@@ -84,8 +84,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Setup(mock => mock.IsDescriptionEnabled).Returns(true);
 
       _checkbox.Setup(mock => mock.Page).Returns(pageStub.Object);
-      _checkbox.Setup(mock => mock.TrueDescription).Returns(WebString.CreateFromText(c_trueDescription));
-      _checkbox.Setup(mock => mock.FalseDescription).Returns(WebString.CreateFromText(c_falseDescription));
+      _checkbox.Setup(mock => mock.TrueDescription).Returns(PlainTextString.CreateFromText(c_trueDescription));
+      _checkbox.Setup(mock => mock.FalseDescription).Returns(PlainTextString.CreateFromText(c_falseDescription));
 
       _checkbox.SetupProperty(_ => _.CssClass);
 
@@ -240,7 +240,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _checkbox.Object.Value = true;
       _checkbox.Setup(_ => _.DefaultTrueDescription).Returns(WebString.CreateFromText("Multiline\nDefaultTrue"));
-      _checkbox.Setup(_ => _.TrueDescription).Returns(WebString.Empty);
+      _checkbox.Setup(_ => _.TrueDescription).Returns(PlainTextString.Empty);
 
       var document = Render();
 
@@ -253,7 +253,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _checkbox.Object.Value = false;
       _checkbox.Setup(_ => _.DefaultFalseDescription).Returns(WebString.CreateFromText("Multiline\nDefaultFalse"));
-      _checkbox.Setup(_ => _.FalseDescription).Returns(WebString.Empty);
+      _checkbox.Setup(_ => _.FalseDescription).Returns(PlainTextString.Empty);
 
       var document = Render();
 
@@ -282,7 +282,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
     }
 
-    private void CheckRender (bool value, WebString spanText)
+    private void CheckRender (bool value, PlainTextString spanText)
     {
       _checkbox.Object.Value = value;
 
@@ -378,12 +378,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(checkbox, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
-    private void CheckImage (bool value, XmlNode outerSpan, WebString altText)
+    private void CheckImage (bool value, XmlNode outerSpan, PlainTextString altText)
     {
       var image = Html.GetAssertedChildElement(outerSpan, "img", 0);
       Html.AssertNoAttribute(image, "id");
       Html.AssertAttribute(image, "src", string.Format("/sprite.svg#CheckBox{0}", value), HtmlHelper.AttributeValueCompareMode.Contains);
-      Html.AssertAttribute(image, "alt", altText.ToString(WebStringEncoding.Attribute));
+      Html.AssertAttribute(image, "alt", altText);
     }
 
     private void CheckOuterSpan (XmlNode outerSpan)

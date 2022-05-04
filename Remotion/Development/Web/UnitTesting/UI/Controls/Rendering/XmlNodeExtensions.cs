@@ -36,7 +36,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
       Helper.AssertChildElementCount(element, childElementCount);
     }
 
-    public static void AssertAttributeValueEquals (this XmlNode element, string attributeName, WebString attributeValue)
+    public static void AssertAttributeValueEquals (this XmlNode element, string attributeName, PlainTextString attributeValue)
     {
       Helper.AssertAttribute(element, attributeName, attributeValue, HtmlHelperBase.AttributeValueCompareMode.Equal);
     }
@@ -46,7 +46,7 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
       Helper.AssertAttribute(element, attributeName, attributeValue, HtmlHelperBase.AttributeValueCompareMode.Equal);
     }
 
-    public static void AssertAttributeValueContains (this XmlNode element, string attributeName, WebString attributeValuePart)
+    public static void AssertAttributeValueContains (this XmlNode element, string attributeName, PlainTextString attributeValuePart)
     {
       Helper.AssertAttribute(element, attributeName, attributeValuePart, HtmlHelperBase.AttributeValueCompareMode.Contains);
     }

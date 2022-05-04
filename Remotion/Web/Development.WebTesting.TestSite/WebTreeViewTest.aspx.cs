@@ -36,11 +36,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       MyWebTreeView3.Nodes.Add(webTreeNodeNoBadge);
 
       var webTreeNodeBadgeNoDescription = new WebTreeNode("Node2", WebString.CreateFromText("Badge with value"));
-      webTreeNodeBadgeNoDescription.Badge = new Badge(WebString.CreateFromText("1"), WebString.Empty);
+      webTreeNodeBadgeNoDescription.Badge = new Badge(WebString.CreateFromText("1"), PlainTextString.Empty);
       MyWebTreeView3.Nodes.Add(webTreeNodeBadgeNoDescription);
 
       var webTreeNodeBadge = new WebTreeNode("Node3", WebString.CreateFromText("Badge with value and description"));
-      webTreeNodeBadge.Badge = new Badge(WebString.CreateFromText("2"), WebString.CreateFromText("2 description"));
+      webTreeNodeBadge.Badge = new Badge(WebString.CreateFromText("2"), PlainTextString.CreateFromText("2 description"));
       MyWebTreeView3.Nodes.Add(webTreeNodeBadge);
 
       var treeViewNodes = new IControlItem[]

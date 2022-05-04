@@ -144,59 +144,6 @@ namespace Remotion.Web
     }
 
     /// <summary>
-    /// Adds the specified markup <paramref name="attribute"/> to the <paramref name="writer"/> using the <see cref="WebString"/> value.
-    /// The value is escaped if necessary, depending on the <see cref="Type"/> of the <see cref="WebString"/>.
-    /// </summary>
-    /// <remarks>
-    /// Renders an attribute with an empty value if the <see cref="WebString"/> has no value.
-    /// </remarks>
-    /// <param name="writer">The <see cref="HtmlTextWriter"/> where the attribute will be added. Must not be <see langword="null" />.</param>
-    /// <param name="attribute">The attribute that is to be added.</param>
-    public void AddAttributeTo ([NotNull] HtmlTextWriter writer, HtmlTextWriterAttribute attribute)
-    {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-
-      switch (_type)
-      {
-        case WebStringType.PlainText:
-          writer.AddAttribute(attribute, GetValue(), fEncode: true);
-          break;
-        case WebStringType.Encoded:
-          writer.AddAttribute(attribute, GetValue(), fEncode: false);
-          break;
-        default:
-          throw new NotSupportedException($"The WebStringType '{_type}' is not supported.");
-      }
-    }
-
-    /// <summary>
-    /// Adds the specified markup <paramref name="attribute"/> to the <paramref name="writer"/> using the <see cref="WebString"/> value.
-    /// The value is escaped if necessary, depending on the <see cref="Type"/> of the <see cref="WebString"/>.
-    /// </summary>
-    /// <remarks>
-    /// Renders an attribute with an empty value if the <see cref="WebString"/> has no value.
-    /// </remarks>
-    /// <param name="writer">The <see cref="HtmlTextWriter"/> where the attribute will be added. Must not be <see langword="null" />.</param>
-    /// <param name="attribute">The name of the attribute that is to be added. Must not be <see langword="null" /> or empty.</param>
-    public void AddAttributeTo ([NotNull] HtmlTextWriter writer, [NotNull] string attribute)
-    {
-      ArgumentUtility.CheckNotNull(nameof(writer), writer);
-      ArgumentUtility.CheckNotNullOrEmpty(nameof(attribute), attribute);
-
-      switch (_type)
-      {
-        case WebStringType.PlainText:
-          writer.AddAttribute(attribute, GetValue(), fEndode: true);
-          break;
-        case WebStringType.Encoded:
-          writer.AddAttribute(attribute, GetValue(), fEndode: false);
-          break;
-        default:
-          throw new NotSupportedException($"The WebStringType '{_type}' is not supported.");
-      }
-    }
-
-    /// <summary>
     /// Converts this <see cref="WebString"/> into a <see cref="PlainTextString"/> if <see cref="Type"/> is <see cref="WebStringType.PlainText"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">
@@ -263,8 +210,6 @@ namespace Remotion.Web
               return stringWriter.ToString();
             }
           }
-        case WebStringEncoding.Attribute:
-          return HttpUtility.HtmlAttributeEncode(value);
         default:
           throw new ArgumentOutOfRangeException(nameof(encoding), encoding, null);
       }

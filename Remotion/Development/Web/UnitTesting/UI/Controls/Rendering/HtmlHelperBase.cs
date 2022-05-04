@@ -194,9 +194,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// <summary>
     /// Asserts that <paramref name="node"/> has an attribute named <paramref name="attributeName"/> with value <paramref name="attributeValue"/>.
     /// </summary>
-    public void AssertAttribute (XmlNode node, string attributeName, WebString attributeValue)
+    public void AssertAttribute (XmlNode node, string attributeName, PlainTextString? attributeValue)
     {
-      AssertAttribute(node, attributeName, attributeValue.ToString(WebStringEncoding.Attribute));
+      AssertAttribute(node, attributeName, attributeValue?.GetValue());
     }
 
     /// <summary>
@@ -215,9 +215,9 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     /// and that the attribute's value is equal to or contains <paramref name="attributeValue"/>, 
     /// depending on <paramref name="mode"/>.
     /// </summary>
-    public void AssertAttribute (XmlNode node, string attributeName, WebString attributeValue, AttributeValueCompareMode mode)
+    public void AssertAttribute (XmlNode node, string attributeName, PlainTextString? attributeValue, AttributeValueCompareMode mode)
     {
-      AssertAttribute(node, attributeName, attributeValue.ToString(WebStringEncoding.Attribute), mode);
+      AssertAttribute(node, attributeName, attributeValue?.GetValue(), mode);
     }
 
     /// <summary>

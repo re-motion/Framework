@@ -30,18 +30,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
     private readonly string _trueIconUrl;
     private readonly string _falseIconUrl;
     private readonly string _nullIconUrl;
-    private readonly WebString _defaultTrueDescription;
-    private readonly WebString _defaultFalseDescription;
-    private readonly WebString _defaultNullDescription;
+    private readonly PlainTextString _defaultTrueDescription;
+    private readonly PlainTextString _defaultFalseDescription;
+    private readonly PlainTextString _defaultNullDescription;
 
     public BocBooleanValueResourceSet (
         string resourceKey,
         string trueIconUrl,
         string falseIconUrl,
         string nullIconUrl,
-        WebString defaultTrueDescription,
-        WebString defaultFalseDescription,
-        WebString defaultNullDescription)
+        PlainTextString defaultTrueDescription,
+        PlainTextString defaultFalseDescription,
+        PlainTextString defaultNullDescription)
     {
       ArgumentUtility.CheckNotNull("resourceKey", resourceKey);
       ArgumentUtility.CheckNotNullOrEmpty("trueIconUrl", trueIconUrl);
@@ -80,17 +80,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation
       get { return _nullIconUrl; }
     }
 
-    public WebString DefaultTrueDescription
+    public PlainTextString DefaultTrueDescription
     {
       get { return _defaultTrueDescription; }
     }
 
-    public WebString DefaultFalseDescription
+    public PlainTextString DefaultFalseDescription
     {
       get { return _defaultFalseDescription; }
     }
 
-    public WebString DefaultNullDescription
+    public PlainTextString DefaultNullDescription
     {
       get { return _defaultNullDescription; }
     }

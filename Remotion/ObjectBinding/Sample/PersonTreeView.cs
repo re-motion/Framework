@@ -41,13 +41,13 @@ namespace Remotion.ObjectBinding.Sample
         nodeInfos = new BusinessObjectPropertyTreeNodeInfo[2];
         nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo(
             WebString.CreateFromText("Children"),
-            WebString.CreateFromText("ToolTip: Children"),
+            PlainTextString.CreateFromText("ToolTip: Children"),
             new IconInfo(null, Unit.Empty, Unit.Empty),
             childrenProperty);
-        nodeInfos[0].Badge = new Badge(WebString.CreateFromText("" + childCount), WebString.CreateFromText(childCount + " children"));
+        nodeInfos[0].Badge = new Badge(WebString.CreateFromText("" + childCount), PlainTextString.CreateFromText(childCount + " children"));
         nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo(
             WebString.CreateFromText("Jobs"),
-            WebString.CreateFromText("ToolTip: Jobs"),
+            PlainTextString.CreateFromText("ToolTip: Jobs"),
             new IconInfo(null, Unit.Empty, Unit.Empty),
             (IBusinessObjectReferenceProperty)businessObject.BusinessObjectClass.GetPropertyDefinition("Jobs"));
       }

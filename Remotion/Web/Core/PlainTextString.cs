@@ -135,7 +135,7 @@ namespace Remotion.Web
     {
       ArgumentUtility.CheckNotNull(nameof(writer), writer);
 
-      ((WebString)this).AddAttributeTo(writer, attribute);
+      writer.AddAttribute(attribute, GetValue(), fEncode: true);
     }
 
     /// <summary>
@@ -152,7 +152,7 @@ namespace Remotion.Web
       ArgumentUtility.CheckNotNull(nameof(writer), writer);
       ArgumentUtility.CheckNotNullOrEmpty(nameof(attribute), attribute);
 
-      ((WebString)this).AddAttributeTo(writer, attribute);
+      writer.AddAttribute(attribute, GetValue(), fEndode: true);
     }
 
     /// <inheritdoc />
