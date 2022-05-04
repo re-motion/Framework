@@ -106,124 +106,6 @@ namespace Remotion.Web.UnitTests.Core
     }
 
     [Test]
-    public void AddAttribute_NullPlainTextWebString_RendersEmptyAttribute ()
-    {
-      var webString = WebString.CreateFromText(null);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, HtmlTextWriterAttribute.Class);
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo("<a class=\"\">"));
-    }
-
-    [Test]
-    public void AddAttribute_EmptyPlainTextWebString_RendersEmptyAttribute ()
-    {
-      var webString = WebString.CreateFromText(string.Empty);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, HtmlTextWriterAttribute.Class);
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo("<a class=\"\">"));
-    }
-
-    [Test]
-    public void AddAttribute_PlainTextWebStringWithAttributeEnum_RendersEncodedAttributeValue ()
-    {
-      var stringValue = "aoe   \" & ' < > é \r \n \r\n";
-      var webString = WebString.CreateFromText(stringValue);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, HtmlTextWriterAttribute.Class);
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo("<a class=\"aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n\">"));
-    }
-
-    [Test]
-    public void AddAttribute_PlainTextWebStringWithAttributeEnumThatDoesNotHaveEncodeDefault_RendersEncodedAttributeValue ()
-    {
-      var stringValue = "aoe   \" & ' < > é \r \n \r\n";
-      var webString = WebString.CreateFromText(stringValue);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, HtmlTextWriterAttribute.Cols);
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo("<a cols=\"aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n\">"));
-    }
-
-    [Test]
-    public void AddAttribute_PlainTextWebStringWithAttributeString_RendersEncodedAttributeValue ()
-    {
-      var stringValue = "aoe   \" & ' < > é \r \n \r\n";
-      var webString = WebString.CreateFromText(stringValue);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, "class");
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo("<a class=\"aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n\">"));
-    }
-
-    [Test]
-    public void AddAttribute_EncodedWebStringWithAttributeEnumThatDoesNotHaveEncodeDefault_RendersUnencodedAttributeValue ()
-    {
-      var stringValue = "aoe   \" & ' < > é \r \n \r\n";
-      var webString = WebString.CreateFromHtml(stringValue);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, HtmlTextWriterAttribute.Cols);
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo($"<a cols=\"{stringValue}\">"));
-    }
-
-    [Test]
-    public void AddAttribute_EncodedWebStringWithAttributeEnum_RendersUnencodedAttributeValue ()
-    {
-      var stringValue = "aoe   \" & ' < > é \r \n \r\n";
-      var webString = WebString.CreateFromHtml(stringValue);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, HtmlTextWriterAttribute.Class);
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo($"<a class=\"{stringValue}\">"));
-    }
-
-    [Test]
-    public void AddAttribute_EncodedWebStringWithAttributeString_RendersUnencodedAttributeValue ()
-    {
-      var stringValue = "aoe   \" & ' < > é \r \n \r\n";
-      var webString = WebString.CreateFromHtml(stringValue);
-
-      var renderedString = ExecuteWithHtmlTextWriter(
-          writer =>
-          {
-            webString.AddAttributeTo(writer, "class");
-            writer.RenderBeginTag("a");
-          });
-      Assert.That(renderedString, Is.EqualTo($@"<a class=""{stringValue}"">"));
-    }
-
-    [Test]
     public void Equals ()
     {
       Assert.That(WebString.CreateFromText("a").Equals(WebString.CreateFromText("a")), Is.True);
@@ -234,19 +116,12 @@ namespace Remotion.Web.UnitTests.Core
     public void ToString_WithEncodedText_DoesNotEncodeOutput ()
     {
       Assert.That(WebString.CreateFromHtml("aoe   \" & ' < > é \r \n \r\n").ToString(WebStringEncoding.Html), Is.EqualTo("aoe   \" & ' < > é \r \n \r\n"));
-      Assert.That(WebString.CreateFromHtml("aoe   \" & ' < > é \r \n \r\n").ToString(WebStringEncoding.Attribute), Is.EqualTo("aoe   \" & ' < > é \r \n \r\n"));
     }
 
     [Test]
     public void ToString_WithPlainTextText_EncodesOutputWithHtmlEncoding ()
     {
       Assert.That(WebString.CreateFromText("aoe   \" & ' < > é \r \n \r\n").ToString(), Is.EqualTo("aoe &#160; &quot; &amp; &#39; &lt; &gt; &#233; \r \n \r\n"));
-    }
-
-    [Test]
-    public void ToString_WithPlainTextTextAndAttributeEncoding_EncodesOutput ()
-    {
-      Assert.That(WebString.CreateFromText("aoe   \" & ' < > é \r \n \r\n").ToString(WebStringEncoding.Attribute), Is.EqualTo("aoe   &quot; &amp; &#39; &lt; > é \r \n \r\n"));
     }
 
     [Test]
