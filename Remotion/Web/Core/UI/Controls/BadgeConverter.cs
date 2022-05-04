@@ -11,6 +11,7 @@ namespace Remotion.Web.UI.Controls
   public class BadgeConverter : ExpandableObjectConverter
   {
     private static readonly WebStringConverter s_webStringConverter = new();
+    private static readonly PlainTextStringConverter s_plainTextStringConverter = new();
 
     public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
     {
@@ -40,7 +41,7 @@ namespace Remotion.Web.UI.Controls
         {
           var valueParts = stringValue.Split(new[] { '\0' }, 2);
           badge.Value = (WebString)s_webStringConverter.ConvertFrom(null!, CultureInfo.CurrentCulture, valueParts[0])!;
-          badge.Description = (WebString)s_webStringConverter.ConvertFrom(null!, CultureInfo.CurrentCulture, valueParts[1])!;
+          badge.Description = (PlainTextString)s_plainTextStringConverter.ConvertFrom(null!, CultureInfo.CurrentCulture, valueParts[1])!;
         }
 
         return badge;
@@ -65,7 +66,7 @@ namespace Remotion.Web.UI.Controls
               var serializedValue = new StringBuilder();
               serializedValue.Append(s_webStringConverter.ConvertTo(badge.Value, typeof(string)));
               serializedValue.Append('\0');
-              serializedValue.Append(s_webStringConverter.ConvertTo(badge.Description, typeof(string)));
+              serializedValue.Append(s_plainTextStringConverter.ConvertTo(badge.Description, typeof(string)));
               return serializedValue.ToString();
             }
 

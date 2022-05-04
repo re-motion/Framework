@@ -23,16 +23,29 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
   public class BadgeConverterTest
   {
     [Test]
-    public void ConvertTo_CorrectlyEncodesWebStrings ()
+    public void ConvertTo_WithTextValue_CorrectlyEncodesWebStrings ()
     {
       var badgeConverter = new BadgeConverter();
 
       var value = WebString.CreateFromText("a");
-      var description = WebString.CreateFromHtml("b");
+      var description = PlainTextString.CreateFromText("b");
       var badge = new Badge(value, description);
 
       var stringRepresentation = (string)badgeConverter.ConvertTo(badge, typeof(string));
-      Assert.That(stringRepresentation, Is.EqualTo("a\0(html)b"));
+      Assert.That(stringRepresentation, Is.EqualTo("a\0b"));
+    }
+
+    [Test]
+    public void ConvertTo_WithHtmlValue_CorrectlyEncodesWebStrings ()
+    {
+      var badgeConverter = new BadgeConverter();
+
+      var value = WebString.CreateFromHtml("a");
+      var description = PlainTextString.CreateFromText("b");
+      var badge = new Badge(value, description);
+
+      var stringRepresentation = (string)badgeConverter.ConvertTo(badge, typeof(string));
+      Assert.That(stringRepresentation, Is.EqualTo("(html)a\0b"));
     }
 
     [Test]
@@ -40,12 +53,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var badgeConverter = new BadgeConverter();
 
-      var stringRepresentation = "(text)a\0(html)b";
+      var stringRepresentation = "(html)a\0b";
       var deserializedBadge = (Badge)badgeConverter.ConvertFrom(stringRepresentation);
 
       Assert.That(deserializedBadge, Is.Not.Null);
-      Assert.That(deserializedBadge.Value, Is.EqualTo(WebString.CreateFromText("a")));
-      Assert.That(deserializedBadge.Description, Is.EqualTo(WebString.CreateFromHtml("b")));
+      Assert.That(deserializedBadge.Value, Is.EqualTo(WebString.CreateFromHtml("a")));
+      Assert.That(deserializedBadge.Description, Is.EqualTo(PlainTextString.CreateFromText("b")));
     }
   }
 }
