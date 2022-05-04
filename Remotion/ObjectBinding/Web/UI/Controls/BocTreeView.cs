@@ -473,7 +473,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       string id = businessObject.UniqueIdentifier;
       WebString text = GetText(businessObject);
-      WebString toolTip = GetToolTip(businessObject);
+      PlainTextString toolTip = GetToolTip(businessObject);
       IconInfo? icon = GetIcon(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
       BusinessObjectTreeNode node = new BusinessObjectTreeNode(id, text, toolTip, icon, property, businessObject);
       node.Badge = GetBadge(businessObject);
@@ -509,10 +509,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return WebString.CreateFromText(businessObject.GetAccessibleDisplayName());
     }
 
-    protected virtual WebString GetToolTip (IBusinessObjectWithIdentity businessObject)
+    protected virtual PlainTextString GetToolTip (IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      return WebString.CreateFromText(GetToolTip(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider));
+      return PlainTextString.CreateFromText(GetToolTip(businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider));
     }
 
     [NotNull]
@@ -644,7 +644,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         bool isSelected = (bool)values[3];
         string menuID = (string)values[4];
         WebString text = (WebString)values[5];
-        WebString toolTip = (WebString)values[6];
+        PlainTextString toolTip = (PlainTextString)values[6];
         IconInfo icon = (IconInfo)values[7];
         Badge badge = (Badge)values[8];
         bool isBusinessObjectTreeNode = (bool)values[10];
@@ -1072,7 +1072,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BusinessObjectPropertyTreeNodeInfo
   {
     private WebString _text;
-    private WebString _toolTip;
+    private PlainTextString _toolTip;
     private IconInfo? _icon;
     private Badge? _badge;
     private IBusinessObjectReferenceProperty _property;
@@ -1081,12 +1081,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       ArgumentUtility.CheckNotNull("property", property);
       _text = WebString.CreateFromText(property.DisplayName);
-      _toolTip = WebString.Empty;
+      _toolTip = PlainTextString.Empty;
       _icon = null;
       _property = property;
     }
 
-    public BusinessObjectPropertyTreeNodeInfo (WebString text, WebString toolTip, IconInfo icon, IBusinessObjectReferenceProperty property)
+    public BusinessObjectPropertyTreeNodeInfo (WebString text, PlainTextString toolTip, IconInfo icon, IBusinessObjectReferenceProperty property)
     {
       _text = text;
       _toolTip = toolTip;
@@ -1100,7 +1100,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _text = value; }
     }
 
-    public WebString ToolTip
+    public PlainTextString ToolTip
     {
       get { return _toolTip; }
       set { _toolTip = value; }
