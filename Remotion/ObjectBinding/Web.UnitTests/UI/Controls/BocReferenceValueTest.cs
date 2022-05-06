@@ -495,6 +495,46 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    public void ControlState_PreservesDropDownListStateBetweenPostbacks ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+      propertyStub.Setup(_ => _.IsAccessible(It.IsAny<IBusinessObject>())).Returns(true);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = _dataSource;
+      control.Property = propertyStub.Object;
+      var controlInvoker = new ControlInvoker(control);
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(_dataSource.BusinessObject, It.IsAny<ISearchAvailableObjectsArguments>()))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("Expected") });
+
+      controlInvoker.PreRenderRecursive();
+      var controlState = controlInvoker.SaveControlState();
+
+      var controlAfterPostback = new BocReferenceValue();
+      controlAfterPostback.EnableSelectStatement = true;
+      controlAfterPostback.DataSource = _dataSource;
+      controlAfterPostback.Property = propertyStub.Object;
+      var controlInvokerAfterPostback = new ControlInvoker(controlAfterPostback);
+      controlInvokerAfterPostback.LoadControlState(controlState);
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(_dataSource.BusinessObject, It.IsAny<ISearchAvailableObjectsArguments>()))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("Other") });
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)controlAfterPostback).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "Expected" }));
+    }
+
+    [Test]
     public void PopulateDropDownList_WithNullValueTextVisible_WithTextFromProperty ()
     {
       var control = new BocReferenceValue();

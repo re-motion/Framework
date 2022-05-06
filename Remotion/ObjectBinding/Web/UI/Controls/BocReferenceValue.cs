@@ -336,17 +336,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (values[1] != null)
         InternalValue = (string?)values[1];
       _displayName = (string?)values[2];
-      ((IStateManager)_listItems).LoadViewState(values[3]);
+      _isBusinessObjectListPopulated = (bool)values[3]!;
+      if (_isBusinessObjectListPopulated)
+        ((IStateManager)_listItems).LoadViewState(values[4]);
     }
 
     protected override object SaveControlState ()
     {
-      object?[] values = new object?[4];
+      object?[] values = new object?[5];
 
       values[0] = base.SaveControlState();
       values[1] = InternalValue;
       values[2] = _displayName;
-      values[3] = ((IStateManager)_listItems).SaveViewState();
+      values[3] = _isBusinessObjectListPopulated;
+      if (_isBusinessObjectListPopulated)
+        values[4] =  ((IStateManager)_listItems).SaveViewState();
 
       return values;
     }
