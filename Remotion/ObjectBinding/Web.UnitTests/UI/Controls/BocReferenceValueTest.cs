@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI;
+using System.Linq;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
 using Moq;
@@ -606,6 +607,119 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       Assert.That(singleItem.Text, Is.Empty);
       Assert.That(singleItem.Attributes["label"], Is.EqualTo(" "));
       Assert.That(singleItem.Attributes["aria-label"], Is.Not.Empty);
+    }
+
+    [Test]
+    public void PopulateDropDownList_PreventsAutomaticListPopulation ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = _dataSource;
+      control.Property = propertyStub.Object;
+
+      control.SetBusinessObjectList(new IBusinessObjectWithIdentity[] { TypeWithReference.Create("Expected") });
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "Expected" }));
+      propertyStub.Verify(_ => _.SearchAvailableObjects(It.IsAny<IBusinessObject>(), It.IsAny<ISearchAvailableObjectsArguments>()), Times.Never());
+    }
+
+    [Test]
+    public void PopulateDropDownList_EnsuresListIsPopulated ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = _dataSource;
+      control.Property = propertyStub.Object;
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(_dataSource.BusinessObject, It.IsAny<ISearchAvailableObjectsArguments>()))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("First"), TypeWithReference.Create("Second") });
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "First", "Second" }));
+    }
+
+    [Test]
+    public void ResetBusinessObjectList_AllowsListToBePopulatedAgainFromProperty ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = _dataSource;
+      control.Property = propertyStub.Object;
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(_dataSource.BusinessObject, It.IsAny<ISearchAvailableObjectsArguments>()))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("NewValue") });
+
+      control.SetBusinessObjectList(new IBusinessObjectWithIdentity[] { TypeWithReference.Create("OldValue") });
+      var dropDownList1 = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList1);
+      }
+
+      Assert.That(dropDownList1.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "OldValue" }));
+
+      control.ResetBusinessObjectList();
+
+      var dropDownList2 = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList2);
+      }
+
+      Assert.That(dropDownList2.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "NewValue" }));
+    }
+
+    [Test]
+    public void PreRender_EnsuresListIsPopulated ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+      propertyStub.Setup(_ => _.IsAccessible(It.IsAny<IBusinessObject>())).Returns(true);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = _dataSource;
+      control.Property = propertyStub.Object;
+      var controlInvoker = new ControlInvoker(control);
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(_dataSource.BusinessObject, It.IsAny<ISearchAvailableObjectsArguments>()))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("Expected") });
+
+      controlInvoker.PreRenderRecursive();
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(_dataSource.BusinessObject, It.IsAny<ISearchAvailableObjectsArguments>()))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("Other") });
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "Expected" }));
     }
   }
 }

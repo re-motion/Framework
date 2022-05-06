@@ -186,15 +186,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ((IStateManager)_listItems).TrackViewState();
     }
 
-    /// <remarks> Populates the list. </remarks>
-    protected override void OnLoad (EventArgs e)
-    {
-      base.OnLoad(e);
-
-      if (!ControlExistedInPreviousRequest)
-        EnsureBusinessObjectListPopulated();
-    }
-
     protected override string ValueContainingControlID
     {
       get { return GetValueName(); }
@@ -316,6 +307,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
       return new BocReferenceValueConstraintVisitor(this);
+    }
+
+    protected override void OnPreRender (EventArgs e)
+    {
+      // Required to provide the list before SaveControlState is performed
+      EnsureBusinessObjectListPopulated();
+
+      base.OnPreRender(e);
     }
 
     protected override void Render (HtmlTextWriter writer)
@@ -469,6 +468,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void ClearBusinessObjectList ()
     {
       SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>());
+    }
+
+    /// <summary> Resets the list of <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
+    /// <remarks> Clears the list of values and reloads the values during the next rendering phase. </remarks>
+    public void ResetBusinessObjectList ()
+    {
+      _isBusinessObjectListPopulated = false;
+      _listItems.Clear();
     }
 
     /// <summary> Calls <see cref="PopulateBusinessObjectList"/> if the list has not yet been populated. </summary>
@@ -670,6 +677,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       // PopulateDropDownList should be moved to the renderer, the BocReferenceValue should only provide a list of items, see also BocEnumValue.
 
       ArgumentUtility.CheckNotNull("dropDownList", dropDownList);
+
+      EnsureBusinessObjectListPopulated();
+
       dropDownList.Items.Clear();
 
       bool isNullItem = (InternalValue == null);
