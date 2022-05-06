@@ -108,7 +108,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
       var group = (Group?)groupReferenceValue.Value;
       if (group == null)
       {
-        positionReferenceValue.ClearBusinessObjectList();
+        positionReferenceValue.SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>());
         positionReferenceValue.Enabled = false;
       }
       else

@@ -88,11 +88,11 @@
         <see cref="Remotion.ObjectBinding.Web.UI.Controls.DropDownListStyle.AutoPostBack"/> property to enable this
         behavior.
       </para><para>
-        Use the <see cref="SetBusinessObjectList"/> method to programmatically populate the list of 
+        Use the <see cref="SetBusinessObjectList"/> method to programmatically populate the list of
         <see cref="IBusinessObjectWithIdentity"/> objects. This call is only required during the first page life cycle. 
         If the list has not been populated programmatically, the <see cref="Select"/> statement will be evaluated. 
         This behavior can be deactivated by setting <see cref="IsSelectStatementEnabled"/> to 
-        <see langword="false"/>. Use <see cref="ClearBusinessObjectList"/> to remove all items from the
+        <see langword="false"/>. Use <see cref="SetBusinessObjectList"/> with an empty array to remove all items from the
         list <see cref="IBusinessObjectWithIdentity"/> objects. Use this method to progammatically clear the list, e.g.
         in an event handler.
       </para><para>
