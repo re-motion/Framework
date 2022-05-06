@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
 using Moq;
@@ -444,6 +445,53 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       factoryMock.Verify();
       serviceLocatorMock.Verify();
+    }
+
+    [Test]
+    public void RaisePostDataChangedEvent_WithSelectedValueNotPartOfList_RestoresValueFromObjectService ()
+    {
+      var businessObjectClassStub = new Mock<IBusinessObjectClassWithIdentity>();
+      var control = new BocReferenceValueMock(new Mock<IWebServiceFactory>().Object);
+      control.DataSource = new StubDataSource(businessObjectClassStub.Object);
+
+      control.InternalValue = "ExpectedIdentifier";
+      businessObjectClassStub.Setup(_ => _.GetObject("ExpectedIdentifier")).Returns(TypeWithReference.Create("ExpectedDisplayName"));
+
+      ((IPostBackDataHandler)control).RaisePostDataChangedEvent();
+
+      Assert.That(((IBocReferenceValueBase)control).GetLabelText(), Is.EqualTo("ExpectedDisplayName"));
+    }
+
+    [Test]
+    public void RaisePostDataChangedEvent_WithSelectedValueNotPartOfList_AndNoValueFromObjectService_ThrowsInvalidOperationException ()
+    {
+      var businessObjectClassStub = new Mock<IBusinessObjectClassWithIdentity>();
+      var control = new BocReferenceValueMock(new Mock<IWebServiceFactory>().Object);
+      control.DataSource = new StubDataSource(businessObjectClassStub.Object);
+
+      control.InternalValue = "ExpectedIdentifier";
+      businessObjectClassStub.Setup(_ => _.GetObject("ExpectedIdentifier")).Returns((IBusinessObjectWithIdentity)null);
+
+      Assert.That(
+          () => ((IPostBackDataHandler)control).RaisePostDataChangedEvent(),
+          Throws.InvalidOperationException.With.Message.EqualTo("The key 'ExpectedIdentifier' does not correspond to a known element."));
+    }
+
+    [Test]
+    public void RaisePostDataChangedEvent_WithSelectedValuePartOfList_UsesValueFromList ()
+    {
+      var businessObjectClassStub = new Mock<IBusinessObjectClassWithIdentity>();
+      var control = new BocReferenceValueMock(new Mock<IWebServiceFactory>().Object);
+      control.DataSource = new StubDataSource(businessObjectClassStub.Object);
+
+      var selectedValue = TypeWithReference.Create("ExpectedDisplayName");
+      control.InternalValue = selectedValue.UniqueIdentifier;
+      control.SetBusinessObjectList(new IBusinessObjectWithIdentity[] { TypeWithReference.Create("FirstValue"), selectedValue, TypeWithReference.Create("SecondValue") });
+
+      ((IPostBackDataHandler)control).RaisePostDataChangedEvent();
+
+      Assert.That(((IBocReferenceValueBase)control).GetLabelText(), Is.EqualTo("ExpectedDisplayName"));
+      businessObjectClassStub.Verify(_ => _.GetObject(It.IsAny<string>()), Times.Never());
     }
 
     [Test]

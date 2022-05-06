@@ -213,14 +213,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Called when the state of the control has changed between postbacks. </summary>
     protected override void RaisePostDataChangedEvent ()
     {
-      if (InternalValue == null)
+      var internalValue = InternalValue;
+      if (internalValue == null)
+      {
         _displayName = null;
+      }
       else
       {
-        ListItem selectedItem = _listItems.FindByValue(InternalValue);
+        ListItem selectedItem = _listItems.FindByValue(internalValue);
         if (selectedItem == null)
-          throw new InvalidOperationException(string.Format("The key '{0}' does not correspond to a known element.", InternalValue));
-        _displayName = selectedItem.Text;
+        {
+          // GetObject(...) can load any value that is provided by ID. This behavior is symmetrical with BocAutoCompleteReferenceValue.
+          var businessObject = GetBusinessObjectClass()?.GetObject(internalValue);
+          if (businessObject == null)
+            throw new InvalidOperationException(string.Format("The key '{0}' does not correspond to a known element.", internalValue));
+          else
+            _displayName = GetDisplayName(businessObject);
+        }
+        else
+        {
+          _displayName = selectedItem.Text;
+        }
       }
 
       if (!IsReadOnly && Enabled)
