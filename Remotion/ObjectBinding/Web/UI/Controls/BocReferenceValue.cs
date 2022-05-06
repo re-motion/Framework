@@ -512,27 +512,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       //  Get all matching business objects
       var businessObjects = Property.SearchAvailableObjects(DataSource?.BusinessObject, new DefaultSearchArguments(_select));
 
-      RefreshBusinessObjectList(ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity>(businessObjects));
+      RefreshBusinessObjectList(businessObjects);
     }
 
     /// <summary> Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>. </summary>
     /// <param name="businessObjects">
-    ///   The <see cref="IList"/> of <see cref="IBusinessObjectWithIdentity"/> objects to populate the 
-    ///   <see cref="DropDownList"/>. Use <see langword="null"/> to clear the list.
+    ///   The <see cref="IList"/> of <see cref="IBusinessObjectWithIdentity"/> objects to populate the <see cref="DropDownList"/>.
+    ///   Must not be <see langword="null" />.
     /// </param>
     /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
-    protected virtual void RefreshBusinessObjectList (IList? businessObjects)
+    protected virtual void RefreshBusinessObjectList (IList businessObjects)
     {
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+
       _isBusinessObjectListPopulated = true;
       _listItems.Clear();
 
-      if (businessObjects != null)
+      foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
       {
-        foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
-        {
-          ListItem item = new ListItem(GetDisplayName(businessObject), businessObject.UniqueIdentifier);
-          _listItems.Add(item);
-        }
+        ListItem item = new ListItem(GetDisplayName(businessObject), businessObject.UniqueIdentifier);
+        _listItems.Add(item);
       }
     }
 
