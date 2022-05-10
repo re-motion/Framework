@@ -509,11 +509,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Property == null)
         return;
 
-      IBusinessObject[]? businessObjects = null;
-
       //  Get all matching business objects
-      if (DataSource != null)
-        businessObjects = Property.SearchAvailableObjects(DataSource.BusinessObject, new DefaultSearchArguments(_select));
+      var businessObjects = Property.SearchAvailableObjects(DataSource?.BusinessObject, new DefaultSearchArguments(_select));
 
       RefreshBusinessObjectList(ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity>(businessObjects));
     }

@@ -656,6 +656,97 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     }
 
     [Test]
+    public void PopulateDropDownList_WithEnableSelectStatementFalse_ListRemainsEmpty ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = false;
+      control.DataSource = _dataSource;
+      control.Property = propertyStub.Object;
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "" }));
+      propertyStub.Verify(_ => _.SearchAvailableObjects(It.IsAny<IBusinessObject>(), It.IsAny<ISearchAvailableObjectsArguments>()), Times.Never());
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithPropertyNull_ListRemainsEmpty ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = _dataSource;
+      control.Property = null;
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "" }));
+      propertyStub.Verify(_ => _.SearchAvailableObjects(It.IsAny<IBusinessObject>(), It.IsAny<ISearchAvailableObjectsArguments>()), Times.Never());
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithDataSourceNull_AndPropertyNotNull_ListIsPopulatedFromSearchService ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = null;
+      control.Property = propertyStub.Object;
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(null, It.IsAny<ISearchAvailableObjectsArguments>()))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("First"), TypeWithReference.Create("Second") });
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "First", "Second" }));
+    }
+
+    [Test]
+    public void PopulateDropDownList_UsesSelectStatementForValueRetrieval ()
+    {
+      var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
+      propertyStub.Setup(_ => _.ReferenceClass).Returns(_dataSource.BusinessObjectClass);
+
+      var control = new BocReferenceValue();
+      control.EnableSelectStatement = true;
+      control.DataSource = null;
+      control.Property = propertyStub.Object;
+      control.Select = "ExpectedSelect";
+
+      propertyStub
+          .Setup(_ => _.SearchAvailableObjects(null, Match.Create<DefaultSearchArguments>(arg => arg.SearchStatement == "ExpectedSelect")))
+          .Returns(new IBusinessObject[] { TypeWithReference.Create("First"), TypeWithReference.Create("Second") });
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Cast<ListItem>().Select(i => i.Text), Is.EqualTo(new[] { "", "First", "Second" }));
+    }
+
+    [Test]
     public void ResetBusinessObjectList_AllowsListToBePopulatedAgainFromProperty ()
     {
       var propertyStub = new Mock<IBusinessObjectReferenceProperty>();
