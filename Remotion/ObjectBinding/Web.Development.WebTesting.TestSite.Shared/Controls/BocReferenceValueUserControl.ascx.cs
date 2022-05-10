@@ -67,5 +67,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite.Shared.Cont
     {
       get { return (BocReferenceValueUserControlTestOutput)((Layout)Page.Master).GetTestOutputControl(); }
     }
+
+    protected void PostbackButton_OnClick (object sender, EventArgs e)
+    {
+      // NOP
+    }
+
+    protected void ResetBusinessObjectListButton_OnClick (object sender, EventArgs e)
+    {
+      PartnerField_Normal.ResetBusinessObjectList();
+    }
+
+    protected void SetEmptyBusinessObjectListButton_OnClick (object sender, EventArgs e)
+    {
+      PartnerField_Normal.SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>());
+    }
   }
 }
