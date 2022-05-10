@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // member fields
 
-    private bool _isBusinessObejectListPopulated;
+    private bool _isBusinessObjectListPopulated;
 
     private readonly DropDownListStyle _dropDownListStyle;
 
@@ -456,7 +456,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Calls <see cref="PopulateBusinessObjectList"/> if the list has not yet been populated. </summary>
     protected void EnsureBusinessObjectListPopulated ()
     {
-      if (_isBusinessObejectListPopulated)
+      if (_isBusinessObjectListPopulated)
         return;
       PopulateBusinessObjectList();
     }
@@ -501,7 +501,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
     protected virtual void RefreshBusinessObjectList (IList? businessObjects)
     {
-      _isBusinessObejectListPopulated = true;
+      _isBusinessObjectListPopulated = true;
       _listItems.Clear();
 
       if (businessObjects != null)
