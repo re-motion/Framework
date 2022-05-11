@@ -107,13 +107,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return data.ContainsObjectID(objectID);
     }
 
-    public DomainObject GetObject (int index)
+    public IDomainObject GetObject (int index)
     {
       var data = GetAssociatedEndPoint().GetData();
       return data.GetObject(index);
     }
 
-    public DomainObject? GetObject (ObjectID objectID)
+    public IDomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -217,7 +217,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       for (int i = Count - 1; i >= 0; --i)
       {
-        var removedObject = GetObject(i);
+        var removedObject = (DomainObject)GetObject(i);
 
         // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
         Assertion.IsFalse(removedObject.TransactionContext[associatedEndPoint.ClientTransaction].State.IsDeleted);

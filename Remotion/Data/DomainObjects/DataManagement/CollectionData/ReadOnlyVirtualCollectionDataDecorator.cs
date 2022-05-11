@@ -41,9 +41,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public bool ContainsObjectID (ObjectID objectID) => _collectionData.ContainsObjectID(objectID);
 
-    public DomainObject GetObject (int index) => _collectionData.GetObject(index);
+    public IDomainObject GetObject (int index) => _collectionData.GetObject(index);
 
-    public DomainObject? GetObject (ObjectID objectID) => _collectionData.GetObject(objectID);
+    public IDomainObject? GetObject (ObjectID objectID) => _collectionData.GetObject(objectID);
 
     public int IndexOf (ObjectID objectID) => _collectionData.IndexOf(objectID);
 
