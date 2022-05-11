@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled())
@@ -383,12 +383,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return id != null ? id.ToString()! : "<null>";
     }
 
-    private string GetDomainObjectsString (IEnumerable<DomainObject> domainObjects)
+    private string GetDomainObjectsString (IEnumerable<IDomainObject> domainObjects)
     {
       return string.Join(", ", ConvertToStringAndCount(domainObjects, 10, GetDomainObjectString));
     }
 
-    private string GetDomainObjectString (DomainObject? domainObject)
+    private string GetDomainObjectString (IDomainObject? domainObject)
     {
       return GetObjectIDString(domainObject.GetSafeID());
     }

@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
     }

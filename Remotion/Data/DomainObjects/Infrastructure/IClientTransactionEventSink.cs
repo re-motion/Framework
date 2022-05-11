@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void RaiseRelationReadEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess);
     // User event
     void RaiseRelationChangingEvent (
