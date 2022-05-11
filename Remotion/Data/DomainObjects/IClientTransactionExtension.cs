@@ -313,7 +313,12 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationReading"/> instead.</note>
     /// </remarks>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess);
+    void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
+        ValueAccess valueAccess);
 
     /// <summary>
     /// Invoked before a relation is changed.
