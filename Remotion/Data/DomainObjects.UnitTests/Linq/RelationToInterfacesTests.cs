@@ -7,6 +7,7 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain.InterfaceMapping;
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
   [TestFixture]
+  [RequiresTestDatabase]
   public class RelationToInterfacesTests : ClientTransactionBaseTest
   {
     [Test]

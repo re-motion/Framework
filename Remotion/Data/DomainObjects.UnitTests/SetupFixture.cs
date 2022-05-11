@@ -32,12 +32,28 @@ namespace Remotion.Data.DomainObjects.UnitTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    private StandardMappingDatabaseAgent _standardMappingDatabaseAgent;
-    private DoubleCheckedLockingContainer<IMappingConfiguration> _previousMappingConfigurationContainer;
+    private static StandardMappingDatabaseAgent _standardMappingDatabaseAgent;
+    private static DoubleCheckedLockingContainer<IMappingConfiguration> _previousMappingConfigurationContainer;
 
-    [OneTimeSetUp]
-    public void OneTimeSetUp ()
+    private static bool _isSetUp;
+
+    public static void Setup ()
     {
+      if (_isSetUp)
+        return;
+
+      ServiceLocator.SetLocatorProvider(() => null);
+
+      LogManager.ResetConfiguration();
+      Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
+
+      StandardConfiguration.Initialize();
+      TableInheritanceConfiguration.Initialize();
+
+      _isSetUp = true;
+      if (1.Equals(1))
+        return;
+
       try
       {
         ServiceLocator.SetLocatorProvider(() => null);
@@ -49,6 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         TableInheritanceConfiguration.Initialize();
 
         SqlConnection.ClearAllPools();
+        
 
         var masterAgent = new DatabaseAgent(DatabaseTest.MasterConnectionString);
         masterAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
@@ -78,6 +95,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
         Assertion.IsNotNull(fields);
         _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>)PrivateInvoke.GetPublicField(fields, "Current");
         PrivateInvoke.SetPublicField(fields, "Current", throwingMappingConfigurationContainer);
+
+        _isSetUp = true;
       }
       catch (Exception ex)
       {
@@ -87,15 +106,28 @@ namespace Remotion.Data.DomainObjects.UnitTests
       }
     }
 
-    [OneTimeTearDown]
-    public void OneTimeTearDown ()
+    public static void Destroy ()
     {
+      if (!_isSetUp)
+        return;
+
       var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
       Assertion.IsNotNull(fields);
       PrivateInvoke.SetPublicField(fields, "Current", _previousMappingConfigurationContainer);
 
       _standardMappingDatabaseAgent.SetDatabaseReadWrite(DatabaseTest.DatabaseName);
       SqlConnection.ClearAllPools();
+    }
+
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
+    {
+    }
+
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
+    {
+      Destroy();
     }
   }
 }

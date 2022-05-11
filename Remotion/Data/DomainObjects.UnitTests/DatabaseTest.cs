@@ -24,6 +24,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
+  [RequiresTestDatabase]
   public abstract class DatabaseTest
   {
     public const string DefaultStorageProviderID = "DefaultStorageProvider";
@@ -69,6 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [OneTimeSetUp]
     public virtual void OneTimeSetUp ()
     {
+      SetUpFixture.Setup();
     }
 
     [OneTimeTearDown]
