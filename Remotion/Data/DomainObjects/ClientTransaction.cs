@@ -1003,7 +1003,7 @@ public class ClientTransaction
 
     _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-    IReadOnlyCollectionData<DomainObject> readOnlyRelatedObjects;
+    IReadOnlyCollectionData<IDomainObject> readOnlyRelatedObjects;
     IReadOnlyList<IDomainObject> relatedObjects;
     var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
     if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
@@ -1016,7 +1016,7 @@ public class ClientTransaction
     {
       var virtualCollectionEndPoint = (IVirtualCollectionEndPoint)collectionEndPoint;
       relatedObjects = virtualCollectionEndPoint.Collection;
-      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>)relatedObjects;
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<IDomainObject>)relatedObjects;
     }
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);

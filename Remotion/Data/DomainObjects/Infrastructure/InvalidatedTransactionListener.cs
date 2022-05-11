@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
       throw CreateException();

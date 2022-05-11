@@ -324,7 +324,7 @@ namespace Remotion.Data.DomainObjects
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess);
 
     /// <summary>
