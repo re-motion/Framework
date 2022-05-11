@@ -102,7 +102,12 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
+        ValueAccess valueAccess)
     {
     }
 
