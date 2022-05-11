@@ -88,6 +88,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(results[1].Position, Is.EqualTo(2));
       Assert.That(((SimpleOrderItem)results[1]).SimpleOrderItemName, Is.EqualTo("tap water"));
     }
+
+    // ObjectList example
+    // Setting foreign key (ObjectList + IObjectList)
+    // ObjectList: Items.Add / Items.Remove
+    // ObjectList<T> = new ObjectList<T>(...);
+    // Multiple implementations for a class
+    // Code generation
+
     // Items with sort order
     // relation property on interface and points to interface
 
