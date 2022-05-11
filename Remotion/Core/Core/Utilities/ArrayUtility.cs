@@ -81,12 +81,10 @@ namespace Remotion.Utilities
       return result;
     }
 
-    [return: NotNullIfNotNull("collection")]
-    public static TResult[]? Convert<TSource, TResult> (ICollection<TSource>? collection)
+    public static TResult[] Convert<TSource, TResult> (ICollection<TSource> collection)
         where TResult: TSource
     {
-      if (collection == null)
-        return null;
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       TResult[] result = (TResult[])Array.CreateInstance(typeof(TResult), collection.Count);
       collection.CopyTo((TSource[])(Array)result, 0);
@@ -95,6 +93,9 @@ namespace Remotion.Utilities
 
     public static Array Convert (Array array, Type elementType)
     {
+      ArgumentUtility.CheckNotNull("array", array);
+      ArgumentUtility.CheckNotNull("elementType", elementType);
+
       int rank = array.Rank;
       int[] lengths = new int[rank];
       int[] lowerBounds = new int[rank];
@@ -119,9 +120,10 @@ namespace Remotion.Utilities
       return result;
     }
 
-    [return: NotNullIfNotNull("collection")]
-    public static T[]? Convert<T> (ICollection<T> collection)
+    public static T[] Convert<T> (ICollection<T> collection)
     {
+      ArgumentUtility.CheckNotNull("collection", collection);
+
       return Convert<T, T>(collection);
     }
 

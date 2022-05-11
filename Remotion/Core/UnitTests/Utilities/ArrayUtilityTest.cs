@@ -45,12 +45,6 @@ public class ArrayUtilityTest
   }
 
   [Test]
-  public void TestConvertWithNull ()
-  {
-    Assert.That(ArrayUtility.Convert<object, string>(null), Is.Null);
-  }
-
-  [Test]
   public void TestInsertFirst ()
   {
     string[] s1 = { "a", "b", "c", "d" };
