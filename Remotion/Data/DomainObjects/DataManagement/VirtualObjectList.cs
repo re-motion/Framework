@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
   /// <typeparam name="T"></typeparam>
   [Serializable]
   public class VirtualObjectList<T> : IObjectList<T>, IReadOnlyCollectionData<T>
-      where T : DomainObject
+      where T : IDomainObject
   {
     private readonly IVirtualCollectionData _dataStrategy;
     private readonly object _syncRoot = new object();

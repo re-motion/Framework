@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return GetCachedDomainObjects().ContainsKey(objectID);
     }
 
-    public DomainObject GetObject (int index)
+    public IDomainObject GetObject (int index)
     {
       if (index < 0)
         throw new ArgumentOutOfRangeException("index");
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       throw new ArgumentOutOfRangeException("index");
     }
 
-    public DomainObject? GetObject (ObjectID objectID)
+    public IDomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
