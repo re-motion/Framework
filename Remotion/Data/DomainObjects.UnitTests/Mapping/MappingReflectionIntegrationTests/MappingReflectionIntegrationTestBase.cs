@@ -48,6 +48,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
       _typeDefinitions = typeDefinitions;
     }
 
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp ()
+    {
+      TestMappingConfiguration.EnsureInitialized();
+      StandardConfiguration.EnsureInitialized();
+    }
+
     protected IDictionary<Type, ClassDefinition> TypeDefinitions
     {
       get { return _typeDefinitions; }

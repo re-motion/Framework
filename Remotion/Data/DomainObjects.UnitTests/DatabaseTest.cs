@@ -19,6 +19,7 @@ using System.Data;
 using System.Transactions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.Database;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting.Data.SqlClient;
 using Remotion.Utilities;
 
@@ -69,11 +70,15 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [OneTimeSetUp]
     public virtual void OneTimeSetUp ()
     {
+      TestDomainDatabase.EnsureDatabaseInitialized();
+      StandardConfiguration.Instance.EnableDatabaseAccess();
+      TableInheritanceConfiguration.Instance.EnableDatabaseAccess();
     }
 
     [OneTimeTearDown]
     public virtual void TestFixtureTearDown ()
     {
+      StandardConfiguration.Instance.DisableDatabaseAccess();
     }
 
     protected DatabaseAgent DatabaseAgent

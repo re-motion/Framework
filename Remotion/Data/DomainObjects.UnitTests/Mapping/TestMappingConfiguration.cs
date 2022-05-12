@@ -52,14 +52,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         if (s_instance == null)
         {
           Debugger.Break();
-          throw new InvalidOperationException("TestMappingConfiguration has not been Initialized by invoking Initialize()");
+          throw new InvalidOperationException($"TestMappingConfiguration has not been Initialized by invoking {nameof(EnsureInitialized)}()");
         }
         return s_instance;
       }
     }
 
-    public static void Initialize ()
+    public static void EnsureInitialized ()
     {
+      if (s_instance != null)
+        return;
+
       s_instance = new TestMappingConfiguration();
     }
 

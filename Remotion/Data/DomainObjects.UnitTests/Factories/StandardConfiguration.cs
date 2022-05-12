@@ -36,9 +36,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       }
     }
 
-    public static void Initialize ()
+    public static void EnsureInitialized ()
     {
+      if (s_instance != null)
+        return;
+
       s_instance = new StandardConfiguration();
+      s_instance.DisableDatabaseAccess();
     }
 
     private readonly DomainObjectIDs _domainObjectIDs;
