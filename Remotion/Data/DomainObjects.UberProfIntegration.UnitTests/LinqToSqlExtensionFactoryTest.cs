@@ -21,7 +21,7 @@ using NUnit.Framework;
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
   [TestFixture]
-  public class LinqToSqlExtensionFactoryTest : TestBase
+  public class LinqToSqlExtensionFactoryTest : LinqToSqlTestBase
   {
     private LinqToSqlExtensionFactory _factory;
 

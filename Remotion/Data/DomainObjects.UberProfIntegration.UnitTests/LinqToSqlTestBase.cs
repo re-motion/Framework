@@ -21,10 +21,10 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public abstract class TestBase
+  public abstract class LinqToSqlTestBase
   {
     private LinqToSqlAppenderProxy _appenderProxy;
-    private MockableLinqToSqlAppender _mockableAppender;
+    private MockableAppender _mockableAppender;
     private LinqToSqlAppenderProxy _originalAppender;
     private DoubleCheckedLockingContainer<LinqToSqlAppenderProxy> _container;
 
@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
           typeof(LinqToSqlAppenderProxy),
           "Test",
           typeof(FakeLinqToSqlProfiler),
-          typeof(MockableLinqToSqlAppender));
-      _mockableAppender = (MockableLinqToSqlAppender)_appenderProxy.LinqToSqlAppender;
+          typeof(MockableAppender));
+      _mockableAppender = (MockableAppender)_appenderProxy.LinqToSqlAppender;
 
       _container = (DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>)PrivateInvoke.GetNonPublicStaticField(typeof(LinqToSqlAppenderProxy), "s_instance");
       Assertion.IsNotNull(_container);
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       get { return _appenderProxy; }
     }
 
-    protected void SetAppender (MockableLinqToSqlAppender.ILinqToSqlAppender appender)
+    protected void SetAppender (MockableAppender.IAppender appender)
     {
       _mockableAppender.AppenderMock = appender;
     }

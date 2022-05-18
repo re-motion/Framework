@@ -26,10 +26,10 @@ using Remotion.TypePipe;
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
   [TestFixture]
-  public class IntegrationTest : TestBase
+  public class LinqToSqlIntegrationTest : LinqToSqlTestBase
   {
     private ServiceLocatorScope _serviceLocatorScope;
-    private TracingLinqToSqlAppender _tracingLinqToSqlAppender;
+    private TracingAppender _tracingAppender;
     private ObjectID _objectID;
 
     public override void SetUp ()
@@ -47,8 +47,8 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       locator.RegisterSingle<IPersistenceExtensionFactory>(() => factory);
       _serviceLocatorScope = new ServiceLocatorScope(locator);
 
-      _tracingLinqToSqlAppender = new TracingLinqToSqlAppender();
-      SetAppender(_tracingLinqToSqlAppender);
+      _tracingAppender = new TracingAppender();
+      SetAppender(_tracingAppender);
     }
 
     public override void TearDown ()
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       clientTransaction.Discard();
 
       Assert.That(
-          _tracingLinqToSqlAppender.TraceLog,
+          _tracingAppender.TraceLog,
           Does.Match(
               @"^ConnectionStarted \((?<connectionid>[^,]+)\)" + Environment.NewLine
               + @"StatementExecuted \(\k<connectionid>, (?<statementid>[^,]+), "
