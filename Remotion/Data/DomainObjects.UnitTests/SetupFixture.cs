@@ -25,6 +25,7 @@ using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Data.SqlClient;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -40,7 +41,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       try
       {
-        ServiceLocator.SetLocatorProvider(() => null);
+        var defaultServiceLocator = DefaultServiceLocator.Create();
+
+        //defaultServiceLocator.Register(typeof(IClientTransactionExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
+        //defaultServiceLocator.Register(typeof(Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
+
+        ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
         LogManager.ResetConfiguration();
         Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
