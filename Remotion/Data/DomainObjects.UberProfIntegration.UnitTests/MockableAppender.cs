@@ -19,9 +19,9 @@ using System.Data;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public class MockableLinqToSqlAppender
+  public class MockableAppender
   {
-    public interface ILinqToSqlAppender
+    public interface IAppender
     {
       void ConnectionStarted (Guid sessionID);
       void ConnectionDisposed (Guid sessionID);
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
     private readonly string _name;
 
-    public MockableLinqToSqlAppender (string name)
+    public MockableAppender (string name)
     {
       _name = name;
     }
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       get { return _name; }
     }
 
-    public ILinqToSqlAppender AppenderMock { get; set; }
+    public IAppender AppenderMock { get; set; }
 
     public void ConnectionStarted (Guid sessionID)
     {

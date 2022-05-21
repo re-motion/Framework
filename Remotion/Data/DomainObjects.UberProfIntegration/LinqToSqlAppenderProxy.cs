@@ -37,11 +37,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
             Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlProfiler, HibernatingRhinos.Profiler.Appender", throwOnError: true, ignoreCase: false)!,
             Type.GetType("HibernatingRhinos.Profiler.Appender.LinqToSql.LinqToSqlAppender, HibernatingRhinos.Profiler.Appender", throwOnError: true, ignoreCase: false)!));
 
-    public static LinqToSqlAppenderProxy Instance
-    {
-      get { return s_instance.Value; }
-      set { s_instance.Value = value; }
-    }
+    public static LinqToSqlAppenderProxy Instance => s_instance.Value;
 
     [NonSerialized]
     private readonly object _linqToSqlAppender;

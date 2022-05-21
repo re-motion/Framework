@@ -21,15 +21,15 @@ using NUnit.Framework;
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
   [TestFixture]
-  public class LinqToSqlExtensionFactoryTest : LinqToSqlTestBase
+  public class EntityFrameworkExtensionFactoryTest : EntityFrameworkTestBase
   {
-    private LinqToSqlExtensionFactory _factory;
+    private EntityFrameworkExtensionFactory _factory;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _factory = new LinqToSqlExtensionFactory();
+      _factory = new EntityFrameworkExtensionFactory();
     }
 
     [Test]
@@ -41,9 +41,9 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 
       Assert.That(result, Has.Length.EqualTo(1));
       var clientTransactionExtension = result.Single();
-      Assert.That(clientTransactionExtension, Is.TypeOf<LinqToSqlExtension>());
-      Assert.That(((LinqToSqlExtension)clientTransactionExtension).ClientTransactionID, Is.EqualTo(clientTransaction.ID));
-      Assert.That(((LinqToSqlExtension)clientTransactionExtension).AppenderProxy, Is.SameAs(AppenderProxy));
+      Assert.That(clientTransactionExtension, Is.TypeOf<EntityFrameworkExtension>());
+      Assert.That(((EntityFrameworkExtension)clientTransactionExtension).ClientTransactionID, Is.EqualTo(clientTransaction.ID));
+      Assert.That(((EntityFrameworkExtension)clientTransactionExtension).AppenderProxy, Is.SameAs(AppenderProxy));
     }
 
     [Test]

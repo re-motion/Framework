@@ -32,6 +32,7 @@
     <ProjectReference Include="..\..\Development\Mixins\Development.Mixins.csproj" />
     <ProjectReference Include="..\..\Development\Moq\Development.Moq.csproj" />
     <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj" />
     <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>

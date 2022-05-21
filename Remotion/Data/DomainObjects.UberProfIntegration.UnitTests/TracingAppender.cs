@@ -20,7 +20,7 @@ using System.Text;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public class TracingLinqToSqlAppender : MockableLinqToSqlAppender.ILinqToSqlAppender
+  public class TracingAppender : MockableAppender.IAppender
   {
     private readonly StringBuilder _log = new StringBuilder();
 

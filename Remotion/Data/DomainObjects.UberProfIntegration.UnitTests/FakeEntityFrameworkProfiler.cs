@@ -19,13 +19,22 @@ using NUnit.Framework;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public class FakeLinqToSqlProfiler
+  public class FakeEntityFrameworkProfiler
   {
+    public class Configuration
+    {
+      public Configuration ()
+      {
+      }
+    }
+
     private static bool s_initialized;
     private static readonly object s_initializedLock = new object();
 
-    public static void Initialize ()
+    public static void Initialize (Configuration configuration)
     {
+      Assert.That(configuration, Is.Not.Null);
+
       lock (s_initializedLock)
       {
         Assert.That(s_initialized, Is.False, "Initialize must not be called twice.");
@@ -33,15 +42,12 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       }
     }
 
-    public static MockableAppender GetAppender (string name)
+    public static void Reset ()
     {
       lock (s_initializedLock)
       {
-        Assert.That(s_initialized, Is.True, "Initialize must be called before GetAppender.");
         s_initialized = false;
       }
-
-      return new MockableAppender(name);
     }
   }
 }
