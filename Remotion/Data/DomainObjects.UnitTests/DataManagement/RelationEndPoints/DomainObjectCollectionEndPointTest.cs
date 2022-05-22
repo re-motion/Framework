@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _loadStateMock
           .Setup(mock => mock.MarkDataComplete(_endPoint, items, It.IsAny<Action<IDomainObjectCollectionEndPointDataManager>>()))
           .Callback(
-              (IDomainObjectCollectionEndPoint _, IEnumerable<DomainObject> _, Action<IDomainObjectCollectionEndPointDataManager> stateSetter) =>
+              (IDomainObjectCollectionEndPoint _, IEnumerable<IDomainObject> _, Action<IDomainObjectCollectionEndPointDataManager> stateSetter) =>
               {
                 actualStateSetter = stateSetter;
               })

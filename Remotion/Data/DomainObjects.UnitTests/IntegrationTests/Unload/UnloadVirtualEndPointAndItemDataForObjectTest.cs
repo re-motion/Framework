@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { orderTicket }))
           .Callback(
-              (ClientTransaction _, IReadOnlyList<DomainObject> _) =>
+              (ClientTransaction _, IReadOnlyList<IDomainObject> _) =>
               {
                 Assert.That(orderTicket.OnUnloadingCalled, Is.False, "items unloaded after this method is called");
                 Assert.That(orderTicket.OnUnloadedCalled, Is.False, "items unloaded after this method is called");
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, new[] { orderTicket }))
           .Callback(
-              (ClientTransaction _, IReadOnlyList<DomainObject> _) =>
+              (ClientTransaction _, IReadOnlyList<IDomainObject> _) =>
               {
                 Assert.That(orderTicket.OnUnloadingCalled, Is.True, "items unloaded before this method is called");
                 Assert.That(orderTicket.OnUnloadedCalled, Is.True, "items unloaded before this method is called");

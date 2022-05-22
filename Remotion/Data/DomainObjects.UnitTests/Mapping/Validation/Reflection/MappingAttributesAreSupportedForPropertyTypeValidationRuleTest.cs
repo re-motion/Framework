@@ -144,7 +144,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, false,
-        "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+        "The 'MandatoryAttribute' may be only applied to properties assignable to types 'IDomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"MappingAttributesAreSupportedForPropertyTypeValidationRule.ClassWithInvalidPropertyAttributes\r\n"
         + "Property: StringPropertyWithMandatoryPropertyAttribute");
@@ -205,7 +205,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
       var validationResult = _validtionRule.Validate(_typeDefinition);
 
       AssertMappingValidationResult(validationResult, false,
-        "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+        "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'IDomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"MappingAttributesAreSupportedForPropertyTypeValidationRule.ClassWithInvalidPropertyAttributes\r\n"
         + "Property: StringPropertyWithBidirectionalRelationAttribute");
@@ -223,7 +223,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Reflection
 
       var validationResult = _validtionRule.Validate(_typeDefinition).ToArray();
 
-      var expectedMessage1 = "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+      var expectedMessage1 = "The 'MandatoryAttribute' may be only applied to properties assignable to types 'IDomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
         + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Reflection."
         +"MappingAttributesAreSupportedForPropertyTypeValidationRule.ClassWithInvalidPropertyAttributes\r\n"
         + "Property: StringPropertyWithMandatoryPropertyAttribute";

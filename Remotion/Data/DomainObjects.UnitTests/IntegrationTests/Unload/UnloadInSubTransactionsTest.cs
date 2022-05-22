@@ -603,7 +603,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
             .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(rootTransaction, new[] { orderItemA, orderItemB }))
             .Callback(
-                (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) =>
+                (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects) =>
                 {
                   Assert.That(orderItemA.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
                   Assert.That(orderItemB.TransactionContext[_subTransaction].State.IsUnchanged, Is.True);
@@ -666,7 +666,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
             .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloaded(rootTransaction, new[] { orderItemA, orderItemB }))
             .Callback(
-                (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) =>
+                (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects) =>
                 {
                   Assert.That(orderItemA.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);
                   Assert.That(orderItemB.TransactionContext[rootTransaction].State.IsNotLoadedYet, Is.True);

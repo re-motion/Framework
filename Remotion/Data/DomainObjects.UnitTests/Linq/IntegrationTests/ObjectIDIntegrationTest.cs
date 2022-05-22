@@ -258,7 +258,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
           Throws.InstanceOf<NotSupportedException>()
               .With.Message.EqualTo(
                   "There was an error preparing or resolving query "
-                  + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.DomainObject[]) => Contains([o])} select [o]' for "
+                  + "'from Order o in DomainObjectQueryable<Order> where {value(Remotion.Data.DomainObjects.IDomainObject[]) => Contains([o])} select [o]' for "
                   + "SQL generation. The SQL 'IN' operator (originally probably a call to a 'Contains' method) requires a single value, so the following "
                   + "expression cannot be translated to SQL: "
                   + "'[t0].[ID] IN (ENTITY(Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid),ENTITY(Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid))'."));

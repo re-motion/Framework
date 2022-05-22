@@ -361,7 +361,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _syncStateMock
           .Setup(mock => mock.CreateSetCommand(_endPoint, relatedObject, It.IsAny<Action<IDomainObject>>()))
           .Returns(fakeResult.Object)
-          .Callback((IRealObjectEndPoint _, DomainObject _, Action<IDomainObject> oppositeObjectSetter) => { actualOppositeObjectSetter = oppositeObjectSetter; })
+          .Callback((IRealObjectEndPoint _, IDomainObject _, Action<IDomainObject> oppositeObjectSetter) => { actualOppositeObjectSetter = oppositeObjectSetter; })
           .Verifiable();
 
       var result = _endPoint.CreateSetCommand(relatedObject);

@@ -217,10 +217,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
           extensionMock.Reset();
           extensionMock
-              .Setup(_ => _.Committing(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<DomainObject>>(), It.IsAny<ICommittingEventRegistrar>()))
+              .Setup(_ => _.Committing(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<IDomainObject>>(), It.IsAny<ICommittingEventRegistrar>()))
               .Verifiable();
           extensionMock.Setup(_ => _.CommitValidate(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<PersistableData>>())).Verifiable();
-          extensionMock.Setup(_ => _.Committed(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<DomainObject>>())).Verifiable();
+          extensionMock.Setup(_ => _.Committed(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<IDomainObject>>())).Verifiable();
 
           _subTransaction.Commit();
           extensionMock.Verify();
@@ -251,7 +251,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
           extensionMock
               .InVerifiableSequence(sequence)
-              .Setup(_ => _.Committing(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<DomainObject>>(), It.IsAny<ICommittingEventRegistrar>()))
+              .Setup(_ => _.Committing(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<IDomainObject>>(), It.IsAny<ICommittingEventRegistrar>()))
               .Verifiable();
 
           extensionMock
@@ -261,7 +261,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
           extensionMock
               .InVerifiableSequence(sequence)
-              .Setup(_ => _.Committed(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<DomainObject>>()))
+              .Setup(_ => _.Committed(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<IDomainObject>>()))
               .Verifiable();
 
           _subTransaction.Commit();

@@ -335,7 +335,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           .Setup(
               mock => mock.ObjectsUnloading(
                   TestableClientTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.Contains(order1) && p.Contains(order3))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.Contains(order1) && p.Contains(order3))))
           .Verifiable();
       unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order1)).Verifiable();
       unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order3)).Verifiable();
@@ -372,7 +372,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
             .Setup(
                 mock => mock.ObjectsUnloaded(
                     TestableClientTransaction,
-                    It.Is<ReadOnlyCollection<DomainObject>>(p => p.Contains(order1) && p.Contains(order3))))
+                    It.Is<ReadOnlyCollection<IDomainObject>>(p => p.Contains(order1) && p.Contains(order3))))
             .Verifiable();
 
       TestableClientTransaction.AddListener(clientTransactionListener.Object);
@@ -509,7 +509,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var sequence = new VerifiableSequence();
       clientTransactionListener
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.Contains(order))))
+          .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.Contains(order))))
           .Verifiable();
       unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order)).Throws(exception).Verifiable();
 
@@ -549,7 +549,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       clientTransactionListener
             .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { order1 }))
-            .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => order3.EnsureDataAvailable())
+            .Callback((ClientTransaction _, IReadOnlyList<IDomainObject> _) => order3.EnsureDataAvailable())
             .Verifiable();
       unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order1)).Verifiable();
       clientTransactionListener
@@ -559,7 +559,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       unloadEventReceiver
             .InVerifiableSequence(sequence)
             .Setup(mock => mock.OnUnloading(order3))
-            .Callback((DomainObject _) => order4.EnsureDataAvailable())
+            .Callback((IDomainObject _) => order4.EnsureDataAvailable())
             .Verifiable();
       clientTransactionListener
             .InVerifiableSequence(sequence)
@@ -616,9 +616,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       }
 
       clientTransactionListener
-          .Verify(mock => mock.ObjectsUnloading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
+          .Verify(mock => mock.ObjectsUnloading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<IDomainObject>>()), Times.Never());
       clientTransactionListener
-          .Verify(mock => mock.ObjectsUnloaded(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
+          .Verify(mock => mock.ObjectsUnloaded(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<IDomainObject>>()), Times.Never());
     }
 
     private void CheckDataAndEndPoints (Order order, bool shouldBePresent)

@@ -151,10 +151,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RaiseTransactionCommittingEvent(
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeNewDomainObject })),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeNewDomainObject })),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Callback(
-              (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
+              (IReadOnlyList<IDomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
               {
                 Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
               })
@@ -172,42 +172,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RaiseTransactionCommittingEvent(
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeDeletedDomainObject })),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeDeletedDomainObject })),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Callback(
-              (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
-              {
-                Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
-              })
-          .Verifiable();
+            (IReadOnlyList<IDomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
+            {
+              Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
+            })
+        .Verifiable();
 
-      // End of BeginCommit: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - events already raised for all of those
-      getLoadedDataByObjectStateReturnValues.Enqueue(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
-      _dataManagerMock
-          .InVerifiableSequence(sequence)
-          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
-          .Returns(() => getLoadedDataByObjectStateReturnValues.Dequeue())
-          .Verifiable();
+    // End of BeginCommit: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - events already raised for all of those
+    getLoadedDataByObjectStateReturnValues.Enqueue(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
+    _dataManagerMock
+        .InVerifiableSequence(sequence)
+        .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+        .Returns(() => getLoadedDataByObjectStateReturnValues.Dequeue())
+        .Verifiable();
 
-      // CommitValidate: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - this is what actually gets committed
-      _eventSinkWithMock
-          .InVerifiableSequence(sequence)
-          .Setup(
-              mock => mock.RaiseTransactionCommitValidateEvent(
-                  It.Is<ReadOnlyCollection<PersistableData>>(p => p.SetEquals(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem }))))
-          .Verifiable();
+    // CommitValidate: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - this is what actually gets committed
+    _eventSinkWithMock
+        .InVerifiableSequence(sequence)
+        .Setup(
+            mock => mock.RaiseTransactionCommitValidateEvent(
+                It.Is<ReadOnlyCollection<PersistableData>>(p => p.SetEquals(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem }))))
+        .Verifiable();
 
-      // Commit _fakeNewPersistableItem, _fakeDeletedPersistableItem found earlier
-      _persistenceStrategyMock
-          .InVerifiableSequence(sequence)
-          .Setup(mock => mock.PersistData(It.Is<IEnumerable<PersistableData>>(p => p.SetEquals(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem }))))
-          .Verifiable();
-      _dataManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
+    // Commit _fakeNewPersistableItem, _fakeDeletedPersistableItem found earlier
+    _persistenceStrategyMock
+        .InVerifiableSequence(sequence)
+        .Setup(mock => mock.PersistData(It.Is<IEnumerable<PersistableData>>(p => p.SetEquals(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem }))))
+        .Verifiable();
+    _dataManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
-      // Raise event for _fakeNewPersistableItem only, _fakeDeletedPersistableItem was deleted
-      _eventSinkWithMock
-          .InVerifiableSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionCommittedEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeNewDomainObject }))))
+    // Raise event for _fakeNewPersistableItem only, _fakeDeletedPersistableItem was deleted
+    _eventSinkWithMock
+        .InVerifiableSequence(sequence)
+        .Setup(mock => mock.RaiseTransactionCommittedEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeNewDomainObject }))))
           .Verifiable();
 
       _agent.CommitData();
@@ -236,10 +236,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RaiseTransactionCommittingEvent(
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeNewDomainObject })),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeNewDomainObject })),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Callback(
-              (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
+              (IReadOnlyList<IDomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
               {
                 Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
                 eventRegistrarParameter.RegisterForAdditionalCommittingEvents(_fakeChangedDomainObject, _fakeNewDomainObject);
@@ -259,10 +259,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RaiseTransactionCommittingEvent(
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeDeletedDomainObject, _fakeNewDomainObject })),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeDeletedDomainObject, _fakeNewDomainObject })),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Callback(
-              (IReadOnlyList<DomainObject> domainObjectsParameter, ICommittingEventRegistrar eventRegistrarParameter) =>
+              (IReadOnlyList<IDomainObject> domainObjectsParameter, ICommittingEventRegistrar eventRegistrarParameter) =>
               {
                 Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
                 eventRegistrarParameter.RegisterForAdditionalCommittingEvents(_fakeChangedDomainObject);
@@ -281,10 +281,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RaiseTransactionCommittingEvent(
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject })),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject })),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Callback(
-              (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
+              (IReadOnlyList<IDomainObject> _, ICommittingEventRegistrar eventRegistrarParameter) =>
               {
                 Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
               })
@@ -316,7 +316,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       // Raise event for _fakeNewPersistableItem only, _fakeDeletedPersistableItem was deleted
       _eventSinkWithMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionCommittedEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeNewDomainObject }))))
+          .Setup(mock => mock.RaiseTransactionCommittedEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeNewDomainObject }))))
           .Verifiable();
 
       _agent.CommitData();
@@ -342,7 +342,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .Verifiable();
       _eventSinkWithMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionRollingBackEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeNewDomainObject }))))
+          .Setup(mock => mock.RaiseTransactionRollingBackEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeChangedDomainObject, _fakeNewDomainObject }))))
           .Verifiable();
 
       // Second run of BeginRollback: fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem in rollback set
@@ -355,7 +355,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           .Verifiable();
       _eventSinkWithMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionRollingBackEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeDeletedDomainObject }))))
+          .Setup(mock => mock.RaiseTransactionRollingBackEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeDeletedDomainObject }))))
           .Verifiable();
 
       // End of BeginRollback: _fakeNewPersistableItem, _fakeDeletedPersistableItem in rollback set - events already raised for all of those
@@ -372,7 +372,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       // Raise event only for _fakeDeletedPersistableItem, _fakeNewPersistableItem was New
       _eventSinkWithMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionRolledBackEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { _fakeDeletedDomainObject }))))
+          .Setup(mock => mock.RaiseTransactionRolledBackEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { _fakeDeletedDomainObject }))))
           .Verifiable();
 
       _agent.RollbackData();

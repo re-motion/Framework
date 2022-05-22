@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           .Setup(
               mock => mock.Committing(
                   transportedObjects.DataTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects))),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects))),
                   It.IsAny<ICommittingEventRegistrar>()))
           .Verifiable();
       extensionMock
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           .Setup(
               mock => mock.Committed(
                   transportedObjects.DataTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects)))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects)))))
           .Verifiable();
       extensionMock.Setup(mock => mock.TransactionDiscard(transportedObjects.DataTransaction)).Verifiable();
 

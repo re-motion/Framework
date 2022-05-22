@@ -150,9 +150,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       var listener = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(clientTransaction);
       listener
-          .Setup(stub => stub.ObjectMarkedInvalid(It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>()))
+          .Setup(stub => stub.ObjectMarkedInvalid(It.IsAny<ClientTransaction>(), It.IsAny<IDomainObject>()))
           .Callback(
-              (ClientTransaction transaction, DomainObject _) =>
+              (ClientTransaction transaction, IDomainObject _) =>
                   Assert.That(transaction.IsWriteable, Is.True, "MarkInvalid requires the transaction to be unlocked."));
     }
   }

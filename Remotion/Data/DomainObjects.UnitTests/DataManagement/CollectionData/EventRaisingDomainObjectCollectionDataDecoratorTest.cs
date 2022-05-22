@@ -61,32 +61,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginRemove(0, _order1))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginRemove(2, _order4))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndRemove(2, _order4))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndRemove(0, _order1))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
           .Verifiable();
 
       _eventRaisingDomainObjectDecoratorWithRealContent.Clear();
@@ -102,12 +102,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginAdd(2, _order5))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndAdd(2, _order5))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(4)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(4)))
           .Verifiable();
 
       _eventRaisingDomainObjectDecoratorWithRealContent.Insert(2, _order5);
@@ -123,12 +123,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
           .Verifiable();
 
       var result = _eventRaisingDomainObjectDecoratorWithRealContent.Remove(_order3);
@@ -144,8 +144,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       var result = _eventRaisingDomainObjectDecoratorWithRealContent.Remove(_order5);
 
-      _eventRaiserMock.Verify(mock => mock.BeginRemove(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
-      _eventRaiserMock.Verify(mock => mock.EndRemove(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
+      _eventRaiserMock.Verify(mock => mock.BeginRemove(It.IsAny<int>(), It.IsAny<IDomainObject>()), Times.Never());
+      _eventRaiserMock.Verify(mock => mock.EndRemove(It.IsAny<int>(), It.IsAny<IDomainObject>()), Times.Never());
 
       Assert.That(result, Is.False);
     }
@@ -157,12 +157,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
           .Verifiable();
 
       var result = _eventRaisingDomainObjectDecoratorWithRealContent.Remove(_order3.ID);
@@ -178,8 +178,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     {
       var result = _eventRaisingDomainObjectDecoratorWithRealContent.Remove(_order5.ID);
 
-      _eventRaiserMock.Verify(mock => mock.BeginRemove(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
-      _eventRaiserMock.Verify(mock => mock.EndRemove(It.IsAny<int>(), It.IsAny<DomainObject>()), Times.Never());
+      _eventRaiserMock.Verify(mock => mock.BeginRemove(It.IsAny<int>(), It.IsAny<IDomainObject>()), Times.Never());
+      _eventRaiserMock.Verify(mock => mock.EndRemove(It.IsAny<int>(), It.IsAny<IDomainObject>()), Times.Never());
 
       Assert.That(result, Is.False);
     }
@@ -191,22 +191,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.BeginAdd(1, _order5))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndRemove(1, _order3))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
           .Verifiable();
       _eventRaiserMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.EndAdd(1, _order5))
-          .Callback((int index, DomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
+          .Callback((int index, IDomainObject domainObject) => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
           .Verifiable();
 
       _eventRaisingDomainObjectDecoratorWithRealContent.Replace(1, _order5);

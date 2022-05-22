@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       _transactionEventSinkWithMock
           .Setup(mock => mock.RaiseObjectsUnloadingEvent(new[] { _existingDomainObject }))
-          .Callback((IReadOnlyList<DomainObject> unloadedDomainObjects) => _dataContainerMap.Register(_newDataContainer))
+          .Callback((IReadOnlyList<IDomainObject> unloadedDomainObjects) => _dataContainerMap.Register(_newDataContainer))
           .Verifiable();
       _transactionEventSinkWithMock
           .Setup(mock => mock.RaiseObjectsUnloadingEvent(new[] { _newDomainObject }))

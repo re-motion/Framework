@@ -175,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       listenerMock.Verify(
           mock => mock.TransactionCommitting(
               TestableClientTransaction,
-              It.Is<ReadOnlyCollection<DomainObject>>(x => x.SetEquals(new[] { newObject, changedObject, unchangedObject })),
+              It.Is<ReadOnlyCollection<IDomainObject>>(x => x.SetEquals(new[] { newObject, changedObject, unchangedObject })),
               It.IsAny<ICommittingEventRegistrar>()),
           Times.AtLeastOnce());
       listenerMock.Verify(
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
         listenerMock.Verify(
             mock => mock.TransactionCommitting(
                 ClientTransaction.Current,
-                It.Is<ReadOnlyCollection<DomainObject>>(x => x.SetEquals(new[] { newObject, changedObject, unchangedObject })),
+                It.Is<ReadOnlyCollection<IDomainObject>>(x => x.SetEquals(new[] { newObject, changedObject, unchangedObject })),
                 It.IsAny<ICommittingEventRegistrar>()),
             Times.AtLeastOnce());
         listenerMock.Verify(
@@ -403,7 +403,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       listenerMock.Verify(
           mock => mock.TransactionRollingBack(
               TestableClientTransaction,
-              It.Is<ReadOnlyCollection<DomainObject>>(x => x.SetEquals(new[] { newObject, changedObject, unchangedObject }))),
+              It.Is<ReadOnlyCollection<IDomainObject>>(x => x.SetEquals(new[] { newObject, changedObject, unchangedObject }))),
           Times.AtLeastOnce());
       objectEventReceiverMock.Verify(mock => mock.RollingBack(unchangedObject, It.IsAny<EventArgs>()), Times.AtLeastOnce());
       objectEventReceiverMock.Verify(mock => mock.RolledBack(unchangedObject, It.IsAny<EventArgs>()), Times.AtLeastOnce());
