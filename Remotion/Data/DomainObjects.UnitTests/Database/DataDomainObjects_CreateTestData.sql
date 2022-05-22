@@ -621,3 +621,6 @@ insert into [SimpleOrderItem] ([ID], [ClassID], [Position], [Product],
         [OrderID], [OrderIDClassID], [SimpleOrderItemName]) 
     values ('{003A1474-66E7-4998-A1EF-F29690B41955}', 'SimpleOrderItem', 2, 'Glass of water',
         '{6B71C813-86A6-44D0-B0E7-846C37F41D47}', 'SimpleOrder', 'tap water');
+
+insert into [ComplexOrder] ([ID], [ClassID], [OrderNumber], [ComplexOrderName]) 
+    values ('{E4B34F09-466B-437C-922F-045588CA4CA3}', 'ComplexOrder', 1, 'Special coffe');

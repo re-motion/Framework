@@ -386,6 +386,15 @@ CREATE TABLE [dbo].[StorageGroupClass]
   [StorageGroupClassIdentifier] nvarchar (100) NOT NULL,
   CONSTRAINT [PK_StorageGroupClass] PRIMARY KEY CLUSTERED ([ID])
 )
+CREATE TABLE [dbo].[ComplexOrder]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [OrderNumber] int NULL,
+  [ComplexOrderName] nvarchar (max) NULL,
+  CONSTRAINT [PK_ComplexOrder] PRIMARY KEY CLUSTERED ([ID])
+)
 CREATE TABLE [dbo].[Implementor1]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -1051,6 +1060,12 @@ CREATE VIEW [dbo].[StorageGroupClassView] ([ID], [ClassID], [Timestamp], [AboveI
     FROM [dbo].[StorageGroupClass]
   WITH CHECK OPTION
 GO
+CREATE VIEW [dbo].[ComplexOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName]
+    FROM [dbo].[ComplexOrder]
+  WITH CHECK OPTION
+GO
 CREATE VIEW [dbo].[IInterfaceWithOneImplementorView] ([ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementorProperty])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [InterfaceProperty], [OnlyImplementorProperty]
@@ -1074,11 +1089,13 @@ CREATE VIEW [dbo].[Implementor2View] ([ID], [ClassID], [Timestamp], [InterfacePr
     FROM [dbo].[Implementor2]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[IOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName])
+CREATE VIEW [dbo].[IOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName], [SimpleOrderName])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName]
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName], NULL
+    FROM [dbo].[ComplexOrder]
+  UNION ALL
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], NULL, [SimpleOrderName]
     FROM [dbo].[SimpleOrder]
-  WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[IOrderItemView] ([ID], [ClassID], [Timestamp], [Position], [Product], [OrderID], [OrderIDClassID], [SimpleOrderItemName])
   WITH SCHEMABINDING AS
