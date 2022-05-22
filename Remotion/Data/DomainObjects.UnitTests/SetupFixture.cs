@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
-      //defaultServiceLocator.Register(typeof(IClientTransactionExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
-      //defaultServiceLocator.Register(typeof(Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
+      defaultServiceLocator.Register(typeof(IClientTransactionExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
+      defaultServiceLocator.Register(typeof(Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 

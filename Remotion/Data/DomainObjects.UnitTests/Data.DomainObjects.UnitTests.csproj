@@ -36,6 +36,7 @@
     <ProjectReference Include="..\Core\Data.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="EntityFrameworkProfiler.Appender" Version="6.0.6033" />
     <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.Development" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.1.1" />
