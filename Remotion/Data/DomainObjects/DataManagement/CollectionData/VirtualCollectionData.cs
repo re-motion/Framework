@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     private readonly IDataContainerMapReadOnlyView _dataContainerMap;
     private readonly ValueAccess _valueAccess;
     [CanBeNull]
-    private IReadOnlyDictionary<ObjectID, DomainObject>? _cachedDomainObjects;
+    private IReadOnlyDictionary<ObjectID, IDomainObject>? _cachedDomainObjects;
 
     public VirtualCollectionData (
         RelationEndPointID associatedEndPointID,
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       _cachedDomainObjects = null;
     }
 
-    public IEnumerator<DomainObject> GetEnumerator () => GetCachedDomainObjectsSorted().GetEnumerator();
+    public IEnumerator<IDomainObject> GetEnumerator () => GetCachedDomainObjectsSorted().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator () => GetEnumerator();
 
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ResetCachedDomainObjects();
     }
 
-    void IVirtualCollectionData.Add (DomainObject domainObject)
+    void IVirtualCollectionData.Add (IDomainObject domainObject)
     {
       //TODO: RM-7294: API is only needed via ChangeTrackingVirtualCollectionDataDecorator, which in turn is used from the VirtualCollectionEndPointAddCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
@@ -165,7 +165,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       ResetCachedDomainObjects();
     }
 
-    bool IVirtualCollectionData.Remove (DomainObject domainObject)
+    bool IVirtualCollectionData.Remove (IDomainObject domainObject)
     {
       //TODO: RM-7294: API is only needed via ChangeTrackingVirtualCollectionDataDecorator, which in turn is used from the VirtualCollectionEndPointRemoveCommand.
       //Possibly create dedicated interface when we only cache the data and need a cache-reset otherwise. 
@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     }
 
     [JetBrains.Annotations.NotNull]
-    private IReadOnlyDictionary<ObjectID, DomainObject> GetCachedDomainObjects ()
+    private IReadOnlyDictionary<ObjectID, IDomainObject> GetCachedDomainObjects ()
     {
       if (_cachedDomainObjects == null)
       {
@@ -202,15 +202,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     }
 
     [JetBrains.Annotations.NotNull]
-    private IEnumerable<DomainObject> GetCachedDomainObjectsSorted ()
+    private IEnumerable<IDomainObject> GetCachedDomainObjectsSorted ()
     {
       var comparer = GetDomainObjectComparer();
       return GetCachedDomainObjects().Values.OrderBy(obj => obj, comparer);
     }
 
-    private IComparer<DomainObject> GetDomainObjectComparer ()
+    private IComparer<IDomainObject> GetDomainObjectComparer ()
     {
-      var idComparer = new DelegateBasedComparer<DomainObject>((left, right) =>
+      var idComparer = new DelegateBasedComparer<IDomainObject>((left, right) =>
       {
         Assertion.DebugIsNotNull(left, "left != null");
         Assertion.DebugIsNotNull(right, "right != null");
@@ -222,7 +222,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       if (sortExpression != null)
       {
         var propertyComparer = SortedPropertyComparer.CreateCompoundComparer(sortExpression.SortedProperties, _dataContainerMap, _valueAccess);
-        return new CompoundComparer<DomainObject>(propertyComparer, idComparer);
+        return new CompoundComparer<IDomainObject>(propertyComparer, idComparer);
       }
       else
       {
@@ -240,7 +240,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       var hasCachedDomainObjects = info.GetBoolValue();
       if (hasCachedDomainObjects)
       {
-        var cachedDomainObjects = new List<DomainObject>();
+        var cachedDomainObjects = new List<IDomainObject>();
         info.FillCollection(cachedDomainObjects);
         _cachedDomainObjects = cachedDomainObjects.ToDictionary(obj => obj.ID);
       }

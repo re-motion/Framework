@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _removedDomainObjects = removedDomainObjects;
     }
 
-    public IEnumerator<DomainObject> GetEnumerator ()
+    public IEnumerator<IDomainObject> GetEnumerator ()
     {
       return _innerVirtualCollectionData.GetEnumerator();
     }
@@ -80,13 +80,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void Clear ()
     {
-      DomainObject[] currentDomainObjects;
+      IDomainObject[] currentDomainObjects;
       if (_innerVirtualCollectionData.IsDataComplete)
       {
         currentDomainObjects = _innerVirtualCollectionData.ToArray();
       }
       else
-        currentDomainObjects = Array.Empty<DomainObject>();
+        currentDomainObjects = Array.Empty<IDomainObject>();
 
       _innerVirtualCollectionData.Clear();
 
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _addedDomainObjects.Clear();
     }
 
-    public void Add (DomainObject domainObject)
+    public void Add (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         _addedDomainObjects.Add(domainObject.ID);
     }
 
-    public bool Remove (DomainObject domainObject)
+    public bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 

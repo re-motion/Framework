@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.Security
       }
     }
 
-    public override void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
+    public override void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.Security
       }
     }
 
-    public override void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public override void PropertyValueReading (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override void RelationReading (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         ValueAccess valueAccess)
     {
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.Security
       PropertyReading(clientTransaction, domainObject, relationEndPointDefinition.PropertyInfo);
     }
 
-    private void PropertyReading (ClientTransaction clientTransaction, DomainObject domainObject, IPropertyInformation propertyInfo)
+    private void PropertyReading (ClientTransaction clientTransaction, IDomainObject domainObject, IPropertyInformation propertyInfo)
     {
       if (SecurityFreeSection.IsActive)
         return;
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override void PropertyValueChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         PropertyDefinition propertyDefinition,
         object? oldValue,
         object? newValue)
@@ -192,10 +192,10 @@ namespace Remotion.Data.DomainObjects.Security
 
     public override void RelationChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -215,7 +215,7 @@ namespace Remotion.Data.DomainObjects.Security
       TryInstall(subTransaction);
     }
 
-    private void PropertyChanging (ClientTransaction clientTransaction, DomainObject domainObject, IPropertyInformation propertyInfo)
+    private void PropertyChanging (ClientTransaction clientTransaction, IDomainObject domainObject, IPropertyInformation propertyInfo)
     {
       if (SecurityFreeSection.IsActive)
         return;

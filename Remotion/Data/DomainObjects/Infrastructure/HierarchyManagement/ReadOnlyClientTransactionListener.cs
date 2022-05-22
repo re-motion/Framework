@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
           || objectIDs.All(id => clientTransaction.SubTransaction.DataManager.DataContainers[id] == null));
     }
 
-    public virtual void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       // Handled by Begin event
     }
@@ -81,35 +81,35 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Handled by Begin event
     }
 
-    public virtual void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public virtual void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       // Allowed for read-only transactions, as the end-user API always affects the whole hierarchy
       // (DataContainerUnregistering and RelationEndPointUnregistering assert on the actual modification, though)
     }
 
-    public virtual void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public virtual void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       // Handled by Begin event
     }
 
-    public virtual void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       EnsureWriteable(clientTransaction, "ObjectDeleting");
     }
 
-    public virtual void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectDeleted (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       // Handled by Begin event
     }
 
-    public virtual void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public virtual void PropertyValueReading (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       // Allowed
     }
 
     public virtual void PropertyValueRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         PropertyDefinition propertyDefinition,
         object? value,
         ValueAccess valueAccess)
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void PropertyValueChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         PropertyDefinition propertyDefinition,
         object? oldValue,
         object? newValue)
@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void PropertyValueChanged (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         PropertyDefinition propertyDefinition,
         object? oldValue,
         object? newValue)
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void RelationReading (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         ValueAccess valueAccess)
     {
@@ -148,9 +148,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? relatedObject,
+        IDomainObject? relatedObject,
         ValueAccess valueAccess)
     {
       // Handled by Begin event
@@ -158,7 +158,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
@@ -168,20 +168,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public virtual void RelationChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       EnsureWriteable(clientTransaction, "RelationChanging");
     }
 
     public virtual void RelationChanged (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       // Handled by Begin event
     }
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       return results;
     }
 
-    public virtual void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public virtual void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       EnsureWriteable(clientTransaction, "TransactionCommitting");
     }
@@ -209,17 +209,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       // Handled by Begin event
     }
 
-    public virtual void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       // Handled by Begin event
     }
 
-    public virtual void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       EnsureWriteable(clientTransaction, "TransactionRollingBack");
     }
 
-    public virtual void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       // Handled by Begin event
     }
@@ -252,12 +252,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
           || IsNullOrIncomplete(clientTransaction.SubTransaction.DataManager.RelationEndPoints[endPointID]));
     }
 
-    public virtual void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectMarkedInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       EnsureWriteable(clientTransaction, "ObjectMarkedInvalid");
     }
 
-    public virtual void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       EnsureWriteable(clientTransaction, "ObjectMarkedNotInvalid");
     }

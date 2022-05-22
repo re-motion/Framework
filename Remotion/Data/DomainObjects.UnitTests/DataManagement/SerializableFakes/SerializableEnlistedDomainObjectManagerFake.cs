@@ -28,27 +28,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { throw new NotImplementedException(); }
     }
 
-    public IEnumerable<DomainObject> GetEnlistedDomainObjects ()
+    public IEnumerable<IDomainObject> GetEnlistedDomainObjects ()
     {
       throw new NotImplementedException();
     }
 
-    public DomainObject GetEnlistedDomainObject (ObjectID objectID)
+    public IDomainObject GetEnlistedDomainObject (ObjectID objectID)
     {
       throw new NotImplementedException();
     }
 
-    public bool IsEnlisted (DomainObject domainObject)
+    public bool IsEnlisted (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
 
-    public void EnlistDomainObject (DomainObject domainObject)
+    public void EnlistDomainObject (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
 
-    public void DisenlistDomainObject (DomainObject domainObject)
+    public void DisenlistDomainObject (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }

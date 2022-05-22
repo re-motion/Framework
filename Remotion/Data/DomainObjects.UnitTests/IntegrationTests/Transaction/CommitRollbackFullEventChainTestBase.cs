@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               mock => mock.TransactionCommitting(
                   _transaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects)),
                   It.IsNotNull<CommittingEventRegistrar>()));
       if (!suppressVerificationForListenerMock)
           listenerMockSetup.Verifiable();
@@ -166,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               mock => mock.Committing(
                   _transaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects)),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation));
       if (!suppressVerificationForExtensionMock)
@@ -231,13 +231,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       ExtensionMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.Committed(_transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.Committed(_transaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
           .Verifiable();
 
       ListenerMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.TransactionCommitted(_transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.TransactionCommitted(_transaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
     }
 
@@ -264,12 +264,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
       ListenerMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.TransactionRollingBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.TransactionRollingBack(Transaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
 
       ExtensionMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.RollingBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.RollingBack(Transaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
           .Verifiable();
 
@@ -332,13 +332,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       ExtensionMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.RolledBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.RolledBack(Transaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
           .Verifiable();
 
       ListenerMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.TransactionRolledBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.TransactionRolledBack(Transaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
     }
 

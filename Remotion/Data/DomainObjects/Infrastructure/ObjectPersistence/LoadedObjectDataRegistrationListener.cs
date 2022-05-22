@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects)
+    public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<IDomainObject> actuallyLoadedDomainObjects)
     {
       ArgumentUtility.CheckNotNull("loadedObjectIDs", loadedObjectIDs);
       ArgumentUtility.CheckNotNull("actuallyLoadedDomainObjects", actuallyLoadedDomainObjects);

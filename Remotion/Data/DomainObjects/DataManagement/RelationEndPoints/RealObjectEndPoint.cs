@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _syncState.IsSynchronized(this); }
     }
 
-    public override DomainObject? GetOppositeObject ()
+    public override IDomainObject? GetOppositeObject ()
     {
       if (OppositeObjectID == null)
         return null;
@@ -127,7 +127,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return ClientTransaction.GetObjectReference(OppositeObjectID);
     }
 
-    public override DomainObject? GetOriginalOppositeObject ()
+    public override IDomainObject? GetOriginalOppositeObject ()
     {
       if (OriginalOppositeObjectID == null)
         return null;
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return _syncState.CreateDeleteCommand(this, () => SetOppositeObjectID(null));
     }
 
-    public override IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject)
+    public override IDataManagementCommand CreateSetCommand (IDomainObject? newRelatedObject)
     {
       return _syncState.CreateSetCommand(this, newRelatedObject, domainObject => SetOppositeObjectID(domainObject.GetSafeID()));
     }

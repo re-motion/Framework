@@ -562,8 +562,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(_decoratorWithRealData, Is.EqualTo(new[] { _domainObject, secondDomainObject }));
       Assert.That(_decoratorWithRealData.IsCacheUpToDate, Is.True);
 
-      var weights = new Dictionary<DomainObject, int> { { _domainObject, 2 }, { secondDomainObject, 1 } };
-      Comparison<DomainObject> comparison = (one, two) => weights[one].CompareTo(weights[two]);
+      var weights = new Dictionary<IDomainObject, int> { { _domainObject, 2 }, { secondDomainObject, 1 } };
+      Comparison<IDomainObject> comparison = (one, two) => weights[one].CompareTo(weights[two]);
       _decoratorWithRealData.Sort(comparison);
 
       Assert.That(_decoratorWithRealData, Is.EqualTo(new[] { secondDomainObject, _domainObject }));
@@ -751,7 +751,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(decorator.IsCacheUpToDate, Is.False);
     }
 
-    private static int CompareTypeNames (DomainObject x, DomainObject y)
+    private static int CompareTypeNames (IDomainObject x, IDomainObject y)
     {
 // ReSharper disable PossibleNullReferenceException
       return x.GetPublicDomainObjectType().FullName.CompareTo(y.GetPublicDomainObjectType().FullName);

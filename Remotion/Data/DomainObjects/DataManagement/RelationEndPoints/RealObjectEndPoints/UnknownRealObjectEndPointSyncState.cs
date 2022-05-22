@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       return endPoint.CreateDeleteCommand();
     }
 
-    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject? newRelatedObject, Action<DomainObject> oppositeObjectIDSetter)
+    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, IDomainObject? newRelatedObject, Action<IDomainObject?> oppositeObjectIDSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("oppositeObjectIDSetter", oppositeObjectIDSetter);

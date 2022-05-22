@@ -131,7 +131,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SortCurrentData ()
     {
-      Comparison<DomainObject> expectedComparison = (one, two) => 0;
+      Comparison<IDomainObject> expectedComparison = (one, two) => 0;
       CheckDelegationWithStateUpdate(ep => ep.SortCurrentData(expectedComparison));
     }
 

@@ -22,25 +22,25 @@ namespace Remotion.Data.DomainObjects
 {
   public partial class DomainObjectCollection : IDomainObjectCollectionEventRaiser
   {
-    void IDomainObjectCollectionEventRaiser.BeginAdd (int index, DomainObject domainObject)
+    void IDomainObjectCollectionEventRaiser.BeginAdd (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       OnAdding(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
-    void IDomainObjectCollectionEventRaiser.EndAdd (int index, DomainObject domainObject)
+    void IDomainObjectCollectionEventRaiser.EndAdd (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       OnAdded(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
-    void IDomainObjectCollectionEventRaiser.BeginRemove (int index, DomainObject domainObject)
+    void IDomainObjectCollectionEventRaiser.BeginRemove (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       OnRemoving(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
-    void IDomainObjectCollectionEventRaiser.EndRemove (int index, DomainObject domainObject)
+    void IDomainObjectCollectionEventRaiser.EndRemove (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       OnRemoved(new DomainObjectCollectionChangeEventArgs(domainObject));

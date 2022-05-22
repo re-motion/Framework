@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -32,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <see cref="ClientTransaction"/>, and <see cref="DomainObject"/> instances.
   /// </summary>
   [Serializable]
-  public class ClientTransactionEventBroker : IClientTransactionEventBroker
+  public class ClientTransactionEventBroker : IClientTransactionEventBroker // todo R2I move event handling to IDomainObject?
   {
     private readonly ClientTransaction _clientTransaction;
 
@@ -130,13 +131,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.ObjectsLoading(_clientTransaction, objectIDs);
     }
 
-    public void RaiseObjectsLoadedEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseObjectsLoadedEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
       using (EnterScopeOnDemand())
       {
-        foreach (var domainObject in domainObjects)
+        foreach (var domainObject in domainObjects.OfType<DomainObject>()) // todo R2I correct?
           domainObject.OnLoaded();
 
         _clientTransaction.OnLoaded(new ClientTransactionEventArgs(domainObjects));
@@ -151,7 +152,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.ObjectsNotFound(_clientTransaction, objectIDs);
     }
 
-    public void RaiseObjectsUnloadingEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadingEvent (IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.CheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
 
@@ -165,12 +166,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         // ReSharper restore ForCanBeConvertedToForeach
         {
           var domainObject = unloadedDomainObjects[i];
-          domainObject.OnUnloading();
+          if (domainObject is DomainObject concreteDomainObject)
+            concreteDomainObject.OnUnloading();
         }
       }
     }
 
-    public void RaiseObjectsUnloadedEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadedEvent (IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       ArgumentUtility.CheckNotNull("unloadedDomainObjects", unloadedDomainObjects);
 
@@ -179,14 +181,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         for (int i = unloadedDomainObjects.Count - 1; i >= 0; i--)
         {
           var domainObject = unloadedDomainObjects[i];
-          domainObject.OnUnloaded();
+          if (domainObject is DomainObject concreteDomainObject)
+            concreteDomainObject.OnUnloaded();
         }
       }
       _extensionCollection.ObjectsUnloaded(_clientTransaction, unloadedDomainObjects);
       _listenerCollection.ObjectsUnloaded(_clientTransaction, unloadedDomainObjects);
     }
 
-    public void RaiseObjectDeletingEvent (DomainObject domainObject)
+    public void RaiseObjectDeletingEvent (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -194,23 +197,25 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.ObjectDeleting(_clientTransaction, domainObject);
       using (EnterScopeOnDemand())
       {
-        domainObject.OnDeleting(EventArgs.Empty);
+        if (domainObject is DomainObject concreteDomainObject)
+          concreteDomainObject.OnDeleting(EventArgs.Empty);
       }
     }
 
-    public void RaiseObjectDeletedEvent (DomainObject domainObject)
+    public void RaiseObjectDeletedEvent (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       using (EnterScopeOnDemand())
       {
-        domainObject.OnDeleted(EventArgs.Empty);
+        if (domainObject is DomainObject concreteDomainObject)
+          concreteDomainObject.OnDeleted(EventArgs.Empty);
       }
       _extensionCollection.ObjectDeleted(_clientTransaction, domainObject);
       _listenerCollection.ObjectDeleted(_clientTransaction, domainObject);
     }
 
-    public void RaisePropertyValueReadingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public void RaisePropertyValueReadingEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -219,7 +224,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.PropertyValueReading(_clientTransaction, domainObject, propertyDefinition, valueAccess);
     }
 
-    public void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
+    public void RaisePropertyValueReadEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -228,7 +233,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.PropertyValueRead(_clientTransaction, domainObject, propertyDefinition, value, valueAccess);
     }
 
-    public void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void RaisePropertyValueChangingEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
@@ -237,25 +242,27 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.PropertyValueChanging(_clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
       using (EnterScopeOnDemand())
       {
-        domainObject.OnPropertyChanging(new PropertyChangeEventArgs(propertyDefinition, oldValue, newValue));
+        if (domainObject is DomainObject concreteDomainObject)
+          concreteDomainObject.OnPropertyChanging(new PropertyChangeEventArgs(propertyDefinition, oldValue, newValue));
       }
     }
 
-    public void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void RaisePropertyValueChangedEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       using (EnterScopeOnDemand())
       {
-        domainObject.OnPropertyChanged(new PropertyChangeEventArgs(propertyDefinition, oldValue, newValue));
+        if (domainObject is DomainObject concreteDomainObject)
+          concreteDomainObject.OnPropertyChanged(new PropertyChangeEventArgs(propertyDefinition, oldValue, newValue));
       }
 
       _extensionCollection.PropertyValueChanged(_clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
       _listenerCollection.PropertyValueChanged(_clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
-    public void RaiseRelationReadingEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
+    public void RaiseRelationReadingEvent (IDomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -264,8 +271,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.RelationReading(_clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
     }
 
-    public void RaiseRelationReadEvent (
-        DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
+    public void RaiseRelationReadEvent (IDomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IDomainObject? relatedObject, ValueAccess valueAccess)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -275,7 +281,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     public void RaiseRelationReadEvent (
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
@@ -289,10 +295,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     public void RaiseRelationChangingEvent (
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
@@ -301,22 +307,24 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.RelationChanging(_clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
       using (EnterScopeOnDemand())
       {
-        domainObject.OnRelationChanging(new RelationChangingEventArgs(relationEndPointDefinition, oldRelatedObject, newRelatedObject));
+        if (domainObject is DomainObject concreteDomainObject)
+          concreteDomainObject.OnRelationChanging(new RelationChangingEventArgs(relationEndPointDefinition, oldRelatedObject, newRelatedObject));
       }
     }
 
     public void RaiseRelationChangedEvent (
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       using (EnterScopeOnDemand())
       {
-        domainObject.OnRelationChanged(new RelationChangedEventArgs(relationEndPointDefinition, oldRelatedObject, newRelatedObject));
+        if (domainObject is DomainObject concreteDomainObject)
+          concreteDomainObject.OnRelationChanged(new RelationChangedEventArgs(relationEndPointDefinition, oldRelatedObject, newRelatedObject));
       }
       _extensionCollection.RelationChanged(_clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
       _listenerCollection.RelationChanged(_clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
@@ -336,7 +344,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return _listenerCollection.FilterCustomQueryResult(_clientTransaction, query, results);
     }
 
-    public void RaiseTransactionCommittingEvent (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void RaiseTransactionCommittingEvent (IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
       ArgumentUtility.CheckNotNull("eventRegistrar", eventRegistrar);
@@ -350,8 +358,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         for (int i = 0; i < domainObjects.Count; i++)
         {
           var domainObject = domainObjects[i];
-          if (!domainObject.State.IsInvalid)
-            domainObject.OnCommitting(new DomainObjectCommittingEventArgs(eventRegistrar));
+          if (domainObject is DomainObject concreteDomainObject)
+          {
+            if (!concreteDomainObject.State.IsInvalid)
+              concreteDomainObject.OnCommitting(new DomainObjectCommittingEventArgs(eventRegistrar));
+          }
         }
         // ReSharper restore ForCanBeConvertedToForeach
       }
@@ -365,14 +376,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _extensionCollection.CommitValidate(_clientTransaction, committedData);
     }
 
-    public void RaiseTransactionCommittedEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseTransactionCommittedEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
       using (EnterScopeOnDemand())
       {
         for (int i = domainObjects.Count - 1; i >= 0; i--)
-          domainObjects[i].OnCommitted(EventArgs.Empty);
+        {
+          if (domainObjects[i] is DomainObject concreteDomainObject)
+            concreteDomainObject.OnCommitted(EventArgs.Empty);
+        }
         _clientTransaction.OnCommitted(new ClientTransactionEventArgs(domainObjects));
       }
 
@@ -380,7 +394,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.TransactionCommitted(_clientTransaction, domainObjects);
     }
 
-    public void RaiseTransactionRollingBackEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseTransactionRollingBackEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
@@ -394,21 +408,27 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         for (int i = 0; i < domainObjects.Count; i++)
         {
           var domainObject = domainObjects[i];
-          if (!domainObject.State.IsInvalid)
-            domainObject.OnRollingBack(EventArgs.Empty);
+          if (domainObject is DomainObject concreteDomainObject)
+          {
+            if (!concreteDomainObject.State.IsInvalid)
+              concreteDomainObject.OnRollingBack(EventArgs.Empty);
+          }
         }
         // ReSharper restore ForCanBeConvertedToForeach
       }
     }
 
-    public void RaiseTransactionRolledBackEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseTransactionRolledBackEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
       using (EnterScopeOnDemand())
       {
         for (int i = domainObjects.Count - 1; i >= 0; i--)
-          domainObjects[i].OnRolledBack(EventArgs.Empty);
+        {
+          if (domainObjects[i] is DomainObject concreteDomainObject)
+            concreteDomainObject.OnRolledBack(EventArgs.Empty);
+        }
         _clientTransaction.OnRolledBack(new ClientTransactionEventArgs(domainObjects));
       }
 
@@ -431,12 +451,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       _listenerCollection.RelationEndPointBecomingIncomplete(_clientTransaction, endPointID);
     }
 
-    public void RaiseObjectMarkedInvalidEvent (DomainObject domainObject)
+    public void RaiseObjectMarkedInvalidEvent (IDomainObject domainObject)
     {
       _listenerCollection.ObjectMarkedInvalid(_clientTransaction, domainObject);
     }
 
-    public void RaiseObjectMarkedNotInvalidEvent (DomainObject domainObject)
+    public void RaiseObjectMarkedNotInvalidEvent (IDomainObject domainObject)
     {
       _listenerCollection.ObjectMarkedNotInvalid(_clientTransaction, domainObject);
     }

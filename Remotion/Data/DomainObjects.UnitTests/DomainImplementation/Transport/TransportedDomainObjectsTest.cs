@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void EmptyTransport ()
     {
       ClientTransaction dataTransaction = ClientTransaction.CreateRootTransaction();
-      var transportedObjects = new TransportedDomainObjects(dataTransaction, new List<DomainObject>());
+      var transportedObjects = new TransportedDomainObjects(dataTransaction, new List<IDomainObject>());
 
       Assert.That(transportedObjects.DataTransaction, Is.Not.Null);
       Assert.That(transportedObjects.DataTransaction, Is.SameAs(dataTransaction));
@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void TransportedObjectsStayConstant_WhenTransactionIsManipulated ()
     {
-      var transportedObjects = new TransportedDomainObjects(ClientTransaction.CreateRootTransaction(), new List<DomainObject>());
+      var transportedObjects = new TransportedDomainObjects(ClientTransaction.CreateRootTransaction(), new List<IDomainObject>());
 
       Assert.That(GetTransportedObjects(transportedObjects), Is.Empty);
 
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void NonEmptyTransport ()
     {
       ClientTransaction newTransaction = ClientTransaction.CreateRootTransaction();
-      var transportedObjectList = new List<DomainObject>();
+      var transportedObjectList = new List<IDomainObject>();
       using (newTransaction.EnterNonDiscardingScope())
       {
         transportedObjectList.Add(DomainObjectIDs.Order1.GetObject<Order>());
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           .Setup(
               mock => mock.Committing(
                   transportedObjects.DataTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects))),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects))),
                   It.IsAny<ICommittingEventRegistrar>()))
           .Verifiable();
       extensionMock
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
           .Setup(
               mock => mock.Committed(
                   transportedObjects.DataTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects)))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(GetTransportedObjects(transportedObjects)))))
           .Verifiable();
       extensionMock.Setup(mock => mock.TransactionDiscard(transportedObjects.DataTransaction)).Verifiable();
 
@@ -144,9 +144,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
         expectedObjects.Add(DomainObjectIDs.ClassWithAllDataTypes2.GetObject<ClassWithAllDataTypes>());
       }
 
-      var filteredObjects = new List<DomainObject>();
+      var filteredObjects = new List<IDomainObject>();
       transportedObjects.FinishTransport(
-          delegate (DomainObject domainObject)
+          delegate (IDomainObject domainObject)
           {
             filteredObjects.Add(domainObject);
             return true;
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       transportedObjects.FinishTransport(transportedObject =>
           {
-            Assert.That(transportedObject.State.IsNew);
+            Assert.That(((DomainObject)transportedObject).State.IsNew);
             return ((ClassWithAllDataTypes)transportedObject).Int32Property < 0;
           });
 
@@ -214,7 +214,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 
       transportedObjects.FinishTransport(transportedObject =>
       {
-        Assert.That(transportedObject.State.IsChanged);
+        Assert.That(((DomainObject)transportedObject).State.IsChanged);
         return ((ClassWithAllDataTypes)transportedObject).BooleanProperty;
       });
 
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void FinishTransport_WithInactiveTTransaction ()
     {
       var dataTransaction = ClientTransaction.CreateRootTransaction();
-      var transportedObjects = new TransportedDomainObjects(dataTransaction, new List<DomainObject>());
+      var transportedObjects = new TransportedDomainObjects(dataTransaction, new List<IDomainObject>());
 
       using (ClientTransactionTestHelper.MakeInactive(dataTransaction))
       {
@@ -321,9 +321,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       return Transport(transporter);
     }
 
-    private List<DomainObject> GetTransportedObjects (TransportedDomainObjects transportedObjects)
+    private List<IDomainObject> GetTransportedObjects (TransportedDomainObjects transportedObjects)
     {
-      return new List<DomainObject>(transportedObjects.TransportedObjects);
+      return new List<IDomainObject>(transportedObjects.TransportedObjects);
     }
 
     private void ModifyDatabase (Action changer)

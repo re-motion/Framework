@@ -29,13 +29,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
   public class DeleteCommand : IDataManagementCommand
   {
     private readonly ClientTransaction _clientTransaction;
-    private readonly DomainObject _deletedObject;
+    private readonly IDomainObject _deletedObject;
     private readonly IClientTransactionEventSink _transactionEventSink;
     private readonly DataContainer _dataContainer;
     private readonly IRelationEndPoint[] _endPoints;
     private readonly CompositeCommand _endPointDeleteCommands;
 
-    public DeleteCommand (ClientTransaction clientTransaction, DomainObject deletedObject, IClientTransactionEventSink transactionEventSink)
+    public DeleteCommand (ClientTransaction clientTransaction, IDomainObject deletedObject, IClientTransactionEventSink transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("deletedObject", deletedObject);
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       get { return _clientTransaction; }
     }
 
-    public DomainObject DeletedObject
+    public IDomainObject DeletedObject
     {
       get { return _deletedObject; }
     }

@@ -354,7 +354,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _dataManagerMock.Setup(mock => mock.OriginalItemWithoutEndPoint).Returns(_relatedObject);
 
-      var result = (IEnumerable<DomainObject>)PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalItemsWithoutEndPoints");
+      var result = (IEnumerable<IDomainObject>)PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalItemsWithoutEndPoints");
 
       Assert.That(result, Is.EqualTo(new[] { _relatedObject }));
     }
@@ -362,9 +362,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void GetOriginalItemsWithoutEndPoints_None ()
     {
-      _dataManagerMock.Setup(mock => mock.OriginalItemWithoutEndPoint).Returns((DomainObject)null);
+      _dataManagerMock.Setup(mock => mock.OriginalItemWithoutEndPoint).Returns((IDomainObject)null);
 
-      var result = (IEnumerable<DomainObject>)PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalItemsWithoutEndPoints");
+      var result = (IEnumerable<IDomainObject>)PrivateInvoke.InvokeNonPublicMethod(_loadState, "GetOriginalItemsWithoutEndPoints");
 
       Assert.That(result, Is.Empty);
     }

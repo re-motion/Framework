@@ -22,19 +22,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
   [Serializable]
   internal class SerializableDomainObjectCollectionEventRaiserFake : IDomainObjectCollectionEventRaiser
   {
-    public void BeginAdd (int index, DomainObject domainObject)
+    public void BeginAdd (int index, IDomainObject domainObject)
     {
     }
 
-    public void EndAdd (int index, DomainObject domainObject)
+    public void EndAdd (int index, IDomainObject domainObject)
     {
     }
 
-    public void BeginRemove (int index, DomainObject domainObject)
+    public void BeginRemove (int index, IDomainObject domainObject)
     {
     }
 
-    public void EndRemove (int index, DomainObject domainObject)
+    public void EndRemove (int index, IDomainObject domainObject)
     {
     }
 

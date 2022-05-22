@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public abstract void ValidateMandatory ();
 
-    public abstract IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject);
+    public abstract IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject);
     public abstract IDataManagementCommand CreateDeleteCommand ();
 
     public ClientTransaction ClientTransaction
@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return false; }
     }
 
-    public DomainObject? GetDomainObject ()
+    public IDomainObject? GetDomainObject ()
     {
       //TODO RM-8241: possible null bug, non-null RelationEndPoint could probably require non-null ObjectID during construction.
       if (ObjectID == null)
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return ClientTransaction.GetObject(ObjectID, true);
     }
 
-    public DomainObject? GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       //TODO RM-8241: possible null bug, non-null RelationEndPoint could probably require non-null ObjectID during construction.
       if (ObjectID == null)

@@ -94,12 +94,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { throw new NotImplementedException(); }
     }
 
-    public DomainObject GetDomainObject ()
+    public IDomainObject GetDomainObject ()
     {
       return _owningObject;
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public IDomainObject GetDomainObjectReference ()
     {
       return _owningObject;
     }
@@ -134,7 +134,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       throw new NotImplementedException();
     }
@@ -203,17 +203,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public DomainObject GetOppositeObject ()
+    public IDomainObject GetOppositeObject ()
     {
       throw new NotImplementedException();
     }
 
-    public DomainObject GetOriginalOppositeObject ()
+    public IDomainObject GetOriginalOppositeObject ()
     {
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (IDomainObject newRelatedObject)
     {
       throw new NotImplementedException();
     }

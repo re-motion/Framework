@@ -35,6 +35,6 @@ namespace Remotion.Data.DomainObjects.Validation
     {
     }
 
-    public abstract DomainObject[] AffectedObjects { get; }
+    public abstract IDomainObject[] AffectedObjects { get; }
   }
 }

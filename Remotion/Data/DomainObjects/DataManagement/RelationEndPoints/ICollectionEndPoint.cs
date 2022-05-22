@@ -24,8 +24,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public interface ICollectionEndPoint<out TData> : IVirtualEndPoint<TData>
       where TData : ICollectionEndPointData
   {
-    void MarkDataComplete (DomainObject[] items);
+    void MarkDataComplete (IDomainObject[] items);
 
-    IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject);
+    IDataManagementCommand CreateAddCommand (IDomainObject addedRelatedObject);
   }
 }

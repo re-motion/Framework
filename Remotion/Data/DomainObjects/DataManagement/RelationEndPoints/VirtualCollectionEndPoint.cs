@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
     }
 
-    public void MarkDataComplete (DomainObject[] items)
+    public void MarkDataComplete (IDomainObject[] items)
     {
       ArgumentUtility.CheckNotNull("items", items);
 
@@ -319,7 +319,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       oppositeEndPoint.MarkSynchronized();
     }
 
-    public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public override IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
 
@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new VirtualCollectionEndPointDeleteCommand(this, changeTrackingVirtualCollectionData, _transactionEventSink);
     }
 
-    public virtual IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
+    public virtual IDataManagementCommand CreateAddCommand (IDomainObject addedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
 

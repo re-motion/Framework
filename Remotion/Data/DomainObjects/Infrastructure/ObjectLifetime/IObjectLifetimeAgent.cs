@@ -22,19 +22,19 @@ using Remotion.TypePipe;
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 {
   /// <summary>
-  /// Provides an interface for classes implementing creation, retrieval, and deletion of <see cref="DomainObject"/> references.
+  /// Provides an interface for classes implementing creation, retrieval, and deletion of <see cref="IDomainObject"/> references.
   /// </summary>
   public interface IObjectLifetimeAgent
   {
-    DomainObject NewObject (ClassDefinition classDefinition, ParamList constructorParameters);
-    DomainObject GetObjectReference (ObjectID objectID);
+    IDomainObject NewObject (ClassDefinition classDefinition, ParamList constructorParameters);
+    IDomainObject GetObjectReference (ObjectID objectID);
 
-    DomainObject GetObject (ObjectID objectID, bool includeDeleted);
-    DomainObject? TryGetObject (ObjectID objectID);
+    IDomainObject GetObject (ObjectID objectID, bool includeDeleted);
+    IDomainObject? TryGetObject (ObjectID objectID);
 
-    T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : DomainObject;
-    T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : DomainObject;
+    T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : IDomainObject;
+    T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs) where T : IDomainObject;
 
-    void Delete (DomainObject domainObject);
+    void Delete (IDomainObject domainObject);
   }
 }

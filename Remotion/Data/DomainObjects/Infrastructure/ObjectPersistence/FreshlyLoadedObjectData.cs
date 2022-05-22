@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _freshlyLoadedDataContainer; }
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       if (!_freshlyLoadedDataContainer.HasDomainObject)
         throw new InvalidOperationException("Cannot obtain a DomainObject reference for a freshly loaded object that has not yet been registered.");

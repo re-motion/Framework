@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// Provides an interface for an encapsulation of the data stored inside an <see cref="IObjectList{IDomainObject}"/> implementation. A number of decorators
   /// implements this interface in order to wrap the data store with additional functionality.
   /// </summary>
-  public interface IVirtualCollectionData : IReadOnlyCollection<DomainObject>
+  public interface IVirtualCollectionData : IReadOnlyCollection<IDomainObject>
   {
     Type RequiredItemType { get; }
     bool IsReadOnly { get; }
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     int IndexOf (ObjectID objectID);
 
     void Clear ();
-    void Add (DomainObject domainObject);
-    bool Remove (DomainObject domainObject);
+    void Add (IDomainObject domainObject);
+    bool Remove (IDomainObject domainObject);
   }
 }

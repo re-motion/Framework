@@ -287,8 +287,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order4, _order3, _order1 })))
           .Verifiable();
 
-      var weights = new Dictionary<DomainObject, int> { { _order1, 3 }, { _order3, 2 }, { _order4, 1 } };
-      Comparison<DomainObject> comparison = (one, two) => weights[one].CompareTo(weights[two]);
+      var weights = new Dictionary<IDomainObject, int> { { _order1, 3 }, { _order3, 2 }, { _order4, 1 } };
+      Comparison<IDomainObject> comparison = (one, two) => weights[one].CompareTo(weights[two]);
 
       _observableDomainObjectDecoratorWithRealContent.Sort(comparison);
 
@@ -306,7 +306,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1))
           .Verifiable();
 
-      Comparison<DomainObject> comparison = (one, two) => { throw new Exception(); };
+      Comparison<IDomainObject> comparison = (one, two) => { throw new Exception(); };
 
       Assert.That(() => _observableDomainObjectDecoratorWithRealContent.Sort(comparison), Throws.Exception);
 

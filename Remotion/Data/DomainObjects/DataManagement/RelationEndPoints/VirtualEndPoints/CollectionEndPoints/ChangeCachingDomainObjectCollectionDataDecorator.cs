@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// only added to the <see cref="OriginalData"/>. This operation may invalidate the state cache.
     /// </summary>
     /// <param name="domainObject">The <see cref="DomainObject"/> to be registered.</param>
-    public void RegisterOriginalItem (DomainObject domainObject)
+    public void RegisterOriginalItem (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -208,7 +208,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// as the current data.
     /// </summary>
     /// <param name="comparison"></param>
-    public void SortOriginalAndCurrent (Comparison<DomainObject> comparison)
+    public void SortOriginalAndCurrent (Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
 

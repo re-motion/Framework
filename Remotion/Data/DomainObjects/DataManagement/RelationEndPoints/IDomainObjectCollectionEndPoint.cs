@@ -31,10 +31,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     DomainObjectCollection GetCollectionWithOriginalData ();
 
     IDataManagementCommand CreateSetCollectionCommand (DomainObjectCollection newCollection);
-    IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index);
-    IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject);
+    IDataManagementCommand CreateInsertCommand (IDomainObject insertedRelatedObject, int index);
+    IDataManagementCommand CreateReplaceCommand (int index, IDomainObject replacementObject);
 
-    void SortCurrentData (Comparison<DomainObject> comparison);
+    void SortCurrentData (Comparison<IDomainObject> comparison);
 
     IDomainObjectCollectionEventRaiser GetCollectionEventRaiser ();
 

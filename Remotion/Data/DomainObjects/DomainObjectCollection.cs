@@ -234,7 +234,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="domainObjects">The <see cref="DomainObject"/>s to copy. Must not be <see langword="null"/>.</param>
     /// <param name="requiredItemType">The required item type of the new collection.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
-    public DomainObjectCollection (IEnumerable<DomainObject> domainObjects, Type requiredItemType)
+    public DomainObjectCollection (IEnumerable<IDomainObject> domainObjects, Type requiredItemType)
     {
       var dataStore = new DomainObjectCollectionData();
       dataStore.AddRangeAndCheckItems(domainObjects, requiredItemType);
@@ -299,7 +299,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets an enumerator for iterating over the items in this <see cref="DomainObjectCollection"/>.
     /// </summary>
     /// <returns>An enumerator for iterating over the items in this collection.</returns>
-    public IEnumerator<DomainObject> GetEnumerator ()
+    public IEnumerator<IDomainObject> GetEnumerator ()
     {
       return _dataStrategy.GetEnumerator();
     }
@@ -312,16 +312,16 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Determines whether the <see cref="DomainObjectCollection"/> contains a reference to the specified <paramref name="domainObject"/>.
     /// </summary>
-    /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
+    /// <param name="domainObject">The <see cref="IDomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
     /// <returns><see langword="true"/> if <paramref name="domainObject"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/></exception>
     /// <remarks>
     /// <para>This method only returns <see langword="true" /> if the same reference is found in the collection. It returns <see langword="false" /> 
     /// when the collection contains no matching object or another object reference (from another <see cref="ClientTransaction"/>) with the same
-    /// <see cref="DomainObject.ID"/>.
+    /// <see cref="IDomainObject.ID"/>.
     /// </para>
     /// </remarks>
-    public bool ContainsObject (DomainObject domainObject)
+    public bool ContainsObject (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -333,10 +333,10 @@ namespace Remotion.Data.DomainObjects
     /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
     /// </summary>
     /// <param name="id">
-    /// The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.
+    /// The <see cref="ObjectID"/> of the <see cref="IDomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.
     /// </param>
     /// <returns>
-    /// <see langword="true"/> if the <see cref="DomainObject"/> with the <paramref name="id"/> is found in the <see cref="DomainObjectCollection"/>;
+    /// <see langword="true"/> if the <see cref="IDomainObject"/> with the <paramref name="id"/> is found in the <see cref="DomainObjectCollection"/>;
     /// otherwise, <see langword="false"/>;
     /// </returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/></exception>
@@ -348,16 +348,16 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Returns the zero-based index of a given <see cref="DomainObject"/> in the collection.
+    /// Returns the zero-based index of a given <see cref="IDomainObject"/> in the collection.
     /// </summary>
     /// <param name="domainObject">The <paramref name="domainObject"/> to locate in the collection.</param>
     /// <returns>The zero-based index of the <paramref name="domainObject"/>, if found; otherwise, -1.</returns>
     /// <remarks>
     /// The method returns -1 if the <paramref name="domainObject"/> is <see langword="null" />. If the collection holds a different item with the
-    /// same <see cref="DomainObject.ID"/> as <paramref name="domainObject"/>, -1 is returned as well. Use the 
+    /// same <see cref="IDomainObject.ID"/> as <paramref name="domainObject"/>, -1 is returned as well. Use the 
     /// <see cref="IndexOf(Remotion.Data.DomainObjects.ObjectID)"/> overload taking an <see cref="ObjectID"/> to find the index in such cases.
     /// </remarks>
-    public int IndexOf (DomainObject domainObject)
+    public int IndexOf (IDomainObject domainObject)
     {
       if (domainObject == null)
         return -1;
@@ -383,7 +383,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets or sets the <see cref="DomainObject"/> with a given <paramref name="index"/> in the <see cref="DomainObjectCollection"/>.
+    /// Gets or sets the <see cref="IDomainObject"/> with a given <paramref name="index"/> in the <see cref="DomainObjectCollection"/>.
     /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException">
     ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
@@ -391,10 +391,10 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     /// <exception cref="System.ArgumentException">
-    ///   <paramref name="value"/> is not a derived type of <see cref="DomainObject"/> and of type <see cref="RequiredItemType"/> or a derived type.
+    ///   <paramref name="value"/> is not a derived type of <see cref="IDomainObject"/> and of type <see cref="RequiredItemType"/> or a derived type.
     /// </exception>
     /// <exception cref="System.InvalidOperationException"><paramref name="value"/> is already part of the collection.</exception>
-    public DomainObject this [int index]
+    public IDomainObject this [int index]
     {
       get { return _dataStrategy.GetObject(index); }
       set
@@ -410,18 +410,18 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
+    /// Gets the <see cref="IDomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
     /// </summary>
     /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="id"/> was not found.</remarks>
-    public DomainObject? this [ObjectID id]
+    public IDomainObject? this [ObjectID id]
     {
       get { return _dataStrategy.GetObject(id); }
     }
 
     /// <summary>
-    /// Adds a <see cref="DomainObject"/> to the collection.
+    /// Adds a <see cref="IDomainObject"/> to the collection.
     /// </summary>
-    /// <param name="domainObject">The <see cref="DomainObject"/> to add. Must not be <see langword="null"/>.</param>
+    /// <param name="domainObject">The <see cref="IDomainObject"/> to add. Must not be <see langword="null"/>.</param>
     /// <returns>The zero-based index where the <paramref name="domainObject"/> has been added.</returns>
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
@@ -431,7 +431,7 @@ namespace Remotion.Data.DomainObjects
     ///   managing this collection. 
     ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
     /// </exception>
-    public int Add (DomainObject domainObject)
+    public int Add (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       this.CheckNotReadOnly("Cannot add an item to a read-only collection.");
@@ -441,7 +441,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Adds a range of <see cref="DomainObject"/> instances to this collection, calling <see cref="Add"/> for each single item.
+    /// Adds a range of <see cref="IDomainObject"/> instances to this collection, calling <see cref="Add"/> for each single item.
     /// </summary>
     /// <param name="domainObjects">The domain objects to add.</param>
     /// <exception cref="ArgumentNullException">
@@ -463,13 +463,13 @@ namespace Remotion.Data.DomainObjects
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
       this.CheckNotReadOnly("Cannot add items to a read-only collection.");
 
-      _dataStrategy.AddRangeAndCheckItems(domainObjects.Cast<DomainObject>(), RequiredItemType);
+      _dataStrategy.AddRangeAndCheckItems(domainObjects.Cast<IDomainObject>(), RequiredItemType);
     }
 
     /// <summary>
-    /// Removes a <see cref="DomainObject"/> from the collection.
+    /// Removes a <see cref="IDomainObject"/> from the collection.
     /// </summary>
-    /// <param name="index">The index of the <see cref="DomainObject"/> to remove.</param>
+    /// <param name="index">The index of the <see cref="IDomainObject"/> to remove.</param>
     /// <exception cref="System.ArgumentOutOfRangeException">
     ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
     ///   <paramref name="index"/> is equal to or greater than the number of items in the collection.
@@ -481,9 +481,9 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Removes a <see cref="DomainObject"/> from the collection.
+    /// Removes a <see cref="IDomainObject"/> from the collection.
     /// </summary>
-    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
+    /// <param name="id">The <see cref="ObjectID"/> of the <see cref="IDomainObject"/> to remove. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
     public void Remove (ObjectID id)
@@ -495,14 +495,14 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Removes a <see cref="DomainObject"/> from the collection.
+    /// Removes a <see cref="IDomainObject"/> from the collection.
     /// </summary>
     /// <returns>True if the collection contained the given object when the method was called; false otherwise.
     /// </returns>
     /// <remarks>
-    /// If <see cref="Remove(Remotion.Data.DomainObjects.DomainObject)"/> is called with an object that is not in the collection, no exception is thrown, and no events are raised. 
+    /// If <see cref="Remove(Remotion.Data.DomainObjects.IDomainObject)"/> is called with an object that is not in the collection, no exception is thrown, and no events are raised. 
     /// </remarks>
-    /// <param name="domainObject">The <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
+    /// <param name="domainObject">The <see cref="IDomainObject"/> to remove. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
     /// <exception cref="System.ArgumentException"><paramref name="domainObject"/> has the same <see cref="ObjectID"/> as an object in this collection, but it is a 
     /// different object reference. You can use <see cref="Remove(ObjectID)"/> to remove an object if you only know its <see cref="ObjectID"/>.</exception>
@@ -512,7 +512,7 @@ namespace Remotion.Data.DomainObjects
     ///   managing this collection. 
     ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
     /// </exception>
-    public bool Remove (DomainObject domainObject)
+    public bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       this.CheckNotReadOnly("Cannot remove an item from a read-only collection.");
@@ -532,7 +532,7 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Inserts a <see cref="DomainObject"/> into the collection at the specified index.
+    /// Inserts a <see cref="IDomainObject"/> into the collection at the specified index.
     /// </summary>
     /// <param name="index">The zero-based <paramref name="index"/> at which the item should be inserted.</param>
     /// <param name="domainObject">The <paramref name="domainObject"/> to add. Must not be <see langword="null"/>.</param>
@@ -551,7 +551,7 @@ namespace Remotion.Data.DomainObjects
     ///   managing this collection. 
     ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
     /// </exception>
-    public void Insert (int index, DomainObject domainObject)
+    public void Insert (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       this.CheckNotReadOnly("Cannot insert an item into a read-only collection.");
@@ -574,7 +574,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="comparison">The comparison.</param>
     [Obsolete("This member is meant exclusively for the implementation of indexed DomainObjectCollections. It will be removed when re-store "
         + "implements a base class for indexed DomainObjectCollections. Don't use this API for any other use case. (1.13.130)")]
-    protected void Sort (Comparison<DomainObject> comparison)
+    protected void Sort (Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
 
@@ -625,7 +625,7 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public virtual DomainObjectCollection Clone (bool makeCloneReadOnly)
     {
-      IEnumerable<DomainObject> contents = _dataStrategy;
+      IEnumerable<IDomainObject> contents = _dataStrategy;
       if (makeCloneReadOnly)
         return DomainObjectCollectionFactory.Instance.CreateReadOnlyCollection(GetType(), contents);
       else

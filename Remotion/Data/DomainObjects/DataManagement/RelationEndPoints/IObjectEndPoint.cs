@@ -27,10 +27,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     ObjectID? OppositeObjectID { get; }
     ObjectID? OriginalOppositeObjectID { get; }
 
-    DomainObject? GetOppositeObject ();
-    DomainObject? GetOriginalOppositeObject ();
+    IDomainObject? GetOppositeObject ();
+    IDomainObject? GetOriginalOppositeObject ();
 
-    IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject);
+    IDataManagementCommand CreateSetCommand (IDomainObject? newRelatedObject);
 
     RelationEndPointID? GetOppositeRelationEndPointID ();
   }

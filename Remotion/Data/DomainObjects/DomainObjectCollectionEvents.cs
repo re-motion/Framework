@@ -32,25 +32,25 @@ public delegate void DomainObjectCollectionChangeEventHandler (object sender, Do
 [Serializable]
 public class DomainObjectCollectionChangeEventArgs : EventArgs
 {
-  private DomainObject _domainObject;
+  private IDomainObject _domainObject;
 
   /// <summary>
   /// Initializes a new instance of the <b>DomainObjectCollectionChangingEventArgs</b> class.
   /// </summary>
   /// <param name="domainObject">
-  /// The <see cref="Remotion.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.
+  /// The <see cref="Remotion.Data.DomainObjects.IDomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.
   /// </param>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
-  public DomainObjectCollectionChangeEventArgs (DomainObject domainObject)
+  public DomainObjectCollectionChangeEventArgs (IDomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull("domainObject", domainObject);
     _domainObject = domainObject;
   }
 
   /// <summary>
-  /// Gets the <see cref="Remotion.Data.DomainObjects.DomainObject"/> that is being added or removed.
+  /// Gets the <see cref="Remotion.Data.DomainObjects.IDomainObject"/> that is being added or removed.
   /// </summary>
-  public DomainObject DomainObject
+  public IDomainObject DomainObject
   {
     get { return _domainObject; }
   }

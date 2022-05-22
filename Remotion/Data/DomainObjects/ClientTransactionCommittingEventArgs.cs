@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects
   {
     private readonly ICommittingEventRegistrar _eventRegistrar;
 
-    public ClientTransactionCommittingEventArgs (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public ClientTransactionCommittingEventArgs (IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
         : base(domainObjects)
     {
       ArgumentUtility.CheckNotNull("eventRegistrar", eventRegistrar);

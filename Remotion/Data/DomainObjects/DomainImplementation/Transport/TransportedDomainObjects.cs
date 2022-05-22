@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   public struct TransportedDomainObjects
   {
     private ClientTransaction? _dataTransaction;
-    private ReadOnlyCollection<DomainObject>? _transportedObjects;
+    private ReadOnlyCollection<IDomainObject>? _transportedObjects;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportedDomainObjects"/> class. This constructor is typically only used internally,
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </summary>
     /// <param name="dataTransaction">The transaction containing the transported objects' data.</param>
     /// <param name="transportedObjects">The transported objects.</param>
-    public TransportedDomainObjects (ClientTransaction dataTransaction, List<DomainObject> transportedObjects)
+    public TransportedDomainObjects (ClientTransaction dataTransaction, List<IDomainObject> transportedObjects)
     {
       ArgumentUtility.CheckNotNull("dataTransaction", dataTransaction);
 
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// Gets the transported objects. Use <see cref="DataTransaction"/> to inspect or change their data before calling <see cref="FinishTransport()"/>.
     /// </summary>
     /// <value>The transported objects.</value>
-    public ReadOnlyCollection<DomainObject>? TransportedObjects
+    public ReadOnlyCollection<IDomainObject>? TransportedObjects
     {
       get { return _transportedObjects; }
     }
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <remarks>This method invalidated the <see cref="TransportedDomainObjects"/> object, setting <see cref="DataTransaction"/> and
     /// <see cref="TransportedObjects"/> to <see langword="null"/> and discarding <see cref="DataTransaction"/>. The transported object references
     /// cannot be used any longer after calling this method.</remarks>
-    public void FinishTransport (Func<DomainObject, bool> filter)
+    public void FinishTransport (Func<IDomainObject, bool> filter)
     {
       ArgumentUtility.CheckNotNull("filter", filter);
 

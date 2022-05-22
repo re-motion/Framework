@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   public interface ILoadedObjectData : INullObject
   {
     ObjectID? ObjectID { get; }
-    DomainObject? GetDomainObjectReference ();
+    IDomainObject? GetDomainObjectReference ();
 
     void Accept (ILoadedObjectVisitor visitor);
   }

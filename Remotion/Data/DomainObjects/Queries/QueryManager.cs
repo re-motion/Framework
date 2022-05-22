@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.Queries
       return _transactionEventSink.RaiseFilterCustomQueryResultEvent(query, queryResult);
     }
 
-    private T? ConvertLoadedDomainObject<T> (DomainObject? domainObject) where T : DomainObject
+    private T? ConvertLoadedDomainObject<T> (IDomainObject? domainObject) where T : IDomainObject
     {
       if (domainObject == null || domainObject is T)
         return (T?)domainObject;

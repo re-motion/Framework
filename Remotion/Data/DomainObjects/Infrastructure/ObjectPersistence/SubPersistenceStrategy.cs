@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       }
     }
 
-    private ILoadedObjectData GetLoadedObjectDataForParentObject (ValueTuple<ObjectID, DomainObject?> parentObject)
+    private ILoadedObjectData GetLoadedObjectDataForParentObject (ValueTuple<ObjectID, IDomainObject?> parentObject)
     {
       if (parentObject.Item2 == null)
         return new NotFoundLoadedObjectData(parentObject.Item1);
@@ -186,7 +186,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         return TransferParentObject(parentObject.Item1);
     }
 
-    private ILoadedObjectData TransferParentObject (DomainObject? parentObject, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
+    private ILoadedObjectData TransferParentObject (IDomainObject? parentObject, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
       if (parentObject == null)
         return new NullLoadedObjectData();

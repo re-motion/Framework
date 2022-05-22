@@ -96,17 +96,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       get { throw new NotImplementedException(); }
     }
 
-    public override DomainObject GetOppositeObject ()
+    public override IDomainObject GetOppositeObject ()
     {
       throw new NotImplementedException();
     }
 
-    public override DomainObject GetOriginalOppositeObject ()
+    public override IDomainObject GetOriginalOppositeObject ()
     {
       throw new NotImplementedException();
     }
 
-    public override IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
+    public override IDataManagementCommand CreateSetCommand (IDomainObject newRelatedObject)
     {
       throw new NotImplementedException();
     }

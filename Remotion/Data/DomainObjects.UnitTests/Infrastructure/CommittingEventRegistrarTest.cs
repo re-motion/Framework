@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         return instance;
       });
       _unchangedObject = _clientTransaction.ExecuteInScope(() => DomainObjectIDs.Order4.GetObject<Order>());
-      _notLoadedYetObject = LifetimeService.GetObjectReference(_clientTransaction, DomainObjectIDs.Order5);
+      _notLoadedYetObject = (DomainObject)LifetimeService.GetObjectReference(_clientTransaction, DomainObjectIDs.Order5);
 
       _registrar = new CommittingEventRegistrar(_clientTransaction);
     }

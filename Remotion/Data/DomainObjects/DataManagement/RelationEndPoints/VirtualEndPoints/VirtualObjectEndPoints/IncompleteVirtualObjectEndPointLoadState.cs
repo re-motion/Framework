@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// loaded, or it has been unloaded).
   /// </summary>
   public class IncompleteVirtualObjectEndPointLoadState
-      : IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager, IVirtualObjectEndPointLoadState>,
+      : IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, IDomainObject?, IVirtualObjectEndPointDataManager, IVirtualObjectEndPointLoadState>,
         IVirtualObjectEndPointLoadState
   {
     private readonly IVirtualObjectEndPointDataManagerFactory _dataManagerFactory;
@@ -52,17 +52,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       EndPointLoader.LoadEndPointAndGetNewState(endPoint);
     }
 
-    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
+    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, IDomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      var items = item == null ? Array.Empty<DomainObject>() : EnumerableUtility.Singleton(item);
+      var items = item == null ? Array.Empty<IDomainObject>() : EnumerableUtility.Singleton(item);
       MarkDataComplete(endPoint, items, stateSetter);
     }
 
-    public IDataManagementCommand CreateSetCommand (
-        IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (IVirtualObjectEndPoint virtualObjectEndPoint, IDomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
 

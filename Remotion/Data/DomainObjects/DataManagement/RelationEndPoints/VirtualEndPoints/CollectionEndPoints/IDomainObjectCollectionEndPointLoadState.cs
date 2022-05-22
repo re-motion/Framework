@@ -29,17 +29,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     bool? HasChangedFast ();
 
     void EnsureDataComplete (IDomainObjectCollectionEndPoint endPoint);
-    void MarkDataComplete (IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter);
-    void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<DomainObject> comparison);
+    void MarkDataComplete (IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<IDomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter);
+    void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<IDomainObject> comparison);
 
     IDataManagementCommand CreateSetCollectionCommand (
         IDomainObjectCollectionEndPoint collectionEndPoint,
         DomainObjectCollection newCollection,
         IDomainObjectCollectionEndPointCollectionManager collectionEndPointCollectionManager);
-    IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject removedRelatedObject);
+    IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject removedRelatedObject);
     IDataManagementCommand CreateDeleteCommand (IDomainObjectCollectionEndPoint collectionEndPoint);
-    IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index);
-    IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject);
-    IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject);
+    IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject insertedRelatedObject, int index);
+    IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject addedRelatedObject);
+    IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, IDomainObject replacementObject);
   }
 }

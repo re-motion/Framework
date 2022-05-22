@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _loadStateMock
           .Setup(mock => mock.MarkDataComplete(_endPoint, items, It.IsAny<Action<IDomainObjectCollectionEndPointDataManager>>()))
           .Callback(
-              (IDomainObjectCollectionEndPoint _, IEnumerable<DomainObject> _, Action<IDomainObjectCollectionEndPointDataManager> stateSetter) =>
+              (IDomainObjectCollectionEndPoint _, IEnumerable<IDomainObject> _, Action<IDomainObjectCollectionEndPointDataManager> stateSetter) =>
               {
                 actualStateSetter = stateSetter;
               })
@@ -566,7 +566,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SortCurrentData ()
     {
-      Comparison<DomainObject> comparison = (one, two) => 0;
+      Comparison<IDomainObject> comparison = (one, two) => 0;
       _loadStateMock.Setup(mock => mock.SortCurrentData(_endPoint, comparison)).Verifiable();
 
       _endPoint.SortCurrentData(comparison);

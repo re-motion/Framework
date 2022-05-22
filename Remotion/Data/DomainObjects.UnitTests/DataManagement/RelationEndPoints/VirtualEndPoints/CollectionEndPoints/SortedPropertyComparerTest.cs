@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var specification1 = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Ascending);
       var specification2 = new SortedPropertySpecification(_orderNumberPropertyDefinition, SortOrder.Descending);
 
-      var compoundComparer = (CompoundComparer<DomainObject>)SortedPropertyComparer.CreateCompoundComparer(
+      var compoundComparer = (CompoundComparer<IDomainObject>)SortedPropertyComparer.CreateCompoundComparer(
           new[] { specification1, specification2 },
           _dataContainerMapStub.Object,
           ValueAccess.Current);

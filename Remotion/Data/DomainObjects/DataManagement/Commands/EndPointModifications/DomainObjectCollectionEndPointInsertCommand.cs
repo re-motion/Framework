@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     public DomainObjectCollectionEndPointInsertCommand (
         IDomainObjectCollectionEndPoint modifiedEndPoint,
         int index,
-        DomainObject insertedObject,
+        IDomainObject insertedObject,
         IDomainObjectCollectionData collectionData,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _endPointProvider; }
     }
 
-    public new DomainObject NewRelatedObject
+    public new IDomainObject NewRelatedObject
     {
       get { return base.NewRelatedObject!; }
     }

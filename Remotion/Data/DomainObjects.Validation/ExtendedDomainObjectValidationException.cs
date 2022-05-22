@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Validation
       _validationFailures = validationFailures;
     }
 
-    public override DomainObject[] AffectedObjects
+    public override IDomainObject[] AffectedObjects
     {
       get { return _affectedObjects; }
     }

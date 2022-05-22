@@ -292,7 +292,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _loadStateMock
           .Setup(mock => mock.MarkDataComplete(_endPoint, _oppositeObject, It.IsAny<Action<IVirtualObjectEndPointDataManager>>()))
-          .Callback((IVirtualObjectEndPoint _, DomainObject _, Action<IVirtualObjectEndPointDataManager> stateSetter) => { actualStateSetter =stateSetter; })
+          .Callback((IVirtualObjectEndPoint _, IDomainObject _, Action<IVirtualObjectEndPointDataManager> stateSetter) => { actualStateSetter =stateSetter; })
           .Verifiable();
 
       _endPoint.MarkDataComplete(_oppositeObject);

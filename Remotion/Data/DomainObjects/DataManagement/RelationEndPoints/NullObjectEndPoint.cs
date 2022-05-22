@@ -89,12 +89,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       // do nothing
     }
 
-    public DomainObject? GetOppositeObject ()
+    public IDomainObject? GetOppositeObject ()
     {
       return null;
     }
 
-    public DomainObject GetOriginalOppositeObject ()
+    public IDomainObject? GetOriginalOppositeObject ()
     {
       throw new InvalidOperationException("It is not possible to call GetOriginalOppositeObject on a NullObjectEndPoint.");
     }
@@ -109,12 +109,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return false; }
     }
 
-    public DomainObject? GetDomainObject ()
+    public IDomainObject? GetDomainObject ()
     {
       return null;
     }
 
-    public DomainObject? GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       return null;
     }
@@ -149,7 +149,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       throw new InvalidOperationException("Rollback cannot be called on a NullObjectEndPoint.");
     }
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject? removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       // TODO RM-8241: removedRelatedObject can be null for null-object implementations. This is required with ObjectEndPointSetOneOneCommand.
       return new NullEndPointModificationCommand(this);
@@ -160,7 +160,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return new NullEndPointModificationCommand(this);
     }
 
-    public IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (IDomainObject? newRelatedObject)
     {
       return new NullEndPointModificationCommand(this);
     }

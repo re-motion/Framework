@@ -492,8 +492,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     {
       Assert.That(_collection, Is.EqualTo(new[] { _customer1, _customer2 }));
 
-      var weights = new Dictionary<DomainObject, int> { { _customer1, 2 }, { _customer2, 1 } };
-      Comparison<DomainObject> comparison = ((one, two) => weights[one].CompareTo(weights[two]));
+      var weights = new Dictionary<IDomainObject, int> { { _customer1, 2 }, { _customer2, 1 } };
+      Comparison<IDomainObject> comparison = ((one, two) => weights[one].CompareTo(weights[two]));
       PrivateInvoke.InvokeNonPublicMethod(_collection, "Sort", comparison);
 
       Assert.That(_collection, Is.EqualTo(new[] { _customer2, _customer1 }));

@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _collectionEndPointMock.Setup(stub => stub.GetCollectionEventRaiser()).Returns(_eventRaiserMock.Object);
 
-      Comparison<DomainObject> comparison = (one, two) => 0;
+      Comparison<IDomainObject> comparison = (one, two) => 0;
       _dataManagerMock
           .InVerifiableSequence(sequence)
           .Setup(mock => mock.SortCurrentData(comparison))

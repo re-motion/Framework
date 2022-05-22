@@ -24,9 +24,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public class InvalidLoadedObjectData : ILoadedObjectData
   {
-    private readonly DomainObject _invalidObjectReference;
+    private readonly IDomainObject _invalidObjectReference;
 
-    public InvalidLoadedObjectData (DomainObject invalidObjectReference)
+    public InvalidLoadedObjectData (IDomainObject invalidObjectReference)
     {
       ArgumentUtility.CheckNotNull("invalidObjectReference", invalidObjectReference);
 
@@ -38,12 +38,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _invalidObjectReference.ID; }
     }
 
-    public DomainObject InvalidObjectReference
+    public IDomainObject InvalidObjectReference
     {
       get { return _invalidObjectReference; }
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       return _invalidObjectReference;
     }

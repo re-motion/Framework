@@ -27,14 +27,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
   public class DictionaryBasedEnlistedDomainObjectManager : IEnlistedDomainObjectManager
   {
     private readonly Dictionary<ObjectID, int> _enlistedObjects = new Dictionary<ObjectID, int>();
-    private readonly List<DomainObject?> _enlistedObjectsList = new List<DomainObject?>();
+    private readonly List<IDomainObject?> _enlistedObjectsList = new List<IDomainObject?>();
 
     public int EnlistedDomainObjectCount
     {
       get { return _enlistedObjects.Count; }
     }
 
-    public IEnumerable<DomainObject> GetEnlistedDomainObjects ()
+    public IEnumerable<IDomainObject> GetEnlistedDomainObjects ()
     {
       for (int i = 0; i < _enlistedObjects.Count; i++)
       {
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
       }
     }
 
-    public DomainObject? GetEnlistedDomainObject (ObjectID objectID)
+    public IDomainObject? GetEnlistedDomainObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -54,18 +54,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
       return null;
     }
 
-    public bool IsEnlisted (DomainObject domainObject)
+    public bool IsEnlisted (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       return GetEnlistedDomainObject(domainObject.ID) == domainObject;
     }
 
-    public void EnlistDomainObject (DomainObject domainObject)
+    public void EnlistDomainObject (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      DomainObject? alreadyEnlistedObject = GetEnlistedDomainObject(domainObject.ID);
+      IDomainObject? alreadyEnlistedObject = GetEnlistedDomainObject(domainObject.ID);
       if (alreadyEnlistedObject != null && alreadyEnlistedObject != domainObject)
       {
         string message = string.Format("A domain object instance for object '{0}' already exists in this transaction.", domainObject.ID);
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
       }
     }
 
-    public void DisenlistDomainObject (DomainObject domainObject)
+    public void DisenlistDomainObject (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 

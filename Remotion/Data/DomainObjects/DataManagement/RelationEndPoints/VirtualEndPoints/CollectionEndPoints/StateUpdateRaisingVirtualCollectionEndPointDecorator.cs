@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     // This is not a problem because we wrap the command into a decorator that raises the StateUpdated notification anyway, so it doesn't matter if 
     // the command internally bypasses this decorator.
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
+    public IDataManagementCommand CreateAddCommand (IDomainObject addedRelatedObject)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -273,7 +273,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetDomainObject ()
+    public IDomainObject? GetDomainObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -283,7 +283,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -478,7 +478,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public void MarkDataComplete (DomainObject[] items)
+    public void MarkDataComplete (IDomainObject[] items)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))

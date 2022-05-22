@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// <summary>
   /// Marker interface for identifying types that can be used when dealing with collection relation endpoints.
   /// </summary>
-  public interface ICollectionEndPointData : IReadOnlyCollection<DomainObject>
+  public interface ICollectionEndPointData : IReadOnlyCollection<IDomainObject>
   {
   }
 }

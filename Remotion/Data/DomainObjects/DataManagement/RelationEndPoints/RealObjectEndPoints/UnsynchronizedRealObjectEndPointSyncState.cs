@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
               endPoint.Definition.GetOppositeEndPointDefinition().PropertyName));
     }
 
-    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject? newRelatedObject, Action<DomainObject> oppositeObjectIDSetter)
+    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, IDomainObject? newRelatedObject, Action<IDomainObject?> oppositeObjectIDSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("oppositeObjectIDSetter", oppositeObjectIDSetter);

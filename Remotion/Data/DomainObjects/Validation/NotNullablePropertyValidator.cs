@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Validation
       }
     }
 
-    private static void ValidatePropertyDefinition (DomainObject? domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private static void ValidatePropertyDefinition (IDomainObject? domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       if (propertyDefinition.IsNullable)
         return;

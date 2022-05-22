@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public VirtualCollectionEndPointRemoveCommand (
         IVirtualCollectionEndPoint modifiedEndPoint,
-        DomainObject removedObject,
+        IDomainObject removedObject,
         IVirtualCollectionData collectionData,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _endPointProvider; }
     }
 
-    public new DomainObject OldRelatedObject
+    public new IDomainObject OldRelatedObject
     {
       get { return base.OldRelatedObject!; }
     }

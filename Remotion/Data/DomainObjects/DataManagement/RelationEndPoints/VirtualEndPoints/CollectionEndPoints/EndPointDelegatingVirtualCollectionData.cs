@@ -129,7 +129,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return data.IndexOf(objectID);
     }
 
-    public IEnumerator<DomainObject> GetEnumerator ()
+    public IEnumerator<IDomainObject> GetEnumerator ()
     {
       var data = GetAssociatedEndPoint().GetData();
       return data.GetEnumerator();
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       combinedCommand.NotifyAndPerform();
     }
 
-    public void Add (DomainObject domainObject)
+    public void Add (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -174,7 +174,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       associatedEndPoint.Touch();
     }
 
-    public bool Remove (DomainObject domainObject)
+    public bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return containsObjectID;
     }
 
-    private void CreateAndExecuteRemoveCommand (DomainObject domainObject)
+    private void CreateAndExecuteRemoveCommand (IDomainObject domainObject)
     {
       var command = GetAssociatedEndPoint().CreateRemoveCommand(domainObject);
       var bidirectionalModification = command.ExpandToAllRelatedObjects();
@@ -217,7 +217,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
       for (int i = Count - 1; i >= 0; --i)
       {
-        var removedObject = (DomainObject)GetObject(i);
+        var removedObject = GetObject(i);
 
         // we can rely on the fact that this object is not deleted, otherwise we wouldn't have got it
         Assertion.IsFalse(removedObject.TransactionContext[associatedEndPoint.ClientTransaction].State.IsDeleted);
@@ -227,7 +227,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return new CompositeCommand(removeCommands).CombineWith(new RelationEndPointTouchCommand(associatedEndPoint));
     }
 
-    private void CheckClientTransaction (DomainObject domainObject, string exceptionFormatString)
+    private void CheckClientTransaction (IDomainObject domainObject, string exceptionFormatString)
     {
       Assertion.DebugAssert(domainObject != null);
 
@@ -246,7 +246,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    private void CheckItemType (DomainObject domainObject, string argumentName)
+    private void CheckItemType (IDomainObject domainObject, string argumentName)
     {
       if (!_requiredItemType.IsInstanceOfType(domainObject))
       {
