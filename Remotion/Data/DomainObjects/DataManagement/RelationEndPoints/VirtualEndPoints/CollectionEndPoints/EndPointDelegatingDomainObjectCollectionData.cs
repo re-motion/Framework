@@ -114,13 +114,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return data.ContainsObjectID(objectID);
     }
 
-    public DomainObject GetObject (int index)
+    public IDomainObject GetObject (int index)
     {
       var data = GetAssociatedEndPoint().GetData();
       return data.GetObject(index);
     }
 
-    public DomainObject? GetObject (ObjectID objectID)
+    public IDomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -136,7 +136,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return data.IndexOf(objectID);
     }
 
-    public IEnumerator<DomainObject> GetEnumerator ()
+    public IEnumerator<IDomainObject> GetEnumerator ()
     {
       var data = GetAssociatedEndPoint().GetData();
       return data.GetEnumerator();
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       combinedCommand.NotifyAndPerform();
     }
 
-    public void Insert (int index, DomainObject domainObject)
+    public void Insert (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       associatedEndPoint.Touch();
     }
 
-    public bool Remove (DomainObject domainObject)
+    public bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -221,7 +221,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return domainObject != null;
     }
 
-    public void Replace (int index, DomainObject value)
+    public void Replace (int index, IDomainObject value)
     {
       ArgumentUtility.CheckNotNull("value", value);
 
@@ -240,14 +240,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       associatedEndPoint.Touch();
     }
 
-    public void Sort (Comparison<DomainObject> comparison)
+    public void Sort (Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
 
       GetAssociatedEndPoint().SortCurrentData(comparison);
     }
 
-    private void CreateAndExecuteRemoveCommand (DomainObject domainObject)
+    private void CreateAndExecuteRemoveCommand (IDomainObject domainObject)
     {
       var command = GetAssociatedEndPoint().CreateRemoveCommand(domainObject);
       var bidirectionalModification = command.ExpandToAllRelatedObjects();
@@ -271,7 +271,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return new CompositeCommand(removeCommands.Cast<IDataManagementCommand>()).CombineWith(new RelationEndPointTouchCommand(associatedEndPoint));
     }
 
-    private void CheckClientTransaction (DomainObject domainObject, string exceptionFormatString)
+    private void CheckClientTransaction (IDomainObject domainObject, string exceptionFormatString)
     {
       Assertion.DebugAssert(domainObject != null);
 

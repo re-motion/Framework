@@ -29,13 +29,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
       public readonly OperationKind Operation;
       /// <summary>
-      /// The <see cref="DomainObject"/> of the insert or remove operation or <see langword="null" />
+      /// The <see cref="IDomainObject"/> of the insert or remove operation or <see langword="null" />
       /// when the <see cref="Operation"/> is <see cref="ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort"/>.
       /// </summary>
-      public readonly DomainObject? AffectedObject;
+      public readonly IDomainObject? AffectedObject;
       public readonly int Index;
 
-      public DataChangeEventArgs (OperationKind operation, DomainObject? affectedObject, int index)
+      public DataChangeEventArgs (OperationKind operation, IDomainObject? affectedObject, int index)
       {
         if (operation != OperationKind.Sort)
           ArgumentUtility.CheckNotNull("affectedObject", affectedObject!);
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
     }
 
-    protected override void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index)
+    protected override void OnDataChanging (OperationKind operation, IDomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
         ArgumentUtility.CheckNotNull("affectedObject", affectedObject!);
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
         eventHandler(this, new DataChangeEventArgs(operation, affectedObject, index));
     }
 
-    protected override void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index)
+    protected override void OnDataChanged (OperationKind operation, IDomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
         ArgumentUtility.CheckNotNull("affectedObject", affectedObject!);

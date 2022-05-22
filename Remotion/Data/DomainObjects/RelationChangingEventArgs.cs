@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects
   public class RelationChangingEventArgs : EventArgs
   {
     private readonly IRelationEndPointDefinition _relationEndPointDefinition;
-    private readonly DomainObject? _oldRelatedObject;
-    private readonly DomainObject? _newRelatedObject;
+    private readonly IDomainObject? _oldRelatedObject;
+    private readonly IDomainObject? _newRelatedObject;
 
     /// <summary>
     /// Initializes a new instance of the <b>RelationChangingEventArgs</b> class.
@@ -41,8 +41,8 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointDefinition"/> is <see langword="null"/>.</exception>
     public RelationChangingEventArgs (
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets the related object that is removed from the relation, or <see langword="null" /> if a new item is added without 
     /// replacing an old one.
     /// </summary>
-    public DomainObject? OldRelatedObject
+    public IDomainObject? OldRelatedObject
     {
       get { return _oldRelatedObject; }
     }
@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects
     /// Gets the related object that is added to the relation, or <see langword="null" /> if an old item is removed without 
     /// being replaced by a new one.
     /// </summary>
-    public DomainObject? NewRelatedObject
+    public IDomainObject? NewRelatedObject
     {
       get { return _newRelatedObject; }
     }

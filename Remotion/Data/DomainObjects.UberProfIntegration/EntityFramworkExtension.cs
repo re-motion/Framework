@@ -58,79 +58,79 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
     }
 
-    public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
     }
 
-    public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectDeleted (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
     }
 
-    public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public void PropertyValueReading (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
     }
 
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
     }
 
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
     }
 
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
     }
 
-    public void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
+    public void RelationReading (ClientTransaction clientTransaction, IDomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
     }
 
     public void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? relatedObject,
+        IDomainObject? relatedObject,
         ValueAccess valueAccess)
     {
     }
 
     public void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
     }
 
     public void RelationChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
     }
 
     public void RelationChanged (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinitiont,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
     }
 
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
       return queryResult;
     }
 
-    public void Committing (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void Committing (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
     }
 
@@ -148,15 +148,15 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void Committed (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 
-    public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 
-    public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 

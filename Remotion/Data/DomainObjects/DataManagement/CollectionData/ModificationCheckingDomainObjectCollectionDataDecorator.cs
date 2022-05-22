@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 {
   /// <summary>
   /// Implements a decorator for <see cref="IDomainObjectCollectionData"/> that performs semantic checks on the arguments passed to 
-  /// <see cref="Insert"/>, <see cref="Replace"/>, and <see cref="Remove(Remotion.Data.DomainObjects.DomainObject)"/>. Those checks are
+  /// <see cref="Insert"/>, <see cref="Replace"/>, and <see cref="Remove(Remotion.Data.DomainObjects.IDomainObject)"/>. Those checks are
   /// performed in a decorator so that they lead to exceptions before any events are raised by <see cref="EventRaisingDomainObjectCollectionDataDecorator"/>.
   /// </summary>
   [Serializable]
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return _requiredItemType; }
     }
 
-    public override void Insert (int index, DomainObject domainObject)
+    public override void Insert (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       base.Insert(index, domainObject);
     }
 
-    public override bool Remove (DomainObject domainObject)
+    public override bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return base.Remove(domainObject);
     }
 
-    public override void Replace (int index, DomainObject value)
+    public override void Replace (int index, IDomainObject value)
     {
       ArgumentUtility.CheckNotNull("value", value);
 
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       base.Replace(index, value);
     }
 
-    private void CheckItemType (DomainObject domainObject, string argumentName)
+    private void CheckItemType (IDomainObject domainObject, string argumentName)
     {
       if (_requiredItemType != null && !_requiredItemType.IsInstanceOfType(domainObject))
       {

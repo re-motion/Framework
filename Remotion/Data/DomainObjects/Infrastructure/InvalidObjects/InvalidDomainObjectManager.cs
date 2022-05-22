@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
   public class InvalidDomainObjectManager : IInvalidDomainObjectManager
   {
     private readonly IClientTransactionEventSink _transactionEventSink;
-    private readonly Dictionary<ObjectID, DomainObject> _invalidObjects = new Dictionary<ObjectID, DomainObject>();
+    private readonly Dictionary<ObjectID, IDomainObject> _invalidObjects = new Dictionary<ObjectID, IDomainObject>();
 
     public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink)
     {
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
       _transactionEventSink = transactionEventSink;
     }
 
-    public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink, IEnumerable<DomainObject> invalidObjects)
+    public InvalidDomainObjectManager (IClientTransactionEventSink transactionEventSink, IEnumerable<IDomainObject> invalidObjects)
         : this(transactionEventSink)
     {
       ArgumentUtility.CheckNotNull("invalidObjects", invalidObjects);
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
       return _invalidObjects.ContainsKey(id);
     }
 
-    public DomainObject GetInvalidObjectReference (ObjectID id)
+    public IDomainObject GetInvalidObjectReference (ObjectID id)
     {
       ArgumentUtility.CheckNotNull("id", id);
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.InvalidObjects
         return invalidDomainObject;
     }
 
-    public bool MarkInvalid (DomainObject domainObject)
+    public bool MarkInvalid (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 

@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void Load ()
     {
-      DomainObject domainObject = _transporter.Load(DomainObjectIDs.Order1);
+      IDomainObject domainObject = _transporter.Load(DomainObjectIDs.Order1);
       Assert.That(_transporter.ObjectIDs.Count, Is.EqualTo(1));
       Assert.That(_transporter.ObjectIDs, Is.EqualTo(new[] { DomainObjectIDs.Order1 }));
 
@@ -68,8 +68,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void Load_Twice ()
     {
-      DomainObject domainObject1 = _transporter.Load(DomainObjectIDs.Order1);
-      DomainObject domainObject2 = _transporter.Load(DomainObjectIDs.Order1);
+      IDomainObject domainObject1 = _transporter.Load(DomainObjectIDs.Order1);
+      IDomainObject domainObject2 = _transporter.Load(DomainObjectIDs.Order1);
       Assert.That(_transporter.ObjectIDs.Count, Is.EqualTo(1));
       Assert.That(_transporter.ObjectIDs, Is.EqualTo(new[] { DomainObjectIDs.Order1 }));
       Assert.That(domainObject2, Is.SameAs(domainObject1));
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void LoadWithRelatedObjects ()
     {
-      IEnumerable<DomainObject> loadedObjects = _transporter.LoadWithRelatedObjects(DomainObjectIDs.Order1);
+      IEnumerable<IDomainObject> loadedObjects = _transporter.LoadWithRelatedObjects(DomainObjectIDs.Order1);
       Assert.That(_transporter.ObjectIDs.Count, Is.EqualTo(6));
       Assert.That(
           _transporter.ObjectIDs,
@@ -125,7 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void LoadRecursive ()
     {
-      IEnumerable<DomainObject> loadedObjects = _transporter.LoadRecursive(DomainObjectIDs.Employee1);
+      IEnumerable<IDomainObject> loadedObjects = _transporter.LoadRecursive(DomainObjectIDs.Employee1);
       Assert.That(_transporter.ObjectIDs.Count, Is.EqualTo(5));
       Assert.That(
           _transporter.ObjectIDs,
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void LoadRecursive_WithStrategy_ShouldFollow ()
     {
       var strategy = new FollowOnlyOneLevelStrategy();
-      IEnumerable<DomainObject> loadedObjects = _transporter.LoadRecursive(DomainObjectIDs.Employee1, strategy);
+      IEnumerable<IDomainObject> loadedObjects = _transporter.LoadRecursive(DomainObjectIDs.Employee1, strategy);
       Assert.That(
           _transporter.ObjectIDs, Is.EquivalentTo(new[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee4, DomainObjectIDs.Employee5 }));
       Assert.That(
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     public void LoadRecursive_WithStrategy_ShouldProcess ()
     {
       var strategy = new OnlyProcessComputersStrategy();
-      IEnumerable<DomainObject> loadedObjects = _transporter.LoadRecursive(DomainObjectIDs.Employee1, strategy);
+      IEnumerable<IDomainObject> loadedObjects = _transporter.LoadRecursive(DomainObjectIDs.Employee1, strategy);
       Assert.That(_transporter.ObjectIDs, Is.EquivalentTo(new[] { DomainObjectIDs.Computer2, DomainObjectIDs.Computer3 }));
       Assert.That(
           loadedObjects.ToArray(),
@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       TransportedDomainObjects transportedObjects = ExportAndLoadTransportData();
 
       Assert.That(transportedObjects, Is.Not.Null);
-      var domainObjects = new List<DomainObject>(transportedObjects.TransportedObjects);
+      var domainObjects = new List<IDomainObject>(transportedObjects.TransportedObjects);
       Assert.That(domainObjects.Count, Is.EqualTo(2));
       Assert.That(domainObjects.ConvertAll(obj => obj.ID), Is.EquivalentTo(new[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee2 }));
     }
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       TransportedDomainObjects transportedObjects = ExportAndLoadTransportData(XmlImportStrategy.Instance, XmlExportStrategy.Instance);
 
       Assert.That(transportedObjects, Is.Not.Null);
-      var domainObjects = new List<DomainObject>(transportedObjects.TransportedObjects);
+      var domainObjects = new List<IDomainObject>(transportedObjects.TransportedObjects);
       Assert.That(domainObjects.Count, Is.EqualTo(2));
       Assert.That(domainObjects.ConvertAll(obj => obj.ID), Is.EquivalentTo(new[] { DomainObjectIDs.Employee1, DomainObjectIDs.Employee2 }));
     }
@@ -261,8 +261,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void Export_SpecialStrategy ()
     {
-      DomainObject loadedObject1 = _transporter.Load(DomainObjectIDs.Order1);
-      DomainObject loadedObject2 = _transporter.Load(DomainObjectIDs.Order3);
+      IDomainObject loadedObject1 = _transporter.Load(DomainObjectIDs.Order1);
+      IDomainObject loadedObject2 = _transporter.Load(DomainObjectIDs.Order3);
 
       var strategyMock = new Mock<IExportStrategy>(MockBehavior.Strict);
 

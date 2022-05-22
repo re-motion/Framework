@@ -29,16 +29,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // member fields
 
     private string _propertyName;
-    private DomainObject _oldDomainObject;
-    private DomainObject _newDomainObject;
+    private IDomainObject _oldDomainObject;
+    private IDomainObject _newDomainObject;
 
     // construction and disposing
 
     public RelationChangeState (
         object sender,
         string propertyName,
-        DomainObject oldDomainObject,
-        DomainObject newDomainObject)
+        IDomainObject oldDomainObject,
+        IDomainObject newDomainObject)
       : this(sender, propertyName, oldDomainObject, newDomainObject, null)
     {
     }
@@ -46,8 +46,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     public RelationChangeState (
         object sender,
         string propertyName,
-        DomainObject oldDomainObject,
-        DomainObject newDomainObject,
+        IDomainObject oldDomainObject,
+        IDomainObject newDomainObject,
         string message)
       : base(sender, message)
     {
@@ -65,12 +65,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       get { return _propertyName; }
     }
 
-    public DomainObject OldDomainObject
+    public IDomainObject OldDomainObject
     {
       get { return _oldDomainObject; }
     }
 
-    public DomainObject NewDomainObject
+    public IDomainObject NewDomainObject
     {
       get { return _newDomainObject; }
     }
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       }
     }
 
-    private string GetObjectIDAsText (DomainObject domainObject)
+    private string GetObjectIDAsText (IDomainObject domainObject)
     {
       if (domainObject != null)
         return domainObject.ID.ToString();

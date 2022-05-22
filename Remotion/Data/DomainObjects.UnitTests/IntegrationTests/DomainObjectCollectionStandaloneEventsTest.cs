@@ -346,7 +346,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       _collection.SetEventReceiver(_eventReceiverMock.Object);
       _eventReceiverMock.Setup(mock => mock.OnReplaceData()).Callback(() => Assert.That(_collection, Is.EqualTo(new[] { _itemB, _itemA}))).Verifiable();
 
-      var weights = new Dictionary<DomainObject, int> { { _itemA, 2 }, { _itemB, 1 } };
+      var weights = new Dictionary<IDomainObject, int> { { _itemA, 2 }, { _itemB, 1 } };
       _collection.Sort((one, two) => weights[one].CompareTo(weights[two]));
 
       _eventReceiverMock.Verify();

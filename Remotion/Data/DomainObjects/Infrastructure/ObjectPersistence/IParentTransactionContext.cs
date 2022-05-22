@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   {
     ObjectID CreateNewObjectID (ClassDefinition classDefinition);
 
-    DomainObject GetObject (ObjectID objectID);
-    DomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs);
-    DomainObject? TryGetObject (ObjectID objectID);
-    DomainObject?[] TryGetObjects (IEnumerable<ObjectID> objectIDs);
+    IDomainObject GetObject (ObjectID objectID);
+    IDomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs);
+    IDomainObject? TryGetObject (ObjectID objectID);
+    IDomainObject?[] TryGetObjects (IEnumerable<ObjectID> objectIDs);
 
-    DomainObject? ResolveRelatedObject (RelationEndPointID relationEndPointID);
-    IEnumerable<DomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID);
+    IDomainObject? ResolveRelatedObject (RelationEndPointID relationEndPointID);
+    IEnumerable<IDomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID);
 
     QueryResult<DomainObject> ExecuteCollectionQuery (IQuery query);
     IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query);

@@ -50,13 +50,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     private string _changingRelationPropertyName;
     private string _changedRelationPropertyName;
     [NonSerialized]
-    private DomainObject _changingOldRelatedObject;
+    private IDomainObject _changingOldRelatedObject;
     [NonSerialized]
-    private DomainObject _changingNewRelatedObject;
+    private IDomainObject _changingNewRelatedObject;
     [NonSerialized]
-    private DomainObject _changedOldRelatedObject;
+    private IDomainObject _changedOldRelatedObject;
     [NonSerialized]
-    private DomainObject _changedNewRelatedObject;
+    private IDomainObject _changedNewRelatedObject;
 
     private bool _hasCommittingEventBeenCalled = false;
     private bool _hasCommittedEventBeenCalled = false;
@@ -152,22 +152,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       get { return _changedRelationPropertyName; }
     }
 
-    public DomainObject ChangingOldRelatedObject
+    public IDomainObject ChangingOldRelatedObject
     {
       get { return _changingOldRelatedObject; }
     }
 
-    public DomainObject ChangingNewRelatedObject
+    public IDomainObject ChangingNewRelatedObject
     {
       get { return _changingNewRelatedObject; }
     }
 
-    public DomainObject ChangedOldRelatedObject
+    public IDomainObject ChangedOldRelatedObject
     {
       get { return _changedOldRelatedObject; }
     }
 
-    public DomainObject ChangedNewRelatedObject
+    public IDomainObject ChangedNewRelatedObject
     {
       get { return _changedNewRelatedObject; }
     }

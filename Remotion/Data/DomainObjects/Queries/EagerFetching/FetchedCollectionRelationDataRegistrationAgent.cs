@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
           {
             var relationEndPointID = RelationEndPointID.Create(originatingObject.ObjectID, relationEndPointDefinition);
             var relatedObjectData = relatedObjectsByOriginalObject[originatingObject.ObjectID];
-            var relatedObjects = relatedObjectData.Select<ILoadedObjectData, DomainObject>(
+            var relatedObjects = relatedObjectData.Select<ILoadedObjectData, IDomainObject>(
                 data =>
                 {
                   Assertion.IsFalse(data.IsNull, "data.IsNull == false");
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       }
     }
 
-    private bool TrySetCollectionEndPointData (RelationEndPointID endPointID, DomainObject[] items)
+    private bool TrySetCollectionEndPointData (RelationEndPointID endPointID, IDomainObject[] items)
     {
       Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
       var endPoint = (ICollectionEndPoint<ICollectionEndPointData>)_virtualEndPointProvider.GetOrCreateVirtualEndPoint(endPointID);

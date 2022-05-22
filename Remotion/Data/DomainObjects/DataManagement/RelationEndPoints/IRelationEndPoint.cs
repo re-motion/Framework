@@ -46,13 +46,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     /// <para>- or -</para>
     /// Not <see langword="null" /> for <see cref="IRelationEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on analysis of all of all usages.
     /// </remarks>
-    DomainObject? GetDomainObject ();
+    IDomainObject? GetDomainObject ();
     /// <remarks>
     /// Not <see langword="null" /> for <see cref="IRealObjectEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on all implementations.
     /// <para>- or -</para>
     /// Not <see langword="null" /> for <see cref="IRelationEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on analysis of all of all usages.
     /// </remarks>
-    DomainObject? GetDomainObjectReference ();
+    IDomainObject? GetDomainObjectReference ();
 
     bool IsDataComplete { get; }
     void EnsureDataComplete ();
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     void Touch ();
     void Commit ();
     void Rollback ();
-    IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject);
+    IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject);
     IDataManagementCommand CreateDeleteCommand ();
     void ValidateMandatory ();
 

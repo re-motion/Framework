@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   {
     public DomainObjectCollectionEndPointReplaceSameCommand (
         IDomainObjectCollectionEndPoint modifiedEndPoint,
-        DomainObject selfReplacedObject,
+        IDomainObject selfReplacedObject,
         IClientTransactionEventSink transactionEventSink)
         : base(
             modifiedEndPoint,

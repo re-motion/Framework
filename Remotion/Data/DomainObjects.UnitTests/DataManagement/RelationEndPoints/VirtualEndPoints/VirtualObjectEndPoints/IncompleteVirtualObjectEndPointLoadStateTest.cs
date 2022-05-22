@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private RelationEndPointID _endPointID;
     private Mock<IVirtualObjectEndPoint> _virtualObjectEndPointMock;
 
-    private Mock<IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager,
+    private Mock<IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, IDomainObject, IVirtualObjectEndPointDataManager,
         IVirtualObjectEndPointLoadState>.IEndPointLoader> _endPointLoaderMock;
     private Mock<IVirtualObjectEndPointDataManagerFactory> _dataManagerFactoryStub;
 
@@ -215,7 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var lazyLoader = new SerializableVirtualEndPointLoaderFake<
           IVirtualObjectEndPoint,
-          DomainObject,
+          IDomainObject,
           IVirtualObjectEndPointDataManager,
           IVirtualObjectEndPointLoadState>();
       var dataManagerFactory = new SerializableVirtualObjectEndPointDataManagerFactoryFake();

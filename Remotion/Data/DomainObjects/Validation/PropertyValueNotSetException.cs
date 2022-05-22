@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.Validation
   [Serializable]
   public class PropertyValueNotSetException : DomainObjectValidationException
   {
-    private readonly DomainObject? _domainObject;
+    private readonly IDomainObject? _domainObject;
     private readonly string _propertyName;
 
-    public PropertyValueNotSetException (DomainObject? domainObject, string propertyName, string message)
+    public PropertyValueNotSetException (IDomainObject? domainObject, string propertyName, string message)
         : this(domainObject, propertyName, message, null)
     {
     }
 
-    public PropertyValueNotSetException (DomainObject? domainObject, string propertyName, string message, Exception? inner)
+    public PropertyValueNotSetException (IDomainObject? domainObject, string propertyName, string message, Exception? inner)
         : base(message, inner)
     {
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.Validation
     protected PropertyValueNotSetException (SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _domainObject = (DomainObject?)info.GetValue("_domainObject", typeof(DomainObject));
+      _domainObject = (IDomainObject?)info.GetValue("_domainObject", typeof(IDomainObject));
       _propertyName = info.GetString("_propertyName")!;
     }
 
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.Validation
       info.AddValue("_propertyName", _propertyName);
     }
 
-    public DomainObject? DomainObject
+    public IDomainObject? DomainObject
     {
       get { return _domainObject; }
     }
@@ -69,9 +69,9 @@ namespace Remotion.Data.DomainObjects.Validation
       get { return _propertyName; }
     }
 
-    public override DomainObject[] AffectedObjects
+    public override IDomainObject[] AffectedObjects
     {
-      get { return _domainObject == null ? new DomainObject[0] : new[] { _domainObject }; }
+      get { return _domainObject == null ? new IDomainObject[0] : new[] { _domainObject }; }
     }
   }
 }

@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var domainObject = _endPoint.GetDomainObject();
 
-      Assert.That(domainObject.State.IsUnchanged, Is.True);
+      Assert.That(((DomainObject)domainObject).State.IsUnchanged, Is.True);
       Assert.That(domainObject, Is.SameAs(DomainObjectIDs.Order1.GetObject<Order>()));
     }
 
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var domainObject = _endPoint.GetDomainObject();
 
-      Assert.That(domainObject.State.IsDeleted, Is.True);
+      Assert.That(((DomainObject)domainObject).State.IsDeleted, Is.True);
       Assert.That(domainObject, Is.SameAs(order1));
     }
 
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var domainObject = _endPointWithInvalidObject.GetDomainObject();
 
-      Assert.That(domainObject.State.IsInvalid, Is.True);
+      Assert.That(((DomainObject)domainObject).State.IsInvalid, Is.True);
       Assert.That(domainObject, Is.SameAs(_invalidObject));
     }
 
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var domainObject = _endPoint.GetDomainObjectReference();
 
-      Assert.That(domainObject.State.IsNotLoadedYet, Is.True);
+      Assert.That(((DomainObject)domainObject).State.IsNotLoadedYet, Is.True);
       Assert.That(domainObject, Is.SameAs(LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1)));
     }
 
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var domainObject = _endPointWithInvalidObject.GetDomainObjectReference();
 
-      Assert.That(domainObject.State.IsInvalid, Is.True);
+      Assert.That(((DomainObject)domainObject).State.IsInvalid, Is.True);
       Assert.That(domainObject, Is.SameAs(_invalidObject));
     }
 

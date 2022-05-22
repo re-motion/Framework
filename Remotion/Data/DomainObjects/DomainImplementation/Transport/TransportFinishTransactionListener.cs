@@ -23,16 +23,16 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 {
   internal class TransportFinishTransactionListener : ClientTransactionListenerBase
   {
-    private readonly Func<DomainObject, bool> _filter;
+    private readonly Func<IDomainObject, bool> _filter;
 
-    public TransportFinishTransactionListener (Func<DomainObject, bool> filter)
+    public TransportFinishTransactionListener (Func<IDomainObject, bool> filter)
     {
       ArgumentUtility.CheckNotNull("filter", filter);
 
       _filter = filter;
     }
 
-    public override void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public override void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       // Rollback the state of all objects not matched by the filter - we don't want those objects to be committed to the transaction
 
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       }
     }
 
-    private void RollbackObject (ClientTransaction clientTransaction, DomainObject domainObject)
+    private void RollbackObject (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       // Note that we do not roll back any end points - this will cause us to create dangling end points. Doesn't matter, though, the transaction
       // is discarded after transport anyway.

@@ -111,10 +111,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       return new ExpandedCommand(this);
     }
 
-    private void RaiseRecurringBeginEvent (Action<ReadOnlyCollection<DomainObject>> eventAction)
+    private void RaiseRecurringBeginEvent (Action<ReadOnlyCollection<IDomainObject>> eventAction)
     {
-      var loadedObjectsEventRaised = new HashSet<DomainObject>();
-      ReadOnlyCollection<DomainObject> loadedObjectsEventNotRaised;
+      var loadedObjectsEventRaised = new HashSet<IDomainObject>();
+      ReadOnlyCollection<IDomainObject> loadedObjectsEventNotRaised;
       while ((loadedObjectsEventNotRaised = GetLoadedObjectsEventNotRaised(loadedObjectsEventRaised)).Count > 0)
       {
         eventAction(loadedObjectsEventNotRaised);
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       }
     }
 
-    private ReadOnlyCollection<DomainObject> GetLoadedObjectsEventNotRaised (HashSet<DomainObject> loadedObjectsEventRaised)
+    private ReadOnlyCollection<IDomainObject> GetLoadedObjectsEventNotRaised (HashSet<IDomainObject> loadedObjectsEventRaised)
     {
       return _dataContainerMap
           .Select(dc => dc.DomainObject)

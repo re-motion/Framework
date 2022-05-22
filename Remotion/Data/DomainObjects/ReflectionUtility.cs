@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects
     private static readonly Func<Type, ValueTuple<bool, Type?>> s_objectListTypeCacheValueFactory =
         static t =>
         {
-          var canAscribeTo = typeof(IReadOnlyList<DomainObject>).IsAssignableFrom(t) && t.CanAscribeTo(typeof(ObjectList<>));
+          var canAscribeTo = typeof(IReadOnlyList<IDomainObject>).IsAssignableFrom(t) && t.CanAscribeTo(typeof(ObjectList<>));
           return ValueTuple.Create(
               canAscribeTo,
               canAscribeTo

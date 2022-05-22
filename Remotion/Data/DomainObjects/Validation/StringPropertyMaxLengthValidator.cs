@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Validation
       }
     }
 
-    private void ValidatePropertyDefinition (DomainObject? domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private void ValidatePropertyDefinition (IDomainObject? domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       var maxLength = propertyDefinition.MaxLength;
       if (maxLength == null)

@@ -40,17 +40,17 @@ namespace Remotion.Data.DomainObjects.UnitTests
       get { return (IClientTransactionEventBroker)PrivateInvoke.GetNonPublicProperty(this, typeof(ClientTransaction), "eventBroker"); }
     }
 
-    public new DomainObject GetObject (ObjectID id, bool includeDeleted)
+    public new IDomainObject GetObject (ObjectID id, bool includeDeleted)
     {
       return base.GetObject(id, includeDeleted);
     }
 
-    public new DomainObject TryGetObject (ObjectID id)
+    public new IDomainObject TryGetObject (ObjectID id)
     {
       return base.TryGetObject(id);
     }
 
-    public new DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
+    public new IDomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
     {
       return base.GetRelatedObject(relationEndPointID);
     }
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       base.RemoveListener(listener);
     }
 
-    public new void Delete (DomainObject domainObject)
+    public new void Delete (IDomainObject domainObject)
     {
       base.Delete(domainObject);
     }

@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static DomainObject CreateFakeObject (ObjectID id = null)
     {
-      return LifetimeService.GetObjectReference(ClientTransaction.CreateRootTransaction(), id ?? new ObjectID(typeof(Order), Guid.NewGuid()));
+      return (DomainObject)LifetimeService.GetObjectReference(ClientTransaction.CreateRootTransaction(), id ?? new ObjectID(typeof(Order), Guid.NewGuid()));
     }
 
     public static T GetObjectReference<T> (ClientTransaction clientTransaction, ObjectID objectID) where T : DomainObject
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static DomainObject GetChangedObject (ClientTransaction transaction, ObjectID objectID)
     {
-      var changedInstance = LifetimeService.GetObject(transaction, objectID, false);
+      var changedInstance = (DomainObject)LifetimeService.GetObject(transaction, objectID, false);
       changedInstance.RegisterForCommit();
       Assert.That(changedInstance.State.IsChanged, Is.True);
       Assert.That(ClientTransactionTestHelper.GetDataManager(transaction).DataContainers[objectID].State.IsChanged, Is.True);
@@ -82,14 +82,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static DomainObject GetUnchangedObject (ClientTransaction transaction, ObjectID objectID)
     {
-      var unchangedInstance = LifetimeService.GetObject(transaction, objectID, false);
+      var unchangedInstance = (DomainObject)LifetimeService.GetObject(transaction, objectID, false);
       Assert.That(unchangedInstance.State.IsUnchanged, Is.True);
       return unchangedInstance;
     }
 
     public static DomainObject GetInvalidObject (ClientTransaction transaction)
     {
-      var invalidInstance = LifetimeService.NewObject(transaction, typeof(Order), ParamList.Empty);
+      var invalidInstance = (DomainObject)LifetimeService.NewObject(transaction, typeof(Order), ParamList.Empty);
       LifetimeService.DeleteObject(transaction, invalidInstance);
       Assert.That(invalidInstance.TransactionContext[transaction].State.IsInvalid, Is.True);
       return invalidInstance;
@@ -97,7 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static DomainObject GetNotLoadedObject (ClientTransaction transaction, ObjectID objectID)
     {
-      var notLoadedInstance = LifetimeService.GetObjectReference(transaction, objectID);
+      var notLoadedInstance = (DomainObject)LifetimeService.GetObjectReference(transaction, objectID);
       Assert.That(notLoadedInstance.TransactionContext[transaction].State.IsNotLoadedYet, Is.True);
       return notLoadedInstance;
     }
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static DomainObject GetDeletedObject (ClientTransaction transaction, ObjectID objectID)
     {
-      var deletedInstance = LifetimeService.GetObjectReference(transaction, objectID);
+      var deletedInstance = (DomainObject)LifetimeService.GetObjectReference(transaction, objectID);
       LifetimeService.DeleteObject(transaction, deletedInstance);
       Assert.That(deletedInstance.TransactionContext[transaction].State.IsDeleted, Is.True);
       return deletedInstance;

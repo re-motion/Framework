@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       get { return _persistenceStrategy; }
     }
 
-    public DomainObject NewObject (ClassDefinition classDefinition, ParamList constructorParameters)
+    public IDomainObject NewObject (ClassDefinition classDefinition, ParamList constructorParameters)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       }
     }
 
-    public DomainObject GetObjectReference (ObjectID objectID)
+    public IDomainObject GetObjectReference (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -139,7 +139,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       return creator.CreateObjectReference(initializationContext, _clientTransaction);
     }
 
-    public DomainObject GetObject (ObjectID objectID, bool includeDeleted)
+    public IDomainObject GetObject (ObjectID objectID, bool includeDeleted)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -152,7 +152,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       return dataContainer.DomainObject;
     }
 
-    public DomainObject? TryGetObject (ObjectID objectID)
+    public IDomainObject? TryGetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -167,7 +167,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     }
 
     public T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
-        where T : DomainObject
+        where T : IDomainObject
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
@@ -179,7 +179,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     }
 
     public T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
-        where T : DomainObject
+        where T : IDomainObject
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
           id =>
           {
             if (dataContainersByID.TryGetValue(id, out var loadResult))
-              return loadResult == null ? null : (T?)loadResult.DomainObject;
+              return loadResult == null ? default : (T?)loadResult.DomainObject;
             else
             {
               Assertion.IsTrue(
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     }
 
-    public void Delete (DomainObject domainObject)
+    public void Delete (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 

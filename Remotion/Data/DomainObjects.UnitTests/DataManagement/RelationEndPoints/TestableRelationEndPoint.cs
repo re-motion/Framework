@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       throw new NotImplementedException();
     }
 
-    public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public override IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       throw new NotImplementedException();
     }

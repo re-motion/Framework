@@ -25,23 +25,23 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   public class ClientTransactionEventArgs : EventArgs
   {
-    private readonly IReadOnlyList<DomainObject> _domainObjects;
+    private readonly IReadOnlyList<IDomainObject> _domainObjects;
 
     /// <summary>
     /// Initializes a new instance of the <b>ClientTransactionEventArgs</b> class.
     /// </summary>
-    /// <param name="domainObjects">The <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction"/> operation. Must not be <see langword="null"/>.</param>
+    /// <param name="domainObjects">The <see cref="IDomainObject"/>s affected by the <see cref="ClientTransaction"/> operation. Must not be <see langword="null"/>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
-    public ClientTransactionEventArgs (IReadOnlyList<DomainObject> domainObjects)
+    public ClientTransactionEventArgs (IReadOnlyList<IDomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
       _domainObjects = domainObjects;
     }
 
     /// <summary>
-    /// Gets the <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction.Commit"/> operation.
+    /// Gets the <see cref="IDomainObject"/>s affected by the <see cref="ClientTransaction.Commit"/> operation.
     /// </summary>
-    public IReadOnlyList<DomainObject> DomainObjects
+    public IReadOnlyList<IDomainObject> DomainObjects
     {
       get { return _domainObjects; }
     }

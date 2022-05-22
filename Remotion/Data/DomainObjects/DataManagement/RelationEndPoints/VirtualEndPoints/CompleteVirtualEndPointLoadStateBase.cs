@@ -64,7 +64,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public abstract void SetDataFromSubTransaction (TEndPoint endPoint, IVirtualEndPointLoadState<TEndPoint, TData, TDataManager> sourceLoadState);
 
     protected abstract IEnumerable<IRealObjectEndPoint> GetOriginalOppositeEndPoints ();
-    protected abstract IEnumerable<DomainObject> GetOriginalItemsWithoutEndPoints ();
+    protected abstract IEnumerable<IDomainObject> GetOriginalItemsWithoutEndPoints ();
 
     public static ILog Log
     {
@@ -273,7 +273,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _dataManager.Rollback();
     }
 
-    protected void MarkDataComplete (TEndPoint endPoint, IEnumerable<DomainObject> data, Action<TDataManager> stateSetter)
+    protected void MarkDataComplete (TEndPoint endPoint, IEnumerable<IDomainObject> data, Action<TDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("data", data);

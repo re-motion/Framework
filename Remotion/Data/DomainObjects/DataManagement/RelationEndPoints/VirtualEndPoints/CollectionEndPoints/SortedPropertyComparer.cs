@@ -24,12 +24,12 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
   /// <summary>
-  /// Compares two <see cref="DomainObject"/> instances based on a <see cref="SortedPropertySpecification"/>. The property values are retrieved
-  /// without raising any events. If the <see cref="DomainObject"/> instances are not loaded, their data is lazily loaded.
+  /// Compares two <see cref="IDomainObject"/> instances based on a <see cref="SortedPropertySpecification"/>. The property values are retrieved
+  /// without raising any events. If the <see cref="IDomainObject"/> instances are not loaded, their data is lazily loaded.
   /// </summary>
-  public class SortedPropertyComparer : IComparer<DomainObject>
+  public class SortedPropertyComparer : IComparer<IDomainObject>
   {
-    public static IComparer<DomainObject> CreateCompoundComparer (
+    public static IComparer<IDomainObject> CreateCompoundComparer (
         IEnumerable<SortedPropertySpecification> sortedPropertySpecifications,
         IDataContainerMapReadOnlyView dataManager,
         ValueAccess valueAccess)
@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ArgumentUtility.CheckNotNull("sortedPropertySpecifications", sortedPropertySpecifications);
       ArgumentUtility.CheckNotNull("dataManager", dataManager);
 
-      var comparers = sortedPropertySpecifications.Select(sp => (IComparer<DomainObject>)new SortedPropertyComparer(sp, dataManager, valueAccess));
-      return new CompoundComparer<DomainObject>(comparers);
+      var comparers = sortedPropertySpecifications.Select(sp => (IComparer<IDomainObject>)new SortedPropertyComparer(sp, dataManager, valueAccess));
+      return new CompoundComparer<IDomainObject>(comparers);
     }
 
     public SortedPropertySpecification SortedPropertySpecification { get; }
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       ValueAccess = valueAccess;
     }
 
-    public int Compare (DomainObject? x, DomainObject? y)
+    public int Compare (IDomainObject? x, IDomainObject? y)
     {
       if (x == null && y == null)
         return 0;
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
         return -Comparer.Default.Compare(valueX, valueY);
     }
 
-    private object? GetComparedKey (DomainObject domainObject)
+    private object? GetComparedKey (IDomainObject domainObject)
     {
       var dataContainer = DataContainerMap[domainObject.ID];
       if (dataContainer == null)

@@ -64,12 +64,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         _cache.HandleStateUpdate(container.ID);
       }
 
-      public override void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+      public override void ObjectMarkedInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
       {
         _cache.HandleStateUpdate(domainObject.ID);
       }
 
-      public override void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+      public override void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
       {
         _cache.HandleStateUpdate(domainObject.ID);
       }

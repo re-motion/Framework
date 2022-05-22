@@ -456,25 +456,25 @@ public class ClientTransaction
   /// The <see cref="DataContainer"/>s of the returned objects might not have been loaded yet. In that case, they will be loaded on first
   /// access of the respective objects' properties, and this might trigger an <see cref="ObjectsNotFoundException"/> if the container cannot be loaded.
   /// </remarks>
-  public IEnumerable<DomainObject> GetEnlistedDomainObjects ()
+  public IEnumerable<IDomainObject> GetEnlistedDomainObjects ()
   {
     return _enlistedDomainObjectManager.GetEnlistedDomainObjects();
   }
 
   /// <summary>
-  /// Returns the <see cref="DomainObject"/> registered for the given <paramref name="objectID"/> in this <see cref="ClientTransaction"/>, or 
+  /// Returns the <see cref="IDomainObject"/> registered for the given <paramref name="objectID"/> in this <see cref="ClientTransaction"/>, or 
   /// <see langword="null"/> if no such object exists.
   /// </summary>
-  /// <param name="objectID">The <see cref="ObjectID"/> for which to retrieve a <see cref="DomainObject"/>.</param>
+  /// <param name="objectID">The <see cref="ObjectID"/> for which to retrieve a <see cref="IDomainObject"/>.</param>
   /// <returns>
-  /// A <see cref="DomainObject"/> with the given <paramref name="objectID"/> previously registered in this <see cref="ClientTransaction"/>,
+  /// A <see cref="IDomainObject"/> with the given <paramref name="objectID"/> previously registered in this <see cref="ClientTransaction"/>,
   /// or <see langword="null"/> if no such object exists.
   /// </returns>
   /// <remarks>
   /// The <see cref="DataContainer"/> of the returned object might not have been loaded yet. In that case, it will be loaded on first
   /// access of the object's properties, and this might trigger an <see cref="ObjectsNotFoundException"/> if the container cannot be loaded.
   /// </remarks>
-  public DomainObject? GetEnlistedDomainObject (ObjectID objectID)
+  public IDomainObject? GetEnlistedDomainObject (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull("objectID", objectID);
     return _enlistedDomainObjectManager.GetEnlistedDomainObject(objectID);
@@ -492,7 +492,7 @@ public class ClientTransaction
   /// faster and usually yields the same result as this method. Only infrastructure code needing to guard against incorrectly setup 
   /// <see cref="DomainObject"/> instances needs to use <see cref="IsEnlisted"/>.
   /// </remarks>
-  public bool IsEnlisted (DomainObject domainObject)
+  public bool IsEnlisted (IDomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull("domainObject", domainObject);
     return _enlistedDomainObjectManager.IsEnlisted(domainObject);
@@ -795,7 +795,7 @@ public class ClientTransaction
   /// </exception>
   /// <exception cref="ObjectDeletedException">The object has already been deleted and the <paramref name="includeDeleted"/> flag is 
   /// <see langword="false" />.</exception>
-  protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
+  protected internal virtual IDomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull("id", id);
 
@@ -817,7 +817,7 @@ public class ClientTransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the data source.
   /// </exception>
-  protected internal virtual DomainObject? TryGetObject (ObjectID objectID)
+  protected internal virtual IDomainObject? TryGetObject (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull("objectID", objectID);
     return _objectLifetimeAgent.TryGetObject(objectID);
@@ -845,7 +845,7 @@ public class ClientTransaction
   /// </para>
   /// </remarks>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
-  protected internal virtual DomainObject GetObjectReference (ObjectID objectID)
+  protected internal virtual IDomainObject GetObjectReference (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull("objectID", objectID);
     return _objectLifetimeAgent.GetObjectReference(objectID);
@@ -862,7 +862,7 @@ public class ClientTransaction
   /// <exception cref="InvalidOperationException">
   /// The object does not have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set at this time.
   /// </exception>
-  protected internal virtual DomainObject GetInvalidObjectReference (ObjectID objectID)
+  protected internal virtual IDomainObject GetInvalidObjectReference (ObjectID objectID)
   {
     ArgumentUtility.CheckNotNull("objectID", objectID);
     return _invalidDomainObjectManager.GetInvalidObjectReference(objectID);
@@ -881,7 +881,7 @@ public class ClientTransaction
     return _invalidDomainObjectManager.IsInvalid(objectID);
   }
 
-  protected internal virtual DomainObject NewObject (Type domainObjectType, ParamList constructorParameters)
+  protected internal virtual IDomainObject NewObject (Type domainObjectType, ParamList constructorParameters)
   {
     ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
     ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
@@ -937,10 +937,10 @@ public class ClientTransaction
   /// Gets the related object of a given <see cref="RelationEndPointID"/>.
   /// </summary>
   /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="ObjectEndPoint"/>. Must not be <see langword="null"/>.</param>
-  /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
+  /// <returns>The <see cref="IDomainObject"/> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
-  protected internal virtual DomainObject? GetRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual IDomainObject? GetRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
@@ -952,7 +952,7 @@ public class ClientTransaction
     _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
     var objectEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
-    DomainObject? relatedObject = objectEndPoint.GetOppositeObject();
+    IDomainObject? relatedObject = objectEndPoint.GetOppositeObject();
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
 
@@ -966,7 +966,7 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> that is the original related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
-  protected internal virtual DomainObject? GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual IDomainObject? GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
@@ -978,7 +978,7 @@ public class ClientTransaction
     _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
     var objectEndPoint = (IObjectEndPoint)_dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
-    DomainObject? relatedObject = objectEndPoint.GetOriginalOppositeObject();
+    IDomainObject? relatedObject = objectEndPoint.GetOriginalOppositeObject();
 
     _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
 
@@ -1064,14 +1064,14 @@ public class ClientTransaction
   }
 
   /// <summary>
-  /// Deletes a <see cref="DomainObject"/>.
+  /// Deletes a <see cref="IDomainObject"/>.
   /// </summary>
-  /// <param name="domainObject">The <see cref="DomainObject"/> to delete. Must not be <see langword="null"/>.</param>
+  /// <param name="domainObject">The <see cref="IDomainObject"/> to delete. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <paramref name="domainObject"/> belongs to a different <see cref="ClientTransaction"/>. 
   /// </exception>
-  protected internal virtual void Delete (DomainObject domainObject)
+  protected internal virtual void Delete (IDomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull("domainObject", domainObject);
     _objectLifetimeAgent.Delete(domainObject);
@@ -1183,14 +1183,14 @@ public class ClientTransaction
     return new ClientTransactionWrapper(this);
   }
 
-  private DomainObject GetOriginatingObjectForRelationAccess (RelationEndPointID relationEndPointID)
+  private IDomainObject GetOriginatingObjectForRelationAccess (RelationEndPointID relationEndPointID)
   {
     // We always want the originating object to be loaded (even for virtual end-points) because we want that:
     // - the user can rely on property access triggering OnLoaded for initialization (e.g., for registering event handlers),
     // - the user gets an ObjectNotFoundException for the originating object rather than a "mandatory relation not set in database" exception (or a
     //   null result) when the originating object doesn't exist.
     Assertion.IsNotNull(relationEndPointID.ObjectID, "RelationEndPointID must indicate an existing endpoint at this point.");
-    DomainObject domainObject = GetObject(relationEndPointID.ObjectID, true);
+    IDomainObject domainObject = GetObject(relationEndPointID.ObjectID, true);
     return domainObject;
   }
   // ReSharper restore UnusedParameter.Global

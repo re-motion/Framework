@@ -24,16 +24,16 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DataManagement.Commands
 {
   /// <summary>
-  /// Unloads a <see cref="DomainObject"/> instance.
+  /// Unloads a <see cref="IDomainObject"/> instance.
   /// </summary>
   public class UnloadCommand : IDataManagementCommand
   {
-    private readonly DomainObject[] _domainObjects;
+    private readonly IDomainObject[] _domainObjects;
     private readonly IDataManagementCommand _unloadDataCommand;
     private readonly IClientTransactionEventSink _transactionEventSink;
 
     public UnloadCommand (
-        ICollection<DomainObject> domainObjects,
+        ICollection<IDomainObject> domainObjects,
         IDataManagementCommand unloadDataCommand,
         IClientTransactionEventSink transactionEventSink)
     {
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       _transactionEventSink = transactionEventSink;
     }
 
-    public ReadOnlyCollection<DomainObject> DomainObjects
+    public ReadOnlyCollection<IDomainObject> DomainObjects
     {
       get { return Array.AsReadOnly(_domainObjects); }
     }

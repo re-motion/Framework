@@ -28,16 +28,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     // member fields
 
-    private DomainObject _domainObject;
+    private IDomainObject _domainObject;
 
     // construction and disposing
 
-    public CollectionChangeState (object sender, DomainObject domainObject)
+    public CollectionChangeState (object sender, IDomainObject domainObject)
       : this(sender, domainObject, null)
     {
     }
 
-    public CollectionChangeState (object sender, DomainObject domainObject, string message)
+    public CollectionChangeState (object sender, IDomainObject domainObject, string message)
       : base(sender, message)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -47,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     // methods and properties
 
-    public DomainObject DomainObject
+    public IDomainObject DomainObject
     {
       get { return _domainObject; }
     }

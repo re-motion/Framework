@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SortCurrentData ()
     {
-      Comparison<DomainObject> comparison = (one, two) => 0;
+      Comparison<IDomainObject> comparison = (one, two) => 0;
       CheckOperationDelegatesToCompleteState(
           s => s.SortCurrentData(_collectionEndPointMock.Object, comparison));
     }

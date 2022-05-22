@@ -23,11 +23,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// </summary>
   public interface IDomainObjectCollectionEventRaiser
   {
-    void BeginAdd (int index, DomainObject domainObject);
-    void EndAdd (int index, DomainObject domainObject);
+    void BeginAdd (int index, IDomainObject domainObject);
+    void EndAdd (int index, IDomainObject domainObject);
 
-    void BeginRemove (int index, DomainObject domainObject);
-    void EndRemove (int index, DomainObject domainObject);
+    void BeginRemove (int index, IDomainObject domainObject);
+    void EndRemove (int index, IDomainObject domainObject);
 
     void BeginDelete ();
     void EndDelete ();

@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       }
     }
 
-    private void ValidatePropertyDefinition (DomainObject domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private void ValidatePropertyDefinition (IDomainObject domainObject, DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
       var maxLength = propertyDefinition.MaxLength;
       if (maxLength == null)

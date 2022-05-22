@@ -29,33 +29,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
   public class SerializableClientTransactionEventSinkFake : IClientTransactionEventSink
   {
     public void RaiseRelationChangingEvent (
-        DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject oldRelatedObject,
+        IDomainObject newRelatedObject)
     {
 
     }
 
     public void RaiseRelationChangedEvent (
-        DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject oldRelatedObject,
+        IDomainObject newRelatedObject)
     {
 
     }
 
-    public void RaiseObjectDeletingEvent (DomainObject domainObject)
+    public void RaiseObjectDeletingEvent (IDomainObject domainObject)
     {
 
     }
 
-    public void RaiseObjectDeletedEvent (DomainObject domainObject)
+    public void RaiseObjectDeletedEvent (IDomainObject domainObject)
     {
 
     }
 
-    public void RaiseObjectsUnloadingEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadingEvent (IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
 
     }
 
-    public void RaiseObjectsUnloadedEvent (IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void RaiseObjectsUnloadedEvent (IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
 
     }
@@ -80,22 +86,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaisePropertyValueReadingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public void RaisePropertyValueReadingEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
 
     }
 
-    public void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void RaisePropertyValueReadEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
     {
 
     }
 
-    public void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void RaisePropertyValueChangingEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
 
     }
 
-    public void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void RaisePropertyValueChangedEvent (IDomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
     {
 
     }
@@ -130,12 +136,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseObjectMarkedInvalidEvent (DomainObject domainObject)
+    public void RaiseObjectMarkedInvalidEvent (IDomainObject domainObject)
     {
 
     }
 
-    public void RaiseObjectMarkedNotInvalidEvent (DomainObject domainObject)
+    public void RaiseObjectMarkedNotInvalidEvent (IDomainObject domainObject)
     {
 
     }
@@ -150,7 +156,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseObjectsLoadedEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseObjectsLoadedEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
 
     }
@@ -160,7 +166,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseTransactionCommittingEvent (IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void RaiseTransactionCommittingEvent (IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
 
     }
@@ -170,17 +176,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseTransactionCommittedEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseTransactionCommittedEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
 
     }
 
-    public void RaiseTransactionRollingBackEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseTransactionRollingBackEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
 
     }
 
-    public void RaiseTransactionRolledBackEvent (IReadOnlyList<DomainObject> domainObjects)
+    public void RaiseTransactionRolledBackEvent (IReadOnlyList<IDomainObject> domainObjects)
     {
 
     }
@@ -205,19 +211,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     }
 
-    public void RaiseRelationReadingEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
+    public void RaiseRelationReadingEvent (IDomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
     }
 
 
-    public void RaiseRelationReadEvent (
-        DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
+    public void RaiseRelationReadEvent (IDomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IDomainObject relatedObject, ValueAccess valueAccess)
     {
 
     }
 
     public void RaiseRelationReadEvent (
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)

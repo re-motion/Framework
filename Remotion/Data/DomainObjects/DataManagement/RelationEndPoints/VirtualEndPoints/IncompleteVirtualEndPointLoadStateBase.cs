@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       Assertion.IsTrue(!HasChanged());
     }
 
-    protected void MarkDataComplete (TEndPoint endPoint, IEnumerable<DomainObject> items, Action<TDataManager> stateSetter)
+    protected void MarkDataComplete (TEndPoint endPoint, IEnumerable<IDomainObject> items, Action<TDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("endPoint", endPoint);
       ArgumentUtility.CheckNotNull("items", items);

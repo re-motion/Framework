@@ -23,17 +23,17 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 {
   /// <summary>
-  /// Holds the data needed to persist a <see cref="DomainObject"/>.
+  /// Holds the data needed to persist a <see cref="IDomainObject"/>.
   /// </summary>
   public class PersistableData
   {
-    private readonly DomainObject _domainObject;
+    private readonly IDomainObject _domainObject;
     private readonly DomainObjectState _domainObjectState;
     private readonly DataContainer _dataContainer;
     private readonly IEnumerable<IRelationEndPoint> _associatedEndPointSequence;
 
     public PersistableData (
-        DomainObject domainObject,
+        IDomainObject domainObject,
         DomainObjectState domainObjectState,
         DataContainer dataContainer,
         IEnumerable<IRelationEndPoint> associatedEndPointSequence)
@@ -48,7 +48,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       _associatedEndPointSequence = associatedEndPointSequence;
     }
 
-    public DomainObject DomainObject
+    public IDomainObject DomainObject
     {
       get { return _domainObject; }
     }

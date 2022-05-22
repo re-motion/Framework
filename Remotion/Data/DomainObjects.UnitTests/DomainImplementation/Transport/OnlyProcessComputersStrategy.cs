@@ -22,12 +22,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
   public class OnlyProcessComputersStrategy : IGraphTraversalStrategy
   {
-    public bool ShouldProcessObject (DomainObject domainObject)
+    public bool ShouldProcessObject (IDomainObject domainObject)
     {
       return domainObject is Computer;
     }
 
-    public bool ShouldFollowLink (DomainObject root, DomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
+    public bool ShouldFollowLink (IDomainObject root, IDomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
     {
       return true;
     }

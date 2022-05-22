@@ -60,12 +60,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void RegisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
 
-    public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void UnregisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }

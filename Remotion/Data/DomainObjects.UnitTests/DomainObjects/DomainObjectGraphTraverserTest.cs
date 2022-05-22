@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetFlattenedRelatedObjectGraph_ContainsRoot ()
     {
       Order order = GetTestGraph();
-      HashSet<DomainObject> graph = new DomainObjectGraphTraverser(order, FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph();
+      HashSet<IDomainObject> graph = new DomainObjectGraphTraverser(order, FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph();
 
       Assert.That(graph, Has.Member(order));
     }
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetFlattenedRelatedObjectGraph_ContainsRelatedObjects ()
     {
       Order order = GetTestGraph();
-      HashSet<DomainObject> graph = new DomainObjectGraphTraverser(order, FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph();
+      HashSet<IDomainObject> graph = new DomainObjectGraphTraverser(order, FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph();
 
       foreach (DomainObject relatedObject in order.Properties.GetAllRelatedObjects())
         Assert.That(graph, Has.Member(relatedObject));
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetFlattenedRelatedObjectGraph_ContainsIndirectRelatedObjects ()
     {
       Order order = GetTestGraph();
-      HashSet<DomainObject> graph = new DomainObjectGraphTraverser(order, FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph();
+      HashSet<IDomainObject> graph = new DomainObjectGraphTraverser(order, FullGraphTraversalStrategy.Instance).GetFlattenedRelatedObjectGraph();
 
       Assert.That(graph, Has.Member(order.Customer.Ceo));
     }
@@ -207,7 +207,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
           .Returns(true)
           .Verifiable();
 
-      HashSet<DomainObject> result = new DomainObjectGraphTraverser(order, strategy.Object).GetFlattenedRelatedObjectGraph();
+      HashSet<IDomainObject> result = new DomainObjectGraphTraverser(order, strategy.Object).GetFlattenedRelatedObjectGraph();
       var expected =
           new DomainObject[]
           {
@@ -225,10 +225,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void GetFlattenedRelatedObjectGraph_WithTraversalFilter_FollowLink ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
-      HashSet<DomainObject> graph = new DomainObjectGraphTraverser(order, new TestTraversalStrategy(true, false)).GetFlattenedRelatedObjectGraph();
+      HashSet<IDomainObject> graph = new DomainObjectGraphTraverser(order, new TestTraversalStrategy(true, false)).GetFlattenedRelatedObjectGraph();
 
       var expected =
-          new HashSet<DomainObject>
+          new HashSet<IDomainObject>
           {
               order,
               LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.OrderTicket1, false),
@@ -257,7 +257,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       var graph = new DomainObjectGraphTraverser(order, new TestTraversalStrategy(false, false)).GetFlattenedRelatedObjectGraph();
 
       var expected =
-          new HashSet<DomainObject>
+          new HashSet<IDomainObject>
           {
               order,
               LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.OrderTicket1, false),
@@ -279,9 +279,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void Traversal_NotAffectedByNotProcessingAnObject ()
     {
       Order order = DomainObjectIDs.Order1.GetObject<Order>();
-      HashSet<DomainObject> graph = new DomainObjectGraphTraverser(order, new TestTraversalStrategy(false, true)).GetFlattenedRelatedObjectGraph();
+      HashSet<IDomainObject> graph = new DomainObjectGraphTraverser(order, new TestTraversalStrategy(false, true)).GetFlattenedRelatedObjectGraph();
 
-      var expected = new HashSet<DomainObject> { LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Distributor2, false) };
+      var expected = new HashSet<IDomainObject> { LifetimeService.GetObject(TestableClientTransaction, DomainObjectIDs.Distributor2, false) };
 
       Assert.That(graph, Is.EquivalentTo(expected));
     }
@@ -297,13 +297,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
         _includeOnlyDistributors = includeOnlyDistributors;
       }
 
-      public bool ShouldProcessObject (DomainObject domainObject)
+      public bool ShouldProcessObject (IDomainObject domainObject)
       {
         return (!_includeOnlyDistributors || domainObject is Distributor)
             && (_includePersons || !(domainObject is Person));
       }
 
-      public bool ShouldFollowLink (DomainObject root, DomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
+      public bool ShouldFollowLink (IDomainObject root, IDomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
       {
         return !typeof(Ceo).IsAssignableFrom(linkProperty.PropertyData.PropertyType)
           && !typeof(Order).IsAssignableFrom(linkProperty.PropertyData.PropertyType)

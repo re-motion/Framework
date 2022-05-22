@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _objectID; }
     }
 
-    public DomainObject? GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       return null;
     }

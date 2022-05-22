@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private IRelationEndPointDefinition _locationClientEndPointDefinition;
     private IRelationEndPointDefinition _orderCustomerEndPointDefinition;
 
-    private Action<DomainObject> _fakeSetter;
+    private Action<IDomainObject> _fakeSetter;
     private Action _fakeNullSetter;
 
     public override void SetUp ()

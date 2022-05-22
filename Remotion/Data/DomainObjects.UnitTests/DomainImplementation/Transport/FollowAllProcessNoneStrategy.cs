@@ -21,12 +21,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
   public class FollowAllProcessNoneStrategy : IGraphTraversalStrategy
   {
-    public bool ShouldProcessObject (DomainObject domainObject)
+    public bool ShouldProcessObject (IDomainObject domainObject)
     {
       return false;
     }
 
-    public bool ShouldFollowLink (DomainObject root, DomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
+    public bool ShouldFollowLink (IDomainObject root, IDomainObject currentObject, int currentDepth, PropertyAccessor linkProperty)
     {
       return true;
     }

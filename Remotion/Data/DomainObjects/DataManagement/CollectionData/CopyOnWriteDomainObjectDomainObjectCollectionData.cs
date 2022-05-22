@@ -63,12 +63,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       WrappedData = _copiedData;
     }
 
-    protected override void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index)
+    protected override void OnDataChanging (OperationKind operation, IDomainObject? affectedObject, int index)
     {
       CopyOnWrite();
     }
 
-    protected override void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index)
+    protected override void OnDataChanged (OperationKind operation, IDomainObject? affectedObject, int index)
     {
       // nothing to do here
     }

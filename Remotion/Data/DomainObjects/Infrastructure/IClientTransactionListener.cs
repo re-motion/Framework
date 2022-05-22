@@ -55,21 +55,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void NewObjectCreating (ClientTransaction clientTransaction, Type type);
 
     void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs);
-    void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
+    void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects);
     void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs);
 
-    void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects);
-    void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects);
+    void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects);
+    void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects);
 
-    void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject);
-    void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject);
+    void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject);
+    void ObjectDeleted (ClientTransaction clientTransaction, IDomainObject domainObject);
 
-    void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess);
-    void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
-    void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
-    void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
+    void PropertyValueReading (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess);
+    void PropertyValueRead (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
+    void PropertyValueChanging (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
+    void PropertyValueChanged (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
-    void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
+    void RelationReading (ClientTransaction clientTransaction, IDomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
 
     /// <summary>
     /// Indicates that a scalar-value relation has been read.
@@ -81,9 +81,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <param name="valueAccess">An indicator whether the current or original values have been read.</param>
     void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? relatedObject,
+        IDomainObject? relatedObject,
         ValueAccess valueAccess);
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <param name="valueAccess">An indicator whether the current or original values have been read.</param>
     void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess);
@@ -120,10 +120,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     ///   being replaced by a new one.</param>
     void RelationChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject);
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject);
 
     /// <summary>
     /// Indicates that a relation has been changed. 
@@ -140,27 +140,26 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     ///   being replaced by a new one.</param>
     void RelationChanged (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject);
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject);
 
     QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject;
     IEnumerable<T> FilterCustomQueryResult<T> (ClientTransaction clientTransaction, IQuery query, IEnumerable<T> results);
 
-    void TransactionCommitting (
-        ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
+    void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
     void TransactionCommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData);
-    void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
-    void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
-    void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
+    void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects);
+    void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects);
+    void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects);
 
     void RelationEndPointMapRegistering (ClientTransaction clientTransaction, IRelationEndPoint endPoint);
     void RelationEndPointMapUnregistering (ClientTransaction clientTransaction, RelationEndPointID endPointID);
     void RelationEndPointBecomingIncomplete (ClientTransaction clientTransaction, RelationEndPointID endPointID);
 
-    void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject);
-    void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject);
+    void ObjectMarkedInvalid (ClientTransaction clientTransaction, IDomainObject domainObject);
+    void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, IDomainObject domainObject);
 
     void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container);
     void DataContainerMapUnregistering (ClientTransaction clientTransaction, DataContainer container);

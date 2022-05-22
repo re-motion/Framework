@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
         _eventReceiver.OnReplaceData();
     }
 
-    public new void Sort (Comparison<DomainObject> comparison)
+    public new void Sort (Comparison<IDomainObject> comparison)
     {
 #pragma warning disable 612,618
       base.Sort(comparison);

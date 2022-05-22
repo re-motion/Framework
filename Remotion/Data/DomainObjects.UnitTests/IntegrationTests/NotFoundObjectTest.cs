@@ -128,14 +128,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void GetObjectReference_ShouldGiveNotLoadedYetObject ()
     {
       var instance = LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
-      Assert.That(instance.State.IsNotLoadedYet, Is.True);
+      Assert.That(((DomainObject)instance).State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
     public void EnsureDataAvailable_ShouldThrow_AndMarkObjectNotFound ()
     {
       var instance = LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
-      Assert.That(instance.State.IsNotLoadedYet, Is.True);
+      Assert.That(((DomainObject)instance).State.IsNotLoadedYet, Is.True);
 
       Assert.That(() => instance.EnsureDataAvailable(), ThrowsObjectNotFoundException(_nonExistingObjectID));
 
@@ -203,7 +203,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public void TryEnsureDataAvailable_ShouldReturnFalse_AndMarkObjectNotFound ()
     {
       var instance = LifetimeService.GetObjectReference(TestableClientTransaction, _nonExistingObjectID);
-      Assert.That(instance.State.IsNotLoadedYet, Is.True);
+      Assert.That(((DomainObject)instance).State.IsNotLoadedYet, Is.True);
 
       var result = instance.TryEnsureDataAvailable();
 
@@ -478,13 +478,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     private void CheckObjectIsMarkedInvalid (ObjectID objectID)
     {
       var instance = LifetimeService.GetObjectReference(ClientTransaction.Current, objectID);
-      Assert.That(instance.State.IsInvalid, Is.True);
+      Assert.That(((DomainObject)instance).State.IsInvalid, Is.True);
     }
 
     private void CheckObjectIsNotMarkedInvalid (ObjectID objectID)
     {
       var instance = LifetimeService.GetObjectReference(ClientTransaction.Current, objectID);
-      Assert.That(instance.State.IsInvalid, Is.False);
+      Assert.That(((DomainObject)instance).State.IsInvalid, Is.False);
     }
 
     private IResolveConstraint ThrowsObjectNotFoundException (ObjectID objectID)

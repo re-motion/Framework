@@ -100,12 +100,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return false; }
     }
 
-    public DomainObject? GetDomainObject ()
+    public IDomainObject? GetDomainObject ()
     {
       return null;
     }
 
-    public DomainObject? GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       return null;
     }
@@ -150,7 +150,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       throw new InvalidOperationException("It is not possible to call GetCollectionWithOriginalData on a NullCollectionEndPoint.");
     }
 
-    public void MarkDataComplete (DomainObject[] items)
+    public void MarkDataComplete (IDomainObject[] items)
     {
       // ignore
     }
@@ -160,12 +160,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       throw new InvalidOperationException("MarkDataIncomplete cannot be called on a NullVirtualCollectionEndPoint.");
     }
 
-    public IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
+    public IDataManagementCommand CreateAddCommand (IDomainObject addedRelatedObject)
     {
       return new NullEndPointModificationCommand(this);
     }
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject? removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       // TODO RM-8241: removedRelatedObject can be null for null-object implementations.
       return new NullEndPointModificationCommand(this);

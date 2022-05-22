@@ -33,12 +33,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public DomainObject GetInvalidObjectReference (ObjectID id)
+    public IDomainObject GetInvalidObjectReference (ObjectID id)
     {
       throw new NotImplementedException();
     }
 
-    public bool MarkInvalid (DomainObject domainObject)
+    public bool MarkInvalid (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }

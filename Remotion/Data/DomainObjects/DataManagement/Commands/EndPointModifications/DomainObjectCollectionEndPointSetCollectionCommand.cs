@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     private readonly IDomainObjectCollectionData _modifiedCollectionData;
     private readonly IDomainObjectCollectionEndPointCollectionManager _collectionEndPointCollectionManager;
 
-    private readonly DomainObject[] _removedObjects;
-    private readonly DomainObject[] _addedObjects;
+    private readonly IDomainObject[] _removedObjects;
+    private readonly IDomainObject[] _addedObjects;
 
     public DomainObjectCollectionEndPointSetCollectionCommand (
         IDomainObjectCollectionEndPoint modifiedEndPoint,
@@ -79,12 +79,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _collectionEndPointCollectionManager; }
     }
 
-    public DomainObject[] RemovedObjects
+    public IDomainObject[] RemovedObjects
     {
       get { return _removedObjects; }
     }
 
-    public DomainObject[] AddedObjects
+    public IDomainObject[] AddedObjects
     {
       get { return _addedObjects; }
     }

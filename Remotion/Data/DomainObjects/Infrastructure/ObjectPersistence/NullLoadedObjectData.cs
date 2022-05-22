@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return null; }
     }
 
-    public DomainObject? GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       return null;
     }

@@ -108,13 +108,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </summary>
     /// <param name="type">The domain object type to instantiate.</param>
     /// <param name="constructorParameters">A <see cref="ParamList"/> encapsulating the parameters to be passed to the constructor. Instantiate this
-    /// by using one of the <see cref="ParamList.Create{A1,A2}"/> methods.</param>
+    ///   by using one of the <see cref="ParamList.Create{A1,A2}"/> methods.</param>
     /// <returns>A new instance of <paramref name="type"/> prepared for transport.</returns>
-    public DomainObject LoadNew (Type type, ParamList constructorParameters)
+    public IDomainObject LoadNew (Type type, ParamList constructorParameters)
     {
       using (_transportTransaction.EnterNonDiscardingScope())
       {
-        DomainObject domainObject = LifetimeService.NewObject(_transportTransaction, type, constructorParameters);
+        IDomainObject domainObject = LifetimeService.NewObject(_transportTransaction, type, constructorParameters);
         Load(domainObject.ID);
         return domainObject;
       }
@@ -140,10 +140,10 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// also applies to the 1-side of a 1-to-n relationship because the n-side is the foreign key side.
     /// </para>
     /// </remarks>
-    public DomainObject Load (ObjectID objectID)
+    public IDomainObject Load (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
-      DomainObject domainObject = _transportTransaction.GetObject(objectID, false);
+      IDomainObject domainObject = _transportTransaction.GetObject(objectID, false);
       _transportedObjects.Add(objectID);
       return domainObject;
     }
@@ -155,13 +155,13 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
     /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="PropertyIndexer.GetAllRelatedObjects"/>
-    public IEnumerable<DomainObject> LoadWithRelatedObjects (ObjectID objectID)
+    public IEnumerable<IDomainObject> LoadWithRelatedObjects (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return LazyLoadWithRelatedObjects(objectID).ToArray();
     }
 
-    private IEnumerable<DomainObject> LazyLoadWithRelatedObjects (ObjectID objectID)
+    private IEnumerable<IDomainObject> LazyLoadWithRelatedObjects (ObjectID objectID)
     {
       IDomainObject sourceObject = _transportTransaction.GetObject(objectID, false);
       yield return Load(sourceObject.ID);
@@ -181,7 +181,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
     /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
-    public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID)
+    public IEnumerable<IDomainObject> LoadRecursive (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return LoadRecursive(objectID, FullGraphTraversalStrategy.Instance);
@@ -193,19 +193,19 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </summary>
     /// <param name="objectID">The <see cref="ObjectID"/> of the object which is to be loaded together with its related objects.</param>
     /// <param name="strategy">An <see cref="IGraphTraversalStrategy"/> instance defining which related object links to follow and which
-    /// objects to include in the set of transported objects.</param>
+    ///   objects to include in the set of transported objects.</param>
     /// <returns>The loaded objects, whose properties can be manipulated before they are transported.</returns>
     /// <seealso cref="DomainObjectGraphTraverser.GetFlattenedRelatedObjectGraph"/>
-    public IEnumerable<DomainObject> LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy)
+    public IEnumerable<IDomainObject> LoadRecursive (ObjectID objectID, IGraphTraversalStrategy strategy)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       ArgumentUtility.CheckNotNull("strategy", strategy);
 
-      DomainObject sourceObject = _transportTransaction.GetObject(objectID, false);
+      IDomainObject sourceObject = _transportTransaction.GetObject(objectID, false);
       using (_transportTransaction.EnterNonDiscardingScope())
       {
-        HashSet<DomainObject> graph = new DomainObjectGraphTraverser(sourceObject, strategy).GetFlattenedRelatedObjectGraph();
-        foreach (DomainObject domainObject in graph)
+        HashSet<IDomainObject> graph = new DomainObjectGraphTraverser(sourceObject, strategy).GetFlattenedRelatedObjectGraph();
+        foreach (IDomainObject domainObject in graph)
           Load(domainObject.ID); // explicitly call load rather than just implicitly loading it into the transaction for consistency
         return graph;
       }
@@ -215,8 +215,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// Retrieves a loaded object so that it can be manipulated prior to it being transported.
     /// </summary>
     /// <param name="loadedObjectID">The object ID of the object to be retrieved.</param>
-    /// <returns>A <see cref="DomainObject"/> representing an object to be transported. Properties of this object can be manipulated.</returns>
-    public DomainObject GetTransportedObject (ObjectID loadedObjectID)
+    /// <returns>A <see cref="IDomainObject"/> representing an object to be transported. Properties of this object can be manipulated.</returns>
+    public IDomainObject GetTransportedObject (ObjectID loadedObjectID)
     {
       ArgumentUtility.CheckNotNull("loadedObjectID", loadedObjectID);
       if (!IsLoaded(loadedObjectID))

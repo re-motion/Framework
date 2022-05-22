@@ -566,7 +566,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SortCurrentData ()
     {
-      Comparison<DomainObject> comparison = (one, two) => 0;
+      Comparison<IDomainObject> comparison = (one, two) => 0;
       _loadStateMock.Setup(mock => mock.SortCurrentData(_endPoint, comparison)).Verifiable();
 
       _endPoint.SortCurrentData(comparison);

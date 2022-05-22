@@ -40,16 +40,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       }
     }
 
-    public static List<DomainObject> ImportObjects (params ObjectID[] objectsToImport)
+    public static List<IDomainObject> ImportObjects (params ObjectID[] objectsToImport)
     {
       byte[] binaryData = GetBinaryDataFor(objectsToImport);
       return ImportObjects(binaryData);
     }
 
-    public static List<DomainObject> ImportObjects (byte[] binaryData)
+    public static List<IDomainObject> ImportObjects (byte[] binaryData)
     {
       TransportedDomainObjects transportedObjects = Import(binaryData);
-      return new List<DomainObject>(transportedObjects.TransportedObjects);
+      return new List<IDomainObject>(transportedObjects.TransportedObjects);
     }
 
     public static TransportedDomainObjects Import (byte[] binaryData)

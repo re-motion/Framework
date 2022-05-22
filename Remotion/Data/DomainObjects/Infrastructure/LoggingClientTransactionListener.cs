@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat("{0} ObjectsLoading: {1}", clientTransaction.ID, GetObjectIDString(objectIDs));
     }
 
-    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} ObjectsLoaded: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
@@ -89,31 +89,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat("{0} ObjectsNotFound: {1}", clientTransaction.ID, GetObjectIDString(objectIDs));
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} ObjectsUnloaded: {1}", clientTransaction.ID, GetDomainObjectsString(unloadedDomainObjects));
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} ObjectsUnloading: {1}", clientTransaction.ID, GetDomainObjectsString(unloadedDomainObjects));
     }
 
-    public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} ObjectDeleting: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));
     }
 
-    public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectDeleted (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} ObjectDeleted: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));
     }
 
-    public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public void PropertyValueReading (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -140,7 +140,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void RelationReading (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         ValueAccess valueAccess)
     {
@@ -187,9 +187,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? relatedObject,
+        IDomainObject? relatedObject,
         ValueAccess valueAccess)
     {
       if (s_log.IsDebugEnabled())
@@ -206,7 +206,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
@@ -226,10 +226,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void RelationChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -245,10 +245,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void RelationChanged (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       if (s_log.IsDebugEnabled())
       {
@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return results;
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} TransactionCommitting: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
@@ -301,19 +301,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat("{0} TransactionCommitValidate: {1}", clientTransaction.ID, GetDomainObjectsString(committedData.Select(pd => pd.DomainObject)));
     }
 
-    public void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} TransactionCommitted: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
     }
 
-    public void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} TransactionRollingBack: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
     }
 
-    public void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} TransactionRolledBack: {1}", clientTransaction.ID, GetDomainObjectsString(domainObjects));
@@ -337,13 +337,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         s_log.DebugFormat("{0} RelationEndPointBecomingIncomplete: {1}", clientTransaction.ID, endPointID);
     }
 
-    public void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectMarkedInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} ObjectMarkedInvalid: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));
     }
 
-    public void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       if (s_log.IsDebugEnabled())
         s_log.DebugFormat("{0} ObjectMarkedNotInvalid: {1}", clientTransaction.ID, GetDomainObjectString(domainObject));

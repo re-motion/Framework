@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
 
-    void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject);
-    void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject);
+    void RegisterOriginalItemWithoutEndPoint (IDomainObject domainObject);
+    void UnregisterOriginalItemWithoutEndPoint (IDomainObject domainObject);
 
     void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);
     void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint);

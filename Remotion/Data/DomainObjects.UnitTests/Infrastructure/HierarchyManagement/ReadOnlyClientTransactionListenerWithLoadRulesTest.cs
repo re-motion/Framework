@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
       _listener = new ReadOnlyClientTransactionListenerWithLoadRules();
       _transaction = ClientTransactionObjectMother.Create();
 
-      _client1 = LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Client1);
-      _order1 = LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
+      _client1 = (DomainObject)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Client1);
+      _order1 = (DomainObject)LifetimeService.GetObjectReference(_transaction, DomainObjectIDs.Order1);
       _orderNumberPropertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
       _orderTicketEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
     }

@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return GetOppositeObject().GetSafeID(); }
     }
 
-    DomainObject? IVirtualEndPoint<DomainObject?>.GetData ()
+    IDomainObject? IVirtualEndPoint<IDomainObject?>.GetData ()
     {
       return GetOppositeObject();
     }
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return GetOriginalOppositeObject().GetSafeID(); }
     }
 
-    DomainObject? IVirtualEndPoint<DomainObject?>.GetOriginalData ()
+    IDomainObject? IVirtualEndPoint<IDomainObject?>.GetOriginalData ()
     {
       return GetOriginalOppositeObject();
     }
@@ -168,12 +168,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       get { return _loadState.IsSynchronized(this); }
     }
 
-    public override DomainObject? GetOppositeObject ()
+    public override IDomainObject? GetOppositeObject ()
     {
       return _loadState.GetData(this);
     }
 
-    public override DomainObject? GetOriginalOppositeObject ()
+    public override IDomainObject? GetOriginalOppositeObject ()
     {
       return _loadState.GetOriginalData(this);
     }
@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _loadState.SynchronizeOppositeEndPoint(this, oppositeEndPoint);
     }
 
-    public void MarkDataComplete (DomainObject? item)
+    public void MarkDataComplete (IDomainObject? item)
     {
       _loadState.MarkDataComplete(this, item, SetCompleteState);
     }
@@ -239,7 +239,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _loadState.UnregisterCurrentOppositeEndPoint(this, oppositeEndPoint);
     }
 
-    public override IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject)
+    public override IDataManagementCommand CreateSetCommand (IDomainObject? newRelatedObject)
     {
       var command = _loadState.CreateSetCommand(this, newRelatedObject);
       return command;

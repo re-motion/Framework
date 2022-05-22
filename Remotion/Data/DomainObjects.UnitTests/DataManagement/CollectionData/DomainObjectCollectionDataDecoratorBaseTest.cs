@@ -230,7 +230,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Sort ()
     {
-      Comparison<DomainObject> comparison = (one, two) => 0;
+      Comparison<IDomainObject> comparison = (one, two) => 0;
       _wrappedDataMock.Setup(mock => mock.Sort(comparison)).Verifiable();
 
       _decorator.Sort(comparison);

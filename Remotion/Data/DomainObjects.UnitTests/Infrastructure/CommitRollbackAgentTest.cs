@@ -66,9 +66,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       _agent = new CommitRollbackAgent(_clientTransaction, _eventSinkWithMock.Object, _persistenceStrategyMock.Object, _dataManagerMock.Object);
 
-      _fakeChangedDomainObject = LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
-      _fakeNewDomainObject = LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
-      _fakeDeletedDomainObject = LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
+      _fakeChangedDomainObject = (DomainObject)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
+      _fakeNewDomainObject = (DomainObject)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
+      _fakeDeletedDomainObject = (DomainObject)LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
 
       var fakeDataContainer1 = DataContainerObjectMother.Create();
       var fakeDataContainer2 = DataContainerObjectMother.Create();

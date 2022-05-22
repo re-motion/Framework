@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/>.</param>
     /// <param name="domainObjectType">The <see cref="Type"/> of the <see cref="DomainObject"/> to be created.</param>
     /// <param name="constructorParameters">A <see cref="ParamList"/> encapsulating the parameters to be passed to the constructor. Instantiate this
-    /// by using one of the <see cref="ParamList.Create{A1,A2}"/> methods.</param>
+    ///   by using one of the <see cref="ParamList.Create{A1,A2}"/> methods.</param>
     /// <returns>A new domain object instance.</returns>
     /// <remarks>
     /// 	<para>
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <exception cref="MissingMethodException">The <paramref name="domainObjectType"/> does not implement the required constructor (see Remarks
     /// section).
     /// </exception>
-    public static DomainObject NewObject (ClientTransaction clientTransaction, Type domainObjectType, ParamList constructorParameters)
+    public static IDomainObject NewObject (ClientTransaction clientTransaction, Type domainObjectType, ParamList constructorParameters)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
@@ -88,7 +88,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </exception>
     /// <exception cref="ObjectDeletedException">The object has already been deleted and the <paramref name="includeDeleted"/> flag is 
     /// <see langword="false" />.</exception>
-    public static DomainObject GetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
+    public static IDomainObject GetObject (ClientTransaction clientTransaction, ObjectID objectID, bool includeDeleted)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("objectID", objectID);
@@ -112,7 +112,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// An error occurred while reading a <see cref="PropertyValue"/>.<br/> -or- <br/>
     /// An error occurred while accessing the data source.
     /// </exception>
-    public static DomainObject? TryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
+    public static IDomainObject? TryGetObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("objectID", objectID);
@@ -141,7 +141,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <exception cref="ArgumentNullException">One of the parameters passed to this method is <see langword="null"/>.</exception>
     /// <exception cref="ObjectInvalidException">The object with the given <paramref name="objectID"/> is invalid in the given 
     /// <paramref name="clientTransaction"/>.</exception>
-    public static DomainObject GetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
+    public static IDomainObject GetObjectReference (ClientTransaction clientTransaction, ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("objectID", objectID);
@@ -246,8 +246,9 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       return clientTransaction.TryGetObjects<T>(objectIDs);
     }
+
     /// <summary>
-    /// Deletes the given <see cref="DomainObject"/>.
+    /// Deletes the given <see cref="IDomainObject"/>.
     /// </summary>
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/>.</param>
     /// <param name="objectToBeDeleted">The object to be deleted.</param>
@@ -255,7 +256,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// <exception cref="ObjectInvalidException">The object is invalid in the given <paramref name="clientTransaction"/>.</exception>
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the current transaction.</exception>
     /// <remarks>See also <see cref="DomainObject.Delete"/>.</remarks>
-    public static void DeleteObject (ClientTransaction clientTransaction, DomainObject objectToBeDeleted)
+    public static void DeleteObject (ClientTransaction clientTransaction, IDomainObject objectToBeDeleted)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("objectToBeDeleted", objectToBeDeleted);

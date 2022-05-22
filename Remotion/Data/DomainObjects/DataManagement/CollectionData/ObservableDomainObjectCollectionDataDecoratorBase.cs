@@ -42,21 +42,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     /// <param name="operation">The <see cref="OperationKind"/> of the change.</param>
     /// <param name="affectedObject">
-    /// The <see cref="DomainObject"/> that was inserted or removed or <see langword="null" /> if <paramref name="operation"/> is <see cref="OperationKind.Sort"/>.
+    /// The <see cref="IDomainObject"/> that was inserted or removed or <see langword="null" /> if <paramref name="operation"/> is <see cref="OperationKind.Sort"/>.
     /// </param>
     /// <param name="index">The index of the <paramref name="affectedObject"/>.</param>
-    protected abstract void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index);
+    protected abstract void OnDataChanging (OperationKind operation, IDomainObject? affectedObject, int index);
 
     /// <param name="operation">The <see cref="OperationKind"/> of the change.</param>
     /// <param name="affectedObject">
-    /// The <see cref="DomainObject"/> that was inserted or removed or <see langword="null" /> if <paramref name="operation"/> is <see cref="OperationKind.Sort"/>.
+    /// The <see cref="IDomainObject"/> that was inserted or removed or <see langword="null" /> if <paramref name="operation"/> is <see cref="OperationKind.Sort"/>.
     /// </param>
     /// <param name="index">The index of the <paramref name="affectedObject"/>.</param>
-    protected abstract void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index);
+    protected abstract void OnDataChanged (OperationKind operation, IDomainObject? affectedObject, int index);
 
     public override void Clear ()
     {
-      var removedObjects = new Stack<DomainObject>(); // holds the removed objects in order to raise 
+      var removedObjects = new Stack<IDomainObject>(); // holds the removed objects in order to raise 
 
       int index = 0;
       foreach (var domainObject in this)
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       Assertion.IsTrue(index == 0);
     }
 
-    public override void Insert (int index, DomainObject domainObject)
+    public override void Insert (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       OnDataChanged(OperationKind.Insert, domainObject, index);
     }
 
-    public override bool Remove (DomainObject domainObject)
+    public override bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return true;
     }
 
-    public override void Replace (int index, DomainObject value)
+    public override void Replace (int index, IDomainObject value)
     {
       ArgumentUtility.CheckNotNull("value", value);
 
@@ -137,7 +137,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       }
     }
 
-    public override void Sort (Comparison<DomainObject> comparison)
+    public override void Sort (Comparison<IDomainObject> comparison)
     {
       OnDataChanging(OperationKind.Sort, null, -1);
       try

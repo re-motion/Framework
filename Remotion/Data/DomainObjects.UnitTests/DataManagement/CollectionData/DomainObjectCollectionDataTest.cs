@@ -431,7 +431,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _data.Add(_order3);
       _data.Add(_order4);
 
-      var weights = new Dictionary<DomainObject, int> { { _order1, 3 }, { _order2, 2 }, { _order3, 0 }, { _order4, 1 } };
+      var weights = new Dictionary<IDomainObject, int> { { _order1, 3 }, { _order2, 2 }, { _order3, 0 }, { _order4, 1 } };
 
       _data.Sort((obj1, obj2) => weights[obj1].CompareTo(weights[obj2]));
 

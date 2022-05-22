@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   {
     void OnBeforeObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs);
     // Calls to OnAfterObjectRegistration must be exactly matched with OnBeforeObjectRegistration; they must not be swallowed in case of exceptions.
-    void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects);
+    void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<IDomainObject> actuallyLoadedDomainObjects);
     void OnObjectsNotFound (IReadOnlyList<ObjectID> notFoundObjectIDs);
   }
 }

@@ -49,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return _existingDataContainer; }
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
       Assertion.IsTrue(_existingDataContainer.HasDomainObject, "Checked by ctor.");
       return _existingDataContainer.DomainObject;

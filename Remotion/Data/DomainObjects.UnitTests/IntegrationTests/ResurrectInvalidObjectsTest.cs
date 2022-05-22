@@ -263,7 +263,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     private void CheckStateIsNotInvalid (
-        DomainObject domainObject,
+        IDomainObject domainObject,
         ClientTransaction clientTransaction,
         Func<DomainObjectState, bool> expectedStatePredicate)
     {
@@ -273,7 +273,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.That(expectedStatePredicate(domainObjectState), Is.True);
     }
 
-    private void CheckStateIsInvalid (DomainObject domainObject, ClientTransaction clientTransaction)
+    private void CheckStateIsInvalid (IDomainObject domainObject, ClientTransaction clientTransaction)
     {
       Assert.That(clientTransaction.IsInvalid(domainObject.ID), Is.True);
       Assert.That(domainObject.TransactionContext[clientTransaction].State.IsInvalid, Is.True);

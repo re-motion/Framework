@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
       _endPoint = RelationEndPointObjectMother.CreateObjectEndPoint(_endPointID, DomainObjectIDs.OrderTicket1);
-      _domainObject = _endPoint.GetDomainObject();
+      _domainObject = (DomainObject)_endPoint.GetDomainObject();
 
       _oppositeObjectNullSetterCalled = false;
       _oppositeObjectNullSetter = () =>

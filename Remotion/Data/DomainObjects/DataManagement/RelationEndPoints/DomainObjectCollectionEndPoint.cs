@@ -212,7 +212,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       _loadState.EnsureDataComplete(this);
     }
 
-    public void MarkDataComplete (DomainObject[] items)
+    public void MarkDataComplete (IDomainObject[] items)
     {
       ArgumentUtility.CheckNotNull("items", items);
       _loadState.MarkDataComplete(this, items, SetCompleteLoadState);
@@ -266,7 +266,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
     }
 
-    public void SortCurrentData (Comparison<DomainObject> comparison)
+    public void SortCurrentData (Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
 
@@ -327,7 +327,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return command;
     }
 
-    public override IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public override IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
 
@@ -341,21 +341,21 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       return command;
     }
 
-    public virtual IDataManagementCommand CreateInsertCommand (DomainObject insertedRelatedObject, int index)
+    public virtual IDataManagementCommand CreateInsertCommand (IDomainObject insertedRelatedObject, int index)
     {
       ArgumentUtility.CheckNotNull("insertedRelatedObject", insertedRelatedObject);
       var command = _loadState.CreateInsertCommand(this, insertedRelatedObject, index);
       return command;
     }
 
-    public virtual IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
+    public virtual IDataManagementCommand CreateAddCommand (IDomainObject addedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
       var command = _loadState.CreateAddCommand(this, addedRelatedObject);
       return command;
     }
 
-    public virtual IDataManagementCommand CreateReplaceCommand (int index, DomainObject replacementObject)
+    public virtual IDataManagementCommand CreateReplaceCommand (int index, IDomainObject replacementObject)
     {
       ArgumentUtility.CheckNotNull("replacementObject", replacementObject);
       var command = _loadState.CreateReplaceCommand(this, index, replacementObject);

@@ -24,7 +24,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>
-  /// Provides a mechanism for retrieving all the <see cref="DomainObject"/> instances directly or indirectly referenced by a root object via
+  /// Provides a mechanism for retrieving all the <see cref="IDomainObject"/> instances directly or indirectly referenced by a root object via
   /// <see cref="PropertyKind.RelatedObject"/> and <see cref="PropertyKind.RelatedObjectCollection"/> properties. A
   /// <see cref="IGraphTraversalStrategy"/> can be given to decide which objects to include and which links to follow when traversing the
   /// object graph.
@@ -32,9 +32,9 @@ namespace Remotion.Data.DomainObjects
   public class DomainObjectGraphTraverser
   {
     private readonly IGraphTraversalStrategy _strategy;
-    private readonly DomainObject _rootObject;
+    private readonly IDomainObject _rootObject;
 
-    public DomainObjectGraphTraverser (DomainObject rootObject, IGraphTraversalStrategy strategy)
+    public DomainObjectGraphTraverser (IDomainObject rootObject, IGraphTraversalStrategy strategy)
     {
       ArgumentUtility.CheckNotNull("rootObject", rootObject);
       ArgumentUtility.CheckNotNull("strategy", strategy);
@@ -44,20 +44,20 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the flattened related object graph for the root <see cref="DomainObject"/> associated with this traverser.
+    /// Gets the flattened related object graph for the root <see cref="IDomainObject"/> associated with this traverser.
     /// </summary>
-    /// <returns>A <see cref="HashSet{T}"/> of <see cref="DomainObject"/> instances containing the root object and all objects directly or indirectly
+    /// <returns>A <see cref="HashSet{T}"/> of <see cref="IDomainObject"/> instances containing the root object and all objects directly or indirectly
     /// referenced by it.</returns>
     // Note: Implemented nonrecursively in order to support very large graphs.
-    public HashSet<DomainObject> GetFlattenedRelatedObjectGraph ()
+    public HashSet<IDomainObject> GetFlattenedRelatedObjectGraph ()
     {
-      var visited = new HashSet<DomainObject>();
-      var resultSet = new HashSet<DomainObject>();
-      var objectsToBeProcessed = new HashSet<Tuple<DomainObject, int>> { Tuple.Create(_rootObject, 0) };
+      var visited = new HashSet<IDomainObject>();
+      var resultSet = new HashSet<IDomainObject>();
+      var objectsToBeProcessed = new HashSet<Tuple<IDomainObject, int>> { Tuple.Create(_rootObject, 0) };
 
       while (objectsToBeProcessed.Count > 0)
       {
-        Tuple<DomainObject, int> current = objectsToBeProcessed.First();
+        Tuple<IDomainObject, int> current = objectsToBeProcessed.First();
         objectsToBeProcessed.Remove(current);
         if (!visited.Contains(current.Item1))
         {
@@ -71,7 +71,7 @@ namespace Remotion.Data.DomainObjects
       return resultSet;
     }
 
-    protected virtual IEnumerable<Tuple<DomainObject, int>> GetNextTraversedObjects (DomainObject current, int currentDepth, IGraphTraversalStrategy strategy)
+    protected virtual IEnumerable<Tuple<IDomainObject, int>> GetNextTraversedObjects (IDomainObject current, int currentDepth, IGraphTraversalStrategy strategy)
     {
       var properties = new PropertyIndexer(current);
       foreach (PropertyAccessor property in properties.AsEnumerable())
@@ -81,7 +81,7 @@ namespace Remotion.Data.DomainObjects
           case PropertyKind.RelatedObject:
             if (strategy.ShouldFollowLink(_rootObject, current, currentDepth, property))
             {
-              var relatedObject = (DomainObject?)property.GetValueWithoutTypeCheck();
+              var relatedObject = (IDomainObject?)property.GetValueWithoutTypeCheck();
               if (relatedObject != null)
                 yield return Tuple.Create(relatedObject, currentDepth + 1);
             }
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects
             {
               var value = (IEnumerable?)property.GetValueWithoutTypeCheck();
               Assertion.IsNotNull(value, "Collection property '{0}' does not have a value.", property.PropertyData.PropertyIdentifier);
-              foreach (DomainObject relatedObject in value)
+              foreach (IDomainObject relatedObject in value)
               {
                 if (relatedObject != null)
                   yield return Tuple.Create(relatedObject, currentDepth + 1);

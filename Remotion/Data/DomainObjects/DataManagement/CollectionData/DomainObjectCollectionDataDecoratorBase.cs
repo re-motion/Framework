@@ -79,12 +79,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _wrappedData.ContainsObjectID(objectID);
     }
 
-    public virtual DomainObject GetObject (int index)
+    public virtual IDomainObject GetObject (int index)
     {
       return _wrappedData.GetObject(index);
     }
 
-    public virtual DomainObject? GetObject (ObjectID objectID)
+    public virtual IDomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return _wrappedData.GetObject(objectID);
@@ -101,13 +101,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       _wrappedData.Clear();
     }
 
-    public virtual void Insert (int index, DomainObject domainObject)
+    public virtual void Insert (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       _wrappedData.Insert(index, domainObject);
     }
 
-    public virtual bool Remove (DomainObject domainObject)
+    public virtual bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       return _wrappedData.Remove(domainObject);
@@ -119,19 +119,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _wrappedData.Remove(objectID);
     }
 
-    public virtual void Replace (int index, DomainObject value)
+    public virtual void Replace (int index, IDomainObject value)
     {
       ArgumentUtility.CheckNotNull("value", value);
       _wrappedData.Replace(index, value);
     }
 
-    public virtual void Sort (Comparison<DomainObject> comparison)
+    public virtual void Sort (Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
       _wrappedData.Sort(comparison);
     }
 
-    public virtual IEnumerator<DomainObject> GetEnumerator ()
+    public virtual IEnumerator<IDomainObject> GetEnumerator ()
     {
       return _wrappedData.GetEnumerator();
     }

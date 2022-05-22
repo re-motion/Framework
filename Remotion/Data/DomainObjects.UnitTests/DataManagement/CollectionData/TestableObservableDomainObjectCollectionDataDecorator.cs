@@ -24,8 +24,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
   {
     public interface IEventSink
     {
-      void CollectionChanging (OperationKind operation, DomainObject affectedObject, int index);
-      void CollectionChanged (OperationKind operation, DomainObject affectedObject, int index);
+      void CollectionChanging (OperationKind operation, IDomainObject affectedObject, int index);
+      void CollectionChanged (OperationKind operation, IDomainObject affectedObject, int index);
     }
 
     private readonly IEventSink _eventSink;
@@ -36,13 +36,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _eventSink = eventSink;
     }
 
-    protected override void OnDataChanging (OperationKind operation, DomainObject affectedObject, int index)
+    protected override void OnDataChanging (OperationKind operation, IDomainObject affectedObject, int index)
     {
       if (_eventSink != null)
         _eventSink.CollectionChanging(operation, affectedObject, index);
     }
 
-    protected override void OnDataChanged (OperationKind operation, DomainObject affectedObject, int index)
+    protected override void OnDataChanged (OperationKind operation, IDomainObject affectedObject, int index)
     {
       if (_eventSink != null)
         _eventSink.CollectionChanged(operation, affectedObject, index);

@@ -69,17 +69,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       // Ignore
     }
 
-    public DomainObject? GetData ()
+    public IDomainObject? GetData ()
     {
       return null;
     }
 
-    public DomainObject? GetOriginalData ()
+    public IDomainObject? GetOriginalData ()
     {
       throw new InvalidOperationException("It is not possible to call GetOriginalData on a NullVirtualObjectEndPoint.");
     }
 
-    public void MarkDataComplete (DomainObject? item)
+    public void MarkDataComplete (IDomainObject? item)
     {
       // Ignore
     }

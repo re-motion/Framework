@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public void MarkInvalid (DomainObject domainObject)
+    public void MarkInvalid (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateDeleteCommand (DomainObject deletedObject)
+    public IDataManagementCommand CreateDeleteCommand (IDomainObject deletedObject)
     {
       throw new NotImplementedException();
     }

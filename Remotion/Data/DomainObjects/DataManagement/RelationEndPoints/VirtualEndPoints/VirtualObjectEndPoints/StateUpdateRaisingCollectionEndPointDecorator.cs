@@ -146,7 +146,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     // This is not a problem because we wrap the command into a decorator that raises the StateUpdated notification anyway, so it doesn't matter if 
     // the command internally bypasses this decorator.
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (IDomainObject? newRelatedObject)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -278,7 +278,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetDomainObject ()
+    public IDomainObject? GetDomainObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -288,7 +288,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetDomainObjectReference ()
+    public IDomainObject? GetDomainObjectReference ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -440,7 +440,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetData ()
+    public IDomainObject? GetData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -450,7 +450,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetOriginalData ()
+    public IDomainObject? GetOriginalData ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -486,7 +486,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetOppositeObject ()
+    public IDomainObject? GetOppositeObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -496,7 +496,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public DomainObject? GetOriginalOppositeObject ()
+    public IDomainObject? GetOriginalOppositeObject ()
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))
@@ -516,7 +516,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    public void MarkDataComplete (DomainObject? item)
+    public void MarkDataComplete (IDomainObject? item)
     {
 #if DEBUG
       using (new ConstantChangeStateAsserter(_innerEndPoint))

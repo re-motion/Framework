@@ -39,9 +39,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       _associatedEndPointID = associatedEndPointID;
     }
 
-    public IEnumerator<DomainObject> GetEnumerator ()
+    public IEnumerator<IDomainObject> GetEnumerator ()
     {
-      return Enumerable.Empty<DomainObject>().GetEnumerator();
+      return Enumerable.Empty<IDomainObject>().GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
@@ -75,11 +75,11 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     {
     }
 
-    public void Add (DomainObject domainObject)
+    public void Add (IDomainObject domainObject)
     {
     }
 
-    public bool Remove (DomainObject domainObject)
+    public bool Remove (IDomainObject domainObject)
     {
       return true;
     }

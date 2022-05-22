@@ -33,13 +33,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   public class DomainObjectCollectionData : IDomainObjectCollectionData
   {
     private readonly List<ObjectID> _orderedObjectIDs = new List<ObjectID>();
-    private readonly Dictionary<ObjectID, DomainObject> _objectsByID = new Dictionary<ObjectID, DomainObject>();
+    private readonly Dictionary<ObjectID, IDomainObject> _objectsByID = new Dictionary<ObjectID, IDomainObject>();
 
     public DomainObjectCollectionData ()
     {
     }
 
-    public DomainObjectCollectionData (IEnumerable<DomainObject> domainObjects)
+    public DomainObjectCollectionData (IEnumerable<IDomainObject> domainObjects)
     {
       ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
@@ -85,12 +85,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return _objectsByID.ContainsKey(objectID);
     }
 
-    public DomainObject GetObject (int index)
+    public IDomainObject GetObject (int index)
     {
       return _objectsByID[_orderedObjectIDs[index]];
     }
 
-    public DomainObject? GetObject (ObjectID objectID)
+    public IDomainObject? GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
 
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       IncrementVersion();
     }
 
-    public void Insert (int index, DomainObject domainObject)
+    public void Insert (int index, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       IncrementVersion();
     }
 
-    public bool Remove (DomainObject domainObject)
+    public bool Remove (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       return true;
     }
 
-    public void Replace (int index, DomainObject value)
+    public void Replace (int index, IDomainObject value)
     {
       ArgumentUtility.CheckNotNull("value", value);
 
@@ -173,7 +173,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       }
     }
 
-    public void Sort (Comparison<DomainObject> comparison)
+    public void Sort (Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("comparison", comparison);
 
@@ -188,7 +188,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       IncrementVersion();
     }
 
-    public IEnumerator<DomainObject> GetEnumerator ()
+    public IEnumerator<IDomainObject> GetEnumerator ()
     {
       var enumeratedVersion = Version;
       for (int i = 0; i < Count; i++)

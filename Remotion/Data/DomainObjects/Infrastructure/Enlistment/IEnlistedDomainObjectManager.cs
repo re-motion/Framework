@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
 {
   /// <summary>
-  /// Provides an interface for classes managing the set of <see cref="DomainObject"/> references that can be used in a <see cref="ClientTransaction"/>.
+  /// Provides an interface for classes managing the set of <see cref="IDomainObject"/> references that can be used in a <see cref="ClientTransaction"/>.
   /// </summary>
   public interface IEnlistedDomainObjectManager
   {
@@ -35,18 +35,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
     /// Gets all domain objects enlisted by this <see cref="IEnlistedDomainObjectManager"/>.
     /// </summary>
     /// <value>The domain objects enlisted via <see cref="EnlistDomainObject"/>.</value>
-    IEnumerable<DomainObject> GetEnlistedDomainObjects ();
+    IEnumerable<IDomainObject> GetEnlistedDomainObjects ();
 
     /// <summary>
-    /// Returns the <see cref="DomainObject"/> enlisted for the given <paramref name="objectID"/> via <see cref="EnlistDomainObject"/>, or 
+    /// Returns the <see cref="IDomainObject"/> enlisted for the given <paramref name="objectID"/> via <see cref="EnlistDomainObject"/>, or 
     /// <see langword="null"/> if no such object exists.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> for which to retrieve a <see cref="DomainObject"/>.</param>
+    /// <param name="objectID">The <see cref="ObjectID"/> for which to retrieve a <see cref="IDomainObject"/>.</param>
     /// <returns>
-    /// A <see cref="DomainObject"/> with the given <paramref name="objectID"/> previously enlisted via <see cref="EnlistDomainObject"/>,
+    /// A <see cref="IDomainObject"/> with the given <paramref name="objectID"/> previously enlisted via <see cref="EnlistDomainObject"/>,
     /// or <see langword="null"/> if no such object exists.
     /// </returns>
-    DomainObject? GetEnlistedDomainObject (ObjectID objectID);
+    IDomainObject? GetEnlistedDomainObject (ObjectID objectID);
 
     /// <summary>
     /// Determines whether the specified <paramref name="domainObject"/> has been enlisted via <see cref="EnlistDomainObject"/>.
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
     /// <see langword="true" /> if the specified domain object has been enlisted via <see cref="EnlistDomainObject"/>; otherwise, 
     /// <see langword="false" />.
     /// </returns>
-    bool IsEnlisted (DomainObject domainObject);
+    bool IsEnlisted (IDomainObject domainObject);
 
     /// <summary>
     /// Enlists the given domain object in the transaction managed by this <see cref="IEnlistedDomainObjectManager"/>.
@@ -70,17 +70,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.Enlistment
     /// From within this method, the object's <see cref="DataContainer"/> must not be accessed (directly or indirectly).
     /// </remarks>
     /// <exception cref="InvalidOperationException">Another object has already been registered for the <paramref name="domainObject"/>'s 
-    /// <see cref="DomainObject.ID"/>.</exception>
-    void EnlistDomainObject (DomainObject domainObject);
+    /// <see cref="IDomainObject.ID"/>.</exception>
+    void EnlistDomainObject (IDomainObject domainObject);
 
     /// <summary>
-    /// Disenlists the given <see cref="DomainObject"/>, throwing an exception if the object wasn't enlisted in the first place.
+    /// Disenlists the given <see cref="IDomainObject"/>, throwing an exception if the object wasn't enlisted in the first place.
     /// </summary>
     /// <remarks>
     /// Note: Disenlist is presently only intended for use during DomainObject construction. Should this ever change, the default implementation of 
     /// <see cref="DictionaryBasedEnlistedDomainObjectManager"/> must be updated to implement garbage collection.
     /// </remarks>
-    /// <param name="domainObject">The <see cref="DomainObject"/> to be disenlisted.</param>
-    void DisenlistDomainObject (DomainObject domainObject);
+    /// <param name="domainObject">The <see cref="IDomainObject"/> to be disenlisted.</param>
+    void DisenlistDomainObject (IDomainObject domainObject);
   }
 }

@@ -248,7 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         var objectReference = LifetimeService.GetObjectReference(subTransaction, order1.ID);
         Assert.That(objectReference, Is.SameAs(order1));
-        Assert.That(objectReference.State.IsInvalid, Is.True);
+        Assert.That(((DomainObject)objectReference).State.IsInvalid, Is.True);
       }
     }
 

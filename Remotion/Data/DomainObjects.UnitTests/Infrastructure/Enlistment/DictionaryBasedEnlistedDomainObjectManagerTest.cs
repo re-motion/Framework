@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.Enlistment
       var orderB = DomainObjectMother.GetObjectInOtherTransaction<Order>(DomainObjectIDs.Order2);
 
       _manager.EnlistDomainObject(orderA);
-      var enlistedObjects = new List<DomainObject>();
+      var enlistedObjects = new List<IDomainObject>();
       foreach (var enlistedDomainObject in _manager.GetEnlistedDomainObjects())
       {
         enlistedObjects.Add(enlistedDomainObject);
@@ -147,7 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.Enlistment
 
       _manager.EnlistDomainObject(orderA);
       _manager.EnlistDomainObject(orderB);
-      var enlistedObjects = new List<DomainObject>();
+      var enlistedObjects = new List<IDomainObject>();
       foreach (var enlistedDomainObject in _manager.GetEnlistedDomainObjects())
       {
         enlistedObjects.Add(enlistedDomainObject);

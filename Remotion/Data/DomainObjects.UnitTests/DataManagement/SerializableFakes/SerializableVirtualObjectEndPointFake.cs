@@ -77,12 +77,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { throw new NotImplementedException(); }
     }
 
-    public DomainObject GetDomainObject ()
+    public IDomainObject GetDomainObject ()
     {
       throw new NotImplementedException();
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public IDomainObject GetDomainObjectReference ()
     {
       throw new NotImplementedException();
     }
@@ -122,7 +122,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       throw new NotImplementedException();
     }
@@ -187,12 +187,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public DomainObject GetData ()
+    public IDomainObject GetData ()
     {
       throw new NotImplementedException();
     }
 
-    public DomainObject GetOriginalData ()
+    public IDomainObject GetOriginalData ()
     {
       throw new NotImplementedException();
     }
@@ -207,17 +207,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { throw new NotImplementedException(); }
     }
 
-    public DomainObject GetOppositeObject ()
+    public IDomainObject GetOppositeObject ()
     {
       throw new NotImplementedException();
     }
 
-    public DomainObject GetOriginalOppositeObject ()
+    public IDomainObject GetOriginalOppositeObject ()
     {
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject)
+    public IDataManagementCommand CreateSetCommand (IDomainObject newRelatedObject)
     {
       throw new NotImplementedException();
     }
@@ -227,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public void MarkDataComplete (DomainObject item)
+    public void MarkDataComplete (IDomainObject item)
     {
       throw new NotImplementedException();
     }

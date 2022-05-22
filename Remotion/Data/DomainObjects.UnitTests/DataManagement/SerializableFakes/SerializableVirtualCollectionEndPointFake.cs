@@ -54,12 +54,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public bool HasBeenTouched => throw new NotImplementedException();
 
-    public DomainObject GetDomainObject ()
+    public IDomainObject GetDomainObject ()
     {
       throw new NotImplementedException();
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public IDomainObject GetDomainObjectReference ()
     {
       throw new NotImplementedException();
     }
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       throw new NotImplementedException();
     }
@@ -164,17 +164,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
 
     public bool? HasChangedFast => throw new NotImplementedException();
 
-    public void MarkDataComplete (DomainObject[] items)
+    public void MarkDataComplete (IDomainObject[] items)
     {
       throw new NotImplementedException();
     }
 
-    public IDataManagementCommand CreateAddCommand (DomainObject addedRelatedObject)
+    public IDataManagementCommand CreateAddCommand (IDomainObject addedRelatedObject)
     {
       throw new NotImplementedException();
     }
 
-    public void SortCurrentData (Comparison<DomainObject> comparison)
+    public void SortCurrentData (Comparison<IDomainObject> comparison)
     {
       throw new NotImplementedException();
     }

@@ -178,7 +178,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       var objectIDs = pendingLoadedObjectDataCollector.DataPendingRegistration.Select(data => data.ObjectID).ToList().AsReadOnly();
       _registrationListener.OnBeforeObjectRegistration(objectIDs);
 
-      var loadedDomainObjects = new List<DomainObject>(pendingLoadedObjectDataCollector.DataPendingRegistration.Count);
+      var loadedDomainObjects = new List<IDomainObject>(pendingLoadedObjectDataCollector.DataPendingRegistration.Count);
       try
       {
         foreach (var data in pendingLoadedObjectDataCollector.DataPendingRegistration)

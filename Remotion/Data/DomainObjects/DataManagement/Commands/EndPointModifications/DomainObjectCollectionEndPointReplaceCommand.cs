@@ -33,9 +33,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public DomainObjectCollectionEndPointReplaceCommand (
         IDomainObjectCollectionEndPoint modifiedEndPoint,
-        DomainObject replacedObject,
+        IDomainObject replacedObject,
         int index,
-        DomainObject replacementObject,
+        IDomainObject replacementObject,
         IDomainObjectCollectionData collectionData,
         IClientTransactionEventSink transactionEventSink)
       : base(
@@ -59,12 +59,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
       get { return _modifiedCollectionData; }
     }
 
-    public new DomainObject NewRelatedObject
+    public new IDomainObject NewRelatedObject
     {
       get { return base.NewRelatedObject!; }
     }
 
-    public new DomainObject OldRelatedObject
+    public new IDomainObject OldRelatedObject
     {
       get { return base.OldRelatedObject!; }
     }

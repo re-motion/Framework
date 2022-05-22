@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       get { return _eventRaiser; }
     }
 
-    protected override void OnDataChanging (OperationKind operation, DomainObject? affectedObject, int index)
+    protected override void OnDataChanging (OperationKind operation, IDomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
         ArgumentUtility.CheckNotNull("affectedObject", affectedObject!);
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       }
     }
 
-    protected override void OnDataChanged (OperationKind operation, DomainObject? affectedObject, int index)
+    protected override void OnDataChanged (OperationKind operation, IDomainObject? affectedObject, int index)
     {
       if (operation != OperationKind.Sort)
         ArgumentUtility.CheckNotNull("affectedObject", affectedObject!);

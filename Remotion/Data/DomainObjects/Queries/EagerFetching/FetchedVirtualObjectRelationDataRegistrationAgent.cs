@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       }
     }
 
-    private bool TrySetVirtualObjectEndPointData (RelationEndPointID endPointID, DomainObject? item)
+    private bool TrySetVirtualObjectEndPointData (RelationEndPointID endPointID, IDomainObject? item)
     {
       Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
       var endPoint = (IVirtualObjectEndPoint)_virtualEndPointProvider.GetOrCreateVirtualEndPoint(endPointID);

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     private DomainObjectCollectionEndPointDataManager _dataManager;
 
-    private Comparison<DomainObject> _comparison123;
+    private Comparison<IDomainObject> _comparison123;
 
     public override void SetUp ()
     {
@@ -683,7 +683,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(deserializedInstance.CurrentOppositeEndPoints.Length, Is.EqualTo(1));
     }
 
-    private int Compare123 (DomainObject x, DomainObject y)
+    private int Compare123 (IDomainObject x, IDomainObject y)
     {
       if (x == y)
         return 0;

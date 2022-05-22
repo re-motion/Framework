@@ -397,7 +397,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Sort ()
     {
-      Comparison<DomainObject> comparison = (one, two) => 0;
+      Comparison<IDomainObject> comparison = (one, two) => 0;
 
       _collectionEndPointMock.Setup(mock => mock.SortCurrentData(comparison)).Verifiable();
     }

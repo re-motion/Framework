@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       _collectionData = collectionData;
     }
 
-    public IEnumerator<DomainObject> GetEnumerator () => _collectionData.GetEnumerator();
+    public IEnumerator<IDomainObject> GetEnumerator () => _collectionData.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator () => _collectionData.GetEnumerator();
 
@@ -49,8 +49,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     void IVirtualCollectionData.Clear () => throw new NotSupportedException("Cannot clear a read-only collection.");
 
-    void IVirtualCollectionData.Add (DomainObject domainObject) => throw new NotSupportedException("Cannot add an item to a read-only collection.");
+    void IVirtualCollectionData.Add (IDomainObject domainObject) => throw new NotSupportedException("Cannot add an item to a read-only collection.");
 
-    bool IVirtualCollectionData.Remove (DomainObject domainObject) => throw new NotSupportedException("Cannot remove an item from a read-only collection.");
+    bool IVirtualCollectionData.Remove (IDomainObject domainObject) => throw new NotSupportedException("Cannot remove an item from a read-only collection.");
   }
 }

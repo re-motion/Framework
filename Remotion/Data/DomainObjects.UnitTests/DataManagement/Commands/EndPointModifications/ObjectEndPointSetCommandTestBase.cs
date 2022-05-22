@@ -25,8 +25,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
   {
     private Mock<IRelationEndPointProvider> _endPointProviderStub;
     private bool _oppositeObjectSetterCalled;
-    private DomainObject _oppositeObjectSetterObject;
-    private Action<DomainObject> _oppositeObjectSetter;
+    private IDomainObject _oppositeObjectSetterObject;
+    private Action<IDomainObject> _oppositeObjectSetter;
     private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
     protected Mock<IRelationEndPointProvider> EndPointProviderStub
@@ -39,12 +39,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
       get { return _oppositeObjectSetterCalled; }
     }
 
-    public DomainObject OppositeObjectSetterObject
+    public IDomainObject OppositeObjectSetterObject
     {
       get { return _oppositeObjectSetterObject; }
     }
 
-    public Action<DomainObject> OppositeObjectSetter
+    public Action<IDomainObject> OppositeObjectSetter
     {
       get { return _oppositeObjectSetter; }
     }

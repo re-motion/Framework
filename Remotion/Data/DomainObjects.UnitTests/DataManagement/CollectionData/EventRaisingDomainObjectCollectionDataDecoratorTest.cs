@@ -234,7 +234,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
           .Callback(() => Assert.That(_eventRaisingDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order4, _order3, _order1 })))
           .Verifiable();
 
-      var weight = new Dictionary<DomainObject, int> { { _order1, 3 }, { _order3, 2 }, { _order4, 1 } };
+      var weight = new Dictionary<IDomainObject, int> { { _order1, 3 }, { _order3, 2 }, { _order4, 1 } };
       _eventRaisingDomainObjectDecoratorWithRealContent.Sort((one, two) => weight[one].CompareTo(weight[two]));
 
       _eventRaiserMock.Verify();
