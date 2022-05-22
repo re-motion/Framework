@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       extensionMock
           .InSequence(sequence)
-          .Setup(_ => _.RollingBack(TestableClientTransaction, It.Is<IReadOnlyList<DomainObject>>(c => c.Count == 0)))
+          .Setup(_ => _.RollingBack(TestableClientTransaction, It.Is<IReadOnlyList<IDomainObject>>(c => c.Count == 0)))
           .Verifiable();
       clientTransactionMockEventReceiver
           .InSequence(sequence)
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
       extensionMock
           .InSequence(sequence)
-          .Setup(_ => _.RolledBack(TestableClientTransaction, It.Is<IReadOnlyList<DomainObject>>(c => c.Count == 0)))
+          .Setup(_ => _.RolledBack(TestableClientTransaction, It.Is<IReadOnlyList<IDomainObject>>(c => c.Count == 0)))
           .Verifiable();
 
       TestableClientTransaction.Rollback();
@@ -213,7 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.RolledBack(
                   TestableClientTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(_ => _.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(_ => _.SetEquals(new DomainObject[] { _order1, _customer1 }))))
           .Verifiable();
 
       TestableClientTransaction.Rollback();
@@ -311,7 +311,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.RolledBack(
                   TestableClientTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
           .Verifiable();
 
       TestableClientTransaction.Rollback();
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.RollingBack(
                   TestableClientTransaction,
-                  It.Is<IReadOnlyList<DomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+                  It.Is<IReadOnlyList<IDomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
           .Verifiable();
       clientTransactionMockEventReceiver
           .InSequence(sequence)
@@ -356,7 +356,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.PropertyValueChanging(
                   It.IsAny<ClientTransaction>(),
-                  It.IsAny<DomainObject>(),
+                  It.IsAny<IDomainObject>(),
                   It.IsAny<PropertyDefinition>(),
                   It.IsAny<object>(),
                   It.IsAny<object>())).Verifiable();
@@ -374,7 +374,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.PropertyValueChanged(
                   It.IsAny<ClientTransaction>(),
-                  It.IsAny<DomainObject>(),
+                  It.IsAny<IDomainObject>(),
                   It.IsAny<PropertyDefinition>(),
                   It.IsAny<object>(),
                   It.IsAny<object>()))
@@ -423,7 +423,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.RollingBack(
                   TestableClientTransaction,
-                  It.Is<IReadOnlyList<DomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+                  It.Is<IReadOnlyList<IDomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
           .Verifiable();
       clientTransactionMockEventReceiver
           .InSequence(sequence)
@@ -436,7 +436,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.PropertyValueChanging(
                   It.IsAny<ClientTransaction>(),
-                  It.IsAny<DomainObject>(),
+                  It.IsAny<IDomainObject>(),
                   It.IsAny<PropertyDefinition>(),
                   It.IsAny<object>(),
                   It.IsAny<object>()))
@@ -455,7 +455,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               _ => _.PropertyValueChanged(
                   It.IsAny<ClientTransaction>(),
-                  It.IsAny<DomainObject>(),
+                  It.IsAny<IDomainObject>(),
                   It.IsAny<PropertyDefinition>(),
                   It.IsAny<object>(),
                   It.IsAny<object>()))

@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
                   // Lazy matching because DataContainers don't have DomainObjects from the start
-                  It.Is<ReadOnlyCollection<DomainObject>>(list => list.SequenceEqual(new[] { dataContainer.DomainObject }))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(list => list.SequenceEqual(new[] { dataContainer.DomainObject }))))
           .Verifiable();
 
       var result = _agent.RegisterIfRequired(new[] { freshlyLoadedObject }, true);
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
                   // Lazy matching because DataContainers don't have DomainObjects from the start
-                  It.Is<ReadOnlyCollection<DomainObject>>(list => list.SequenceEqual(new[] { registerableDataContainer1.DomainObject, registerableDataContainer2.DomainObject }))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(list => list.SequenceEqual(new[] { registerableDataContainer1.DomainObject, registerableDataContainer2.DomainObject }))))
           .Verifiable();
 
       var allObjects =
@@ -289,7 +289,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
                   // Lazy matching because DataContainers don't have DomainObjects from the start
-                  It.Is<ReadOnlyCollection<DomainObject>>(list => list.SequenceEqual(new[] { registerableDataContainer1a.DomainObject }))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(list => list.SequenceEqual(new[] { registerableDataContainer1a.DomainObject }))))
           .Verifiable();
 
       var allObjects = new ILoadedObjectData[] { freshlyLoadedObject1a, freshlyLoadedObject1b };
@@ -345,7 +345,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
                   // Lazy matching because DataContainers don't have DomainObjects from the start
-                  It.Is<ReadOnlyCollection<DomainObject>>(list => list.SequenceEqual(new[] { registerableDataContainer1.DomainObject }))))
+                  It.Is<ReadOnlyCollection<IDomainObject>>(list => list.SequenceEqual(new[] { registerableDataContainer1.DomainObject }))))
           .Verifiable();
 
       Assert.That(

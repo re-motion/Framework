@@ -291,7 +291,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_ReferencingNonDomainObject"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+                  "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'IDomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingNonDomainObject.ClassReferencingNonDomainObject\r\n"
                   + "Property: BidirectionalRelationProperty"));
     }
@@ -303,7 +303,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
           () => ValidateMapping("NotSupportedRelations.Bidirectional_ReferencingObject"),
           Throws.InstanceOf<MappingException>()
               .With.Message.EqualTo(
-                  "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+                  "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'IDomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedRelations.Bidirectional_ReferencingObject.ClassReferencingObject\r\n"
                   + "Property: BidirectionalRelationProperty\r\n"
                   + "----------\r\n"

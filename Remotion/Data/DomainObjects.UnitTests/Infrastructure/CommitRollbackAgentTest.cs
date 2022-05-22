@@ -195,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       ExpectTransactionCommitting(
           sequence,
           new[] { _fakeChangedDomainObject, _fakeNewDomainObject },
-          (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrar) =>
+          (IReadOnlyList<IDomainObject> _, ICommittingEventRegistrar eventRegistrar) =>
               eventRegistrar.RegisterForAdditionalCommittingEvents(_fakeChangedDomainObject, _fakeNewDomainObject));
 
       // Second run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, fakeDeletedPersistableItem in commit set
@@ -209,7 +209,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       ExpectTransactionCommitting(
           sequence,
           new[] { _fakeChangedDomainObject, _fakeDeletedDomainObject, _fakeNewDomainObject },
-          (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrar) =>
+          (IReadOnlyList<IDomainObject> _, ICommittingEventRegistrar eventRegistrar) =>
               eventRegistrar.RegisterForAdditionalCommittingEvents(_fakeChangedDomainObject));
 
       // Third run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, fakeDeletedPersistableItem in commit set
@@ -309,16 +309,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     private void ExpectTransactionCommitting (
         MockSequence sequence,
         DomainObject[] domainObjects,
-        Action<IReadOnlyList<DomainObject>, ICommittingEventRegistrar> callback = null)
+        Action<IReadOnlyList<IDomainObject>, ICommittingEventRegistrar> callback = null)
     {
       _eventSinkWithMock
           .InSequence(sequence)
           .Setup(
               mock => mock.RaiseTransactionCommittingEvent(
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects)),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Callback(
-              (IReadOnlyList<DomainObject> domainObjectsParameter, ICommittingEventRegistrar eventRegistrarParameter) =>
+              (IReadOnlyList<IDomainObject> domainObjectsParameter, ICommittingEventRegistrar eventRegistrarParameter) =>
               {
                 Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
                 if (callback != null)
@@ -347,7 +347,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _eventSinkWithMock
           .InSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionCommittedEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.RaiseTransactionCommittedEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
     }
 
@@ -355,7 +355,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _eventSinkWithMock
           .InSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionRollingBackEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.RaiseTransactionRollingBackEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
     }
 
@@ -363,7 +363,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       _eventSinkWithMock
           .InSequence(sequence)
-          .Setup(mock => mock.RaiseTransactionRolledBackEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Setup(mock => mock.RaiseTransactionRolledBackEvent(It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
     }
   }

@@ -107,7 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       ArgumentUtility.CheckNotNull("loadedObject", loadedObject);
 
       listenerMock.Verify(
-          mock => mock.ObjectsLoaded(ClientTransaction.Current, It.Is<ReadOnlyCollection<DomainObject>>(_ => _.Contains(loadedObject))),
+          mock => mock.ObjectsLoaded(ClientTransaction.Current, It.Is<ReadOnlyCollection<IDomainObject>>(_ => _.Contains(loadedObject))),
           Times.AtLeastOnce());
     }
   }

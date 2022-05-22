@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(mock => mock.DataContainerMapRegistering(TestableClientTransaction, It.IsAny<DataContainer>())).Verifiable();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(doc => doc.Count == 1)))
+          .Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, It.Is<ReadOnlyCollection<IDomainObject>>(doc => doc.Count == 1)))
           .Verifiable();
 
       DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
@@ -383,7 +383,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(
               mock => mock.TransactionCommitting(
                   TestableClientTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { order })),
+                  It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { order })),
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Verifiable();
       _strictListenerMock
@@ -399,7 +399,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.TransactionCommitted(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { order }))))
+          .Setup(mock => mock.TransactionCommitted(TestableClientTransaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { order }))))
           .Verifiable();
 
       TestableClientTransaction.Commit();
@@ -418,7 +418,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var sequence = new MockSequence();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.TransactionRollingBack(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(doc => doc.Count == 1)))
+          .Setup(mock => mock.TransactionRollingBack(TestableClientTransaction, It.Is<ReadOnlyCollection<IDomainObject>>(doc => doc.Count == 1)))
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
@@ -430,7 +430,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.TransactionRolledBack(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(doc => doc.Count == 1)))
+          .Setup(mock => mock.TransactionRolledBack(TestableClientTransaction, It.Is<ReadOnlyCollection<IDomainObject>>(doc => doc.Count == 1)))
           .Verifiable();
 
       TestableClientTransaction.Rollback();
@@ -472,7 +472,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, It.IsAny<ReadOnlyCollection<DomainObject>>()))
+          .Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, It.IsAny<ReadOnlyCollection<IDomainObject>>()))
           .Verifiable();
 
       DomainObjectIDs.Customer1.GetObject<Customer>();
@@ -554,7 +554,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
       _strictListenerMock
           .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, It.IsAny<ReadOnlyCollection<DomainObject>>()))
+          .Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, It.IsAny<ReadOnlyCollection<IDomainObject>>()))
           .Verifiable();
 
       DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
@@ -644,7 +644,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _strictListenerMock
           .InSequence(sequence)
           .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { orderTicket1 }))
-          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(orderTicket1.State.IsUnchanged, Is.True))
+          .Callback((ClientTransaction _, IReadOnlyList<IDomainObject> _) => Assert.That(orderTicket1.State.IsUnchanged, Is.True))
           .Verifiable();
 
       _strictListenerMock
@@ -663,7 +663,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _strictListenerMock
           .InSequence(sequence)
           .Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, new[] { orderTicket1 }))
-          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(orderTicket1.State.IsNotLoadedYet, Is.True))
+          .Callback((ClientTransaction _, IReadOnlyList<IDomainObject> _) => Assert.That(orderTicket1.State.IsNotLoadedYet, Is.True))
           .Verifiable();
 
       UnloadService.UnloadData(TestableClientTransaction, orderTicket1.ID);

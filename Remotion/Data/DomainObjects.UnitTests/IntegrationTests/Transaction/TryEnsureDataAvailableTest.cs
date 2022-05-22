@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           mock => mock.ObjectsLoading(TestableClientTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => new[] { NotLoadedObject1.ID }.All(_.Contains))),
           Times.AtLeastOnce());
       ListenerMock.Verify(
-          mock => mock.ObjectsLoaded(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(_ => new[] { NotLoadedObject1 }.All(_.Contains))),
+          mock => mock.ObjectsLoaded(TestableClientTransaction, It.Is<ReadOnlyCollection<IDomainObject>>(_ => new[] { NotLoadedObject1 }.All(_.Contains))),
           Times.AtLeastOnce());
       CheckLoaded(NotLoadedObject1);
       Assert.That(result, Is.True);
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           mock => mock.ObjectsLoading(TestableClientTransaction, It.Is<ReadOnlyCollection<ObjectID>>(p => p.SetEquals(new[] { NotLoadedObject1.ID, NotLoadedObject2.ID }))),
           Times.AtLeastOnce());
       ListenerMock.Verify(
-          mock => mock.ObjectsLoaded(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new[] { NotLoadedObject1, NotLoadedObject2 }))),
+          mock => mock.ObjectsLoaded(TestableClientTransaction, It.Is<ReadOnlyCollection<IDomainObject>>(p => p.SetEquals(new[] { NotLoadedObject1, NotLoadedObject2 }))),
           Times.AtLeastOnce());
 
       ListenerMock.Verify(

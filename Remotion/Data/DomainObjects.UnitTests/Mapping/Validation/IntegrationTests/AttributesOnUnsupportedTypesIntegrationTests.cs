@@ -43,11 +43,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.IntegrationTe
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
                   + "Property: StringPropertyWithExtensibleEnumPropertyAttribute\r\n"
                   + "----------\r\n"
-                  + "The 'MandatoryAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+                  + "The 'MandatoryAttribute' may be only applied to properties assignable to types 'IDomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
                   + "Property: StringPropertyWithMandatoryPropertyAttribute\r\n"
                   + "----------\r\n"
-                  + "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'DomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
+                  + "The 'DBBidirectionalRelationAttribute' may be only applied to properties assignable to types 'IDomainObject', 'ObjectList`1', or 'IObjectList`1'.\r\n\r\n"
                   + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.AttributesOnUnsupportedTypes.ClassWithAttributesOnUnsupportedTypes\r\n"
                   + "Property: StringPropertyWithBidirectionalRelationAttribute"));
     }

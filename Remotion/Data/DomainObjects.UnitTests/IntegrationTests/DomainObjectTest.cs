@@ -1200,7 +1200,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             .Setup(
                 _ => _.Committing(
                     TestableClientTransaction,
-                    It.Is<ReadOnlyCollection<DomainObject>>(c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })),
+                    It.Is<ReadOnlyCollection<IDomainObject>>(c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 })),
                     It.IsAny<ICommittingEventRegistrar>()))
             .Verifiable();
 
@@ -1257,7 +1257,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
             .Setup(
                 _ => _.Committed(
                     TestableClientTransaction,
-                    It.Is<ReadOnlyCollection<DomainObject>>(c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }))))
+                    It.Is<ReadOnlyCollection<IDomainObject>>(c => c.SetEquals(new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }))))
             .Verifiable();
 
         //14
