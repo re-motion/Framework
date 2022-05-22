@@ -54,6 +54,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     }
 
     [Test]
+    public void GetAllOrders ()
+    {
+      var orders = QueryFactory.CreateLinqQuery<IOrder>()
+          .ToArray()
+          .OrderBy(e => e.ID)
+          .ToArray();
+
+      Assert.That(orders.Length, Is.EqualTo(3));
+      Assert.That(orders[0].ID, Is.EqualTo(new ObjectID(typeof(SimpleOrder), Guid.Parse("6B71C813-86A6-44D0-B0E7-846C37F41D47"))));
+      Assert.That(orders[1].ID, Is.EqualTo(new ObjectID(typeof(SimpleOrder), Guid.Parse("DFFF4E9C-1EE1-4D36-977C-037909173CE0"))));
+      Assert.That(orders[2].ID, Is.EqualTo(new ObjectID(typeof(ComplexOrder), Guid.Parse("E4B34F09-466B-437C-922F-045588CA4CA3"))));
+    }
+
+    [Test]
     public void TestLazyLoading ()
     {
       var order = QueryFactory.CreateLinqQuery<IOrder>()
