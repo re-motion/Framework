@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     bool IList.Contains (object? value)
     {
-      if (value is DomainObject domainObject)
+      if (value is IDomainObject domainObject)
         return ReferenceEquals(domainObject, GetObject(domainObject.ID));
       return false;
     }
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     int IList.IndexOf (object? value)
     {
       return _dataStrategy
-          .Select((obj, index) => new KeyValuePair<DomainObject, int>(obj, index))
+          .Select((obj, index) => new KeyValuePair<IDomainObject, int>(obj, index))
           .Where(kvp => ReferenceEquals(kvp.Key, value))
           .Select(kvp => (int?)kvp.Value).FirstOrDefault() ?? -1;
     }

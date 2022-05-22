@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return SafeInnerDataManager.GetLoadedDataByObjectState(predicate);
     }
 
-    public void MarkInvalid (DomainObject domainObject)
+    public void MarkInvalid (IDomainObject domainObject)
     {
       SafeInnerDataManager.MarkInvalid(domainObject);
     }
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       SafeInnerDataManager.Rollback();
     }
 
-    public IDataManagementCommand CreateDeleteCommand (DomainObject deletedObject)
+    public IDataManagementCommand CreateDeleteCommand (IDomainObject deletedObject)
     {
       return SafeInnerDataManager.CreateDeleteCommand(deletedObject);
     }

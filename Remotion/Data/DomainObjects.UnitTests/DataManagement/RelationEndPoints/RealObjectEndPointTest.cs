@@ -198,14 +198,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       RealObjectEndPointTestHelper.SetOppositeObjectID(_endPoint, DomainObjectIDs.Order1);
 
-      DomainObject oppositeObject;
+      IDomainObject oppositeObject;
       using (ClientTransactionScope.EnterNullScope())
       {
         oppositeObject = _endPoint.GetOppositeObject();
       }
 
       Assert.That(oppositeObject, Is.SameAs(LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1)));
-      Assert.That(oppositeObject.State.IsNotLoadedYet, Is.True, "Data has not been loaded");
+      Assert.That(((DomainObject)oppositeObject).State.IsNotLoadedYet, Is.True, "Data has not been loaded");
     }
 
     [Test]
@@ -250,13 +250,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var oppositeObject = _endPoint.GetOppositeObject();
       Assert.That(oppositeObject.ID, Is.EqualTo(objectID));
-      Assert.That(oppositeObject.State.IsNotLoadedYet, Is.True, "Data has not been loaded");
+      Assert.That(((DomainObject)oppositeObject).State.IsNotLoadedYet, Is.True, "Data has not been loaded");
 
       Assert.That(() => oppositeObject.EnsureDataAvailable(), Throws.TypeOf<ObjectsNotFoundException>());
 
       var oppositeObject2 = _endPoint.GetOppositeObject();
       Assert.That(oppositeObject2.ID, Is.EqualTo(objectID));
-      Assert.That(oppositeObject2.State.IsInvalid, Is.True, "Data has not been found");
+      Assert.That(((DomainObject)oppositeObject2).State.IsInvalid, Is.True, "Data has not been found");
     }
 
     [Test]
@@ -268,7 +268,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var originalOppositeObject = _endPoint.GetOriginalOppositeObject();
 
       Assert.That(originalOppositeObject, Is.SameAs(DomainObjectIDs.Order1.GetObjectReference<Order>()));
-      Assert.That(originalOppositeObject.State.IsNotLoadedYet, Is.True);
+      Assert.That(((DomainObject)originalOppositeObject).State.IsNotLoadedYet, Is.True);
     }
 
     [Test]
@@ -356,12 +356,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       var fakeResult = new Mock<IDataManagementCommand>();
       var relatedObject = DomainObjectMother.CreateFakeObject<Order>();
 
-      Action<DomainObject> actualOppositeObjectSetter = null;
+      Action<IDomainObject> actualOppositeObjectSetter = null;
 
       _syncStateMock
-          .Setup(mock => mock.CreateSetCommand(_endPoint, relatedObject, It.IsAny<Action<DomainObject>>()))
+          .Setup(mock => mock.CreateSetCommand(_endPoint, relatedObject, It.IsAny<Action<IDomainObject>>()))
           .Returns(fakeResult.Object)
-          .Callback((IRealObjectEndPoint _, DomainObject _, Action<DomainObject> oppositeObjectSetter) => { actualOppositeObjectSetter = oppositeObjectSetter; })
+          .Callback((IRealObjectEndPoint _, DomainObject _, Action<IDomainObject> oppositeObjectSetter) => { actualOppositeObjectSetter = oppositeObjectSetter; })
           .Verifiable();
 
       var result = _endPoint.CreateSetCommand(relatedObject);

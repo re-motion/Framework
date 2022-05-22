@@ -55,7 +55,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
     }
 
-    public virtual void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 
@@ -63,60 +63,94 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
     }
 
-    public virtual void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public virtual void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
     }
 
-    public virtual void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public virtual void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
     }
 
-    public virtual void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
     }
 
-    public virtual void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectDeleted (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
     }
 
-    public virtual void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public virtual void PropertyValueReading (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
     }
 
-    public virtual void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
+    public virtual void PropertyValueRead (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? value,
+        ValueAccess valueAccess)
     {
     }
 
-    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public virtual void PropertyValueChanging (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? oldValue,
+        object? newValue)
     {
     }
 
-    public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public virtual void PropertyValueChanged (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? oldValue,
+        object? newValue)
     {
     }
 
-    public virtual void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
-    {
-    }
-
-    public virtual void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
+    public virtual void RelationReading (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        ValueAccess valueAccess)
     {
     }
 
     public virtual void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject? relatedObject,
+        ValueAccess valueAccess)
+    {
+    }
+
+    public virtual void RelationRead (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
     {
     }
 
-    public virtual void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public virtual void RelationChanging (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
     }
 
-    public virtual void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public virtual void RelationChanged (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
     }
 
@@ -130,7 +164,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return results;
     }
 
-    public virtual void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public virtual void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
     }
 
@@ -138,15 +172,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
     }
 
-    public virtual void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 
-    public virtual void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 
-    public virtual void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public virtual void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
     }
 
@@ -162,11 +196,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
     }
 
-    public virtual void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectMarkedInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
     }
 
-    public virtual void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public virtual void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
     }
 

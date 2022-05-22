@@ -620,8 +620,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var orderItemsEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(order.OrderItems);
       EnsureEndPointLoadedAndComplete(orderItemsEndPoint.ID);
 
-      var orderItem1 = orderItemsEndPoint.Collection[0];
-      var orderItem2 = orderItemsEndPoint.Collection[1];
+      var orderItem1 = (DomainObject)orderItemsEndPoint.Collection[0];
+      var orderItem2 = (DomainObject)orderItemsEndPoint.Collection[1];
 
       UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, orderItemsEndPoint.ID);
 
@@ -809,8 +809,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       var orderItemsEndPoint = DomainObjectCollectionDataTestHelper.GetAssociatedEndPoint(order.OrderItems);
       EnsureEndPointLoadedAndComplete(orderItemsEndPoint.ID);
 
-      var orderItem1 = orderItemsEndPoint.Collection[0];
-      var orderItem2 = orderItemsEndPoint.Collection[1];
+      var orderItem1 = (DomainObject)orderItemsEndPoint.Collection[0];
+      var orderItem2 = (DomainObject)orderItemsEndPoint.Collection[1];
 
       var result = UnloadService.TryUnloadVirtualEndPointAndItemData(TestableClientTransaction, orderItemsEndPoint.ID);
 
@@ -993,7 +993,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
 
       customer.Orders[0].RegisterForCommit();
 
-      Assert.That(parentOrdersEndPoint.Collection[0].State.IsChanged, Is.True);
+      Assert.That(((DomainObject)parentOrdersEndPoint.Collection[0]).State.IsChanged, Is.True);
 
       var subTransaction = TestableClientTransaction.CreateSubTransaction();
       var subTransactionDataManager = ClientTransactionTestHelper.GetDataManager(subTransaction);

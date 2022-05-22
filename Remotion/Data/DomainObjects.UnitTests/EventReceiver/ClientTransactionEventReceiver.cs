@@ -28,17 +28,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // member fields
 
     private readonly ClientTransaction _clientTransaction;
-    private List<IReadOnlyList<DomainObject>> _loadedDomainObjectLists;
-    private List<IReadOnlyList<DomainObject>> _committingDomainObjectLists;
-    private List<IReadOnlyList<DomainObject>> _committedDomainObjectLists;
+    private List<IReadOnlyList<IDomainObject>> _loadedDomainObjectLists;
+    private List<IReadOnlyList<IDomainObject>> _committingDomainObjectLists;
+    private List<IReadOnlyList<IDomainObject>> _committedDomainObjectLists;
 
     // construction and disposing
 
     public ClientTransactionEventReceiver (ClientTransaction clientTransaction)
     {
-      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
-      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
-      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
+      _loadedDomainObjectLists = new List<IReadOnlyList<IDomainObject>>();
+      _committingDomainObjectLists = new List<IReadOnlyList<IDomainObject>>();
+      _committedDomainObjectLists = new List<IReadOnlyList<IDomainObject>>();
       _clientTransaction = clientTransaction;
 
       _clientTransaction.Loaded += ClientTransaction_Loaded;
@@ -50,9 +50,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public void Clear ()
     {
-      _loadedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
-      _committingDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
-      _committedDomainObjectLists = new List<IReadOnlyList<DomainObject>>();
+      _loadedDomainObjectLists = new List<IReadOnlyList<IDomainObject>>();
+      _committingDomainObjectLists = new List<IReadOnlyList<IDomainObject>>();
+      _committedDomainObjectLists = new List<IReadOnlyList<IDomainObject>>();
     }
 
     public void Unregister ()
@@ -77,17 +77,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
       _committedDomainObjectLists.Add(args.DomainObjects);
     }
 
-    public List<IReadOnlyList<DomainObject>> LoadedDomainObjectLists
+    public List<IReadOnlyList<IDomainObject>> LoadedDomainObjectLists
     {
       get { return _loadedDomainObjectLists; }
     }
 
-    public List<IReadOnlyList<DomainObject>> CommittingDomainObjectLists
+    public List<IReadOnlyList<IDomainObject>> CommittingDomainObjectLists
     {
       get { return _committingDomainObjectLists; }
     }
 
-    public List<IReadOnlyList<DomainObject>> CommittedDomainObjectLists
+    public List<IReadOnlyList<IDomainObject>> CommittedDomainObjectLists
     {
       get { return _committedDomainObjectLists; }
     }

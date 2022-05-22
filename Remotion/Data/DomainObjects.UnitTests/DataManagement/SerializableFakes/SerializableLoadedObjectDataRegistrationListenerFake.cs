@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<DomainObject> actuallyLoadedDomainObjects)
+    public void OnAfterObjectRegistration (IReadOnlyList<ObjectID> loadedObjectIDs, IReadOnlyList<IDomainObject> actuallyLoadedDomainObjects)
     {
       throw new NotImplementedException();
     }

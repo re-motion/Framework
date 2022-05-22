@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// Provides an interface for an encapsulation of the data stored inside a <see cref="DomainObjectCollection"/>. A number of decorators
   /// implements this interface in order to wrap the data store with additional functionality.
   /// </summary>
-  public interface IDomainObjectCollectionData : IReadOnlyCollection<DomainObject>
+  public interface IDomainObjectCollectionData : IReadOnlyCollection<IDomainObject>
   {
     Type? RequiredItemType { get; }
     bool IsReadOnly { get; }
@@ -36,17 +36,17 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     bool ContainsObjectID (ObjectID objectID);
 
-    DomainObject GetObject (int index);
-    DomainObject? GetObject (ObjectID objectID);
+    IDomainObject GetObject (int index);
+    IDomainObject? GetObject (ObjectID objectID);
 
     int IndexOf (ObjectID objectID);
 
     void Clear ();
-    void Insert (int index, DomainObject domainObject);
-    bool Remove (DomainObject domainObject); // this overload should be called from DomainObjectCollection.Remove (DomainObject)
+    void Insert (int index, IDomainObject domainObject);
+    bool Remove (IDomainObject domainObject); // this overload should be called from DomainObjectCollection.Remove (DomainObject)
     bool Remove (ObjectID objectID); // this overload should be called from DomainObjectCollection.Remove (ObjectID)
-    void Replace (int index, DomainObject value);
+    void Replace (int index, IDomainObject value);
 
-    void Sort (Comparison<DomainObject> comparison);
+    void Sort (Comparison<IDomainObject> comparison);
   }
 }

@@ -161,7 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
     [Test]
     public void GetObjectReference ()
     {
-      var result = LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1);
+      var result = (DomainObject)LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1);
 
       Assert.That(result, Is.InstanceOf(typeof(Order)));
       Assert.That(result.ID, Is.EqualTo(DomainObjectIDs.Order1));

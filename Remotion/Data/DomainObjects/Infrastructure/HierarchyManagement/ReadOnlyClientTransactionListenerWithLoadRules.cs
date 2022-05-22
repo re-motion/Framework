@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
       base.NewObjectCreating(clientTransaction, type);
     }
 
-    public override void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
+    public override void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -88,7 +88,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     }
 
     public override void PropertyValueChanging (
-        ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? oldValue,
+        object? newValue)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -112,10 +116,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
 
     public override void RelationChanging (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject? oldRelatedObject,
-        DomainObject? newRelatedObject)
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);

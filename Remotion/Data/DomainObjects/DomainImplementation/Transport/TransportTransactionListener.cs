@@ -34,28 +34,38 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       _transporter = transporter;
     }
 
-    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public override void PropertyValueChanging (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? oldValue,
+        object? newValue)
     {
       CheckDomainObjectForChangedProperty(domainObject);
     }
 
-    public override void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public override void RelationChanging (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       if (!relationEndPointDefinition.IsVirtual)
         CheckDomainObjectForChangedProperty(domainObject);
     }
 
-    public override void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public override void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       throw new InvalidOperationException("The transport transaction cannot be committed.");
     }
 
-    public override void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public override void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       throw new InvalidOperationException("The transport transaction cannot be rolled back.");
     }
 
-    private void CheckDomainObjectForChangedProperty (DomainObject domainObject)
+    private void CheckDomainObjectForChangedProperty (IDomainObject domainObject)
     {
       if (_transporter == null)
         throw new InvalidOperationException("Cannot use the transported transaction for changing properties after it has been deserialized.");

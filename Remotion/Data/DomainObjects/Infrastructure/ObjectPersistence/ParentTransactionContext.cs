@@ -67,31 +67,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return _parentTransaction.CreateNewObjectID(classDefinition);
     }
 
-    public DomainObject GetObject (ObjectID objectID)
+    public IDomainObject GetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return _parentTransaction.GetObject(objectID, false);
     }
 
-    public DomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs)
+    public IDomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       return _parentTransaction.GetObjects<DomainObject>(objectIDs);
     }
 
-    public DomainObject? TryGetObject (ObjectID objectID)
+    public IDomainObject? TryGetObject (ObjectID objectID)
     {
       ArgumentUtility.CheckNotNull("objectID", objectID);
       return _parentTransaction.TryGetObject(objectID);
     }
 
-    public DomainObject?[] TryGetObjects (IEnumerable<ObjectID> objectIDs)
+    public IDomainObject?[] TryGetObjects (IEnumerable<ObjectID> objectIDs)
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
       return _parentTransaction.TryGetObjects<DomainObject>(objectIDs);
     }
 
-    public DomainObject? ResolveRelatedObject (RelationEndPointID relationEndPointID)
+    public IDomainObject? ResolveRelatedObject (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.One)
@@ -101,7 +101,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       return endPoint.GetData();
     }
 
-    public IEnumerable<DomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID)
+    public IEnumerable<IDomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID)
     {
       ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
       if (!relationEndPointID.Definition.IsVirtual || relationEndPointID.Definition.Cardinality != CardinalityType.Many)

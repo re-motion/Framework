@@ -30,13 +30,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     ReadOnlyDomainObjectCollectionDataDecorator OriginalCollectionData { get; }
 
     IRealObjectEndPoint[] OriginalOppositeEndPoints { get; }
-    DomainObject[] OriginalItemsWithoutEndPoints { get; }
+    IDomainObject[] OriginalItemsWithoutEndPoints { get; }
     IRealObjectEndPoint[] CurrentOppositeEndPoints { get; }
 
-    bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject);
+    bool ContainsOriginalItemWithoutEndPoint (IDomainObject domainObject);
 
-    void SortCurrentData (Comparison<DomainObject> comparison);
-    void SortCurrentAndOriginalData (Comparison<DomainObject> comparison);
+    void SortCurrentData (Comparison<IDomainObject> comparison);
+    void SortCurrentAndOriginalData (Comparison<IDomainObject> comparison);
     void SetDataFromSubTransaction (IDomainObjectCollectionEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider);
   }
 }

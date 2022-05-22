@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     private readonly RelationEndPointID _endPointID;
 
-    private DomainObject? _currentOppositeObject;
-    private DomainObject? _originalOppositeObject;
+    private IDomainObject? _currentOppositeObject;
+    private IDomainObject? _originalOppositeObject;
 
     private IRealObjectEndPoint? _currentOppositeEndPoint;
     private IRealObjectEndPoint? _originalOppositeEndPoint;
@@ -45,13 +45,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _endPointID; }
     }
 
-    public DomainObject? CurrentOppositeObject
+    public IDomainObject? CurrentOppositeObject
     {
       get { return _currentOppositeObject; }
       set { _currentOppositeObject = value; }
     }
 
-    public DomainObject? OriginalOppositeObject
+    public IDomainObject? OriginalOppositeObject
     {
       get { return _originalOppositeObject; }
     }
@@ -66,7 +66,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _originalOppositeEndPoint; }
     }
 
-    public DomainObject? OriginalItemWithoutEndPoint
+    public IDomainObject? OriginalItemWithoutEndPoint
     {
       get { return OriginalOppositeEndPoint == null ? OriginalOppositeObject : null; }
     }
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _currentOppositeObject = null;
     }
 
-    public void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void RegisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -130,7 +130,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       _originalOppositeObject = domainObject;
     }
 
-    public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void UnregisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 

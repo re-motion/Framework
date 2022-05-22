@@ -60,12 +60,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void RegisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
 
-    public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void UnregisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
@@ -95,13 +95,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public DomainObject CurrentOppositeObject
+    public IDomainObject CurrentOppositeObject
     {
       get { throw new NotImplementedException(); }
       set { throw new NotImplementedException(); }
     }
 
-    public DomainObject OriginalOppositeObject
+    public IDomainObject OriginalOppositeObject
     {
       get { throw new NotImplementedException(); }
     }
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { return null; }
     }
 
-    public DomainObject OriginalItemWithoutEndPoint
+    public IDomainObject OriginalItemWithoutEndPoint
     {
       get { throw new NotImplementedException(); }
     }

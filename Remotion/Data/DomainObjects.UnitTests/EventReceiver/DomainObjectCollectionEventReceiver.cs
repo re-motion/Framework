@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     // member fields
 
-    private DomainObject _addingDomainObject;
-    private DomainObject _addedDomainObject;
+    private IDomainObject _addingDomainObject;
+    private IDomainObject _addedDomainObject;
 
     private DomainObjectCollection _removingDomainObjects;
     private DomainObjectCollection _removedDomainObjects;
@@ -76,12 +76,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     public bool Cancel { get; set; }
 
-    public DomainObject AddingDomainObject
+    public IDomainObject AddingDomainObject
     {
       get { return _addingDomainObject; }
     }
 
-    public DomainObject AddedDomainObject
+    public IDomainObject AddedDomainObject
     {
       get { return _addedDomainObject; }
     }

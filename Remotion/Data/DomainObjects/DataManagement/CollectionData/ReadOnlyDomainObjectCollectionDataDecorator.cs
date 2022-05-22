@@ -43,12 +43,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       throw new NotSupportedException("Cannot clear a read-only collection.");
     }
 
-    public override void Insert (int index, DomainObject domainObject)
+    public override void Insert (int index, IDomainObject domainObject)
     {
       throw new NotSupportedException("Cannot insert an item into a read-only collection.");
     }
 
-    public override bool Remove (DomainObject domainObject)
+    public override bool Remove (IDomainObject domainObject)
     {
       throw new NotSupportedException("Cannot remove an item from a read-only collection.");
     }
@@ -58,12 +58,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       throw new NotSupportedException("Cannot remove an item from a read-only collection.");
     }
 
-    public override void Replace (int index, DomainObject newDomainObject)
+    public override void Replace (int index, IDomainObject newDomainObject)
     {
       throw new NotSupportedException("Cannot replace an item in a read-only collection.");
     }
 
-    public override void Sort (Comparison<DomainObject> comparison)
+    public override void Sort (Comparison<IDomainObject> comparison)
     {
       throw new NotSupportedException("Cannot sort a read-only collection.");
     }

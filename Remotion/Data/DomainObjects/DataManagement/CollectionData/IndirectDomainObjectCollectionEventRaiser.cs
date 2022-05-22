@@ -37,22 +37,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public IDomainObjectCollectionEventRaiser? EventRaiser { get; set; }
 
-    public void BeginAdd (int index, DomainObject domainObject)
+    public void BeginAdd (int index, IDomainObject domainObject)
     {
       GetAndCheckEventRaiser().BeginAdd(index, domainObject);
     }
 
-    public void EndAdd (int index, DomainObject domainObject)
+    public void EndAdd (int index, IDomainObject domainObject)
     {
       GetAndCheckEventRaiser().EndAdd(index, domainObject);
     }
 
-    public void BeginRemove (int index, DomainObject domainObject)
+    public void BeginRemove (int index, IDomainObject domainObject)
     {
       GetAndCheckEventRaiser().BeginRemove(index, domainObject);
     }
 
-    public void EndRemove (int index, DomainObject domainObject)
+    public void EndRemove (int index, IDomainObject domainObject)
     {
       GetAndCheckEventRaiser().EndRemove(index, domainObject);
     }

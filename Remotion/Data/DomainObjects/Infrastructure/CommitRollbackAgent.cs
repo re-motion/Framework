@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    private void EndCommit (ReadOnlyCollection<DomainObject> changedDomainObjects)
+    private void EndCommit (ReadOnlyCollection<IDomainObject> changedDomainObjects)
     {
       _eventSink.RaiseTransactionCommittedEvent(changedDomainObjects);
     }
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
 
-    private void EndRollback (ReadOnlyCollection<DomainObject> changedDomainObjects)
+    private void EndRollback (ReadOnlyCollection<IDomainObject> changedDomainObjects)
     {
       _eventSink.RaiseTransactionRolledBackEvent(changedDomainObjects);
     }

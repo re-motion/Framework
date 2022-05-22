@@ -142,7 +142,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     private ClientTransaction? _clientTransaction;
     private IDataContainerEventListener? _eventListener;
-    private DomainObject? _domainObject;
+    private IDomainObject? _domainObject;
 
     private RelationEndPointID[]? _associatedRelationEndPointIDs;
 
@@ -397,7 +397,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// Gets the <see cref="Remotion.Data.DomainObjects.DomainObject"/> associated with the <see cref="DataContainer"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">This instance has not been associated with a <see cref="DomainObject"/> yet.</exception>
-    public DomainObject DomainObject
+    public IDomainObject DomainObject
     {
       get
       {
@@ -682,7 +682,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _eventListener = null;
     }
 
-    public void SetDomainObject (DomainObject domainObject)
+    public void SetDomainObject (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 

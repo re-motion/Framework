@@ -38,12 +38,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     public abstract ObjectID? OppositeObjectID { get; }
     public abstract ObjectID? OriginalOppositeObjectID { get; }
 
-    public abstract DomainObject? GetOppositeObject ();
-    public abstract DomainObject? GetOriginalOppositeObject ();
+    public abstract IDomainObject? GetOppositeObject ();
+    public abstract IDomainObject? GetOriginalOppositeObject ();
 
     protected abstract void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint);
 
-    public abstract IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject);
+    public abstract IDataManagementCommand CreateSetCommand (IDomainObject? newRelatedObject);
 
     public override void ValidateMandatory ()
     {
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
       }
     }
 
-    public override sealed IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
+    public override sealed IDataManagementCommand CreateRemoveCommand (IDomainObject removedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
 

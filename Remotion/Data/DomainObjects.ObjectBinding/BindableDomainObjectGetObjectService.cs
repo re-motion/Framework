@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
 
       var objectID = ObjectID.Parse(uniqueIdentifier);
-      var domainObjectOrNull = LifetimeService.TryGetObject(clientTransaction, objectID);
+      var domainObjectOrNull = (DomainObject?)LifetimeService.TryGetObject(clientTransaction, objectID);
       if (domainObjectOrNull == null)
         return null;
       if (domainObjectOrNull.State.IsInvalid)

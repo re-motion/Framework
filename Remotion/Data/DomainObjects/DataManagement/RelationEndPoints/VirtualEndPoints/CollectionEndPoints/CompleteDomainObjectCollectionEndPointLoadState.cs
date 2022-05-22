@@ -68,7 +68,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return DataManager.HasDataChangedFast();
     }
 
-    public new void MarkDataComplete (IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
+    public new void MarkDataComplete (
+        IDomainObjectCollectionEndPoint collectionEndPoint,
+        IEnumerable<IDomainObject> items,
+        Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("items", items);
@@ -77,7 +80,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       base.MarkDataComplete(collectionEndPoint, items, stateSetter);
     }
 
-    public void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<DomainObject> comparison)
+    public void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("comparison", comparison);
@@ -149,7 +152,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
           collectionEndPoint, newCollection, DataManager.CollectionData, collectionEndPointCollectionManager, TransactionEventSink);
     }
 
-    public IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject removedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
@@ -192,7 +195,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return new DomainObjectCollectionEndPointDeleteCommand(collectionEndPoint, DataManager.CollectionData, TransactionEventSink);
     }
 
-    public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
+    public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject insertedRelatedObject, int index)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("insertedRelatedObject", insertedRelatedObject);
@@ -207,14 +210,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
           TransactionEventSink);
     }
 
-    public IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject)
+    public IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject addedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
 
       return CreateInsertCommand(collectionEndPoint, addedRelatedObject, DataManager.CollectionData.Count);
     }
 
-    public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
+    public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, IDomainObject replacementObject)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("replacementObject", replacementObject);
@@ -235,12 +238,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return DataManager.OriginalOppositeEndPoints;
     }
 
-    protected override IEnumerable<DomainObject> GetOriginalItemsWithoutEndPoints ()
+    protected override IEnumerable<IDomainObject> GetOriginalItemsWithoutEndPoints ()
     {
       return DataManager.OriginalItemsWithoutEndPoints;
     }
 
-    private void CheckAddedObject (DomainObject domainObject)
+    private void CheckAddedObject (IDomainObject domainObject)
     {
       if (ContainsUnsynchronizedOppositeEndPoint(domainObject.ID))
       {
@@ -269,7 +272,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       }
     }
 
-    private void CheckRemovedObject (DomainObject domainObject)
+    private void CheckRemovedObject (IDomainObject domainObject)
     {
       if (ContainsUnsynchronizedOppositeEndPoint(domainObject.ID))
       {

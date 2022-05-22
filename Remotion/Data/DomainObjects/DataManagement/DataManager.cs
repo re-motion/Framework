@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _invalidDomainObjectManager.MarkInvalid(domainObject);
     }
 
-    public void MarkInvalid (DomainObject domainObject)
+    public void MarkInvalid (IDomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
@@ -337,7 +337,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       return _relationEndPointManager.GetOrCreateVirtualEndPoint(endPointID);
     }
 
-    public IDataManagementCommand CreateDeleteCommand (DomainObject deletedObject)
+    public IDataManagementCommand CreateDeleteCommand (IDomainObject deletedObject)
     {
       ArgumentUtility.CheckNotNull("deletedObject", deletedObject);
 
@@ -362,7 +362,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      var domainObjects = new List<DomainObject>();
+      var domainObjects = new List<IDomainObject>();
       var problematicDataContainers = new List<KeyValuePair<ObjectID, DataContainerState>>();
       var commands = new List<IDataManagementCommand>();
       var dataContainerStateDiscarded = new DataContainerState.Builder().SetDiscarded().Value;

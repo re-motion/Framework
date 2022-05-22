@@ -58,7 +58,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       EndPointLoader.LoadEndPointAndGetNewState(endPoint);
     }
 
-    public new void MarkDataComplete (IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
+    public new void MarkDataComplete (
+        IDomainObjectCollectionEndPoint collectionEndPoint,
+        IEnumerable<IDomainObject> items,
+        Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("items", items);
@@ -70,7 +73,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       eventRaiser.WithinReplaceData();
     }
 
-    public void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<DomainObject> comparison)
+    public void SortCurrentData (IDomainObjectCollectionEndPoint collectionEndPoint, Comparison<IDomainObject> comparison)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("comparison", comparison);
@@ -91,7 +94,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return completeState.CreateSetCollectionCommand(collectionEndPoint, newCollection, collectionEndPointCollectionManager);
     }
 
-    public IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject removedRelatedObject)
+    public IDataManagementCommand CreateRemoveCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject removedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
@@ -108,7 +111,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return completeState.CreateDeleteCommand(collectionEndPoint);
     }
 
-    public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject insertedRelatedObject, int index)
+    public IDataManagementCommand CreateInsertCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject insertedRelatedObject, int index)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("insertedRelatedObject", insertedRelatedObject);
@@ -117,7 +120,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return completeState.CreateInsertCommand(collectionEndPoint, insertedRelatedObject, index);
     }
 
-    public IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, DomainObject addedRelatedObject)
+    public IDataManagementCommand CreateAddCommand (IDomainObjectCollectionEndPoint collectionEndPoint, IDomainObject addedRelatedObject)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("addedRelatedObject", addedRelatedObject);
@@ -126,7 +129,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return completeState.CreateAddCommand(collectionEndPoint, addedRelatedObject);
     }
 
-    public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, DomainObject replacementObject)
+    public IDataManagementCommand CreateReplaceCommand (IDomainObjectCollectionEndPoint collectionEndPoint, int index, IDomainObject replacementObject)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("replacementObject", replacementObject);

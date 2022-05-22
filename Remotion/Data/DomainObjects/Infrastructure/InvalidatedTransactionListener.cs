@@ -67,12 +67,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       throw CreateException();
     }
 
-    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       throw CreateException();
     }
@@ -82,54 +82,59 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> unloadedDomainObjects)
     {
       throw CreateException();
     }
 
-    public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectDeleting (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       throw CreateException();
     }
 
-    public void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectDeleted (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       throw CreateException();
     }
 
-    public void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
+    public void PropertyValueReading (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       throw CreateException();
     }
 
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       throw CreateException();
     }
 
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject? domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       throw CreateException();
     }
 
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, IDomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       throw CreateException();
     }
 
-    public void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
-    {
-      throw CreateException();
-    }
-
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
+    public void RelationReading (ClientTransaction clientTransaction, IDomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
       throw CreateException();
     }
 
     public void RelationRead (
         ClientTransaction clientTransaction,
-        DomainObject domainObject,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject? relatedObject,
+        ValueAccess valueAccess)
+    {
+      throw CreateException();
+    }
+
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
         IReadOnlyCollectionData<IDomainObject> relatedObjects,
         ValueAccess valueAccess)
@@ -137,12 +142,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanging (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       throw CreateException();
     }
 
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanged (
+        ClientTransaction clientTransaction,
+        IDomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IDomainObject? oldRelatedObject,
+        IDomainObject? newRelatedObject)
     {
       throw CreateException();
     }
@@ -157,7 +172,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       throw CreateException();
     }
@@ -167,17 +182,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       throw CreateException();
     }
 
-    public void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       throw CreateException();
     }
 
-    public void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    public void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<IDomainObject> domainObjects)
     {
       throw CreateException();
     }
@@ -197,12 +212,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectMarkedInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       throw CreateException();
     }
 
-    public void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
+    public void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       throw CreateException();
     }

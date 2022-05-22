@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Represents a virtual <see cref="IRelationEndPoint"/> holding a single opposite <see cref="ObjectID"/>, i.e. the non-foreign key side in a 
   /// 1:1 relation.
   /// </summary>
-  public interface IVirtualObjectEndPoint : IVirtualEndPoint<DomainObject?>, IObjectEndPoint
+  public interface IVirtualObjectEndPoint : IVirtualEndPoint<IDomainObject?>, IObjectEndPoint
   {
-    void MarkDataComplete (DomainObject? item);
+    void MarkDataComplete (IDomainObject? item);
   }
 }

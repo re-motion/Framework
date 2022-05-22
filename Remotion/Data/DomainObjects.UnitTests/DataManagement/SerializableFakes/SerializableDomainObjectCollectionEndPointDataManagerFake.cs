@@ -43,7 +43,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       get { return new IRealObjectEndPoint[0]; }
     }
 
-    public DomainObject[] OriginalItemsWithoutEndPoints
+    public IDomainObject[] OriginalItemsWithoutEndPoints
     {
       get { throw new NotImplementedException(); }
     }
@@ -83,17 +83,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       throw new NotImplementedException();
     }
 
-    public bool ContainsOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public bool ContainsOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
 
-    public void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void RegisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
 
-    public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
+    public void UnregisterOriginalItemWithoutEndPoint (IDomainObject domainObject)
     {
       throw new NotImplementedException();
     }
@@ -108,12 +108,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes
       return false;
     }
 
-    public void SortCurrentData (Comparison<DomainObject> comparison)
+    public void SortCurrentData (Comparison<IDomainObject> comparison)
     {
       throw new NotImplementedException();
     }
 
-    public void SortCurrentAndOriginalData (Comparison<DomainObject> comparison)
+    public void SortCurrentAndOriginalData (Comparison<IDomainObject> comparison)
     {
       throw new NotImplementedException();
     }

@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       return _stubbedOriginalOppositeEndPoints;
     }
 
-    protected override IEnumerable<DomainObject> GetOriginalItemsWithoutEndPoints ()
+    protected override IEnumerable<IDomainObject> GetOriginalItemsWithoutEndPoints ()
     {
       return _stubbedOriginalItemsWithoutEndPoints;
     }

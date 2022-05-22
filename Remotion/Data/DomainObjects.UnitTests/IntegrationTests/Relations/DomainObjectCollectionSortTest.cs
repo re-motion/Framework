@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     private Customer _owningCustomer;
     private Order _itemA;
     private Order _itemB;
-    private Comparison<DomainObject> _reversingComparison;
+    private Comparison<IDomainObject> _reversingComparison;
 
     public override void SetUp ()
     {
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       _itemA = _owningCustomer.Orders[0];
       _itemB = _owningCustomer.Orders[1];
 
-      var weights = new Dictionary<DomainObject, int> { { _itemA, 2 }, { _itemB, 1 } };
+      var weights = new Dictionary<IDomainObject, int> { { _itemA, 2 }, { _itemB, 1 } };
       _reversingComparison = (one, two) => weights[one].CompareTo(weights[two]);
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
       Assert.That(_itemA.State.IsUnchanged, Is.True);
       Assert.That(_itemB.State.IsUnchanged, Is.True);
 
-      Comparison<DomainObject> nonReversingComparison = (one, two) => _reversingComparison(two, one);
+      Comparison<IDomainObject> nonReversingComparison = (one, two) => _reversingComparison(two, one);
       _owningCustomer.Orders.Sort(nonReversingComparison);
 
       Assert.That(_owningCustomer.Orders, Is.EqualTo(new[] { _itemA, _itemB }));

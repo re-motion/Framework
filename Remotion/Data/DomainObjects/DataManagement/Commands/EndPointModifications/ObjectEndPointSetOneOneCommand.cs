@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   {
     public ObjectEndPointSetOneOneCommand (
         IObjectEndPoint modifiedEndPoint,
-        DomainObject? newRelatedObject,
-        Action<DomainObject?> oppositeObjectSetter,
+        IDomainObject? newRelatedObject,
+        Action<IDomainObject?> oppositeObjectSetter,
         IClientTransactionEventSink transactionEventSink)
         : base(modifiedEndPoint, newRelatedObject, oppositeObjectSetter, transactionEventSink)
     {

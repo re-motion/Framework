@@ -39,13 +39,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
     void RegisterDataContainer (DataContainer dataContainer);
     void Discard (DataContainer dataContainer);
 
-    void MarkInvalid (DomainObject domainObject);
+    void MarkInvalid (IDomainObject domainObject);
     void MarkNotInvalid (ObjectID objectID);
 
     void Commit ();
     void Rollback ();
 
-    IDataManagementCommand CreateDeleteCommand (DomainObject deletedObject);
+    IDataManagementCommand CreateDeleteCommand (IDomainObject deletedObject);
     IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs);
     IDataManagementCommand CreateUnloadVirtualEndPointsCommand (params RelationEndPointID[] endPointIDs);
     IDataManagementCommand CreateUnloadAllCommand ();

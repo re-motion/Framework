@@ -101,19 +101,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     }
 
 
-    protected void CheckDataLoaded (ClientTransaction clientTransaction, DomainObject domainObject)
+    protected void CheckDataLoaded (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       Assert.That(ClientTransactionTestHelper.GetIDataManager(clientTransaction).DataContainers[domainObject.ID], Is.Not.Null);
       CheckState(clientTransaction, domainObject, state => state.IsUnchanged);
     }
 
-    protected void CheckDataNotLoaded (ClientTransaction clientTransaction, DomainObject domainObject)
+    protected void CheckDataNotLoaded (ClientTransaction clientTransaction, IDomainObject domainObject)
     {
       CheckDataNotLoaded(clientTransaction, domainObject.ID);
       CheckState(clientTransaction, domainObject, state => state.IsNotLoadedYet);
     }
 
-    protected void CheckState (ClientTransaction clientTransaction, DomainObject domainObject, Func<DomainObjectState, bool> expectedStatePredicate)
+    protected void CheckState (ClientTransaction clientTransaction, IDomainObject domainObject, Func<DomainObjectState, bool> expectedStatePredicate)
     {
       Assert.That(expectedStatePredicate(domainObject.TransactionContext[clientTransaction].State), Is.True);
     }

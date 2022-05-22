@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// duplicates or <see langword="null" /> values.</param>
     /// <param name="requiredItemType">The required item type of the collection.</param>
     /// <returns>A stand-alone instance of <paramref name="collectionType"/>.</returns>
-    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content, Type? requiredItemType)
+    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<IDomainObject> content, Type? requiredItemType)
     {
       ArgumentUtility.CheckNotNull("collectionType", collectionType);
       ArgumentUtility.CheckNotNull("content", content);
@@ -108,7 +108,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// in the collection's list of interfaces, that implementation's type parameter is used as the required item type. If none is found,
     /// no required item type is set.
     /// </remarks>
-    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content)
+    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<IDomainObject> content)
     {
       ArgumentUtility.CheckNotNull("collectionType", collectionType);
       ArgumentUtility.CheckNotNull("content", content);
@@ -128,7 +128,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// <remarks>
     /// The <see cref="DomainObjectCollection"/> returned is read-only, its content cannot be changed.
     /// </remarks>
-    public DomainObjectCollection CreateReadOnlyCollection (Type collectionType, IEnumerable<DomainObject> content)
+    public DomainObjectCollection CreateReadOnlyCollection (Type collectionType, IEnumerable<IDomainObject> content)
     {
       ArgumentUtility.CheckNotNull("collectionType", collectionType);
       ArgumentUtility.CheckNotNull("content", content);
