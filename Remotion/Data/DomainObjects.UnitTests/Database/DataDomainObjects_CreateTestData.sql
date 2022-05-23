@@ -601,11 +601,14 @@ insert into [OnlyImplementor] ([ID], [ClassID], [InterfaceProperty], [OnlyImplem
 insert into [OnlyImplementor] ([ID], [ClassID], [InterfaceProperty], [OnlyImplementorProperty]) 
     values ('{CDA944EF-4ABC-48DA-AFCB-CEFD1F826597}', 'OnlyImplementor', 5, 1338);
 
-insert into [SimpleOrder] ([ID], [ClassID], [OrderNumber], [SimpleOrderName]) 
-    values ('{DFFF4E9C-1EE1-4D36-977C-037909173CE0}', 'SimpleOrder', 1, 'Coffee');
+insert into [OrderGroup] ([ID], [ClassID], [GroupName]) 
+    values ('{38A0D154-662B-4F94-9F89-E59E5BAE30E4}', 'OrderGroup', 'Order Group 1');
 
-insert into [SimpleOrder] ([ID], [ClassID], [OrderNumber], [SimpleOrderName]) 
-    values ('{6B71C813-86A6-44D0-B0E7-846C37F41D47}', 'SimpleOrder', 2, 'Coffee and Milk');
+insert into [SimpleOrder] ([ID], [ClassID], [OrderNumber], [GroupID], [GroupIDClassID], [SimpleOrderName]) 
+    values ('{DFFF4E9C-1EE1-4D36-977C-037909173CE0}', 'SimpleOrder', 1, NULL, NULL, 'Coffee');
+
+insert into [SimpleOrder] ([ID], [ClassID], [OrderNumber], [GroupID], [GroupIDClassID], [SimpleOrderName]) 
+    values ('{6B71C813-86A6-44D0-B0E7-846C37F41D47}', 'SimpleOrder', 2, '{38A0D154-662B-4F94-9F89-E59E5BAE30E4}', 'OrderGroup', 'Coffee and Milk');
 
 insert into [SimpleOrderItem] ([ID], [ClassID], [Position], [Product],
         [OrderID], [OrderIDClassID], [SimpleOrderItemName]) 
@@ -622,5 +625,5 @@ insert into [SimpleOrderItem] ([ID], [ClassID], [Position], [Product],
     values ('{003A1474-66E7-4998-A1EF-F29690B41955}', 'SimpleOrderItem', 2, 'Glass of water',
         '{6B71C813-86A6-44D0-B0E7-846C37F41D47}', 'SimpleOrder', 'tap water');
 
-insert into [ComplexOrder] ([ID], [ClassID], [OrderNumber], [ComplexOrderName]) 
-    values ('{E4B34F09-466B-437C-922F-045588CA4CA3}', 'ComplexOrder', 1, 'Special coffe');
+insert into [ComplexOrder] ([ID], [ClassID], [OrderNumber], [GroupID], [GroupIDClassID], [ComplexOrderName]) 
+    values ('{E4B34F09-466B-437C-922F-045588CA4CA3}', 'ComplexOrder', 1, '{38A0D154-662B-4F94-9F89-E59E5BAE30E4}', 'OrderGroup', 'Special coffe');

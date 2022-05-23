@@ -392,6 +392,8 @@ CREATE TABLE [dbo].[ComplexOrder]
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [OrderNumber] int NULL,
+  [GroupID] uniqueidentifier NULL,
+  [GroupIDClassID] varchar (100) NULL,
   [ComplexOrderName] nvarchar (max) NULL,
   CONSTRAINT [PK_ComplexOrder] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -422,12 +424,22 @@ CREATE TABLE [dbo].[OnlyImplementor]
   [OnlyImplementorProperty] int NOT NULL,
   CONSTRAINT [PK_OnlyImplementor] PRIMARY KEY CLUSTERED ([ID])
 )
+CREATE TABLE [dbo].[OrderGroup]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  [GroupName] nvarchar (max) NULL,
+  CONSTRAINT [PK_OrderGroup] PRIMARY KEY CLUSTERED ([ID])
+)
 CREATE TABLE [dbo].[SimpleOrder]
 (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
   [Timestamp] rowversion NOT NULL,
   [OrderNumber] int NULL,
+  [GroupID] uniqueidentifier NULL,
+  [GroupIDClassID] varchar (100) NULL,
   [SimpleOrderName] nvarchar (max) NULL,
   CONSTRAINT [PK_SimpleOrder] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -1060,9 +1072,9 @@ CREATE VIEW [dbo].[StorageGroupClassView] ([ID], [ClassID], [Timestamp], [AboveI
     FROM [dbo].[StorageGroupClass]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[ComplexOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName])
+CREATE VIEW [dbo].[ComplexOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [GroupID], [GroupIDClassID], [ComplexOrderName])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName]
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [GroupID], [GroupIDClassID], [ComplexOrderName]
     FROM [dbo].[ComplexOrder]
   WITH CHECK OPTION
 GO
@@ -1089,13 +1101,19 @@ CREATE VIEW [dbo].[Implementor2View] ([ID], [ClassID], [Timestamp], [InterfacePr
     FROM [dbo].[Implementor2]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[IOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName], [SimpleOrderName])
+CREATE VIEW [dbo].[IOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [GroupID], [GroupIDClassID], [ComplexOrderName], [SimpleOrderName])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [ComplexOrderName], NULL
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [GroupID], [GroupIDClassID], [ComplexOrderName], NULL
     FROM [dbo].[ComplexOrder]
   UNION ALL
-  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], NULL, [SimpleOrderName]
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [GroupID], [GroupIDClassID], NULL, [SimpleOrderName]
     FROM [dbo].[SimpleOrder]
+GO
+CREATE VIEW [dbo].[IOrderGroupView] ([ID], [ClassID], [Timestamp], [GroupName])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [GroupName]
+    FROM [dbo].[OrderGroup]
+  WITH CHECK OPTION
 GO
 CREATE VIEW [dbo].[IOrderItemView] ([ID], [ClassID], [Timestamp], [Position], [Product], [OrderID], [OrderIDClassID], [SimpleOrderItemName])
   WITH SCHEMABINDING AS
@@ -1109,9 +1127,15 @@ CREATE VIEW [dbo].[OnlyImplementorView] ([ID], [ClassID], [Timestamp], [Interfac
     FROM [dbo].[OnlyImplementor]
   WITH CHECK OPTION
 GO
-CREATE VIEW [dbo].[SimpleOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName])
+CREATE VIEW [dbo].[OrderGroupView] ([ID], [ClassID], [Timestamp], [GroupName])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [SimpleOrderName]
+  SELECT [ID], [ClassID], [Timestamp], [GroupName]
+    FROM [dbo].[OrderGroup]
+  WITH CHECK OPTION
+GO
+CREATE VIEW [dbo].[SimpleOrderView] ([ID], [ClassID], [Timestamp], [OrderNumber], [GroupID], [GroupIDClassID], [SimpleOrderName])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [OrderNumber], [GroupID], [GroupIDClassID], [SimpleOrderName]
     FROM [dbo].[SimpleOrder]
   WITH CHECK OPTION
 GO
