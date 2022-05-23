@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.InterfaceMapping;
+using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
@@ -101,6 +103,105 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       Assert.That(results[1], Is.InstanceOf<SimpleOrderItem>());
       Assert.That(results[1].Position, Is.EqualTo(2));
       Assert.That(((SimpleOrderItem)results[1]).SimpleOrderItemName, Is.EqualTo("tap water"));
+    }
+
+    [Test]
+    public void GetAllOrderGroups ()
+    {
+      var orders = QueryFactory.CreateLinqQuery<IOrderGroup>()
+          .ToArray()
+          .OrderBy(e => e.ID)
+          .ToArray();
+
+      Assert.That(orders.Length, Is.EqualTo(1));
+      Assert.That(orders[0].ID, Is.EqualTo(new ObjectID(typeof(OrderGroup), Guid.Parse("{38A0D154-662B-4F94-9F89-E59E5BAE30E4}"))));
+      Assert.That(orders[0].Orders.Count, Is.EqualTo(2));
+    }
+
+    [Test]
+    public void OrderGroup_AddNewOrder ()
+    {
+      var order = (SimpleOrder)LifetimeService.NewObject(ClientTransaction.Current, typeof(SimpleOrder), ParamList.Empty);
+      order.OrderNumber = 3;
+      order.SimpleOrderName = "Test";
+
+      var orderGroup = QueryFactory.CreateLinqQuery<IOrderGroup>().First();
+      orderGroup.Orders.Add(order);
+
+      Assert.That(order.Group, Is.EqualTo(orderGroup));
+    }
+
+    [Test]
+    public void OrderGroup_AddOrder ()
+    {
+      var entry = QueryFactory
+          .CreateLinqQuery<IOrder>()
+          .First(e => e.Group == null);
+      Assert.That(entry.Group, Is.Null);
+
+      var orderGroup = QueryFactory.CreateLinqQuery<IOrderGroup>().First();
+      orderGroup.Orders.Add(entry);
+
+      Assert.That(entry.Group, Is.EqualTo(orderGroup));
+    }
+
+    [Test]
+    public void OrderGroup_RemoveOrder ()
+    {
+      var orderGroup = QueryFactory.CreateLinqQuery<IOrderGroup>().First();
+      var entry = QueryFactory
+          .CreateLinqQuery<IOrder>()
+          .First(e => e.Group == orderGroup);
+      Assert.That(entry.Group, Is.EqualTo(orderGroup));
+
+      orderGroup.Orders.Remove(entry);
+      Assert.That(entry.Group, Is.Null);
+    }
+
+    [Explicit("Does not work maybe because IObjectList<> instead of ObjectList?")]
+    [Test]
+    public void OrderItem_ChangeOrder ()
+    {
+      var orderItems = QueryFactory.CreateLinqQuery<IOrderItem>().ToArray();
+
+      var orderItem = orderItems[0];
+      var oldOrder = orderItem.Order;
+
+      var newOrder = QueryFactory.CreateLinqQuery<IOrder>().First(e => e != oldOrder);
+      orderItem.Order = newOrder;
+
+      Assert.That(newOrder.OrderItems.Contains(orderItem), Is.True);
+      Assert.That(oldOrder.OrderItems.Contains(orderItem), Is.False);
+    }
+
+    [Test]
+    public void Order_ChangeOrderGroup ()
+    {
+      var order = QueryFactory.CreateLinqQuery<IOrder>().First(e => e.Group == null);
+      var orderGroup = QueryFactory.CreateLinqQuery<IOrderGroup>().First();
+      Assert.That(orderGroup.Orders.Contains(order), Is.False);
+
+      order.Group = orderGroup;
+
+      Assert.That(orderGroup.Orders.Contains(order), Is.True);
+    }
+
+    [Test]
+    public void OrderGroup_ChangeList ()
+    {
+      var orderGroup = QueryFactory.CreateLinqQuery<IOrderGroup>().First();
+      Assert.That(orderGroup.Orders.Count, Is.EqualTo(2));
+      var oldOrders = orderGroup.Orders.ToArray();
+
+      var newOrders = QueryFactory.CreateLinqQuery<IOrder>()
+          .Where(e => e.Group == null)
+          .ToArray()
+          .Concat(new[] { oldOrders[0] });
+
+      orderGroup.Orders = new ObjectList<IOrder>(newOrders);
+      Assert.That(oldOrders[0].Group, Is.EqualTo(orderGroup));
+      Assert.That(oldOrders.Skip(1).All(e => e.Group == null), Is.True);
+      Assert.That(newOrders.All(e => e.Group == orderGroup), Is.True);
     }
 
     // ObjectList example

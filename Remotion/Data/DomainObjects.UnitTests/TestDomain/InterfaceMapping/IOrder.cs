@@ -5,7 +5,9 @@
   {
     int OrderNumber { get; set; }
 
-    [Mandatory]
+    [DBBidirectionalRelation("Orders")]
+    IOrderGroup Group { get; set; }
+
     [DBBidirectionalRelation("Order", SortExpression = "Position ASC")]
     IObjectList<IOrderItem> OrderItems { get; set; }
   }

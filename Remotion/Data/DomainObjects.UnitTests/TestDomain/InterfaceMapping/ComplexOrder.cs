@@ -12,6 +12,13 @@
     }
 
     /// <inheritdoc />
+    public virtual IOrderGroup Group
+    {
+      get => Properties[typeof(IOrder), nameof(IOrder.Group)].GetValue<IOrderGroup>();
+      set => Properties[typeof(IOrder), nameof(IOrder.Group)].SetValue(value);
+    }
+
+    /// <inheritdoc />
     public virtual IObjectList<IOrderItem> OrderItems
     {
       get => Properties[typeof(IOrder), nameof(IOrder.OrderItems)].GetValue<IObjectList<IOrderItem>>();
