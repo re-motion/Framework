@@ -223,7 +223,7 @@ public sealed class ResourceDispatcher
         }
 
         //  Insert the argument and resource's value into the dictonary for the specified element.
-        elementValues.Add(property, (WebString)s_webStringConverter.ConvertFromString(resourceEntry.Value));
+        elementValues.Add(property, (WebString?)s_webStringConverter.ConvertFromString(resourceEntry.Value) ?? WebString.Empty);
       }
     }
 

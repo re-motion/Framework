@@ -79,10 +79,8 @@ namespace Remotion.ExtensibleEnums
     /// <returns>
     /// <see langword="true" /> if this converter can perform the conversion; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType);
-
       return destinationType == typeof(string);
     }
 

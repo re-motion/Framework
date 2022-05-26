@@ -31,14 +31,16 @@ namespace Remotion.Web
     private static readonly MethodInfo s_createFromTextMethodInfo = MemberInfoFromExpressionUtility.GetMethod(() => PlainTextString.CreateFromText(null));
 
     /// <inheritdoc />
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+
       return sourceType == typeof(string)
              || base.CanConvertFrom(context, sourceType);
     }
 
     /// <inheritdoc />
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
       return destinationType == typeof(string)
              || destinationType == typeof(InstanceDescriptor)
@@ -46,7 +48,7 @@ namespace Remotion.Web
     }
 
     /// <inheritdoc />
-    public override object? ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object? value)
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       if (value == null)
         return null;
@@ -58,8 +60,10 @@ namespace Remotion.Web
     }
 
     /// <inheritdoc />
-    public override object? ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object? value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+
       if (value == null)
         return null;
 

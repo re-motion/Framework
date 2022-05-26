@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using NUnit.Framework;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
 
@@ -60,6 +61,12 @@ namespace Remotion.ExtensibleEnums.UnitTests
       Assert.That(_converter.CanConvertTo(null, typeof(int)), Is.False);
       Assert.That(_converter.CanConvertTo(null, typeof(Enum)), Is.False);
       Assert.That(_converter.CanConvertTo(null, typeof(Color)), Is.False);
+    }
+
+    [Test]
+    public void CanConvertTo_Null_IsFalse ()
+    {
+      Assert.That(_converter.CanConvertTo((ITypeDescriptorContext)null, (Type)null), Is.False);
     }
 
     [Test]
