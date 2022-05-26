@@ -19,7 +19,7 @@
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Import Project="$(RemotionBuildScriptTasksPath)MSBuild.ExtensionPack.tasks" />
+  <UsingTask AssemblyFile="$(RemotionBuildScriptTasksPath)Remotion.BuildScript.dll" TaskName="MSBuild.ExtensionPack.Xml.XmlFile"/>
 
   <Target Name="SetupTestConfiguration">
     <Error Text="The property 'LogDirectory' is not set." Condition="'$(LogDirectory)' == ''" />
