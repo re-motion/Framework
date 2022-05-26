@@ -32,7 +32,7 @@
     <PackageTags>re-motion</PackageTags>
     <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <DefineConstants Condition="'$(TargetFramework)' == 'net48'">$(DefineConstants);FEATURE_GAC;FEATURE_SERIALIZATION;FEATURE_ASSEMBLYBUILDER_SAVE</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net48'">$(DefineConstants);FEATURE_GAC;FEATURE_SERIALIZATION;FEATURE_ASSEMBLYBUILDER_SAVE;FEATURE_THREAD_ABORT</DefineConstants>
     <DefineConstants Condition="'$(TargetFramework)' != 'net48'">$(DefineConstants);NO_PEVERIFY</DefineConstants>
   </PropertyGroup>
 

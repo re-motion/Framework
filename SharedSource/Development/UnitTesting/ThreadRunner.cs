@@ -63,12 +63,14 @@ namespace Remotion.Development.UnitTesting
             {
               _threadStart();
             }
+#if FEATURE_THREAD_ABORT
             catch (ThreadAbortException)
             {
               // Explicitely reset the ThreadAbortException
               Thread.ResetAbort();
               // Do not report exception in lastException, since aborting is expected behavior.
             }
+#endif
             catch (Exception e)
             {
               lastException = e;
