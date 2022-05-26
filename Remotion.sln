@@ -274,7 +274,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ObjectBinding.Web.Contracts
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{8C1706D0-5034-4C35-9F3B-3FBF0C552EE6}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
 		packages\repositories.config = packages\repositories.config
 	EndProjectSection
 EndProject
