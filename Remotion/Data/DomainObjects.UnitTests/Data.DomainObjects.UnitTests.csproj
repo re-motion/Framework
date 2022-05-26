@@ -8,7 +8,7 @@
     <AssemblyTitle>Unit Tests for Remotion DomainObjects Library</AssemblyTitle>
     <AssemblyName>Remotion.Data.DomainObjects.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <!-- TODO: Remotion.Linq.Development is not net5.0 compatible -->
+    <!-- TODO: Remotion.Linq.Development is not net6.0 compatible -->
     <NoWarn>$(NoWarn);NU1701</NoWarn>
   </PropertyGroup>
   <ItemGroup>
