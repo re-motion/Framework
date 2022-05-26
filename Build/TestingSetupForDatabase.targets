@@ -19,10 +19,7 @@
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <PropertyGroup>
-    <ExtensionTasksPath>$(MSBuildExtensionPackPath)</ExtensionTasksPath>
-  </PropertyGroup>
-  <Import Project="$(MSBuildExtensionPackPath)MSBuild.ExtensionPack.tasks" />
+  <Import Project="$(RemotionBuildScriptTasksPath)MSBuild.ExtensionPack.tasks" />
 
   <PropertyGroup>
     <CreateDatabaseProperties>
