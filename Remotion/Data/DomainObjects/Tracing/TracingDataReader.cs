@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Tracing
       return _dataReader.GetByte(i);
     }
 
-    public long GetBytes (int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+    public long GetBytes (int i, long fieldOffset, byte[]? buffer, int bufferoffset, int length)
     {
       return _dataReader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
     }
@@ -79,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Tracing
       return _dataReader.GetChar(i);
     }
 
-    public long GetChars (int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+    public long GetChars (int i, long fieldoffset, char[]? buffer, int bufferoffset, int length)
     {
       return _dataReader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
     }
