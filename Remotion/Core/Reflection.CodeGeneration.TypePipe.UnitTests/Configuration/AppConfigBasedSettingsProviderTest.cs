@@ -42,6 +42,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
       var xmlFragment = "<typePipe/>";
       ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
+#pragma warning disable SYSLIB0017
       Assert.That(_provider.ForceStrongNaming, Is.False);
     }
 
@@ -51,8 +52,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
       var xmlFragment = "<typePipe><forceStrongNaming/></typePipe>";
       ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
+#pragma warning disable SYSLIB0017
       Assert.That(_provider.ForceStrongNaming, Is.True);
       Assert.That(_provider.KeyFilePath, Is.Empty);
+#pragma warning restore
     }
 
     [Test]
@@ -61,7 +64,9 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
       var xmlFragment = @"<typePipe><forceStrongNaming keyFilePath=""C:\key.snk""/></typePipe>";
       ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
+#pragma warning disable SYSLIB0017
       Assert.That(_provider.KeyFilePath, Is.EqualTo(@"C:\key.snk"));
+#pragma warning restore
     }
 
     [Test]
@@ -90,8 +95,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
 
       var settings = _provider.GetSettings();
 
+#pragma warning disable SYSLIB0017
       Assert.That(settings.ForceStrongNaming, Is.False);
       Assert.That(settings.KeyFilePath, Is.Empty);
+#pragma warning restore
       Assert.That(settings.EnableSerializationWithoutAssemblySaving, Is.False);
     }
 
@@ -103,8 +110,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
 
       var settings = _provider.GetSettings();
 
+#pragma warning disable SYSLIB0017
       Assert.That(settings.ForceStrongNaming, Is.True);
       Assert.That(settings.KeyFilePath, Is.EqualTo(@"C:\key.snk"));
+#pragma warning restore
       Assert.That(settings.EnableSerializationWithoutAssemblySaving, Is.True);
     }
   }

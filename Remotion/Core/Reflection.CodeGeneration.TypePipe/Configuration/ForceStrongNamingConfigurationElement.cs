@@ -19,6 +19,9 @@ using System.Configuration;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
 {
+#if !FEATURE_STRONGNAMESIGNING
+  [Obsolete("Strong name signing is not supported and throws PlatformNotSupportedException.", DiagnosticId="SYSLIB0017", UrlFormat="https://aka.ms/dotnet-warnings/{0}")]
+#endif
   public class ForceStrongNamingConfigurationElement : ConfigurationElement
   {
     [ConfigurationProperty("keyFilePath")]
