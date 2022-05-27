@@ -878,7 +878,7 @@ namespace Remotion.Web.UI.Controls
       nodes.Add(new WebTreeNode("node0", WebString.CreateFromText("Node 0")));
       nodes.Add(new WebTreeNode("node1", WebString.CreateFromText("Node 1")));
       nodes.Add(new WebTreeNode("node2", WebString.CreateFromText("Node 2")));
-      using (var nodeIDAlgorithm = MD5CryptoServiceProvider.Create())
+      using (var nodeIDAlgorithm = CreateNodeIDAlgorithm())
       {
         RenderNodes(writer, designModeNodes, true, nodeIDAlgorithm, 0);
       }
@@ -905,9 +905,9 @@ namespace Remotion.Web.UI.Controls
       get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
 
-    private MD5 CreateNodeIDAlgorithm ()
+    private HashAlgorithm CreateNodeIDAlgorithm ()
     {
-      return MD5CryptoServiceProvider.Create();
+      return Assertion.IsNotNull(HashAlgorithm.Create("MD5"), "HashAlgorithm.Create('MD5') != null");
     }
 
     private string CreateNodeID (HashAlgorithm nodeIDAlgorithm, string nodePath)
