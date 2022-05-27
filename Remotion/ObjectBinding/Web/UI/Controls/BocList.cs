@@ -2445,7 +2445,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    private void AvailableViews_CollectionChanged (object sender, CollectionChangeEventArgs e)
+    private void AvailableViews_CollectionChanged (object? sender, CollectionChangeEventArgs e)
     {
       if (_selectedViewIndex == null
           && _availableViews.Count > 0)
