@@ -125,7 +125,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 
     private GithubResponse GetLatestGeckoDriverReleaseInfo ()
     {
-      using (var webClient = new WebClient())
+#pragma warning disable SYSLIB0014
+      using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
+#pragma warning restore SYSLIB0014
       {
         // The user-agent header is required for github requests.
         webClient.Headers.Add("user-agent", "unknown");
@@ -158,7 +160,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox
 
       var fullZipPath = Path.Combine(Path.GetTempPath(), c_driverZipFileName);
 
-      using (var webClient = new WebClient())
+#pragma warning disable SYSLIB0014
+      using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
+#pragma warning restore SYSLIB0014
       {
         try
         {
