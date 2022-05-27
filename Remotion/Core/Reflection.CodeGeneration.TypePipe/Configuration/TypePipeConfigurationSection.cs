@@ -36,6 +36,9 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
       get { return c_xmlNamespace; }
     }
 
+#if !FEATURE_STRONGNAMESIGNING
+    [Obsolete("Strong name signing is not supported and throws PlatformNotSupportedException.", DiagnosticId="SYSLIB0017", UrlFormat="https://aka.ms/dotnet-warnings/{0}")]
+#endif
     [ConfigurationProperty("forceStrongNaming")]
     public ForceStrongNamingConfigurationElement ForceStrongNaming
     {
