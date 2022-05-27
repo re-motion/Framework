@@ -28,6 +28,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.Reflection.CodeGeneration;
+using Remotion.Utilities;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
@@ -114,9 +115,18 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       var expectedIdentifier = new ConcreteMixinTypeIdentifier(typeof(object), new HashSet<MethodInfo>(), new HashSet<MethodInfo>());
 
       var method1 = ReflectionObjectMother.GetSomeNonPublicMethod();
+#if NETFRAMEWORK
       var method2 = typeof(DateTime).GetMethod("get_InternalTicks", BindingFlags.NonPublic | BindingFlags.Instance);
+#else
+      var method2 = typeof(DateTime).GetMethod("get_UTicks", BindingFlags.NonPublic | BindingFlags.Instance);
+#endif
       var wrapper1 = typeof(DateTime).GetMethod("get_Month");
       var wrapper2 = typeof(DateTime).GetMethod("get_Year");
+
+      Assertion.IsNotNull(method1, "method1 != null");
+      Assertion.IsNotNull(method2, "method2 != null");
+      Assertion.IsNotNull(wrapper1, "wrapper1 != null");
+      Assertion.IsNotNull(wrapper2, "wrapper2 != null");
 
       SetupImporterMock(
           importerMock,
