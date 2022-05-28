@@ -55,6 +55,7 @@
     <None Include="packages.config" />
     <None Include="ProjectFeatures\UseWebForms.props" />
     <None Include="ProjectTypes\Executable.props" />
+    <None Include="ProjectTypes\JavascriptLibrary.props" />
     <None Include="ProjectTypes\Library.props" />
     <None Include="ProjectTypes\Test.props" />
     <None Include="ProjectTypes\Test.targets" />
