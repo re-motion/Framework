@@ -8,6 +8,7 @@ set msbuild="%program-pathX86%\Microsoft Visual Studio\2022\BuildTools\MSBuild\C
 if not exist %msbuild% set msbuild="%program-path%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
 if not exist %msbuild% set msbuild="%program-path%\Microsoft Visual Studio\2022\Professional\MSBuild\Current\Bin\MSBuild.exe"
 if not exist %msbuild% set msbuild="%program-path%\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe"
+set dotnet="dotnet.exe"
 
 set log-dir=build\BuildOutput\log
 set nuget-bin=build\BuildOutput\temp\nuget-bin
@@ -49,7 +50,7 @@ mkdir %log-dir%
 mkdir %nuget-bin%
 %nuget-download%
 %nuget% restore Remotion.sln -NonInteractive
-%msbuild% build\Remotion.Local.build /t:TestBuild /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
+%dotnet% build build\Remotion.Local.build /t:TestBuild /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
 if not %ERRORLEVEL%==0 goto build_failed
 goto build_succeeded
 
@@ -58,7 +59,7 @@ mkdir %log-dir%
 mkdir %nuget-bin%
 %nuget-download%
 %nuget% restore Remotion.sln -NonInteractive
-%msbuild% build\Remotion.Local.build /t:FullBuildWithoutDocumentation /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
+%dotnet% build build\Remotion.Local.build /t:FullBuildWithoutDocumentation /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
 if not %ERRORLEVEL%==0 goto build_failed
 goto build_succeeded
 
@@ -67,7 +68,7 @@ mkdir %log-dir%
 mkdir %nuget-bin%
 %nuget-download%
 %nuget% restore Remotion.sln -NonInteractive
-%msbuild% build\Remotion.Local.build /t:QuickBuild /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
+%dotnet% build build\Remotion.Local.build /t:QuickBuild /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
 if not %ERRORLEVEL%==0 goto build_failed
 goto build_succeeded
 
@@ -76,7 +77,7 @@ mkdir %log-dir%
 mkdir %nuget-bin%
 %nuget-download%
 %nuget% restore Remotion.sln -NonInteractive
-%msbuild% build\Remotion.Local.build /t:DocumentationBuild /maxcpucount /verbosity:minimal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
+%dotnet% build build\Remotion.Local.build /t:DocumentationBuild /maxcpucount /verbosity:minimal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
 if not %ERRORLEVEL%==0 goto build_failed
 goto build_succeeded
 
@@ -85,7 +86,7 @@ mkdir %log-dir%
 mkdir %nuget-bin%
 %nuget-download%
 %nuget% restore Remotion.sln -NonInteractive
-%msbuild% build\Remotion.Local.build /t:PackageBuild /maxcpucount /verbosity:minimal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
+%dotnet% build build\Remotion.Local.build /t:PackageBuild /maxcpucount /verbosity:minimal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
 if not %ERRORLEVEL%==0 goto build_failed
 goto build_succeeded
 
@@ -94,7 +95,7 @@ mkdir %log-dir%
 mkdir %nuget-bin%
 %nuget-download%
 %nuget% restore Remotion.sln -NonInteractive
-%msbuild% build\Remotion.Local.build /t:DependDBBuild /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
+%dotnet% build build\Remotion.Local.build /t:DependDBBuild /maxcpucount /verbosity:normal /flp:verbosity=normal;logfile=build\BuildOutput\log\build.log
 if not %ERRORLEVEL%==0 goto build_failed
 goto build_succeeded
 
