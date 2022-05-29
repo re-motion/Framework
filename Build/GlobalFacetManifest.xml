@@ -140,7 +140,11 @@
   </package>
 
   <package id="Remotion.TypePipe.Documentation"
-           feature="Remotion.Core"
-           layer="Core"/>
+           feature="Remotion.Documentation"
+           layer="Core">
+    <extends>
+      <feature name="Remotion.Core" />
+    </extends>
+  </package>
 
 </packages>
