@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.Analyzers.IntegrationTests
       var test = new Test
                  {
                      TestCode = source,
-                     ReferenceAssemblies = ReferenceAssemblies.Net.Net50,
+                     ReferenceAssemblies = ReferenceAssemblies.Net.Net60,
                      SolutionTransforms = { (solution, id) =>
                      {
                        var project = solution.GetProject(id);
