@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using NUnit.Framework;
 using Remotion.Utilities;
 
@@ -78,6 +79,13 @@ namespace Remotion.UnitTests.Utilities
     {
       Assert.That(_int32EnumConverter.CanConvertTo(typeof(string)), Is.True);
       Assert.That(_nullableInt32EnumConverter.CanConvertTo(typeof(string)), Is.True);
+    }
+
+    [Test]
+    public void CanConvertToNull ()
+    {
+      Assert.That(_int32EnumConverter.CanConvertTo((ITypeDescriptorContext)null, (Type)null), Is.False);
+      Assert.That(_nullableInt32EnumConverter.CanConvertTo((Type)null), Is.False);
     }
 
     [Test]

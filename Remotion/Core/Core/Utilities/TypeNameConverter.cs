@@ -42,7 +42,7 @@ namespace Remotion.Utilities
       return sourceType == typeof(string);
     }
 
-    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
       return destinationType == typeof(string);
     }
@@ -62,7 +62,7 @@ namespace Remotion.Utilities
       return null;
     }
 
-    public override object ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
       ArgumentUtility.CheckNotNull("destinationType", destinationType);
 

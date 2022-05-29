@@ -122,7 +122,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       try
       {
-        using (var webClient = new WebClient())
+#pragma warning disable SYSLIB0014
+        using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
+#pragma warning restore SYSLIB0014
         {
           return webClient.DownloadString(chromeDriverVersionUrl);
         }
@@ -184,7 +186,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 
       try
       {
-        using (var webClient = new WebClient())
+#pragma warning disable SYSLIB0014
+        using (var webClient = new WebClient()) // TODO RM-8492: Replace with HttpClient
+#pragma warning restore SYSLIB0014
         {
           webClient.DownloadFile(url, fullZipPath);
         }

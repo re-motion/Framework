@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using NUnit.Framework;
 
 namespace Remotion.Reflection.UnitTests
@@ -59,6 +60,12 @@ namespace Remotion.Reflection.UnitTests
     {
       Assert.That(_converter.CanConvertTo(null, typeof(object)), Is.False);
       Assert.That(_converter.CanConvertTo(null, typeof(string)), Is.False);
+    }
+
+    [Test]
+    public void CanConvertTo_Null_IsFalse ()
+    {
+      Assert.That(_converter.CanConvertTo((ITypeDescriptorContext)null, (Type)null), Is.False);
     }
 
     [Test]

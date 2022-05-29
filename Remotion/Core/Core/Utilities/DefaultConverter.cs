@@ -58,9 +58,10 @@ namespace Remotion.Utilities
       return _type == sourceType || _underlyingType == sourceType;
     }
 
-    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+      if (destinationType == null)
+        return false;
 
       return destinationType == _type || Nullable.GetUnderlyingType(destinationType) == _type;
     }

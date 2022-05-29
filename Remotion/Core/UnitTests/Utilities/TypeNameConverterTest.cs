@@ -52,6 +52,12 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
+    public void CanConvertToNull ()
+    {
+      Assert.That(_converter.CanConvertTo((Type)null), Is.False);
+    }
+
+    [Test]
     public void CanConvertFromString ()
     {
       Assert.That(_converter.CanConvertFrom(typeof(string)), Is.True);

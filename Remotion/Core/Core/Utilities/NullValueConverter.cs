@@ -31,9 +31,10 @@ namespace Remotion.Utilities
     {
     }
 
-    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+      if (destinationType == null)
+        return false;
 
       return NullableTypeUtility.IsNullableType(destinationType);
     }

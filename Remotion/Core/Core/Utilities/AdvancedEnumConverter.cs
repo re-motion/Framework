@@ -93,9 +93,10 @@ namespace Remotion.Utilities
     /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
     /// <param name="destinationType"> The <see cref="Type"/> to convert an <see cref="Enum"/> value to. </param>
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+      if (destinationType == null)
+        return false;
 
       if (!_isNullable && destinationType == _underlyingType)
         return true;
@@ -126,6 +127,10 @@ namespace Remotion.Utilities
             throw new ArgumentOutOfRangeException(string.Format("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.GetFullNameSafe()), (Exception?)null);
 
           return Enum.ToObject(UnderlyingEnumType, value);
+        }
+        else if (value == null)
+        {
+          throw new NotSupportedException(string.Format("Cannot convert value 'null' to non-nullable type '{0}'.", UnderlyingEnumType.GetFullNameSafe()));
         }
       }
 

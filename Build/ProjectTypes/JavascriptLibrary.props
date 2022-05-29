@@ -1,0 +1,35 @@
+<Project>
+
+  <Import Project="$(MSBuildThisFileDirectory)Library.props" />
+
+  <PropertyGroup>
+    <IsPackable>False</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="tsconfig\debug\tsconfig.json" Condition="'$(Configuration)' == 'Debug'" />
+    <Content Include="tsconfig\release\tsconfig.json" Condition="'$(Configuration)' == 'Release'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="microsoft-ajax.TypeScript.DefinitelyTyped" Version="0.1.4">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.4.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <MSBuildPath>C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists('$(MSBuildPath)')">C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists('$(MSBuildPath)')">C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists('$(MSBuildPath)')">C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists('$(MSBuildPath)')">C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists('$(MSBuildPath)')"></MSBuildPath>
+    <!-- dotnet does not contain a distribution of node.js -->
+    <NodePath Condition="'$(NodePath)' == '' AND '$(MSBuildPath)' != '' AND '$(OS)' == 'Windows_NT' AND Exists('$(MSBuildPath)\Microsoft\VisualStudio\NodeJs\node.exe')">$(MSBuildPath)\Microsoft\VisualStudio\NodeJs</NodePath>
+  </PropertyGroup>
+
+</Project>

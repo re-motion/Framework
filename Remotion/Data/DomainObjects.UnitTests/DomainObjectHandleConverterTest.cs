@@ -59,6 +59,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
+    public void CanConvertTo_Null_ReturnsFalse ()
+    {
+      Assert.That(_converter.CanConvertTo((Type)null), Is.False);
+    }
+
+    [Test]
     public void ConvertFrom_String_SucceedsForObjectIDString ()
     {
       var objectIDString = DomainObjectIDs.Order1.ToString();
@@ -77,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void ConvertFrom_String_SucceedsForNullValue ()
+    public void ConvertFrom_OtherType_SucceedsForNullValue ()
     {
       var result = _converter.ConvertFrom(null);
 

@@ -39,8 +39,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     {
       DeserializeSection(TypePipeConfigurationSection.ExampleConfiguration);
 
+#pragma warning disable SYSLIB0017
       Assert.That(_section.ForceStrongNaming.ElementInformation.IsPresent, Is.True);
       Assert.That(_section.ForceStrongNaming.KeyFilePath, Is.EqualTo("keyFile.snk"));
+#pragma warning restore
       Assert.That(_section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent, Is.True);
     }
 
@@ -50,7 +52,9 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
       var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns} />";
       DeserializeSection(xmlFragment);
 
+#pragma warning disable SYSLIB0017
       Assert.That(_section.ForceStrongNaming.ElementInformation.IsPresent, Is.False);
+#pragma warning restore
       Assert.That(_section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent, Is.False);
     }
 
@@ -60,7 +64,9 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
       var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns}><forceStrongNaming/></remotion.reflection.codeGeneration.typePipe>";
       DeserializeSection(xmlFragment);
 
+#pragma warning disable SYSLIB0017
       Assert.That(_section.ForceStrongNaming.ElementInformation.IsPresent, Is.True);
+#pragma warning restore
     }
 
     [Test]

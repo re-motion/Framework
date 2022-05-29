@@ -6,4 +6,13 @@
     <DebugType>full</DebugType>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <MSBuildPath>C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists('$(MSBuildPath)')">C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists($(MSBuildPath))">C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists($(MSBuildPath))">C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists($(MSBuildPath))">C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild</MSBuildPath>
+    <MSBuildPath Condition="!Exists($(MSBuildPath))"></MSBuildPath>
+  </PropertyGroup>
+
 </Project>

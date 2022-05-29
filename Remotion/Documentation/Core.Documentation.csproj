@@ -11,5 +11,8 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <PackageTags>$(PackageTags) Documentation</PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Remotion.TypePipe.Documentation" version="3.0.0" />
+  </ItemGroup>
   <Import Project="..\..\Build\Shared.build.targets" />
 </Project>

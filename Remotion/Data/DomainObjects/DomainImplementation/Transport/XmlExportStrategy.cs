@@ -16,6 +16,7 @@
 // 
 using System;
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using Remotion.Utilities;
 
@@ -43,7 +44,15 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
       ArgumentUtility.CheckNotNull("dataStream", dataStream);
       ArgumentUtility.CheckNotNull("formatter", formatter);
 
+#if NETFRAMEWORK
       formatter.Serialize(dataStream, transportedObjects);
+#else
+      var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
+      using (XmlWriter xmlWriter = XmlWriter.Create(dataStream, xmlWriterSettings))
+      {
+        formatter.Serialize(xmlWriter, transportedObjects);
+      }
+#endif
     }
   }
 }

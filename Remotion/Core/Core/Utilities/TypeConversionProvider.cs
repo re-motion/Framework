@@ -148,7 +148,7 @@ namespace Remotion.Utilities
 
       if (value == null && !isNullableDestinationType)
         throw new NotSupportedException(string.Format("Cannot convert value 'null' to non-nullable type '{0}'.", destinationType));
-      else if (value != null && !sourceType.IsInstanceOfType(value))
+      if (value != null && !sourceType.IsInstanceOfType(value))
         throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), sourceType);
 
       if (AreUnderlyingTypesEqual(sourceType, destinationType))
@@ -160,10 +160,14 @@ namespace Remotion.Utilities
         switch (typeConverterResult.TypeConverterType)
         {
           case TypeConverterType.SourceTypeConverter:
+          {
             return typeConverterResult.TypeConverter.ConvertTo(context, culture, value, destinationType);
+          }
           default:
+          {
             Assertion.IsTrue(typeConverterResult.TypeConverterType == TypeConverterType.DestinationTypeConverter);
-            return typeConverterResult.TypeConverter.ConvertFrom(context, culture, value);
+            return typeConverterResult.TypeConverter.ConvertFrom(context, culture, value!); //TODO RM-8491: value may not be null
+          }
         }
       }
 

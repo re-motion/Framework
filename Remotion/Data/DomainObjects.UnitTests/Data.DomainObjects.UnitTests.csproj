@@ -8,7 +8,7 @@
     <AssemblyTitle>Unit Tests for Remotion DomainObjects Library</AssemblyTitle>
     <AssemblyName>Remotion.Data.DomainObjects.UnitTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
-    <!-- TODO: Remotion.Linq.Development is not net5.0 compatible -->
+    <!-- TODO: Remotion.Linq.Development is not net6.0 compatible -->
     <NoWarn>$(NoWarn);NU1701</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -39,8 +39,8 @@
   <ItemGroup>
     <PackageReference Include="Remotion.Linq.EagerFetching" Version="2.2.0" />
     <PackageReference Include="Remotion.Linq.Development" Version="2.2.0" />
-    <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.1.0-alpha.1" />
-    <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0-alpha.1" />
+    <PackageReference Include="Remotion.Linq.SqlBackend.Development" Version="2.1.0" />
+    <PackageReference Include="Remotion.TypePipe.Development" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <Reference Include="System.Transactions" />
