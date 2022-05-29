@@ -26,7 +26,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
     {
     }
 
-    public ICollection GetTypes (Type baseType, bool excludeGlobalTypes)
+    public ICollection GetTypes (Type? baseType, bool excludeGlobalTypes)
     {
       return new Type[0];
     }
