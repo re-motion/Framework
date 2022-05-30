@@ -137,6 +137,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
         var stateDefinition = (StateDefinition?)StateDefinitionField.Value;
+        StateDefinitionField.IsDirty = false;
         CurrentStateCombination.ClearStates();
         if (stateDefinition != null)
           CurrentStateCombination.AttachState(stateDefinition);
