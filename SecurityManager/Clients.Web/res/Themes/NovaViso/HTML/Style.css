@@ -3,6 +3,7 @@
   --singleview-topcontrols-padding: 0 0 var(--remotion-themed-spacing) 0;
   --tabbedMenu-horizontal-padding: calc(var(--remotion-themed-spacing-large) - var(--remotion-themed-spacing));
   --accesscontrollist-permission-image-width: 16px;
+  --imagebutton-image-width: 16px;
 }
 
 html
@@ -59,6 +60,12 @@ button.imageButton
   border: var(--remotion-themed-border-placeholder);
   background-color: Transparent;
   padding: var(--remotion-themed-spacing-small);
+}
+
+button.imageButton img
+{
+  height: var(--imagebutton-image-width);
+  width: var(--imagebutton-image-width);
 }
 
 div.singleViewTopControls div.content h1.pageTitle
@@ -239,7 +246,7 @@ div.accessControlListContainer table.accessControlEntriesTable td.buttonCell
   padding: calc(var(--remotion-themed-spacing) / 2);
 }
 
-div.accessControlListContainer table.accessControlEntriesTable td img
+div.accessControlListContainer table.accessControlEntriesTable .bocBooleanValue img
 {
   height: var(--accesscontrollist-permission-image-width);
   width: var(--accesscontrollist-permission-image-width);
