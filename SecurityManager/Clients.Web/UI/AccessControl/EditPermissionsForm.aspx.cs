@@ -244,7 +244,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         return;
 
       SaveAccessControlLists(false);
-      IsDirty = true;
 
       var accessControlList = CurrentSecurableClassDefinition.CreateStatelessAccessControlList();
 
@@ -260,7 +259,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         return;
 
       SaveAccessControlLists(false);
-      IsDirty = true;
 
       var accessControlList = CurrentSecurableClassDefinition.CreateStatefulAccessControlList();
 
@@ -282,7 +280,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       accessControlList.Delete();
 
       SaveAccessControlLists(false);
-      IsDirty = true;
 
       LoadAccessControlLists(false);
     }

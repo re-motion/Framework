@@ -199,7 +199,6 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
         return;
 
       SaveAccessControlEntries(false);
-      Page.IsDirty = true;
 
       AccessControlEntry accessControlEntry = CurrentAccessControlList.CreateAccessControlEntry();
 
@@ -222,7 +221,6 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
       accessControlEntry.Delete();
 
       SaveAccessControlEntries(false);
-      Page.IsDirty = true;
 
       LoadAccessControlEntries(false);
     }
