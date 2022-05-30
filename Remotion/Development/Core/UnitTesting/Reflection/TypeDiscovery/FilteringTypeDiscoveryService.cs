@@ -56,7 +56,7 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
       _filter = filter;
     }
 
-    public ICollection GetTypes (Type baseType, bool excludeGlobalTypes)
+    public ICollection GetTypes (Type? baseType, bool excludeGlobalTypes)
     {
       var collection = _decoratedTypeDiscoveryService.GetTypes(baseType, excludeGlobalTypes);
       return collection.Cast<Type>().Where(_filter).ToList();

@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       else
         storageValueOrNull = storageValue;
 
-      return DotNetTypeConverter.ConvertFrom(storageValueOrNull);
+      return DotNetTypeConverter.ConvertFrom(storageValueOrNull!); //TODO RM-8491: value may not be null
     }
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)

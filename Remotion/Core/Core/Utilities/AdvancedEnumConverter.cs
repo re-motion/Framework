@@ -93,9 +93,9 @@ namespace Remotion.Utilities
     /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
     /// <param name="destinationType"> The <see cref="Type"/> to convert an <see cref="Enum"/> value to. </param>
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext? context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType!); // Override nullability for release v3.0 of re-motion to prevent changes during release phase
 
       if (!_isNullable && destinationType == _underlyingType)
         return true;
@@ -129,7 +129,7 @@ namespace Remotion.Utilities
         }
       }
 
-      return base.ConvertFrom(context, culture, value);
+      return base.ConvertFrom(context, culture, value!);
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
     }
 

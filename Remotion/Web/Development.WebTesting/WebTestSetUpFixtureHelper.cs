@@ -144,7 +144,9 @@ namespace Remotion.Web.Development.WebTesting
 
       var stopwatch = Stopwatch.StartNew();
 
-      var webRequest = (HttpWebRequest)HttpWebRequest.Create(resolvedUri);
+#pragma warning disable SYSLIB0014
+      var webRequest = (HttpWebRequest)HttpWebRequest.Create(resolvedUri); // TODO RM-8492: Replace with HttpClient
+#pragma warning restore SYSLIB0014
       webRequest.Method = WebRequestMethods.Http.Head;
       webRequest.AllowAutoRedirect = true;
       webRequest.Host = webApplicationRoot.Host;

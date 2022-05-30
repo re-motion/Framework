@@ -49,11 +49,17 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
       _section = (TypePipeConfigurationSection)ConfigurationManager.GetSection("remotion.reflection.codeGeneration.typePipe") ?? new TypePipeConfigurationSection();
     }
 
+#if !FEATURE_STRONGNAMESIGNING
+    [Obsolete("Strong name signing is not supported and throws PlatformNotSupportedException.", DiagnosticId="SYSLIB0017", UrlFormat="https://aka.ms/dotnet-warnings/{0}")]
+#endif
     public bool ForceStrongNaming
     {
       get { return _section.ForceStrongNaming.ElementInformation.IsPresent; }
     }
 
+#if !FEATURE_STRONGNAMESIGNING
+    [Obsolete("Strong name signing is not supported and throws PlatformNotSupportedException.", DiagnosticId="SYSLIB0017", UrlFormat="https://aka.ms/dotnet-warnings/{0}")]
+#endif
     public string KeyFilePath
     {
       get { return _section.ForceStrongNaming.KeyFilePath; }
@@ -68,8 +74,10 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.Configuration
     {
       return PipelineSettings
           .New()
+#pragma warning disable SYSLIB0017
           .SetForceStrongNaming(ForceStrongNaming)
           .SetKeyFilePath(KeyFilePath)
+#pragma warning restore
           .SetEnableSerializationWithoutAssemblySaving(EnableSerializationWithoutAssemblySaving)
           .Build();
     }

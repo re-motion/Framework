@@ -24,17 +24,17 @@ namespace Remotion.Data.DomainObjects
   /// </summary>
   public class DomainObjectHandleConverter : TypeConverter
   {
-    public override bool CanConvertFrom (ITypeDescriptorContext context, System.Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
       return sourceType == typeof(string);
     }
 
-    public override bool CanConvertTo (ITypeDescriptorContext context, System.Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
       return destinationType == typeof(string);
     }
 
-    public override object? ConvertFrom (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+    public override object? ConvertFrom (ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value)
     {
       if (value == null)
         return null;
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects
       }
     }
 
-    public override object? ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext? context, System.Globalization.CultureInfo? culture, object? value, Type destinationType)
     {
       if (destinationType != typeof(string))
         throw new NotSupportedException(string.Format("This TypeConverter cannot convert to values of type '{0}'.", destinationType));
