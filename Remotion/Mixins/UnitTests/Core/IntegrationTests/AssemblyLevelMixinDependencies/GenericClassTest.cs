@@ -26,26 +26,26 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     public void DependencyAddedToOpenGenericClass_ViaAssemblyLevelAttribute_AppliesWhenMixinIsInheritedByClosedClass ()
     {
       // M1 is applied to C<>, dependency via C<> => ok
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (typeof (ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<>), typeof (M1), typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(typeof(ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<>), typeof(M1), typeof(M2)));
 
       var instance = ObjectFactory.Create<ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<int>>();
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1 M2 ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<Int32>"));
+      Assert.That(result, Is.EqualTo("M1 M2 ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<Int32>"));
     }
 
     [Test]
     public void DependencyAddedToOpenGenericClass_ViaAssemblyLevelAttribute_ErrorWhenMixinIsOnlyPresentOnClosedClass ()
     {
       // M1 is applied to C<int>, dependency via C<> => error
-      Assert.That (
-          () => PrepareMixinConfigurationWithAttributeDeclarations (
-              new AdditionalMixinDependencyAttribute (typeof (ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<>),
-                  typeof (M1),
-                  typeof (M2))),
-          Throws.TypeOf<ConfigurationException>().With.Message.EqualTo (
+      Assert.That(
+          () => PrepareMixinConfigurationWithAttributeDeclarations(
+              new AdditionalMixinDependencyAttribute(typeof(ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<>),
+                  typeof(M1),
+                  typeof(M2))),
+          Throws.TypeOf<ConfigurationException>().With.Message.EqualTo(
               "The mixin dependencies configured for type "
               + "'Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDependencies.GenericClassTest+"
               + "ClassWithMixinAppliedToClosedType_WithDependencyForOpenType`1[T]' could not be processed: The mixin "
@@ -58,56 +58,56 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     public void DependencyAddedToClosedGenericClass_ViaAssemblyLevelAttribute_SucceedsWhenMixinIsPresentOnOpenClass ()
     {
       // M1 is applied to C<>, dependency via C<int> => ok (when C<int> is instantiated)
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (
-              typeof (ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<int>),
-              typeof (M1),
-              typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(
+              typeof(ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<int>),
+              typeof(M1),
+              typeof(M2)));
 
       var instance = ObjectFactory.Create<ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<int>>();
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1 M2 ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<Int32>"));
+      Assert.That(result, Is.EqualTo("M1 M2 ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<Int32>"));
     }
 
     [Test]
     public void DependencyAddedToClosedGenericClass_ViaAssemblyLevelAttribute_DoesNotAffectOtherClosedGenericVariant ()
     {
       // M1 is applied to C<>, dependency via C<int> => missing ordering when C<string> is instantiated
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (
-              typeof (ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<int>),
-              typeof (M1),
-              typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(
+              typeof(ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<int>),
+              typeof(M1),
+              typeof(M2)));
 
-      Assert.That (
+      Assert.That(
           () => ObjectFactory.Create<ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<string>>(),
-          Throws.TypeOf<ConfigurationException>().With.Message.StringContaining ("base call ordering"));
+          Throws.TypeOf<ConfigurationException>().With.Message.Contains("base call ordering"));
     }
 
     [Test]
     public void DependencyAddedToClosedGenericClass_ViaAssemblyLevelAttribute_SucceedsWhenMixinIsPresentOnClosedClass ()
     {
       // M1 is applied to C<int>, dependency via C<int> => ok
-      PrepareMixinConfigurationWithAttributeDeclarations (
-          new AdditionalMixinDependencyAttribute (
-              typeof (ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<int>),
-              typeof (M1),
-              typeof (M2)));
+      PrepareMixinConfigurationWithAttributeDeclarations(
+          new AdditionalMixinDependencyAttribute(
+              typeof(ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<int>),
+              typeof(M1),
+              typeof(M2)));
 
       var instance = ObjectFactory.Create<ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<int>>();
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M1 M2 ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<Int32>"));
+      Assert.That(result, Is.EqualTo("M1 M2 ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<Int32>"));
     }
 
     public class ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<T> : IC
     {
       public virtual string M ()
       {
-        return "ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<" + typeof (T).Name + ">";
+        return "ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<" + typeof(T).Name + ">";
       }
     }
 
@@ -115,7 +115,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     {
       public virtual string M ()
       {
-        return "ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<" + typeof (T).Name + ">";
+        return "ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<" + typeof(T).Name + ">";
       }
     }
 
@@ -123,7 +123,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     {
       public virtual string M ()
       {
-        return "ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<" + typeof (T).Name + ">";
+        return "ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<" + typeof(T).Name + ">";
       }
     }
 
@@ -131,7 +131,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     {
       public virtual string M ()
       {
-        return "ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<" + typeof (T).Name + ">";
+        return "ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<" + typeof(T).Name + ">";
       }
     }
 
@@ -140,10 +140,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<>))]
-    [Extends (typeof (ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<int>))]
-    [Extends (typeof (ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<>))]
-    [Extends (typeof (ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<int>))]
+    [Extends(typeof(ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<>))]
+    [Extends(typeof(ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<int>))]
+    [Extends(typeof(ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<>))]
+    [Extends(typeof(ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<int>))]
     public class M1 : Mixin<IC, IC>
     {
       [OverrideTarget]
@@ -153,10 +153,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof (ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<>))]
-    [Extends (typeof (ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<>))]
-    [Extends (typeof (ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<>))]
-    [Extends (typeof (ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<>))]
+    [Extends(typeof(ClassWithMixinAppliedToOpenType_WithDependencyForOpenType<>))]
+    [Extends(typeof(ClassWithMixinAppliedToClosedType_WithDependencyForOpenType<>))]
+    [Extends(typeof(ClassWithMixinAppliedToOpenType_WithDependencyForClosedType<>))]
+    [Extends(typeof(ClassWithMixinAppliedToClosedType_WithDependencyForClosedType<>))]
     public class M2 : Mixin<IC, IC>
     {
       [OverrideTarget]

@@ -18,18 +18,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ObjectBinding.Design;
+using CommonServiceLocator;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -38,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition
   {
     private readonly PropertyPathBinding _propertyPathBinding;
-    private BocCustomColumnDefinitionCell _customCell;
+    private BocCustomColumnDefinitionCell? _customCell;
     private string _customCellType = string.Empty;
     private string _customCellArgument = string.Empty;
     private bool _isSortable;
@@ -57,24 +56,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the <see cref="BocCustomColumnDefinitionCell"/> to be used for rendering. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocCustomColumnDefinitionCell CustomCell
     {
       get
       {
         if (_customCell == null)
         {
-          if (string.IsNullOrEmpty (_customCellType))
+          if (string.IsNullOrEmpty(_customCellType))
           {
-            throw new InvalidOperationException (
-                string.Format (
+            throw new InvalidOperationException(
+                string.Format(
                     "Neither a CustomCell nor a CustomCellType has been specified for BocCustomColumnDefinition '{0}' in BocList '{1}'.",
                     ItemID,
-                    OwnerControl.ID));
+                    OwnerControl!.ID));
           }
-          Type type = WebTypeUtility.GetType (_customCellType, true);
-          _customCell = (BocCustomColumnDefinitionCell) Activator.CreateInstance (type);
+          Type type = WebTypeUtility.GetType(_customCellType, true)!;
+          _customCell = (BocCustomColumnDefinitionCell)Activator.CreateInstance(type)!;
         }
         return _customCell;
       }
@@ -85,11 +84,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Format")]
-    [Description ("The BocCustomColumnDefinitionCell to be used for rendering.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Format")]
+    [Description("The BocCustomColumnDefinitionCell to be used for rendering.")]
     //  No default value
-    [NotifyParentProperty (true)]
+    [NotifyParentProperty(true)]
     public string CustomCellType
     {
       get { return _customCellType; }
@@ -100,11 +99,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the comma seperated name/value pairs to set the <see cref="BocCustomColumnDefinitionCell"/>'s 
     ///   properties. 
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Format")]
-    [Description ("The comma seperated name/value pairs to set the BocCustomColumnDefinitionCell's properties (property=value).")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Format")]
+    [Description("The comma seperated name/value pairs to set the BocCustomColumnDefinitionCell's properties (property=value).")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string CustomCellArgument
     {
       get { return _customCellArgument; }
@@ -112,18 +111,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     [NotNull]
-    public IBusinessObjectPropertyPath GetPropertyPath()
+    public IBusinessObjectPropertyPath GetPropertyPath ()
     {
       return _propertyPathBinding.GetPropertyPath();
     }
 
     public void SetPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      _propertyPathBinding.SetPropertyPath (propertyPath);
+      _propertyPathBinding.SetPropertyPath(propertyPath);
     }
 
-    [DefaultValue (false)]
-    [Category ("Data")]
+    [DefaultValue(false)]
+    [Category("Data")]
     public bool IsDynamic
     {
       get { return _propertyPathBinding.IsDynamic; }
@@ -135,13 +134,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Must not be <see langword="null"/> or emtpy.
     /// </summary>
     /// <value> A <see cref="string"/> representing the <see cref="IBusinessObjectPropertyPath"/>. </value>
-    [Editor (typeof (PropertyPathPickerEditor), typeof (UITypeEditor))]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("The string representation of the Property Path. Must not be emtpy.")]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("The string representation of the Property Path. Must not be emtpy.")]
     //  No default value
-    [NotifyParentProperty (true)]
-    public string PropertyPathIdentifier
+    [NotifyParentProperty(true)]
+    public string? PropertyPathIdentifier
     {
       get { return _propertyPathBinding.PropertyPathIdentifier; }
       set { _propertyPathBinding.PropertyPathIdentifier = value; }
@@ -149,11 +147,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Gets or sets a flag that determines whether to enable sorting for this columns. </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("A flag determining whether to enable sorting for this columns.")]
-    [DefaultValue (false)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to enable sorting for this columns.")]
+    [DefaultValue(false)]
+    [NotifyParentProperty(true)]
     public bool IsSortable
     {
       get { return _isSortable; }
@@ -163,11 +161,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> 
     ///   Gets or sets the <see cref="BocCustomColumnDefinitionMode"/> that determines how the cells are rendered.
     /// </summary>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("Determines how the cells are rendered.")]
-    [DefaultValue (BocCustomColumnDefinitionMode.NoControls)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("Determines how the cells are rendered.")]
+    [DefaultValue(BocCustomColumnDefinitionMode.NoControls)]
+    [NotifyParentProperty(true)]
     public BocCustomColumnDefinitionMode Mode
     {
       get { return _mode; }
@@ -176,9 +174,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-      
-      return serviceLocator.GetInstance<IBocCustomColumnRenderer> ();
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+
+      return serviceLocator.GetInstance<IBocCustomColumnRenderer>();
     }
 
     /// <summary> Gets the displayed value of the column title. </summary>
@@ -187,13 +185,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   the <c>DisplayName</c> of the <see cref="IBusinessObjectProperty"/> is returned.
     /// </remarks>
     /// <value> A <see cref="string"/> representing this column's title row contents. </value>
-    public override string ColumnTitleDisplayValue
+    public override WebString ColumnTitleDisplayValue
     {
       get
       {
-        bool isTitleEmpty = string.IsNullOrEmpty (ColumnTitle);
-
-        if (! isTitleEmpty)
+        if (!ColumnTitle.IsEmpty)
           return ColumnTitle;
 
         IBusinessObjectPropertyPath propertyPath;
@@ -204,14 +200,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         catch (ParseException)
         {
           // gracefully recover in column header
-          return string.Empty;
+          return WebString.Empty;
         }
 
         var lastProperty = propertyPath.Properties.LastOrDefault();
         if (lastProperty == null)
-          return string.Empty;
+          return WebString.Empty;
 
-        return lastProperty.DisplayName;
+        return WebString.CreateFromText(lastProperty.DisplayName);
       }
     }
 
@@ -221,15 +217,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return "CustomColumnDefinition"; }
     }
 
-    IBusinessObjectClass IBusinessObjectClassSource.BusinessObjectClass
+    IBusinessObjectClass? IBusinessObjectClassSource.BusinessObjectClass
     {
       get { return _propertyPathBinding.BusinessObjectClass; }
     }
 
     IComparer<BocListRow> IBocSortableColumnDefinition.CreateCellValueComparer ()
     {
-      var args = new BocCustomCellArguments ((IBocList) OwnerControl, this);
-      return CustomCell.CreateCellValueComparerInternal (args);
+      Assertion.IsNotNull(OwnerControl, "OwnerControl must not be null.");
+
+      var args = new BocCustomCellArguments((IBocList)OwnerControl, this);
+      return CustomCell.CreateCellValueComparerInternal(args);
     }
   }
 
@@ -254,12 +252,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     private readonly IBusinessObject _businessObject;
     private readonly BocCustomColumnDefinition _column;
-    private readonly string _argument;
+    private readonly string? _argument;
 
     public BocCustomCellClickEventArgs (
         BocCustomColumnDefinition column,
         IBusinessObject businessObject,
-        string argument)
+        string? argument)
     {
       _businessObject = businessObject;
       _column = column;
@@ -282,7 +280,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The argument generated by the <see cref="BocCustomColumnDefinitionCell.Render"/> method when registering
     ///   for a <c>click</c> event.
     /// </summary>
-    public string Argument
+    public string? Argument
     {
       get { return _argument; }
     }
@@ -298,7 +296,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </remarks>
   public abstract class BocCustomColumnDefinitionCell
   {
-    private BocCustomCellArguments _arguments;
+    private BocCustomCellArguments? _arguments;
 
     /// <summary> Get the javascript code that invokes <see cref="OnClick"/> when called. </summary>
     /// <param name="eventArgument"> The event argument to be passed to <see cref="OnClick"/>. </param>
@@ -307,34 +305,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       var renderArguments = _arguments as BocCustomCellRenderArguments;
       if (renderArguments == null)
-        throw new InvalidOperationException ("GetPostBackClientEvent can only be called from DoRender method.");
+        throw new InvalidOperationException("GetPostBackClientEvent can only be called from DoRender method.");
 
-      var postBackClientEvent = renderArguments.List.GetCustomCellPostBackClientEvent (
+      var postBackClientEvent = renderArguments.List.GetCustomCellPostBackClientEvent(
           renderArguments.ColumnIndex,
-          new BocListRow (renderArguments.ListIndex, renderArguments.BusinessObject),
+          new BocListRow(renderArguments.ListIndex, renderArguments.BusinessObject),
           eventArgument);
       return postBackClientEvent + renderArguments.OnClick;
     }
 
     protected void RegisterForSynchronousPostBack (BocListRow row, string eventArgument)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
       var preRenderArguments = _arguments as BocCustomCellPreRenderArguments;
       if (preRenderArguments == null)
-        throw new InvalidOperationException ("RegisterForSynchronousPostBack can only be called from OnPreRender method.");
+        throw new InvalidOperationException("RegisterForSynchronousPostBack can only be called from OnPreRender method.");
 
-      _arguments.List.RegisterCustomCellForSynchronousPostBack (preRenderArguments.ColumnIndex, row, eventArgument);
+      _arguments!.List.RegisterCustomCellForSynchronousPostBack(preRenderArguments.ColumnIndex, row, eventArgument);
     }
 
     internal Control CreateControlInternal (BocCustomCellArguments arguments)
     {
-      InitArguments (arguments);
-      Control control = CreateControl (arguments);
+      InitArguments(arguments);
+      Control control = CreateControl(arguments);
       if (control == null)
       {
-        throw new NullReferenceException (
-            string.Format (
+        throw new NullReferenceException(
+            string.Format(
                 "{0}.CreateControl(BocCustomCellArguments) evaluated null, but a Control was expected.", GetType()));
       }
       return control;
@@ -349,8 +347,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     protected virtual Control CreateControl (BocCustomCellArguments arguments)
     {
-      throw new NotImplementedException (
-          string.Format (
+      throw new NotImplementedException(
+          string.Format(
               "{0}: An implementation of 'CreateControl' is required if the 'BocCustomColumnDefinition.Mode' property "
               + "is set to '{1}' or '{2}'.",
               GetType().Name,
@@ -360,8 +358,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     internal void Init (BocCustomCellArguments arguments)
     {
-      InitArguments (arguments);
-      OnInit (arguments);
+      InitArguments(arguments);
+      OnInit(arguments);
     }
 
     /// <summary> Override this method to initialize a custom column. </summary>
@@ -372,8 +370,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     internal void Load (BocCustomCellLoadArguments arguments)
     {
-      InitArguments (arguments);
-      OnLoad (arguments);
+      InitArguments(arguments);
+      OnLoad(arguments);
     }
 
     /// <summary> Override this method to process the load phase. </summary>
@@ -383,23 +381,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
     }
 
-    internal void Click (BocCustomCellClickArguments arguments, string eventArgument)
+    internal void Click (BocCustomCellClickArguments arguments, string? eventArgument)
     {
-      InitArguments (arguments);
-      OnClick (arguments, eventArgument);
+      InitArguments(arguments);
+      OnClick(arguments, eventArgument);
     }
 
     /// <summary> Override this method to process a click event generated by <see cref="GetPostBackClientEvent"/>. </summary>
     /// <param name="arguments"> The <see cref="BocCustomCellClickArguments"/>. </param>
     /// <param name="eventArgument"> The argument passed to <see cref="GetPostBackClientEvent"/>. </param>
-    protected virtual void OnClick (BocCustomCellClickArguments arguments, string eventArgument)
+    protected virtual void OnClick (BocCustomCellClickArguments arguments, string? eventArgument)
     {
     }
 
     internal void Validate (BocCustomCellValidationArguments arguments)
     {
-      InitArguments (arguments);
-      OnValidate (arguments);
+      InitArguments(arguments);
+      OnValidate(arguments);
     }
 
     /// <summary> Override this method to process the validation of the editable custom cell during edit mode. </summary>
@@ -410,8 +408,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     internal void PreRender (BocCustomCellPreRenderArguments arguments)
     {
-      InitArguments (arguments);
-      OnPreRender (arguments);
+      InitArguments(arguments);
+      OnPreRender(arguments);
     }
 
     /// <summary> Override this method to prerender a custom column. </summary>
@@ -422,8 +420,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void RenderInternal (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
     {
-      InitArguments (arguments);
-      Render (writer, arguments);
+      InitArguments(arguments);
+      Render(writer, arguments);
     }
 
     /// <summary> Override this method to render a custom cell. </summary>
@@ -433,20 +431,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     protected virtual void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
     {
-      throw new NotImplementedException (
-          string.Format (
+      throw new NotImplementedException(
+          string.Format(
               "{0}: An implementation of 'Render' is required if the 'BocCustomColumnDefinition.Mode' property "
               + "is set to '{1}' or '{2}'.",
               GetType().Name,
               BocCustomColumnDefinitionMode.NoControls,
               BocCustomColumnDefinitionMode.ControlInEditedRow));
     }
-    
+
     [NotNull]
     internal IComparer<BocListRow> CreateCellValueComparerInternal (BocCustomCellArguments arguments)
     {
-      InitArguments (arguments);
-      return CreateCellValueComparer (arguments);
+      InitArguments(arguments);
+      return CreateCellValueComparer(arguments);
     }
 
     /// <summary>
@@ -458,7 +456,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [NotNull]
     protected virtual IComparer<BocListRow> CreateCellValueComparer (BocCustomCellArguments arguments)
     {
-      ArgumentUtility.CheckNotNull ("arguments", arguments);
+      ArgumentUtility.CheckNotNull("arguments", arguments);
 
       return arguments.ColumnDefinition.GetPropertyPath().CreateComparer();
     }
@@ -468,37 +466,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _arguments = arguments;
 
       string propertyValuePairs = arguments.ColumnDefinition.CustomCellArgument;
-      if (! string.IsNullOrEmpty (propertyValuePairs))
+      if (! string.IsNullOrEmpty(propertyValuePairs))
       {
         NameValueCollection values = new NameValueCollection();
-        StringUtility.ParsedItem[] items = StringUtility.ParseSeparatedList (propertyValuePairs, ',');
+        StringUtility.ParsedItem[] items = StringUtility.ParseSeparatedList(propertyValuePairs, ',');
         for (int i = 0; i < items.Length; i++)
         {
-          string[] pair = items[i].Value.Split (new[] { '=' }, 2);
+          string[] pair = items[i].Value.Split(new[] { '=' }, 2);
           if (pair.Length == 2)
           {
             string key = pair[0].Trim();
-            string value = pair[1].Trim (' ', '\"');
-            values.Add (key, value);
+            string value = pair[1].Trim(' ', '\"');
+            values.Add(key, value);
           }
         }
-        PropertyInfo[] properties = GetType().GetProperties (BindingFlags.Public | BindingFlags.Instance);
+        PropertyInfo[] properties = GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
         for (int i = 0; i < properties.Length; i++)
         {
           PropertyInfo property = properties[i];
-          string strval = values[property.Name];
+          string? strval = values[property.Name];
           if (strval != null)
           {
             try
             {
               if (strval.Length >= 2 && strval[0] == '\"' && strval[strval.Length - 1] == '\"')
-                strval = strval.Substring (1, strval.Length - 2);
-              object value = StringUtility.Parse (property.PropertyType, strval, CultureInfo.InvariantCulture);
-              property.SetValue (this, value, new object[0]);
+                strval = strval.Substring(1, strval.Length - 2);
+              object? value = StringUtility.Parse(property.PropertyType, strval, CultureInfo.InvariantCulture);
+              property.SetValue(this, value, new object[0]);
             }
             catch (Exception e)
             {
-              throw new ApplicationException ("Property " + property.Name + ": " + e.Message, e);
+              throw new ApplicationException("Property " + property.Name + ": " + e.Message, e);
             }
           }
         }
@@ -550,7 +548,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCustomColumnDefinition columnDefinition,
         int listIndex,
         Control control)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _businessObject = businessObject;
       _listIndex = listIndex;
@@ -585,7 +583,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocList list,
         IBusinessObject businessObject,
         BocCustomColumnDefinition columnDefinition)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _businessObject = businessObject;
     }
@@ -609,7 +607,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObject businessObject,
         BocCustomColumnDefinition columnDefinition,
         Control control)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _businessObject = businessObject;
       _control = control;
@@ -653,7 +651,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public IEnumerable<BocListRow> GetRowsToRender ()
     {
-      return List.GetRowsToRender().Select (row =>row.Row);
+      return List.GetRowsToRender().Select(row =>row.Row);
     }
   }
 
@@ -672,7 +670,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         int columnIndex,
         int listIndex,
         string onClick)
-        : base (list, columnDefinition)
+        : base(list, columnDefinition)
     {
       _columnIndex = columnIndex;
       _businessObject = businessObject;

@@ -33,12 +33,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     }
 
     protected EditUserFormFunction (ITransactionMode transactionMode, params object[] args)
-        : base (transactionMode, args)
+        : base(transactionMode, args)
     {
     }
 
-    public EditUserFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<User> currentObjectHandle)
-        : base (transactionMode, currentObjectHandle)
+    public EditUserFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<User>? currentObjectHandle)
+        : base(transactionMode, currentObjectHandle)
     {
     }
 
@@ -51,6 +51,6 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
       }
     }
 
-    private WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditUserForm), "UI/OrganizationalStructure/EditUserForm.aspx");
+    private WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(EditUserForm), "UI/OrganizationalStructure/EditUserForm.aspx");
   }
 }

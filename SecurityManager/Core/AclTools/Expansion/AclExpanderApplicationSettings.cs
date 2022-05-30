@@ -23,28 +23,28 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 {
   public class AclExpanderApplicationSettings : ConsoleApplicationSettings
   {
-    [CommandLineStringArgument ("user", true, Placeholder = "accountants/john.doe", Description = "Fully qualified name of user(s) to query access types for.")]
-    public string UserName;
+    [CommandLineStringArgument("user", true, Placeholder = "accountants/john.doe", Description = "Fully qualified name of user(s) to query access types for.")]
+    public string? UserName;
 
-    [CommandLineStringArgument ("last", true, Placeholder = "Doe", Description = "Last name of user(s) to query access types for.")]
-    public string UserLastName;
+    [CommandLineStringArgument("last", true, Placeholder = "Doe", Description = "Last name of user(s) to query access types for.")]
+    public string? UserLastName;
 
-    [CommandLineStringArgument ("first", true, Placeholder = "John", Description = "First name of user(s) to query access types for.")]
-    public string UserFirstName;
+    [CommandLineStringArgument("first", true, Placeholder = "John", Description = "First name of user(s) to query access types for.")]
+    public string? UserFirstName;
 
-    [CommandLineStringArgument ("dir", true, Placeholder = "c:\\temp", Description = "Directory the ACL-expansion gets written to (e.g. /dir:c:\\temp).")]
+    [CommandLineStringArgument("dir", true, Placeholder = "c:\\temp", Description = "Directory the ACL-expansion gets written to (e.g. /dir:c:\\temp).")]
     public string Directory = ".";
 
-    [CommandLineStringArgument ("culture", true, Placeholder = "", Description = "Culture to set for output (e.g. /culture:en-US, /culture:de-AT).")]
+    [CommandLineStringArgument("culture", true, Placeholder = "", Description = "Culture to set for output (e.g. /culture:en-US, /culture:de-AT).")]
     public string CultureName = "de-AT";
 
-    [CommandLineFlagArgument ("denied", true, Description = "Output the denied access rights (e.g. /denied+).")]
+    [CommandLineFlagArgument("denied", true, Description = "Output the denied access rights (e.g. /denied+).")]
     public bool OutputDeniedRights;
 
-    [CommandLineFlagArgument ("multifile", false, Description = "Create a single file for all users + permissions or a master file and several detail files.")]
+    [CommandLineFlagArgument("multifile", false, Description = "Create a single file for all users + permissions or a master file and several detail files.")]
     public bool UseMultipleFileOutput;
 
-    [CommandLineFlagArgument ("rc", false, Description = "Output row count for user, role.... (/multifile- only)")]
+    [CommandLineFlagArgument("rc", false, Description = "Output row count for user, role.... (/multifile- only)")]
     public bool OutputRowCount;
   }
 }

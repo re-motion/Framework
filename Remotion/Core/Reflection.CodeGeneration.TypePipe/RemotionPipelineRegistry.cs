@@ -31,18 +31,18 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
   /// <see cref="NonApplicationAssemblyAttribute"/> to the in-memory assembly in order to retain original re-mix behavior.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IPipelineRegistry), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPipelineRegistry), Lifetime = LifetimeKind.Singleton)]
   public class RemotionPipelineRegistry : DefaultPipelineRegistry
   {
     private static IPipeline CreateDefaultPipeline (IEnumerable<IParticipant> defaultPipelineParticipants)
     {
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var settings = new AppConfigBasedSettingsProvider().GetSettings();
-      return remotionPipelineFactory.Create ("remotion-default-pipeline", settings, defaultPipelineParticipants);
+      return remotionPipelineFactory.Create("remotion-default-pipeline", settings, defaultPipelineParticipants);
     }
 
     public RemotionPipelineRegistry (IEnumerable<IParticipant> defaultPipelineParticipants)
-        : base (CreateDefaultPipeline (ArgumentUtility.CheckNotNull ("defaultPipelineParticipants", defaultPipelineParticipants)))
+        : base(CreateDefaultPipeline(ArgumentUtility.CheckNotNull("defaultPipelineParticipants", defaultPipelineParticipants)))
     {
     }
   }

@@ -27,41 +27,52 @@ namespace Remotion.Extensions.UnitTests.Reflection
     [Test]
     public void GetInstanceMethodDelegate_WithExactMatchFromBase ()
     {
-      MethodLookupInfo lookupInfo = new MethodLookupInfo ("InstanceMethod");
-      var actual = (Func<TestClass, Base, Type>) lookupInfo.GetInstanceMethodDelegate (typeof (Func<TestClass, Base, Type>));
+      MethodLookupInfo lookupInfo = new MethodLookupInfo("InstanceMethod");
+      var actual = (Func<TestClass, Base, Type>)lookupInfo.GetInstanceMethodDelegate(typeof(Func<TestClass, Base, Type>));
 
-      TestClass instance = new TestClass ((Derived) null);
-      Assert.That (actual (instance, null), Is.SameAs (typeof (Base)));
+      TestClass instance = new TestClass((Derived)null);
+      Assert.That(actual(instance, null), Is.SameAs(typeof(Base)));
     }
 
     [Test]
     public void GetInstanceMethodDelegate_WithExactMatchFromDerived ()
     {
-      MethodLookupInfo lookupInfo = new MethodLookupInfo ("InstanceMethod");
-      var actual = (Func<TestClass, Derived, Type>) lookupInfo.GetInstanceMethodDelegate (typeof (Func<TestClass, Derived, Type>));
+      MethodLookupInfo lookupInfo = new MethodLookupInfo("InstanceMethod");
+      var actual = (Func<TestClass, Derived, Type>)lookupInfo.GetInstanceMethodDelegate(typeof(Func<TestClass, Derived, Type>));
 
-      TestClass instance = new TestClass ((Base) null);
-      Assert.That (actual (instance, null), Is.SameAs (typeof (Derived)));
+      TestClass instance = new TestClass((Base)null);
+      Assert.That(actual(instance, null), Is.SameAs(typeof(Derived)));
     }
 
     [Test]
     public void GetInstanceMethodDelegate_WithExactMatchFromDerivedDerived ()
     {
-      MethodLookupInfo lookupInfo = new MethodLookupInfo ("InstanceMethod");
-      var actual = (Func<TestClass, DerivedDerived, Type>) lookupInfo.GetInstanceMethodDelegate (typeof (Func<TestClass, DerivedDerived, Type>));
+      MethodLookupInfo lookupInfo = new MethodLookupInfo("InstanceMethod");
+      var actual = (Func<TestClass, DerivedDerived, Type>)lookupInfo.GetInstanceMethodDelegate(typeof(Func<TestClass, DerivedDerived, Type>));
 
-      TestClass instance = new TestClass ((Base) null);
-      Assert.That (actual (instance, null), Is.SameAs (typeof (Derived)));
+      TestClass instance = new TestClass((Base)null);
+      Assert.That(actual(instance, null), Is.SameAs(typeof(Derived)));
     }
 
     [Test]
-    [Ignore ("TODO: Implement support for static methods.")]
+    public void GetInstanceMethodDelegate_WithNonExistentMethodName_Throws ()
+    {
+      var lookupInfo = new MethodLookupInfo("IDoNotExist");
+
+      Assert.That(
+          () => lookupInfo.GetInstanceMethodDelegate(typeof(Func<TestClass, DerivedDerived, Type>)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("No method named 'IDoNotExist' could be found on 'Remotion.Extensions.UnitTests.Reflection.TestDomain.TestClass'."));
+    }
+
+    [Test]
+    [Ignore("TODO: Implement support for static methods.")]
     public void GetStaticMethodDelegate_WithExactMatchFromBase ()
     {
-      MethodLookupInfo lookupInfo = new MethodLookupInfo ("StaticMethod");
-      var actual = (Func<TestClass, Base, Type>) lookupInfo.GetInstanceMethodDelegate (typeof (Func<TestClass, Base, Type>));
+      MethodLookupInfo lookupInfo = new MethodLookupInfo("StaticMethod");
+      var actual = (Func<TestClass, Base, Type>)lookupInfo.GetInstanceMethodDelegate(typeof(Func<TestClass, Base, Type>));
 
-      Assert.That (actual (null, null), Is.SameAs (typeof (Base)));
+      Assert.That(actual(null, null), Is.SameAs(typeof(Base)));
     }
 
   }

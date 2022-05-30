@@ -25,10 +25,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
   public interface IDataContainerEventListener
   {
     void PropertyValueReading (DataContainer dataContainer, PropertyDefinition propertyDefinition, ValueAccess valueAccess);
-    void PropertyValueRead (DataContainer dataContainer, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess);
-    void PropertyValueChanging (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue);
-    void PropertyValueChanged (DataContainer dataContainer, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void PropertyValueRead (DataContainer dataContainer, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
+    void PropertyValueChanging (DataContainer dataContainer, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
+    void PropertyValueChanged (DataContainer dataContainer, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
-    void StateUpdated (DataContainer dataContainer, StateType state);
+    void StateUpdated (DataContainer dataContainer, DataContainerState state);
   }
 }

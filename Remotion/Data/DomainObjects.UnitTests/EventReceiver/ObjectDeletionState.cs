@@ -30,12 +30,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     // construction and disposing
 
     public ObjectDeletionState (object sender)
-      : this (sender, null)
+      : this(sender, null)
     {
     }
 
     public ObjectDeletionState (object sender, string message)
-      : base (sender, message)
+      : base(sender, message)
     {
     }
 

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         IEnumerable<IRdbmsStoragePropertyDefinition> dataProperties,
         IEnumerable<IIndexDefinition> indexes,
         IEnumerable<EntityNameDefinition> synonyms)
-        : base (
+        : base(
             storageProviderDefinition,
             viewName,
             idProperty,

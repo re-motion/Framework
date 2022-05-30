@@ -36,26 +36,26 @@ namespace Remotion.Web.UI.Controls
     {
     }
 
-    [Category ("Appearance")]
+    [Category("Appearance")]
     [CssClassProperty]
-    [DefaultValue ("")]
-    [Description ("Class name applied to the control.")]
+    [DefaultValue("")]
+    [Description("Class name applied to the control.")]
     public string CssClass
     {
       get { return _cssClass; }
       set { _cssClass = value ?? string.Empty; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public CssStyleCollection Style
     {
       get { return Attributes.CssStyle; }
     }
 
-    [Description ("Indicates whether the UpdatePanel should render as a block tag (<div>), an inline tag (<span>), or a table section (tbody, thead, tfoot).")]
-    [DefaultValue (WebUpdatePanelRenderMode.Div)]
-    [Category ("Layout")]
+    [Description("Indicates whether the UpdatePanel should render as a block tag (<div>), an inline tag (<span>), or a table section (tbody, thead, tfoot).")]
+    [DefaultValue(WebUpdatePanelRenderMode.Div)]
+    [Category("Layout")]
     public new WebUpdatePanelRenderMode RenderMode
     {
       get
@@ -64,35 +64,35 @@ namespace Remotion.Web.UI.Controls
       }
       set
       {
-        _renderMode = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<WebUpdatePanelRenderMode> ("value", value);
+        _renderMode = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<WebUpdatePanelRenderMode>("value", value);
       }
     }
- 
-    protected override void LoadViewState (object savedState)
+
+    protected override void LoadViewState (object? savedState)
     {
       if (savedState != null)
       {
-        var pair = (Pair) savedState;
+        var pair = (Pair)savedState;
 
-        base.LoadViewState (pair.First);
+        base.LoadViewState(pair.First);
 
-        _cssClass = (string) pair.Second ?? string.Empty;
+        _cssClass = (string)(pair.Second ?? string.Empty);
       }
     }
 
-    protected override object SaveViewState ()
+    protected override object? SaveViewState ()
     {
-      object baseViewState = base.SaveViewState();
+      object? baseViewState = base.SaveViewState();
 
-      if ((baseViewState == null) && string.IsNullOrEmpty (_cssClass))
+      if ((baseViewState == null) && string.IsNullOrEmpty(_cssClass))
         return null;
-      return new Pair (baseViewState, _cssClass);
+      return new Pair(baseViewState, _cssClass);
     }
 
     protected virtual void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (!string.IsNullOrEmpty (_cssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, _cssClass);
+      if (!string.IsNullOrEmpty(_cssClass))
+        writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClass);
 
       Attributes.AddAttributes(writer);
     }
@@ -101,19 +101,19 @@ namespace Remotion.Web.UI.Controls
     {
       if (IsInPartialRendering)
       {
-        base.RenderChildren (writer);
+        base.RenderChildren(writer);
       }
       else
       {
-        AddAttributesToRender (writer);
-        writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID);
-        writer.RenderBeginTag (GetTagName());
+        AddAttributesToRender(writer);
+        writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+        writer.RenderBeginTag(GetTagName());
 
-        _memberCaller.RenderChildrenInternal (this, writer, Controls);
+        _memberCaller.RenderChildrenInternal(this, writer, Controls);
 
-        writer.RenderEndTag ();
+        writer.RenderEndTag();
 
-        _memberCaller.SetUpdatePanelRendered (this, true);
+        _memberCaller.SetUpdatePanelRendered(this, true);
       }
     }
 
@@ -135,12 +135,12 @@ namespace Remotion.Web.UI.Controls
 
         case WebUpdatePanelRenderMode.Thead:
           return HtmlTextWriterTag.Thead;
-        
+
         case WebUpdatePanelRenderMode.Tfoot:
           return HtmlTextWriterTag.Tfoot;
 
         default:
-          throw new InvalidOperationException(string.Format ("The RenderMode '{0}' is not valid.", _renderMode));
+          throw new InvalidOperationException(string.Format("The RenderMode '{0}' is not valid.", _renderMode));
       }
 #pragma warning restore 612,618
     }

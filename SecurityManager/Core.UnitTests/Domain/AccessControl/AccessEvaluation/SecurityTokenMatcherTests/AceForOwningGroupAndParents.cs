@@ -31,96 +31,96 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      
-      _companyHelper = new CompanyStructureHelper (TestHelper.Transaction);
+      base.SetUp();
 
-      _ace = TestHelper.CreateAceWithOwningGroup ();
+      _companyHelper = new CompanyStructureHelper(TestHelper.Transaction);
+
+      _ace = TestHelper.CreateAceWithOwningGroup();
       _ace.GroupHierarchyCondition = GroupHierarchyCondition.ThisAndParent;
 
-      Assert.That (_ace.TenantCondition, Is.EqualTo (TenantCondition.None));
-      Assert.That (_ace.GroupCondition, Is.EqualTo (GroupCondition.OwningGroup));
-      Assert.That (_ace.GroupHierarchyCondition, Is.EqualTo (GroupHierarchyCondition.ThisAndParent));
-      Assert.That (_ace.UserCondition, Is.EqualTo (UserCondition.None));
-      Assert.That (_ace.SpecificAbstractRole, Is.Null);
+      Assert.That(_ace.TenantCondition, Is.EqualTo(TenantCondition.None));
+      Assert.That(_ace.GroupCondition, Is.EqualTo(GroupCondition.OwningGroup));
+      Assert.That(_ace.GroupHierarchyCondition, Is.EqualTo(GroupHierarchyCondition.ThisAndParent));
+      Assert.That(_ace.UserCondition, Is.EqualTo(UserCondition.None));
+      Assert.That(_ace.SpecificAbstractRole, Is.Null);
     }
 
     [Test]
     public void TokenWithPrincipal_Matches ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group owningGroup = _companyHelper.AustrianProjectsDepartment;
-      TestHelper.CreateRole (user, owningGroup, _companyHelper.HeadPosition);
+      TestHelper.CreateRole(user, owningGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithPrincipalInParent_Matches ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group owningGroup = _companyHelper.AustrianProjectsDepartment;
       Group parentGroup = owningGroup.Parent;
-      Assert.That (parentGroup, Is.Not.Null);
-      TestHelper.CreateRole (user, parentGroup, _companyHelper.HeadPosition);
+      Assert.That(parentGroup, Is.Not.Null);
+      TestHelper.CreateRole(user, parentGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithPrincipalInGrandParent_Matches ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group owningGroup = _companyHelper.AustrianCarTeam;
       Group grandParentGroup = owningGroup.Parent.Parent;
-      Assert.That (grandParentGroup, Is.Not.Null);
-      TestHelper.CreateRole (user, grandParentGroup, _companyHelper.HeadPosition);
+      Assert.That(grandParentGroup, Is.Not.Null);
+      TestHelper.CreateRole(user, grandParentGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithPrincipalInChild_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group childGroup = _companyHelper.AustrianCarTeam;
       Group owningGroup = childGroup.Parent;
-      Assert.That (owningGroup, Is.Not.Null);
-      TestHelper.CreateRole (user, childGroup, _companyHelper.HeadPosition);
+      Assert.That(owningGroup, Is.Not.Null);
+      TestHelper.CreateRole(user, childGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
 
     [Test]
     public void TokenWithPrincipalInSibling_DoesNotMatch ()
     {
-      User user = CreateUser (_companyHelper.CompanyTenant, null);
+      User user = CreateUser(_companyHelper.CompanyTenant, null);
       Group branchRoot = _companyHelper.AustrianDivsion;
       Group userGroup = branchRoot.Children[0];
       Group owningGroup = branchRoot.Children[1];
-      TestHelper.CreateRole (user, userGroup, _companyHelper.HeadPosition);
+      TestHelper.CreateRole(user, userGroup, _companyHelper.HeadPosition);
 
-      SecurityToken token = TestHelper.CreateTokenWithOwningGroup (user, owningGroup);
+      SecurityToken token = TestHelper.CreateTokenWithOwningGroup(user, owningGroup);
 
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (_ace);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(_ace);
 
-      Assert.That (matcher.MatchesToken (token), Is.False);
+      Assert.That(matcher.MatchesToken(token), Is.False);
     }
   }
 }

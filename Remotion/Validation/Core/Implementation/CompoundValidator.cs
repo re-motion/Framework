@@ -15,15 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Results;
 using Remotion.Utilities;
-using Remotion.Utilities.ReSharperAnnotations;
+using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Implementation
 {
@@ -32,23 +27,16 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   public sealed class CompoundValidator : IValidator
   {
-    private static readonly MethodInfo s_CreateDescriptorMethod =
-        typeof (CompoundValidator).GetMethod (
-            "CreateDescriptor",
-            BindingFlags.Instance | BindingFlags.NonPublic);
-
     private readonly IReadOnlyCollection<IValidator> _validators;
     private readonly Type _typeToValidate;
-    private readonly MethodInfo _createDescriptorMethod;
 
     public CompoundValidator (IEnumerable<IValidator> validators, Type typeToValidate)
     {
-      ArgumentUtility.CheckNotNull ("validators", validators);
-      ArgumentUtility.CheckNotNull ("typeToValidate", typeToValidate);
+      ArgumentUtility.CheckNotNull("validators", validators);
+      ArgumentUtility.CheckNotNull("typeToValidate", typeToValidate);
 
       _validators = validators.ToList().AsReadOnly();
       _typeToValidate = typeToValidate;
-      _createDescriptorMethod = s_CreateDescriptorMethod.MakeGenericMethod (_typeToValidate);
     }
 
     public IReadOnlyCollection<IValidator> Validators
@@ -58,67 +46,45 @@ namespace Remotion.Validation.Implementation
 
     public ValidationResult Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      return Validate (new ValidationContext (instance, new PropertyChain(), new DefaultValidatorSelector()));
+      return Validate(new ValidationContext(instance));
     }
 
     public ValidationResult Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var failures = _validators.SelectMany (v => v.Validate (context).Errors);
-      return new ValidationResult (failures);
+      var failures = _validators.SelectMany(v => v.Validate(context).Errors).ToArray();
+      return new ValidationResult(failures);
     }
 
-    public IValidatorDescriptor CreateDescriptor ()
+    public ValidatorDescriptor CreateDescriptor ()
     {
-      return (IValidatorDescriptor) _createDescriptorMethod.Invoke (this, null);
-    }
-
-    [ReflectionAPI]
-    private IValidatorDescriptor CreateDescriptor<T> ()
-    {
-      var validationRules = GetAllValidationRules();
-      return new ValidatorDescriptor<T> (validationRules);
+      return new ValidatorDescriptor(_validators.SelectMany(v => v.CreateDescriptor().ValidationRules).ToArray());
     }
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validators.All (v => v.CanValidateInstancesOfType (type));
+      return _validators.All(v => v.CanValidateInstancesOfType(type));
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      if (!CanValidateInstancesOfType (instance.GetType()))
+      if (!CanValidateInstancesOfType(instance.GetType()))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
                 instance.GetType().Name,
                 _typeToValidate.Name));
       }
 
-      return Validate (instance);
-    }
-
-    IEnumerator IEnumerable.GetEnumerator ()
-    {
-      return GetEnumerator();
-    }
-
-    public IEnumerator<IValidationRule> GetEnumerator ()
-    {
-      return GetAllValidationRules().GetEnumerator();
-    }
-
-    private IEnumerable<IValidationRule> GetAllValidationRules ()
-    {
-      return _validators.SelectMany (valiator => valiator);
+      return Validate(instance);
     }
   }
 }

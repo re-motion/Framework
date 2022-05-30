@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
+using System.IO;
 using Coypu;
 using Coypu.Drivers;
 using JetBrains.Annotations;
@@ -22,69 +24,86 @@ using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 using Remotion.Web.Development.WebTesting.BrowserSession.Chrome;
 using Remotion.Web.Development.WebTesting.Configuration;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 {
   /// <summary>
-  /// Responsible for creating a new Chrome browser, configured based on <see cref="IChromeConfiguration"/> and <see cref="ITestInfrastructureConfiguration"/>.
+  /// Responsible for creating a new Chrome browser, configured based on <see cref="IChromeConfiguration"/> and <see cref="DriverConfiguration"/>.
   /// </summary>
   public class ChromeBrowserFactory : IBrowserFactory
   {
     private readonly IChromeConfiguration _chromeConfiguration;
+    private readonly ExtendedChromeOptions _extendedChromeOptions;
+    private readonly IBrowserSessionCleanUpStrategy _registryCleanUpStrategy;
 
     public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("chromeConfiguration", chromeConfiguration);
+      ArgumentUtility.CheckNotNull("chromeConfiguration", chromeConfiguration);
 
       _chromeConfiguration = chromeConfiguration;
+      _extendedChromeOptions = _chromeConfiguration.CreateChromeOptions();
+      _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForChrome(_chromeConfiguration.DisableSecurityWarningsBehavior);
     }
 
-    public IBrowserSession CreateBrowser (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    public IBrowserSession CreateBrowser (DriverConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("testInfrastructureConfiguration", testInfrastructureConfiguration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
-      var sessionConfiguration = CreateSessionConfiguration (testInfrastructureConfiguration);
-      int driverProcessID;
-      string userDirectory;
-      var driver = CreateChromeDriver (out driverProcessID, out userDirectory);
+      var sessionConfiguration = CreateSessionConfiguration(configuration);
+      var commandTimeout = configuration.CommandTimeout;
 
-      var session = new Coypu.BrowserSession (sessionConfiguration, new CustomSeleniumWebDriver (driver, Browser.Chrome));
+      var driver = CreateChromeDriver(out var driverProcessID, commandTimeout);
+      driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
-      return new ChromeBrowserSession (session, _chromeConfiguration, driverProcessID, userDirectory);
+      var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.Chrome));
+
+      return new ChromeBrowserSession(
+          session,
+          _chromeConfiguration,
+          driverProcessID,
+          new[]
+          {
+              _registryCleanUpStrategy,
+              new ChromiumUserDirectoryCleanUpStrategy(_chromeConfiguration.UserDirectoryRoot, _extendedChromeOptions.UserDirectory!)
+          });
     }
 
-    private SessionConfiguration CreateSessionConfiguration (ITestInfrastructureConfiguration testInfrastructureConfiguration)
+    private SessionConfiguration CreateSessionConfiguration (DriverConfiguration configuration)
     {
       return new SessionConfiguration
              {
                  Browser = Browser.Chrome,
-                 RetryInterval = testInfrastructureConfiguration.RetryInterval,
-                 Timeout = testInfrastructureConfiguration.SearchTimeout,
+                 RetryInterval = configuration.RetryInterval,
+                 Timeout = configuration.SearchTimeout,
                  ConsiderInvisibleElements = WebTestingConstants.ShouldConsiderInvisibleElements,
                  Match = WebTestingConstants.DefaultMatchStrategy,
                  TextPrecision = WebTestingConstants.DefaultTextPrecision,
-                 Driver = typeof (CustomSeleniumWebDriver)
+                 Driver = typeof(CustomSeleniumWebDriver)
              };
     }
 
-    private ChromeDriver CreateChromeDriver (out int driverProcessID, [CanBeNull] out string userDirectory)
+    private ChromeDriver CreateChromeDriver (out int driverProcessID, TimeSpan commandTimeout)
     {
       var driverService = CreateChromeDriverService();
-      var chromeOptions = _chromeConfiguration.CreateChromeOptions();
 
-      var driver = new ChromeDriver (driverService, chromeOptions);
+      var driver = new ChromeDriver(driverService, _extendedChromeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
-      userDirectory = chromeOptions.UserDirectory;
+
       return driver;
     }
 
     private ChromeDriverService CreateChromeDriverService ()
     {
-      var driverService = ChromeDriverService.CreateDefaultService();
+      var driverDirectory = Path.GetDirectoryName(_chromeConfiguration.DriverBinaryPath);
+      var driverExecutable = Path.GetFileName(_chromeConfiguration.DriverBinaryPath);
+
+      var driverService = ChromeDriverService.CreateDefaultService(driverDirectory, driverExecutable);
 
       driverService.EnableVerboseLogging = false;
-      driverService.LogPath = WebDriverLogUtility.CreateLogFile (_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
+      driverService.LogPath = WebDriverLogUtility.CreateLogFile(_chromeConfiguration.LogsDirectory, _chromeConfiguration.BrowserName);
 
       return driverService;
     }

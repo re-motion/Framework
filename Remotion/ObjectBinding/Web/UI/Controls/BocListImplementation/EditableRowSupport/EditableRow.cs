@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -25,11 +26,13 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public class EditableRow : PlaceHolder, INamingContainer, IEditableRow
   {
     // types
@@ -40,97 +43,102 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     private readonly IEditModeHost _editModeHost;
 
-    private EditableRowDataSourceFactory _dataSourceFactory;
-    private EditableRowControlFactory _controlFactory;
-  
-    private IBusinessObjectReferenceDataSource _dataSource;
+    private EditableRowDataSourceFactory? _dataSourceFactory;
+    private EditableRowControlFactory? _controlFactory;
 
-    private PlaceHolder _editControls;
-    private PlaceHolder _validatorControls;
+    private IBusinessObjectReferenceDataSource? _dataSource;
+
+    private PlaceHolder? _editControls;
+    private PlaceHolder? _validatorControls;
 
     private bool _isRowEditModeValidatorsRestored;
-    private IBusinessObjectBoundEditableWebControl[] _rowEditModeControls;
+    private IBusinessObjectBoundEditableWebControl[]? _rowEditModeControls;
 
     // construction and disposing
 
     public EditableRow (IEditModeHost editModeHost)
     {
-      ArgumentUtility.CheckNotNull ("editModeHost", editModeHost);
+      ArgumentUtility.CheckNotNull("editModeHost", editModeHost);
 
       _editModeHost = editModeHost;
     }
 
     // methods and properties
 
-    public EditableRowDataSourceFactory DataSourceFactory
+    [DisallowNull]
+    public EditableRowDataSourceFactory? DataSourceFactory
     {
-      get 
+      get
       {
-        return _dataSourceFactory; 
+        return _dataSourceFactory;
       }
-      set 
+      set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        _dataSourceFactory = value; 
+        ArgumentUtility.CheckNotNull("value", value);
+        _dataSourceFactory = value;
       }
     }
 
-    public EditableRowControlFactory ControlFactory
+    [DisallowNull]
+    public EditableRowControlFactory? ControlFactory
     {
-      get 
+      get
       {
-        return _controlFactory; 
+        return _controlFactory;
       }
-      set 
+      set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        _controlFactory = value; 
+        ArgumentUtility.CheckNotNull("value", value);
+        _controlFactory = value;
       }
     }
 
     public virtual void CreateControls (IBusinessObject value, BocColumnDefinition[] columns)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
 
       if (_dataSourceFactory == null)
       {
-        throw new InvalidOperationException (
-            string.Format ("BocList '{0}': DataSourceFactory has not been set prior to invoking CreateControls().", _editModeHost.ID));
+        throw new InvalidOperationException(
+            string.Format("BocList '{0}': DataSourceFactory has not been set prior to invoking CreateControls().", _editModeHost.ID));
       }
 
       if (_controlFactory == null)
       {
-        throw new InvalidOperationException (
-            string.Format ("BocList '{0}': ControlFactory has not been set prior to invoking CreateControls().", _editModeHost.ID));
+        throw new InvalidOperationException(
+            string.Format("BocList '{0}': ControlFactory has not been set prior to invoking CreateControls().", _editModeHost.ID));
       }
 
-      CreatePlaceHolders (columns);
+      CreatePlaceHolders(columns);
 
-      _dataSource = _dataSourceFactory.Create (value);
+      _dataSource = _dataSourceFactory.Create(value);
 
       _rowEditModeControls = new IBusinessObjectBoundEditableWebControl[columns.Length];
 
       for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
       {
-        BocSimpleColumnDefinition simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
+        BocSimpleColumnDefinition? simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
 
-        if (IsColumnEditable (simpleColumn))
+        if (IsColumnEditable(simpleColumn))
         {
-          IBusinessObjectBoundEditableWebControl control = _controlFactory.Create (simpleColumn, idxColumns);
+          IBusinessObjectBoundEditableWebControl? control = _controlFactory.Create(simpleColumn, idxColumns);
 
           if (control != null)
           {
             control.ID = idxColumns.ToString();
             control.DataSource = _dataSource;
-            IBusinessObjectPropertyPath propertyPath = simpleColumn.GetPropertyPath ();
+            IBusinessObjectPropertyPath propertyPath = simpleColumn.GetPropertyPath();
             control.Property = propertyPath.Properties[0];
-            SetEditControl (idxColumns, control);
+            if (control is BusinessObjectBoundEditableWebControl editableWebControl && !editableWebControl.EnableOptionalValidators.HasValue)
+              editableWebControl.EnableOptionalValidators = _editModeHost.EnableOptionalValidators;
+
+            SetEditControl(idxColumns, control);
 
             _rowEditModeControls[idxColumns] = control;
           }
         }
-      }  
+      }
       _isRowEditModeValidatorsRestored = false;
     }
 
@@ -139,19 +147,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       RemoveControls();
 
       _editControls = new PlaceHolder();
-      Controls.Add (_editControls);
+      Controls.Add(_editControls);
 
       _validatorControls = new PlaceHolder();
-      Controls.Add (_validatorControls);
+      Controls.Add(_validatorControls);
 
       for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
       {
-        _editControls.Controls.Add (new PlaceHolder());
-        _validatorControls.Controls.Add (new PlaceHolder());
+        _editControls.Controls.Add(new PlaceHolder());
+        _validatorControls.Controls.Add(new PlaceHolder());
       }
     }
 
-    protected bool IsColumnEditable (BocSimpleColumnDefinition column)
+    protected bool IsColumnEditable ([NotNullWhen(true)] BocSimpleColumnDefinition? column)
     {
       if (column == null)
         return false;
@@ -170,7 +178,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return true;
     }
 
-    public void RemoveControls()
+    public void RemoveControls ()
     {
       ClearChildState();
       Controls.Clear();
@@ -178,33 +186,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _validatorControls = null;
     }
 
-    public IBusinessObjectReferenceDataSource GetDataSource()
+    public IBusinessObjectReferenceDataSource GetDataSource ()
     {
-      return _dataSource;
+      return Assertion.IsNotNull(_dataSource, "CreateControls must be called before GetDataSource.");
     }
 
     protected void SetEditControl (int index, IBusinessObjectBoundEditableWebControl control)
     {
-      Control webControl = ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
+      Control webControl = ArgumentUtility.CheckNotNullAndType<Control>("control", control);
 
-      ControlCollection cellControls = GetEditControls (index);
+      ControlCollection cellControls = GetEditControls(index);
       cellControls.Clear();
-      cellControls.Add (webControl);
+      cellControls.Add(webControl);
     }
 
     private ControlCollection GetEditControls (int columnIndex)
     {
-      if (columnIndex < 0 || columnIndex >= _editControls.Controls.Count) throw new ArgumentOutOfRangeException ("columnIndex");
+      Assertion.IsNotNull(_editControls, "_editControls must not be null.");
+
+      if (columnIndex < 0 || columnIndex >= _editControls.Controls.Count) throw new ArgumentOutOfRangeException("columnIndex");
 
       return _editControls.Controls[columnIndex].Controls;
     }
 
-    public IBusinessObjectBoundEditableWebControl GetEditControl (int columnIndex)
+    public IBusinessObjectBoundEditableWebControl? GetEditControl (int columnIndex)
     {
-      if (HasEditControl (columnIndex))
+      if (HasEditControl(columnIndex))
       {
-        ControlCollection controls = GetEditControls (columnIndex);
-        return (IBusinessObjectBoundEditableWebControl) controls[0];
+        ControlCollection controls = GetEditControls(columnIndex);
+        return (IBusinessObjectBoundEditableWebControl)controls[0];
       }
       else
       {
@@ -212,6 +222,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
     }
 
+    [MemberNotNullWhen(true, nameof(_editControls))]
     public bool HasEditControls ()
     {
       return _editControls != null;
@@ -220,30 +231,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     public bool HasEditControl (int columnIndex)
     {
       if (HasEditControls())
-        return GetEditControls (columnIndex).Count > 0;
+        return GetEditControls(columnIndex).Count > 0;
       else
         return false;
     }
 
     protected void AddToValidators (int columnIndex, IEnumerable<BaseValidator> validators)
     {
-      ArgumentUtility.CheckNotNull ("validators", validators);
+      ArgumentUtility.CheckNotNull("validators", validators);
 
-      ControlCollection cellValidators = GetValidators (columnIndex);
+      ControlCollection? cellValidators = GetValidators(columnIndex);
+      Assertion.IsNotNull(cellValidators, "GetValidators(columnIndex) != null");
+
       foreach (var validator in validators)
-        cellValidators.Add (validator);
+        cellValidators.Add(validator);
     }
 
-    public ControlCollection GetValidators (int columnIndex)
+    public ControlCollection? GetValidators (int columnIndex)
     {
-      if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException ("columnIndex");
-    
-      if (HasEditControl (columnIndex))
+      Assertion.IsNotNull(_validatorControls, "_validatorControls must not be null.");
+
+      if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException("columnIndex");
+
+      if (HasEditControl(columnIndex))
         return _validatorControls.Controls[columnIndex].Controls;
       else
         return null;
     }
 
+    [MemberNotNullWhen(true, nameof(_validatorControls))]
     public bool HasValidators ()
     {
       return _validatorControls != null;
@@ -252,7 +268,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     public bool HasValidators (int columnIndex)
     {
       if (HasValidators())
-        return HasEditControl (columnIndex);
+        return HasEditControl(columnIndex);
       else
         return false;
     }
@@ -261,7 +277,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     ///   Validators must be added to the controls collection after LoadPostData is complete.
     ///   If not, invalid validators will know that they are invalid without first calling validate.
     /// </remarks>
-    public void EnsureValidatorsRestored()
+    public void EnsureValidatorsRestored ()
     {
       if (_isRowEditModeValidatorsRestored)
         return;
@@ -271,16 +287,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         return;
 
       for (int i = 0; i < _editControls.Controls.Count; i++)
-        CreateValidators (i);
+        CreateValidators(i);
     }
 
     protected void CreateValidators (int columnIndex)
     {
-      if (HasEditControl (columnIndex))
+      if (HasEditControl(columnIndex))
       {
-        IBusinessObjectBoundEditableWebControl editControl = GetEditControl (columnIndex);
+        IBusinessObjectBoundEditableWebControl? editControl = GetEditControl(columnIndex);
+        Assertion.IsNotNull(editControl, "GetEditControl(columnIndex) != null");
         var validators = editControl.CreateValidators();
-        AddToValidators (columnIndex, validators);
+        AddToValidators(columnIndex, validators);
       }
     }
 
@@ -290,26 +307,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         return;
 
       for (int i = 0; i < _editControls.Controls.Count; i++)
-        PrepareValidation (i);
+        PrepareValidation(i);
     }
 
     protected void PrepareValidation (int columnIndex)
     {
-      if (HasEditControl (columnIndex))
+      if (HasEditControl(columnIndex))
       {
-        IBusinessObjectBoundEditableWebControl editControl = GetEditControl (columnIndex);
-        editControl.PrepareValidation ();
+        IBusinessObjectBoundEditableWebControl? editControl = GetEditControl(columnIndex);
+        Assertion.IsNotNull(editControl, "GetEditControl(columnIndex) != null");
+        editControl.PrepareValidation();
       }
     }
 
     public bool Validate ()
     {
+      Assertion.IsNotNull(_editControls, "_editControls must not be null.");
+
       bool isValid = true;
 
       if (HasValidators())
       {
         for (int i = 0; i < _editControls.Controls.Count; i++)
-          isValid &= Validate (i);
+          isValid &= Validate(i);
       }
 
       return isValid;
@@ -319,12 +339,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     {
       bool isValid = true;
 
-      if (HasValidators (columnIndex))
+      if (HasValidators(columnIndex))
       {
-        ControlCollection cellValidators = GetValidators (columnIndex);
+        ControlCollection? cellValidators = GetValidators(columnIndex);
+        Assertion.IsNotNull(cellValidators, "GetValidators(columnIndex) != null");
         for (int i = 0; i < cellValidators.Count; i++)
         {
-          BaseValidator validator = (BaseValidator) cellValidators[i];
+          BaseValidator validator = (BaseValidator)cellValidators[i];
           validator.Validate();
           isValid &= validator.IsValid;
         }
@@ -333,61 +354,63 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       return isValid;
     }
 
-    public string[] GetTrackedClientIDs()
+    public string[] GetTrackedClientIDs ()
     {
       StringCollection trackedIDs = new StringCollection();
 
       if (HasEditControls())
       {
         for (int i = 0; i < _editControls.Controls.Count; i++)
-          trackedIDs.AddRange (GetTrackedClientIDs (i));
+          trackedIDs.AddRange(GetTrackedClientIDs(i));
       }
 
       string[] trackedIDsArray = new string[trackedIDs.Count];
-      trackedIDs.CopyTo (trackedIDsArray, 0);
+      trackedIDs.CopyTo(trackedIDsArray, 0);
       return trackedIDsArray;
     }
 
     protected string[] GetTrackedClientIDs (int columnIndex)
     {
-      if (HasEditControl (columnIndex))
-        return GetEditControl (columnIndex).GetTrackedClientIDs();
+      if (HasEditControl(columnIndex))
+        return GetEditControl(columnIndex)!.GetTrackedClientIDs();
       else
         return new string[0];
     }
 
-    public bool IsDirty()
+    public bool IsDirty ()
     {
       if (HasEditControls())
       {
         for (int i = 0; i < _editControls.Controls.Count; i++)
         {
-          if (IsDirty (i))
+          if (IsDirty(i))
             return true;
         }
       }
       return false;
     }
-  
+
     protected bool IsDirty (int columnIndex)
     {
-      if (HasEditControl (columnIndex))
-        return GetEditControl (columnIndex).IsDirty;
+      if (HasEditControl(columnIndex))
+        return GetEditControl(columnIndex)!.IsDirty;
       else
         return false;
     }
 
     public bool IsRequired (int columnIndex)
     {
-      if (HasEditControl (columnIndex))
-        return GetEditControl (columnIndex).IsRequired;
+      if (HasEditControl(columnIndex))
+        return GetEditControl(columnIndex)!.IsRequired;
       else
         return false;
     }
 
-    public IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray()
+    public IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray ()
     {
-      return (IBusinessObjectBoundEditableWebControl[]) _rowEditModeControls.Clone ();
+      Assertion.IsNotNull(_rowEditModeControls, "_rowEditModeControls must not be null.");
+
+      return (IBusinessObjectBoundEditableWebControl[])_rowEditModeControls.Clone();
     }
 
     public void RenderSimpleColumnCellEditModeControl (
@@ -397,27 +420,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         int columnIndex,
         string columnTitleID)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("column", column);
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleID", columnTitleID);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("column", column);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNullOrEmpty("columnTitleID", columnTitleID);
 
-      if (! HasEditControl (columnIndex))
+      if (! HasEditControl(columnIndex))
         return;
-  
-      ControlCollection validators = GetValidators (columnIndex);
 
+      ControlCollection? validators = GetValidators(columnIndex);
+      Assertion.IsNotNull(validators, "GetValidators(columnIndex) != null");
+
+      Assertion.IsNotNull(_rowEditModeControls, "_rowEditModeControls must not be null.");
       IBusinessObjectBoundEditableWebControl editModeControl = _rowEditModeControls[columnIndex];
 
-      bool enforceWidth = column.EnforceWidth 
+      bool enforceWidth = column.EnforceWidth
                           && ! column.Width.IsEmpty
                           && column.Width.Type != UnitType.Percentage;
 
       if (enforceWidth)
-        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString (CultureInfo.InvariantCulture));
+        writer.AddStyleAttribute(HtmlTextWriterStyle.Width, column.Width.ToString(CultureInfo.InvariantCulture));
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, "bocListEditableCell");
-      writer.RenderBeginTag (HtmlTextWriterTag.Span); // Span Container
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, "bocListEditableCell");
+      writer.RenderBeginTag(HtmlTextWriterTag.Span); // Span Container
 
       if (_editModeHost.ShowEditModeValidationMarkers)
       {
@@ -427,71 +452,76 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
         for (int i = 0; i < validators.Count; i++)
         {
-          BaseValidator validator = (BaseValidator) validators[i];
+          BaseValidator validator = (BaseValidator)validators[i];
           isCellValid &= validator.IsValid;
           if (!validator.IsValid)
           {
             if (toolTipBuilder.Length > 0)
               toolTipBuilder.AppendLine();
-            toolTipBuilder.Append (validator.ErrorMessage);
+            toolTipBuilder.Append(validator.ErrorMessage);
           }
         }
         if (!isCellValid)
         {
           if (validationErrorMarker is HtmlControl)
           {
-            ((HtmlControl) validationErrorMarker).Attributes["tabIndex"] = "0";
-            ((HtmlControl) validationErrorMarker).Attributes["title"] = null;
-            ((HtmlControl) validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            ((HtmlControl)validationErrorMarker).Attributes["tabIndex"] = "0";
+            ((HtmlControl)validationErrorMarker).Attributes["title"] = null;
+            ((HtmlControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
           else if (validationErrorMarker is WebControl)
           {
-            ((WebControl) validationErrorMarker).TabIndex = 0;
-            ((WebControl) validationErrorMarker).ToolTip = null;
-            ((WebControl) validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
+            ((WebControl)validationErrorMarker).TabIndex = 0;
+            ((WebControl)validationErrorMarker).ToolTip = null;
+            ((WebControl)validationErrorMarker).Attributes[HtmlTextWriterAttribute2.AriaLabel] = toolTipBuilder.ToString();
           }
-          validationErrorMarker.RenderControl (writer);
+          validationErrorMarker.RenderControl(writer);
         }
       }
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, "control");
-      writer.RenderBeginTag (HtmlTextWriterTag.Span); // Span Control
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, "control");
+      writer.RenderBeginTag(HtmlTextWriterTag.Span); // Span Control
 
       foreach (BaseValidator validator in validators)
-        editModeControl.RegisterValidator (validator);
+        editModeControl.RegisterValidator(validator);
 
-      editModeControl.AssignLabel (columnTitleID);
+      editModeControl.AssignLabel(columnTitleID);
 
-      editModeControl.RenderControl (writer);
+      editModeControl.RenderControl(writer);
 
       writer.RenderEndTag(); // Span Control
 
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, "validationMessages");
+      writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
       foreach (BaseValidator validator in validators)
       {
-        writer.RenderBeginTag (HtmlTextWriterTag.Div);
-        validator.RenderControl (writer);
+        writer.RenderBeginTag(HtmlTextWriterTag.Div);
+        validator.RenderControl(writer);
         writer.RenderEndTag();
 
-        if (   ! validator.IsValid 
+        if (   ! validator.IsValid
                && validator.Display == ValidatorDisplay.None
                && ! _editModeHost.DisableEditModeValidationMessages)
         {
-          if (! string.IsNullOrEmpty (validator.CssClass))
-            writer.AddAttribute (HtmlTextWriterAttribute.Class, validator.CssClass);
+          if (! string.IsNullOrEmpty(validator.CssClass))
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, validator.CssClass);
           else
-            writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
-          writer.RenderBeginTag (HtmlTextWriterTag.Div);
-          writer.Write (validator.ErrorMessage); // Do not HTML encode.
+            writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
+          writer.RenderBeginTag(HtmlTextWriterTag.Div);
+          PlainTextString.CreateFromText(validator.ErrorMessage).WriteTo(writer);
           writer.RenderEndTag();
         }
       }
+
+      writer.RenderEndTag(); // validationMessages Div container
 
       writer.RenderEndTag(); // Span Container
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       if (Controls.Count > 0)
         PreRenderValidators();
@@ -499,10 +529,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     private void PreRenderValidators ()
     {
+      Assertion.IsNotNull(_validatorControls, "_validatorControls must not be null.");
+
       var editModeValidator = _editModeHost.GetEditModeValidator();
       var disableEditModeValidationMessages = _editModeHost.DisableEditModeValidationMessages;
 
-      foreach (var validator in _validatorControls.Controls.Cast<Control>().SelectMany (placeHolder => placeHolder.Controls.Cast<BaseValidator>()))
+      foreach (var validator in _validatorControls.Controls.Cast<Control>().SelectMany(placeHolder => placeHolder.Controls.Cast<BaseValidator>()))
       {
         if (editModeValidator == null || disableEditModeValidationMessages)
         {
@@ -524,6 +556,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     ///   </remarks>
     protected virtual string CssClassEditModeValidationMessage
     { get { return "bocListEditModeValidationMessage"; } }
-  
+
   }
 }

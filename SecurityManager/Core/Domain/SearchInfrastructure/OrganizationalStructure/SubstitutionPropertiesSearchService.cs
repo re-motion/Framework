@@ -41,16 +41,16 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
   {
     public SubstitutionPropertiesSearchService ()
     {
-      RegisterQueryFactory ("SubstitutedRole", FindPossibleSubstitutedRoles);
+      RegisterQueryFactory("SubstitutedRole", FindPossibleSubstitutedRoles);
     }
 
     private IQueryable<IBusinessObject> FindPossibleSubstitutedRoles (
         Substitution substitution,
         IBusinessObjectReferenceProperty property,
-        TenantConstraint tenantConstraint,
-        DisplayNameConstraint displayNameConstraint)
+        TenantConstraint? tenantConstraint,
+        DisplayNameConstraint? displayNameConstraint)
     {
-      ArgumentUtility.CheckNotNull ("substitution", substitution);
+      ArgumentUtility.CheckNotNull("substitution", substitution);
 
       if (substitution.SubstitutedUser == null)
         return Enumerable.Empty<IBusinessObject>().AsQueryable();

@@ -39,21 +39,21 @@ public class SearchObjectPage : WxePage
   protected Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeValue2;
   protected Remotion.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
-  private SearchFunction MyFunction 
+  private SearchFunction MyFunction
   {
-    get { return (SearchFunction) CurrentFunction; }
+    get { return (SearchFunction)CurrentFunction; }
   }
 
-  private void Page_Load(object sender, System.EventArgs e)
+  private void Page_Load (object sender, System.EventArgs e)
 	{
-    ResultList.Value = MyFunction.Result;
+    ResultList.ValueAsList = MyFunction.Result;
 
-    CurrentSearchObject.BusinessObject = (IBusinessObject) MyFunction.SearchObject;
-    CurrentSearchObject.LoadValues (IsPostBack);
+    CurrentSearchObject.BusinessObject = (IBusinessObject)MyFunction.SearchObject;
+    CurrentSearchObject.LoadValues(IsPostBack);
 	}
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -61,35 +61,35 @@ public class SearchObjectPage : WxePage
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
-	{    
+	private void InitializeComponent ()
+	{
     this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
-    this.ResultList.EditableRowChangesSaved += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventHandler (ResultList_EditableRowChangesSaved);
+    this.ResultList.EditableRowChangesSaved += new Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventHandler(ResultList_EditableRowChangesSaved);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
 
-  private void SearchButton_Click(object sender, System.EventArgs e)
+  private void SearchButton_Click (object sender, System.EventArgs e)
   {
-    if (SearchFormGridManager.Validate ())
+    if (SearchFormGridManager.Validate())
     {
-      CurrentSearchObject.SaveValues (false);
-      
-      MyFunction.Requery ();
-      ResultList.Value = MyFunction.Result;
-      ResultList.LoadValue (false);
+      CurrentSearchObject.SaveValues(false);
+
+      MyFunction.Requery();
+      ResultList.ValueAsList = MyFunction.Result;
+      ResultList.LoadValue(false);
     }
   }
 
   private void ResultList_EditableRowChangesSaved (object sender, Remotion.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
   {
-    ClientTransactionScope.CurrentTransaction.Commit ();
+    ClientTransactionScope.CurrentTransaction.Commit();
   }
 }
 }

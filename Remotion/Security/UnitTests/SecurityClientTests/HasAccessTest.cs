@@ -37,83 +37,77 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithParamsArray ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, AccessType.Get (TestAccessTypes.First));
+      bool hasAccess = _securityClient.HasAccess(_testHelper.SecurableObject, AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void Test_WithParamsArray_AndSecurityPrincipal ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
-      bool hasAccess = _securityClient.HasAccess (_testHelper.SecurableObject, securityPrincipal, AccessType.Get (TestAccessTypes.First));
+      bool hasAccess = _securityClient.HasAccess(_testHelper.SecurableObject, securityPrincipal, AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      bool hasAccess = _securityClient.HasAccess (
+      bool hasAccess = _securityClient.HasAccess(
           _testHelper.SecurableObject,
-          (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+          (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (true));
+      Assert.That(hasAccess, Is.EqualTo(true));
     }
 
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.First, false);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.First, false);
 
-      bool hasAccess = _securityClient.HasAccess (
+      bool hasAccess = _securityClient.HasAccess(
           _testHelper.SecurableObject,
-          (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+          (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.EqualTo (false));
+      Assert.That(hasAccess, Is.EqualTo(false));
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasAccess (
+        hasAccess = _securityClient.HasAccess(
             _testHelper.SecurableObject,
-            (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+            (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The securableObject did not return an IObjectSecurityStrategy.")]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _testHelper.ReplayAll();
-
-      _securityClient.HasAccess (new SecurableObject (null), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+      Assert.That(
+          () =>  _securityClient.HasAccess(new SecurableObject(null), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) }),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("The securableObject did not return an IObjectSecurityStrategy."));
 
       _testHelper.VerifyAll();
     }

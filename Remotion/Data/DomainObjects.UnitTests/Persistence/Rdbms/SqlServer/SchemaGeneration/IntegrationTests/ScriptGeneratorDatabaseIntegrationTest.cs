@@ -35,14 +35,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       base.SetUp();
 
-      _standardScriptGenerator = new ScriptGenerator (
-          pd => pd.Factory.CreateSchemaScriptBuilder (pd),
+      _standardScriptGenerator = new ScriptGenerator(
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
 
-      _extendedScriptGenerator = new ScriptGenerator (
-          pd => new SqlDatabaseSelectionScriptElementBuilder (
-              new CompositeScriptBuilder (
+      _extendedScriptGenerator = new ScriptGenerator(
+          pd => new SqlDatabaseSelectionScriptElementBuilder(
+              new CompositeScriptBuilder(
                   SchemaGenerationThirdStorageProviderDefinition,
                   new IScriptBuilder[]
                   {
@@ -57,47 +57,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           new ScriptToStringConverter());
     }
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
-      var createDBScript = ResourceUtility.GetResourceString (GetType(), "TestData.SchemaGeneration_CreateDB.sql");
+      var createDBScript = ResourceUtility.GetResourceString(GetType(), "TestData.SchemaGeneration_CreateDB.sql");
 
-      var masterAgent = new DatabaseAgent (MasterConnectionString);
-      masterAgent.ExecuteBatchString (createDBScript, false, DatabaseConfiguration.GetReplacementDictionary());
+      var masterAgent = new DatabaseAgent(MasterConnectionString);
+      masterAgent.ExecuteBatchString(createDBScript, false, DatabaseConfiguration.GetReplacementDictionary());
     }
 
     [Test]
     public void ExecuteScriptForFirstStorageProvider ()
     {
-      DatabaseAgent.SetConnectionString (SchemaGenerationConnectionString1);
+      DatabaseAgent.SetConnectionString(SchemaGenerationConnectionString1);
 
-      var scripts = _standardScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
-          .Single (s => s.StorageProviderDefinition == SchemaGenerationFirstStorageProviderDefinition);
+      var scripts = _standardScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
+          .Single(s => s.StorageProviderDefinition == SchemaGenerationFirstStorageProviderDefinition);
 
-      DatabaseAgent.ExecuteBatchString (scripts.TearDownScript + scripts.SetUpScript, false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchString(scripts.TearDownScript + scripts.SetUpScript, false, DatabaseConfiguration.GetReplacementDictionary());
     }
 
     [Test]
     public void ExecuteScriptForSecondStorageProvider ()
     {
-      DatabaseAgent.SetConnectionString (SchemaGenerationConnectionString2);
+      DatabaseAgent.SetConnectionString(SchemaGenerationConnectionString2);
 
-      var scripts = _standardScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
-          .Single (s => s.StorageProviderDefinition == SchemaGenerationSecondStorageProviderDefinition);
+      var scripts = _standardScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
+          .Single(s => s.StorageProviderDefinition == SchemaGenerationSecondStorageProviderDefinition);
 
-      DatabaseAgent.ExecuteBatchString (scripts.TearDownScript + scripts.SetUpScript, false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchString(scripts.TearDownScript + scripts.SetUpScript, false, DatabaseConfiguration.GetReplacementDictionary());
     }
 
     [Test]
     public void ExecuteScriptForThirdStorageProvider ()
     {
-      DatabaseAgent.SetConnectionString (SchemaGenerationConnectionString3);
+      DatabaseAgent.SetConnectionString(SchemaGenerationConnectionString3);
 
-      var scripts = _extendedScriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions ())
-          .Single (s => s.StorageProviderDefinition == SchemaGenerationThirdStorageProviderDefinition);
+      var scripts = _extendedScriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions())
+          .Single(s => s.StorageProviderDefinition == SchemaGenerationThirdStorageProviderDefinition);
 
-      DatabaseAgent.ExecuteBatchString (scripts.TearDownScript + scripts.SetUpScript, false, DatabaseConfiguration.GetReplacementDictionary());
+      DatabaseAgent.ExecuteBatchString(scripts.TearDownScript + scripts.SetUpScript, false, DatabaseConfiguration.GetReplacementDictionary());
     }
   }
 }

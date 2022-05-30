@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundObjects
 {
@@ -31,69 +31,80 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _rootTransaction = ClientTransaction.CreateRootTransaction ();
+      _rootTransaction = ClientTransaction.CreateRootTransaction();
       _subTransaction = _rootTransaction.CreateSubTransaction();
       _subTransaction.EnterDiscardingScope();
 
-      _orderReference = DomainObjectIDs.Order1.GetObjectReference<Order> (_rootTransaction);
+      _orderReference = DomainObjectIDs.Order1.GetObjectReference<Order>(_rootTransaction);
     }
 
     [Test]
     public void OnLoaded_IsExecutedWithRightTransactionActivated ()
     {
-      var eventReceiverMock = MockRepository.GenerateStrictMock<ILoadEventReceiver>();
-      _orderReference.SetLoadEventReceiver (eventReceiverMock);
+      var eventReceiverMock = new Mock<ILoadEventReceiver>(MockBehavior.Strict);
+      _orderReference.SetLoadEventReceiver(eventReceiverMock.Object);
 
+      var sequence = new MockSequence();
       eventReceiverMock
-          .Expect (mock => mock.OnLoaded (_orderReference))
-          .WhenCalled (
-              mi =>
+          .InSequence(sequence)
+          .Setup(mock => mock.OnLoaded(_orderReference))
+          .Callback(
+              (DomainObject domainObject) =>
               {
-                Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
-                Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_rootTransaction));
-              });
+                Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
+              })
+          .Verifiable();
       eventReceiverMock
-          .Expect (mock => mock.OnLoaded (_orderReference))
-          .WhenCalled (
-              mi =>
+          .InSequence(sequence)
+          .Setup(mock => mock.OnLoaded(_orderReference))
+          .Callback(
+              (DomainObject domainObject) =>
               {
-                Assert.That (ClientTransaction.Current, Is.SameAs (_subTransaction));
-                Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_subTransaction));
-              });
+                Assert.That(ClientTransaction.Current, Is.SameAs(_subTransaction));
+                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_subTransaction));
+              })
+          .Verifiable();
 
       _orderReference.EnsureDataAvailable();
 
-      eventReceiverMock.VerifyAllExpectations();
+      eventReceiverMock.Verify();
     }
 
     [Test]
     public void TransactionOnLoaded_IsExecutedWithRightTransactionActivated ()
     {
-      var rootTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver> (_rootTransaction);
-      var subTransactionEventReceiverMock = MockRepository.GenerateStrictMock<ClientTransactionMockEventReceiver> (_subTransaction);
-      
+      var rootTransactionEventReceiverMock = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _rootTransaction);
+      var subTransactionEventReceiverMock = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _subTransaction);
+
+      var sequence = new MockSequence();
       rootTransactionEventReceiverMock
-        .Expect (mock => mock.Loaded (new[] { _orderReference }))
-        .WhenCalled (
-          mi =>
-          {
-            Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
-            Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_rootTransaction));
-          });
+          .InSequence(sequence)
+          .SetupLoaded(_rootTransaction, new[] { _orderReference })
+          .Callback(
+              (object _, ClientTransactionEventArgs _) =>
+              {
+                Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
+              })
+          .Verifiable();
       subTransactionEventReceiverMock
-          .Expect (mock => mock.Loaded (new[] { _orderReference })).WhenCalled (
-          mi =>
-          {
-            Assert.That (ClientTransaction.Current, Is.SameAs (_subTransaction));
-            Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_subTransaction));
-          });
+          .InSequence(sequence)
+          .SetupLoaded(_subTransaction, new[] { _orderReference })
+          .Callback(
+              (object _, ClientTransactionEventArgs _) =>
+              {
+                Assert.That(ClientTransaction.Current, Is.SameAs(_subTransaction));
+                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_subTransaction));
+              })
+          .Verifiable();
 
-      _orderReference.EnsureDataAvailable ();
+      _orderReference.EnsureDataAvailable();
 
-      rootTransactionEventReceiverMock.VerifyAllExpectations ();
-      subTransactionEventReceiverMock.VerifyAllExpectations ();
+      rootTransactionEventReceiverMock.Verify();
+      subTransactionEventReceiverMock.Verify();
     }
   }
 }

@@ -35,25 +35,26 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new SubstitutionPropertiesSearchService();
-      IBusinessObjectClass substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Substitution));
-      _otherProperty = (IBusinessObjectReferenceProperty) substitutionClass.GetPropertyDefinition ("SubstitutedUser");
-      Assert.That (_otherProperty, Is.Not.Null);
+      IBusinessObjectClass substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Substitution));
+      _otherProperty = (IBusinessObjectReferenceProperty)substitutionClass.GetPropertyDefinition("SubstitutedUser");
+      Assert.That(_otherProperty, Is.Not.Null);
     }
 
     [Test]
     public void SupportsProperty_WithInvalidProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_otherProperty), Is.False);
+      Assert.That(_searchService.SupportsProperty(_otherProperty), Is.False);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The property 'SubstitutedUser' is not supported by the "
-        + "'Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure.SubstitutionPropertiesSearchService' type.",
-        MatchType = MessageMatch.Contains)]
     public void Search_WithInvalidProperty ()
     {
-      _searchService.Search (null, _otherProperty, null);
+      Assert.That(
+          () => _searchService.Search(null, _otherProperty, null),
+          Throws.ArgumentException
+              .With.Message.Contains(
+                  "The property 'SubstitutedUser' is not supported by the "
+                  + "'Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure.SubstitutionPropertiesSearchService' type."));
     }
   }
 }

@@ -27,13 +27,13 @@ namespace Remotion.Mixins.MixerTools
   // Change to be an ITypeDiscoveryService decorator
   public class MixedTypeFinder : IMixedTypeFinder
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (MixedTypeFinder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixedTypeFinder));
 
     private readonly ITypeDiscoveryService _typeDiscoveryService;
 
     public MixedTypeFinder (ITypeDiscoveryService typeDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
 
       _typeDiscoveryService = typeDiscoveryService;
     }
@@ -45,18 +45,18 @@ namespace Remotion.Mixins.MixerTools
 
     public IEnumerable<Type> FindMixedTypes (MixinConfiguration configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
-      var types = _typeDiscoveryService.GetTypes (null, false);
-      s_log.InfoFormat (
-          "Retrieving class contexts for {0} configured mixin targets and {1} loaded types.", 
+      var types = _typeDiscoveryService.GetTypes(null, false);
+      s_log.InfoFormat(
+          "Retrieving class contexts for {0} configured mixin targets and {1} loaded types.",
           configuration.ClassContexts.Count,
           types.Count);
 
       return from t in types.Cast<Type>()
-             where !t.IsDefined (typeof (IgnoreForMixinConfigurationAttribute), false)
-             let context = configuration.GetContext (t)
-             where context != null && !MixinTypeUtility.IsGeneratedConcreteMixedType (t) && ShouldProcessContext (context)
+             where !t.IsDefined(typeof(IgnoreForMixinConfigurationAttribute), false)
+             let context = configuration.GetContext(t)
+             where context != null && !MixinTypeUtility.IsGeneratedConcreteMixedType(t) && ShouldProcessContext(context)
              select t;
     }
 
@@ -64,13 +64,13 @@ namespace Remotion.Mixins.MixerTools
     {
       if (context.Type.IsGenericTypeDefinition)
       {
-        s_log.DebugFormat ("Type {0} is a generic type definition and is thus ignored.", context.Type);
+        s_log.DebugFormat("Type {0} is a generic type definition and is thus ignored.", context.Type);
         return false;
       }
 
       if (context.Type.IsInterface)
       {
-        s_log.DebugFormat ("Type {0} is an interface and is thus ignored.", context.Type);
+        s_log.DebugFormat("Type {0} is an interface and is thus ignored.", context.Type);
         return false;
       }
 

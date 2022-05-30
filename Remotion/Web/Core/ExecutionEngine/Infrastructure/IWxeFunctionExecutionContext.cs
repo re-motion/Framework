@@ -20,8 +20,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 {
   public interface IWxeFunctionExecutionContext
   {
-    object[] GetInParameters ();
-    object[] GetOutParameters ();
+    object?[] GetInParameters ();
+    object?[] GetOutParameters ();
     object[] GetVariables ();
   }
 }

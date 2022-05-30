@@ -28,44 +28,47 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void MixinGet_FindsMixinInstanceInTarget ()
     {
-      var bt3 = ObjectFactory.Create<BaseType3> (ParamList.Empty);
-      var mixin = Mixin.Get<BT3Mixin2> (bt3);
-      Assert.That (mixin, Is.Not.Null);
+      var bt3 = ObjectFactory.Create<BaseType3>(ParamList.Empty);
+      var mixin = Mixin.Get<BT3Mixin2>(bt3);
+      Assert.That(mixin, Is.Not.Null);
     }
 
     [Test]
     public void MixinGet_ReturnsNullIfMixinNotFound ()
     {
-      var mixin = Mixin.Get<BT3Mixin2> (new object());
-      Assert.That (mixin, Is.Null);
+      var mixin = Mixin.Get<BT3Mixin2>(new object());
+      Assert.That(mixin, Is.Null);
     }
 
     [Test]
     public void MixinGet_FindsMixinWithAssignableMatch ()
     {
-      var bt1 = ObjectFactory.Create<BaseType1> (ParamList.Empty);
-      var mixin = Mixin.Get<IBT1Mixin1> (bt1);
-      Assert.That (mixin, Is.Not.Null);
-      Assert.That (mixin, Is.InstanceOf (typeof (BT1Mixin1)));
+      var bt1 = ObjectFactory.Create<BaseType1>(ParamList.Empty);
+      var mixin = Mixin.Get<IBT1Mixin1>(bt1);
+      Assert.That(mixin, Is.Not.Null);
+      Assert.That(mixin, Is.InstanceOf(typeof(BT1Mixin1)));
     }
 
     [Test]
     public void MixinGet_FindsMixinWithGenericMatch ()
     {
-      BaseType3 bt3 = ObjectFactory.Create<BaseType3> (ParamList.Empty);
-      object mixin = Mixin.Get (typeof (BT3Mixin3<,>), bt3);
-      Assert.That (mixin, Is.Not.Null);
+      BaseType3 bt3 = ObjectFactory.Create<BaseType3>(ParamList.Empty);
+      object mixin = Mixin.Get(typeof(BT3Mixin3<,>), bt3);
+      Assert.That(mixin, Is.Not.Null);
     }
 
     [Test]
-    [ExpectedException (typeof (AmbiguousMatchException), ExpectedMessage = "Both mixins 'Remotion.Mixins.UnitTests.Core.TestDomain."
-        + "DerivedDerivedNullMixin' and 'Remotion.Mixins.UnitTests.Core.TestDomain.DerivedNullMixin' match the given type 'NullMixin'.")]
     public void MixinGet_AssignableMatchAmbiguity ()
     {
       using (MixinConfiguration.BuildNew().ForClass<NullTarget>().AddMixin<DerivedNullMixin>().AddMixin<DerivedDerivedNullMixin>().EnterScope())
       {
-        var instance = ObjectFactory.Create<NullTarget> (ParamList.Empty);
-        Mixin.Get<NullMixin> (instance);
+        var instance = ObjectFactory.Create<NullTarget>(ParamList.Empty);
+        Assert.That(
+            () => Mixin.Get<NullMixin>(instance),
+            Throws.InstanceOf<AmbiguousMatchException>()
+                .With.Message.EqualTo(
+                    "Both mixins 'Remotion.Mixins.UnitTests.Core.TestDomain."
+                    + "DerivedDerivedNullMixin' and 'Remotion.Mixins.UnitTests.Core.TestDomain.DerivedNullMixin' match the given type 'NullMixin'."));
       }
     }
   }

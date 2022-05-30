@@ -39,7 +39,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotWebTabStripSelector ([NotNull] WebTabStripControlObject webTabStrip)
     {
-      ArgumentUtility.CheckNotNull ("webTabStrip", webTabStrip);
+      ArgumentUtility.CheckNotNull("webTabStrip", webTabStrip);
 
       _webTabStrip = webTabStrip.Scope;
     }
@@ -47,9 +47,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("htmlID", htmlID);
 
-      var item = _webTabStrip.FindId (htmlID);
+      var item = _webTabStrip.FindId(htmlID);
 
       return item.ForElementScopeScreenshot();
     }
@@ -57,14 +57,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
       var item =
-          _webTabStrip.FindCss (
-              string.Format (
+          _webTabStrip.FindCss(
+              string.Format(
                   "span.tabStripTab[{0}={1}], span.tabStripTabSelected[{0}={1}]",
                   DiagnosticMetadataAttributes.ItemID,
-                  DomSelectorUtility.CreateMatchValueForCssSelector (itemID)));
+                  DomSelectorUtility.CreateMatchValueForCssSelector(itemID)));
 
       return item.ForElementScopeScreenshot();
     }
@@ -72,11 +72,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithIndex (int oneBasedIndex)
     {
-      var xPathSelector = string.Format (
+      var xPathSelector = string.Format(
           "(.//span{0})[{1}]",
-          DomSelectorUtility.CreateHasOneOfClassesCheckForXPath (new[] { "tabStripTab", "tabStripTabSelected" }),
+          DomSelectorUtility.CreateHasOneOfClassesCheckForXPath(new[] { "tabStripTab", "tabStripTabSelected" }),
           oneBasedIndex);
-      var item = _webTabStrip.FindXPath (xPathSelector);
+      var item = _webTabStrip.FindXPath(xPathSelector);
 
       return item.ForElementScopeScreenshot();
     }
@@ -84,14 +84,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
       var item =
-          _webTabStrip.FindCss (
-              string.Format (
+          _webTabStrip.FindCss(
+              string.Format(
                   "span.tabStripTab[{0}={1}], span.tabStripTabSelected[{0}={1}]",
                   DiagnosticMetadataAttributes.Content,
-                  DomSelectorUtility.CreateMatchValueForCssSelector (displayText)));
+                  DomSelectorUtility.CreateMatchValueForCssSelector(displayText)));
 
       return item.ForElementScopeScreenshot();
     }
@@ -99,14 +99,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
       var item =
-          _webTabStrip.FindCss (
-              string.Format (
+          _webTabStrip.FindCss(
+              string.Format(
                   "span.tabStripTab[{0}*={1}], span.tabStripTabSelected[{0}*={1}]",
                   DiagnosticMetadataAttributes.Content,
-                  DomSelectorUtility.CreateMatchValueForCssSelector (displayText)));
+                  DomSelectorUtility.CreateMatchValueForCssSelector(displayText)));
 
       return item.ForElementScopeScreenshot();
     }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlObjects;
@@ -27,79 +28,148 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   /// </summary>
   public class TreeViewControlObject
       : WebFormsControlObject,
-          IControlObjectWithNodes<TreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<TreeViewNodeControlObject>
+          IControlObjectWithNodes<TreeViewNodeControlObject>
   {
+    private class GetNodeImplementationForChildren : IFluentControlObjectWithNodes<TreeViewNodeControlObject>
+    {
+      private readonly TreeViewControlObject _treeView;
+
+      public GetNodeImplementationForChildren (TreeViewControlObject treeView)
+      {
+        _treeView = treeView;
+      }
+
+      public TreeViewNodeControlObject WithItemID (string itemID)
+      {
+        throw new NotSupportedException("The TreeViewControlObject does not support node selection by item ID.");
+      }
+
+      public TreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var xpath = string.Format("./table[{0}]", oneBasedIndex);
+        return FindAndCreateNode(xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var xpath = string.Format("./table[normalize-space(tbody/tr/td[last()])={0}]", DomSelectorUtility.CreateMatchValueForXPath(displayText));
+        return FindAndCreateNode(xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var xpath = string.Format("./table[contains(tbody/tr/td[last()], {0})]", DomSelectorUtility.CreateMatchValueForXPath(containsDisplayText));
+        return FindAndCreateNode(xpath);
+      }
+
+      private TreeViewNodeControlObject FindAndCreateNode (string xpath)
+      {
+        var nodeScope = _treeView.Scope.FindXPath(xpath);
+        return new TreeViewNodeControlObject(_treeView.Context.CloneForControl(nodeScope));
+      }
+    }
+
+    private class GetNodeImplementationForHierarchy : IFluentControlObjectWithNodes<TreeViewNodeControlObject>
+    {
+      private readonly TreeViewControlObject _treeView;
+
+      public GetNodeImplementationForHierarchy (TreeViewControlObject treeView)
+      {
+        _treeView = treeView;
+      }
+
+      public TreeViewNodeControlObject WithIndex (int oneBasedIndex)
+      {
+        var xpath = string.Format(".//table[{0}]", oneBasedIndex);
+        var foundNodes = _treeView.Scope.FindAllXPath(xpath).ToArray();
+
+        if (foundNodes.Length > 1)
+          throw AssertionExceptionUtility.CreateExpectationException(_treeView.Driver, $"Multiple nodes with the index '{oneBasedIndex}' were found.");
+
+        if (foundNodes.Length == 0)
+          throw AssertionExceptionUtility.CreateExpectationException(_treeView.Driver, $"No node with the index '{oneBasedIndex}' was found.");
+
+        var nodeScope = foundNodes.Single();
+
+        return new TreeViewNodeControlObject(_treeView.Context.CloneForControl(nodeScope));
+      }
+
+      public TreeViewNodeControlObject WithDisplayText (string displayText)
+      {
+        var xpath = string.Format("//table[normalize-space(tbody/tr/td[last()])={0}]", DomSelectorUtility.CreateMatchValueForXPath(displayText));
+        return FindAndCreateNode(xpath);
+      }
+
+      public TreeViewNodeControlObject WithDisplayTextContains (string containsDisplayText)
+      {
+        var xpath = string.Format("//table[contains(tbody/tr/td[last()], {0})]", DomSelectorUtility.CreateMatchValueForXPath(containsDisplayText));
+        return FindAndCreateNode(xpath);
+      }
+
+      public TreeViewNodeControlObject WithItemID (string itemID)
+      {
+        throw new NotSupportedException("The TreeViewControlObject does not support node selection by item ID.");
+      }
+
+      private TreeViewNodeControlObject FindAndCreateNode (string xpath)
+      {
+        var nodeScope = _treeView.Scope.FindXPath(xpath);
+        return new TreeViewNodeControlObject(_treeView.Context.CloneForControl(nodeScope));
+      }
+    }
+
     public TreeViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
     /// <summary>
-    /// Returns the tree's root node.
+    /// Returns the tree's first root node.
     /// </summary>
+    [Obsolete("This method is equivalent to .GetNode().WithIndex (1), which should be used instead. (Version 3.0.0-alpha.14)", false)]
     public TreeViewNodeControlObject GetRootNode ()
     {
-      return GetNode().WithIndex (1);
+      return GetNode().WithIndex(1);
     }
 
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<TreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return new GetNodeImplementationForChildren(this);
     }
 
     /// <inheritdoc/>
     public TreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNode().WithItemID (itemID);
+      return GetNode().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public TreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (oneBasedIndex);
+      return GetNode().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithItemID (string itemID)
+    public IFluentControlObjectWithNodes<TreeViewNodeControlObject> GetNodeInHierarchy ()
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      throw new NotSupportedException ("The TreeViewControlObject does not support node selection by item ID.");
+      return new GetNodeImplementationForHierarchy(this);
     }
 
     /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
+    public TreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      var xpath = string.Format ("./table[{0}]", oneBasedIndex);
-      return FindAndCreateNode (xpath);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithDisplayText (string displayText)
+    public TreeViewNodeControlObject GetNodeInHierarchy (int oneBaseIndex)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      var xpath = string.Format ("./table[normalize-space(tbody/tr/td[last()])={0}]", DomSelectorUtility.CreateMatchValueForXPath (displayText));
-      return FindAndCreateNode (xpath);
-    }
-
-    /// <inheritdoc/>
-    TreeViewNodeControlObject IFluentControlObjectWithNodes<TreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      var xpath = string.Format ("./table[contains(tbody/tr/td[last()], {0})]", DomSelectorUtility.CreateMatchValueForXPath (containsDisplayText));
-      return FindAndCreateNode (xpath);
-    }
-
-    private TreeViewNodeControlObject FindAndCreateNode (string xpath)
-    {
-      var nodeScope = Scope.FindXPath (xpath);
-      return new TreeViewNodeControlObject (Context.CloneForControl (nodeScope));
+      return GetNodeInHierarchy().WithIndex(oneBaseIndex);
     }
   }
 }

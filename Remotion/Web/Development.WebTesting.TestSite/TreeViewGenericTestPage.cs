@@ -33,8 +33,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     public override TreeView CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
-      control.Nodes.Add (new TreeNode ("A"));
+      var control = base.CreateControl(options);
+      control.Nodes.Add(new TreeNode("A"));
       return control;
     }
   }

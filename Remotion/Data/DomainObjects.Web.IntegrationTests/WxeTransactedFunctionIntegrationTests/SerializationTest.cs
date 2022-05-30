@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests.WxeFunctions;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunctionIntegrationTests
@@ -27,20 +28,22 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     [Test]
     public void Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var function = new SerializationTestTransactedFunction();
-      function.Execute (Context);
-      Assert.That (function.FirstStepExecuted, Is.True);
-      Assert.That (function.SecondStepExecuted, Is.True);
+      function.Execute(Context);
+      Assert.That(function.FirstStepExecuted, Is.True);
+      Assert.That(function.SecondStepExecuted, Is.True);
 
       var deserializedFunction =
-          (SerializationTestTransactedFunction) Serializer.Deserialize (function.SerializedSelf);
-      Assert.That (deserializedFunction.FirstStepExecuted, Is.True);
-      Assert.That (deserializedFunction.SecondStepExecuted, Is.False);
+          (SerializationTestTransactedFunction)Serializer.Deserialize(function.SerializedSelf);
+      Assert.That(deserializedFunction.FirstStepExecuted, Is.True);
+      Assert.That(deserializedFunction.SecondStepExecuted, Is.False);
 
-      deserializedFunction.Execute (Context);
+      deserializedFunction.Execute(Context);
 
-      Assert.That (deserializedFunction.FirstStepExecuted, Is.True);
-      Assert.That (deserializedFunction.SecondStepExecuted, Is.True);
+      Assert.That(deserializedFunction.FirstStepExecuted, Is.True);
+      Assert.That(deserializedFunction.SecondStepExecuted, Is.True);
     }
   }
 }

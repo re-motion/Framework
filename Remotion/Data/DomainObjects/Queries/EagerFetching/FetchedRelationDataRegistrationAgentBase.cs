@@ -34,42 +34,48 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     protected void CheckOriginatingObjects (IRelationEndPointDefinition relationEndPointDefinition, IEnumerable<ILoadedObjectData> originatingObjects)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull ("originatingObjects", originatingObjects);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("originatingObjects", originatingObjects);
 
       foreach (var originatingObject in originatingObjects)
       {
         if (!originatingObject.IsNull)
-          CheckClassDefinitionOfOriginatingObject (relationEndPointDefinition, originatingObject);
+          CheckClassDefinitionOfOriginatingObject(relationEndPointDefinition, originatingObject);
       }
     }
 
     protected void CheckRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, IEnumerable<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull ("relatedObjects", relatedObjects);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relatedObjects", relatedObjects);
 
-      var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition ();
+      var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
 
       foreach (var relatedObject in relatedObjects)
       {
         if (!relatedObject.IsNull)
-          CheckClassDefinitionOfRelatedObject (relationEndPointDefinition, oppositeEndPointDefinition, relatedObject.LoadedObjectData.ObjectID);
+        {
+          Assertion.DebugAssert(relatedObject.LoadedObjectData.IsNull == false, "relatedObject.LoadedObjectData.IsNull == false");
+          Assertion.DebugIsNotNull(relatedObject.LoadedObjectData.ObjectID, "relatedObject.LoadedObjectData.ObjectID != null");
+          CheckClassDefinitionOfRelatedObject(relationEndPointDefinition, oppositeEndPointDefinition, relatedObject.LoadedObjectData.ObjectID);
+        }
       }
     }
 
     private void CheckClassDefinitionOfOriginatingObject (IRelationEndPointDefinition relationEndPointDefinition, ILoadedObjectData originatingObject)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull ("originatingObject", originatingObject);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("originatingObject", originatingObject);
+      Assertion.DebugAssert(originatingObject.IsNull == false, "originatingObject.IsNull == false");
+      Assertion.DebugIsNotNull(originatingObject.ObjectID, "originatingObject.ObjectID != null");
 
       var relationEndPointDefinitionInheritanceRoot = relationEndPointDefinition.ClassDefinition.GetInheritanceRootClass();
       var originatingObjectInheritanceRoot = originatingObject.ObjectID.ClassDefinition.GetInheritanceRootClass();
 
-      if (ReferenceEquals (relationEndPointDefinitionInheritanceRoot, originatingObjectInheritanceRoot))
+      if (ReferenceEquals(relationEndPointDefinitionInheritanceRoot, originatingObjectInheritanceRoot))
         return;
 
-      var message = string.Format (
+      var message = string.Format(
           "Cannot register relation end-point '{0}' for domain object '{1}'. The end-point belongs to an object of "
           + "class '{2}' but the domain object has class '{3}'.",
           relationEndPointDefinition.PropertyName,
@@ -77,55 +83,78 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
           relationEndPointDefinition.ClassDefinition.ID,
           originatingObject.ObjectID.ClassDefinition.ID);
 
-      throw new InvalidOperationException (message);
+      throw new InvalidOperationException(message);
     }
 
     private void CheckClassDefinitionOfRelatedObject (
         IRelationEndPointDefinition relationEndPointDefinition,
-        IRelationEndPointDefinition oppositeEndPointDefinition, 
+        IRelationEndPointDefinition oppositeEndPointDefinition,
         ObjectID relatedObjectID)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull ("oppositeEndPointDefinition", oppositeEndPointDefinition);
-      ArgumentUtility.CheckNotNull ("relatedObjectID", relatedObjectID);
-      
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("oppositeEndPointDefinition", oppositeEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relatedObjectID", relatedObjectID);
 
-      if (!oppositeEndPointDefinition.ClassDefinition.IsSameOrBaseClassOf (relatedObjectID.ClassDefinition))
+
+      if (!oppositeEndPointDefinition.ClassDefinition.IsSameOrBaseClassOf(relatedObjectID.ClassDefinition))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot associate object '{0}' with the relation end-point '{1}'. An object of type '{2}' was expected.",
             relatedObjectID,
             relationEndPointDefinition.PropertyName,
             oppositeEndPointDefinition.ClassDefinition.ClassType);
 
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
     }
 
     protected IEnumerable<Tuple<ObjectID, LoadedObjectDataWithDataSourceData>> GetForeignKeysForVirtualEndPointDefinition (
-        IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData, 
-        VirtualRelationEndPointDefinition virtualEndPointDefinition)
+        IEnumerable<LoadedObjectDataWithDataSourceData> loadedObjectData,
+        IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("loadedObjectData", loadedObjectData);
-      ArgumentUtility.CheckNotNull ("virtualEndPointDefinition", virtualEndPointDefinition);
+      ArgumentUtility.CheckNotNull("loadedObjectData", loadedObjectData);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      if (!relationEndPointDefinition.IsVirtual)
+      {
+        throw new ArgumentException(
+            string.Format(
+                "RelationEndPointDefinition for property '{0}' of RelationDefinition '{1}' must be virtual.",
+                relationEndPointDefinition.PropertyName,
+                relationEndPointDefinition.RelationDefinition.ID),
+            "relationEndPointDefinition");
+      }
 
-      var oppositeEndPointDefinition = (RelationEndPointDefinition) virtualEndPointDefinition.GetOppositeEndPointDefinition ();
+      if (relationEndPointDefinition.IsAnonymous)
+      {
+        throw new ArgumentException(
+            string.Format(
+                "RelationEndPointDefinition for RelationDefinition '{0}' must not be anonymous.",
+                relationEndPointDefinition.RelationDefinition.ID),
+            "relationEndPointDefinition");
+      }
+
+      var oppositeEndPointDefinition = (RelationEndPointDefinition)relationEndPointDefinition.GetOppositeEndPointDefinition();
       return from data in loadedObjectData
              where !data.IsNull
-             let dataContainer = CheckRelatedObjectAndGetDataContainer (
+             let dataContainer = CheckRelatedObjectAndGetDataContainer(
                  data,
-                 virtualEndPointDefinition,
+                 relationEndPointDefinition,
                  oppositeEndPointDefinition)
-             let originatingObjectID = (ObjectID) dataContainer.GetValueWithoutEvents (oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
-             select Tuple.Create (originatingObjectID, data);
+             let originatingObjectID = (ObjectID?)dataContainer.GetValueWithoutEvents(oppositeEndPointDefinition.PropertyDefinition, ValueAccess.Current)
+             where originatingObjectID != null // TODO RM-8247: analyze if originatingObjectID can actually ever be null
+             select Tuple.Create<ObjectID, LoadedObjectDataWithDataSourceData>(originatingObjectID!, data);
     }
 
     private DataContainer CheckRelatedObjectAndGetDataContainer (
         LoadedObjectDataWithDataSourceData relatedObject,
-        IRelationEndPointDefinition relationEndPointDefinition, 
+        IRelationEndPointDefinition relationEndPointDefinition,
         IRelationEndPointDefinition oppositeEndPointDefinition)
     {
-      CheckClassDefinitionOfRelatedObject (relationEndPointDefinition, oppositeEndPointDefinition, relatedObject.LoadedObjectData.ObjectID);
+      Assertion.DebugAssert(relatedObject.IsNull == false, "relatedObject.IsNull == false");
+      Assertion.DebugAssert(relatedObject.LoadedObjectData.IsNull == false, "relatedObject.LoadedObjectData.IsNull == false");
+      Assertion.DebugIsNotNull(relatedObject.LoadedObjectData.ObjectID, "relatedObject.LoadedObjectData.ObjectID != null");
+      Assertion.DebugIsNotNull(relatedObject.DataSourceData, "relatedObject.DataSourceData != null");
+      CheckClassDefinitionOfRelatedObject(relationEndPointDefinition, oppositeEndPointDefinition, relatedObject.LoadedObjectData.ObjectID);
       return relatedObject.DataSourceData;
     }
   }

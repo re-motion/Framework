@@ -22,6 +22,7 @@ using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Core;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -32,7 +33,6 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
@@ -53,18 +53,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       base.SetUp();
 
       _memoryAppender = new MemoryAppender();
-      BasicConfigurator.Configure (_memoryAppender);
+      BasicConfigurator.Configure(_memoryAppender);
 
       _clientTransaction = new TestableClientTransaction();
 
       _listener = new LoggingClientTransactionListener();
 
-      _domainObject = DomainObjectMother.CreateObjectInTransaction<Client> (_clientTransaction);
-      _dataContainer = _domainObject.GetInternalDataContainerForTransaction (_clientTransaction);
-      _propertyDefinition = GetPropertyDefinition (typeof (Client), "ParentClient");
+      _domainObject = DomainObjectMother.CreateObjectInTransaction<Client>(_clientTransaction);
+      _dataContainer = _domainObject.GetInternalDataContainerForTransaction(_clientTransaction);
+      _propertyDefinition = GetPropertyDefinition(typeof(Client), "ParentClient");
 
-      _domainObject2 = DomainObjectMother.CreateObjectInTransaction<Client> (_clientTransaction);
-      _domainObject3 = DomainObjectMother.CreateObjectInTransaction<Client> (_clientTransaction);
+      _domainObject2 = DomainObjectMother.CreateObjectInTransaction<Client>(_clientTransaction);
+      _domainObject3 = DomainObjectMother.CreateObjectInTransaction<Client>(_clientTransaction);
     }
 
     public override void TearDown ()
@@ -72,7 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _memoryAppender.Clear();
       LogManager.ResetConfiguration();
 
-      Assert.That (LogManager.GetLogger (typeof (LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
+      Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
 
       base.TearDown();
     }
@@ -80,143 +80,143 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void TransactionInitialize ()
     {
-      CheckLoggingMethod (
-          () => _listener.TransactionInitialize (_clientTransaction),
-          string.Format ("{0} TransactionInitialize", _clientTransaction.ID));
+      CheckLoggingMethod(
+          () => _listener.TransactionInitialize(_clientTransaction),
+          string.Format("{0} TransactionInitialize", _clientTransaction.ID));
     }
 
     [Test]
     public void TransactionDiscard ()
     {
-      CheckLoggingMethod (
-          () => _listener.TransactionDiscard (_clientTransaction),
-          string.Format ("{0} TransactionDiscard", _clientTransaction.ID));
+      CheckLoggingMethod(
+          () => _listener.TransactionDiscard(_clientTransaction),
+          string.Format("{0} TransactionDiscard", _clientTransaction.ID));
     }
 
     [Test]
     public void SubTransactionCreating ()
     {
-      CheckLoggingMethod (
-          () => _listener.SubTransactionCreating (_clientTransaction),
-          string.Format ("{0} SubTransactionCreating", _clientTransaction.ID));
+      CheckLoggingMethod(
+          () => _listener.SubTransactionCreating(_clientTransaction),
+          string.Format("{0} SubTransactionCreating", _clientTransaction.ID));
     }
 
     [Test]
     public void SubTransactionInitialize ()
     {
-      CheckLoggingMethod (
-          () => _listener.SubTransactionInitialize (_clientTransaction, _clientTransaction),
-          string.Format ("{0} SubTransactionInitialize: {1}", _clientTransaction.ID, _clientTransaction.ID));
+      CheckLoggingMethod(
+          () => _listener.SubTransactionInitialize(_clientTransaction, _clientTransaction),
+          string.Format("{0} SubTransactionInitialize: {1}", _clientTransaction.ID, _clientTransaction.ID));
     }
 
     [Test]
     public void SubTransactionCreated ()
     {
-      CheckLoggingMethod (
-          () => _listener.SubTransactionCreated (_clientTransaction, _clientTransaction),
-          string.Format ("{0} SubTransactionCreated: {1}", _clientTransaction.ID, _clientTransaction.ID));
+      CheckLoggingMethod(
+          () => _listener.SubTransactionCreated(_clientTransaction, _clientTransaction),
+          string.Format("{0} SubTransactionCreated: {1}", _clientTransaction.ID, _clientTransaction.ID));
     }
 
     [Test]
     public void NewObjectCreating ()
     {
-      CheckLoggingMethod (
-          () => _listener.NewObjectCreating (_clientTransaction, typeof (string)),
-          string.Format ("{0} NewObjectCreating: {1}", _clientTransaction.ID, typeof (string).FullName));
+      CheckLoggingMethod(
+          () => _listener.NewObjectCreating(_clientTransaction, typeof(string)),
+          string.Format("{0} NewObjectCreating: {1}", _clientTransaction.ID, typeof(string).FullName));
     }
 
     [Test]
     public void ObjectsLoading ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectsLoading (_clientTransaction, new ReadOnlyCollection<ObjectID> (new List<ObjectID>())),
-          string.Format ("{0} ObjectsLoading: {1}", _clientTransaction.ID, ""));
+      CheckLoggingMethod(
+          () => _listener.ObjectsLoading(_clientTransaction, new ReadOnlyCollection<ObjectID>(new List<ObjectID>())),
+          string.Format("{0} ObjectsLoading: {1}", _clientTransaction.ID, ""));
     }
 
     [Test]
     public void ObjectsLoaded ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectsLoaded (_clientTransaction, new ReadOnlyCollection<DomainObject> (new List<DomainObject> { _domainObject })),
-          string.Format ("{0} ObjectsLoaded: {1}", _clientTransaction.ID, _domainObject.ID));
+      CheckLoggingMethod(
+          () => _listener.ObjectsLoaded(_clientTransaction, new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject })),
+          string.Format("{0} ObjectsLoaded: {1}", _clientTransaction.ID, _domainObject.ID));
     }
 
     [Test]
     public void ObjectsNotFound ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectsNotFound (_clientTransaction, new ReadOnlyCollection<ObjectID> (new List<ObjectID> ())),
-          string.Format ("{0} ObjectsNotFound: {1}", _clientTransaction.ID, ""));
+      CheckLoggingMethod(
+          () => _listener.ObjectsNotFound(_clientTransaction, new ReadOnlyCollection<ObjectID>(new List<ObjectID>())),
+          string.Format("{0} ObjectsNotFound: {1}", _clientTransaction.ID, ""));
     }
 
     [Test]
     public void ObjectsUnloaded ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectsUnloaded (_clientTransaction, new ReadOnlyCollection<DomainObject> (new List<DomainObject> { _domainObject })),
-          string.Format ("{0} ObjectsUnloaded: {1}", _clientTransaction.ID, _domainObject.ID));
+      CheckLoggingMethod(
+          () => _listener.ObjectsUnloaded(_clientTransaction, new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject })),
+          string.Format("{0} ObjectsUnloaded: {1}", _clientTransaction.ID, _domainObject.ID));
     }
 
     [Test]
     public void ObjectsUnloading ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectsUnloading (_clientTransaction, new ReadOnlyCollection<DomainObject> (new List<DomainObject> { _domainObject })),
-          string.Format ("{0} ObjectsUnloading: {1}", _clientTransaction.ID, _domainObject.ID));
+      CheckLoggingMethod(
+          () => _listener.ObjectsUnloading(_clientTransaction, new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject })),
+          string.Format("{0} ObjectsUnloading: {1}", _clientTransaction.ID, _domainObject.ID));
     }
 
     [Test]
     public void ObjectDeleting ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectDeleting (_clientTransaction, _domainObject),
-          string.Format ("{0} ObjectDeleting: {1}", _clientTransaction.ID, _domainObject.ID));
+      CheckLoggingMethod(
+          () => _listener.ObjectDeleting(_clientTransaction, _domainObject),
+          string.Format("{0} ObjectDeleting: {1}", _clientTransaction.ID, _domainObject.ID));
     }
 
     [Test]
     public void ObjectDeleted ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectDeleted (_clientTransaction, _domainObject),
-          string.Format ("{0} ObjectDeleted: {1}", _clientTransaction.ID, _domainObject.ID));
+      CheckLoggingMethod(
+          () => _listener.ObjectDeleted(_clientTransaction, _domainObject),
+          string.Format("{0} ObjectDeleted: {1}", _clientTransaction.ID, _domainObject.ID));
     }
 
     [Test]
     public void PropertyValueReading ()
     {
-      CheckLoggingMethod (
-          () => _listener.PropertyValueReading (_clientTransaction, _domainObject, _propertyDefinition, ValueAccess.Current),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.PropertyValueReading(_clientTransaction, _domainObject, _propertyDefinition, ValueAccess.Current),
+          string.Format(
               "{0} PropertyValueReading: {1} ({2}, {3})", _clientTransaction.ID, _propertyDefinition.PropertyName, ValueAccess.Current, _dataContainer.ID));
     }
 
     [Test]
     public void PropertyValueChanging ()
     {
-      CheckLoggingMethod (
-          () => _listener.PropertyValueChanging (_clientTransaction, _domainObject, _propertyDefinition, 1, 2),
-          string.Format ("{0} PropertyValueChanging: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyDefinition.PropertyName, 1, 2, _dataContainer.ID));
+      CheckLoggingMethod(
+          () => _listener.PropertyValueChanging(_clientTransaction, _domainObject, _propertyDefinition, 1, 2),
+          string.Format("{0} PropertyValueChanging: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyDefinition.PropertyName, 1, 2, _dataContainer.ID));
     }
 
     [Test]
     public void PropertyValueChanged ()
     {
-      CheckLoggingMethod (
-          () => _listener.PropertyValueChanged (_clientTransaction, _domainObject, _propertyDefinition, 1, 2),
-          string.Format ("{0} PropertyValueChanged: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyDefinition.PropertyName, 1, 2, _dataContainer.ID));
+      CheckLoggingMethod(
+          () => _listener.PropertyValueChanged(_clientTransaction, _domainObject, _propertyDefinition, 1, 2),
+          string.Format("{0} PropertyValueChanged: {1} {2}->{3} ({4})", _clientTransaction.ID, _propertyDefinition.PropertyName, 1, 2, _dataContainer.ID));
     }
 
     [Test]
     public void RelationReading ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub (n => n.PropertyName).Return ("Name");
-      CheckLoggingMethod (
-          () => _listener.RelationReading (_clientTransaction, _domainObject, relationEndPointDefinition, ValueAccess.Current),
-          string.Format (
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
+      CheckLoggingMethod(
+          () => _listener.RelationReading(_clientTransaction, _domainObject, relationEndPointDefinition.Object, ValueAccess.Current),
+          string.Format(
               "{0} RelationReading: {1} ({2}, {3})",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               ValueAccess.Current,
               _domainObject.ID));
     }
@@ -224,15 +224,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationRead ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub (n => n.PropertyName).Return ("Name");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
 
-      CheckLoggingMethod (
-          () => _listener.RelationRead (_clientTransaction, _domainObject, relationEndPointDefinition, _domainObject, ValueAccess.Current),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition.Object, _domainObject, ValueAccess.Current),
+          string.Format(
               "{0} RelationRead: {1}=={2} ({3}, {4})",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               _domainObject.ID,
               ValueAccess.Current,
               _domainObject.ID));
@@ -241,17 +241,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationRead_Collection ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub (n => n.PropertyName).Return ("Items");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Items");
 
       var values =
-          new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (new DomainObjectCollection (new[] { _domainObject2, _domainObject3 }, null));
-      CheckLoggingMethod (
-          () => _listener.RelationRead (_clientTransaction, _domainObject, relationEndPointDefinition, values, ValueAccess.Current),
-          string.Format (
+          new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(new DomainObjectCollection(new[] { _domainObject2, _domainObject3 }, null));
+      CheckLoggingMethod(
+          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition.Object, values, ValueAccess.Current),
+          string.Format(
               "{0} RelationRead: {1} ({2}, {3}): {4}, {5}",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               ValueAccess.Current,
               _domainObject.ID,
               _domainObject2.ID,
@@ -261,36 +261,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationRead_LongCollection ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub (n => n.PropertyName).Return ("Items");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Items");
 
-      var values = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (
-          new DomainObjectCollection (
-              Enumerable.Range (0, 100).Select (i => LifetimeService.NewObject (_clientTransaction, typeof (Client), ParamList.Empty)),
+      var values = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(
+          new DomainObjectCollection(
+              Enumerable.Range(0, 100).Select(i => LifetimeService.NewObject(_clientTransaction, typeof(Client), ParamList.Empty)),
               null));
-      CheckLoggingMethod (
-          () => _listener.RelationRead (_clientTransaction, _domainObject, relationEndPointDefinition, values, ValueAccess.Current),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.RelationRead(_clientTransaction, _domainObject, relationEndPointDefinition.Object, values, ValueAccess.Current),
+          string.Format(
               "{0} RelationRead: {1} ({2}, {3}): {4}, +90",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               ValueAccess.Current,
               _domainObject.ID,
-              string.Join (", ", values.Take (10))));
+              string.Join(", ", values.Take(10))));
     }
 
     [Test]
     public void RelationChanging ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub (n => n.PropertyName).Return ("Name");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
 
-      CheckLoggingMethod (
-          () => _listener.RelationChanging (_clientTransaction, _domainObject, relationEndPointDefinition, _domainObject2, _domainObject3),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.RelationChanging(_clientTransaction, _domainObject, relationEndPointDefinition.Object, _domainObject2, _domainObject3),
+          string.Format(
               "{0} RelationChanging: {1}: {2}->{3} /{4}",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               _domainObject2.ID,
               _domainObject3.ID,
               _domainObject.ID));
@@ -299,15 +299,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationChanged ()
     {
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
-      relationEndPointDefinition.Stub (n => n.PropertyName).Return ("Name");
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      relationEndPointDefinition.Setup(n => n.PropertyName).Returns("Name");
 
-      CheckLoggingMethod (
-          () => _listener.RelationChanged (_clientTransaction, _domainObject, relationEndPointDefinition, _domainObject2, _domainObject3),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.RelationChanged(_clientTransaction, _domainObject, relationEndPointDefinition.Object, _domainObject2, _domainObject3),
+          string.Format(
               "{0} RelationChanged: {1}: {2}->{3} /{4}",
               _clientTransaction.ID,
-              relationEndPointDefinition.PropertyName,
+              relationEndPointDefinition.Object.PropertyName,
               _domainObject2.ID,
               _domainObject3.ID,
               _domainObject.ID));
@@ -316,39 +316,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void FilterQueryResult ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
-      queryStub.Stub (stub => stub.ID).Return ("a_query");
-      queryStub.Stub (stub => stub.Statement).Return ("SELECT SMTH");
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup(stub => stub.ID).Returns("a_query");
+      queryStub.Setup(stub => stub.Statement).Returns("SELECT SMTH");
 
-      var queryResult = new QueryResult<Order> (queryStub, new[] { DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1) });
-      CheckLoggingMethod (
-          () => _listener.FilterQueryResult (_clientTransaction, queryResult),
-          string.Format ("{0} FilterQueryResult: a_query (SELECT SMTH): Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid", _clientTransaction.ID));
+      var queryResult = new QueryResult<Order>(queryStub.Object, new[] { DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1) });
+      CheckLoggingMethod(
+          () => _listener.FilterQueryResult(_clientTransaction, queryResult),
+          string.Format("{0} FilterQueryResult: a_query (SELECT SMTH): Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid", _clientTransaction.ID));
     }
 
     [Test]
     public void FilterCustomQueryResult ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery> ();
-      queryStub.Stub (stub => stub.ID).Return ("a_query");
-      queryStub.Stub (stub => stub.Statement).Return ("SELECT SMTH");
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup(stub => stub.ID).Returns("a_query");
+      queryStub.Setup(stub => stub.Statement).Returns("SELECT SMTH");
 
       var results = new[] { "item" };
-      CheckLoggingMethod (
-          () => _listener.FilterCustomQueryResult (_clientTransaction, queryStub, results),
-          string.Format ("{0} FilterCustomQueryResult: a_query (SELECT SMTH)", _clientTransaction.ID));
+      CheckLoggingMethod(
+          () => _listener.FilterCustomQueryResult(_clientTransaction, queryStub.Object, results),
+          string.Format("{0} FilterCustomQueryResult: a_query (SELECT SMTH)", _clientTransaction.ID));
     }
 
     [Test]
     public void TransactionCommitting ()
     {
-      CheckLoggingMethod (
+      CheckLoggingMethod(
           () =>
-          _listener.TransactionCommitting (
+          _listener.TransactionCommitting(
               _clientTransaction,
-              new ReadOnlyCollection<DomainObject> (new List<DomainObject> { _domainObject }),
-              MockRepository.GenerateStub<ICommittingEventRegistrar>()),
-          string.Format (
+              new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject }),
+              new Mock<ICommittingEventRegistrar>().Object),
+          string.Format(
               "{0} TransactionCommitting: {1}",
               _clientTransaction.ID,
               _domainObject.ID));
@@ -357,9 +357,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void TransactionCommitted ()
     {
-      CheckLoggingMethod (
-          () => _listener.TransactionCommitted (_clientTransaction, new ReadOnlyCollection<DomainObject> (new List<DomainObject> { _domainObject })),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.TransactionCommitted(_clientTransaction, new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject })),
+          string.Format(
               "{0} TransactionCommitted: {1}",
               _clientTransaction.ID,
               _domainObject.ID));
@@ -368,9 +368,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void TransactionRollingBack ()
     {
-      CheckLoggingMethod (
-          () => _listener.TransactionRollingBack (_clientTransaction, new ReadOnlyCollection<DomainObject> (new List<DomainObject> { _domainObject })),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.TransactionRollingBack(_clientTransaction, new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject })),
+          string.Format(
               "{0} TransactionRollingBack: {1}",
               _clientTransaction.ID,
               _domainObject.ID));
@@ -379,9 +379,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void TransactionRolledBack ()
     {
-      CheckLoggingMethod (
-          () => _listener.TransactionRolledBack (_clientTransaction, new ReadOnlyCollection<DomainObject> (new List<DomainObject> { _domainObject })),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.TransactionRolledBack(_clientTransaction, new ReadOnlyCollection<DomainObject>(new List<DomainObject> { _domainObject })),
+          string.Format(
               "{0} TransactionRolledBack: {1}",
               _clientTransaction.ID,
               _domainObject.ID));
@@ -394,13 +394,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       IObjectEndPoint relationEndPoint;
       using (_clientTransaction.EnterNonDiscardingScope())
       {
-        relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (_domainObject.ID, "ParentClient");
-        relationEndPoint = RelationEndPointObjectMother.CreateRealObjectEndPoint (relationEndPointID);
+        relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(_domainObject.ID, "ParentClient");
+        relationEndPoint = RelationEndPointObjectMother.CreateRealObjectEndPoint(relationEndPointID);
       }
 
-      CheckLoggingMethod (
-          () => _listener.RelationEndPointMapRegistering (_clientTransaction, relationEndPoint),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.RelationEndPointMapRegistering(_clientTransaction, relationEndPoint),
+          string.Format(
               "{0} RelationEndPointMapRegistering: {1}",
               _clientTransaction.ID,
               relationEndPointID));
@@ -413,12 +413,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       using (_clientTransaction.EnterNonDiscardingScope())
       {
-        relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (_domainObject.ID, "ParentClient");
+        relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(_domainObject.ID, "ParentClient");
       }
 
-      CheckLoggingMethod (
-          () => _listener.RelationEndPointMapUnregistering (_clientTransaction, relationEndPointID),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.RelationEndPointMapUnregistering(_clientTransaction, relationEndPointID),
+          string.Format(
               "{0} RelationEndPointMapUnregistering: {1}",
               _clientTransaction.ID,
               relationEndPointID));
@@ -427,11 +427,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void RelationEndPointBecomingIncomplete ()
     {
-      var relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (_domainObject.ID, "ParentClient");
+      var relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(_domainObject.ID, "ParentClient");
 
-      CheckLoggingMethod (
-          () => _listener.RelationEndPointBecomingIncomplete (_clientTransaction, relationEndPointID),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.RelationEndPointBecomingIncomplete(_clientTransaction, relationEndPointID),
+          string.Format(
               "{0} RelationEndPointBecomingIncomplete: {1}",
               _clientTransaction.ID,
               relationEndPointID));
@@ -440,9 +440,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void ObjectMarkedInvalid ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectMarkedInvalid (_clientTransaction, _domainObject),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.ObjectMarkedInvalid(_clientTransaction, _domainObject),
+          string.Format(
               "{0} ObjectMarkedInvalid: {1}",
               _clientTransaction.ID,
               _domainObject.ID));
@@ -451,9 +451,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void ObjectMarkedNotInvalid ()
     {
-      CheckLoggingMethod (
-          () => _listener.ObjectMarkedNotInvalid (_clientTransaction, _domainObject),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.ObjectMarkedNotInvalid(_clientTransaction, _domainObject),
+          string.Format(
               "{0} ObjectMarkedNotInvalid: {1}",
               _clientTransaction.ID,
               _domainObject.ID));
@@ -462,9 +462,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void DataContainerMapRegistering ()
     {
-      CheckLoggingMethod (
-          () => _listener.DataContainerMapRegistering (_clientTransaction, _dataContainer),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.DataContainerMapRegistering(_clientTransaction, _dataContainer),
+          string.Format(
               "{0} DataContainerMapRegistering: {1}",
               _clientTransaction.ID,
               _dataContainer.ID));
@@ -473,9 +473,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void DataContainerMapUnregistering ()
     {
-      CheckLoggingMethod (
-          () => _listener.DataContainerMapUnregistering (_clientTransaction, _dataContainer),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.DataContainerMapUnregistering(_clientTransaction, _dataContainer),
+          string.Format(
               "{0} DataContainerMapUnregistering: {1}",
               _clientTransaction.ID,
               _dataContainer.ID));
@@ -484,10 +484,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void DataContainerStateUpdated ()
     {
-      var newDataContainerState = new StateType();
-      CheckLoggingMethod (
-          () => _listener.DataContainerStateUpdated (_clientTransaction, _dataContainer, newDataContainerState),
-          string.Format (
+      var newDataContainerState = new DataContainerState.Builder().SetDeleted().Value;
+      CheckLoggingMethod(
+          () => _listener.DataContainerStateUpdated(_clientTransaction, _dataContainer, newDataContainerState),
+          string.Format(
               "{0} DataContainerStateUpdated: {1} {2}",
               _clientTransaction.ID,
               _dataContainer.ID,
@@ -501,12 +501,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       using (_clientTransaction.EnterNonDiscardingScope())
       {
-        relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID (_domainObject.ID, "ParentClient");
+        relationEndPointID = RelationEndPointObjectMother.CreateRelationEndPointID(_domainObject.ID, "ParentClient");
       }
 
-      CheckLoggingMethod (
-          () => _listener.VirtualRelationEndPointStateUpdated (_clientTransaction, relationEndPointID, false),
-          string.Format (
+      CheckLoggingMethod(
+          () => _listener.VirtualRelationEndPointStateUpdated(_clientTransaction, relationEndPointID, false),
+          string.Format(
               "{0} VirtualRelationEndPointStateUpdated: {1} {2}",
               _clientTransaction.ID,
               relationEndPointID,
@@ -524,7 +524,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       action();
       var loggingEvents = GetLoggingEvents();
 
-      Assert.That (loggingEvents.Last().RenderedMessage, Is.EqualTo (expectedMessage));
+      Assert.That(loggingEvents.Last().RenderedMessage, Is.EqualTo(expectedMessage));
     }
   }
 }

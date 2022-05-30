@@ -15,31 +15,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
 using Remotion.TypePipe;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.Domain
 {
   [BindableObjectWithIdentity]
-  public class TypeWithReference
+  public class TypeWithReference : IBusinessObjectWithIdentity
   {
     public static TypeWithReference Create ()
     {
-      return ObjectFactory.Create<TypeWithReference> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithReference>(true, ParamList.Empty);
     }
 
     public static TypeWithReference Create (TypeWithReference firstValue, TypeWithReference secondValue)
     {
-      return ObjectFactory.Create<TypeWithReference> (true, ParamList.Create (firstValue, secondValue));
+      return ObjectFactory.Create<TypeWithReference>(true, ParamList.Create(firstValue, secondValue));
     }
 
     public static TypeWithReference Create (string displayName)
     {
-      return ObjectFactory.Create<TypeWithReference> (true, ParamList.Create (displayName));
+      return ObjectFactory.Create<TypeWithReference>(true, ParamList.Create(displayName));
     }
 
     private TypeWithReference _referenceValue;
     private TypeWithReference[] _referenceList;
+    private IList _referenceListAsList;
     private TypeWithReference _firstValue;
     private TypeWithReference _secondValue;
     private string _displayName;
@@ -72,6 +75,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
       set { _referenceList = value; }
     }
 
+    [ItemType(typeof(TypeWithReference))]
+    public IList ReferenceListAsList
+    {
+      get { return _referenceListAsList; }
+      set { _referenceListAsList = value; }
+    }
+
     public TypeWithReference FirstValue
     {
       get { return _firstValue; }
@@ -94,6 +104,26 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
     public string UniqueIdentifier
     {
       get { return _id.ToString(); }
+    }
+
+    IBusinessObjectClass IBusinessObject.BusinessObjectClass
+    {
+      get { return Mixin.Get<BindableObjectWithIdentityMixin>(this).BusinessObjectClass; }
+    }
+
+    object IBusinessObject.GetProperty (IBusinessObjectProperty property)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin>(this).GetProperty(property);
+    }
+
+    string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin>(this).GetPropertyString(property, format);
+    }
+
+    void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
+    {
+      Mixin.Get<BindableObjectWithIdentityMixin>(this).SetProperty(property, value);
     }
   }
 }

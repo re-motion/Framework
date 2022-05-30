@@ -41,9 +41,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IDbCommandBuilderFactory dbCommandBuilderFactory,
         IDataStoragePropertyDefinitionFactory dataStoragePropertyDefinitionFactory)
     {
-      ArgumentUtility.CheckNotNull ("objectReaderFactory", objectReaderFactory);
-      ArgumentUtility.CheckNotNull ("dbCommandBuilderFactory", dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull ("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
+      ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
+      ArgumentUtility.CheckNotNull("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
 
       _objectReaderFactory = objectReaderFactory;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -65,69 +65,69 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
       get { return _dataStoragePropertyDefinitionFactory; }
     }
 
-    public virtual IStorageProviderCommand<IEnumerable<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForDataContainerQuery (IQuery query)
+    public virtual IStorageProviderCommand<IEnumerable<DataContainer?>, IRdbmsProviderCommandExecutionContext> CreateForDataContainerQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      var dbCommandBuilder = CreateDbCommandBuilder (query);
-      var dataContainerReader = _objectReaderFactory.CreateDataContainerReader ();
-      return new MultiObjectLoadCommand<DataContainer> (new[] { Tuple.Create (dbCommandBuilder, dataContainerReader) });
+      var dbCommandBuilder = CreateDbCommandBuilder(query);
+      var dataContainerReader = _objectReaderFactory.CreateDataContainerReader();
+      return new MultiObjectLoadCommand<DataContainer?>(new[] { Tuple.Create(dbCommandBuilder, dataContainerReader) });
     }
 
     public virtual IStorageProviderCommand<IEnumerable<IQueryResultRow>, IRdbmsProviderCommandExecutionContext> CreateForCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      var dbCommandBuilder = CreateDbCommandBuilder (query);
+      var dbCommandBuilder = CreateDbCommandBuilder(query);
       var resultRowReader = _objectReaderFactory.CreateResultRowReader();
 
-      return new MultiObjectLoadCommand<IQueryResultRow> (new[] { Tuple.Create (dbCommandBuilder, resultRowReader) });
+      return new MultiObjectLoadCommand<IQueryResultRow>(new[] { Tuple.Create(dbCommandBuilder, resultRowReader) });
     }
 
-    public virtual IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query)
+    public virtual IStorageProviderCommand<object?, IRdbmsProviderCommandExecutionContext> CreateForScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      var dbCommandBuilder = CreateDbCommandBuilder (query);
-      return new ScalarValueLoadCommand (dbCommandBuilder);
+      var dbCommandBuilder = CreateDbCommandBuilder(query);
+      return new ScalarValueLoadCommand(dbCommandBuilder);
     }
 
     protected virtual QueryParameterWithType GetQueryParameterWithType (QueryParameter parameter)
     {
-      var storagePropertyDefinition = _dataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (parameter.Value);
+      var storagePropertyDefinition = _dataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(parameter.Value);
       ColumnValue[] columnValues;
       try
       {
-        columnValues = storagePropertyDefinition.SplitValueForComparison (parameter.Value).ToArray ();
+        columnValues = storagePropertyDefinition.SplitValueForComparison(parameter.Value).ToArray();
       }
       catch (NotSupportedException ex)
       {
-        var message = string.Format ("The query parameter '{0}' cannot be converted to a database value: {1}", parameter.Name, ex.Message);
-        throw new InvalidOperationException (message, ex);
+        var message = string.Format("The query parameter '{0}' cannot be converted to a database value: {1}", parameter.Name, ex.Message);
+        throw new InvalidOperationException(message, ex);
       }
       if (columnValues.Length != 1)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The query parameter '{0}' is mapped to {1} database-level values. Only values that map to a single database-level value can be used "
             + "as query parameters.",
             parameter.Name,
             columnValues.Length);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
 
-      var adaptedParameter = new QueryParameter (parameter.Name, columnValues[0].Value, parameter.ParameterType);
-      return new QueryParameterWithType (adaptedParameter, columnValues[0].Column.StorageTypeInfo);
+      var adaptedParameter = new QueryParameter(parameter.Name, columnValues[0].Value, parameter.ParameterType);
+      return new QueryParameterWithType(adaptedParameter, columnValues[0].Column.StorageTypeInfo);
     }
 
     private IDbCommandBuilder CreateDbCommandBuilder (IQuery query)
     {
       // Use ToList to trigger error detection here
       var queryParametersWithType = query.Parameters
-          .Cast<QueryParameter> ()
-          .Select (GetQueryParameterWithType)
-          .ToList ();
+          .Cast<QueryParameter>()
+          .Select(GetQueryParameterWithType)
+          .ToList();
 
-      return _dbCommandBuilderFactory.CreateForQuery (query.Statement, queryParametersWithType);
+      return _dbCommandBuilderFactory.CreateForQuery(query.Statement, queryParametersWithType);
     }
   }
 }

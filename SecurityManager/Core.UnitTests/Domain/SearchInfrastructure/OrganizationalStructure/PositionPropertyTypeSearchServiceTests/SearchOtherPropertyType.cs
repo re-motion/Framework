@@ -35,25 +35,26 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new PositionPropertyTypeSearchService();
-      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (User));
-      _tenantProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition ("Tenant");
-      Assert.That (_tenantProperty, Is.Not.Null);
+      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(User));
+      _tenantProperty = (IBusinessObjectReferenceProperty)userClass.GetPropertyDefinition("Tenant");
+      Assert.That(_tenantProperty, Is.Not.Null);
     }
 
     [Test]
     public void SupportsProperty_WithInvalidProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_tenantProperty), Is.False);
+      Assert.That(_searchService.SupportsProperty(_tenantProperty), Is.False);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The type of the property 'Tenant', declared on 'Remotion.SecurityManager.Domain.OrganizationalStructure.User, Remotion.SecurityManager', "
-        + "is not supported by the 'Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure.PositionPropertyTypeSearchService' type.",
-        MatchType = MessageMatch.Contains)]
     public void Search_WithInvalidProperty ()
     {
-       _searchService.Search (null, _tenantProperty, null);
+      Assert.That(
+          () => _searchService.Search(null, _tenantProperty, null),
+          Throws.ArgumentException
+              .With.Message.Contains(
+                  "The type of the property 'Tenant', declared on 'Remotion.SecurityManager.Domain.OrganizationalStructure.User, Remotion.SecurityManager', "
+                  + "is not supported by the 'Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure.PositionPropertyTypeSearchService' type."));
     }
   }
 }

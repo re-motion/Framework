@@ -16,8 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using FluentValidation.Validators;
-using Remotion.Validation.Rules;
+using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Merging
 {
@@ -27,6 +27,6 @@ namespace Remotion.Validation.Merging
   /// <seealso cref="PropertyValidatorExtractor"/>
   public interface IPropertyValidatorExtractor
   {
-    IEnumerable<IPropertyValidator> ExtractPropertyValidatorsToRemove (IAddingComponentPropertyRule addingComponentPropertyRule);
+    IEnumerable<IPropertyValidator> ExtractPropertyValidatorsToRemove (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
   }
 }

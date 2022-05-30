@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
 using Remotion.Utilities;
@@ -27,13 +28,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class MixinContextSerializerBase : IMixinContextSerializer
   {
-    private Type _mixinType;
+    private Type? _mixinType;
     private MixinKind _mixinKind;
     private MemberVisibility _introducedMemberVisibility;
-    private IEnumerable<Type> _explicitDependencies;
-    private MixinContextOrigin _origin;
+    private IEnumerable<Type>? _explicitDependencies;
+    private MixinContextOrigin? _origin;
 
-    public Type MixinType
+    public Type? MixinType
     {
       get { return _mixinType; }
     }
@@ -48,43 +49,48 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       get { return _introducedMemberVisibility; }
     }
 
-    public IEnumerable<Type> ExplicitDependencies
+    public IEnumerable<Type>? ExplicitDependencies
     {
       get { return _explicitDependencies; }
     }
 
-    public MixinContextOrigin Origin
+    public MixinContextOrigin? Origin
     {
       get { return _origin; }
     }
 
+    [MemberNotNull(nameof(_mixinType))]
     public void AddMixinType (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
       _mixinType = mixinType;
     }
 
+    [MemberNotNull(nameof(_mixinKind))]
     public void AddMixinKind (MixinKind mixinKind)
     {
       _mixinKind = mixinKind;
     }
 
+    [MemberNotNull(nameof(_introducedMemberVisibility))]
     public void AddIntroducedMemberVisibility (MemberVisibility introducedMemberVisibility)
     {
       _introducedMemberVisibility = introducedMemberVisibility;
     }
 
+    [MemberNotNull(nameof(_explicitDependencies))]
     public void AddExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
-      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
+      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
 
       _explicitDependencies = explicitDependencies;
     }
 
+    [MemberNotNull(nameof(_origin))]
     public void AddOrigin (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull ("origin", origin);
+      ArgumentUtility.CheckNotNull("origin", origin);
 
       _origin = origin;
     }

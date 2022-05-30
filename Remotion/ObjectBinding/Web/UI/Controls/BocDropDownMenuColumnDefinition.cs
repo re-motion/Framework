@@ -17,10 +17,12 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -30,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocDropDownMenuColumnDefinition : BocColumnDefinition
   {
     private bool _showMenuTitle = true;
-    private string _menuTitleText = string.Empty;
+    private WebString _menuTitleText;
     private IconInfo _menuTitleIcon;
 
     public BocDropDownMenuColumnDefinition ()
@@ -40,9 +42,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-      
-      return serviceLocator.GetInstance<IBocDropDownMenuColumnRenderer> ();
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+
+      return serviceLocator.GetInstance<IBocDropDownMenuColumnRenderer>();
     }
 
     /// <summary> Gets the human readable name of this type. </summary>
@@ -53,11 +55,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a flag to show/hide the menu's title. </summary>
     /// <value> <see langword="false" /> to hide the menu's title. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("Set false to hide the menu's title")]
-    [DefaultValue (true)]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("Set false to hide the menu's title")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
     public bool ShowMenuTitle
     {
       get { return _showMenuTitle; }
@@ -65,26 +67,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text displayed as the menu title. </summary>
-    /// <value> A <see cref="string"/> displayed as the menu's title. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The menu title, can be empty.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
-    public string MenuTitleText
+    /// <value> A <see cref="WebString"/> displayed as the menu's title. </value>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The menu title, can be empty.")]
+    [DefaultValue(typeof(WebString), "")]
+    [NotifyParentProperty(true)]
+    public WebString MenuTitleText
     {
       get { return _menuTitleText; }
-      set { _menuTitleText = value ?? string.Empty; }
+      set { _menuTitleText = value; }
     }
 
     /// <summary> Gets or sets the icon displayed in the menu's title field. </summary>
     /// <value> An <see cref="IconInfo"/> displayed in the menu's title field. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("An icon displayed in the menu's title field, can be empty.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("An icon displayed in the menu's title field, can be empty.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public IconInfo MenuTitleIcon
     {
       get { return _menuTitleIcon; }
@@ -94,17 +96,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      base.LoadResources (resourceManager, globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (MenuTitleText);
-      if (!string.IsNullOrEmpty (key))
-        MenuTitleText = resourceManager.GetString (key);
+      base.LoadResources(resourceManager, globalizationService);
+
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(MenuTitleText.GetValue());
+      if (!string.IsNullOrEmpty(key))
+        MenuTitleText = resourceManager.GetWebString(key, MenuTitleText.Type);
 
       if (MenuTitleIcon != null)
-        MenuTitleIcon.LoadResources (resourceManager);
+        MenuTitleIcon.LoadResources(resourceManager);
     }
   }
 }

@@ -20,7 +20,6 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
@@ -29,6 +28,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -43,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected void RegisterBrowserCompatibilityScript (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
     }
@@ -70,17 +70,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// and <see cref="CssClassDisabled"/> if appropriate.</remarks>
     protected void AddAttributesToRender (RenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      string backUpCssClass;
-      string backUpAttributeCssClass;
-      OverrideCssClass (renderingContext, out backUpCssClass, out backUpAttributeCssClass);
+      OverrideCssClass(renderingContext, out var backUpCssClass, out var backUpAttributeCssClass);
 
-      AddStandardAttributesToRender (renderingContext);
+      AddStandardAttributesToRender(renderingContext);
 
-      RestoreClass (renderingContext, backUpCssClass, backUpAttributeCssClass);
+      RestoreClass(renderingContext, backUpCssClass, backUpAttributeCssClass);
 
-      AddAdditionalAttributes (renderingContext);
+      AddAdditionalAttributes(renderingContext);
     }
 
     /// <summary>
@@ -93,25 +91,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<TControl> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
 
       var control = renderingContext.Control;
-      if (!string.IsNullOrEmpty (control.DisplayName))
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.DisplayName, control.DisplayName);
+      if (!control.DisplayName.IsEmpty)
+        HtmlUtility.ExtractPlainText(control.DisplayName).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributesForObjectBinding.DisplayName);
 
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (!control.Enabled).ToString().ToLower());
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsReadOnly, IsReadOnly (control).ToString().ToLower());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (!control.Enabled).ToString().ToLower());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsReadOnly, IsReadOnly(control).ToString().ToLower());
 
-      var isBound = IsBoundToBusinessObject (control);
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.IsBound, isBound.ToString().ToLower());
+      var isBound = IsBoundToBusinessObject(control);
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.IsBound, isBound.ToString().ToLower());
 
       if (isBound)
       {
-        var businessObjectClassIdentifier = GetBusinessObjectClassIdentifier (control);
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundType, businessObjectClassIdentifier);
+        var businessObjectClassIdentifier = GetBusinessObjectClassIdentifier(control);
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BoundType, businessObjectClassIdentifier);
 
-        var boundProperty = Maybe.ForValue (control.Property).Select (p => p.Identifier).ValueOrDefault ("null");
-        renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BoundProperty, boundProperty);
+        var boundProperty = control.Property?.Identifier ?? "null";
+        renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BoundProperty, boundProperty);
       }
     }
 
@@ -123,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>True if the control is bound to a business object, false otherwise.</returns>
     protected virtual bool IsBoundToBusinessObject (TControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       return control.Property != null && control.DataSource != null
              && (control.DataSource.BusinessObject != null || control.DataSource.BusinessObjectClass != null);
@@ -133,13 +131,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       // Try dynamic bound type first, afterwards static bound type. Order due to behavioral uniformity.
 
+      Assertion.IsNotNull(control.DataSource, "control.DataSource must not be null.");
+
       if (control.DataSource.BusinessObject != null)
         return control.DataSource.BusinessObject.BusinessObjectClass.Identifier;
 
       if (control.DataSource.BusinessObjectClass != null)
         return control.DataSource.BusinessObjectClass.Identifier;
 
-      throw new NotSupportedException ("Cannot determine BusinessObjectClass.Identifier for unbound control.");
+      throw new NotSupportedException("Cannot determine BusinessObjectClass.Identifier for unbound control.");
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when it is displayed in read-only mode. </summary>
@@ -149,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual string CssClassReadOnly
     {
-      get { return "readOnly"; }
+      get { return CssClassDefinition.ReadOnly; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when it is displayed disabled. </summary>
@@ -159,42 +159,67 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
 
-    private void OverrideCssClass (RenderingContext<TControl> renderingContext, out string backUpCssClass, out string backUpAttributeCssClass)
+    /// <summary>
+    /// Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when itself and child elements
+    /// that are standard browser controls (e.g. input elements) should be styled in the current theme.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>remotion-themed</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public virtual string CssClassThemed
+    {
+      get { return CssClassDefinition.Themed; }
+    }
+
+    /// <summary>
+    /// Gets whether the control establishes a theming context which automatically styles standard browser controls (e.g. input elements)
+    /// in the current theme. <see langword="false" /> by default. Derived classes may override this behavior. 
+    /// </summary>
+    protected virtual bool UseThemingContext
+    {
+      get { return false; }
+    }
+
+    private void OverrideCssClass (RenderingContext<TControl> renderingContext, out string backUpCssClass, out string? backUpAttributeCssClass)
     {
       backUpCssClass = renderingContext.Control.CssClass;
-      bool hasCssClass = !string.IsNullOrEmpty (backUpCssClass);
+      bool hasCssClass = !string.IsNullOrEmpty(backUpCssClass);
       if (hasCssClass)
-        renderingContext.Control.CssClass += GetAdditionalCssClass (renderingContext.Control);
+        renderingContext.Control.CssClass += GetAdditionalCssClass(renderingContext.Control);
 
       backUpAttributeCssClass = renderingContext.Control.Attributes["class"];
-      bool hasClassAttribute = !string.IsNullOrEmpty (backUpAttributeCssClass);
+      bool hasClassAttribute = !string.IsNullOrEmpty(backUpAttributeCssClass);
       if (hasClassAttribute)
-        renderingContext.Control.Attributes["class"] += GetAdditionalCssClass (renderingContext.Control);
+        renderingContext.Control.Attributes["class"] += GetAdditionalCssClass(renderingContext.Control);
 
       if (!hasCssClass && !hasClassAttribute)
-        renderingContext.Control.CssClass = GetCssClassBase (renderingContext.Control) + GetAdditionalCssClass (renderingContext.Control);
+        renderingContext.Control.CssClass = GetCssClassBase(renderingContext.Control) + GetAdditionalCssClass(renderingContext.Control);
     }
 
-    private void RestoreClass (RenderingContext<TControl> renderingContext, string backUpCssClass, string backUpAttributeCssClass)
+    private void RestoreClass (RenderingContext<TControl> renderingContext, string backUpCssClass, string? backUpAttributeCssClass)
     {
       renderingContext.Control.CssClass = backUpCssClass;
       renderingContext.Control.Attributes["class"] = backUpAttributeCssClass;
     }
 
-    private string GetAdditionalCssClass (TControl control)
+    protected virtual string GetAdditionalCssClass (TControl control)
     {
-      var isReadOnly = IsReadOnly (control);
+      var isReadOnly = IsReadOnly(control);
       var isDisabled = !control.Enabled;
 
       var additionalCssClass = string.Empty;
 
+      if (UseThemingContext)
+        additionalCssClass += " " + CssClassThemed;
+
       if (isReadOnly)
-        additionalCssClass = " " + CssClassReadOnly;
+        additionalCssClass += " " + CssClassReadOnly;
       else if (isDisabled)
-        additionalCssClass = " " + CssClassDisabled;
+        additionalCssClass += " " + CssClassDisabled;
 
       return additionalCssClass;
     }

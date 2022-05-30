@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static DateTime GetDateTime (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.GetDateTime();
     }
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static string GetDateTimeAsString (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.GetDateTimeAsString();
     }
@@ -57,13 +57,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetDateField (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
       ElementScope target;
       if (fluentDateTimeValue.IsReadOnly())
-        target = fluentDateTimeValue.Target.Scope.FindCss ("span:nth-child(1)");
+        target = fluentDateTimeValue.Target.Scope.FindCss("span:nth-child(1)");
       else
-        target = fluentDateTimeValue.Target.Scope.FindChild ("DateValue", Options.NoWait);
+        target = fluentDateTimeValue.Target.Scope.FindChild("DateValue", Options.NoWait);
       target.EnsureExistence();
 
       return target.ForElementScopeScreenshot();
@@ -75,9 +75,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetDatePickerIcon (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
-      var target = fluentDateTimeValue.Target.Scope.FindChild ("Boc_DatePicker", Options.NoWait);
+      var target = fluentDateTimeValue.Target.Scope.FindChild("Boc_DatePicker", Options.NoWait);
       target.EnsureExistence();
 
       return target.ForElementScopeScreenshot();
@@ -89,9 +89,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocDateTimeValuePicker> GetDatePicker (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
-      return SelfResolvableFluentScreenshot.Create (new ScreenshotBocDateTimeValuePicker (fluentDateTimeValue));
+      return SelfResolvableFluentScreenshot.Create(new ScreenshotBocDateTimeValuePicker(fluentDateTimeValue));
     }
 
     /// <summary>
@@ -100,13 +100,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetTimeField (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
       ElementScope target;
       if (fluentDateTimeValue.IsReadOnly())
-        target = fluentDateTimeValue.Target.Scope.FindCss ("span:nth-child(2)");
+        target = fluentDateTimeValue.Target.Scope.FindCss("span:nth-child(2)");
       else
-        target = fluentDateTimeValue.Target.Scope.FindChild ("TimeValue", Options.NoWait);
+        target = fluentDateTimeValue.Target.Scope.FindChild("TimeValue", Options.NoWait);
       target.EnsureExistence();
 
       return target.ForElementScopeScreenshot();
@@ -119,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <returns></returns>
     public static bool HasTimeField ([NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.HasTimeField();
     }
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public static bool IsReadOnly ([NotNull] this IFluentScreenshotElementWithCovariance<BocDateTimeValueControlObject> fluentDateTimeValue)
     {
-      ArgumentUtility.CheckNotNull ("fluentDateTimeValue", fluentDateTimeValue);
+      ArgumentUtility.CheckNotNull("fluentDateTimeValue", fluentDateTimeValue);
 
       return fluentDateTimeValue.Target.IsReadOnly();
     }

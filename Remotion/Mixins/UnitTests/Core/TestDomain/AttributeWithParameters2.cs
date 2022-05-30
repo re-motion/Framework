@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [AttributeUsage (AttributeTargets.All, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
   public class AttributeWithParameters2 : Attribute
   {
     public int Field;
@@ -32,7 +32,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     }
 
     public AttributeWithParameters2 (int ctor, string dummy)
-      : this (ctor)
+      : this(ctor)
     {
     }
 

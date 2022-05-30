@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// </summary>
     public static readonly RectangleResolver Instance = new RectangleResolver();
 
-    private readonly IWebDriver _driver;
+    private readonly IWebDriver? _driver;
     private readonly bool _relative;
 
     private RectangleResolver ()
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
     public RectangleResolver ([NotNull] IWebDriver driver)
     {
-      ArgumentUtility.CheckNotNull ("driver", driver);
+      ArgumentUtility.CheckNotNull("driver", driver);
 
       _driver = driver;
       _relative = true;
@@ -52,18 +52,23 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates (Rectangle target)
     {
-      return new ResolvedScreenshotElement (CoordinateSystem.Browser, target, ElementVisibility.FullyVisible, null);
+      var unresolvedBounds = target;
+
+      return new ResolvedScreenshotElement(CoordinateSystem.Browser, target, ElementVisibility.FullyVisible, null, unresolvedBounds);
     }
 
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (Rectangle target, IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
+      Assertion.IsNotNull(_driver, "'{0}' must not be null when resolving the desktop coordinates.", nameof(_driver));
+
+      var unresolvedBounds = target;
 
       if (_relative)
-        target.Offset (locator.GetBrowserContentBounds (_driver).Location);
+        target.Offset(locator.GetBrowserContentBounds(_driver).Location);
 
-      return new ResolvedScreenshotElement (CoordinateSystem.Desktop, target, ElementVisibility.FullyVisible, null);
+      return new ResolvedScreenshotElement(CoordinateSystem.Desktop, target, ElementVisibility.FullyVisible, null, unresolvedBounds);
     }
   }
 }

@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <summary>
     /// Gets the type of the collection if the query returns a collection of <see cref="Remotion.Data.DomainObjects.DomainObject"/>s.
     /// </summary> 
-    Type CollectionType { get; }
+    Type? CollectionType { get; }
 
     /// <summary>
     /// Gets the <see cref="Configuration.QueryType"/> of the query.

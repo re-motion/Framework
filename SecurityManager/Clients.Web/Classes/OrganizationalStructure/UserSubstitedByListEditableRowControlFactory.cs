@@ -16,7 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
@@ -33,46 +33,51 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// The <see cref="UserSubstitedByListEditableRowControlFactory"/> instance is retrieved form the <see cref="IServiceLocator"/> using the type
   /// <see cref="UserSubstitedByListEditableRowControlFactory"/> as key.
   /// </remarks>
-  [ImplementationFor (typeof (UserSubstitedByListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(UserSubstitedByListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
   public class UserSubstitedByListEditableRowControlFactory : EditableRowAutoCompleteControlFactory
   {
     public UserSubstitedByListEditableRowControlFactory ()
     {
     }
 
-    protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       if (propertyPath.Identifier == "SubstitutedRole")
-        return CreateControlForSubstitutedRole (propertyPath);
+        return CreateControlForSubstitutedRole(propertyPath);
       else
-        return base.CreateFromPropertyPath (propertyPath);
+        return base.CreateFromPropertyPath(propertyPath);
     }
 
     protected virtual BocReferenceValue CreateBocReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       return new BocReferenceValue();
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForSubstitutedRole (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      var control = CreateBocReferenceValue (propertyPath);
+      var control = CreateBocReferenceValue(propertyPath);
       control.PreRender += HandleSubstitutedRolePreRender;
       control.EnableSelectStatement = false;
       return control;
     }
 
-    private void HandleSubstitutedRolePreRender (object sender, EventArgs e)
+    private void HandleSubstitutedRolePreRender (object? sender, EventArgs e)
     {
-      var substituededRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue> ("sender", sender);
-      var substitution = substituededRoleReferenceValue.DataSource.BusinessObject;
-      var roles = substituededRoleReferenceValue.Property.SearchAvailableObjects (substitution, new DefaultSearchArguments (null));
-      substituededRoleReferenceValue.SetBusinessObjectList (roles);
+      var substitutedRoleReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
+
+      Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", substitutedRoleReferenceValue.ID);
+      Assertion.IsNotNull(substitutedRoleReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", substitutedRoleReferenceValue.ID);
+      Assertion.IsNotNull(substitutedRoleReferenceValue.Property, "BocReferenceValue{{{0}}}.Property != null", substitutedRoleReferenceValue.ID);
+
+      var substitution = substitutedRoleReferenceValue.DataSource.BusinessObject;
+      var roles = substitutedRoleReferenceValue.Property.SearchAvailableObjects(substitution, new DefaultSearchArguments(null));
+      substitutedRoleReferenceValue.SetBusinessObjectList(roles);
     }
   }
 }

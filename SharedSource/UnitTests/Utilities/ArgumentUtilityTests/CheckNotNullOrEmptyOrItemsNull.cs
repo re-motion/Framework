@@ -17,9 +17,12 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
+#nullable disable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
@@ -27,76 +30,188 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckNotNullOrEmptyOrItemsNull
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Value cannot be null.\r\nParameter name: arg")]
     public void Fail_NullICollection ()
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", (ICollection) null);
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (ICollection)null),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Value cannot be null.", "arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException), ExpectedMessage = "Item 0 of parameter 'arg' is null.\r\nParameter name: arg")]
-    public void Fail_zItemNullICollection ()
+    public void Fail_NullICollectionOfT ()
+    {
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (ICollection<object>)null),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Value cannot be null.", "arg"));
+    }
+
+    [Test]
+    public void Fail_NullIReadOnlyCollectionOfT ()
+    {
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (IReadOnlyCollection<object>)null),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Value cannot be null.", "arg"));
+    }
+
+    [Test]
+    public void Fail_NullListOfT ()
+    {
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", (List<object>)null),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Value cannot be null.", "arg"));
+    }
+
+    [Test]
+    public void Fail_ItemNullICollection ()
     {
       ArrayList list = new ArrayList();
-      list.Add (null);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", list);
+      list.Add(null);
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", list),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Item 0 of parameter 'arg' is null.", "arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
+    public void Fail_ItemNullICollectionOfT ()
+    {
+      ICollection<object> list = new List<object> { null };
+
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", list),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Item 0 of parameter 'arg' is null.", "arg"));
+    }
+
+    [Test]
+    public void Fail_ItemNullIReadOnlyCollectionOfT ()
+    {
+      IReadOnlyCollection<object> list = new List<object> { null };
+
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", list),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Item 0 of parameter 'arg' is null.", "arg"));
+    }
+
+    [Test]
+    public void Fail_ItemNullListOfT ()
+    {
+      List<object> list = new List<object> { null };
+
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", list),
+          Throws.InstanceOf<ArgumentNullException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Item 0 of parameter 'arg' is null.", "arg"));
+    }
+
+    [Test]
     public void Fail_EmptyArray ()
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", new string[0]);
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", new string[0]),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
     public void Fail_EmptyCollection ()
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", new ArrayList());
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", new ArrayList()),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Parameter 'arg' cannot be empty.\r\nParameter name: arg")]
-    public void Fail_EmptyIEnumerable ()
+    public void Fail_EmptyICollectionOfT ()
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", GetEmptyEnumerable());
+      ICollection<object> value = new List<object>();
+
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", value),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'arg' cannot be empty.", "arg"));
+    }
+
+    [Test]
+    public void Fail_EmptyIReadOnlyCollectionOfT ()
+    {
+      IReadOnlyCollection<object> value = new List<object>();
+
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", value),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'arg' cannot be empty.", "arg"));
+    }
+
+    [Test]
+    public void Fail_EmptyListOfT ()
+    {
+      List<object> value = new List<object>();
+
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", value),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'arg' cannot be empty.", "arg"));
     }
 
     [Test]
     public void Succeed_Array ()
     {
       string[] array = new string[] { "test" };
-      string[] result = ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", array);
-      Assert.That (result, Is.SameAs (array));
+      string[] result = ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", array);
+      Assert.That(result, Is.SameAs(array));
     }
 
     [Test]
     public void Succeed_Collection ()
     {
       ArrayList list = new ArrayList();
-      list.Add ("test");
-      ArrayList result = ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", list);
-      Assert.That (result, Is.SameAs (list));
+      list.Add("test");
+      ArrayList result = ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", list);
+      Assert.That(result, Is.SameAs(list));
     }
 
     [Test]
-    public void Succeed_IEnumerable ()
+    public void Succeed_ICollectionOfT ()
     {
-      IEnumerable enumerable = GetEnumerableWithValue();
-      IEnumerable result = ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("arg", enumerable);
-      Assert.That (result, Is.SameAs (enumerable));
-      Assert.That (result.GetEnumerator().MoveNext(), Is.True);
+      ICollection<string> value = new List<string> { "test" };
+
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", value);
     }
 
-    private IEnumerable GetEnumerableWithValue ()
+    [Test]
+    public void Succeed_IReadOnlyCollectionOfT ()
     {
-      yield return "test";
+      IReadOnlyCollection<string> value = new List<string> { "test" };
+
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", value);
     }
 
-    private IEnumerable GetEmptyEnumerable ()
+    [Test]
+    public void Succeed_ListOfT ()
     {
-      yield break;
+      List<string> value = new List<string> { "test" };
+
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("arg", value);
     }
   }
 }

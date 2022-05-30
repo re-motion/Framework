@@ -34,19 +34,19 @@ namespace Remotion.Mixins.Context
     private readonly IReadOnlyDictionary<Type, ClassContext> _values;
     private readonly IMixinInheritancePolicy _inheritancePolicy = DefaultMixinInheritancePolicy.Instance;
 
-    private readonly ConcurrentDictionary<Type, ClassContext> _inheritedContextCache = new ConcurrentDictionary<Type, ClassContext>();
-    private readonly Func<Type, ClassContext> _deriveInheritedContextFunc;
+    private readonly ConcurrentDictionary<Type, ClassContext?> _inheritedContextCache = new ConcurrentDictionary<Type, ClassContext?>();
+    private readonly Func<Type, ClassContext?> _deriveInheritedContextFunc;
 
     public ClassContextCollection (IEnumerable<ClassContext> classContexts)
     {
-      ArgumentUtility.CheckNotNull ("classContexts", classContexts);
+      ArgumentUtility.CheckNotNull("classContexts", classContexts);
 
-      _values = classContexts.ToDictionary (cc => cc.Type);
+      _values = classContexts.ToDictionary(cc => cc.Type);
       _deriveInheritedContextFunc = DeriveInheritedContext;
     }
 
     public ClassContextCollection (params ClassContext[] classContexts)
-        : this ((IEnumerable<ClassContext>) classContexts)
+        : this((IEnumerable<ClassContext>)classContexts)
     {
     }
 
@@ -62,70 +62,70 @@ namespace Remotion.Mixins.Context
 
     IEnumerator IEnumerable.GetEnumerator ()
     {
-      return GetEnumerator ();
+      return GetEnumerator();
     }
 
     public void CopyTo (ClassContext[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNull ("array", array);
-      ((ICollection) this).CopyTo (array, arrayIndex);
+      ArgumentUtility.CheckNotNull("array", array);
+      ((ICollection)this).CopyTo(array, arrayIndex);
     }
 
     void ICollection.CopyTo (Array array, int index)
     {
-      ArgumentUtility.CheckNotNull ("array", array);
-      ((ICollection) _values.Values).CopyTo (array, index);
+      ArgumentUtility.CheckNotNull("array", array);
+      ((ICollection)_values.Values).CopyTo(array, index);
     }
 
-    public ClassContext GetExact (Type type)
+    public ClassContext? GetExact (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      ClassContext result;
-      _values.TryGetValue (type, out result);
-      Assertion.IsTrue (result == null || result.Type == type);
+      ClassContext? result;
+      _values.TryGetValue(type, out result);
+      Assertion.IsTrue(result == null || result.Type == type);
       return result;
     }
 
-    public ClassContext GetWithInheritance (Type type)
+    public ClassContext? GetWithInheritance (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var exactMatch = GetExact (type);
+      var exactMatch = GetExact(type);
       if (exactMatch != null)
         return exactMatch;
       else
-        return _inheritedContextCache.GetOrAdd (type, _deriveInheritedContextFunc);
+        return _inheritedContextCache.GetOrAdd(type, _deriveInheritedContextFunc);
     }
 
-    private ClassContext DeriveInheritedContext (Type type)
+    private ClassContext? DeriveInheritedContext (Type type)
     {
-      var contextsToInheritFrom = _inheritancePolicy.GetClassContextsToInheritFrom (type, GetWithInheritance); // Recursion!
+      var contextsToInheritFrom = _inheritancePolicy.GetClassContextsToInheritFrom(type, GetWithInheritance); // Recursion!
 
-      var inheritedContextCombiner = new ClassContextCombiner ();
-      inheritedContextCombiner.AddRangeAllowingNulls (contextsToInheritFrom);
+      var inheritedContextCombiner = new ClassContextCombiner();
+      inheritedContextCombiner.AddRangeAllowingNulls(contextsToInheritFrom);
 
-      var result = inheritedContextCombiner.GetCombinedContexts (type);
-      Assertion.IsTrue (result == null || result.Type == type);
+      var result = inheritedContextCombiner.GetCombinedContexts(type);
+      Assertion.IsTrue(result == null || result.Type == type);
       return result;
     }
 
     public bool ContainsExact (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return GetExact (type) != null;
+      ArgumentUtility.CheckNotNull("type", type);
+      return GetExact(type) != null;
     }
 
     public bool ContainsWithInheritance (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return GetWithInheritance (type) != null;
+      ArgumentUtility.CheckNotNull("type", type);
+      return GetWithInheritance(type) != null;
     }
 
     public bool Contains (ClassContext item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
-      return item.Equals (GetExact (item.Type));
+      ArgumentUtility.CheckNotNull("item", item);
+      return item.Equals(GetExact(item.Type));
     }
 
     object ICollection.SyncRoot
@@ -145,17 +145,17 @@ namespace Remotion.Mixins.Context
 
     void ICollection<ClassContext>.Clear ()
     {
-      throw new NotSupportedException ("This collection is read-only.");
+      throw new NotSupportedException("This collection is read-only.");
     }
 
     void ICollection<ClassContext>.Add (ClassContext value)
     {
-      throw new NotSupportedException ("This collection is read-only.");
+      throw new NotSupportedException("This collection is read-only.");
     }
 
     bool ICollection<ClassContext>.Remove (ClassContext item)
     {
-      throw new NotSupportedException ("This collection is read-only.");
+      throw new NotSupportedException("This collection is read-only.");
     }
   }
 }

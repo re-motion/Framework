@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <param name="controlType">The <see cref="DiagnosticMetadataAttributes.ControlType"/> identifying the <typeparamref name="TControlObject"/>.</param>
     protected TypedControlSelectorBase ([NotNull] string controlType)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("controlType", controlType);
+      ArgumentUtility.CheckNotNullOrEmpty("controlType", controlType);
 
       _controlType = controlType;
     }
@@ -57,22 +57,22 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = FindScopeByFirstOccurence (context);
+      var scope = FindScopeByFirstOccurence(context);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public TControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = FindScopeByFirstOccurence (context);
+      var scope = FindScopeByFirstOccurence(context);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -80,47 +80,47 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public TControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = FindScopeByFirstOccurence (context);
+      var scope = FindScopeByFirstOccurence(context);
 
       scope.EnsureSingle();
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public TControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = FindScopeByFirstOccurence (context);
+      var scope = FindScopeByFirstOccurence(context);
 
       if (!scope.ExistsWithEnsureSingleWorkaround())
         return null;
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public TControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = FindScopePerIndex (context, oneBasedIndex);
+      var scope = FindScopePerIndex(context, oneBasedIndex);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public TControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = FindScopePerIndex (context, oneBasedIndex);
+      var scope = FindScopePerIndex(context, oneBasedIndex);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -128,23 +128,23 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = FindScopePerIndex (context, oneBasedIndex);
+      var scope = FindScopePerIndex(context, oneBasedIndex);
 
       return scope.ExistsWorkaround();
     }
 
     private ElementScope FindScopeByFirstOccurence (ControlSelectionContext context)
     {
-      var scope = context.Scope.FindTagWithAttribute ("*", DiagnosticMetadataAttributes.ControlType, _controlType);
+      var scope = context.Scope.FindTagWithAttribute("*", DiagnosticMetadataAttributes.ControlType, _controlType);
       return scope;
     }
 
     private ElementScope FindScopePerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath (DiagnosticMetadataAttributes.ControlType, _controlType);
-      var scope = context.Scope.FindXPath (string.Format ("(.//*{0})[{1}]", hasAttributeCheck, oneBasedIndex));
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath(DiagnosticMetadataAttributes.ControlType, _controlType);
+      var scope = context.Scope.FindXPath(string.Format("(.//*{0})[{1}]", hasAttributeCheck, oneBasedIndex));
       return scope;
     }
   }

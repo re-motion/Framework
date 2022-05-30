@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Validation
@@ -24,11 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var instance = _serviceLocator.GetInstance<IBocListValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<IBocList>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<IBocList>>());
 
-      var factories = ((CompoundValidatorFactory<IBocList>) instance).VlidatorFactories;
-      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (BocListValidatorFactory)));
-      Assert.That (factories.Count, Is.EqualTo (1));
+      var factories = ((CompoundValidatorFactory<IBocList>)instance).VlidatorFactories;
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof(BocListValidatorFactory), typeof(ValidationBocListValidatorFactory) }));
     }
 
     [Test]
@@ -37,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var instance1 = _serviceLocator.GetInstance<IBocListValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IBocListValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<IBocList>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<IBocList>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

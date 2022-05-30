@@ -18,6 +18,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
@@ -29,66 +30,68 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
   /// Implements <see cref="IWebTabStripRenderer"/> for standard mode rendering of <see cref="WebTabStrip"/> controls.
   /// <seealso cref="IWebTabStrip"/>
   /// </summary>
-  [ImplementationFor (typeof (IWebTabStripRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IWebTabStripRenderer), Lifetime = LifetimeKind.Singleton)]
   public class WebTabStripRenderer : RendererBase<IWebTabStrip>, IWebTabStripRenderer
   {
     public WebTabStripRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, IControl control)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      string key = typeof (WebTabStripRenderer).FullName + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
-      htmlHeadAppender.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+      htmlHeadAppender.RegisterCommonStyleSheet();
 
-      string keyScript = typeof (WebTabStripRenderer).FullName + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (WebTabStripRenderer), ResourceType.Html, "TabStrip.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (keyScript, scriptUrl);
+      string key = typeof(WebTabStripRenderer).GetFullNameChecked() + "_Style";
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(WebTabStripRenderer), ResourceType.Html, "TabStrip.css");
+      htmlHeadAppender.RegisterStylesheetLink(key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
 
-      ScriptUtility.Instance.RegisterJavaScriptInclude (control, htmlHeadAppender);
+      string keyScript = typeof(WebTabStripRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(WebTabStripRenderer), ResourceType.Html, "TabStrip.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(keyScript, scriptUrl);
+
+      ScriptUtility.Instance.RegisterJavaScriptInclude(control, htmlHeadAppender);
     }
 
     public void Render (WebTabStripRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
           renderingContext.Control,
-          typeof (WebTabStrip),
-          Guid.NewGuid ().ToString (),
-          string.Format ("WebTabStrip.Initialize ($('#{0}'));", renderingContext.Control.ClientID));
+          typeof(WebTabStrip),
+          Guid.NewGuid().ToString(),
+          string.Format("WebTabStrip.Initialize ('#{0}');", renderingContext.Control.ClientID));
 
-      AddAttributesToRender (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      RenderBeginTabsPane (renderingContext);
+      AddAttributesToRender(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
+      RenderBeginTabsPane(renderingContext);
 
       foreach (var webTabRenderer in renderingContext.WebTabRenderers)
       {
-        webTabRenderer.Render (renderingContext);
-        renderingContext.Writer.WriteLine ();
+        webTabRenderer.Render(renderingContext);
+        renderingContext.Writer.WriteLine();
       }
 
-      RenderEndTabsPane (renderingContext);
-      RenderClearingPane (renderingContext);
-      renderingContext.Writer.RenderEndTag ();
+      RenderEndTabsPane(renderingContext);
+      RenderClearingPane(renderingContext);
+      renderingContext.Writer.RenderEndTag();
     }
 
     protected void AddAttributesToRender (WebTabStripRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      AddStandardAttributesToRender (renderingContext);
+      AddStandardAttributesToRender(renderingContext);
 
-      if (string.IsNullOrEmpty (renderingContext.Control.CssClass) && string.IsNullOrEmpty (renderingContext.Control.Attributes["class"]))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassBase);
+      if (string.IsNullOrEmpty(renderingContext.Control.CssClass) && string.IsNullOrEmpty(renderingContext.Control.Attributes["class"]))
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
     }
 
     private void RenderBeginTabsPane (WebTabStripRenderingContext renderingContext)
@@ -98,32 +101,26 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
       string cssClass = CssClassTabsPane;
       if (isEmpty)
         cssClass += " " + CssClassTabsPaneEmpty;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TabList);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.TabList);
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Div
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div); // Begin Div
 
-      if (renderingContext.Control.IsDesignMode)
-      {
-        renderingContext.Writer.AddStyleAttribute ("list-style", "none");
-        renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-        renderingContext.Writer.AddStyleAttribute ("display", "inline");
-      }
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin List
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Ul); // Begin List
     }
 
     private void RenderEndTabsPane (WebTabStripRenderingContext renderingContext)
     {
-      renderingContext.Writer.RenderEndTag (); // End List
-      renderingContext.Writer.RenderEndTag (); // End Div
+      renderingContext.Writer.RenderEndTag(); // End List
+      renderingContext.Writer.RenderEndTag(); // End Div
     }
 
     private void RenderClearingPane (WebTabStripRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassClearingPane);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      renderingContext.Writer.RenderEndTag ();
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassClearingPane);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
+      renderingContext.Writer.RenderEndTag();
     }
 
     #region public virtual string CssClass...
@@ -220,7 +217,7 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering
     /// </remarks>
     public virtual string CssClassDisabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
     }
 
     /// <summary> Gets the CSS-Class applied to the div used to clear the flow-layout at the end of the tab-strip. </summary>

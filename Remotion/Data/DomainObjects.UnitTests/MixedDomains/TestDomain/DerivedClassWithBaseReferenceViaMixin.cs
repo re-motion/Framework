@@ -22,10 +22,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public new static DerivedClassWithBaseReferenceViaMixin NewObject ()
     {
-      return NewObject<DerivedClassWithBaseReferenceViaMixin> ();
+      return NewObject<DerivedClassWithBaseReferenceViaMixin>();
     }
 
-    [DBBidirectionalRelation ("MyDerived")]
+    [DBBidirectionalRelation("MyDerived")]
     public virtual TargetClassReceivingReferenceToDerivedClass MyBase { get; set; }
   }
 }

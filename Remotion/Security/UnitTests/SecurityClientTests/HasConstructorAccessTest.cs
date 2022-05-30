@@ -29,47 +29,44 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = new SecurityClientTestHelper ();
-      _securityClient = _testHelper.CreateSecurityClient ();
+      _testHelper = new SecurityClientTestHelper();
+      _securityClient = _testHelper.CreateSecurityClient();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, true);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, true);
 
-      bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
+      bool hasAccess = _securityClient.HasConstructorAccess(typeof(SecurableObject));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (GeneralAccessTypes.Create, false);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(GeneralAccessTypes.Create, false);
 
-      bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
+      bool hasAccess = _securityClient.HasConstructorAccess(typeof(SecurableObject));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.False);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll ();
       bool hasAccess;
-      
+
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject));
+        hasAccess = _securityClient.HasConstructorAccess(typeof(SecurableObject));
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
   }
 }

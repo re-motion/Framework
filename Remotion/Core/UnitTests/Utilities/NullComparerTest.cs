@@ -28,9 +28,9 @@ namespace Remotion.UnitTests.Utilities
     {
       var comparer = new NullComparer<string>();
 
-      Assert.That (comparer.Compare ("a", "a"), Is.EqualTo (0));
-      Assert.That (comparer.Compare ("a", "b"), Is.EqualTo (0));
-      Assert.That (comparer.Compare ("b", "a"), Is.EqualTo (0));
+      Assert.That(comparer.Compare("a", "a"), Is.EqualTo(0));
+      Assert.That(comparer.Compare("a", "b"), Is.EqualTo(0));
+      Assert.That(comparer.Compare("b", "a"), Is.EqualTo(0));
     }
 
     [Test]
@@ -38,7 +38,7 @@ namespace Remotion.UnitTests.Utilities
     {
       INullObject comparer = new NullComparer<string>();
 
-      Assert.That (comparer.IsNull, Is.True);
+      Assert.That(comparer.IsNull, Is.True);
     }
   }
 }

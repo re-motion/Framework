@@ -25,18 +25,18 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [Test]
     public void AssemblyLevelAttribute_TakesPrecedence_OverAlphabeticOrdering ()
     {
-      PrepareMixinConfigurationWithAttributeDeclarations (new AdditionalMixinDependencyAttribute (typeof (C), typeof (M2), typeof (M1)));
+      PrepareMixinConfigurationWithAttributeDeclarations(new AdditionalMixinDependencyAttribute(typeof(C), typeof(M2), typeof(M1)));
 
       var instance = ObjectFactory.Create<C>();
 
       var result = instance.M();
 
-      Assert.That (result, Is.EqualTo ("M2 M1 C"));
+      Assert.That(result, Is.EqualTo("M2 M1 C"));
     }
 
     public class C : IC
     {
-      public virtual string M()
+      public virtual string M ()
       {
         return "C";
       }
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       string M ();
     }
 
-    [Extends (typeof (C))]
+    [Extends(typeof(C))]
     [AcceptsAlphabeticOrdering]
     public class M1 : Mixin<C, IC>
     {
@@ -58,14 +58,14 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
       }
     }
 
-    [Extends (typeof (C))]
+    [Extends(typeof(C))]
     [AcceptsAlphabeticOrdering]
     public class M2 : Mixin<C, IC>
     {
       [OverrideTarget]
       public string M ()
       {
-        return "M2 " + Next.M ();
+        return "M2 " + Next.M();
       }
     }
 

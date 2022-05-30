@@ -29,38 +29,38 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     private readonly List<ProviderHelperBase> _providerHelpers = new List<ProviderHelperBase>();
     private readonly ConfigurationProperty _storageProviderGroupsProperty;
 
-    public StorageConfiguration()
+    public StorageConfiguration ()
     {
-      _storageProviderGroupsProperty = new ConfigurationProperty (
+      _storageProviderGroupsProperty = new ConfigurationProperty(
           "groups",
-          typeof (ConfigurationElementCollection<StorageGroupElement>),
+          typeof(ConfigurationElementCollection<StorageGroupElement>),
           null,
           ConfigurationPropertyOptions.None);
 
-      _defaultStorageProviderDefinitionHelper = new StorageProviderDefinitionHelper (this);
-      _providerHelpers.Add (_defaultStorageProviderDefinitionHelper);
+      _defaultStorageProviderDefinitionHelper = new StorageProviderDefinitionHelper(this);
+      _providerHelpers.Add(_defaultStorageProviderDefinitionHelper);
 
-      _properties.Add (_storageProviderGroupsProperty);
-      _providerHelpers.ForEach (current => current.InitializeProperties (_properties));
+      _properties.Add(_storageProviderGroupsProperty);
+      _providerHelpers.ForEach(current => current.InitializeProperties(_properties));
     }
 
     public StorageConfiguration (ProviderCollection<StorageProviderDefinition> providers, StorageProviderDefinition defaultProvider)
         : this()
     {
-      ArgumentUtility.CheckNotNull ("providers", providers);
+      ArgumentUtility.CheckNotNull("providers", providers);
 
       _defaultStorageProviderDefinitionHelper.Provider = defaultProvider;
 
-      ProviderCollection<StorageProviderDefinition> providersCopy = CopyProvidersAsReadOnly (providers);
+      ProviderCollection<StorageProviderDefinition> providersCopy = CopyProvidersAsReadOnly(providers);
       _defaultStorageProviderDefinitionHelper.Providers = providersCopy;
     }
 
     public ConfigurationElementCollection<StorageGroupElement> StorageGroups
     {
-      get { return (ConfigurationElementCollection<StorageGroupElement>) this[_storageProviderGroupsProperty]; }
+      get { return (ConfigurationElementCollection<StorageGroupElement>)this[_storageProviderGroupsProperty]; }
     }
 
-    public StorageProviderDefinition DefaultStorageProviderDefinition
+    public StorageProviderDefinition? DefaultStorageProviderDefinition
     {
       get { return _defaultStorageProviderDefinitionHelper.Provider; }
     }
@@ -70,24 +70,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
       get { return _defaultStorageProviderDefinitionHelper.Providers; }
     }
 
-    protected override void PostDeserialize()
+    protected override void PostDeserialize ()
     {
       base.PostDeserialize();
 
-      _providerHelpers.ForEach (current => current.PostDeserialze());
+      _providerHelpers.ForEach(current => current.PostDeserialze());
     }
 
-    public ConfigurationException CreateMissingDefaultProviderException (string context)
+    public ConfigurationException CreateMissingDefaultProviderException (string? context)
     {
-      return new ConfigurationException (
-          "Missing default storage provider. " 
-          + context 
+      return new ConfigurationException(
+          "Missing default storage provider. "
+          + context
           + Environment.NewLine
           + "Please add an application or Web configuration file to your application, declare the "
           + "remotion.data.domainObjects section group, and add the storage element to configure the default storage provider. Alternatively, "
-          + "explicitly assign all storage groups and queries to specific storage providers." 
+          + "explicitly assign all storage groups and queries to specific storage providers."
           + Environment.NewLine + Environment.NewLine
-          + "Configuration File Example:" 
+          + "Configuration File Example:"
           + Environment.NewLine +
           @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <configuration>
@@ -100,7 +100,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
   <remotion.data.domainObjects xmlns=""http://www.re-motion.org/Data/DomainObjects/Configuration/2.1"">
     <storage defaultProviderDefinition=""Default"">
       <providerDefinitions>
-        <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" name=""Default"" factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory"" connectionString=""DefaultConnection"" />
+        <add type=""Remotion.Data.DomainObjects::Persistence.Rdbms.RdbmsProviderDefinition"" name=""Default"" factoryType=""Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory"" connectionString=""DefaultConnection"" />
       </providerDefinitions>
     </storage>
   </remotion.data.domainObjects>
@@ -120,7 +120,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     {
       ProviderCollection<StorageProviderDefinition> providersCopy = new ProviderCollection<StorageProviderDefinition>();
       foreach (StorageProviderDefinition provider in providers)
-        providersCopy.Add (provider);
+        providersCopy.Add(provider);
 
       providersCopy.SetReadOnly();
       return providersCopy;

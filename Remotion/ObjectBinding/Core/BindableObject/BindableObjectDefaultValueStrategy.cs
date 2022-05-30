@@ -32,8 +32,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public bool IsDefaultValue (IBusinessObject obj, PropertyBase property)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("obj", obj);
+      ArgumentUtility.CheckNotNull("property", property);
 
       return false;
     }

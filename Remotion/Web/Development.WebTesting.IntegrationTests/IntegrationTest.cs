@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
@@ -26,6 +29,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
+    private static Lazy<Uri> s_webApplicationRoot;
+
     private WebTestHelper _webTestHelper;
     private IDisposable _aspNetRequestErrorDetectionScope;
 
@@ -39,37 +44,49 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       get { return _webTestHelper; }
     }
 
-    [TestFixtureSetUp]
-    public void IntegrationTestTestFixtureSetUp ()
+    protected IDriver Driver
+    {
+      get { return _webTestHelper.MainBrowserSession?.Driver; }
+    }
+
+    [OneTimeSetUp]
+    public void IntegrationTestOneTimeSetUp ()
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
-      _webTestHelper.OnFixtureSetUp (MaximizeMainBrowserSession);
+      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession);
+      s_webApplicationRoot = new Lazy<Uri>(
+          () =>
+          {
+            var uri = new Uri(_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
+
+            // RM-7401: Edge loads pages slower due to repeated hostname resolution.
+            if (_webTestHelper.BrowserConfiguration.IsEdge())
+              return HostnameResolveHelper.ResolveHostname(uri);
+
+            return uri;
+          });
     }
 
     [SetUp]
     public void IntegrationTestSetUp ()
     {
-      _webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
+      _webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
 
       var requestErrorDetection =
-          (DiagnosticInformationCollectioningRequestErrorDetectionStrategy) Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
+          (DiagnosticInformationCollectioningRequestErrorDetectionStrategy)Helper.TestInfrastructureConfiguration.RequestErrorDetectionStrategy;
 
       _aspNetRequestErrorDetectionScope = requestErrorDetection.CreateAspNetRequestErrorDetectionStrategyScope();
-
-      // Prevent failing IE tests due to topmost windows
-      if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
-        KillAnyExistingWindowsErrorReportingProcesses();
     }
 
     [TearDown]
     public void IntegrationTestTearDown ()
     {
-      var hasSucceeded = TestContext.CurrentContext.Result.Status != TestStatus.Failed;
-      _webTestHelper.OnTearDown (hasSucceeded);
+      var hasSucceeded = TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed;
+      _webTestHelper.OnTearDown(hasSucceeded);
       _aspNetRequestErrorDetectionScope.Dispose();
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public void IntegrationTestTestFixtureTearDown ()
     {
       _webTestHelper.OnFixtureTearDown();
@@ -78,15 +95,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     protected TPageObject Start<TPageObject> (string page)
       where TPageObject : PageObject
     {
-      var url = _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot + page;
-      _webTestHelper.MainBrowserSession.Window.Visit (url);
+      var url = s_webApplicationRoot.Value + page;
+      _webTestHelper.MainBrowserSession.Window.Visit(url);
 
-      return _webTestHelper.CreateInitialPageObject<TPageObject> (_webTestHelper.MainBrowserSession);
-    }
-
-    private static void KillAnyExistingWindowsErrorReportingProcesses ()
-    {
-      ProcessUtils.KillAllProcessesWithName ("WerFault");
+      return _webTestHelper.CreateInitialPageObject<TPageObject>(_webTestHelper.MainBrowserSession);
     }
   }
 }

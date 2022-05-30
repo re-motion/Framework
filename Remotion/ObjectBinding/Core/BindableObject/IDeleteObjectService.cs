@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// a derived type, you also have to apply the <see cref="DeleteObjectServiceTypeAttribute"/> to the bindable object for which the service is intended.
   /// </remarks>
   /// <seealso cref="DeleteObjectServiceTypeAttribute"/>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
   public interface IDeleteObjectService : IBusinessObjectService
   {
     /// <summary>
@@ -49,6 +49,6 @@ namespace Remotion.ObjectBinding.BindableObject
     /// The <see cref="IBusinessObjectReferenceProperty"/> that holds the reference to the <paramref name="value"/>. Must not be <see langword="null" />.
     /// </param>
     /// <param name="value">The <see cref="IBusinessObject"/> instance to be deleted. Must not be <see langword="null" />..</param>
-    void Delete ([CanBeNull] IBusinessObject referencingObject, [NotNull] IBusinessObjectReferenceProperty property, [NotNull] IBusinessObject value);
+    void Delete ([CanBeNull] IBusinessObject? referencingObject, [NotNull] IBusinessObjectReferenceProperty property, [NotNull] IBusinessObject value);
   }
 }

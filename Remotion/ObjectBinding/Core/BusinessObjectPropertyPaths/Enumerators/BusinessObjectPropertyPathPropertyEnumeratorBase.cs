@@ -28,12 +28,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
   {
     private string _remainingPropertyPathIdentifier;
     private bool _isEnumerationFinished;
-    private IBusinessObjectProperty _currentProperty;
+    private IBusinessObjectProperty? _currentProperty;
     private bool _isEnumerationStarted;
 
     protected BusinessObjectPropertyPathPropertyEnumeratorBase (string propertyPathIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyPathIdentifier", propertyPathIdentifier);
 
       _remainingPropertyPathIdentifier = propertyPathIdentifier;
     }
@@ -46,15 +46,15 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
         IBusinessObjectClass businessObjectClass,
         IBusinessObjectProperty property);
 
-    public IBusinessObjectProperty Current
+    public IBusinessObjectProperty? Current
     {
       get
       {
         if (!_isEnumerationStarted)
-          throw new InvalidOperationException ("Enumeration has not started. Call MoveNext.");
+          throw new InvalidOperationException("Enumeration has not started. Call MoveNext.");
 
         if (_isEnumerationFinished)
-          throw new InvalidOperationException ("Enumeration already finished.");
+          throw new InvalidOperationException("Enumeration already finished.");
 
         return _currentProperty; }
     }
@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
 
     public bool MoveNext (IBusinessObjectClass currentClass)
     {
-      ArgumentUtility.CheckNotNull ("currentClass", currentClass);
+      ArgumentUtility.CheckNotNull("currentClass", currentClass);
 
       _isEnumerationStarted = true;
       _currentProperty = null;
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
       }
 
       var propertyIdentifierAndRemainder =
-          _remainingPropertyPathIdentifier.Split (
+          _remainingPropertyPathIdentifier.Split(
               new[] { currentClass.BusinessObjectProvider.GetPropertyPathSeparator() }, 2, StringSplitOptions.None);
 
       if (propertyIdentifierAndRemainder.Length == 2)
@@ -87,12 +87,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
         _remainingPropertyPathIdentifier = string.Empty;
 
       var propertyIdentifier = propertyIdentifierAndRemainder[0];
-      var property = currentClass.GetPropertyDefinition (propertyIdentifier);
+      var property = currentClass.GetPropertyDefinition(propertyIdentifier);
 
       if (property == null)
-        HandlePropertyNotFound (currentClass, propertyIdentifier);
+        HandlePropertyNotFound(currentClass, propertyIdentifier);
       else if (HasNext && ! (property is IBusinessObjectReferenceProperty))
-        HandlePropertyNotLastPropertyAndNotReferenceProperty (currentClass, property);
+        HandlePropertyNotLastPropertyAndNotReferenceProperty(currentClass, property);
       else
         _currentProperty = property;
 

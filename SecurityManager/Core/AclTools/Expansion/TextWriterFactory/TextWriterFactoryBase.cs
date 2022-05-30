@@ -24,12 +24,12 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 {
   public abstract class TextWriterFactoryBase : ITextWriterFactory
   {
-    private readonly Dictionary<string, TextWriterData> _nameToTextWriterData = new Dictionary<string, TextWriterData> (); 
+    private readonly Dictionary<string, TextWriterData> _nameToTextWriterData = new Dictionary<string, TextWriterData>();
 
     public abstract TextWriter CreateTextWriter (string directory, string name, string extension);
     public abstract TextWriter CreateTextWriter (string name);
-    public string Directory { get; set; }
-    public string Extension { get; set; }
+    public string? Directory { get; set; }
+    public string? Extension { get; set; }
 
     public Dictionary<string, TextWriterData> NameToTextWriterData
     {
@@ -37,10 +37,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
     }
 
 
-    public static string AppendExtension(string name, string extension)
+    public static string AppendExtension (string name, string? extension)
     {
-      ArgumentUtility.CheckNotNull ("name", name);
-      if (String.IsNullOrEmpty (extension))
+      ArgumentUtility.CheckNotNull("name", name);
+      if (String.IsNullOrEmpty(extension))
       {
         return name;
       }
@@ -52,22 +52,22 @@ namespace Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory
 
     public virtual string GetRelativePath (string fromName, string toName)
     {
-      ArgumentUtility.CheckNotNull ("fromName", fromName);
-      ArgumentUtility.CheckNotNull ("toName", toName);
+      ArgumentUtility.CheckNotNull("fromName", fromName);
+      ArgumentUtility.CheckNotNull("toName", toName);
 
       if (!TextWriterExists(toName))
-        throw new ArgumentException (string.Format ("No TextWriter with name \"{0}\" registered => no relative path exists.", toName));
-      return Path.Combine(".", AppendExtension (toName, Extension)); 
+        throw new ArgumentException(string.Format("No TextWriter with name \"{0}\" registered => no relative path exists.", toName));
+      return Path.Combine(".", AppendExtension(toName, Extension));
     }
 
     public virtual bool TextWriterExists (string toName)
     {
-      return _nameToTextWriterData.ContainsKey (toName);
+      return _nameToTextWriterData.ContainsKey(toName);
     }
 
     public TextWriterData GetTextWriterData (string name)
     {
-      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull("name", name);
       return _nameToTextWriterData[name];
     }
 

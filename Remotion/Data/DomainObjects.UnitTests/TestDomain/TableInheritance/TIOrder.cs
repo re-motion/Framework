@@ -18,18 +18,18 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_Order")]
-  [DBTable ("TableInheritance_Order")]
+  [ClassID("TI_Order")]
+  [DBTable("TableInheritance_Order")]
   [TableInheritanceTestDomain]
   [Instantiable]
   public abstract class TIOrder: DomainObject, ISupportsGetObject
   {
-    public static TIOrder NewObject()
+    public static TIOrder NewObject ()
     {
       return NewObject<TIOrder>();
     }
 
-    protected TIOrder()
+    protected TIOrder ()
     {
     }
 
@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 
     public abstract DateTime OrderDate { get; set; }
 
-    [DBBidirectionalRelation ("Orders")]
+    [DBBidirectionalRelation("Orders")]
     public abstract TICustomer Customer { get; set; }
   }
 }

@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.Configuration
     private const string QueryPropertyName = "query";
 
     private static readonly DoubleCheckedLockingContainer<IDomainObjectsConfiguration> s_current =
-        new DoubleCheckedLockingContainer<IDomainObjectsConfiguration> (delegate { return new DomainObjectsConfiguration(); });
+        new DoubleCheckedLockingContainer<IDomainObjectsConfiguration>(delegate { return new DomainObjectsConfiguration(); });
 
     public static IDomainObjectsConfiguration Current
     {
@@ -45,59 +45,59 @@ namespace Remotion.Data.DomainObjects.Configuration
       s_current.Value = configuration;
     }
 
-    public DomainObjectsConfiguration()
+    public DomainObjectsConfiguration ()
     {
-      _mappingLoaderConfiguration =new DoubleCheckedLockingContainer<MappingLoaderConfiguration> (GetMappingLoaderConfiguration);
-      _persistenceConfiguration = new DoubleCheckedLockingContainer<StorageConfiguration> (GetPersistenceConfiguration);
-      _queryConfiguration = new DoubleCheckedLockingContainer<QueryConfiguration> (GetQueryConfiguration);
+      _mappingLoaderConfiguration =new DoubleCheckedLockingContainer<MappingLoaderConfiguration>(GetMappingLoaderConfiguration);
+      _persistenceConfiguration = new DoubleCheckedLockingContainer<StorageConfiguration>(GetPersistenceConfiguration);
+      _queryConfiguration = new DoubleCheckedLockingContainer<QueryConfiguration>(GetQueryConfiguration);
     }
 
     private readonly DoubleCheckedLockingContainer<MappingLoaderConfiguration> _mappingLoaderConfiguration;
     private readonly DoubleCheckedLockingContainer<StorageConfiguration> _persistenceConfiguration;
     private readonly DoubleCheckedLockingContainer<QueryConfiguration> _queryConfiguration;
 
-    [ConfigurationProperty (MappingLoaderPropertyName)]
+    [ConfigurationProperty(MappingLoaderPropertyName)]
     public MappingLoaderConfiguration MappingLoader
     {
       get { return _mappingLoaderConfiguration.Value; }
     }
 
-    [ConfigurationProperty (StoragePropertyName)]
+    [ConfigurationProperty(StoragePropertyName)]
     public StorageConfiguration Storage
     {
       get { return _persistenceConfiguration.Value; }
     }
 
-    [ConfigurationProperty (QueryPropertyName)]
+    [ConfigurationProperty(QueryPropertyName)]
     public QueryConfiguration Query
     {
       get { return _queryConfiguration.Value; }
     }
 
-    private MappingLoaderConfiguration GetMappingLoaderConfiguration()
+    private MappingLoaderConfiguration GetMappingLoaderConfiguration ()
     {
       return
-          (MappingLoaderConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + MappingLoaderPropertyName, false)
+          (MappingLoaderConfiguration?)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + MappingLoaderPropertyName, false)
           ?? new MappingLoaderConfiguration();
     }
 
-    private StorageConfiguration GetPersistenceConfiguration()
+    private StorageConfiguration GetPersistenceConfiguration ()
     {
       return
-          (StorageConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + StoragePropertyName, false) 
+          (StorageConfiguration?)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + StoragePropertyName, false)
           ?? new StorageConfiguration();
     }
 
     private QueryConfiguration GetQueryConfiguration ()
     {
       return
-          (QueryConfiguration) ConfigurationWrapper.Current.GetSection (ConfigKey + "/" + QueryPropertyName, false)
-          ?? new QueryConfiguration ();
+          (QueryConfiguration?)ConfigurationWrapper.Current.GetSection(ConfigKey + "/" + QueryPropertyName, false)
+          ?? new QueryConfiguration();
     }
 
     private string ConfigKey
     {
-      get { return string.IsNullOrEmpty (SectionGroupName) ? "remotion.data.domainObjects" : SectionGroupName; }
+      get { return string.IsNullOrEmpty(SectionGroupName) ? "remotion.data.domainObjects" : SectionGroupName; }
     }
   }
 }

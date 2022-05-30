@@ -26,13 +26,13 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public class RootRelationEndPointRegistrationAgent : RelationEndPointRegistrationAgent
   {
     public RootRelationEndPointRegistrationAgent (IVirtualEndPointProvider endPointProvider)
-        : base (endPointProvider)
+        : base(endPointProvider)
     {
     }
 
-    protected override IVirtualEndPoint RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
+    protected override IVirtualEndPoint? RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
     {
-      var oppositeVirtualEndPoint = base.RegisterOppositeForRealObjectEndPoint (realObjectEndPoint);
+      var oppositeVirtualEndPoint = base.RegisterOppositeForRealObjectEndPoint(realObjectEndPoint);
 
       // Optimization for 1:1 relations: to avoid a database query, we'll mark the virtual end-point complete when the first opposite foreign key
       // is registered with it. We can only do this in root transactions; in sub-transactions we need the query to occur so that we get the same
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
       var oppositeVirtualObjectEndPoint = oppositeVirtualEndPoint as IVirtualObjectEndPoint;
       if (oppositeVirtualObjectEndPoint != null && !oppositeVirtualObjectEndPoint.IsDataComplete)
-        oppositeVirtualObjectEndPoint.MarkDataComplete (realObjectEndPoint.GetDomainObjectReference ());
+        oppositeVirtualObjectEndPoint.MarkDataComplete(realObjectEndPoint.GetDomainObjectReference());
 
       return oppositeVirtualEndPoint;
     }

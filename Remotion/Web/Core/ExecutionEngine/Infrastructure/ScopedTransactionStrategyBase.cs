@@ -31,7 +31,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     [NotNull]
     private ITransaction _transaction;
     [NonSerialized]
-    private ITransactionScope _scope;
+    private ITransactionScope? _scope;
     private readonly bool _autoCommit;
     private readonly IWxeFunctionExecutionContext _executionContext;
     private readonly TransactionStrategyBase _outerTransactionStrategy;
@@ -43,9 +43,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
         TransactionStrategyBase outerTransactionStrategy,
         IWxeFunctionExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("transactionFactory", transactionFactory);
-      ArgumentUtility.CheckNotNull ("outerTransactionStrategy", outerTransactionStrategy);
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("transactionFactory", transactionFactory);
+      ArgumentUtility.CheckNotNull("outerTransactionStrategy", outerTransactionStrategy);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
       _autoCommit = autoCommit;
       _transactionFactory = transactionFactory;
@@ -55,15 +55,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
       _transaction = CreateTransaction();
 
-      var inParameters = _executionContext.GetInParameters ();
+      var inParameters = _executionContext.GetInParameters();
       try
       {
-        EnsureCompatibility (inParameters);
+        EnsureCompatibility(inParameters);
       }
       catch (InvalidOperationException ex)
       {
         var message = "One or more of the input parameters passed to the WxeFunction are incompatible with the function's transaction. " + ex.Message;
-        throw new WxeException (message, ex);
+        throw new WxeException(message, ex);
       }
     }
 
@@ -72,7 +72,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return _transaction; }
     }
 
-    public ITransactionScope Scope
+    public ITransactionScope? Scope
     {
       get { return _scope; }
     }
@@ -102,6 +102,11 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return _executionContext; }
     }
 
+    public override bool EvaluateDirtyState ()
+    {
+      return _transaction.HasUncommittedChanges;
+    }
+
     public override void Commit ()
     {
       _transaction.Commit();
@@ -116,60 +121,60 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     {
       if (_scope != null)
       {
-        _scope.Leave ();
+        _scope.Leave();
         _transaction.Release();
         _transaction = CreateTransaction();
         EnterScope();
       }
       else
       {
-        _transaction.Release ();
-        _transaction = CreateTransaction ();
+        _transaction.Release();
+        _transaction = CreateTransaction();
       }
 
       var variables = _executionContext.GetVariables();
       try
       {
-        EnsureCompatibility (variables);
+        EnsureCompatibility(variables);
       }
       catch (InvalidOperationException ex)
       {
-        var message = 
-            "One or more of the variables of the WxeFunction are incompatible with the new transaction after the Reset. " 
+        var message =
+            "One or more of the variables of the WxeFunction are incompatible with the new transaction after the Reset. "
             + ex.Message
             + " (To avoid this exception, clear the Variables collection from incompatible objects before calling Reset and repopulate it "
             + "afterwards.)";
-        throw new WxeException (message, ex);
+        throw new WxeException(message, ex);
       }
     }
 
     public override sealed TransactionStrategyBase CreateChildTransactionStrategy (bool autoCommit, IWxeFunctionExecutionContext executionContext, WxeContext wxeContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
-      ArgumentUtility.CheckNotNull ("wxeContext", wxeContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("wxeContext", wxeContext);
 
       if (!_child.IsNull)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "The transaction strategy already has an active child transaction strategy. "
             + "This child transaction strategy must first be unregistered before invoking CreateChildTransactionStrategy again.");
       }
 
-      var childTransactionStrategy = new ChildTransactionStrategy (autoCommit, this, Transaction, executionContext);
+      var childTransactionStrategy = new ChildTransactionStrategy(autoCommit, this, Transaction, executionContext);
       _child = childTransactionStrategy;
       if (_scope != null)
-        _child.OnExecutionPlay (wxeContext, NullExecutionListener.Null);
+        _child.OnExecutionPlay(wxeContext, NullExecutionListener.Null);
 
       return childTransactionStrategy;
     }
 
     public override void UnregisterChildTransactionStrategy (TransactionStrategyBase childTransactionStrategy)
     {
-      ArgumentUtility.CheckNotNull ("childTransactionStrategy", childTransactionStrategy);
+      ArgumentUtility.CheckNotNull("childTransactionStrategy", childTransactionStrategy);
 
       if (_child != childTransactionStrategy)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "Unregistering a child transaction strategy that is different from the presently registered strategy is not supported.");
       }
 
@@ -178,67 +183,67 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public override sealed void EnsureCompatibility (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull ("objects", objects);
+      ArgumentUtility.CheckNotNull("objects", objects);
 
-      _transaction.EnsureCompatibility (FlattenList (objects));
+      _transaction.EnsureCompatibility(FlattenList(objects));
     }
 
     public override void OnExecutionPlay (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       if (_scope != null)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "OnExecutionPlay may not be invoked twice without calling OnExecutionStop, OnExecutionPause, or OnExecutionFail in-between.");
       }
 
-      ExecuteAndWrapInnerException (EnterScope, null);
+      ExecuteAndWrapInnerException(EnterScope, null);
 
-      _child.OnExecutionPlay (context, listener);
+      _child.OnExecutionPlay(context, listener);
     }
 
     public override void OnExecutionStop (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       if (_scope == null)
-        throw new InvalidOperationException ("OnExecutionStop may not be invoked unless OnExecutionPlay was called first.");
+        throw new InvalidOperationException("OnExecutionStop may not be invoked unless OnExecutionPlay was called first.");
 
-      _child.OnExecutionStop (context, listener);
+      _child.OnExecutionStop(context, listener);
 
       if (_autoCommit)
         CommitTransaction();
 
-      var outParameters = _executionContext.GetOutParameters ();
+      var outParameters = _executionContext.GetOutParameters();
       try
       {
-        _outerTransactionStrategy.EnsureCompatibility (outParameters);
+        _outerTransactionStrategy.EnsureCompatibility(outParameters);
       }
       catch (InvalidOperationException ex)
       {
         var message = "One or more of the output parameters returned from the WxeFunction are incompatible with the function's parent transaction. "
                       + ex.Message;
-        throw new WxeException (message, ex);
+        throw new WxeException(message, ex);
       }
 
-      LeaveScopeAndReleaseTransaction (null);
+      LeaveScopeAndReleaseTransaction(null);
     }
 
     public override void OnExecutionPause (WxeContext context, IWxeFunctionExecutionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       if (_scope == null)
-        throw new InvalidOperationException ("OnExecutionPause may not be invoked unless OnExecutionPlay was called first.");
+        throw new InvalidOperationException("OnExecutionPause may not be invoked unless OnExecutionPlay was called first.");
 
-      Exception innerException = null;
+      Exception? innerException = null;
       try
       {
-        _child.OnExecutionPause (context, listener);
+        _child.OnExecutionPause(context, listener);
       }
       catch (Exception e)
       {
@@ -247,22 +252,22 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       }
       finally
       {
-        LeaveScope (innerException);
+        LeaveScope(innerException);
       }
     }
 
     public override void OnExecutionFail (WxeContext context, IWxeFunctionExecutionListener listener, Exception exception)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       if (_scope == null)
-        throw new InvalidOperationException ("OnExecutionFail may not be invoked unless OnExecutionPlay was called first.");
+        throw new InvalidOperationException("OnExecutionFail may not be invoked unless OnExecutionPlay was called first.");
 
-      Exception innerException = null;
+      Exception? innerException = null;
       try
       {
-        _child.OnExecutionFail (context, listener, exception);
+        _child.OnExecutionFail(context, listener, exception);
       }
       catch (Exception e)
       {
@@ -271,7 +276,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       }
       finally
       {
-        LeaveScopeAndReleaseTransaction (innerException);
+        LeaveScopeAndReleaseTransaction(innerException);
       }
     }
 
@@ -283,7 +288,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private void EnterScope ()
     {
       var scope = _transaction.EnterScope();
-      Assertion.IsNotNull (scope);
+      Assertion.IsNotNull(scope);
       _scope = scope;
     }
 
@@ -300,29 +305,29 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     [NotNull]
     private ITransaction CreateTransaction ()
     {
-      var transaction = _transactionFactory ();
-      Assertion.IsNotNull (transaction, "Factory must return a non-null transaction.");
+      var transaction = _transactionFactory();
+      Assertion.IsNotNull(transaction, "Factory must return a non-null transaction.");
       return transaction;
     }
 
-    private void LeaveScope (Exception innerException)
+    private void LeaveScope (Exception? innerException)
     {
       bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
       {
-        ExecuteAndWrapInnerException (_scope.Leave, innerException);
+        ExecuteAndWrapInnerException(_scope!.Leave, innerException); // TODO RM-8118: debug not null assertion
         _scope = null;
       }
     }
 
-    private void LeaveScopeAndReleaseTransaction (Exception innerException)
+    private void LeaveScopeAndReleaseTransaction (Exception? innerException)
     {
       bool isFatalExecutionException = innerException is WxeFatalExecutionException;
       if (!isFatalExecutionException)
       {
-        ExecuteAndWrapInnerException (_scope.Leave, innerException);
+        ExecuteAndWrapInnerException(_scope!.Leave, innerException); // TODO RM-8118: debug not null assertion
         _scope = null;
-        ExecuteAndWrapInnerException (ReleaseTransaction, innerException);
+        ExecuteAndWrapInnerException(ReleaseTransaction, innerException);
       }
     }
 
@@ -333,15 +338,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       {
         var enumerable = obj as IEnumerable;
         if (enumerable != null)
-          list.AddRange (FlattenList (enumerable));
+          list.AddRange(FlattenList(enumerable));
         else if (obj != null)
-          list.Add (obj);
+          list.Add(obj);
       }
 
       return list;
     }
 
-    private void ExecuteAndWrapInnerException (Action action, Exception existingInnerException)
+    private void ExecuteAndWrapInnerException (Action action, Exception? existingInnerException)
     {
       try
       {
@@ -350,9 +355,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       catch (Exception e)
       {
         if (existingInnerException == null)
-          throw new WxeFatalExecutionException (e, null);
+          throw new WxeFatalExecutionException(e, null);
         else
-          throw new WxeFatalExecutionException (existingInnerException, e);
+          throw new WxeFatalExecutionException(existingInnerException, e);
       }
     }
   }

@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using Remotion.Mixins.Context.Serialization;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context
@@ -29,39 +30,39 @@ namespace Remotion.Mixins.Context
   {
     public static MixinContextOrigin CreateForCustomAttribute (Attribute attribute, MemberInfo target)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("target", target);
 
-      return new MixinContextOrigin (attribute.GetType ().Name, target.Module.Assembly, target.ToString ());
+      return new MixinContextOrigin(attribute.GetType().Name, target.Module.Assembly, target.ToString()!);
     }
 
     public static MixinContextOrigin CreateForCustomAttribute (Attribute attribute, Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      return new MixinContextOrigin (attribute.GetType ().Name, assembly, "assembly");
+      return new MixinContextOrigin(attribute.GetType().Name, assembly, "assembly");
     }
 
     public static MixinContextOrigin CreateForMethod (MethodBase methodBase)
     {
-      ArgumentUtility.CheckNotNull ("methodBase", methodBase);
+      ArgumentUtility.CheckNotNull("methodBase", methodBase);
 
-      var location = String.Format ("{0}, declaring type: {1}", methodBase, methodBase.DeclaringType);
-      return new MixinContextOrigin ("Method", methodBase.Module.Assembly, location);
+      var location = String.Format("{0}, declaring type: {1}", methodBase, methodBase.DeclaringType);
+      return new MixinContextOrigin("Method", methodBase.Module.Assembly, location);
     }
 
     public static MixinContextOrigin CreateForStackFrame (StackFrame stackFrame)
     {
-      ArgumentUtility.CheckNotNull ("stackFrame", stackFrame);
-      return CreateForMethod (stackFrame.GetMethod ());
+      ArgumentUtility.CheckNotNull("stackFrame", stackFrame);
+      return CreateForMethod(stackFrame.GetMethod()!);
     }
 
     public static MixinContextOrigin Deserialize (IMixinContextOriginDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull ("deserializer", deserializer);
+      ArgumentUtility.CheckNotNull("deserializer", deserializer);
 
-      return new MixinContextOrigin (deserializer.GetKind(), deserializer.GetAssembly(), deserializer.GetLocation());
+      return new MixinContextOrigin(deserializer.GetKind(), deserializer.GetAssembly(), deserializer.GetLocation());
     }
 
     private readonly string _kind; // e.g., UsesAttribute or Imperative
@@ -70,9 +71,9 @@ namespace Remotion.Mixins.Context
 
     public MixinContextOrigin (string kind, Assembly assembly, string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("kind", kind);
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      ArgumentUtility.CheckNotNullOrEmpty ("location", location);
+      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNullOrEmpty("location", location);
 
       _kind = kind;
       _assembly = assembly;
@@ -96,41 +97,41 @@ namespace Remotion.Mixins.Context
 
     public override string ToString ()
     {
-      var assemblyName = Assembly.GetName (false);
-      return String.Format ("{0}, Location: '{1}' (Assembly: '{2}', code base: {3})", Kind, Location, assemblyName.Name, assemblyName.CodeBase);
+      var assemblyName = Assembly.GetName(copiedName: false);
+      return String.Format("{0}, Location: '{1}' (Assembly: '{2}', code base: {3})", Kind, Location, assemblyName.GetNameSafe(), assemblyName.CodeBase);
     }
 
     public void Serialize (IMixinContextOriginSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull ("serializer", serializer);
+      ArgumentUtility.CheckNotNull("serializer", serializer);
 
-      serializer.AddKind (_kind);
-      serializer.AddAssembly (_assembly);
-      serializer.AddLocation (_location);
+      serializer.AddKind(_kind);
+      serializer.AddAssembly(_assembly);
+      serializer.AddLocation(_location);
     }
 
-    public bool Equals (MixinContextOrigin other)
+    public bool Equals (MixinContextOrigin? other)
     {
-      if (ReferenceEquals (null, other))
+      if (ReferenceEquals(null, other))
         return false;
-      if (ReferenceEquals (this, other))
+      if (ReferenceEquals(this, other))
         return true;
 
       return
           GetType() == other.GetType()
-          && Equals (other._kind, _kind)
-          && Equals (other._assembly, _assembly)
-          && Equals (other._location, _location);
+          && Equals(other._kind, _kind)
+          && Equals(other._assembly, _assembly)
+          && Equals(other._location, _location);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return Equals (obj as MixinContextOrigin);
+      return Equals(obj as MixinContextOrigin);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (_kind, _assembly, _location);
+      return EqualityUtility.GetRotatedHashCode(_kind, _assembly, _location);
     }
   }
 }

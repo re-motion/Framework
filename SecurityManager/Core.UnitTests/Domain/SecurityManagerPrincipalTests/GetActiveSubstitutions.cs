@@ -33,30 +33,30 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
 
-      User user = User.FindByUserName ("substituting.user");
+      User user = User.FindByUserName("substituting.user");
       _userHandle = user.GetHandle();
       _tenantHandle = user.Tenant.GetHandle();
-      _substitutionIDs = user.GetActiveSubstitutions().Select (s => s.ID).ToArray();
-      Assert.That (_substitutionIDs.Length, Is.EqualTo (2));
+      _substitutionIDs = user.GetActiveSubstitutions().Select(s => s.ID).ToArray();
+      Assert.That(_substitutionIDs.Length, Is.EqualTo(2));
     }
 
     public override void TearDown ()
     {
-      base.TearDown ();
+      base.TearDown();
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
     }
 
     [Test]
     public void ExcludeInactiveSubstitutions ()
     {
-      SecurityManagerPrincipal principal = new SecurityManagerPrincipal (_tenantHandle, _userHandle, null, null, null, null);
+      SecurityManagerPrincipal principal = new SecurityManagerPrincipal(_tenantHandle, _userHandle, null, null, null, null);
 
-      Assert.That (principal.GetActiveSubstitutions().Select (s => s.ID), Is.EquivalentTo (_substitutionIDs));
+      Assert.That(principal.GetActiveSubstitutions().Select(s => s.ID), Is.EquivalentTo(_substitutionIDs));
     }
   }
 }

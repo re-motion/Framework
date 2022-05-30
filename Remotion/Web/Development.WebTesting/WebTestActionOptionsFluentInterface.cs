@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static WebTestActionOptionsFluentInterface ContinueWhen ([NotNull] ICompletionDetectionStrategy completionDetectionStrategy)
     {
-      return new WebTestActionOptionsFluentInterface().ContinueWhen (completionDetectionStrategy);
+      return new WebTestActionOptionsFluentInterface().ContinueWhen(completionDetectionStrategy);
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public static WebTestActionOptionsFluentInterface ContinueWhenAll ([NotNull] params ICompletionDetectionStrategy[] completionDetectionStrategies)
     {
-      return new WebTestActionOptionsFluentInterface().ContinueWhenAll (completionDetectionStrategies);
+      return new WebTestActionOptionsFluentInterface().ContinueWhenAll(completionDetectionStrategies);
     }
 
     /// <summary>
@@ -111,8 +111,8 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebTestActionOptionsFluentInterface ContinueWhen ([NotNull] ICompletionDetectionStrategy completionDetectionStrategy)
     {
-      ArgumentUtility.CheckNotNull ("completionDetectionStrategy", completionDetectionStrategy);
-      Assertion.IsNull (_actionOptions.CompletionDetectionStrategy, "You cannot specify multiple completion detector strategies.");
+      ArgumentUtility.CheckNotNull("completionDetectionStrategy", completionDetectionStrategy);
+      Assertion.IsNull(_actionOptions.CompletionDetectionStrategy, "You cannot specify multiple completion detector strategies.");
 
       _actionOptions.CompletionDetectionStrategy = completionDetectionStrategy;
 
@@ -122,10 +122,10 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebTestActionOptionsFluentInterface ContinueWhenAll (params ICompletionDetectionStrategy[] completionDetectionStrategies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("completionDetectionStrategies", completionDetectionStrategies);
-      Assertion.IsNull (_actionOptions.CompletionDetectionStrategy, "You cannot completion detection strategies multiple times.");
+      ArgumentUtility.CheckNotNullOrEmpty("completionDetectionStrategies", completionDetectionStrategies);
+      Assertion.IsNull(_actionOptions.CompletionDetectionStrategy, "You cannot completion detection strategies multiple times.");
 
-      _actionOptions.CompletionDetectionStrategy = new CompoundCompletionDetectionStrategy (completionDetectionStrategies);
+      _actionOptions.CompletionDetectionStrategy = new CompoundCompletionDetectionStrategy(completionDetectionStrategies);
 
       return this;
     }
@@ -133,7 +133,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebTestActionOptionsFluentInterface ContinueImmediately ()
     {
-      Assertion.IsNull (_actionOptions.CompletionDetectionStrategy, "You cannot specify multiple completion detector strategies.");
+      Assertion.IsNull(_actionOptions.CompletionDetectionStrategy, "You cannot specify multiple completion detector strategies.");
 
       _actionOptions.CompletionDetectionStrategy = new NullCompletionDetectionStrategy();
 
@@ -143,7 +143,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebTestActionOptionsFluentInterface AcceptModalDialog ()
     {
-      Assertion.IsNull (_actionOptions.ModalDialogHandler, "You cannot specify multiple modal dialog handlers.");
+      Assertion.IsNull(_actionOptions.ModalDialogHandler, "You cannot specify multiple modal dialog handlers.");
 
       _actionOptions.ModalDialogHandler = new AcceptModalDialogHandler();
 
@@ -153,7 +153,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <inheritdoc/>
     public WebTestActionOptionsFluentInterface CancelModalDialog ()
     {
-      Assertion.IsNull (_actionOptions.ModalDialogHandler, "You cannot specify multiple modal dialog handlers.");
+      Assertion.IsNull(_actionOptions.ModalDialogHandler, "You cannot specify multiple modal dialog handlers.");
 
       _actionOptions.ModalDialogHandler = new CancelModalDialogHandler();
 
@@ -161,14 +161,14 @@ namespace Remotion.Web.Development.WebTesting
     }
 
     /// <inheritdoc/>
-    ICompletionDetectionStrategy IWebTestActionOptions.CompletionDetectionStrategy
+    ICompletionDetectionStrategy? IWebTestActionOptions.CompletionDetectionStrategy
     {
       get { return _actionOptions.CompletionDetectionStrategy; }
       set { _actionOptions.CompletionDetectionStrategy = value; }
     }
 
     /// <inheritdoc/>
-    IModalDialogHandler IWebTestActionOptions.ModalDialogHandler
+    IModalDialogHandler? IWebTestActionOptions.ModalDialogHandler
     {
       get { return _actionOptions.ModalDialogHandler; }
       set { _actionOptions.ModalDialogHandler = value; }

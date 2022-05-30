@@ -22,22 +22,22 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{Type}, TargetClass = {TargetClass.Type}")]
+  [DebuggerDisplay("{Type}, TargetClass = {TargetClass.Type}")]
   public abstract class RequirementDefinitionBase : IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> _requiringDependencies =
-        new UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase> (d => d);
+        new UniqueDefinitionCollection<DependencyDefinitionBase, DependencyDefinitionBase>(d => d);
 
     private readonly UniqueDefinitionCollection<MethodInfo, RequiredMethodDefinition> _methods =
-        new UniqueDefinitionCollection<MethodInfo, RequiredMethodDefinition> (m => m.InterfaceMethod);
+        new UniqueDefinitionCollection<MethodInfo, RequiredMethodDefinition>(m => m.InterfaceMethod);
 
     private readonly TargetClassDefinition _targetClass;
     private readonly Type _type;
 
-    protected RequirementDefinitionBase(TargetClassDefinition targetClass, Type type)
+    protected RequirementDefinitionBase (TargetClassDefinition targetClass, Type type)
     {
-      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("targetClass", targetClass);
+      ArgumentUtility.CheckNotNull("type", type);
 
       _targetClass = targetClass;
       _type = type;
@@ -53,7 +53,7 @@ namespace Remotion.Mixins.Definitions
       get { return _type; }
     }
 
-    public string FullName
+    public string? FullName
     {
       get { return Type.FullName; }
     }
@@ -85,17 +85,17 @@ namespace Remotion.Mixins.Definitions
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      ConcreteAccept (visitor);
-      _methods.Accept (visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ConcreteAccept(visitor);
+      _methods.Accept(visitor);
     }
 
     protected abstract void ConcreteAccept (IDefinitionVisitor visitor);
 
     public string GetRequiringEntityDescription ()
     {
-      var distinctRequiringDependencyDescriptions = _requiringDependencies.Select (d => d.GetDependencyDescription()).Distinct();
-      return string.Join (", ", distinctRequiringDependencyDescriptions);
+      var distinctRequiringDependencyDescriptions = _requiringDependencies.Select(d => d.GetDependencyDescription()).Distinct();
+      return string.Join(", ", distinctRequiringDependencyDescriptions);
     }
   }
 }

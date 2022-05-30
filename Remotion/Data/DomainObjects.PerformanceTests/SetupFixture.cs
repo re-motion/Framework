@@ -22,23 +22,23 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
   [SetUpFixture]
   public class SetUpFixture
   {
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
-        StandardConfiguration.Initialize ();
+        StandardConfiguration.Initialize();
       }
       catch (Exception ex)
       {
-        Console.WriteLine ("SetUpFixture failed: " + ex);
-        Console.WriteLine ();
+        Console.WriteLine("SetUpFixture failed: " + ex);
+        Console.WriteLine();
         throw;
       }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
     }
   }

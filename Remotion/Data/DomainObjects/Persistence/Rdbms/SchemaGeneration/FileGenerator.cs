@@ -30,39 +30,39 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public FileGenerator (string outputPath)
     {
-      ArgumentUtility.CheckNotNull ("outputPath", outputPath);
+      ArgumentUtility.CheckNotNull("outputPath", outputPath);
 
       _outputPath = outputPath;
     }
 
     public void WriteScriptsToDisk (Script script, bool includeStorageProviderName)
     {
-      ArgumentUtility.CheckNotNull ("script", script);
+      ArgumentUtility.CheckNotNull("script", script);
 
       CreateOutputPath();
 
-      var setupDbFileName = GetFileName (script.StorageProviderDefinition, includeStorageProviderName , "SetupDB");
-      var tearDownDbFileName = GetFileName (script.StorageProviderDefinition, includeStorageProviderName, "TearDownDB");
-      
-      File.WriteAllText (setupDbFileName, script.SetUpScript);
-      File.WriteAllText (tearDownDbFileName, script.TearDownScript);
+      var setupDbFileName = GetFileName(script.StorageProviderDefinition, includeStorageProviderName , "SetupDB");
+      var tearDownDbFileName = GetFileName(script.StorageProviderDefinition, includeStorageProviderName, "TearDownDB");
+
+      File.WriteAllText(setupDbFileName, script.SetUpScript);
+      File.WriteAllText(tearDownDbFileName, script.TearDownScript);
     }
 
     private string GetFileName (StorageProviderDefinition storageProviderDefinition, bool multipleStorageProviders, string fileNamePrefix)
     {
       string fileName;
       if (multipleStorageProviders)
-        fileName = String.Format ("{0}_{1}.sql", fileNamePrefix, storageProviderDefinition.Name);
+        fileName = String.Format("{0}_{1}.sql", fileNamePrefix, storageProviderDefinition.Name);
       else
         fileName = fileNamePrefix + ".sql";
 
-      return Path.Combine (_outputPath, fileName);
+      return Path.Combine(_outputPath, fileName);
     }
 
     private void CreateOutputPath ()
     {
-      if (_outputPath != String.Empty && !Directory.Exists (_outputPath))
-        Directory.CreateDirectory (_outputPath);
+      if (_outputPath != String.Empty && !Directory.Exists(_outputPath))
+        Directory.CreateDirectory(_outputPath);
     }
   }
 }

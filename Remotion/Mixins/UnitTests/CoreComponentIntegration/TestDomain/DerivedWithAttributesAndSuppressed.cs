@@ -19,10 +19,10 @@ using System;
 namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
 {
   [BaseInherited("DerivedWithAttributesAndSuppressed")]
-  [DerivedInherited ("DerivedWithAttributesAndSuppressed")]
+  [DerivedInherited("DerivedWithAttributesAndSuppressed")]
   [SuppressAttributes(typeof(BaseInheritedAttribute))]
   public class DerivedWithAttributesAndSuppressed : BaseWithAttributesForSuppressed
   {
-    
+
   }
 }

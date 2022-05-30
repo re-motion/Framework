@@ -28,7 +28,7 @@ public interface ISupportsPostLoadControl: IControl
   /// <summary>
   ///   This method may be called after the <see cref="Control.Load"/> event.
   /// </summary>
-  void OnPostLoad();
+  void OnPostLoad ();
 }
 
 }

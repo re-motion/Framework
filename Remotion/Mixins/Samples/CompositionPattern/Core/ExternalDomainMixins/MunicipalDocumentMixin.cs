@@ -40,7 +40,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins
     public override string Title
     {
       get { return base.Title; }
-      set { base.Title = value + " (for municipality " + ((IMunicipalSettlement) Target).MunicipalityID + ")"; }
+      set { base.Title = value + " (for municipality " + ((IMunicipalSettlement)Target).MunicipalityID + ")"; }
     }
   }
 }

@@ -31,25 +31,25 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   {
     public static WxeRepostOptions SuppressRepost ([NotNull] Control sender, bool usesEventTarget)
     {
-      return new WxeRepostOptions (sender, usesEventTarget);
+      return new WxeRepostOptions(sender, usesEventTarget);
     }
 
-    public static WxeRepostOptions DoRepost ([CanBeNull] Control sender)
+    public static WxeRepostOptions DoRepost ([CanBeNull] Control? sender)
     {
-      return new WxeRepostOptions (sender);
+      return new WxeRepostOptions(sender);
     }
 
-    private readonly Control _sender;
+    private readonly Control? _sender;
     private readonly bool _usesEventTarget;
     private readonly bool _suppressesRepost;
 
     private WxeRepostOptions (Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
       if (!usesEventTarget && !(sender is IPostBackEventHandler || sender is IPostBackDataHandler))
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "The 'sender' must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event.");
       }
 
@@ -58,14 +58,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       _suppressesRepost = true;
     }
 
-    private WxeRepostOptions (Control sender)
+    private WxeRepostOptions (Control? sender)
     {
       _sender = sender;
       _usesEventTarget = false;
       _suppressesRepost = false;
     }
 
-    public Control Sender
+    public Control? Sender
     {
       get { return _sender; }
     }

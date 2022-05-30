@@ -22,7 +22,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
-  [ImplementationFor (typeof (IClientTransactionExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IClientTransactionExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundClientTransactionExtensionFactory : IClientTransactionExtensionFactory
   {
     private readonly IReadOnlyCollection<IClientTransactionExtensionFactory> _clientTransactionExtensionFactories;
@@ -39,8 +39,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      return _clientTransactionExtensionFactories.SelectMany (f => f.CreateClientTransactionExtensions (clientTransaction));
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      return _clientTransactionExtensionFactories.SelectMany(f => f.CreateClientTransactionExtensions(clientTransaction));
     }
   }
 }

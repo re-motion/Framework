@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests
 {
@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     public void CreateClientTransactionExtensions_InRootTransaction_CreatesExtension ()
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
-      var validatorBuilderStub = MockRepository.GenerateStub<IValidatorBuilder>();
-      var factory = new ValidationClientTransactionExtensionFactory (validatorBuilderStub);
+      var validatorProviderStub = new Mock<IValidatorProvider>();
+      var factory = new ValidationClientTransactionExtensionFactory(validatorProviderStub.Object);
 
-      var result = factory.CreateClientTransactionExtensions (clientTransaction).ToArray();
+      var result = factory.CreateClientTransactionExtensions(clientTransaction).ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
+      Assert.That(result.Count(), Is.EqualTo(1));
       var clientTransactionExtension = result.First();
-      Assert.That (clientTransactionExtension, Is.TypeOf<ValidationClientTransactionExtension>());
-      Assert.That (((ValidationClientTransactionExtension) clientTransactionExtension).ValidatorBuilder, Is.EqualTo (validatorBuilderStub));
+      Assert.That(clientTransactionExtension, Is.TypeOf<ValidationClientTransactionExtension>());
+      Assert.That(((ValidationClientTransactionExtension)clientTransactionExtension).ValidatorProvider, Is.EqualTo(validatorProviderStub.Object));
     }
 
     [Test]
@@ -45,12 +45,12 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
     {
       var clientTransaction = ClientTransaction.CreateRootTransaction();
       var subTransaction = clientTransaction.CreateSubTransaction();
-      var validatorBuilderStub = MockRepository.GenerateStub<IValidatorBuilder>();
-      var factory = new ValidationClientTransactionExtensionFactory (validatorBuilderStub);
+      var validatorProviderStub = new Mock<IValidatorProvider>();
+      var factory = new ValidationClientTransactionExtensionFactory(validatorProviderStub.Object);
 
-      var result = factory.CreateClientTransactionExtensions (subTransaction).ToArray();
+      var result = factory.CreateClientTransactionExtensions(subTransaction).ToArray();
 
-      Assert.That (result, Is.Empty);
+      Assert.That(result, Is.Empty);
     }
   }
 }

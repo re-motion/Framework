@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 
@@ -23,48 +24,49 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public abstract class BocTreeViewMenuItemProvider : WebTreeViewMenuItemProvider
   {
-    private BocTreeView _ownerControl;
+    private BocTreeView? _ownerControl;
 
     public BocTreeViewMenuItemProvider ()
     {
     }
 
-    public override void OnMenuItemEventCommandClick (WebMenuItem menuItem, WebTreeNode node)
+    public override void OnMenuItemEventCommandClick (WebMenuItem? menuItem, WebTreeNode node)
     {
       if (menuItem != null && menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
-          ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+          ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
         else
-          base.OnMenuItemEventCommandClick (menuItem, node);
+          base.OnMenuItemEventCommandClick(menuItem, node);
       }
     }
 
-    public override void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem, WebTreeNode node)
+    public override void OnMenuItemWxeFunctionCommandClick (WebMenuItem? menuItem, WebTreeNode node)
     {
       if (menuItem != null && menuItem.Command != null)
       {
         if (menuItem is BocMenuItem)
         {
-          BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-          IBusinessObject businessObject = null;
+          BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
+          IBusinessObject? businessObject = null;
           if (node is BusinessObjectTreeNode)
-            businessObject = ((BusinessObjectTreeNode) node).BusinessObject;
+            businessObject = ((BusinessObjectTreeNode)node).BusinessObject;
 
-          Page page = node.TreeView.Page;
+          Assertion.DebugIsNotNull(node.TreeView, "node.TreeView must not be null.");
+          Page? page = node.TreeView.Page;
           if (page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) page, businessObject);
+            command.ExecuteWxeFunction((IWxePage)page, businessObject);
           //else
           //  command.ExecuteWxeFunction (Page, businessObject);
         }
         else
         {
-          base.OnMenuItemWxeFunctionCommandClick (menuItem, node);
+          base.OnMenuItemWxeFunctionCommandClick(menuItem, node);
         }
       }
     }
 
-    public BocTreeView OwnerControl
+    public BocTreeView? OwnerControl
     {
       get { return _ownerControl; }
       set { _ownerControl = value; }

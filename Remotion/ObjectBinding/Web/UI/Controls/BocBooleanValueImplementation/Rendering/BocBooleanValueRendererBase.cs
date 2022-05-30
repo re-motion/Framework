@@ -38,20 +38,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
-    protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
+    /// <inheritdoc />
+    protected override bool UseThemingContext
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      get { return true; }
+    }
+
+    protected IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       return renderingContext.Control.GetValidationErrors();
     }
 
     protected string GetValidationErrorsID (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }

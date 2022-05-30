@@ -35,12 +35,12 @@ public class PersonsForm : SingleBocTestWxeBasePage
   protected BocList PersonList;
   protected Button PostBackButton;
 
-	private void Page_Load(object sender, EventArgs e)
+	private void Page_Load (object sender, EventArgs e)
 	{
-    PersonList.Value = (IBusinessObject[]) Variables["objects"];
+    PersonList.Value = (IBusinessObject[])Variables["objects"];
   }
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -53,13 +53,13 @@ public class PersonsForm : SingleBocTestWxeBasePage
 	}
 
 	#region Web Form Designer generated code
-	
+
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
-	{    
+	private void InitializeComponent ()
+	{
     this.Load += new System.EventHandler(this.Page_Load);
 
   }

@@ -16,7 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
@@ -28,6 +28,7 @@ using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -48,50 +49,50 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        GroupTypeList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) GroupTypeList.FixedColumns[0], SortingDirection.Ascending));
+        GroupTypeList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)GroupTypeList.FixedColumns[0], SortingDirection.Ascending));
       }
-      GroupTypeList.LoadUnboundValue (GetValues(), false);
+      GroupTypeList.LoadUnboundValue(GetValues(), false);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-      NewGroupTypeButton.Visible = securityClient.HasConstructorAccess (typeof (GroupType));
+      NewGroupTypeButton.Visible = securityClient.HasConstructorAccess(typeof(GroupType));
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      GroupTypeListLabel.Text = resourceManager.GetString(ResourceIdentifier.GroupTypeListLabelText);
-      NewGroupTypeButton.Text = resourceManager.GetString(ResourceIdentifier.NewGroupTypeButtonText);
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
+      GroupTypeListLabel.Text = resourceManager.GetText(ResourceIdentifier.GroupTypeListLabelText);
+      NewGroupTypeButton.Text = resourceManager.GetText(ResourceIdentifier.NewGroupTypeButtonText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      ResetListOnTenantChange (GroupTypeList);
+      ResetListOnTenantChange(GroupTypeList);
     }
 
     protected void GroupTypeList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
-      HandleEditItemClick (GroupTypeList, e);
+      HandleEditItemClick(GroupTypeList, e);
     }
 
     protected void NewGroupTypeButton_Click (object sender, EventArgs e)
     {
-      HandleNewButtonClick (GroupTypeList);
+      HandleNewButtonClick(GroupTypeList);
     }
 
-    protected override IList GetValues ()
+    protected override IReadOnlyList<GroupType> GetValues ()
     {
       return GroupType.FindAll().ToArray();
     }
 
-    protected override FormFunction<GroupType> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<GroupType> editedObject)
+    protected override FormFunction<GroupType> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<GroupType>? editedObject)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 
-      return new EditGroupTypeFormFunction (transactionMode, editedObject);
+      return new EditGroupTypeFormFunction(transactionMode, editedObject);
     }
   }
 }

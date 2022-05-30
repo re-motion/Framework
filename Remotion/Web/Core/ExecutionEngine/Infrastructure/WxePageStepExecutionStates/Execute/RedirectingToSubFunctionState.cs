@@ -28,22 +28,22 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   public class RedirectingToSubFunctionState : ExecutionStateBase<RedirectingToSubFunctionStateParameters>
   {
     public RedirectingToSubFunctionState (IExecutionStateContext executionStateContext, RedirectingToSubFunctionStateParameters parameters)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
     }
 
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      
+      ArgumentUtility.CheckNotNull("context", context);
+
       try
       {
-        context.HttpContext.Response.Redirect (Parameters.DestinationUrl);
-        throw new InvalidOperationException (string.Format ("Redirect to '{0}' failed.", Parameters.DestinationUrl));
+        context.HttpContext.Response.Redirect(Parameters.DestinationUrl);
+        throw new InvalidOperationException(string.Format("Redirect to '{0}' failed.", Parameters.DestinationUrl));
       }
       catch (ThreadAbortException)
       {
-        ExecutionStateContext.SetExecutionState (new ExecutingSubFunctionWithPermaUrlState (ExecutionStateContext, Parameters));
+        ExecutionStateContext.SetExecutionState(new ExecutingSubFunctionWithPermaUrlState(ExecutionStateContext, Parameters));
         throw;
       }
     }

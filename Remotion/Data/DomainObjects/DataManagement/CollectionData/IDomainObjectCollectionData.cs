@@ -24,13 +24,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// Provides an interface for an encapsulation of the data stored inside a <see cref="DomainObjectCollection"/>. A number of decorators
   /// implements this interface in order to wrap the data store with additional functionality.
   /// </summary>
-  public interface IDomainObjectCollectionData : IEnumerable<DomainObject>
+  public interface IDomainObjectCollectionData : IReadOnlyCollection<DomainObject>
   {
-    int Count { get; }
-    Type RequiredItemType { get; }
+    Type? RequiredItemType { get; }
     bool IsReadOnly { get; }
 
-    RelationEndPointID AssociatedEndPointID { get; }
+    RelationEndPointID? AssociatedEndPointID { get; }
     bool IsDataComplete { get; }
 
     void EnsureDataComplete ();
@@ -38,7 +37,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     bool ContainsObjectID (ObjectID objectID);
 
     DomainObject GetObject (int index);
-    DomainObject GetObject (ObjectID objectID);
+    DomainObject? GetObject (ObjectID objectID);
 
     int IndexOf (ObjectID objectID);
 

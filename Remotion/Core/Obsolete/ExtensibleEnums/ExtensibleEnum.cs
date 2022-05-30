@@ -21,10 +21,10 @@ using Remotion.Utilities;
 // ReSharper disable once CheckNamespace
 namespace Remotion.ExtensibleEnums
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
   internal abstract class ExtensibleEnum<T> {
 
-    public static readonly ExtensibleEnumDefinition<T> Values = (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition (typeof (T));
+    public static readonly ExtensibleEnumDefinition<T> Values = (ExtensibleEnumDefinition<T>)ExtensibleEnumUtility.GetDefinition(typeof(T));
 
     public static bool operator == (ExtensibleEnum<T> value1, ExtensibleEnum<T> value2)
     {
@@ -42,25 +42,25 @@ namespace Remotion.ExtensibleEnums
     }
 
     protected ExtensibleEnum (string id)
-        : this ((string) null, id)
+        : this((string)null, id)
     {
       throw new NotImplementedException();
     }
 
     protected ExtensibleEnum (Type declaringType, string valueName)
-        : this (declaringType.FullName, valueName)
+        : this(declaringType.FullName, valueName)
     {
       throw new NotImplementedException();
     }
 
     protected ExtensibleEnum (MethodBase currentMethod)
-        : this (currentMethod.DeclaringType, currentMethod.Name)
+        : this(currentMethod.DeclaringType, currentMethod.Name)
     {
       throw new NotImplementedException();
     }
 
     public abstract string ID { get; }
-    
+
     public abstract string DeclarationSpace { get; }
 
     public abstract string ValueName { get;  }

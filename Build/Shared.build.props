@@ -1,0 +1,70 @@
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)Customizations\Properties.props" />
+  <Import Project="$(MSBuildThisFileDirectory)Customizations\Version.props" Condition="'$(Version)' == ''" />
+
+  <PropertyGroup>
+    <ProductType Condition="'$(ProductType)' == ''">Default</ProductType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Product Condition="'$(ProductType)' == 'Default'">$(ProductName)</Product>
+    <Product Condition="'$(ProductType)' == 'Mixins'" >$(ProductNameForMixins)</Product>
+    <Product Condition="'$(ProductType)' == 'SecurityManager'">$(ProductNameForSecurityManager)</Product>
+    <Company>$(CompanyName)</Company>
+    <Copyright Condition="'$(ProductType)' == 'Default' OR '$(ProductType)' == 'Mixins'">$(Copyright)</Copyright>
+    <Copyright Condition="'$(ProductType)' == 'SecurityManager'">$(CopyrightForSecurityManager)</Copyright>
+    <Authors>$(Company)</Authors>
+    <PackageLicenseExpression Condition="'$(ProductType)' == 'Default' OR '$(ProductType)' == 'Mixins'">LGPL-2.1-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression Condition="'$(ProductType)' == 'SecurityManager'">AGPL-3.0-only</PackageLicenseExpression>
+    <PackageProjectUrl>http://www.re-motion.org</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/re-motion/Framework/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>9</LangVersion>
+    <DebugType Condition="'$(TargetFramework)' == 'net48'">full</DebugType>
+    <DebugType Condition="'$(TargetFramework)' != 'net48'">portable</DebugType>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder Condition="'$(IncludeSymbols)' != 'True'">$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <PackageTags>re-motion</PackageTags>
+    <PackageTags Condition="'$(ProductType)' == 'SecurityManager'">$(PackageTags) SecurityManager</PackageTags>
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    <DefineConstants Condition="'$(TargetFramework)' == 'net48'">$(DefineConstants);FEATURE_GAC;FEATURE_SERIALIZATION;FEATURE_ASSEMBLYBUILDER_SAVE;FEATURE_THREAD_ABORT;FEATURE_STRONGNAMESIGNING</DefineConstants>
+    <DefineConstants Condition="'$(TargetFramework)' != 'net48'">$(DefineConstants);NO_PEVERIFY</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ProjectTypePropsFile>$(MSBuildThisFileDirectory)ProjectTypes\$(ProjectType).props</ProjectTypePropsFile>
+    <ProjectTypeTargetsFile>$(MSBuildThisFileDirectory)ProjectTypes\$(ProjectType).targets</ProjectTypeTargetsFile>
+  </PropertyGroup>
+
+  <Import Project="$(ProjectTypePropsFile)" Condition="'$(ProjectTypePropsFile)' != '' AND Exists('$(ProjectTypePropsFile)')" />
+
+  <PropertyGroup>
+    <ProjectFeaturesRoot>$(MSBuildThisFileDirectory)ProjectFeatures\</ProjectFeaturesRoot>
+  </PropertyGroup>
+
+  <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />
+    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Default'" />
+    <None Include="$(MSBuildThisFileDirectory)..\Remotion\Remotion LGPL.licenseheader" Link="Remotion LGPL.licenseheader" Condition="'$(ProductType)' == 'Mixins'" />
+    <None Include="$(MSBuildThisFileDirectory)..\SecurityManager\SecurityManager AGPL.licenseheader" Link="SecurityManager AGPL.licenseheader" Condition="'$(ProductType)' == 'SecurityManager'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <_version>$(Version.Split('-')[0])</_version>
+    <AssemblyVersion>$(_version).0</AssemblyVersion>
+    <FileVersion>$(_version).24009</FileVersion>
+    <InformationalVersion>$(_version)-x.9+$(Configuration)</InformationalVersion>
+    <PackageVersion>$(_version)-x.9</PackageVersion>
+  </PropertyGroup>
+</Project>

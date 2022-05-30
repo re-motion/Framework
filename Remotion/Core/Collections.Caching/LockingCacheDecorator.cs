@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -34,35 +35,36 @@ namespace Remotion.Collections.Caching
   /// <see cref="ICache{TKey,TValue}"/> thread-safe, as long as the cache is only accessed through this wrapper.
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
-  [Obsolete ("Use ConcurrentCache<TKey, TValue> instead. (Version: 1.19.3)")]
+  [Obsolete("Use ConcurrentCache<TKey, TValue> instead. (Version: 1.19.3)")]
   [Serializable]
   public sealed class LockingCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
+      where TKey: notnull
   {
     private readonly ICache<TKey, TValue> _innerCache;
-    private readonly object _lock = new object ();
+    private readonly object _lock = new object();
 
     public LockingCacheDecorator (ICache<TKey, TValue> innerCache)
     {
-      ArgumentUtility.CheckNotNull ("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull("innerCache", innerCache);
 
       _innerCache = innerCache;
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       lock (_lock)
-        return _innerCache.GetOrCreateValue (key, valueFactory);
+        return _innerCache.GetOrCreateValue(key, valueFactory);
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       lock (_lock)
-        return _innerCache.TryGetValue (key, out value);
+        return _innerCache.TryGetValue(key, out value);
     }
 
     IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
@@ -80,14 +82,14 @@ namespace Remotion.Collections.Caching
       // Sequence must be evaluated while inside the lock
       lock (_lock)
       {
-        return ((IEnumerable<KeyValuePair<TKey, TValue>>) _innerCache.ToArray()).GetEnumerator();
+        return ((IEnumerable<KeyValuePair<TKey, TValue>>)_innerCache.ToArray()).GetEnumerator();
       }
     }
 
     public void Clear ()
     {
       lock (_lock)
-        _innerCache.Clear ();
+        _innerCache.Clear();
     }
 
     bool INullObject.IsNull

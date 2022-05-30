@@ -34,16 +34,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static UserProxy Create (User user)
     {
-      ArgumentUtility.CheckNotNull ("user", user);
+      ArgumentUtility.CheckNotNull("user", user);
 
-      return new UserProxy (
+      return new UserProxy(
           user.GetHandle(),
-          ((IBusinessObjectWithIdentity) user).UniqueIdentifier,
-          ((IBusinessObjectWithIdentity) user).DisplayName);
+          ((IBusinessObjectWithIdentity)user).UniqueIdentifier,
+          ((IBusinessObjectWithIdentity)user).DisplayName);
     }
 
     private UserProxy (IDomainObjectHandle<User> handle, string uniqueIdentifier, string displayName)
-        : base (handle, uniqueIdentifier, displayName)
+        : base(handle, uniqueIdentifier, displayName)
     {
     }
   }

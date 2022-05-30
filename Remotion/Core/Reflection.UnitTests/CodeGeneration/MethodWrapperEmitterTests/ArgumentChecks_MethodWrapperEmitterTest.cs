@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.Serialization;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection.CodeGeneration;
 using Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests.TestDomain;
 
@@ -31,64 +32,72 @@ namespace Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _fakeILGenerator = (ILGenerator) FormatterServices.GetSafeUninitializedObject (typeof (ILGenerator));
+      base.SetUp();
+      _fakeILGenerator = (ILGenerator)FormatterServices.GetSafeUninitializedObject(typeof(ILGenerator));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The wrapperReturnType ('String') cannot be assigned from the return type ('SimpleReferenceType') of the wrappedMethod.\r\n"
-        + "Parameter name: wrapperReturnType")]
     public void EmitMethodBody_ReturnTypesDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("InstanceMethodWithReferenceTypeReturnValue", BindingFlags.Public | BindingFlags.Instance);
+      Type declaringType = typeof(ClassWithMethods);
+      var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeReturnValue", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (string);
-      Type[] parameterTypes = new[] { typeof (object) };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Type returnType = typeof(string);
+      Type[] parameterTypes = new[] { typeof(object) };
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The wrapperReturnType ('String') cannot be assigned from the return type ('SimpleReferenceType') of the wrappedMethod.",
+                  "wrapperReturnType"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The wrapperParameterType #1 ('String') cannot be assigned to the type ('SimpleReferenceType') of parameter 'value' of the wrappedMethod.\r\n"
-        + "Parameter name: wrapperParameterTypes")]
     public void EmitMethodBody_ParameterTypesDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
+      Type declaringType = typeof(ClassWithMethods);
+      var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (object);
-      Type[] parameterTypes = new[] { typeof (object), typeof (string) };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Type returnType = typeof(object);
+      Type[] parameterTypes = new[] { typeof(object), typeof(string) };
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The wrapperParameterType #1 ('String') cannot be assigned to the type ('SimpleReferenceType') of parameter 'value' of the wrappedMethod.",
+                  "wrapperParameterTypes"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The wrapperParameterType #0 ('String') cannot be assigned to the declaring type ('ClassWithMethods') of the wrappedMethod.\r\n"
-        + "Parameter name: wrapperParameterTypes")]
     public void EmitMethodBody_InstanceTypesDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
+      Type declaringType = typeof(ClassWithMethods);
+      var methodInfo = declaringType.GetMethod("InstanceMethodWithReferenceTypeParameter", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (object);
-      Type[] parameterTypes = new[] { typeof (string), typeof (object) };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Type returnType = typeof(object);
+      Type[] parameterTypes = new[] { typeof(string), typeof(object) };
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The wrapperParameterType #0 ('String') cannot be assigned to the declaring type ('ClassWithMethods') of the wrappedMethod.",
+                  "wrapperParameterTypes"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The number of elements in the wrapperParameterTypes array (3) does not match the number of parameters required for invoking the wrappedMethod (5).\r\n"
-        + "Parameter name: wrapperParameterTypes")]
     public void EmitMethodBody_ParameterCountsDoNotMatch ()
     {
-      Type declaringType = typeof (ClassWithMethods);
-      var methodInfo = declaringType.GetMethod ("InstanceMethodWithMultipleParameters", BindingFlags.Public | BindingFlags.Instance);
+      Type declaringType = typeof(ClassWithMethods);
+      var methodInfo = declaringType.GetMethod("InstanceMethodWithMultipleParameters", BindingFlags.Public | BindingFlags.Instance);
 
-      Type returnType = typeof (object);
-      Type[] parameterTypes = new[] { typeof (object), typeof (object), typeof (object) };
-      new MethodWrapperEmitter (_fakeILGenerator, methodInfo, parameterTypes, returnType);
+      Type returnType = typeof(object);
+      Type[] parameterTypes = new[] { typeof(object), typeof(object), typeof(object) };
+      Assert.That(
+          () => new MethodWrapperEmitter(_fakeILGenerator, methodInfo, parameterTypes, returnType),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The number of elements in the wrapperParameterTypes array (3) does not match the number of parameters required for invoking the wrappedMethod (5).",
+                  "wrapperParameterTypes"));
     }
   }
 }

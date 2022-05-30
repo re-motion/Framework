@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -28,16 +29,15 @@ using Remotion.Linq.SqlBackend.SqlGeneration;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Linq.SqlBackend.SqlStatementModel;
 using Remotion.Linq.SqlBackend.SqlStatementModel.Resolved;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq
 {
   [TestFixture]
   public class SqlQueryGeneratorTest
   {
-    private ISqlPreparationStage _preparationStageMock;
-    private IMappingResolutionStage _resolutionStageMock;
-    private ISqlGenerationStage _generationStageMock;
+    private Mock<ISqlPreparationStage> _preparationStageMock;
+    private Mock<IMappingResolutionStage> _resolutionStageMock;
+    private Mock<ISqlGenerationStage> _generationStageMock;
 
     private SqlQueryGenerator _sqlQueryGenerator;
 
@@ -46,11 +46,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [SetUp]
     public void SetUp ()
     {
-      _preparationStageMock = MockRepository.GenerateStrictMock<ISqlPreparationStage> ();
-      _resolutionStageMock = MockRepository.GenerateStrictMock<IMappingResolutionStage> ();
-      _generationStageMock = MockRepository.GenerateStrictMock<ISqlGenerationStage> ();
+      _preparationStageMock = new Mock<ISqlPreparationStage>(MockBehavior.Strict);
+      _resolutionStageMock = new Mock<IMappingResolutionStage>(MockBehavior.Strict);
+      _generationStageMock = new Mock<ISqlGenerationStage>(MockBehavior.Strict);
 
-      _sqlQueryGenerator = new SqlQueryGenerator (_preparationStageMock, _resolutionStageMock, _generationStageMock);
+      _sqlQueryGenerator = new SqlQueryGenerator(_preparationStageMock.Object, _resolutionStageMock.Object, _generationStageMock.Object);
 
       _queryModel = QueryModelObjectMother.Create();
     }
@@ -60,155 +60,158 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     {
       var fakePreparationResult = CreateSqlStatement();
       _preparationStageMock
-          .Expect (mock => mock.PrepareSqlStatement (_queryModel, null))
-          .Return (fakePreparationResult);
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(fakePreparationResult)
+          .Verifiable();
       var fakeResolutionResult = CreateSqlStatement();
       _resolutionStageMock
-          .Expect (mock => mock.ResolveSqlStatement (Arg.Is (fakePreparationResult), Arg<MappingResolutionContext>.Is.TypeOf))
-          .Return (fakeResolutionResult);
+          .Setup(mock => mock.ResolveSqlStatement(fakePreparationResult, It.IsNotNull<MappingResolutionContext>()))
+          .Returns(fakeResolutionResult)
+          .Verifiable();
       _generationStageMock
-          .Expect (mock => mock.GenerateTextForOuterSqlStatement (Arg<SqlCommandBuilder>.Is.TypeOf, Arg.Is (fakeResolutionResult)))
-          .WhenCalled (mi =>
-          {
-            var sqlCommandBuilder = ((SqlCommandBuilder) mi.Arguments[0]);
-            sqlCommandBuilder.Append ("TestTest");
-            sqlCommandBuilder.SetInMemoryProjectionBody (Expression.Constant (null));
-          });
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(It.IsNotNull<SqlCommandBuilder>(), fakeResolutionResult))
+          .Callback(
+              (ISqlCommandBuilder commandBuilder, SqlStatement _) =>
+              {
+                commandBuilder.Append("TestTest");
+                commandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
+              })
+          .Verifiable();
 
-      var result = _sqlQueryGenerator.CreateSqlQuery (_queryModel);
+      var result = _sqlQueryGenerator.CreateSqlQuery(_queryModel);
 
-      _preparationStageMock.VerifyAllExpectations();
-      _resolutionStageMock.VerifyAllExpectations();
-      _generationStageMock.VerifyAllExpectations();
+      _preparationStageMock.Verify();
+      _resolutionStageMock.Verify();
+      _generationStageMock.Verify();
 
-      Assert.That (result.SqlCommand.CommandText, Is.EqualTo ("TestTest"));
+      Assert.That(result.SqlCommand.CommandText, Is.EqualTo("TestTest"));
     }
 
     [Test]
     public void CreateSqlQuery_QueryKindEntity ()
     {
       var selectProjection = CreateEntityDefinitionExpression();
-      CheckCreateSqlQuery_SelectedEntityType (typeof (Order), selectProjection);
+      CheckCreateSqlQuery_SelectedEntityType(typeof(Order), selectProjection);
     }
 
     [Test]
     public void CreateSqlQuery_QueryKindEntity_WrappedInUnaryExpressions ()
     {
-      var selectProjection = Expression.Convert (Expression.Convert (CreateEntityDefinitionExpression (), typeof (object)), typeof (Order));
-      CheckCreateSqlQuery_SelectedEntityType (typeof (Order), selectProjection);
+      var selectProjection = Expression.Convert(Expression.Convert(CreateEntityDefinitionExpression(), typeof(object)), typeof(Order));
+      CheckCreateSqlQuery_SelectedEntityType(typeof(Order), selectProjection);
     }
 
     [Test]
     public void CreateSqlQuery_QueryKindOther ()
     {
-      var selectProjection = Expression.Constant (null);
-      CheckCreateSqlQuery_SelectedEntityType (null, selectProjection);
+      var selectProjection = Expression.Constant(null);
+      CheckCreateSqlQuery_SelectedEntityType(null, selectProjection);
     }
 
     [Test]
     public void CreateSqlQuery_NotSupportedException_InPreparationStage ()
     {
-      var exception = new NotSupportedException ("Bla.");
+      var exception = new NotSupportedException("Bla.");
       _preparationStageMock
-          .Stub (mock => mock.PrepareSqlStatement (_queryModel, null))
-          .Throw (exception);
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Throws(exception);
 
-      Assert.That (
-          () => _sqlQueryGenerator.CreateSqlQuery (_queryModel),
-          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo (
+      Assert.That(
+          () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
+          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo(
               "There was an error preparing or resolving query 'from Order o in null select null' for SQL generation. Bla."));
     }
 
     [Test]
     public void CreateSqlQuery_NotSupportedException_InResolutionStage ()
     {
-      var exception = new NotSupportedException ("Bla.");
+      var exception = new NotSupportedException("Bla.");
       _preparationStageMock
-          .Stub (mock => mock.PrepareSqlStatement (_queryModel, null))
-          .Return (CreateSqlStatement ());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
 
       _resolutionStageMock
-          .Stub (mock => mock.ResolveSqlStatement (Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Throw (exception);
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), It.IsNotNull<MappingResolutionContext>()))
+          .Throws(exception);
 
-      Assert.That (
-          () => _sqlQueryGenerator.CreateSqlQuery (_queryModel),
-          Throws.TypeOf<NotSupportedException> ().With.Message.EqualTo (
+      Assert.That(
+          () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
+          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo(
               "There was an error preparing or resolving query 'from Order o in null select null' for SQL generation. Bla."));
     }
 
     [Test]
     public void CreateSqlQuery_NotSupportedException_InGenerationStage ()
     {
-      var exception = new NotSupportedException ("Bla.");
+      var exception = new NotSupportedException("Bla.");
       _preparationStageMock
-          .Stub (mock => mock.PrepareSqlStatement (_queryModel, null))
-          .Return (CreateSqlStatement ());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
       _resolutionStageMock
-          .Stub (mock => mock.ResolveSqlStatement (Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Return (CreateSqlStatement ());
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), It.IsNotNull<MappingResolutionContext>()))
+          .Returns(CreateSqlStatement());
       _generationStageMock
-          .Stub (mock => mock.GenerateTextForOuterSqlStatement (Arg<SqlCommandBuilder>.Is.TypeOf, Arg<SqlStatement>.Is.Anything))
-          .Throw (exception);
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(It.IsNotNull<SqlCommandBuilder>(), It.IsAny<SqlStatement>()))
+          .Throws(exception);
 
-      Assert.That (
-          () => _sqlQueryGenerator.CreateSqlQuery (_queryModel),
-          Throws.TypeOf<NotSupportedException> ().With.Message.EqualTo (
+      Assert.That(
+          () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
+          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo(
               "There was an error generating SQL for the query 'from Order o in null select null'. Bla."));
     }
 
     [Test]
     public void CreateSqlQuery_UnmappedItemException_InResolutionStage ()
     {
-      var exception = new UnmappedItemException ("Bla.");
+      var exception = new UnmappedItemException("Bla.");
       _preparationStageMock
-          .Stub (mock => mock.PrepareSqlStatement (_queryModel, null))
-          .Return (CreateSqlStatement ());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
 
       _resolutionStageMock
-          .Stub (mock => mock.ResolveSqlStatement (Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Throw (exception);
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), It.IsNotNull<MappingResolutionContext>()))
+          .Throws(exception);
 
-      Assert.That (
-          () => _sqlQueryGenerator.CreateSqlQuery (_queryModel),
-          Throws.TypeOf<UnmappedItemException> ().With.Message.EqualTo (
+      Assert.That(
+          () => _sqlQueryGenerator.CreateSqlQuery(_queryModel),
+          Throws.TypeOf<UnmappedItemException>().With.Message.EqualTo(
               "Query 'from Order o in null select null' contains an unmapped item. Bla."));
     }
 
     private void CheckCreateSqlQuery_SelectedEntityType (Type expectedSelectedEntityType, Expression selectProjection)
     {
       _preparationStageMock
-          .Stub (mock => mock.PrepareSqlStatement (_queryModel, null))
-          .Return (CreateSqlStatement());
+          .Setup(mock => mock.PrepareSqlStatement(_queryModel, null))
+          .Returns(CreateSqlStatement());
 
-      var fakeResolutionResult = CreateSqlStatement (selectProjection);
+      var fakeResolutionResult = CreateSqlStatement(selectProjection);
       _resolutionStageMock
-          .Stub (mock => mock.ResolveSqlStatement (Arg<SqlStatement>.Is.Anything, Arg<MappingResolutionContext>.Is.TypeOf))
-          .Return (fakeResolutionResult);
+          .Setup(mock => mock.ResolveSqlStatement(It.IsAny<SqlStatement>(), It.IsNotNull<MappingResolutionContext>()))
+          .Returns(fakeResolutionResult);
 
       _generationStageMock
-          .Stub (mock => mock.GenerateTextForOuterSqlStatement (Arg<SqlCommandBuilder>.Is.TypeOf, Arg<SqlStatement>.Is.Anything))
-          .WhenCalled (mi =>
-          {
-            var sqlCommandBuilder = ((SqlCommandBuilder) mi.Arguments[0]);
-            sqlCommandBuilder.Append ("TestTest");
-            sqlCommandBuilder.SetInMemoryProjectionBody (Expression.Constant (null));
-          });
-      
-      var result = _sqlQueryGenerator.CreateSqlQuery (_queryModel);
+          .Setup(mock => mock.GenerateTextForOuterSqlStatement(It.IsNotNull<SqlCommandBuilder>(), It.IsAny<SqlStatement>()))
+          .Callback(
+              (ISqlCommandBuilder commandBuilder, SqlStatement sqlStatement) =>
+              {
+                commandBuilder.Append("TestTest");
+                commandBuilder.SetInMemoryProjectionBody(Expression.Constant(null));
+              });
 
-      Assert.That (result.SelectedEntityType, Is.EqualTo (expectedSelectedEntityType));
+      var result = _sqlQueryGenerator.CreateSqlQuery(_queryModel);
+
+      Assert.That(result.SelectedEntityType, Is.EqualTo(expectedSelectedEntityType));
     }
 
     private SqlStatement CreateSqlStatement (Expression selectProjection = null)
     {
-      return new SqlStatement (
-          new StreamedSequenceInfo (typeof (IQueryable<Order>), Expression.Constant (null, typeof (Order))),
-          selectProjection ?? Expression.Constant (null, typeof (Order)),
+      return new SqlStatement(
+          new StreamedSequenceInfo(typeof(IQueryable<Order>), Expression.Constant(null, typeof(Order))),
+          selectProjection ?? Expression.Constant(null, typeof(Order)),
           new SqlTable[0],
           null,
           null,
-          Enumerable.Empty<Ordering> (),
+          Enumerable.Empty<Ordering>(),
           null,
           false,
           null,
@@ -218,7 +221,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
 
     private SqlEntityDefinitionExpression CreateEntityDefinitionExpression ()
     {
-      return new SqlEntityDefinitionExpression (typeof (Order), "t0", "o", e => e.GetColumn (typeof (int), "id", true));
+      return new SqlEntityDefinitionExpression(typeof(Order), "t0", "o", e => e.GetColumn(typeof(int), "id", true));
     }
   }
 }

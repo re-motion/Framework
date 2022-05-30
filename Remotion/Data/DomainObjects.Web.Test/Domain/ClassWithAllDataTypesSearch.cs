@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
     public byte? BytePropertyTo { get; set; }
 
     public ClassWithAllDataTypes.EnumType EnumProperty { get; set; }
-    
+
     public Color ExtensibleEnumProperty { get; set; }
 
     [DateProperty]
@@ -51,17 +51,17 @@ namespace Remotion.Data.DomainObjects.Web.Test.Domain
 
     public IQuery CreateQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("QueryWithAllDataTypes");
+      var query = QueryFactory.CreateQueryFromConfiguration("QueryWithAllDataTypes");
 
-      query.Parameters.Add ("@stringProperty", StringProperty);
-      query.Parameters.Add ("@bytePropertyFrom", BytePropertyFrom);
-      query.Parameters.Add ("@bytePropertyTo", BytePropertyTo);
-      query.Parameters.Add ("@enumProperty", EnumProperty);
-      query.Parameters.Add ("@extensibleEnumProperty", ExtensibleEnumProperty);
-      query.Parameters.Add ("@datePropertyFrom", DatePropertyFrom);
-      query.Parameters.Add ("@datePropertyTo", DatePropertyTo);
-      query.Parameters.Add ("@dateTimePropertyFrom", DateTimePropertyFrom);
-      query.Parameters.Add ("@dateTimePropertyTo", DateTimePropertyTo);
+      query.Parameters.Add("@stringProperty", StringProperty);
+      query.Parameters.Add("@bytePropertyFrom", BytePropertyFrom);
+      query.Parameters.Add("@bytePropertyTo", BytePropertyTo);
+      query.Parameters.Add("@enumProperty", EnumProperty);
+      query.Parameters.Add("@extensibleEnumProperty", ExtensibleEnumProperty);
+      query.Parameters.Add("@datePropertyFrom", DatePropertyFrom);
+      query.Parameters.Add("@datePropertyTo", DatePropertyTo);
+      query.Parameters.Add("@dateTimePropertyFrom", DateTimePropertyFrom);
+      query.Parameters.Add("@dateTimePropertyTo", DateTimePropertyTo);
 
       return query;
     }

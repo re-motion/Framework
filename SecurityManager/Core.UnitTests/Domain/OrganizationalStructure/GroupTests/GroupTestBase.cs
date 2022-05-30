@@ -30,7 +30,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     {
       base.SetUp();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
       _testHelper = new OrganizationalStructureTestHelper();
       _testHelper.Transaction.EnterNonDiscardingScope();
@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     public override void TearDown ()
     {
       base.TearDown();
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     protected OrganizationalStructureTestHelper TestHelper
@@ -49,8 +49,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
 
     protected Group CreateGroup ()
     {
-      Tenant tenant = _testHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      Group group = _testHelper.CreateGroup ("TestGroup", "UID: TestGroup", null, tenant);
+      Tenant tenant = _testHelper.CreateTenant("TestTenant", "UID: testTenant");
+      Group group = _testHelper.CreateGroup("TestGroup", "UID: TestGroup", null, tenant);
 
       return group;
     }

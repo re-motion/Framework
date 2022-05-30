@@ -20,6 +20,7 @@ using System.IO;
 using System.Reflection;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.IO
 {
@@ -30,10 +31,10 @@ namespace Remotion.Development.UnitTesting.IO
   {
     public static Assembly LoadWithoutLocking (string assemblyFilenameOrPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyFilenameOrPath", assemblyFilenameOrPath);
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyFilenameOrPath", assemblyFilenameOrPath);
 
-      var bytes = File.ReadAllBytes (assemblyFilenameOrPath);
-      return Assembly.Load (bytes);
+      var bytes = File.ReadAllBytes(assemblyFilenameOrPath);
+      return Assembly.Load(bytes);
     }
   }
 }

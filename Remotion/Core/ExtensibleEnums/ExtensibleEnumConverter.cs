@@ -36,18 +36,18 @@ namespace Remotion.ExtensibleEnums
     /// <param name="extensibleEnumType">The extensible enum type to be converted from and to.</param>
     public ExtensibleEnumConverter (Type extensibleEnumType)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumType", extensibleEnumType);
+      ArgumentUtility.CheckNotNull("extensibleEnumType", extensibleEnumType);
 
       _extensibleEnumType = extensibleEnumType;
-      _definition = ExtensibleEnumUtility.GetDefinition (ExtensibleEnumType);
+      _definition = ExtensibleEnumUtility.GetDefinition(ExtensibleEnumType);
     }
 
     /// <summary>
     /// Gets the extensible enum type to be be converted from and to.
     /// </summary>
     /// <value>The extensible enum type.</value>
-    public Type ExtensibleEnumType 
-    { 
+    public Type ExtensibleEnumType
+    {
       get { return _extensibleEnumType; }
     }
 
@@ -61,11 +61,11 @@ namespace Remotion.ExtensibleEnums
     /// <returns>
     /// <see langword="true" /> if this converter can perform the conversion; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
 
-      return sourceType == typeof (string);
+      return sourceType == typeof(string);
     }
 
     /// <summary>
@@ -79,11 +79,11 @@ namespace Remotion.ExtensibleEnums
     /// <returns>
     /// <see langword="true" /> if this converter can perform the conversion; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType!);
 
-      return destinationType == typeof (string);
+      return destinationType == typeof(string);
     }
 
     /// <summary>
@@ -102,22 +102,22 @@ namespace Remotion.ExtensibleEnums
     /// <exception cref="KeyNotFoundException">
     /// The value is of a convertible type, but the <see cref="ExtensibleEnumType"/> does not define a corresponding value.
     /// </exception>
-    public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       if (value == null)
         return null;
-      
+
       var stringValue = value as string;
       if (stringValue == null)
       {
-        var message = string.Format ("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), ExtensibleEnumType);
-        throw new NotSupportedException (message);
+        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), ExtensibleEnumType);
+        throw new NotSupportedException(message);
       }
 
       if (stringValue == string.Empty)
         return null;
 
-      return _definition.GetValueInfoByID (stringValue).Value;
+      return _definition.GetValueInfoByID(stringValue).Value;
     }
 
     /// <summary>
@@ -139,17 +139,17 @@ namespace Remotion.ExtensibleEnums
     /// <exception cref="T:System.NotSupportedException">
     /// The conversion cannot be performed.
     /// </exception>
-    public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (destinationType != typeof (string))
+      if (destinationType != typeof(string))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values to type '{0}'. This converter only supports converting to type '{1}'.",
             destinationType,
-            typeof (string));
-        throw new NotSupportedException (message);
+            typeof(string));
+        throw new NotSupportedException(message);
       }
 
       if (value == null)
@@ -158,12 +158,12 @@ namespace Remotion.ExtensibleEnums
       var enumValue = value as IExtensibleEnum;
       if (enumValue == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values of type '{0}' to type '{1}'. This converter only supports values of type '{2}'.",
             value.GetType(),
             destinationType,
             ExtensibleEnumType);
-        throw new NotSupportedException (message);
+        throw new NotSupportedException(message);
       }
 
       return enumValue.ID;

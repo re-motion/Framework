@@ -32,19 +32,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       _orderHandle1 = DomainObjectIDs.Order1.GetHandle<Order>();
-      _orderHandle2 = DomainObjectIDs.Order2.GetHandle<Order> ();
-      _notFoundOrderHandle = new ObjectID (typeof (Order), Guid.NewGuid()).GetHandle<Order>();
+      _orderHandle2 = DomainObjectIDs.Order2.GetHandle<Order>();
+      _notFoundOrderHandle = new ObjectID(typeof(Order), Guid.NewGuid()).GetHandle<Order>();
       _clientTransaction = ClientTransaction.CreateRootTransaction();
     }
 
     [Test]
     public void GetObject_LoadsObjectIntoGivenTransaction ()
     {
-      var result = _orderHandle1.GetObject (_clientTransaction);
+      var result = _orderHandle1.GetObject(_clientTransaction);
 
-      CheckDomainObject (result, _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedState: StateType.Unchanged);
+      CheckDomainObject(result, _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
@@ -53,181 +53,181 @@ namespace Remotion.Data.DomainObjects.UnitTests
       using (_clientTransaction.EnterNonDiscardingScope())
       {
         var result = _orderHandle1.GetObject();
-        CheckDomainObject (result, _clientTransaction);
+        CheckDomainObject(result, _clientTransaction);
       }
     }
 
     [Test]
     public void GetObject_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
-      Assert.That (
+      Assert.That(
           () => _orderHandle1.GetObject(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
     public void GetObject_IncludeDeletedTrue_LoadsDeletedObject ()
     {
-      _clientTransaction.ExecuteInScope (() => _orderHandle1.GetObject().Delete());
+      _clientTransaction.ExecuteInScope(() => _orderHandle1.GetObject().Delete());
 
-      var result = _orderHandle1.GetObject (_clientTransaction, includeDeleted: true);
+      var result = _orderHandle1.GetObject(_clientTransaction, includeDeleted: true);
 
-      Assert.That (result, Is.Not.Null);
-      CheckDomainObject (result, _clientTransaction, expectedState: StateType.Deleted);
+      Assert.That(result, Is.Not.Null);
+      CheckDomainObject(result, _clientTransaction, expectedStatePredicate: state => state.IsDeleted);
     }
 
     [Test]
     public void GetObject_IncludeDeletedFalse_ThrowsOnDeletedObject ()
     {
-      _clientTransaction.ExecuteInScope (() => _orderHandle1.GetObject ().Delete ());
-      Assert.That (() => _orderHandle1.GetObject (_clientTransaction, includeDeleted: false), Throws.TypeOf<ObjectDeletedException>());
+      _clientTransaction.ExecuteInScope(() => _orderHandle1.GetObject().Delete());
+      Assert.That(() => _orderHandle1.GetObject(_clientTransaction, includeDeleted: false), Throws.TypeOf<ObjectDeletedException>());
     }
 
     [Test]
     public void GetObject_IncludeDeletedUnspecified_ThrowsOnDeletedObject ()
     {
-      _clientTransaction.ExecuteInScope (() => _orderHandle1.GetObject ().Delete ());
-      Assert.That (() => _orderHandle1.GetObject (_clientTransaction), Throws.TypeOf<ObjectDeletedException> ());
+      _clientTransaction.ExecuteInScope(() => _orderHandle1.GetObject().Delete());
+      Assert.That(() => _orderHandle1.GetObject(_clientTransaction), Throws.TypeOf<ObjectDeletedException>());
     }
 
     [Test]
     public void TryGetObject_LoadsObjectIntoGivenTransaction ()
     {
-      var result = _orderHandle1.TryGetObject (_clientTransaction);
-      CheckDomainObject (result, _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedState: StateType.Unchanged);
+      var result = _orderHandle1.TryGetObject(_clientTransaction);
+      CheckDomainObject(result, _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
     public void TryGetObject_AllowsNotFoundObjects ()
     {
-      var result = _notFoundOrderHandle.TryGetObject (_clientTransaction);
-      Assert.That (result, Is.Null);
+      var result = _notFoundOrderHandle.TryGetObject(_clientTransaction);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void TryGetObject_NoClientTransactionGiven_UsesCurrentTransaction ()
     {
-      using (_clientTransaction.EnterNonDiscardingScope ())
+      using (_clientTransaction.EnterNonDiscardingScope())
       {
-        var result = _orderHandle1.TryGetObject ();
-        CheckDomainObject (result, _clientTransaction);
+        var result = _orderHandle1.TryGetObject();
+        CheckDomainObject(result, _clientTransaction);
       }
     }
 
     [Test]
     public void TryGetObject_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
-      Assert.That (
-          () => _orderHandle1.TryGetObject (),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+      Assert.That(
+          () => _orderHandle1.TryGetObject(),
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
     public void GetObjectReference_ReturnsReferenceFromGivenTransaction ()
     {
-      var result = _orderHandle1.GetObjectReference (_clientTransaction);
-      CheckDomainObject (result, _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedState: StateType.NotLoadedYet);
+      var result = _orderHandle1.GetObjectReference(_clientTransaction);
+      CheckDomainObject(result, _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedStatePredicate: state => state.IsNotLoadedYet);
     }
 
     [Test]
     public void GetObjectReference_NoClientTransactionGiven_UsesCurrentTransaction ()
     {
-      using (_clientTransaction.EnterNonDiscardingScope ())
+      using (_clientTransaction.EnterNonDiscardingScope())
       {
-        var result = _orderHandle1.GetObjectReference ();
-        CheckDomainObject (result, _clientTransaction);
+        var result = _orderHandle1.GetObjectReference();
+        CheckDomainObject(result, _clientTransaction);
       }
     }
 
     [Test]
     public void GetObjectReference_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
-      Assert.That (
-          () => _orderHandle1.GetObjectReference (),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+      Assert.That(
+          () => _orderHandle1.GetObjectReference(),
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
     public void GetObjects_LoadsObjectsIntoGivenTransaction ()
     {
-      var results = new[] { _orderHandle1, _orderHandle2 }.GetObjects (_clientTransaction);
+      var results = new[] { _orderHandle1, _orderHandle2 }.GetObjects(_clientTransaction);
 
-      Assert.That (results, Has.Length.EqualTo (2));
-      CheckDomainObject (results[0], _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedState: StateType.Unchanged);
-      CheckDomainObject (results[1], _clientTransaction, expectedID: _orderHandle2.ObjectID, expectedState: StateType.Unchanged);
+      Assert.That(results, Has.Length.EqualTo(2));
+      CheckDomainObject(results[0], _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedStatePredicate: state => state.IsUnchanged);
+      CheckDomainObject(results[1], _clientTransaction, expectedID: _orderHandle2.ObjectID, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
     public void GetObjects_NoClientTransactionGiven_UsesCurrentTransaction ()
     {
-      using (_clientTransaction.EnterNonDiscardingScope ())
+      using (_clientTransaction.EnterNonDiscardingScope())
       {
-        var results = new[] { _orderHandle1 }.GetObjects ();
+        var results = new[] { _orderHandle1 }.GetObjects();
 
-        CheckDomainObject (results[0], _clientTransaction);
+        CheckDomainObject(results[0], _clientTransaction);
       }
     }
 
     [Test]
     public void GetObjects_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
-      Assert.That (
-          () => new[] { _orderHandle1 }.GetObjects (),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+      Assert.That(
+          () => new[] { _orderHandle1 }.GetObjects(),
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
-    public void GetObjects_WithNotFound_Throws()
+    public void GetObjects_WithNotFound_Throws ()
     {
-      Assert.That (() => new[] { _notFoundOrderHandle }.GetObjects (_clientTransaction), Throws.TypeOf<ObjectsNotFoundException>());
+      Assert.That(() => new[] { _notFoundOrderHandle }.GetObjects(_clientTransaction), Throws.TypeOf<ObjectsNotFoundException>());
     }
 
     [Test]
     public void TryGetObjects_LoadsObjectsIntoGivenTransaction ()
     {
-      var results = new[] { _orderHandle1, _orderHandle2 }.TryGetObjects (_clientTransaction);
+      var results = new[] { _orderHandle1, _orderHandle2 }.TryGetObjects(_clientTransaction);
 
-      Assert.That (results, Has.Length.EqualTo (2));
-      CheckDomainObject (results[0], _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedState: StateType.Unchanged);
-      CheckDomainObject (results[1], _clientTransaction, expectedID: _orderHandle2.ObjectID, expectedState: StateType.Unchanged);
+      Assert.That(results, Has.Length.EqualTo(2));
+      CheckDomainObject(results[0], _clientTransaction, expectedID: _orderHandle1.ObjectID, expectedStatePredicate: state => state.IsUnchanged);
+      CheckDomainObject(results[1], _clientTransaction, expectedID: _orderHandle2.ObjectID, expectedStatePredicate: state => state.IsUnchanged);
     }
 
     [Test]
     public void TryGetObjects_NoClientTransactionGiven_UsesCurrentTransaction ()
     {
-      using (_clientTransaction.EnterNonDiscardingScope ())
+      using (_clientTransaction.EnterNonDiscardingScope())
       {
-        var results = new[] { _orderHandle1 }.TryGetObjects ();
-        CheckDomainObject (results[0], _clientTransaction);
+        var results = new[] { _orderHandle1 }.TryGetObjects();
+        CheckDomainObject(results[0], _clientTransaction);
       }
     }
 
     [Test]
     public void TryGetObjects_NoClientTransactionGiven_NoCurrentTransaction_Throws ()
     {
-      Assert.That (
-          () => new[] { _orderHandle1 }.TryGetObjects (),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+      Assert.That(
+          () => new[] { _orderHandle1 }.TryGetObjects(),
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
     }
 
     [Test]
     public void TryGetObjects_WithNotFound_Throws ()
     {
-      var results = new[] { _notFoundOrderHandle }.TryGetObjects (_clientTransaction);
-      Assert.That (results[0], Is.Null);
+      var results = new[] { _notFoundOrderHandle }.TryGetObjects(_clientTransaction);
+      Assert.That(results[0], Is.Null);
     }
 
     private void CheckDomainObject (
         DomainObject result,
         ClientTransaction expectedClientTransaction,
         ObjectID expectedID = null,
-        StateType? expectedState = null)
+        Func<DomainObjectState, bool> expectedStatePredicate = null)
     {
-      Assert.That (expectedClientTransaction.IsEnlisted (result), Is.True);
+      Assert.That(expectedClientTransaction.IsEnlisted(result), Is.True);
       if (expectedID != null)
-        Assert.That (result.ID, Is.EqualTo (expectedID));
-      if (expectedState != null)
-        Assert.That (expectedClientTransaction.ExecuteInScope (() => result.State), Is.EqualTo (expectedState));
+        Assert.That(result.ID, Is.EqualTo(expectedID));
+      if (expectedStatePredicate != null)
+        Assert.That(expectedStatePredicate(expectedClientTransaction.ExecuteInScope(() => result.State)), Is.True);
     }
   }
 }

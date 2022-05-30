@@ -35,7 +35,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public LocatorHelper ([NotNull] IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       BrowserConfiguration = browserConfiguration;
     }
@@ -45,9 +45,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBounds ([NotNull] ControlObject control, CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      return Resolve (ControlObjectResolver.Instance, control, coordinateSystem).ElementBounds;
+      return Resolve(ControlObjectResolver.Instance, control, coordinateSystem).ElementBounds;
     }
 
     /// <summary>
@@ -55,9 +55,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBounds ([NotNull] ElementScope element, CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      return Resolve (ElementScopeResolver.Instance, element, coordinateSystem).ElementBounds;
+      return Resolve(ElementScopeResolver.Instance, element, coordinateSystem).ElementBounds;
     }
 
     /// <summary>
@@ -65,9 +65,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBounds ([NotNull] IWebElement webElement, CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      return Resolve (WebElementResolver.Instance, webElement, coordinateSystem).ElementBounds;
+      return Resolve(WebElementResolver.Instance, webElement, coordinateSystem).ElementBounds;
     }
 
     /// <summary>
@@ -77,18 +77,19 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         [NotNull] IScreenshotElementResolver<T> resolver,
         [NotNull] T target,
         CoordinateSystem coordinateSystem)
+        where T : notnull
     {
-      ArgumentUtility.CheckNotNull ("resolver", target);
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentUtility.CheckNotNull("target", target);
 
       switch (coordinateSystem)
       {
         case CoordinateSystem.Browser:
-          return ResolveBrowser (resolver, target);
+          return ResolveBrowser(resolver, target);
         case CoordinateSystem.Desktop:
-          return ResolveDesktop (resolver, target);
+          return ResolveDesktop(resolver, target);
         default:
-          throw new ArgumentOutOfRangeException ("coordinateSystem", coordinateSystem, null);
+          throw new ArgumentOutOfRangeException("coordinateSystem", coordinateSystem, null);
       }
     }
 
@@ -96,22 +97,24 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Resolves <paramref name="target"/> using the specified <paramref name="resolver"/> for the browser <see cref="CoordinateSystem"/>.
     /// </summary>
     public ResolvedScreenshotElement ResolveBrowser<T> ([NotNull] IScreenshotElementResolver<T> resolver, [NotNull] T target)
+        where T : notnull
     {
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentUtility.CheckNotNull("target", target);
 
-      return resolver.ResolveBrowserCoordinates (target);
+      return resolver.ResolveBrowserCoordinates(target);
     }
 
     /// <summary>
     /// Resolves <paramref name="target"/> using the specified <paramref name="resolver"/> for the desktop <see cref="CoordinateSystem"/>.
     /// </summary>
     public ResolvedScreenshotElement ResolveDesktop<T> ([NotNull] IScreenshotElementResolver<T> resolver, [NotNull] T target)
+        where T : notnull
     {
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
+      ArgumentUtility.CheckNotNull("target", target);
 
-      return resolver.ResolveDesktopCoordinates (target, BrowserConfiguration.Locator);
+      return resolver.ResolveDesktopCoordinates(target, BrowserConfiguration.Locator);
     }
   }
 }

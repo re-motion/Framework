@@ -16,174 +16,166 @@
 // 
 using System;
 using System.Data;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
   [TestFixture]
   public class TracingDbConnectionTest
   {
-    private MockRepository _mockRepository;
     private IDbConnection _connection;
-    private IDbConnection _innerConnectionMock;
-    private IPersistenceExtension _extensionMock;
-    
+    private Mock<IDbConnection> _innerConnectionMock;
+    private Mock<IPersistenceExtension> _extensionMock;
+
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _innerConnectionMock = _mockRepository.StrictMock<IDbConnection>();
-      _extensionMock = _mockRepository.StrictMock<IPersistenceExtension> ();
-      
-      _connection = new TracingDbConnection (_innerConnectionMock, _extensionMock);
+      _innerConnectionMock = new Mock<IDbConnection>(MockBehavior.Strict);
+      _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
+
+      _connection = new TracingDbConnection(_innerConnectionMock.Object, _extensionMock.Object);
     }
 
     [Test]
     public void ChangeDatabase ()
     {
       string databaseName = "databaseName";
-      _innerConnectionMock.Expect (mock => mock.ChangeDatabase (databaseName));
-      _mockRepository.ReplayAll();
+      _innerConnectionMock.Setup(mock => mock.ChangeDatabase(databaseName)).Verifiable();
 
-      _connection.ChangeDatabase (databaseName);
+      _connection.ChangeDatabase(databaseName);
 
-      _mockRepository.VerifyAll();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetConnectionString ()
     {
       var connectionString = "connectionString";
-      _innerConnectionMock.Expect (mock => mock.ConnectionString).Return (connectionString);
-      _mockRepository.ReplayAll();
+      _innerConnectionMock.Setup(mock => mock.ConnectionString).Returns(connectionString).Verifiable();
 
       var result = _connection.ConnectionString;
 
-      _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo(connectionString));
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(connectionString));
     }
 
     [Test]
     public void SetConnectionString ()
     {
       var connectionString = "connectionString";
-      _innerConnectionMock.ConnectionString = connectionString;
-      _mockRepository.ReplayAll ();
+      _innerConnectionMock.SetupSet(_ => _.ConnectionString = connectionString).Verifiable();
 
       _connection.ConnectionString = connectionString;
 
-      _mockRepository.VerifyAll ();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetConnectionTimeout ()
     {
       var assumedResult = 10;
-      _innerConnectionMock.Expect (mock => mock.ConnectionTimeout).Return (assumedResult);
-      _mockRepository.ReplayAll();
+      _innerConnectionMock.Setup(mock => mock.ConnectionTimeout).Returns(assumedResult).Verifiable();
 
       var result = _connection.ConnectionTimeout;
 
-      _mockRepository.VerifyAll();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void GetDatabase ()
     {
       var assumedResult = "database";
-      _innerConnectionMock.Expect (mock => mock.Database).Return (assumedResult);
-      _mockRepository.ReplayAll ();
+      _innerConnectionMock.Setup(mock => mock.Database).Returns(assumedResult).Verifiable();
 
       var result = _connection.Database;
 
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void GetState ()
     {
       var assumedResult = new ConnectionState();
-      _innerConnectionMock.Expect (mock => mock.State).Return (assumedResult);
-      _mockRepository.ReplayAll ();
+      _innerConnectionMock.Setup(mock => mock.State).Returns(assumedResult).Verifiable();
 
       var result = _connection.State;
 
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.EqualTo (assumedResult));
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      Assert.That(result, Is.EqualTo(assumedResult));
     }
 
     [Test]
     public void GetWrappedInstance ()
     {
       var wrappedInstance = ((TracingDbConnection)_connection).WrappedInstance;
-      Assert.That (wrappedInstance, Is.EqualTo (_innerConnectionMock));
+      Assert.That(wrappedInstance, Is.EqualTo(_innerConnectionMock.Object));
     }
 
     [Test]
     public void Open ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerConnectionMock.Expect (mock => mock.Open());
-        _extensionMock.Expect (mock => mock.ConnectionOpened (((TracingDbConnection) _connection).ConnectionID));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _innerConnectionMock.InSequence(sequence).Setup(mock => mock.Open()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.ConnectionOpened(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
 
       _connection.Open();
 
-      _mockRepository.VerifyAll();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Dispose_ConnectionOpen ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerConnectionMock.Expect (mock => mock.Dispose());
-        _extensionMock.Expect (mock => mock.ConnectionClosed (((TracingDbConnection) _connection).ConnectionID));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _innerConnectionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.ConnectionClosed(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
 
       _connection.Dispose();
-      _mockRepository.VerifyAll();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Close ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerConnectionMock.Expect (mock => mock.Close ());
-        _extensionMock.Expect (mock => mock.ConnectionClosed (((TracingDbConnection) _connection).ConnectionID));
-      }
-      _mockRepository.ReplayAll ();
+      var sequence = new MockSequence();
+      _innerConnectionMock.InSequence(sequence).Setup(mock => mock.Close()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.ConnectionClosed(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
 
-      _connection.Close ();
-      _mockRepository.VerifyAll ();
+      _connection.Close();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void BeginTransaction ()
     {
       var isolationLevel = IsolationLevel.Chaos;
-      var dbTransactionMock = _mockRepository.StrictMock<IDbTransaction> ();
-      dbTransactionMock.Expect (mock => mock.IsolationLevel).Return (isolationLevel);
+      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
 
-      _innerConnectionMock.Expect (mock => mock.BeginTransaction()).Return(dbTransactionMock);
-      _extensionMock.Expect (mock => mock.TransactionBegan (((TracingDbConnection) _connection).ConnectionID, isolationLevel));
-      
-      _mockRepository.ReplayAll();
+      _innerConnectionMock.Setup(mock => mock.BeginTransaction()).Returns(dbTransactionMock.Object).Verifiable();
+      _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
-      var tracingDbTransaction = ((TracingDbConnection) _connection).BeginTransaction ();
+      var tracingDbTransaction = ((TracingDbConnection)_connection).BeginTransaction();
 
-      _mockRepository.VerifyAll();
-      Assert.That (tracingDbTransaction.WrappedInstance, Is.EqualTo (dbTransactionMock));
-      Assert.That (tracingDbTransaction.PersistenceExtension, Is.EqualTo (_extensionMock));
-      Assert.That (tracingDbTransaction.ConnectionID, Is.EqualTo (((TracingDbConnection)_connection).ConnectionID));
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      dbTransactionMock.Verify();
+      Assert.That(tracingDbTransaction.WrappedInstance, Is.EqualTo(dbTransactionMock.Object));
+      Assert.That(tracingDbTransaction.PersistenceExtension, Is.EqualTo(_extensionMock.Object));
+      Assert.That(tracingDbTransaction.ConnectionID, Is.EqualTo(((TracingDbConnection)_connection).ConnectionID));
     }
 
     [Test]
@@ -191,54 +183,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var isolationLevel = IsolationLevel.Chaos;
 
-      var dbTransactionMock = _mockRepository.StrictMock<IDbTransaction> ();
-      
-      _innerConnectionMock.Expect (mock => mock.BeginTransaction (isolationLevel)).Return (dbTransactionMock);
-      _extensionMock.Expect (mock => mock.TransactionBegan (((TracingDbConnection)_connection).ConnectionID, isolationLevel));
+      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
 
-      _mockRepository.ReplayAll ();
+      _innerConnectionMock.Setup(mock => mock.BeginTransaction(isolationLevel)).Returns(dbTransactionMock.Object).Verifiable();
+      _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
-      var tracingDbTransaction = ((TracingDbConnection)_connection).BeginTransaction (isolationLevel);
+      var tracingDbTransaction = ((TracingDbConnection)_connection).BeginTransaction(isolationLevel);
 
-      _mockRepository.VerifyAll ();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      dbTransactionMock.Verify();
 
-      Assert.That (tracingDbTransaction.WrappedInstance, Is.EqualTo (dbTransactionMock));
-      Assert.That (tracingDbTransaction.PersistenceExtension, Is.EqualTo (_extensionMock));
-      Assert.That (tracingDbTransaction.ConnectionID, Is.EqualTo (((TracingDbConnection)_connection).ConnectionID));
+      Assert.That(tracingDbTransaction.WrappedInstance, Is.EqualTo(dbTransactionMock.Object));
+      Assert.That(tracingDbTransaction.PersistenceExtension, Is.EqualTo(_extensionMock.Object));
+      Assert.That(tracingDbTransaction.ConnectionID, Is.EqualTo(((TracingDbConnection)_connection).ConnectionID));
     }
 
     [Test]
     public void CreateCommand ()
     {
-      var commandMock = _mockRepository.StrictMock<IDbCommand>();
-      _innerConnectionMock.Expect (mock => mock.CreateCommand()).Return (commandMock);
-
-      _mockRepository.ReplayAll();
+      var commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _innerConnectionMock.Setup(mock => mock.CreateCommand()).Returns(commandMock.Object).Verifiable();
 
       var tracingDbCommand = ((TracingDbConnection)_connection).CreateCommand();
 
-      _mockRepository.VerifyAll();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      commandMock.Verify();
 
-      Assert.That (tracingDbCommand.WrappedInstance, Is.EqualTo (commandMock));
-      Assert.That (tracingDbCommand.PersistenceExtension, Is.EqualTo (_extensionMock));
-      Assert.That (tracingDbCommand.ConnectionID, Is.EqualTo (((TracingDbConnection)_connection).ConnectionID));
+      Assert.That(tracingDbCommand.WrappedInstance, Is.EqualTo(commandMock.Object));
+      Assert.That(tracingDbCommand.PersistenceExtension, Is.EqualTo(_extensionMock.Object));
+      Assert.That(tracingDbCommand.ConnectionID, Is.EqualTo(((TracingDbConnection)_connection).ConnectionID));
     }
 
     [Test]
     public void BeginTransactionExplicitInterfaceImplementation ()
     {
       var isolationLevel = IsolationLevel.Chaos;
-      var dbTransactionMock = _mockRepository.StrictMock<IDbTransaction> ();
-      dbTransactionMock.Expect (mock => mock.IsolationLevel).Return (isolationLevel);
+      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      dbTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
 
-      _innerConnectionMock.Expect (mock => mock.BeginTransaction ()).Return (dbTransactionMock);
-      _extensionMock.Expect (mock => mock.TransactionBegan (((TracingDbConnection) _connection).ConnectionID, isolationLevel));
-
-      _mockRepository.ReplayAll ();
+      _innerConnectionMock.Setup(mock => mock.BeginTransaction()).Returns(dbTransactionMock.Object).Verifiable();
+      _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
       _connection.BeginTransaction();
 
-      _mockRepository.VerifyAll ();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      dbTransactionMock.Verify();
     }
 
     [Test]
@@ -246,29 +238,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var isolationLevel = IsolationLevel.Chaos;
 
-      var dbTransactionMock = _mockRepository.StrictMock<IDbTransaction> ();
+      var dbTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
 
-      _innerConnectionMock.Expect (mock => mock.BeginTransaction (isolationLevel)).Return (dbTransactionMock);
-      _extensionMock.Expect (mock => mock.TransactionBegan (((TracingDbConnection) _connection).ConnectionID, isolationLevel));
+      _innerConnectionMock.Setup(mock => mock.BeginTransaction(isolationLevel)).Returns(dbTransactionMock.Object).Verifiable();
+      _extensionMock.Setup(mock => mock.TransactionBegan(((TracingDbConnection)_connection).ConnectionID, isolationLevel)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _connection.BeginTransaction(isolationLevel);
 
-      _connection.BeginTransaction (isolationLevel);
-
-      _mockRepository.VerifyAll();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      dbTransactionMock.Verify();
     }
 
     [Test]
     public void CreateCommandExplicitInterfaceImplementation ()
     {
-      var commandMock = _mockRepository.StrictMock<IDbCommand> ();
-      _innerConnectionMock.Expect (mock => mock.CreateCommand ()).Return (commandMock);
-
-      _mockRepository.ReplayAll ();
+      var commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _innerConnectionMock.Setup(mock => mock.CreateCommand()).Returns(commandMock.Object).Verifiable();
 
       var result = _connection.CreateCommand();
 
-      _mockRepository.VerifyAll();
+      _innerConnectionMock.Verify();
+      _extensionMock.Verify();
+      commandMock.Verify();
     }
   }
 }

@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite {
-    
-    
-    public partial class ScreenshotTest {
-        
+namespace Remotion.Web.Development.WebTesting.TestSite
+{
+
+
+    public partial class ScreenshotTest
+    {
+
         /// <summary>
         /// UpdatePanel control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
-        
+
         /// <summary>
         /// MyDropDownList control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList MyDropDownList;
-        
+
         /// <summary>
         /// MyDropDownMenu control.
         /// </summary>
@@ -38,7 +40,16 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenu;
-        
+
+        /// <summary>
+        /// MyDropDownMenuWithHiddenTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.DropDownMenu MyDropDownMenuWithHiddenTitle;
+
         /// <summary>
         /// MyListMenu control.
         /// </summary>
@@ -47,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.ListMenu MyListMenu;
-        
+
         /// <summary>
         /// MyTabbedMenu control.
         /// </summary>
@@ -56,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.TabbedMenu MyTabbedMenu;
-        
+
         /// <summary>
         /// MyTabStrip control.
         /// </summary>
@@ -65,7 +76,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebTabStrip MyTabStrip;
-        
+
         /// <summary>
         /// MyWebTreeView control.
         /// </summary>
@@ -74,5 +85,19 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebTreeView MyWebTreeView;
+
+        /// <summary>
+        /// Master property.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated property.
+        /// </remarks>
+        public new Remotion.Web.Development.WebTesting.TestSite.Layout Master
+        {
+            get
+            {
+                return ((Remotion.Web.Development.WebTesting.TestSite.Layout)(base.Master));
+            }
+        }
     }
 }

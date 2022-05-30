@@ -23,26 +23,26 @@ namespace Remotion.Mixins.Validation
 {
   public class DefaultValidationLog : IValidationLog
   {
-    private readonly Stack<ValidationResult> _currentData = new Stack<ValidationResult> ();
-    private readonly IDictionary<object, object> _contextStore = new Dictionary<object, object> ();
+    private readonly Stack<ValidationResult> _currentData = new Stack<ValidationResult>();
+    private readonly IDictionary<object, object> _contextStore = new Dictionary<object, object>();
 
     private readonly ValidationLogData _data = new ValidationLogData();
 
     public void ValidationStartsFor (IVisitableDefinition definition)
     {
-      ArgumentUtility.CheckNotNull ("definition", definition);
-      var validationResult = new ValidationResult (definition);
-      _currentData.Push (validationResult);
+      ArgumentUtility.CheckNotNull("definition", definition);
+      var validationResult = new ValidationResult(definition);
+      _currentData.Push(validationResult);
     }
 
     public void ValidationEndsFor (IVisitableDefinition definition)
     {
-      ArgumentUtility.CheckNotNull ("definition", definition);
+      ArgumentUtility.CheckNotNull("definition", definition);
       if (_currentData.Count == 0)
       {
-        string message = string.Format ("Validation of definition {0}/{1} cannot be ended, because it wasn't started.", definition.GetType ().Name,
+        string message = string.Format("Validation of definition {0}/{1} cannot be ended, because it wasn't started.", definition.GetType().Name,
             definition.FullName);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
       else
       {
@@ -50,15 +50,15 @@ namespace Remotion.Mixins.Validation
         // Only compare the full name rather than creating a new ID - it's more performant, and it's only a safety check anyway
         if (currentResult.ValidatedDefinition.FullName != definition.FullName)
         {
-          string message = string.Format (
-              "Cannot end validation for {0} while {1} is validated.", 
-              definition.FullName, 
+          string message = string.Format(
+              "Cannot end validation for {0} while {1} is validated.",
+              definition.FullName,
               currentResult.ValidatedDefinition.FullName);
-          throw new InvalidOperationException (message);
+          throw new InvalidOperationException(message);
         }
 
         _currentData.Pop();
-        _data.Add (currentResult);
+        _data.Add(currentResult);
       }
     }
 
@@ -66,32 +66,32 @@ namespace Remotion.Mixins.Validation
     {
       if (_currentData.Count == 0)
       {
-        throw new InvalidOperationException ("Validation has not been started.");
+        throw new InvalidOperationException("Validation has not been started.");
       }
-      return _currentData.Peek ();
+      return _currentData.Peek();
     }
 
     public void Succeed (IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull ("rule", rule);
-      GetCurrentResult().Successes.Add (new ValidationResultItem(rule.RuleName, rule.Message));
+      ArgumentUtility.CheckNotNull("rule", rule);
+      GetCurrentResult().Successes.Add(new ValidationResultItem(rule.RuleName, rule.Message));
     }
 
     public void Warn (IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull ("rule", rule);
-      GetCurrentResult ().Warnings.Add (new ValidationResultItem(rule.RuleName, rule.Message));
+      ArgumentUtility.CheckNotNull("rule", rule);
+      GetCurrentResult().Warnings.Add(new ValidationResultItem(rule.RuleName, rule.Message));
     }
 
     public void Fail (IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull ("rule", rule);
-      GetCurrentResult ().Failures.Add (new ValidationResultItem (rule.RuleName, rule.Message));
+      ArgumentUtility.CheckNotNull("rule", rule);
+      GetCurrentResult().Failures.Add(new ValidationResultItem(rule.RuleName, rule.Message));
     }
 
     public void UnexpectedException (IValidationRule rule, Exception ex)
     {
-      GetCurrentResult ().Exceptions.Add (new ValidationExceptionResultItem (rule.RuleName, ex));
+      GetCurrentResult().Exceptions.Add(new ValidationExceptionResultItem(rule.RuleName, ex));
     }
 
     public IDictionary<object, object> ContextStore
@@ -106,7 +106,7 @@ namespace Remotion.Mixins.Validation
 
     public void MergeIn (IValidationLog log)
     {
-      _data.Add (log.GetData());
+      _data.Add(log.GetData());
     }
   }
 }

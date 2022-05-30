@@ -35,14 +35,14 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
           IFluentControlObjectWithSelectableItems
   {
     public TabbedMenuControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
     /// <inheritdoc/>
     public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
     {
-      return GetMenuItemOrSubMenuItemDefinitions (GetMainMenuScope());
+      return GetMenuItemOrSubMenuItemDefinitions(GetMainMenuScope());
     }
 
     /// <summary>
@@ -50,7 +50,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public string GetStatusText ()
     {
-      return Scope.FindCss ("td.tabbedMenuStatusCell").Text.Trim();
+      return Scope.FindCss("td.tabbedMenuStatusCell").Text.Trim();
     }
 
     /// <inheritdoc/>
@@ -60,11 +60,17 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return SelectItem().WithItemID (itemID, actionOptions);
+      var menuItemScope = GetMainMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
+      var menuItemCommand = FindMenuItemCommand(menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem(itemID)");
+
+      return SelectMenuItem(menuItemCommand, actionOptions);
     }
 
     /// <summary>
@@ -72,97 +78,134 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public IControlObjectWithSelectableItems SubMenu
     {
-      get { return new SubMenuItems (Context); }
+      get { return new SubMenuItems(Context); }
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      var menuItemScope = GetMainMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID);
-      return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemScope = GetMainMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
+      var menuItemCommand = FindMenuItemCommand(menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithItemID");
+
+      return SelectMenuItem(menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
-      var menuItemScope = GetMainMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
-      return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemScope = GetMainMenuScope().FindXPath(string.Format("(.//li/span/span[2])[{0}]", oneBasedIndex));
+      var menuItemCommand = FindMenuItemCommand(menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithIndex");
+
+      return SelectMenuItem(menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
-      var menuItemScope = Scope.FindId (htmlID);
-      return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemScope = Scope.FindId(htmlID);
+      var menuItemCommand = FindMenuItemCommand(menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithHtmlID");
+
+      return SelectMenuItem(menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
 
-      var menuItemScope = GetMainMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.Content, displayText);
-      return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+      var menuItemScope = GetMainMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, displayText);
+      var menuItemCommand = FindMenuItemCommand(menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithDisplayText");
+
+      return SelectMenuItem(menuItemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
     UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayTextContains (
         string containsDisplayText,
-        IWebTestActionOptions actionOptions)
+        IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
+      ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
 
       var menuItemScope = GetMainMenuScope()
-          .FindTagWithAttributeUsingOperator ("span", CssComparisonOperator.SubstringMatch, DiagnosticMetadataAttributes.Content, containsDisplayText);
-      return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+          .FindTagWithAttributeUsingOperator("span", CssComparisonOperator.SubstringMatch, DiagnosticMetadataAttributes.Content, containsDisplayText);
+
+      var menuItemCommand = FindMenuItemCommand(menuItemScope);
+
+      if (menuItemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithDisplayTextContains");
+
+      return SelectMenuItem(menuItemCommand, actionOptions);
     }
 
     private static IReadOnlyList<ItemDefinition> GetMenuItemOrSubMenuItemDefinitions (ElementScope scope)
     {
       return
-          RetryUntilTimeout.Run (
+          RetryUntilTimeout.Run(
               () =>
-                  scope.FindAllXPath (".//li/span/span[2]")
-                      .Select (
+                  scope.FindAllXPath(".//li/span/span[2]")
+                      .Select(
                           (itemScope, i) =>
-                              new ItemDefinition (
+                              new ItemDefinition(
                                   itemScope[DiagnosticMetadataAttributes.ItemID],
                                   i + 1,
                                   itemScope.Text.Trim(),
-                                  itemScope[DiagnosticMetadataAttributes.IsDisabled] == "true"))
+                                  itemScope[DiagnosticMetadataAttributes.IsDisabled] == "true",
+                                  itemScope.FindCss("a")?["accesskey"] ?? string.Empty))
                       .ToList());
     }
 
-    private static UnspecifiedPageObject SelectMenuOrSubMenuItem (
-        ControlObjectContext context,
-        ElementScope menuItemScope,
-        IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject SelectMenuItem (CommandControlObject itemCommand, IWebTestActionOptions? actionOptions)
+    {
+      try
+      {
+        ((IControlObjectNotifier)itemCommand).ActionExecute += OnActionExecute;
+        return itemCommand.Click(actionOptions);
+      }
+      finally
+      {
+        ((IControlObjectNotifier)itemCommand).ActionExecute -= OnActionExecute;
+      }
+    }
+
+    private CommandControlObject FindMenuItemCommand (ElementScope menuItemScope)
     {
       var menuItemCommandScope = menuItemScope.FindLink();
-      var menuItemCommand = new CommandControlObject (context.CloneForControl (menuItemCommandScope));
-      return menuItemCommand.Click (actionOptions);
+
+      return new CommandControlObject(Context.CloneForControl(menuItemCommandScope));
     }
 
     private ElementScope GetMainMenuScope ()
     {
-      return Scope.FindCss ("td.tabbedMainMenuCell");
+      return Scope.FindCss("td.tabbedMainMenuCell");
     }
 
     private class SubMenuItems
         : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems
     {
       public SubMenuItems ([NotNull] ControlObjectContext context)
-          : base (context)
+          : base(context)
       {
       }
 
       public IReadOnlyList<ItemDefinition> GetItemDefinitions ()
       {
-        return GetMenuItemOrSubMenuItemDefinitions (GetSubMenuScope());
+        return GetMenuItemOrSubMenuItemDefinitions(GetSubMenuScope());
       }
 
       public IFluentControlObjectWithSelectableItems SelectItem ()
@@ -170,61 +213,114 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
         return this;
       }
 
-      public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions actionOptions = null)
+      public UnspecifiedPageObject SelectItem (string itemID, IWebTestActionOptions? actionOptions = null)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+        ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-        return SelectItem().WithItemID (itemID, actionOptions);
+        var menuItemScope = GetSubMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
+        var itemCommand = FindItemCommand(menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem(itemID)");
+
+        return SelectMenuItem(itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+        ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-        var menuItemScope = GetSubMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID);
-        return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+        var menuItemScope = GetSubMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
+        var itemCommand = FindItemCommand(menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithItemID");
+
+        return SelectMenuItem(itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
       {
-        var menuItemScope = GetSubMenuScope().FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
-        return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+        var menuItemScope = GetSubMenuScope().FindXPath(string.Format("(.//li/span/span[2])[{0}]", oneBasedIndex));
+        var itemCommand = FindItemCommand(menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithIndex");
+
+        return SelectMenuItem(itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+        ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
-        var menuItemScope = Scope.FindId (htmlID);
-        return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+        var menuItemScope = Scope.FindId(htmlID);
+        var itemCommand = FindItemCommand(menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithHtmlID");
+
+        return SelectMenuItem(itemCommand, actionOptions);
       }
 
-      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+      UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+        ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
 
-        var menuItemScope = GetSubMenuScope().FindTagWithAttribute ("span", DiagnosticMetadataAttributes.Content, displayText);
-        return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+        var menuItemScope = GetSubMenuScope().FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, displayText);
+        var itemCommand = FindItemCommand(menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithDisplayText");
+
+        return SelectMenuItem(itemCommand, actionOptions);
       }
 
       UnspecifiedPageObject IFluentControlObjectWithSelectableItems.WithDisplayTextContains (
           string containsDisplayText,
-          IWebTestActionOptions actionOptions)
+          IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
+        ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
 
         var menuItemScope = GetSubMenuScope()
-            .FindTagWithAttributeUsingOperator (
+            .FindTagWithAttributeUsingOperator(
                 "span",
                 CssComparisonOperator.SubstringMatch,
                 DiagnosticMetadataAttributes.Content,
                 containsDisplayText);
-        return SelectMenuOrSubMenuItem (Context, menuItemScope, actionOptions);
+        var itemCommand = FindItemCommand(menuItemScope);
+
+        if (itemCommand.IsDisabled())
+          throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SelectItem.WithDisplayTextContains");
+
+        return SelectMenuItem(itemCommand, actionOptions);
+      }
+
+      private UnspecifiedPageObject SelectMenuItem (
+          CommandControlObject itemCommand,
+          IWebTestActionOptions? actionOptions)
+      {
+        try
+        {
+          ((IControlObjectNotifier)itemCommand).ActionExecute += OnActionExecute;
+          return itemCommand.Click(actionOptions);
+        }
+        finally
+        {
+          ((IControlObjectNotifier)itemCommand).ActionExecute -= OnActionExecute;
+        }
+      }
+
+      private CommandControlObject FindItemCommand (ElementScope itemScope)
+      {
+        var menuItemCommandScope = itemScope.FindLink();
+        var menuItemCommand = new CommandControlObject(Context.CloneForControl(menuItemCommandScope));
+        return menuItemCommand;
       }
 
       private ElementScope GetSubMenuScope ()
       {
-        return Scope.FindCss ("td.tabbedSubMenuCell");
+        return Scope.FindCss("td.tabbedSubMenuCell");
       }
     }
   }

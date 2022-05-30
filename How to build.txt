@@ -1,10 +1,8 @@
 Introduction
 ------------
 
-You can download the latest officially signed, weekly or stable re-motion build 
-from the Downloads section at www.re-motion.org. In most cases this is your best
-option, since you can easily upgrade your re-motion version as new releases
-become available. 
+You can download the latest officially signed builds of re-motion at
+https://nuget.re-motion.org/feeds/re-motion-release/
 
 If however you want to build your own version of re-motion, either from 
 Visual Studio or from the command line, this text will tell you how to go 
@@ -18,18 +16,16 @@ create your own key to sign your assembles. Please refer to
 Getting re-motion
 -----------------
 
-To get the latest version of the re-motion source code, check it out from the 
-SVN server (https://svn.re-motion.org/svn/Remotion/trunk/) 
-(Note: The following examples assume that you check out the sourcecode into 
-"c:\Remotion"; you can, of course, pick any other directory structure you like):
+To get the latest version of the re-motion source code, check it out from 
+Github at https://github.com/re-motion/Framework.
 
-md c:\Remotion 
-cd c:\Remotion 
-svn checkout https://svn.re-motion.org/svn/Remotion/trunk/ trunk 
+Note that the "Framework" repository only contains the history starting
+with version 1.16.0 in 2015. To view the earlier history, check-out the 
+"Framework-Archive" repository at https://github.com/re-motion/Framework-Archive.
 
-(To obtain the SVN tool, please go to http://subversion.tigris.org/; 
-alternatively you can also use TortoiseSVN from http://tortoisesvn.tigris.org/ 
-if you prefer a graphical user interface.) 
+You can also graft the repositories together by first checking out both
+repositories into the same local copy and then using the git-replace command:
+git replace --graft e9da3872012ac60583b703c2525ce3112a7f31f5 87c543e3daaf3f2746ca9dcbe08de8543408d30b
 
 
 Creating your own remotion.snk keyfile
@@ -55,7 +51,7 @@ After getting the sources and a remotion.snk, just load Remotion.sln in
 Visual Studio and build it. It should work.
 
 To run all the tests from NUnit, make sure you have a local installation of
-SQL Server 2005. You might need to create C:\Databases and 
+SQL Server 2019. You might need to create C:\Databases and 
 C:\Databases\ftdata directories by hand to make the unit tests work.
 
 
@@ -66,23 +62,24 @@ After getting the sources and a remotion.snk, run Build-RemotionLocal.cmd
 from the re-motion trunk directory:
 
 cd c:\Remotion
-Build-RemotionLocal.cmd
+Build-Remotion.cmd
 
 As with the Visual Studio build, you need a local installation of 
-SQL Server 2005 to run the full build. You might also need to create 
+SQL Server 2019 to run the full build. You might also need to create 
 C:\Databases and C:\Databases\ftdata directories by hand to make the unit 
 tests work.
 
-To generate documentation files for re-motion, run Build-RemotionLocalDoc.cmd.
-This requires Sandcastle Help File Builder to be installed, see below. 
+To generate documentation files for re-motion, run Build-Remotion.cmd
+and select the "documentation" Option in the menu. The documentation build
+requires Sandcastle Help File Builder to be installed, see below. 
 
 
 Installing Sandcastle Help File Builder for the documentation build
 -------------------------------------------------------------------
-The installation package of the version of Sandcastle Help File Builder used by
-re-motion is located in the prereq folder, under the following path: 
+A backup of the installation package of the version of Sandcastle Help File Builder 
+used by re-motion is located in the old Subversion repository:
 
-prereq\Tools\SandcastleHelpFileBuilderInstall\
+https://svn.re-motion.org/svn/Remotion/trunk/prereq/Tools/SandcastleHelpFileBuilderInstall/v1.9.5.0/
 
 Run Sandcastle Installer and click through the wizard.
 - When asked whether to proceed without the Microsoft Help 2 Compiler 

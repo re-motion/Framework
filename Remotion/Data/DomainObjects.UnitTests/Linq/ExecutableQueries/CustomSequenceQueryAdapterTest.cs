@@ -15,51 +15,52 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq.ExecutableQueries;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
-using Rhino.Mocks;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Linq.ExecutableQueries
 {
   [TestFixture]
   public class CustomSequenceQueryAdapterTest
   {
-    private IQuery _queryStub;
+    private Mock<IQuery> _queryStub;
     private Func<IQueryResultRow, string> _resultConversion;
 
     [SetUp]
     public void SetUp ()
     {
-      _queryStub = MockRepository.GenerateStub<IQuery>();
+      _queryStub = new Mock<IQuery>();
       _resultConversion = qrr => "string";
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Only custom queries can be used to load custom results.\r\nParameter name: query")]
     public void Initialization_QueryTypeNotCustom ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Collection);
-
-      new CustomSequenceQueryAdapter<string> (_queryStub, _resultConversion);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Collection);
+      Assert.That(
+          () => new CustomSequenceQueryAdapter<string>(_queryStub.Object, _resultConversion),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("Only custom queries can be used to load custom results.", "query"));
     }
 
     [Test]
     public void Execute ()
     {
-      _queryStub.Stub (stub => stub.QueryType).Return (QueryType.Custom);
-      var queryAdapter = new CustomSequenceQueryAdapter<string> (_queryStub, _resultConversion);
+      _queryStub.Setup(stub => stub.QueryType).Returns(QueryType.Custom);
+      var queryAdapter = new CustomSequenceQueryAdapter<string>(_queryStub.Object, _resultConversion);
 
       var fakeResult = new[] { "t1", "t2" };
-      var queryManagerMock = MockRepository.GenerateStrictMock<IQueryManager>();
-      queryManagerMock.Expect (mock => mock.GetCustom (queryAdapter, _resultConversion)).Return (fakeResult);
+      var queryManagerMock = new Mock<IQueryManager>(MockBehavior.Strict);
+      queryManagerMock.Setup(mock => mock.GetCustom(queryAdapter, _resultConversion)).Returns(fakeResult).Verifiable();
 
-      var result = queryAdapter.Execute (queryManagerMock);
+      var result = queryAdapter.Execute(queryManagerMock.Object);
 
-      queryManagerMock.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (fakeResult));
+      queryManagerMock.Verify();
+      Assert.That(result, Is.EqualTo(fakeResult));
     }
   }
 }

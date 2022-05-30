@@ -49,7 +49,7 @@ namespace Remotion.Mixins
   /// </remarks>
   /// <seealso cref="BindToConstraintsAttribute"/>
   /// <seealso cref="BindToGenericTargetParameterAttribute"/>
-  [AttributeUsage (AttributeTargets.GenericParameter, Inherited = false)]
+  [AttributeUsage(AttributeTargets.GenericParameter, Inherited = false)]
   public class BindToTargetTypeAttribute : Attribute
   {
   }

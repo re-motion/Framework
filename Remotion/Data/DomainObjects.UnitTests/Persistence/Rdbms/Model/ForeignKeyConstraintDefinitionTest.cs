@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -34,45 +35,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider");
-      _referencingColumn = ColumnDefinitionObjectMother.CreateColumn ("COL1");
-      _referencedColumn = ColumnDefinitionObjectMother.CreateColumn ("COL2");
+      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition("DefaultStorageProvider");
+      _referencingColumn = ColumnDefinitionObjectMother.CreateColumn("COL1");
+      _referencedColumn = ColumnDefinitionObjectMother.CreateColumn("COL2");
 
       _referencedTableName = "TableName";
-      _constraint = new ForeignKeyConstraintDefinition (
-          "Test", new EntityNameDefinition (null, _referencedTableName), new[] { _referencingColumn }, new[] { _referencedColumn });
+      _constraint = new ForeignKeyConstraintDefinition(
+          "Test", new EntityNameDefinition(null, _referencedTableName), new[] { _referencingColumn }, new[] { _referencedColumn });
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_constraint.ConstraintName, Is.EqualTo ("Test"));
-      Assert.That (_constraint.ReferencedTableName.EntityName, Is.SameAs (_referencedTableName));
-      Assert.That (_constraint.ReferencedTableName.SchemaName, Is.Null);
-      Assert.That (_constraint.ReferencingColumns, Is.EqualTo (new[] { _referencingColumn }));
-      Assert.That (_constraint.ReferencedColumns, Is.EqualTo (new[] { _referencedColumn }));
+      Assert.That(_constraint.ConstraintName, Is.EqualTo("Test"));
+      Assert.That(_constraint.ReferencedTableName.EntityName, Is.SameAs(_referencedTableName));
+      Assert.That(_constraint.ReferencedTableName.SchemaName, Is.Null);
+      Assert.That(_constraint.ReferencingColumns, Is.EqualTo(new[] { _referencingColumn }));
+      Assert.That(_constraint.ReferencedColumns, Is.EqualTo(new[] { _referencedColumn }));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The referencing and referenced column sets must have the same number of items.\r\nParameter name: referencingColumns")]
     public void Initialization_InvalidColumns ()
     {
-      new ForeignKeyConstraintDefinition (
-          "Test", new EntityNameDefinition (null, _referencedTableName), new[] { _referencingColumn }, new ColumnDefinition[0]);
+      Assert.That(
+          () => new ForeignKeyConstraintDefinition(
+          "Test", new EntityNameDefinition(null, _referencedTableName), new[] { _referencingColumn }, new ColumnDefinition[0]),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The referencing and referenced column sets must have the same number of items.", "referencingColumns"));
     }
 
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ITableConstraintDefinitionVisitor>();
+      var visitorMock = new Mock<ITableConstraintDefinitionVisitor>(MockBehavior.Strict);
 
-      visitorMock.Expect (mock => mock.VisitForeignKeyConstraintDefinition (_constraint));
-      visitorMock.Replay();
+      visitorMock.Setup(mock => mock.VisitForeignKeyConstraintDefinition(_constraint)).Verifiable();
 
-      _constraint.Accept (visitorMock);
+      _constraint.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
   }
 }

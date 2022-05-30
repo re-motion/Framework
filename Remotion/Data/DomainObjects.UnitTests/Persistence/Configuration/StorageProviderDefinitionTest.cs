@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Linq;
 using Remotion.Data.DomainObjects.Mapping;
@@ -28,28 +29,27 @@ using Remotion.Development.UnitTesting;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 {
   [TestFixture]
   public class StorageProviderDefinitionTest
   {
-    private IStorageObjectFactory _storageObjectFactoryStub;
+    private Mock<IStorageObjectFactory> _storageObjectFactoryStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _storageObjectFactoryStub = MockRepository.GenerateStub<IStorageObjectFactory>();
+      _storageObjectFactoryStub = new Mock<IStorageObjectFactory>();
     }
 
     [Test]
     public void Initialize_Objects ()
     {
-      var providerDefinition = new TestableStorageProviderDefinition ("TestProvider", _storageObjectFactoryStub);
+      var providerDefinition = new TestableStorageProviderDefinition("TestProvider", _storageObjectFactoryStub.Object);
 
-      Assert.That (providerDefinition.Name, Is.EqualTo ("TestProvider"));
-      Assert.That (providerDefinition.Factory, Is.SameAs (_storageObjectFactoryStub));
+      Assert.That(providerDefinition.Name, Is.EqualTo("TestProvider"));
+      Assert.That(providerDefinition.Factory, Is.SameAs(_storageObjectFactoryStub.Object));
     }
 
     [Test]
@@ -57,9 +57,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     {
       var nameValueCollection = new NameValueCollection();
 
-      Assert.That (
-          () => new TestableStorageProviderDefinition ("TestProvider", nameValueCollection),
-          Throws.TypeOf<ConfigurationErrorsException> ().With.Message.EqualTo (
+      Assert.That(
+          () => new TestableStorageProviderDefinition("TestProvider", nameValueCollection),
+          Throws.TypeOf<ConfigurationErrorsException>().With.Message.EqualTo(
               "The attribute 'factoryType' is missing in the configuration of the 'TestProvider' provider."));
     }
 
@@ -68,39 +68,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     {
       var nameValueCollection = new NameValueCollection { { "factoryType", "NonExistingType" } };
 
-      Assert.That (() => new TestableStorageProviderDefinition ("TestProvider", nameValueCollection), Throws.TypeOf<TypeLoadException> ());
+      Assert.That(() => new TestableStorageProviderDefinition("TestProvider", nameValueCollection), Throws.TypeOf<TypeLoadException>());
     }
 
     [Test]
     public void Initialize_NameValueCollection_WithoutServiceLocatorConfiguration ()
     {
-      var nameValueCollection = new NameValueCollection { { "factoryType", typeof (StorageObjectFactoryFake).AssemblyQualifiedName } };
+      var nameValueCollection = new NameValueCollection { { "factoryType", typeof(StorageObjectFactoryFake).AssemblyQualifiedName } };
 
-      var providerDefinition = new TestableStorageProviderDefinition ("TestProvider", nameValueCollection);
+      var providerDefinition = new TestableStorageProviderDefinition("TestProvider", nameValueCollection);
 
-      Assert.That (providerDefinition.Name, Is.EqualTo ("TestProvider"));
-      Assert.That (providerDefinition.Factory, Is.TypeOf<StorageObjectFactoryFake>());
+      Assert.That(providerDefinition.Name, Is.EqualTo("TestProvider"));
+      Assert.That(providerDefinition.Factory, Is.TypeOf<StorageObjectFactoryFake>());
     }
 
     [Test]
     public void Initialize_NameValueCollection_WithoutServiceLocatorConfiguration_CanBeMixed ()
     {
-      var nameValueCollection = new NameValueCollection { { "factoryType", typeof (StorageObjectFactoryFake).AssemblyQualifiedName } };
-      using (MixinConfiguration.BuildNew ().ForClass<StorageObjectFactoryFake>().AddMixin<FakeMixin>().EnterScope ())
+      var nameValueCollection = new NameValueCollection { { "factoryType", typeof(StorageObjectFactoryFake).AssemblyQualifiedName } };
+      using (MixinConfiguration.BuildNew().ForClass<StorageObjectFactoryFake>().AddMixin<FakeMixin>().EnterScope())
       {
-        var providerDefinition = new TestableStorageProviderDefinition ("TestProvider", nameValueCollection);
+        var providerDefinition = new TestableStorageProviderDefinition("TestProvider", nameValueCollection);
 
-        Assert.That (Mixin.Get<FakeMixin> (providerDefinition.Factory), Is.Not.Null);
+        Assert.That(Mixin.Get<FakeMixin>(providerDefinition.Factory), Is.Not.Null);
       }
     }
 
     [Test]
     public void Initialize_NameValueCollection_WithoutServiceLocatorConfiguration_AbstractType ()
     {
-      var nameValueCollection = new NameValueCollection { { "factoryType", typeof (IStorageObjectFactory).AssemblyQualifiedName } };
-      Assert.That (
-          () => new TestableStorageProviderDefinition ("TestProvider", nameValueCollection), 
-          Throws.TypeOf<ConfigurationErrorsException> ().With.Message.EqualTo (
+      var nameValueCollection = new NameValueCollection { { "factoryType", typeof(IStorageObjectFactory).AssemblyQualifiedName } };
+      Assert.That(
+          () => new TestableStorageProviderDefinition("TestProvider", nameValueCollection),
+          Throws.TypeOf<ConfigurationErrorsException>().With.Message.EqualTo(
               "The factory type 'Remotion.Data.DomainObjects.Persistence.IStorageObjectFactory' specified in the configuration of the 'TestProvider' "
               + "StorageProvider definition cannot be instantiated because it is abstract. Either register an implementation of "
               + "'IStorageObjectFactory' in the configured service locator, or specify a non-abstract type."));
@@ -109,10 +109,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public void Initialize_NameValueCollection_WithoutServiceLocatorConfiguration_InstantiationError ()
     {
-      var nameValueCollection = new NameValueCollection { { "factoryType", typeof (StorageObjectFactoryFakeWithCtorParameters).AssemblyQualifiedName } };
-      Assert.That (
-          () => new TestableStorageProviderDefinition ("TestProvider", nameValueCollection),
-          Throws.TypeOf<ConfigurationErrorsException>().With.Message.EqualTo (
+      var nameValueCollection = new NameValueCollection { { "factoryType", typeof(StorageObjectFactoryFakeWithCtorParameters).AssemblyQualifiedName } };
+      Assert.That(
+          () => new TestableStorageProviderDefinition("TestProvider", nameValueCollection),
+          Throws.TypeOf<ConfigurationErrorsException>().With.Message.EqualTo(
               "The factory type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration.StorageProviderDefinitionTest+StorageObjectFactoryFakeWithCtorParameters' "
               + "specified in the configuration of the 'TestProvider' StorageProvider definition cannot be instantiated: Type "
               + "'Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration.StorageProviderDefinitionTest+StorageObjectFactoryFakeWithCtorParameters' "
@@ -123,15 +123,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void Initialize_NameValueCollection_WithServiceLocatorConfiguration ()
     {
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (typeof (StorageObjectFactoryFake), typeof (DerivedStorageObjectFactoryFake), LifetimeKind.Singleton);
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.Register(typeof(StorageObjectFactoryFake), typeof(DerivedStorageObjectFactoryFake), LifetimeKind.Singleton);
+      using (new ServiceLocatorScope(serviceLocator))
       {
-        var nameValueCollection = new NameValueCollection { { "factoryType", typeof (StorageObjectFactoryFake).AssemblyQualifiedName } };
+        var nameValueCollection = new NameValueCollection { { "factoryType", typeof(StorageObjectFactoryFake).AssemblyQualifiedName } };
 
-        var providerDefinition = new TestableStorageProviderDefinition ("TestProvider", nameValueCollection);
+        var providerDefinition = new TestableStorageProviderDefinition("TestProvider", nameValueCollection);
 
-        Assert.That (providerDefinition.Name, Is.EqualTo ("TestProvider"));
-        Assert.That (providerDefinition.Factory, Is.TypeOf<DerivedStorageObjectFactoryFake> ());
+        Assert.That(providerDefinition.Name, Is.EqualTo("TestProvider"));
+        Assert.That(providerDefinition.Factory, Is.TypeOf<DerivedStorageObjectFactoryFake>());
       }
     }
 
@@ -139,14 +139,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     public void Initialize_NameValueCollection_WithServiceLocatorConfiguration_InstantiationError ()
     {
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (typeof (StorageObjectFactoryFake), typeof (DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter), LifetimeKind.Singleton);
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.Register(typeof(StorageObjectFactoryFake), typeof(DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter), LifetimeKind.Singleton);
+      using (new ServiceLocatorScope(serviceLocator))
       {
-        var nameValueCollection = new NameValueCollection { { "factoryType", typeof (StorageObjectFactoryFake).AssemblyQualifiedName } };
+        var nameValueCollection = new NameValueCollection { { "factoryType", typeof(StorageObjectFactoryFake).AssemblyQualifiedName } };
 
-        Assert.That (
-          () => new TestableStorageProviderDefinition ("TestProvider", nameValueCollection),
-          Throws.TypeOf<ConfigurationErrorsException> ().With.Message.EqualTo (
+        Assert.That(
+          () => new TestableStorageProviderDefinition("TestProvider", nameValueCollection),
+          Throws.TypeOf<ConfigurationErrorsException>().With.Message.EqualTo(
               "The factory type 'Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration.StorageProviderDefinitionTest+StorageObjectFactoryFake' "
               + "specified in the configuration of the 'TestProvider' StorageProvider definition cannot be resolved: Could not resolve type "
               + "'Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration.StorageProviderDefinitionTest+StorageObjectFactoryFake': "
@@ -159,9 +159,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
     [Test]
     public new void ToString ()
     {
-      var providerDefinition = new TestableStorageProviderDefinition ("TestProvider", _storageObjectFactoryStub);
+      var providerDefinition = new TestableStorageProviderDefinition("TestProvider", _storageObjectFactoryStub.Object);
 
-      Assert.That (providerDefinition.ToString(), Is.EqualTo ("TestableStorageProviderDefinition: 'TestProvider'"));
+      Assert.That(providerDefinition.ToString(), Is.EqualTo("TestableStorageProviderDefinition: 'TestProvider'"));
     }
 
     public class StorageObjectFactoryFake : IStorageObjectFactory
@@ -191,7 +191,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
 
     public class FakeMixin { }
 
-    public class StorageObjectFactoryFakeWithCtorParameters 
+    public class StorageObjectFactoryFakeWithCtorParameters
     {
       public StorageObjectFactoryFakeWithCtorParameters (string s)
       {
@@ -199,7 +199,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Configuration
       }
     }
 
-    private class DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter : StorageObjectFactoryFake 
+    private class DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter : StorageObjectFactoryFake
     {
       public DerivedStorageObjectFactoryFakeWithUnresolvedCtorParameter (string s)
       {

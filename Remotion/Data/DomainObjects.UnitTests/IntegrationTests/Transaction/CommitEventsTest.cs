@@ -27,17 +27,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
   {
     private Customer _customer;
 
-    public override void TestFixtureSetUp ()
-    {
-      base.TestFixtureSetUp();
-      SetDatabaseModifyable();
-    }
-
     public override void SetUp ()
     {
       base.SetUp();
 
-      _customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
+      _customer = DomainObjectIDs.Customer1.GetObject<Customer>();
     }
 
     [Test]
@@ -45,25 +39,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       _customer.Name = "New name";
 
-      var domainObjectEventReceiver = new DomainObjectEventReceiver (_customer);
-      var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
+      var domainObjectEventReceiver = new DomainObjectEventReceiver(_customer);
+      var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
 
       TestableClientTransaction.Commit();
 
-      Assert.That (domainObjectEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (domainObjectEventReceiver.HasCommittedEventBeenCalled, Is.True);
+      Assert.That(domainObjectEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(domainObjectEventReceiver.HasCommittedEventBeenCalled, Is.True);
 
-      Assert.That (clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo (1));
-      Assert.That (clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo (1));
+      Assert.That(clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo(1));
+      Assert.That(clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo(1));
 
       var committingDomainObjects = clientTransactionEventReceiver.CommittingDomainObjectLists[0];
       var committedDomainObjects = clientTransactionEventReceiver.CommittedDomainObjectLists[0];
 
-      Assert.That (committingDomainObjects.Count, Is.EqualTo (1));
-      Assert.That (committedDomainObjects.Count, Is.EqualTo (1));
+      Assert.That(committingDomainObjects.Count, Is.EqualTo(1));
+      Assert.That(committedDomainObjects.Count, Is.EqualTo(1));
 
-      Assert.That (committingDomainObjects[0], Is.SameAs (_customer));
-      Assert.That (committedDomainObjects[0], Is.SameAs (_customer));
+      Assert.That(committingDomainObjects[0], Is.SameAs(_customer));
+      Assert.That(committedDomainObjects[0], Is.SameAs(_customer));
     }
 
     [Test]
@@ -74,24 +68,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _customer.Name = "New name";
       _customer.Committing += (sender, e) => ceo.Name = "New CEO name";
 
-      var ceoEventReceiver = new DomainObjectEventReceiver (ceo);
-      var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
+      var ceoEventReceiver = new DomainObjectEventReceiver(ceo);
+      var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
 
       TestableClientTransaction.Commit();
 
-      Assert.That (ceoEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (ceoEventReceiver.HasCommittedEventBeenCalled, Is.True);
+      Assert.That(ceoEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(ceoEventReceiver.HasCommittedEventBeenCalled, Is.True);
 
-      Assert.That (clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo (2));
-      Assert.That (clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo (1));
+      Assert.That(clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo(2));
+      Assert.That(clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo(1));
 
       var committingDomainObjects1 = clientTransactionEventReceiver.CommittingDomainObjectLists[0];
       var committingDomainObjects2 = clientTransactionEventReceiver.CommittingDomainObjectLists[1];
       var committedDomainObjects = clientTransactionEventReceiver.CommittedDomainObjectLists[0];
 
-      Assert.That (committingDomainObjects1, Is.EqualTo (new[] { _customer }));
-      Assert.That (committingDomainObjects2, Is.EqualTo (new[] { ceo }));
-      Assert.That (committedDomainObjects, Is.EquivalentTo (new DomainObject[] { _customer, ceo }));
+      Assert.That(committingDomainObjects1, Is.EqualTo(new[] { _customer }));
+      Assert.That(committingDomainObjects2, Is.EqualTo(new[] { ceo }));
+      Assert.That(committedDomainObjects, Is.EquivalentTo(new DomainObject[] { _customer, ceo }));
     }
 
     [Test]
@@ -102,33 +96,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Ceo ceo = _customer.Ceo;
 
-      var ceoEventReceiver = new DomainObjectEventReceiver (ceo);
-      var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
+      var ceoEventReceiver = new DomainObjectEventReceiver(ceo);
+      var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
 
       TestableClientTransaction.Commit();
 
-      Assert.That (ceoEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (ceoEventReceiver.HasCommittedEventBeenCalled, Is.True);
+      Assert.That(ceoEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(ceoEventReceiver.HasCommittedEventBeenCalled, Is.True);
 
-      Assert.That (clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo (2));
-      Assert.That (clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo (1));
+      Assert.That(clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo(2));
+      Assert.That(clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo(1));
 
       var committingDomainObjectsForFirstCommitEvent = clientTransactionEventReceiver.CommittingDomainObjectLists[0];
       var committingDomainObjectsForSecondCommit = clientTransactionEventReceiver.CommittingDomainObjectLists[1];
       var committedDomainObjects = clientTransactionEventReceiver.CommittedDomainObjectLists[0];
 
-      Assert.That (committingDomainObjectsForFirstCommitEvent.Count, Is.EqualTo (1));
-      Assert.That (committingDomainObjectsForSecondCommit.Count, Is.EqualTo (1));
-      Assert.That (committedDomainObjects.Count, Is.EqualTo (2));
+      Assert.That(committingDomainObjectsForFirstCommitEvent.Count, Is.EqualTo(1));
+      Assert.That(committingDomainObjectsForSecondCommit.Count, Is.EqualTo(1));
+      Assert.That(committedDomainObjects.Count, Is.EqualTo(2));
 
-      Assert.That (committingDomainObjectsForFirstCommitEvent.Contains (_customer), Is.True);
-      Assert.That (committingDomainObjectsForFirstCommitEvent.Contains (ceo), Is.False);
+      Assert.That(committingDomainObjectsForFirstCommitEvent.Contains(_customer), Is.True);
+      Assert.That(committingDomainObjectsForFirstCommitEvent.Contains(ceo), Is.False);
 
-      Assert.That (committingDomainObjectsForSecondCommit.Contains (_customer), Is.False);
-      Assert.That (committingDomainObjectsForSecondCommit.Contains (ceo), Is.True);
+      Assert.That(committingDomainObjectsForSecondCommit.Contains(_customer), Is.False);
+      Assert.That(committingDomainObjectsForSecondCommit.Contains(ceo), Is.True);
 
-      Assert.That (committedDomainObjects.Contains (_customer), Is.True);
-      Assert.That (committedDomainObjects.Contains (ceo), Is.True);
+      Assert.That(committedDomainObjects.Contains(_customer), Is.True);
+      Assert.That(committedDomainObjects.Contains(ceo), Is.True);
     }
 
     [Test]
@@ -142,85 +136,85 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Order order = _customer.Orders[DomainObjectIDs.Order1];
       IndustrialSector industrialSector = _customer.IndustrialSector;
 
-      var ceoEventReceiver = new DomainObjectEventReceiver (ceo);
-      var customerEventReceiver = new DomainObjectEventReceiver (_customer);
-      var orderEventReceiver = new DomainObjectEventReceiver (order);
-      var industrialSectorEventReceiver = new DomainObjectEventReceiver (industrialSector);
-      var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
+      var ceoEventReceiver = new DomainObjectEventReceiver(ceo);
+      var customerEventReceiver = new DomainObjectEventReceiver(_customer);
+      var orderEventReceiver = new DomainObjectEventReceiver(order);
+      var industrialSectorEventReceiver = new DomainObjectEventReceiver(industrialSector);
+      var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
 
       _customer.Committing += (sender, e) => order.OrderNumber = 1000;
       TestableClientTransaction.Committing += (sender1, args) =>
       {
-        var customer = (Customer) args.DomainObjects.SingleOrDefault (obj => obj.ID == DomainObjectIDs.Customer1);
+        var customer = (Customer)args.DomainObjects.SingleOrDefault(obj => obj.ID == DomainObjectIDs.Customer1);
         if (customer != null)
           customer.IndustrialSector.Name = "New industrial sector name";
       };
 
       TestableClientTransaction.Commit();
 
-      Assert.That (ceoEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (ceoEventReceiver.HasCommittedEventBeenCalled, Is.True);
+      Assert.That(ceoEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(ceoEventReceiver.HasCommittedEventBeenCalled, Is.True);
 
-      Assert.That (customerEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (customerEventReceiver.HasCommittedEventBeenCalled, Is.True);
+      Assert.That(customerEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(customerEventReceiver.HasCommittedEventBeenCalled, Is.True);
 
-      Assert.That (orderEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (orderEventReceiver.HasCommittedEventBeenCalled, Is.True);
+      Assert.That(orderEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(orderEventReceiver.HasCommittedEventBeenCalled, Is.True);
 
-      Assert.That (industrialSectorEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (industrialSectorEventReceiver.HasCommittedEventBeenCalled, Is.True);
+      Assert.That(industrialSectorEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(industrialSectorEventReceiver.HasCommittedEventBeenCalled, Is.True);
 
-      Assert.That (clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo (2));
-      Assert.That (clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo (1));
+      Assert.That(clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo(2));
+      Assert.That(clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo(1));
 
       var committingDomainObjectsForFirstCommitEvent = clientTransactionEventReceiver.CommittingDomainObjectLists[0];
       var committingDomainObjectsForSecondCommitEvent = clientTransactionEventReceiver.CommittingDomainObjectLists[1];
       var committedDomainObjects = clientTransactionEventReceiver.CommittedDomainObjectLists[0];
 
-      Assert.That (committingDomainObjectsForFirstCommitEvent, Is.EquivalentTo (new DomainObject[] { _customer, ceo }));
-      Assert.That (committingDomainObjectsForSecondCommitEvent, Is.EquivalentTo (new DomainObject[] { order, industrialSector }));
-      Assert.That (committedDomainObjects, Is.EquivalentTo (new DomainObject[] { _customer, ceo, order, industrialSector }));
+      Assert.That(committingDomainObjectsForFirstCommitEvent, Is.EquivalentTo(new DomainObject[] { _customer, ceo }));
+      Assert.That(committingDomainObjectsForSecondCommitEvent, Is.EquivalentTo(new DomainObject[] { order, industrialSector }));
+      Assert.That(committedDomainObjects, Is.EquivalentTo(new DomainObject[] { _customer, ceo, order, industrialSector }));
     }
 
     [Test]
     public void CommitWithoutChanges ()
     {
-      var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
+      var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
 
       TestableClientTransaction.Commit();
 
-      Assert.That (clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo (1));
-      Assert.That (clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo (1));
+      Assert.That(clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo(1));
+      Assert.That(clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo(1));
 
       var committingDomainObjects = clientTransactionEventReceiver.CommittingDomainObjectLists[0];
       var committedDomainObjects = clientTransactionEventReceiver.CommittedDomainObjectLists[0];
 
-      Assert.That (committingDomainObjects.Count, Is.EqualTo (0));
-      Assert.That (committedDomainObjects.Count, Is.EqualTo (0));
+      Assert.That(committingDomainObjects.Count, Is.EqualTo(0));
+      Assert.That(committedDomainObjects.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void CommitWithExistingObjectDeleted ()
     {
-      var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
+      var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
 
-      ClassWithAllDataTypes classWithAllDataTypes = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
+      ClassWithAllDataTypes classWithAllDataTypes = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
       ObjectID classWithAllDataTypesID = classWithAllDataTypes.ID;
 
       classWithAllDataTypes.Delete();
 
       TestableClientTransaction.Commit();
 
-      Assert.That (clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo (1));
-      Assert.That (clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo (1));
+      Assert.That(clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo(1));
+      Assert.That(clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo(1));
 
       var committingDomainObjects = clientTransactionEventReceiver.CommittingDomainObjectLists[0];
       var committedDomainObjects = clientTransactionEventReceiver.CommittedDomainObjectLists[0];
 
-      Assert.That (committingDomainObjects.Count, Is.EqualTo (1));
-      Assert.That (committedDomainObjects.Count, Is.EqualTo (0));
+      Assert.That(committingDomainObjects.Count, Is.EqualTo(1));
+      Assert.That(committedDomainObjects.Count, Is.EqualTo(0));
 
-      Assert.That (committingDomainObjects.Any (obj => obj.ID == classWithAllDataTypesID), Is.True);
+      Assert.That(committingDomainObjects.Any(obj => obj.ID == classWithAllDataTypesID), Is.True);
     }
 
     [Test]
@@ -228,23 +222,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       _customer.Name = "New name";
 
-      var customerEventReceiver = new DomainObjectEventReceiver (_customer);
-      var clientTransactionEventReceiver = new ClientTransactionEventReceiver (TestableClientTransaction);
-      _customer.Committing += (sender, e) => { _customer.Name = _customer.Properties[typeof (Company), "Name"].GetOriginalValue<string>(); };
+      var customerEventReceiver = new DomainObjectEventReceiver(_customer);
+      var clientTransactionEventReceiver = new ClientTransactionEventReceiver(TestableClientTransaction);
+      _customer.Committing += (sender, e) => { _customer.Name = _customer.Properties[typeof(Company), "Name"].GetOriginalValue<string>(); };
 
       TestableClientTransaction.Commit();
 
-      Assert.That (customerEventReceiver.HasCommittingEventBeenCalled, Is.True);
-      Assert.That (customerEventReceiver.HasCommittedEventBeenCalled, Is.False);
+      Assert.That(customerEventReceiver.HasCommittingEventBeenCalled, Is.True);
+      Assert.That(customerEventReceiver.HasCommittedEventBeenCalled, Is.False);
 
-      Assert.That (clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo (1));
-      Assert.That (clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo (1));
+      Assert.That(clientTransactionEventReceiver.CommittingDomainObjectLists.Count, Is.EqualTo(1));
+      Assert.That(clientTransactionEventReceiver.CommittedDomainObjectLists.Count, Is.EqualTo(1));
 
       var committingDomainObjects = clientTransactionEventReceiver.CommittingDomainObjectLists[0];
       var committedDomainObjects = clientTransactionEventReceiver.CommittedDomainObjectLists[0];
 
-      Assert.That (committingDomainObjects.Count, Is.EqualTo (1));
-      Assert.That (committedDomainObjects.Count, Is.EqualTo (0));
+      Assert.That(committingDomainObjects.Count, Is.EqualTo(1));
+      Assert.That(committedDomainObjects.Count, Is.EqualTo(0));
     }
 
     private void ClientTransaction_CommittingForModifyOtherObjectInClientTransactionCommitting (object sender, ClientTransactionEventArgs args)

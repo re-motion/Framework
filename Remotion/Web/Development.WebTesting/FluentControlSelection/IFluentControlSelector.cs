@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 
@@ -34,20 +33,20 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// </summary>
     /// <param name="selectionCommandBuilder">The selection command builder which is combined with the <see cref="IControlSelector"/>.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found but the specific <typeparamref name="TControlSelector"/> requires an exact match.</exception>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If multiple matching controls are found but the specific <typeparamref name="TControlSelector"/> requires an exact match.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     [NotNull]
     TControlObject GetControl ([NotNull] IControlSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder);
-    
+
     /// <summary>
     /// Performs the selection and returns the actual <see cref="ControlObject"/> if the control exists.
     /// </summary>
     /// <param name="selectionCommandBuilder">The selection command builder which is combined with the <see cref="IControlSelector"/>.</param>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found but the specific <typeparamref name="TControlSelector"/> requires an exact match.</exception>
+    /// <exception cref="WebTestException">If multiple matching controls are found but the specific <typeparamref name="TControlSelector"/> requires an exact match.</exception>
     [CanBeNull]
-    TControlObject GetControlOrNull ([NotNull] IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder);
-    
+    TControlObject? GetControlOrNull ([NotNull] IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder);
+
     /// <summary>
     /// Tries to find the control and returns <see langword="true" /> if it exists.
     /// </summary>

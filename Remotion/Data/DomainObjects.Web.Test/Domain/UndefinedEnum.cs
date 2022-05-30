@@ -19,7 +19,7 @@ using Remotion.ObjectBinding;
 
 namespace Remotion.Data.DomainObjects.Web.Test.Domain
 {
-  [UndefinedEnumValue (Undefined)]
+  [UndefinedEnumValue(Undefined)]
   public enum UndefinedEnum
   {
     Undefined = 0,

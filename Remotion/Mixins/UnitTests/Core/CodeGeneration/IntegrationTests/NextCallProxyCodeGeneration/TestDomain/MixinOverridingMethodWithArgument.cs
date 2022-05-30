@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.NextCallProxyCodeGeneration.TestDomain
 {
-  [Extends (typeof (TargetClassForMixinOverridingMethodWithArgument))]
+  [Extends(typeof(TargetClassForMixinOverridingMethodWithArgument))]
   public class MixinOverridingMethodWithArgument
       : Mixin<MixinOverridingMethodWithArgument.ITargetRequirements, MixinOverridingMethodWithArgument.ITargetRequirements>
   {
@@ -31,13 +31,13 @@ namespace Remotion.UnitTests.Mixins.CodeGeneration.IntegrationTests.NextCallProx
     [OverrideTarget]
     public string VirtualMethod (string text)
     {
-      return "MixinOverridingMethodWithArgument.VirtualMethod(" + text + ") - " + Next.VirtualMethod (text);
+      return "MixinOverridingMethodWithArgument.VirtualMethod(" + text + ") - " + Next.VirtualMethod(text);
     }
 
     [OverrideTarget]
     public new bool Equals (object other)
     {
-      return Next.Equals (other);
+      return Next.Equals(other);
     }
   }
 

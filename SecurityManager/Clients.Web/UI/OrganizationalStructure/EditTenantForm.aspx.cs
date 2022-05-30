@@ -19,6 +19,7 @@ using System;
 using Remotion.Globalization;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 
@@ -40,29 +41,29 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnLoad (EventArgs e)
     {
-      RegisterDataEditUserControl (EditTenantControl);
+      RegisterDataEditUserControl(EditTenantControl);
 
-      base.OnLoad (e);
+      base.OnLoad(e);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      Title = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.Title);
+      Title = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.Title);
 
-      SaveButton.Text = GlobalResourcesHelper.GetString(GlobalResources.Save);
-      CancelButton.Text = GlobalResourcesHelper.GetString(GlobalResources.Cancel);
+      SaveButton.Text = GlobalResourcesHelper.GetText(GlobalResources.Save);
+      CancelButton.Text = GlobalResourcesHelper.GetText(GlobalResources.Cancel);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     protected override void ShowErrors ()
     {
-      ErrorMessageControl.ShowError ();
+      ErrorMessageControl.ShowError();
     }
 
     protected void CancelButton_Click (object sender, EventArgs e)
     {
-      throw new WxeUserCancelException ();
+      throw new WxeUserCancelException();
     }
   }
 }

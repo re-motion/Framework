@@ -40,16 +40,16 @@ namespace Remotion.SecurityManager.Domain
   public interface ISecurityManagerPrincipal : INullObject
   {
     [CanBeNull]
-    TenantProxy Tenant { get; }
+    TenantProxy? Tenant { get; }
 
     [CanBeNull]
-    UserProxy User { get; }
+    UserProxy? User { get; }
 
     [CanBeNull]
-    IReadOnlyList<RoleProxy> Roles { get; }
+    IReadOnlyList<RoleProxy>? Roles { get; }
 
     [CanBeNull]
-    SubstitutionProxy Substitution { get; }
+    SubstitutionProxy? Substitution { get; }
 
     [NotNull]
     [MustUseReturnValue]

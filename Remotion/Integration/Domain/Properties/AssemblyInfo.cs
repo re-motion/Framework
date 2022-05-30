@@ -23,12 +23,10 @@ using Remotion.ObjectBinding.Security;
 using Remotion.Validation.Globalization;
 using Remotion.Validation.Mixins;
 
-[assembly: AssemblyTitle ("re-motion Integration Library for Application Domains")]
-[assembly: AssemblyDescription ("This assembly can be linked to ensure that all domain-layer-related dependencies are integrated in the build output of a project.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: EnsureGlobalizationSupportForMixins]
 [assembly: EnsureValidationSupportForDomainObjects]
 [assembly: EnsureValidationSupportForMixins]
-[assembly: EnsureValidationSupportForGlobalization]
+[assembly: EnsureGlobalizationSupportForValidation]
 [assembly: EnsureSecuritySupportForObjectBinding]

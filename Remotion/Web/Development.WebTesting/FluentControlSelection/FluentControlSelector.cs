@@ -45,8 +45,8 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
 
     public FluentControlSelector (IControlHost host, TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("host", host);
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("host", host);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
       _host = host;
       _controlSelector = controlSelector;
@@ -56,27 +56,27 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     TControlObject IFluentControlSelector<TControlSelector, TControlObject>.GetControl (
         IControlSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder)
     {
-      ArgumentUtility.CheckNotNull ("selectionCommandBuilder", selectionCommandBuilder);
+      ArgumentUtility.CheckNotNull("selectionCommandBuilder", selectionCommandBuilder);
 
-      return _host.GetControl (selectionCommandBuilder.Using (_controlSelector));
+      return _host.GetControl(selectionCommandBuilder.Using(_controlSelector));
     }
 
     /// <inheritdoc />
-    TControlObject IFluentControlSelector<TControlSelector, TControlObject>.GetControlOrNull (
+    TControlObject? IFluentControlSelector<TControlSelector, TControlObject>.GetControlOrNull (
         IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject> selectionCommandBuilder)
     {
-      ArgumentUtility.CheckNotNull ("selectionCommandBuilder", selectionCommandBuilder);
+      ArgumentUtility.CheckNotNull("selectionCommandBuilder", selectionCommandBuilder);
 
-      return _host.GetControlOrNull (selectionCommandBuilder.Using (_controlSelector));
+      return _host.GetControlOrNull(selectionCommandBuilder.Using(_controlSelector));
     }
 
     /// <inheritdoc />
     bool IFluentControlSelector<TControlSelector, TControlObject>.HasControl (
         IControlExistsCommandBuilder<TControlSelector> selectionCommandBuilder)
     {
-      ArgumentUtility.CheckNotNull ("selectionCommandBuilder", selectionCommandBuilder);
+      ArgumentUtility.CheckNotNull("selectionCommandBuilder", selectionCommandBuilder);
 
-      return _host.HasControl (selectionCommandBuilder.Using (_controlSelector));
+      return _host.HasControl(selectionCommandBuilder.Using(_controlSelector));
     }
   }
 }

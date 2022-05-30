@@ -26,68 +26,71 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ReadValue ()
     {
-      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[] { 1, 2, 3 });
-      Assert.That (reader.ReadValue(), Is.EqualTo (1));
+      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int>(new int[] { 1, 2, 3 });
+      Assert.That(reader.ReadValue(), Is.EqualTo(1));
     }
 
     [Test]
     public void ReadValue_MultipleTimes ()
     {
-      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[] { 1, 2, 3 });
-      Assert.That (reader.ReadValue (), Is.EqualTo (1));
-      Assert.That (reader.ReadValue (), Is.EqualTo (2));
-      Assert.That (reader.ReadValue (), Is.EqualTo (3));
+      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int>(new int[] { 1, 2, 3 });
+      Assert.That(reader.ReadValue(), Is.EqualTo(1));
+      Assert.That(reader.ReadValue(), Is.EqualTo(2));
+      Assert.That(reader.ReadValue(), Is.EqualTo(3));
     }
 
     [Test]
     public void ReadPosition ()
     {
-      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[] { 1, 2, 3 });
-      Assert.That (reader.ReadPosition, Is.EqualTo (0));
+      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int>(new int[] { 1, 2, 3 });
+      Assert.That(reader.ReadPosition, Is.EqualTo(0));
       reader.ReadValue();
-      Assert.That (reader.ReadPosition, Is.EqualTo (1));
-      reader.ReadValue ();
-      Assert.That (reader.ReadPosition, Is.EqualTo (2));
-      reader.ReadValue ();
+      Assert.That(reader.ReadPosition, Is.EqualTo(1));
+      reader.ReadValue();
+      Assert.That(reader.ReadPosition, Is.EqualTo(2));
+      reader.ReadValue();
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is no more data in the serialization stream at position 3.")]
     public void ReadValue_TooOften ()
     {
-      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[] { 1, 2, 3 });
-      Assert.That (reader.ReadValue (), Is.EqualTo (1));
-      Assert.That (reader.ReadValue (), Is.EqualTo (2));
-      Assert.That (reader.ReadValue (), Is.EqualTo (3));
-      reader.ReadValue ();
+      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int>(new int[] { 1, 2, 3 });
+      Assert.That(reader.ReadValue(), Is.EqualTo(1));
+      Assert.That(reader.ReadValue(), Is.EqualTo(2));
+      Assert.That(reader.ReadValue(), Is.EqualTo(3));
+      Assert.That(
+          () => reader.ReadValue(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "There is no more data in the serialization stream at position 3."));
     }
 
     [Test]
     public void EndReached_False ()
     {
-      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[] { 1, 2, 3 });
-      Assert.That (reader.EndReached, Is.False);
-      reader.ReadValue ();
-      Assert.That (reader.EndReached, Is.False);
-      reader.ReadValue ();
-      Assert.That (reader.EndReached, Is.False);
+      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int>(new int[] { 1, 2, 3 });
+      Assert.That(reader.EndReached, Is.False);
+      reader.ReadValue();
+      Assert.That(reader.EndReached, Is.False);
+      reader.ReadValue();
+      Assert.That(reader.EndReached, Is.False);
     }
 
     [Test]
     public void EndReached_True ()
     {
-      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[] { 1, 2, 3 });
-      reader.ReadValue ();
-      reader.ReadValue ();
-      reader.ReadValue ();
-      Assert.That (reader.EndReached, Is.True);
+      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int>(new int[] { 1, 2, 3 });
+      reader.ReadValue();
+      reader.ReadValue();
+      reader.ReadValue();
+      Assert.That(reader.EndReached, Is.True);
     }
 
     [Test]
     public void EndReached_Empty ()
     {
-      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int> (new int[0]);
-      Assert.That (reader.EndReached, Is.True);
+      FlattenedSerializationReader<int> reader = new FlattenedSerializationReader<int>(new int[0]);
+      Assert.That(reader.EndReached, Is.True);
     }
   }
 }

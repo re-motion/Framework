@@ -28,11 +28,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -42,36 +42,36 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       if (!relationEndPointDefinition.IsAnonymous)
       {
-        var relationAttribute = relationEndPointDefinition.PropertyInfo.GetCustomAttribute<BidirectionalRelationAttribute> (true);
+        var relationAttribute = relationEndPointDefinition.PropertyInfo.GetCustomAttribute<BidirectionalRelationAttribute>(true);
         if (relationAttribute != null)
         {
-          var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition ();
+          var oppositeEndPointDefinition = relationEndPointDefinition.GetOppositeEndPointDefinition();
           if (!oppositeEndPointDefinition.IsAnonymous)
           {
             var oppositeProperty = oppositeEndPointDefinition.PropertyInfo;
-            var oppositeRelationAttribute = oppositeProperty.GetCustomAttribute<BidirectionalRelationAttribute> (true);
+            var oppositeRelationAttribute = oppositeProperty.GetCustomAttribute<BidirectionalRelationAttribute>(true);
 
             if (oppositeRelationAttribute == null)
             {
-              return MappingValidationResult.CreateInvalidResultForProperty (
+              return MappingValidationResult.CreateInvalidResultForProperty(
                   relationEndPointDefinition.PropertyInfo,
                   "Opposite relation property '{0}' declared on type '{1}' does not define a matching '{2}'.",
                   relationAttribute.OppositeProperty,
-                  oppositeProperty.DeclaringType.Name,
+                  oppositeProperty.DeclaringType!.Name,
                   relationAttribute.GetType().Name);
             }
 
-            if (!relationEndPointDefinition.PropertyInfo.Name.Equals (oppositeRelationAttribute.OppositeProperty, StringComparison.Ordinal))
+            if (!relationEndPointDefinition.PropertyInfo.Name.Equals(oppositeRelationAttribute.OppositeProperty, StringComparison.Ordinal))
             {
-              return MappingValidationResult.CreateInvalidResultForProperty (
+              return MappingValidationResult.CreateInvalidResultForProperty(
                   relationEndPointDefinition.PropertyInfo,
                   "Opposite relation property '{0}' declared on type '{1}' defines a '{2}' whose opposite property does not match.",
                   relationAttribute.OppositeProperty,
-                  oppositeProperty.DeclaringType.Name,
+                  oppositeProperty.DeclaringType!.Name,
                   relationAttribute.GetType().Name);
             }
           }
@@ -80,6 +80,6 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
       return MappingValidationResult.CreateValidResult();
     }
-   
+
   }
 }

@@ -25,7 +25,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   {
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      gen.Emit (OpCodes.Pop);
+      gen.Emit(OpCodes.Pop);
     }
   }
 }

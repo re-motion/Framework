@@ -21,7 +21,7 @@ namespace Remotion.Validation.Mixins
   /// <summary>
   /// Apply this <see cref="Attribute"/> to an assembly to force the inclusing of the mixins-extension for validation.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Assembly)]
+  [AttributeUsage(AttributeTargets.Assembly)]
   public class EnsureValidationSupportForMixinsAttribute : Attribute
   {
   }

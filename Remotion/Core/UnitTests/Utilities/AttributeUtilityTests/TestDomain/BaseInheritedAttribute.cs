@@ -35,9 +35,9 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 
     public override bool Equals (object obj)
     {
-      if (obj.GetType () != this.GetType())
+      if (obj.GetType() != this.GetType())
         return false;
-      return ((BaseInheritedAttribute) obj).Context == Context;
+      return ((BaseInheritedAttribute)obj).Context == Context;
     }
 
     public override int GetHashCode ()
@@ -47,7 +47,7 @@ namespace Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain
 
     public override string ToString ()
     {
-      return GetType () + " (\"" + Context + "\")";
+      return GetType() + " (\"" + Context + "\")";
     }
   }
 }

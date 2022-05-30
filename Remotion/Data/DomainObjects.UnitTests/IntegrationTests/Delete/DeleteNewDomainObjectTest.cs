@@ -20,7 +20,6 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 {
@@ -35,305 +34,373 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _newOrder = Order.NewObject ();
+      _newOrder = Order.NewObject();
       _newOrderContainer = _newOrder.InternalDataContainer;
-      _newOrderTicket = OrderTicket.NewObject (_newOrder);
+      _newOrderTicket = OrderTicket.NewObject(_newOrder);
 
-      _orderNumberProperty = GetPropertyDefinition (typeof (Order), "OrderNumber");
+      _orderNumberProperty = GetPropertyDefinition(typeof(Order), "OrderNumber");
     }
 
     [Test]
     public void RelatedObject ()
     {
-      Assert.That (_newOrderTicket.Order, Is.SameAs (_newOrder));
-      Assert.That (_newOrder.OrderTicket, Is.SameAs (_newOrderTicket));
+      Assert.That(_newOrderTicket.Order, Is.SameAs(_newOrder));
+      Assert.That(_newOrder.OrderTicket, Is.SameAs(_newOrderTicket));
 
-      _newOrder.Delete ();
+      _newOrder.Delete();
 
-      Assert.That (_newOrderTicket.Order, Is.Null);
+      Assert.That(_newOrderTicket.Order, Is.Null);
 
-      _newOrderTicket.Delete ();
+      _newOrderTicket.Delete();
 
-      Assert.That (TestableClientTransaction.DataManager.DataContainers.Count, Is.EqualTo (0));
-      Assert.That (TestableClientTransaction.DataManager.RelationEndPoints.Count, Is.EqualTo (0));
+      Assert.That(TestableClientTransaction.DataManager.DataContainers.Count, Is.EqualTo(0));
+      Assert.That(TestableClientTransaction.DataManager.RelationEndPoints.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void DomainObjectID ()
     {
       ObjectID oldID = _newOrder.ID;
-      _newOrder.Delete ();
+      _newOrder.Delete();
       ObjectID newID = _newOrder.ID;
-      Assert.That (newID, Is.EqualTo (oldID));
+      Assert.That(newID, Is.EqualTo(oldID));
     }
 
     [Test]
     public void DomainObjectState ()
     {
-      _newOrder.Delete ();
-      StateType state = _newOrder.State;
-      Assert.That (state, Is.EqualTo (StateType.Invalid));
+      _newOrder.Delete();
+      Assert.That(_newOrder.State.IsInvalid, Is.True);
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectDataContainer ()
     {
-      _newOrder.Delete ();
-      DataContainer dataContainer = _newOrder.InternalDataContainer;
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.InternalDataContainer,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectDelete ()
     {
-      _newOrder.Delete ();
-      _newOrder.Delete ();
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.Delete(),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectGetRelatedObject ()
     {
-      _newOrder.Delete ();
-      _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.GetRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
-    public void DomainObjectGetRelatedObjects ()
+    public void DomainObjectGetRelatedObjectsForDomainObjectCollection ()
     {
-      _newOrder.Delete ();
-      _newOrder.GetRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.GetRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
+    public void DomainObjectGetRelatedObjectsForVirtualCollection ()
+    {
+      var product = Product.NewObject();
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+
+      product.Delete();
+      Assert.That(
+          () => product.GetRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
     public void DomainObjectGetOriginalRelatedObject ()
     {
-      _newOrder.Delete ();
-      _newOrder.GetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.GetRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
-    public void DomainObjectGetOriginalRelatedObjects ()
+    public void DomainObjectGetOriginalRelatedObjectsForDomainObjectCollection ()
     {
-      _newOrder.Delete ();
-      _newOrder.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems"),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
+
+    public void DomainObjectGetOriginalRelatedObjectsForVirtualCollection ()
+    {
+      var product = Product.NewObject();
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+
+      product.Delete();
+      Assert.That(
+          () => product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews"),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
     public void DomainObjectSetRelatedObject ()
     {
-      _newOrder.Delete ();
-      _newOrder.SetRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _newOrderTicket);
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.SetRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket", _newOrderTicket),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void DomainObjectIsInvalid ()
     {
-      Assert.That (_newOrder.State, Is.Not.EqualTo (StateType.Invalid));
+      Assert.That(_newOrder.State.IsInvalid, Is.False);
 
-      _newOrder.Delete ();
+      _newOrder.Delete();
 
-      Assert.That (_newOrder.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(_newOrder.State.IsInvalid, Is.True);
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectGetPropertyValue ()
     {
-      _newOrder.Delete ();
-      Dev.Null = _newOrder.Properties[typeof (Order), "OrderNumber"].GetValueWithoutTypeCheck();
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.Properties[typeof(Order), "OrderNumber"].GetValueWithoutTypeCheck(),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DomainObjectSetPropertyValue ()
     {
-      _newOrder.Delete ();
-      _newOrder.Properties[typeof (Order), "OrderNumber"].SetValueWithoutTypeCheck (10);
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrder.Properties[typeof(Order), "OrderNumber"].SetValueWithoutTypeCheck(10),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerGetValue ()
     {
-      _newOrder.Delete ();
-      _newOrderContainer.GetValue (GetPropertyDefinition (typeof (Order), "OrderNumber"));
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.GetValue(GetPropertyDefinition(typeof(Order), "OrderNumber")),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerSetValue ()
     {
-      _newOrder.Delete ();
-      _newOrderContainer.SetValue (GetPropertyDefinition (typeof (Order), "OrderNumber"), 10);
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.SetValue(GetPropertyDefinition(typeof(Order), "OrderNumber"), 10),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void DataContainerDomainObject ()
     {
-      _newOrder.Delete ();
-      Assert.That (_newOrderContainer.DomainObject, Is.SameAs (_newOrder));
+      _newOrder.Delete();
+      Assert.That(_newOrderContainer.DomainObject, Is.SameAs(_newOrder));
     }
 
     [Test]
     public void DataContainerID ()
     {
-      _newOrder.Delete ();
-      Assert.That (_newOrderContainer.ID, Is.SameAs (_newOrder.ID));
+      _newOrder.Delete();
+      Assert.That(_newOrderContainer.ID, Is.SameAs(_newOrder.ID));
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerClassDefinition ()
     {
-      _newOrder.Delete ();
-      ClassDefinition definition = _newOrderContainer.ClassDefinition;
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.ClassDefinition,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerDomainObjectType ()
     {
-      _newOrder.Delete ();
-      Type type = _newOrderContainer.DomainObjectType;
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.DomainObjectType,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void DataContainerState ()
     {
-      _newOrder.Delete ();
-      StateType state = _newOrderContainer.State;
-      Assert.That (state, Is.EqualTo (StateType.Invalid));
+      _newOrder.Delete();
+      Assert.That(_newOrderContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerTimestamp ()
     {
-      _newOrder.Delete ();
-      object timestamp = _newOrderContainer.Timestamp;
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.Timestamp,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void DataContainerClientTransaction ()
     {
-      _newOrder.Delete ();
-      ClientTransaction clientTransaction = _newOrderContainer.ClientTransaction;
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.ClientTransaction,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void DataContainerIsDiscarded ()
     {
       DataContainer newDataContainer = _newOrder.InternalDataContainer;
-      Assert.That (newDataContainer.IsDiscarded, Is.False);
+      Assert.That(newDataContainer.State.IsDiscarded, Is.False);
 
-      _newOrder.Delete ();
+      _newOrder.Delete();
 
-      Assert.That (newDataContainer.IsDiscarded, Is.True);
+      Assert.That(newDataContainer.State.IsDiscarded, Is.True);
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueGetValue ()
     {
-      _newOrder.Delete ();
-
-      Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty);
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.GetValue(_orderNumberProperty),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueSetValue ()
     {
-      _newOrder.Delete ();
-
-      _newOrderContainer.SetValue (_orderNumberProperty, 10);
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.SetValue(_orderNumberProperty, 10),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueOriginalValue ()
     {
-      _newOrder.Delete ();
-
-      Dev.Null = _newOrderContainer.GetValue (_orderNumberProperty, ValueAccess.Original);
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.GetValue(_orderNumberProperty, ValueAccess.Original),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueHasChanged ()
     {
-      _newOrder.Delete ();
-
-      bool hasChanged = _newOrderContainer.HasValueChanged (_orderNumberProperty);
+      _newOrder.Delete();
+      Assert.That(
+          () => _newOrderContainer.HasValueChanged(_orderNumberProperty),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void PropertyValueHasBeenTouched ()
     {
-      _newOrder.Delete ();
+      _newOrder.Delete();
 
-      bool hasBeenTouched = _newOrderContainer.HasValueBeenTouched (_orderNumberProperty);
+      Assert.That(
+          () => _newOrderContainer.HasValueBeenTouched(_orderNumberProperty),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void Events ()
     {
       var orderItemsCollection = _newOrder.OrderItems;
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver(
           new DomainObject[] { _newOrder, _newOrderTicket },
           new DomainObjectCollection[] { orderItemsCollection });
 
-      _newOrder.Delete ();
+      _newOrder.Delete();
 
-      ChangeState[] expectedStates = new ChangeState[]
-    {
-      new ObjectDeletionState (_newOrder, "1. Deleting event of order"),
-      new CollectionDeletionState (orderItemsCollection, "2. Deleting of order.OrderItems"),
-      new RelationChangeState (_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrder, null, "3. Relation changing event of orderTicket"),
-      new RelationChangeState (_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "4. Relation changed event of orderTicket"),
-      new CollectionDeletionState (orderItemsCollection, "5. Deleted of order.OrderItems"),
-      new ObjectDeletionState (_newOrder, "6. Deleted event of order")
-    };
+      ChangeState[] expectedStates =
+          new ChangeState[]
+          {
+              new ObjectDeletionState(_newOrder, "1. Deleting event of order"),
+              new CollectionDeletionState(orderItemsCollection, "2. Deleting of order.OrderItems"),
+              new RelationChangeState(_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrder, null, "3. Relation changing event of orderTicket"),
+              new RelationChangeState(_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "4. Relation changed event of orderTicket"),
+              new CollectionDeletionState(orderItemsCollection, "5. Deleted of order.OrderItems"),
+              new ObjectDeletionState(_newOrder, "6. Deleted event of order")
+          };
 
-      eventReceiver.Check (expectedStates);
+      eventReceiver.Check(expectedStates);
     }
 
     [Test]
-    public void DeleteFromManyToOneRelation ()
+    public void DeleteFromManyToOneRelationForDomainObjectCollection ()
     {
-      Customer newCustomer = Customer.NewObject ();
+      Customer newCustomer = Customer.NewObject();
 
       _newOrder.Customer = newCustomer;
 
       ObjectID newOrderID = _newOrder.ID;
 
-      _newOrder.Delete ();
+      _newOrder.Delete();
 
-      Assert.That (newCustomer.Orders.Contains (newOrderID), Is.False);
+      Assert.That(newCustomer.Orders.Contains(newOrderID), Is.False);
     }
 
     [Test]
-    public void DeleteFromOneToManyRelation ()
+    public void DeleteFromManyToOneRelationForVirtualCollection ()
     {
-      Customer newCustomer = Customer.NewObject ();
+      var product = Product.NewObject();
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+
+      var productReviewID = productReview.ID;
+
+      productReview.Delete();
+
+      Assert.That(product.Reviews.Contains(productReviewID), Is.False);
+    }
+
+    [Test]
+    public void DeleteFromOneToManyRelationForDomainObjectCollection ()
+    {
+      Customer newCustomer = Customer.NewObject();
 
       _newOrder.Customer = newCustomer;
 
       ObjectID newCustomerID = newCustomer.ID;
 
-      newCustomer.Delete ();
+      newCustomer.Delete();
 
-      Assert.That (_newOrder.Customer, Is.Null);
+      Assert.That(_newOrder.Customer, Is.Null);
+    }
+
+    [Test]
+    public void DeleteFromOneToManyRelationForVirtualCollection ()
+    {
+      var product = Product.NewObject();
+      var productReview = ProductReview.NewObject();
+      productReview.Product = product;
+
+      product.Delete();
+
+      Assert.That(productReview.Product, Is.Null);
     }
 
     [Test]
@@ -344,23 +411,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
         _newOrder.Delete();
         _newOrderTicket.Delete();
       };
-      _newOrderTicket.Committing += (o, args) => Assert.Fail ("NewOrderTicket_Committing event should not be raised.");
-      TestableClientTransaction.Committing += (sender, args1) => Assert.That (args1.DomainObjects.Count, Is.EqualTo (2));
+      _newOrderTicket.Committing += (o, args) => Assert.Fail("NewOrderTicket_Committing event should not be raised.");
+      TestableClientTransaction.Committing += (sender, args1) => Assert.That(args1.DomainObjects.Count, Is.EqualTo(2));
 
-      TestableClientTransaction.Commit ();
+      TestableClientTransaction.Commit();
     }
 
     [Test]
     public void DeleteNewObjectsInClientTransactionsCommittingEvent ()
     {
-      _newOrder.Committing += (sender, args) => Assert.Fail ("Should not be called.");
-      _newOrderTicket.Committing += (sender1, args1) => Assert.Fail ("Should not be called.");
+      _newOrder.Committing += (sender, args) => Assert.Fail("Should not be called.");
+      _newOrderTicket.Committing += (sender1, args1) => Assert.Fail("Should not be called.");
       TestableClientTransaction.Committing += (sender2, args2) =>
       {
-        _newOrder.Delete ();
-        _newOrderTicket.Delete ();
+        _newOrder.Delete();
+        _newOrderTicket.Delete();
       };
-      TestableClientTransaction.Commit ();
+      TestableClientTransaction.Commit();
     }
   }
 }

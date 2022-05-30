@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Definitions.Building.DependencySorting;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using ReflectionUtility = Remotion.Mixins.Utilities.ReflectionUtility;
@@ -29,14 +30,14 @@ namespace Remotion.Mixins.Definitions.Building
   /// <summary>
   /// Builds <see cref="TargetClassDefinition"/> objects containing all metadata required for code generation from a <see cref="ClassContext"/>.
   /// </summary>
-  [ImplementationFor (typeof (ITargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ITargetClassDefinitionBuilder), Lifetime = LifetimeKind.Singleton)]
   public class TargetClassDefinitionBuilder : ITargetClassDefinitionBuilder
   {
     private readonly IMixinDefinitionSorter _mixinSorter;
 
     public TargetClassDefinitionBuilder (IMixinDefinitionSorter mixinSorter)
     {
-      ArgumentUtility.CheckNotNull ("mixinSorter", mixinSorter);
+      ArgumentUtility.CheckNotNull("mixinSorter", mixinSorter);
       _mixinSorter = mixinSorter;
     }
 
@@ -47,29 +48,29 @@ namespace Remotion.Mixins.Definitions.Building
 
     public TargetClassDefinition Build (ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
+      ArgumentUtility.CheckNotNull("classContext", classContext);
 
       if (classContext.Type.ContainsGenericParameters)
       {
-        string message = string.Format ("The base class {0} contains generic parameters. This is not supported.", classContext.Type.FullName);
-        throw new ConfigurationException (message);
+        string message = string.Format("The base class {0} contains generic parameters. This is not supported.", classContext.Type.GetFullNameSafe());
+        throw new ConfigurationException(message);
       }
 
-      var classDefinition = new TargetClassDefinition (classContext);
+      var classDefinition = new TargetClassDefinition(classContext);
 
-      var membersBuilder = new MemberDefinitionBuilder (classDefinition, ReflectionUtility.IsPublicOrProtectedOrExplicit);
-      membersBuilder.Apply (classDefinition.Type);
+      var membersBuilder = new MemberDefinitionBuilder(classDefinition, ReflectionUtility.IsPublicOrProtectedOrExplicit);
+      membersBuilder.Apply(classDefinition.Type);
 
-      var attributesBuilder = new AttributeDefinitionBuilder (classDefinition);
-      attributesBuilder.Apply (classDefinition.Type);
+      var attributesBuilder = new AttributeDefinitionBuilder(classDefinition);
+      attributesBuilder.Apply(classDefinition.Type);
 
-      ApplyComposedInterfaces (classDefinition, classContext);
-      ApplyMixins (classDefinition, classContext);
-      ApplyMethodRequirements (classDefinition);
+      ApplyComposedInterfaces(classDefinition, classContext);
+      ApplyMixins(classDefinition, classContext);
+      ApplyMethodRequirements(classDefinition);
 
-      AnalyzeOverrides (classDefinition);
-      AnalyzeAttributeIntroductions (classDefinition);
-      AnalyzeMemberAttributeIntroductions (classDefinition);
+      AnalyzeOverrides(classDefinition);
+      AnalyzeAttributeIntroductions(classDefinition);
+      AnalyzeMemberAttributeIntroductions(classDefinition);
       return classDefinition;
     }
 
@@ -77,23 +78,23 @@ namespace Remotion.Mixins.Definitions.Building
     {
       foreach (Type composedInterface in classContext.ComposedInterfaces)
       {
-        var composedInterfaceDependencyDefinitionBuilder = new ComposedInterfaceDependencyDefinitionBuilder (classDefinition, composedInterface);
+        var composedInterfaceDependencyDefinitionBuilder = new ComposedInterfaceDependencyDefinitionBuilder(classDefinition, composedInterface);
         // Apply recursively creates aggregated dependencies for interfaces implemented by composedInterface
-        composedInterfaceDependencyDefinitionBuilder.Apply (new[] { composedInterface });
+        composedInterfaceDependencyDefinitionBuilder.Apply(new[] { composedInterface });
       }
     }
 
     private void ApplyMixins (TargetClassDefinition classDefinition, ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classContext", classContext);
 
       // The IMixinDefinitionSorter requires that the mixins have already been added to the class (and that the dependencoes have been set up
       // correctly). Therefore, we add all the mixins, then sort them, then re-add them in the correct order.
 
-      var mixinDefinitionBuilder = new MixinDefinitionBuilder (classDefinition);
+      var mixinDefinitionBuilder = new MixinDefinitionBuilder(classDefinition);
       foreach (var mixinContext in classContext.Mixins)
-          mixinDefinitionBuilder.Apply (mixinContext, -1);
+          mixinDefinitionBuilder.Apply(mixinContext, -1);
 
       var sortedMixins = SortMixins(classDefinition);
 
@@ -101,7 +102,7 @@ namespace Remotion.Mixins.Definitions.Building
       foreach (var mixinDefinition in sortedMixins)
       {
         mixinDefinition.MixinIndex = classDefinition.Mixins.Count;
-        classDefinition.Mixins.Add (mixinDefinition);
+        classDefinition.Mixins.Add(mixinDefinition);
       }
     }
 
@@ -109,65 +110,65 @@ namespace Remotion.Mixins.Definitions.Building
     {
       try
       {
-        return _mixinSorter.SortMixins (targetClassDefinition.Mixins).ConvertToCollection ();
+        return _mixinSorter.SortMixins(targetClassDefinition.Mixins).ConvertToCollection();
       }
       catch (InvalidOperationException ex)
       {
-        string message = string.Format (
+        string message = string.Format(
             "The mixins applied to target class '{0}' cannot be ordered. {1}",
             targetClassDefinition.FullName,
             ex.Message);
-        throw new ConfigurationException (message, ex);
+        throw new ConfigurationException(message, ex);
       }
     }
 
     // This can only be done once all the mixins are available, therefore, the TargetClassDefinitionBuilder has to do it.
     private void ApplyMethodRequirements (TargetClassDefinition classDefinition)
     {
-      var methodRequirementBuilder = new RequiredMethodDefinitionBuilder (classDefinition);
+      var methodRequirementBuilder = new RequiredMethodDefinitionBuilder(classDefinition);
       foreach (RequiredTargetCallTypeDefinition requirement in classDefinition.RequiredTargetCallTypes)
-        methodRequirementBuilder.Apply (requirement);
+        methodRequirementBuilder.Apply(requirement);
 
       foreach (RequiredNextCallTypeDefinition requirement in classDefinition.RequiredNextCallTypes)
-        methodRequirementBuilder.Apply (requirement);
+        methodRequirementBuilder.Apply(requirement);
     }
 
     private void AnalyzeOverrides (TargetClassDefinition definition)
     {
-      var mixinMethods = definition.Mixins.SelectMany (m => m.Methods);
-      var methodAnalyzer = new OverridesAnalyzer<MethodDefinition> (typeof (OverrideMixinAttribute), mixinMethods);
-      foreach (var methodOverride in methodAnalyzer.Analyze (definition.Methods))
-        InitializeOverride (methodOverride.Overrider, methodOverride.BaseMember);
+      var mixinMethods = definition.Mixins.SelectMany(m => m.Methods);
+      var methodAnalyzer = new OverridesAnalyzer<MethodDefinition>(typeof(OverrideMixinAttribute), mixinMethods);
+      foreach (var methodOverride in methodAnalyzer.Analyze(definition.Methods))
+        InitializeOverride(methodOverride.Overrider, methodOverride.BaseMember);
 
-      var mixinProperties = definition.Mixins.SelectMany (m => m.Properties);
-      var propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition> (typeof (OverrideMixinAttribute), mixinProperties);
-      foreach (var propertyOverride in propertyAnalyzer.Analyze (definition.Properties))
-        InitializeOverride (propertyOverride.Overrider, propertyOverride.BaseMember);
+      var mixinProperties = definition.Mixins.SelectMany(m => m.Properties);
+      var propertyAnalyzer = new OverridesAnalyzer<PropertyDefinition>(typeof(OverrideMixinAttribute), mixinProperties);
+      foreach (var propertyOverride in propertyAnalyzer.Analyze(definition.Properties))
+        InitializeOverride(propertyOverride.Overrider, propertyOverride.BaseMember);
 
-      var mixinEvents = definition.Mixins.SelectMany (m => m.Events);
-      var eventAnalyzer = new OverridesAnalyzer<EventDefinition> (typeof (OverrideMixinAttribute), mixinEvents);
-      foreach (var eventOverride in eventAnalyzer.Analyze (definition.Events))
-        InitializeOverride (eventOverride.Overrider, eventOverride.BaseMember);
+      var mixinEvents = definition.Mixins.SelectMany(m => m.Events);
+      var eventAnalyzer = new OverridesAnalyzer<EventDefinition>(typeof(OverrideMixinAttribute), mixinEvents);
+      foreach (var eventOverride in eventAnalyzer.Analyze(definition.Events))
+        InitializeOverride(eventOverride.Overrider, eventOverride.BaseMember);
     }
 
     private void InitializeOverride (MemberDefinitionBase overrider, MemberDefinitionBase baseMember)
     {
       overrider.BaseAsMember = baseMember;
-      baseMember.AddOverride (overrider);
+      baseMember.AddOverride(overrider);
     }
 
     private void AnalyzeAttributeIntroductions (TargetClassDefinition classDefinition)
     {
-      var builder = new AttributeIntroductionDefinitionBuilder (classDefinition);
+      var builder = new AttributeIntroductionDefinitionBuilder(classDefinition);
 
       var attributesOnMixins = from m in classDefinition.Mixins
                                from a in m.CustomAttributes
                                select a;
-      var potentialSuppressors = classDefinition.CustomAttributes.Concat (attributesOnMixins);
-      builder.AddPotentialSuppressors (potentialSuppressors);
-      
+      var potentialSuppressors = classDefinition.CustomAttributes.Concat(attributesOnMixins);
+      builder.AddPotentialSuppressors(potentialSuppressors);
+
       foreach (MixinDefinition mixin in classDefinition.Mixins)
-        builder.Apply (mixin);
+        builder.Apply(mixin);
     }
 
     private void AnalyzeMemberAttributeIntroductions (TargetClassDefinition classDefinition)
@@ -175,19 +176,18 @@ namespace Remotion.Mixins.Definitions.Building
       // Check that SuppressAttributesAttribute cannot be applied to methods, properties, and fields.
       // As long as this holds, we don't need to deal with potential suppressors here.
       const AttributeTargets memberTargets = AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Field;
-      Assertion.IsTrue ((AttributeUtility.GetAttributeUsage (typeof (SuppressAttributesAttribute)).ValidOn & memberTargets) == 0, 
+      Assertion.IsTrue((AttributeUtility.GetAttributeUsage(typeof(SuppressAttributesAttribute)).ValidOn & memberTargets) == 0,
           "TargetClassDefinitionBuilder must be updated with AddPotentialSuppressors once SuppressAttributesAttribute supports members");
 
-      foreach (MemberDefinitionBase member in classDefinition.GetAllMembers ())
+      foreach (MemberDefinitionBase member in classDefinition.GetAllMembers())
       {
         if (member.Overrides.Count != 0)
         {
-          var introductionBuilder = new AttributeIntroductionDefinitionBuilder (member);
+          var introductionBuilder = new AttributeIntroductionDefinitionBuilder(member);
           foreach (MemberDefinitionBase overrider in member.Overrides)
-            introductionBuilder.Apply (overrider);
+            introductionBuilder.Apply(overrider);
         }
       }
     }
   }
 }
-

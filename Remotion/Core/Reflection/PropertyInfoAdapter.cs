@@ -18,11 +18,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Remotion.FunctionalProgramming;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -30,76 +31,87 @@ namespace Remotion.Reflection
   /// <summary>
   /// Implements the <see cref="IPropertyInformation"/> interface to wrap a <see cref="PropertyInfo"/> instance.
   /// </summary>
-  [TypeConverter (typeof (PropertyInfoAdapterConverter))]
+  [TypeConverter(typeof(PropertyInfoAdapterConverter))]
   public sealed class PropertyInfoAdapter : IPropertyInformation
   {
     private static readonly ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter> s_dataStore =
-        new ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter> (MemberInfoEqualityComparer<PropertyInfo>.Instance);
+        new ConcurrentDictionary<PropertyInfo, PropertyInfoAdapter>(MemberInfoEqualityComparer<PropertyInfo>.Instance);
 
     ///<remarks>Optimized for memory allocations</remarks>
-    private static readonly Func<PropertyInfo, PropertyInfoAdapter> s_ctorFunc = pi => new PropertyInfoAdapter (pi); 
+    private static readonly Func<PropertyInfo, PropertyInfoAdapter> s_ctorFunc = pi => new PropertyInfoAdapter(pi);
 
     public static PropertyInfoAdapter Create (PropertyInfo propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      return s_dataStore.GetOrAdd (propertyInfo, s_ctorFunc);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      return s_dataStore.GetOrAdd(propertyInfo, s_ctorFunc);
+    }
+
+    [ContractAnnotation("null => null; notnull => notnull")]
+    [return: NotNullIfNotNull("propertyInfo")]
+    public static PropertyInfoAdapter? CreateOrNull (PropertyInfo? propertyInfo)
+    {
+      if (propertyInfo == null)
+        return null;
+
+      return s_dataStore.GetOrAdd(propertyInfo, s_ctorFunc);
     }
 
     private readonly PropertyInfo _propertyInfo;
-    private readonly Lazy<IMethodInformation> _publicGetMethod;
-    private readonly Lazy<IMethodInformation> _publicOrNonPublicGetMethod;
-    private readonly Lazy<IMethodInformation> _publicSetMethod;
-    private readonly Lazy<IMethodInformation> _publicOrNonPublicSetMethod;
+    private readonly Lazy<IMethodInformation?> _publicGetMethod;
+    private readonly Lazy<IMethodInformation?> _publicOrNonPublicGetMethod;
+    private readonly Lazy<IMethodInformation?> _publicSetMethod;
+    private readonly Lazy<IMethodInformation?> _publicOrNonPublicSetMethod;
     private readonly Lazy<IReadOnlyCollection<IMethodInformation>> _publicAccessors;
     private readonly Lazy<IReadOnlyCollection<IMethodInformation>> _publicOrNonPublicAccessors;
 
-    private readonly Lazy<ITypeInformation> _cachedDeclaringType;
+    private readonly Lazy<ITypeInformation?> _cachedDeclaringType;
     private readonly Lazy<ITypeInformation> _cachedOriginalDeclaringType;
     private readonly Lazy<IPropertyInformation> _cachedOriginalDeclaration;
 
-    private readonly Lazy<IReadOnlyCollection<IPropertyInformation>> _interfaceDeclarations; 
+    private readonly Lazy<IReadOnlyCollection<IPropertyInformation>> _interfaceDeclarations;
 
     private PropertyInfoAdapter (PropertyInfo propertyInfo)
     {
       _propertyInfo = propertyInfo;
 
-      _publicGetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetGetMethod (false)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+      // TODO RM-7777: Check if Create or CreateOrNull should be used in the following instantiations.
+      _publicGetMethod = new Lazy<IMethodInformation?>(
+          () => MethodInfoAdapter.CreateOrNull(_propertyInfo.GetGetMethod(false)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicOrNonPublicGetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetGetMethod (true)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+      _publicOrNonPublicGetMethod = new Lazy<IMethodInformation?>(
+          () => MethodInfoAdapter.CreateOrNull(_propertyInfo.GetGetMethod(true)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicSetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetSetMethod (false)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+      _publicSetMethod = new Lazy<IMethodInformation?>(
+          () => MethodInfoAdapter.CreateOrNull(_propertyInfo.GetSetMethod(false)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicOrNonPublicSetMethod = new Lazy<IMethodInformation> (
-          () => Maybe.ForValue (_propertyInfo.GetSetMethod (true)).Select (MethodInfoAdapter.Create).ValueOrDefault(),
+      _publicOrNonPublicSetMethod = new Lazy<IMethodInformation?>(
+          () => MethodInfoAdapter.CreateOrNull(_propertyInfo.GetSetMethod(true)),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicAccessors = new Lazy<IReadOnlyCollection<IMethodInformation>> (
-          () => _propertyInfo.GetAccessors (false).Select (MethodInfoAdapter.Create).ToArray(),
+      _publicAccessors = new Lazy<IReadOnlyCollection<IMethodInformation>>(
+          () => _propertyInfo.GetAccessors(false).Select(MethodInfoAdapter.Create).ToArray(),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _publicOrNonPublicAccessors = new Lazy<IReadOnlyCollection<IMethodInformation>> (
-          () => _propertyInfo.GetAccessors (true).Select (MethodInfoAdapter.Create).ToArray(),
+      _publicOrNonPublicAccessors = new Lazy<IReadOnlyCollection<IMethodInformation>>(
+          () => _propertyInfo.GetAccessors(true).Select(MethodInfoAdapter.Create).ToArray(),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _cachedDeclaringType = new Lazy<ITypeInformation> (
-          () => Maybe.ForValue (_propertyInfo.DeclaringType).Select (TypeAdapter.Create).ValueOrDefault(),
+      _cachedDeclaringType = new Lazy<ITypeInformation?>(
+          () => TypeAdapter.CreateOrNull(_propertyInfo.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _cachedOriginalDeclaringType = new Lazy<ITypeInformation> (
-          () => TypeAdapter.Create (_propertyInfo.GetOriginalDeclaringType()),
+      _cachedOriginalDeclaringType = new Lazy<ITypeInformation>(
+          () => TypeAdapter.Create(_propertyInfo.GetOriginalDeclaringType()),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _cachedOriginalDeclaration = new Lazy<IPropertyInformation> (
-          () => PropertyInfoAdapter.Create (_propertyInfo.GetBaseDefinition()),
+      _cachedOriginalDeclaration = new Lazy<IPropertyInformation>(
+          () => PropertyInfoAdapter.Create(_propertyInfo.GetBaseDefinition()),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _interfaceDeclarations = new Lazy<IReadOnlyCollection<IPropertyInformation>> (
+      _interfaceDeclarations = new Lazy<IReadOnlyCollection<IPropertyInformation>>(
           FindInterfaceDeclarationsImplementation,
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
@@ -119,7 +131,7 @@ namespace Remotion.Reflection
       get { return _propertyInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _cachedDeclaringType.Value; }
     }
@@ -139,36 +151,38 @@ namespace Remotion.Reflection
       get { return _publicSetMethod.Value != null; }
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
-      return AttributeUtility.GetCustomAttribute<T> (_propertyInfo, inherited);
+      return AttributeUtility.GetCustomAttribute<T>(_propertyInfo, inherited);
     }
 
     public T[] GetCustomAttributes<T> (bool inherited) where T: class
     {
-      return AttributeUtility.GetCustomAttributes<T> (_propertyInfo, inherited);
+      return AttributeUtility.GetCustomAttributes<T>(_propertyInfo, inherited);
     }
 
     public bool IsDefined<T> (bool inherited) where T: class
     {
-      return AttributeUtility.IsDefined<T> (_propertyInfo, inherited);
+      return AttributeUtility.IsDefined<T>(_propertyInfo, inherited);
     }
 
-    public object GetValue (object instance, object[] indexParameters)
+    public object? GetValue (object? instance, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      //TODO RM-7432: Remove null check, parameter should be nullable
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      return _propertyInfo.GetValue (instance, indexParameters);
+      return _propertyInfo.GetValue(instance, indexParameters);
     }
 
-    public void SetValue (object instance, object value, object[] indexParameters)
+    public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      //TODO RM-7432: Remove null check, parameter should be nullable
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      _propertyInfo.SetValue (instance, value, indexParameters);
+      _propertyInfo.SetValue(instance, value, indexParameters);
     }
 
-    public IMethodInformation GetGetMethod (bool nonPublic)
+    public IMethodInformation? GetGetMethod (bool nonPublic)
     {
       if (nonPublic)
         return _publicOrNonPublicGetMethod.Value;
@@ -176,7 +190,7 @@ namespace Remotion.Reflection
         return _publicGetMethod.Value;
     }
 
-    public IMethodInformation GetSetMethod (bool nonPublic)
+    public IMethodInformation? GetSetMethod (bool nonPublic)
     {
       if (nonPublic)
         return _publicOrNonPublicSetMethod.Value;
@@ -197,22 +211,23 @@ namespace Remotion.Reflection
         return _publicAccessors.Value.ToArray();
     }
 
-    public IPropertyInformation FindInterfaceImplementation (Type implementationType)
+    public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
 
-      if (!DeclaringType.IsInterface)
-        throw new InvalidOperationException ("This property is not an interface property.");
+      // TODO RM-7802: DeclaringType being null should be handled.
+      if (!DeclaringType!.IsInterface)
+        throw new InvalidOperationException("This property is not an interface property.");
 
       var interfaceAccessorMethod = _publicAccessors.Value.First();
-      var implementationMethod = interfaceAccessorMethod.FindInterfaceImplementation (implementationType);
+      var implementationMethod = interfaceAccessorMethod.FindInterfaceImplementation(implementationType);
       if (implementationMethod == null)
         return null;
-      
-      var implementationProperty = implementationMethod.FindDeclaringProperty ();
-      
-      Assertion.IsNotNull (
-          implementationProperty, 
+
+      var implementationProperty = implementationMethod.FindDeclaringProperty();
+
+      Assertion.IsNotNull(
+          implementationProperty,
           "We assume that property acessor '" + implementationMethod + "' must be found on '" + implementationType + "'.");
 
       return implementationProperty;
@@ -225,27 +240,29 @@ namespace Remotion.Reflection
 
     private IReadOnlyCollection<IPropertyInformation> FindInterfaceDeclarationsImplementation ()
     {
-      if (DeclaringType.IsInterface)
-        throw new InvalidOperationException ("This property is itself an interface member, so it cannot have an interface declaration.");
+      // TODO RM-7802: DeclaringType being null should be handled.
+      if (DeclaringType!.IsInterface)
+        throw new InvalidOperationException("This property is itself an interface member, so it cannot have an interface declaration.");
 
       var accessorMethod = _publicOrNonPublicAccessors.Value.First();
       var interfaceAccessorMethods = accessorMethod.FindInterfaceDeclarations();
-      return interfaceAccessorMethods.Select (m => m.FindDeclaringProperty()).ToArray();
+      //TODO RM-7432: Implementation does not match nullability of interface
+      return interfaceAccessorMethods.Select(m => m.FindDeclaringProperty()!).ToArray();
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return ReferenceEquals (this, obj);
+      return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode ()
     {
-      return RuntimeHelpers.GetHashCode (this);
+      return RuntimeHelpers.GetHashCode(this);
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
-      return _propertyInfo.ToString ();
+      return _propertyInfo.ToString();
     }
 
     bool INullObject.IsNull

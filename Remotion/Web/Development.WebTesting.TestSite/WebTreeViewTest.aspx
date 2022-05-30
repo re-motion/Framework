@@ -20,6 +20,18 @@
   <remotion:WebTreeView ID="MyWebTreeView" runat="server"/>
   <div id="scope">
     <h3>WebTreeView2</h3>
-    <remotion:WebTreeView ID="MyWebTreeView2" runat="server"/>
+    <remotion:WebTreeView ID="MyWebTreeView2" EnableWordWrap="True" Width="100px" runat="server"/>
   </div>
+  <h3>WebTreeView3</h3>
+  <remotion:WebTreeView ID="MyWebTreeView3" runat="server"/>
+  <h3>MyOrderedWebTreeView</h3>
+  <remotion:WebTreeView ID="MyOrderedWebTreeView" EnableTopLevelGrouping="True" runat="server"/>
+  <h3>MyUnorderedWebTreeView</h3>
+  <remotion:WebTreeView ID="MyUnorderedWebTreeView" EnableTopLevelGrouping="False" runat="server"/>
+  <h3>MyWebTreeViewWithCategories</h3>
+  <remotion:WebTreeView ID="MyWebTreeViewWithCategories" runat="server"/>
+  <h3>MyWebTreeViewWithoutCategories</h3>
+  <remotion:WebTreeView ID="MyWebTreeViewWithoutCategories" runat="server"/>
+  <h3>MyWebTreeViewWithUmlauts</h3>
+  <remotion:WebTreeView ID="MyWebTreeViewWithUmlauts" runat="server"/>
 </asp:Content>

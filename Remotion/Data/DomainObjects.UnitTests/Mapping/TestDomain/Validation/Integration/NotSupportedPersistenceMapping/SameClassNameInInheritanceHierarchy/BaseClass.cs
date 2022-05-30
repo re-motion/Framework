@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     SameClassNameInInheritanceHierarchy
 {
   [DBTable]
-  [ClassID ("SameClassNameInInheritanceHierarchy_DuplicatedClassName")]
+  [ClassID("SameClassNameInInheritanceHierarchy_DuplicatedClassName")]
   public class BaseClass : DomainObject
   {
   }

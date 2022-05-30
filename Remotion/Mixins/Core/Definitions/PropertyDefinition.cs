@@ -23,14 +23,14 @@ namespace Remotion.Mixins.Definitions
   public class PropertyDefinition : MemberDefinitionBase
   {
     public new readonly UniqueDefinitionCollection<Type, PropertyDefinition> Overrides =
-        new UniqueDefinitionCollection<Type, PropertyDefinition> (m => m.DeclaringClass.Type);
+        new UniqueDefinitionCollection<Type, PropertyDefinition>(m => m.DeclaringClass.Type);
 
-    private PropertyDefinition _base;
-    private readonly MethodDefinition _getMethod;
-    private readonly MethodDefinition _setMethod;
+    private PropertyDefinition? _base;
+    private readonly MethodDefinition? _getMethod;
+    private readonly MethodDefinition? _setMethod;
 
-    public PropertyDefinition (PropertyInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition getMethod, MethodDefinition setMethod)
-        : base (memberInfo, declaringClass)
+    public PropertyDefinition (PropertyInfo memberInfo, ClassDefinitionBase declaringClass, MethodDefinition? getMethod, MethodDefinition? setMethod)
+        : base(memberInfo, declaringClass)
     {
       _getMethod = getMethod;
       _setMethod = setMethod;
@@ -43,38 +43,38 @@ namespace Remotion.Mixins.Definitions
 
     public PropertyInfo PropertyInfo
     {
-      get { return (PropertyInfo) MemberInfo; }
+      get { return (PropertyInfo)MemberInfo; }
     }
 
-    public MethodDefinition GetMethod
+    public MethodDefinition? GetMethod
     {
       get { return _getMethod; }
     }
 
-    public MethodDefinition SetMethod
+    public MethodDefinition? SetMethod
     {
       get { return _setMethod; }
     }
 
-    public override MemberDefinitionBase BaseAsMember
+    public override MemberDefinitionBase? BaseAsMember
     {
       get { return _base; }
       protected internal set
       {
         if (value == null || value is PropertyDefinition)
         {
-          _base = (PropertyDefinition) value;
+          _base = (PropertyDefinition?)value;
           if (GetMethod != null)
             GetMethod.Base = _base == null ? null : _base.GetMethod;
           if (SetMethod != null)
             SetMethod.Base = _base == null ? null : _base.SetMethod;
         }
         else
-          throw new ArgumentException ("Base must be PropertyDefinition or null.", "value");
+          throw new ArgumentException("Base must be PropertyDefinition or null.", "value");
       }
     }
 
-    public PropertyDefinition Base
+    public PropertyDefinition? Base
     {
       get { return _base; }
       protected internal set { BaseAsMember = value; }
@@ -82,37 +82,37 @@ namespace Remotion.Mixins.Definitions
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull("member", member);
 
       var overrider = member as PropertyDefinition;
       if (overrider == null)
       {
-        string message = string.Format ("Member {0} cannot override property {1} - it is not a property.", member.FullName, FullName);
-        throw new ArgumentException (message);
+        string message = string.Format("Member {0} cannot override property {1} - it is not a property.", member.FullName, FullName);
+        throw new ArgumentException(message);
       }
 
-      Overrides.Add (overrider);
+      Overrides.Add(overrider);
 
       if (GetMethod != null && overrider.GetMethod != null)
-        GetMethod.AddOverride (overrider.GetMethod);
+        GetMethod.AddOverride(overrider.GetMethod);
       if (SetMethod != null && overrider.SetMethod != null)
-        SetMethod.AddOverride (overrider.SetMethod);
+        SetMethod.AddOverride(overrider.SetMethod);
     }
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
 
       if (GetMethod != null)
-        GetMethod.Accept (visitor);
+        GetMethod.Accept(visitor);
       if (SetMethod != null)
-        SetMethod.Accept (visitor);
+        SetMethod.Accept(visitor);
     }
 
     protected override IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper ()
     {
-      return new CovariantDefinitionCollectionWrapper<Type, PropertyDefinition, MemberDefinitionBase> (Overrides);
+      return new CovariantDefinitionCollectionWrapper<Type, PropertyDefinition, MemberDefinitionBase>(Overrides);
     }
   }
 }

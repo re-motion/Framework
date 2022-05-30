@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using Remotion.Logging;
@@ -35,13 +36,13 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
   /// </remarks>
   public class FilteringAssemblyLoader : IAssemblyLoader
   {
-    private static readonly Lazy<ILog> s_log = new Lazy<ILog> (() => LogManager.GetLogger (typeof (FilteringAssemblyLoader)));
+    private static readonly Lazy<ILog> s_log = new Lazy<ILog>(() => LogManager.GetLogger(typeof(FilteringAssemblyLoader)));
 
     private readonly IAssemblyLoaderFilter _filter;
 
     public FilteringAssemblyLoader (IAssemblyLoaderFilter filter)
     {
-      ArgumentUtility.CheckNotNull ("filter", filter);
+      ArgumentUtility.CheckNotNull("filter", filter);
       _filter = filter;
     }
 
@@ -50,34 +51,34 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       get { return _filter; }
     }
 
-    public virtual Assembly TryLoadAssembly (string filePath)
+    public virtual Assembly? TryLoadAssembly (string filePath)
     {
-      ArgumentUtility.CheckNotNull ("filePath", filePath);
+      ArgumentUtility.CheckNotNull("filePath", filePath);
 
-      s_log.Value.InfoFormat ("Attempting to get assembly name for path '{0}'.", filePath);
-      AssemblyName assemblyName = PerformGuardedLoadOperation (filePath, null, () => AssemblyNameCache.GetAssemblyName (filePath));
+      s_log.Value.InfoFormat("Attempting to get assembly name for path '{0}'.", filePath);
+      AssemblyName? assemblyName = PerformGuardedLoadOperation(filePath, null, () => AssemblyNameCache.GetAssemblyName(filePath));
       if (assemblyName == null)
         return null;
 
-      s_log.Value.InfoFormat ("Assembly name for path '{0}' is '{1}'.", filePath, assemblyName.FullName);
+      s_log.Value.InfoFormat("Assembly name for path '{0}' is '{1}'.", filePath, assemblyName.FullName);
 
       return TryLoadAssembly(assemblyName, filePath);
     }
 
-    public virtual Assembly TryLoadAssembly (AssemblyName assemblyName, string context)
+    public virtual Assembly? TryLoadAssembly (AssemblyName assemblyName, string context)
     {
-      ArgumentUtility.CheckNotNull ("assemblyName", assemblyName);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      if (PerformGuardedLoadOperation (assemblyName.FullName, context, () => _filter.ShouldConsiderAssembly (assemblyName)))
+      if (PerformGuardedLoadOperation(assemblyName.FullName, context, () => _filter.ShouldConsiderAssembly(assemblyName)))
       {
-        s_log.Value.InfoFormat ("Attempting to load assembly with name '{0}' in context '{1}'.", assemblyName, context);
-        Assembly loadedAssembly = PerformGuardedLoadOperation (assemblyName.FullName, context, () => Assembly.Load (assemblyName));
-        s_log.Value.InfoFormat ("Success: {0}", loadedAssembly != null);
+        s_log.Value.InfoFormat("Attempting to load assembly with name '{0}' in context '{1}'.", assemblyName, context);
+        Assembly? loadedAssembly = PerformGuardedLoadOperation(assemblyName.FullName, context, () => Assembly.Load(assemblyName));
+        s_log.Value.InfoFormat("Success: {0}", loadedAssembly != null);
 
         if (loadedAssembly == null)
           return null;
-        else if (PerformGuardedLoadOperation (assemblyName.FullName, context, () => _filter.ShouldIncludeAssembly (loadedAssembly)))
+        else if (PerformGuardedLoadOperation(assemblyName.FullName, context, () => _filter.ShouldIncludeAssembly(loadedAssembly)))
           return loadedAssembly;
         else
           return null;
@@ -86,10 +87,11 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
         return null;
     }
 
-    public T PerformGuardedLoadOperation<T> (string assemblyDescription, string loadContext, Func<T> loadOperation)
+    [return: MaybeNull]
+    public T PerformGuardedLoadOperation<T> (string assemblyDescription, string? loadContext, Func<T> loadOperation)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyDescription", assemblyDescription);
-      ArgumentUtility.CheckNotNull ("loadOperation", loadOperation);
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyDescription", assemblyDescription);
+      ArgumentUtility.CheckNotNull("loadOperation", loadOperation);
 
       var assemblyDescriptionText = "'" + assemblyDescription + "'";
       if (loadContext != null)
@@ -97,50 +99,50 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
       try
       {
-        return loadOperation ();
+        return loadOperation();
       }
       catch (BadImageFormatException ex)
       {
-        s_log.Value.InfoFormat (
-            "The file {0} triggered a BadImageFormatException and will be ignored. Possible causes for this are:" + Environment.NewLine 
-            + "- The file is not a .NET assembly." + Environment.NewLine 
+        s_log.Value.InfoFormat(
+            "The file {0} triggered a BadImageFormatException and will be ignored. Possible causes for this are:" + Environment.NewLine
+            + "- The file is not a .NET assembly." + Environment.NewLine
             + "- The file was built for a newer version of .NET." + Environment.NewLine
             + "- The file was compiled for a different platform (x86, x64, etc.) than the platform this process is running on." + Environment.NewLine
-            + "- The file is damaged.", 
+            + "- The file is damaged.",
             assemblyDescriptionText);
-        s_log.Value.DebugFormat (ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
+        s_log.Value.DebugFormat(ex, "The file {0} triggered a BadImageFormatException.", assemblyDescriptionText);
 
-        return default (T);
+        return default(T)!;
       }
       catch (FileLoadException ex)
       {
-        s_log.Value.WarnFormat (
+        s_log.Value.WarnFormat(
             ex,
             "The assembly {0} triggered a FileLoadException and will be ignored - maybe the assembly is DelaySigned, but signing has not been completed?",
             assemblyDescriptionText);
-        return default (T);
+        return default(T)!;
       }
       catch (FileNotFoundException ex)
       {
-        string message = string.Format ("The assembly {0} triggered a FileNotFoundException - maybe the assembly does not exist or a referenced assembly "
+        string message = string.Format("The assembly {0} triggered a FileNotFoundException - maybe the assembly does not exist or a referenced assembly "
                                         + "is missing?\r\nFileNotFoundException message: {1}", assemblyDescriptionText, ex.Message);
 
         // This is a workaround for an issue in Windows 8 with .NET 3.5, where System.ServiceModel references a 
         // non-existing System.IdentityModel.Selectors.dll,
         // https://www.re-motion.org/jira/browse/RM-5089
-        if (assemblyDescription.Contains ("System.IdentityModel.Selectors"))
+        if (assemblyDescription.Contains("System.IdentityModel.Selectors"))
         {
-          s_log.Value.WarnFormat (message, ex);
-          return default (T);
+          s_log.Value.WarnFormat(message, ex);
+          return default(T)!;
         }
 
-        throw new AssemblyLoaderException (message, ex);
+        throw new AssemblyLoaderException(message, ex);
       }
       catch (Exception ex)
       {
-        string message = string.Format ("The assembly {0} triggered an unexpected exception of type {1}.\r\nUnexpected exception message: {2}", 
-                                        assemblyDescriptionText, ex.GetType().FullName, ex.Message);
-        throw new AssemblyLoaderException (message, ex);
+        string message = string.Format("The assembly {0} triggered an unexpected exception of type {1}.\r\nUnexpected exception message: {2}",
+                                        assemblyDescriptionText, ex.GetType().GetFullNameSafe(), ex.Message);
+        throw new AssemblyLoaderException(message, ex);
       }
     }
   }

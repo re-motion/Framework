@@ -33,31 +33,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _factory = new SqlFilterViewScriptElementFactory();
 
-      var tableDefinitionWithCustomSchema = TableDefinitionObjectMother.Create (
+      var tableDefinitionWithCustomSchema = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "TableName1"));
-      var tableDefinitionWithDefaultSchema = TableDefinitionObjectMother.Create (
+          new EntityNameDefinition("SchemaName", "TableName1"));
+      var tableDefinitionWithDefaultSchema = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "TableName2"));
+          new EntityNameDefinition(null, "TableName2"));
 
-      var property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column1");
-      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column2");
+      var property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1");
+      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2");
 
-      _filterViewDefinitionWithCustomSchema = FilterViewDefinitionObjectMother.Create (
+      _filterViewDefinitionWithCustomSchema = FilterViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "FilterView1"),
+          new EntityNameDefinition("SchemaName", "FilterView1"),
           tableDefinitionWithCustomSchema,
           new[] { "ClassID1" },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new[] { property1 });
-      _filterViewDefinitionWithDefaultSchema = FilterViewDefinitionObjectMother.Create (
+      _filterViewDefinitionWithDefaultSchema = FilterViewDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "FilterView2"),
+          new EntityNameDefinition(null, "FilterView2"),
           tableDefinitionWithDefaultSchema,
           new[] { "ClassID1", "ClassID2" },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
@@ -68,14 +68,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     [Test]
     public void GetCreateElement_CustomSchema_WithSchemaBinding ()
     {
-      var result = _factory.GetCreateElement (_filterViewDefinitionWithCustomSchema);
+      var result = _factory.GetCreateElement(_filterViewDefinitionWithCustomSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
-      var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo(3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof(ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
+      var elements = ((ScriptElementCollection)result).Elements;
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [SchemaName].[FilterView1] ([ID], [ClassID], [Timestamp], [Column1])\r\n"
          +"  WITH SCHEMABINDING AS\r\n"
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
          +"    FROM [SchemaName].[TableName1]\r\n"
          +"    WHERE [ClassID] IN ('ClassID1')\r\n"
          +"  WITH CHECK OPTION";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo(expectedResult));
+      Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
@@ -91,14 +91,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var factory = new ExtendedSqlFilterViewScriptElementFactory();
 
-      var result = factory.GetCreateElement (_filterViewDefinitionWithDefaultSchema);
+      var result = factory.GetCreateElement(_filterViewDefinitionWithDefaultSchema);
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptElementCollection)));
-      var elements = ((ScriptElementCollection) result).Elements;
-      Assert.That (elements.Count, Is.EqualTo (3));
-      Assert.That (elements[0], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[2], Is.TypeOf (typeof (BatchDelimiterStatement)));
-      Assert.That (elements[1], Is.TypeOf (typeof (ScriptStatement)));
+      Assert.That(result, Is.TypeOf(typeof(ScriptElementCollection)));
+      var elements = ((ScriptElementCollection)result).Elements;
+      Assert.That(elements.Count, Is.EqualTo(3));
+      Assert.That(elements[0], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[2], Is.TypeOf(typeof(BatchDelimiterStatement)));
+      Assert.That(elements[1], Is.TypeOf(typeof(ScriptStatement)));
       var expectedResult =
           "CREATE VIEW [dbo].[FilterView2] ([ID], [ClassID], [Timestamp], [Column1], [Column2])\r\n"
           +"  AS\r\n"
@@ -106,33 +106,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           +"    FROM [dbo].[TableName2]\r\n"
           +"    WHERE [ClassID] IN ('ClassID1', 'ClassID2')\r\n"
           +"  WITH CHECK OPTION";
-      Assert.That (((ScriptStatement) elements[1]).Statement, Is.EqualTo (expectedResult));
+      Assert.That(((ScriptStatement)elements[1]).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_CustomSchema ()
     {
-      var result = _factory.GetDropElement (_filterViewDefinitionWithCustomSchema);
+      var result = _factory.GetDropElement(_filterViewDefinitionWithCustomSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FilterView1' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP VIEW [SchemaName].[FilterView1]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_filterViewDefinitionWithDefaultSchema);
+      var result = _factory.GetDropElement(_filterViewDefinitionWithDefaultSchema);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FilterView2' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP VIEW [dbo].[FilterView2]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

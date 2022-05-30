@@ -49,179 +49,179 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       using (var persistenceManager = CreatePersistenceManager())
       {
-        return persistenceManager.CreateNewObjectID (classDefinition);
+        return persistenceManager.CreateNewObjectID(classDefinition);
       }
     }
 
     public virtual ILoadedObjectData LoadObjectData (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
       using (var persistenceManager = CreatePersistenceManager())
       {
-        var result = persistenceManager.LoadDataContainer (id);
-        return GetLoadedObjectDataForObjectLookupResult (result);
+        var result = persistenceManager.LoadDataContainer(id);
+        return GetLoadedObjectDataForObjectLookupResult(result);
       }
     }
 
     public virtual IEnumerable<ILoadedObjectData> LoadObjectData (IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       using (var persistenceManager = CreatePersistenceManager())
       {
-        var results = persistenceManager.LoadDataContainers (objectIDs);
-        return results.Select (GetLoadedObjectDataForObjectLookupResult);
+        var results = persistenceManager.LoadDataContainers(objectIDs);
+        return results.Select(GetLoadedObjectDataForObjectLookupResult);
       }
     }
 
     public virtual ILoadedObjectData ResolveObjectRelationData (
-        RelationEndPointID relationEndPointID, 
+        RelationEndPointID relationEndPointID,
         ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      ArgumentUtility.CheckNotNull ("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
+      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
+      ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
       using (var persistenceManager = CreatePersistenceManager())
       {
-        var dataContainer = persistenceManager.LoadRelatedDataContainer (relationEndPointID);
-        return GetLoadedObjectDataForDataContainer (dataContainer, alreadyLoadedObjectDataProvider);
+        var dataContainer = persistenceManager.LoadRelatedDataContainer(relationEndPointID);
+        return GetLoadedObjectDataForDataContainer(dataContainer, alreadyLoadedObjectDataProvider);
       }
     }
 
     public virtual IEnumerable<ILoadedObjectData> ResolveCollectionRelationData (
         RelationEndPointID relationEndPointID, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-      ArgumentUtility.CheckNotNull ("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
-      
+      ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
+      ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
+
       using (var persistenceManager = CreatePersistenceManager())
       {
-        var dataContainers = persistenceManager.LoadRelatedDataContainers (relationEndPointID);
-        return dataContainers.Select (dc => GetLoadedObjectDataForDataContainer (dc, alreadyLoadedObjectDataProvider));
+        var dataContainers = persistenceManager.LoadRelatedDataContainers(relationEndPointID);
+        return dataContainers.Select(dc => GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider));
       }
     }
 
     public virtual IEnumerable<ILoadedObjectData> ExecuteCollectionQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull ("query", query);ArgumentUtility.CheckNotNull ("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
-      
+      ArgumentUtility.CheckNotNull("query", query);ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
+
 
       if (query.QueryType != QueryType.Collection)
-        throw new ArgumentException ("Only collection queries can be used to load data containers.", "query");
+        throw new ArgumentException("Only collection queries can be used to load data containers.", "query");
 
       var dataContainers = ExecuteDataContainerQuery(query);
-      return dataContainers.Select (dc => GetLoadedObjectDataForDataContainer (dc, alreadyLoadedObjectDataProvider));
+      return dataContainers.Select(dc => GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider));
     }
 
     public virtual IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
       if (query.QueryType != QueryType.Custom)
         throw new ArgumentException("Only custom queries can be used to load custom results", "query");
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory (query.StorageProviderDefinition.Name);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
         // This foreach/yield combination is needed to force the using block to stay open until the whole result set has finished enumeration.
-        foreach (var queryResultRow in provider.ExecuteCustomQuery (query))
+        foreach (var queryResultRow in provider.ExecuteCustomQuery(query))
         {
           yield return queryResultRow;
-        }  
+        }
       }
     }
 
-    private IEnumerable<DataContainer> ExecuteDataContainerQuery (IQuery query)
+    private IEnumerable<DataContainer?> ExecuteDataContainerQuery (IQuery query)
     {
-      IEnumerable<DataContainer> dataContainers;
+      IEnumerable<DataContainer?> dataContainers;
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        var provider = storageProviderManager.GetMandatory (query.StorageProviderDefinition.Name);
-        dataContainers = provider.ExecuteCollectionQuery (query);
+        var provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        dataContainers = provider.ExecuteCollectionQuery(query);
       }
       return dataContainers;
     }
 
-    public virtual object ExecuteScalarQuery (IQuery query)
+    public virtual object? ExecuteScalarQuery (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
       if (query.QueryType != QueryType.Scalar)
-        throw new ArgumentException ("Only scalar queries can be used to load scalar results.", "query");
+        throw new ArgumentException("Only scalar queries can be used to load scalar results.", "query");
 
       using (var storageProviderManager = CreateStorageProviderManager())
       {
-        StorageProvider provider = storageProviderManager.GetMandatory (query.StorageProviderDefinition.Name);
-        return provider.ExecuteScalarQuery (query);
+        StorageProvider provider = storageProviderManager.GetMandatory(query.StorageProviderDefinition.Name);
+        return provider.ExecuteScalarQuery(query);
       }
     }
 
     public virtual void PersistData (IEnumerable<PersistableData> data)
     {
-      ArgumentUtility.CheckNotNull ("data", data);
+      ArgumentUtility.CheckNotNull("data", data);
 
       // Filter out those items whose state is only Changed due to relation changes - we don't persist those
-      var dataContainers = data.Select (item => item.DataContainer).Where (dc => dc.State != StateType.Unchanged);
-      var collection = new DataContainerCollection (dataContainers, false);
+      var dataContainers = data.Select(item => item.DataContainer).Where(dc => !dc.State.IsUnchanged);
+      var collection = new DataContainerCollection(dataContainers, false);
 
       if (collection.Count > 0)
       {
-        using (var persistenceManager = CreatePersistenceManager ())
+        using (var persistenceManager = CreatePersistenceManager())
         {
-          persistenceManager.Save (collection);
+          persistenceManager.Save(collection);
         }
       }
     }
 
     public virtual IEnumerable<LoadedObjectDataWithDataSourceData> ExecuteFetchQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-      ArgumentUtility.CheckNotNull ("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
+      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull("alreadyLoadedObjectDataProvider", alreadyLoadedObjectDataProvider);
 
       if (query.QueryType != QueryType.Collection)
-        throw new ArgumentException ("Only collection queries can be used for fetching.", "query");
+        throw new ArgumentException("Only collection queries can be used for fetching.", "query");
 
-      var dataContainers = ExecuteDataContainerQuery (query);
-      return dataContainers.Select (dc => new LoadedObjectDataWithDataSourceData (GetLoadedObjectDataForDataContainer (dc, alreadyLoadedObjectDataProvider), dc));
+      var dataContainers = ExecuteDataContainerQuery(query);
+      return dataContainers.Select(dc => new LoadedObjectDataWithDataSourceData(GetLoadedObjectDataForDataContainer(dc, alreadyLoadedObjectDataProvider), dc));
 
     }
 
-    private PersistenceManager CreatePersistenceManager ()
+    protected virtual PersistenceManager CreatePersistenceManager ()
     {
-      return new PersistenceManager (CreatePersistenceExtension());
+      return new PersistenceManager(CreatePersistenceExtension());
     }
 
     private StorageProviderManager CreateStorageProviderManager ()
     {
-      return new StorageProviderManager (CreatePersistenceExtension ());
+      return new StorageProviderManager(CreatePersistenceExtension());
     }
 
-    private IPersistenceExtension CreatePersistenceExtension ()
+    protected IPersistenceExtension CreatePersistenceExtension ()
     {
       var listenerFactory = SafeServiceLocator.Current.GetInstance<IPersistenceExtensionFactory>();
-      return new CompoundPersistenceExtension (listenerFactory.CreatePersistenceExtensions (_transactionID));
+      return new CompoundPersistenceExtension(listenerFactory.CreatePersistenceExtensions(_transactionID));
     }
 
-    private ILoadedObjectData GetLoadedObjectDataForDataContainer (DataContainer dataContainer, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
+    private ILoadedObjectData GetLoadedObjectDataForDataContainer (DataContainer? dataContainer, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)
     {
       if (dataContainer == null)
         return new NullLoadedObjectData();
 
-      var knownLoadedObjectData = alreadyLoadedObjectDataProvider.GetLoadedObject (dataContainer.ID);
-      return knownLoadedObjectData ?? new FreshlyLoadedObjectData (dataContainer);
+      var knownLoadedObjectData = alreadyLoadedObjectDataProvider.GetLoadedObject(dataContainer.ID);
+      return knownLoadedObjectData ?? new FreshlyLoadedObjectData(dataContainer);
     }
 
     private ILoadedObjectData GetLoadedObjectDataForObjectLookupResult (ObjectLookupResult<DataContainer> result)
     {
       if (result.LocatedObject == null)
-        return new NotFoundLoadedObjectData (result.ObjectID);
+        return new NotFoundLoadedObjectData(result.ObjectID);
       else
-        return new FreshlyLoadedObjectData (result.LocatedObject);
+        return new FreshlyLoadedObjectData(result.LocatedObject);
     }
   }
 }

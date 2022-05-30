@@ -37,11 +37,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>A <see cref="TransportItem"/> holding the same data as <paramref name="container"/>.</returns>
     public static TransportItem PackageDataContainer (DataContainer container)
     {
-      ArgumentUtility.CheckNotNull ("container", container);
+      ArgumentUtility.CheckNotNull("container", container);
 
-      TransportItem item = new TransportItem (container.ID);
+      TransportItem item = new TransportItem(container.ID);
       foreach (var propertyDefinition in container.ClassDefinition.GetPropertyDefinitions())
-        item.Properties.Add (propertyDefinition.PropertyName, container.GetValue (propertyDefinition));
+        item.Properties.Add(propertyDefinition.PropertyName, container.GetValue(propertyDefinition));
       return item;
     }
 
@@ -53,14 +53,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <returns>A stream of <see cref="TransportItem"/> instances holding the same data as <paramref name="containers"/>.</returns>
     public static IEnumerable<TransportItem> PackageDataContainers (IEnumerable<DataContainer> containers)
     {
-      ArgumentUtility.CheckNotNull ("containers", containers);
+      ArgumentUtility.CheckNotNull("containers", containers);
 
       foreach (DataContainer container in containers)
-        yield return PackageDataContainer (container);
+        yield return PackageDataContainer(container);
     }
 
     private readonly ObjectID _id;
-    private readonly Dictionary<string, object> _properties;
+    private readonly Dictionary<string, object?> _properties;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportItem"/> class.
@@ -68,15 +68,15 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="id">The id of the <see cref="DomainObject"/> represented by this item.</param>
     public TransportItem (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
       _id = id;
-      _properties = new Dictionary<string, object>();
+      _properties = new Dictionary<string, object?>();
     }
 
-    internal TransportItem (ObjectID id, Dictionary<string, object> properties)
+    internal TransportItem (ObjectID id, Dictionary<string, object?> properties)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      ArgumentUtility.CheckNotNull ("properties", properties);
+      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull("properties", properties);
 
       _id = id;
       _properties = properties;
@@ -95,7 +95,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// Gets the properties to be transported by this item.
     /// </summary>
     /// <value>The properties to be transported.</value>
-    public Dictionary<string, object> Properties
+    public Dictionary<string, object?> Properties
     {
       get { return _properties; }
     }

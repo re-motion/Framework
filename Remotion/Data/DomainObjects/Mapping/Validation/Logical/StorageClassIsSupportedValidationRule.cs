@@ -34,28 +34,28 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions 
-             select Validate (propertyDefinition.PropertyInfo);
+      return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
+             select Validate(propertyDefinition.PropertyInfo);
     }
 
     private MappingValidationResult Validate (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      var storageClassAttribute = propertyInfo.GetCustomAttribute<StorageClassAttribute> (true);
+      var storageClassAttribute = propertyInfo.GetCustomAttribute<StorageClassAttribute>(true);
 
       if (storageClassAttribute != null && storageClassAttribute.StorageClass != StorageClass.Persistent
           && storageClassAttribute.StorageClass != StorageClass.Transaction)
       {
-        return MappingValidationResult.CreateInvalidResultForProperty (
+        return MappingValidationResult.CreateInvalidResultForProperty(
             propertyInfo,
             "Only StorageClass.Persistent and StorageClass.Transaction are supported for property '{0}' of class '{1}'.",
             propertyInfo.Name,
-            propertyInfo.DeclaringType.Name);
+            propertyInfo.DeclaringType!.Name);
       }
-      return MappingValidationResult.CreateValidResult ();
+      return MappingValidationResult.CreateValidResult();
     }
   }
 }

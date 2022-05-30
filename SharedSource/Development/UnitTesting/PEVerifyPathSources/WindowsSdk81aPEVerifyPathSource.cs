@@ -17,8 +17,8 @@
 using System;
 using System.IO;
 using Microsoft.Win32;
-using Remotion.FunctionalProgramming;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
@@ -32,7 +32,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       switch (version)
       {
         case PEVerifyVersion.DotNet4:
-          return string.Format (
+          return string.Format(
               "Windows SDK 8.1A: Registry: HKEY_LOCAL_MACHINE\\{0}\\{1}\\PEVerify.exe",
               WindowsSdkRegistryKey40,
               WindowsSdkRegistryInstallationFolderValue);
@@ -42,22 +42,27 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
       }
     }
 
-    protected override string GetPotentialPEVerifyPath (PEVerifyVersion version)
+    protected override string? GetPotentialPEVerifyPath (PEVerifyVersion version)
     {
       switch (version)
       {
         case PEVerifyVersion.DotNet4:
-          return Maybe
-              .ForValue (RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32))
-              .Select (key => key.OpenSubKey (WindowsSdkRegistryKey40, false))
-              .Select (key => key.GetValue (WindowsSdkRegistryInstallationFolderValue) as string)
-              .Select (path => Path.Combine (path, "PEVerify.exe"))
-              .ValueOrDefault ();
+        {
+          var sdkPath = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+              .OpenSubKey(WindowsSdkRegistryKey40, false)
+              ?.GetValue(WindowsSdkRegistryInstallationFolderValue) as string;
+
+          if (sdkPath == null)
+            return null;
+
+          return Path.Combine(sdkPath, "PEVerify.exe");
+        }
 
         default:
+        {
           return null;
+        }
       }
     }
-
   }
 }

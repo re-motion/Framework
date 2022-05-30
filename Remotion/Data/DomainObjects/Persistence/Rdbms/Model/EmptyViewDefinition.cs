@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IRdbmsStoragePropertyDefinition timestampProperty,
         IEnumerable<IRdbmsStoragePropertyDefinition> dataProperties,
         IEnumerable<EntityNameDefinition> synonyms)
-        : base (
+        : base(
             storageProviderDefinition,
             viewName,
             objectIDProperty,
@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
 
-      visitor.VisitEmptyViewDefinition (this);
+      visitor.VisitEmptyViewDefinition(this);
     }
   }
 }

@@ -20,9 +20,9 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof (MixinAddingUnidirectionalRelation1))]
-  [Uses (typeof (MixinAddingUnidirectionalRelation2))]
-  [DBTable ("MixedDomains_TargetWithTwoUnidirectionalMixins")]
+  [Uses(typeof(MixinAddingUnidirectionalRelation1))]
+  [Uses(typeof(MixinAddingUnidirectionalRelation2))]
+  [DBTable("MixedDomains_TargetWithTwoUnidirectionalMixins")]
   [TestDomain]
   public class TargetClassWithTwoUnidirectionalMixins : DomainObject, ISupportsGetObject
   {

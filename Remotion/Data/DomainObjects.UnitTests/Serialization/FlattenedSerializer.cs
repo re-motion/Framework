@@ -25,23 +25,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     public static object[] Serialize (IFlattenedSerializable serializable)
     {
       FlattenedSerializationInfo info = new FlattenedSerializationInfo();
-      info.AddValue (serializable);
+      info.AddValue(serializable);
       return info.GetData();
     }
 
     public static T Deserialize<T> (object[] data) where T : IFlattenedSerializable
     {
-      FlattenedDeserializationInfo info = new FlattenedDeserializationInfo (data);
+      FlattenedDeserializationInfo info = new FlattenedDeserializationInfo(data);
       var value = info.GetValue<T>();
-      info.SignalDeserializationFinished ();
+      info.SignalDeserializationFinished();
       return value;
     }
 
     public static T SerializeAndDeserialize<T> (T serializable) where T : IFlattenedSerializable
     {
-      var flattenedData = Serialize (serializable);
-      var deserializedFlattenedData = Serializer.SerializeAndDeserialize (flattenedData);
-      return Deserialize<T> (deserializedFlattenedData);
+      var flattenedData = Serialize(serializable);
+      var deserializedFlattenedData = Serializer.SerializeAndDeserialize(flattenedData);
+      return Deserialize<T>(deserializedFlattenedData);
     }
   }
 }

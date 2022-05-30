@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTests
 {
@@ -28,66 +28,61 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.EnumerationPropertyTes
   {
     private BindableObjectProvider _businessObjectProvider;
 
-    private MockRepository _mockRepository;
-
     public override void SetUp ()
     {
       base.SetUp();
 
-      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
-
-      _mockRepository = new MockRepository();
-      _mockRepository.StrictMock<IBusinessObject>();
+      _businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
     }
 
     [Test]
     public void DisableFromProperty ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledFromProperty");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithDisabledEnumValue), "DisabledFromProperty");
       EnumerationValueInfo[] expected = new[]
           {
-              new EnumerationValueInfo (TestEnum.Value2, "Value2", "Value2", true),
-              new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true),
-              new EnumerationValueInfo (TestEnum.Value4, "Value4", "Value4", true),
-              new EnumerationValueInfo (TestEnum.Value5, "Value5", "Value5", true)
+              new EnumerationValueInfo(TestEnum.Value2, "Value2", "Value2", true),
+              new EnumerationValueInfo(TestEnum.Value3, "Value3", "Value3", true),
+              new EnumerationValueInfo(TestEnum.Value4, "Value4", "Value4", true),
+              new EnumerationValueInfo(TestEnum.Value5, "Value5", "Value5", true)
           };
 
-      CheckEnumerationValueInfos (expected, property.GetEnabledValues (null));
+      CheckEnumerationValueInfos(expected, property.GetEnabledValues(null));
     }
 
     [Test]
     public void DisableFromPropertyType ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledFromPropertyType");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithDisabledEnumValue), "DisabledFromPropertyType");
       EnumerationValueInfo[] expected = new[]
           {
-              new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
-              new EnumerationValueInfo (TestEnum.Value2, "Value2", "Value2", true),
-              new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true),
-              new EnumerationValueInfo (TestEnum.Value4, "Value4", "Value4", true)
+              new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),
+              new EnumerationValueInfo(TestEnum.Value2, "Value2", "Value2", true),
+              new EnumerationValueInfo(TestEnum.Value3, "Value3", "Value3", true),
+              new EnumerationValueInfo(TestEnum.Value4, "Value4", "Value4", true)
           };
 
-      CheckEnumerationValueInfos (expected, property.GetEnabledValues (null));
+      CheckEnumerationValueInfos(expected, property.GetEnabledValues(null));
     }
 
     [Test]
     public void DisableWithBusinessObject ()
     {
-      IBusinessObjectEnumerationProperty property = CreateProperty (typeof (ClassWithDisabledEnumValue), "DisabledWithObject");
+      IBusinessObjectEnumerationProperty property = CreateProperty(typeof(ClassWithDisabledEnumValue), "DisabledWithObject");
       EnumerationValueInfo[] expected = new[]
           {
-              new EnumerationValueInfo (TestEnum.Value1, "Value1", "Value1", true),
-              new EnumerationValueInfo (TestEnum.Value3, "Value3", "Value3", true),
-              new EnumerationValueInfo (TestEnum.Value5, "Value5", "Value5", true),
+              new EnumerationValueInfo(TestEnum.Value1, "Value1", "Value1", true),
+              new EnumerationValueInfo(TestEnum.Value3, "Value3", "Value3", true),
+              new EnumerationValueInfo(TestEnum.Value5, "Value5", "Value5", true),
           };
 
-      CheckEnumerationValueInfos (expected, property.GetEnabledValues (MockRepository.GenerateStub<IBusinessObject>()));
+      CheckEnumerationValueInfos(expected, property.GetEnabledValues(new Mock<IBusinessObject>().Object));
     }
 
     private EnumerationProperty CreateProperty (Type type, string propertyName)
     {
-      return new EnumerationProperty (
-        GetPropertyParameters (GetPropertyInfo (type, propertyName), _businessObjectProvider));
+      return new EnumerationProperty(
+        GetPropertyParameters(GetPropertyInfo(type, propertyName), _businessObjectProvider));
     }
   }
 }

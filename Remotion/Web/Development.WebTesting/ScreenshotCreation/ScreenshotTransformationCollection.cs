@@ -27,12 +27,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
   /// A collection of <see cref="IScreenshotTransformation{T}"/>s that can be applied as a <see cref="IScreenshotTransformation{T}"/>.
   /// </summary>
   public class ScreenshotTransformationCollection<T> : ICollection<IScreenshotTransformation<T>>, IScreenshotTransformation<T>
+      where T : notnull
   {
     private class TransformationComparer : IComparer<int>
     {
       public int Compare (int x, int y)
       {
-        var result = x.CompareTo (y);
+        var result = x.CompareTo(y);
 
         if (result == 0)
           return 1;
@@ -40,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       }
     }
 
-    public static readonly ScreenshotTransformationCollection<T> EmptyCollection = new ScreenshotTransformationCollection<T> (true);
+    public static readonly ScreenshotTransformationCollection<T> EmptyCollection = new ScreenshotTransformationCollection<T>(true);
 
     private readonly SortedList<int, IScreenshotTransformation<T>> _transformations;
     private readonly HashSet<IScreenshotTransformation<T>> _transformationsSet;
@@ -48,13 +49,13 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     private bool _isReadOnly;
 
     public ScreenshotTransformationCollection ()
-        : this (false)
+        : this(false)
     {
     }
 
     private ScreenshotTransformationCollection (bool isReadOnly)
     {
-      _transformations = new SortedList<int, IScreenshotTransformation<T>> (new TransformationComparer());
+      _transformations = new SortedList<int, IScreenshotTransformation<T>>(new TransformationComparer());
       _transformationsSet = new HashSet<IScreenshotTransformation<T>>();
       _isReadOnly = isReadOnly;
     }
@@ -80,24 +81,24 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public ScreenshotTransformationContext<T> BeginApply (ScreenshotTransformationContext<T> context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _transformations.Aggregate (context, (current, transformation) => transformation.Value.BeginApply (current));
+      return _transformations.Aggregate(context, (current, transformation) => transformation.Value.BeginApply(current));
     }
 
     /// <inheritdoc />
     public void EndApply (ScreenshotTransformationContext<T> context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       foreach (var transformation in _transformations.Reverse())
-        transformation.Value.EndApply (context);
+        transformation.Value.EndApply(context);
     }
 
     /// <inheritdoc />
     public IEnumerator<IScreenshotTransformation<T>> GetEnumerator ()
     {
-      return _transformations.Select (e => e.Value).GetEnumerator();
+      return _transformations.Select(e => e.Value).GetEnumerator();
     }
 
     /// <inheritdoc />
@@ -109,23 +110,23 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public void Add ([NotNull] IScreenshotTransformation<T> item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
+      ArgumentUtility.CheckNotNull("item", item);
 
       if (_isReadOnly)
-        throw new InvalidOperationException ("The collection can not be changed as it is read-only.");
+        throw new InvalidOperationException("The collection can not be changed as it is read-only.");
 
-      if (_transformationsSet.Contains (item))
-        throw new InvalidOperationException ("The specified item is already in the collection.");
+      if (_transformationsSet.Contains(item))
+        throw new InvalidOperationException("The specified item is already in the collection.");
 
-      _transformations.Add (item.ZIndex, item);
-      _transformationsSet.Add (item);
+      _transformations.Add(item.ZIndex, item);
+      _transformationsSet.Add(item);
     }
 
     /// <inheritdoc />
     public void Clear ()
     {
       if (_isReadOnly)
-        throw new InvalidOperationException ("The collection can not be changed as it is read-only.");
+        throw new InvalidOperationException("The collection can not be changed as it is read-only.");
 
       _transformations.Clear();
       _transformationsSet.Clear();
@@ -134,15 +135,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public bool Contains ([NotNull] IScreenshotTransformation<T> item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
+      ArgumentUtility.CheckNotNull("item", item);
 
-      return _transformationsSet.Contains (item);
+      return _transformationsSet.Contains(item);
     }
 
     /// <inheritdoc />
     public void CopyTo (IScreenshotTransformation<T>[] array, int arrayIndex)
     {
-      _transformations.Select (i => i.Value).ToArray().CopyTo (array, arrayIndex);
+      ArgumentUtility.CheckNotNull("array", array);
+
+      _transformations.Select(i => i.Value).ToArray().CopyTo(array, arrayIndex);
     }
 
     /// <summary>
@@ -156,17 +159,17 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public bool Remove ([NotNull] IScreenshotTransformation<T> item)
     {
-      ArgumentUtility.CheckNotNull ("item", item);
+      ArgumentUtility.CheckNotNull("item", item);
 
       if (_isReadOnly)
-        throw new InvalidOperationException ("The collection can not be changed as it is read-only.");
+        throw new InvalidOperationException("The collection can not be changed as it is read-only.");
 
-      var index = _transformations.IndexOfValue (item);
+      var index = _transformations.IndexOfValue(item);
       if (index == -1)
         return false;
 
-      _transformations.RemoveAt (index);
-      _transformationsSet.Remove (item);
+      _transformations.RemoveAt(index);
+      _transformationsSet.Remove(item);
       return true;
     }
   }

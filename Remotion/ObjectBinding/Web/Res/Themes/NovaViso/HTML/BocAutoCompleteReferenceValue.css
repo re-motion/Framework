@@ -1,0 +1,204 @@
+/* Style applied to the BocAutoCompleteReferenceValue. */
+
+.bocAutoCompleteReferenceValue
+{
+  /* defined inline on the markup */
+  --width: 0px;
+
+  --input-width: minmax(var(--width), var(--remotion-themed-control-width));
+  min-height: var(--remotion-themed-singleline-min-height);
+  display: inline-block;
+}
+
+.bocAutoCompleteReferenceValue.reserveOptionsMenuWidth
+{
+  width: var(--remotion-themed-control-width);
+}
+
+.bocAutoCompleteReferenceValue span.body
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: inline-grid;
+  grid-template-areas: "content optionsMenu";
+  grid-template-columns: var(--input-width) min-content;
+  align-items: center;
+}
+
+.bocAutoCompleteReferenceValue.reserveOptionsMenuWidth span.body
+{
+  grid-template-columns: auto min-content;
+}
+
+.bocAutoCompleteReferenceValue span.icon
+{
+  grid-area: content;
+}
+
+.bocAutoCompleteReferenceValue.readOnly span.icon
+{
+  align-self: start;
+  padding: var(--remotion-themed-control-padding-readonly);
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  border: var(--remotion-themed-border-readonly);
+}
+
+.bocAutoCompleteReferenceValue span.icon img
+{
+  position: relative;
+  width: var(--default-icon-size);
+  height: var(--default-icon-size);
+  pointer-events: none;
+
+  /* Currently used for overriding img.Icon rule in Style.css. */
+  vertical-align: top;
+}
+
+.bocAutoCompleteReferenceValue:not(.readOnly) span.icon img
+{
+  padding-left: calc(var(--remotion-themed-spacing) + 2 * var(--remotion-themed-border-width));
+}
+
+.bocAutoCompleteReferenceValue.readOnly span.icon img
+{
+  padding-top: var(--remotion-themed-border-width);
+  padding-left: calc(var(--remotion-themed-spacing) + var(--remotion-themed-border-width));
+}
+
+.bocAutoCompleteReferenceValue span.content
+{
+  grid-row: 1;
+  grid-column: content;
+  display: inline-grid;
+  grid-template-areas: "input button";
+  grid-template-columns: 1fr var(--remotion-themed-img-width);
+  gap: var(--remotion-themed-spacing-small);
+  align-items: center;
+}
+
+.bocAutoCompleteReferenceValue span.content span.bocAutoCompleteReferenceValueInput
+{
+  grid-row: 1;
+  grid-column: input / button;
+  height: 100%;
+}
+
+.bocAutoCompleteReferenceValue span.content span.bocAutoCompleteReferenceValueInput input,
+.bocAutoCompleteReferenceValue span.content.hasIcon span.bocAutoCompleteReferenceValueInput input
+{
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+
+.bocAutoCompleteReferenceValue span.content span.bocAutoCompleteReferenceValueInput input
+{
+  padding-left: calc(var(--remotion-themed-spacing) + var(--remotion-themed-border-width));
+  padding-right: calc(var(--remotion-themed-img-width) + var(--remotion-themed-spacing-small));
+}
+
+.bocAutoCompleteReferenceValue span.content.hasIcon span.bocAutoCompleteReferenceValueInput input
+{
+  padding-left: calc(var(--default-icon-size) + var(--remotion-themed-spacing) + var(--remotion-themed-border-width) + var(--remotion-themed-spacing-small));
+}
+
+.bocAutoCompleteReferenceValue input.error
+{
+  background-image: url('../Image/sprite.svg#AutoCompleteReferenceValueErrorIndicator');
+  background-size: var(--remotion-themed-line-height);
+  background-position: right var(--remotion-themed-img-width) center;
+  background-repeat: no-repeat;
+}
+
+.bocAutoCompleteReferenceValue span.bocAutoCompleteReferenceValueButton
+{
+  grid-row: 1;
+  grid-column: button;
+  display: flex;
+  align-items: center;
+  width: var(--remotion-themed-img-width);
+  height: calc(var(--remotion-themed-singleline-min-height));
+  box-sizing: border-box;
+  border: var(--remotion-themed-border);
+  border-color: transparent;
+  border-left-color: var(--color-contrast-separator);
+  border-top-right-radius: var(--remotion-themed-border-radius);
+  border-bottom-right-radius: var(--remotion-themed-border-radius);
+}
+
+.bocAutoCompleteReferenceValue:not(.disabled) span.bocAutoCompleteReferenceValueButton:hover
+{
+  background-color: var(--color-highlight);
+  border: var(--remotion-themed-border-focus);
+}
+
+.bocAutoCompleteReferenceValue .bocAutoCompleteReferenceValueButton img
+{
+  width: 100%;
+  height: 100%;
+  background-image: url(../Image/sprite.svg#AutoCompleteReferenceValueDropDownButtonFace);
+  background-size: var(--remotion-themed-img-width) var(--remotion-themed-img-width);
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bocAutoCompleteReferenceValue.disabled:not(.readOnly) span.content
+{
+  color: var(--color-disabled-text);
+  cursor: default;
+}
+
+.bocAutoCompleteReferenceValue.readOnly span.content
+{
+  display: inline-flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.bocAutoCompleteReferenceValue.readOnly span[tabindex]
+{
+  min-height: var(--remotion-themed-singleline-min-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--remotion-themed-control-padding-readonly);
+  border: var(--remotion-themed-border-readonly);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
+.bocAutoCompleteReferenceValue.readOnly span[tabindex]:focus-visible
+{
+  outline: none;
+  border: var(--remotion-themed-border-readonly-focus);
+  background-color: var(--remotion-themed-background-color-readonly-focus);
+  box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
+  width: 100%;
+}
+
+span.bocAutoCompleteReferenceValue.readOnly span[tabindex]:empty::before
+{
+  /* Inserting a 'zero width space' unicode character as placeholder so that empty
+  readonly values are not collapsed and can therefore visualize the keyboard focus.
+  This also scales with the font size and min-height doesn't have to be set since
+  line height remains unchanged. */
+  content: "\200b";
+}
+
+.bocAutoCompleteReferenceValue.readOnly span.content.hasIcon span
+{
+  padding-left: calc(var(--default-icon-size) + var(--remotion-themed-spacing-small) + var(--remotion-themed-border-width));
+}
+
+.bocAutoCompleteReferenceValue span.optionsMenu
+{
+  grid-area: optionsMenu;
+  /* by not using gap on the parent element, we don't need to adjust the grid-template when the optionsMenu is not rendered. */
+  margin-left: var(--remotion-themed-spacing);
+}

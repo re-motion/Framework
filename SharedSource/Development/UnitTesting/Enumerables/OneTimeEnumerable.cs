@@ -20,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.Enumerables
 {
@@ -35,7 +36,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
 
       public OneTimeEnumerator (IEnumerator<T> enumerator)
       {
-        ArgumentUtility.CheckNotNull ("enumerator", enumerator);
+        ArgumentUtility.CheckNotNull("enumerator", enumerator);
         _enumerator = enumerator;
       }
 
@@ -44,24 +45,24 @@ namespace Remotion.Development.UnitTesting.Enumerables
         get { return _enumerator.Current; }
       }
 
-      object IEnumerator.Current
+      object? IEnumerator.Current
       {
         get { return Current; }
       }
 
       public void Dispose ()
       {
-        _enumerator.Dispose ();
+        _enumerator.Dispose();
       }
 
       public bool MoveNext ()
       {
-        return _enumerator.MoveNext ();
+        return _enumerator.MoveNext();
       }
 
       public void Reset ()
       {
-        throw new NotSupportedException ("OneTimeEnumerator does not support Reset().");
+        throw new NotSupportedException("OneTimeEnumerator does not support Reset().");
       }
     }
 
@@ -70,7 +71,7 @@ namespace Remotion.Development.UnitTesting.Enumerables
 
     public OneTimeEnumerable (IEnumerable<T> enumerable)
     {
-      ArgumentUtility.CheckNotNull ("enumerable", enumerable);
+      ArgumentUtility.CheckNotNull("enumerable", enumerable);
       _enumerable = enumerable;
     }
 
@@ -78,10 +79,10 @@ namespace Remotion.Development.UnitTesting.Enumerables
     public IEnumerator<T> GetEnumerator ()
     {
       if (_isUsed)
-        throw new InvalidOperationException ("OneTimeEnumerable can only be iterated once.");
+        throw new InvalidOperationException("OneTimeEnumerable can only be iterated once.");
       _isUsed = true;
 
-      return new OneTimeEnumerator (_enumerable.GetEnumerator());
+      return new OneTimeEnumerator(_enumerable.GetEnumerator());
     }
 
     IEnumerator IEnumerable.GetEnumerator ()

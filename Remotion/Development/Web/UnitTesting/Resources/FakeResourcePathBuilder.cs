@@ -31,7 +31,7 @@ namespace Remotion.Development.Web.UnitTesting.Resources
 
     protected override string BuildPath (string[] completePath)
     {
-      return string.Join ("/", completePath);
+      return string.Join("/", completePath);
     }
   }
 }

@@ -28,6 +28,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// The user directory of this <see cref="ChromeOptions"/>.
     /// </summary>
     [CanBeNull]
-    public string UserDirectory { get; set; }
+    public string? UserDirectory { get; set; }
   }
 }

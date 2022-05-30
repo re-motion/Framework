@@ -32,18 +32,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     [SetUp]
     public override void SetUp ()
     {
-      base.SetUp ();
-      _bocLiteral = new BocLiteral ();
+      base.SetUp();
+      _bocLiteral = new BocLiteral();
       _bocLiteral.ID = "BocTextValue";
-      NamingContainer.Controls.Add (_bocLiteral);
+      NamingContainer.Controls.Add(_bocLiteral);
 
-      _businessObject = TypeWithString.Create ();
+      _businessObject = TypeWithString.Create();
 
       _propertyStringValue =
-          (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("StringValue");
+          (IBusinessObjectStringProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("StringValue");
 
-      _dataSource = new BusinessObjectReferenceDataSource ();
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new BusinessObjectReferenceDataSource();
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 
@@ -51,21 +51,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void HasValue_ValueIsSet_ReturnsTrue ()
     {
       _bocLiteral.Value = "x";
-      Assert.That (_bocLiteral.HasValue, Is.True);
+      Assert.That(_bocLiteral.HasValue, Is.True);
     }
 
     [Test]
     public void HasValue_TextContainsOnlyWhitespace_ReturnsFalse ()
     {
       _bocLiteral.Value = "  ";
-      Assert.That (_bocLiteral.HasValue, Is.False);
+      Assert.That(_bocLiteral.HasValue, Is.False);
     }
 
     [Test]
     public void HasValue_ValueIsNull_ReturnsFalse ()
     {
       _bocLiteral.Value = null;
-      Assert.That (_bocLiteral.HasValue, Is.False);
+      Assert.That(_bocLiteral.HasValue, Is.False);
     }
 
 
@@ -77,8 +77,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocLiteral.Property = _propertyStringValue;
       _bocLiteral.Value = null;
 
-      _bocLiteral.LoadValue (true);
-      Assert.That (_bocLiteral.Value, Is.EqualTo ("Foo Bar"));
+      _bocLiteral.LoadValue(true);
+      Assert.That(_bocLiteral.Value, Is.EqualTo("Foo Bar"));
     }
 
     [Test]
@@ -89,8 +89,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocLiteral.Property = _propertyStringValue;
       _bocLiteral.Value = null;
 
-      _bocLiteral.LoadValue (false);
-      Assert.That (_bocLiteral.Value, Is.EqualTo (_businessObject.StringValue));
+      _bocLiteral.LoadValue(false);
+      Assert.That(_bocLiteral.Value, Is.EqualTo(_businessObject.StringValue));
     }
 
     [Test]
@@ -101,8 +101,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocLiteral.Property = _propertyStringValue;
       _bocLiteral.Value = "Foo Bar";
 
-      _bocLiteral.LoadValue (false);
-      Assert.That (_bocLiteral.Value, Is.EqualTo (_businessObject.StringValue));
+      _bocLiteral.LoadValue(false);
+      Assert.That(_bocLiteral.Value, Is.EqualTo(_businessObject.StringValue));
     }
 
     [Test]
@@ -112,8 +112,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocLiteral.Property = _propertyStringValue;
       _bocLiteral.Value = "Foo Bar";
 
-      _bocLiteral.LoadValue (false);
-      Assert.That (_bocLiteral.Value, Is.EqualTo ("Foo Bar"));
+      _bocLiteral.LoadValue(false);
+      Assert.That(_bocLiteral.Value, Is.EqualTo("Foo Bar"));
     }
 
     [Test]
@@ -123,8 +123,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocLiteral.Property = null;
       _bocLiteral.Value = "Foo Bar";
 
-      _bocLiteral.LoadValue (false);
-      Assert.That (_bocLiteral.Value, Is.EqualTo ("Foo Bar"));
+      _bocLiteral.LoadValue(false);
+      Assert.That(_bocLiteral.Value, Is.EqualTo("Foo Bar"));
     }
 
     [Test]
@@ -135,8 +135,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocLiteral.Property = _propertyStringValue;
       _bocLiteral.Value = "Foo Bar";
 
-      _bocLiteral.LoadValue (false);
-      Assert.That (_bocLiteral.Value, Is.EqualTo (null));
+      _bocLiteral.LoadValue(false);
+      Assert.That(_bocLiteral.Value, Is.EqualTo(null));
     }
 
 
@@ -146,8 +146,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string value = "Foo Bar";
       _bocLiteral.Value = null;
 
-      _bocLiteral.LoadUnboundValue (value, true);
-      Assert.That (_bocLiteral.Value, Is.EqualTo ("Foo Bar"));
+      _bocLiteral.LoadUnboundValue(value, true);
+      Assert.That(_bocLiteral.Value, Is.EqualTo("Foo Bar"));
     }
 
     [Test]
@@ -156,8 +156,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string value = "Foo Bar";
       _bocLiteral.Value = null;
 
-      _bocLiteral.LoadUnboundValue (value, false);
-      Assert.That (_bocLiteral.Value, Is.EqualTo (value));
+      _bocLiteral.LoadUnboundValue(value, false);
+      Assert.That(_bocLiteral.Value, Is.EqualTo(value));
     }
 
     [Test]
@@ -166,8 +166,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string value = null;
       _bocLiteral.Value = "Foo Bar";
 
-      _bocLiteral.LoadUnboundValue (value, false);
-      Assert.That (_bocLiteral.Value, Is.EqualTo (value));
+      _bocLiteral.LoadUnboundValue(value, false);
+      Assert.That(_bocLiteral.Value, Is.EqualTo(value));
     }
   }
 }

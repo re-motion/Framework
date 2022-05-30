@@ -36,6 +36,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly IClassIDProvider _classIDProvider;
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
     private readonly IDomainObjectCreator _instanceCreator;
 
     public ClassReflector (
@@ -45,15 +46,17 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IClassIDProvider classIDProvider,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (DomainObject));
-      ArgumentUtility.CheckNotNull ("mappingObjectFactory", mappingObjectFactory);
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull ("instanceCreator", instanceCreator);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("type", type, typeof(DomainObject));
+      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull("instanceCreator", instanceCreator);
 
       _type = type;
       _mappingObjectFactory = mappingObjectFactory;
@@ -61,6 +64,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _classIDProvider = classIDProvider;
       _propertyMetadataProvider = propertyMetadataProvider;
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
       _instanceCreator = instanceCreator;
     }
 
@@ -79,48 +83,55 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       get { return _nameResolver; }
     }
 
-    public ClassDefinition GetMetadata (ClassDefinition baseClassDefinition)
+    public ClassDefinition GetMetadata (ClassDefinition? baseClassDefinition)
     {
-      var persistentMixinFinder = new PersistentMixinFinder (Type, baseClassDefinition == null);
-      var classDefinition = new ClassDefinition (
-          _classIDProvider.GetClassID (Type), Type, IsAbstract(), baseClassDefinition, GetStorageGroupType(), persistentMixinFinder, _instanceCreator);
+      var persistentMixinFinder = new PersistentMixinFinder(Type, baseClassDefinition == null);
+      var storageGroupAttribute = GetStorageGroupAttribute();
+      var storageGroupType = storageGroupAttribute?.GetType();
+      var defaultStorageClass = storageGroupAttribute?.DefaultStorageClass ?? DefaultStorageClass.Persistent;
+      var classDefinition = new ClassDefinition(
+              _classIDProvider.GetClassID(Type),
+              Type,
+              IsAbstract(),
+              baseClassDefinition,
+              storageGroupType,
+              defaultStorageClass,
+              persistentMixinFinder,
+              _instanceCreator);
 
-      var properties = MappingObjectFactory.CreatePropertyDefinitionCollection (classDefinition, GetPropertyInfos (classDefinition));
-      classDefinition.SetPropertyDefinitions (properties);
-      var endPoints = MappingObjectFactory.CreateRelationEndPointDefinitionCollection (classDefinition);
-      classDefinition.SetRelationEndPointDefinitions (endPoints);
+      var properties = MappingObjectFactory.CreatePropertyDefinitionCollection(classDefinition, GetPropertyInfos(classDefinition));
+      classDefinition.SetPropertyDefinitions(properties);
+      var endPoints = MappingObjectFactory.CreateRelationEndPointDefinitionCollection(classDefinition);
+      classDefinition.SetRelationEndPointDefinitions(endPoints);
 
       return classDefinition;
     }
 
-    private Type GetStorageGroupType ()
+    private StorageGroupAttribute? GetStorageGroupAttribute ()
     {
-      var storageGroupAttribute = AttributeUtility.GetCustomAttributes<StorageGroupAttribute> (Type, true).FirstOrDefault();
-      if (storageGroupAttribute != null)
-        return storageGroupAttribute.GetType();
-      return null;
+      return AttributeUtility.GetCustomAttributes<StorageGroupAttribute>(Type, true).FirstOrDefault();
     }
 
     private bool IsAbstract ()
     {
       if (Type.IsAbstract)
-        return !Attribute.IsDefined (Type, typeof (InstantiableAttribute), false);
+        return !Attribute.IsDefined(Type, typeof(InstantiableAttribute), false);
 
       return false;
     }
 
     private IEnumerable<IPropertyInformation> GetPropertyInfos (ClassDefinition classDefinition)
     {
-      PropertyFinder propertyFinder = new PropertyFinder (
+      PropertyFinder propertyFinder = new PropertyFinder(
           classDefinition.ClassType,
           classDefinition,
           classDefinition.BaseClass == null,
           true,
           _nameResolver,
-          classDefinition.PersistentMixinFinder, 
+          classDefinition.PersistentMixinFinder,
           _propertyMetadataProvider,
-          _domainModelConstraintProvider
-          );
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
       return propertyFinder.FindPropertyInfos();
     }
   }

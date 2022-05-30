@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -30,48 +30,49 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     public void Initialize_AndToArray ()
     {
       var properties = new PropertyBase[] { CreateProperty() };
-      var propertyCollection = new PropertyCollection (properties);
+      var propertyCollection = new PropertyCollection(properties);
 
-      Assert.That (propertyCollection.ToArray(), Is.EqualTo (properties));
+      Assert.That(propertyCollection.ToArray(), Is.EqualTo(properties));
     }
 
     [Test]
     public void Contains_KnownProperty ()
     {
       var properties = new PropertyBase[] { CreateProperty() };
-      var propertyCollection = new PropertyCollection (properties);
+      var propertyCollection = new PropertyCollection(properties);
 
-      Assert.That (propertyCollection.Contains ("Scalar"), Is.True);
+      Assert.That(propertyCollection.Contains("Scalar"), Is.True);
     }
 
     [Test]
     public void Contains_UnkownProperty ()
     {
       var properties = new PropertyBase[] { CreateProperty() };
-      var propertyCollection = new PropertyCollection (properties);
+      var propertyCollection = new PropertyCollection(properties);
 
-      Assert.That (propertyCollection.Contains ("Invalid"), Is.False);
+      Assert.That(propertyCollection.Contains("Invalid"), Is.False);
     }
 
     [Test]
     public void GetByName ()
     {
       var property = CreateProperty();
-      var propertyCollection = new PropertyCollection (new PropertyBase[] { property });
+      var propertyCollection = new PropertyCollection(new PropertyBase[] { property });
 
-      Assert.That (propertyCollection["Scalar"], Is.SameAs (property));
+      Assert.That(propertyCollection["Scalar"], Is.SameAs(property));
     }
 
     private StubPropertyBase CreateProperty ()
     {
-      return new StubPropertyBase (
-          CreateParameters (
-              new BindableObjectProvider (
-                  MockRepository.GenerateStub<IMetadataFactory>(), MockRepository.GenerateStub<IBusinessObjectServiceFactory>()),
-              GetPropertyInfo (typeof (ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
-              typeof (SimpleReferenceType),
-              typeof (SimpleReferenceType),
+      return new StubPropertyBase(
+          CreateParameters(
+              new BindableObjectProvider(
+                  new Mock<IMetadataFactory>().Object, new Mock<IBusinessObjectServiceFactory>().Object),
+              GetPropertyInfo(typeof(ClassWithReferenceType<SimpleReferenceType>), "Scalar"),
+              typeof(SimpleReferenceType),
+              typeof(SimpleReferenceType),
               null,
+              true,
               false,
               false));
     }

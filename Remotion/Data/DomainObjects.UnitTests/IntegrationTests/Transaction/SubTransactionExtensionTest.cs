@@ -15,76 +15,57 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.RhinoMocks.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.FunctionalProgramming;
-using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
-using Is = NUnit.Framework.Is;
-using Mocks_Is = Rhino.Mocks.Constraints.Is;
-using Mocks_List = Rhino.Mocks.Constraints.List;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
   [TestFixture]
   public class SubTransactionExtensionTest : ClientTransactionBaseTest
   {
-    private MockRepository _mockRepository;
-    private IClientTransactionExtension _extensionMock;
     private ClientTransaction _subTransaction;
     private ClientTransactionScope _subTransactionScope;
 
     private Order _order1;
     private DataManager _parentTransactionDataManager;
     private DataManager _subTransactionDataManager;
-
-    public override void TestFixtureSetUp ()
-    {
-      base.TestFixtureSetUp();
-      SetDatabaseModifyable();
-    }
+    private Product _product1;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
-      _extensionMock = _mockRepository.StrictMock<IClientTransactionExtension>();
 
       _subTransaction = TestableClientTransaction.CreateSubTransaction();
       _subTransactionScope = _subTransaction.EnterDiscardingScope();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      _product1 = DomainObjectIDs.Product1.GetObject<Product>();
 
-      _extensionMock.Stub (stub => stub.Key).Return ("TestExtension");
-      _extensionMock.Replay();
-      TestableClientTransaction.Extensions.Add (_extensionMock);
-      _subTransaction.Extensions.Add (_extensionMock);
-      _extensionMock.BackToRecord();
-
-      _mockRepository.BackToRecordAll();
-
-      _parentTransactionDataManager = ClientTransactionTestHelper.GetDataManager (_subTransaction.ParentTransaction);
-      _subTransactionDataManager = ClientTransactionTestHelper.GetDataManager (_subTransaction);
+      _parentTransactionDataManager = ClientTransactionTestHelper.GetDataManager(_subTransaction.ParentTransaction);
+      _subTransactionDataManager = ClientTransactionTestHelper.GetDataManager(_subTransaction);
     }
 
     public override void TearDown ()
     {
-      TestableClientTransaction.Extensions.Remove ("TestExtension");
-      _subTransaction.Extensions.Remove ("TestExtension");
-      _subTransactionScope.Leave ();
+      TestableClientTransaction.Extensions.Remove("TestExtension");
+      _subTransaction.Extensions.Remove("TestExtension");
+      _subTransactionScope.Leave();
 
       base.TearDown();
     }
@@ -92,46 +73,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void NewObjectCreation ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.NewObjectCreating (_subTransaction, typeof (Order));
-      }
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+
+      extensionMock.InSequence(sequence).Setup(mock => mock.NewObjectCreating(_subTransaction, typeof(Order))).Verifiable();
 
       Order.NewObject();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void ObjectLoading ()
     {
-      _mockRepository.BackToRecordAll();
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order3 })));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
+      var sequence = new MockSequence();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.Order3 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.Order3 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order3 })));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
-      }
+      Dev.Null = DomainObjectIDs.Order3.GetObject<Order>();
+      Dev.Null = DomainObjectIDs.Order3.GetObject<Order>();
 
-      _mockRepository.ReplayAll();
-
-      Dev.Null = DomainObjectIDs.Order3.GetObject<Order> ();
-      Dev.Null = DomainObjectIDs.Order3.GetObject<Order> ();
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     private void TestObjectLoadingWithRelatedObject (
@@ -140,58 +119,79 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         bool expectLoadEventsForRelatedObject,
         ObjectID expectedRelatedID)
     {
-      _mockRepository.BackToRecordAll();
-      using (_mockRepository.Ordered())
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { expectedMainObjectID }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .Verifiable();
+      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { expectedMainObjectID })).Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, It.IsAny<DomainObject>(), It.IsAny<IRelationEndPointDefinition>(), It.IsAny<ValueAccess>()))
+          .Verifiable();
+      if (expectLoadEventsForRelatedObject)
       {
-        // loading of main object
-        _extensionMock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { expectedMainObjectID }));
-
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.NotNull());
-
-        _extensionMock.ObjectsLoading (Arg.Is (_subTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { expectedMainObjectID }));
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.NotNull());
-
-        // accessing relation property
-
-        _extensionMock.RelationReading (null, null, null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
-
-        if (expectLoadEventsForRelatedObject)
-        {
-          _extensionMock.ObjectsLoading (
-              Arg.Is (_subTransaction.ParentTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.IsIn (expectedRelatedID));
-          _extensionMock.ObjectsLoaded (_subTransaction.ParentTransaction, null);
-          LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.Anything());
-
-          _extensionMock.ObjectsLoading (Arg.Is (_subTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.IsIn (expectedRelatedID));
-          _extensionMock.ObjectsLoaded (_subTransaction, null);
-          LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything());
-        }
-
-        _extensionMock.RelationRead (null, null, null, (DomainObject) null, ValueAccess.Current);
-
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
-
-        // loading of main object a second time
-
-        // accessing relation property a second time
-
-        _extensionMock.RelationReading (null, null, null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
-
-        _extensionMock.RelationRead (_subTransaction, null, null, (DomainObject) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Contains(expectedRelatedID))))
+            .Verifiable();
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .Verifiable();
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Contains(expectedRelatedID))))
+            .Verifiable();
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .Verifiable();
       }
 
-      _mockRepository.ReplayAll();
-
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<ValueAccess>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationReading(
+                  _subTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<ValueAccess>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<ValueAccess>()))
+          .Verifiable();
       accessCode();
       accessCode();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     private void TestObjectLoadingWithRelatedObjectCollection (
@@ -200,82 +200,111 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         bool expectLoadEventsForRelatedObjects,
         ObjectID[] expectedRelatedIDs)
     {
-      _mockRepository.BackToRecordAll ();
-      using (_mockRepository.Ordered())
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+
+      var sequence = new MockSequence();
+      // loading of main object
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { expectedMainObjectID }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { expectedMainObjectID })).Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, It.IsAny<DomainObject>(), It.IsAny<IRelationEndPointDefinition>(), It.IsAny<ValueAccess>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<IReadOnlyCollectionData<DomainObject>>(),
+                  It.IsAny<ValueAccess>()))
+          .Verifiable();
+
+      if (expectLoadEventsForRelatedObjects)
       {
-        // loading of main object
-        _extensionMock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { expectedMainObjectID }));
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => expectedRelatedIDs.All(_.Contains))))
+            .Verifiable();
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .Verifiable();
 
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.NotNull());
-
-        _extensionMock.ObjectsLoading (Arg.Is (_subTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { expectedMainObjectID }));
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.NotNull());
-
-        // accessing relation property
-
-        _extensionMock.RelationReading (null, null, null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
-
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything (), Mocks_Is.Anything (), Mocks_Is.Anything (), Mocks_Is.Anything ());
-
-        if (expectLoadEventsForRelatedObjects)
-        {
-          _extensionMock.ObjectsLoading (
-              Arg.Is (_subTransaction.ParentTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (expectedRelatedIDs));
-          _extensionMock.ObjectsLoaded (_subTransaction.ParentTransaction, null);
-          LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_Is.Anything());
-
-          _extensionMock.ObjectsLoading (Arg.Is (_subTransaction), Arg<ReadOnlyCollection<ObjectID>>.List.ContainsAll (expectedRelatedIDs));
-          _extensionMock.ObjectsLoaded (_subTransaction, null);
-          LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything());
-        }
-
-        // loading of main object a second time
-
-        // accessing relation property a second time
-
-        _extensionMock.RelationReading (null, null, null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
-
-
-        _extensionMock.RelationRead (_subTransaction, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything(), Mocks_Is.Anything());
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => expectedRelatedIDs.All(_.Contains))))
+            .Verifiable();
+        extensionMock
+            .InSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .Verifiable();
       }
 
-      _mockRepository.ReplayAll ();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationReading(
+                  _subTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<ValueAccess>())).Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<IReadOnlyCollectionData<DomainObject>>(),
+                  It.IsAny<ValueAccess>()))
+          .Verifiable();
 
-      accessCode ();
-      accessCode ();
+      accessCode();
+      accessCode();
 
-      _mockRepository.VerifyAll ();
+      extensionMock.Verify();
     }
 
     [Test]
     public void ObjectLoadingWithRelatedObjects1Side ()
     {
-      TestObjectLoadingWithRelatedObjectCollection (
+      TestObjectLoadingWithRelatedObjectCollection(
           delegate
           {
-            Order order = DomainObjectIDs.Order3.GetObject<Order> ();
+            Order order = DomainObjectIDs.Order3.GetObject<Order>();
             int orderItemCount = order.OrderItems.Count;
-            Assert.That (orderItemCount, Is.EqualTo (1));
+            Assert.That(orderItemCount, Is.EqualTo(1));
           },
-          DomainObjectIDs.Order3, true, new[] { DomainObjectIDs.OrderItem3 });
+          DomainObjectIDs.Order3,
+          true,
+          new[] { DomainObjectIDs.OrderItem3 });
     }
 
     [Test]
     public void ObjectLoadingWithRelatedObjectsNSide ()
     {
-      TestObjectLoadingWithRelatedObject (
+      TestObjectLoadingWithRelatedObject(
           delegate
           {
             OrderItem orderItem = DomainObjectIDs.OrderItem3.GetObject<OrderItem>();
             Order order = orderItem.Order;
-            Assert.That (order, Is.Not.Null);
+            Assert.That(order, Is.Not.Null);
           },
           DomainObjectIDs.OrderItem3,
           false,
@@ -285,12 +314,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ObjectLoadingWithRelatedObjects1To1RealSide ()
     {
-      TestObjectLoadingWithRelatedObject (
+      TestObjectLoadingWithRelatedObject(
           delegate
           {
-            Computer computer = DomainObjectIDs.Computer1.GetObject<Computer> ();
+            Computer computer = DomainObjectIDs.Computer1.GetObject<Computer>();
             Employee employee = computer.Employee;
-            Assert.That (employee, Is.Not.Null);
+            Assert.That(employee, Is.Not.Null);
           },
           DomainObjectIDs.Computer1,
           false,
@@ -300,178 +329,191 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void ObjectLoadingWithRelatedObjects1To1VirtualSide ()
     {
-      TestObjectLoadingWithRelatedObject (
+      TestObjectLoadingWithRelatedObject(
           delegate
           {
-            Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+            Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
             Computer computer = employee.Computer;
-            Assert.That (computer, Is.Not.Null);
+            Assert.That(computer, Is.Not.Null);
           },
-          DomainObjectIDs.Employee3, true, DomainObjectIDs.Computer1);
+          DomainObjectIDs.Employee3,
+          true,
+          DomainObjectIDs.Computer1);
     }
 
     [Test]
     public void EmptyObjectLoadingWithRelatedObjects1Side ()
     {
-      TestObjectLoadingWithRelatedObjectCollection (
+      TestObjectLoadingWithRelatedObjectCollection(
           delegate
           {
-            Customer customer = DomainObjectIDs.Customer2.GetObject<Customer> ();
+            Customer customer = DomainObjectIDs.Customer2.GetObject<Customer>();
             int count = customer.Orders.Count;
-            Assert.That (count, Is.EqualTo (0));
+            Assert.That(count, Is.EqualTo(0));
           },
-          DomainObjectIDs.Customer2, false, null);
+          DomainObjectIDs.Customer2,
+          false,
+          null);
     }
 
     [Test]
     public void NullObjectLoadingWithRelatedObjectsNSide ()
     {
-      TestObjectLoadingWithRelatedObject (
+      TestObjectLoadingWithRelatedObject(
           delegate
           {
-            Client client = DomainObjectIDs.Client1.GetObject<Client> ();
+            Client client = DomainObjectIDs.Client1.GetObject<Client>();
             Client parent = client.ParentClient;
-            Assert.That (parent, Is.Null);
+            Assert.That(parent, Is.Null);
           },
-          DomainObjectIDs.Client1, false, null);
+          DomainObjectIDs.Client1,
+          false,
+          null);
     }
 
     [Test]
     public void NullObjectLoadingWithRelatedObjects1To1RealSide ()
     {
-      TestObjectLoadingWithRelatedObject (
+      TestObjectLoadingWithRelatedObject(
           delegate
           {
-            Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+            Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
             Employee employee = computer.Employee;
-            Assert.That (employee, Is.Null);
+            Assert.That(employee, Is.Null);
           },
-          DomainObjectIDs.Computer4, false, null);
+          DomainObjectIDs.Computer4,
+          false,
+          null);
     }
 
     [Test]
     public void NullObjectLoadingWithRelatedObjects1To1VirtualSide ()
     {
-      TestObjectLoadingWithRelatedObject (
+      TestObjectLoadingWithRelatedObject(
           delegate
           {
-            Employee employee = DomainObjectIDs.Employee7.GetObject<Employee> ();
+            Employee employee = DomainObjectIDs.Employee7.GetObject<Employee>();
             Computer computer = employee.Computer;
-            Assert.That (computer, Is.Null);
+            Assert.That(computer, Is.Null);
           },
-          DomainObjectIDs.Employee7, false, null);
+          DomainObjectIDs.Employee7,
+          false,
+          null);
     }
 
     [Test]
     public void ObjectsLoaded ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
-      }
+      var sequence = new MockSequence();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
 
-      DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void ObjectsLoadedWithRelations ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order3 })));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction.ParentTransaction), 
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order3 })));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
-      }
+      var sequence = new MockSequence();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.Order3 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.Order3 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      DomainObjectIDs.Order3.GetObject<Order>();
 
-      DomainObjectIDs.Order3.GetObject<Order> ();
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void ObjectsLoadedWithEvents ()
     {
       var clientTransactionEventReceiver =
-          _mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_subTransaction);
+          ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _subTransaction);
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (
-            mock => mock.ObjectsLoading (
-                Arg.Is (_subTransaction.ParentTransaction),
-                Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
+          .Verifiable();
+      clientTransactionEventReceiver
+          .InSequence(sequence)
+          .Setup(mock => mock.Loaded(_subTransaction, It.Is<ClientTransactionEventArgs>(args => args.DomainObjects.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
 
-        _extensionMock.Expect (
-            mock => mock.ObjectsLoading (
-                        Arg.Is (_subTransaction),
-                        Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.ClassWithAllDataTypes1 })));
+      DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
 
-        clientTransactionEventReceiver.Expect (
-            mock => mock.Loaded (Arg.Is (_subTransaction), Arg<ClientTransactionEventArgs>.Matches (args => args.DomainObjects.Count == 1)));
-        _extensionMock.Expect (mock => mock.ObjectsLoaded (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1)));
-      }
-
-      _mockRepository.ReplayAll();
-
-      DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
+      clientTransactionEventReceiver.Verify();
     }
 
     [Test]
     public void ObjectDelete ()
     {
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
 
-      var computerEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (computer);
-      _mockRepository.BackToRecord (_extensionMock);
+      var computerEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, computer);
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.ObjectDeleting (_subTransaction, computer);
-        computerEventReceiver.Deleting (computer, EventArgs.Empty);
-        computerEventReceiver.Deleted (computer, EventArgs.Empty);
-        _extensionMock.ObjectDeleted (_subTransaction, computer);
-      }
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      _mockRepository.ReplayAll();
+      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, computer)).Verifiable();
+
+      computerEventReceiver.InSequence(sequence).Setup(mock => mock.Deleting(computer, EventArgs.Empty)).Verifiable();
+
+      computerEventReceiver.InSequence(sequence).Setup(mock => mock.Deleted(computer, EventArgs.Empty)).Verifiable();
+
+      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, computer)).Verifiable();
 
       computer.Delete();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
+      computerEventReceiver.Verify();
     }
 
     [Test]
@@ -483,80 +525,127 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Official official = _order1.Official;
       Customer customer = _order1.Customer;
       OrderCollection customerOrders = customer.Orders;
-      customerOrders.EnsureDataComplete ();
+      customerOrders.EnsureDataComplete();
       ObjectList<Order> officialOrders = official.Orders;
-      officialOrders.EnsureDataComplete ();
+      officialOrders.EnsureDataComplete();
       Dev.Null = orderTicket.Order; // preload
 
-      var order1MockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (_order1);
-      var orderItem1MockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (orderItem1);
-      var orderItem2MockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (orderItem2);
-      var orderTicketMockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (orderTicket);
-      var officialMockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (official);
-      var customerMockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (customer);
+      var order1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var orderItem1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, orderItem1);
+      var orderItem2MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, orderItem2);
+      var orderTicketMockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, orderTicket);
+      var officialMockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, official);
+      var customerMockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, customer);
 
       var customerOrdersMockEventReceiver =
-          _mockRepository.StrictMock<DomainObjectCollectionMockEventReceiver> (customerOrders);
+          DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, customerOrders);
 
       var officialOrdersMockEventReceiver =
-          _mockRepository.StrictMock<DomainObjectCollectionMockEventReceiver> (officialOrders);
+          DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, officialOrders);
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.ObjectDeleting (_subTransaction, _order1);
-        order1MockEventReceiver.Deleting (_order1, EventArgs.Empty);
+      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, _order1)).Verifiable();
 
-        using (_mockRepository.Unordered ())
-        {
-          customerOrdersMockEventReceiver.Removing (customerOrders, _order1);
-          _extensionMock.RelationChanging (_subTransaction, customer, GetEndPointDefinition (typeof (Customer), "Orders"), _order1, null);
-          customerMockEventReceiver.RelationChanging (GetEndPointDefinition (typeof (Customer), "Orders"), _order1, null);
+      order1MockEventReceiver.InSequence(sequence).Setup(mock => mock.Deleting(_order1, EventArgs.Empty)).Verifiable();
 
-          _extensionMock.RelationChanging (_subTransaction, orderTicket, GetEndPointDefinition (typeof (OrderTicket), "Order"), _order1, null);
-          orderTicketMockEventReceiver.RelationChanging (GetEndPointDefinition (typeof (OrderTicket), "Order"), _order1, null);
+      customerOrdersMockEventReceiver
+          .SetupRemoving(customerOrders, _order1)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.RelationChanging(_subTransaction, customer, GetEndPointDefinition(typeof(Customer), "Orders"), _order1, null))
+          .Verifiable();
+      customerMockEventReceiver
+          .SetupRelationChanging(customer, GetEndPointDefinition(typeof(Customer), "Orders"), _order1, null)
+          .Verifiable();
 
-          _extensionMock.RelationChanging (_subTransaction, orderItem1, GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
-          orderItem1MockEventReceiver.RelationChanging (GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
+      extensionMock
+          .Setup(mock => mock.RelationChanging(_subTransaction, orderTicket, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null))
+          .Verifiable();
+      orderTicketMockEventReceiver
+          .SetupRelationChanging(orderTicket, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null)
+          .Verifiable();
 
-          _extensionMock.RelationChanging (_subTransaction, orderItem2, GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
-          orderItem2MockEventReceiver.RelationChanging (GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
+      extensionMock
+          .Setup(mock => mock.RelationChanging(_subTransaction, orderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
+          .Verifiable();
+      orderItem1MockEventReceiver
+          .SetupRelationChanging(orderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
+          .Verifiable();
 
-          officialOrdersMockEventReceiver.Removing (officialOrders, _order1);
-          _extensionMock.RelationChanging (_subTransaction, official, GetEndPointDefinition (typeof (Official), "Orders"), _order1, null);
-          officialMockEventReceiver.RelationChanging (GetEndPointDefinition (typeof (Official), "Orders"), _order1, null);
-        }
+      extensionMock
+          .Setup(mock => mock.RelationChanging(_subTransaction, orderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
+          .Verifiable();
+      orderItem2MockEventReceiver
+          .SetupRelationChanging(orderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
+          .Verifiable();
 
-        using (_mockRepository.Unordered ())
-        {
-          customerMockEventReceiver.RelationChanged (GetEndPointDefinition (typeof (Customer), "Orders"), _order1, null);
-          _extensionMock.RelationChanged (_subTransaction, customer, GetEndPointDefinition (typeof (Customer), "Orders"), _order1, null);
-          customerOrdersMockEventReceiver.Removed (customerOrders, _order1);
+      officialOrdersMockEventReceiver
+          .SetupRemoving(officialOrders, _order1)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.RelationChanging(_subTransaction, official, GetEndPointDefinition(typeof(Official), "Orders"), _order1, null))
+          .Verifiable();
+      officialMockEventReceiver
+          .SetupRelationChanging(official, GetEndPointDefinition(typeof(Official), "Orders"), _order1, null)
+          .Verifiable();
 
-          orderTicketMockEventReceiver.RelationChanged (GetEndPointDefinition (typeof (OrderTicket), "Order"), _order1, null);
-          _extensionMock.RelationChanged (_subTransaction, orderTicket, GetEndPointDefinition (typeof (OrderTicket), "Order"), _order1, null);
+      customerMockEventReceiver
+          .SetupRelationChanged(customer, GetEndPointDefinition(typeof(Customer), "Orders"), _order1, null)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.RelationChanged(_subTransaction, customer, GetEndPointDefinition(typeof(Customer), "Orders"), _order1, null))
+          .Verifiable();
+      customerOrdersMockEventReceiver
+          .SetupRemoved(customerOrders, _order1)
+          .Verifiable();
 
-          orderItem1MockEventReceiver.RelationChanged (GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
-          _extensionMock.RelationChanged (_subTransaction, orderItem1, GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
+      orderTicketMockEventReceiver
+          .SetupRelationChanged(orderTicket, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.RelationChanged(_subTransaction, orderTicket, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null))
+          .Verifiable();
 
-          orderItem2MockEventReceiver.RelationChanged (GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
-          _extensionMock.RelationChanged (_subTransaction, orderItem2, GetEndPointDefinition (typeof (OrderItem), "Order"), _order1, null);
+      orderItem1MockEventReceiver
+          .SetupRelationChanged(orderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.RelationChanged(_subTransaction, orderItem1, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
+          .Verifiable();
 
-          officialOrdersMockEventReceiver.Removed (officialOrders, _order1);
-          officialMockEventReceiver.RelationChanged (GetEndPointDefinition (typeof (Official), "Orders"), _order1, null);
-          _extensionMock.RelationChanged (_subTransaction, official, GetEndPointDefinition (typeof (Official), "Orders"), _order1, null);
-        }
+      orderItem2MockEventReceiver
+          .SetupRelationChanged(orderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.RelationChanged(_subTransaction, orderItem2, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
+          .Verifiable();
 
-        order1MockEventReceiver.Deleted (_order1, EventArgs.Empty);
-        _extensionMock.ObjectDeleted (_subTransaction, _order1);
-      }
+      officialOrdersMockEventReceiver
+          .SetupRemoved(officialOrders, _order1)
+          .Verifiable();
+      officialMockEventReceiver
+          .SetupRelationChanged(official, GetEndPointDefinition(typeof(Official), "Orders"), _order1, null)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.RelationChanged(_subTransaction, official, GetEndPointDefinition(typeof(Official), "Orders"), _order1, null))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      order1MockEventReceiver.InSequence(sequence).Setup(mock => mock.Deleted(_order1, EventArgs.Empty)).Verifiable();
 
+      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, _order1)).Verifiable();
       _order1.Delete();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
+      order1MockEventReceiver.Verify();
+      orderItem1MockEventReceiver.Verify();
+      orderItem2MockEventReceiver.Verify();
+      orderTicketMockEventReceiver.Verify();
+      officialMockEventReceiver.Verify();
+      customerMockEventReceiver.Verify();
+      customerOrdersMockEventReceiver.Verify();
+      officialOrdersMockEventReceiver.Verify();
     }
 
     [Test]
@@ -569,19 +658,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Client newClient = Client.NewObject();
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationChanging (_subTransaction, location, GetEndPointDefinition (typeof (Location), "Client"), deletedClient, newClient);
-        _extensionMock.RelationChanged (_subTransaction, location, GetEndPointDefinition (typeof (Location), "Client"), deletedClient, newClient);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanging(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanged(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
+          .Verifiable();
       location.Client = newClient;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
@@ -595,103 +686,98 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Client newClient = Client.NewObject();
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationChanging (_subTransaction, location, GetEndPointDefinition (typeof (Location), "Client"), deletedClient, newClient);
-        _extensionMock.RelationChanged (_subTransaction, location, GetEndPointDefinition (typeof (Location), "Client"), deletedClient, newClient);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanging(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanged(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
+          .Verifiable();
       location.Client = newClient;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void ObjectDeleteTwice ()
     {
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.ObjectDeleting (_subTransaction, computer);
-        _extensionMock.ObjectDeleted (_subTransaction, computer);
-      }
+      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, computer)).Verifiable();
 
-      _mockRepository.ReplayAll();
+      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, computer)).Verifiable();
 
       computer.Delete();
       computer.Delete();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void PropertyRead ()
     {
       int orderNumber = _order1.OrderNumber;
-      _mockRepository.BackToRecord (_extensionMock);
+      var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
-      var propertyDefinition = GetPropertyDefinition (typeof (Order), "OrderNumber");
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.PropertyValueReading (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            ValueAccess.Current);
-        _extensionMock.PropertyValueRead (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            orderNumber,
-            ValueAccess.Current);
-        _extensionMock.PropertyValueReading (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            ValueAccess.Original);
-        _extensionMock.PropertyValueRead (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            orderNumber,
-            ValueAccess.Original);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Current))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, orderNumber, ValueAccess.Current))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Original))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, orderNumber, ValueAccess.Original))
+          .Verifiable();
 
       Dev.Null = _order1.OrderNumber;
       Dev.Null = _order1.Properties[propertyDefinition.PropertyName].GetOriginalValueWithoutTypeCheck();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void ReadObjectIDProperty ()
     {
-      var propertyDefinition = GetPropertyDefinition (typeof (Order), "Customer");
+      var propertyDefinition = GetPropertyDefinition(typeof(Order), "Customer");
       var customerID = _order1.Properties[propertyDefinition.PropertyName].GetRelatedObjectID();
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.PropertyValueReading (_subTransaction, _order1, propertyDefinition, ValueAccess.Current);
-        _extensionMock.PropertyValueRead (_subTransaction, _order1, propertyDefinition, customerID, ValueAccess.Current);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Current))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, customerID, ValueAccess.Current))
+          .Verifiable();
 
-      Dev.Null = _order1.Properties[propertyDefinition.PropertyName].GetRelatedObjectID ();
+      Dev.Null = _order1.Properties[propertyDefinition.PropertyName].GetRelatedObjectID();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
@@ -699,13 +785,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       int orderNumber = _order1.OrderNumber;
 
-      _mockRepository.BackToRecord (_extensionMock);
-      // Note: No method call on the extension is expected.
-      _mockRepository.ReplayAll();
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
       _order1.OrderNumber = orderNumber;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
@@ -714,133 +798,105 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       int oldOrderNumber = _order1.OrderNumber;
       int newOrderNumber = oldOrderNumber + 1;
 
-      var propertyDefinition = GetPropertyDefinition (typeof (Order), "OrderNumber");
+      var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.PropertyValueChanging (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            oldOrderNumber,
-            newOrderNumber);
-        _extensionMock.PropertyValueChanged (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            oldOrderNumber,
-            newOrderNumber);
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueChanging(_subTransaction, _order1, propertyDefinition, oldOrderNumber, newOrderNumber))
+          .Verifiable();
 
-        _extensionMock.PropertyValueReading (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            ValueAccess.Current);
-        _extensionMock.PropertyValueRead (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            newOrderNumber,
-            ValueAccess.Current);
-        _extensionMock.PropertyValueReading (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            ValueAccess.Original);
-        _extensionMock.PropertyValueRead (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            oldOrderNumber,
-            ValueAccess.Original);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueChanged(_subTransaction, _order1, propertyDefinition, oldOrderNumber, newOrderNumber))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Current))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, newOrderNumber, ValueAccess.Current))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Original))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, oldOrderNumber, ValueAccess.Original))
+          .Verifiable();
 
       _order1.OrderNumber = newOrderNumber;
       Dev.Null = _order1.OrderNumber;
-      Dev.Null = _order1.Properties[typeof (Order), "OrderNumber"].GetOriginalValueWithoutTypeCheck ();
+      Dev.Null = _order1.Properties[typeof(Order), "OrderNumber"].GetOriginalValueWithoutTypeCheck();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void PropertyChange ()
     {
       int oldOrderNumber = _order1.OrderNumber;
-      _mockRepository.BackToRecord (_extensionMock);
 
-      var propertyDefinition = GetPropertyDefinition (typeof (Order), "OrderNumber");
+      var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.PropertyValueChanging (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            oldOrderNumber,
-            oldOrderNumber + 1);
-        _extensionMock.PropertyValueChanged (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            oldOrderNumber,
-            oldOrderNumber + 1);
-      }
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueChanging(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueChanged(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
+          .Verifiable();
 
       _order1.OrderNumber = oldOrderNumber + 1;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void PropertyChangeWithEvents ()
     {
       int oldOrderNumber = _order1.OrderNumber;
-      _mockRepository.BackToRecord (_extensionMock);
 
-      var domainObjectMockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (_order1);
-      var propertyDefinition = GetPropertyDefinition (typeof (Order), "OrderNumber");
+      var domainObjectMockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
-      using (_mockRepository.Ordered())
-      {
-        // "Changing" notifications
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-        _extensionMock.PropertyValueChanging (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            oldOrderNumber,
-            oldOrderNumber + 1);
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueChanging(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
+          .Verifiable();
+      domainObjectMockEventReceiver
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyChanging(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
+      domainObjectMockEventReceiver
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyChanged(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
 
-        domainObjectMockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments();
-
-
-
-        // "Changed" notifications
-
-
-        domainObjectMockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments();
-
-        _extensionMock.PropertyValueChanged (
-            _subTransaction,
-            _order1,
-            propertyDefinition,
-            oldOrderNumber,
-            oldOrderNumber + 1);
-      }
-
-      _mockRepository.ReplayAll();
-
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PropertyValueChanged(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
+          .Verifiable();
       _order1.OrderNumber = oldOrderNumber + 1;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
+      domainObjectMockEventReceiver.Verify();
     }
 
     [Test]
@@ -848,563 +904,643 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       OrderTicket orderTicket = _order1.OrderTicket;
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (_subTransaction, _order1, GetEndPointDefinition (typeof(Order), "OrderTicket"), ValueAccess.Current);
-        _extensionMock.RelationRead (_subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderTicket"), orderTicket, ValueAccess.Current);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Current))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationRead(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket, ValueAccess.Current))
+          .Verifiable();
       Dev.Null = _order1.OrderTicket;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void GetOriginalRelatedObject ()
     {
-      var originalOrderTicket = (OrderTicket) _order1.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
+      var originalOrderTicket = (OrderTicket)_order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (_subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderTicket"), ValueAccess.Original);
-        _extensionMock.RelationRead (_subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderTicket"), originalOrderTicket, ValueAccess.Original);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Original))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationRead(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), originalOrderTicket, ValueAccess.Original))
+          .Verifiable();
+      Dev.Null = _order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-      Dev.Null = _order1.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void GetRelatedObjects ()
     {
-      DomainObjectCollection orderItems = _order1.OrderItems;
+      ObjectList<OrderItem> orderItems = _order1.OrderItems;
       orderItems.EnsureDataComplete();
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (
-            _subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Current);
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderItems")),
-            Property.Value ("Count", 2) & Mocks_List.IsIn (orderItems[0]) & Mocks_List.IsIn (orderItems[1]),
-            Mocks_Is.Equal (ValueAccess.Current));
-      }
-
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Current))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _order1,
+                  GetEndPointDefinition(typeof(Order), "OrderItems"),
+                  It.Is<IReadOnlyCollectionData<DomainObject>>(_ => _.SetEquals(orderItems)),
+                  ValueAccess.Current))
+          .Verifiable();
 
       Dev.Null = _order1.OrderItems;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
-    public void GetOriginalRelatedObjects ()
+    public void GetOriginalRelatedObjects_ForDomainObjectCollection ()
     {
-      DomainObjectCollection originalOrderItems =
-          _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      ObjectList<OrderItem> originalOrderItems =
+          (ObjectList<OrderItem>)_order1.GetOriginalRelatedObjectsAsDomainObjectCollection(
+              "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (
-            _subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Original);
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Original);
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Original))
+          .Verifiable();
 
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderItems")),
-            Property.Value ("Count", 2) & Mocks_List.IsIn (originalOrderItems[0]) & Mocks_List.IsIn (originalOrderItems[1]),
-            Mocks_Is.Equal (ValueAccess.Original));
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _order1,
+                  GetEndPointDefinition(typeof(Order), "OrderItems"),
+                  It.Is<IReadOnlyCollectionData<DomainObject>>(_ => _.SetEquals(originalOrderItems)),
+                  ValueAccess.Original))
+          .Verifiable();
+      Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-      _mockRepository.ReplayAll();
+      extensionMock.Verify();
+    }
 
-      Dev.Null = _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+    [Test]
+    public void GetOriginalRelatedObjects_ForVirtualCollection ()
+    {
+      var originalProductReviews =
+          _product1.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
-      _mockRepository.VerifyAll();
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _product1, GetEndPointDefinition(typeof(Product), "Reviews"), ValueAccess.Original))
+          .Verifiable();
+
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _product1,
+                  GetEndPointDefinition(typeof(Product), "Reviews"),
+                  It.Is<IReadOnlyCollectionData<DomainObject>>(_ => _.SetEquals(originalProductReviews)),
+                  ValueAccess.Original))
+          .Verifiable();
+      Dev.Null = _product1.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+
+      extensionMock.Verify();
     }
 
     [Test]
     public void GetRelatedObjectWithLazyLoad ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (
-            _subTransaction,
-            _order1,
-            GetEndPointDefinition (typeof(Order), "OrderTicket"),
-            ValueAccess.Current);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-          Arg.Is (_subTransaction.ParentTransaction),
-          Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 1)));
-
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Property.Value ("Count", 1));
-
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 1)));
-
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Property.Value ("Count", 1));
-
-        _extensionMock.RelationRead (null, null, null, (DomainObject) null, ValueAccess.Current);
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderTicket")),
-            Mocks_Is.NotNull(),
-            Mocks_Is.Equal (ValueAccess.Current));
-      }
-      _mockRepository.ReplayAll();
-
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Current))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _order1,
+                  GetEndPointDefinition(typeof(Order), "OrderTicket"),
+                  It.IsNotNull<DomainObject>(),
+                  ValueAccess.Current))
+          .Verifiable();
       Dev.Null = _order1.OrderTicket;
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void GetRelatedObjectsWithLazyLoad ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (
-            _subTransaction, 
-            _order1,
-            GetEndPointDefinition (typeof (Order), "OrderItems"),
-            ValueAccess.Current);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Current);
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderItems")),
-            Mocks_Is.NotNull (),
-            Mocks_Is.Equal (ValueAccess.Current));
-
-        _extensionMock.ObjectsLoading (_subTransaction.ParentTransaction, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Property.Value ("Count", 2));
-
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Property.Value ("Count", 2));
-
-        _extensionMock.ObjectsLoading (_subTransaction, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Property.Value ("Count", 2));
-
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Property.Value ("Count", 2));
-      }
-      _mockRepository.ReplayAll();
-
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Current))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _order1,
+                  GetEndPointDefinition(typeof(Order), "OrderItems"),
+                  It.IsNotNull<IReadOnlyCollectionData<DomainObject>>(),
+                  ValueAccess.Current))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<ObjectID>>(_ => _.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<IReadOnlyList<ObjectID>>(_ => _.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 2)))
+          .Verifiable();
       _order1.OrderItems.EnsureDataComplete();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void GetOriginalRelatedObjectWithLazyLoad ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (
-            _subTransaction, _order1, GetEndPointDefinition (typeof(Order), "OrderTicket"), ValueAccess.Original);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 1)));
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Property.Value ("Count", 1));
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Original))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _order1,
+                  GetEndPointDefinition(typeof(Order), "OrderTicket"),
+                  It.IsNotNull<DomainObject>(),
+                  ValueAccess.Original))
+          .Verifiable();
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 1)));
+      Dev.Null = _order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Property.Value ("Count", 1));
-        _extensionMock.RelationRead (null, null, null, (DomainObject) null, ValueAccess.Original);
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderTicket")),
-            Mocks_Is.NotNull(),
-            Mocks_Is.Equal (ValueAccess.Original));
-      }
-      _mockRepository.ReplayAll();
-
-      Dev.Null = _order1.GetOriginalRelatedObject ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
-    public void GetOriginalRelatedObjectsWithLazyLoad ()
+    public void GetOriginalRelatedObjectsWithLazyLoad_ForDomainObjectCollection ()
     {
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RelationReading (
-            _subTransaction, _order1, GetEndPointDefinition (typeof (Order), "OrderItems"), ValueAccess.Original);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 2)));
-        
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Property.Value ("Count", 2));
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Original))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _order1,
+                  GetEndPointDefinition(typeof(Order), "OrderItems"),
+                  It.IsNotNull<IReadOnlyCollectionData<DomainObject>>(),
+                  ValueAccess.Original))
+          .Verifiable();
+      Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.Count == 2)));
+      extensionMock.Verify();
+    }
 
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Property.Value ("Count", 2));
-        _extensionMock.RelationRead (null, null, null, (ReadOnlyDomainObjectCollectionAdapter<DomainObject>) null, ValueAccess.Original);
-        LastCall.Constraints (
-            Mocks_Is.Same (_subTransaction),
-            Mocks_Is.Same (_order1),
-            Mocks_Is.Equal (GetEndPointDefinition (typeof (Order), "OrderItems")),
-            Mocks_Is.NotNull(),
-            Mocks_Is.Equal (ValueAccess.Original));
-      }
-      _mockRepository.ReplayAll();
+    [Test]
+    public void GetOriginalRelatedObjectsWithLazyLoad_ForVirtualCollection ()
+    {
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      Dev.Null = _order1.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, _product1, GetEndPointDefinition(typeof(Product), "Reviews"), ValueAccess.Original))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 3)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 3)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 3)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 3)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RelationRead(
+                  _subTransaction,
+                  _product1,
+                  GetEndPointDefinition(typeof(Product), "Reviews"),
+                  It.IsNotNull<IReadOnlyCollectionData<DomainObject>>(),
+                  ValueAccess.Original))
+          .Verifiable();
+      Dev.Null = _product1.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void FilterQueryResult ()
     {
-      IQuery query = QueryFactory.CreateQueryFromConfiguration ("OrderQuery");
-      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
+      IQuery query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      query.Parameters.Add("@customerID", DomainObjectIDs.Customer1);
 
       // preload query results to avoid Load notifications later on
-      LifetimeService.GetObject (_subTransaction, DomainObjectIDs.Order1, true);
-      LifetimeService.GetObject (_subTransaction, DomainObjectIDs.Order2, true);
+      LifetimeService.GetObject(_subTransaction, DomainObjectIDs.Order1, true);
+      LifetimeService.GetObject(_subTransaction, DomainObjectIDs.Order2, true);
 
-      _mockRepository.BackToRecord (_extensionMock);
+      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>(new[] { _order1 });
+      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
 
-      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject> (new[] { _order1 });
-      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject> ();
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      extensionMock
+          .Setup(mock => mock.FilterQueryResult(_subTransaction.ParentTransaction, It.Is<QueryResult<DomainObject>>(qr => qr.Count == 2 && qr.Query == query)))
+          .Returns(parentFilteredQueryResult)
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.FilterQueryResult(_subTransaction, It.Is<QueryResult<DomainObject>>(qr => qr.Count == 1 && qr.Query == query)))
+          .Returns(subFilteredQueryResult)
+          .Verifiable();
 
-      _extensionMock
-          .Expect (mock => mock.FilterQueryResult (
-              Arg.Is (_subTransaction.ParentTransaction), 
-              Arg<QueryResult<DomainObject>>.Matches (qr => qr.Count == 2 && qr.Query == query)))
-          .Return (parentFilteredQueryResult);
-      _extensionMock
-          .Expect (mock => mock.FilterQueryResult (
-            Arg.Is (_subTransaction),
-            Arg<QueryResult<DomainObject>>.Matches (qr => qr.Count == 1 && qr.Query == query)))
-          .Return (subFilteredQueryResult);
+      QueryResult<DomainObject> finalResult = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
+      Assert.That(finalResult, Is.SameAs(subFilteredQueryResult));
 
-      _mockRepository.ReplayAll();
-
-      QueryResult<DomainObject> finalResult = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
-      Assert.That (finalResult, NUnit.Framework.Is.SameAs (subFilteredQueryResult));
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void FilterQueryResultWithLoad ()
     {
-      IQuery query = QueryFactory.CreateQueryFromConfiguration ("OrderQuery");
-      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer4); // yields Order4, Order5
+      IQuery query = QueryFactory.CreateQueryFromConfiguration("OrderQuery");
+      query.Parameters.Add("@customerID", DomainObjectIDs.Customer4); // yields Order4, Order5
 
-      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject> (new[] { _order1 });
-      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject> ();
+      QueryResult<DomainObject> parentFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>(new[] { _order1 });
+      QueryResult<DomainObject> subFilteredQueryResult = TestQueryFactory.CreateTestQueryResult<DomainObject>();
 
-      UnloadService.UnloadData (_subTransaction, _order1.ID); // unload _order1 to force Load events
-      ClientTransactionTestHelper.SetIsWriteable (TestableClientTransaction, true);
-      TestableClientTransaction.EnsureDataAvailable (DomainObjectIDs.Order1); // we only want Load events in the sub-transaction
-      ClientTransactionTestHelper.SetIsWriteable (TestableClientTransaction, false);
+      UnloadService.UnloadData(_subTransaction, _order1.ID); // unload _order1 to force Load events
+      ClientTransactionTestHelper.SetIsWriteable(TestableClientTransaction, true);
+      TestableClientTransaction.EnsureDataAvailable(DomainObjectIDs.Order1); // we only want Load events in the sub-transaction
+      ClientTransactionTestHelper.SetIsWriteable(TestableClientTransaction, false);
 
-      _mockRepository.BackToRecordAll ();
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.SetEquals (new[] { DomainObjectIDs.Order4, DomainObjectIDs.Order5 }))));
-        _extensionMock.ObjectsLoaded (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 2));
-        _extensionMock
-            .Expect (mock => mock.FilterQueryResult (
-                Arg.Is (_subTransaction.ParentTransaction), 
-                Arg<QueryResult<DomainObject>>.Matches (qr => qr.Count == 2 && qr.Query == query)))
-            .Return (parentFilteredQueryResult);
+      extensionMock
+          .Setup(
+              mock => mock.ObjectsLoading(
+                  _subTransaction.ParentTransaction,
+                  It.Is<ReadOnlyCollection<ObjectID>>(list => list.SetEquals(new[] { DomainObjectIDs.Order4, DomainObjectIDs.Order5 }))))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.FilterQueryResult(_subTransaction.ParentTransaction, It.Is<QueryResult<DomainObject>>(qr => qr.Count == 2 && qr.Query == query)))
+          .Returns(parentFilteredQueryResult)
+          .Verifiable();
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.Matches (list => list.SetEquals (new[] { DomainObjectIDs.Order1 }))));
-        _extensionMock.ObjectsLoaded (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<DomainObject>>.Matches (list => list.Count == 1));
-        _extensionMock
-            .Expect (
-            mock =>
-            mock.FilterQueryResult (
-                Arg.Is (_subTransaction), Arg<QueryResult<DomainObject>>.Matches (qr => qr.Count == 1 && qr.Query == query)))
-            .Return (subFilteredQueryResult);
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.SetEquals(new[] { DomainObjectIDs.Order1 }))))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
+          .Verifiable();
+      extensionMock
+          .Setup(mock => mock.FilterQueryResult(_subTransaction, It.Is<QueryResult<DomainObject>>(qr => qr.Count == 1 && qr.Query == query)))
+          .Returns(subFilteredQueryResult)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
+      QueryResult<DomainObject> finalQueryResult = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(query);
+      Assert.That(finalQueryResult, Is.SameAs(subFilteredQueryResult));
 
-      QueryResult<DomainObject> finalQueryResult = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (query);
-      Assert.That (finalQueryResult, NUnit.Framework.Is.SameAs (subFilteredQueryResult));
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void CommitWithChangedPropertyValue ()
     {
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
       computer.SerialNumber = "newSerialNumber";
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (
-            mock =>
-            mock.Committing (
-                Arg.Is (_subTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { computer }),
-                Arg<CommittingEventRegistrar>.Is.TypeOf));
-        _extensionMock.Expect (mock => mock.CommitValidate (
-            Arg.Is (_subTransaction), 
-            Arg<ReadOnlyCollection<PersistableData>>.Matches (c => c.Select (d => d.DomainObject).SetEquals (new[] { computer }))));
-        _extensionMock.Expect (mock => mock.Committed (Arg.Is (_subTransaction), Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { computer })));
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Committing(_subTransaction, new[] { computer }, It.IsNotNull<CommittingEventRegistrar>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.CommitValidate(_subTransaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new[] { computer }))))
+          .Verifiable();
+      extensionMock.InSequence(sequence).Setup(mock => mock.Committed(_subTransaction, new[] { computer })).Verifiable();
 
-      _mockRepository.ReplayAll();
+      _subTransaction.Commit();
 
-      _subTransaction.Commit ();
-
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void CommitWithChangedRelationValue ()
     {
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
-      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee> ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
+      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       computer.Employee = employee;
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (
-            mock =>
-            mock.Committing (
-                Arg.Is (_subTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new DomainObject[] { computer, employee }),
-                Arg<CommittingEventRegistrar>.Is.TypeOf));
-        _extensionMock.Expect (
-            mock =>
-            mock.CommitValidate (
-                Arg.Is (_subTransaction), 
-                Arg<ReadOnlyCollection<PersistableData>>.Matches (c => c.Select (d => d.DomainObject).SetEquals (new DomainObject[] { computer, employee }))));
-        _extensionMock.Expect (
-            mock =>
-            mock.Committed (Arg.Is (_subTransaction), Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new DomainObject[] { computer, employee })));
-      }
-
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.Committing(
+                  _subTransaction,
+                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new DomainObject[] { computer, employee })),
+                  It.IsNotNull<CommittingEventRegistrar>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.CommitValidate(
+                  _subTransaction,
+                  It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new DomainObject[] { computer, employee }))))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Committed(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new DomainObject[] { computer, employee }))))
+          .Verifiable();
 
       _subTransaction.Commit();
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void CommitWithChangedRelationValueWithClassIDColumn ()
     {
       Customer oldCustomer = _order1.Customer;
-      Customer newCustomer = DomainObjectIDs.Customer2.GetObject<Customer> ();
+      Customer newCustomer = DomainObjectIDs.Customer2.GetObject<Customer>();
       _order1.Customer = newCustomer;
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (
-            mock =>
-            mock.Committing (
-                Arg.Is (_subTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new DomainObject[] { _order1, newCustomer, oldCustomer }),
-                Arg<CommittingEventRegistrar>.Is.TypeOf));
-        _extensionMock.Expect (
-            mock =>
-            mock.CommitValidate (
-                Arg.Is (_subTransaction), 
-                Arg<ReadOnlyCollection<PersistableData>>.Matches (c => c.Select (d => d.DomainObject).SetEquals (new DomainObject[] { _order1, newCustomer, oldCustomer }))));
-        _extensionMock.Expect (
-            mock =>
-            mock.Committed (
-                Arg.Is (_subTransaction), Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (new DomainObject[] { _order1, newCustomer, oldCustomer })));
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.Committing(
+                  _subTransaction,
+                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new DomainObject[] { _order1, newCustomer, oldCustomer })),
+                  It.IsNotNull<CommittingEventRegistrar>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.CommitValidate(
+                  _subTransaction,
+                  It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new DomainObject[] { _order1, newCustomer, oldCustomer }))))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Committed(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new DomainObject[] { _order1, newCustomer, oldCustomer }))))
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      
       _subTransactionScope.Commit();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void CommitWithEvents ()
     {
-      SetDatabaseModifyable();
-
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
       computer.SerialNumber = "newSerialNumber";
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _subTransaction);
 
-      var clientTransactionMockEventReceiver =
-          _mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_subTransaction);
+      var computerEventReveiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, computer);
 
-      var computerEventReveiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (computer);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.Expect (
-            mock =>
-            mock.Committing (
-                Arg.Is (_subTransaction),
-                Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { computer }),
-                Arg<CommittingEventRegistrar>.Is.TypeOf));
-        clientTransactionMockEventReceiver.Expect (mock => mock.Committing (computer));
-        computerEventReveiver.Expect (mock => mock.Committing ());
-
-        _extensionMock.Expect (mock => mock.CommitValidate (
-            Arg.Is (_subTransaction), 
-            Arg<ReadOnlyCollection<PersistableData>>.Matches (c => c.Select (d => d.DomainObject).SetEquals (new[] { computer }))));
-
-        computerEventReveiver.Expect (mock => mock.Committed ());
-        clientTransactionMockEventReceiver.Expect (mock => mock.Committed (computer));
-        _extensionMock.Expect (mock => mock.Committed (Arg.Is (_subTransaction), Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { computer })));
-      }
-
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Committing(_subTransaction, new[] { computer }, It.IsNotNull<CommittingEventRegistrar>()))
+          .Verifiable();
+      clientTransactionMockEventReceiver.InSequence(sequence).SetupCommitting(_subTransaction, computer).Verifiable();
+      computerEventReveiver.InSequence(sequence).Setup(mock => mock.Committing(computer, It.IsAny<DomainObjectCommittingEventArgs>())).Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.CommitValidate(_subTransaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new[] { computer }))))
+          .Verifiable();
+      computerEventReveiver.InSequence(sequence).Setup(mock => mock.Committed(computer, It.IsAny<EventArgs>())).Verifiable();
+      clientTransactionMockEventReceiver.InSequence(sequence).SetupCommitted(_subTransaction, computer).Verifiable();
+      extensionMock.InSequence(sequence).Setup(mock => mock.Committed(_subTransaction, new[] { computer })).Verifiable();
 
       _subTransaction.Commit();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
+      clientTransactionMockEventReceiver.Verify();
+      computerEventReveiver.Verify();
     }
 
     [Test]
     public void Rollback ()
     {
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
       computer.SerialNumber = "newSerialNumber";
 
-      _mockRepository.BackToRecord (_extensionMock);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-      using (_mockRepository.Ordered())
-      {
-        _extensionMock.RollingBack (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_List.IsIn (computer));
-
-        _extensionMock.RolledBack (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_List.IsIn (computer));
-      }
-
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RollingBack(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Contains(computer))))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RolledBack(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Contains(computer))))
+          .Verifiable();
 
       ClientTransactionScope.CurrentTransaction.Rollback();
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void GetObjects ()
     {
-      using (_mockRepository.Ordered())
-      {
-        // parent transaction first, just like persistence manager comes first in root transactions (ie. persistence manager loads data containers 
-        // before any events are raised)
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction.ParentTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order3, DomainObjectIDs.Order4 })));
-
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction.ParentTransaction), Mocks_List.Count (Mocks_Is.Equal (2)));
-
-        _extensionMock.Expect (mock => mock.ObjectsLoading (
-            Arg.Is (_subTransaction),
-            Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { DomainObjectIDs.Order3, DomainObjectIDs.Order4 })));
-        
-        _extensionMock.ObjectsLoaded (null, null);
-        LastCall.Constraints (Mocks_Is.Same (_subTransaction), Mocks_List.Count (Mocks_Is.Equal (2)));
-      }
-
-      _mockRepository.ReplayAll();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.Order3, DomainObjectIDs.Order4 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 2)))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.Order3, DomainObjectIDs.Order4 }))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 2)))
+          .Verifiable();
 
       using (_subTransaction.EnterNonDiscardingScope())
       {
-        LifetimeService.GetObjects<DomainObject> (_subTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4);
+        LifetimeService.GetObjects<DomainObject>(_subTransaction, DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4);
       }
 
-      _mockRepository.VerifyAll();
+      extensionMock.Verify();
     }
 
     [Test]
     public void UnloadData ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extensionMock
-            .Expect (mock => mock.ObjectsUnloading (
-                        Arg.Is (_subTransaction),
-                        Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order1 })))
-            .WhenCalled (mi => Assert.That (_subTransactionDataManager.DataContainers[_order1.ID] != null));
-        _extensionMock
-            .Expect (mock => mock.ObjectsUnloading (
-                        Arg.Is (_subTransaction.ParentTransaction),
-                        Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order1 })))
-            .WhenCalled (mi => Assert.That (_parentTransactionDataManager.DataContainers[_order1.ID] != null));
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
+      var sequence = new MockSequence();
 
-        _extensionMock
-            .Expect (mock => mock.ObjectsUnloaded (
-                        Arg.Is (_subTransaction.ParentTransaction),
-                        Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order1 })))
-            .WhenCalled (mi => Assert.That (_parentTransactionDataManager.DataContainers[_order1.ID] == null));
-        _extensionMock
-            .Expect (mock => mock.ObjectsUnloaded (
-                        Arg.Is (_subTransaction),
-                        Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order1 })))
-            .WhenCalled (mi => Assert.That (_subTransactionDataManager.DataContainers[_order1.ID] == null));
-      }
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsUnloading(_subTransaction, new[] { _order1 }))
+          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_subTransactionDataManager.DataContainers[_order1.ID] != null))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsUnloading(_subTransaction.ParentTransaction, new[] { _order1 }))
+          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_parentTransactionDataManager.DataContainers[_order1.ID] != null))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsUnloaded(_subTransaction.ParentTransaction, new[] { _order1 }))
+          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_parentTransactionDataManager.DataContainers[_order1.ID] == null))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsUnloaded(_subTransaction, new[] { _order1 }))
+          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_subTransactionDataManager.DataContainers[_order1.ID] == null))
+          .Verifiable();
 
-      _mockRepository.ReplayAll ();
+      UnloadService.UnloadData(_subTransaction, _order1.ID);
 
-      UnloadService.UnloadData (_subTransaction, _order1.ID);
-
-      _mockRepository.VerifyAll ();
+      extensionMock.Verify();
     }
 
+    private Mock<IClientTransactionExtension> AddExtensionToClientTransaction (ClientTransaction rootClientTransaction, ClientTransaction subClientTransaction)
+    {
+      var extensionMock = new Mock<IClientTransactionExtension>(MockBehavior.Strict);
+
+      extensionMock.Setup(stub => stub.Key).Returns("TestExtension");
+      rootClientTransaction.Extensions.Add(extensionMock.Object);
+      subClientTransaction.Extensions.Add(extensionMock.Object);
+      extensionMock.Reset();
+
+      return extensionMock;
+    }
   }
 }

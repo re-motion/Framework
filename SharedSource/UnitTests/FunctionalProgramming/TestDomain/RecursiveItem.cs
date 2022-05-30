@@ -18,6 +18,7 @@
 using System;
 using System.Collections.ObjectModel;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 {
@@ -32,7 +33,7 @@ namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 
     public ReadOnlyCollection<RecursiveItem> Children
     {
-      get { return Array.AsReadOnly (_children); }
+      get { return Array.AsReadOnly(_children); }
     }
   }
 }

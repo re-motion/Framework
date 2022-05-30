@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -32,21 +33,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class ImageButtonControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void GenericTests (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
-      testAction (Helper, e => e.ImageButtons(), "imageButton");
+      testAction(Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<ImageButtonSelector, ImageButtonControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<ImageButtonSelector, ImageButtonControlObject> testAction)
     {
-      testAction (Helper, e => e.ImageButtons(), "imageButton");
+      testAction(Helper, e => e.ImageButtons(), "imageButton");
     }
 
     [Test]
@@ -54,10 +55,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.ImageButtons().GetByLocalID ("ImageButtonDisabled");
+      var control = home.ImageButtons().GetByLocalID("ImageButtonDisabled");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.Click(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(() => control.Click(), Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "Click").Message));
     }
 
     [Test]
@@ -65,8 +66,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var imageButton = home.ImageButtons().GetByLocalID ("MyImageButton");
-      Assert.That (imageButton.GetImageSourceUrl(), Is.StringEnding ("/Images/SampleIcon.gif"));
+      var imageButton = home.ImageButtons().GetByLocalID("MyImageButton");
+      Assert.That(imageButton.GetImageSourceUrl(), Does.EndWith("/Images/SampleIcon.gif"));
     }
 
     [Test]
@@ -74,18 +75,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var imageButton = home.ImageButtons().GetByLocalID ("MyImageButton2");
-      home = imageButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("MyImageButton2|MyImageButton2Command"));
+      {
+        var imageButton2 = home.ImageButtons().GetByLocalID("MyImageButton2");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(imageButton2);
+        home = imageButton2.Click().Expect<WxePageObject>();
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("MyImageButton2|MyImageButton2Command"));
+      }
 
-      imageButton = home.ImageButtons().GetByLocalID ("MyImageButton3");
-      home = imageButton.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      {
+        var imageButton3 = home.ImageButtons().GetByLocalID("MyImageButton3");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(imageButton3);
+        home = imageButton3.Click().Expect<WxePageObject>();
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
+      }
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("ImageButtonTest.wxe");
+      return Start<WxePageObject>("ImageButtonTest.wxe");
     }
   }
 }

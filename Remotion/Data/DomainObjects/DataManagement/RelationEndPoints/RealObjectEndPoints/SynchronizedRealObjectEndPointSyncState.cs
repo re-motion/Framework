@@ -31,10 +31,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
     private readonly IRelationEndPointProvider _endPointProvider;
     private readonly IClientTransactionEventSink _transactionEventSink;
 
-    public SynchronizedRealObjectEndPointSyncState(IRelationEndPointProvider endPointProvider, IClientTransactionEventSink transactionEventSink)
+    public SynchronizedRealObjectEndPointSyncState (IRelationEndPointProvider endPointProvider, IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
 
       _endPointProvider = endPointProvider;
       _transactionEventSink = transactionEventSink;
@@ -57,26 +57,26 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     public void Synchronize (IRealObjectEndPoint endPoint, IVirtualEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       // nothing to do here - the end-point is already syncrhonized
     }
 
     public IDataManagementCommand CreateDeleteCommand (IRealObjectEndPoint endPoint, Action oppositeObjectNullSetter)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("oppositeObjectNullSetter", oppositeObjectNullSetter);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("oppositeObjectNullSetter", oppositeObjectNullSetter);
 
-      var oppositeEndPointDefinition = endPoint.Definition.GetOppositeEndPointDefinition ();
+      var oppositeEndPointDefinition = endPoint.Definition.GetOppositeEndPointDefinition();
 
-      var objectEndPointDeleteCommand = new ObjectEndPointDeleteCommand (endPoint, oppositeObjectNullSetter, _transactionEventSink);
+      var objectEndPointDeleteCommand = new ObjectEndPointDeleteCommand(endPoint, oppositeObjectNullSetter, _transactionEventSink);
 
       if (!oppositeEndPointDefinition.IsAnonymous && oppositeEndPointDefinition.IsVirtual)
       {
-        var oldRelatedEndPoint = GetOppositeEndPoint (endPoint, endPoint.OppositeObjectID);
-        var newRelatedEndPoint = GetOppositeEndPoint (endPoint, null);
-        return new RealObjectEndPointRegistrationCommandDecorator (objectEndPointDeleteCommand, endPoint, oldRelatedEndPoint, newRelatedEndPoint);
+        var oldRelatedEndPoint = GetOppositeEndPoint(endPoint, endPoint.OppositeObjectID);
+        var newRelatedEndPoint = GetOppositeEndPoint(endPoint, null);
+        return new RealObjectEndPointRegistrationCommandDecorator(objectEndPointDeleteCommand, endPoint, oldRelatedEndPoint, newRelatedEndPoint);
       }
       else
       {
@@ -84,43 +84,42 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
       }
     }
 
-    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject newRelatedObject, Action<DomainObject> oppositeObjectSetter)
+    public IDataManagementCommand CreateSetCommand (IRealObjectEndPoint endPoint, DomainObject? newRelatedObject, Action<DomainObject?> oppositeObjectSetter)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("oppositeObjectSetter", oppositeObjectSetter);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("oppositeObjectSetter", oppositeObjectSetter);
 
-      var oppositeEndPointDefinition = endPoint.Definition.GetOppositeEndPointDefinition ();
+      var oppositeEndPointDefinition = endPoint.Definition.GetOppositeEndPointDefinition();
 
       var newRelatedObjectID = newRelatedObject.GetSafeID();
       if (endPoint.OppositeObjectID == newRelatedObjectID)
-        return new ObjectEndPointSetSameCommand (endPoint, _transactionEventSink);
+        return new ObjectEndPointSetSameCommand(endPoint, _transactionEventSink);
       else if (oppositeEndPointDefinition.IsAnonymous)
-        return new ObjectEndPointSetUnidirectionalCommand (endPoint, newRelatedObject, oppositeObjectSetter, _transactionEventSink);
+        return new ObjectEndPointSetUnidirectionalCommand(endPoint, newRelatedObject, oppositeObjectSetter, _transactionEventSink);
       else
       {
         var setCommand =
             oppositeEndPointDefinition.Cardinality == CardinalityType.One
-                ? (IDataManagementCommand)
-                  new ObjectEndPointSetOneOneCommand (endPoint, newRelatedObject, oppositeObjectSetter, _transactionEventSink)
-                : new ObjectEndPointSetOneManyCommand (endPoint, newRelatedObject, oppositeObjectSetter, _endPointProvider, _transactionEventSink);
+                ? (IDataManagementCommand)new ObjectEndPointSetOneOneCommand(endPoint, newRelatedObject, oppositeObjectSetter, _transactionEventSink)
+                : new ObjectEndPointSetOneManyCommand(endPoint, newRelatedObject, oppositeObjectSetter, _endPointProvider, _transactionEventSink);
 
-        var oldRelatedEndPoint = GetOppositeEndPoint (endPoint, endPoint.OppositeObjectID);
-        var newRelatedEndPoint = GetOppositeEndPoint (endPoint, newRelatedObjectID);
-        return new RealObjectEndPointRegistrationCommandDecorator (setCommand, endPoint, oldRelatedEndPoint, newRelatedEndPoint);
+        var oldRelatedEndPoint = GetOppositeEndPoint(endPoint, endPoint.OppositeObjectID);
+        var newRelatedEndPoint = GetOppositeEndPoint(endPoint, newRelatedObjectID);
+        return new RealObjectEndPointRegistrationCommandDecorator(setCommand, endPoint, oldRelatedEndPoint, newRelatedEndPoint);
       }
     }
 
-    private IVirtualEndPoint GetOppositeEndPoint (IRealObjectEndPoint sourceEndPoint, ObjectID oppositeObjectID)
+    private IVirtualEndPoint GetOppositeEndPoint (IRealObjectEndPoint sourceEndPoint, ObjectID? oppositeObjectID)
     {
-      var newOppositeID = RelationEndPointID.CreateOpposite (sourceEndPoint.Definition, oppositeObjectID);
-      return (IVirtualEndPoint) _endPointProvider.GetRelationEndPointWithLazyLoad (newOppositeID);
+      var newOppositeID = RelationEndPointID.CreateOpposite(sourceEndPoint.Definition, oppositeObjectID);
+      return (IVirtualEndPoint)_endPointProvider.GetRelationEndPointWithLazyLoad(newOppositeID);
     }
 
     #region Serialization
 
     public SynchronizedRealObjectEndPointSyncState (FlattenedDeserializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
       _endPointProvider = info.GetValueForHandle<IRelationEndPointProvider>();
       _transactionEventSink = info.GetValueForHandle<IClientTransactionEventSink>();
@@ -128,10 +127,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RealObjec
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      info.AddHandle (_endPointProvider);
-      info.AddHandle (_transactionEventSink);
+      info.AddHandle(_endPointProvider);
+      info.AddHandle(_transactionEventSink);
     }
 
     #endregion

@@ -20,7 +20,6 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Utilities
@@ -35,9 +34,9 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static string JoinLinesWithEncoding (IEnumerable<string> lines)
     {
-      ArgumentUtility.CheckNotNull ("lines", lines);
+      ArgumentUtility.CheckNotNull("lines", lines);
 
-      return string.Join ("<br />", lines.Select (HttpUtility.HtmlEncode));
+      return string.Join("<br />", lines.Select(HttpUtility.HtmlEncode));
     }
 
     /// <summary>
@@ -45,7 +44,7 @@ namespace Remotion.Web.Utilities
     /// </summary>
     public static void WriteEncodedLines (this HtmlTextWriter htmlTextWriter, IEnumerable<string> lines)
     {
-      ArgumentUtility.CheckNotNull ("lines", lines);
+      ArgumentUtility.CheckNotNull("lines", lines);
 
       var enumerator = lines.GetEnumerator();
       if (!enumerator.MoveNext())
@@ -53,7 +52,7 @@ namespace Remotion.Web.Utilities
 
       while (true)
       {
-        htmlTextWriter.WriteEncodedText (enumerator.Current);
+        htmlTextWriter.WriteEncodedText(enumerator.Current);
 
         if (enumerator.MoveNext())
           htmlTextWriter.WriteBreak();
@@ -63,38 +62,83 @@ namespace Remotion.Web.Utilities
     }
 
     /// <summary>
-    /// Writes a <paramref name="dictionary"/> as Json string to the <paramref name="stringBuilder"/>.
+    /// Writes a set of string and string-arrays as Json string to the <paramref name="stringBuilder"/>.
     /// </summary>
-    public static void WriteDictionaryAsJson (this StringBuilder stringBuilder, IReadOnlyDictionary<string, string> dictionary)
+    public static void WriteDictionaryAsJson (
+          this StringBuilder stringBuilder,
+          IReadOnlyDictionary<string, string?> dictionaryOfStringValues,
+          IReadOnlyDictionary<string, IReadOnlyCollection<string>?>? dictionaryOfStringArrays = null)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("dictionaryOfStringValues", dictionaryOfStringValues);
 
-      if (dictionary.Count == 0)
+      stringBuilder.Append('{');
+
+      foreach (var dictionaryEntry in dictionaryOfStringValues)
       {
-        stringBuilder.Append ("null");
-        return;
+        stringBuilder.AppendFormattedString(dictionaryEntry.Key);
+        stringBuilder.Append(':');
+        stringBuilder.AppendFormattedString(dictionaryEntry.Value);
+        stringBuilder.Append(',');
       }
 
-      stringBuilder.Append ("{");
-
-      foreach (var dictionaryEntry in dictionary)
+      if (dictionaryOfStringArrays != null)
       {
-        stringBuilder.Append ("\"").Append (dictionaryEntry.Key).Append ("\"").Append (":");
+        foreach (var dictionaryEntry in dictionaryOfStringArrays)
+        {
+          stringBuilder.AppendFormattedString(dictionaryEntry.Key);
+          stringBuilder.Append(':');
+          stringBuilder.AppendStringCollection(dictionaryEntry.Value);
+          stringBuilder.Append(',');
+        }
+      }
 
-        if (dictionaryEntry.Value.Contains ("\""))
-          stringBuilder.Append ("'").Append (dictionaryEntry.Value).Append ("'");
+      stringBuilder.RemoveTrailingComma();
+
+      stringBuilder.Append('}');
+    }
+
+    private static StringBuilder AppendFormattedString (this StringBuilder stringBuilder, string? value)
+    {
+      if (value == null)
+      {
+        stringBuilder.Append("null");
+      }
+      else
+      {
+        var hasDoubleQuotes = value.IndexOf('\"') >= 0;
+        if (hasDoubleQuotes)
+          stringBuilder.Append('\'').Append(value).Append('\'');
         else
-          stringBuilder.Append ("\"").Append (dictionaryEntry.Value).Append ("\"");
-
-
-        stringBuilder.Append (",");
+          stringBuilder.Append('\"').Append(value).Append('\"');
       }
 
-      //Remove last comma
-      stringBuilder.Remove (stringBuilder.Length - 1, 1);
+      return stringBuilder;
+    }
 
-      stringBuilder.Append ("}");
+    private static StringBuilder AppendStringCollection (this StringBuilder stringBuilder, IReadOnlyCollection<string>? value)
+    {
+      if (value == null)
+      {
+        stringBuilder.Append("null");
+      }
+      else
+      {
+        stringBuilder.Append('[');
+        value.Aggregate(stringBuilder, (sb, itemID) => sb.AppendFormattedString(itemID).Append(','));
+        stringBuilder.RemoveTrailingComma();
+        stringBuilder.Append(']');
+      }
+
+      return stringBuilder;
+    }
+
+    private static StringBuilder RemoveTrailingComma (this StringBuilder stringBuilder)
+    {
+      if (stringBuilder[stringBuilder.Length - 1] == ',')
+        stringBuilder.Remove(stringBuilder.Length - 1, 1);
+
+      return stringBuilder;
     }
   }
 }

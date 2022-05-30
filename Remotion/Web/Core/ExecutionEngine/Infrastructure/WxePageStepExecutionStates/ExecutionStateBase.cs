@@ -35,8 +35,8 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
 
     protected ExecutionStateBase (IExecutionStateContext executionStateContext, TParameters parameters)
     {
-      ArgumentUtility.CheckNotNull ("executionStateContext", executionStateContext);
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("executionStateContext", executionStateContext);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       _executionStateContext = executionStateContext;
       _parameters = parameters;

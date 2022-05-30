@@ -27,21 +27,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
   {
     protected PropertyReflector CreatePropertyReflector<T> (string property, IDomainModelConstraintProvider domainModelConstraintProvider)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("property", property);
+      ArgumentUtility.CheckNotNullOrEmpty("property", property);
 
-      Type type = typeof (T);
-      var propertyInfo = PropertyInfoAdapter.Create(type.GetProperty (property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
+      Type type = typeof(T);
       ClassDefinition classDefinition;
-      if (ReflectionUtility.IsDomainObject (type))
+      if (ReflectionUtility.IsDomainObject(type))
       {
-        classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: type, isAbstract: true);
+        classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type, isAbstract: true);
       }
       else
       {
-        classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: type, isAbstract: false);
+        classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type, isAbstract: false);
       }
 
-      return new PropertyReflector (
+      return CreatePropertyReflector<T>(property, classDefinition, domainModelConstraintProvider);
+    }
+
+    protected PropertyReflector CreatePropertyReflector<T> (
+        string property,
+        ClassDefinition classDefinition,
+        IDomainModelConstraintProvider domainModelConstraintProvider)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty("property", property);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+
+      Type type = typeof(T);
+      var propertyInfo = PropertyInfoAdapter.Create(
+          type.GetProperty(property, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
+
+      return new PropertyReflector(
           classDefinition,
           propertyInfo,
           Configuration.NameResolver,

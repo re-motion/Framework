@@ -39,55 +39,55 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
     public static IDomainObjectHandle<SecurableClassDefinition> OrderClassHandle { get; private set; }
     public static  List<AccessControlList> aclList { get; private set; }
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       try
       {
         // Use default localization for tests
-        AclToolsExpansion.Culture = new CultureInfo ("");
+        AclToolsExpansion.Culture = new CultureInfo("");
 
         AccessControlTestHelper testHelper = new AccessControlTestHelper();
         using (testHelper.Transaction.EnterDiscardingScope())
         {
           _dbFixtures = new DatabaseFixtures();
-          _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
+          _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.Current);
 
-          _cultureDe = Culture.NewObject ("de-DE");
-          _cultureEn = Culture.NewObject ("en-US");
+          _cultureDe = Culture.NewObject("de-DE");
+          _cultureEn = Culture.NewObject("en-US");
 
           SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition();
           OrderClassHandle = orderClass.GetHandle();
 
-          testHelper.AttachAccessType (orderClass, Guid.NewGuid (), "FirstAccessType", 0);
-          testHelper.AttachAccessType (orderClass, Guid.NewGuid(), "FirstAccessType2", 2);
-          testHelper.AttachAccessType (orderClass, Guid.NewGuid(), "FirstAccessType3", 3);
-          aclList = testHelper.CreateAclsForOrderAndPaymentAndDeliveryStates (orderClass);
-          var ace = aclList[0].CreateAccessControlEntry ();
+          testHelper.AttachAccessType(orderClass, Guid.NewGuid(), "FirstAccessType", 0);
+          testHelper.AttachAccessType(orderClass, Guid.NewGuid(), "FirstAccessType2", 2);
+          testHelper.AttachAccessType(orderClass, Guid.NewGuid(), "FirstAccessType3", 3);
+          aclList = testHelper.CreateAclsForOrderAndPaymentAndDeliveryStates(orderClass);
+          var ace = aclList[0].CreateAccessControlEntry();
           ace.GetPermissions()[0].Allowed = true; // FirstAccessType
 
           testHelper.CreateInvoiceClassDefinition();
 
-          LocalizeClassEnDe (orderClass, "Order", "Bestellung");
-          
-          LocalizeStatePropertyEnDe (orderClass, "Payment", "Payment", "Bezahlstatus");
-          LocalizeStateEnDe (orderClass, "Payment", (int) PaymentState.None, "None", "Offen");
-          LocalizeStateEnDe (orderClass, "Payment", (int) PaymentState.Paid, "Paid", "Bezahlt");
-          
-          LocalizeStatePropertyEnDe (orderClass, "State", "Order State", "Bestellstatus");
-          LocalizeStateEnDe (orderClass, "State", (int) OrderState.Delivered, "Delivered", "Ausgelifert");
-          LocalizeStateEnDe (orderClass, "State", (int) OrderState.Received, "Received", "Erhalten");
+          LocalizeClassEnDe(orderClass, "Order", "Bestellung");
 
-          LocalizeStatePropertyEnDe (orderClass, "Delivery", "Delivery Provider", "Auslieferer");
-          LocalizeStateEnDe (orderClass, "Delivery", (int) Delivery.Dhl, "DHL", "DHL");
-          LocalizeStateEnDe (orderClass, "Delivery", (int) Delivery.Post, "Mail", "Post");
+          LocalizeStatePropertyEnDe(orderClass, "Payment", "Payment", "Bezahlstatus");
+          LocalizeStateEnDe(orderClass, "Payment", (int)PaymentState.None, "None", "Offen");
+          LocalizeStateEnDe(orderClass, "Payment", (int)PaymentState.Paid, "Paid", "Bezahlt");
+
+          LocalizeStatePropertyEnDe(orderClass, "State", "Order State", "Bestellstatus");
+          LocalizeStateEnDe(orderClass, "State", (int)OrderState.Delivered, "Delivered", "Ausgelifert");
+          LocalizeStateEnDe(orderClass, "State", (int)OrderState.Received, "Received", "Erhalten");
+
+          LocalizeStatePropertyEnDe(orderClass, "Delivery", "Delivery Provider", "Auslieferer");
+          LocalizeStateEnDe(orderClass, "Delivery", (int)Delivery.Dhl, "DHL", "DHL");
+          LocalizeStateEnDe(orderClass, "Delivery", (int)Delivery.Post, "Mail", "Post");
 
           ClientTransaction.Current.Commit();
         }
       }
       catch (Exception e)
       {
-        Console.WriteLine (e);
+        Console.WriteLine(e);
         throw;
       }
     }
@@ -95,28 +95,28 @@ namespace Remotion.SecurityManager.UnitTests.AclTools
 
     private void LocalizeMetadataObjectEnDe (MetadataObject metadataObject, string nameEnglish, string nameGerman)
     {
-      LocalizedName.NewObject (nameGerman, _cultureDe, metadataObject);
-      LocalizedName.NewObject (nameEnglish, _cultureEn, metadataObject);
-    }
-  
-    private void LocalizeClassEnDe (SecurableClassDefinition classDefinition, string nameEnglish, string nameGerman)
-    {
-      LocalizeMetadataObjectEnDe (classDefinition, nameEnglish, nameGerman);
+      LocalizedName.NewObject(nameGerman, _cultureDe, metadataObject);
+      LocalizedName.NewObject(nameEnglish, _cultureEn, metadataObject);
     }
 
-    private void LocalizeStatePropertyEnDe (SecurableClassDefinition classDefinition, 
+    private void LocalizeClassEnDe (SecurableClassDefinition classDefinition, string nameEnglish, string nameGerman)
+    {
+      LocalizeMetadataObjectEnDe(classDefinition, nameEnglish, nameGerman);
+    }
+
+    private void LocalizeStatePropertyEnDe (SecurableClassDefinition classDefinition,
       string statePropertyName, string nameEnglish, string nameGerman)
     {
-      var stateProperty = classDefinition.GetStateProperty (statePropertyName);
-      LocalizeMetadataObjectEnDe (stateProperty, nameEnglish, nameGerman);
+      var stateProperty = classDefinition.GetStateProperty(statePropertyName);
+      LocalizeMetadataObjectEnDe(stateProperty, nameEnglish, nameGerman);
     }
 
     private void LocalizeStateEnDe (SecurableClassDefinition classDefinition,
       string statePropertyName, int stateEnumValue, string nameEnglish, string nameGerman)
     {
-      var stateProperty = classDefinition.GetStateProperty (statePropertyName);
-      var state = stateProperty.GetState (stateEnumValue);
-      LocalizeMetadataObjectEnDe (state, nameEnglish, nameGerman);
+      var stateProperty = classDefinition.GetStateProperty(statePropertyName);
+      var state = stateProperty.GetState(stateEnumValue);
+      LocalizeMetadataObjectEnDe(state, nameEnglish, nameGerman);
     }
   }
 }

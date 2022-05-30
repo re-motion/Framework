@@ -27,31 +27,42 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
   /// </summary>
   public class ScreenshotTooltipStyle
   {
-    public static readonly ScreenshotTooltipStyle Chrome = new ScreenshotTooltipStyle (
-        new Font ("Arial", 9, FontStyle.Regular),
-        new SolidBrush (Color.FromArgb (0x57, 0x57, 0x57)),
+    public static readonly ScreenshotTooltipStyle Chrome = new ScreenshotTooltipStyle(
+        new Font("Arial", 9, FontStyle.Regular),
+        new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
         Brushes.White,
-        new Pen (Color.FromArgb (0x76, 0x76, 0x76), 1),
+        new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
         TooltipPositioning.BottomRight,
-        new WebPadding (2, 0, 2, 0),
+        new WebPadding(2, 0, 2, 0),
         true,
-        new Size (12, 18),
-        new Size (970, 110));
+        new Size(12, 18),
+        new Size(970, 110));
 
-    public static readonly ScreenshotTooltipStyle InternetExplorer = new ScreenshotTooltipStyle (
-        new Font ("Arial", 9, FontStyle.Regular),
-        new SolidBrush (Color.FromArgb (0x66, 0x66, 0x66)),
+    public static readonly ScreenshotTooltipStyle Edge = new ScreenshotTooltipStyle(
+        new Font("Arial", 9, FontStyle.Regular),
+        new SolidBrush(Color.FromArgb(0x57, 0x57, 0x57)),
         Brushes.White,
-        new Pen (Color.FromArgb (0x80, 0x80, 0x80), 2),
-        TooltipPositioning.TopCenter,
-        new WebPadding (9, 8, 9, 7),
-        false,
-        new Size (20, 29),
-        new Size (378, 209));
+        new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
+        TooltipPositioning.BottomRight,
+        new WebPadding(2, 0, 2, 0),
+        true,
+        new Size(12, 18),
+        new Size(970, 110));
+
+    public static readonly ScreenshotTooltipStyle Firefox = new ScreenshotTooltipStyle(
+        new Font("Sans-Serif", 9, FontStyle.Regular),
+        new SolidBrush(Color.FromArgb(0x0, 0x0, 0x0)),
+        Brushes.White,
+        new Pen(Color.FromArgb(0x76, 0x76, 0x76), 1),
+        TooltipPositioning.BottomRight,
+        new WebPadding(2, 2, 2, 2),
+        true,
+        new Size(12, 18),
+        new Size(970, 110));
 
     private readonly Font _font;
     private readonly Brush _foregroundBrush;
-    private readonly Brush _backgroundBrush;
+    private readonly Brush? _backgroundBrush;
     private readonly Pen _border;
     private readonly TooltipPositioning _positioning;
     private readonly WebPadding _contentPadding;
@@ -62,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     public ScreenshotTooltipStyle (
         [NotNull] Font font,
         [NotNull] Brush foregroundBrush,
-        [CanBeNull] Brush backgroundBrush,
+        [CanBeNull] Brush? backgroundBrush,
         [NotNull] Pen border,
         TooltipPositioning positioning,
         WebPadding contentPadding,
@@ -70,9 +81,9 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
         Size minimumSize,
         Size maximumSize)
     {
-      ArgumentUtility.CheckNotNull ("font", font);
-      ArgumentUtility.CheckNotNull ("foregroundBrush", foregroundBrush);
-      ArgumentUtility.CheckNotNull ("border", border);
+      ArgumentUtility.CheckNotNull("font", font);
+      ArgumentUtility.CheckNotNull("foregroundBrush", foregroundBrush);
+      ArgumentUtility.CheckNotNull("border", border);
 
       _font = font;
       _foregroundBrush = foregroundBrush;
@@ -105,7 +116,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// The <see cref="Brush"/> that will be used to fill the background of the tooltip, or <see langword="null" /> if the background should not be filled.
     /// </summary>
     [CanBeNull]
-    public Brush BackgroundBrush
+    public Brush? BackgroundBrush
     {
       get { return _backgroundBrush; }
     }
@@ -163,20 +174,20 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations
     /// Clones the <see cref="ScreenshotTooltipStyle"/> overriding the specified members.
     /// </summary>
     public ScreenshotTooltipStyle Clone (
-        Font font = null,
-        Brush foregroundBrush = null,
+        Font? font = null,
+        Brush? foregroundBrush = null,
         OptionalParameter<Brush> backgroundBrush = default(OptionalParameter<Brush>),
-        Pen border = null,
+        Pen? border = null,
         TooltipPositioning? positioning = null,
         WebPadding? contentPadding = null,
         bool? wrapLines = null,
         Size? minimumSize = null,
         Size? maximumSize = null)
     {
-      return new ScreenshotTooltipStyle (
+      return new ScreenshotTooltipStyle(
           font ?? _font,
           foregroundBrush ?? _foregroundBrush,
-          backgroundBrush.GetValueOrDefault (_backgroundBrush),
+          backgroundBrush.GetValueOrDefault(_backgroundBrush),
           border ?? _border,
           positioning ?? _positioning,
           contentPadding ?? _contentPadding,

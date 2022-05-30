@@ -15,23 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
   /// Implements <see cref="IValidatorFormatter"/> interface by calling <see cref="Object.ToString()"/> on the <see cref="IPropertyValidator"/> instance.
   /// </summary>
-  [ImplementationFor (typeof (IValidatorFormatter), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IValidatorFormatter), Lifetime = LifetimeKind.Singleton)]
   public class DefaultValidatorFormatter : IValidatorFormatter
   {
     public string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
+      ArgumentUtility.CheckNotNull("validator", validator);
 
-      return validator.ToString();
+      string? formattedValidator = validator.ToString();
+      Assertion.IsNotNull(formattedValidator, "ToString() of validator type '{0}' returned null.", validator.GetType());
+      return formattedValidator;
     }
   }
 }

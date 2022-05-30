@@ -1,106 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2657E4C0-90AB-4B2E-A1B9-90DD4EEE7825}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.SecurityManager.PerformanceTests</RootNamespace>
+    <ProjectType>Executable</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\Build\Shared.build.props" />
+  <PropertyGroup>
     <AssemblyName>Remotion.SecurityManager.PerformanceTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <IsPackable>False</IsPackable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
+    <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\Data\Core\Data.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj" />
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj" />
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj" />
+    <ProjectReference Include="..\..\Remotion\Data\DomainObjects\Data.DomainObjects.csproj" />
+    <ProjectReference Include="..\..\Remotion\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj" />
+    <ProjectReference Include="..\Core\SecurityManager.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleSecurityContext.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Remotion\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\Data\Core\Data.Core.csproj">
-      <Project>{70273934-12F1-49AF-975A-303BAEFE1CAE}</Project>
-      <Name>Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.ObjectBinding\Data.DomainObjects.ObjectBinding.csproj">
-      <Project>{F3935D12-39E6-4F06-8316-98CD7ED60C6B}</Project>
-      <Name>Data.DomainObjects.ObjectBinding</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.Security\Data.DomainObjects.Security.csproj">
-      <Project>{2C87FB62-CC00-4297-A3EA-35F4FC6649F0}</Project>
-      <Name>Data.DomainObjects.Security</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\Data\DomainObjects.UberProfIntegration\Data.DomainObjects.UberProfIntegration.csproj">
-      <Project>{81E5BEC0-B845-4470-BD19-9FCB121CB413}</Project>
-      <Name>Data.DomainObjects.UberProfIntegration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\Data\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\ObjectBinding\Core\ObjectBinding.Core.csproj">
-      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
-      <Name>ObjectBinding.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Remotion\Security\Core\Security.Core.csproj">
-      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
-      <Name>Security.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
-      <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
-      <Name>SecurityManager.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\Build\Shared.build.targets" />
 </Project>

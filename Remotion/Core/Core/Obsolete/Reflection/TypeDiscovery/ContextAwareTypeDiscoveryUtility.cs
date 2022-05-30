@@ -22,10 +22,10 @@ using System.ComponentModel.Design;
 namespace Remotion.Reflection.TypeDiscovery
 {
   /// <threadsafety static="true" instance="false"/>
-  [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility instead. (Version 1.15.30.0)", true)]
+  [Obsolete("Use Remotion.Reflection.ContextAwareTypeUtility instead. (Version 1.15.30.0)", true)]
   public static class ContextAwareTypeDiscoveryUtility
   {
-    [Obsolete ("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)", true)]
+    [Obsolete("Use Remotion.Reflection.ContextAwareTypeUtility.GetTypeDiscoveryService() instead. (Version 1.15.30.0)", true)]
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
       // NOTE: This method must remain until Mixin XRef has been updated to use ContextAwareTypeUtility.GetTypeDiscoveryService() instead.

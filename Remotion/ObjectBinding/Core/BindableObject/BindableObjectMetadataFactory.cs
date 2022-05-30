@@ -31,46 +31,46 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     public static BindableObjectMetadataFactory Create ()
     {
-      return ObjectFactory.Create<BindableObjectMetadataFactory> (true, ParamList.Empty);
+      return ObjectFactory.Create<BindableObjectMetadataFactory>(true, ParamList.Empty);
     }
 
     private readonly BindableObjectGlobalizationService _bindableObjectGlobalizationService;
 
     protected BindableObjectMetadataFactory ()
-        : this (SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
+        : this(SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
     {
     }
 
     public BindableObjectMetadataFactory (BindableObjectGlobalizationService bindableObjectGlobalizationService)
     {
-      ArgumentUtility.CheckNotNull ("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
+      ArgumentUtility.CheckNotNull("bindableObjectGlobalizationService", bindableObjectGlobalizationService);
 
       _bindableObjectGlobalizationService = bindableObjectGlobalizationService;
     }
 
     public virtual IClassReflector CreateClassReflector (Type targetType, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
 
-      return new ClassReflector (targetType, businessObjectProvider, this, _bindableObjectGlobalizationService);
+      return new ClassReflector(targetType, businessObjectProvider, this, _bindableObjectGlobalizationService);
     }
 
     public virtual IPropertyFinder CreatePropertyFinder (Type concreteType)
     {
-      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
+      ArgumentUtility.CheckNotNull("concreteType", concreteType);
 
-      return new ReflectionBasedPropertyFinder (concreteType);
+      return new ReflectionBasedPropertyFinder(concreteType);
     }
 
     public virtual PropertyReflector CreatePropertyReflector (
         Type concreteType, IPropertyInformation propertyInfo, BindableObjectProvider businessObjectProvider)
     {
-      ArgumentUtility.CheckNotNull ("concreteType", concreteType);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("concreteType", concreteType);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
 
-      return PropertyReflector.Create (propertyInfo, businessObjectProvider);
+      return PropertyReflector.Create(propertyInfo, businessObjectProvider);
     }
   }
 }

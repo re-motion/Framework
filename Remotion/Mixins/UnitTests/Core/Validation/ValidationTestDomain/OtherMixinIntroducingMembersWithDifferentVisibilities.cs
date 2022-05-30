@@ -44,19 +44,19 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
 
     public event EventHandler EventWithDefaultVisibility;
 
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public void MethodWithPublicVisibility ()
     {
     }
 
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public int PropertyWithPublicVisibility
     {
       get { return 0; }
       set { Dev.Null = value; }
     }
 
-    [MemberVisibility (MemberVisibility.Public)]
+    [MemberVisibility(MemberVisibility.Public)]
     public event EventHandler EventWithPublicVisibility;
   }
 }

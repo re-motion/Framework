@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -26,21 +27,41 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private readonly WebTestSetUpFixtureHelper _setUpFixtureHelper =
         WebTestSetUpFixtureHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
-      var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
+      AppContext.SetSwitch("Switch.System.Net.DontEnableSchUseStrongCrypto", false);
 
-      if (Directory.Exists (screenshotDirectory))
-        Directory.Delete (screenshotDirectory, true);
+      try
+      {
+        var screenshotDirectory = _setUpFixtureHelper.ScreenshotDirectory;
 
-      _setUpFixtureHelper.OnSetUp();
+        if (Directory.Exists(screenshotDirectory))
+          Directory.Delete(screenshotDirectory, true);
+
+        _setUpFixtureHelper.OnSetUp();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine("SetUpFixture failed: " + e);
+        Console.WriteLine();
+        throw;
+      }
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
-      _setUpFixtureHelper.OnTearDown();
+      try
+      {
+        _setUpFixtureHelper.OnTearDown();
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine("SetUpFixture failed: " + e);
+        Console.WriteLine();
+        throw;
+      }
     }
   }
 }

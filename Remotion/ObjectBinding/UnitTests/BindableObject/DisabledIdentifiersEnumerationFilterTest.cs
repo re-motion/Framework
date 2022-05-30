@@ -15,53 +15,53 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
   [TestFixture]
   public class DisabledIdentifiersEnumerationFilterTest
   {
-    private IBusinessObject _businessObjectStub;
-    private IBusinessObjectEnumerationProperty _propertyStub;
+    private Mock<IBusinessObject> _businessObjectStub;
+    private Mock<IBusinessObjectEnumerationProperty> _propertyStub;
     private EnumerationValueInfo _value1;
     private EnumerationValueInfo _value2;
 
     [SetUp]
     public void SetUp ()
     {
-      _businessObjectStub = MockRepository.GenerateStub<IBusinessObject> ();
-      _propertyStub = MockRepository.GenerateStub<IBusinessObjectEnumerationProperty> ();
-      _value1 = new EnumerationValueInfo ("Value1", "ID1", "Value 1", true);
-      _value2 = new EnumerationValueInfo ("Value2", "ID2", "Value 2", true);
+      _businessObjectStub = new Mock<IBusinessObject>();
+      _propertyStub = new Mock<IBusinessObjectEnumerationProperty>();
+      _value1 = new EnumerationValueInfo("Value1", "ID1", "Value 1", true);
+      _value2 = new EnumerationValueInfo("Value2", "ID2", "Value 2", true);
     }
 
     [Test]
     public void IsEnabled_True ()
     {
-      var filter = new DisabledIdentifiersEnumerationFilter (new[] { "ID3", "ID4" });
+      var filter = new DisabledIdentifiersEnumerationFilter(new[] { "ID3", "ID4" });
 
-      Assert.That (filter.IsEnabled (_value1, _businessObjectStub, _propertyStub), Is.True);
-      Assert.That (filter.IsEnabled (_value2, _businessObjectStub, _propertyStub), Is.True);
+      Assert.That(filter.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object), Is.True);
+      Assert.That(filter.IsEnabled(_value2, _businessObjectStub.Object, _propertyStub.Object), Is.True);
     }
 
     [Test]
     public void IsEnabled_False ()
     {
-      var filter = new DisabledIdentifiersEnumerationFilter (new[] { "ID1", "ID2" });
+      var filter = new DisabledIdentifiersEnumerationFilter(new[] { "ID1", "ID2" });
 
-      Assert.That (filter.IsEnabled (_value1, _businessObjectStub, _propertyStub), Is.False);
-      Assert.That (filter.IsEnabled (_value2, _businessObjectStub, _propertyStub), Is.False);
+      Assert.That(filter.IsEnabled(_value1, _businessObjectStub.Object, _propertyStub.Object), Is.False);
+      Assert.That(filter.IsEnabled(_value2, _businessObjectStub.Object, _propertyStub.Object), Is.False);
     }
 
     [Test]
     public void IsEnabled_NullBusinessObject ()
     {
-      var filter = new DisabledIdentifiersEnumerationFilter (new string[0]);
+      var filter = new DisabledIdentifiersEnumerationFilter(new string[0]);
 
-      Assert.That (filter.IsEnabled (_value1, null, _propertyStub), Is.True);
+      Assert.That(filter.IsEnabled(_value1, null, _propertyStub.Object), Is.True);
     }
   }
 }

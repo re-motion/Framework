@@ -32,6 +32,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public BrowserHelper (IBrowserConfiguration browserConfiguration)
     {
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+
       BrowserConfiguration = browserConfiguration;
     }
 
@@ -40,9 +42,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] BrowserWindow browserWindow)
     {
-      ArgumentUtility.CheckNotNull ("browserWindow", browserWindow);
+      ArgumentUtility.CheckNotNull("browserWindow", browserWindow);
 
-      return GetBrowserContentBounds (browserWindow.GetWebDriver());
+      return GetBrowserContentBounds(browserWindow.GetWebDriver());
     }
 
     /// <summary>
@@ -50,9 +52,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return GetBrowserContentBounds ((IWebDriver) browserSession.Driver.Native);
+      return GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
     }
 
     /// <summary>
@@ -60,9 +62,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] ControlObject controlObject)
     {
-      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return GetBrowserContentBounds (((IWrapsDriver) controlObject.Scope.Native).WrappedDriver);
+      return GetBrowserContentBounds(((IWrapsDriver)controlObject.Scope.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -70,9 +72,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] ElementScope element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      return GetBrowserContentBounds (((IWrapsDriver) element.Native).WrappedDriver);
+      return GetBrowserContentBounds(((IWrapsDriver)element.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -80,9 +82,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] IWebElement webElement)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      return GetBrowserContentBounds (((IWrapsDriver) webElement).WrappedDriver);
+      return GetBrowserContentBounds(((IWrapsDriver)webElement).WrappedDriver);
     }
 
     /// <summary>
@@ -90,9 +92,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetBrowserContentBounds ([NotNull] IWebDriver webDriver)
     {
-      ArgumentUtility.CheckNotNull ("webDriver", webDriver);
+      ArgumentUtility.CheckNotNull("webDriver", webDriver);
 
-      return BrowserConfiguration.Locator.GetBrowserContentBounds (webDriver);
+      return BrowserConfiguration.Locator.GetBrowserContentBounds(webDriver);
     }
 
     /// <summary>
@@ -100,9 +102,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] BrowserWindow browserWindow)
     {
-      ArgumentUtility.CheckNotNull ("browserWindow", browserWindow);
+      ArgumentUtility.CheckNotNull("browserWindow", browserWindow);
 
-      return new Size (GetBrowserContentBounds (browserWindow).Location) - new Size (GetWindowBounds (browserWindow).Location);
+      return new Size(GetBrowserContentBounds(browserWindow).Location) - new Size(GetWindowBounds(browserWindow).Location);
     }
 
     /// <summary>
@@ -110,9 +112,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return new Size (GetBrowserContentBounds (browserSession).Location) - new Size (GetWindowBounds (browserSession).Location);
+      return new Size(GetBrowserContentBounds(browserSession).Location) - new Size(GetWindowBounds(browserSession).Location);
     }
 
     /// <summary>
@@ -120,9 +122,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] ControlObject controlObject)
     {
-      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return new Size (GetBrowserContentBounds (controlObject).Location) - new Size (GetWindowBounds (controlObject).Location);
+      return new Size(GetBrowserContentBounds(controlObject).Location) - new Size(GetWindowBounds(controlObject).Location);
     }
 
     /// <summary>
@@ -130,9 +132,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] ElementScope element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      return new Size (GetBrowserContentBounds (element).Location) - new Size (GetWindowBounds (element).Location);
+      return new Size(GetBrowserContentBounds(element).Location) - new Size(GetWindowBounds(element).Location);
     }
 
     /// <summary>
@@ -140,9 +142,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] IWebElement webElement)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      return new Size (GetBrowserContentBounds (webElement).Location) - new Size (GetWindowBounds (webElement).Location);
+      return new Size(GetBrowserContentBounds(webElement).Location) - new Size(GetWindowBounds(webElement).Location);
     }
 
     /// <summary>
@@ -150,9 +152,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Size GetBrowserContentOffset ([NotNull] IWebDriver webDriver)
     {
-      ArgumentUtility.CheckNotNull ("webDriver", webDriver);
+      ArgumentUtility.CheckNotNull("webDriver", webDriver);
 
-      return new Size (GetBrowserContentBounds (webDriver).Location) - new Size (GetWindowBounds (webDriver).Location);
+      return new Size(GetBrowserContentBounds(webDriver).Location) - new Size(GetWindowBounds(webDriver).Location);
     }
 
     /// <summary>
@@ -160,9 +162,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetWindowBounds ([NotNull] BrowserWindow browserWindow)
     {
-      ArgumentUtility.CheckNotNull ("browserWindow", browserWindow);
+      ArgumentUtility.CheckNotNull("browserWindow", browserWindow);
 
-      return GetWindowBounds (browserWindow.GetWebDriver());
+      return GetWindowBounds(browserWindow.GetWebDriver());
     }
 
     /// <summary>
@@ -170,9 +172,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetWindowBounds ([NotNull] IBrowserSession browserSession)
     {
-      ArgumentUtility.CheckNotNull ("browserSession", browserSession);
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return GetWindowBounds ((IWebDriver) browserSession.Driver.Native);
+      return GetWindowBounds((IWebDriver)browserSession.Driver.Native);
     }
 
     /// <summary>
@@ -180,9 +182,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetWindowBounds ([NotNull] ControlObject controlObject)
     {
-      ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+      ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
-      return GetWindowBounds (((IWrapsDriver) controlObject.Scope.Native).WrappedDriver);
+      return GetWindowBounds(((IWrapsDriver)controlObject.Scope.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -190,9 +192,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetWindowBounds ([NotNull] ElementScope element)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
+      ArgumentUtility.CheckNotNull("element", element);
 
-      return GetWindowBounds (((IWrapsDriver) element.Native).WrappedDriver);
+      return GetWindowBounds(((IWrapsDriver)element.Native).WrappedDriver);
     }
 
     /// <summary>
@@ -200,9 +202,9 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetWindowBounds ([NotNull] IWebElement webElement)
     {
-      ArgumentUtility.CheckNotNull ("webElement", webElement);
+      ArgumentUtility.CheckNotNull("webElement", webElement);
 
-      return GetWindowBounds (((IWrapsDriver) webElement).WrappedDriver);
+      return GetWindowBounds(((IWrapsDriver)webElement).WrappedDriver);
     }
 
     /// <summary>
@@ -210,10 +212,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public Rectangle GetWindowBounds ([NotNull] IWebDriver webDriver)
     {
-      ArgumentUtility.CheckNotNull ("webDriver", webDriver);
+      ArgumentUtility.CheckNotNull("webDriver", webDriver);
 
       var window = webDriver.Manage().Window;
-      return new Rectangle (window.Position, window.Size);
+      return new Rectangle(window.Position, window.Size);
     }
 
     /// <summary>
@@ -221,7 +223,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void MoveBrowserWindowTo ([NotNull] BrowserWindow window, Point location)
     {
-      ArgumentUtility.CheckNotNull ("window", window);
+      ArgumentUtility.CheckNotNull("window", window);
 
       var driver = window.GetWebDriver();
       driver.Manage().Window.Position = location;
@@ -232,11 +234,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void ResizeBrowserWindowTo ([NotNull] BrowserWindow window, Size size)
     {
-      ArgumentUtility.CheckNotNull ("window", window);
+      ArgumentUtility.CheckNotNull("window", window);
       if (size.Width <= 0)
-        throw new ArgumentOutOfRangeException ("size", "The window width can not be smaller or equal to zero.");
+        throw new ArgumentOutOfRangeException("size", "The window width can not be smaller or equal to zero.");
       if (size.Height <= 0)
-        throw new ArgumentOutOfRangeException ("size", "The window height can not be smaller or equal to zero.");
+        throw new ArgumentOutOfRangeException("size", "The window height can not be smaller or equal to zero.");
 
       var driver = window.GetWebDriver();
       driver.Manage().Window.Size = size;
@@ -247,21 +249,21 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     public void ResizeBrowserContentTo ([NotNull] BrowserWindow window, Size size)
     {
-      ArgumentUtility.CheckNotNull ("window", window);
+      ArgumentUtility.CheckNotNull("window", window);
 
       var driver = window.GetWebDriver();
 
-      var offset = GetWindowBounds (driver).Size - GetBrowserContentBounds (driver).Size;
-      ResizeBrowserWindowTo (window, offset + size);
+      var offset = GetWindowBounds(driver).Size - GetBrowserContentBounds(driver).Size;
+      ResizeBrowserWindowTo(window, offset + size);
 
-      var newOffset = GetWindowBounds (driver).Size - GetBrowserContentBounds (driver).Size;
+      var newOffset = GetWindowBounds(driver).Size - GetBrowserContentBounds(driver).Size;
       var offsetOffset = newOffset - offset;
       if (offsetOffset.IsEmpty)
         return;
 
-      ResizeBrowserWindowTo (window, GetWindowBounds (driver).Size + offsetOffset);
-      if (GetWindowBounds (driver).Size - GetBrowserContentBounds (driver).Size != newOffset)
-        throw new InvalidOperationException ("Could not resize the window to match the expected content size.");
+      ResizeBrowserWindowTo(window, GetWindowBounds(driver).Size + offsetOffset);
+      if (GetWindowBounds(driver).Size - GetBrowserContentBounds(driver).Size != newOffset)
+        throw new InvalidOperationException("Could not resize the window to match the expected content size.");
     }
   }
 }

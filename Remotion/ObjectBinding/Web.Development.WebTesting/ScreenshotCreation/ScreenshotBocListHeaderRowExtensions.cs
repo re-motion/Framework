@@ -37,10 +37,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static ScreenshotBocListFluentHeaderCellSelector<TList, TRow, TCell> GetCell<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentHeaderRow", fluentHeaderRow);
+      ArgumentUtility.CheckNotNull("fluentHeaderRow", fluentHeaderRow);
 
       return fluentHeaderRow.Target.GetCellSelector();
     }
@@ -52,13 +52,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
         [NotNull] string itemID)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentHeaderRow", fluentHeaderRow);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("fluentHeaderRow", fluentHeaderRow);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return fluentHeaderRow.Target.GetCellSelector().WithItemID (itemID);
+      return fluentHeaderRow.Target.GetCellSelector().WithItemID(itemID);
     }
 
     /// <summary>
@@ -68,12 +68,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListHeaderRow<TList, TRow, TCell>> fluentHeaderRow,
         int oneBasedIndex)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentHeaderRow", fluentHeaderRow);
+      ArgumentUtility.CheckNotNull("fluentHeaderRow", fluentHeaderRow);
 
-      return fluentHeaderRow.Target.GetCellSelector().WithIndex (oneBasedIndex);
+      return fluentHeaderRow.Target.GetCellSelector().WithIndex(oneBasedIndex);
     }
   }
 }

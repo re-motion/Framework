@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest.IndividualControlTests
@@ -27,6 +28,7 @@ public class EmptyUserControl : BaseUserControl
   protected HtmlGenericControl NonVisualControls;
   protected FormGridManager FormGridManager;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {
@@ -38,8 +40,13 @@ public class EmptyUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -47,12 +54,12 @@ public class EmptyUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

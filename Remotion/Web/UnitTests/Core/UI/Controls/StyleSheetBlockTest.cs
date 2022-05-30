@@ -36,18 +36,18 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     {
       var styleSheetElements = new StyleSheetElement[]
                                {
-                                   new StubStyleSheetElement ("First"),
-                                   new StubStyleSheetElement ("Second")
+                                   new StubStyleSheetElement("First"),
+                                   new StubStyleSheetElement("Second")
                                };
 
-      var javaScriptInclude = new StyleSheetBlock (styleSheetElements);
+      var javaScriptInclude = new StyleSheetBlock(styleSheetElements);
 
-      javaScriptInclude.Render (_htmlHelper.Writer);
+      javaScriptInclude.Render(_htmlHelper.Writer);
 
       var document = _htmlHelper.GetResultDocument();
-      var element = _htmlHelper.GetAssertedChildElement (document, "style", 0);
-      _htmlHelper.AssertAttribute (element, "type", "text/css");
-      _htmlHelper.AssertTextNode (element, "First\r\n\tSecond", 0);
+      var element = _htmlHelper.GetAssertedChildElement(document, "style", 0);
+      _htmlHelper.AssertAttribute(element, "type", "text/css");
+      _htmlHelper.AssertTextNode(element, "First\r\n\tSecond", 0);
     }
   }
 }

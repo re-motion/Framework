@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -39,7 +40,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
   protected BocDateTimeValue UnboundBirthdayField;
   protected Label UnboundBirthdayFieldValueLabel;
   protected BocDateTimeValue UnboundRequiredBirthdayField;
-  protected Label UnboundRequiredBirthdayFieldLabel;
+  protected Label UnboundRequiredBirthdayFieldValueLabel;
   protected BocDateTimeValue UnboundReadOnlyBirthdayField;
   protected Label UnboundReadOnlyBirthdayFieldValueLabel;
   protected BocDateTimeValue DateOfDeathField;
@@ -69,6 +70,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
   protected WebButton ReadOnlyBirthdayTestSetNewValueButton;
   protected HtmlTable FormGrid;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {
@@ -86,62 +88,61 @@ public class BocDateTimeValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
-    UnboundBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
     //UnboundBirthdayField.LoadUnboundValue (person.DateOFBirth, IsPostBack);
-    UnboundReadOnlyBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
-    UnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
+    UnboundReadOnlyBirthdayField.LoadUnboundValue(person.DateOfBirth, IsPostBack);
 
-    UnboundDateOfDeathField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
-    UnboundDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
-    //UnboundReadOnlyDateOfDeathField.Property = (Remotion.ObjectBinding.IBusinessObjectDateProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfDeath");
-    UnboundReadOnlyDateOfDeathField.LoadUnboundValue (person.DateOfDeath, IsPostBack);
+    UnboundDateOfDeathField.LoadUnboundValue(person.DateOfDeath, IsPostBack);
+    UnboundReadOnlyDateOfDeathField.LoadUnboundValue(person.DateOfDeath, IsPostBack);
 
-    DisabledUnboundBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
-    DisabledUnboundBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
-    DisabledUnboundReadOnlyBirthdayField.Property = (IBusinessObjectDateTimeProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("DateOfBirth");
-    DisabledUnboundReadOnlyBirthdayField.LoadUnboundValue (person.DateOfBirth, IsPostBack);
+    DisabledUnboundBirthdayField.LoadUnboundValue(person.DateOfBirth, IsPostBack);
+    DisabledUnboundReadOnlyBirthdayField.LoadUnboundValue(person.DateOfBirth, IsPostBack);
 
-    DirectlySetBocDateTimeValueField.LoadUnboundValue (DateTime.Now, IsPostBack);
-    ReadOnlyDirectlySetBocDateTimeValueField.LoadUnboundValue (DateTime.Now, IsPostBack);
+    DirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
+    ReadOnlyDirectlySetBocDateTimeValueField.LoadUnboundValue(DateTime.Now, IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (BirthdayField);
+        ((ISmartNavigablePage)Page).SetFocus(BirthdayField);
     }
   }
 
   public override bool Validate ()
   {
-    bool isValid = base.Validate ();
+    bool isValid = base.Validate();
     isValid &= FormGridManager.Validate();
     return isValid;
   }
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (BirthdayField, BirthdayFieldValueLabel);
-    SetDebugLabel (ReadOnlyBirthdayField, ReadOnlyBirthdayFieldValueLabel);
-    SetDebugLabel (UnboundBirthdayField, UnboundBirthdayFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyBirthdayField, UnboundReadOnlyBirthdayFieldValueLabel);
-    SetDebugLabel (DateOfDeathField, DateOfDeathFieldValueLabel);
-    SetDebugLabel (ReadOnlyDateOfDeathField, ReadOnlyDateOfDeathFieldValueLabel);
-    SetDebugLabel (UnboundDateOfDeathField, UnboundDateOfDeathFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyDateOfDeathField, UnboundReadOnlyDateOfDeathFieldValueLabel);
-    SetDebugLabel (DirectlySetBocDateTimeValueField, DirectlySetBocDateTimeValueFieldValueLabel);
-    SetDebugLabel (ReadOnlyDirectlySetBocDateTimeValueField, ReadOnlyDirectlySetBocDateTimeValueFieldValueLabel);
-    SetDebugLabel (DisabledBirthdayField, DisabledBirthdayFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyBirthdayField, DisabledReadOnlyBirthdayFieldValueLabel);
-    SetDebugLabel (DisabledUnboundBirthdayField, DisabledUnboundBirthdayFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyBirthdayField, DisabledUnboundReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(BirthdayField, BirthdayFieldValueLabel);
+    SetDebugLabel(ReadOnlyBirthdayField, ReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(UnboundBirthdayField, UnboundBirthdayFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyBirthdayField, UnboundReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(DateOfDeathField, DateOfDeathFieldValueLabel);
+    SetDebugLabel(ReadOnlyDateOfDeathField, ReadOnlyDateOfDeathFieldValueLabel);
+    SetDebugLabel(UnboundDateOfDeathField, UnboundDateOfDeathFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyDateOfDeathField, UnboundReadOnlyDateOfDeathFieldValueLabel);
+    SetDebugLabel(DirectlySetBocDateTimeValueField, DirectlySetBocDateTimeValueFieldValueLabel);
+    SetDebugLabel(ReadOnlyDirectlySetBocDateTimeValueField, ReadOnlyDirectlySetBocDateTimeValueFieldValueLabel);
+    SetDebugLabel(DisabledBirthdayField, DisabledBirthdayFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyBirthdayField, DisabledReadOnlyBirthdayFieldValueLabel);
+    SetDebugLabel(DisabledUnboundBirthdayField, DisabledUnboundBirthdayFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyBirthdayField, DisabledUnboundReadOnlyBirthdayFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)
@@ -152,24 +153,24 @@ public class BocDateTimeValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void BirthdayTestSetNullButton_Click(object sender, EventArgs e)
+  private void BirthdayTestSetNullButton_Click (object sender, EventArgs e)
   {
     BirthdayField.Value = null;
   }
 
-  private void BirthdayTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void BirthdayTestSetNewValueButton_Click (object sender, EventArgs e)
   {
-    BirthdayField.Value = new DateTime (1950, 1, 1);
+    BirthdayField.Value = new DateTime(1950, 1, 1);
   }
 
-  private void ReadOnlyBirthdayTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyBirthdayTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyBirthdayField.Value = null;
   }
 
-  private void ReadOnlyBirthdayTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void ReadOnlyBirthdayTestSetNewValueButton_Click (object sender, EventArgs e)
   {
-    ReadOnlyBirthdayField.Value = new DateTime (1950, 1, 1);;
+    ReadOnlyBirthdayField.Value = new DateTime(1950, 1, 1);;
   }
 
   private void BirthdayField_DateTimeChanged (object sender, EventArgs e)
@@ -181,7 +182,7 @@ public class BocDateTimeValueUserControl : BaseUserControl
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -189,12 +190,12 @@ public class BocDateTimeValueUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Reflection;
 
 namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
@@ -26,23 +27,25 @@ namespace Remotion.UnitTests.Reflection.TypeExtensionsTests
     [Test]
     public void DerivedType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedType), typeof (DerivedType)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedType), typeof(DerivedType)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
     public void DerivedTypeFromBaseType ()
     {
-      Assert.That (TypeExtensions.GetAscribedGenericArguments (typeof (DerivedType), typeof (BaseType)), Is.EqualTo (new Type[0]));
+      Assert.That(TypeExtensions.GetAscribedGenericArguments(typeof(DerivedType), typeof(BaseType)), Is.EqualTo(new Type[0]));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
-        + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.DerivedType' was expected.\r\n"
-        + "Parameter name: type")]
     public void BaseType ()
     {
-      TypeExtensions.GetAscribedGenericArguments (typeof (BaseType), typeof (DerivedType));
+      Assert.That(
+          () => TypeExtensions.GetAscribedGenericArguments(typeof(BaseType), typeof(DerivedType)),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'type' has type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.BaseType' "
+                  + "when type 'Remotion.UnitTests.Reflection.TypeExtensionsTests.DerivedType' was expected.",
+                  "type"));
     }
   }
 }

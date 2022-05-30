@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.ReadOnlyTransactions.AllowedOperations
 {
@@ -26,83 +26,89 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void DiscardReadOnlyRootTransaction_IsAllowed ()
     {
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
 
       var extensionMock = CreateAndAddExtensionMock();
-      using (extensionMock.GetMockRepository().Ordered())
-      {
-        extensionMock
-            .Expect (mock => mock.TransactionDiscard (ReadOnlyRootTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
-        extensionMock
-            .Expect (mock => mock.TransactionDiscard (ReadOnlyMiddleTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
-        extensionMock
-            .Expect (mock => mock.TransactionDiscard (WriteableSubTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy());
-      }
+      var sequence = new MockSequence();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionDiscard(ReadOnlyRootTransaction))
+          .Callback((ClientTransaction _) => CheckTransactionHierarchy())
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionDiscard(ReadOnlyMiddleTransaction))
+          .Callback((ClientTransaction _) => CheckTransactionHierarchy())
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionDiscard(WriteableSubTransaction))
+          .Callback((ClientTransaction _) => CheckTransactionHierarchy())
+          .Verifiable();
 
       ReadOnlyRootTransaction.Discard();
 
-      extensionMock.VerifyAllExpectations();
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.True);
+      extensionMock.Verify();
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.True);
     }
 
     [Test]
     public void DiscardReadOnlyMiddleTransaction_IsAllowed ()
     {
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
 
-      var extensionMock = CreateAndAddExtensionMock ();
-      using (extensionMock.GetMockRepository ().Ordered ())
-      {
-        extensionMock
-            .Expect (mock => mock.TransactionDiscard (ReadOnlyMiddleTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
-        extensionMock
-            .Expect (mock => mock.TransactionDiscard (WriteableSubTransaction))
-            .WhenCalled (mi => CheckTransactionHierarchy ());
-      }
+      var extensionMock = CreateAndAddExtensionMock();
+      var sequence = new MockSequence();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionDiscard(ReadOnlyMiddleTransaction))
+          .Callback((ClientTransaction _) => CheckTransactionHierarchy())
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionDiscard(WriteableSubTransaction))
+          .Callback((ClientTransaction _) => CheckTransactionHierarchy())
+          .Verifiable();
 
-      ReadOnlyMiddleTransaction.Discard ();
+      ReadOnlyMiddleTransaction.Discard();
 
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.True);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.True);
 
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.Null);
-      Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.True);
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.Null);
+      Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.True);
     }
 
     private void CheckTransactionHierarchy ()
     {
-      Assert.That (WriteableSubTransaction.ParentTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs (WriteableSubTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.ParentTransaction, Is.SameAs (ReadOnlyRootTransaction));
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
+      Assert.That(WriteableSubTransaction.ParentTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs(WriteableSubTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.ParentTransaction, Is.SameAs(ReadOnlyRootTransaction));
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
 
-      Assert.That (WriteableSubTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
-      Assert.That (ReadOnlyRootTransaction.IsDiscarded, Is.False);
+      Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
 
-      Assert.That (WriteableSubTransaction.IsWriteable, Is.True);
-      Assert.That (ReadOnlyMiddleTransaction.IsWriteable, Is.False);
-      Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.False);
+      Assert.That(WriteableSubTransaction.IsWriteable, Is.True);
+      Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False);
+      Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False);
     }
 
-    private IClientTransactionExtension CreateAndAddExtensionMock ()
+    private Mock<IClientTransactionExtension> CreateAndAddExtensionMock ()
     {
-      var extensionMock = MockRepository.GenerateStrictMock<IClientTransactionExtension>();
-      extensionMock.Stub (stub => stub.Key).Return ("Test");
-      ReadOnlyRootTransaction.Extensions.Add (extensionMock);
-      ReadOnlyMiddleTransaction.Extensions.Add (extensionMock);
-      WriteableSubTransaction.Extensions.Add (extensionMock);
+      var extensionMock = new Mock<IClientTransactionExtension>(MockBehavior.Strict);
+      extensionMock.Setup(stub => stub.Key).Returns("Test");
+      ReadOnlyRootTransaction.Extensions.Add(extensionMock.Object);
+      ReadOnlyMiddleTransaction.Extensions.Add(extensionMock.Object);
+      WriteableSubTransaction.Extensions.Add(extensionMock.Object);
       return extensionMock;
     }
   }

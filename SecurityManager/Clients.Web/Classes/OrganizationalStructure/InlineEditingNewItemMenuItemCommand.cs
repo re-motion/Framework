@@ -34,16 +34,17 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public InlineEditingNewItemMenuItemCommand (Func<TBusinessObject> newObjectFactory)
     {
-      ArgumentUtility.CheckNotNull ("newObjectFactory", newObjectFactory);
+      ArgumentUtility.CheckNotNull("newObjectFactory", newObjectFactory);
       _newObjectFactory = newObjectFactory;
       Show = CommandShow.EditMode;
     }
 
     public override void OnClick (BocMenuItem menuItem)
     {
-      base.OnClick (menuItem);
+      base.OnClick(menuItem);
 
-      ((BocList) OwnerControl).AddAndEditRow (_newObjectFactory());
+      Assertion.IsNotNull(OwnerControl, "OwnerControl != null when processing page lifecycle events.");
+      ((BocList)OwnerControl).AddAndEditRow(_newObjectFactory());
     }
   }
 }

@@ -18,12 +18,12 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithoutIDColumn")]
+  [DBTable("TableWithoutIDColumn")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithoutIDColumn : TestDomainBase
   {
-    protected ClassWithoutIDColumn()
+    protected ClassWithoutIDColumn ()
     {
     }
   }

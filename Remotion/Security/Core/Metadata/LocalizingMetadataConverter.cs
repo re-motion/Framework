@@ -26,19 +26,19 @@ namespace Remotion.Security.Metadata
     private delegate LocalizedName CreateLocalizedName<T> (T item, string text);
 
     private CultureInfo[] _cultures;
-    private IMetadataConverter _metadataConverter;
+    private IMetadataConverter? _metadataConverter;
     private IMetadataLocalizationConverter _localizationConverter;
 
     public LocalizingMetadataConverter (IMetadataLocalizationConverter localizationConverter, CultureInfo[] cultures)
     {
-      ArgumentUtility.CheckNotNull ("localizationConverter", localizationConverter);
-      ArgumentUtility.CheckNotNullOrItemsNull ("cultures", cultures);
+      ArgumentUtility.CheckNotNull("localizationConverter", localizationConverter);
+      ArgumentUtility.CheckNotNullOrItemsNull("cultures", cultures);
 
       _localizationConverter = localizationConverter;
       _cultures = cultures;
     }
 
-    public IMetadataConverter MetadataConverter
+    public IMetadataConverter? MetadataConverter
     {
       get { return _metadataConverter; }
       set { _metadataConverter = value; }
@@ -52,60 +52,63 @@ namespace Remotion.Security.Metadata
     public void ConvertAndSave (MetadataCache cache, string filename)
     {
       if (_metadataConverter != null)
-        _metadataConverter.ConvertAndSave (cache, filename);
+        _metadataConverter.ConvertAndSave(cache, filename);
 
       foreach (CultureInfo culture in _cultures)
-        _localizationConverter.ConvertAndSave (GetLocalizedNames (cache, culture), culture, filename);
+        _localizationConverter.ConvertAndSave(GetLocalizedNames(cache, culture), culture, filename);
     }
 
     private LocalizedName[] GetLocalizedNames (MetadataCache cache, CultureInfo culture)
     {
-      List<LocalizedName> localizedNames = new List<LocalizedName> ();
+      List<LocalizedName> localizedNames = new List<LocalizedName>();
 
-      AddNames (localizedNames, cache.GetSecurableClassInfos (), CreateLocalizedNameFromClassInfo);
-      AddNames (localizedNames, cache.GetAbstractRoles (), CreateLocalizedNameFromEnumValueInfo);
-      AddNames (localizedNames, cache.GetAccessTypes (), CreateLocalizedNameFromEnumValueInfo);
-      AddStateNames (localizedNames, cache.GetStatePropertyInfos ());
+      AddNames(localizedNames, cache.GetSecurableClassInfos(), CreateLocalizedNameFromClassInfo);
+      AddNames(localizedNames, cache.GetAbstractRoles(), CreateLocalizedNameFromEnumValueInfo);
+      AddNames(localizedNames, cache.GetAccessTypes(), CreateLocalizedNameFromEnumValueInfo);
+      AddStateNames(localizedNames, cache.GetStatePropertyInfos());
 
-      return localizedNames.ToArray ();
+      return localizedNames.ToArray();
     }
 
     private void AddNames<T> (List<LocalizedName> localizedNames, List<T> items, CreateLocalizedName<T> createLocalizedNameDelegate) where T : MetadataInfo
     {
       foreach (T item in items)
-        localizedNames.Add (createLocalizedNameDelegate (item, string.Empty));
+        localizedNames.Add(createLocalizedNameDelegate(item, string.Empty));
     }
 
     private LocalizedName CreateLocalizedNameFromClassInfo (SecurableClassInfo classInfo, string text)
     {
-      return new LocalizedName (classInfo.ID, classInfo.Name, classInfo.Description);
+      // TODO RM-7875: MetadataInfo and subtypes should be reworked to increase null safety.
+      return new LocalizedName(classInfo.ID!, classInfo.Name!, classInfo.Description!);
     }
 
     private LocalizedName CreateLocalizedNameFromEnumValueInfo (EnumValueInfo enumValueInfo, string text)
     {
-      EnumWrapper enumWrapper = EnumWrapper.Get(enumValueInfo.Name, enumValueInfo.TypeName);
-      return new LocalizedName (enumValueInfo.ID, enumWrapper.ToString (), enumValueInfo.Name);
+      // TODO RM-7875: MetadataInfo and subtypes should be reworked to increase null safety.
+      EnumWrapper enumWrapper = EnumWrapper.Get(enumValueInfo.Name!, enumValueInfo.TypeName);
+      return new LocalizedName(enumValueInfo.ID!, enumWrapper.ToString(), enumValueInfo.Name!);
     }
 
     private LocalizedName CreateLocalizedNameFromStatePropertyInfo (StatePropertyInfo propertyInfo, string text)
     {
-      return new LocalizedName (propertyInfo.ID, propertyInfo.Name, propertyInfo.Description);
+      // TODO RM-7875: MetadataInfo and subtypes should be reworked to increase null safety.
+      return new LocalizedName(propertyInfo.ID!, propertyInfo.Name!, propertyInfo.Description!);
     }
 
     private LocalizedName CreateLocalizedNameForState (StatePropertyInfo property, EnumValueInfo state, string text)
     {
       string description = property.Name + "|" + state.Name;
-      return new LocalizedName (property.ID + "|" + state.Value, property.Name + "|" + state.Name, description);
+      return new LocalizedName(property.ID + "|" + state.Value, property.Name + "|" + state.Name, description);
     }
 
     private void AddStateNames (List<LocalizedName> localizedNames, List<StatePropertyInfo> properties)
     {
       foreach (StatePropertyInfo property in properties)
       {
-        localizedNames.Add (CreateLocalizedNameFromStatePropertyInfo (property, string.Empty));
+        localizedNames.Add(CreateLocalizedNameFromStatePropertyInfo(property, string.Empty));
 
         foreach (EnumValueInfo stateInfo in property.Values)
-          localizedNames.Add (CreateLocalizedNameForState (property, stateInfo, string.Empty));
+          localizedNames.Add(CreateLocalizedNameForState(property, stateInfo, string.Empty));
       }
     }
   }

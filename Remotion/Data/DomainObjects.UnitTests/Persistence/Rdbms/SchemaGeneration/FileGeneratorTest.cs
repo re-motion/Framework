@@ -27,28 +27,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     private FileGenerator _fileGenerator;
     private Script _script;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
+      base.OneTimeSetUp();
 
-      if (Directory.Exists ("TestOutputPath"))
-        Directory.Delete ("TestOutputPath", true);
+      if (Directory.Exists("TestOutputPath"))
+        Directory.Delete("TestOutputPath", true);
     }
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _fileGenerator = new FileGenerator ("TestOutputPath");
-      _script = new Script (SchemaGenerationFirstStorageProviderDefinition, "SetupScript", "TearDownScript");
+      _fileGenerator = new FileGenerator("TestOutputPath");
+      _script = new Script(SchemaGenerationFirstStorageProviderDefinition, "SetupScript", "TearDownScript");
     }
 
     public override void TearDown ()
     {
-      base.TearDown ();
+      base.TearDown();
 
-      if (Directory.Exists ("TestOutputPath"))
-        Directory.Delete ("TestOutputPath", true);
+      if (Directory.Exists("TestOutputPath"))
+        Directory.Delete("TestOutputPath", true);
     }
 
     [Test]
@@ -57,12 +57,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
       var setupFileName = @"TestOutputPath\SetupDB_SchemaGenerationFirstStorageProvider.sql";
       var tearDownFileName = @"TestOutputPath\TearDownDB_SchemaGenerationFirstStorageProvider.sql";
 
-      _fileGenerator.WriteScriptsToDisk (_script, true);
+      _fileGenerator.WriteScriptsToDisk(_script, true);
 
-      Assert.That (File.Exists (setupFileName), Is.True);
-      Assert.That (File.ReadAllText (setupFileName), Is.EqualTo ("SetupScript"));
-      Assert.That (File.Exists (tearDownFileName), Is.True);
-      Assert.That (File.ReadAllText (tearDownFileName), Is.EqualTo ("TearDownScript"));
+      Assert.That(File.Exists(setupFileName), Is.True);
+      Assert.That(File.ReadAllText(setupFileName), Is.EqualTo("SetupScript"));
+      Assert.That(File.Exists(tearDownFileName), Is.True);
+      Assert.That(File.ReadAllText(tearDownFileName), Is.EqualTo("TearDownScript"));
     }
 
     [Test]
@@ -70,13 +70,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     {
       var setupFileName = @"TestOutputPath\SetupDB.sql";
       var tearDownFileName = @"TestOutputPath\TearDownDB.sql";
-      
-      _fileGenerator.WriteScriptsToDisk (_script, false);
 
-      Assert.That (File.Exists (setupFileName), Is.True);
-      Assert.That (File.ReadAllText (setupFileName), Is.EqualTo ("SetupScript"));
-      Assert.That (File.Exists (tearDownFileName), Is.True);
-      Assert.That (File.ReadAllText (tearDownFileName), Is.EqualTo ("TearDownScript"));
+      _fileGenerator.WriteScriptsToDisk(_script, false);
+
+      Assert.That(File.Exists(setupFileName), Is.True);
+      Assert.That(File.ReadAllText(setupFileName), Is.EqualTo("SetupScript"));
+      Assert.That(File.Exists(tearDownFileName), Is.True);
+      Assert.That(File.ReadAllText(tearDownFileName), Is.EqualTo("TearDownScript"));
     }
   }
 }

@@ -37,20 +37,20 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
     public void DeserializeSection_DefaultFactory ()
     {
       string xmlFragment = @"<remotion.securityManager />";
-      _configuration.DeserializeSection (xmlFragment);
+      _configuration.DeserializeSection(xmlFragment);
 
-      Assert.That (_configuration.OrganizationalStructureFactory, Is.Not.Null);
-      Assert.IsInstanceOf (typeof (OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+      Assert.That(_configuration.OrganizationalStructureFactory, Is.Not.Null);
+      Assert.IsInstanceOf(typeof(OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
     }
 
     [Test]
     public void DeserializeSection_WithNamespace ()
     {
       string xmlFragment = @"<remotion.securityManager xmlns=""http://www.re-motion.org/SecurityManager/Configuration"" />";
-      _configuration.DeserializeSection (xmlFragment);
+      _configuration.DeserializeSection(xmlFragment);
 
-      Assert.That (_configuration.OrganizationalStructureFactory, Is.Not.Null);
-      Assert.IsInstanceOf (typeof (OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+      Assert.That(_configuration.OrganizationalStructureFactory, Is.Not.Null);
+      Assert.IsInstanceOf(typeof(OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
     }
 
     [Test]
@@ -61,14 +61,13 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
           <remotion.securityManager xmlns=""http://www.re-motion.org/SecurityManager/Configuration"">
             <organizationalStructureFactory type=""Remotion.SecurityManager.UnitTests::Configuration.TestOrganizationalStructureFactory"" />
           </remotion.securityManager>";
-      _configuration.DeserializeSection (xmlFragment);
+      _configuration.DeserializeSection(xmlFragment);
 
-      Assert.That (_configuration.OrganizationalStructureFactory, Is.Not.Null);
-      Assert.IsInstanceOf (typeof (TestOrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+      Assert.That(_configuration.OrganizationalStructureFactory, Is.Not.Null);
+      Assert.IsInstanceOf(typeof(TestOrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException))]
     public void DeserializeSection_InvalidFactoryType ()
     {
       string xmlFragment =
@@ -76,8 +75,10 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
           <remotion.securityManager>
             <organizationalStructureFactory type=""Invalid"" />
           </remotion.securityManager>";
-      _configuration.DeserializeSection (xmlFragment);
-      IOrganizationalStructureFactory factory = _configuration.OrganizationalStructureFactory;
+      _configuration.DeserializeSection(xmlFragment);
+      Assert.That(
+          () => _configuration.OrganizationalStructureFactory,
+          Throws.InstanceOf<ConfigurationErrorsException>());
     }
 
     [Test]
@@ -85,10 +86,10 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
     {
       string xmlFragment = @"
           <remotion.securityManager xmlns=""http://www.re-motion.org/SecurityManager/Configuration""/>";
-      _configuration.DeserializeSection (xmlFragment);
+      _configuration.DeserializeSection(xmlFragment);
 
-      Assert.That (_configuration.AccessControl, Is.Not.Null);
-      Assert.That (_configuration.AccessControl.DisableSpecificUser, Is.False);
+      Assert.That(_configuration.AccessControl, Is.Not.Null);
+      Assert.That(_configuration.AccessControl.DisableSpecificUser, Is.False);
     }
 
     [Test]
@@ -99,9 +100,9 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
           <remotion.securityManager xmlns=""http://www.re-motion.org/SecurityManager/Configuration"">
             <accessControl disableSpecificUser=""true"" />
           </remotion.securityManager>";
-      _configuration.DeserializeSection (xmlFragment);
+      _configuration.DeserializeSection(xmlFragment);
 
-      Assert.That (_configuration.AccessControl.DisableSpecificUser, Is.True);
+      Assert.That(_configuration.AccessControl.DisableSpecificUser, Is.True);
     }
 
     [Test]
@@ -112,9 +113,9 @@ namespace Remotion.SecurityManager.UnitTests.Configuration
           <remotion.securityManager xmlns=""http://www.re-motion.org/SecurityManager/Configuration"">
             <accessControl />
           </remotion.securityManager>";
-      _configuration.DeserializeSection (xmlFragment);
+      _configuration.DeserializeSection(xmlFragment);
 
-      Assert.That (_configuration.AccessControl.DisableSpecificUser, Is.False);
+      Assert.That(_configuration.AccessControl.DisableSpecificUser, Is.False);
     }
   }
 }

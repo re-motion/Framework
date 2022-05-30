@@ -38,50 +38,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
       _factory = new SqlTableScriptElementFactory();
 
-      var column1 = new ColumnDefinition ("Column1", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation (false), false);
-      var column2 = new ColumnDefinition ("Column2", StorageTypeInformationObjectMother.CreateBitStorageTypeInformation (true), false);
-      var property1 = new SimpleStoragePropertyDefinition (typeof (string), column1);
-      var property2 = new SimpleStoragePropertyDefinition (typeof (bool), column2);
+      var column1 = new ColumnDefinition("Column1", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation(false), false);
+      var column2 = new ColumnDefinition("Column2", StorageTypeInformationObjectMother.CreateBitStorageTypeInformation(true), false);
+      var property1 = new SimpleStoragePropertyDefinition(typeof(string), column1);
+      var property2 = new SimpleStoragePropertyDefinition(typeof(bool), column2);
 
-      var idColumn = new ColumnDefinition ("ID", StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation (false), true);
-      var classIDColumn = new ColumnDefinition ("ClassID", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation (true), false);
-      var objectIDProperty = new ObjectIDStoragePropertyDefinition (
-          new SimpleStoragePropertyDefinition (typeof (object), idColumn), 
-          new SimpleStoragePropertyDefinition (typeof (string), classIDColumn));
-      var timestampColumn = new ColumnDefinition ("Timestamp", StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation (true), false);
-      var timestampProperty = new SimpleStoragePropertyDefinition (typeof (object), timestampColumn);
+      var idColumn = new ColumnDefinition("ID", StorageTypeInformationObjectMother.CreateUniqueIdentifierStorageTypeInformation(false), true);
+      var classIDColumn = new ColumnDefinition("ClassID", StorageTypeInformationObjectMother.CreateVarchar100StorageTypeInformation(true), false);
+      var objectIDProperty = new ObjectIDStoragePropertyDefinition(
+          new SimpleStoragePropertyDefinition(typeof(object), idColumn),
+          new SimpleStoragePropertyDefinition(typeof(string), classIDColumn));
+      var timestampColumn = new ColumnDefinition("Timestamp", StorageTypeInformationObjectMother.CreateDateTimeStorageTypeInformation(true), false);
+      var timestampProperty = new SimpleStoragePropertyDefinition(typeof(object), timestampColumn);
 
-      _tableDefinitionWithoutPrimaryKeyConstraint = TableDefinitionObjectMother.Create (
+      _tableDefinitionWithoutPrimaryKeyConstraint = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "EntityName"),
+          new EntityNameDefinition("SchemaName", "EntityName"),
           null,
           objectIDProperty,
           timestampProperty,
           property1);
 
-      _tableDefinitionWithClusteredPrimaryKeyConstraint = TableDefinitionObjectMother.Create (
+      _tableDefinitionWithClusteredPrimaryKeyConstraint = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition ("SchemaName", "EntityName"),
+          new EntityNameDefinition("SchemaName", "EntityName"),
           null,
           objectIDProperty,
           timestampProperty,
           new[] { property1, property2 },
-          new ITableConstraintDefinition[] { new PrimaryKeyConstraintDefinition ("PKName", true, new[] { column1 }) });
+          new ITableConstraintDefinition[] { new PrimaryKeyConstraintDefinition("PKName", true, new[] { column1 }) });
 
-      _tableDefinitionWithNonClusteredPrimaryKeyConstraint = TableDefinitionObjectMother.Create (
+      _tableDefinitionWithNonClusteredPrimaryKeyConstraint = TableDefinitionObjectMother.Create(
           SchemaGenerationFirstStorageProviderDefinition,
-          new EntityNameDefinition (null, "EntityName"),
+          new EntityNameDefinition(null, "EntityName"),
           null,
           objectIDProperty,
           timestampProperty,
           new[] { property1, property2 },
-          new ITableConstraintDefinition[] { new PrimaryKeyConstraintDefinition ("PKName", false, new[] { column1, column2 }) });
+          new ITableConstraintDefinition[] { new PrimaryKeyConstraintDefinition("PKName", false, new[] { column1, column2 }) });
     }
 
     [Test]
     public void GetCreateElement_TableDefinitionWithoutPrimaryKeyConstraint ()
     {
-      var result = _factory.GetCreateElement (_tableDefinitionWithoutPrimaryKeyConstraint);
+      var result = _factory.GetCreateElement(_tableDefinitionWithoutPrimaryKeyConstraint);
 
       var expectedResult =
           "CREATE TABLE [SchemaName].[EntityName]\r\n"
@@ -92,14 +92,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  [Column1] varchar(100) NOT NULL\r\n"
           + ")";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_TableDefinitionWithClusteredPrimaryKeyConstraint ()
     {
-      var result = _factory.GetCreateElement (_tableDefinitionWithClusteredPrimaryKeyConstraint);
+      var result = _factory.GetCreateElement(_tableDefinitionWithClusteredPrimaryKeyConstraint);
 
       var expectedResult =
           "CREATE TABLE [SchemaName].[EntityName]\r\n"
@@ -112,14 +112,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  CONSTRAINT [PKName] PRIMARY KEY CLUSTERED ([Column1])\r\n"
           + ")";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetCreateElement_TableDefinitionWithNonClusteredPrimaryKeyConstraint ()
     {
-      var result = _factory.GetCreateElement (_tableDefinitionWithNonClusteredPrimaryKeyConstraint);
+      var result = _factory.GetCreateElement(_tableDefinitionWithNonClusteredPrimaryKeyConstraint);
 
       var expectedResult =
           "CREATE TABLE [dbo].[EntityName]\r\n"
@@ -132,34 +132,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           + "  CONSTRAINT [PKName] PRIMARY KEY NONCLUSTERED ([Column1], [Column2])\r\n"
           + ")";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement ()
     {
-      var result = _factory.GetDropElement (_tableDefinitionWithClusteredPrimaryKeyConstraint);
+      var result = _factory.GetDropElement(_tableDefinitionWithClusteredPrimaryKeyConstraint);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'SchemaName')\r\n"
           + "  DROP TABLE [SchemaName].[EntityName]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
 
     [Test]
     public void GetDropElement_DefaultSchema ()
     {
-      var result = _factory.GetDropElement (_tableDefinitionWithNonClusteredPrimaryKeyConstraint);
+      var result = _factory.GetDropElement(_tableDefinitionWithNonClusteredPrimaryKeyConstraint);
 
       var expectedResult =
           "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EntityName' AND TABLE_SCHEMA = 'dbo')\r\n"
           + "  DROP TABLE [dbo].[EntityName]";
 
-      Assert.That (result, Is.TypeOf (typeof (ScriptStatement)));
-      Assert.That (((ScriptStatement) result).Statement, Is.EqualTo (expectedResult));
+      Assert.That(result, Is.TypeOf(typeof(ScriptStatement)));
+      Assert.That(((ScriptStatement)result).Statement, Is.EqualTo(expectedResult));
     }
   }
 }

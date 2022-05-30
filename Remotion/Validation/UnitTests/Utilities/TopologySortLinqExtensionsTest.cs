@@ -35,7 +35,7 @@ namespace Remotion.Validation.UnitTests.Utilities
 
     public TestContent Add (params TestContent[] dependencies)
     {
-      Dependencies.AddRange (dependencies);
+      Dependencies.AddRange(dependencies);
       return this;
     }
   }
@@ -46,199 +46,199 @@ namespace Remotion.Validation.UnitTests.Utilities
     [Test]
     public void SimpleSort ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      var d = new TestContent ("d");
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      var d = new TestContent("d");
 
       var unsorted = new[] { a, b, d, c };
-      var sorted = unsorted.TopologySort (content => content.Dependencies).ToArray();
+      var sorted = unsorted.TopologySort(content => content.Dependencies).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (3));
-      Assert.That (sorted[0], Is.EqualTo (new[] { d, c }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { b }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { a }));
+      Assert.That(sorted.Count(), Is.EqualTo(3));
+      Assert.That(sorted[0], Is.EqualTo(new[] { d, c }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { b }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { a }));
     }
 
     [Test]
     public void SimpleSortDesc ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      var d = new TestContent ("d");
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      var d = new TestContent("d");
 
       var unsorted = new[] { a, b, d, c };
-      var sorted = unsorted.TopologySortDesc (content => content.Dependencies).ToArray();
+      var sorted = unsorted.TopologySortDesc(content => content.Dependencies).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (3));
-      Assert.That (sorted[0], Is.EqualTo (new[] { a }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { b }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { d, c }));
+      Assert.That(sorted.Count(), Is.EqualTo(3));
+      Assert.That(sorted[0], Is.EqualTo(new[] { a }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { b }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { d, c }));
     }
 
     [Test]
     public void SubSort ()
     {
-      var a = new TestContent ("a");
-      var b1 = new TestContent ("b1").Add (a);
-      var b2 = new TestContent ("b2").Add (a);
-      var c1 = new TestContent ("c1").Add (a, b1);
-      var c2 = new TestContent ("c2").Add (a, b2);
-      var c = new TestContent ("c").Add (a, b1, b2);
+      var a = new TestContent("a");
+      var b1 = new TestContent("b1").Add(a);
+      var b2 = new TestContent("b2").Add(a);
+      var c1 = new TestContent("c1").Add(a, b1);
+      var c2 = new TestContent("c2").Add(a, b2);
+      var c = new TestContent("c").Add(a, b1, b2);
       var unsorted = new[] { a, b2, b1, c2, c1, c };
-      var sorted = unsorted.TopologySort (content => content.Dependencies, contents => contents.OrderBy (content => content.Name)).ToArray();
+      var sorted = unsorted.TopologySort(content => content.Dependencies, contents => contents.OrderBy(content => content.Name)).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (3));
-      Assert.That (sorted[0], Is.EqualTo (new[] { c, c1, c2 }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { b1, b2 }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { a }));
+      Assert.That(sorted.Count(), Is.EqualTo(3));
+      Assert.That(sorted[0], Is.EqualTo(new[] { c, c1, c2 }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { b1, b2 }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { a }));
     }
 
     [Test]
     public void SubSortDesc ()
     {
-      var a = new TestContent ("a");
-      var b1 = new TestContent ("b1").Add (a);
-      var b2 = new TestContent ("b2").Add (a);
-      var c1 = new TestContent ("c1").Add (a, b1);
-      var c2 = new TestContent ("c2").Add (a, b2);
-      var c = new TestContent ("c").Add (a, b1, b2);
+      var a = new TestContent("a");
+      var b1 = new TestContent("b1").Add(a);
+      var b2 = new TestContent("b2").Add(a);
+      var c1 = new TestContent("c1").Add(a, b1);
+      var c2 = new TestContent("c2").Add(a, b2);
+      var c = new TestContent("c").Add(a, b1, b2);
       var unsorted = new[] { a, b2, b1, c2, c1, c };
-      var sorted = unsorted.TopologySortDesc (content => content.Dependencies, contents => contents.OrderBy (content => content.Name)).ToArray();
+      var sorted = unsorted.TopologySortDesc(content => content.Dependencies, contents => contents.OrderBy(content => content.Name)).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (3));
-      Assert.That (sorted[0], Is.EqualTo (new[] { a }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { b1, b2 }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { c, c1, c2 }));
+      Assert.That(sorted.Count(), Is.EqualTo(3));
+      Assert.That(sorted[0], Is.EqualTo(new[] { a }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { b1, b2 }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { c, c1, c2 }));
     }
 
     [Test]
     public void Sort_Missing_Ignore ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      var d = new TestContent ("d").Add (a, c);
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      var d = new TestContent("d").Add(a, c);
       var unsorted = new[] { a, b, d };
-      var sorted = unsorted.TopologySort (
+      var sorted = unsorted.TopologySort(
           content => content.Dependencies,
-          contents => contents.OrderBy (cnt => cnt.Name),
+          contents => contents.OrderBy(cnt => cnt.Name),
           TopologySortMissingDependencyBehavior.Ignore).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (2));
-      Assert.That (sorted[0], Is.EqualTo (new[] { b, d }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { a }));
+      Assert.That(sorted.Count(), Is.EqualTo(2));
+      Assert.That(sorted[0], Is.EqualTo(new[] { b, d }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { a }));
     }
 
     [Test]
     public void Sort_Missing_Respect ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      var d = new TestContent ("d").Add (a, c);
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      var d = new TestContent("d").Add(a, c);
       var unsorted = new[] { a, b, d };
-      var sorted = unsorted.TopologySort (
+      var sorted = unsorted.TopologySort(
           content => content.Dependencies,
-          contents => contents.OrderBy (cnt => cnt.Name),
+          contents => contents.OrderBy(cnt => cnt.Name),
           TopologySortMissingDependencyBehavior.Respect).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (3));
-      Assert.That (sorted[0], Is.EqualTo (new[] { d }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { b }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { a }));
+      Assert.That(sorted.Count(), Is.EqualTo(3));
+      Assert.That(sorted[0], Is.EqualTo(new[] { d }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { b }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { a }));
     }
 
     [Test]
     public void Sort_Missing_Include ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      var d = new TestContent ("d").Add (a, c);
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      var d = new TestContent("d").Add(a, c);
       var unsorted = new[] { a, b, d };
-      var sorted = unsorted.TopologySort (
+      var sorted = unsorted.TopologySort(
           content => content.Dependencies,
-          contents => contents.OrderBy (cnt => cnt.Name),
+          contents => contents.OrderBy(cnt => cnt.Name),
           TopologySortMissingDependencyBehavior.Include).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (4));
-      Assert.That (sorted[0], Is.EqualTo (new[] { d }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { c }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { b }));
-      Assert.That (sorted[3], Is.EqualTo (new[] { a }));
+      Assert.That(sorted.Count(), Is.EqualTo(4));
+      Assert.That(sorted[0], Is.EqualTo(new[] { d }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { c }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { b }));
+      Assert.That(sorted[3], Is.EqualTo(new[] { a }));
     }
 
     [Test]
     public void Cyclic_Missing_Respect ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      var c1 = new TestContent ("c1").Add (c);
-      c.Add (c1);
-      var d = new TestContent ("d").Add (a, c);
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      var c1 = new TestContent("c1").Add(c);
+      c.Add(c1);
+      var d = new TestContent("d").Add(a, c);
       var unsorted = new[] { a, b, d };
-      var sorted = unsorted.TopologySort (
+      var sorted = unsorted.TopologySort(
           content => content.Dependencies,
-          contents => contents.OrderBy (cnt => cnt.Name),
+          contents => contents.OrderBy(cnt => cnt.Name),
           TopologySortMissingDependencyBehavior.Respect).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (3));
-      Assert.That (sorted[0], Is.EqualTo (new[] { d }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { b }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { a }));
+      Assert.That(sorted.Count(), Is.EqualTo(3));
+      Assert.That(sorted[0], Is.EqualTo(new[] { d }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { b }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { a }));
     }
 
     [Test]
     public void Cyclic_Self_OK ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      c.Add (c);
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      c.Add(c);
       var unsorted = new[] { a, b, c };
-      var sorted = unsorted.TopologySort (content => content.Dependencies).ToArray();
+      var sorted = unsorted.TopologySort(content => content.Dependencies).ToArray();
 
-      Assert.That (sorted.Count(), Is.EqualTo (3));
-      Assert.That (sorted[0], Is.EqualTo (new[] { c }));
-      Assert.That (sorted[1], Is.EqualTo (new[] { b }));
-      Assert.That (sorted[2], Is.EqualTo (new[] { a }));
+      Assert.That(sorted.Count(), Is.EqualTo(3));
+      Assert.That(sorted[0], Is.EqualTo(new[] { c }));
+      Assert.That(sorted[1], Is.EqualTo(new[] { b }));
+      Assert.That(sorted[2], Is.EqualTo(new[] { a }));
     }
 
     [Test]
     public void Cyclic_Missing_Include ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      var c1 = new TestContent ("c1").Add (c);
-      c.Add (c1);
-      var d = new TestContent ("d").Add (a, c);
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      var c1 = new TestContent("c1").Add(c);
+      c.Add(c1);
+      var d = new TestContent("d").Add(a, c);
       var unsorted = new[] { a, b, d };
 
-      Assert.That (
+      Assert.That(
           () =>
-          unsorted.TopologySort (
+          unsorted.TopologySort(
               content => content.Dependencies,
-              contents => contents.OrderBy (cnt => cnt.Name),
+              contents => contents.OrderBy(cnt => cnt.Name),
               TopologySortMissingDependencyBehavior.Include).ToArray(),
-          Throws.InvalidOperationException.And.Message.EqualTo ("Cyclic dependency detected - cannot perform topology sort"));
+          Throws.InvalidOperationException.And.Message.EqualTo("Cyclic dependency detected - cannot perform topology sort"));
     }
 
     [Test]
     public void Cyclic ()
     {
-      var a = new TestContent ("a");
-      var b = new TestContent ("b").Add (a);
-      var c = new TestContent ("c").Add (a, b);
-      a.Add (c);
+      var a = new TestContent("a");
+      var b = new TestContent("b").Add(a);
+      var c = new TestContent("c").Add(a, b);
+      a.Add(c);
 
       var unsorted = new[] { a, b, c };
-      Assert.That (
-          () => unsorted.TopologySort (content => content.Dependencies).ToArray(),
-          Throws.InvalidOperationException.And.Message.EqualTo ("Cyclic dependency detected - cannot perform topology sort"));
+      Assert.That(
+          () => unsorted.TopologySort(content => content.Dependencies).ToArray(),
+          Throws.InvalidOperationException.And.Message.EqualTo("Cyclic dependency detected - cannot perform topology sort"));
     }
   }
 }

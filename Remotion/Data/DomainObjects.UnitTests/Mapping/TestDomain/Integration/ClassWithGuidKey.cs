@@ -18,31 +18,31 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithGuidKey")]
+  [DBTable("TableWithGuidKey")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithGuidKey : TestDomainBase
   {
     public static ClassWithGuidKey NewObject ()
     {
-      return NewObject<ClassWithGuidKey> ();
+      return NewObject<ClassWithGuidKey>();
     }
 
-    protected ClassWithGuidKey()
+    protected ClassWithGuidKey ()
     {
     }
 
-    [DBBidirectionalRelation ("ClassWithGuidKeyOptional")]
+    [DBBidirectionalRelation("ClassWithGuidKeyOptional")]
     public abstract ClassWithValidRelations ClassWithValidRelationsOptional { get; set; }
 
-    [DBBidirectionalRelation ("ClassWithGuidKeyNonOptional")]
+    [DBBidirectionalRelation("ClassWithGuidKeyNonOptional")]
     [Mandatory]
     public abstract ClassWithValidRelations ClassWithValidRelationsNonOptional { get; set; }
 
-    [DBBidirectionalRelation ("ClassWithGuidKey")]
+    [DBBidirectionalRelation("ClassWithGuidKey")]
     public abstract ClassWithInvalidRelation ClassWithInvalidRelation { get; set; }
 
-    [DBBidirectionalRelation ("ClassWithGuidKey")]
+    [DBBidirectionalRelation("ClassWithGuidKey")]
     public abstract ClassWithRelatedClassIDColumnAndNoInheritance ClassWithRelatedClassIDColumnAndNoInheritance { get; set; }
   }
 }

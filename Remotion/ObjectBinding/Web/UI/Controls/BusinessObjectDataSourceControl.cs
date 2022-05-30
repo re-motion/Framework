@@ -20,7 +20,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -49,7 +48,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   ///   </note>
   /// </remarks>
   [NonVisualControl]
-  [Designer (typeof (BocDataSourceDesigner))]
   public abstract class BusinessObjectDataSourceControl : Control, IBusinessObjectDataSourceControl
   {
     /// <summary>
@@ -72,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual void LoadValues (bool interim)
     {
-      InnerDataSource.LoadValues (interim);
+      InnerDataSource.LoadValues(interim);
     }
 
     /// <summary> 
@@ -89,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual bool SaveValues (bool interim)
     {
-      return InnerDataSource.SaveValues (interim);
+      return InnerDataSource.SaveValues(interim);
     }
 
     /// <summary>
@@ -103,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual void Register (IBusinessObjectBoundControl control)
     {
-      InnerDataSource.Register (control);
+      InnerDataSource.Register(control);
     }
 
     /// <summary>
@@ -117,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </remarks>
     public virtual void Unregister (IBusinessObjectBoundControl control)
     {
-      InnerDataSource.Unregister (control);
+      InnerDataSource.Unregister(control);
     }
 
     /// <summary>
@@ -127,9 +125,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   Gets or sets the <see cref="IBusinessObjectDataSource.Mode"/> property of the encapsulated <see cref="IBusinessObjectDataSource"/>.
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [DefaultValue (DataSourceMode.Edit)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [DefaultValue(DataSourceMode.Edit)]
     public virtual DataSourceMode Mode
     {
       get { return InnerDataSource.Mode; }
@@ -145,9 +143,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   Gets or sets the <see cref="IBusinessObjectDataSource.BusinessObject"/> property of the encapsulated <see cref="IBusinessObjectDataSource"/>.
     /// </remarks>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public virtual IBusinessObject BusinessObject
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public virtual IBusinessObject? BusinessObject
     {
       get { return InnerDataSource.BusinessObject; }
       set { InnerDataSource.BusinessObject = value; }
@@ -166,9 +164,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     Gets the <see cref="IBusinessObjectDataSource.BusinessObjectClass"/> property of the encapsulated <see cref="IBusinessObjectDataSource"/>.
     ///   </para>
     /// </remarks>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public virtual IBusinessObjectClass BusinessObjectClass
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public virtual IBusinessObjectClass? BusinessObjectClass
     {
       get { return InnerDataSource.BusinessObjectClass; }
     }
@@ -180,9 +178,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   Gets the <see cref="IBusinessObjectDataSource.BusinessObjectProvider"/> property of the encapsulated <see cref="IBusinessObjectDataSource"/>.
     /// </remarks>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public virtual IBusinessObjectProvider BusinessObjectProvider
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public virtual IBusinessObjectProvider? BusinessObjectProvider
     {
       get { return InnerDataSource.BusinessObjectProvider; }
     }
@@ -192,8 +190,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   Gets the <see cref="IBusinessObjectDataSource.GetAllBoundControls"/> method of the encapsulated <see cref="IBusinessObjectDataSource"/>.
     /// </remarks>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public ReadOnlyCollection<IBusinessObjectBoundControl> GetAllBoundControls ()
     {
       return InnerDataSource.GetAllBoundControls();
@@ -210,8 +208,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   Gets the <see cref="IBusinessObjectDataSource.GetBoundControlsWithValidBinding"/> method of the encapsulated <see cref="IBusinessObjectDataSource"/>.
     /// </remarks>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IEnumerable<IBusinessObjectBoundControl> GetBoundControlsWithValidBinding ()
     {
       return InnerDataSource.GetBoundControlsWithValidBinding();
@@ -234,9 +232,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return isValid;
     }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     /// <summary>
@@ -251,9 +249,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override void OnUnload (EventArgs e)
     {
       foreach (var control in InnerDataSource.GetAllBoundControls().ToArray())
-        InnerDataSource.Unregister (control);
+        InnerDataSource.Unregister(control);
 
-      base.OnUnload (e);
+      base.OnUnload(e);
     }
   }
 }

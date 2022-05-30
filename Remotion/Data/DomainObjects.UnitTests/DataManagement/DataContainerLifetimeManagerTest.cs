@@ -22,6 +22,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
   [TestFixture]
   public class DataContainerLifetimeManagerTest
   {
-    
+
   }
 }

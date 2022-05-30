@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     public ClientTransactionWithIDMixin ()
     {
-      _id = Guid.NewGuid ();
+      _id = Guid.NewGuid();
     }
 
     public Guid ID
@@ -43,12 +43,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     public void Commit ()
     {
-      Target.Commit ();
+      Target.Commit();
     }
 
     public void Rollback ()
     {
-      Target.Rollback ();
+      Target.Rollback();
     }
 
     public ClientTransaction AsClientTransaction
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [OverrideTarget]
     public new string ToString ()
     {
-      return ID.ToString ();
+      return ID.ToString();
     }
   }
 }

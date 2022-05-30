@@ -17,8 +17,7 @@
 // 
 using System;
 using System.Web.UI.WebControls;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.Data.DomainObjects;
+using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.UI;
@@ -39,7 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// The <see cref="BocListInlineEditingConfigurator"/> instance is retrieved form the <see cref="IServiceLocator"/> using the type
   /// <see cref="BocListInlineEditingConfigurator"/> as key.
   /// </remarks>
-  [ImplementationFor(typeof (BocListInlineEditingConfigurator), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(BocListInlineEditingConfigurator), Lifetime = LifetimeKind.Singleton)]
   public class BocListInlineEditingConfigurator
   {
     private readonly IResourceUrlFactory _resourceUrlFactory;
@@ -47,8 +46,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public BocListInlineEditingConfigurator (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
       _resourceUrlFactory = resourceUrlFactory;
       _globalizationService = globalizationService;
@@ -57,55 +56,52 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     public virtual void Configure<TBusinessObject> (BocList bocList, Func<TBusinessObject> newObjectFactory)
         where TBusinessObject: BaseSecurityManagerObject
     {
-      ArgumentUtility.CheckNotNull ("bocList", bocList);
-      ArgumentUtility.CheckNotNull ("newObjectFactory", newObjectFactory);
+      ArgumentUtility.CheckNotNull("bocList", bocList);
+      ArgumentUtility.CheckNotNull("newObjectFactory", newObjectFactory);
 
-      if (!ControlHelper.IsDesignMode (bocList))
-      {
-        bocList.FixedColumns.Insert (
-            0,
-            new BocRowEditModeColumnDefinition
-            {
-                Width = Unit.Pixel (40),
-                EditIcon = GetIcon ("EditItem.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Edit)),
-                SaveIcon = GetIcon("ApplyButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Apply)),
-                CancelIcon = GetIcon("CancelButton.gif", GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Cancel))
-            });
+      bocList.FixedColumns.Insert(
+          0,
+          new BocRowEditModeColumnDefinition
+          {
+              Width = Unit.Pixel(40),
+              EditIcon = GetIcon("sprite.svg#EditItem", GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Edit)),
+              SaveIcon = GetIcon("sprite.svg#ApplyButton", GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Apply)),
+              CancelIcon = GetIcon("sprite.svg#CancelButton", GlobalResourcesHelper.GetString(_globalizationService, GlobalResources.Cancel))
+          });
 
-        bocList.EditableRowChangesCanceled += HandleEditableRowChangesCanceled;
+      bocList.EditableRowChangesCanceled += HandleEditableRowChangesCanceled;
 
-        bocList.ListMenuItems.Add (
-            new BocMenuItem
-            {
-                ItemID = "New",
-                Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.New),
-                Command = new InlineEditingNewItemMenuItemCommand<TBusinessObject> (newObjectFactory)
-            });
-        bocList.ListMenuItems.Add (
-            new BocMenuItem
-            {
-                ItemID = "Delete",
-                Text = GlobalResourcesHelper.GetString (_globalizationService, GlobalResources.Delete),
-                RequiredSelection = RequiredSelection.OneOrMore,
-                Command = new InlineEditingDeleteItemMenuItemCommand<TBusinessObject>()
-            });
-      }
+      bocList.ListMenuItems.Add(
+          new BocMenuItem
+          {
+              ItemID = "New",
+              Text = GlobalResourcesHelper.GetText(_globalizationService, GlobalResources.New),
+              Command = new InlineEditingNewItemMenuItemCommand<TBusinessObject>(newObjectFactory)
+          });
+      bocList.ListMenuItems.Add(
+          new BocMenuItem
+          {
+              ItemID = "Delete",
+              Text = GlobalResourcesHelper.GetText(_globalizationService, GlobalResources.Delete),
+              RequiredSelection = RequiredSelection.OneOrMore,
+              Command = new InlineEditingDeleteItemMenuItemCommand<TBusinessObject>()
+          });
     }
 
     private void HandleEditableRowChangesCanceled (object sender, BocListItemEventArgs e)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
-      ArgumentUtility.CheckNotNull ("e", e);
+      ArgumentUtility.CheckNotNull("sender", sender);
+      ArgumentUtility.CheckNotNull("e", e);
 
-      var businessObject = (BaseSecurityManagerObject) e.BusinessObject;
-      if (businessObject.State == StateType.New)
+      var businessObject = (BaseSecurityManagerObject)e.BusinessObject;
+      if (businessObject.State.IsNew)
         businessObject.Delete();
     }
 
     private IconInfo GetIcon (string resourceUrl, string alternateText)
     {
-      var url = _resourceUrlFactory.CreateThemedResourceUrl (typeof (BocListInlineEditingConfigurator), ResourceType.Image, resourceUrl).GetUrl();
-      return new IconInfo (url) { AlternateText = alternateText };
+      var url = _resourceUrlFactory.CreateThemedResourceUrl(typeof(BocListInlineEditingConfigurator), ResourceType.Image, resourceUrl).GetUrl();
+      return new IconInfo(url) { AlternateText = alternateText };
     }
   }
 }

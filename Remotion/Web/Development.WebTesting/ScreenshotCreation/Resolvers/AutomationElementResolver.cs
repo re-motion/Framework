@@ -40,10 +40,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement Resolve (AutomationElement target, CoordinateSystem coordinateSystem)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("target", target);
 
       if (coordinateSystem != CoordinateSystem.Desktop)
-        throw new NotSupportedException (string.Format ("The specified coordinate system '{0}' is not supported.", coordinateSystem));
+        throw new NotSupportedException(string.Format("The specified coordinate system '{0}' is not supported.", coordinateSystem));
 
       try
       {
@@ -51,45 +51,46 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
         ElementVisibility visibility;
         if (target.Current.IsOffscreen)
           visibility = ElementVisibility.NotVisible;
-        else if (target.TryGetClickablePoint (out clickPoint))
+        else if (target.TryGetClickablePoint(out clickPoint))
           visibility = ElementVisibility.FullyVisible;
         else
           visibility = ElementVisibility.NotVisible;
 
         var elementRect = target.Current.BoundingRectangle;
-        var elementBounds = new Rectangle ((int) elementRect.X, (int) elementRect.Y, (int) elementRect.Width, (int) elementRect.Height);
+        var elementBounds = new Rectangle((int)elementRect.X, (int)elementRect.Y, (int)elementRect.Width, (int)elementRect.Height);
+        var unresolvedBounds = elementBounds;
 
-        var result = FindTopMostWindow (target);
+        var result = FindTopMostWindow(target);
         if (result == null)
-          throw new InvalidOperationException ("Could not find a parent window of the specified AutomationElement.");
+          throw new InvalidOperationException("Could not find a parent window of the specified AutomationElement.");
 
         var windowRect = result.Current.BoundingRectangle;
-        var windowBounds = new Rectangle ((int) windowRect.X, (int) windowRect.Y, (int) windowRect.Width, (int) windowRect.Height);
+        var windowBounds = new Rectangle((int)windowRect.X, (int)windowRect.Y, (int)windowRect.Width, (int)windowRect.Height);
 
-        return new ResolvedScreenshotElement (CoordinateSystem.Desktop, elementBounds, visibility, windowBounds);
+        return new ResolvedScreenshotElement(CoordinateSystem.Desktop, elementBounds, visibility, windowBounds, unresolvedBounds);
       }
       catch (ElementNotAvailableException ex)
       {
-        throw new InvalidOperationException ("The specified AutomationElement is no longer available.", ex);
+        throw new InvalidOperationException("The specified AutomationElement is no longer available.", ex);
       }
     }
 
     [CanBeNull]
-    private AutomationElement FindTopMostWindow (AutomationElement element)
+    private AutomationElement? FindTopMostWindow (AutomationElement element)
     {
       var walker = TreeWalker.ControlViewWalker;
-      AutomationElement result = null, current = element;
+      AutomationElement? result = null, current = element;
       do
       {
-        current = walker.GetParent (current);
+        current = walker.GetParent(current);
         if (current == null)
           break;
 
-        if (Equals (current.Current.ControlType, ControlType.Window))
+        if (Equals(current.Current.ControlType, ControlType.Window))
           result = current;
       } while (true);
 
-      if (result == null && element.Current.ControlType.Equals (ControlType.Window))
+      if (result == null && element.Current.ControlType.Equals(ControlType.Window))
         return element;
 
       return result;
@@ -102,8 +103,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
 
     public ResolvedScreenshotElement ResolveDesktopCoordinates (AutomationElement target, IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
       try
       {
@@ -111,26 +112,27 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
         ElementVisibility visibility;
         if (target.Current.IsOffscreen)
           visibility = ElementVisibility.NotVisible;
-        else if (target.TryGetClickablePoint (out clickPoint))
+        else if (target.TryGetClickablePoint(out clickPoint))
           visibility = ElementVisibility.FullyVisible;
         else
           visibility = ElementVisibility.NotVisible;
 
         var elementRect = target.Current.BoundingRectangle;
-        var elementBounds = new Rectangle ((int) elementRect.X, (int) elementRect.Y, (int) elementRect.Width, (int) elementRect.Height);
+        var elementBounds = new Rectangle((int)elementRect.X, (int)elementRect.Y, (int)elementRect.Width, (int)elementRect.Height);
+        var unresolvedBounds = elementBounds;
 
-        var result = FindTopMostWindow (target);
+        var result = FindTopMostWindow(target);
         if (result == null)
-          throw new InvalidOperationException ("Could not find a parent window of the specified AutomationElement.");
+          throw new InvalidOperationException("Could not find a parent window of the specified AutomationElement.");
 
         var windowRect = result.Current.BoundingRectangle;
-        var windowBounds = new Rectangle ((int) windowRect.X, (int) windowRect.Y, (int) windowRect.Width, (int) windowRect.Height);
+        var windowBounds = new Rectangle((int)windowRect.X, (int)windowRect.Y, (int)windowRect.Width, (int)windowRect.Height);
 
-        return new ResolvedScreenshotElement (CoordinateSystem.Desktop, elementBounds, visibility, windowBounds);
+        return new ResolvedScreenshotElement(CoordinateSystem.Desktop, elementBounds, visibility, windowBounds, unresolvedBounds);
       }
       catch (ElementNotAvailableException ex)
       {
-        throw new InvalidOperationException ("The specified AutomationElement is no longer available.", ex);
+        throw new InvalidOperationException("The specified AutomationElement is no longer available.", ex);
       }
     }
   }

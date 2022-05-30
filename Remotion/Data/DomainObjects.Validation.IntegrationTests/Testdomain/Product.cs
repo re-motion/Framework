@@ -23,12 +23,11 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
   {
     public static Product NewObject ()
     {
-      return NewObject<Product> ();
+      return NewObject<Product>();
     }
 
-    [Mandatory]
-    public virtual Order Order { get; set; }
-
     public virtual decimal Price { get; set; }
+
+    //TODO: RM-7294: Validation integration tests for IObjectList
   }
 }

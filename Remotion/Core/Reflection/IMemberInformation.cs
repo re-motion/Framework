@@ -37,14 +37,14 @@ namespace Remotion.Reflection
     /// Gets the type declaring the member.
     /// </summary>
     /// <value>The declaring type of the member.</value>
-    [CanBeNull]ITypeInformation DeclaringType { get; }
+    [CanBeNull]ITypeInformation? DeclaringType { get; }
 
     /// <summary>
     /// Gets the type the member was originally declared on.
     /// </summary>
     /// <returns>The type the member was originally declared on.</returns>
     /// <remarks>If the member represented by this instance overrides a member from a base type, this method will return the base type.</remarks>
-    [CanBeNull]ITypeInformation GetOriginalDeclaringType ();
+    [CanBeNull]ITypeInformation? GetOriginalDeclaringType ();
 
     /// <summary>
     /// Gets the one custom attribute of type <typeparamref name="T"/> declared on this member, or null if no such attribute exists.
@@ -55,7 +55,7 @@ namespace Remotion.Reflection
     /// <exception cref="AmbiguousMatchException">More than one instance of the given attribute type <typeparamref name="T"/> is declared on this
     /// member.</exception>
     /// <returns>An instance of type <typeparamref name="T"/>, or <see langword="null"/> if no attribute of that type is declared on this member.</returns>
-    [CanBeNull]T GetCustomAttribute<T> (bool inherited) where T : class;
+    [CanBeNull]T? GetCustomAttribute<T> (bool inherited) where T : class;
 
     /// <summary>
     /// Gets the custom attributes of type <typeparamref name="T"/> declared on this member, or null if no such attribute exists.

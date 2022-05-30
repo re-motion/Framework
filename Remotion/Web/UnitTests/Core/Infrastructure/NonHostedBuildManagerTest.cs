@@ -34,46 +34,46 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
     [Test]
     public void GetType_WithValidTypeName_ReturnsType ()
     {
-      Assert.That (
-          _buildManager.GetType ("Remotion.Web.Infrastructure.IBuildManager, Remotion.Web", true, false),
-          Is.EqualTo (typeof (IBuildManager)));
+      Assert.That(
+          _buildManager.GetType("Remotion.Web.Infrastructure.IBuildManager, Remotion.Web", true, false),
+          Is.EqualTo(typeof(IBuildManager)));
     }
 
     [Test]
     public void GetType_WithValidTypeNameIgnoringCase_ReturnsType ()
     {
-      Assert.That (
-          _buildManager.GetType ("Remotion.Web.Infrastructure.ibuildmanager, Remotion.Web", true, ignoreCase: true),
-          Is.EqualTo (typeof (IBuildManager)));
+      Assert.That(
+          _buildManager.GetType("Remotion.Web.Infrastructure.ibuildmanager, Remotion.Web", true, ignoreCase: true),
+          Is.EqualTo(typeof(IBuildManager)));
     }
 
     [Test]
     public void GetType_WithInvalidTypeNameAndThrowOnErrorIsTrue_ThrowsException ()
     {
-      Assert.That (
-          () => _buildManager.GetType ("Remotion.Web.Infrastructure.Invalid, Remotion.Web", throwOnError: true, ignoreCase: false),
+      Assert.That(
+          () => _buildManager.GetType("Remotion.Web.Infrastructure.Invalid, Remotion.Web", throwOnError: true, ignoreCase: false),
           Throws.TypeOf<TypeLoadException>()
-              .And.Message.EqualTo ("Could not load type 'Remotion.Web.Infrastructure.Invalid' from assembly 'Remotion.Web'."));
+              .And.Message.EqualTo("Could not load type 'Remotion.Web.Infrastructure.Invalid' from assembly 'Remotion.Web'."));
     }
 
     [Test]
     public void GetType_WithInvalidTypeNameAndThrowOnErrorIsFalse_ReturnsNull ()
     {
-      Assert.That (
-          _buildManager.GetType ("Remotion.Web.Infrastructure.Invalid, Remotion.Web", throwOnError: false, ignoreCase: false),
+      Assert.That(
+          _buildManager.GetType("Remotion.Web.Infrastructure.Invalid, Remotion.Web", throwOnError: false, ignoreCase: false),
           Is.Null);
     }
 
     [Test]
     public void GetCodeAssemblies_ReturnsNull ()
     {
-      Assert.That (_buildManager.CodeAssemblies, Is.Null);
+      Assert.That(_buildManager.CodeAssemblies, Is.Null);
     }
 
     [Test]
     public void GetCompiledType_ReturnsNull ()
     {
-      Assert.That (_buildManager.GetCompiledType ("SomePath"), Is.Null);
+      Assert.That(_buildManager.GetCompiledType("SomePath"), Is.Null);
     }
   }
 }

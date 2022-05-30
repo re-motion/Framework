@@ -38,36 +38,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueSelectList> GetSelectList (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
       if (fluentAutoComplete.IsReadOnly())
-        throw new InvalidOperationException ("Can not get the auto-complete as the AutoCompleteReferenceValue is read-only.");
+        throw new InvalidOperationException("Can not get the auto-complete as the AutoCompleteReferenceValue is read-only.");
 
-      return SelfResolvableFluentScreenshot.Create (new ScreenshotBocAutoCompleteReferenceValueSelectList (fluentAutoComplete));
-    }
-
-    /// <summary>
-    /// Returns the command of this <see cref="BocAutoCompleteReferenceValueControlObject"/>.
-    /// </summary>
-    /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no command.</exception>
-    public static FluentScreenshotElement<CommandControlObject> GetCommand (
-        [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
-    {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
-
-      return fluentAutoComplete.Target.GetCommand().ForControlObjectScreenshot();
+      return SelfResolvableFluentScreenshot.Create(new ScreenshotBocAutoCompleteReferenceValueSelectList(fluentAutoComplete));
     }
 
     /// <summary>
     /// Returns the drop-down-button of this <see cref="BocAutoCompleteReferenceValueControlObject"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no drop-down-button as it is read-only.</exception>
+    /// <exception cref="WebTestException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no drop-down-button as it is read-only.</exception>
     public static FluentScreenshotElement<ElementScope> GetDropDownButton (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
-      var target = fluentAutoComplete.Target.Scope.FindChild ("DropDownButton", Options.NoWait);
+      var target = fluentAutoComplete.Target.Scope.FindChild("DropDownButton", Options.NoWait);
       target.EnsureExistence();
 
       return target.ForElementScopeScreenshot();
@@ -76,16 +64,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Returns the command of this <see cref="BocAutoCompleteReferenceValueControlObject"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no option menu.</exception>
+    /// <exception cref="WebTestException">The <see cref="BocAutoCompleteReferenceValueControlObject"/> has no option menu.</exception>
     public static FluentScreenshotElement<DropDownMenuControlObject> GetOptionsMenu (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
-      var target = fluentAutoComplete.Target.Scope.FindChild ("Boc_OptionsMenu", Options.NoWait);
+      var target = fluentAutoComplete.Target.Scope.FindChild("Boc_OptionsMenu", Options.NoWait);
       target.EnsureExistence();
 
-      return FluentUtility.CreateFluentControlObject (new DropDownMenuControlObject (fluentAutoComplete.Target.Context.CloneForControl (target)));
+      return FluentUtility.CreateFluentControlObject(new DropDownMenuControlObject(fluentAutoComplete.Target.Context.CloneForControl(target)));
     }
 
     /// <summary>
@@ -95,12 +83,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotBocAutoCompleteReferenceValueInformationPopup> GetInformationPopup (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
       if (fluentAutoComplete.Target.IsReadOnly())
-        throw new InvalidOperationException ("Can not get the popup as the AutoCompleteReferenceValue is read-only.");
+        throw new InvalidOperationException("Can not get the popup as the AutoCompleteReferenceValue is read-only.");
 
-      return SelfResolvableFluentScreenshot.Create (new ScreenshotBocAutoCompleteReferenceValueInformationPopup (fluentAutoComplete));
+      return SelfResolvableFluentScreenshot.Create(new ScreenshotBocAutoCompleteReferenceValueInformationPopup(fluentAutoComplete));
     }
 
     /// <summary>
@@ -110,13 +98,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetValue (
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
       ElementScope target;
       if (fluentAutoComplete.IsReadOnly())
-        target = fluentAutoComplete.Target.Scope.FindChild ("Value", Options.NoWait);
+        target = fluentAutoComplete.Target.Scope.FindChild("Value", Options.NoWait);
       else
-        target = fluentAutoComplete.Target.Scope.FindChild ("TextValue", Options.NoWait);
+        target = fluentAutoComplete.Target.Scope.FindChild("TextValue", Options.NoWait);
       target.EnsureExistence();
 
       return target.ForElementScopeScreenshot();
@@ -127,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// </summary>
     public static bool IsReadOnly ([NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
       return fluentAutoComplete.Target.IsReadOnly();
     }
@@ -139,14 +127,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<BocAutoCompleteReferenceValueControlObject> fluentAutoComplete,
         [NotNull] string value)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("value", value);
 
       if (fluentAutoComplete.IsReadOnly())
-        throw new InvalidOperationException ("Can not set as the control is read-only.");
+        throw new InvalidOperationException("Can not set as the control is read-only.");
 
-      fluentAutoComplete.GetValue().GetTarget().FillInWith (value);
-      fluentAutoComplete.GetDropDownButton().GetTarget().Click (Options.NoWait);
+      fluentAutoComplete.GetValue().GetTarget().FillInWith(value);
+      fluentAutoComplete.GetDropDownButton().GetTarget().Click(Options.NoWait);
     }
   }
 }

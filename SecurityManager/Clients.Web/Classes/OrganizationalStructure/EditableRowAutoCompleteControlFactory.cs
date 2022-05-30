@@ -17,7 +17,7 @@
 // 
 using System;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// <see cref="EditableRowAutoCompleteControlFactory"/> as key.
   /// </remarks>
 
-  [ImplementationFor(typeof (EditableRowAutoCompleteControlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(EditableRowAutoCompleteControlFactory), Lifetime = LifetimeKind.Singleton)]
   public class EditableRowAutoCompleteControlFactory : EditableRowControlFactory
   {
     public EditableRowAutoCompleteControlFactory ()
@@ -48,37 +48,37 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var bocAutoCompleteReferenceValue = new BocAutoCompleteReferenceValue();
-      bocAutoCompleteReferenceValue.RegisterHtmlHeadContents (htmlHeadAppender);
+      bocAutoCompleteReferenceValue.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
-    protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      if (IsAutoCompleteReferenceValueRequired (propertyPath))
+      if (IsAutoCompleteReferenceValueRequired(propertyPath))
         return CreateBocAutoCompleteReferenceValue(propertyPath);
 
-      return base.CreateFromPropertyPath (propertyPath);
+      return base.CreateFromPropertyPath(propertyPath);
     }
 
     protected virtual IBusinessObjectBoundEditableWebControl CreateBocAutoCompleteReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       var control = new BocAutoCompleteReferenceValue();
-      SecurityManagerSearchWebService.BindServiceToControl (control);
+      SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(control);
 
-      if (Is<User> (propertyPath) || Is<Group> (propertyPath))
+      if (Is<User>(propertyPath) || Is<Group>(propertyPath))
       {
         control.PreRender += delegate
         {
-          BasePage page = (BasePage) control.Page;
-          control.Args = page.CurrentFunction.TenantHandle.AsArgument();
+          BasePage page = Assertion.IsNotNull((BasePage?)control.Page, "Page != null when processing page lifecycle events.");
+          control.ControlServiceArguments = page.CurrentFunction.TenantHandle.AsArgument();
         };
       }
 
@@ -87,7 +87,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     protected virtual bool IsAutoCompleteReferenceValueRequired (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       var lastProperty = propertyPath.Properties.Last();
       bool isScalarReferenceProperty = !lastProperty.IsList && lastProperty is IBusinessObjectReferenceProperty;
@@ -100,7 +100,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     private bool Is<T> (IBusinessObjectPropertyPath propertyPath)
         where T: OrganizationalStructureObject
     {
-      return typeof (T).IsAssignableFrom (propertyPath.Properties.Last().PropertyType);
+      return typeof(T).IsAssignableFrom(propertyPath.Properties.Last().PropertyType);
     }
   }
 }

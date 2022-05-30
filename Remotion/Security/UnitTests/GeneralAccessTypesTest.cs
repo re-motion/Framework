@@ -29,10 +29,10 @@ namespace Remotion.Security.UnitTests
     public void Localization ()
     {
       var globalizationService = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
-      foreach (GeneralAccessTypes enumValue in Enum.GetValues (typeof (GeneralAccessTypes)))
+      foreach (GeneralAccessTypes enumValue in Enum.GetValues(typeof(GeneralAccessTypes)))
       {
-        var localizations = globalizationService.GetAvailableEnumDisplayNames (enumValue);
-        Assert.That (localizations.Count, Is.EqualTo (5), enumValue.ToString()); // invariant, EN, DE, FR, IT
+        var localizations = globalizationService.GetAvailableEnumDisplayNames(enumValue);
+        Assert.That(localizations.Count, Is.EqualTo(5), enumValue.ToString()); // invariant, EN, DE, FR, IT
       }
     }
   }

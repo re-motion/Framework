@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinRequiringAllMembersTargetCall))]
+  [Uses(typeof(MixinRequiringAllMembersTargetCall))]
   public class ClassFulfillingAllMemberRequirementsExplicitly : IMixinRequiringAllMembersRequirements
   {
     void IMixinRequiringAllMembersRequirements.Method ()
@@ -28,13 +28,13 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     int IMixinRequiringAllMembersRequirements.Property
     {
       get { return 37; }
-      set { throw new Exception ("The method or operation is not implemented."); }
+      set { throw new Exception("The method or operation is not implemented."); }
     }
 
     event Func<string> IMixinRequiringAllMembersRequirements.Event
     {
-      add { throw new Exception ("The method or operation is not implemented."); }
-      remove { throw new Exception ("The method or operation is not implemented."); }
+      add { throw new Exception("The method or operation is not implemented."); }
+      remove { throw new Exception("The method or operation is not implemented."); }
     }
   }
 }

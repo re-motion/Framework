@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Text;
+using System.Web.UI;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -24,25 +25,25 @@ namespace Remotion.Web.UI.Controls.Hotkey
   /// <summary>
   /// Implementation of the <see cref="IHotkeyFormatter"/> interface. Surrounds the hotkey with HTML U-tags.
   /// </summary>
-  [ImplementationFor (typeof (IHotkeyFormatter), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IHotkeyFormatter), Lifetime = LifetimeKind.Singleton)]
   public sealed class UnderscoreHotkeyFormatter : HotkeyFormatterBase
   {
     public UnderscoreHotkeyFormatter ()
     {
     }
 
-    protected override void AppendHotkeyBeginTag (StringBuilder stringBuilder, string hotkey)
+    protected override void AppendHotkeyBeginTag (HtmlTextWriter writer, char hotkey)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      stringBuilder.Append ("<u>");
+      writer.RenderBeginTag(HtmlTextWriterTag.U);
     }
 
-    protected override void AppendHotkeyEndTag (StringBuilder stringBuilder)
+    protected override void AppendHotkeyEndTag (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      stringBuilder.Append ("</u>");
+      writer.RenderEndTag();
     }
   }
 }

@@ -45,27 +45,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
       return "Timestamp";
     }
 
-    public EntityNameDefinition GetTableName (ClassDefinition classDefinition)
+    public EntityNameDefinition? GetTableName (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var tableAttribute = AttributeUtility.GetCustomAttribute<DBTableAttribute> (classDefinition.ClassType, false);
+      var tableAttribute = AttributeUtility.GetCustomAttribute<DBTableAttribute>(classDefinition.ClassType, false);
       if (tableAttribute == null)
         return null;
 
-      return new EntityNameDefinition(null, String.IsNullOrEmpty (tableAttribute.Name) ? classDefinition.ID : tableAttribute.Name);
+      return new EntityNameDefinition(null, String.IsNullOrEmpty(tableAttribute.Name) ? classDefinition.ID : tableAttribute.Name);
     }
 
     public EntityNameDefinition GetViewName (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return new EntityNameDefinition(null, classDefinition.ID + "View");
     }
 
     public string GetColumnName (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       var name = GetColumnNameFromAttribute(propertyDefinition);
       if (name != null)
@@ -76,7 +76,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public string GetRelationColumnName (RelationEndPointDefinition relationEndPointDefinition)
     {
-      var name = GetColumnNameFromAttribute (relationEndPointDefinition.PropertyDefinition);
+      var name = GetColumnNameFromAttribute(relationEndPointDefinition.PropertyDefinition);
       if (name != null)
         return name;
 
@@ -85,33 +85,47 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public string GetRelationClassIDColumnName (RelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
-      return GetRelationColumnName (relationEndPointDefinition) + "ClassID";
+      return GetRelationColumnName(relationEndPointDefinition) + "ClassID";
     }
 
     public string GetPrimaryKeyConstraintName (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var tableName = GetTableName (classDefinition).EntityName;
+      var entityNameDefinition = GetTableName(classDefinition);
+      if (entityNameDefinition == null)
+      {
+        throw new MappingException(
+            string.Format("Class '{0}' cannot not define a primary key constraint because no table name has been defined.", classDefinition.ID));
+      }
 
-      return String.Format ("PK_{0}", tableName);
+      var tableName = entityNameDefinition.EntityName;
+
+      return String.Format("PK_{0}", tableName);
     }
 
     public string GetForeignKeyConstraintName (ClassDefinition classDefinition, IEnumerable<ColumnDefinition> foreignKeyColumns)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("foreignKeyColumns", foreignKeyColumns);
-      
-      var tableName = GetTableName (classDefinition).EntityName;
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("foreignKeyColumns", foreignKeyColumns);
 
-      return String.Format ("FK_{0}_{1}", tableName, String.Join ((string) "_", (IEnumerable<string>) foreignKeyColumns.Select (cd => cd.Name)));
+      var entityNameDefinition = GetTableName(classDefinition);
+      if (entityNameDefinition == null)
+      {
+        throw new MappingException(
+            string.Format("Class '{0}' cannot not define a foreign key constraint because no table name has been defined.", classDefinition.ID));
+      }
+
+      var tableName = entityNameDefinition.EntityName;
+
+      return String.Format("FK_{0}_{1}", tableName, String.Join((string)"_", (IEnumerable<string>)foreignKeyColumns.Select(cd => cd.Name)));
     }
 
-    private string GetColumnNameFromAttribute (PropertyDefinition propertyDefinition)
+    private string? GetColumnNameFromAttribute (PropertyDefinition propertyDefinition)
     {
-      var attribute = propertyDefinition.PropertyInfo.GetCustomAttribute<IStorageSpecificIdentifierAttribute> (false);
+      var attribute = propertyDefinition.PropertyInfo.GetCustomAttribute<IStorageSpecificIdentifierAttribute>(false);
       return attribute != null ? attribute.Identifier : null;
     }
   }

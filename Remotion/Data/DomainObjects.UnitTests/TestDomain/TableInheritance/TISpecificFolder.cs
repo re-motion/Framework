@@ -18,13 +18,13 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_SpecificFolder")]
+  [ClassID("TI_SpecificFolder")]
   [Instantiable]
   public abstract class TISpecificFolder : TIFolder
   {
-    public new static TISpecificFolder NewObject()
+    public new static TISpecificFolder NewObject ()
     {
-      return NewObject<TISpecificFolder> ();
+      return NewObject<TISpecificFolder>();
     }
 
     protected TISpecificFolder ()

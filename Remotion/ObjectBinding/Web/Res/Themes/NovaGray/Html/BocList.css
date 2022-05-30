@@ -75,6 +75,24 @@ div.bocListNavigator img
   vertical-align: -0.1em;
 }
 
+div.bocListNavigator a[id$="_First"] img,
+div.bocListNavigator a[id$="_Last"] img
+{
+  height: 16px;
+  width: 16px;
+  margin-right: -1px;
+  margin-bottom: -3px;
+}
+
+div.bocListNavigator a[id$="_Previous"] img,
+div.bocListNavigator a[id$="_Next"] img
+{
+  height: 16px;
+  width: 16px;
+  margin-right: -8px;
+  margin-bottom: -3px;
+}
+
 div.bocListNavigator a[href]:focus img,
 div.bocListNavigator a[href]:hover img,
 div.bocListNavigator a[href]:active img
@@ -84,17 +102,27 @@ div.bocListNavigator a[href]:active img
   filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 }
 
+div.bocListListMenuContainer
+{
+  width: 100%;
+}
+
 /*  Style applied to the BocList's menu block. */
 div.bocListMenuBlock
 {
   display: block;
   float: right;
-  width: 10em;
+  width: var(--boclist-menublock-minimum-width, 10em);
 }
 
 div.bocListMenuBlock > div
 {
   margin-left: 0.5em;
+}
+
+div.bocListMenuBlock > div > *
+{
+  margin-bottom: 5pt;
 }
 
 /*  Style applied to the list-area (table and navigation block) of the BocList.  */
@@ -125,7 +153,7 @@ div.bocList.hasDimensions div.bocListTableBlock
 /* Style applied to the list-area (table and navigation block) of the BocList if there is a menu block. */
 div.bocList.hasDimensions div.bocListTableBlock.hasMenuBlock
 {
-  right: 10em; /* width of BocList menu block + some space */
+  right: var(--boclist-menublock-minimum-width, 10em); /* width of BocList menu block + some space */
 }
 
 /* Style applied to the div surrounding the BocList's table. */
@@ -145,6 +173,12 @@ div.bocList.hasDimensions div.bocListTableBlock div.bocListTableContainer
   bottom: 0;
   right: 0;
   overflow: hidden;
+}
+
+div.bocList.hasDimensions div.bocListTableBlock span:focus + div.bocListTableContainer
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
 }
 
 /*  Style applied to the div surrounding the BocList's table when the BocList has a defined width or height and a navigation block.  */
@@ -180,6 +214,7 @@ div.bocList.hasDimensions div.bocListTableScrollContainer table.bocListTable
   margin-top: -1.9em;
   position: relative;
 }
+
 
 /* Style applied to the fake table head used for scrolling */
 div.bocListFakeTableHead
@@ -270,9 +305,17 @@ th.bocListTitleCell > a[href]:active
   background-color: #C5E0FC;
 }
 
-th.bocListTitleCell > a[href]:focus img,
-th.bocListTitleCell > a[href]:hover img,
-th.bocListTitleCell > a[href]:active img
+th.bocListTitleCell .bocListSortingOrder img
+{
+  height: 16px;
+  width: 16px;
+  margin-right: -3px;
+  margin-bottom: -8px;
+}
+
+th.bocListTitleCell > a[href]:focus .bocListSortingOrder img,
+th.bocListTitleCell > a[href]:hover .bocListSortingOrder img,
+th.bocListTitleCell > a[href]:active .bocListSortingOrder img
 {
   -webkit-filter: brightness(0);
   filter: brightness(0);
@@ -393,6 +436,22 @@ tr.bocListDataRow td.bocListDataCell span.CommandText
 
 
 /* Style to override the BocList's anchor style for drop down menus rendered inside a cell. */
+td.bocListDataCell div ul.DropDownMenuOptions li a
+{
+  display: block;
+}
+
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled.selected a,
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:active,
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:focus,
+td.bocListDataCell div ul.DropDownMenuOptions li.DropDownMenuItemDisabled a:hover
+{
+  background-color: #ECEEEC;
+  border-style: none;
+  padding: 2px;
+  color: gray;
+}
+
 td.bocListDataCell div span.DropDownMenuSelect a.DropDownMenuLabel,
 td.bocListDataCell div span.DropDownMenuSelect:focus a.DropDownMenuLabel,
 td.bocListDataCell div span.DropDownMenuSelect:hover a.DropDownMenuLabel
@@ -474,6 +533,11 @@ span.bocListSortingOrder
   font-weight: normal;
 }
 
+div.bocListAvailableViewsList
+{
+  width: 100%;
+}
+
 /*  Style applied to the BocList's list of available views. */
 select.bocListAvailableViewsListDropDownList
 {
@@ -487,11 +551,19 @@ span.bocListAvailableViewsListLabel
 .bocList .validationRequiredMarker
 {
   vertical-align: -0.3em;
+  height: 16px;
+  width: 16px;
 }
 
 .bocList .validationErrorMarker
 {
   padding-top: 0.1em;
+}
+
+.bocList .validationErrorMarker > img
+{
+  height: 16px;
+  width: 16px;
 }
 
 /*  Style applied to the validation messages, applied if the EditDetailsValidator has no style it self.  */
@@ -519,7 +591,7 @@ span.bocListEditableCell .control
 
 span.bocListEditableCell .validationErrorMarker + .control
 {
-  padding-left: 14px;
+  padding-left: 16px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -564,4 +636,17 @@ span.bocListEditableCell .control > *
 {
   width: 100%;
   vertical-align: middle;
+}
+
+/* Shared in other CSS files */
+.screenReaderText
+{
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }

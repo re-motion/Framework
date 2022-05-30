@@ -25,7 +25,7 @@ namespace Remotion.Web.UnitTests.Core.Resources
     private IHttpContextProvider _httpContextProvider;
 
     public TestableResourcePathBuilder (IHttpContextProvider httpContextProvider, string configuredResourceRoot)
-        : base (httpContextProvider, configuredResourceRoot)
+        : base(httpContextProvider, configuredResourceRoot)
     {
       _httpContextProvider = httpContextProvider;
     }

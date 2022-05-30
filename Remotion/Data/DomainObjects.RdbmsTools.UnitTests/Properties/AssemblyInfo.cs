@@ -23,6 +23,5 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Unit Tests for Remotion DomainObjects RdmbsTools")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

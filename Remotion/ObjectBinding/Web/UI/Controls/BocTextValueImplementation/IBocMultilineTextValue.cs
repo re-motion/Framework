@@ -20,6 +20,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
 {
   public interface IBocMultilineTextValue : IBocTextValueBase
   {
-    new string[] Value { get; }
+    new string[]? Value { get; }
   }
 }

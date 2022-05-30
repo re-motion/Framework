@@ -28,8 +28,8 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     // member fields
 
-    private string _valueInViewState;
-    private string _valueInControlState;
+    private string? _valueInViewState;
+    private string? _valueInControlState;
 
     // construction and disposing
 
@@ -41,40 +41,40 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      Assertion.IsNotNull (Page, "Page is null for control '{0}'", ID);
-      Page.RegisterRequiresControlState (this);
+      Assertion.IsNotNull(Page, "Page is null for control '{0}'", ID!);
+      Page.RegisterRequiresControlState(this);
     }
 
-    public string ValueInViewState
+    public string? ValueInViewState
     {
       get { return _valueInViewState; }
       set { _valueInViewState = value; }
     }
 
-    public string ValueInControlState
+    public string? ValueInControlState
     {
       get { return _valueInControlState; }
       set { _valueInControlState = value; }
     }
-    
-    protected override void LoadViewState (object savedState)
+
+    protected override void LoadViewState (object? savedState)
     {
-      _valueInViewState = (string) savedState;
+      _valueInViewState = (string?)savedState;
     }
 
-    protected override object SaveViewState()
+    protected override object? SaveViewState ()
     {
       return _valueInViewState;
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      _valueInControlState = (string) savedState;
+      _valueInControlState = (string?)savedState;
     }
-  
-    protected override object SaveControlState ()
+
+    protected override object? SaveControlState ()
     {
       return _valueInControlState;
     }
@@ -82,10 +82,10 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
     protected override void Render (HtmlTextWriter writer)
     {
       writer.RenderBeginTag( HtmlTextWriterTag.Div);
-      writer.Write ("ValueInViewState: {0}", _valueInViewState);
+      writer.Write("ValueInViewState: {0}", _valueInViewState);
       writer.WriteBreak();
-      writer.Write ("ValueInControlState: {0}", _valueInControlState);
-      writer.RenderEndTag ();
+      writer.Write("ValueInControlState: {0}", _valueInControlState);
+      writer.RenderEndTag();
     }
   }
 }

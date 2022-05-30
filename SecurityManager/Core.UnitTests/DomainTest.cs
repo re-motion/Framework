@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.UnitTests
     {
     }
 
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp ()
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp ()
     {
     }
 
@@ -45,17 +45,17 @@ namespace Remotion.SecurityManager.UnitTests
       ClientTransactionScope.ResetActiveScope();
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public virtual void TestFixtureTearDown ()
     {
     }
 
     protected DataContainer GetDataContainer (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      
-      return DataManagementService.GetDataManager (ClientTransaction.Current)
-                                  .GetDataContainerWithLazyLoad (domainObject.ID, true);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+
+      return DataManagementService.GetDataManager(ClientTransaction.Current)
+                                  .GetDataContainerWithLazyLoad(domainObject.ID, true);
     }
   }
 }

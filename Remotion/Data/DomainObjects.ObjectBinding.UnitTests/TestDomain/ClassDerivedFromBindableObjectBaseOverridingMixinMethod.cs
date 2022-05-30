@@ -20,13 +20,13 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
   [Serializable]
-  [Uses (typeof (MixinWithOverridableMethod))]
+  [Uses(typeof(MixinWithOverridableMethod))]
   [DBTable]
   public class ClassDerivedFromBindableDomainObjectOverridingMixinMethod : BindableDomainObject
   {
     public static ClassDerivedFromBindableDomainObjectOverridingMixinMethod NewObject ()
     {
-      return NewObject<ClassDerivedFromBindableDomainObjectOverridingMixinMethod> ();
+      return NewObject<ClassDerivedFromBindableDomainObjectOverridingMixinMethod>();
     }
 
     public virtual string String { get; set; }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using Remotion.Linq.SqlBackend.SqlGeneration;
@@ -28,8 +29,8 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class ExtendedSqlGeneratingOuterSelectExpressionVisitor : SqlGeneratingOuterSelectExpressionVisitor
   {
-    private static readonly MethodInfo s_getObjectIDOrNullMethod = MemberInfoFromExpressionUtility.GetMethod (() => GetObjectIDOrNull (null, null));
-    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor (() => new ObjectID ((string) null, null));
+    private static readonly MethodInfo s_getObjectIDOrNullMethod = MemberInfoFromExpressionUtility.GetMethod(() => GetObjectIDOrNull(null!, null!));
+    private static readonly ConstructorInfo s_objectIDConstructor = MemberInfoFromExpressionUtility.GetConstructor(() => new ObjectID((string?)null!, null!));
 
     public static new void GenerateSql (
         Expression expression,
@@ -37,49 +38,50 @@ namespace Remotion.Data.DomainObjects.Linq
         ISqlGenerationStage stage,
         SetOperationsMode setOperationsMode)
     {
-      ArgumentUtility.CheckNotNull ("expression", expression);
-      ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
-      ArgumentUtility.CheckNotNull ("stage", stage);
+      ArgumentUtility.CheckNotNull("expression", expression);
+      ArgumentUtility.CheckNotNull("commandBuilder", commandBuilder);
+      ArgumentUtility.CheckNotNull("stage", stage);
 
-      EnsureNoCollectionExpression (expression);
+      EnsureNoCollectionExpression(expression);
 
-      var visitor = new ExtendedSqlGeneratingOuterSelectExpressionVisitor (commandBuilder, stage, setOperationsMode);
-      visitor.Visit (expression);
+      var visitor = new ExtendedSqlGeneratingOuterSelectExpressionVisitor(commandBuilder, stage, setOperationsMode);
+      visitor.Visit(expression);
     }
 
-    public static ObjectID GetObjectIDOrNull (string classID, object value)
+    [return: NotNullIfNotNull("value")]
+    public static ObjectID? GetObjectIDOrNull (string classID, object? value)
     {
       if (value == null)
         return null;
 
-      return new ObjectID (classID, value);
+      return new ObjectID(classID, value);
     }
 
     protected ExtendedSqlGeneratingOuterSelectExpressionVisitor (
         ISqlCommandBuilder commandBuilder,
         ISqlGenerationStage stage,
         SetOperationsMode setOperationsMode)
-        : base (commandBuilder, stage, setOperationsMode)
+        : base(commandBuilder, stage, setOperationsMode)
     {
     }
 
     protected override Expression VisitNew (NewExpression expression)
     {
-      var baseResult = base.VisitNew (expression);
-      if (expression.Type == typeof (ObjectID))
+      var baseResult = base.VisitNew(expression);
+      if (expression.Type == typeof(ObjectID))
       {
         // If the NewExpression represents a selected ObjectID, we want to return null if the ID value is null. Therefore, change the projection
         // to use the GetObjectIDOrNull method.
 
-        var originalObjectIDProjection = (NewExpression) CommandBuilder.GetInMemoryProjectionBody();
-        Assertion.IsNotNull (originalObjectIDProjection);
-        Assertion.IsTrue (originalObjectIDProjection.Constructor.Equals (s_objectIDConstructor));
+        var originalObjectIDProjection = (NewExpression)CommandBuilder.GetInMemoryProjectionBody();
+        Assertion.IsNotNull(originalObjectIDProjection);
+        Assertion.IsTrue(object.Equals(originalObjectIDProjection.Constructor, s_objectIDConstructor));
 
-        var nullSafeObjectIDProjection = Expression.Call (
-            s_getObjectIDOrNullMethod, 
-            originalObjectIDProjection.Arguments[0], 
+        var nullSafeObjectIDProjection = Expression.Call(
+            s_getObjectIDOrNullMethod,
+            originalObjectIDProjection.Arguments[0],
             originalObjectIDProjection.Arguments[1]);
-        CommandBuilder.SetInMemoryProjectionBody (nullSafeObjectIDProjection);
+        CommandBuilder.SetInMemoryProjectionBody(nullSafeObjectIDProjection);
       }
 
       return baseResult;

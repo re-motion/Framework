@@ -33,9 +33,9 @@ public class DomainObjectException : Exception
 
   // construction and disposing
 
-  public DomainObjectException (string message) : base (message) {}
-  public DomainObjectException (string message, Exception inner) : base (message, inner) {}
-  protected DomainObjectException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+  public DomainObjectException (string message) : base(message) {}
+  public DomainObjectException (string message, Exception? inner) : base(message, inner) {}
+  protected DomainObjectException (SerializationInfo info, StreamingContext context) : base(info, context) {}
 
   // methods and properties
 

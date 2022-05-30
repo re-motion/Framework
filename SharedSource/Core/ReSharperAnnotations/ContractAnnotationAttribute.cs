@@ -109,11 +109,11 @@ namespace JetBrains.Annotations
   /// public bool TryParse(string s, out Person result)
   /// </code></item>
   /// </list></examples>
-  [AttributeUsage (AttributeTargets.Method, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
   sealed partial class ContractAnnotationAttribute : Attribute
   {
     public ContractAnnotationAttribute ([NotNull] string contract)
-        : this (contract, false)
+        : this(contract, false)
     {
     }
 

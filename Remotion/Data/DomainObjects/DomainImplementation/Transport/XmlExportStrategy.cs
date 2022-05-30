@@ -16,6 +16,7 @@
 // 
 using System;
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using Remotion.Utilities;
 
@@ -30,20 +31,28 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public void Export (Stream outputStream, TransportItem[] transportedObjects)
     {
-      ArgumentUtility.CheckNotNull ("outputStream", outputStream);
-      ArgumentUtility.CheckNotNull ("transportedObjects", transportedObjects);
+      ArgumentUtility.CheckNotNull("outputStream", outputStream);
+      ArgumentUtility.CheckNotNull("transportedObjects", transportedObjects);
 
-      var formatter = new XmlSerializer (typeof (XmlTransportItem[]));
-      PerformSerialization(XmlTransportItem.Wrap (transportedObjects), outputStream, formatter);
+      var formatter = new XmlSerializer(typeof(XmlTransportItem[]));
+      PerformSerialization(XmlTransportItem.Wrap(transportedObjects), outputStream, formatter);
     }
 
     protected virtual void PerformSerialization (XmlTransportItem[] transportedObjects, Stream dataStream, XmlSerializer formatter)
     {
-      ArgumentUtility.CheckNotNull ("transportedObjects", transportedObjects);
-      ArgumentUtility.CheckNotNull ("dataStream", dataStream);
-      ArgumentUtility.CheckNotNull ("formatter", formatter);
+      ArgumentUtility.CheckNotNull("transportedObjects", transportedObjects);
+      ArgumentUtility.CheckNotNull("dataStream", dataStream);
+      ArgumentUtility.CheckNotNull("formatter", formatter);
 
-      formatter.Serialize (dataStream, transportedObjects);
+#if NETFRAMEWORK
+      formatter.Serialize(dataStream, transportedObjects);
+#else
+      var xmlWriterSettings = new XmlWriterSettings() { Indent = true };
+      using (XmlWriter xmlWriter = XmlWriter.Create(dataStream, xmlWriterSettings))
+      {
+        formatter.Serialize(xmlWriter, transportedObjects);
+      }
+#endif
     }
   }
 }

@@ -28,7 +28,7 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       public object ThisValue;
 
-      public MixinWithOnInitialize1()
+      public MixinWithOnInitialize1 ()
       {
         try
         {
@@ -41,33 +41,33 @@ namespace Remotion.Mixins.UnitTests.Core
         }
         catch (Exception e)
         {
-          Assert.Fail ("Expected InvalidOperationException, but was: " + e);
+          Assert.Fail("Expected InvalidOperationException, but was: " + e);
         }
-        Assert.That (ThisValue, Is.Null);
+        Assert.That(ThisValue, Is.Null);
       }
 
       protected override void OnInitialized ()
       {
-        Assert.That (Target, Is.Not.Null);
+        Assert.That(Target, Is.Not.Null);
         ThisValue = Target;
         base.OnInitialized();
       }
     }
 
     [Test]
-    public void ThisAccessInCtorAndInitialize()
+    public void ThisAccessInCtorAndInitialize ()
     {
-      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithOnInitialize1));
-      MixinWithOnInitialize1 mixin = Mixin.Get<MixinWithOnInitialize1> (bt1);
-      Assert.That (mixin, Is.Not.Null);
-      Assert.That (mixin.ThisValue, Is.Not.Null);
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(MixinWithOnInitialize1));
+      MixinWithOnInitialize1 mixin = Mixin.Get<MixinWithOnInitialize1>(bt1);
+      Assert.That(mixin, Is.Not.Null);
+      Assert.That(mixin.ThisValue, Is.Not.Null);
     }
 
     private TTargetType CreateMixedObject<TTargetType> (params Type[] types)
     {
-      using (MixinConfiguration.BuildNew ().ForClass<TTargetType> ().AddMixins (types).EnterScope ())
+      using (MixinConfiguration.BuildNew().ForClass<TTargetType>().AddMixins(types).EnterScope())
       {
-        return ObjectFactory.Create<TTargetType> (ParamList.Empty);
+        return ObjectFactory.Create<TTargetType>(ParamList.Empty);
       }
     }
 
@@ -81,7 +81,7 @@ namespace Remotion.Mixins.UnitTests.Core
         try
         {
           object t = Target;
-          Assert.Fail ("Expected InvalidOperationException.");
+          Assert.Fail("Expected InvalidOperationException.");
         }
         catch (InvalidOperationException)
         {
@@ -89,13 +89,13 @@ namespace Remotion.Mixins.UnitTests.Core
         }
         catch (Exception e)
         {
-          Assert.Fail ("Expected InvalidOperationException, but was: " + e);
+          Assert.Fail("Expected InvalidOperationException, but was: " + e);
         }
 
         try
         {
           object t = Next;
-          Assert.Fail ("Expected InvalidOperationException.");
+          Assert.Fail("Expected InvalidOperationException.");
         }
         catch (InvalidOperationException)
         {
@@ -103,31 +103,31 @@ namespace Remotion.Mixins.UnitTests.Core
         }
         catch (Exception e)
         {
-          Assert.Fail ("Expected InvalidOperationException, but was: " + e);
+          Assert.Fail("Expected InvalidOperationException, but was: " + e);
         }
 
-        Assert.That (ThisValue, Is.Null);
-        Assert.That (BaseValue, Is.Null);
+        Assert.That(ThisValue, Is.Null);
+        Assert.That(BaseValue, Is.Null);
       }
 
       protected override void OnInitialized ()
       {
-        Assert.That (Target, Is.Not.Null);
-        Assert.That (Next, Is.Not.Null);
+        Assert.That(Target, Is.Not.Null);
+        Assert.That(Next, Is.Not.Null);
         ThisValue = Target;
         BaseValue = Next;
-        base.OnInitialized ();
+        base.OnInitialized();
       }
     }
 
     [Test]
     public void BaseAccessInCtorAndInitialize ()
     {
-      BaseType2 bt2 = CreateMixedObject<BaseType2> (typeof (MixinWithOnInitialize2));
-      MixinWithOnInitialize2 mixin = Mixin.Get<MixinWithOnInitialize2> (bt2);
-      Assert.That (mixin, Is.Not.Null);
-      Assert.That (mixin.ThisValue, Is.Not.Null);
-      Assert.That (mixin.BaseValue, Is.Not.Null);
+      BaseType2 bt2 = CreateMixedObject<BaseType2>(typeof(MixinWithOnInitialize2));
+      MixinWithOnInitialize2 mixin = Mixin.Get<MixinWithOnInitialize2>(bt2);
+      Assert.That(mixin, Is.Not.Null);
+      Assert.That(mixin.ThisValue, Is.Not.Null);
+      Assert.That(mixin.BaseValue, Is.Not.Null);
     }
   }
 }

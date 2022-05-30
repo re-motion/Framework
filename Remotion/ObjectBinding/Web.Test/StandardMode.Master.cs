@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -23,6 +24,11 @@ namespace OBWTest
     public StandardMode ()
     {
       ID = "MP";
+    }
+
+    public void SetPageContentScrollable ()
+    {
+      Html.Attributes["class"] = CssClassDefinition.Scrollable;
     }
   }
 }

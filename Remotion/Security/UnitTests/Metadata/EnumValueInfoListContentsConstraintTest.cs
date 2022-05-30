@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
+using NUnit.Framework.Constraints;
 using Remotion.Security.Metadata;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
@@ -37,47 +37,45 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _enumValueInfo1 = new EnumValueInfo ("TypeName", "First", 1);
-      _enumValueInfo2 = new EnumValueInfo ("TypeName", "Second", 2);
+      _enumValueInfo1 = new EnumValueInfo("TypeName", "First", 1);
+      _enumValueInfo2 = new EnumValueInfo("TypeName", "Second", 2);
       _list = new List<EnumValueInfo>();
-      _list.Add (_enumValueInfo1);
-      _list.Add (_enumValueInfo2);
+      _list.Add(_enumValueInfo1);
+      _list.Add(_enumValueInfo2);
     }
 
     [Test]
     public void AssertWithValidValue ()
     {
-      var constraint = new EnumValueInfoListContentsConstraint ("First");
-      Assert.That (_list, constraint);
+      var constraint = new EnumValueInfoListContentsConstraint("First");
+      Assert.That(_list, constraint);
     }
 
     [Test]
     public void AssertWithListEmpty ()
     {
-      var constraint = new EnumValueInfoListContentsConstraint ("First");
-      Assert.That (constraint.Matches (new List<EnumValueInfo> ()), Is.False);
+      var constraint = new EnumValueInfoListContentsConstraint("First");
+      Assert.That(constraint.ApplyTo(new List<EnumValueInfo>()).IsSuccess, Is.False);
     }
 
     [Test]
     public void AssertWithInvalidValue ()
     {
-      var constraint = new EnumValueInfoListContentsConstraint ("Other");
-      Assert.That (constraint.Matches(_list), Is.False);
+      var constraint = new EnumValueInfoListContentsConstraint("Other");
+      Assert.That(constraint.ApplyTo(_list).IsSuccess, Is.False);
     }
 
     [Test]
     public void GetMessage ()
     {
-      var writerMock = MockRepository.GenerateMock<TextMessageWriter>();
-      writerMock.Expect (mock => mock.Write ("Expected: ExpectedName	 but was: First, Second"));
-      writerMock.Replay();
+      var writerMock = new Mock<MessageWriter>();
+      writerMock.Setup(mock => mock.Write("Expected: ExpectedName	 but was: First, Second")).Verifiable();
 
-      var constraint = new EnumValueInfoListContentsConstraint ("ExpectedName");
-      PrivateInvoke.SetNonPublicField (constraint, "actual", _list);
-      constraint.WriteMessageTo (writerMock);
-      
-      writerMock.VerifyAllExpectations();
+      var constraint = new EnumValueInfoListContentsConstraintResult(null, _list, "ExpectedName", false);
+      constraint.WriteMessageTo(writerMock.Object);
+
+      writerMock.Verify();
     }
-    
+
   }
 }

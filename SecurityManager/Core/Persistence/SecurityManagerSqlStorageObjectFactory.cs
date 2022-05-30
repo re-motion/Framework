@@ -20,7 +20,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Mixins;
 using Remotion.TypePipe;
@@ -35,16 +35,16 @@ namespace Remotion.SecurityManager.Persistence
         RdbmsProviderDefinition storageProviderDefinition,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> commandFactory)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("commandFactory", commandFactory);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
 
-      return ObjectFactory.Create<SecurityManagerRdbmsProvider> (
-          ParamList.Create (
+      return ObjectFactory.Create<SecurityManagerRdbmsProvider>(
+          ParamList.Create(
               storageProviderDefinition,
               persistenceExtension,
               commandFactory,
-              (Func<IDbConnection>) (() => new SqlConnection())));
+              (Func<IDbConnection>)(() => new SqlConnection())));
     }
   }
 }

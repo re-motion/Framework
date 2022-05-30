@@ -31,15 +31,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
   {
     private readonly TableDefinition _tableDefinition;
     private readonly IComparedColumnsSpecification _comparedColumnsSpecification;
-    
+
     public DeleteDbCommandBuilder (
         TableDefinition tableDefinition,
         IComparedColumnsSpecification comparedColumnsSpecification,
         ISqlDialect sqlDialect)
-        : base (sqlDialect)
+        : base(sqlDialect)
     {
-      ArgumentUtility.CheckNotNull ("tableDefinition", tableDefinition);
-      ArgumentUtility.CheckNotNull ("comparedColumnsSpecification", comparedColumnsSpecification);
+      ArgumentUtility.CheckNotNull("tableDefinition", tableDefinition);
+      ArgumentUtility.CheckNotNull("comparedColumnsSpecification", comparedColumnsSpecification);
 
       _tableDefinition = tableDefinition;
       _comparedColumnsSpecification = comparedColumnsSpecification;
@@ -57,19 +57,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders
 
     public override IDbCommand Create (IRdbmsProviderCommandExecutionContext commandExecutionContext)
     {
-      ArgumentUtility.CheckNotNull ("commandExecutionContext", commandExecutionContext);
+      ArgumentUtility.CheckNotNull("commandExecutionContext", commandExecutionContext);
 
-      var command = commandExecutionContext.CreateDbCommand ();
-      var statement = new StringBuilder ();
+      var command = commandExecutionContext.CreateDbCommand();
+      var statement = new StringBuilder();
 
-      statement.Append ("DELETE FROM ");
-      AppendTableName (statement, command, _tableDefinition);
-      AppendWhereClause (statement, command, _comparedColumnsSpecification);
-      statement.Append (SqlDialect.StatementDelimiter);
+      statement.Append("DELETE FROM ");
+      AppendTableName(statement, command, _tableDefinition);
+      AppendWhereClause(statement, command, _comparedColumnsSpecification);
+      statement.Append(SqlDialect.StatementDelimiter);
 
-      command.CommandText = statement.ToString ();
+      command.CommandText = statement.ToString();
       return command;
     }
-    
+
   }
 }

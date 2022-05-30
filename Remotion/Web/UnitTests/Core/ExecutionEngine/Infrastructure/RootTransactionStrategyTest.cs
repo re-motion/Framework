@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data;
 using Remotion.Web.ExecutionEngine.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
@@ -26,41 +26,41 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
   public class RootTransactionStrategyTest
   {
     private RootTransactionStrategy _strategy;
-    private ITransaction _transactionMock;
-    private TransactionStrategyBase _outerTransactionStrategyStub;
-    private IWxeFunctionExecutionContext _executionContextStub;
+    private Mock<ITransaction> _transactionMock;
+    private Mock<TransactionStrategyBase> _outerTransactionStrategyStub;
+    private Mock<IWxeFunctionExecutionContext> _executionContextStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _transactionMock = MockRepository.GenerateMock<ITransaction>();
-      _outerTransactionStrategyStub = MockRepository.GenerateStub<TransactionStrategyBase>();
-      _executionContextStub = MockRepository.GenerateStub<IWxeFunctionExecutionContext>();
-      _executionContextStub.Stub (stub => stub.GetInParameters()).Return (new object[0]);
+      _transactionMock = new Mock<ITransaction>();
+      _outerTransactionStrategyStub = new Mock<TransactionStrategyBase>();
+      _executionContextStub = new Mock<IWxeFunctionExecutionContext>();
+      _executionContextStub.Setup(stub => stub.GetInParameters()).Returns(new object[0]);
 
-      _strategy = new RootTransactionStrategy (true, () => _transactionMock, _outerTransactionStrategyStub, _executionContextStub);
+      _strategy = new RootTransactionStrategy(true, () => _transactionMock.Object, _outerTransactionStrategyStub.Object, _executionContextStub.Object);
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_strategy.Transaction, Is.SameAs (_transactionMock));
-      Assert.That (_strategy.OuterTransactionStrategy, Is.SameAs (_outerTransactionStrategyStub));
-      Assert.That (_strategy.ExecutionContext, Is.SameAs (_executionContextStub));
-      Assert.That (_strategy.AutoCommit, Is.True);
-      Assert.That (_strategy.IsNull, Is.False);
+      Assert.That(_strategy.Transaction, Is.SameAs(_transactionMock.Object));
+      Assert.That(_strategy.OuterTransactionStrategy, Is.SameAs(_outerTransactionStrategyStub.Object));
+      Assert.That(_strategy.ExecutionContext, Is.SameAs(_executionContextStub.Object));
+      Assert.That(_strategy.AutoCommit, Is.True);
+      Assert.That(_strategy.IsNull, Is.False);
     }
 
     [Test]
     public void CreateExecutionListener ()
     {
-      var innerExecutionListenerStub = MockRepository.GenerateStub<IWxeFunctionExecutionListener>();
-      IWxeFunctionExecutionListener executionListener = _strategy.CreateExecutionListener (innerExecutionListenerStub);
+      var innerExecutionListenerStub = new Mock<IWxeFunctionExecutionListener>();
+      IWxeFunctionExecutionListener executionListener = _strategy.CreateExecutionListener(innerExecutionListenerStub.Object);
 
-      Assert.That (executionListener, Is.InstanceOf (typeof (RootTransactionExecutionListener)));
-      var transactionExecutionListener = (RootTransactionExecutionListener) executionListener;
-      Assert.That (transactionExecutionListener.InnerListener, Is.SameAs (innerExecutionListenerStub));
-      Assert.That (transactionExecutionListener.TransactionStrategy, Is.SameAs (_strategy));
+      Assert.That(executionListener, Is.InstanceOf(typeof(RootTransactionExecutionListener)));
+      var transactionExecutionListener = (RootTransactionExecutionListener)executionListener;
+      Assert.That(transactionExecutionListener.InnerListener, Is.SameAs(innerExecutionListenerStub.Object));
+      Assert.That(transactionExecutionListener.TransactionStrategy, Is.SameAs(_strategy));
     }
   }
 }

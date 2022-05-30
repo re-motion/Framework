@@ -54,8 +54,7 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>
     /// An <see cref="IExecutableQuery{T}"/> collection corresponding to the given <paramref name="queryModel"/>.
     /// </returns>
-    IExecutableQuery<IEnumerable<T>> CreateSequenceQuery<T>
-        (
+    IExecutableQuery<IEnumerable<T>> CreateSequenceQuery<T> (
         string id,
         StorageProviderDefinition storageProviderDefinition,
         QueryModel queryModel,

@@ -28,26 +28,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static OrderItem NewObject ()
     {
-      return NewObject<OrderItem> ();
+      return NewObject<OrderItem>();
     }
 
     public static OrderItem NewObject (Order order)
     {
-      return NewObject<OrderItem> (ParamList.Create (order));
+      return NewObject<OrderItem>(ParamList.Create(order));
     }
 
     public static OrderItem NewObject (string product)
     {
-      return NewObject<OrderItem> (ParamList.Create (product));
+      return NewObject<OrderItem>(ParamList.Create(product));
     }
 
-    protected OrderItem()
+    protected OrderItem ()
     {
     }
 
     protected OrderItem (Order order)
     {
-      ArgumentUtility.CheckNotNull ("order", order);
+      ArgumentUtility.CheckNotNull("order", order);
       Order = order;
     }
 
@@ -58,17 +58,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
 
     public abstract int Position { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Product { get; set; }
 
-    [DBBidirectionalRelation ("OrderItems")]
+    [DBBidirectionalRelation("OrderItems")]
     [Mandatory]
     public abstract Order Order { get; set; }
 
     [StorageClassNone]
     public object OriginalOrder
     {
-      get { return Properties[typeof (OrderItem), "Order"].GetOriginalValue<Order>(); }
+      get { return Properties[typeof(OrderItem), "Order"].GetOriginalValue<Order>(); }
     }
   }
 }

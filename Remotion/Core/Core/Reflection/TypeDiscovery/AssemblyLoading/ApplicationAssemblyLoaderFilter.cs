@@ -47,14 +47,15 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
 
     private static string MakeMatchExpression (IEnumerable<string> assemblyMatchStrings)
     {
-      ArgumentUtility.CheckNotNull ("assemblyMatchStrings", assemblyMatchStrings);
+      ArgumentUtility.CheckNotNull("assemblyMatchStrings", assemblyMatchStrings);
 
-      return "^((" + string.Join (")|(", assemblyMatchStrings) + "))$";
+      return "^((" + string.Join(")|(", assemblyMatchStrings) + "))$";
     }
 
-    private List<string> _nonApplicationAssemblyNames;
+    //TODO RM-7434: Mark with MemberNotNull once supported by msbuild
+    private List<string> _nonApplicationAssemblyNames = default!;
 
-    private RegexAssemblyLoaderFilter _assemblyNameFilter;
+    private RegexAssemblyLoaderFilter? _assemblyNameFilter;
     private readonly object _assemblyNameFilterLock = new object();
 
     private ApplicationAssemblyLoaderFilter ()
@@ -69,14 +70,20 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     {
       lock (_assemblyNameFilterLock)
       {
-        _nonApplicationAssemblyNames = new List<string> (
+        _nonApplicationAssemblyNames = new List<string>(
             new[]
             {
                 @"mscorlib",
                 @"System",
                 @"System\..*",
                 @"Microsoft\..*",
+                @"Moq",
+                @"netstandard",
+                @"NUnit\..*",
+                @"NUnit3\..*",
                 @"Remotion\..*\.Generated\..*",
+                @"Rhino.Mocks",
+                @"testcentric\.engine\.metadata",
                 @"TypePipe_.*Generated.*",
             });
         _assemblyNameFilter = null;
@@ -98,10 +105,10 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <param name="simpleNameRegularExpression">A regular expression matching the simple names of assemblies to be excluded.</param>
     public void AddIgnoredAssembly (string simpleNameRegularExpression)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("simpleNameRegularExpression", simpleNameRegularExpression);
+      ArgumentUtility.CheckNotNullOrEmpty("simpleNameRegularExpression", simpleNameRegularExpression);
       lock (_assemblyNameFilterLock)
       {
-        _nonApplicationAssemblyNames.Add (simpleNameRegularExpression);
+        _nonApplicationAssemblyNames.Add(simpleNameRegularExpression);
         _assemblyNameFilter = null;
       }
     }
@@ -119,8 +126,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// <see cref="ShouldIncludeAssembly"/>.</remarks>
     public bool ShouldConsiderAssembly (AssemblyName assemblyName)
     {
-      ArgumentUtility.CheckNotNull ("assemblyName", assemblyName);
-      return !GetAssemblyNameFilter().ShouldConsiderAssembly (assemblyName);
+      ArgumentUtility.CheckNotNull("assemblyName", assemblyName);
+      return !GetAssemblyNameFilter().ShouldConsiderAssembly(assemblyName);
     }
 
     /// <summary>
@@ -135,8 +142,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
     /// passed on to this step.</remarks>
     public bool ShouldIncludeAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      return !assembly.IsDefined (typeof (NonApplicationAssemblyAttribute), false);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      return !assembly.IsDefined(typeof(NonApplicationAssemblyAttribute), false);
     }
 
     private RegexAssemblyLoaderFilter GetAssemblyNameFilter ()
@@ -145,8 +152,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
       {
         if (_assemblyNameFilter == null)
         {
-          string matchExpression = MakeMatchExpression (_nonApplicationAssemblyNames);
-          _assemblyNameFilter = new RegexAssemblyLoaderFilter (matchExpression, RegexAssemblyLoaderFilter.MatchTargetKind.SimpleName);
+          string matchExpression = MakeMatchExpression(_nonApplicationAssemblyNames);
+          _assemblyNameFilter = new RegexAssemblyLoaderFilter(matchExpression, RegexAssemblyLoaderFilter.MatchTargetKind.SimpleName);
         }
         return _assemblyNameFilter;
       }

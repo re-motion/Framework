@@ -16,6 +16,8 @@
 // 
 using System;
 
+#nullable disable
+
 // ReSharper disable once CheckNamespace
 namespace Remotion.Globalization
 {
@@ -32,10 +34,10 @@ namespace Remotion.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> The found string resource or an empty string. </returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
+    [Obsolete("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
     public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
     {
-      throw new NotSupportedException ("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
+      throw new NotSupportedException("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
     }
 
     /// <summary>
@@ -46,10 +48,12 @@ namespace Remotion.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> <see langword="true"/> if the resource can be found. </returns>
-    [Obsolete ("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
+    [Obsolete("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
     public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
     {
-      throw new NotSupportedException ("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
+      throw new NotSupportedException("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
     }
   }
 }
+
+#nullable restore

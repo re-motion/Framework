@@ -26,10 +26,10 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void Cast ()
     {
-      var methodEmitter = GetMethodEmitter (false, typeof (IConvertible), new[] { typeof (object) });
-      methodEmitter.ImplementByReturning (new CastClassExpression (typeof (IConvertible), methodEmitter.ArgumentReferences[0].ToExpression ()));
+      var methodEmitter = GetMethodEmitter(false, typeof(IConvertible), new[] { typeof(object) });
+      methodEmitter.ImplementByReturning(new CastClassExpression(typeof(IConvertible), methodEmitter.ArgumentReferences[0].ToExpression()));
 
-      Assert.That (InvokeMethod((object) 12), Is.EqualTo (12));
+      Assert.That(InvokeMethod((object)12), Is.EqualTo(12));
     }
   }
 }

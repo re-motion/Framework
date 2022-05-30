@@ -26,22 +26,22 @@ namespace Remotion.Validation.MetaValidation
   {
     public static MetaValidationRuleValidationResult CreateValidResult ()
     {
-      return new MetaValidationRuleValidationResult (true, null);
+      return new MetaValidationRuleValidationResult(true, null);
     }
 
-    [JetBrains.Annotations.StringFormatMethod ("messageFormat")]
-    public static MetaValidationRuleValidationResult CreateInvalidResult (string messageFormat, params object[] args)
+    [JetBrains.Annotations.StringFormatMethod("messageFormat")]
+    public static MetaValidationRuleValidationResult CreateInvalidResult (string messageFormat, params object?[] args)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("messageFormat", messageFormat);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNullOrEmpty("messageFormat", messageFormat);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      return new MetaValidationRuleValidationResult (false, string.Format (messageFormat, args));
+      return new MetaValidationRuleValidationResult(false, string.Format(messageFormat, args));
     }
-    
-    private readonly bool _isValid;
-    private readonly string _message;
 
-    private MetaValidationRuleValidationResult (bool isValid, string message)
+    private readonly bool _isValid;
+    private readonly string? _message;
+
+    private MetaValidationRuleValidationResult (bool isValid, string? message)
     {
       _isValid = isValid;
       _message = message;
@@ -52,7 +52,7 @@ namespace Remotion.Validation.MetaValidation
       get { return _isValid; }
     }
 
-    public string Message
+    public string? Message
     {
       get { return _message; }
     }

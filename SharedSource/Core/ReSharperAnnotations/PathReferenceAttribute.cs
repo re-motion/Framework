@@ -52,6 +52,8 @@
 // SOFTWARE.
 // 
 
+#nullable disable
+
 using System;
 
 #pragma warning disable 1591
@@ -69,7 +71,7 @@ namespace JetBrains.Annotations
   /// Indicates that a parameter is a path to a file or a folder within a web project.
   /// Path can be relative or absolute, starting from web root (~).
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter)]
+  [AttributeUsage(AttributeTargets.Parameter)]
   sealed partial class PathReferenceAttribute : Attribute
   {
     public PathReferenceAttribute ()
@@ -85,3 +87,5 @@ namespace JetBrains.Annotations
     public string BasePath { get; private set; }
   }
 }
+
+#nullable restore

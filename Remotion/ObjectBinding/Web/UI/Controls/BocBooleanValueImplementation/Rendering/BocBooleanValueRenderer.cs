@@ -15,12 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -36,16 +40,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   /// Responsible for rendering <see cref="BocBooleanValue"/> controls.
   /// <seealso cref="IBocBooleanValue"/>
   /// </summary>
-  [ImplementationFor (typeof (IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocBooleanValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocBooleanValueRenderer : BocBooleanValueRendererBase<IBocBooleanValue>, IBocBooleanValueRenderer
   {
-    private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
-    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
-    private readonly IValidationErrorRenderer _validationErrorRenderer;
+    /// <summary> A list of control specific resources. </summary>
+    /// <remarks> 
+    ///   Resources will be accessed using 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   See the documentation of <b>GetString</b> for further details.
+    /// </remarks>
+    [ResourceIdentifiers]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocBooleanValueRenderer")]
+    public enum ResourceIdentifier
+    {
+      /// <summary> Additional text to announce required information since the required-attribute is not supported on anchor elements.</summary>
+      ScreenReaderRequiredLabelText
+    }
 
     private const string c_nullString = "null";
 
-    private static readonly string s_startUpScriptKeyPrefix = typeof (BocBooleanValueRenderer).FullName + "_Startup_";
+    private static readonly string s_startUpScriptKeyPrefix = typeof(BocBooleanValueRenderer).GetFullNameChecked() + "_Startup_";
+
+    private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IValidationErrorRenderer _validationErrorRenderer;
 
     public BocBooleanValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
@@ -54,11 +72,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IBocBooleanValueResourceSetFactory resourceSetFactory,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("resourceSetFactory", resourceSetFactory);
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull("resourceSetFactory", resourceSetFactory);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
 
       _resourceSetFactory = resourceSetFactory;
       _labelReferenceRenderer = labelReferenceRenderer;
@@ -67,15 +85,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string scriptFileKey = typeof (BocBooleanValueRenderer).FullName + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptUrl);
+      string scriptFileKey = typeof(BocBooleanValueRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptUrl);
 
-      string styleFileKey = typeof (BocBooleanValueRenderer).FullName + "_Style";
-      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
+      string styleFileKey = typeof(BocBooleanValueRenderer).GetFullNameChecked() + "_Style";
+      var styleUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocBooleanValueRenderer), ResourceType.Html, "BocBooleanValue.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
     }
 
     /// <summary>
@@ -85,123 +105,138 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     /// </summary>
     public void Render (BocBooleanValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      var resourceSet = _resourceSetFactory.CreateResourceSet (renderingContext.Control);
+      var resourceSet = _resourceSetFactory.CreateResourceSet(renderingContext.Control);
 
-      AddAttributesToRender (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      AddAttributesToRender(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
-      var validationErrorsID = GetValidationErrorsID (renderingContext);
+      var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID(renderingContext);
 
-      var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
+      var descriptionLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
+      var requiredLabelControl = new Label { ID = renderingContext.Control.ClientID + "_Required", ClientIDMode = ClientIDMode.Static };
       var imageControl = new Image();
       var hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var dataValueReadOnlyControl = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var linkControl = new HyperLink { ID = renderingContext.Control.GetDisplayValueName(), ClientIDMode = ClientIDMode.Static };
 
-      bool isClientScriptEnabled = DetermineClientScriptLevel (renderingContext);
+      bool isClientScriptEnabled = DetermineClientScriptLevel(renderingContext);
       if (isClientScriptEnabled)
       {
         if (renderingContext.Control.Enabled)
-          RegisterStarupScriptIfNeeded (renderingContext, resourceSet);
+          RegisterStarupScriptIfNeeded(renderingContext, resourceSet);
 
-        var script = GetClickScript (
+        var script = GetClickScript(
             renderingContext,
             resourceSet,
             renderingContext.Control.Enabled);
-        labelControl.Attributes.Add ("onclick", script);
-        linkControl.Attributes.Add ("onclick", script);
+        descriptionLabelControl.Attributes.Add("onclick", script);
+        linkControl.Attributes.Add("onclick", script);
       }
 
-      PrepareLinkControl (renderingContext, linkControl, isClientScriptEnabled);
-      PrepareVisibleControls (renderingContext, resourceSet, linkControl, imageControl, labelControl);
+      PrepareLinkControl(renderingContext, linkControl, isClientScriptEnabled);
+      PrepareVisibleControls(renderingContext, resourceSet, linkControl, imageControl, descriptionLabelControl);
 
       if (!renderingContext.Control.IsReadOnly)
       {
-        hiddenFieldControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString() : c_nullString;
+        hiddenFieldControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString()! : c_nullString;
         hiddenFieldControl.Visible = true;
-        hiddenFieldControl.RenderControl (renderingContext.Writer);
+        hiddenFieldControl.RenderControl(renderingContext.Writer);
       }
       else
       {
         if (renderingContext.Control.Value.HasValue)
-          dataValueReadOnlyControl.Attributes.Add ("data-value", renderingContext.Control.Value.Value.ToString());
-        dataValueReadOnlyControl.RenderControl (renderingContext.Writer);
-        linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+          dataValueReadOnlyControl.Attributes.Add("data-value", renderingContext.Control.Value.Value.ToString());
+        dataValueReadOnlyControl.RenderControl(renderingContext.Writer);
+        linkControl.Attributes.Add(HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
       }
 
-      linkControl.Controls.Add (imageControl);
+      linkControl.Controls.Add(imageControl);
+
+      string[] accessibilityLabelIDs;
+      if (!renderingContext.Control.IsReadOnly && renderingContext.Control.IsRequired)
+      {
+        requiredLabelControl.Text = GetResourceManager(renderingContext).GetString(ResourceIdentifier.ScreenReaderRequiredLabelText);
+        accessibilityLabelIDs = new[] { requiredLabelControl.ID };
+      }
+      else
+      {
+        accessibilityLabelIDs = Array.Empty<string>();
+      }
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.SetLabelReferenceOnControl (linkControl, labelIDs);
+      _labelReferenceRenderer.SetLabelsReferenceOnControl(linkControl, labelIDs, accessibilityLabelIDs);
 
-      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
-      _validationErrorRenderer.SetValidationErrorsReferenceOnControl (linkControl, validationErrorsID, validationErrors);
+      linkControl.Attributes.Add(HtmlTextWriterAttribute2.AriaDescribedBy, descriptionLabelControl.ClientID);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(linkControl, validationErrorsID, validationErrors);
 
-      linkControl.RenderControl (renderingContext.Writer);
+      linkControl.RenderControl(renderingContext.Writer);
 
-      labelControl.RenderControl (renderingContext.Writer);
+      requiredLabelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      requiredLabelControl.RenderControl(renderingContext.Writer);
 
-      _validationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
+      descriptionLabelControl.RenderControl(renderingContext.Writer);
+
+      _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag();
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocBooleanValue> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
 
       var hasAutoPostBack = renderingContext.Control.IsAutoPostBackEnabled;
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, hasAutoPostBack.ToString().ToLower());
 
       var isTriState = !renderingContext.Control.IsRequired;
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocBooleanValueIsTriState, isTriState.ToString().ToLower());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocBooleanValueIsTriState, isTriState.ToString().ToLower());
     }
 
     private bool DetermineClientScriptLevel (BocBooleanValueRenderingContext renderingContext)
     {
-      return !renderingContext.Control.IsDesignMode && !renderingContext.Control.IsReadOnly;
+      return !renderingContext.Control.IsReadOnly;
     }
 
     private void PrepareLinkControl (BocBooleanValueRenderingContext renderingContext, HyperLink linkControl, bool isClientScriptEnabled)
     {
       // isClientScriptEnabled also includes IsReadOnly
-      linkControl.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
-      linkControl.Attributes.Add ("href", "#");
+      linkControl.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
+      linkControl.Attributes.Add("href", "#");
 
       if (!isClientScriptEnabled)
         return;
 
-      linkControl.Attributes.Add ("onkeydown", "BocBooleanValue_OnKeyDown (this);");
+      linkControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
       linkControl.Enabled = renderingContext.Control.Enabled;
     }
 
     private void RegisterStarupScriptIfNeeded (BocBooleanValueRenderingContext renderingContext, BocBooleanValueResourceSet resourceSet)
     {
       string startUpScriptKey = s_startUpScriptKeyPrefix + resourceSet.ResourceKey;
-      if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (BocBooleanValueRenderer), startUpScriptKey))
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(BocBooleanValueRenderer), startUpScriptKey))
       {
         string trueValue = true.ToString();
         string falseValue = false.ToString();
         string nullValue = c_nullString;
 
-        string startupScript = string.Format (
-            "BocBooleanValue_InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
+        string startupScript = string.Format(
+            "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
             resourceSet.ResourceKey,
             trueValue,
             falseValue,
             nullValue,
-            ScriptUtility.EscapeClientScript (resourceSet.DefaultTrueDescription),
-            ScriptUtility.EscapeClientScript (resourceSet.DefaultFalseDescription),
-            ScriptUtility.EscapeClientScript (resourceSet.DefaultNullDescription),
+            ScriptUtility.EscapeClientScript(resourceSet.DefaultTrueDescription),
+            ScriptUtility.EscapeClientScript(resourceSet.DefaultFalseDescription),
+            ScriptUtility.EscapeClientScript(resourceSet.DefaultNullDescription),
             resourceSet.TrueIconUrl,
             resourceSet.FalseIconUrl,
             resourceSet.NullIconUrl);
-        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
             renderingContext.Control,
-            typeof (BocBooleanValueRenderer),
+            typeof(BocBooleanValueRenderer),
             startUpScriptKey,
             startupScript);
       }
@@ -218,33 +253,33 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       string requiredFlag = renderingContext.Control.IsRequired ? "true" : "false";
 
-      var scriptBuilder = new StringBuilder (500);
-      scriptBuilder.Append ("BocBooleanValue_SelectNextCheckboxValue (");
-      scriptBuilder.Append ("'").Append (resourceSet.ResourceKey).Append ("'");
-      scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('a')[0]");
-      scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('a').children('img').first()[0]");
-      scriptBuilder.Append (", ");
+      var scriptBuilder = new StringBuilder(500);
+      scriptBuilder.Append("BocBooleanValue.SelectNextCheckboxValue (");
+      scriptBuilder.Append("'").Append(resourceSet.ResourceKey).Append("'");
+      scriptBuilder.Append(", ");
+      scriptBuilder.Append("this.parentNode.querySelector(':scope > a')");
+      scriptBuilder.Append(", ");
+      scriptBuilder.Append("this.parentNode.querySelector(':scope > a > img')");
+      scriptBuilder.Append(", ");
       if (renderingContext.Control.ShowDescription)
-        scriptBuilder.Append ("$(this).parent().children('span').first()[0]");
+        scriptBuilder.Append("this.parentNode.querySelectorAll(':scope > span')[1]");
       else
-        scriptBuilder.Append ("null");
-      scriptBuilder.Append (", ");
-      scriptBuilder.Append ("$(this).parent().children('input').first()[0]");
-      scriptBuilder.Append (", ");
-      scriptBuilder.Append (requiredFlag);
-      scriptBuilder.Append (", ");
-      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.TrueDescription);
-      scriptBuilder.Append (", ");
-      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.FalseDescription);
-      scriptBuilder.Append (", ");
-      AppendStringValueOrNullToScript (scriptBuilder, renderingContext.Control.NullDescription);
-      scriptBuilder.Append (");");
+        scriptBuilder.Append("null");
+      scriptBuilder.Append(", ");
+      scriptBuilder.Append("this.parentNode.querySelector(':scope > input')");
+      scriptBuilder.Append(", ");
+      scriptBuilder.Append(requiredFlag);
+      scriptBuilder.Append(", ");
+      AppendStringValueOrNullToScript(scriptBuilder, renderingContext.Control.TrueDescription);
+      scriptBuilder.Append(", ");
+      AppendStringValueOrNullToScript(scriptBuilder, renderingContext.Control.FalseDescription);
+      scriptBuilder.Append(", ");
+      AppendStringValueOrNullToScript(scriptBuilder, renderingContext.Control.NullDescription);
+      scriptBuilder.Append(");");
 
       if (renderingContext.Control.IsAutoPostBackEnabled)
-        scriptBuilder.Append (renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, "")).Append (";");
-      scriptBuilder.Append ("return false;");
+        scriptBuilder.Append(renderingContext.Control.Page!.ClientScript.GetPostBackEventReference(renderingContext.Control, "")).Append(";");
+      scriptBuilder.Append("return false;");
       return scriptBuilder.ToString();
     }
 
@@ -257,59 +292,59 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       string checkedState;
       string imageUrl;
-      string description;
-      bool hasRequiredAttribute;
+      WebString description;
 
       if (!renderingContext.Control.Value.HasValue)
       {
         checkedState = HtmlAriaCheckedAttributeValue.Mixed;
         imageUrl = resourceSet.NullIconUrl;
-        description = string.IsNullOrEmpty (renderingContext.Control.NullDescription)
+        description = renderingContext.Control.NullDescription.IsEmpty
             ? resourceSet.DefaultNullDescription
             : renderingContext.Control.NullDescription;
-        hasRequiredAttribute = renderingContext.Control.IsRequired;
       }
       else if (renderingContext.Control.Value.Value)
       {
         checkedState = HtmlAriaCheckedAttributeValue.True;
         imageUrl = resourceSet.TrueIconUrl;
-        description = string.IsNullOrEmpty (renderingContext.Control.TrueDescription)
+        description = renderingContext.Control.TrueDescription.IsEmpty
             ? resourceSet.DefaultTrueDescription
             : renderingContext.Control.TrueDescription;
-        hasRequiredAttribute = false;
       }
       else
       {
         checkedState = HtmlAriaCheckedAttributeValue.False;
         imageUrl = resourceSet.FalseIconUrl;
-        description = string.IsNullOrEmpty (renderingContext.Control.FalseDescription)
+        description = renderingContext.Control.FalseDescription.IsEmpty
             ? resourceSet.DefaultFalseDescription
             : renderingContext.Control.FalseDescription;
-        hasRequiredAttribute = false;
       }
 
-      linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaChecked, checkedState);
-      if (hasRequiredAttribute)
-        linkControl.Attributes.Add (HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
+      linkControl.Attributes.Add(HtmlTextWriterAttribute2.AriaChecked, checkedState);
 
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;
 
-      labelControl.Text = description;
+      labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       if (!renderingContext.Control.ShowDescription)
       {
-        linkControl.ToolTip = description;
-        labelControl.Attributes.Add (HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+        linkControl.ToolTip = description.Type == WebStringType.PlainText ? description.GetValue() : HttpUtility.HtmlDecode(description.GetValue());
+        labelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
       }
 
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
-      labelControl.ApplyStyle (renderingContext.Control.LabelStyle);
+      labelControl.ApplyStyle(renderingContext.Control.LabelStyle);
+      labelControl.CssClass = "description";
     }
 
     public override string GetCssClassBase (IBocBooleanValue control)
     {
       return "bocBooleanValue";
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocBooleanValueRenderingContext renderingContext)
+    {
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
   }
 }

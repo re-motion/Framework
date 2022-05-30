@@ -30,30 +30,30 @@ namespace Remotion.Mixins.Context
       get { return _classContexts; }
     }
 
-    public void AddIfNotNull (ClassContext context)
+    public void AddIfNotNull (ClassContext? context)
     {
       if (context != null)
-        _classContexts.Add (context);
+        _classContexts.Add(context);
     }
 
-    public void AddRangeAllowingNulls (IEnumerable<ClassContext> contexts)
+    public void AddRangeAllowingNulls (IEnumerable<ClassContext?> contexts)
     {
-      ArgumentUtility.CheckNotNull ("contexts", contexts);
+      ArgumentUtility.CheckNotNull("contexts", contexts);
 
       foreach (var context in contexts)
-        AddIfNotNull (context);
+        AddIfNotNull(context);
     }
-    
-    public ClassContext GetCombinedContexts (Type contextType)
+
+    public ClassContext? GetCombinedContexts (Type contextType)
     {
       switch (_classContexts.Count)
       {
         case 0:
           return null;
         case 1:
-          return _classContexts[0].CloneForSpecificType (contextType);
+          return _classContexts[0].CloneForSpecificType(contextType);
         default:
-          return new ClassContext (contextType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>()).InheritFrom (_classContexts);
+          return new ClassContext(contextType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>()).InheritFrom(_classContexts);
       }
     }
   }

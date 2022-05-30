@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation.Factories;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
@@ -38,11 +39,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       var instance = _serviceLocator.GetInstance<IUserControlBindingValidatorFactory>();
 
-      Assert.That (instance, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
+      Assert.That(instance, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
 
-      var factories = ((CompoundValidatorFactory<UserControlBinding>) instance).VlidatorFactories;
-      Assert.That (factories.Select (f => f.GetType()), Has.Member (typeof (UserControlBindingValidatorFactory)));
-      Assert.That (factories.Count, Is.EqualTo (1));
+      var factories = ((CompoundValidatorFactory<UserControlBinding>)instance).VlidatorFactories;
+      Assert.That(
+          factories.Select(f => f.GetType()),
+          Is.EqualTo(new[] { typeof(UserControlBindingValidatorFactory), typeof(ValidationUserControlBindingValidatorFactory)}));
     }
 
     [Test]
@@ -51,8 +53,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       var instance1 = _serviceLocator.GetInstance<IUserControlBindingValidatorFactory>();
       var instance2 = _serviceLocator.GetInstance<IUserControlBindingValidatorFactory>();
 
-      Assert.That (instance1, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.InstanceOf<CompoundValidatorFactory<UserControlBinding>>());
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

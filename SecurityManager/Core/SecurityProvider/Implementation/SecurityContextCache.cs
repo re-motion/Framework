@@ -31,7 +31,7 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
       private readonly ICache<ISecurityPrincipal, AccessTypeCache> _items;
 
       internal Data (GuidRevisionValue revision)
-          : base (revision)
+          : base(revision)
       {
         _items = CacheFactory.CreateWithSynchronization<ISecurityPrincipal, AccessTypeCache>();
       }
@@ -46,18 +46,18 @@ namespace Remotion.SecurityManager.SecurityProvider.Implementation
     private readonly RevisionKey _revisionKey = new RevisionKey();
 
     public SecurityContextCache (IRevisionProvider<RevisionKey, GuidRevisionValue> revisionProvider)
-        : base (revisionProvider)
+        : base(revisionProvider)
     {
     }
 
     public ICache<ISecurityPrincipal, AccessTypeCache> Items
     {
-      get { return GetCachedData (_revisionKey).Items; }
+      get { return GetCachedData(_revisionKey).Items; }
     }
 
     protected override Data LoadData (GuidRevisionValue revision)
     {
-      return new Data (revision);
+      return new Data(revision);
     }
   }
 }

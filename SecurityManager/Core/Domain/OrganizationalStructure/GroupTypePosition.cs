@@ -24,8 +24,8 @@ using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructu
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
-  [PermanentGuid ("E2BF5572-DDFF-4319-8824-B41653950860")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupTypePosition")]
+  [PermanentGuid("E2BF5572-DDFF-4319-8824-B41653950860")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -33,22 +33,22 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static GroupTypePosition NewObject ()
     {
-      return NewObject<GroupTypePosition> ();
+      return NewObject<GroupTypePosition>();
     }
 
     protected GroupTypePosition ()
     {
     }
 
-    [DBBidirectionalRelation ("Positions")]
+    [DBBidirectionalRelation("Positions")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (GroupTypePropertyTypeSearchService))]
-    public abstract GroupType GroupType { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(GroupTypePropertyTypeSearchService))]
+    public abstract GroupType? GroupType { get; set; }
 
-    [DBBidirectionalRelation ("GroupTypes")]
+    [DBBidirectionalRelation("GroupTypes")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (PositionPropertyTypeSearchService))]
-    public abstract Position Position { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(PositionPropertyTypeSearchService))]
+    public abstract Position? Position { get; set; }
 
     public override string DisplayName
     {
@@ -57,7 +57,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
         string groupTypeName = (GroupType != null) ? GroupType.Name : string.Empty;
         string positionName = (Position != null) ? Position.Name : string.Empty;
 
-        return string.Format ("{0} / {1}", groupTypeName, positionName); 
+        return string.Format("{0} / {1}", groupTypeName, positionName);
       }
     }
   }

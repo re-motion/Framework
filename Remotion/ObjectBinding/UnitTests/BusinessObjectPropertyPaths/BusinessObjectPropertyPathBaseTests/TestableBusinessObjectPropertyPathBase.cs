@@ -42,12 +42,12 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
 
     public override ReadOnlyCollection<IBusinessObjectProperty> Properties
     {
-      get { return new ReadOnlyCollection<IBusinessObjectProperty> (_properties); }
+      get { return new ReadOnlyCollection<IBusinessObjectProperty>(_properties); }
     }
 
     protected override IBusinessObjectPropertyPathPropertyEnumerator GetResultPropertyEnumerator ()
     {
-      return new ResolvedBusinessObjectPropertyPathPropertyEnumerator (_properties);
+      return new ResolvedBusinessObjectPropertyPathPropertyEnumerator(_properties);
     }
   }
 }

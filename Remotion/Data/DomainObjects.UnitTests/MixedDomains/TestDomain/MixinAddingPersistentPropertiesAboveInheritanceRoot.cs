@@ -22,15 +22,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
   {
     public int PersistentProperty
     {
-      get { return Properties[typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentProperty"].GetValue<int> (); }
-      set { Properties[typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentProperty"].SetValue (value); }
+      get { return Properties[typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentProperty"].GetValue<int>(); }
+      set { Properties[typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentProperty"].SetValue(value); }
     }
 
     [DBBidirectionalRelation("RelationProperty1", ContainsForeignKey = true)]
     public RelationTargetForPersistentMixinAboveInheritanceRoot PersistentRelationProperty
     {
-      get { return Properties[typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty"].GetValue<RelationTargetForPersistentMixinAboveInheritanceRoot> (); }
-      set { Properties[typeof (MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty"].SetValue (value); }
+      get
+      {
+        return Properties[typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty"]
+            .GetValue<RelationTargetForPersistentMixinAboveInheritanceRoot>();
+      }
+      set { Properties[typeof(MixinAddingPersistentPropertiesAboveInheritanceRoot), "PersistentRelationProperty"].SetValue(value); }
     }
   }
 }

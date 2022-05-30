@@ -33,7 +33,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      gen.Emit (OpCodes.Ldftn, _function);
+      gen.Emit(OpCodes.Ldftn, _function);
     }
   }
 }

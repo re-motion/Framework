@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -23,7 +24,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Delegates to <see cref="ExistingDataContainerEndPointsRegistrationAgent"/> and <see cref="NonExistingDataContainerEndPointsRegistrationAgent"/>,
   /// depending on the state of the given <see cref="DataContainer"/>.
   /// </summary>
-  [Serializable]
   public class DelegatingDataContainerEndPointsRegistrationAgent : IDataContainerEndPointsRegistrationAgent
   {
     private readonly ExistingDataContainerEndPointsRegistrationAgent _existingDataContainerRegistrationAgent;
@@ -31,45 +31,46 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public DelegatingDataContainerEndPointsRegistrationAgent (IRelationEndPointFactory endPointFactory, IRelationEndPointRegistrationAgent registrationAgent)
     {
-      ArgumentUtility.CheckNotNull ("endPointFactory", endPointFactory);
-      ArgumentUtility.CheckNotNull ("registrationAgent", registrationAgent);
+      ArgumentUtility.CheckNotNull("endPointFactory", endPointFactory);
+      ArgumentUtility.CheckNotNull("registrationAgent", registrationAgent);
 
-      _existingDataContainerRegistrationAgent = new ExistingDataContainerEndPointsRegistrationAgent (endPointFactory, registrationAgent);
-      _nonExistingDataContainerRegistrationAgent = new NonExistingDataContainerEndPointsRegistrationAgent (endPointFactory, registrationAgent);
+      _existingDataContainerRegistrationAgent = new ExistingDataContainerEndPointsRegistrationAgent(endPointFactory, registrationAgent);
+      _nonExistingDataContainerRegistrationAgent = new NonExistingDataContainerEndPointsRegistrationAgent(endPointFactory, registrationAgent);
     }
 
     public void RegisterEndPoints (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-      ArgumentUtility.CheckNotNull ("relationEndPointMap", relationEndPointMap);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
 
-      var agent = ChooseAgent (dataContainer);
-      agent.RegisterEndPoints (dataContainer, relationEndPointMap);
+      var agent = ChooseAgent(dataContainer);
+      agent.RegisterEndPoints(dataContainer, relationEndPointMap);
     }
 
     public IDataManagementCommand CreateUnregisterEndPointsCommand (DataContainer dataContainer, RelationEndPointMap relationEndPointMap)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-      ArgumentUtility.CheckNotNull ("relationEndPointMap", relationEndPointMap);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("relationEndPointMap", relationEndPointMap);
 
-      var agent = ChooseAgent (dataContainer);
-      return agent.CreateUnregisterEndPointsCommand (dataContainer, relationEndPointMap);
+      var agent = ChooseAgent(dataContainer);
+      return agent.CreateUnregisterEndPointsCommand(dataContainer, relationEndPointMap);
     }
 
     private IDataContainerEndPointsRegistrationAgent ChooseAgent (DataContainer dataContainer)
     {
-      switch (dataContainer.State)
-      {
-        case StateType.Changed:
-        case StateType.Unchanged:
-          return _existingDataContainerRegistrationAgent;
-        case StateType.New:
-        case StateType.Deleted:
-          return _nonExistingDataContainerRegistrationAgent;
-        default:
-          throw new NotSupportedException ("Cannot register end-points for a DataContainer with state '" + dataContainer.State + "'.");
-      }
+      var dataContainerState = dataContainer.State;
+      if (dataContainerState.IsChanged)
+        return _existingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsUnchanged)
+        return _existingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsNew)
+        return _nonExistingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsDeleted)
+        return _nonExistingDataContainerRegistrationAgent;
+      else if (dataContainerState.IsDiscarded)
+        throw new NotSupportedException("Cannot register end-points for a discarded DataContainer.");
+      else
+        throw new NotSupportedException("DataContainer '" + dataContainer.ID + "' has an unsupported state: " + dataContainerState);
     }
-
   }
 }

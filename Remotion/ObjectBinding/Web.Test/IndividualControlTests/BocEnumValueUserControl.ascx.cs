@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -31,6 +32,7 @@ public class BocEnumValueUserControl : BaseUserControl
   protected HtmlGenericControl NonVisualControls;
   protected FormGridManager FormGridManager;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
   protected BindableObjectDataSourceControl EnumObject;
   protected BocTextValue FirstNameField;
   protected BocTextValue LastNameField;
@@ -65,7 +67,7 @@ public class BocEnumValueUserControl : BaseUserControl
   protected WebButton ReadOnlyGenderTestSetNullButton;
   protected WebButton ReadOnlyGenderTestSetNewItemButton;
   protected HtmlTable FormGrid;
-  
+
   private string _instanceEnum;
 
   public string InstanceEnum
@@ -91,30 +93,33 @@ public class BocEnumValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
-    GenderField.LoadUnboundValue ((Gender?)null, IsPostBack);
+    GenderField.LoadUnboundValue((Gender?)null, IsPostBack);
 
-    UnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    UnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty)CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
     //UnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    UnboundReadOnlyMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
-    UnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
-    DisabledUnboundMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
-    DisabledUnboundReadOnlyMarriageStatusField.Property = (IBusinessObjectEnumerationProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
-    DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue (person.MarriageStatus, IsPostBack);
+    UnboundReadOnlyMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
+    DisabledUnboundMarriageStatusField.Property = (IBusinessObjectEnumerationProperty)CurrentObject.BusinessObjectClass.GetPropertyDefinition("MarriageStatus");
+    DisabledUnboundMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
+    DisabledUnboundReadOnlyMarriageStatusField.LoadUnboundValue(person.MarriageStatus, IsPostBack);
 
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (MarriageStatusField);
+        ((ISmartNavigablePage)Page).SetFocus(MarriageStatusField);
     }
 
-    EnumObject.BusinessObject = (IBusinessObject) ClassWithEnums.CreateObject();
+    EnumObject.BusinessObject = (IBusinessObject)ClassWithEnums.CreateObject();
   }
   public override bool Validate ()
   {
@@ -125,20 +130,20 @@ public class BocEnumValueUserControl : BaseUserControl
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (GenderField, GenderFieldValueLabel);
-    SetDebugLabel (ReadOnlyGenderField, ReadOnlyGenderFieldValueLabel);
-    SetDebugLabel (MarriageStatusField, MarriageStatusFieldValueLabel);
-    SetDebugLabel (UnboundMarriageStatusField, UnboundMarriageStatusFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyMarriageStatusField, UnboundReadOnlyMarriageStatusFieldValueLabel);
-    SetDebugLabel (DeceasedAsEnumField, DeceasedAsEnumFieldValueLabel);
-    SetDebugLabel (DisabledGenderField, DisabledGenderFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyGenderField, DisabledReadOnlyGenderFieldValueLabel);
-    SetDebugLabel (DisabledMarriageStatusField, DisabledMarriageStatusFieldValueLabel);
-    SetDebugLabel (DisabledUnboundMarriageStatusField, DisabledUnboundMarriageStatusFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyMarriageStatusField, DisabledUnboundReadOnlyMarriageStatusFieldValueLabel);
-    SetDebugLabel (InstanceEnumField, InstanceEnumFieldValueLabel);
+    SetDebugLabel(GenderField, GenderFieldValueLabel);
+    SetDebugLabel(ReadOnlyGenderField, ReadOnlyGenderFieldValueLabel);
+    SetDebugLabel(MarriageStatusField, MarriageStatusFieldValueLabel);
+    SetDebugLabel(UnboundMarriageStatusField, UnboundMarriageStatusFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyMarriageStatusField, UnboundReadOnlyMarriageStatusFieldValueLabel);
+    SetDebugLabel(DeceasedAsEnumField, DeceasedAsEnumFieldValueLabel);
+    SetDebugLabel(DisabledGenderField, DisabledGenderFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyGenderField, DisabledReadOnlyGenderFieldValueLabel);
+    SetDebugLabel(DisabledMarriageStatusField, DisabledMarriageStatusFieldValueLabel);
+    SetDebugLabel(DisabledUnboundMarriageStatusField, DisabledUnboundMarriageStatusFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyMarriageStatusField, DisabledUnboundReadOnlyMarriageStatusFieldValueLabel);
+    SetDebugLabel(InstanceEnumField, InstanceEnumFieldValueLabel);
   }
 
   private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)
@@ -149,32 +154,32 @@ public class BocEnumValueUserControl : BaseUserControl
       label.Text = "not set";
   }
 
-  private void GenderTestSetNullButton_Click(object sender, EventArgs e)
+  private void GenderTestSetNullButton_Click (object sender, EventArgs e)
   {
     GenderField.Value = null;
   }
 
-  private void GenderTestSetDisabledGenderButton_Click(object sender, EventArgs e)
+  private void GenderTestSetDisabledGenderButton_Click (object sender, EventArgs e)
   {
     GenderField.Value = Gender.UnknownGender;
   }
 
-  private void GenderTestSetMarriedButton_Click(object sender, EventArgs e)
+  private void GenderTestSetMarriedButton_Click (object sender, EventArgs e)
   {
     GenderField.Value = MarriageStatus.Married;
   }
 
-  private void ReadOnlyGenderTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyGenderTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyGenderField.Value = null;
   }
 
-  private void ReadOnlyGenderTestSetFemaleButton_Click(object sender, EventArgs e)
+  private void ReadOnlyGenderTestSetFemaleButton_Click (object sender, EventArgs e)
   {
     ReadOnlyGenderField.Value = Gender.Female;
   }
 
-  private void GenderField_SelectionChanged(object sender, EventArgs e)
+  private void GenderField_SelectionChanged (object sender, EventArgs e)
   {
     if (GenderField.Value != null)
       GenderFieldSelectionChangedLabel.Text = GenderField.Value.ToString();
@@ -183,7 +188,7 @@ public class BocEnumValueUserControl : BaseUserControl
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -191,12 +196,12 @@ public class BocEnumValueUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

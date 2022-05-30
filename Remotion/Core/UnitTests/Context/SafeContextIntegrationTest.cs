@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Remoting.Messaging;
 using NUnit.Framework;
 using Remotion.Context;
 
@@ -27,18 +26,16 @@ namespace Remotion.UnitTests.Context
     [Test]
     public void SetGetFreeData ()
     {
-      Assert.That (SafeContext.Instance.GetData ("Integration"), Is.Null);
+      Assert.That(SafeContext.Instance.GetData("Integration"), Is.Null);
 
-      SafeContext.Instance.SetData ("Integration", "value");
-      Assert.That (SafeContext.Instance.GetData ("Integration"), Is.EqualTo ("value"));
-      Assert.That (CallContext.GetData ("Integration"), Is.EqualTo ("value"));
+      SafeContext.Instance.SetData("Integration", "value");
+      Assert.That(SafeContext.Instance.GetData("Integration"), Is.EqualTo("value"));
 
-      SafeContext.Instance.SetData ("Integration", "other value");
-      Assert.That (SafeContext.Instance.GetData ("Integration"), Is.EqualTo ("other value"));
+      SafeContext.Instance.SetData("Integration", "other value");
+      Assert.That(SafeContext.Instance.GetData("Integration"), Is.EqualTo("other value"));
 
       SafeContext.Instance.FreeData("Integration");
-      Assert.That (SafeContext.Instance.GetData ("Integration"), Is.Null);
-      Assert.That (CallContext.GetData ("Integration"), Is.Null);
+      Assert.That(SafeContext.Instance.GetData("Integration"), Is.Null);
     }
   }
 }

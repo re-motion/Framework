@@ -27,7 +27,7 @@ namespace Remotion.Development.Data.UnitTesting.DomainObjects.Linq
   public class ApplyQueryGeneratorMixinAttribute : MixAttribute
   {
     public ApplyQueryGeneratorMixinAttribute ()
-        : base (typeof (DomainObjectQueryGenerator), typeof (QueryGeneratorMixin))
+        : base(typeof(DomainObjectQueryGenerator), typeof(QueryGeneratorMixin))
     {
     }
   }

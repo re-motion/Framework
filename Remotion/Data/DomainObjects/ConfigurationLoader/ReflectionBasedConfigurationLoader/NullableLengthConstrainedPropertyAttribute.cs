@@ -28,7 +28,8 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public int MaximumLength
     {
-      get { return _maximumLength.Value; }
+      [Obsolete("Property getter is only required for C# compiler. Use ((ILengthConstrainedPropertyAttribute)attribute).MaximumLength instead.", true)]
+      get { return _maximumLength ?? throw new InvalidOperationException("The MaximumLength property is null. Use HasMaximumLength to check the property before accessing its value."); }
       set { _maximumLength = value; }
     }
 

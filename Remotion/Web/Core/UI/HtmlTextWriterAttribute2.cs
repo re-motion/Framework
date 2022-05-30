@@ -41,7 +41,8 @@ namespace Remotion.Web.UI
     public const string AriaRequired = "aria-required";
     public const string AriaSelected = "aria-selected";
     public const string Hidden = "hidden";
-    [Obsolete ("Use 'AriaRequired' instead to prevent the browser from adding a tooltip to the input fields for 'input required'.")]
+    public const string Label = "label";
+    [Obsolete("Use 'AriaRequired' instead to prevent the browser from adding a tooltip to the input fields for 'input required'.")]
     public const string Required = "required";
     public const string Role = "role";
   }

@@ -16,13 +16,13 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.UserTests
 {
@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     public override void TearDown ()
     {
       base.TearDown();
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [Test]
@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       user.FirstName = "UserFirstName";
       user.Title = "UserTitle";
 
-      Assert.That (user.DisplayName, Is.EqualTo ("UserLastName UserFirstName, UserTitle"));
+      Assert.That(user.DisplayName, Is.EqualTo("UserLastName UserFirstName, UserTitle"));
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       user.FirstName = "UserFirstName";
       user.Title = null;
 
-      Assert.That (user.DisplayName, Is.EqualTo ("UserLastName UserFirstName"));
+      Assert.That(user.DisplayName, Is.EqualTo("UserLastName UserFirstName"));
     }
 
     [Test]
@@ -65,32 +65,32 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       user.FirstName = null;
       user.Title = null;
 
-      Assert.That (user.DisplayName, Is.EqualTo ("UserLastName"));
+      Assert.That(user.DisplayName, Is.EqualTo("UserLastName"));
     }
 
     [Test]
     public void SearchOwningGroups ()
     {
-      ISearchAvailableObjectsService searchServiceStub = MockRepository.GenerateStub<ISearchAvailableObjectsService>();
-      ISearchAvailableObjectsArguments args = MockRepository.GenerateStub<ISearchAvailableObjectsArguments>();
+      var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
+      var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService (typeof (GroupPropertyTypeSearchService), searchServiceStub);
-      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (User));
-      IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty) userClass.GetPropertyDefinition ("OwningGroup");
-      Assert.That (owningGroupProperty, Is.Not.Null);
+          .AddService(typeof(GroupPropertyTypeSearchService), searchServiceStub.Object);
+      IBusinessObjectClass userClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(User));
+      IBusinessObjectReferenceProperty owningGroupProperty = (IBusinessObjectReferenceProperty)userClass.GetPropertyDefinition("OwningGroup");
+      Assert.That(owningGroupProperty, Is.Not.Null);
 
       User user = CreateUser();
-      var expected = new[] { MockRepository.GenerateStub<IBusinessObject> () };
+      var expected = new[] { new Mock<IBusinessObject>().Object };
 
-      searchServiceStub.Stub (stub => stub.SupportsProperty (owningGroupProperty)).Return (true);
-      searchServiceStub.Stub (stub => stub.Search (user, owningGroupProperty, args)).Return (expected);
+      searchServiceStub.Setup(stub => stub.SupportsProperty(owningGroupProperty)).Returns(true);
+      searchServiceStub.Setup(stub => stub.Search(user, owningGroupProperty, args.Object)).Returns(expected);
 
-      Assert.That (owningGroupProperty.SupportsSearchAvailableObjects, Is.True);
+      Assert.That(owningGroupProperty.SupportsSearchAvailableObjects, Is.True);
 
-      IBusinessObject[] actual = owningGroupProperty.SearchAvailableObjects (user, args);
-      Assert.That (actual, Is.SameAs (expected));
+      IBusinessObject[] actual = owningGroupProperty.SearchAvailableObjects(user, args.Object);
+      Assert.That(actual, Is.SameAs(expected));
     }
   }
 }

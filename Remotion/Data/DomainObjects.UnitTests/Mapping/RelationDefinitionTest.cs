@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public class RelationDefinitionTest : MappingReflectionTestBase
   {
     private ClassDefinition _customerClass;
-    private VirtualRelationEndPointDefinition _customerEndPoint;
+    private DomainObjectCollectionRelationEndPointDefinition _customerEndPoint;
     private RelationEndPointDefinition _orderEndPoint;
     private RelationDefinition _customerToOrder;
 
@@ -34,93 +34,95 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       base.SetUp();
 
-      _customerClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Customer)];
+      _customerClass = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Customer)];
       _customerToOrder =
           FakeMappingConfiguration.Current.RelationDefinitions[
               "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order:Remotion.Data.DomainObjects.UnitTests.Mapping."
               + "TestDomain.Integration.Order.Customer->Remotion.Data.DomainObjects.UnitTests.Mapping."
               + "TestDomain.Integration.Customer.Orders"];
-      _customerEndPoint = (VirtualRelationEndPointDefinition) _customerToOrder.EndPointDefinitions[0];
-      _orderEndPoint = (RelationEndPointDefinition) _customerToOrder.EndPointDefinitions[1];
+      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition)_customerToOrder.EndPointDefinitions[0];
+      _orderEndPoint = (RelationEndPointDefinition)_customerToOrder.EndPointDefinitions[1];
     }
 
     [Test]
     public void EndPointDefinitionsAreReturnedAsReadOnlyCollection ()
     {
-      RelationDefinition relation = new RelationDefinition ("RelationID", _customerEndPoint, _orderEndPoint);
+      RelationDefinition relation = new RelationDefinition("RelationID", _customerEndPoint, _orderEndPoint);
 
-      Assert.That (relation.EndPointDefinitions.Length, Is.EqualTo (2));
-      Assert.That (relation.EndPointDefinitions[0], Is.SameAs (_customerEndPoint));
-      Assert.That (relation.EndPointDefinitions[1], Is.SameAs (_orderEndPoint));
+      Assert.That(relation.EndPointDefinitions.Length, Is.EqualTo(2));
+      Assert.That(relation.EndPointDefinitions[0], Is.SameAs(_customerEndPoint));
+      Assert.That(relation.EndPointDefinitions[1], Is.SameAs(_orderEndPoint));
     }
 
     [Test]
     public void GetToString ()
     {
-      RelationDefinition relation = new RelationDefinition ("RelationID", _customerEndPoint, _orderEndPoint);
+      RelationDefinition relation = new RelationDefinition("RelationID", _customerEndPoint, _orderEndPoint);
 
-      Assert.That (relation.ToString(), Is.EqualTo ("RelationDefinition: RelationID"));
+      Assert.That(relation.ToString(), Is.EqualTo("RelationDefinition: RelationID"));
     }
 
     [Test]
     public void IsEndPoint ()
     {
-      RelationDefinition relation = new RelationDefinition ("myRelation", _customerEndPoint, _orderEndPoint);
+      RelationDefinition relation = new RelationDefinition("myRelation", _customerEndPoint, _orderEndPoint);
 
-      Assert.That (relation.IsEndPoint ("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"), Is.True);
-      Assert.That (relation.IsEndPoint ("Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"), Is.True);
-      Assert.That (relation.IsEndPoint ("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"), Is.False);
-      Assert.That (relation.IsEndPoint ("Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"), Is.False);
+      Assert.That(relation.IsEndPoint("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"), Is.True);
+      Assert.That(relation.IsEndPoint("Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"), Is.True);
+      Assert.That(relation.IsEndPoint("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"), Is.False);
+      Assert.That(relation.IsEndPoint("Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"), Is.False);
     }
 
     [Test]
     public void Contains ()
     {
-      RelationDefinition relation = new RelationDefinition ("myRelation", _customerEndPoint, _orderEndPoint);
+      RelationDefinition relation = new RelationDefinition("myRelation", _customerEndPoint, _orderEndPoint);
 
-      Assert.That (relation.Contains (_orderEndPoint), Is.True);
-      Assert.That (relation.Contains (_customerEndPoint), Is.True);
-      
+      Assert.That(relation.Contains(_orderEndPoint), Is.True);
+      Assert.That(relation.Contains(_customerEndPoint), Is.True);
+
       var invalidEndPoint = CreateEquivalentEndPointDefinitionFake(_customerEndPoint);
-      Assert.That (relation.Contains (invalidEndPoint), Is.False);
+      Assert.That(relation.Contains(invalidEndPoint), Is.False);
     }
 
     [Test]
     public void GetEndPointDefinition ()
     {
-      Assert.That (_customerToOrder.GetEndPointDefinition ("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"), Is.SameAs (_orderEndPoint));
-      Assert.That (_customerToOrder.GetEndPointDefinition (
-          "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"), Is.SameAs (_customerEndPoint));
+      Assert.That(
+          _customerToOrder.GetEndPointDefinition("Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer"),
+          Is.SameAs(_orderEndPoint));
+      Assert.That(_customerToOrder.GetEndPointDefinition(
+          "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"), Is.SameAs(_customerEndPoint));
     }
 
     [Test]
     public void GetOppositeEndPointDefinition_Strings ()
     {
-      var result1 = _customerToOrder.GetOppositeEndPointDefinition (
+      var result1 = _customerToOrder.GetOppositeEndPointDefinition(
           "Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
-      Assert.That (result1, Is.SameAs (_customerEndPoint));
+      Assert.That(result1, Is.SameAs(_customerEndPoint));
 
-      var result2 = _customerToOrder.GetOppositeEndPointDefinition (
+      var result2 = _customerToOrder.GetOppositeEndPointDefinition(
           "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders");
-      Assert.That (result2, Is.SameAs (_orderEndPoint));
+      Assert.That(result2, Is.SameAs(_orderEndPoint));
     }
 
     [Test]
     public void GetOppositeEndPointDefinitionForUndefinedProperty_Strings ()
     {
-      var result = _customerToOrder.GetOppositeEndPointDefinition (
+      var result = _customerToOrder.GetOppositeEndPointDefinition(
           "Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderNumber");
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetOppositeEndPointDefinition_EndPoint ()
     {
-      var result1 = _customerToOrder.GetOppositeEndPointDefinition (_customerEndPoint);
-      Assert.That (result1, Is.SameAs (_orderEndPoint));
+      var result1 = _customerToOrder.GetOppositeEndPointDefinition(_customerEndPoint);
+      Assert.That(result1, Is.SameAs(_orderEndPoint));
 
-      var result2 = _customerToOrder.GetOppositeEndPointDefinition (_orderEndPoint);
-      Assert.That (result2, Is.SameAs (_customerEndPoint));
+      var result2 = _customerToOrder.GetOppositeEndPointDefinition(_orderEndPoint);
+      Assert.That(result2, Is.SameAs(_customerEndPoint));
     }
 
     [Test]
@@ -128,40 +130,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var invalidEndPoint = CreateEquivalentEndPointDefinitionFake(_customerEndPoint);
 
-      var result = _customerToOrder.GetOppositeEndPointDefinition (invalidEndPoint);
-      Assert.That (result, Is.Null);
+      var result = _customerToOrder.GetOppositeEndPointDefinition(invalidEndPoint);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void GetEndPointDefinitionForUndefinedProperty ()
     {
-      var result = _customerToOrder.GetEndPointDefinition (
+      var result = _customerToOrder.GetEndPointDefinition(
           "Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderNumber");
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
 
     [Test]
     public void GetEndPointDefinitionForUndefinedClass ()
     {
-      Assert.That (_customerToOrder.GetEndPointDefinition (
+      Assert.That(_customerToOrder.GetEndPointDefinition(
           "OrderTicket", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Customer"), Is.Null);
     }
 
     [Test]
     public void GetOppositeEndPointDefinitionForUndefinedClass ()
     {
-      Assert.That (_customerToOrder.GetOppositeEndPointDefinition (
+      Assert.That(_customerToOrder.GetOppositeEndPointDefinition(
           "OrderTicket", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Customer"), Is.Null);
     }
 
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Relation 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem:"
-        + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem.Order->"
-        +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderItems' has no association with class 'Customer' "
-        + "and property 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders'.")]
     public void GetMandatoryOppositeRelationEndPointDefinitionWithNotAssociatedRelationDefinitionID ()
     {
       RelationDefinition orderToOrderItem =
@@ -170,44 +167,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem.Order->"
               +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderItems"];
 
-      IRelationEndPointDefinition wrongEndPointDefinition =
-          orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (
-              _customerClass.GetMandatoryRelationEndPointDefinition (
-                  "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders"));
-
-      orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition (wrongEndPointDefinition);
+      Assert.That(
+          () => orderToOrderItem.GetMandatoryOppositeRelationEndPointDefinition(
+              _customerClass.GetMandatoryRelationEndPointDefinition(
+                  "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders")),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo(
+                  "Relation 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem:"
+                  + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderItem.Order->"
+                  +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.OrderItems' has no association with class 'Customer' "
+                  + "and property 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders'."));
     }
 
     [Test]
     public void RelationType_OneToOne ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Computer));
-      var relationDefinition = classDefinition.GetRelationEndPointDefinition (typeof (Computer).FullName + ".Employee").RelationDefinition;
-      Assert.That (relationDefinition.RelationKind, Is.EqualTo (RelationKindType.OneToOne));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Computer));
+      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(Computer).FullName + ".Employee").RelationDefinition;
+      Assert.That(relationDefinition.RelationKind, Is.EqualTo(RelationKindType.OneToOne));
     }
 
     [Test]
     public void RelationType_OneMany ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (OrderItem));
-      var relationDefinition = classDefinition.GetRelationEndPointDefinition (typeof (OrderItem).FullName + ".Order").RelationDefinition;
-      Assert.That (relationDefinition.RelationKind, Is.EqualTo (RelationKindType.OneToMany));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(OrderItem).FullName + ".Order").RelationDefinition;
+      Assert.That(relationDefinition.RelationKind, Is.EqualTo(RelationKindType.OneToMany));
     }
 
     [Test]
     public void RelationType_Unidirectional ()
     {
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Location));
-      var relationDefinition = classDefinition.GetRelationEndPointDefinition (typeof (Location).FullName + ".Client").RelationDefinition;
-      Assert.That (relationDefinition.RelationKind, Is.EqualTo (RelationKindType.Unidirectional));
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Location));
+      var relationDefinition = classDefinition.GetRelationEndPointDefinition(typeof(Location).FullName + ".Client").RelationDefinition;
+      Assert.That(relationDefinition.RelationKind, Is.EqualTo(RelationKindType.Unidirectional));
     }
 
-    private IRelationEndPointDefinition CreateEquivalentEndPointDefinitionFake (VirtualRelationEndPointDefinition sourceEndPoint)
+    private IRelationEndPointDefinition CreateEquivalentEndPointDefinitionFake (DomainObjectCollectionRelationEndPointDefinition sourceEndPoint)
     {
-      var invalidEndPoint = MockRepository.GenerateStub<IRelationEndPointDefinition> ();
-      invalidEndPoint.Stub (stub => stub.ClassDefinition).Return (sourceEndPoint.ClassDefinition);
-      invalidEndPoint.Stub (stub => stub.PropertyName).Return (sourceEndPoint.PropertyName);
-      return invalidEndPoint;
+      var invalidEndPoint = new Mock<IRelationEndPointDefinition>();
+      invalidEndPoint.Setup(stub => stub.ClassDefinition).Returns(sourceEndPoint.ClassDefinition);
+      invalidEndPoint.Setup(stub => stub.PropertyName).Returns(sourceEndPoint.PropertyName);
+      return invalidEndPoint.Object;
     }
 
   }

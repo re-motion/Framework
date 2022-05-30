@@ -19,6 +19,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {
@@ -30,31 +31,31 @@ namespace Remotion.Development.UnitTesting
     [DebuggerStepThrough]
     public static T As<T> (this object obj)
     {
-      return (T) obj;
+      return (T)obj;
     }
 
     [DebuggerStepThrough]
-    public static T Invoke<T> (this object target, string method, params object[] args)
+    public static T Invoke<T> (this object target, string method, params object?[]? args)
     {
-      return (T) PrivateInvoke.InvokeNonPublicMethod (target, method, args);
+      return (T)PrivateInvoke.InvokeNonPublicMethod(target, method, args)!;
     }
 
     [DebuggerStepThrough]
-    public static object Invoke (this object target, string method, params object[] args)
+    public static object? Invoke (this object target, string method, params object?[]? args)
     {
-      return PrivateInvoke.InvokeNonPublicMethod (target, method, args);
+      return PrivateInvoke.InvokeNonPublicMethod(target, method, args);
     }
 
     [DebuggerStepThrough]
-    public static object Invoke (this object target, MethodInfo method, params object[] args)
+    public static object? Invoke (this object target, MethodInfo method, params object?[]? args)
     {
-      return method.Invoke (target, args);
+      return method.Invoke(target, args);
     }
 
     [DebuggerStepThrough]
-    public static T Invoke<T> (this object target, MethodInfo method, params object[] args)
+    public static T Invoke<T> (this object target, MethodInfo method, params object?[]? args)
     {
-      return (T) method.Invoke (target, args);
+      return (T)method.Invoke(target, args)!;
     }
   }
 }

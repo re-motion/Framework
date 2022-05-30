@@ -31,9 +31,9 @@ namespace Remotion.Data.DomainObjects.Mapping
         IRelationEndPointDefinition endPointDefinition1,
         IRelationEndPointDefinition endPointDefinition2)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-      ArgumentUtility.CheckNotNull ("endPointDefinition1", endPointDefinition1);
-      ArgumentUtility.CheckNotNull ("endPointDefinition2", endPointDefinition2);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
+      ArgumentUtility.CheckNotNull("endPointDefinition1", endPointDefinition1);
+      ArgumentUtility.CheckNotNull("endPointDefinition2", endPointDefinition2);
 
       _id = id;
 
@@ -43,12 +43,12 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public IRelationEndPointDefinition GetMandatoryOppositeRelationEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("endPointDefinition", endPointDefinition);
+      ArgumentUtility.CheckNotNull("endPointDefinition", endPointDefinition);
 
-      IRelationEndPointDefinition oppositeEndPointDefinition = GetOppositeEndPointDefinition (endPointDefinition);
+      IRelationEndPointDefinition? oppositeEndPointDefinition = GetOppositeEndPointDefinition(endPointDefinition);
       if (oppositeEndPointDefinition == null)
       {
-        throw CreateMappingException (
+        throw CreateMappingException(
             "Relation '{0}' has no association with class '{1}' and property '{2}'.",
             ID,
             endPointDefinition.ClassDefinition.ID,
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationKindType RelationKind
     {
-      get 
+      get
       {
         if (_endPointDefinition1 is AnonymousRelationEndPointDefinition || _endPointDefinition2 is AnonymousRelationEndPointDefinition)
           return RelationKindType.Unidirectional;
@@ -81,9 +81,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return new[] { _endPointDefinition1, _endPointDefinition2 }; }
     }
 
-    public IRelationEndPointDefinition GetEndPointDefinition (string classID, string propertyName)
+    public IRelationEndPointDefinition? GetEndPointDefinition (string classID, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
+      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
 
       if (_endPointDefinition1.ClassDefinition.ID == classID && _endPointDefinition1.PropertyName == propertyName)
         return _endPointDefinition1;
@@ -94,9 +94,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       return null;
     }
 
-    public IRelationEndPointDefinition GetOppositeEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
+    public IRelationEndPointDefinition? GetOppositeEndPointDefinition (IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("endPointDefinition", endPointDefinition);
+      ArgumentUtility.CheckNotNull("endPointDefinition", endPointDefinition);
 
       if (endPointDefinition == _endPointDefinition1)
         return _endPointDefinition2;
@@ -106,27 +106,27 @@ namespace Remotion.Data.DomainObjects.Mapping
         return null;
     }
 
-    public IRelationEndPointDefinition GetOppositeEndPointDefinition (string classID, string propertyName)
+    public IRelationEndPointDefinition? GetOppositeEndPointDefinition (string classID, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
+      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
 
-      var matchingEndPointDefinition = GetEndPointDefinition (classID, propertyName);
+      var matchingEndPointDefinition = GetEndPointDefinition(classID, propertyName);
       if (matchingEndPointDefinition == null)
         return null;
 
-      return GetOppositeEndPointDefinition (matchingEndPointDefinition);
+      return GetOppositeEndPointDefinition(matchingEndPointDefinition);
     }
 
     public bool IsEndPoint (string classID, string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
+      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
 
-      return GetEndPointDefinition (classID, propertyName) != null;
+      return GetEndPointDefinition(classID, propertyName) != null;
     }
 
     public bool Contains (IRelationEndPointDefinition endPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("endPointDefinition", endPointDefinition);
+      ArgumentUtility.CheckNotNull("endPointDefinition", endPointDefinition);
 
       return endPointDefinition == _endPointDefinition1 || endPointDefinition == _endPointDefinition2;
     }
@@ -136,9 +136,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       return GetType().Name + ": " + _id;
     }
 
-    private MappingException CreateMappingException (string message, params object[] args)
+    private MappingException CreateMappingException (string message, params object?[] args)
     {
-      return new MappingException (String.Format (message, args));
+      return new MappingException(String.Format(message, args));
     }
   }
 }

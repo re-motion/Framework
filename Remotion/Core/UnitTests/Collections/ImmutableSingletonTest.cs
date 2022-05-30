@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -28,87 +29,87 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void Count ()
     {
-      IReadOnlyList<string> list = ImmutableSingleton.Create ("A");
-      Assert.That (list.Count, Is.EqualTo (1));
+      IReadOnlyList<string> list = ImmutableSingleton.Create("A");
+      Assert.That(list.Count, Is.EqualTo(1));
     }
 
     [Test]
     public void Index_With0_ReturnsItem ()
     {
-      IReadOnlyList<string> list = ImmutableSingleton.Create ("B");
-      Assert.That (list[0], Is.EqualTo ("B"));
+      IReadOnlyList<string> list = ImmutableSingleton.Create("B");
+      Assert.That(list[0], Is.EqualTo("B"));
     }
 
     [Test]
     public void Index_WithGreaterThan0_ThrowsArgumentOutOfRangeException ()
     {
-      IReadOnlyList<string> list = ImmutableSingleton.Create ("B");
-      Assert.That (
+      IReadOnlyList<string> list = ImmutableSingleton.Create("B");
+      Assert.That(
           () => list[1],
           Throws.TypeOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo ("The list contains only a single item.\r\nParameter name: index\r\nActual value was 1."));
+              .With.ArgumentOutOfRangeExceptionMessageEqualTo("The list contains only a single item.", "index", 1));
     }
 
     [Test]
     public void Index_WithLessThan0_ThrowsArgumentOutOfRangeException ()
     {
-      IReadOnlyList<string> list = ImmutableSingleton.Create ("B");
-      Assert.That (
+      IReadOnlyList<string> list = ImmutableSingleton.Create("B");
+      Assert.That(
           () => list[-1],
           Throws.TypeOf<ArgumentOutOfRangeException>()
-              .With.Message.EqualTo ("The list contains only a single item.\r\nParameter name: index\r\nActual value was -1."));
+              .With.ArgumentOutOfRangeExceptionMessageEqualTo("The list contains only a single item.", "index", -1));
     }
 
     [Test]
     public void Enumerate_Generic ()
     {
-      IReadOnlyList<string> list = ImmutableSingleton.Create ("B");
+      IReadOnlyList<string> list = ImmutableSingleton.Create("B");
       IEnumerator<string> enumerator = list.GetEnumerator();
 
-      Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration has not started. Call MoveNext."));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.EqualTo ("B"));
-      Assert.That (enumerator.MoveNext(), Is.False);
-      Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
+      Assert.That(() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo("Enumeration has not started. Call MoveNext."));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo("B"));
+      Assert.That(enumerator.MoveNext(), Is.False);
+      Assert.That(() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo("Enumeration already finished."));
       enumerator.Reset();
-      Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration has not started. Call MoveNext."));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.EqualTo ("B"));
+      Assert.That(() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo("Enumeration has not started. Call MoveNext."));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo("B"));
     }
 
     [Test]
     public void Enumerate_NonGeneric ()
     {
-      IReadOnlyList<string> list = ImmutableSingleton.Create ("B");
+      IReadOnlyList<string> list = ImmutableSingleton.Create("B");
       IEnumerator enumerator = list.ToNonGenericEnumerable().GetEnumerator();
 
-      Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration has not started. Call MoveNext."));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.EqualTo ("B"));
-      Assert.That (enumerator.MoveNext(), Is.False);
-      Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration already finished."));
+      Assert.That(() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo("Enumeration has not started. Call MoveNext."));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo("B"));
+      Assert.That(enumerator.MoveNext(), Is.False);
+      Assert.That(() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo("Enumeration already finished."));
       enumerator.Reset();
-      Assert.That (() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo ("Enumeration has not started. Call MoveNext."));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.EqualTo ("B"));
+      Assert.That(() => enumerator.Current, Throws.InvalidOperationException.With.Message.EqualTo("Enumeration has not started. Call MoveNext."));
+      Assert.That(enumerator.MoveNext(), Is.True);
+      Assert.That(enumerator.Current, Is.EqualTo("B"));
     }
 
     [Test]
     public void Enumerate_Foreach ()
     {
       var items = new List<string>();
-      foreach (var item in  ImmutableSingleton.Create ("B"))
-        items.Add (item);
+      foreach (var item in  ImmutableSingleton.Create("B"))
+        items.Add(item);
 
-      Assert.That (items, Is.EqualTo (new[] { "B" }));
+      Assert.That(items, Is.EqualTo(new[] { "B" }));
     }
 
     [Test]
     public void InitializeWithNull ()
     {
-      IReadOnlyList<object> list = ImmutableSingleton.Create<object> (null);
-      Assert.That (list.Count, Is.EqualTo (1));
-      Assert.That (list[0], Is.Null);
+      IReadOnlyList<object> list = ImmutableSingleton.Create<object>(null);
+      Assert.That(list.Count, Is.EqualTo(1));
+      Assert.That(list[0], Is.Null);
     }
   }
 }

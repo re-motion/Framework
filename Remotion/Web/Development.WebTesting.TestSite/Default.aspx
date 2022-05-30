@@ -27,6 +27,7 @@
         <table style="margin-bottom: 20px">
           <tr><td><a href="AnchorTest.wxe">AnchorTest</a></td></tr>
           <tr><td><a href="CommandTest.wxe">CommandTest</a></td></tr>
+          <tr><td><a href="DirtyStateTest.wxe">DirtyStateTest</a></td></tr>
           <tr><td><a href="DropDownListTest.wxe">DropDownListTest</a></td></tr>
           <tr><td><a href="DropDownMenuTest.wxe">DropDownMenuTest</a></td></tr>
           <tr><td><a href="Empty.aspx">Empty</a></td></tr>
@@ -53,6 +54,7 @@
           <tr><td><a href="MultiWindowTest/Main.wxe">MultiWindowTest</a></td></tr>
           <tr><td><a href="BrowserSessionTest.wxe">BrowserSessionTest</a></td></tr>
           <tr><td><a href="PlatformTest.wxe">PlatformTest</a></td></tr>
+          <tr><td><a href="CompletionDetectionStrategyTest.wxe">CompletionDetectionStrategyTest</a></td></tr>
         </table>
         
         <label>Generic tests</label>

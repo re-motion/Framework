@@ -25,11 +25,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Vali
   /// </summary>
   /// <seealso cref="IBocEnumValueValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
-  [ImplementationFor (typeof (IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IBocEnumValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocEnumValueValidatorFactory : CompoundValidatorFactory<IBocEnumValue>, IBocEnumValueValidatorFactory
   {
     public CompoundBocEnumValueValidatorFactory (IEnumerable<IBocEnumValueValidatorFactory> innerFactories)
-        : base (innerFactories)
+        : base(innerFactories)
     { }
   }
 }

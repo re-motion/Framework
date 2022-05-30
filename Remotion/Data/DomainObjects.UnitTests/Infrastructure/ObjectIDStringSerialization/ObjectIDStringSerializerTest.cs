@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSerialization
 {
@@ -27,47 +28,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     [Test]
     public void Serialize_WithStringValue ()
     {
-      var id = new ObjectID ("Official", "Arthur Dent");
-      Assert.That (ObjectIDStringSerializer.Instance.Serialize (id), Is.EqualTo ("Official|Arthur Dent|System.String"));
+      var id = new ObjectID("Official", "Arthur Dent");
+      Assert.That(ObjectIDStringSerializer.Instance.Serialize(id), Is.EqualTo("Official|Arthur Dent|System.String"));
     }
 
     [Test]
     public void Serialize_WithStringValueContainsDelimiter ()
     {
-      var id = new ObjectID ("Official", "Arthur" + ObjectIDStringSerializer.Delimiter + "Dent");
-      Assert.That (ObjectIDStringSerializer.Instance.Serialize (id), Is.EqualTo ("Official|Arthur|Dent|System.String"));
+      var id = new ObjectID("Official", "Arthur" + ObjectIDStringSerializer.Delimiter + "Dent");
+      Assert.That(ObjectIDStringSerializer.Instance.Serialize(id), Is.EqualTo("Official|Arthur|Dent|System.String"));
     }
 
     [Test]
     public void Serialize_WithInt32Value ()
     {
-      var id = new ObjectID ("Official", 42);
-      Assert.That (ObjectIDStringSerializer.Instance.Serialize (id), Is.EqualTo ("Official|42|System.Int32"));
+      var id = new ObjectID("Official", 42);
+      Assert.That(ObjectIDStringSerializer.Instance.Serialize(id), Is.EqualTo("Official|42|System.Int32"));
     }
 
     [Test]
     public void Serialize_WithGuidValue ()
     {
-      var id = new ObjectID ("Order", new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}"));
-      Assert.That (ObjectIDStringSerializer.Instance.Serialize (id), Is.EqualTo ("Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid"));
+      var id = new ObjectID("Order", new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}"));
+      Assert.That(ObjectIDStringSerializer.Instance.Serialize(id), Is.EqualTo("Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid"));
     }
 
     [Test]
     public void Serialize_WithClassIDContainingDelimiter_FailsInDebugBuild ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable (
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithTable(
           id: "Class" + ObjectIDStringSerializer.Delimiter + "ID",
-          storageProviderDefinition: new UnitTestStorageProviderStubDefinition ("stub"));
+          storageProviderDefinition: new UnitTestStorageProviderStubDefinition("stub"));
 
-      var id = new ObjectID (classDefinition, "Arthur Dent");
+      var id = new ObjectID(classDefinition, "Arthur Dent");
 
 #if DEBUG
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Serialize (id),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The class id 'Class|ID' contains the delimiter character ('|'). This is not allowed when serializing the ObjectID.\r\nParameter name: objectID"));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Serialize(id),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The class id 'Class|ID' contains the delimiter character ('|'). This is not allowed when serializing the ObjectID.", "objectID"));
 #else
-      Assert.That (ObjectIDStringSerializer.Instance.Serialize (id), Is.EqualTo ("Class|ID|Arthur Dent|System.String"));
+      Assert.That(ObjectIDStringSerializer.Instance.Serialize(id), Is.EqualTo("Class|ID|Arthur Dent|System.String"));
 #endif
     }
 
@@ -75,174 +76,174 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     public void Parse_StringValue ()
     {
       string idString = "Official|Arthur Dent|System.String";
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse (idString);
+      ObjectID id = ObjectIDStringSerializer.Instance.Parse(idString);
 
-      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("UnitTestStorageProviderStub"));
-      Assert.That (id.ClassID, Is.EqualTo ("Official"));
-      Assert.That (id.Value.GetType(), Is.EqualTo (typeof (string)));
-      Assert.That (id.Value, Is.EqualTo ("Arthur Dent"));
+      Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("UnitTestStorageProviderStub"));
+      Assert.That(id.ClassID, Is.EqualTo("Official"));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(string)));
+      Assert.That(id.Value, Is.EqualTo("Arthur Dent"));
     }
 
     [Test]
     public void Parse_Int32Value ()
     {
       string idString = "Official|42|System.Int32";
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse (idString);
+      ObjectID id = ObjectIDStringSerializer.Instance.Parse(idString);
 
-      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("UnitTestStorageProviderStub"));
-      Assert.That (id.ClassID, Is.EqualTo ("Official"));
-      Assert.That (id.Value.GetType(), Is.EqualTo (typeof (int)));
-      Assert.That (id.Value, Is.EqualTo (42));
+      Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("UnitTestStorageProviderStub"));
+      Assert.That(id.ClassID, Is.EqualTo("Official"));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(int)));
+      Assert.That(id.Value, Is.EqualTo(42));
     }
 
     [Test]
     public void Parse_GuidValue ()
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse (idString);
+      ObjectID id = ObjectIDStringSerializer.Instance.Parse(idString);
 
-      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
-      Assert.That (id.ClassID, Is.EqualTo ("Order"));
-      Assert.That (id.Value.GetType(), Is.EqualTo (typeof (Guid)));
-      Assert.That (id.Value, Is.EqualTo (new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
+      Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("TestDomain"));
+      Assert.That(id.ClassID, Is.EqualTo("Order"));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(Guid)));
+      Assert.That(id.Value, Is.EqualTo(new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
     }
 
     [Test]
     public void Parse_WithValueContainsDelimiter_ReturnsValueIncludingDelimiter ()
     {
       string idString = "Official|Multi|Value|System.String";
-      ObjectID id = ObjectIDStringSerializer.Instance.Parse (idString);
+      ObjectID id = ObjectIDStringSerializer.Instance.Parse(idString);
 
-      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("UnitTestStorageProviderStub"));
-      Assert.That (id.ClassID, Is.EqualTo ("Official"));
-      Assert.That (id.Value.GetType(), Is.EqualTo (typeof (string)));
-      Assert.That (id.Value, Is.EqualTo ("Multi|Value"));
+      Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("UnitTestStorageProviderStub"));
+      Assert.That(id.ClassID, Is.EqualTo("Official"));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(string)));
+      Assert.That(id.Value, Is.EqualTo("Multi|Value"));
     }
 
     [Test]
     public void Parse_EmptyString_ThrowsFormatException ()
     {
       string idString = "";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID '' is not correctly formatted: it must not be empty."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID '' is not correctly formatted: it must not be empty."));
     }
 
     [Test]
     public void Parse_EmptyClassIDAndEmptyValueAndMissingType_ThrowsFormatException ()
     {
       string idString = "|";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID '|' is not correctly formatted: it must have three parts."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID '|' is not correctly formatted: it must have three parts."));
     }
 
     [Test]
     public void Parse_EmptyClassIDAndEmptyValueAndEmptyType_ThrowsFormatException ()
     {
       string idString = "||";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID '||' is not correctly formatted: the class id must not be empty."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID '||' is not correctly formatted: the class id must not be empty."));
     }
 
     [Test]
     public void Parse_MissingClassID_ThrowsFormatException ()
     {
       string idString = "12|System.Int32";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID '12|System.Int32' is not correctly formatted: it must have three parts."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID '12|System.Int32' is not correctly formatted: it must have three parts."));
     }
 
     [Test]
     public void Parse_EmptyClassID_ThrowsFormatException ()
     {
       string idString = "|12|System.Int32";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID '|12|System.Int32' is not correctly formatted: the class id must not be empty."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID '|12|System.Int32' is not correctly formatted: the class id must not be empty."));
     }
 
     [Test]
     public void Parse_MissingClassIDAndEmptyValue_ThrowsFormatException ()
     {
       string idString = "|System.Int32";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID '|System.Int32' is not correctly formatted: it must have three parts."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID '|System.Int32' is not correctly formatted: it must have three parts."));
     }
 
     [Test]
     public void Parse_EmptyClassIDAndEmptyValue_ThrowsFormatException ()
     {
       string idString = "||System.Int32";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID '||System.Int32' is not correctly formatted: the class id must not be empty."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID '||System.Int32' is not correctly formatted: the class id must not be empty."));
     }
 
     [Test]
     public void Parse_MissingValueAndMissingType_ThrowsFormatException ()
     {
       string idString = "Official";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID 'Official' is not correctly formatted: it must have three parts."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID 'Official' is not correctly formatted: it must have three parts."));
     }
 
     [Test]
     public void Parse_EmptyValueAndMissingType_ThrowsFormatException ()
     {
       string idString = "Official|";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID 'Official|' is not correctly formatted: it must have three parts."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID 'Official|' is not correctly formatted: it must have three parts."));
     }
 
     [Test]
     public void Parse_EmptyValueAndEmptyType_ThrowsFormatException ()
     {
       string idString = "Official||";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID 'Official||' is not correctly formatted: the value must not be empty."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID 'Official||' is not correctly formatted: the value must not be empty."));
     }
 
     [Test]
     public void Parse_EmptyValue_ThrowsFormatException ()
     {
       string idString = "Official||System.String";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID 'Official||System.String' is not correctly formatted: the value must not be empty."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID 'Official||System.String' is not correctly formatted: the value must not be empty."));
     }
 
     [Test]
     public void Parse_MissingType_ThrowsFormatException ()
     {
       string idString = "Official|v";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID 'Official|v' is not correctly formatted: it must have three parts."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID 'Official|v' is not correctly formatted: it must have three parts."));
     }
 
     [Test]
     public void Parse_EmptyType_ThrowsFormatException ()
     {
       string idString = "Official|v|";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo ("Serialized ObjectID 'Official|v|' is not correctly formatted: the type must not be empty."));
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo("Serialized ObjectID 'Official|v|' is not correctly formatted: the type must not be empty."));
     }
 
     [Test]
     public void Parse_WithInvalidValueType_ThrowsFormatException ()
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Double";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo (
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo(
               "Serialized ObjectID 'Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Double' is invalid: type 'System.Double' is not supported."));
     }
 
@@ -250,9 +251,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     public void Parse_WithInvalidValue_ThrowsFormatException ()
     {
       string idString = "Order|12|System.Guid";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo (
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo(
               "Serialized ObjectID 'Order|12|System.Guid' is not correctly formatted: value '12' is not in the correct format for type 'System.Guid'."));
     }
 
@@ -260,9 +261,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     public void Parse_WithInvalidTypeName_ThrowsFormatException ()
     {
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo (
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo(
               "Serialized ObjectID 'Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid' is invalid: 'System.Goid' is not the name of a loadable type."));
     }
 
@@ -270,9 +271,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     public void Parse_WithInvalidClassID_ThrowsFormatException ()
     {
       string idString = "Arder|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
-      Assert.That (
-          () => ObjectIDStringSerializer.Instance.Parse (idString),
-          Throws.TypeOf<FormatException>().With.Message.EqualTo (
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo(
               "Serialized ObjectID 'Arder|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid' is invalid: 'Arder' is not a valid class ID."));
     }
 
@@ -282,13 +283,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.True);
-      Assert.That (id.StorageProviderDefinition.Name, Is.EqualTo ("TestDomain"));
-      Assert.That (id.ClassID, Is.EqualTo ("Order"));
-      Assert.That (id.Value.GetType(), Is.EqualTo (typeof (Guid)));
-      Assert.That (id.Value, Is.EqualTo (new Guid ("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
+      Assert.That(result, Is.True);
+      Assert.That(id.StorageProviderDefinition.Name, Is.EqualTo("TestDomain"));
+      Assert.That(id.ClassID, Is.EqualTo("Order"));
+      Assert.That(id.Value.GetType(), Is.EqualTo(typeof(Guid)));
+      Assert.That(id.Value, Is.EqualTo(new Guid("{5D09030C-25C2-4735-B514-46333BD28AC8}")));
     }
 
     [Test]
@@ -297,10 +298,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -309,10 +310,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "|";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -321,10 +322,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "||";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -333,10 +334,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "12|System.Int32";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -345,10 +346,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "|12|System.Int32";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -357,10 +358,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "|System.Int32";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -369,10 +370,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "||System.Int32";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -381,10 +382,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Official";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -393,10 +394,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Official|";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -405,10 +406,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Official||";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -417,10 +418,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Official||System.String";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -429,10 +430,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Official|v";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -441,10 +442,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Official|v|";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -453,10 +454,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Double";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -465,10 +466,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Order|12|System.Guid";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -477,10 +478,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -489,10 +490,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Arder|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
 
     [Test]
@@ -501,10 +502,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       string idString = "Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Double";
 
       ObjectID id;
-      bool result = ObjectIDStringSerializer.Instance.TryParse (idString, out id);
+      bool result = ObjectIDStringSerializer.Instance.TryParse(idString, out id);
 
-      Assert.That (result, Is.False);
-      Assert.That (id, Is.Null);
+      Assert.That(result, Is.False);
+      Assert.That(id, Is.Null);
     }
   }
 }

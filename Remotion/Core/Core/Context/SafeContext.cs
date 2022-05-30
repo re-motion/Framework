@@ -15,20 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Context
 {
   /// <summary>
-  /// Superior alternative to the <see cref="ThreadStaticAttribute"/> and <see cref="CallContext"/> for making member variables thread safe that 
-  /// also works with ASP.NET threads.
+  /// Superior alternative to the <see cref="ThreadStaticAttribute"/> and <see cref="T:System.Runtime.Remoting.Messaging.CallContext"/>
+  /// for making member variables thread safe that also works with ASP.NET threads.
   /// </summary>
   /// <remarks>
   /// <para>
-  /// The data managed by this class is by default stored in the <see cref="CallContext"/>, but the storage provider can be replaced by application 
-  /// code if needed. Replacements for the storage provider must guarantee that all data stored by the <see cref="SafeContext"/> is thread-local.
+  /// The data managed by this class is by default stored in the <see cref="T:System.Runtime.Remoting.Messaging.CallContext"/>,
+  /// but the storage provider can be replaced by application code if needed. Replacements for the storage provider must guarantee
+  /// that all data stored by the <see cref="SafeContext"/> is thread-local.
   /// </para>
   /// <para>
   /// The Remotion.Web assembly by default replaces the storage provider with one that stores all data in the <see cref="T:System.Web.HttpContext"/>. 
@@ -39,15 +39,22 @@ namespace Remotion.Context
   /// The data managed by this class is thread-local. The class is safe to be used from multiple threads at the same time, but each thread will have 
   /// its own copy of the data.
   /// </threadsafety>
-  public static class SafeContext
+  public static partial class SafeContext
   {
-    private static readonly Lazy<ISafeContextStorageProvider> s_instance = new Lazy<ISafeContextStorageProvider> (
-        () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
-        LazyThreadSafetyMode.ExecutionAndPublication);
+    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
+    private class Fields
+    {
+      public readonly Lazy<ISafeContextStorageProvider> SafeContextStorageProvider =
+          new Lazy<ISafeContextStorageProvider>(
+              () => SafeServiceLocator.Current.GetInstance<ISafeContextStorageProvider>(),
+              LazyThreadSafetyMode.ExecutionAndPublication);
+    }
+
+    private static readonly Fields s_fields = new Fields();
 
     public static ISafeContextStorageProvider Instance
     {
-      get { return s_instance.Value; }
+      get { return s_fields.SafeContextStorageProvider.Value; }
     }
   }
 }

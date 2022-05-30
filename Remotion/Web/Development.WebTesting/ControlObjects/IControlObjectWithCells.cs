@@ -21,14 +21,25 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
   /// <summary>
   /// Interface for all <see cref="ControlObject"/> implementations representing a collection of cells, e.g. a row within a BOC list.
+  /// Allows the selection via <see cref="IFluentControlObjectWithCells{TCellControlObject}"/>.
   /// </summary>
-  public interface IControlObjectWithCells<TCellControlObject>
+  public interface IControlObjectWithCells<TCellControlObject> : IControlObjectWithCells<TCellControlObject, IFluentControlObjectWithCells<TCellControlObject>>
       where TCellControlObject : ControlObject
+  {
+  }
+
+  /// <summary>
+  /// Interface for all <see cref="ControlObject"/> implementations representing a collection of cells, e.g. a row within a BOC list.
+  /// Allows the selection via the specified <typeparamref name="TFluentControlObjectWithCells"/>.
+  /// </summary>
+  public interface IControlObjectWithCells<TCellControlObject, TFluentControlObjectWithCells>
+      where TCellControlObject : ControlObject
+      where TFluentControlObjectWithCells : IFluentControlObjectWithCells<TCellControlObject>
   {
     /// <summary>
     /// Start of the fluent interface for selecting a cell.
     /// </summary>
-    IFluentControlObjectWithCells<TCellControlObject> GetCell ();
+    TFluentControlObjectWithCells GetCell ();
 
     /// <summary>
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithCells{TCellControlObject}.WithColumnItemID"/>.
@@ -42,7 +53,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   }
 
   /// <summary>
-  /// Fluent interface for completing the <see cref="IControlObjectWithCells{TCellControlObject}.GetCell()"/> call.
+  /// Fluent interface for completing the <see cref="IControlObjectWithCells{TCellControlObject, TFluentControlObjectWithCells}.GetCell()"/> call.
   /// </summary>
   public interface IFluentControlObjectWithCells<TCellControlObject>
       where TCellControlObject : ControlObject

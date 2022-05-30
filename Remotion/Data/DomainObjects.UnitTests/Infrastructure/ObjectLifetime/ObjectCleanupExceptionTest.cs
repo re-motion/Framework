@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void Serialization ()
     {
-      var instance = new ObjectCleanupException (
-          "Message.", DomainObjectIDs.Order1, new ArgumentException ("Inner."), new InvalidOperationException ("Cleanup."));
+      var instance = new ObjectCleanupException(
+          "Message.", DomainObjectIDs.Order1, new ArgumentException("Inner."), new InvalidOperationException("Cleanup."));
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.Message, Is.EqualTo ("Message."));
-      Assert.That (deserializedInstance.ObjectID, Is.EqualTo (DomainObjectIDs.Order1));
-      Assert.That (deserializedInstance.InnerException, Is.TypeOf<ArgumentException> ());
-      Assert.That (deserializedInstance.CleanupException, Is.TypeOf<InvalidOperationException> ());
+      Assert.That(deserializedInstance.Message, Is.EqualTo("Message."));
+      Assert.That(deserializedInstance.ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(deserializedInstance.InnerException, Is.TypeOf<ArgumentException>());
+      Assert.That(deserializedInstance.CleanupException, Is.TypeOf<InvalidOperationException>());
     }
   }
 }

@@ -16,23 +16,25 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   [TestFixture]
+  [SetUICulture("en-US")]
   public class BocListRendererTest : BocListRendererTestBase
   {
-    private static readonly Unit s_menuBlockWidth = new Unit (123, UnitType.Pixel);
-    private static readonly Unit s_menuBlockOffset = new Unit (12, UnitType.Pixel);
+    private static readonly Unit s_menuBlockOffset = new Unit(12, UnitType.Pixel);
     private BocListCssClassDefinition _bocListCssClassDefinition;
 
     [SetUp]
@@ -46,302 +48,331 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderOnlyTableBlock ()
     {
-      List.Stub (mock => mock.HasMenuBlock).Return (false);
+      List.Setup(mock => mock.HasMenuBlock).Returns(false);
 
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "id", "MyList");
-      Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
-      Html.AssertAttribute (tableBlock, "class", "bocListTableBlock");
-      Html.AssertChildElementCount (tableBlock, 1);
-      Html.GetAssertedChildElement (tableBlock, "table", 0);
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "id", "MyList");
+      Html.AssertAttribute(div, "role", "group");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
+
+      var controlTypeLabel = Html.GetAssertedChildElement(div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
+
+      var tableBlock = Html.GetAssertedChildElement(div, "div", 1);
+      Html.AssertAttribute(tableBlock, "class", "bocListTableBlock");
+      Html.AssertChildElementCount(tableBlock, 1);
+      Html.GetAssertedChildElement(tableBlock, "table", 0);
     }
 
     [Test]
     public void RenderWithMenuBlock ()
     {
-      List.Stub (mock => mock.HasMenuBlock).Return (true);
-      List.Stub (mock => mock.MenuBlockWidth).Return (s_menuBlockWidth);
-      List.Stub (mock => mock.MenuBlockOffset).Return (s_menuBlockOffset);
+      List.Setup(mock => mock.HasMenuBlock).Returns(true);
+      List.Setup(mock => mock.MenuBlockMinWidth).Returns(Unit.Parse("15em"));
+      List.Setup(mock => mock.MenuBlockMaxWidth).Returns(Unit.Parse("50%"));
 
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
+
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "id", "MyList");
-      Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "id", "MyList");
+      Html.AssertAttribute(div, "role", "group");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
+      Html.AssertStyleAttribute(div, "--boclist-menublock-minimum-width", "15em");
+      Html.AssertStyleAttribute(div, "--boclist-menublock-maximum-width", "50%");
 
-      var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
-      Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
-      Html.AssertStyleAttribute (menuBlock, "width", s_menuBlockWidth.ToString());
-      var menuBlockContent = Html.GetAssertedChildElement (menuBlock, "div", 0);
-      Html.AssertStyleAttribute (menuBlockContent, "margin-left", s_menuBlockOffset.ToString());
-      Html.GetAssertedChildElement (menuBlockContent, "menu", 0);
+      var controlTypeLabel = Html.GetAssertedChildElement(div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
 
+      var menuBlock = Html.GetAssertedChildElement(div, "div", 1);
+      Html.AssertAttribute(menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
+      var menuBlockContent = Html.GetAssertedChildElement(menuBlock, "div", 0);
+      Html.GetAssertedChildElement(menuBlockContent, "menu", 0);
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 1);
-      Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasMenuBlock");
+      var tableBlock = Html.GetAssertedChildElement(div, "div", 2);
+      Html.AssertAttribute(tableBlock, "class", "bocListTableBlock hasMenuBlock");
 
-      Html.AssertStyleAttribute (tableBlock, "right", s_menuBlockWidth.ToString ());
-
-      Html.GetAssertedChildElement (tableBlock, "table", 0);
+      Html.GetAssertedChildElement(tableBlock, "table", 0);
     }
 
     [Test]
     public void RenderWithMenuBlockWithoutWidth ()
     {
-      List.Stub (mock => mock.HasMenuBlock).Return (true);
+      List.Setup(mock => mock.HasMenuBlock).Returns(true);
 
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
+
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "id", "MyList");
-      Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "id", "MyList");
+      Html.AssertAttribute(div, "role", "group");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
 
-      var menuBlock = Html.GetAssertedChildElement (div, "div", 0);
-      Html.AssertAttribute (menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
-      var menuBlockContent = Html.GetAssertedChildElement (menuBlock, "div", 0);
-      Html.GetAssertedChildElement (menuBlockContent, "menu", 0);
+      var controlTypeLabel = Html.GetAssertedChildElement(div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
 
+      var menuBlock = Html.GetAssertedChildElement(div, "div", 1);
+      Html.AssertAttribute(menuBlock, "class", _bocListCssClassDefinition.MenuBlock);
+      var menuBlockContent = Html.GetAssertedChildElement(menuBlock, "div", 0);
+      Html.GetAssertedChildElement(menuBlockContent, "menu", 0);
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 1);
-      Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasMenuBlock");
+      var tableBlock = Html.GetAssertedChildElement(div, "div", 2);
+      Html.AssertAttribute(tableBlock, "class", "bocListTableBlock hasMenuBlock");
 
-      Html.GetAssertedChildElement (tableBlock, "table", 0);
+      Html.GetAssertedChildElement(tableBlock, "table", 0);
     }
 
     [Test]
     public void RenderWithNavigationBlock ()
     {
-      List.Stub (mock => mock.HasNavigator).Return (true);
+      List.Setup(mock => mock.HasNavigator).Returns(true);
 
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
+
+      var controlTypeLabelID = "MyList_ControlTypeLabel";
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "id", "MyList");
-      Html.AssertAttribute (div, "role", "group");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
-      Html.AssertAttribute (div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "id", "MyList");
+      Html.AssertAttribute(div, "role", "group");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.LabelReferenceAttribute, "Label");
+      Html.AssertAttribute(div, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, controlTypeLabelID);
 
-      var tableBlock = Html.GetAssertedChildElement (div, "div", 0);
-      Html.AssertAttribute (tableBlock, "class", "bocListTableBlock hasNavigator");
-      Html.AssertChildElementCount (tableBlock, 2);
-      Html.GetAssertedChildElement (tableBlock, "table", 0);
-      Html.GetAssertedChildElement (tableBlock, "navigation", 1);
+      var controlTypeLabel = Html.GetAssertedChildElement(div, "span", 0);
+      AssertControlTypeLabel(controlTypeLabel, controlTypeLabelID);
+
+      var tableBlock = Html.GetAssertedChildElement(div, "div", 1);
+      Html.AssertAttribute(tableBlock, "class", "bocListTableBlock hasNavigator");
+      Html.AssertChildElementCount(tableBlock, 2);
+      Html.GetAssertedChildElement(tableBlock, "table", 0);
+      Html.GetAssertedChildElement(tableBlock, "navigation", 1);
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributes.ControlType, "BocList");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributes.ControlType, "BocList");
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributesWithNavigationBlock ()
     {
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
-      List.Stub (mock => mock.HasNavigator).Return (true);
+      List.Setup(mock => mock.HasNavigator).Returns(true);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock, "true");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock, "true");
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributesWithoutNavigationBlock ()
     {
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
-      List.Stub (mock => mock.HasNavigator).Return (false);
+      List.Setup(mock => mock.HasNavigator).Returns(false);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock, "false");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListHasNavigationBlock, "false");
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributesRowEditModeAndListEditMode ()
     {
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsListEditModeActive).Returns(true);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsRowEditModeActive).Returns(true);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributesNoEditMode ()
     {
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsListEditModeActive).Returns(false);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsRowEditModeActive).Returns(false);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "false");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "false");
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributesListEditMode ()
     {
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (true);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (false);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsListEditModeActive).Returns(true);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsRowEditModeActive).Returns(false);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributesRowEditMode ()
     {
-      var renderer = new BocListRenderer (
+      var renderer = new BocListRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition,
-          new StubRenderer ("table"),
-          new StubRenderer ("navigation"),
-          new StubRenderer ("menu"),
+          new StubRenderer("table"),
+          new StubRenderer("navigation"),
+          new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
-      List.EditModeController.Stub (mock => mock.IsListEditModeActive).Return (false);
-      List.EditModeController.Stub (mock => mock.IsRowEditModeActive).Return (true);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsListEditModeActive).Returns(false);
+      Mock.Get(List.Object.EditModeController).Setup(mock => mock.IsRowEditModeActive).Returns(true);
 
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListIsEditModeActive, "true");
+    }
+
+    private void AssertControlTypeLabel (XmlNode controlTypeLabel, string controlTypeLabelID)
+    {
+      Html.AssertAttribute(controlTypeLabel, "id", controlTypeLabelID);
+      Html.AssertAttribute(controlTypeLabel, "hidden", "hidden");
+      Html.AssertTextNode(controlTypeLabel, "Data table", 0);
+    }
+
+    private BocListRenderingContext CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      return new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }

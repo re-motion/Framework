@@ -30,29 +30,29 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
     private readonly ConfigurationProperty _storageGroupTypeProperty;
     private readonly DoubleCheckedLockingContainer<StorageGroupAttribute> _storageGroup;
 
-    public StorageGroupElement()
+    public StorageGroupElement ()
     {
-      _storageGroup = new DoubleCheckedLockingContainer<StorageGroupAttribute> (
-          delegate { return (StorageGroupAttribute) Activator.CreateInstance (StorageGroupType); });
-      _storageGroupTypeProperty = TypeElement<StorageGroupAttribute>.CreateTypeProperty (null);
+      _storageGroup = new DoubleCheckedLockingContainer<StorageGroupAttribute>(
+          delegate { return (StorageGroupAttribute)Activator.CreateInstance(StorageGroupType)!; });
+      _storageGroupTypeProperty = TypeElement<StorageGroupAttribute>.CreateTypeProperty(null);
 
-      _storageProviderNameProperty = new ConfigurationProperty (
+      _storageProviderNameProperty = new ConfigurationProperty(
           "provider",
-          typeof (string),
+          typeof(string),
           null,
           ConfigurationPropertyOptions.IsRequired);
 
 
-      _properties.Add (_storageGroupTypeProperty);
-      _properties.Add (_storageProviderNameProperty);
+      _properties.Add(_storageGroupTypeProperty);
+      _properties.Add(_storageProviderNameProperty);
     }
 
     //TODO: test
     public StorageGroupElement (StorageGroupAttribute storageGroup, string storageProviderName)
         : this()
     {
-      ArgumentUtility.CheckNotNull ("storageGroup", storageGroup);
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderName", storageProviderName);
+      ArgumentUtility.CheckNotNull("storageGroup", storageGroup);
+      ArgumentUtility.CheckNotNullOrEmpty("storageProviderName", storageProviderName);
 
       StorageGroup = storageGroup;
       StorageGroupType = storageGroup.GetType();
@@ -67,13 +67,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     protected Type StorageGroupType
     {
-      get { return (Type) this[_storageGroupTypeProperty]; }
+      get { return (Type)this[_storageGroupTypeProperty]; }
       set { this[_storageGroupTypeProperty] = value; }
     }
 
     public string StorageProviderName
     {
-      get { return (string) this[_storageProviderNameProperty]; }
+      get { return (string)this[_storageProviderNameProperty]; }
       protected set { this[_storageProviderNameProperty] = value; }
     }
 
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Configuration
 
     string INamedConfigurationElement.Name
     {
-      get { return TypeUtility.GetPartialAssemblyQualifiedName (StorageGroupType); }
+      get { return TypeUtility.GetPartialAssemblyQualifiedName(StorageGroupType); }
     }
   }
 }

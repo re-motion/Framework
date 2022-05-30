@@ -31,18 +31,22 @@ namespace Remotion.Data.DomainObjects.Mapping
 {
   public class MappingConfiguration : IMappingConfiguration
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (MappingConfiguration));
+    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
+    private class Fields
+    {
+      // ReSharper disable once MemberHidesStaticFromOuterClass
+      public readonly DoubleCheckedLockingContainer<IMappingConfiguration> Current = new DoubleCheckedLockingContainer<IMappingConfiguration>(
+          () => new MappingConfiguration(
+              DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
+              new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
+    }
 
-    private static readonly DoubleCheckedLockingContainer<IMappingConfiguration> s_mappingConfiguration =
-        new DoubleCheckedLockingContainer<IMappingConfiguration> (
-            () =>
-            new MappingConfiguration (
-                DomainObjectsConfiguration.Current.MappingLoader.CreateMappingLoader(),
-                new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage))));
+    private static readonly Fields s_fields = new Fields();
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingConfiguration));
 
     public static IMappingConfiguration Current
     {
-      get { return s_mappingConfiguration.Value; }
+      get { return s_fields.Current.Value; }
     }
 
     public static void SetCurrent (IMappingConfiguration mappingConfiguration)
@@ -50,20 +54,20 @@ namespace Remotion.Data.DomainObjects.Mapping
       if (mappingConfiguration != null)
       {
         if (!mappingConfiguration.ResolveTypes)
-          throw CreateArgumentException ("mappingConfiguration", "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.");
+          throw CreateArgumentException("mappingConfiguration", "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.");
       }
 
-      s_mappingConfiguration.Value = mappingConfiguration;
+      s_fields.Current.Value = mappingConfiguration!;
     }
 
-    private static ArgumentException CreateArgumentException (Exception innerException, string argumentName, string message, params object[] args)
+    private static ArgumentException CreateArgumentException (Exception? innerException, string argumentName, string message, params object[] args)
     {
-      return new ArgumentException (string.Format (message, args), argumentName, innerException);
+      return new ArgumentException(string.Format(message, args), argumentName, innerException);
     }
 
     private static ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
     {
-      return CreateArgumentException (null, argumentName, message, args);
+      return CreateArgumentException(null, argumentName, message, args);
     }
 
     // member fields
@@ -78,41 +82,41 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public MappingConfiguration (IMappingLoader mappingLoader, IPersistenceModelLoader persistenceModelLoader)
     {
-      ArgumentUtility.CheckNotNull ("mappingLoader", mappingLoader);
-      ArgumentUtility.CheckNotNull ("persistenceModelLoader", persistenceModelLoader);
+      ArgumentUtility.CheckNotNull("mappingLoader", mappingLoader);
+      ArgumentUtility.CheckNotNull("persistenceModelLoader", persistenceModelLoader);
 
-      s_log.Info ("Building mapping configuration...");
-      
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Info, "Time needed to build and validate mapping configuration: {elapsed}."))
+      s_log.Info("Building mapping configuration...");
+
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build and validate mapping configuration: {elapsed}."))
       {
-        var mappingConfigurationValidationHelper = new MappingConfigurationValidationHelper (mappingLoader, persistenceModelLoader);
+        var mappingConfigurationValidationHelper = new MappingConfigurationValidationHelper(mappingLoader, persistenceModelLoader);
 
         var typeDefinitions = mappingLoader.GetClassDefinitions();
-        _typeDefinitions = typeDefinitions.ToDictionary (td => td.ClassType).AsReadOnly();
-        mappingConfigurationValidationHelper.ValidateDuplicateClassIDs (typeDefinitions.OfType<ClassDefinition>());
-        _classDefinitions = typeDefinitions.ToDictionary (cd => cd.ID).AsReadOnly();
-        
-        mappingConfigurationValidationHelper.ValidateClassDefinitions (_typeDefinitions.Values);
-        mappingConfigurationValidationHelper.ValidatePropertyDefinitions (_typeDefinitions.Values);
+        _typeDefinitions = new ReadOnlyDictionary<Type, ClassDefinition>(typeDefinitions.ToDictionary(td => td.ClassType));
+        mappingConfigurationValidationHelper.ValidateDuplicateClassIDs(typeDefinitions.OfType<ClassDefinition>());
+        _classDefinitions = new ReadOnlyDictionary<string, ClassDefinition>(typeDefinitions.ToDictionary(cd => cd.ID));
 
-        var relationDefinitions = mappingLoader.GetRelationDefinitions (_typeDefinitions);
-        _relationDefinitions = new ReadOnlyDictionary<string, RelationDefinition> (relationDefinitions.ToDictionary (rd => rd.ID));
+        mappingConfigurationValidationHelper.ValidateClassDefinitions(_typeDefinitions.Values);
+        mappingConfigurationValidationHelper.ValidatePropertyDefinitions(_typeDefinitions.Values);
 
-        mappingConfigurationValidationHelper.ValidateRelationDefinitions (_relationDefinitions.Values);
+        var relationDefinitions = mappingLoader.GetRelationDefinitions(_typeDefinitions);
+        _relationDefinitions = new ReadOnlyDictionary<string, RelationDefinition>(relationDefinitions.ToDictionary(rd => rd.ID));
 
-        foreach (var rootClass in GetInheritanceRootClasses (_typeDefinitions.Values))
+        mappingConfigurationValidationHelper.ValidateRelationDefinitions(_relationDefinitions.Values);
+
+        foreach (var rootClass in GetInheritanceRootClasses(_typeDefinitions.Values))
         {
-          persistenceModelLoader.ApplyPersistenceModelToHierarchy (rootClass);
-          mappingConfigurationValidationHelper.VerifyPersistenceModelApplied (rootClass);
-          mappingConfigurationValidationHelper.ValidatePersistenceMapping (rootClass);
+          persistenceModelLoader.ApplyPersistenceModelToHierarchy(rootClass);
+          mappingConfigurationValidationHelper.VerifyPersistenceModelApplied(rootClass);
+          mappingConfigurationValidationHelper.ValidatePersistenceMapping(rootClass);
         }
 
         _resolveTypes = mappingLoader.ResolveTypes;
         _nameResolver = mappingLoader.NameResolver;
 
-        SetMappingReadOnly ();
+        SetMappingReadOnly();
 
-        mappingConfigurationValidationHelper.ValidateSortExpression (_relationDefinitions.Values);
+        mappingConfigurationValidationHelper.ValidateSortExpression(_relationDefinitions.Values);
       }
     }
 
@@ -131,52 +135,52 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public bool ContainsTypeDefinition (Type classType)
     {
-      ArgumentUtility.CheckNotNull ("classType", classType);
+      ArgumentUtility.CheckNotNull("classType", classType);
 
-      return _typeDefinitions.ContainsKey (classType);
+      return _typeDefinitions.ContainsKey(classType);
     }
 
     public ClassDefinition GetTypeDefinition (Type classType)
     {
-      ArgumentUtility.CheckNotNull ("classType", classType);
+      ArgumentUtility.CheckNotNull("classType", classType);
 
-      return GetTypeDefinition (classType, type => CreateMappingException ("Mapping does not contain class '{0}'.", type));
+      return GetTypeDefinition(classType, type => CreateMappingException("Mapping does not contain class '{0}'.", type));
     }
 
    public ClassDefinition GetTypeDefinition (Type classType, Func<Type, Exception> missingTypeDefinitionExceptionFactory)
     {
-      ArgumentUtility.CheckNotNull ("classType", classType);
-      ArgumentUtility.CheckNotNull ("missingTypeDefinitionExceptionFactory", missingTypeDefinitionExceptionFactory);
+      ArgumentUtility.CheckNotNull("classType", classType);
+      ArgumentUtility.CheckNotNull("missingTypeDefinitionExceptionFactory", missingTypeDefinitionExceptionFactory);
 
-      var classDefinition = _typeDefinitions.GetValueOrDefault (classType);
+      var classDefinition = _typeDefinitions.GetValueOrDefault(classType);
       if (classDefinition == null)
-        throw missingTypeDefinitionExceptionFactory (classType);
+        throw missingTypeDefinitionExceptionFactory(classType);
 
       return classDefinition;
     }
 
     public bool ContainsClassDefinition (string classID)
     {
-      ArgumentUtility.CheckNotNull ("classID", classID);
+      ArgumentUtility.CheckNotNull("classID", classID);
 
-      return _classDefinitions.ContainsKey (classID);
+      return _classDefinitions.ContainsKey(classID);
     }
 
     public ClassDefinition GetClassDefinition (string classID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
+      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
 
-      return GetClassDefinition (classID, id => CreateMappingException ("Mapping does not contain class '{0}'.", id));
+      return GetClassDefinition(classID, id => CreateMappingException("Mapping does not contain class '{0}'.", id));
     }
 
     public ClassDefinition GetClassDefinition (string classID, Func<string, Exception> missingClassDefinitionExceptionFactory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
-      ArgumentUtility.CheckNotNull ("missingClassDefinitionExceptionFactory", missingClassDefinitionExceptionFactory);
+      ArgumentUtility.CheckNotNullOrEmpty("classID", classID);
+      ArgumentUtility.CheckNotNull("missingClassDefinitionExceptionFactory", missingClassDefinitionExceptionFactory);
 
-      var classDefinition = _classDefinitions.GetValueOrDefault (classID);
+      var classDefinition = _classDefinitions.GetValueOrDefault(classID);
       if (classDefinition == null)
-        throw missingClassDefinitionExceptionFactory (classID);
+        throw missingClassDefinitionExceptionFactory(classID);
 
       return classDefinition;
     }
@@ -188,12 +192,12 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private IEnumerable<ClassDefinition> GetInheritanceRootClasses (IEnumerable<ClassDefinition> classDefinitions)
     {
-      var rootClasses = new HashSet<ClassDefinition> ();
+      var rootClasses = new HashSet<ClassDefinition>();
       foreach (var classDefinition in classDefinitions)
       {
-        var rootClassDefinition = classDefinition.GetInheritanceRootClass ();
-        if (!rootClasses.Contains (rootClassDefinition))
-          rootClasses.Add (rootClassDefinition);
+        var rootClassDefinition = classDefinition.GetInheritanceRootClass();
+        if (!rootClasses.Contains(rootClassDefinition))
+          rootClasses.Add(rootClassDefinition);
       }
 
       return rootClasses;
@@ -207,7 +211,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private MappingException CreateMappingException (string message, params object[] args)
     {
-      return new MappingException (string.Format (message, args));
+      return new MappingException(string.Format(message, args));
     }
   }
 }

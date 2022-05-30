@@ -32,8 +32,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     /// <inheritdoc />
     public override WebButton CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
-      control.Text = options.TextContent;
+      var control = base.CreateControl(options);
+      control.Text = WebString.CreateFromText(options.TextContent);
       return control;
     }
   }

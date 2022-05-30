@@ -24,6 +24,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator"/>
   public interface IBusinessObjectReferenceDataSourceControlValidatorFactory : IBocValidatorFactory<BusinessObjectReferenceDataSourceControl>
   {
-     
+
   }
 }

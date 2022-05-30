@@ -47,9 +47,9 @@ namespace Remotion.Security.Metadata
       get { return true; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return obj != null && obj.GetType () == GetType ();
+      return obj != null && obj.GetType() == GetType();
     }
 
     public override int GetHashCode ()

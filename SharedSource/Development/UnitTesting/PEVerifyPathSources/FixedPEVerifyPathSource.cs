@@ -18,6 +18,7 @@
 using System;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
@@ -27,7 +28,7 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 
     public FixedPEVerifyPathSource (string path)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+      ArgumentUtility.CheckNotNullOrEmpty("path", path);
       _path = path;
     }
 

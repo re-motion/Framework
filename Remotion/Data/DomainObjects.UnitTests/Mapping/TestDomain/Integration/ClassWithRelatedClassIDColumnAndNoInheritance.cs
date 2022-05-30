@@ -18,22 +18,22 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithRelatedClassIDColumnAndNoInheritance")]
+  [DBTable("TableWithRelatedClassIDColumnAndNoInheritance")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithRelatedClassIDColumnAndNoInheritance : TestDomainBase
   {
     public static ClassWithRelatedClassIDColumnAndNoInheritance NewObject ()
     {
-      return NewObject<ClassWithRelatedClassIDColumnAndNoInheritance> ();
+      return NewObject<ClassWithRelatedClassIDColumnAndNoInheritance>();
     }
 
-    protected ClassWithRelatedClassIDColumnAndNoInheritance()
+    protected ClassWithRelatedClassIDColumnAndNoInheritance ()
     {
     }
 
-    [DBBidirectionalRelation ("ClassWithRelatedClassIDColumnAndNoInheritance", ContainsForeignKey = true)]
-    [DBColumn ("TableWithGuidKeyID")]
+    [DBBidirectionalRelation("ClassWithRelatedClassIDColumnAndNoInheritance", ContainsForeignKey = true)]
+    [DBColumn("TableWithGuidKeyID")]
     public abstract ClassWithGuidKey ClassWithGuidKey { get; set; }
   }
 }

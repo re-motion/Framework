@@ -36,18 +36,18 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="context">The corresponding control object's context.</param>
     public static void ContextClick ([NotNull] this ElementScope scope, [NotNull] WebTestObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("scope", scope);
+      ArgumentUtility.CheckNotNull("context", context);
 
       // Hack: Coypu does not directly support the Actions interface, therefore we need to fall back to using Selenium.
-      RetryUntilTimeout.Run (
+      RetryUntilTimeout.Run(
           () =>
           {
-            var webDriver = (IWebDriver) context.Browser.Driver.Native;
-            var nativeScope = (IWebElement) scope.Native;
+            var webDriver = (IWebDriver)context.Browser.Driver.Native;
+            var nativeScope = (IWebElement)scope.Native;
 
-            var actions = new Actions (webDriver);
-            actions.ContextClick (nativeScope);
+            var actions = new Actions(webDriver);
+            actions.ContextClick(nativeScope);
             actions.Perform();
           });
     }
@@ -56,25 +56,15 @@ namespace Remotion.Web.Development.WebTesting
     /// Focuses an element.
     /// </summary>
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     public static void Focus ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
-
-      // This workaround is necessary, as in some cases in InternetExplorer this Property returns "true" on first couple accesses even when the scope is not disabled.
-      //TODO: Remove Workaround when RM-6831 is fixed
-      for (var i = 0; i < 10; i++)
-      {
-        var disabled = scope.Disabled;
-        
-        if (!disabled)
-          break;
-      }
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       if (scope.Disabled)
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(scope.GetDriver());
 
-      scope.SendKeys ("");
+      scope.SendKeys("");
     }
 
     /// <summary>
@@ -83,7 +73,7 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="scope">The <see cref="ElementScope"/> on which the action is performed.</param>
     public static void FocusClick ([NotNull] this ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       scope.Focus();
       scope.Click();

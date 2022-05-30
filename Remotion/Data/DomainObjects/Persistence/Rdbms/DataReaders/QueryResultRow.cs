@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Queries;
@@ -33,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public QueryResultRow (IDataReader dataReader, IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       _dataReader = dataReader;
       _storageTypeInformationProvider = storageTypeInformationProvider;
@@ -55,35 +56,62 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _dataReader.FieldCount; }
     }
 
-    public object GetRawValue (int position)
+    public object? GetRawValue (int position)
     {
-      return _dataReader.GetValue (position);
+      // IDataReader.GetValue(ordinal) usually returns DBNull.Value for null values, but the implementation does return null for unsupported data types.
+      // There is no explicit documentation on IDataReader.GetValue(ordinal) returning only DBNull.Value instead of an actual null value.
+      // Also, when using IDbCommand.ExecuteScalar(), the API is defined as a nullable value, therefore it is more consistent to officially accept
+      // that IDataReader.GetValue(ordinal) could also return null values despite its contract.
+
+      return _dataReader.GetValue(position);
     }
 
-    public object GetConvertedValue (int position, Type type)
+    public object? GetConvertedValue (int position, Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var storageType =  GetStorageType (type);
-      return storageType.Read (_dataReader, position);
+      var storageType =  GetStorageType(type);
+      object? convertedValue = storageType.Read(_dataReader, position);
+      return convertedValue;
     }
 
+    [return: MaybeNull]
     public T GetConvertedValue<T> (int position)
     {
-      return (T) GetConvertedValue (position, typeof(T));
+      object? convertedValue = GetConvertedValue(position, typeof(T));
+
+      try
+      {
+        return (T?)convertedValue;
+      }
+      catch (NullReferenceException)
+      {
+        if (convertedValue == null && typeof(T).IsValueType && !NullableTypeUtility.IsNullableType(typeof(T)))
+        {
+          throw new InvalidCastException(
+              string.Format(
+                  "Type parameter 'T' is a value type ('{0}') but the result at position '{1}' is null. Use 'System.Nullable<{0}>' instead as type parameter.",
+                  typeof(T),
+                  position));
+        }
+        else
+        {
+          throw;
+        }
+      }
     }
 
     private IStorageTypeInformation GetStorageType (Type type)
     {
       try
       {
-        return _storageTypeInformationProvider.GetStorageType (type);
+        return _storageTypeInformationProvider.GetStorageType(type);
       }
       catch (NotSupportedException ex)
       {
-        if (typeof (ObjectID).IsAssignableFrom (type))
+        if (typeof(ObjectID).IsAssignableFrom(type))
         {
-          throw new NotSupportedException (
+          throw new NotSupportedException(
               "Type 'ObjectID' ist not supported by this storage provider."
               + Environment.NewLine
               + "Please select the ID and ClassID values separately, then create an ObjectID with it in memory "

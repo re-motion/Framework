@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -32,21 +33,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class TextBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     public void GenericTests (GenericSelectorTestAction<TextBoxSelector, TextBoxControlObject> testAction)
     {
-      testAction (Helper, e => e.TextBoxes(), "textBox");
+      testAction(Helper, e => e.TextBoxes(), "textBox");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<TextBoxSelector, TextBoxControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<TextBoxSelector, TextBoxControlObject> testAction)
     {
-      testAction (Helper, e => e.TextBoxes(), "textBox");
+      testAction(Helper, e => e.TextBoxes(), "textBox");
     }
 
     [Test]
@@ -54,11 +55,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.TextBoxes().GetByLocalID ("TextBoxDisabled");
+      var control = home.TextBoxes().GetByLocalID("TextBoxDisabled");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
+          () => control.FillWith("text"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "FillWith").Message));
+      Assert.That(
+          () => control.FillWith("text", FinishInput.Promptly),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "FillWith").Message));
     }
 
     [Test]
@@ -66,14 +71,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var myHtmlTextBox = home.TextBoxes().GetByLocalID ("MyHtmlTextBox");
-      Assert.That (myHtmlTextBox.IsReadOnly(), Is.False);
+      var myHtmlTextBox = home.TextBoxes().GetByLocalID("MyHtmlTextBox");
+      Assert.That(myHtmlTextBox.IsReadOnly(), Is.False);
 
-      var textBoxReadOnly = home.TextBoxes().GetByLocalID ("TextBoxReadOnly");
-      Assert.That (textBoxReadOnly.IsReadOnly(), Is.True);
+      var textBoxReadOnly = home.TextBoxes().GetByLocalID("TextBoxReadOnly");
+      Assert.That(textBoxReadOnly.IsReadOnly(), Is.True);
 
-      var myHtmlTextBoxReadOnly = home.TextBoxes().GetByLocalID ("MyHtmlTextBoxReadOnly");
-      Assert.That (myHtmlTextBoxReadOnly.IsReadOnly(), Is.True);
+      var myHtmlTextBoxReadOnly = home.TextBoxes().GetByLocalID("MyHtmlTextBoxReadOnly");
+      Assert.That(myHtmlTextBoxReadOnly.IsReadOnly(), Is.True);
     }
 
     [Test]
@@ -81,11 +86,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.TextBoxes().GetByLocalID ("TextBoxReadOnly");
+      var control = home.TextBoxes().GetByLocalID("TextBoxReadOnly");
 
-      Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.FillWith ("text"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.FillWith ("text", FinishInput.Promptly), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That(control.IsReadOnly(), Is.True);
+      Assert.That(() => control.FillWith("text"), Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.FillWith("text", FinishInput.Promptly),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 
     [Test]
@@ -93,14 +100,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var editableTextBox = home.TextBoxes().GetByID ("body_MyEditableTextBox");
-      Assert.That (editableTextBox.Scope.Id, Is.EqualTo ("body_MyEditableTextBox"));
+      var editableTextBox = home.TextBoxes().GetByID("body_MyEditableTextBox");
+      Assert.That(editableTextBox.Scope.Id, Is.EqualTo("body_MyEditableTextBox"));
 
-      var aspTextBox = home.TextBoxes().GetByID ("body_MyAspTextBox");
-      Assert.That (aspTextBox.Scope.Id, Is.EqualTo ("body_MyAspTextBox"));
+      var aspTextBox = home.TextBoxes().GetByID("body_MyAspTextBox");
+      Assert.That(aspTextBox.Scope.Id, Is.EqualTo("body_MyAspTextBox"));
 
-      var htmlTextBox = home.TextBoxes().GetByID ("body_MyHtmlTextBox");
-      Assert.That (htmlTextBox.Scope.Id, Is.EqualTo ("body_MyHtmlTextBox"));
+      var htmlTextBox = home.TextBoxes().GetByID("body_MyHtmlTextBox");
+      Assert.That(htmlTextBox.Scope.Id, Is.EqualTo("body_MyHtmlTextBox"));
     }
 
     [Test]
@@ -108,14 +115,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var editableTextBox = home.TextBoxes().GetByLocalID ("MyEditableTextBox");
-      Assert.That (editableTextBox.Scope.Id, Is.EqualTo ("body_MyEditableTextBox"));
+      var editableTextBox = home.TextBoxes().GetByLocalID("MyEditableTextBox");
+      Assert.That(editableTextBox.Scope.Id, Is.EqualTo("body_MyEditableTextBox"));
 
-      var aspTextBox = home.TextBoxes().GetByLocalID ("MyAspTextBox");
-      Assert.That (aspTextBox.Scope.Id, Is.EqualTo ("body_MyAspTextBox"));
+      var aspTextBox = home.TextBoxes().GetByLocalID("MyAspTextBox");
+      Assert.That(aspTextBox.Scope.Id, Is.EqualTo("body_MyAspTextBox"));
 
-      var htmlTextBox = home.TextBoxes().GetByLocalID ("MyHtmlTextBox");
-      Assert.That (htmlTextBox.Scope.Id, Is.EqualTo ("body_MyHtmlTextBox"));
+      var htmlTextBox = home.TextBoxes().GetByLocalID("MyHtmlTextBox");
+      Assert.That(htmlTextBox.Scope.Id, Is.EqualTo("body_MyHtmlTextBox"));
     }
 
     [Test]
@@ -123,14 +130,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var editableTextBox = home.TextBoxes().GetByLocalID ("MyEditableTextBox");
-      Assert.That (editableTextBox.GetText(), Is.EqualTo ("MyEditableTextBoxValue"));
+      var editableTextBox = home.TextBoxes().GetByLocalID("MyEditableTextBox");
+      Assert.That(editableTextBox.GetText(), Is.EqualTo("MyEditableTextBoxValue"));
 
-      var aspTextBox = home.TextBoxes().GetByLocalID ("MyAspTextBox");
-      Assert.That (aspTextBox.GetText(), Is.EqualTo ("MyAspTextBoxValue"));
+      var aspTextBox = home.TextBoxes().GetByLocalID("MyAspTextBox");
+      Assert.That(aspTextBox.GetText(), Is.EqualTo("MyAspTextBoxValue"));
 
-      var htmlTextBox = home.TextBoxes().GetByLocalID ("MyHtmlTextBox");
-      Assert.That (htmlTextBox.GetText(), Is.EqualTo ("MyHtmlTextBoxValue"));
+      var htmlTextBox = home.TextBoxes().GetByLocalID("MyHtmlTextBox");
+      Assert.That(htmlTextBox.GetText(), Is.EqualTo("MyHtmlTextBoxValue"));
     }
 
     [Test]
@@ -138,30 +145,42 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      // Check WaitFor.Nothing once before default behavior usage...
+      {
+        var aspTextBoxNoAutoPostBack = home.TextBoxes().GetByLocalID("MyAspTextBoxNoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(aspTextBoxNoAutoPostBack);
+        aspTextBoxNoAutoPostBack.FillWith("Blubba4", Opt.ContinueImmediately());
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That(aspTextBoxNoAutoPostBack.GetText(), Is.EqualTo("Blubba4"));
+      }
 
-      var aspTextBoxNoAutoPostback = home.TextBoxes().GetByLocalID ("MyAspTextBoxNoAutoPostBack");
-      aspTextBoxNoAutoPostback.FillWith ("Blubba4", Opt.ContinueImmediately());
-      Assert.That (aspTextBoxNoAutoPostback.GetText(), Is.EqualTo ("Blubba4"));
+      {
+        var editableTextBox = home.TextBoxes().GetByLocalID("MyEditableTextBox");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(editableTextBox);
+        editableTextBox.FillWith("Blubba1");
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(editableTextBox.GetText(), Is.EqualTo("Blubba1"));
+      }
 
-      var editableTextBox = home.TextBoxes().GetByLocalID ("MyEditableTextBox");
-      editableTextBox.FillWith ("Blubba1");
-      Assert.That (editableTextBox.GetText(), Is.EqualTo ("Blubba1"));
+      {
+        var aspTextBox = home.TextBoxes().GetByLocalID("MyAspTextBox");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(aspTextBox);
+        aspTextBox.FillWith("Blubba2");
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(aspTextBox.GetText(), Is.EqualTo("Blubba2"));
+      }
 
-      // ...and once afterwards
-
-      var aspTextBox = home.TextBoxes().GetByLocalID ("MyAspTextBox");
-      aspTextBox.FillWith ("Blubba2");
-      Assert.That (aspTextBox.GetText(), Is.EqualTo ("Blubba2"));
-
-      var htmlTextBox = home.TextBoxes().GetByLocalID ("MyHtmlTextBox");
-      htmlTextBox.FillWith ("Blubba3", Opt.ContinueImmediately());
-      Assert.That (htmlTextBox.GetText(), Is.EqualTo ("Blubba3"));
+      {
+        var htmlTextBox = home.TextBoxes().GetByLocalID("MyHtmlTextBox");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(htmlTextBox);
+        htmlTextBox.FillWith("Blubba3", Opt.ContinueImmediately());
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That(htmlTextBox.GetText(), Is.EqualTo("Blubba3"));
+      }
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("TextBoxTest.wxe");
+      return Start<WxePageObject>("TextBoxTest.wxe");
     }
   }
 }

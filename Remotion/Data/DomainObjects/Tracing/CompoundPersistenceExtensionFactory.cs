@@ -22,14 +22,14 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
 {
-  [ImplementationFor (typeof (IPersistenceExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IPersistenceExtensionFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundPersistenceExtensionFactory : IPersistenceExtensionFactory
   {
     private readonly IReadOnlyCollection<IPersistenceExtensionFactory> _persistenceExtensionFactories;
 
     public CompoundPersistenceExtensionFactory (IEnumerable<IPersistenceExtensionFactory> persistenceExtensionFactories)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtensionFactories", persistenceExtensionFactories);
+      ArgumentUtility.CheckNotNull("persistenceExtensionFactories", persistenceExtensionFactories);
 
       _persistenceExtensionFactories = persistenceExtensionFactories.ToList().AsReadOnly();
     }
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public IEnumerable<IPersistenceExtension> CreatePersistenceExtensions (Guid clientTransactionID)
     {
-      return _persistenceExtensionFactories.SelectMany (f => f.CreatePersistenceExtensions (clientTransactionID));
+      return _persistenceExtensionFactories.SelectMany(f => f.CreatePersistenceExtensions(clientTransactionID));
     }
   }
 }

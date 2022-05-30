@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Caching;
@@ -32,29 +33,30 @@ namespace Remotion.Web.Infrastructure
   /// </summary>
   public class PageWrapper : ControlWrapper, IPage
   {
-    public static IPage CastOrCreate (Page page)
+    [return: NotNullIfNotNull("page")]
+    public static IPage? CastOrCreate (Page? page)
     {
       if (page == null)
         return null;
       else if (page is IPage)
-        return (IPage) page;
+        return (IPage)page;
       else
-        return new PageWrapper (page);
+        return new PageWrapper(page);
     }
 
     private readonly Page _page;
-    private HttpContextWrapper _httpContext;
-    private HttpResponseWrapper _httpResponse;
-    private HttpRequestWrapper _httpRequest;
-    private HttpSessionStateWrapper _httpSessionState;
-    private HttpServerUtilityWrapper _httpServerUtility;
-    private HttpApplicationStateWrapper _httpApplicationState;
-    private ClientScriptManagerWrapper _clientScriptManager;
+    private HttpContextWrapper? _httpContext;
+    private HttpResponseWrapper? _httpResponse;
+    private HttpRequestWrapper? _httpRequest;
+    private HttpSessionStateWrapper? _httpSessionState;
+    private HttpServerUtilityWrapper? _httpServerUtility;
+    private HttpApplicationStateWrapper? _httpApplicationState;
+    private ClientScriptManagerWrapper? _clientScriptManager;
 
     private PageWrapper (Page page)
-        : base (page)
+        : base(page)
     {
-      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNull("page", page);
       _page = page;
     }
 
@@ -74,12 +76,12 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void AddParsedSubObject (object obj)
     {
-      ((IParserAccessor) _page).AddParsedSubObject (obj);
+      ((IParserAccessor)_page).AddParsedSubObject(obj);
     }
 
     public DataBindingCollection DataBindings
     {
-      get { return ((IDataBindingsAccessor) _page).DataBindings; }
+      get { return ((IDataBindingsAccessor)_page).DataBindings; }
     }
 
     /// <summary>
@@ -90,7 +92,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public bool HasDataBindings
     {
-      get { return ((IDataBindingsAccessor) _page).HasDataBindings; }
+      get { return ((IDataBindingsAccessor)_page).HasDataBindings; }
     }
 
     /// <summary>
@@ -101,7 +103,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public ControlBuilder ControlBuilder
     {
-      get { return ((IControlBuilderAccessor) _page).ControlBuilder; }
+      get { return ((IControlBuilderAccessor)_page).ControlBuilder; }
     }
 
     /// <summary>
@@ -112,7 +114,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public IDictionary GetDesignModeState ()
     {
-      return ((IControlDesignerAccessor) _page).GetDesignModeState();
+      return ((IControlDesignerAccessor)_page).GetDesignModeState();
     }
 
     /// <summary>
@@ -122,7 +124,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void SetDesignModeState (IDictionary data)
     {
-      ((IControlDesignerAccessor) _page).SetDesignModeState (data);
+      ((IControlDesignerAccessor)_page).SetDesignModeState(data);
     }
 
     /// <summary>
@@ -132,7 +134,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void SetOwnerControl (Control owner)
     {
-      ((IControlDesignerAccessor) _page).SetOwnerControl (owner);
+      ((IControlDesignerAccessor)_page).SetOwnerControl(owner);
     }
 
     /// <summary>
@@ -143,7 +145,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public IDictionary UserData
     {
-      get { return ((IControlDesignerAccessor) _page).UserData; }
+      get { return ((IControlDesignerAccessor)_page).UserData; }
     }
 
     /// <summary>
@@ -154,7 +156,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public bool HasExpressions
     {
-      get { return ((IExpressionsAccessor) _page).HasExpressions; }
+      get { return ((IExpressionsAccessor)_page).HasExpressions; }
     }
 
     /// <summary>
@@ -166,7 +168,7 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     public ExpressionBindingCollection Expressions
     {
-      get { return ((IExpressionsAccessor) _page).Expressions; }
+      get { return ((IExpressionsAccessor)_page).Expressions; }
     }
 
     /// <summary>
@@ -192,7 +194,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     bool IFilterResolutionService.EvaluateFilter (string filterName)
     {
-      return ((IFilterResolutionService) _page).EvaluateFilter (filterName);
+      return ((IFilterResolutionService)_page).EvaluateFilter(filterName);
     }
 
     /// <summary>
@@ -208,7 +210,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     int IFilterResolutionService.CompareFilters (string filter1, string filter2)
     {
-      return ((IFilterResolutionService) _page).CompareFilters (filter1, filter2);
+      return ((IFilterResolutionService)_page).CompareFilters(filter1, filter2);
     }
 
     /// <summary>
@@ -236,7 +238,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public bool TestDeviceFilter (string filterName)
     {
-      return _page.TestDeviceFilter (filterName);
+      return _page.TestDeviceFilter(filterName);
     }
 
     /// <summary>
@@ -250,7 +252,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public Control LoadControl (string virtualPath)
     {
-      return _page.LoadControl (virtualPath);
+      return _page.LoadControl(virtualPath);
     }
 
     /// <summary>
@@ -265,7 +267,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public Control LoadControl (Type t, object[] parameters)
     {
-      return _page.LoadControl (t, parameters);
+      return _page.LoadControl(t, parameters);
     }
 
     /// <summary>
@@ -278,7 +280,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public ITemplate LoadTemplate (string virtualPath)
     {
-      return _page.LoadTemplate (virtualPath);
+      return _page.LoadTemplate(virtualPath);
     }
 
     /// <summary>
@@ -289,9 +291,9 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="content">A string that contains a user control. 
     /// </param>
-    public Control ParseControl (string content)
+    public Control? ParseControl (string content)
     {
-      return _page.ParseControl (content);
+      return _page.ParseControl(content);
     }
 
     /// <summary>
@@ -303,9 +305,9 @@ namespace Remotion.Web.Infrastructure
     /// <param name="content">A string that contains a user control.
     /// </param><param name="ignoreParserFilter">A value that specifies whether to ignore the parser filter.
     /// </param>
-    public Control ParseControl (string content, bool ignoreParserFilter)
+    public Control? ParseControl (string content, bool ignoreParserFilter)
     {
-      return _page.ParseControl (content, ignoreParserFilter);
+      return _page.ParseControl(content, ignoreParserFilter);
     }
 
     /// <summary>
@@ -374,7 +376,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void SetFocus (Control control)
     {
-      _page.SetFocus (control);
+      _page.SetFocus(control);
     }
 
     /// <summary>
@@ -389,7 +391,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void SetFocus (string clientID)
     {
-      _page.SetFocus (clientID);
+      _page.SetFocus(clientID);
     }
 
     /// <summary>
@@ -403,7 +405,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterRequiresControlState (Control control)
     {
-      _page.RegisterRequiresControlState (control);
+      _page.RegisterRequiresControlState(control);
     }
 
     /// <summary>
@@ -416,7 +418,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public bool RequiresControlState (Control control)
     {
-      return _page.RequiresControlState (control);
+      return _page.RequiresControlState(control);
     }
 
     /// <summary>
@@ -427,7 +429,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void UnregisterRequiresControlState (Control control)
     {
-      _page.UnregisterRequiresControlState (control);
+      _page.UnregisterRequiresControlState(control);
     }
 
     /// <summary>
@@ -439,7 +441,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterRequiresPostBack (Control control)
     {
-      _page.RegisterRequiresPostBack (control);
+      _page.RegisterRequiresPostBack(control);
     }
 
     /// <summary>
@@ -450,7 +452,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterRequiresRaiseEvent (IPostBackEventHandler control)
     {
-      _page.RegisterRequiresRaiseEvent (control);
+      _page.RegisterRequiresRaiseEvent(control);
     }
 
     /// <summary>
@@ -463,7 +465,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public string MapPath (string virtualPath)
     {
-      return _page.MapPath (virtualPath);
+      return _page.MapPath(virtualPath);
     }
 
     /// <summary>
@@ -489,7 +491,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void ProcessRequest (HttpContext context)
     {
-      _page.ProcessRequest (context);
+      _page.ProcessRequest(context);
     }
 
     /// <summary>
@@ -518,7 +520,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterAsyncTask (PageAsyncTask task)
     {
-      _page.RegisterAsyncTask (task);
+      _page.RegisterAsyncTask(task);
     }
 
     /// <summary>
@@ -539,7 +541,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void AddOnPreRenderCompleteAsync (BeginEventHandler beginHandler, EndEventHandler endHandler)
     {
-      _page.AddOnPreRenderCompleteAsync (beginHandler, endHandler);
+      _page.AddOnPreRenderCompleteAsync(beginHandler, endHandler);
     }
 
     /// <summary>
@@ -562,7 +564,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void AddOnPreRenderCompleteAsync (BeginEventHandler beginHandler, EndEventHandler endHandler, object state)
     {
-      _page.AddOnPreRenderCompleteAsync (beginHandler, endHandler, state);
+      _page.AddOnPreRenderCompleteAsync(beginHandler, endHandler, state);
     }
 
     /// <summary>
@@ -580,7 +582,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void Validate (string validationGroup)
     {
-      _page.Validate (validationGroup);
+      _page.Validate(validationGroup);
     }
 
     /// <summary>
@@ -593,7 +595,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public ValidatorCollection GetValidators (string validationGroup)
     {
-      return _page.GetValidators (validationGroup);
+      return _page.GetValidators(validationGroup);
     }
 
     /// <summary>
@@ -610,7 +612,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void VerifyRenderingInServerForm (Control control)
     {
-      _page.VerifyRenderingInServerForm (control);
+      _page.VerifyRenderingInServerForm(control);
     }
 
     /// <summary>
@@ -632,12 +634,12 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// The current data in the <see cref="T:System.Web.HttpApplicationState"/> class.
     /// </returns>
-    public HttpApplicationStateBase Application
+    public HttpApplicationStateBase? Application
     {
       get
       {
         if (_httpApplicationState == null && _page.Application != null)
-          _httpApplicationState = new HttpApplicationStateWrapper (_page.Application);
+          _httpApplicationState = new HttpApplicationStateWrapper(_page.Application);
         return _httpApplicationState;
       }
     }
@@ -653,7 +655,7 @@ namespace Remotion.Web.Infrastructure
       get
       {
         if (_clientScriptManager == null)
-          _clientScriptManager = new ClientScriptManagerWrapper (_page.ClientScript);
+          _clientScriptManager = new ClientScriptManagerWrapper(_page.ClientScript);
         return _clientScriptManager;
       }
     }
@@ -688,12 +690,12 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// An <see cref="HttpContext"/> wrapped in a class implementing <see cref="HttpContextBase"/>.
     /// </returns>
-    public HttpContextBase Context
+    public HttpContextBase? Context
     {
       get
       {
         if (_httpContext == null && HttpContext.Current != null)
-          _httpContext = new HttpContextWrapper (HttpContext.Current);
+          _httpContext = new HttpContextWrapper(HttpContext.Current);
         return _httpContext;
       }
     }
@@ -786,7 +788,7 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// The <see cref="T:System.Web.UI.MasterPage"/> associated with this page if it exists; otherwise, null. 
     /// </returns>
-    public MasterPage Master
+    public MasterPage? Master
     {
       get { return _page.Master; }
     }
@@ -849,12 +851,12 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.Web.HttpException">Occurs when the <see cref="T:System.Web.HttpRequest"/> object is not available. 
     /// </exception>
-    public HttpRequestBase Request
+    public HttpRequestBase? Request
     {
       get
       {
         if (_httpRequest == null && _page.Request != null)
-          _httpRequest = new HttpRequestWrapper (_page.Request);
+          _httpRequest = new HttpRequestWrapper(_page.Request);
         return _httpRequest;
       }
     }
@@ -868,12 +870,12 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.Web.HttpException">The <see cref="T:System.Web.HttpResponse"/> object is not available. 
     /// </exception>
-    public HttpResponseBase Response
+    public HttpResponseBase? Response
     {
       get
       {
         if (_httpResponse == null && _page.Response != null)
-          _httpResponse = new HttpResponseWrapper (_page.Response);
+          _httpResponse = new HttpResponseWrapper(_page.Response);
         return _httpResponse;
       }
     }
@@ -884,12 +886,12 @@ namespace Remotion.Web.Infrastructure
     /// <returns>
     /// The current Server object associated with the page.
     /// </returns>
-    public HttpServerUtilityBase Server
+    public HttpServerUtilityBase? Server
     {
       get
       {
         if (_httpServerUtility == null && _page.Server != null)
-          _httpServerUtility = new HttpServerUtilityWrapper (_page.Server);
+          _httpServerUtility = new HttpServerUtilityWrapper(_page.Server);
         return _httpServerUtility;
       }
     }
@@ -915,12 +917,12 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <exception cref="T:System.Web.HttpException">Occurs when the session information is set to null. 
     /// </exception>
-    public HttpSessionStateBase Session
+    public HttpSessionStateBase? Session
     {
       get
       {
         if (_httpSessionState == null && _page.Session != null)
-          _httpSessionState = new HttpSessionStateWrapper (_page.Session);
+          _httpSessionState = new HttpSessionStateWrapper(_page.Session);
         return _httpSessionState;
       }
     }

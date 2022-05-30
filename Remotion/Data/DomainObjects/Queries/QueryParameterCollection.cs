@@ -50,16 +50,16 @@ public class QueryParameterCollection : CommonCollection
   /// <param name="collection">The <see cref="QueryParameterCollection"/> to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
-  public QueryParameterCollection (QueryParameterCollection collection, bool makeCollectionReadOnly)  
+  public QueryParameterCollection (QueryParameterCollection collection, bool makeCollectionReadOnly)
   {
-    ArgumentUtility.CheckNotNull ("collection", collection);
+    ArgumentUtility.CheckNotNull("collection", collection);
 
     foreach (QueryParameter parameter in collection)
     {
-      Add (parameter);
+      Add(parameter);
     }
 
-    this.SetIsReadOnly (makeCollectionReadOnly);
+    this.SetIsReadOnly(makeCollectionReadOnly);
   }
 
   // methods and properties
@@ -73,9 +73,9 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentException"><paramref name="parameterName"/> is an empty string.</exception>
   public void Add (string parameterName, object parameterValue)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
+    ArgumentUtility.CheckNotNullOrEmpty("parameterName", parameterName);
 
-    Add (new QueryParameter (parameterName, parameterValue));
+    Add(new QueryParameter(parameterName, parameterValue));
   }
 
   /// <summary>
@@ -89,10 +89,10 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public void Add (string parameterName, object parameterValue, QueryParameterType parameterType)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
-    ArgumentUtility.CheckValidEnumValue ("parameterType", parameterType);
+    ArgumentUtility.CheckNotNullOrEmpty("parameterName", parameterName);
+    ArgumentUtility.CheckValidEnumValue("parameterType", parameterType);
 
-    Add (new QueryParameter (parameterName, parameterValue, parameterType));
+    Add(new QueryParameter(parameterName, parameterValue, parameterType));
   }
 
   #region Standard implementation for "add-only" collections
@@ -106,9 +106,9 @@ public class QueryParameterCollection : CommonCollection
   /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
   public bool Contains (QueryParameter queryParameter)
   {
-    ArgumentUtility.CheckNotNull ("queryParameter", queryParameter);
+    ArgumentUtility.CheckNotNull("queryParameter", queryParameter);
 
-    return BaseContains (queryParameter.Name, queryParameter);
+    return BaseContains(queryParameter.Name, queryParameter);
   }
 
   /// <summary>
@@ -119,24 +119,24 @@ public class QueryParameterCollection : CommonCollection
   /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/></exception>
   public bool Contains (string name)
   {
-    return BaseContainsKey (name);
+    return BaseContainsKey(name);
   }
 
   /// <summary>
   /// Gets the <see cref="QueryParameter"/> with a given <paramref name="index"/> in the <see cref="QueryParameterCollection"/>.
   /// </summary>
-  public QueryParameter this [int index]  
+  public QueryParameter this [int index]
   {
-    get { return (QueryParameter) BaseGetObject (index); }
+    get { return (QueryParameter)BaseGetObject(index); }
   }
 
   /// <summary>
   /// Gets the <see cref="QueryParameter"/> with a given <paramref name="name"/> in the <see cref="QueryParameterCollection"/>.
   /// </summary>
   /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="name"/> was not found.</remarks>
-  public QueryParameter this [string name]  
+  public QueryParameter? this [string name]
   {
-    get { return (QueryParameter) BaseGetObject (name); }
+    get { return (QueryParameter?)BaseGetObject(name); }
   }
 
   /// <summary>
@@ -144,11 +144,11 @@ public class QueryParameterCollection : CommonCollection
   /// </summary>
   /// <param name="parameter">The <see cref="QueryParameter"/> to add.</param>
   /// <returns>The zero-based index where <paramref name="parameter"/> has been added.</returns>
-  public int Add (QueryParameter parameter)  
+  public int Add (QueryParameter parameter)
   {
-    ArgumentUtility.CheckNotNull ("parameter", parameter);
-    
-    return BaseAdd (parameter.Name, parameter);
+    ArgumentUtility.CheckNotNull("parameter", parameter);
+
+    return BaseAdd(parameter.Name, parameter);
   }
 
   #endregion

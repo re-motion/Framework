@@ -23,7 +23,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   public class ClassOverridingMixinMembers
   {
     [OverrideMixin]
-    public virtual string AbstractMethod(int i)
+    public virtual string AbstractMethod (int i)
     {
       return "ClassOverridingMixinMembers.AbstractMethod-" + i;
     }
@@ -37,7 +37,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
     [OverrideMixin]
     public virtual string RaiseEvent ()
     {
-      return _abstractEvent ();
+      return _abstractEvent();
     }
 
     private Func<string> _abstractEvent;

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -24,6 +23,7 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
@@ -54,19 +54,19 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
     }
 
-    public void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
     }
 
@@ -82,15 +82,15 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
     }
 
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
     }
 
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
     }
 
@@ -98,19 +98,19 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
     {
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
     {
     }
 
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
     }
 
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinitiont, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinitiont, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
     }
 
@@ -119,23 +119,23 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
       return queryResult;
     }
 
-    public void Committing (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void Committing (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
     }
 
-    public void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
     }
 
-    public void Committed (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void Committed (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 
-    public void RollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void RollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 
-    public void RolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void RolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
     }
 
@@ -151,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     public void ConnectionClosed (Guid connectionID)
     {
     }
-    
+
     #endregion
 
     private readonly LinqToSqlAppenderProxy _appenderProxy;
@@ -159,7 +159,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public LinqToSqlExtension (Guid clientTransactionID, LinqToSqlAppenderProxy appenderProxy)
     {
-      ArgumentUtility.CheckNotNull ("appenderProxy", appenderProxy);
+      ArgumentUtility.CheckNotNull("appenderProxy", appenderProxy);
 
       _clientTransactionID = clientTransactionID;
       _appenderProxy = appenderProxy;
@@ -177,85 +177,85 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public string Key
     {
-      get { return typeof (LinqToSqlExtension).FullName; }
+      get { return typeof(LinqToSqlExtension).GetFullNameChecked(); }
     }
 
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {
-      _appenderProxy.ConnectionStarted (_clientTransactionID);
+      _appenderProxy.ConnectionStarted(_clientTransactionID);
     }
 
     public void TransactionDiscard (ClientTransaction clientTransaction)
     {
-      _appenderProxy.ConnectionDisposed (_clientTransactionID);
+      _appenderProxy.ConnectionDisposed(_clientTransactionID);
     }
 
     public void QueryCompleted (Guid connectionID, Guid queryID, TimeSpan durationOfDataRead, int rowCount)
     {
-      _appenderProxy.StatementRowCount (_clientTransactionID, queryID, rowCount);
+      _appenderProxy.StatementRowCount(_clientTransactionID, queryID, rowCount);
     }
 
     public void QueryError (Guid connectionID, Guid queryID, Exception e)
     {
-      _appenderProxy.StatementError (_clientTransactionID, e);
+      _appenderProxy.StatementError(_clientTransactionID, e);
     }
 
     public void QueryExecuted (Guid connectionID, Guid queryID, TimeSpan durationOfQueryExecution)
     {
-      _appenderProxy.CommandDurationAndRowCount (_clientTransactionID, durationOfQueryExecution.Milliseconds, null);
+      _appenderProxy.CommandDurationAndRowCount(_clientTransactionID, durationOfQueryExecution.Milliseconds, null);
     }
 
     public void QueryExecuting (
-        Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters)
+        Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("commandText", commandText);
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      _appenderProxy.StatementExecuted (_clientTransactionID, queryID, AppendParametersToCommandText (commandText, parameters));
+      _appenderProxy.StatementExecuted(_clientTransactionID, queryID, AppendParametersToCommandText(commandText, parameters));
     }
 
     public void TransactionBegan (Guid connectionID, IsolationLevel isolationLevel)
     {
-      _appenderProxy.TransactionBegan (_clientTransactionID, isolationLevel);
+      _appenderProxy.TransactionBegan(_clientTransactionID, isolationLevel);
     }
 
     public void TransactionCommitted (Guid connectionID)
     {
-      _appenderProxy.TransactionCommit (_clientTransactionID);
+      _appenderProxy.TransactionCommit(_clientTransactionID);
     }
 
     public void TransactionDisposed (Guid connectionID)
     {
-      _appenderProxy.TransactionDisposed (_clientTransactionID);
+      _appenderProxy.TransactionDisposed(_clientTransactionID);
     }
 
     public void TransactionRolledBack (Guid connectionID)
     {
-      _appenderProxy.TransactionRolledBack (_clientTransactionID);
+      _appenderProxy.TransactionRolledBack(_clientTransactionID);
     }
 
-    private string AppendParametersToCommandText (string commandText, IDictionary<string, object> parameters)
+    private string AppendParametersToCommandText (string commandText, IDictionary<string, object?> parameters)
     {
       StringBuilder builder = new StringBuilder();
-      builder.AppendLine (commandText);
-      builder.AppendLine ("-- Ignore unbounded result sets: TOP *"); // Format with space and asterisk is important to trigger RexEx in profiler.
-      builder.AppendLine ("-- Parameters:");
+      builder.AppendLine(commandText);
+      builder.AppendLine("-- Ignore unbounded result sets: TOP *"); // Format with space and asterisk is important to trigger RexEx in profiler.
+      builder.AppendLine("-- Parameters:");
       foreach (string key in parameters.Keys)
       {
         string parameterName = key;
-        if (!parameterName.StartsWith ("@"))
+        if (!parameterName.StartsWith("@"))
           parameterName = "@" + parameterName;
-        object value = parameters[key];
+        object? value = parameters[key];
 
-        builder.Append ("-- ");
-        builder.Append (parameterName);
-        builder.Append (" = [-[");
-        builder.Append (value);
-        builder.Append ("]-] [-[");
-        builder.Append ("Type"); //parameter.DbType
-        builder.Append (" (");
-        builder.Append (0); // parameter.Size
-        builder.AppendLine (")]-]");
+        builder.Append("-- ");
+        builder.Append(parameterName);
+        builder.Append(" = [-[");
+        builder.Append(value);
+        builder.Append("]-] [-[");
+        builder.Append("Type"); //parameter.DbType
+        builder.Append(" (");
+        builder.Append(0); // parameter.Size
+        builder.AppendLine(")]-]");
       }
 
       return builder.ToString();

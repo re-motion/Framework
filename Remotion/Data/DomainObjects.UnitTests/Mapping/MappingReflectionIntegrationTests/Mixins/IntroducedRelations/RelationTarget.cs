@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
   [DBTable]
   public class RelationTarget : DomainObject
   {
-    [DBBidirectionalRelation ("RelationTarget", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("RelationTarget", ContainsForeignKey = true)]
     public virtual Derived Derived { get; set; }
   }
 }

@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
   public class CheckAction : WebTestAction
   {
     public CheckAction ([NotNull] ControlObject control, [NotNull] ElementScope scope)
-        : base (control, scope)
+        : base(control, scope)
     {
     }
 
@@ -40,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       scope.Check();
     }

@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Integration Library for Web-Applications")]
-[assembly: AssemblyDescription ("This assembly can be linked to ensure that all web-related dependencies are integrated in the build output of a web project.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

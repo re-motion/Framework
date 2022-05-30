@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     [OverrideTarget]
     public virtual string GetSomething ()
     {
-      return Next.GetSomething () + "-MixinMethod";
+      return Next.GetSomething() + "-MixinMethod";
     }
 
     public interface IBaseRequirements

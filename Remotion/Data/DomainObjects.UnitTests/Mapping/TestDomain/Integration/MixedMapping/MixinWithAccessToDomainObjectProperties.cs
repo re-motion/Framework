@@ -20,8 +20,8 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping
 {
-  [CLSCompliant (false)]
-  [Extends (typeof (ClassWithAllDataTypes), MixinTypeArguments = new Type[] { typeof (ClassWithAllDataTypes) })]
+  [CLSCompliant(false)]
+  [Extends(typeof(ClassWithAllDataTypes), MixinTypeArguments = new Type[] { typeof(ClassWithAllDataTypes) })]
   [Serializable]
   public class MixinWithAccessToDomainObjectProperties<TDomainObject> : DomainObjectMixin<TDomainObject>
       where TDomainObject : DomainObject
@@ -39,19 +39,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
 
     public new Type GetPublicDomainObjectType ()
     {
-      return base.GetPublicDomainObjectType ();
+      return base.GetPublicDomainObjectType();
     }
 
     [StorageClassNone]
-    public new StateType State
+    public new DomainObjectState State
     {
       get { return base.State; }
-    }
-
-    [StorageClassNone]
-    public new bool IsInvalid
-    {
-      get { return base.IsInvalid; }
     }
 
     [StorageClassNone]

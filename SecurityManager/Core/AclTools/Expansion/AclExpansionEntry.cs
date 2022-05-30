@@ -39,11 +39,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion
         AccessTypeDefinition[] allowedAccessTypes,
         AccessTypeDefinition[] deniedAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNull ("role", role);
-      ArgumentUtility.CheckNotNull ("accessControlList", accessControlList);
-      ArgumentUtility.CheckNotNull ("accessConditions", accessConditions);
-      ArgumentUtility.CheckNotNull ("accessTypeDefinitions", allowedAccessTypes);
+      ArgumentUtility.CheckNotNull("user", user);
+      ArgumentUtility.CheckNotNull("role", role);
+      ArgumentUtility.CheckNotNull("accessControlList", accessControlList);
+      ArgumentUtility.CheckNotNull("accessConditions", accessConditions);
+      ArgumentUtility.CheckNotNull("allowedAccessTypes", allowedAccessTypes);
+      if (accessControlList.Class == null)
+        throw new ArgumentException("AccessControlList must have a Class set.", "accessControlList");
+
       User = user;
       Role = role;
       _accessControlList = accessControlList;
@@ -57,19 +60,23 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public SecurableClassDefinition Class
     {
-      get { return AccessControlList.Class; }
+      get
+      {
+        Assertion.DebugIsNotNull(AccessControlList.Class, "AccessControlList.Class != null");
+        return AccessControlList.Class;
+      }
     }
 
 
     public IList<StateCombination> GetStateCombinations ()
     {
       if (AccessControlList is StatefulAccessControlList)
-        return ((StatefulAccessControlList) AccessControlList).StateCombinations;
+        return ((StatefulAccessControlList)AccessControlList).StateCombinations;
       else
       {
         // Throw exception (instead of returning e.g. new StateCombination[0]) in case of StatelessAccessControlList, 
         // to avoid "silent failure" in calling code
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             @"StateCombinations not defined for StatelessAccessControlList. Test for ""is StatefulAccessControlList"" in calling code.");
       }
     }

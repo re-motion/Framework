@@ -36,19 +36,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IBocBooleanValueResourceSetFactory> ();
+      var factory = _serviceLocator.GetInstance<IBocBooleanValueResourceSetFactory>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (BocBooleanValueResourceSetFactory)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(BocBooleanValueResourceSetFactory)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IBocBooleanValueResourceSetFactory> ();
-      var factory2 = _serviceLocator.GetInstance<IBocBooleanValueResourceSetFactory> ();
+      var factory1 = _serviceLocator.GetInstance<IBocBooleanValueResourceSetFactory>();
+      var factory2 = _serviceLocator.GetInstance<IBocBooleanValueResourceSetFactory>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

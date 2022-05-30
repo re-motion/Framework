@@ -19,6 +19,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -39,9 +40,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IDefaultValueStrategy defaultValueStrategy)
     {
-      return ObjectFactory.Create<BindableDomainObjectPropertyReflector> (
+      return ObjectFactory.Create<BindableDomainObjectPropertyReflector>(
           true,
-          ParamList.Create (propertyInfo, businessObjectProvider, domainModelConstraintProvider, defaultValueStrategy));
+          ParamList.Create(propertyInfo, businessObjectProvider, domainModelConstraintProvider, defaultValueStrategy));
     }
 
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
@@ -51,13 +52,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         BindableObjectProvider businessObjectProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
         IDefaultValueStrategy defaultValueStrategy)
-        : this (propertyInfo,
+        : this(propertyInfo,
             businessObjectProvider,
             domainModelConstraintProvider,
             defaultValueStrategy,
             SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
             SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-            SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>())
+            SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+            SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>())
     {
     }
 
@@ -68,17 +70,19 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
         IDefaultValueStrategy defaultValueStrategy,
         IBindablePropertyReadAccessStrategy bindablePropertyReadAccessStrategy,
         IBindablePropertyWriteAccessStrategy bindablePropertyWriteAccessStrategy,
-        BindableObjectGlobalizationService bindableObjectGlobalizationService)
-        : base (
+        BindableObjectGlobalizationService bindableObjectGlobalizationService,
+        IBusinessObjectPropertyConstraintProvider businessObjectPropertyConstraintProvider)
+        : base(
             propertyInfo,
             businessObjectProvider,
             defaultValueStrategy,
             bindablePropertyReadAccessStrategy,
             bindablePropertyWriteAccessStrategy,
-            bindableObjectGlobalizationService)
+            bindableObjectGlobalizationService,
+            businessObjectPropertyConstraintProvider)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("businessObjectProvider", businessObjectProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }
@@ -87,12 +91,12 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     {
       if (base.GetIsRequired())
         return true;
-      return !_domainModelConstraintProvider.IsNullable (PropertyInfo);
+      return !_domainModelConstraintProvider.IsNullable(PropertyInfo);
     }
 
     protected override int? GetMaxLength ()
     {
-      return base.GetMaxLength() ?? _domainModelConstraintProvider.GetMaxLength (PropertyInfo);
+      return base.GetMaxLength() ?? _domainModelConstraintProvider.GetMaxLength(PropertyInfo);
     }
   }
 }

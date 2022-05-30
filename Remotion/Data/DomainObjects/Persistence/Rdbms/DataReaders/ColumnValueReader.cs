@@ -32,8 +32,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public ColumnValueReader (IDataReader dataReader, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
-      ArgumentUtility.CheckNotNull ("columnOrdinalProvider", columnOrdinalProvider);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("columnOrdinalProvider", columnOrdinalProvider);
 
       _dataReader = dataReader;
       _columnOrdinalProvider = columnOrdinalProvider;
@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public object GetValueForColumn (ColumnDefinition columnDefinition)
+    public object? GetValueForColumn (ColumnDefinition columnDefinition)
     {
-      var ordinal = _columnOrdinalProvider.GetOrdinal (columnDefinition, _dataReader);
-      return columnDefinition.StorageTypeInfo.Read (_dataReader, ordinal);
+      var ordinal = _columnOrdinalProvider.GetOrdinal(columnDefinition, _dataReader);
+      return columnDefinition.StorageTypeInfo.Read(_dataReader, ordinal);
     }
   }
 }

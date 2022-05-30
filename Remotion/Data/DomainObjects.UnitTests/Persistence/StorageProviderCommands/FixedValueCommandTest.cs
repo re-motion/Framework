@@ -29,9 +29,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
       var value = new object();
       var command = new FixedValueCommand<object, object>(value);
 
-      var result = command.Execute (new object());
+      var result = command.Execute(new object());
 
-      Assert.That (result, Is.SameAs (value));
+      Assert.That(result, Is.SameAs(value));
     }
   }
 }

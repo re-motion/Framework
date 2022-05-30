@@ -23,10 +23,11 @@ using Coypu;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Internal;
-using Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -45,14 +46,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var clickElement = home.Scope.FindId (c_clickDivID);
-      Assert.That (GetColor (clickElement).ToArgb(), Is.EqualTo (Color.Black.ToArgb()));
+      var clickElement = home.Scope.FindId(c_clickDivID);
+      Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
 
-      var focusElement = home.Scope.FindId (c_clickDivID);
-      Assert.That (GetColor (focusElement).ToArgb(), Is.EqualTo (Color.Black.ToArgb()));
+      var focusElement = home.Scope.FindId(c_clickDivID);
+      Assert.That(GetColor(focusElement).ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
 
-      var hoverElement = home.Scope.FindId (c_clickDivID);
-      Assert.That (GetColor (hoverElement).ToArgb(), Is.EqualTo (Color.Black.ToArgb()));
+      var hoverElement = home.Scope.FindId(c_clickDivID);
+      Assert.That(GetColor(hoverElement).ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
     }
 
     [Test]
@@ -60,12 +61,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var clickElement = home.Scope.FindId (c_clickDivID);
-      Helper.BrowserConfiguration.MouseHelper.Hover (clickElement);
+      var clickElement = home.Scope.FindId(c_clickDivID);
+      Helper.BrowserConfiguration.MouseHelper.Hover(clickElement);
       Helper.BrowserConfiguration.MouseHelper.LeftClick();
-      Thread.Sleep (250);
+      Thread.Sleep(250);
 
-      Assert.That (GetColor (clickElement).ToArgb(), Is.EqualTo (Color.Red.ToArgb()));
+      Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
     }
 
     [Test]
@@ -73,12 +74,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var clickElement = home.Scope.FindId (c_clickDivID);
-      Helper.BrowserConfiguration.MouseHelper.Hover (clickElement);
+      var clickElement = home.Scope.FindId(c_clickDivID);
+      Helper.BrowserConfiguration.MouseHelper.Hover(clickElement);
       Helper.BrowserConfiguration.MouseHelper.DoubleLeftClick();
-      Thread.Sleep (250);
+      Thread.Sleep(250);
 
-      Assert.That (GetColor (clickElement).ToArgb(), Is.EqualTo (Color.Green.ToArgb()));
+      Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
     }
 
     [Test]
@@ -86,27 +87,30 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var clickElement = home.Scope.FindId (c_clickDivID);
-      Helper.BrowserConfiguration.MouseHelper.Hover (clickElement);
+      var clickElement = home.Scope.FindId(c_clickDivID);
+      Helper.BrowserConfiguration.MouseHelper.Hover(clickElement);
       Helper.BrowserConfiguration.MouseHelper.RightClick();
-      Thread.Sleep (250);
+      Thread.Sleep(250);
 
-      Assert.That (GetColor (clickElement).ToArgb(), Is.EqualTo (Color.Blue.ToArgb()));
+      Assert.That(GetColor(clickElement).ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
     }
 
     [Test]
     public void Test_Focus ()
     {
+      if (Helper.BrowserConfiguration.IsFirefox())
+        Assert.Ignore("This test is flaky in Firefox. (RM-7291)");
+
       var home = Start();
 
-      var focusElement = home.Scope.FindId (c_focusDivID);
+      var focusElement = home.Scope.FindId(c_focusDivID);
 
-      Helper.BrowserConfiguration.MouseHelper.Hover (focusElement);
+      Helper.BrowserConfiguration.MouseHelper.Hover(focusElement);
       Helper.BrowserConfiguration.MouseHelper.LeftClick();
 
-      Thread.Sleep (250);
+      Thread.Sleep(250);
 
-      Assert.That (GetColor (focusElement).ToArgb(), Is.EqualTo (Color.Orange.ToArgb()));
+      Assert.That(GetColor(focusElement).ToArgb(), Is.EqualTo(Color.Orange.ToArgb()));
     }
 
     [Test]
@@ -114,52 +118,53 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var hoverElement = home.Scope.FindId (c_hoverDivID);
-      Helper.BrowserConfiguration.MouseHelper.Hover (hoverElement);
-      Thread.Sleep (250);
+      var hoverElement = home.Scope.FindId(c_hoverDivID);
+      Thread.Sleep(250);
+      Helper.BrowserConfiguration.MouseHelper.Hover(hoverElement);
+      Thread.Sleep(250);
 
-      Assert.That (GetColor (hoverElement).ToArgb(), Is.EqualTo (Color.Red.ToArgb()));
+      Assert.That(GetColor(hoverElement).ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
     }
 
-    [Explicit ("Testing the tooltip is flaky as long as there is no good implementation of .ShowTooltip")]
+    [Explicit("Testing the tooltip is flaky as long as there is no good implementation of .ShowTooltip")]
     [Test]
     public void Test_Tooltip ()
     {
       var home = Start();
 
       ScreenshotTestingDelegate<ElementScope> test =
-          (b, e) => { b.Crop (e, ElementScopeResolver.Instance, new ScreenshotCropping (new WebPadding (6, 47, 6, 18))); };
+          (b, e) => { b.Crop(e, ElementScopeResolver.Instance, new ScreenshotCropping(new WebPadding(6, 47, 6, 18))); };
 
-      var tooltipElement = home.Scope.FindId ("tooltipDiv");
+      var tooltipElement = home.Scope.FindId("tooltipDiv");
 
       // Workaround in order to make the test work.
       // If the test is run behind all the other tests the tooltip will not show.
       // Mouse movement beforehand with a little sleep does the trick
-      Helper.BrowserConfiguration.MouseHelper.Hover (tooltipElement);
-      Thread.Sleep (500);
+      Helper.BrowserConfiguration.MouseHelper.Hover(tooltipElement);
+      Thread.Sleep(500);
 
 #pragma warning disable 0618
-      Helper.BrowserConfiguration.MouseHelper.ShowTooltip (tooltipElement);
+      Helper.BrowserConfiguration.MouseHelper.ShowTooltip(tooltipElement);
 #pragma warning restore 0618
 
-      Helper.RunScreenshotTestExact<ElementScope, MouseTest> (tooltipElement, ScreenshotTestingType.Desktop, test);
+      Helper.RunScreenshotTestExact<ElementScope, MouseTest>(tooltipElement, ScreenshotTestingType.Desktop, test);
     }
 
     private Color GetColor (ElementScope scope)
     {
-      var driver = ((IWrapsDriver) scope.Native).WrappedDriver;
-      var jsExecutor = (IJavaScriptExecutor) driver;
+      var driver = ((IWrapsDriver)scope.Native).WrappedDriver;
+      var jsExecutor = (IJavaScriptExecutor)driver;
 
-      var rawData = (IReadOnlyCollection<object>) jsExecutor.ExecuteScript (c_getBackgroundColorJs, (IWebElement) scope.Native);
+      var rawData = (IReadOnlyCollection<object>)jsExecutor.ExecuteScript(c_getBackgroundColorJs, (IWebElement)scope.Native);
       if (rawData.Count != 3)
-        throw new InvalidOperationException ("Javascript is invalid.");
-      var rgb = rawData.Select (i => int.Parse ((string) i)).ToArray();
-      return Color.FromArgb (rgb[0], rgb[1], rgb[2]);
+        throw new InvalidOperationException("Javascript is invalid.");
+      var rgb = rawData.Select(i => int.Parse((string)i)).ToArray();
+      return Color.FromArgb(rgb[0], rgb[1], rgb[2]);
     }
 
     private HtmlPageObject Start ()
     {
-      return Start<HtmlPageObject> ("MouseTest.aspx");
+      return Start<HtmlPageObject>("MouseTest.aspx");
     }
   }
 }

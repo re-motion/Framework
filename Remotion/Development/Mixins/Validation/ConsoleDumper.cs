@@ -26,7 +26,7 @@ namespace Remotion.Development.Mixins.Validation
   {
     public static void DumpValidationResults (IEnumerable<ValidationResult> results)
     {
-      ArgumentUtility.CheckNotNull ("results", results);
+      ArgumentUtility.CheckNotNull("results", results);
 
       foreach (ValidationResult result in results)
       {
@@ -37,20 +37,20 @@ namespace Remotion.Development.Mixins.Validation
         }
         else if (result.TotalRulesExecuted != result.Successes.Count)
         {
-          using (ConsoleUtility.EnterColorScope (ConsoleColor.Gray, null))
+          using (ConsoleUtility.EnterColorScope(ConsoleColor.Gray, null))
           {
-            Console.WriteLine (
+            Console.WriteLine(
                 "{0} '{1}', {2} rules executed",
                 result.ValidatedDefinition.GetType().Name,
                 result.ValidatedDefinition.FullName,
                 result.TotalRulesExecuted);
-            DumpContext (result);
+            DumpContext(result);
           }
         }
-        DumpResultList ("unexpected exceptions", result.Exceptions, ConsoleColor.White, ConsoleColor.DarkRed);
+        DumpResultList("unexpected exceptions", result.Exceptions, ConsoleColor.White, ConsoleColor.DarkRed);
         // DumpResultList ("successes", result.Successes, ConsoleColor.Green, null);
-        DumpResultList ("warnings", result.Warnings, ConsoleColor.Yellow, null);
-        DumpResultList ("failures", result.Failures, ConsoleColor.Red, null);
+        DumpResultList("warnings", result.Warnings, ConsoleColor.Yellow, null);
+        DumpResultList("failures", result.Failures, ConsoleColor.Red, null);
       }
     }
 
@@ -58,18 +58,18 @@ namespace Remotion.Development.Mixins.Validation
     {
       string contextString = result.GetDefinitionContextPath();
       if (contextString.Length > 0)
-        Console.WriteLine ("Context: " + contextString);
+        Console.WriteLine("Context: " + contextString);
     }
 
     private static void DumpResultList<T> (string title, List<T> resultList, ConsoleColor foreColor, ConsoleColor? backColor) where T : IDefaultValidationResultItem
     {
       if (resultList.Count > 0)
       {
-        using (ConsoleUtility.EnterColorScope (foreColor, backColor))
+        using (ConsoleUtility.EnterColorScope(foreColor, backColor))
         {
-          Console.WriteLine ("  {0} - {1}", title, resultList.Count);
+          Console.WriteLine("  {0} - {1}", title, resultList.Count);
           foreach (T resultItem in resultList)
-            Console.WriteLine ("    {0} ({1})", resultItem.Message, resultItem.RuleName);
+            Console.WriteLine("    {0} ({1})", resultItem.Message, resultItem.RuleName);
         }
       }
     }

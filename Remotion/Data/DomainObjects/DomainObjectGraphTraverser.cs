@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -35,8 +36,8 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectGraphTraverser (DomainObject rootObject, IGraphTraversalStrategy strategy)
     {
-      ArgumentUtility.CheckNotNull ("rootObject", rootObject);
-      ArgumentUtility.CheckNotNull ("strategy", strategy);
+      ArgumentUtility.CheckNotNull("rootObject", rootObject);
+      ArgumentUtility.CheckNotNull("strategy", strategy);
 
       _rootObject = rootObject;
       _strategy = strategy;
@@ -50,20 +51,20 @@ namespace Remotion.Data.DomainObjects
     // Note: Implemented nonrecursively in order to support very large graphs.
     public HashSet<DomainObject> GetFlattenedRelatedObjectGraph ()
     {
-      var visited = new HashSet<DomainObject> ();
-      var resultSet = new HashSet<DomainObject> ();
-      var objectsToBeProcessed = new HashSet<Tuple<DomainObject, int>> { Tuple.Create (_rootObject, 0) };
+      var visited = new HashSet<DomainObject>();
+      var resultSet = new HashSet<DomainObject>();
+      var objectsToBeProcessed = new HashSet<Tuple<DomainObject, int>> { Tuple.Create(_rootObject, 0) };
 
       while (objectsToBeProcessed.Count > 0)
       {
         Tuple<DomainObject, int> current = objectsToBeProcessed.First();
-        objectsToBeProcessed.Remove (current);
-        if (!visited.Contains (current.Item1))
+        objectsToBeProcessed.Remove(current);
+        if (!visited.Contains(current.Item1))
         {
-          visited.Add (current.Item1);
-          if (_strategy.ShouldProcessObject (current.Item1))
-            resultSet.Add (current.Item1);
-          objectsToBeProcessed.UnionWith (GetNextTraversedObjects (current.Item1, current.Item2, _strategy));
+          visited.Add(current.Item1);
+          if (_strategy.ShouldProcessObject(current.Item1))
+            resultSet.Add(current.Item1);
+          objectsToBeProcessed.UnionWith(GetNextTraversedObjects(current.Item1, current.Item2, _strategy));
         }
       }
 
@@ -72,26 +73,28 @@ namespace Remotion.Data.DomainObjects
 
     protected virtual IEnumerable<Tuple<DomainObject, int>> GetNextTraversedObjects (DomainObject current, int currentDepth, IGraphTraversalStrategy strategy)
     {
-      var properties = new PropertyIndexer (current);
+      var properties = new PropertyIndexer(current);
       foreach (PropertyAccessor property in properties.AsEnumerable())
       {
         switch (property.PropertyData.Kind)
         {
           case PropertyKind.RelatedObject:
-            if (strategy.ShouldFollowLink (_rootObject, current, currentDepth, property))
+            if (strategy.ShouldFollowLink(_rootObject, current, currentDepth, property))
             {
-              var relatedObject = (DomainObject) property.GetValueWithoutTypeCheck ();
+              var relatedObject = (DomainObject?)property.GetValueWithoutTypeCheck();
               if (relatedObject != null)
-                yield return Tuple.Create (relatedObject, currentDepth + 1);
+                yield return Tuple.Create(relatedObject, currentDepth + 1);
             }
             break;
           case PropertyKind.RelatedObjectCollection:
-            if (strategy.ShouldFollowLink (_rootObject, current, currentDepth, property))
+            if (strategy.ShouldFollowLink(_rootObject, current, currentDepth, property))
             {
-              foreach (DomainObject relatedObject in (DomainObjectCollection) property.GetValueWithoutTypeCheck ())
+              var value = (IEnumerable?)property.GetValueWithoutTypeCheck();
+              Assertion.IsNotNull(value, "Collection property '{0}' does not have a value.", property.PropertyData.PropertyIdentifier);
+              foreach (DomainObject relatedObject in value)
               {
                 if (relatedObject != null)
-                  yield return Tuple.Create (relatedObject, currentDepth + 1);
+                  yield return Tuple.Create(relatedObject, currentDepth + 1);
               }
             }
             break;

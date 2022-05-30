@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -29,20 +30,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     private DomainObject _notLoadedObject2;
     private DomainObject _invalidObject;
     private DomainObject _notLoadedNonExistingObject;
-    private IClientTransactionListener _listenerMock;
+    private Mock<IClientTransactionListener> _listenerMock;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _loadedObject1 = DomainObjectMother.GetUnchangedObject (TestableClientTransaction, DomainObjectIDs.Order1);
-      _loadedObject2 = DomainObjectMother.GetUnchangedObject (TestableClientTransaction, DomainObjectIDs.Order3);
-      _notLoadedObject1 = DomainObjectMother.GetNotLoadedObject (TestableClientTransaction, DomainObjectIDs.Order4);
-      _notLoadedObject2 = DomainObjectMother.GetNotLoadedObject (TestableClientTransaction, DomainObjectIDs.Order5);
-      _invalidObject = DomainObjectMother.GetInvalidObject (TestableClientTransaction);
-      _notLoadedNonExistingObject = DomainObjectMother.GetNotLoadedObject (TestableClientTransaction, new ObjectID(typeof (ClassWithAllDataTypes), Guid.NewGuid()));
+      _loadedObject1 = DomainObjectMother.GetUnchangedObject(TestableClientTransaction, DomainObjectIDs.Order1);
+      _loadedObject2 = DomainObjectMother.GetUnchangedObject(TestableClientTransaction, DomainObjectIDs.Order3);
+      _notLoadedObject1 = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, DomainObjectIDs.Order4);
+      _notLoadedObject2 = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, DomainObjectIDs.Order5);
+      _invalidObject = DomainObjectMother.GetInvalidObject(TestableClientTransaction);
+      _notLoadedNonExistingObject = DomainObjectMother.GetNotLoadedObject(TestableClientTransaction, new ObjectID(typeof(ClassWithAllDataTypes), Guid.NewGuid()));
 
-      _listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock (TestableClientTransaction);
+      _listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
     }
 
     protected DomainObject LoadedObject1
@@ -75,27 +76,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       get { return _notLoadedNonExistingObject; }
     }
 
-    protected IClientTransactionListener ListenerMock
+    protected Mock<IClientTransactionListener> ListenerMock
     {
       get { return _listenerMock; }
     }
 
     protected void CheckLoaded (DomainObject domainObject)
     {
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Not.Null);
+      Assert.That(domainObject.State.IsUnchanged, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Not.Null);
     }
 
     protected void CheckNotLoaded (DomainObject domainObject)
     {
-      Assert.That (domainObject.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
+      Assert.That(domainObject.State.IsNotLoadedYet, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
     }
 
     protected void CheckInvalid (DomainObject domainObject)
     {
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
+      Assert.That(domainObject.State.IsInvalid, Is.True);
+      Assert.That(TestableClientTransaction.DataManager.DataContainers[domainObject.ID], Is.Null);
     }
   }
 }

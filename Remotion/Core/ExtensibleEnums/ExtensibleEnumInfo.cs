@@ -39,14 +39,14 @@ namespace Remotion.ExtensibleEnums
     /// <param name="positionalKey">The positional key of the value.</param>
     public ExtensibleEnumInfo (T value, MethodInfo declaringMethod, double positionalKey)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("declaringMethod", declaringMethod);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("declaringMethod", declaringMethod);
 
       Value = value;
       DefiningMethod = declaringMethod;
       PositionalKey = positionalKey;
     }
-    
+
     /// <summary>
     /// Gets the <see cref="ExtensibleEnum{T}"/> value described by this instance.
     /// </summary>
@@ -74,7 +74,7 @@ namespace Remotion.ExtensibleEnums
 
     public override string ToString ()
     {
-      return string.Format ("ExtensibleEnumInfo: {0} ({1})", Value.ValueName, Value.GetEnumType ());
+      return string.Format("ExtensibleEnumInfo: {0} ({1})", Value.ValueName, Value.GetEnumType());
     }
   }
 }

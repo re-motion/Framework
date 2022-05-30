@@ -19,6 +19,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable disable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
@@ -26,38 +27,40 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckNotNull
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Nullable_Fail ()
     {
-      ArgumentUtility.CheckNotNull ("arg", (int?) null);
+      Assert.That(
+          () => ArgumentUtility.CheckNotNull("arg", (int?)null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Nullable_Succeed ()
     {
-      int? result = ArgumentUtility.CheckNotNull ("arg", (int?) 1);
-      Assert.That (result, Is.EqualTo (1));
+      int? result = ArgumentUtility.CheckNotNull("arg", (int?)1);
+      Assert.That(result, Is.EqualTo(1));
     }
 
     [Test]
     public void Value_Succeed ()
     {
-      int result = ArgumentUtility.CheckNotNull ("arg", (int) 1);
-      Assert.That (result, Is.EqualTo (1));
+      int result = ArgumentUtility.CheckNotNull("arg", (int)1);
+      Assert.That(result, Is.EqualTo(1));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Reference_Fail ()
     {
-      ArgumentUtility.CheckNotNull ("arg", (string) null);
+      Assert.That(
+          () => ArgumentUtility.CheckNotNull("arg", (string)null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Reference_Succeed ()
     {
-      string result = ArgumentUtility.CheckNotNull ("arg", string.Empty);
-      Assert.That (result, Is.SameAs (string.Empty));
+      string result = ArgumentUtility.CheckNotNull("arg", string.Empty);
+      Assert.That(result, Is.SameAs(string.Empty));
     }
   }
 }

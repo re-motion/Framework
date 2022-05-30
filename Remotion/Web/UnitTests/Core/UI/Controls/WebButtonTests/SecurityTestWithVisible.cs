@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
@@ -22,29 +23,26 @@ using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 {
   [TestFixture]
   public class SecurityTestWithVisible : BaseTest
   {
-    private MockRepository _mocks;
-    private IWebSecurityAdapter _mockWebSecurityAdapter;
-    private ISecurableObject _mockSecurableObject;
+    private Mock<IWebSecurityAdapter> _mockWebSecurityAdapter;
+    private Mock<ISecurableObject> _mockSecurableObject;
     private ServiceLocatorScope _serviceLocatorStub;
 
     [SetUp]
     public void Setup ()
     {
-      _mocks = new MockRepository ();
-      _mockWebSecurityAdapter = _mocks.StrictMock<IWebSecurityAdapter> ();
-      _mockSecurableObject = _mocks.StrictMock<ISecurableObject> ();
+      _mockWebSecurityAdapter = new Mock<IWebSecurityAdapter>(MockBehavior.Strict);
+      _mockSecurableObject = new Mock<ISecurableObject>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterMultiple<IWebSecurityAdapter> (() => _mockWebSecurityAdapter);
+      serviceLocator.RegisterMultiple<IWebSecurityAdapter>(() => _mockWebSecurityAdapter.Object);
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
-      _serviceLocatorStub = new ServiceLocatorScope (serviceLocator);
+      _serviceLocatorStub = new ServiceLocatorScope(serviceLocator);
     }
 
     public override void TearDown ()
@@ -56,29 +54,29 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
     [Test]
     public void EvaluateTrue_FromTrueAndWithMissingPermissionBehaviorSetToDisabled ()
     {
-      WebButton button = CreateButtonWithClickEventHandler ();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       button.Visible = true;
-      _mocks.ReplayAll ();
 
       bool isVisible = button.Visible;
 
-      _mocks.VerifyAll ();
-      Assert.That (isVisible, Is.True);
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      Assert.That(isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromFalseAndWithMissingPermissionBehaviorSetToDisabled ()
     {
-      WebButton button = CreateButtonWithClickEventHandler ();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       button.Visible = false;
-      _mocks.ReplayAll ();
 
       bool isVisible = button.Visible;
 
-      _mocks.VerifyAll ();
-      Assert.That (isVisible, Is.False);
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      Assert.That(isVisible, Is.False);
     }
 
     [Test]
@@ -87,16 +85,16 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         WebButton button = CreateButtonWithClickEventHandler();
         button.Visible = true;
-        _mocks.ReplayAll();
 
         bool isVisible = button.Visible;
 
-        _mocks.VerifyAll();
-        Assert.That (isVisible, Is.True);
+        _mockWebSecurityAdapter.Verify();
+        _mockSecurableObject.Verify();
+        Assert.That(isVisible, Is.True);
       }
     }
 
@@ -106,84 +104,84 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         WebButton button = CreateButtonWithClickEventHandler();
         button.Visible = false;
-        _mocks.ReplayAll();
 
         bool isVisible = button.Visible;
 
-        _mocks.VerifyAll();
-        Assert.That (isVisible, Is.False);
+        _mockWebSecurityAdapter.Verify();
+        _mockSecurableObject.Verify();
+        Assert.That(isVisible, Is.False);
       }
     }
 
     [Test]
     public void EvaluateTrue_FromTrueAndWithoutClickEventHandler ()
     {
-      WebButton button = CreateButtonWithoutClickEventHandler ();
+      WebButton button = CreateButtonWithoutClickEventHandler();
       button.Visible = true;
-      _mocks.ReplayAll ();
 
       bool isVisible = button.Visible;
 
-      _mocks.VerifyAll ();
-      Assert.That (isVisible, Is.True);
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      Assert.That(isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromFalseAndWithoutClickEventHandler ()
     {
-      WebButton button = CreateButtonWithoutClickEventHandler ();
+      WebButton button = CreateButtonWithoutClickEventHandler();
       button.Visible = false;
-      _mocks.ReplayAll ();
 
       bool isVisible = button.Visible;
 
-      _mocks.VerifyAll ();
-      Assert.That (isVisible, Is.False);
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      Assert.That(isVisible, Is.False);
     }
 
     [Test]
     public void EvaluateTrue_FromTrueAndAccessGranted ()
     {
-      Expect.Call (_mockWebSecurityAdapter.HasAccess (_mockSecurableObject, new EventHandler (TestHandler))).Return (true);
-      WebButton button = CreateButtonWithClickEventHandler ();
+      _mockWebSecurityAdapter.Setup(_ => _.HasAccess(_mockSecurableObject.Object, new EventHandler(TestHandler))).Returns(true).Verifiable();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.Visible = true;
-      _mocks.ReplayAll ();
 
       bool isVisible = button.Visible;
 
-      _mocks.VerifyAll ();
-      Assert.That (isVisible, Is.True);
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      Assert.That(isVisible, Is.True);
     }
 
     [Test]
     public void EvaluateFalse_FromTrueAndAccessDenied ()
     {
-      Expect.Call (_mockWebSecurityAdapter.HasAccess(_mockSecurableObject, new EventHandler (TestHandler))).Return (false);
-      WebButton button = CreateButtonWithClickEventHandler ();
+      _mockWebSecurityAdapter.Setup(_ => _.HasAccess(_mockSecurableObject.Object, new EventHandler(TestHandler))).Returns(false).Verifiable();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.Visible = true;
-      _mocks.ReplayAll ();
 
       bool isVisible = button.Visible;
 
-      _mocks.VerifyAll ();
-      Assert.That (isVisible, Is.False);
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      Assert.That(isVisible, Is.False);
     }
 
     [Test]
     public void EvaluateFalse_FromFalse ()
     {
-      WebButton button = CreateButtonWithClickEventHandler ();
+      WebButton button = CreateButtonWithClickEventHandler();
       button.Visible = false;
-      _mocks.ReplayAll ();
 
       bool isVisible = button.Visible;
 
-      _mocks.VerifyAll ();
-      Assert.That (isVisible, Is.False);
+      _mockWebSecurityAdapter.Verify();
+      _mockSecurableObject.Verify();
+      Assert.That(isVisible, Is.False);
     }
 
     private void TestHandler (object sender, EventArgs e)
@@ -192,9 +190,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
     private WebButton CreateButtonWithClickEventHandler ()
     {
-      WebButton button = new WebButton ();
+      WebButton button = new WebButton();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
-      button.SecurableObject = _mockSecurableObject;
+      button.SecurableObject = _mockSecurableObject.Object;
       button.Click += TestHandler;
 
       return button;
@@ -202,9 +200,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 
     private WebButton CreateButtonWithoutClickEventHandler ()
     {
-      WebButton button = new WebButton ();
+      WebButton button = new WebButton();
       button.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
-      button.SecurableObject = _mockSecurableObject;
+      button.SecurableObject = _mockSecurableObject.Object;
 
       return button;
     }

@@ -27,14 +27,14 @@ using Remotion.SecurityManager.Domain.AccessControl;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
-  [PermanentGuid ("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.GroupType")]
+  [PermanentGuid("BDBB9696-177B-4b73-98CF-321B2FBEAD0C")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
   public abstract class GroupType : OrganizationalStructureObject, ISupportsGetObject
   {
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     public enum Methods
     {
@@ -43,7 +43,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     public static GroupType NewObject ()
     {
-      return NewObject<GroupType> ();
+      return NewObject<GroupType>();
     }
 
     public static IQueryable<GroupType> FindAll ()
@@ -53,47 +53,47 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
              select g;
     }
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     protected GroupType ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("GroupType")]
+    [DBBidirectionalRelation("GroupType")]
     public abstract ObjectList<GroupTypePosition> Positions { get; }
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
-     
+      base.OnDeleting(args);
+
       using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
-        if (QueryFactory.CreateLinqQuery<Group>().Where (g => g.GroupType == this).Any())
+        if (QueryFactory.CreateLinqQuery<Group>().Where(g => g.GroupType == this).Any())
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The GroupType '{0}' is still assigned to at least one group. Please update or delete the dependent groups before proceeding.", Name));
         }
 
-        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry> ().Where (ace => ace.SpecificGroupType == this);
-        
-        _deleteHandler = new DomainObjectDeleteHandler (aces, Positions);
+        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificGroupType == this);
+
+        _deleteHandler = new DomainObjectDeleteHandler(aces, Positions);
       }
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public override string DisplayName

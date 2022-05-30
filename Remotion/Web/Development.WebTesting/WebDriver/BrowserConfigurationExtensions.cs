@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.ComponentModel;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver
 {
@@ -30,36 +32,47 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
   public static class BrowserConfigurationExtensions
   {
     /// <summary>
-    /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Internet Explorer</b> by testing if the passed object 
-    /// implements <see cref="IInternetExplorerConfiguration"/>.
-    /// </summary>
-    public static bool IsInternetExplorer ([NotNull] this IBrowserConfiguration browserConfiguration)
-    {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
-
-      return browserConfiguration is IInternetExplorerConfiguration;
-    }
-
-    /// <summary>
     /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Chrome</b> by testing if the passed object 
     /// implements <see cref="IChromeConfiguration"/>.
     /// </summary>
     public static bool IsChrome ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       return browserConfiguration is IChromeConfiguration;
     }
 
     /// <summary>
-    /// Gets a flag indicating if <paramref name="browser"/> represents <b>Internet Explorer</b> by testing if the passed instance 
-    /// is <see cref="Browser.InternetExplorer"/>.
+    /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Edge</b> by testing if the passed object
+    /// implements <see cref="IEdgeConfiguration"/>.
     /// </summary>
-    public static bool IsInternetExplorer ([NotNull] this Browser browser)
+    public static bool IsEdge ([NotNull] this IBrowserConfiguration browserConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
-      return browser == Browser.InternetExplorer;
+      return browserConfiguration is IEdgeConfiguration;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents a <b>Chromium browser</b> by testing if the passed object 
+    /// implements either <see cref="IChromeConfiguration"/> or <see cref="IEdgeConfiguration"/>.
+    /// </summary>
+    public static bool IsChromium ([NotNull] this IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+
+      return browserConfiguration is IChromeConfiguration || browserConfiguration is IEdgeConfiguration;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if <paramref name="browserConfiguration"/> represents <b>Firefox</b> by testing if the passed object 
+    /// implements <see cref="IFirefoxConfiguration"/>.
+    /// </summary>
+    public static bool IsFirefox ([NotNull] this IBrowserConfiguration browserConfiguration)
+    {
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
+
+      return browserConfiguration is IFirefoxConfiguration;
     }
 
     /// <summary>
@@ -68,9 +81,42 @@ namespace Remotion.Web.Development.WebTesting.WebDriver
     /// </summary>
     public static bool IsChrome ([NotNull] this Browser browser)
     {
-      ArgumentUtility.CheckNotNull ("browser", browser);
+      ArgumentUtility.CheckNotNull("browser", browser);
 
       return browser == Browser.Chrome;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if <paramref name="browser"/> represents <b>Edge</b> by testing if the passed instance
+    /// is <see cref="Browser.Edge"/>.
+    /// </summary>
+    public static bool IsEdge ([NotNull] this Browser browser)
+    {
+      ArgumentUtility.CheckNotNull("browser", browser);
+
+      return browser == Browser.Edge;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if <paramref name="browser"/> represents a <b>Chromium browser</b> by testing if the passed instance
+    /// is <see cref="Browser.Chrome"/> or <seealso cref="Browser.Edge"/>.
+    /// </summary>
+    public static bool IsChromium ([NotNull] this Browser browser)
+    {
+      ArgumentUtility.CheckNotNull("browser", browser);
+
+      return browser == Browser.Chrome || browser == Browser.Edge;
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if <paramref name="browser"/> represents <b>Firefox</b> by testing if the passed instance 
+    /// is <see cref="Browser.Firefox"/>.
+    /// </summary>
+    public static bool IsFirefox ([NotNull] this Browser browser)
+    {
+      ArgumentUtility.CheckNotNull("browser", browser);
+
+      return browser == Browser.Firefox;
     }
   }
 }

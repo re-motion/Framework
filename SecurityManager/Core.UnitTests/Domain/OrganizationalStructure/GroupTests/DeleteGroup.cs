@@ -29,20 +29,20 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     [Test]
     public void DeleteGroup_WithAccessControlEntry ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         dbFixtures.CreateEmptyDomain();
-        var group = testHelper.CreateGroup ("group", null, testHelper.CreateTenant ("tenant"));
-        var ace = testHelper.CreateAceWithSpecificGroup (group);
-        ClientTransaction.Current.Commit ();
+        var group = testHelper.CreateGroup("group", null, testHelper.CreateTenant("tenant"));
+        var ace = testHelper.CreateAceWithSpecificGroup(group);
+        ClientTransaction.Current.Commit();
 
-        group.Delete ();
+        group.Delete();
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (ace.State, Is.EqualTo (StateType.Invalid));
+        Assert.That(ace.State.IsInvalid, Is.True);
       }
     }
 
@@ -52,16 +52,16 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        Tenant tenant = testHelper.CreateTenant ("TestTenant", "UID: testTenant");
-        Group userGroup = testHelper.CreateGroup ("UserGroup", Guid.NewGuid().ToString(), null, tenant);
-        Group roleGroup = testHelper.CreateGroup ("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
-        User user = testHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
-        Position position = testHelper.CreatePosition ("Position");
-        Role role = testHelper.CreateRole (user, roleGroup, position);
+        Tenant tenant = testHelper.CreateTenant("TestTenant", "UID: testTenant");
+        Group userGroup = testHelper.CreateGroup("UserGroup", Guid.NewGuid().ToString(), null, tenant);
+        Group roleGroup = testHelper.CreateGroup("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
+        User user = testHelper.CreateUser("user", "Firstname", "Lastname", "Title", userGroup, tenant);
+        Position position = testHelper.CreatePosition("Position");
+        Role role = testHelper.CreateRole(user, roleGroup, position);
 
         roleGroup.Delete();
 
-        Assert.That (role.State, Is.EqualTo (StateType.Invalid));
+        Assert.That(role.State.IsInvalid, Is.True);
       }
     }
   }

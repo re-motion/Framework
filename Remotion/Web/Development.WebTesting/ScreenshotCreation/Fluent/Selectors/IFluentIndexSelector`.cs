@@ -23,6 +23,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent.Selector
   /// via the specified index.
   /// </summary>
   public interface IFluentIndexSelector<TResult> : IFluentSelector
+      where TResult : notnull
   {
     /// <summary>
     /// Selects the item with the specified <paramref name="oneBasedIndex"/>.

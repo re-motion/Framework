@@ -18,12 +18,12 @@ using System;
 
 namespace Remotion.Collections
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Collections.DataStore.dll", true)]
   public class NullDataStore<TKey, TValue> : IDataStore<TKey, TValue>
   {
     public static readonly NullDataStore<TKey, TValue> Instance = null;
 
-    private NullDataStore()
+    private NullDataStore ()
     {
       throw new NotImplementedException();
     }

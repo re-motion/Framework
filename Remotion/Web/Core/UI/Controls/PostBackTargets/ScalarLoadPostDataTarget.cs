@@ -30,13 +30,13 @@ namespace Remotion.Web.UI.Controls.PostBackTargets
     {
     }
 
-    public event EventHandler DataChanged;
+    public event EventHandler? DataChanged;
 
-    public string Value { get; set; }
+    public string? Value { get; set; }
 
     public bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      var newValues = postCollection.GetValues (postDataKey);
+      var newValues = postCollection.GetValues(postDataKey);
       var oldValue = Value;
       if (newValues != null)
         Value = newValues.FirstOrDefault();
@@ -47,7 +47,7 @@ namespace Remotion.Web.UI.Controls.PostBackTargets
     public void RaisePostDataChangedEvent ()
     {
       if (DataChanged != null)
-        DataChanged (this, EventArgs.Empty);
+        DataChanged(this, EventArgs.Empty);
     }
   }
 }

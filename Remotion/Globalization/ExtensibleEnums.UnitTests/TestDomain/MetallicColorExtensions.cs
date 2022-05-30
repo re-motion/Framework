@@ -23,7 +23,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
   {
     public static MetallicColor RedMetallic (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new MetallicColor ("MetallicColor", "RedMetallic");
+      return new MetallicColor("MetallicColor", "RedMetallic");
     }
   }
 }

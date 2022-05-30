@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     IEnumerable<ColumnDefinition> GetColumns ();
     IEnumerable<ColumnDefinition> GetColumnsForComparison ();
 
-    IEnumerable<ColumnValue> SplitValue (object value);
-    IEnumerable<ColumnValue> SplitValueForComparison (object value);
-    ColumnValueTable SplitValuesForComparison (IEnumerable<object> values);
-    object CombineValue (IColumnValueProvider columnValueProvider);
+    IEnumerable<ColumnValue> SplitValue (object? value);
+    IEnumerable<ColumnValue> SplitValueForComparison (object? value);
+    ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values);
+    object? CombineValue (IColumnValueProvider columnValueProvider);
     IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties);
   }
 }

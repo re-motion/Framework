@@ -44,8 +44,8 @@ namespace Remotion.Mixins
     // Singleton implementations with nested classes are documented here: http://csharpindepth.com/Articles/General/Singleton.aspx.
     static class LazyStaticFields
     {
-      public static readonly IObjectFactoryImplementation ObjectFactoryImplementation = 
-          SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation> ();
+      public static readonly IObjectFactoryImplementation ObjectFactoryImplementation =
+          SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>();
 
       // ReSharper disable EmptyConstructor
       // Explicit static constructor to tell C# compiler not to mark type as beforefieldinit; this will make the static fields as lazy as possible.
@@ -86,7 +86,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static T Create<T> ()
     {
-      return Create<T> (ParamList.Empty);
+      return Create<T>(ParamList.Empty);
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static T Create<T> (ParamList constructorParameters, params object[] preparedMixins)
     {
-      return Create<T> (false, constructorParameters, preparedMixins);
+      return Create<T>(false, constructorParameters, preparedMixins);
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object Create (Type targetOrConcreteType)
     {
-      return Create (false, targetOrConcreteType, ParamList.Empty);
+      return Create(false, targetOrConcreteType, ParamList.Empty);
     }
 
     /// <summary>
@@ -217,7 +217,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static object Create (Type targetOrConcreteType, ParamList constructorParameters, params object[] preparedMixins)
     {
-      return Create (false, targetOrConcreteType, constructorParameters, preparedMixins);
+      return Create(false, targetOrConcreteType, constructorParameters, preparedMixins);
     }
 
     #endregion
@@ -268,9 +268,9 @@ namespace Remotion.Mixins
     /// </remarks>
     public static T Create<T> (bool allowNonPublicConstructors, ParamList constructorParameters, params object[] preparedMixins)
     {
-      return (T) Create (allowNonPublicConstructors, typeof (T), constructorParameters, preparedMixins);
+      return (T)Create(allowNonPublicConstructors, typeof(T), constructorParameters, preparedMixins);
     }
-    
+
     /// <summary>
     /// Creates a mixed instance of the given <paramref name="targetOrConcreteType"/>.
     /// </summary>
@@ -320,7 +320,7 @@ namespace Remotion.Mixins
     public static object Create (
         bool allowNonPublicConstructors, Type targetOrConcreteType, ParamList constructorParameters, params object[] preparedMixins)
     {
-      return LazyStaticFields.ObjectFactoryImplementation.CreateInstance (
+      return LazyStaticFields.ObjectFactoryImplementation.CreateInstance(
           allowNonPublicConstructors, targetOrConcreteType, constructorParameters, preparedMixins);
     }
 

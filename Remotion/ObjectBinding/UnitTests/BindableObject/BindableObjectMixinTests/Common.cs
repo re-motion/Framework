@@ -30,40 +30,40 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     [Test]
     public void InstantiateMixedType ()
     {
-      Assert.That (ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty), Is.InstanceOf (typeof (IBusinessObject)));
+      Assert.That(ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty), Is.InstanceOf(typeof(IBusinessObject)));
     }
 
     [Test]
     public void GetProvider ()
     {
-      Assert.That (
-          BindableObjectProvider.GetProviderForBindableObjectType (typeof (SimpleBusinessObjectClass)),
-          Is.SameAs (BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>()));
-      Assert.That (
-          BindableObjectProvider.GetProviderForBindableObjectType (typeof (SimpleBusinessObjectClass)),
-          Is.Not.SameAs (BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute> ()));
+      Assert.That(
+          BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass)),
+          Is.SameAs(BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>()));
+      Assert.That(
+          BindableObjectProvider.GetProviderForBindableObjectType(typeof(SimpleBusinessObjectClass)),
+          Is.Not.SameAs(BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()));
     }
 
     [Test]
     public void SerializeAndDeserialize ()
     {
-      SimpleBusinessObjectClass value = ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
+      SimpleBusinessObjectClass value = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
       value.String = "TheString";
-      SimpleBusinessObjectClass deserialized = Serializer.SerializeAndDeserialize (value);
+      SimpleBusinessObjectClass deserialized = Serializer.SerializeAndDeserialize(value);
 
-      Assert.That (deserialized.String, Is.EqualTo ("TheString"));
-      Assert.That (((IBusinessObject) deserialized).BusinessObjectClass, Is.SameAs (((IBusinessObject) value).BusinessObjectClass));
+      Assert.That(deserialized.String, Is.EqualTo("TheString"));
+      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.SameAs(((IBusinessObject)value).BusinessObjectClass));
     }
 
     [Test]
     public void SerializeAndDeserialize_WithNewBindableObjectProvider ()
     {
-      SimpleBusinessObjectClass value = ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
-      byte[] serialized = Serializer.Serialize (value);
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), null);
-      SimpleBusinessObjectClass deserialized = (SimpleBusinessObjectClass) Serializer.Deserialize (serialized);
+      SimpleBusinessObjectClass value = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
+      byte[] serialized = Serializer.Serialize(value);
+      BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), null);
+      SimpleBusinessObjectClass deserialized = (SimpleBusinessObjectClass)Serializer.Deserialize(serialized);
 
-      Assert.That (((IBusinessObject) deserialized).BusinessObjectClass, Is.Not.SameAs (((IBusinessObject) value).BusinessObjectClass));
+      Assert.That(((IBusinessObject)deserialized).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject)value).BusinessObjectClass));
     }
   }
 }

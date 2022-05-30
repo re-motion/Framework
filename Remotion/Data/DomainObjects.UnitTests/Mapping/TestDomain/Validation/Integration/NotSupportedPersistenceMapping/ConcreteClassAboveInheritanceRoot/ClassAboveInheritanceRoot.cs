@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedPersistenceMapping.
     ConcreteClassAboveInheritanceRoot
 {
-  [ClassID ("ConcreteClassAboveInheritanceRoot_ConcreteClassAboveInheritanceRoot")]
+  [ClassID("ConcreteClassAboveInheritanceRoot_ConcreteClassAboveInheritanceRoot")]
   public class ClassAboveInheritanceRoot : DomainObject
   {
   }

@@ -17,8 +17,10 @@
 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
+#nullable disable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 {
@@ -26,25 +28,28 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
   public class CheckNotNullAndTypeIsAssignableFrom
   {
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void Fail_Null ()
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", null, typeof (string));
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("arg", null, typeof(string)),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.\r\nParameter name: arg")]
     public void Fail_Type ()
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (object), typeof (string));
+      Assert.That(
+          () => ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("arg", typeof(object), typeof(string)),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'arg' is a 'System.Object', which cannot be assigned to type 'System.String'.", "arg"));
     }
 
     [Test]
     public void Succeed ()
     {
-      Type result = ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
-      Assert.That (result, Is.SameAs (typeof (string)));
+      Type result = ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("arg", typeof(string), typeof(object));
+      Assert.That(result, Is.SameAs(typeof(string)));
     }
   }
 }

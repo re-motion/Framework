@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.ReadOnlyTransactions
 {
@@ -30,62 +31,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order = (Order) LifetimeService.GetObjectReference (WriteableSubTransaction, DomainObjectIDs.Order1);
+      _order = (Order)LifetimeService.GetObjectReference(WriteableSubTransaction, DomainObjectIDs.Order1);
 
-      InstallExtensionMock ();
+      InstallExtensionMock();
     }
 
     [Test]
     public void ObjectsLoading_Loaded_RaisedInAllHierarchyLevels ()
     {
-      using (ExtensionStrictMock.GetMockRepository ().Ordered ())
-      {
-        ExtensionStrictMock
-            .Expect (
-                mock => mock.ObjectsLoading (
-                    Arg.Is (ReadOnlyRootTransaction),
-                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
-            .WhenCalled (mi => Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.False));
-        ExtensionStrictMock
-            .Expect (
-                mock => mock.ObjectsLoaded (
-                    Arg.Is (ReadOnlyRootTransaction),
-                    Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order })))
-            .WhenCalled (mi => Assert.That (ReadOnlyRootTransaction.IsWriteable, Is.False));
+      var sequence = new MockSequence();
+      ExtensionStrictMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(ReadOnlyRootTransaction, new[] { _order.ID }))
+          .Callback((ClientTransaction _, IReadOnlyList<ObjectID> _) => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False))
+          .Verifiable();
+      ExtensionStrictMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(ReadOnlyRootTransaction, new[] { _order }))
+          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False))
+          .Verifiable();
+      ExtensionStrictMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(ReadOnlyMiddleTransaction, new[] { _order.ID }))
+          .Callback((ClientTransaction _, IReadOnlyList<ObjectID> _) => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False))
+          .Verifiable();
+      ExtensionStrictMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(ReadOnlyMiddleTransaction, new[] { _order }))
+          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False))
+          .Verifiable();
+      ExtensionStrictMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoading(WriteableSubTransaction, new[] { _order.ID }))
+          .Callback((ClientTransaction _, IReadOnlyList<ObjectID> _) => Assert.That(WriteableSubTransaction.IsWriteable, Is.True))
+          .Verifiable();
+      ExtensionStrictMock
+          .InSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(WriteableSubTransaction, new[] { _order }))
+          .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(WriteableSubTransaction.IsWriteable, Is.True))
+          .Verifiable();
 
-        ExtensionStrictMock
-            .Expect (
-                mock => mock.ObjectsLoading (
-                    Arg.Is (ReadOnlyMiddleTransaction),
-                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
-            .WhenCalled (mi => Assert.That (ReadOnlyMiddleTransaction.IsWriteable, Is.False));
-        ExtensionStrictMock
-            .Expect (
-                mock => mock.ObjectsLoaded (
-                    Arg.Is (ReadOnlyMiddleTransaction),
-                    Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order })))
-            .WhenCalled (mi => Assert.That (ReadOnlyMiddleTransaction.IsWriteable, Is.False));
+      ExecuteInWriteableSubTransaction(() => _order.EnsureDataAvailable());
 
-        ExtensionStrictMock
-            .Expect (
-                mock => mock.ObjectsLoading (
-                    Arg.Is (WriteableSubTransaction),
-                    Arg<ReadOnlyCollection<ObjectID>>.List.Equal (new[] { _order.ID })))
-            .WhenCalled (mi => Assert.That (WriteableSubTransaction.IsWriteable, Is.True));
-        ExtensionStrictMock
-            .Expect (
-                mock => mock.ObjectsLoaded (
-                    Arg.Is (WriteableSubTransaction),
-                    Arg<ReadOnlyCollection<DomainObject>>.List.Equal (new[] { _order })))
-            .WhenCalled (mi => Assert.That (WriteableSubTransaction.IsWriteable, Is.True));
-      }
-
-      ExecuteInWriteableSubTransaction (() => _order.EnsureDataAvailable());
-
-      ExtensionStrictMock.VerifyAllExpectations();
+      ExtensionStrictMock.Verify();
     }
-
   }
 }

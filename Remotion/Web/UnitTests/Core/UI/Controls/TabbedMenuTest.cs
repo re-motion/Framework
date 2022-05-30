@@ -50,14 +50,14 @@ public class TabbedMenuTest: WebControlTest
 
   protected override void SetUpContext ()
   {
-    base.SetUpContext ();
-    
-    _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
+    base.SetUpContext();
+
+    _currentHttpContext = HttpContextHelper.CreateHttpContext("GET", "default.html", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
-    HttpContextHelper.SetCurrent (_currentHttpContext);
+    HttpContextHelper.SetCurrent(_currentHttpContext);
   }
 
-  protected override void SetUpPage()
+  protected override void SetUpPage ()
   {
     base.SetUpPage();
 
@@ -76,161 +76,161 @@ public class TabbedMenuTest: WebControlTest
     _subMenuTab22 = new SubMenuTab("SubMenuTab22", "Sub 2.2");
     _subMenuTab23 = new SubMenuTab("SubMenuTab23", "Sub 2.3");
 
-    _mainMenuTab1.SubMenuTabs.Add (_subMenuTab11);
-    _mainMenuTab1.SubMenuTabs.Add (_subMenuTab12);
-    _mainMenuTab1.SubMenuTabs.Add (_subMenuTab13);
+    _mainMenuTab1.SubMenuTabs.Add(_subMenuTab11);
+    _mainMenuTab1.SubMenuTabs.Add(_subMenuTab12);
+    _mainMenuTab1.SubMenuTabs.Add(_subMenuTab13);
 
-    _mainMenuTab2.SubMenuTabs.Add (_subMenuTab21);
-    _mainMenuTab2.SubMenuTabs.Add (_subMenuTab22);
-    _mainMenuTab2.SubMenuTabs.Add (_subMenuTab23);
+    _mainMenuTab2.SubMenuTabs.Add(_subMenuTab21);
+    _mainMenuTab2.SubMenuTabs.Add(_subMenuTab22);
+    _mainMenuTab2.SubMenuTabs.Add(_subMenuTab23);
 
-    _tabbedMenu.Tabs.Add (_mainMenuTab1);
-    _tabbedMenu.Tabs.Add (_mainMenuTab2);
-    _tabbedMenu.Tabs.Add (_mainMenuTab3);
+    _tabbedMenu.Tabs.Add(_mainMenuTab1);
+    _tabbedMenu.Tabs.Add(_mainMenuTab2);
+    _tabbedMenu.Tabs.Add(_mainMenuTab3);
   }
 
   [Test]
-  public void GetUrlParametersForMainMenuTab()
+  public void GetUrlParametersForMainMenuTab ()
   {
     string expectedParameterValue = _mainMenuTab2.ItemID;
-    
-    NameValueCollection parameters = _tabbedMenu.GetUrlParameters (_mainMenuTab2);
 
-    Assert.That (parameters, Is.Not.Null);
-    Assert.That (parameters.Count, Is.EqualTo (1));
-    Assert.That (parameters.GetKey (0), Is.Not.Null);
-    Assert.That (parameters.GetKey (0), Is.EqualTo (_tabbedMenu.SelectionID));
-    Assert.That (parameters.Get (0), Is.Not.Null);
-    Assert.That (parameters.Get (0), Is.EqualTo (expectedParameterValue));
+    NameValueCollection parameters = _tabbedMenu.GetUrlParameters(_mainMenuTab2);
+
+    Assert.That(parameters, Is.Not.Null);
+    Assert.That(parameters.Count, Is.EqualTo(1));
+    Assert.That(parameters.GetKey(0), Is.Not.Null);
+    Assert.That(parameters.GetKey(0), Is.EqualTo(_tabbedMenu.SelectionID));
+    Assert.That(parameters.Get(0), Is.Not.Null);
+    Assert.That(parameters.Get(0), Is.EqualTo(expectedParameterValue));
   }
 
   [Test]
-  public void GetUrlParametersForSubMenuTab()
+  public void GetUrlParametersForSubMenuTab ()
   {
-    string expectedParameterValue = string.Format ("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
-    
-    NameValueCollection parameters = _tabbedMenu.GetUrlParameters (_subMenuTab22);
+    string expectedParameterValue = string.Format("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
 
-    Assert.That (parameters, Is.Not.Null);
-    Assert.That (parameters.Count, Is.EqualTo (1));
-    Assert.That (parameters.GetKey (0), Is.Not.Null);
-    Assert.That (parameters.GetKey (0), Is.EqualTo (_tabbedMenu.SelectionID));
-    Assert.That (parameters.Get (0), Is.Not.Null);
-    Assert.That (parameters.Get (0), Is.EqualTo (expectedParameterValue));
+    NameValueCollection parameters = _tabbedMenu.GetUrlParameters(_subMenuTab22);
+
+    Assert.That(parameters, Is.Not.Null);
+    Assert.That(parameters.Count, Is.EqualTo(1));
+    Assert.That(parameters.GetKey(0), Is.Not.Null);
+    Assert.That(parameters.GetKey(0), Is.EqualTo(_tabbedMenu.SelectionID));
+    Assert.That(parameters.Get(0), Is.Not.Null);
+    Assert.That(parameters.Get(0), Is.EqualTo(expectedParameterValue));
   }
 
   [Test]
-  public void FormatUrlForMainMenuTab()
+  public void FormatUrlForMainMenuTab ()
   {
     string url = "/AppDir/page.aspx";
     string expectedParameterValue = _mainMenuTab2.ItemID;
-    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
-    string value = _tabbedMenu.FormatUrl (url, _mainMenuTab2);
+    string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
 
-    Assert.That (value, Is.Not.Null);
-    Assert.That (value, Is.EqualTo (expectedUrl));
+    string value = _tabbedMenu.FormatUrl(url, _mainMenuTab2);
+
+    Assert.That(value, Is.Not.Null);
+    Assert.That(value, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void FormatUrlForSubMenuTab()
+  public void FormatUrlForSubMenuTab ()
   {
     string url = "/AppDir/page.aspx";
-    string expectedParameterValue = string.Format ("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
-    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
-    string value = _tabbedMenu.FormatUrl (url, _subMenuTab22);
+    string expectedParameterValue = string.Format("{0},{1}", _subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID);
+    string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
 
-    Assert.That (value, Is.Not.Null);
-    Assert.That (value, Is.EqualTo (expectedUrl));
+    string value = _tabbedMenu.FormatUrl(url, _subMenuTab22);
+
+    Assert.That(value, Is.Not.Null);
+    Assert.That(value, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void FormatUrlForSelectedMainMenuTab()
+  public void FormatUrlForSelectedMainMenuTab ()
   {
     string url = "/AppDir/page.aspx";
     _mainMenuTab3.IsSelected = true;
     string expectedParameterValue = _mainMenuTab3.ItemID;
-    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
-    string value = _tabbedMenu.FormatUrl (url);
+    string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
 
-    Assert.That (value, Is.Not.Null);
-    Assert.That (value, Is.EqualTo (expectedUrl));
+    string value = _tabbedMenu.FormatUrl(url);
+
+    Assert.That(value, Is.Not.Null);
+    Assert.That(value, Is.EqualTo(expectedUrl));
   }
 
   [Test]
-  public void FormatUrlForSelectedSubMenuTab()
+  public void FormatUrlForSelectedSubMenuTab ()
   {
     string url = "/AppDir/page.aspx";
     _subMenuTab12.IsSelected = true;
-    string expectedParameterValue = string.Format ("{0},{1}", _subMenuTab12.Parent.ItemID, _subMenuTab12.ItemID);
-    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
-    
-    string value = _tabbedMenu.FormatUrl (url);
+    string expectedParameterValue = string.Format("{0},{1}", _subMenuTab12.Parent.ItemID, _subMenuTab12.ItemID);
+    string expectedUrl = UrlUtility.AddParameter(url, _tabbedMenu.SelectionID, expectedParameterValue);
 
-    Assert.That (value, Is.Not.Null);
-    Assert.That (value, Is.EqualTo (expectedUrl));
+    string value = _tabbedMenu.FormatUrl(url);
+
+    Assert.That(value, Is.Not.Null);
+    Assert.That(value, Is.EqualTo(expectedUrl));
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelUndefined()
+  public void EvaluateWaiConformityDebugLevelUndefined ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _mainMenuTab1.Command.Type = CommandType.Event;
     _subMenuTab11.Command.Type = CommandType.Event;
-    
+
     _tabbedMenu.EvaluateWaiConformity();
 
-	  Assert.That (WcagHelperMock.HasWarning, Is.False);
-	  Assert.That (WcagHelperMock.HasError, Is.False);
+	  Assert.That(WcagHelperMock.HasWarning, Is.False);
+	  Assert.That(WcagHelperMock.HasError, Is.False);
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithMainMenuTabSetToEvent()
+  public void EvaluateWaiConformityDebugLevelAWithMainMenuTabSetToEvent ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _tabbedMenu.Tabs.Clear();
-    _tabbedMenu.Tabs.Add (_mainMenuTab1);
+    _tabbedMenu.Tabs.Add(_mainMenuTab1);
     _mainMenuTab1.Command.Type = CommandType.Event;
 
     _tabbedMenu.EvaluateWaiConformity();
 
-	  Assert.That (WcagHelperMock.HasWarning, Is.False);
-	  Assert.That (WcagHelperMock.HasError, Is.True);
+	  Assert.That(WcagHelperMock.HasWarning, Is.False);
+	  Assert.That(WcagHelperMock.HasError, Is.True);
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithSubMenuTabSetToEvent()
+  public void EvaluateWaiConformityDebugLevelAWithSubMenuTabSetToEvent ()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _tabbedMenu.Tabs.Clear();
-    _tabbedMenu.Tabs.Add (_mainMenuTab1);
+    _tabbedMenu.Tabs.Add(_mainMenuTab1);
     _mainMenuTab1.Command.Type = CommandType.Event;
 
     _tabbedMenu.EvaluateWaiConformity();
 
-	  Assert.That (WcagHelperMock.HasWarning, Is.False);
-	  Assert.That (WcagHelperMock.HasError, Is.True);
+	  Assert.That(WcagHelperMock.HasWarning, Is.False);
+	  Assert.That(WcagHelperMock.HasError, Is.True);
   }
 
   [Test]
   public void StylesheetRegistrationIntegrationTest ()
   {
-    NamingContainer.Controls.Add (_tabbedMenu);
+    NamingContainer.Controls.Add(_tabbedMenu);
 
-    Assert.That (HtmlHeadAppender.Current, Is.Not.Null);
-    Assert.That (ControlHelper.IsDesignMode (_tabbedMenu), Is.False);
+    Assert.That(HtmlHeadAppender.Current, Is.Not.Null);
 
     NamingContainerInvoker.InitRecursive();
 
     var htmlHeadAppender = HtmlHeadAppender.Current;
     var registeredStyleSheetBlock = htmlHeadAppender.GetHtmlHeadElements().OfType<StyleSheetBlock>().SingleOrDefault();
-    Assert.That (registeredStyleSheetBlock, Is.Not.Null);
+    Assert.That(registeredStyleSheetBlock, Is.Not.Null);
 
-    Assert.That (registeredStyleSheetBlock.StyleSheetElements.Count, Is.EqualTo (2));
-    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Is.StringEnding ("TabStrip.css"));
-    Assert.That (((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Is.StringEnding ("TabbedMenu.css"));
+    Assert.That(registeredStyleSheetBlock.StyleSheetElements.Count, Is.EqualTo(3));
+    Assert.That(((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[0]).ResourceUrl.GetUrl(), Does.EndWith("Common.css"));
+    Assert.That(((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[1]).ResourceUrl.GetUrl(), Does.EndWith("TabStrip.css"));
+    Assert.That(((StyleSheetImportRule)registeredStyleSheetBlock.StyleSheetElements[2]).ResourceUrl.GetUrl(), Does.EndWith("TabbedMenu.css"));
   }
 }
 

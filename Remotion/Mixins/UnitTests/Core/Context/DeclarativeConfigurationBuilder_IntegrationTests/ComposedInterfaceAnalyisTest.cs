@@ -27,63 +27,63 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeConfigurationBuilder
     [Test]
     public void ComposedInterface_ViaAttribute ()
     {
-      var result = new DeclarativeConfigurationBuilder (null)
-          .AddType (typeof (ClassWithComposedInterface))
-          .AddType (typeof (ClassWithComposedInterface.IComposedInterface))
-          .BuildConfiguration ();
+      var result = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(ClassWithComposedInterface))
+          .AddType(typeof(ClassWithComposedInterface.IComposedInterface))
+          .BuildConfiguration();
 
-      var classContext = result.GetContext (typeof (ClassWithComposedInterface));
-      Assert.That (classContext.ComposedInterfaces, Has.Member (typeof (ClassWithComposedInterface.IComposedInterface)));
+      var classContext = result.GetContext(typeof(ClassWithComposedInterface));
+      Assert.That(classContext.ComposedInterfaces, Has.Member(typeof(ClassWithComposedInterface.IComposedInterface)));
     }
 
     [Test]
-    [Ignore ("TODO 3536")]
+    [Ignore("TODO 3536")]
     public void ComposedInterface_ViaAttribute_Derived ()
     {
-      var result = new DeclarativeConfigurationBuilder (null)
-          .AddType (typeof (ClassWithComposedInterface))
-          .AddType (typeof (ClassWithComposedInterface.IComposedInterface))
-          .AddType (typeof (DerivedClassWithComposedInterface))
-          .BuildConfiguration ();
+      var result = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(ClassWithComposedInterface))
+          .AddType(typeof(ClassWithComposedInterface.IComposedInterface))
+          .AddType(typeof(DerivedClassWithComposedInterface))
+          .BuildConfiguration();
 
-      var baseClassContext = result.GetContext (typeof (ClassWithComposedInterface));
-      Assert.That (baseClassContext.ComposedInterfaces, Has.Member (typeof (ClassWithComposedInterface.IComposedInterface)));
+      var baseClassContext = result.GetContext(typeof(ClassWithComposedInterface));
+      Assert.That(baseClassContext.ComposedInterfaces, Has.Member(typeof(ClassWithComposedInterface.IComposedInterface)));
 
-      var derivedClassContext = result.GetContext (typeof (DerivedClassWithComposedInterface));
-      Assert.That (derivedClassContext.ComposedInterfaces, Has.Member (typeof (ClassWithComposedInterface.IComposedInterface)));
+      var derivedClassContext = result.GetContext(typeof(DerivedClassWithComposedInterface));
+      Assert.That(derivedClassContext.ComposedInterfaces, Has.Member(typeof(ClassWithComposedInterface.IComposedInterface)));
     }
 
     [Test]
     public void ComposedInterface_ViaIHasComposedInterface ()
     {
-      var result = new DeclarativeConfigurationBuilder (null).AddType (typeof (ClassWithHasComposedInterfaces)).BuildConfiguration ();
+      var result = new DeclarativeConfigurationBuilder(null).AddType(typeof(ClassWithHasComposedInterfaces)).BuildConfiguration();
 
-      var classContext = result.GetContext (typeof (ClassWithHasComposedInterfaces));
-      Assert.That (classContext.ComposedInterfaces, Has.Member (typeof (ClassWithHasComposedInterfaces.IComposedInterface1)));
-      Assert.That (classContext.ComposedInterfaces, Has.Member (typeof (ClassWithHasComposedInterfaces.IComposedInterface2)));
+      var classContext = result.GetContext(typeof(ClassWithHasComposedInterfaces));
+      Assert.That(classContext.ComposedInterfaces, Has.Member(typeof(ClassWithHasComposedInterfaces.IComposedInterface1)));
+      Assert.That(classContext.ComposedInterfaces, Has.Member(typeof(ClassWithHasComposedInterfaces.IComposedInterface2)));
     }
 
     [Test]
     public void ComposedInterface_ViaIHasComposedInterface_ViaGenericBaseClass ()
     {
-      var result = new DeclarativeConfigurationBuilder (null).AddType (typeof (ClassDerivedFromBaseClassWithHasComleteInterface)).BuildConfiguration ();
+      var result = new DeclarativeConfigurationBuilder(null).AddType(typeof(ClassDerivedFromBaseClassWithHasComleteInterface)).BuildConfiguration();
 
-      var classContext = result.GetContext (typeof (ClassDerivedFromBaseClassWithHasComleteInterface));
-      Assert.That (classContext.ComposedInterfaces, Has.Member (typeof (ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
+      var classContext = result.GetContext(typeof(ClassDerivedFromBaseClassWithHasComleteInterface));
+      Assert.That(classContext.ComposedInterfaces, Has.Member(typeof(ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
     }
 
     [Test]
     public void ComposedInterface_ViaIHasComposedInterface_Derived ()
     {
-      var result = new DeclarativeConfigurationBuilder (null)
-          .AddType (typeof (ClassDerivedFromBaseClassWithHasComleteInterface))
-          .AddType (typeof (DerivedClassDerivedFromBaseClassWithHasComleteInterface)).BuildConfiguration ();
+      var result = new DeclarativeConfigurationBuilder(null)
+          .AddType(typeof(ClassDerivedFromBaseClassWithHasComleteInterface))
+          .AddType(typeof(DerivedClassDerivedFromBaseClassWithHasComleteInterface)).BuildConfiguration();
 
-      var baseClassContext = result.GetContext (typeof (ClassDerivedFromBaseClassWithHasComleteInterface));
-      Assert.That (baseClassContext.ComposedInterfaces, Has.Member (typeof (ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
+      var baseClassContext = result.GetContext(typeof(ClassDerivedFromBaseClassWithHasComleteInterface));
+      Assert.That(baseClassContext.ComposedInterfaces, Has.Member(typeof(ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
 
-      var derivedClassContext = result.GetContext (typeof (DerivedClassDerivedFromBaseClassWithHasComleteInterface));
-      Assert.That (derivedClassContext.ComposedInterfaces, Has.Member (typeof (ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
+      var derivedClassContext = result.GetContext(typeof(DerivedClassDerivedFromBaseClassWithHasComleteInterface));
+      Assert.That(derivedClassContext.ComposedInterfaces, Has.Member(typeof(ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface)));
     }
   }
 }

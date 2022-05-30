@@ -31,13 +31,13 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public StatefulAccessControlListData ([NotNull] IDomainObjectHandle<StatefulAccessControlList> handle, [NotNull] IEnumerable<State> states)
     {
-      ArgumentUtility.CheckNotNull ("handle", handle);
-      ArgumentUtility.CheckNotNull ("states", states);
+      ArgumentUtility.CheckNotNull("handle", handle);
+      ArgumentUtility.CheckNotNull("states", states);
 
-      var stateArray = Array.AsReadOnly (states.ToArray());
+      var stateArray = Array.AsReadOnly(states.ToArray());
 
-      if (stateArray.Select (s => s.PropertyHandle).Distinct().Count() != stateArray.Count)
-        throw new ArgumentException ("Multiple state values found for a single state property.", "states");
+      if (stateArray.Select(s => s.PropertyHandle).Distinct().Count() != stateArray.Count)
+        throw new ArgumentException("Multiple state values found for a single state property.", "states");
 
       _handle = handle;
       _states = stateArray;

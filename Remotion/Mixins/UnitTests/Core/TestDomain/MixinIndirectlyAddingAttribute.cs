@@ -18,20 +18,20 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [CopyCustomAttributes (typeof (AttributeSource))]
+  [CopyCustomAttributes(typeof(AttributeSource))]
   public class MixinIndirectlyAddingAttribute : Mixin<object>
   {
-    [AttributeWithParameters (1, "bla", Property = 4, Field = 5)]
+    [AttributeWithParameters(1, "bla", Property = 4, Field = 5)]
     public class AttributeSource
     {
-      [AttributeWithParameters (4)]
+      [AttributeWithParameters(4)]
       public void AttributeSourceMethod ()
       {
       }
     }
 
     [OverrideTarget]
-    [CopyCustomAttributes (typeof (AttributeSource), "AttributeSourceMethod")]
+    [CopyCustomAttributes(typeof(AttributeSource), "AttributeSourceMethod")]
     public new string ToString ()
     {
       return "";

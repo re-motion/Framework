@@ -33,9 +33,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
   public abstract class BrowserSessionBase<T> : IBrowserSession
       where T : IBrowserConfiguration
   {
-    private const int c_driverShutdownWaitTime = 250;
-    private const int c_browserShutdownWaitTime = 500;
-    private const int c_browserSubProcessShutdownWaitTime = 100;
+    private readonly TimeSpan _browserProcessesShutdownTime = TimeSpan.FromSeconds(60);
 
     private readonly T _browserConfiguration;
     private readonly Coypu.BrowserSession _value;
@@ -47,16 +45,19 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
         [NotNull] T browserConfiguration,
         int driverProcessId)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("browserConfiguration", browserConfiguration);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
 
       if (driverProcessId < 0)
-        throw new ArgumentOutOfRangeException ("driverProcessId", "Process id can not be smaller that zero.");
+        throw new ArgumentOutOfRangeException("driverProcessId", "Process id can not be smaller that zero.");
 
       _value = value;
       _browserConfiguration = browserConfiguration;
       _driverProcessID = driverProcessId;
     }
+
+    /// <inheritdoc />
+    public abstract IReadOnlyCollection<BrowserLogEntry> GetBrowserLogs ();
 
     /// <summary>
     /// Returns the <see cref="IBrowserConfiguration"/> associated with the underlying <see cref="Coypu.BrowserSession"/>.
@@ -66,12 +67,12 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _browserConfiguration; }
     }
 
-    public void AcceptModalDialog (Options options = null)
+    public void AcceptModalDialog (Options? options = null)
     {
-      _value.AcceptModalDialog (options);
+      _value.AcceptModalDialog(options);
     }
 
-    public Driver Driver
+    public IDriver Driver
     {
       get { return _value.Driver; }
     }
@@ -81,14 +82,16 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       get { return _value; }
     }
 
-    public BrowserWindow FindWindow (string locator, Options options = null)
+    public BrowserWindow FindWindow (string locator, Options? options = null)
     {
-      return _value.FindWindow (locator, options);
+      ArgumentUtility.CheckNotNullOrEmpty("locator", locator);
+
+      return _value.FindWindow(locator, options);
     }
 
     public virtual void DeleteAllCookies ()
     {
-      var webDriver = (IWebDriver) _value.Driver.Native;
+      var webDriver = (IWebDriver)_value.Driver.Native;
       webDriver.Manage().Cookies.DeleteAllCookies();
     }
 
@@ -106,64 +109,42 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       var driverProcess = FindDriverProcess();
       var browserProcess = FindBrowserProcess();
 
-      List<Process> browserSubProcesses;
-      if (browserProcess == null)
-        browserSubProcesses = new List<Process>();
-      else
-        browserSubProcesses = FindSubProcesses (browserProcess).ToList();
+      var processesToClose = new List<Process>();
+      if (driverProcess != null)
+        processesToClose.Add(driverProcess);
+      if (browserProcess != null)
+        processesToClose.Add(browserProcess);
+      if (browserProcess != null)
+        processesToClose.AddRange(FindSubProcesses(browserProcess));
 
       // Dispose the underlying BrowserSession
       _value.Dispose();
 
-      // Check driver and main browser for null
-      if (driverProcess != null)
-        ProcessUtils.GracefulProcessShutdown (driverProcess, c_driverShutdownWaitTime);
-
-      if (browserProcess != null)
-      {
-        ProcessUtils.GracefulProcessShutdown (browserProcess, c_browserShutdownWaitTime);
-        CheckForSubProcessesExited (browserSubProcesses, browserProcess);
-      }
-    }
-
-    private void CheckForSubProcessesExited (List<Process> browserSubProcesses, Process browserProcess)
-    {
-      // Wait for every sub process of the browser process to be closed
-      for (int i = 0; i < 5; i++)
-      {
-        if (WaitForSubProcessExit (browserSubProcesses, c_browserSubProcessShutdownWaitTime))
-          return;
-      }
-
-      throw new InvalidOperationException (
-          string.Format (
-            "The Subprocesses of the Process '{0}' (id: '{1}') did not exit in the expected amount of time.",
-            browserProcess.ProcessName,
-            browserProcess.Id));
+      ProcessUtils.GracefulProcessShutdown(processesToClose, _browserProcessesShutdownTime);
     }
 
     /// <summary>
     /// Returns a <see cref="Process"/> representing the driver process.
     /// </summary>
     [CanBeNull]
-    private Process FindDriverProcess ()
+    private Process? FindDriverProcess ()
     {
       var processes = Process.GetProcesses();
 
-      return processes.FirstOrDefault (p => p.Id == _driverProcessID);
+      return processes.FirstOrDefault(p => p.Id == _driverProcessID);
     }
 
     /// <summary>
     /// Returns a <see cref="Process"/> representing the main browser process.
     /// </summary>
     [CanBeNull]
-    private Process FindBrowserProcess ()
+    private Process? FindBrowserProcess ()
     {
       var processes = Process.GetProcesses();
 
-      return processes.FirstOrDefault (
+      return processes.FirstOrDefault(
           p => p.ProcessName == _browserConfiguration.BrowserExecutableName
-               && ProcessUtils.GetParentProcessID (p) == _driverProcessID);
+               && ProcessUtils.GetParentProcessID(p) == _driverProcessID);
     }
 
     /// <summary>
@@ -173,25 +154,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     {
       var processes = Process.GetProcesses();
 
-      return processes.Where (p => p.ProcessName == _browserConfiguration.BrowserExecutableName && ProcessUtils.GetParentProcessID (p) == process.Id);
-    }
-
-    /// <summary>
-    /// WaitForExit for <paramref name="browserSubProcesses"/>.
-    /// Returns false if any process failed to exit in the specified <paramref name="timeout"/>.
-    /// </summary>
-    private bool WaitForSubProcessExit (IEnumerable<Process> browserSubProcesses, int timeout)
-    {
-      foreach (var browserSubProcess in browserSubProcesses)
-      {
-        if (!browserSubProcess.WaitForExit (timeout))
-        {
-          // There is still a minimum of 1 sub process running --> Try again
-          return false;
-        }
-      }
-
-      return true;
+      return processes.Where(p => p.ProcessName == _browserConfiguration.BrowserExecutableName && ProcessUtils.GetParentProcessID(p) == process.Id);
     }
   }
 }

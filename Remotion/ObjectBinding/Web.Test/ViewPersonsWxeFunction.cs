@@ -25,25 +25,25 @@ namespace OBWTest
 [Serializable]
 public class ViewPersonsWxeFunction: WxeFunction
 {
-  static readonly WxeParameterDeclaration[] s_parameters =  { 
-      new WxeParameterDeclaration ("objects", true, WxeParameterDirection.In, typeof (IBusinessObject[]))};
+  static readonly WxeParameterDeclaration[] s_parameters =  {
+      new WxeParameterDeclaration("objects", true, WxeParameterDirection.In, typeof(IBusinessObject[]))};
 
-  public ViewPersonsWxeFunction()
-    : base (new NoneTransactionMode(), s_parameters)
+  public ViewPersonsWxeFunction ()
+    : base(new NoneTransactionMode(), s_parameters)
   {
   }
 
   // parameters and local variables
 
-  [WxeParameter (1, true, WxeParameterDirection.In)]
+  [WxeParameter(1, true, WxeParameterDirection.In)]
   public IBusinessObject[] Objects
   {
-    get { return (IBusinessObject[]) Variables["objects"]; }
+    get { return (IBusinessObject[])Variables["objects"]; }
     set { Variables["objects"] = value; }
   }
 
   // steps
 
-  private WxeStep Step1 = new WxePageStep ("PersonsForm.aspx");
+  private WxeStep Step1 = new WxePageStep("PersonsForm.aspx");
 }
 }

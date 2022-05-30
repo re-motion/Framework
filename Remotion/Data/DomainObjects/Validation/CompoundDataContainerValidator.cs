@@ -28,23 +28,23 @@ namespace Remotion.Data.DomainObjects.Validation
   /// delegates the validation to them.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IDataContainerValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IDataContainerValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundDataContainerValidator : IDataContainerValidator
   {
     private readonly IReadOnlyList<IDataContainerValidator> _validators;
 
     public CompoundDataContainerValidator (IEnumerable<IDataContainerValidator> validators)
     {
-      ArgumentUtility.CheckNotNull ("validators", validators);
+      ArgumentUtility.CheckNotNull("validators", validators);
       _validators = validators.ToList().AsReadOnly();
     }
 
     public void Validate (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
       foreach (var validator in _validators)
-        validator.Validate (dataContainer);
+        validator.Validate(dataContainer);
     }
 
     public IReadOnlyList<IDataContainerValidator> Validators

@@ -19,7 +19,7 @@ namespace Remotion.SecurityManager.Globalization.AclTools.Expansion {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class AclToolsExpansion {
@@ -61,7 +61,7 @@ namespace Remotion.SecurityManager.Globalization.AclTools.Expansion {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Granted permissions.
+        ///   Looks up a localized string similar to Permissions granted.
         /// </summary>
         public static string AccessRightsNameTableHeader {
             get {
@@ -79,7 +79,7 @@ namespace Remotion.SecurityManager.Globalization.AclTools.Expansion {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Denied permissions.
+        ///   Looks up a localized string similar to Permissions denied.
         /// </summary>
         public static string DeniedRightsTableHeader {
             get {
@@ -142,7 +142,7 @@ namespace Remotion.SecurityManager.Globalization.AclTools.Expansion {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group of the object is set to.
+        ///   Looks up a localized string similar to Object group is set to.
         /// </summary>
         public static string OwningGroupEqualsTableHeader {
             get {
@@ -151,7 +151,7 @@ namespace Remotion.SecurityManager.Globalization.AclTools.Expansion {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tenant of the object is set to.
+        ///   Looks up a localized string similar to Object tenant is set to.
         /// </summary>
         public static string OwningTenantEqualsTableHeader {
             get {
@@ -214,7 +214,7 @@ namespace Remotion.SecurityManager.Globalization.AclTools.Expansion {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User must have ownership.
+        ///   Looks up a localized string similar to User must be owner.
         /// </summary>
         public static string UserMustOwnTableHeader {
             get {

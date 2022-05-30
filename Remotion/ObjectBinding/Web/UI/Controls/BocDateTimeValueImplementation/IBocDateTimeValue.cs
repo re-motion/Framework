@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
 
@@ -35,21 +36,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation
     IDatePickerButton DatePickerButton { get; }
     bool ShowSeconds { get; }
     SingleRowTextBoxStyle DateTimeTextBoxStyle { get; }
-    string DateString { get; }
-    string TimeString { get; }
+    string? DateString { get; }
+    string? TimeString { get; }
     string GetDateValueName ();
     string GetTimeValueName ();
     string GetDatePickerText ();
     IDateTimeFormatter DateTimeFormatter { get; }
-    
+
     /// <summary>
     /// Gets the list of validation errors for the date value of this control.
     /// </summary>
-    IEnumerable<string> GetDateValueValidationErrors();
+    IEnumerable<PlainTextString> GetDateValueValidationErrors ();
 
     /// <summary>
     /// Gets the list of validation errors for the time value of this control.
     /// </summary>
-    IEnumerable<string> GetTimeValueValidationErrors();
+    IEnumerable<PlainTextString> GetTimeValueValidationErrors ();
   }
 }

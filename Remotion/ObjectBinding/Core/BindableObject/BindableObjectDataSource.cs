@@ -17,7 +17,6 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using Remotion.ObjectBinding.Design.BindableObject;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.BindableObject
@@ -25,16 +24,16 @@ namespace Remotion.ObjectBinding.BindableObject
   //TODO: Doc
   public class BindableObjectDataSource : BusinessObjectDataSource
   {
-    private IBusinessObject _businessObject;
-    private string _typeName;
+    private IBusinessObject? _businessObject;
+    private string? _typeName;
     private DataSourceMode _mode = DataSourceMode.Edit;
-    private BindableObjectClass _bindableObjectClass;
+    private BindableObjectClass? _bindableObjectClass;
 
     public BindableObjectDataSource ()
     {
     }
 
-    public override IBusinessObject BusinessObject
+    public override IBusinessObject? BusinessObject
     {
       get { return _businessObject; }
       set { _businessObject = value; }
@@ -46,16 +45,15 @@ namespace Remotion.ObjectBinding.BindableObject
       set { _mode = value; }
     }
 
-    public override IBusinessObjectClass BusinessObjectClass
+    public override IBusinessObjectClass? BusinessObjectClass
     {
       get { return GetBindableObjectClass(); }
     }
 
-    [Category ("Data")]
-    [DefaultValue (null)]
-    [Editor (typeof (BindableObjectTypePickerEditor), typeof (UITypeEditor))]
-    [TypeConverter (typeof (TypeNameConverter))]
-    public Type Type
+    [Category("Data")]
+    [DefaultValue(null)]
+    [TypeConverter(typeof(TypeNameConverter))]
+    public Type? Type
     {
       get
       {
@@ -70,21 +68,21 @@ namespace Remotion.ObjectBinding.BindableObject
         if (value == null)
           _typeName = null;
         else
-          _typeName = TypeUtility.GetPartialAssemblyQualifiedName (value);
+          _typeName = TypeUtility.GetPartialAssemblyQualifiedName(value);
 
         _bindableObjectClass = null;
       }
     }
 
-    private new Type GetType ()
+    private new Type? GetType ()
     {
       if (_typeName == null)
         return null;
 
-      return TypeUtility.GetType (_typeName, true);
+      return TypeUtility.GetType(_typeName, true);
     }
 
-    private BindableObjectClass GetBindableObjectClass ()
+    private BindableObjectClass? GetBindableObjectClass ()
     {
       var type = GetType();
       if (type == null)
@@ -92,8 +90,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
       if (_bindableObjectClass == null)
       {
-        var provider = BindableObjectProvider.GetProviderForBindableObjectType (type);
-        _bindableObjectClass = provider.GetBindableObjectClass (type);
+        var provider = BindableObjectProvider.GetProviderForBindableObjectType(type);
+        _bindableObjectClass = provider.GetBindableObjectClass(type);
       }
 
       return _bindableObjectClass;

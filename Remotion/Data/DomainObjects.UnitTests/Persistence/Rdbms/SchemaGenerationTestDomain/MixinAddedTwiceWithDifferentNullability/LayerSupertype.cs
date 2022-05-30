@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.MixinAddedTwiceWithDifferentNullability
 {
   [FirstStorageGroup]
-  [ClassID ("MixinAddedTwiceWithDifferentNullability_LayerSupertype")]
+  [ClassID("MixinAddedTwiceWithDifferentNullability_LayerSupertype")]
   public abstract class LayerSupertype : DomainObject
   {
   }

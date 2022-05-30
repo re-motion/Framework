@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       : IFluentItemIDSelector<ScreenshotBocListCell<TList, TRow, TCell>>,
           IFluentIndexSelector<ScreenshotBocListCell<TList, TRow, TCell>>
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         int columnIndex)
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
 
       _fluentList = fluentList;
       _columnIndex = columnIndex;
@@ -48,23 +48,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListCell<TList, TRow, TCell>(
                   _fluentList,
-                  _fluentList.Target.List.GetRow (itemID).GetCell (_columnIndex).ForControlObjectScreenshot()));
+                  _fluentList.Target.List.GetRow(itemID).GetCell(_columnIndex).ForControlObjectScreenshot()));
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListCell<TList, TRow, TCell>> WithIndex (int oneBasedIndex)
     {
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListCell<TList, TRow, TCell> (
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListCell<TList, TRow, TCell>(
                   _fluentList,
-                  _fluentList.Target.List.GetRow (oneBasedIndex).GetCell (_columnIndex).ForControlObjectScreenshot()));
+                  _fluentList.Target.List.GetRow(oneBasedIndex).GetCell(_columnIndex).ForControlObjectScreenshot()));
     }
   }
 }

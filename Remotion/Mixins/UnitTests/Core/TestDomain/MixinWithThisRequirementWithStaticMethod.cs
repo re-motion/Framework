@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
   }
 
-  [Uses (typeof (MixinWithThisRequirementWithStaticMethod))]
+  [Uses(typeof(MixinWithThisRequirementWithStaticMethod))]
   public class ClassWithStaticMethod
   {
     public static void StaticMethod ()

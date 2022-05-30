@@ -33,14 +33,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
     {
       base.SetUp();
 
-      var tenant = TestHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      var userGroup = TestHelper.CreateGroup ("UserGroup", Guid.NewGuid().ToString(), null, tenant);
-      var roleGroup = TestHelper.CreateGroup ("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
-      _user = TestHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
-      var position = TestHelper.CreatePosition ("Position");
-      _role = TestHelper.CreateRole (_user, roleGroup, position);
+      var tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
+      var userGroup = TestHelper.CreateGroup("UserGroup", Guid.NewGuid().ToString(), null, tenant);
+      var roleGroup = TestHelper.CreateGroup("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
+      _user = TestHelper.CreateUser("user", "Firstname", "Lastname", "Title", userGroup, tenant);
+      var position = TestHelper.CreatePosition("Position");
+      _role = TestHelper.CreateRole(_user, roleGroup, position);
 
-      var substitutingUser = TestHelper.CreateUser ("substitutingUser", "Firstname", "Lastname", "Title", userGroup, tenant);
+      var substitutingUser = TestHelper.CreateUser("substitutingUser", "Firstname", "Lastname", "Title", userGroup, tenant);
       _substitution = Substitution.NewObject();
       _substitution.SubstitutedUser = _user;
       _substitution.SubstitutedRole = _role;
@@ -56,12 +56,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _user.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _role.RegisterForCommit();
       ClientTransaction.Current.Commit();
 
-      Assert.That (commitOnClassWasCalled, Is.True);
+      Assert.That(commitOnClassWasCalled, Is.True);
     }
 
     [Test]
@@ -71,12 +71,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _user.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _role.Delete();
       ClientTransaction.Current.Commit();
 
-      Assert.That (commitOnClassWasCalled, Is.True);
+      Assert.That(commitOnClassWasCalled, Is.True);
     }
 
     [Test]
@@ -86,11 +86,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _substitution.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+        Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
       };
       _role.RegisterForCommit();
       ClientTransaction.Current.Commit();
-      Assert.That (commitOnClassWasCalled, Is.True);
+      Assert.That(commitOnClassWasCalled, Is.True);
     }
 
     [Test]
@@ -100,12 +100,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
       _substitution.Committing += (sender, e) =>
       {
         commitOnClassWasCalled = true;
-        Assert.That (GetDataContainer ((DomainObject) sender).State, Is.EqualTo (StateType.Deleted));
+        Assert.That(GetDataContainer((DomainObject)sender).State.IsDeleted, Is.True);
       };
       _role.Delete();
       ClientTransaction.Current.Commit();
 
-      Assert.That (commitOnClassWasCalled, Is.True);
+      Assert.That(commitOnClassWasCalled, Is.True);
     }
   }
 }

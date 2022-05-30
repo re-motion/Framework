@@ -26,6 +26,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
   public interface IValueStoragePropertyDefinitionFactory
   {
     IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition);
-    IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object value, string columnName);
+    IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object? value, string columnName);
   }
 }

@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
@@ -43,7 +44,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> A list of validation state viewer wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Remotion.Web.Globalization.ValidationStateViewer")]
+  [MultiLingualResources("Remotion.Web.Globalization.ValidationStateViewer")]
   public enum ResourceIdentifier
   {
     /// <summary>The summary message displayed if validation errors where found. </summary>
@@ -55,7 +56,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   private const string c_cssClassValidationMessage = "formGridValidationMessage";
-  
+
   /// <summary> CSS-Class applied to the validation notice. </summary>
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   private const string c_cssClassValidationNotice = "formGridValidationNotice";
@@ -65,23 +66,23 @@ public class ValidationStateViewer : WebControl, IControl
   // member fields
 
   /// <summary> Collection of <see cref="FormGridManager" /> instances in the page. </summary>
-  private ArrayList _formGridManagers;
+  private ArrayList? _formGridManagers;
 
   /// <summary>
   ///   The Text displayed if <see cref="ValidationStateViewer.ValidationErrorStyle"/> is set to 
   ///   <see cref="Remotion.Web.UI.Controls.ValidationErrorStyle.Notice"/>.
   /// </summary>
-  private string _noticeText;
+  private WebString _noticeText;
   /// <summary> The style in which the validation errors should be displayed on the page. </summary>
   private ValidationErrorStyle _validationErrorStyle = ValidationErrorStyle.Notice;
   private bool _showLabels = true;
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="ValidationStateViewer"/>. </summary>
-  private ResourceManagerSet _cachedResourceManager;
+  private ResourceManagerSet? _cachedResourceManager;
 
   // construction and disposing
 
   /// <summary> Initializes a new instance of the <see cref="ValidationStateViewer"/> class. </summary>
-  public ValidationStateViewer()
+  public ValidationStateViewer ()
   {
   }
 
@@ -89,19 +90,19 @@ public class ValidationStateViewer : WebControl, IControl
   /// <param name="parent"> Parent element of the FormGridManager objects. </param>
   private void PopulateFormGridManagerList (Control parent)
   {
-    ArgumentUtility.CheckNotNull ("parent", parent);
+    ArgumentUtility.CheckNotNull("parent", parent);
 
     //  Add all FormGridManager instances
     for (int i = 0; i < parent.Controls.Count; i++)
     {
-      Control childControl = (Control) parent.Controls[i];
-      FormGridManager formGridManager = childControl as FormGridManager;
+      Control childControl = (Control)parent.Controls[i];
+      FormGridManager? formGridManager = childControl as FormGridManager;
 
       if (formGridManager != null)
-        _formGridManagers.Add(formGridManager);
+        _formGridManagers!.Add(formGridManager); // TODO RM-8118: Debug not null assertion
 
       bool isChildNamingContainer = childControl is INamingContainer;
-      PopulateFormGridManagerList (childControl);
+      PopulateFormGridManagerList(childControl);
     }
   }
 
@@ -112,50 +113,44 @@ public class ValidationStateViewer : WebControl, IControl
 
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    IResourceManager resourceManager = GetResourceManager ();
-    LoadResources (resourceManager);
+    IResourceManager resourceManager = GetResourceManager();
+    LoadResources(resourceManager);
   }
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    if (ControlHelper.IsDesignMode (this))
-      return;
-
-    string key = ResourceManagerUtility.GetGlobalResourceKey (NoticeText);
-    if (!string.IsNullOrEmpty (key))
-      NoticeText = resourceManager.GetString (key);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(NoticeText.GetValue());
+    if (!string.IsNullOrEmpty(key))
+      NoticeText = resourceManager.GetWebString(key, NoticeText.Type);
   }
 
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (!ControlHelper.IsDesignMode (this))
+    switch (_validationErrorStyle)
     {
-      switch (_validationErrorStyle)
+      case ValidationErrorStyle.Notice:
       {
-        case ValidationErrorStyle.Notice:
-        {
-          RenderValidationNotice (writer);
-          break;
-        }
-        case ValidationErrorStyle.DetailedMessages:
-        {
-          RenderValidationMessages (writer);
-          break;
-        }
-        case ValidationErrorStyle.HideErrors:
-        {
-          //  Do nothing
-          break;
-        }
-        default:
-        {
-          //  Do nothing
-          break;
-        }
+        RenderValidationNotice(writer);
+        break;
+      }
+      case ValidationErrorStyle.DetailedMessages:
+      {
+        RenderValidationMessages(writer);
+        break;
+      }
+      case ValidationErrorStyle.HideErrors:
+      {
+        //  Do nothing
+        break;
+      }
+      default:
+      {
+        //  Do nothing
+        break;
       }
     }
   }
@@ -164,9 +159,9 @@ public class ValidationStateViewer : WebControl, IControl
   protected virtual void RenderValidationNotice (HtmlTextWriter writer)
   {
     bool isPageValid = true;
-    for (int i = 0; i < Page.Validators.Count; i++)
+    for (int i = 0; i < Page!.Validators.Count; i++)
     {
-      IValidator validator = (IValidator) Page.Validators[i];
+      IValidator validator = (IValidator)Page.Validators[i];
       if (! validator.IsValid)
       {
         isPageValid = false;
@@ -177,20 +172,19 @@ public class ValidationStateViewer : WebControl, IControl
     //  Enclose the validation error notice inside a div
     if (! isPageValid)
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValidationNotice);
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      
-      string noticeText;
-      if (string.IsNullOrEmpty (_noticeText))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassValidationNotice);
+      writer.RenderBeginTag(HtmlTextWriterTag.Div);
+
+      WebString noticeText;
+      if (_noticeText.IsEmpty)
       {
         IResourceManager resourceManager = GetResourceManager();
-        noticeText = resourceManager.GetString (ResourceIdentifier.NoticeText);
+        noticeText = resourceManager.GetText(ResourceIdentifier.NoticeText);
       }
       else
         noticeText = _noticeText;
-        
-      // Do not HTML encode.
-      writer.WriteLine (noticeText);
+
+      noticeText.WriteTo(writer);
       writer.RenderEndTag();
     }
   }
@@ -199,57 +193,53 @@ public class ValidationStateViewer : WebControl, IControl
   protected virtual void RenderValidationMessages (HtmlTextWriter writer)
   {
     _formGridManagers = new ArrayList();
-    PopulateFormGridManagerList (NamingContainer);
+    PopulateFormGridManagerList(NamingContainer);
 
-    writer.AddStyleAttribute ("border-spacing", "0");
-    writer.AddStyleAttribute ("border-collapse", "collapse");
-    writer.AddStyleAttribute ("border", "none");
-    writer.RenderBeginTag (HtmlTextWriterTag.Table);
+    writer.AddStyleAttribute("border-spacing", "0");
+    writer.AddStyleAttribute("border-collapse", "collapse");
+    writer.AddStyleAttribute("border", "none");
+    writer.RenderBeginTag(HtmlTextWriterTag.Table);
     for (int idxFormGridManagers = 0; idxFormGridManagers < _formGridManagers.Count; idxFormGridManagers++)
     {
-      FormGridManager formGridManager = (FormGridManager) _formGridManagers[idxFormGridManagers];
+      FormGridManager formGridManager = (FormGridManager)_formGridManagers[idxFormGridManagers]!; // TODO RM-8118: not null assertion
       ValidationError[] validationErrors = formGridManager.GetValidationErrors();
       //  Get validation messages
       for (int idxErrors = 0; idxErrors < validationErrors.Length; idxErrors++)
       {
-        ValidationError validationError = (ValidationError) validationErrors[idxErrors];
+        ValidationError validationError = (ValidationError)validationErrors[idxErrors];
         if (validationError == null)
           continue;
 
-        writer.RenderBeginTag (HtmlTextWriterTag.Tr);
+        writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
         if (validationError.Labels  != null)
         {
-          writer.AddStyleAttribute ("padding-right", "0.3em");
-          writer.RenderBeginTag (HtmlTextWriterTag.Td);
+          writer.AddStyleAttribute("padding-right", "0.3em");
+          writer.RenderBeginTag(HtmlTextWriterTag.Td);
           for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
-            Control control = (Control) validationError.Labels[idxErrorLabels];
-            string text = string.Empty;
-            if (control is SmartLabel)
-              text = ((SmartLabel) control).GetText();
-            else if (control is FormGridLabel)
-              text = ((FormGridLabel) control).Text;
-            else if (control is Label)
-              text = ((Label) control).Text;
-            else if (control is LiteralControl)
-              text = ((LiteralControl) control).Text;
+            var control = validationError.Labels[idxErrorLabels];
+            var text = control switch
+            {
+                SmartLabel label => label.GetText(),
+                FormGridLabel label => label.Text,
+                Label label => WebString.CreateFromHtml(label.Text),
+                LiteralControl literalControl => WebString.CreateFromHtml(literalControl.Text),
+                _ => WebString.Empty
+            };
 
-            text = text ?? string.Empty;
-            // Do not HTML enocde.
-            writer.Write (text);
-
+            text.WriteTo(writer);
           }
           writer.RenderEndTag();
         }
         else
         {
-          writer.RenderBeginTag (HtmlTextWriterTag.Td);
+          writer.RenderBeginTag(HtmlTextWriterTag.Td);
           writer.RenderEndTag();
         }
-      
-        writer.RenderBeginTag (HtmlTextWriterTag.Td);
-        validationError.ToHyperLink (CssClassValidationMessage).RenderControl (writer);
+
+        writer.RenderBeginTag(HtmlTextWriterTag.Td);
+        validationError.ToHyperLink(CssClassValidationMessage).RenderControl(writer);
         writer.RenderEndTag();
 
         writer.RenderEndTag();
@@ -262,7 +252,7 @@ public class ValidationStateViewer : WebControl, IControl
   ///   Find the <see cref="IResourceManager"/> for this <see cref="ValidationStateViewer"/>.
   /// </summary>
   /// <returns></returns>
-  protected IResourceManager GetResourceManager()
+  protected IResourceManager GetResourceManager ()
   {
     //  Provider has already been identified.
     if (_cachedResourceManager != null)
@@ -270,15 +260,15 @@ public class ValidationStateViewer : WebControl, IControl
 
     //  Get the resource managers
 
-    IResourceManager localResourceManager = GlobalizationService.GetResourceManager (typeof (ResourceIdentifier));
-    IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager (NamingContainer, true);
-    _cachedResourceManager = ResourceManagerSet.Create (namingContainerResourceManager, localResourceManager);
+    IResourceManager localResourceManager = GlobalizationService.GetResourceManager(typeof(ResourceIdentifier));
+    IResourceManager namingContainerResourceManager = ResourceManagerUtility.GetResourceManager(NamingContainer, true);
+    _cachedResourceManager = ResourceManagerSet.Create(namingContainerResourceManager, localResourceManager);
 
     return _cachedResourceManager;
   }
 
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable(false)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
   public IGlobalizationService GlobalizationService
   {
     get
@@ -294,8 +284,8 @@ public class ValidationStateViewer : WebControl, IControl
   /// <value> A string. </value>
   [Category("Appearance")]
   [Description("Sets the Text to be displayed if ValidationErrorStyle is set to Notice.")]
-  [DefaultValue("")]
-  public string NoticeText
+  [DefaultValue(typeof(WebString), "")]
+  public WebString NoticeText
   {
     get { return _noticeText; }
     set { _noticeText = value; }
@@ -317,18 +307,18 @@ public class ValidationStateViewer : WebControl, IControl
   ///   in front of the error message.
   /// </summary>
   /// <value> <see langword="true"/> to render the label. </value>
-  [Category ("Apearance")]
-  [Description ("true to render the label associated with the erroneous control in front of the error message.")]  
-  [DefaultValue (true)]
+  [Category("Apearance")]
+  [Description("true to render the label associated with the erroneous control in front of the error message.")]
+  [DefaultValue(true)]
   public bool ShowLabels
   {
     get { return _showLabels; }
     set { _showLabels = value; }
   }
 
-  IPage IControl.Page
+  IPage? IControl.Page
   {
-    get { return PageWrapper.CastOrCreate (base.Page); }
+    get { return PageWrapper.CastOrCreate(base.Page); }
   }
 
   /// <summary> CSS-Class applied to the individual validation messages. </summary>
@@ -340,7 +330,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <remarks> Class: <c>formGridValidationMessage</c>. </remarks>
   protected virtual string CssClassValidationNotice
   { get { return c_cssClassValidationNotice;} }
-}  
+}
 
 
 /// <summary> A list of possible ways to displau the validation messages. </summary>

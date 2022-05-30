@@ -28,17 +28,17 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   {
     public ClassEmitterSupportingOpenGenericBaseType (ModuleScope modulescope, string name, Type baseType, Type[] interfaces, TypeAttributes flags,
         bool forceUnsigned)
-        : base (modulescope, name, CheckBaseType (baseType), interfaces, flags, forceUnsigned)
+        : base(modulescope, name, CheckBaseType(baseType), interfaces, flags, forceUnsigned)
     {
     }
 
     private static Type CheckBaseType (Type baseType)
     {
       if (baseType.DeclaringType != null && baseType.DeclaringType.ContainsGenericParameters)
-        throw new NotSupportedException ("This emitter does not support nested types of non-closed generic types.");
+        throw new NotSupportedException("This emitter does not support nested types of non-closed generic types.");
 
       if (!baseType.IsGenericTypeDefinition && baseType.ContainsGenericParameters)
-        throw new NotSupportedException (
+        throw new NotSupportedException(
             "This emitter does not support open constructed types as base types. Specify a closed type or a generic "
             + "type definition.");
 
@@ -47,50 +47,50 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     protected override IEnumerable<Type> InitializeGenericArgumentsFromBases (ref Type baseType, IEnumerable<Type> interfaces)
     {
-      Assertion.IsTrue (baseType.DeclaringType == null || !baseType.DeclaringType.ContainsGenericParameters);
+      Assertion.IsTrue(baseType.DeclaringType == null || !baseType.DeclaringType.ContainsGenericParameters);
       if (baseType.IsGenericTypeDefinition)
       {
         Type[] baseTypeParameters = baseType.GetGenericArguments();
-        string[] typeParameterNames = Array.ConvertAll<Type, string> (baseTypeParameters, delegate (Type t) { return t.Name; });
+        string[] typeParameterNames = Array.ConvertAll<Type, string>(baseTypeParameters, delegate (Type t) { return t.Name; });
 
-        Assertion.DebugAssert (
-            Array.TrueForAll (baseTypeParameters, delegate (Type param) { return param.IsGenericParameter; }),
+        Assertion.DebugAssert(
+            Array.TrueForAll(baseTypeParameters, delegate (Type param) { return param.IsGenericParameter; }),
             "type definitions have no bound arguments");
 
-        baseType = CloseBaseType (baseType, typeParameterNames, baseTypeParameters);
+        baseType = CloseBaseType(baseType, typeParameterNames, baseTypeParameters);
       }
       else
-        Assertion.IsFalse (baseType.ContainsGenericParameters);
+        Assertion.IsFalse(baseType.ContainsGenericParameters);
 
-      return base.InitializeGenericArgumentsFromBases (ref baseType, interfaces); // checks that no interface contains generic parameters
+      return base.InitializeGenericArgumentsFromBases(ref baseType, interfaces); // checks that no interface contains generic parameters
     }
 
     private Type CloseBaseType (Type baseTypeDefinition, string[] genericParameterNames, Type[] baseTypeArguments)
     {
-      Assertion.IsTrue (genericParameterNames.Length == baseTypeArguments.Length, "No pre-bound arguments supported at the moment.");
-      Assertion.DebugAssert (
-          Array.TrueForAll (baseTypeArguments, delegate (Type param) { return param.IsGenericParameter; }),
+      Assertion.IsTrue(genericParameterNames.Length == baseTypeArguments.Length, "No pre-bound arguments supported at the moment.");
+      Assertion.DebugAssert(
+          Array.TrueForAll(baseTypeArguments, delegate (Type param) { return param.IsGenericParameter; }),
           "No pre-bound arguments supported at the moment.");
 
-      GenericTypeParameterBuilder[] genericParameterBuilders = TypeBuilder.DefineGenericParameters (genericParameterNames);
+      GenericTypeParameterBuilder[] genericParameterBuilders = TypeBuilder.DefineGenericParameters(genericParameterNames);
       for (int i = 0; i < genericParameterBuilders.Length; ++i)
-        CopyConstraints (baseTypeArguments[i], genericParameterBuilders, i);
+        CopyConstraints(baseTypeArguments[i], genericParameterBuilders, i);
 
-      SetGenericTypeParameters (genericParameterBuilders);
+      SetGenericTypeParameters(genericParameterBuilders);
 
-      Type closedBaseType = baseTypeDefinition.MakeGenericType (genericParameterBuilders);
+      Type closedBaseType = baseTypeDefinition.MakeGenericType(genericParameterBuilders);
       return closedBaseType;
     }
 
     private void CopyConstraints (Type sourceParameter, GenericTypeParameterBuilder[] builders, int copyTargetIndex)
     {
-      Assertion.IsTrue (sourceParameter.IsGenericParameter);
+      Assertion.IsTrue(sourceParameter.IsGenericParameter);
 
       GenericTypeParameterBuilder builder = builders[copyTargetIndex];
-      builder.SetGenericParameterAttributes (sourceParameter.GenericParameterAttributes);
+      builder.SetGenericParameterAttributes(sourceParameter.GenericParameterAttributes);
 
       Type[] sourceConstraints = sourceParameter.GetGenericParameterConstraints();
-      Type baseConstraint = null;
+      Type? baseConstraint = null;
       List<Type> interfaceConstraints = new List<Type>();
 
       for (int i = 0; i < sourceConstraints.Length; ++i)
@@ -100,24 +100,24 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
         {
           // Note: Reflection and the CLR are nice enough to accept this without requiring cumbersome conversions to the respective builders
           // Note 2: Conversion would be especially cumbersome because a generic parameter could also be embedded inside a class/interface constraint
-          interfaceConstraints.Add (sourceConstraint);
+          interfaceConstraints.Add(sourceConstraint);
         }
         else if (sourceConstraint.IsClass)
         {
-          Assertion.IsNull (baseConstraint, "only one base constraint per type");
+          Assertion.IsNull(baseConstraint, "only one base constraint per type");
           baseConstraint = sourceConstraint;
         }
         else
         {
-          Assertion.IsTrue (sourceConstraint.IsInterface, "there are only class and interface constraints");
-          interfaceConstraints.Add (sourceConstraint);
+          Assertion.IsTrue(sourceConstraint.IsInterface, "there are only class and interface constraints");
+          interfaceConstraints.Add(sourceConstraint);
         }
       }
 
       if (baseConstraint != null)
-        builder.SetBaseTypeConstraint (baseConstraint);
+        builder.SetBaseTypeConstraint(baseConstraint);
       if (interfaceConstraints.Count > 0)
-        builder.SetInterfaceConstraints (interfaceConstraints.ToArray());
+        builder.SetInterfaceConstraints(interfaceConstraints.ToArray());
     }
   }
 }

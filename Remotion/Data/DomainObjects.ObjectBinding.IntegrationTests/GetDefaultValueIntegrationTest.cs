@@ -27,11 +27,11 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
     [Test]
     public void IsDefaultValue_DerivedClassWithMixinWithDuplicateInterface ()
     {
-      var instance = (IBusinessObject) DerivedClassWithMixinWithDuplicateInterface.NewObject();
-      Assert.That (instance.GetProperty ("Property"), Is.Null); // default value => 0 becomes null
+      var instance = (IBusinessObject)DerivedClassWithMixinWithDuplicateInterface.NewObject();
+      Assert.That(instance.GetProperty("Property"), Is.Null); // default value => 0 becomes null
 
-      ((IMixinAddingProperty) instance).Property = 17;
-      Assert.That (instance.GetProperty ("Property"), Is.EqualTo (17)); // non-default value => 17
+      ((IMixinAddingProperty)instance).Property = 17;
+      Assert.That(instance.GetProperty("Property"), Is.EqualTo(17)); // non-default value => 17
     }
   }
 }

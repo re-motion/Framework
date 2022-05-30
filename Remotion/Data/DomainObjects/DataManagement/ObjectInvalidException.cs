@@ -46,33 +46,33 @@ namespace Remotion.Data.DomainObjects.DataManagement
   [Serializable]
   public class ObjectInvalidException : DomainObjectException
   {
-    private readonly ObjectID _id;
+    private readonly ObjectID? _id;
 
     public ObjectInvalidException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
     public ObjectInvalidException (string message, Exception inner)
-        : base (message, inner)
+        : base(message, inner)
     {
     }
 
     protected ObjectInvalidException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _id = (ObjectID) info.GetValue ("ID", typeof (ObjectID));
+      _id = (ObjectID?)info.GetValue("ID", typeof(ObjectID));
     }
 
     public ObjectInvalidException (ObjectID id)
-        : this (string.Format ("Object '{0}' is invalid in this transaction.", id), id)
+        : this(string.Format("Object '{0}' is invalid in this transaction.", id), id)
     {
     }
 
     public ObjectInvalidException (string message, ObjectID id)
-        : base (message)
+        : base(message)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
       _id = id;
     }
@@ -80,16 +80,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <summary>
     /// The <see cref="ObjectID"/> of the object that caused the exception.
     /// </summary>
-    public ObjectID ID
+    public ObjectID? ID
     {
       get { return _id; }
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("ID", _id);
+      info.AddValue("ID", _id);
     }
   }
 }

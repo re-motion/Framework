@@ -17,6 +17,7 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.BrowserSession;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
@@ -30,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// Private constructor, may be obtained only via a <see cref="PageObjectContext"/> or <see cref="ControlObjectContext"/>.
     /// </summary>
     internal ControlSelectionContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
-        : base (pageObject, scope)
+        : base(pageObject, scope)
     {
     }
 
@@ -42,7 +43,10 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <param name="scope">The scope of the other <see cref="ControlObject"/>.</param>
     public ControlObjectContext CloneForControl ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
     {
-      return pageObject.Context.CloneForControl (pageObject, scope);
+      ArgumentUtility.CheckNotNull("pageObject", pageObject);
+      ArgumentUtility.CheckNotNull("scope", scope);
+
+      return pageObject.Context.CloneForControl(pageObject, scope);
     }
   }
 }

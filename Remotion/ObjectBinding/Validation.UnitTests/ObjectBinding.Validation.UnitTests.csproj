@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Integration Tests for Remotion ObjectBinding Validation</AssemblyTitle>
+    <AssemblyName>Remotion.ObjectBinding.Validation.UnitTests</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj" />
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\Validation\ObjectBinding.Validation.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

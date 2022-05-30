@@ -16,9 +16,10 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Utilities
 {
@@ -28,12 +29,12 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Initialize ()
     {
-      var factories = new[] { MockRepository.GenerateStub<ITypeConverterFactory>(), MockRepository.GenerateStub<ITypeConverterFactory>() };
+      var factories = new[] { new Mock<ITypeConverterFactory>().Object, new Mock<ITypeConverterFactory>().Object };
 
-      var compoundFactory = new CompoundTypeConverterFactory (factories);
+      var compoundFactory = new CompoundTypeConverterFactory(factories);
 
-      Assert.That (compoundFactory.TypeConverterFactories, Is.Not.SameAs (factories));
-      Assert.That (compoundFactory.TypeConverterFactories, Is.EqualTo (factories));
+      Assert.That(compoundFactory.TypeConverterFactories, Is.Not.SameAs(factories));
+      Assert.That(compoundFactory.TypeConverterFactories, Is.EqualTo(factories));
     }
 
     [Test]
@@ -42,15 +43,15 @@ namespace Remotion.UnitTests.Utilities
       var intTypeConverter = new TypeConverter();
       var doubleTypeConverter = new TypeConverter();
 
-      var factories = new[] { MockRepository.GenerateStub<ITypeConverterFactory>(), MockRepository.GenerateStub<ITypeConverterFactory>() };
-      factories[0].Stub (_ => _.CreateTypeConverterOrDefault (typeof (int))).Return (intTypeConverter);
-      factories[1].Stub (_ => _.CreateTypeConverterOrDefault (typeof (double))).Return (doubleTypeConverter);
+      var factories = new[] { new Mock<ITypeConverterFactory>(), new Mock<ITypeConverterFactory>() };
+      factories[0].Setup(_ => _.CreateTypeConverterOrDefault(typeof(int))).Returns(intTypeConverter);
+      factories[1].Setup(_ => _.CreateTypeConverterOrDefault(typeof(double))).Returns(doubleTypeConverter);
 
-      var compoundFactory = new CompoundTypeConverterFactory (factories);
+      var compoundFactory = new CompoundTypeConverterFactory(factories.Select(_ => _.Object));
 
-      Assert.That (compoundFactory.CreateTypeConverterOrDefault (typeof (int)), Is.SameAs (intTypeConverter));
-      Assert.That (compoundFactory.CreateTypeConverterOrDefault (typeof (double)), Is.SameAs (doubleTypeConverter));
-      Assert.That (compoundFactory.CreateTypeConverterOrDefault (typeof (object)), Is.Null);
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(int)), Is.SameAs(intTypeConverter));
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(double)), Is.SameAs(doubleTypeConverter));
+      Assert.That(compoundFactory.CreateTypeConverterOrDefault(typeof(object)), Is.Null);
     }
   }
 }

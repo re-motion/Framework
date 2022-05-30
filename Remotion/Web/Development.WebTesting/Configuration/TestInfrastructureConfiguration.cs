@@ -30,28 +30,24 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private static readonly Dictionary<string, Type> s_wellKnownRequestErrorDetectionStrategyTypes =
         new Dictionary<string, Type>
         {
-            { "AspNet", typeof (AspNetRequestErrorDetectionStrategy) },
-            { "None", typeof (NullRequestErrorDetectionStrategy) }
+            { "AspNet", typeof(AspNetRequestErrorDetectionStrategy) },
+            { "None", typeof(NullRequestErrorDetectionStrategy) }
         };
 
     private readonly string _webApplicationRoot;
     private readonly string _screenshotDirectory;
-    private readonly TimeSpan _searchTimeout;
-    private readonly TimeSpan _retryInterval;
     private readonly IRequestErrorDetectionStrategy _requestErrorDetectionStrategy;
     private readonly bool _closeBrowserWindowsOnSetUpAndTearDown;
 
     public TestInfrastructureConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
 
       _webApplicationRoot = webTestConfigurationSection.WebApplicationRoot;
       _screenshotDirectory = webTestConfigurationSection.ScreenshotDirectory;
-      _searchTimeout = webTestConfigurationSection.SearchTimeout;
-      _retryInterval = webTestConfigurationSection.RetryInterval;
 
       _closeBrowserWindowsOnSetUpAndTearDown = webTestConfigurationSection.CloseBrowserWindowsOnSetUpAndTearDown;
-      _requestErrorDetectionStrategy = GetRequestErrorDetectionConfiguration (webTestConfigurationSection.RequestErrorDetectionStrategyTypeName);
+      _requestErrorDetectionStrategy = GetRequestErrorDetectionConfiguration(webTestConfigurationSection.RequestErrorDetectionStrategyTypeName);
     }
 
     public string WebApplicationRoot
@@ -62,16 +58,6 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public string ScreenshotDirectory
     {
       get { return _screenshotDirectory; }
-    }
-
-    public TimeSpan SearchTimeout
-    {
-      get { return _searchTimeout; }
-    }
-
-    public TimeSpan RetryInterval
-    {
-      get { return _retryInterval; }
     }
 
     public bool CloseBrowserWindowsOnSetUpAndTearDown
@@ -86,21 +72,21 @@ namespace Remotion.Web.Development.WebTesting.Configuration
 
     private IRequestErrorDetectionStrategy GetRequestErrorDetectionConfiguration (string requestErrorDetectionStrategyName)
     {
-      var requestErrorStrategyType = GetRequestErrorDetectionStrategyType (requestErrorDetectionStrategyName);
-      Assertion.IsNotNull (
+      var requestErrorStrategyType = GetRequestErrorDetectionStrategyType(requestErrorDetectionStrategyName);
+      Assertion.IsNotNull(
           requestErrorStrategyType,
-          string.Format ("Request Error Detection strategy '{0}' could not be loaded.", requestErrorDetectionStrategyName));
+          string.Format("Request Error Detection strategy '{0}' could not be loaded.", requestErrorDetectionStrategyName));
 
-      return (IRequestErrorDetectionStrategy) Activator.CreateInstance (requestErrorStrategyType);
+      return (IRequestErrorDetectionStrategy)Activator.CreateInstance(requestErrorStrategyType)!;
     }
 
     [CanBeNull]
-    private Type GetRequestErrorDetectionStrategyType (string requestErrorDetectionStrategyTypeName)
+    private Type? GetRequestErrorDetectionStrategyType (string requestErrorDetectionStrategyTypeName)
     {
-      if (s_wellKnownRequestErrorDetectionStrategyTypes.ContainsKey (requestErrorDetectionStrategyTypeName))
+      if (s_wellKnownRequestErrorDetectionStrategyTypes.ContainsKey(requestErrorDetectionStrategyTypeName))
         return s_wellKnownRequestErrorDetectionStrategyTypes [requestErrorDetectionStrategyTypeName];
 
-      return Type.GetType (requestErrorDetectionStrategyTypeName, throwOnError: false, ignoreCase: false);
+      return Type.GetType(requestErrorDetectionStrategyTypeName, throwOnError: false, ignoreCase: false);
     }
   }
 }

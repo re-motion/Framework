@@ -29,35 +29,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation
   {
     protected void AssertMappingValidationResult (MappingValidationResult validationResult, bool expectedIsValid, string expectedMessage)
     {
-      Assert.That (validationResult.IsValid, Is.EqualTo (expectedIsValid));
-      Assert.That (validationResult.Message, Is.EqualTo (expectedMessage));
+      Assert.That(validationResult.IsValid, Is.EqualTo(expectedIsValid));
+      Assert.That(validationResult.Message, Is.EqualTo(expectedMessage));
     }
 
     protected void AssertMappingValidationResult (IEnumerable<MappingValidationResult> validationResult, bool expectedIsValid, string expectedMessage)
     {
-      var invalidResults = validationResult.Where (r => !r.IsValid).ToArray ();
+      var invalidResults = validationResult.Where(r => !r.IsValid).ToArray();
       if (expectedIsValid)
       {
-        Assert.That (invalidResults, Is.Empty);
+        Assert.That(invalidResults, Is.Empty);
       }
       else
       {
-        Assert.That (invalidResults.Length, Is.EqualTo (1));
-        Assert.That (invalidResults[0].IsValid, Is.EqualTo (expectedIsValid));
-        Assert.That (invalidResults[0].Message, Is.EqualTo (expectedMessage));
+        Assert.That(invalidResults.Length, Is.EqualTo(1));
+        Assert.That(invalidResults[0].IsValid, Is.EqualTo(expectedIsValid));
+        Assert.That(invalidResults[0].Message, Is.EqualTo(expectedMessage));
       }
     }
 
     protected StorageProviderDefinition StorageProviderDefinition
     {
-      get { return new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider"); }
+      get { return new UnitTestStorageProviderStubDefinition("DefaultStorageProvider"); }
     }
 
-    protected RelationDefinition CreateRelationDefinitionAndSetBackReferences (string id, IRelationEndPointDefinition endPointDefinition1, IRelationEndPointDefinition endPointDefinition2)
+    protected RelationDefinition CreateRelationDefinitionAndSetBackReferences (
+        string id,
+        IRelationEndPointDefinition endPointDefinition1,
+        IRelationEndPointDefinition endPointDefinition2)
     {
-      var relationDefinition = new RelationDefinition (id, endPointDefinition1, endPointDefinition2);
-      endPointDefinition1.SetRelationDefinition (relationDefinition);
-      endPointDefinition2.SetRelationDefinition (relationDefinition);
+      var relationDefinition = new RelationDefinition(id, endPointDefinition1, endPointDefinition2);
+      ((IRelationEndPointDefinitionSetter)endPointDefinition1).SetRelationDefinition(relationDefinition);
+      ((IRelationEndPointDefinitionSetter)endPointDefinition2).SetRelationDefinition(relationDefinition);
       return relationDefinition;
     }
   }

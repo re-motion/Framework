@@ -28,18 +28,18 @@ namespace Remotion.SecurityManager.Configuration
 
     public AccessControlElement ()
     {
-      _disableSpecificUserProperty = new ConfigurationProperty (
+      _disableSpecificUserProperty = new ConfigurationProperty(
           "disableSpecificUser",
-          typeof (bool),
+          typeof(bool),
           false,
           ConfigurationPropertyOptions.None);
 
-      _properties.Add (_disableSpecificUserProperty);
+      _properties.Add(_disableSpecificUserProperty);
     }
 
     public bool DisableSpecificUser
     {
-      get { return (bool) this[_disableSpecificUserProperty]; }
+      get { return (bool)this[_disableSpecificUserProperty]; }
       set { this[_disableSpecificUserProperty] = value; }
     }
 

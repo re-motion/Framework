@@ -24,17 +24,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   {
     public static Color Red (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color (MethodBase.GetCurrentMethod());
+      return new Color(MethodBase.GetCurrentMethod());
     }
 
     public static Color Green (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color (MethodBase.GetCurrentMethod ());
+      return new Color(MethodBase.GetCurrentMethod());
     }
 
     public static Color Blue (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color (MethodBase.GetCurrentMethod ());
+      return new Color(MethodBase.GetCurrentMethod());
     }
   }
 }

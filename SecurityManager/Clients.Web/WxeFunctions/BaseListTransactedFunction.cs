@@ -24,12 +24,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
   public abstract class BaseListTransactedFunction : BaseTransactedFunction
   {
     protected BaseListTransactedFunction ()
-        : this (WxeTransactionMode.CreateRootWithAutoCommit)
+        : this(WxeTransactionMode.CreateRootWithAutoCommit)
     {
     }
 
     protected BaseListTransactedFunction (ITransactionMode transactionMode, params object[] args)
-        : base (transactionMode, args)
+        : base(transactionMode, args)
     {
     }
 

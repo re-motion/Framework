@@ -17,8 +17,9 @@
 using System;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
@@ -28,25 +29,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = new ProviderCollection<StorageProviderDefinition>();
       var sqlStorageObjectFactory = new SqlStorageObjectFactory();
+      var nonPersistentStorageObjectFactory = new NonPersistentStorageObjectFactory();
 
-      storageProviderDefinitionCollection.Add (
-          new RdbmsProviderDefinition (
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
               DatabaseTest.c_testDomainProviderID,
               sqlStorageObjectFactory,
               DatabaseTest.TestDomainConnectionString));
 
-      storageProviderDefinitionCollection.Add (
-          new RdbmsProviderDefinition (
+      storageProviderDefinitionCollection.Add(
+          new NonPersistentProviderDefinition(
+              DatabaseTest.c_nonPersistentTestDomainProviderID,
+              nonPersistentStorageObjectFactory));
+
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
               DatabaseTest.DefaultStorageProviderID,
               sqlStorageObjectFactory,
               DatabaseTest.TestDomainConnectionString));
 
-      storageProviderDefinitionCollection.Add (
-          new UnitTestStorageProviderStubDefinition (
+      storageProviderDefinitionCollection.Add(
+          new UnitTestStorageProviderStubDefinition(
               DatabaseTest.c_unitTestStorageProviderStubID));
 
-      storageProviderDefinitionCollection.Add (
-          new RdbmsProviderDefinition (
+      storageProviderDefinitionCollection.Add(
+          new RdbmsProviderDefinition(
               TableInheritanceMappingTest.TableInheritanceTestDomainProviderID,
               sqlStorageObjectFactory,
               DatabaseTest.TestDomainConnectionString));

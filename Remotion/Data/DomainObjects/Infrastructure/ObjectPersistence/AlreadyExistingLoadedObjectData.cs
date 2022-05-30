@@ -29,12 +29,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public AlreadyExistingLoadedObjectData (DataContainer existingDataContainer)
     {
-      ArgumentUtility.CheckNotNull ("existingDataContainer", existingDataContainer);
+      ArgumentUtility.CheckNotNull("existingDataContainer", existingDataContainer);
 
       if (!existingDataContainer.IsRegistered)
-        throw new ArgumentException ("The DataContainer must have been registered with a ClientTransaction.", "existingDataContainer");
+        throw new ArgumentException("The DataContainer must have been registered with a ClientTransaction.", "existingDataContainer");
 
-      Assertion.IsTrue (existingDataContainer.HasDomainObject, "ClientTransaction only accepts DataContainers with DomainObjects.");
+      Assertion.IsTrue(existingDataContainer.HasDomainObject, "ClientTransaction only accepts DataContainers with DomainObjects.");
 
       _existingDataContainer = existingDataContainer;
     }
@@ -51,14 +51,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public DomainObject GetDomainObjectReference ()
     {
-      Assertion.IsTrue (_existingDataContainer.HasDomainObject, "Checked by ctor.");
+      Assertion.IsTrue(_existingDataContainer.HasDomainObject, "Checked by ctor.");
       return _existingDataContainer.DomainObject;
     }
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitAlreadyExistingLoadedObject (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.VisitAlreadyExistingLoadedObject(this);
     }
 
     bool INullObject.IsNull
@@ -66,6 +66,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       get { return false; }
     }
   }
- 
+
 
 }

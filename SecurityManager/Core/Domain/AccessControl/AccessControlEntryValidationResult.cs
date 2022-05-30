@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   /// </summary>
   public class AccessControlEntryValidationResult
   {
-    private readonly HashSet<AccessControlEntryValidationError> _errors = new HashSet<AccessControlEntryValidationError> ();
+    private readonly HashSet<AccessControlEntryValidationError> _errors = new HashSet<AccessControlEntryValidationError>();
 
     public AccessControlEntryValidationResult ()
     {
@@ -42,26 +42,26 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public AccessControlEntryValidationError[] GetErrors ()
     {
-      return _errors.OrderBy (e => (int) e).ToArray();
+      return _errors.OrderBy(e => (int)e).ToArray();
     }
 
     public void SetError (AccessControlEntryValidationError error)
     {
-      _errors.Add (error);
+      _errors.Add(error);
     }
 
     public string GetErrorMessage ()
     {
       StringBuilder errorMessageBuilder = new StringBuilder(_errors.Count * 100);
-      errorMessageBuilder.Append ("The access control entry is in an invalid state:");
+      errorMessageBuilder.Append("The access control entry is in an invalid state:");
       var enumerationGlobalizationService = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
       foreach (var error in GetErrors())
       {
         errorMessageBuilder.AppendLine();
-        errorMessageBuilder.Append ("  ");
+        errorMessageBuilder.Append("  ");
 
-        var displayName = enumerationGlobalizationService.GetEnumerationValueDisplayName (error);
-        errorMessageBuilder.Append (displayName);
+        var displayName = enumerationGlobalizationService.GetEnumerationValueDisplayName(error);
+        errorMessageBuilder.Append(displayName);
       }
 
       return errorMessageBuilder.ToString();

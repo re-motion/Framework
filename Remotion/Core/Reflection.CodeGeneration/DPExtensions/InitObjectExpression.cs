@@ -29,23 +29,23 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public InitObjectExpression (Reference objectToBeInitialized, Type type)
     {
-      ArgumentUtility.CheckNotNull ("objectToBeInitialized", objectToBeInitialized);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("objectToBeInitialized", objectToBeInitialized);
+      ArgumentUtility.CheckNotNull("type", type);
 
       _objectToBeInitialized = objectToBeInitialized;
       _type = type;
     }
 
     public InitObjectExpression (IMethodEmitter method, Type type)
-        : this (ArgumentUtility.CheckNotNull ("method", method).DeclareLocal (type), type)
+        : this(ArgumentUtility.CheckNotNull("method", method).DeclareLocal(type), type)
     {
     }
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      _objectToBeInitialized.LoadAddressOfReference (gen);
-      gen.Emit (OpCodes.Initobj, _type);
-      _objectToBeInitialized.LoadReference (gen);
+      _objectToBeInitialized.LoadAddressOfReference(gen);
+      gen.Emit(OpCodes.Initobj, _type);
+      _objectToBeInitialized.LoadReference(gen);
     }
   }
 }

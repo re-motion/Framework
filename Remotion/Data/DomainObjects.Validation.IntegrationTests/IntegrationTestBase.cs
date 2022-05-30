@@ -22,17 +22,16 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
 using Remotion.Validation;
-using Remotion.Validation.Globalization;
 using Remotion.Validation.Merging;
 using LogManager = log4net.LogManager;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 {
-  [SetUICulture ("")]
-  [SetCulture ("")]
+  [SetUICulture("")]
+  [SetCulture("")]
   public abstract class IntegrationTestBase
   {
-    protected IValidatorBuilder ValidationBuilder;
+    protected IValidatorProvider ValidationProvider;
     protected MemoryAppender MemoryAppender;
     protected bool ShowLogOutput;
     private ServiceLocatorScope _serviceLocatorScope;
@@ -40,16 +39,15 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
     [SetUp]
     public virtual void SetUp ()
     {
-      var serviceLocator = DefaultServiceLocator.Create ();
-      serviceLocator.RegisterSingle<IErrorMessageGlobalizationService> (GetValidatorGlobalizationService);
-      serviceLocator.RegisterSingle<IClientTransactionExtensionFactory> (
-          () => new ValidationClientTransactionExtensionFactory (serviceLocator.GetInstance<IValidatorBuilder>()));
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle<IClientTransactionExtensionFactory>(
+          () => new ValidationClientTransactionExtensionFactory(serviceLocator.GetInstance<IValidatorProvider>()));
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       MemoryAppender = new MemoryAppender();
-      BasicConfigurator.Configure (MemoryAppender);
+      BasicConfigurator.Configure(MemoryAppender);
 
-      ValidationBuilder = serviceLocator.GetInstance<IValidatorBuilder> ();
+      ValidationProvider = serviceLocator.GetInstance<IValidatorProvider>();
     }
 
     [TearDown]
@@ -58,20 +56,15 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       if (ShowLogOutput)
       {
         var logEvents = MemoryAppender.GetEvents().Reverse().ToArray();
-        Console.WriteLine (logEvents.Skip (1).First().RenderedMessage);
-        Console.WriteLine (logEvents.First().RenderedMessage);
+        Console.WriteLine(logEvents.Skip(1).First().RenderedMessage);
+        Console.WriteLine(logEvents.First().RenderedMessage);
       }
 
       MemoryAppender.Clear();
       LogManager.ResetConfiguration();
       _serviceLocatorScope.Dispose();
 
-      Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
-    }
-
-    protected virtual IErrorMessageGlobalizationService GetValidatorGlobalizationService ()
-    {
-      return new NullErrorMessageGlobalizationService();
+      Assert.That(LogManager.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator)).IsDebugEnabled, Is.False);
     }
   }
 }

@@ -20,16 +20,16 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [Uses (typeof (NullMixin))]
+  [Uses(typeof(NullMixin))]
   public class TargetClassAccessingFirstCallProxyFromCtor
   {
     public object FirstNextCallProxy;
 
     public TargetClassAccessingFirstCallProxyFromCtor ()
     {
-      var mixinTarget = (IMixinTarget) this;
+      var mixinTarget = (IMixinTarget)this;
       FirstNextCallProxy = mixinTarget.FirstNextCallProxy;
-      Assert.That (FirstNextCallProxy, Is.Not.Null);
+      Assert.That(FirstNextCallProxy, Is.Not.Null);
     }
   }
 }

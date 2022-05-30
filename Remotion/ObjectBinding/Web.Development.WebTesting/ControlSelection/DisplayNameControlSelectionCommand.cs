@@ -40,8 +40,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
         [NotNull] IDisplayNameControlSelector<TControlObject> controlSelector,
         [NotNull] string displayName)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
       _controlSelector = controlSelector;
       _displayName = displayName;
@@ -50,25 +50,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectPerDisplayName (context, _displayName);
+      return _controlSelector.SelectPerDisplayName(context, _displayName);
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptional (ControlSelectionContext context)
+    public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectOptionalPerDisplayName (context, _displayName);
+      return _controlSelector.SelectOptionalPerDisplayName(context, _displayName);
     }
 
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.ExistsPerDisplayName (context, _displayName);
+      return _controlSelector.ExistsPerDisplayName(context, _displayName);
     }
   }
 }

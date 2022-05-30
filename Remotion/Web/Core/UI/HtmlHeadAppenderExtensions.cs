@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -28,31 +29,26 @@ namespace Remotion.Web.UI
   public static class HtmlHeadAppenderExtensions
   {
     /// <summary>
-    /// Registers jquery and Utilities.js in non-themed HTML folder of Remotion.Web.dll.
+    /// Registers Utilities.js in non-themed HTML folder of Remotion.Web.dll.
     /// </summary>
     public static void RegisterUtilitiesJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string jqueryKey = typeof (HtmlHeadContents).FullName + "_JQuery";
-      var jqueryFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery-1.6.4.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (jqueryKey, jqueryFileUrl);
-
-      string utilitiesKey = typeof (HtmlHeadContents).FullName + "_Utilities";
-      var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (utilitiesKey, utilitiesScripFileUrl);
+      string utilitiesKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_Utilities";
+      var utilitiesScripFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Utilities.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(utilitiesKey, utilitiesScripFileUrl);
     }
 
     /// <summary>
     /// Registers jquery.IFrameShim.js in non-themed HTML folder of Remotion.Web.dll.
     /// </summary>
+    [Obsolete("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)", true)]
     public static void RegisterJQueryIFrameShimJavaScriptInclude (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (HtmlHeadContents).FullName + "_JQueryBgiFrames";
-      var href = ResourceUrlFactory.CreateResourceUrl (typeof (HtmlHeadContents), ResourceType.Html, "jquery.IFrameShim.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (key, href);
+      throw new NotSupportedException("JQuery iFrame shim was only needed for IE, which is no longer supported. (Version 3.0.0-alpha.12)");
     }
 
     /// <summary>
@@ -60,11 +56,34 @@ namespace Remotion.Web.UI
     /// </summary>
     public static void RegisterPageStylesheetLink (this HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (HtmlHeadContents).FullName + "_Style";
-      var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "Style.css");
-      htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Page);
+      string key = typeof(HtmlHeadContents).GetFullNameChecked() + "_Style";
+      var url = InfrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, "Style.css");
+      htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Page);
+    }
+
+    /// <summary>
+    /// Registers Common.css in themed HTML folder of Remotion.Web.dll with priority level <see cref="HtmlHeadAppender.Priority.Library"/>.
+    /// </summary>
+    public static void RegisterCommonStyleSheet (this HtmlHeadAppender htmlHeadAppender)
+    {
+      var key = typeof(HtmlHeadContents).GetFullNameChecked() + "_CommonStyle";
+      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Common.css");
+
+      htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Library);
+
+      var robotoRegularKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_RobotoRegular";
+      var robotoRegularUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Roboto-Regular.ttf");
+      htmlHeadAppender.RegisterHeadElement(robotoRegularKey, new FontPreloadLink(robotoRegularUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
+
+      var robotoMediumKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_RobotoMedium";
+      var robotoMediumUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Roboto-Medium.ttf");
+      htmlHeadAppender.RegisterHeadElement(robotoMediumKey, new FontPreloadLink(robotoMediumUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
+
+      var robotoBoldKey = typeof(HtmlHeadContents).GetFullNameChecked() + "_RobotoBold";
+      var robotoBoldUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(HtmlHeadContents), ResourceType.Html, "Roboto-Bold.ttf");
+      htmlHeadAppender.RegisterHeadElement(robotoBoldKey, new FontPreloadLink(robotoBoldUrl, "font/ttf"), HtmlHeadAppender.Priority.Script);
     }
 
     private static IResourceUrlFactory ResourceUrlFactory
@@ -75,6 +94,11 @@ namespace Remotion.Web.UI
     private static IInfrastructureResourceUrlFactory InfrastructureResourceUrlFactory
     {
       get { return SafeServiceLocator.Current.GetInstance<IInfrastructureResourceUrlFactory>(); }
+    }
+
+    private static ResourceTheme ResourceTheme
+    {
+      get { return SafeServiceLocator.Current.GetInstance<ResourceTheme>(); }
     }
   }
 }

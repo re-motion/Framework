@@ -28,18 +28,18 @@ namespace Remotion.Security
   public sealed class SecurityPrincipal : ISecurityPrincipal, IEquatable<SecurityPrincipal>
   {
     private readonly string _user;
-    private readonly IReadOnlyList<ISecurityPrincipalRole> _roles;
-    private readonly string _substitutedUser;
-    private readonly IReadOnlyList<ISecurityPrincipalRole> _substitutedRoles;
+    private readonly IReadOnlyList<ISecurityPrincipalRole>? _roles;
+    private readonly string? _substitutedUser;
+    private readonly IReadOnlyList<ISecurityPrincipalRole>? _substitutedRoles;
 
     public SecurityPrincipal (
         [NotNull] string user,
-        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole> roles,
-        [CanBeNull] string substitutedUser,
-        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole> substitutedRoles)
+        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole>? roles,
+        [CanBeNull] string? substitutedUser,
+        [CanBeNull] IReadOnlyList<ISecurityPrincipalRole>? substitutedRoles)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("user", user);
-      ArgumentUtility.CheckNotEmpty ("substitutedUser", substitutedUser);
+      ArgumentUtility.CheckNotNullOrEmpty("user", user);
+      ArgumentUtility.CheckNotEmpty("substitutedUser", substitutedUser);
 
       _user = user;
       _substitutedRoles = substitutedRoles;
@@ -52,30 +52,30 @@ namespace Remotion.Security
       get { return _user; }
     }
 
-    public IReadOnlyList<ISecurityPrincipalRole> Roles
+    public IReadOnlyList<ISecurityPrincipalRole>? Roles
     {
       get { return _roles; }
     }
 
-    public string SubstitutedUser
+    public string? SubstitutedUser
     {
       get { return _substitutedUser; }
     }
 
-    public IReadOnlyList<ISecurityPrincipalRole> SubstitutedRoles
+    public IReadOnlyList<ISecurityPrincipalRole>? SubstitutedRoles
     {
       get { return _substitutedRoles; }
     }
 
-    public bool Equals (SecurityPrincipal other)
+    public bool Equals (SecurityPrincipal? other)
     {
-      if (ReferenceEquals (this, other))
+      if (ReferenceEquals(this, other))
         return true;
 
       if (other == null)
         return false;
 
-      if (!string.Equals (this._user, other._user, StringComparison.Ordinal))
+      if (!string.Equals(this._user, other._user, StringComparison.Ordinal))
         return false;
 
       if (this._roles == null && other._roles != null)
@@ -92,12 +92,12 @@ namespace Remotion.Security
         // ReSharper disable once LoopCanBeConvertedToQuery
         for (int i = 0; i < this._roles.Count; i++)
         {
-          if (!IsRoleInList (this._roles[i], i, other._roles))
+          if (!IsRoleInList(this._roles[i], i, other._roles))
             return false;
         }
       }
 
-      if (!string.Equals (this._substitutedUser, other._substitutedUser, StringComparison.Ordinal))
+      if (!string.Equals(this._substitutedUser, other._substitutedUser, StringComparison.Ordinal))
         return false;
 
       if (this._substitutedRoles == null && other._substitutedRoles != null)
@@ -114,7 +114,7 @@ namespace Remotion.Security
         // ReSharper disable once LoopCanBeConvertedToQuery
         for (int i = 0; i < this._substitutedRoles.Count; i++)
         {
-          if (!IsRoleInList (this._substitutedRoles[i], i, other._substitutedRoles))
+          if (!IsRoleInList(this._substitutedRoles[i], i, other._substitutedRoles))
             return false;
         }
       }
@@ -124,31 +124,31 @@ namespace Remotion.Security
 
     private static bool IsRoleInList (ISecurityPrincipalRole roleToLookUp, int currentIndex, IReadOnlyList<ISecurityPrincipalRole> roles)
     {
-      if (roleToLookUp.Equals (roles[currentIndex]))
+      if (roleToLookUp.Equals(roles[currentIndex]))
         return true;
 
       // ReSharper disable once LoopCanBeConvertedToQuery
       // ReSharper disable once ForCanBeConvertedToForeach
       for (int j = 0; j < roles.Count; j++)
       {
-        if (roleToLookUp.Equals (roles[j]))
+        if (roleToLookUp.Equals(roles[j]))
           return true;
       }
 
       return false;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      SecurityPrincipal other = obj as SecurityPrincipal;
+      SecurityPrincipal? other = obj as SecurityPrincipal;
       if (other == null)
         return false;
-      return ((IEquatable<SecurityPrincipal>) this).Equals (other);
+      return ((IEquatable<SecurityPrincipal>)this).Equals(other);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (
+      return EqualityUtility.GetRotatedHashCode(
           _user,
           // Skip roles, they don't do much for the hash code but require complex implemenetation.
           _substitutedUser

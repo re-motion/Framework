@@ -25,9 +25,9 @@ namespace Remotion.Web.UI.Controls
 
 public interface IUserControl: ITemplateControl, IAttributeAccessor, IUserControlDesignerAccessor
 {
-  void DesignerInitialize();
-  void InitializeAsUserControl(Page page);
-  string MapPath(string virtualPath);
+  void DesignerInitialize ();
+  void InitializeAsUserControl (Page page);
+  string MapPath (string virtualPath);
 
   HttpApplicationState Application { get; }
   AttributeCollection Attributes { get; }

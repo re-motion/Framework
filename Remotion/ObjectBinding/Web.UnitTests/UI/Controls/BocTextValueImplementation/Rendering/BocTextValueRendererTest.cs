@@ -19,6 +19,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
@@ -27,11 +28,11 @@ using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplementation.Rendering
 {
@@ -41,430 +42,432 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     private const string c_valueName = "MyTextValue_Boc_Textbox";
     private const string c_clientID = "MyTextValue";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
+
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
+
     private BocTextValueRenderer _renderer;
 
     [SetUp]
     public void SetUp ()
     {
       Initialize();
-      TextValue = MockRepository.GenerateMock<IBocTextValue>();
-      _renderer = new BocTextValueRenderer (
+      TextValue = new Mock<IBocTextValue>();
+      _renderer = new BocTextValueRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      TextValue.Stub (stub => stub.ClientID).Return (c_clientID);
-      TextValue.Stub (stub => stub.ControlType).Return ("BocTextValue");
-      TextValue.Stub (stub => stub.GetValueName()).Return (c_valueName);
-      TextValue.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
-      TextValue.Stub (mock => mock.CssClass).PropertyBehavior();
-      TextValue.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
+      TextValue.Setup(stub => stub.ClientID).Returns(c_clientID);
+      TextValue.Setup(stub => stub.ControlType).Returns("BocTextValue");
+      TextValue.Setup(stub => stub.GetValueName()).Returns(c_valueName);
+      TextValue.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
+      TextValue.SetupProperty(_ => _.CssClass);
+      TextValue.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(s_validationErrors));
 
-      var pageStub = MockRepository.GenerateStub<IPage>();
-      pageStub.Stub (stub => stub.WrappedInstance).Return (new PageMock());
+      var pageStub = new Mock<IPage>();
+      pageStub.Setup(stub => stub.WrappedInstance).Returns(new PageMock());
 
-      TextValue.Stub (stub => stub.Page).Return (pageStub);
+      TextValue.Setup(stub => stub.Page).Returns(pageStub.Object);
     }
 
     [Test]
     public void RenderSingleLineEditabaleAutoPostback ()
     {
-      RenderSingleLineEditable (false, false, false, true);
+      RenderSingleLineEditable(false, false, false, true);
     }
 
     [Test]
     public void RenderSingleLineEditable ()
     {
-      RenderSingleLineEditable (false, false, false, false);
+      RenderSingleLineEditable(false, false, false, false);
     }
 
     [Test]
     public void RenderSingleLineDisabled ()
     {
-      RenderSingleLineDisabled (false, false, false);
+      RenderSingleLineDisabled(false, false, false);
     }
 
     [Test]
     public void RenderSingleLineReadonly ()
     {
-      RenderSingleLineReadonly (false, false, false);
+      RenderSingleLineReadonly(false, false, false);
     }
 
     [Test]
     public void RenderMultiLineReadonly ()
     {
-      RenderMultiLineReadonly (false, false, false);
+      RenderMultiLineReadonly(false, false, false);
     }
 
     [Test]
     public void RenderSingleLineEditableWithStyle ()
     {
-      RenderSingleLineEditable (true, false, false, false);
+      RenderSingleLineEditable(true, false, false, false);
     }
 
     [Test]
     public void RenderSingleLineDisabledWithStyle ()
     {
-      RenderSingleLineDisabled (true, false, false);
+      RenderSingleLineDisabled(true, false, false);
     }
 
     [Test]
     public void RenderSingleLineReadonlyWithStyle ()
     {
-      RenderSingleLineReadonly (true, false, false);
+      RenderSingleLineReadonly(true, false, false);
     }
 
     [Test]
     public void RenderMultiLineReadonlyWithStyle ()
     {
-      RenderMultiLineReadonly (true, false, false);
+      RenderMultiLineReadonly(true, false, false);
     }
 
     [Test]
     public void RenderSingleLineEditableWithStyleAndCssClass ()
     {
-      RenderSingleLineEditable (true, true, false, false);
+      RenderSingleLineEditable(true, true, false, false);
     }
 
     [Test]
     public void RenderSingleLineDisabledWithStyleAndCssClass ()
     {
-      RenderSingleLineDisabled (true, true, false);
+      RenderSingleLineDisabled(true, true, false);
     }
 
     [Test]
     public void RenderSingleLineReadonlyWithStyleAndCssClass ()
     {
-      RenderSingleLineReadonly (true, true, false);
+      RenderSingleLineReadonly(true, true, false);
     }
 
     [Test]
     public void RenderMultiLineReadonlyWithStyleAndCssClass ()
     {
-      RenderMultiLineReadonly (true, true, false);
+      RenderMultiLineReadonly(true, true, false);
     }
 
     [Test]
     public void RenderSingleLineEditableWithStyleInStandardProperties ()
     {
-      RenderSingleLineEditable (true, false, true, false);
+      RenderSingleLineEditable(true, false, true, false);
     }
 
     [Test]
     public void RenderSingleLineDisabledWithStyleInStandardProperties ()
     {
-      RenderSingleLineDisabled (true, false, true);
+      RenderSingleLineDisabled(true, false, true);
     }
 
     [Test]
     public void RenderSingleLineReadonlyWithStyleInStandardProperties ()
     {
-      RenderSingleLineReadonly (true, false, true);
+      RenderSingleLineReadonly(true, false, true);
     }
 
     [Test]
     public void RenderMultiLineReadonlyWithStyleInStandardProperties ()
     {
-      RenderMultiLineReadonly (true, false, true);
+      RenderMultiLineReadonly(true, false, true);
     }
 
     [Test]
     public void RenderSingleLineEditableWithStyleAndCssClassInStandardProperties ()
     {
-      RenderSingleLineEditable (true, true, true, false);
+      RenderSingleLineEditable(true, true, true, false);
     }
 
     [Test]
     public void RenderSingleLineDisabledWithStyleAndCssClassInStandardProperties ()
     {
-      RenderSingleLineDisabled (true, true, true);
+      RenderSingleLineDisabled(true, true, true);
     }
 
     [Test]
     public void RenderSingleLineReadonlyWithStyleAndCssClassInStandardProperties ()
     {
-      RenderSingleLineReadonly (true, true, true);
+      RenderSingleLineReadonly(true, true, true);
     }
 
     [Test]
     public void RenderMultiLineReadonlyWithStyleAndCssClassInStandardProperties ()
     {
-      RenderMultiLineReadonly (true, true, true);
+      RenderMultiLineReadonly(true, true, true);
     }
 
     [Test]
     public void RenderPasswordMaskedEditable ()
     {
-      RenderPasswordEditable (true, false);
+      RenderPasswordEditable(true, false);
     }
 
     [Test]
     public void RenderPasswordMaskedEditableWithAutoPostback ()
     {
-      RenderPasswordEditable (true, true);
+      RenderPasswordEditable(true, true);
     }
 
     [Test]
     public void RenderPasswordNoRenderEditable ()
     {
-      RenderPasswordEditable (false, false);
+      RenderPasswordEditable(false, false);
     }
 
     [Test]
     public void RenderPasswordMaskedReadonly ()
     {
-      RenderPasswordReadonly (true);
+      RenderPasswordReadonly(true);
     }
 
     [Test]
     public void RenderPasswordNoRenderReadonly ()
     {
-      RenderPasswordReadonly (false);
+      RenderPasswordReadonly(false);
     }
 
     [Test]
     public void TestDiagnosticMetadataRenderingWithAutoPostBack ()
     {
-      _renderer = new BocTextValueRenderer (
+      _renderer = new BocTextValueRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      var span = RenderSingleLineEditable (true, true, true, true);
-      Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocTextValue");
-      Html.AssertAttribute (span, DiagnosticMetadataAttributes.TriggersPostBack, "true");
+      var span = RenderSingleLineEditable(true, true, true, true);
+      Html.AssertAttribute(span, DiagnosticMetadataAttributes.ControlType, "BocTextValue");
+      Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "true");
     }
 
     [Test]
     public void TestDiagnosticMetadataRenderingWithoutAutoPostBack ()
     {
-      _renderer = new BocTextValueRenderer (
+      _renderer = new BocTextValueRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      var span = RenderSingleLineEditable (true, true, true, false);
-      Html.AssertAttribute (span, DiagnosticMetadataAttributes.ControlType, "BocTextValue");
-      Html.AssertAttribute (span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
+      var span = RenderSingleLineEditable(true, true, true, false);
+      Html.AssertAttribute(span, DiagnosticMetadataAttributes.ControlType, "BocTextValue");
+      Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
     private XmlNode RenderSingleLineEditable (bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack)
     {
-      TextValue.Stub (mock => mock.Text).Return (c_firstLineText);
+      TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
 
-      SetStyle (withStyle, withCssClass, inStandardProperties, autoPostBack);
+      SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
 
-      _renderer.Render (new BocTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase>(), Html.Writer, TextValue));
+      _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
-      Html.AssertChildElementCount (document.DocumentElement, 1);
+      Html.AssertChildElementCount(document.DocumentElement, 1);
 
-      var span = Html.GetAssertedChildElement (document, "span", 0);
-      Html.AssertAttribute (span, "id", c_clientID);
-      CheckCssClass (_renderer, span, withCssClass, inStandardProperties);
-      Html.AssertChildElementCount (span, 1);
-      var content = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 2);
+      var span = Html.GetAssertedChildElement(document, "span", 0);
+      Html.AssertAttribute(span, "id", c_clientID);
+      CheckCssClass(_renderer, span, withCssClass, inStandardProperties);
+      Html.AssertChildElementCount(span, 1);
+      var content = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(content, "class", "content");
+      Html.AssertChildElementCount(content, 2);
 
-      var input = Html.GetAssertedChildElement (content, "input", 0);
-      Html.AssertAttribute (input, "id", c_valueName);
-      Html.AssertAttribute (input, "name", c_valueName);
-      Html.AssertAttribute (input, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute (input, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-      Html.AssertAttribute (input, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (input, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      Html.AssertAttribute (input, "type", "text");
-      Html.AssertAttribute (input, "value", c_firstLineText);
-      Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
+      var input = Html.GetAssertedChildElement(content, "input", 0);
+      Html.AssertAttribute(input, "id", c_valueName);
+      Html.AssertAttribute(input, "name", c_valueName);
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(input, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(input, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+      Html.AssertAttribute(input, "type", "text");
+      Html.AssertAttribute(input, "value", c_firstLineText);
+      Assert.That(TextValue.Object.TextBoxStyle.AutoPostBack, Is.EqualTo(autoPostBack));
       if (autoPostBack)
-        Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_valueName));
+        Html.AssertAttribute(input, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_valueName));
       else
-        Html.AssertNoAttribute (input, "onchange");
+        Html.AssertNoAttribute(input, "onchange");
 
-      CheckStyle (withStyle, span, input);
+      CheckStyle(withStyle, span, input);
 
-      var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
       return span;
     }
 
     private void RenderSingleLineDisabled (bool withStyle, bool withCssClass, bool inStandardProperties)
     {
-      TextValue.Stub (mock => mock.Text).Return (c_firstLineText);
+      TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
 
-      SetStyle (withStyle, withCssClass, inStandardProperties, false);
+      SetStyle(withStyle, withCssClass, inStandardProperties, false);
 
-      TextValue.Stub (mock => mock.Enabled).Return (false);
-      _renderer.Render (new BocTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase>(), Html.Writer, TextValue));
+      TextValue.Setup(mock => mock.Enabled).Returns(false);
+      _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
-      Html.AssertChildElementCount (document.DocumentElement, 1);
+      Html.AssertChildElementCount(document.DocumentElement, 1);
 
-      var span = Html.GetAssertedChildElement (document, "span", 0);
-      Html.AssertAttribute (span, "id", c_clientID);
-      CheckCssClass (_renderer, span, withCssClass, inStandardProperties);
-      Html.AssertAttribute (span, "class", _renderer.CssClassDisabled, HtmlHelperBase.AttributeValueCompareMode.Contains);
-      Html.AssertChildElementCount (span, 1);
-      var content = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 2);
+      var span = Html.GetAssertedChildElement(document, "span", 0);
+      Html.AssertAttribute(span, "id", c_clientID);
+      CheckCssClass(_renderer, span, withCssClass, inStandardProperties);
+      Html.AssertAttribute(span, "class", _renderer.CssClassDisabled, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertChildElementCount(span, 1);
+      var content = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(content, "class", "content");
+      Html.AssertChildElementCount(content, 2);
 
-      var input = Html.GetAssertedChildElement (content, "input", 0);
-      Html.AssertAttribute (input, "disabled", "disabled");
-      Html.AssertAttribute (input, "readonly", "readonly");
-      Html.AssertAttribute (input, "value", c_firstLineText);
+      var input = Html.GetAssertedChildElement(content, "input", 0);
+      Html.AssertAttribute(input, "disabled", "disabled");
+      Html.AssertAttribute(input, "readonly", "readonly");
+      Html.AssertAttribute(input, "value", c_firstLineText);
 
-      CheckStyle (withStyle, span, input);
+      CheckStyle(withStyle, span, input);
 
-      var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void RenderSingleLineReadonly (bool withStyle, bool withCssClass, bool inStandardProperties)
     {
-      TextValue.Stub (mock => mock.Text).Return (c_firstLineText);
+      TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
 
-      SetStyle (withStyle, withCssClass, inStandardProperties, false);
+      SetStyle(withStyle, withCssClass, inStandardProperties, false);
 
-      TextValue.Stub (mock => mock.IsReadOnly).Return (true);
-      _renderer.Render (new BocTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase>(), Html.Writer, TextValue));
+      TextValue.Setup(mock => mock.IsReadOnly).Returns(true);
+      _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
-      Html.AssertChildElementCount (document.DocumentElement, 1);
+      Html.AssertChildElementCount(document.DocumentElement, 1);
 
-      var span = Html.GetAssertedChildElement (document, "span", 0);
-      Html.AssertAttribute (span, "id", c_clientID);
-      CheckCssClass (_renderer, span, withCssClass, inStandardProperties);
-      Html.AssertAttribute (span, "class", _renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
-      Html.AssertChildElementCount (span, 1);
-      var content = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 2);
+      var span = Html.GetAssertedChildElement(document, "span", 0);
+      Html.AssertAttribute(span, "id", c_clientID);
+      CheckCssClass(_renderer, span, withCssClass, inStandardProperties);
+      Html.AssertAttribute(span, "class", _renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertChildElementCount(span, 1);
+      var content = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(content, "class", "content");
+      Html.AssertChildElementCount(content, 2);
 
-      var labelSpan = Html.GetAssertedChildElement (content, "span", 0);
-      Html.AssertAttribute (labelSpan, "id", c_valueName);
-      Html.AssertAttribute (labelSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute (labelSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_valueName);
-      Html.AssertAttribute (labelSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (labelSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      Html.AssertAttribute (labelSpan, "tabindex", "0");
-      Html.AssertTextNode (labelSpan, c_firstLineText, 0);
+      var labelSpan = Html.GetAssertedChildElement(content, "span", 0);
+      Html.AssertAttribute(labelSpan, "id", c_valueName);
+      Html.AssertAttribute(labelSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(labelSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_valueName);
+      Html.AssertAttribute(labelSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(labelSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+      Html.AssertAttribute(labelSpan, "tabindex", "0");
+      Html.AssertTextNode(labelSpan, c_firstLineText, 0);
 
-      CheckStyle (withStyle, span, labelSpan);
+      CheckStyle(withStyle, span, labelSpan);
     }
 
     private void RenderMultiLineReadonly (bool withStyle, bool withCssClass, bool inStandardProperties)
     {
-      TextValue.Stub (mock => mock.Text).Return (
+      TextValue.Setup(mock => mock.Text).Returns(
           c_firstLineText + Environment.NewLine
           + c_secondLineText);
-      TextValue.Stub (mock => mock.IsReadOnly).Return (true);
+      TextValue.Setup(mock => mock.IsReadOnly).Returns(true);
 
-      SetStyle (withStyle, withCssClass, inStandardProperties, false);
-      TextValue.TextBoxStyle.TextMode = BocTextBoxMode.MultiLine;
+      SetStyle(withStyle, withCssClass, inStandardProperties, false);
+      TextValue.Object.TextBoxStyle.TextMode = BocTextBoxMode.MultiLine;
 
-      _renderer.Render (new BocTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase>(), Html.Writer, TextValue));
+      _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
-      Html.AssertChildElementCount (document.DocumentElement, 1);
+      Html.AssertChildElementCount(document.DocumentElement, 1);
 
-      var span = Html.GetAssertedChildElement (document, "span", 0);
+      var span = Html.GetAssertedChildElement(document, "span", 0);
 
-      Html.AssertAttribute (span, "id", c_clientID);
-      CheckCssClass (_renderer, span, withCssClass, inStandardProperties);
-      Html.AssertAttribute (span, "class", _renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
-      Html.AssertChildElementCount (span, 1);
-      var content = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 2);
+      Html.AssertAttribute(span, "id", c_clientID);
+      CheckCssClass(_renderer, span, withCssClass, inStandardProperties);
+      Html.AssertAttribute(span, "class", _renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertChildElementCount(span, 1);
+      var content = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(content, "class", "content");
+      Html.AssertChildElementCount(content, 2);
 
-      var labelSpan = Html.GetAssertedChildElement (content, "span", 0);
+      var labelSpan = Html.GetAssertedChildElement(content, "span", 0);
 
-      Html.AssertTextNode (labelSpan, c_firstLineText, 0);
-      Html.GetAssertedChildElement (labelSpan, "br", 1);
-      Html.AssertTextNode (labelSpan, c_secondLineText, 2);
-      Html.AssertChildElementCount (labelSpan, 1);
+      Html.AssertTextNode(labelSpan, c_firstLineText, 0);
+      Html.GetAssertedChildElement(labelSpan, "br", 1);
+      Html.AssertTextNode(labelSpan, c_secondLineText, 2);
+      Html.AssertChildElementCount(labelSpan, 1);
 
-      CheckStyle (withStyle, span, labelSpan);
+      CheckStyle(withStyle, span, labelSpan);
 
-      var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void RenderPasswordEditable (bool renderPassword, bool autoPostBack)
     {
-      TextValue.Stub (mock => mock.Text).Return (c_firstLineText);
+      TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
 
-      SetStyle (false, false, false, autoPostBack);
-      TextValue.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
+      SetStyle(false, false, false, autoPostBack);
+      TextValue.Object.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
 
-      _renderer.Render (new BocTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase>(), Html.Writer, TextValue));
+      _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
-      Html.AssertChildElementCount (document.DocumentElement, 1);
+      Html.AssertChildElementCount(document.DocumentElement, 1);
 
-      var span = Html.GetAssertedChildElement (document, "span", 0);
-      Html.AssertAttribute (span, "id", c_clientID);
-      Html.AssertChildElementCount (span, 1);
-      var content = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 2);
+      var span = Html.GetAssertedChildElement(document, "span", 0);
+      Html.AssertAttribute(span, "id", c_clientID);
+      Html.AssertChildElementCount(span, 1);
+      var content = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(content, "class", "content");
+      Html.AssertChildElementCount(content, 2);
 
-      var input = Html.GetAssertedChildElement (content, "input", 0);
-      Html.AssertAttribute (input, "type", "password");
+      var input = Html.GetAssertedChildElement(content, "input", 0);
+      Html.AssertAttribute(input, "type", "password");
       if (renderPassword)
-        Html.AssertAttribute (input, "value", c_firstLineText);
+        Html.AssertAttribute(input, "value", c_firstLineText);
       else
-        Html.AssertNoAttribute (input, "value");
+        Html.AssertNoAttribute(input, "value");
 
-      Assert.That (TextValue.TextBoxStyle.AutoPostBack, Is.EqualTo (autoPostBack));
+      Assert.That(TextValue.Object.TextBoxStyle.AutoPostBack, Is.EqualTo(autoPostBack));
       if (autoPostBack)
-        Html.AssertAttribute (input, "onchange", string.Format ("javascript:__doPostBack('{0}','')", c_valueName));
+        Html.AssertAttribute(input, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_valueName));
       else
-        Html.AssertNoAttribute (input, "onchange");
+        Html.AssertNoAttribute(input, "onchange");
 
-      var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void RenderPasswordReadonly (bool renderPassword)
     {
-      TextValue.Stub (mock => mock.Text).Return (c_firstLineText);
+      TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
 
-      SetStyle (false, false, false, false);
-      TextValue.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
+      SetStyle(false, false, false, false);
+      TextValue.Object.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
 
-      TextValue.Stub (mock => mock.IsReadOnly).Return (true);
-      _renderer.Render (new BocTextValueRenderingContext (MockRepository.GenerateMock<HttpContextBase>(), Html.Writer, TextValue));
+      TextValue.Setup(mock => mock.IsReadOnly).Returns(true);
+      _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
       var document = Html.GetResultDocument();
-      Html.AssertChildElementCount (document.DocumentElement, 1);
+      Html.AssertChildElementCount(document.DocumentElement, 1);
 
-      var span = Html.GetAssertedChildElement (document, "span", 0);
-      Html.AssertAttribute (span, "id", c_clientID);
+      var span = Html.GetAssertedChildElement(document, "span", 0);
+      Html.AssertAttribute(span, "id", c_clientID);
 
-      Html.AssertAttribute (span, "class", _renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
-      Html.AssertChildElementCount (span, 1);
-      var content = Html.GetAssertedChildElement (span, "span", 0);
-      Html.AssertAttribute (content, "class", "content");
-      Html.AssertChildElementCount (content, 2);
+      Html.AssertAttribute(span, "class", _renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertChildElementCount(span, 1);
+      var content = Html.GetAssertedChildElement(span, "span", 0);
+      Html.AssertAttribute(content, "class", "content");
+      Html.AssertChildElementCount(content, 2);
 
-      var labelSpan = Html.GetAssertedChildElement (content, "span", 0);
-      Html.AssertTextNode (labelSpan, new string ((char) 9679, 5), 0);
+      var labelSpan = Html.GetAssertedChildElement(content, "span", 0);
+      Html.AssertTextNode(labelSpan, new string((char)9679, 5), 0);
 
-      var validationErrors = Html.GetAssertedChildElement (content, "fake", 1);
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
     private void CheckStyle (bool withStyle, XmlNode span, XmlNode valueElement)
@@ -473,11 +476,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       string width = withStyle ? Width.ToString() : null;
       if (withStyle)
       {
-        Html.AssertStyleAttribute (span, "height", height);
-        Html.AssertStyleAttribute (span, "width", width);
+        Html.AssertStyleAttribute(span, "height", height);
+        Html.AssertStyleAttribute(span, "width", width);
 
         if (height != null)
-          Html.AssertStyleAttribute (valueElement, "height", "100%");
+          Html.AssertStyleAttribute(valueElement, "height", "100%");
       }
     }
   }

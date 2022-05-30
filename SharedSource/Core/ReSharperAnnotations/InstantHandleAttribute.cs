@@ -70,7 +70,7 @@ namespace JetBrains.Annotations
   /// If the parameter is a delegate, indicates that delegate is executed while the method is executed.
   /// If the parameter is an enumerable, indicates that it is enumerated while the method is executed.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Parameter)]
+  [AttributeUsage(AttributeTargets.Parameter)]
   sealed partial class InstantHandleAttribute : Attribute
   {
   }

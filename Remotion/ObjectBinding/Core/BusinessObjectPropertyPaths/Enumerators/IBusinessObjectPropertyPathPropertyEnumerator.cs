@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths.Enumerators
     /// Gets the <see cref="IBusinessObjectProperty"/> at the current position. 
     /// Returns <see langword="null" /> if the property could not be retrieved.
     /// </summary>
-    IBusinessObjectProperty Current { get; }
+    IBusinessObjectProperty? Current { get; }
 
     /// <summary>
     /// Returns <see langword="true" /> if the next invocation of <see cref="MoveNext"/> will return true. 

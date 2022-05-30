@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Tools.Console.CommandLine
@@ -44,7 +45,7 @@ namespace Remotion.Tools.Console.CommandLine
   /// ]]>
   /// </code>
   /// </example>
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public abstract class CommandLineArgumentAttribute : Attribute
   {
     private readonly CommandLineArgument _argument;
@@ -56,7 +57,7 @@ namespace Remotion.Tools.Console.CommandLine
     ///   This constructor is necessary because, even in <see langword="abstract"/> attribute classes, one constructor 
     ///   must have arguments that meet the constraints of attribute declarations. 
     /// </remarks>
-    [Obsolete ("Do not use this constructor.", true)]
+    [Obsolete("Do not use this constructor.", true)]
     protected CommandLineArgumentAttribute (int doNotUseThisConstructor)
     {
       throw new NotSupportedException();
@@ -69,7 +70,7 @@ namespace Remotion.Tools.Console.CommandLine
       _argument = argument;
     }
 
-    public string Name
+    public string? Name
     {
       get { return _argument.Name; }
       set { _argument.Name = value; }
@@ -81,13 +82,13 @@ namespace Remotion.Tools.Console.CommandLine
       set { _argument.IsOptional = value; }
     }
 
-    public string Placeholder
+    public string? Placeholder
     {
       get { return _argument.Placeholder; }
       set { _argument.Placeholder = value; }
     }
 
-    public string Description
+    public string? Description
     {
       get { return _argument.Description; }
       set { _argument.Description = value; }
@@ -104,8 +105,8 @@ namespace Remotion.Tools.Console.CommandLine
 
     public virtual void AddArgument (CommandLineArgumentCollection argumentCollection, IDictionary dictionary, MemberInfo member)
     {
-      argumentCollection.Add (this.Argument);
-      dictionary.Add (this.Argument, member);
+      argumentCollection.Add(this.Argument);
+      dictionary.Add(this.Argument, member);
     }
   }
 
@@ -144,98 +145,98 @@ namespace Remotion.Tools.Console.CommandLine
   /// </example>
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineStringArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineStringArgumentAttribute (bool isOptional)
-        : base (new CommandLineStringArgument (isOptional))
+        : base(new CommandLineStringArgument(isOptional))
     {
     }
 
     public CommandLineStringArgumentAttribute (string name, bool isOptional)
-        : base (new CommandLineStringArgument (name, isOptional))
+        : base(new CommandLineStringArgument(name, isOptional))
     {
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineFlagArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineFlagArgumentAttribute (string name)
-        : base (new CommandLineFlagArgument (name))
+        : base(new CommandLineFlagArgument(name))
     {
     }
 
     public CommandLineFlagArgumentAttribute (string name, bool defaultValue)
-        : base (new CommandLineFlagArgument (name, defaultValue))
+        : base(new CommandLineFlagArgument(name, defaultValue))
     {
     }
   }
 
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineInt32ArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineInt32ArgumentAttribute (string name, bool isOptional)
-        : base (new CommandLineInt32Argument (name, isOptional))
+        : base(new CommandLineInt32Argument(name, isOptional))
     {
     }
 
     public CommandLineInt32ArgumentAttribute (bool isOptional)
-        : base (new CommandLineInt32Argument (isOptional))
+        : base(new CommandLineInt32Argument(isOptional))
     {
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineEnumArgumentAttribute : CommandLineArgumentAttribute
   {
     public CommandLineEnumArgumentAttribute (bool isOptional)
-        : base (new CommandLineEnumArgument (isOptional, null))
+        : base(new CommandLineEnumArgument(isOptional, null))
     {
     }
 
     public CommandLineEnumArgumentAttribute (string name, bool isOptional)
-        : base (new CommandLineEnumArgument (name, isOptional, null))
+        : base(new CommandLineEnumArgument(name, isOptional, null))
     {
     }
 
     public override void SetMember (MemberInfo fieldOrProperty)
     {
-      Type enumType = CommandLineReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
+      Type enumType = CommandLineReflectionUtility.GetFieldOrPropertyType(fieldOrProperty);
       if (! enumType.IsEnum)
       {
-        throw new ApplicationException (
-            string.Format (
-                "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).FullName));
+        throw new ApplicationException(
+            string.Format(
+                "Attribute {0} can only be applied to enumeration fields or properties.", typeof(CommandLineEnumArgumentAttribute).GetFullNameSafe()));
       }
-      ((CommandLineEnumArgument) Argument).EnumType = enumType;
+      ((CommandLineEnumArgument)Argument).EnumType = enumType;
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
   public class CommandLineModeArgumentAttribute : CommandLineArgumentAttribute
   {
-    private Type _enumType;
+    private Type? _enumType;
 
     public CommandLineModeArgumentAttribute (bool isOptional)
-        : base (new CommandLineModeArgument (isOptional, null))
+        : base(new CommandLineModeArgument(isOptional, null))
     {
     }
 
     public new CommandLineModeArgument Argument
     {
-      get { return (CommandLineModeArgument) base.Argument; }
+      get { return (CommandLineModeArgument)base.Argument; }
     }
 
     public override void SetMember (MemberInfo fieldOrProperty)
     {
-      _enumType = CommandLineReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
+      _enumType = CommandLineReflectionUtility.GetFieldOrPropertyType(fieldOrProperty);
       if (! _enumType.IsEnum)
       {
-        throw new ApplicationException (
-            string.Format (
-                "Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).FullName));
+        throw new ApplicationException(
+            string.Format(
+                "Attribute {0} can only be applied to enumeration fields or properties.", typeof(CommandLineEnumArgumentAttribute).GetFullNameSafe()));
       }
 
       Argument.EnumType = _enumType;
@@ -245,27 +246,27 @@ namespace Remotion.Tools.Console.CommandLine
     public override void AddArgument (CommandLineArgumentCollection argumentCollection, IDictionary dictionary, MemberInfo member)
     {
       if (_enumType == null)
-        throw new InvalidOperationException ("SetMember must be called before AddArgument");
+        throw new InvalidOperationException("SetMember must be called before AddArgument");
 
       foreach (CommandLineModeFlagArgument flag in Argument.Parts)
       {
-        argumentCollection.Add (flag);
-        dictionary.Add (flag, member);
+        argumentCollection.Add(flag);
+        dictionary.Add(flag, member);
       }
-      argumentCollection.Add (Argument);
+      argumentCollection.Add(Argument);
     }
   }
 
-  [AttributeUsage (AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
   public class CommandLineModeAttribute : Attribute
   {
-    public static CommandLineModeAttribute GetAttribute (FieldInfo field)
+    public static CommandLineModeAttribute? GetAttribute (FieldInfo field)
     {
-      return (CommandLineModeAttribute) AttributeUtility.GetCustomAttribute (field, typeof (CommandLineModeAttribute), false);
+      return (CommandLineModeAttribute?)AttributeUtility.GetCustomAttribute(field, typeof(CommandLineModeAttribute), false);
     }
 
     private string _name;
-    private string _description;
+    private string? _description;
 
     public CommandLineModeAttribute (string name)
     {
@@ -277,7 +278,7 @@ namespace Remotion.Tools.Console.CommandLine
       get { return _name; }
     }
 
-    public string Description
+    public string? Description
     {
       get { return _description; }
       set { _description = value; }

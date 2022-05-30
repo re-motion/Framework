@@ -30,19 +30,19 @@ public class TestFailureException : ApplicationException
 
   // construction and disposing
 
-  public TestFailureException () : this ("A test failed.") 
+  public TestFailureException () : this("A test failed.")
   {
   }
 
-  public TestFailureException (string message) : base (message) 
-  {
-  }
-  
-  public TestFailureException (string message, Exception inner) : base (message, inner) 
+  public TestFailureException (string message) : base(message)
   {
   }
 
-  protected TestFailureException (SerializationInfo info, StreamingContext context) : base (info, context) 
+  public TestFailureException (string message, Exception inner) : base(message, inner)
+  {
+  }
+
+  protected TestFailureException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
   }
 

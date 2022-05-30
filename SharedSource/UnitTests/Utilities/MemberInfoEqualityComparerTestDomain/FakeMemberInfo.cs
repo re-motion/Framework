@@ -18,16 +18,17 @@
 using System;
 using System.Reflection;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Utilities.MemberInfoEqualityComparerTestDomain
 {
   public class FakeMemberInfo : MemberInfo
   {
-    private readonly Type _declaringType;
+    private readonly Type? _declaringType;
     private readonly int _metadataToken;
     private Module _module;
 
-    public FakeMemberInfo (Type declaringType, int metadataToken, Module module)
+    public FakeMemberInfo (Type? declaringType, int metadataToken, Module module)
     {
       _declaringType = declaringType;
       _metadataToken = metadataToken;
@@ -54,7 +55,7 @@ namespace Remotion.UnitTests.Utilities.MemberInfoEqualityComparerTestDomain
       get { throw new NotImplementedException(); }
     }
 
-    public override Type DeclaringType
+    public override Type? DeclaringType
     {
       get { return _declaringType; }
     }

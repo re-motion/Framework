@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 {
@@ -27,105 +27,105 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void Equal_SameBusinessObject_SameIndex_AreEqual ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      var row1 = new BocListRow (index, businessObject);
-      var row2 = new BocListRow (index, businessObject);
+      var row1 = new BocListRow(index, businessObject.Object);
+      var row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1.Equals (row2), Is.True);
-      Assert.That (row2.Equals (row1), Is.True);
+      Assert.That(row1.Equals(row2), Is.True);
+      Assert.That(row2.Equals(row1), Is.True);
     }
 
     [Test]
     public void IEquatable_SameBusinessObject_SameIndex_AreEqual ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      IEquatable<BocListRow> row1 = new BocListRow (index, businessObject);
-      IEquatable<BocListRow> row2 = new BocListRow (index, businessObject);
+      IEquatable<BocListRow> row1 = new BocListRow(index, businessObject.Object);
+      IEquatable<BocListRow> row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1.Equals (row2), Is.True);
-      Assert.That (row2.Equals (row1), Is.True);
+      Assert.That(row1.Equals(row2), Is.True);
+      Assert.That(row2.Equals(row1), Is.True);
     }
 
     [Test]
     public void IEquatable_OtherBusinessObject_SameIndex_AreNotEqual ()
     {
       var index = 5;
-      IEquatable<BocListRow> row1 = new BocListRow (index, MockRepository.GenerateStub<IBusinessObject>());
-      IEquatable<BocListRow> row2 = new BocListRow (index, MockRepository.GenerateStub<IBusinessObject>());
+      IEquatable<BocListRow> row1 = new BocListRow(index, new Mock<IBusinessObject>().Object);
+      IEquatable<BocListRow> row2 = new BocListRow(index, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row1.Equals (row2), Is.False);
-      Assert.That (row2.Equals (row1), Is.False);
+      Assert.That(row1.Equals(row2), Is.False);
+      Assert.That(row2.Equals(row1), Is.False);
     }
 
     [Test]
     public void IEquatable_SameBusinessObject_OtherIndex_AreNotEqual ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
-      IEquatable<BocListRow> row1 = new BocListRow (4, businessObject);
-      IEquatable<BocListRow> row2 = new BocListRow (6, businessObject);
+      var businessObject = new Mock<IBusinessObject>();
+      IEquatable<BocListRow> row1 = new BocListRow(4, businessObject.Object);
+      IEquatable<BocListRow> row2 = new BocListRow(6, businessObject.Object);
 
-      Assert.That (row1.Equals (row2), Is.False);
-      Assert.That (row2.Equals (row1), Is.False);
+      Assert.That(row1.Equals(row2), Is.False);
+      Assert.That(row2.Equals(row1), Is.False);
     }
 
     [Test]
     public void Equal_OtherRowNull_AreNotEqual ()
     {
-      var row = new BocListRow (5, MockRepository.GenerateStub<IBusinessObject>());
+      var row = new BocListRow(5, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row.Equals (null), Is.False);
+      Assert.That(row.Equals(null), Is.False);
     }
 
     [Test]
     public void IEquatable_OtherRowNull_AreNotEqual ()
     {
-      IEquatable<BocListRow> row = new BocListRow (5, MockRepository.GenerateStub<IBusinessObject>());
+      IEquatable<BocListRow> row = new BocListRow(5, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row.Equals (null), Is.False);
+      Assert.That(row.Equals(null), Is.False);
     }
 
     [Test]
     public void Equal_OtherType_AreNotEqual ()
     {
-      var row = new BocListRow (5, MockRepository.GenerateStub<IBusinessObject>());
+      var row = new BocListRow(5, new Mock<IBusinessObject>().Object);
 
-      Assert.That (row.Equals (new object()), Is.False);
+      Assert.That(row.Equals(new object()), Is.False);
     }
 
     [Test]
     public void OperatorEqual_SameBusinessObject_SameIndex_AreEqual ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      var row1 = new BocListRow (index, businessObject);
-      var row2 = new BocListRow (index, businessObject);
+      var row1 = new BocListRow(index, businessObject.Object);
+      var row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1 == row2, Is.True);
-      Assert.That (row2 == row1, Is.True);
+      Assert.That(row1 == row2, Is.True);
+      Assert.That(row2 == row1, Is.True);
     }
 
     [Test]
     public void OperatorNotEqual_SameBusinessObject_OtherIndex_AreNotEqual ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
-      var row1 = new BocListRow (4, businessObject);
-      var row2 = new BocListRow (6, businessObject);
+      var businessObject = new Mock<IBusinessObject>();
+      var row1 = new BocListRow(4, businessObject.Object);
+      var row2 = new BocListRow(6, businessObject.Object);
 
-      Assert.That (row1 != row2, Is.True);
-      Assert.That (row2 != row1, Is.True);
+      Assert.That(row1 != row2, Is.True);
+      Assert.That(row2 != row1, Is.True);
     }
 
     [Test]
     public void GetHashcode_SameBusinessObject_SameIndex_SameHashcode ()
     {
-      var businessObject = MockRepository.GenerateStub<IBusinessObject>();
+      var businessObject = new Mock<IBusinessObject>();
       var index = 5;
-      var row1 = new BocListRow (index, businessObject);
-      var row2 = new BocListRow (index, businessObject);
+      var row1 = new BocListRow(index, businessObject.Object);
+      var row2 = new BocListRow(index, businessObject.Object);
 
-      Assert.That (row1.GetHashCode(), Is.EqualTo(row2.GetHashCode()));
+      Assert.That(row1.GetHashCode(), Is.EqualTo(row2.GetHashCode()));
     }
   }
 }

@@ -38,17 +38,17 @@ namespace Remotion.Data.DomainObjects
 
     public DomainObjectCollectionWrapper (DomainObjectCollection wrappedCollection)
     {
-      ArgumentUtility.CheckNotNull ("wrappedCollection", wrappedCollection);
+      ArgumentUtility.CheckNotNull("wrappedCollection", wrappedCollection);
 
-      var requiredItemType = wrappedCollection.RequiredItemType ?? typeof (DomainObject);
-      if (!typeof (T).IsAssignableFrom (requiredItemType))
+      var requiredItemType = wrappedCollection.RequiredItemType ?? typeof(DomainObject);
+      if (!typeof(T).IsAssignableFrom(requiredItemType))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot implement 'IList<{0}>' for a DomainObjectCollection with required item type '{1}'. The IList<T>'s item type must be assignable "
-            + "from the required item type.", 
-            typeof (T), 
+            + "from the required item type.",
+            typeof(T),
             requiredItemType);
-        throw new ArgumentException (message, "wrappedCollection");
+        throw new ArgumentException(message, "wrappedCollection");
       }
 
       _wrappedCollection = wrappedCollection;
@@ -71,53 +71,53 @@ namespace Remotion.Data.DomainObjects
 
     public T this[int index]
     {
-      get { return (T) _wrappedCollection[index]; }
+      get { return (T)_wrappedCollection[index]; }
       set { _wrappedCollection[index] = value; }
     }
 
     public IEnumerator<T> GetEnumerator ()
     {
-      return _wrappedCollection.Cast<T> ().GetEnumerator();
+      return _wrappedCollection.Cast<T>().GetEnumerator();
     }
 
     public bool Contains (T item)
     {
-      return _wrappedCollection.ContainsObject (item);
+      return _wrappedCollection.ContainsObject(item);
     }
 
     public int IndexOf (T item)
     {
-      return _wrappedCollection.IndexOf (item);
+      return _wrappedCollection.IndexOf(item);
     }
 
     public void Insert (int index, T item)
     {
-      _wrappedCollection.Insert (index, item);
+      _wrappedCollection.Insert(index, item);
     }
 
     public void RemoveAt (int index)
     {
-      _wrappedCollection.RemoveAt (index);
+      _wrappedCollection.RemoveAt(index);
     }
 
     public void Add (T item)
     {
-      _wrappedCollection.Add (item);
+      _wrappedCollection.Add(item);
     }
 
     public void Clear ()
     {
-      _wrappedCollection.Clear ();
+      _wrappedCollection.Clear();
     }
 
     public bool Remove (T item)
     {
-      return _wrappedCollection.Remove (item);
+      return _wrappedCollection.Remove(item);
     }
-    
+
     public void CopyTo (T[] array, int arrayIndex)
     {
-      _wrappedCollection.CopyTo (array, arrayIndex);
+      _wrappedCollection.CopyTo(array, arrayIndex);
     }
 
     IEnumerator IEnumerable.GetEnumerator ()

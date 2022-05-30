@@ -21,8 +21,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
     {
       var factory = _serviceLocator.GetInstance<IDatePickerPageRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (DatePickerPageRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(DatePickerPageRenderer)));
     }
 
     [Test]
@@ -31,7 +31,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       var factory1 = _serviceLocator.GetInstance<IDatePickerPageRenderer>();
       var factory2 = _serviceLocator.GetInstance<IDatePickerPageRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

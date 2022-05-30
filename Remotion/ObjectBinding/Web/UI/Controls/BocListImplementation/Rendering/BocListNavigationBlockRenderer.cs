@@ -23,6 +23,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -32,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// Responsible for rendering the navigation block of a <see cref="BocList"/>.
   /// </summary>
   /// <remarks>This class should not be instantiated directly. It is meant to be used by a <see cref="BocListRenderer"/>.</remarks>
-  [ImplementationFor (typeof (IBocListNavigationBlockRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocListNavigationBlockRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocListNavigationBlockRenderer : RendererBase<BocList>, IBocListNavigationBlockRenderer
   {
     /// <summary> A list of control specific resources. </summary>
@@ -42,7 +43,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocListNavigationBlockRenderer")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocListNavigationBlockRenderer")]
     public enum ResourceIdentifier
     {
       PageLabelText,
@@ -53,14 +54,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       GoToPreviousAlternateText,
     }
 
-    private const string c_goToFirstIcon = "MoveFirst.gif";
-    private const string c_goToLastIcon = "MoveLast.gif";
-    private const string c_goToPreviousIcon = "MovePrevious.gif";
-    private const string c_goToNextIcon = "MoveNext.gif";
-    private const string c_goToFirstInactiveIcon = "MoveFirstInactive.gif";
-    private const string c_goToLastInactiveIcon = "MoveLastInactive.gif";
-    private const string c_goToPreviousInactiveIcon = "MovePreviousInactive.gif";
-    private const string c_goToNextInactiveIcon = "MoveNextInactive.gif";
+    private const string c_goToFirstIcon = "sprite.svg#MoveFirst";
+    private const string c_goToLastIcon = "sprite.svg#MoveLast";
+    private const string c_goToPreviousIcon = "sprite.svg#MovePrevious";
+    private const string c_goToNextIcon = "sprite.svg#MoveNext";
+    private const string c_goToFirstInactiveIcon = "sprite.svg#MoveFirstInactive";
+    private const string c_goToLastInactiveIcon = "sprite.svg#MoveLastInactive";
+    private const string c_goToPreviousInactiveIcon = "sprite.svg#MovePreviousInactive";
+    private const string c_goToNextInactiveIcon = "sprite.svg#MoveNextInactive";
 
     private static readonly IDictionary<GoToOption, string> s_activeIcons = new Dictionary<GoToOption, string>
                                                                             {
@@ -118,9 +119,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
 
       _cssClasses = cssClasses;
     }
@@ -135,20 +136,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     public void Render (BocListRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClasses.Navigator);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Navigator);
       if (IsDiagnosticMetadataRenderingEnabled)
       {
-        renderingContext.Writer.AddAttribute (
+        renderingContext.Writer.AddAttribute(
             DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages,
             renderingContext.Control.PageCount.ToString());
-        
-        renderingContext.Writer.AddAttribute (
+
+        renderingContext.Writer.AddAttribute(
             DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber,
             (renderingContext.Control.CurrentPageIndex + 1).ToString());
       }
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
       if (renderingContext.Control.HasClientScript)
       {
@@ -158,98 +159,101 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var isReadOnly = renderingContext.Control.PageCount == 1 || renderingContext.Control.EditModeController.IsRowEditModeActive;
 
         if (isReadOnly)
-          RenderPageInformationReadOnly (renderingContext);
+          RenderPageInformationReadOnly(renderingContext);
         else
-          RenderPageInformation (renderingContext);
+          RenderPageInformation(renderingContext);
 
-        RenderNavigationIcon (renderingContext, isFirstPage || isReadOnly, GoToOption.First, 0);
-        RenderNavigationIcon (renderingContext, isFirstPage || isReadOnly, GoToOption.Previous, renderingContext.Control.CurrentPageIndex - 1);
-        RenderNavigationIcon (renderingContext, isLastPage || isReadOnly, GoToOption.Next, renderingContext.Control.CurrentPageIndex + 1);
-        RenderNavigationIcon (renderingContext, isLastPage || isReadOnly, GoToOption.Last, renderingContext.Control.PageCount - 1);
+        RenderNavigationIcon(renderingContext, isFirstPage || isReadOnly, GoToOption.First, 0);
+        RenderNavigationIcon(renderingContext, isFirstPage || isReadOnly, GoToOption.Previous, renderingContext.Control.CurrentPageIndex - 1);
+        RenderNavigationIcon(renderingContext, isLastPage || isReadOnly, GoToOption.Next, renderingContext.Control.CurrentPageIndex + 1);
+        RenderNavigationIcon(renderingContext, isLastPage || isReadOnly, GoToOption.Last, renderingContext.Control.PageCount - 1);
 
         if (!isReadOnly)
-          RenderValueField (renderingContext);
+          RenderValueField(renderingContext);
       }
       else
-        RenderPageInformationReadOnly (renderingContext);
+        RenderPageInformationReadOnly(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
     }
 
     private void RenderPageInformation (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Themed);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      var pageLabelText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageLabelText);
-      var currentPageNumber = (renderingContext.Control.CurrentPageIndex + 1).ToString (CultureInfo.InvariantCulture);
-      var totalPageCount = renderingContext.Control.PageCount.ToString (CultureInfo.InvariantCulture);
-      var currentPageNumberMaxLength = totalPageCount.Length.ToString (CultureInfo.InvariantCulture);
-      var currentPageNumberTextBoxID = GetCurrentPageNumberControlID (renderingContext);
-      var totalPageCountText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.TotalPageCountText);
+      var pageLabelText = GetResourceManager(renderingContext).GetText(ResourceIdentifier.PageLabelText);
+      var currentPageNumber = (renderingContext.Control.CurrentPageIndex + 1).ToString(CultureInfo.InvariantCulture);
+      var totalPageCount = renderingContext.Control.PageCount.ToString(CultureInfo.InvariantCulture);
+      var currentPageNumberMaxLength = totalPageCount.Length.ToString(CultureInfo.InvariantCulture);
+      var currentPageNumberTextBoxID = GetCurrentPageNumberControlID(renderingContext);
+      var totalPageCountText = GetResourceManager(renderingContext).GetText(ResourceIdentifier.TotalPageCountText).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.For, currentPageNumberTextBoxID);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Label);
-      renderingContext.Writer.Write (pageLabelText);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.For, currentPageNumberTextBoxID);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Label);
+      pageLabelText.WriteTo(renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, currentPageNumberTextBoxID);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "text");
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Value, currentPageNumber);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Size, currentPageNumberMaxLength);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Maxlength, currentPageNumberMaxLength);
-      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Maxlength, "3");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, currentPageNumberTextBoxID);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Value, currentPageNumber);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Size, currentPageNumberMaxLength);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, currentPageNumberMaxLength);
+      renderingContext.Writer.AddStyleAttribute("--size", currentPageNumberMaxLength);
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();
 
-      renderingContext.Writer.Write (totalPageCountText, totalPageCount);
+      renderingContext.Writer.Write(totalPageCountText, totalPageCount);
 
       renderingContext.Writer.RenderEndTag(); // end span
 
-      string script = string.Format (
-          "BocListNavigationBlock_Initialize ($('#{0}'), $('#{1}'))",
+      string script = string.Format(
+          "BocList.InitializeNavigationBlock ('#{0}', '#{1}')",
           currentPageNumberTextBoxID,
-          GetCurrentPageIndexControlID (renderingContext));
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+          GetCurrentPageIndexControlID(renderingContext));
+      renderingContext.Control.Page!.ClientScript.RegisterStartupScriptBlock(
           renderingContext.Control,
-          typeof (BocListNavigationBlockRenderer),
+          typeof(BocListNavigationBlockRenderer),
           "Initialize_" + renderingContext.Control.ClientID,
           script);
     }
 
     private void RenderPageInformationReadOnly (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       //  Page info
-      string pageLabelText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.PageLabelText);
-      string totalPageCountText = GetResourceManager (renderingContext).GetString (ResourceIdentifier.TotalPageCountText);
+      var pageLabelText = GetResourceManager(renderingContext).GetText(ResourceIdentifier.PageLabelText);
+      var totalPageCountText = WebString.CreateFromText(
+          string.Format(
+              GetResourceManager(renderingContext).GetString(ResourceIdentifier.TotalPageCountText),
+              renderingContext.Control.PageCount));
 
-      // Do not HTML encode.
-      renderingContext.Writer.Write (pageLabelText);
-      renderingContext.Writer.Write (" ");
-      renderingContext.Writer.Write (renderingContext.Control.CurrentPageIndex + 1);
-      renderingContext.Writer.Write (" ");
-      renderingContext.Writer.Write (totalPageCountText, renderingContext.Control.PageCount);
+      pageLabelText.WriteTo(renderingContext.Writer);
+      renderingContext.Writer.Write(" ");
+      renderingContext.Writer.Write(renderingContext.Control.CurrentPageIndex + 1);
+      renderingContext.Writer.Write(" ");
+      totalPageCountText.WriteTo(renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag(); // end span
     }
 
     private void RenderValueField (BocListRenderingContext renderingContext)
     {
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetCurrentPageIndexControlID (renderingContext));
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlName());
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Type, "hidden");
-      renderingContext.Writer.AddAttribute (
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetCurrentPageIndexControlID(renderingContext));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Name, renderingContext.Control.GetCurrentPageControlName());
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Type, "hidden");
+      renderingContext.Writer.AddAttribute(
           HtmlTextWriterAttribute.Value,
-          renderingContext.Control.CurrentPageIndex.ToString (CultureInfo.InvariantCulture));
+          renderingContext.Control.CurrentPageIndex.ToString(CultureInfo.InvariantCulture));
 
-      var postBackOptions = new PostBackOptions (new Control { ID = renderingContext.Control.GetCurrentPageControlName() }, "");
-      renderingContext.Writer.AddAttribute (
+      var postBackOptions = new PostBackOptions(new Control { ID = renderingContext.Control.GetCurrentPageControlName() }, "");
+      renderingContext.Writer.AddAttribute(
           HtmlTextWriterAttribute.Onchange,
-          renderingContext.Control.Page.ClientScript.GetPostBackEventReference (postBackOptions));
+          renderingContext.Control.Page!.ClientScript.GetPostBackEventReference(postBackOptions));
 
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Input);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -259,30 +263,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (isInactive)
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, navigateCommandID);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-        var imageUrl = GetResolvedImageUrl (s_inactiveIcons[command]);
-        new IconInfo (imageUrl.GetUrl()).Render (renderingContext.Writer, renderingContext.Control);
+        var imageUrl = GetResolvedImageUrl(s_inactiveIcons[command]);
+        new IconInfo(imageUrl.GetUrl()).Render(renderingContext.Writer, renderingContext.Control);
 
         renderingContext.Writer.RenderEndTag();
       }
       else
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, navigateCommandID);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, navigateCommandID);
 
-        var currentPageControlClientID = GetCurrentPageIndexControlID (renderingContext);
-        var postBackEvent = string.Format ("$('#{0}').val({1}).trigger('change');return false;", currentPageControlClientID, pageIndex);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
+        var currentPageControlClientID = GetCurrentPageIndexControlID(renderingContext);
+        var postBackEvent = string.Format("let element = document.getElementById('{0}');element.value = {1};element.dispatchEvent(new Event('change'));return false;", currentPageControlClientID, pageIndex);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
 
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
 
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.A);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-        var imageUrl = GetResolvedImageUrl (s_activeIcons[command]);
-        var icon = new IconInfo (imageUrl.GetUrl());
-        icon.AlternateText = GetResourceManager (renderingContext).GetString (s_alternateTexts[command]);
-        icon.Render (renderingContext.Writer, renderingContext.Control);
+        var imageUrl = GetResolvedImageUrl(s_activeIcons[command]);
+        var icon = new IconInfo(imageUrl.GetUrl());
+        icon.AlternateText = GetResourceManager(renderingContext).GetString(s_alternateTexts[command]);
+        icon.Render(renderingContext.Writer, renderingContext.Control);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -290,22 +294,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     protected virtual IResourceManager GetResourceManager (BocListRenderingContext renderingContext)
     {
-      return GetResourceManager (typeof (ResourceIdentifier), renderingContext.Control.GetResourceManager());
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     private IResourceUrl GetResolvedImageUrl (string imageUrl)
     {
-      return ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocListNavigationBlockRenderer), ResourceType.Image, imageUrl);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocListNavigationBlockRenderer), ResourceType.Image, imageUrl);
     }
 
     private string GetCurrentPageNumberControlID (BocListRenderingContext renderingContext)
     {
-      return renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_') + "_TextBox";
+      return renderingContext.Control.GetCurrentPageControlName().Replace('$', '_') + "_TextBox";
     }
 
     private static string GetCurrentPageIndexControlID (BocListRenderingContext renderingContext)
     {
-      return renderingContext.Control.GetCurrentPageControlName().Replace ('$', '_');
+      return renderingContext.Control.GetCurrentPageControlName().Replace('$', '_');
     }
   }
 }

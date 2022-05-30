@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Web;
 using Remotion.Collections;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Resources;
 
@@ -30,31 +31,31 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public ResourceObjectWithVarRef (WxeVariableReference pathReference)
     {
-      ArgumentUtility.CheckNotNull ("pathReference", pathReference);
+      ArgumentUtility.CheckNotNull("pathReference", pathReference);
       _pathReference = pathReference;
     }
 
     public ResourceObjectWithVarRef (IResourcePathBuilder resourcePathBuilder, Assembly assembly, WxeVariableReference pathReference)
         : base(resourcePathBuilder , assembly)
     {
-      ArgumentUtility.CheckNotNull ("pathReference", pathReference);
+      ArgumentUtility.CheckNotNull("pathReference", pathReference);
       _pathReference = pathReference;
     }
 
     public override string GetResourcePath (NameObjectCollection variables)
     {
-      ArgumentUtility.CheckNotNull ("variables", variables);
+      ArgumentUtility.CheckNotNull("variables", variables);
 
-      object pageObject =  variables[_pathReference.Name];
+      object? pageObject =  variables[_pathReference.Name];
       if (pageObject == null)
-        throw new InvalidOperationException (string.Format ("The variable '{0}' could not be found in the list of variables.", _pathReference.Name));
-      
-      string page = pageObject as string;
-      if (page == null)
-        throw new InvalidCastException (string.Format ("The variable '{0}' was of type '{1}'. Expected type is '{2}'.", _pathReference.Name, pageObject.GetType().FullName, typeof (string).FullName));
+        throw new InvalidOperationException(string.Format("The variable '{0}' could not be found in the list of variables.", _pathReference.Name));
 
-      return VirtualPathUtility.Combine (
-          VirtualPathUtility.AppendTrailingSlash (ResourceRoot),
+      string? page = pageObject as string;
+      if (page == null)
+        throw new InvalidCastException(string.Format("The variable '{0}' was of type '{1}'. Expected type is '{2}'.", _pathReference.Name, pageObject.GetType().GetFullNameSafe(), typeof(string).GetFullNameSafe()));
+
+      return VirtualPathUtility.Combine(
+          VirtualPathUtility.AppendTrailingSlash(ResourceRoot),
           page);
     }
 

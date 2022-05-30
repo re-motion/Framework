@@ -26,105 +26,105 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
   public class AttributeTest : CodeGenerationBaseTest
   {
     [Test]
-    public void AttributesReplicatedFromMixinViaIntroduction()
+    public void AttributesReplicatedFromMixinViaIntroduction ()
     {
-      BaseType1 bt1 = CreateMixedObject<BaseType1> (typeof (MixinWithPropsEventAtts));
+      BaseType1 bt1 = CreateMixedObject<BaseType1>(typeof(MixinWithPropsEventAtts));
 
-      Assert.That (bt1.GetType().IsDefined (typeof (BT1Attribute), false), Is.False);
-      Assert.IsTrue (bt1.GetType().IsDefined (typeof (BT1Attribute), true), "Attribute is inherited");
-      Assert.That (bt1.GetType().IsDefined (typeof (ReplicatableAttribute), false), Is.True);
+      Assert.That(bt1.GetType().IsDefined(typeof(BT1Attribute), false), Is.False);
+      Assert.IsTrue(bt1.GetType().IsDefined(typeof(BT1Attribute), true), "Attribute is inherited");
+      Assert.That(bt1.GetType().IsDefined(typeof(ReplicatableAttribute), false), Is.True);
 
-      var atts = (ReplicatableAttribute[]) bt1.GetType().GetCustomAttributes (typeof (ReplicatableAttribute), false);
-      Assert.That (atts.Length, Is.EqualTo (1));
-      Assert.That (atts[0].I, Is.EqualTo (4));
+      var atts = (ReplicatableAttribute[])bt1.GetType().GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      Assert.That(atts.Length, Is.EqualTo(1));
+      Assert.That(atts[0].I, Is.EqualTo(4));
 
-      PropertyInfo property = bt1.GetType().GetProperty (typeof (IMixinWithPropsEventsAtts).FullName + ".Property",
+      PropertyInfo property = bt1.GetType().GetProperty(typeof(IMixinWithPropsEventsAtts).FullName + ".Property",
                                                          BindingFlags.NonPublic | BindingFlags.Instance);
-      Assert.That (property, Is.Not.Null);
-      atts = (ReplicatableAttribute[]) property.GetCustomAttributes (typeof (ReplicatableAttribute), false);
-      Assert.That (atts.Length, Is.EqualTo (1));
-      Assert.That (atts[0].S, Is.EqualTo ("bla"));
-      Assert.That (property.GetGetMethod (true).IsSpecialName, Is.True);
-      atts = (ReplicatableAttribute[]) property.GetGetMethod (true).GetCustomAttributes (typeof (ReplicatableAttribute), false);
-      Assert.That (atts[0].Named2, Is.EqualTo (1.0));
+      Assert.That(property, Is.Not.Null);
+      atts = (ReplicatableAttribute[])property.GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      Assert.That(atts.Length, Is.EqualTo(1));
+      Assert.That(atts[0].S, Is.EqualTo("bla"));
+      Assert.That(property.GetGetMethod(true).IsSpecialName, Is.True);
+      atts = (ReplicatableAttribute[])property.GetGetMethod(true).GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      Assert.That(atts[0].Named2, Is.EqualTo(1.0));
 
-      Assert.That (property.GetSetMethod (true).IsSpecialName, Is.True);
-      atts = (ReplicatableAttribute[]) property.GetSetMethod (true).GetCustomAttributes (typeof (ReplicatableAttribute), false);
-      Assert.That (atts[0].Named2, Is.EqualTo (2.0));
+      Assert.That(property.GetSetMethod(true).IsSpecialName, Is.True);
+      atts = (ReplicatableAttribute[])property.GetSetMethod(true).GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      Assert.That(atts[0].Named2, Is.EqualTo(2.0));
 
-      EventInfo eventInfo = bt1.GetType().GetEvent (typeof (IMixinWithPropsEventsAtts).FullName + ".Event",
+      EventInfo eventInfo = bt1.GetType().GetEvent(typeof(IMixinWithPropsEventsAtts).FullName + ".Event",
                                                     BindingFlags.NonPublic | BindingFlags.Instance);
-      Assert.That (eventInfo, Is.Not.Null);
-      atts = (ReplicatableAttribute[]) eventInfo.GetCustomAttributes (typeof (ReplicatableAttribute), false);
-      Assert.That (atts.Length, Is.EqualTo (1));
-      Assert.That (atts[0].S, Is.EqualTo ("blo"));
-      Assert.That (eventInfo.GetAddMethod (true).IsSpecialName, Is.True);
-      Assert.That (eventInfo.GetAddMethod (true).IsDefined (typeof (ReplicatableAttribute), false), Is.True);
-      Assert.That (eventInfo.GetRemoveMethod (true).IsSpecialName, Is.True);
-      Assert.That (eventInfo.GetRemoveMethod (true).IsDefined (typeof (ReplicatableAttribute), false), Is.True);
+      Assert.That(eventInfo, Is.Not.Null);
+      atts = (ReplicatableAttribute[])eventInfo.GetCustomAttributes(typeof(ReplicatableAttribute), false);
+      Assert.That(atts.Length, Is.EqualTo(1));
+      Assert.That(atts[0].S, Is.EqualTo("blo"));
+      Assert.That(eventInfo.GetAddMethod(true).IsSpecialName, Is.True);
+      Assert.That(eventInfo.GetAddMethod(true).IsDefined(typeof(ReplicatableAttribute), false), Is.True);
+      Assert.That(eventInfo.GetRemoveMethod(true).IsSpecialName, Is.True);
+      Assert.That(eventInfo.GetRemoveMethod(true).IsDefined(typeof(ReplicatableAttribute), false), Is.True);
     }
 
     [Test]
-    public void IntroducedAttributes()
+    public void IntroducedAttributes ()
     {
-      Type concreteType = TypeFactory.GetConcreteType (typeof (BaseType1));
-      Assert.That (concreteType.GetCustomAttributes (typeof (BT1Attribute), true).Length, Is.EqualTo (1));
-      Assert.That (concreteType.GetCustomAttributes (typeof (BT1M1Attribute), true).Length, Is.EqualTo (1));
+      Type concreteType = TypeFactory.GetConcreteType(typeof(BaseType1));
+      Assert.That(concreteType.GetCustomAttributes(typeof(BT1Attribute), true).Length, Is.EqualTo(1));
+      Assert.That(concreteType.GetCustomAttributes(typeof(BT1M1Attribute), true).Length, Is.EqualTo(1));
 
-      MethodInfo bt1VirtualMethod = concreteType.GetMethod ("VirtualMethod", Type.EmptyTypes);
-      Assert.That (bt1VirtualMethod.GetCustomAttributes (typeof (BT1M1Attribute), true).Length, Is.EqualTo (1));
+      MethodInfo bt1VirtualMethod = concreteType.GetMethod("VirtualMethod", Type.EmptyTypes);
+      Assert.That(bt1VirtualMethod.GetCustomAttributes(typeof(BT1M1Attribute), true).Length, Is.EqualTo(1));
 
-      PropertyInfo bt1VirtualProperty = concreteType.GetProperty ("VirtualProperty",
+      PropertyInfo bt1VirtualProperty = concreteType.GetProperty("VirtualProperty",
                                                                   BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-      Assert.That (bt1VirtualProperty.GetCustomAttributes (typeof (BT1M1Attribute), true).Length, Is.EqualTo (1));
+      Assert.That(bt1VirtualProperty.GetCustomAttributes(typeof(BT1M1Attribute), true).Length, Is.EqualTo(1));
 
-      EventInfo bt1VirtualEvent = concreteType.GetEvent ("VirtualEvent");
-      Assert.That (bt1VirtualEvent.GetCustomAttributes (typeof (BT1M1Attribute), true).Length, Is.EqualTo (1));
+      EventInfo bt1VirtualEvent = concreteType.GetEvent("VirtualEvent");
+      Assert.That(bt1VirtualEvent.GetCustomAttributes(typeof(BT1M1Attribute), true).Length, Is.EqualTo(1));
     }
 
     [Test]
-    public void IntroducedMultiAttributes()
+    public void IntroducedMultiAttributes ()
     {
-      Type concreteType = CreateMixedType (
-          typeof (BaseTypeWithAllowMultiple),
-          typeof (MixinAddingAllowMultipleToClassAndMember),
-          typeof (MixinAddingAllowMultipleToClassAndMember2));
+      Type concreteType = CreateMixedType(
+          typeof(BaseTypeWithAllowMultiple),
+          typeof(MixinAddingAllowMultipleToClassAndMember),
+          typeof(MixinAddingAllowMultipleToClassAndMember2));
 
-      Assert.That (concreteType.GetCustomAttributes (typeof (MultiAttribute), true).Length, Is.EqualTo (4));
-      Assert.That (concreteType.GetMethod ("Foo").GetCustomAttributes (typeof (MultiAttribute), true).Length, Is.EqualTo (3));
+      Assert.That(concreteType.GetCustomAttributes(typeof(MultiAttribute), true).Length, Is.EqualTo(4));
+      Assert.That(concreteType.GetMethod("Foo").GetCustomAttributes(typeof(MultiAttribute), true).Length, Is.EqualTo(3));
     }
 
     [Test]
-    public void IntroducedAttributesTargetClassWins()
+    public void IntroducedAttributesTargetClassWins ()
     {
-      Type concreteType = CreateMixedType (typeof (BaseType1), typeof (MixinAddingBT1Attribute));
-      Assert.That (concreteType.GetCustomAttributes (typeof (BT1Attribute), true).Length, Is.EqualTo (1));
+      Type concreteType = CreateMixedType(typeof(BaseType1), typeof(MixinAddingBT1Attribute));
+      Assert.That(concreteType.GetCustomAttributes(typeof(BT1Attribute), true).Length, Is.EqualTo(1));
 
-      concreteType = CreateMixedType (typeof (BaseType1), typeof (MixinAddingBT1AttributeToMember));
-      Assert.That (concreteType.GetMethod ("VirtualMethod", Type.EmptyTypes).GetCustomAttributes (typeof (BT1Attribute), true).Length, Is.EqualTo (1));
+      concreteType = CreateMixedType(typeof(BaseType1), typeof(MixinAddingBT1AttributeToMember));
+      Assert.That(concreteType.GetMethod("VirtualMethod", Type.EmptyTypes).GetCustomAttributes(typeof(BT1Attribute), true).Length, Is.EqualTo(1));
     }
 
     private object[] GetRelevantAttributes (ICustomAttributeProvider source)
     {
-      object[] attributes = source.GetCustomAttributes (true);
-      return Array.FindAll (attributes,
+      object[] attributes = source.GetCustomAttributes(true);
+      return Array.FindAll(attributes,
                             o =>
                             o is MultiInheritedAttribute || o is MultiNonInheritedAttribute || o is NonMultiInheritedAttribute
                             || o is NonMultiNonInheritedAttribute);
     }
 
     [Test]
-    public void AttributesOnMixedTypesBehaveLikeOnDerivedTypes()
+    public void AttributesOnMixedTypesBehaveLikeOnDerivedTypes ()
     {
-      object[] attributes = GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)));
-      Assert.That (attributes.Length, Is.EqualTo (2));
-      Assert.That (
-          attributes, Is.EquivalentTo (new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
+      object[] attributes = GetRelevantAttributes(CreateMixedType(typeof(TargetWithoutAttributes), typeof(MixinWithAttributes)));
+      Assert.That(attributes.Length, Is.EqualTo(2));
+      Assert.That(
+          attributes, Is.EquivalentTo(new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
 
-      attributes = GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)));
-      Assert.That (attributes.Length, Is.EqualTo (5));
+      attributes = GetRelevantAttributes(CreateMixedType(typeof(TargetWithAttributes), typeof(MixinWithAttributes)));
+      Assert.That(attributes.Length, Is.EqualTo(5));
 
-      Assert.That (attributes, Is.EquivalentTo (new object[]
+      Assert.That(attributes, Is.EquivalentTo(new object[]
                                                   {
                                                       new MultiInheritedAttribute(), new MultiInheritedAttribute(),
                                                       new NonMultiNonInheritedAttribute(), new MultiNonInheritedAttribute(),
@@ -133,42 +133,42 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     }
 
     [Test]
-    public void AttributesSuppressedByMixin_AreNotReplicatedFromBaseType()
+    public void AttributesSuppressedByMixin_AreNotReplicatedFromBaseType ()
     {
-      object[] attributes = GetRelevantAttributes (CreateMixedType (typeof (TargetWithNonInheritedAttributes), typeof (MixinSuppressingAllAttributes)));
-      Assert.That (attributes.Length, Is.EqualTo (0));
+      object[] attributes = GetRelevantAttributes(CreateMixedType(typeof(TargetWithNonInheritedAttributes), typeof(MixinSuppressingAllAttributes)));
+      Assert.That(attributes.Length, Is.EqualTo(0));
     }
 
     [Test]
-    public void AttributesSuppressedByMixin_AreNotIntroducedFromOtherMixin()
+    public void AttributesSuppressedByMixin_AreNotIntroducedFromOtherMixin ()
     {
       object[] attributes =
-          GetRelevantAttributes (CreateMixedType (typeof (NullTarget), typeof (MixinSuppressingAllAttributes), typeof (MixinAddingAttributes)));
-      Assert.That (attributes.Length, Is.EqualTo (0));
+          GetRelevantAttributes(CreateMixedType(typeof(NullTarget), typeof(MixinSuppressingAllAttributes), typeof(MixinAddingAttributes)));
+      Assert.That(attributes.Length, Is.EqualTo(0));
     }
 
     [Test]
-    public void AttributesSuppressedByMixin_AreIntroducedForSameMixin()
+    public void AttributesSuppressedByMixin_AreIntroducedForSameMixin ()
     {
-      object[] attributes = GetRelevantAttributes (CreateMixedType (typeof (NullTarget), typeof (MixinSuppressingAllAttributesAddingAttributes)));
-      Assert.That (attributes.Length, Is.EqualTo (2));
-      Assert.That (attributes, Is.EquivalentTo (new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
+      object[] attributes = GetRelevantAttributes(CreateMixedType(typeof(NullTarget), typeof(MixinSuppressingAllAttributesAddingAttributes)));
+      Assert.That(attributes.Length, Is.EqualTo(2));
+      Assert.That(attributes, Is.EquivalentTo(new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
     }
 
     [Test]
-    public void AttributesOnDerivedMethodsBehaveLikeOnDerivedTypes()
+    public void AttributesOnDerivedMethodsBehaveLikeOnDerivedTypes ()
     {
       object[] attributes =
-          GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetMethod ("Method"));
-      Assert.That (attributes.Length, Is.EqualTo (2));
-      Assert.That (
-          attributes, Is.EquivalentTo (new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
+          GetRelevantAttributes(CreateMixedType(typeof(TargetWithoutAttributes), typeof(MixinWithAttributes)).GetMethod("Method"));
+      Assert.That(attributes.Length, Is.EqualTo(2));
+      Assert.That(
+          attributes, Is.EquivalentTo(new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
 
       attributes =
-          GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)).GetMethod ("Method"));
-      Assert.That (attributes.Length, Is.EqualTo (5));
+          GetRelevantAttributes(CreateMixedType(typeof(TargetWithAttributes), typeof(MixinWithAttributes)).GetMethod("Method"));
+      Assert.That(attributes.Length, Is.EqualTo(5));
 
-      Assert.That (attributes, Is.EquivalentTo (new object[]
+      Assert.That(attributes, Is.EquivalentTo(new object[]
                                                   {
                                                       new MultiInheritedAttribute(), new MultiInheritedAttribute(),
                                                       new NonMultiNonInheritedAttribute(), new MultiNonInheritedAttribute(),
@@ -180,37 +180,37 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTy
     public void AttributesOnDerivedPropertiesBehaveLikeMethods ()
     {
       object[] attributes =
-          GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetProperty ("Property"));
-      Assert.That (attributes.Length, Is.EqualTo (2));
-      Assert.That (
-          attributes, Is.EquivalentTo (new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
+          GetRelevantAttributes(CreateMixedType(typeof(TargetWithoutAttributes), typeof(MixinWithAttributes)).GetProperty("Property"));
+      Assert.That(attributes.Length, Is.EqualTo(2));
+      Assert.That(
+          attributes, Is.EquivalentTo(new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
 
       attributes =
-          GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)).GetProperty ("Property"));
-      Assert.That (attributes.Length, Is.EqualTo (5));
+          GetRelevantAttributes(CreateMixedType(typeof(TargetWithAttributes), typeof(MixinWithAttributes)).GetProperty("Property"));
+      Assert.That(attributes.Length, Is.EqualTo(5));
 
-      Assert.That (attributes, Is.EquivalentTo (new object[]
+      Assert.That(attributes, Is.EquivalentTo(new object[]
                                                   {
                                                       new MultiInheritedAttribute(), new MultiInheritedAttribute(),
                                                       new NonMultiNonInheritedAttribute(), new MultiNonInheritedAttribute(),
                                                       new NonMultiInheritedAttribute()
                                                   }));
     }
-    
+
     [Test]
-    public void AttributesOnDerivedEventsBehaveLikeMethods()
+    public void AttributesOnDerivedEventsBehaveLikeMethods ()
     {
       object[] attributes =
-          GetRelevantAttributes (CreateMixedType (typeof (TargetWithoutAttributes), typeof (MixinWithAttributes)).GetEvent ("Event"));
-      Assert.That (attributes.Length, Is.EqualTo (2));
-      Assert.That (
-          attributes, Is.EquivalentTo (new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
+          GetRelevantAttributes(CreateMixedType(typeof(TargetWithoutAttributes), typeof(MixinWithAttributes)).GetEvent("Event"));
+      Assert.That(attributes.Length, Is.EqualTo(2));
+      Assert.That(
+          attributes, Is.EquivalentTo(new object[] {new MultiInheritedAttribute(), new NonMultiInheritedAttribute()}));
 
       attributes =
-          GetRelevantAttributes (CreateMixedType (typeof (TargetWithAttributes), typeof (MixinWithAttributes)).GetEvent ("Event"));
-      Assert.That (attributes.Length, Is.EqualTo (5));
+          GetRelevantAttributes(CreateMixedType(typeof(TargetWithAttributes), typeof(MixinWithAttributes)).GetEvent("Event"));
+      Assert.That(attributes.Length, Is.EqualTo(5));
 
-      Assert.That (attributes, Is.EquivalentTo (new object[]
+      Assert.That(attributes, Is.EquivalentTo(new object[]
                                                   {
                                                       new MultiInheritedAttribute(), new MultiInheritedAttribute(),
                                                       new NonMultiNonInheritedAttribute(), new MultiNonInheritedAttribute(),

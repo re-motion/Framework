@@ -41,38 +41,39 @@ namespace Remotion.Reflection
     /// </returns>
     public static Delegate CreateMethodCallerDelegate (MethodInfo methodInfo, Type delegateType)
     {
-      ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
-      var delegateMethod = delegateType.GetMethod ("Invoke");
-      Assertion.IsNotNull (delegateMethod);
+      var delegateMethod = delegateType.GetMethod("Invoke");
+      Assertion.IsNotNull(delegateMethod);
       var name = methodInfo.DeclaringType + "_" + methodInfo.Name + "_" + Guid.NewGuid();
       var returnType = delegateMethod.ReturnType;
-      var parameterTypes = delegateMethod.GetParameters().Select (p => p.ParameterType).ToArray();
+      var parameterTypes = delegateMethod.GetParameters().Select(p => p.ParameterType).ToArray();
 
       DynamicMethod dynamicMethod;
-      if (methodInfo.DeclaringType.IsInterface)
+      // TODO RM-7767: methodInfo.DeclaringType should be checked for null
+      if (methodInfo.DeclaringType!.IsInterface)
       {
         // Using the owner-less version for non-nested interfaces helps circumvent issues in the CLR regarding the combination of 
         // DynamicMethods and domain-neutrally loaded assemblies. This case could happen if the interface is from mscorlib, e.g. ICollection. 
         // See http://support.microsoft.com/kb/971030/en-us for details.
 
         if (methodInfo.DeclaringType.IsNested)
-          dynamicMethod = new DynamicMethod (name, returnType, parameterTypes, methodInfo.DeclaringType.DeclaringType, false);
+          dynamicMethod = new DynamicMethod(name, returnType, parameterTypes, methodInfo.DeclaringType.DeclaringType!, false);
         else
-          dynamicMethod = new DynamicMethod (name, returnType, parameterTypes, false);
+          dynamicMethod = new DynamicMethod(name, returnType, parameterTypes, false);
       }
       else
       {
-        dynamicMethod = new DynamicMethod (name, returnType, parameterTypes, methodInfo.DeclaringType, false);
+        dynamicMethod = new DynamicMethod(name, returnType, parameterTypes, methodInfo.DeclaringType, false);
       }
 
       var ilGenerator = dynamicMethod.GetILGenerator();
 
-      var emitter = new MethodWrapperEmitter (ilGenerator, methodInfo, parameterTypes, returnType);
+      var emitter = new MethodWrapperEmitter(ilGenerator, methodInfo, parameterTypes, returnType);
       emitter.EmitStaticMethodBody();
 
-      return dynamicMethod.CreateDelegate (delegateType);
+      return dynamicMethod.CreateDelegate(delegateType);
     }
   }
 }

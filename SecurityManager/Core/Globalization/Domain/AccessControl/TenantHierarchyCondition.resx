@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Remotion.SecurityManager.Domain.AccessControl.TenantHierarchyCondition.This" xml:space="preserve">
-    <value>only this tenant</value>
+    <value>this tenant only</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.TenantHierarchyCondition.ThisAndParent" xml:space="preserve">
-    <value>or parents</value>
+    <value>or its parents</value>
   </data>
 </root>

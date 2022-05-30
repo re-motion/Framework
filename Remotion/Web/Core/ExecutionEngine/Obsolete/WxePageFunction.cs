@@ -21,14 +21,14 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
   /// <summary>
   /// Specifies that a WXE function should automatically be created by the WXE function generator (wxegen.exe).
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public class WxeFunctionPageAttribute : Attribute
   {
     private string _axpxPageName;
     private Type _baseClass;
 
     public WxeFunctionPageAttribute (string aspxPageName)
-      : this (aspxPageName, typeof (WxeFunction))
+      : this(aspxPageName, typeof(WxeFunction))
     {
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
   /// Specifies a WXE function parameter that should automatically be created by the WXE function generator (wxegen.exe). 
   /// Requires <see cref="WxeFunctionPageAttribute"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
   public class WxePageParameterAttribute: Attribute
   {
     private int _index;
@@ -72,17 +72,17 @@ namespace Remotion.Web.ExecutionEngine.Obsolete
     }
 
     public WxePageParameterAttribute (int index, string name, Type type)
-      : this (index, name, type, false, WxeParameterDirection.In)
+      : this(index, name, type, false, WxeParameterDirection.In)
     {
     }
 
     public WxePageParameterAttribute (int index, string name, Type type, WxeParameterDirection direction)
-      : this (index, name, type, false, direction)
+      : this(index, name, type, false, direction)
     {
     }
 
     public WxePageParameterAttribute (int index, string name, Type type, bool required)
-      : this (index, name, type, required, WxeParameterDirection.In)
+      : this(index, name, type, required, WxeParameterDirection.In)
     {
     }
 

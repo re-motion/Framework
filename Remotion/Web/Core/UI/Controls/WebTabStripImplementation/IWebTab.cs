@@ -25,9 +25,10 @@ namespace Remotion.Web.UI.Controls.WebTabStripImplementation
   public interface IWebTab : IControlItem
   {
     string GetPostBackClientEvent ();
-    IconInfo Icon { get; }
-    string Text { get; }
+    IconInfo? Icon { get; }
+    WebString Text { get; }
     bool IsSelected { get; }
+    string AccessKey { get; }
     bool EvaluateEnabled ();
 
     IWebTabRenderer GetRenderer ();

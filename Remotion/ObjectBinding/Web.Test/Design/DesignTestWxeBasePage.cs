@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Web.Resources;
 using Remotion.Web.UI;
 
@@ -31,14 +30,13 @@ namespace OBWTest.Design
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
-      HtmlHeadAppender.Current.RegisterStylesheetLink ("design", new StaticResourceUrl ("Html/Design.css"));
+      base.OnPreRender(e);
+      HtmlHeadAppender.Current.RegisterStylesheetLink("design", new StaticResourceUrl("Html/Design.css"));
     }
 
     protected override void OnInit (EventArgs e)
     {
-      SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = false;
-      base.OnInit (e);
+      base.OnInit(e);
     }
   }
 }

@@ -34,46 +34,46 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     public const string StorageProviderID = "StubStorageProvider";
 
     public StubStorageProvider (StorageProviderDefinition definition, IPersistenceExtension persistenceExtension)
-      : base (definition, persistenceExtension)
+      : base(definition, persistenceExtension)
     {
     }
 
     public override ObjectLookupResult<DataContainer> LoadDataContainer (ObjectID id)
     {
-      return new ObjectLookupResult<DataContainer> (id, LoadDataContainerResult);
+      return new ObjectLookupResult<DataContainer>(id, LoadDataContainerResult);
     }
 
-    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IEnumerable<ObjectID> ids)
+    public override IEnumerable<ObjectLookupResult<DataContainer>> LoadDataContainers (IReadOnlyCollection<ObjectID> ids)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public override IEnumerable<DataContainer> ExecuteCollectionQuery (IQuery query)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public override IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public override object ExecuteScalarQuery (IQuery query)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
-    public override void Save (IEnumerable<DataContainer> dataContainers)
+    public override void Save (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 
-    public override void UpdateTimestamps (IEnumerable<DataContainer> dataContainers)
+    public override void UpdateTimestamps (IReadOnlyCollection<DataContainer> dataContainers)
     {
     }
 
     public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public override void BeginTransaction ()
@@ -90,18 +90,18 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     public override ObjectID CreateNewObjectID (ClassDefinition classDefinition)
     {
-      CheckDisposed ();
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      CheckClassDefinition (classDefinition, "classDefinition");
+      CheckDisposed();
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      CheckClassDefinition(classDefinition, "classDefinition");
 
-      return new ObjectID(classDefinition.ID, Guid.NewGuid ());
+      return new ObjectID(classDefinition.ID, Guid.NewGuid());
     }
 
     private void CheckClassDefinition (ClassDefinition classDefinition, string argumentName)
     {
       if (classDefinition.StorageEntityDefinition.StorageProviderDefinition != StorageProviderDefinition)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             argumentName,
             "The StorageProviderID '{0}' of the provided ClassDefinition does not match with this StorageProvider's ID '{1}'.",
             classDefinition.StorageEntityDefinition.StorageProviderDefinition.Name,

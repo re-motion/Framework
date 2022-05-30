@@ -43,20 +43,20 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       get { return _lineCount == 0 ? 0 : _startRowNumber + _lineCount - 1; }
     }
 
-    public string Content
+    public string? Content
     {
       get
       {
         var batch = _content.ToString().Trim();
-        return string.IsNullOrEmpty (batch) ? null : batch;
+        return string.IsNullOrEmpty(batch) ? null : batch;
       }
     }
 
     public void AppendCommandBatchLine (string commandBatchLine)
     {
-      ArgumentUtility.CheckNotNull ("commandBatchLine", commandBatchLine);
-      
-      _content.AppendLine (commandBatchLine);
+      ArgumentUtility.CheckNotNull("commandBatchLine", commandBatchLine);
+
+      _content.AppendLine(commandBatchLine);
       _lineCount++;
     }
   }

@@ -27,7 +27,6 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   //TODO: Test for null or empty StorageSpecificIdentifier
   public class PropertyReflector : MemberReflectorBase
   {
-    private readonly ClassDefinition _classDefinition;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
 
     public PropertyReflector (
@@ -36,42 +35,40 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider)
-        : base (propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
 
-      _classDefinition = classDefinition;
       _domainModelConstraintProvider = domainModelConstraintProvider;
     }
 
     public PropertyDefinition GetMetadata ()
     {
-      var propertyDefinition = new PropertyDefinition (
-          _classDefinition,
+      var propertyDefinition = new PropertyDefinition(
+          ClassDefinition,
           PropertyInfo,
           GetPropertyName(),
           IsDomainObject(),
           IsNullable(),
           _domainModelConstraintProvider.GetMaxLength(PropertyInfo),
-          StorageClass);
+          GetStorageClass());
       return propertyDefinition;
     }
 
     private bool IsDomainObject ()
     {
-      return ReflectionUtility.IsDomainObject (PropertyInfo.PropertyType);
+      return ReflectionUtility.IsDomainObject(PropertyInfo.PropertyType);
     }
 
     private bool IsNullable ()
     {
       if (PropertyInfo.PropertyType.IsValueType)
-        return Nullable.GetUnderlyingType (PropertyInfo.PropertyType) != null;
+        return Nullable.GetUnderlyingType(PropertyInfo.PropertyType) != null;
 
-      if (ReflectionUtility.IsDomainObject (PropertyInfo.PropertyType))
+      if (ReflectionUtility.IsDomainObject(PropertyInfo.PropertyType))
         return true;
 
-      return _domainModelConstraintProvider.IsNullable (PropertyInfo);
+      return _domainModelConstraintProvider.IsNullable(PropertyInfo);
     }
   }
 }

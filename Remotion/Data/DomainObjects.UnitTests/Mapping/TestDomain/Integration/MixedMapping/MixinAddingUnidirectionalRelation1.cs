@@ -22,8 +22,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
   {
     public Computer Computer
     {
-      get { return Properties[typeof (MixinAddingUnidirectionalRelation1), "Computer"].GetValue<Computer>(); }
-      set { Properties[typeof (MixinAddingUnidirectionalRelation1), "Computer"].SetValue (value); }
+      get { return Properties[typeof(MixinAddingUnidirectionalRelation1), "Computer"].GetValue<Computer>(); }
+      set { Properties[typeof(MixinAddingUnidirectionalRelation1), "Computer"].SetValue(value); }
     }
   }
 }

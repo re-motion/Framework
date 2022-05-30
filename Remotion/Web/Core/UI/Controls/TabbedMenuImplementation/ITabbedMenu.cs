@@ -31,7 +31,6 @@ namespace Remotion.Web.UI.Controls.TabbedMenuImplementation
     IWebTabStrip SubMenuTabStrip { get; }
     Color SubMenuBackgroundColor { get; }
     Style StatusStyle { get; }
-    string StatusText { get; }
-    bool IsDesignMode { get; }
+    WebString StatusText { get; }
   }
 }

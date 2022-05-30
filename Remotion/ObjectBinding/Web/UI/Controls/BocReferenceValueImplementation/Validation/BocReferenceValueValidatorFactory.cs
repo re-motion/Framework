@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// Implements the <see cref="IBocReferenceValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocReferenceValueValidatorFactory"/>
-  [ImplementationFor (typeof (IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor(typeof(IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocReferenceValueValidatorFactory: IBocReferenceValueValidatorFactory
   {
     public const int Position = 0;
@@ -37,22 +37,38 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     public IEnumerable<BaseValidator> CreateValidators (IBocReferenceValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
-      if (isReadOnly || !control.IsRequired)
+      if (isReadOnly)
         yield break;
 
-      var resourceManager = control.GetResourceManager ();
-      yield return CreateRequiredFieldValidator (control, resourceManager);
+      var resourceManager = control.GetResourceManager();
+
+      var requiredFieldValidator = CreateRequiredFieldValidator(control, resourceManager);
+      if (requiredFieldValidator != null)
+        yield return requiredFieldValidator;
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator (IBocReferenceValue control, IResourceManager resourceManage)
+    private RequiredFieldValidator? CreateRequiredFieldValidator (IBocReferenceValue control, IResourceManager resourceManage)
     {
-      var requiredFieldValidator = new RequiredFieldValidator ();
-      requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
-      requiredFieldValidator.ControlToValidate = control.ID;
-      requiredFieldValidator.ErrorMessage = resourceManage.GetString (BocReferenceValue.ResourceIdentifier.NullItemErrorMessage);
-      return requiredFieldValidator;
+      var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
+      var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
+
+      if (isPropertyTypeRequired || isControlRequired)
+      {
+        var requiredFieldValidator = new RequiredFieldValidator();
+        requiredFieldValidator.ID = control.ID + "_ValidatorNotNullItem";
+        requiredFieldValidator.ControlToValidate = control.ID;
+        requiredFieldValidator.ErrorMessage = resourceManage.GetString(BocReferenceValue.ResourceIdentifier.NullItemErrorMessage);
+        requiredFieldValidator.EnableViewState = false;
+
+        return requiredFieldValidator;
+      }
+      else
+      {
+        return null;
+      }
     }
   }
 }

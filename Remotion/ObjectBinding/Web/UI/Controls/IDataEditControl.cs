@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///   If the control uses multiple business objects, only one can be exposed using this property.
     /// </remarks>
-    IBusinessObject BusinessObject { get; set; }
+    IBusinessObject? BusinessObject { get; set; }
 
     /// <summary>
     ///   Load the values into bound controls. 
@@ -83,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     /// Provides access to the data source object. For common operations, use the methods of <see cref="IDataEditControl"/> instead.
     /// </summary>
-    [EditorBrowsable (EditorBrowsableState.Advanced)]
+    [EditorBrowsable(EditorBrowsableState.Advanced)]
     IBusinessObjectDataSourceControl DataSource { get; }
   }
 }

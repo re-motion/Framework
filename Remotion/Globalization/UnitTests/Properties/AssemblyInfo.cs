@@ -25,10 +25,9 @@ using Remotion.Globalization;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Remotion Extensions Library Unit Tests")]
-[assembly: AssemblyCulture ("")]
-[assembly: NeutralResourcesLanguage ("")]
+[assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("")]
 // Explicitly supply "de-AT" twice to show that this is handled gracefully.
 // Explicitly do not place localizations in order to show that this is handled gracefully.
-[assembly: AvailableResourcesLanguages ("de-AT", "fr-CA", "fr", "fr-CH", "de-AT")]
-[assembly: CLSCompliant (true)]
+[assembly: AvailableResourcesLanguages("de-AT", "fr-CA", "fr", "fr-CH", "de-AT")]
+[assembly: CLSCompliant(true)]

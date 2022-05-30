@@ -19,9 +19,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.Globalization;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
@@ -29,24 +31,24 @@ using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
+using ButtonType = Remotion.Web.UI.Controls.ButtonType;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Rendering
 {
   [TestFixture]
   public class DropDownMenuRendererTest : RendererTestBase
   {
-    private const string c_MenuTitle = "MenuTitle";
+    private const string c_MenuTitle = "Menu&Title";
     private const string c_Icon_Url = "/Image/icon.gif";
-    private const string c_IconAlternateText = "Icon_AlternateText";
+    private const string c_IconAlternateText = "Icon_&AlternateText";
     private const string c_Icon_ToolTip = "Icon_ToolTip";
 
-    private static readonly Unit s_iconWidth = Unit.Pixel (16);
-    private static readonly Unit s_iconHeight = Unit.Pixel (12);
-    private static readonly IconInfo s_titleIcon = new IconInfo (c_Icon_Url, c_IconAlternateText, c_Icon_ToolTip, s_iconWidth, s_iconHeight);
+    private static readonly Unit s_iconWidth = Unit.Pixel(16);
+    private static readonly Unit s_iconHeight = Unit.Pixel(12);
+    private static readonly IconInfo s_titleIcon = new IconInfo(c_Icon_Url, c_IconAlternateText, c_Icon_ToolTip, s_iconWidth, s_iconHeight);
 
-    private IDropDownMenu _control;
-    private HttpContextBase _httpContextStub;
+    private Mock<IDropDownMenu> _control;
+    private Mock<HttpContextBase> _httpContextStub;
     private HtmlHelper _htmlHelper;
     private FakeResourceUrlFactory _resourceUrlFactory;
 
@@ -54,34 +56,37 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     public void SetUp ()
     {
       _htmlHelper = new HtmlHelper();
-      _httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
+      _httpContextStub = new Mock<HttpContextBase>();
 
-      _control = MockRepository.GenerateStub<IDropDownMenu>();
-      _control.ID = "DropDownMenu1";
-      _control.Stub (stub => stub.Enabled).Return (true);
-      _control.Stub (stub => stub.UniqueID).Return ("DropDownMenu1");
-      _control.Stub (stub => stub.ClientID).Return ("DropDownMenu1");
-      _control.Stub (stub => stub.ControlType).Return ("DropDownMenu");
-      _control.Stub (stub => stub.MenuItems).Return (new WebMenuItemCollection (_control));
-      _control.Stub (stub => stub.GetBindOpenEventScript (null, null, true)).IgnoreArguments().Return ("OpenDropDownMenuEventReference");
-      _control.Stub (stub => stub.ResolveClientUrl (null)).IgnoreArguments().Do ((Func<string, string>) (url => url.TrimStart ('~')));
+      _control = new Mock<IDropDownMenu>();
+      _control.SetupProperty(_ => _.ID);
+      _control.Object.ID = "DropDownMenu1";
+      _control.Setup(stub => stub.Enabled).Returns(true);
+      _control.Setup(stub => stub.UniqueID).Returns("DropDownMenu1");
+      _control.Setup(stub => stub.ClientID).Returns("DropDownMenu1");
+      _control.Setup(stub => stub.ControlType).Returns("DropDownMenu");
+      _control.Setup(stub => stub.MenuItems).Returns(new WebMenuItemCollection(_control.Object));
+      _control.Setup(stub => stub.GetBindOpenEventScript(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns("OpenDropDownMenuEventReference");
+      _control.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string relativeUrl) => (relativeUrl.TrimStart('~')));
 
-      IPage pageStub = MockRepository.GenerateStub<IPage>();
-      _control.Stub (stub => stub.Page).Return (pageStub);
+      var pageStub = new Mock<IPage>();
+      _control.Setup(stub => stub.Page).Returns(pageStub.Object);
 
       StateBag stateBag = new StateBag();
-      _control.Stub (stub => stub.Attributes).Return (new AttributeCollection (stateBag));
-      _control.Stub (stub => stub.ControlStyle).Return (new Style (stateBag));
+      _control.Setup(stub => stub.Attributes).Returns(new AttributeCollection(stateBag));
+      _control.Setup(stub => stub.ControlStyle).Returns(new Style(stateBag));
 
-      IClientScriptManager scriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
-      _control.Page.Stub (stub => stub.ClientScript).Return (scriptManagerMock);
+      _control.Setup(stub => stub.GetResourceManager()).Returns(NullResourceManager.Instance);
 
+      var scriptManagerMock = new Mock<IClientScriptManager>();
+      Mock.Get(_control.Object.Page).Setup(stub => stub.ClientScript).Returns(scriptManagerMock.Object);
       _resourceUrlFactory = new FakeResourceUrlFactory();
     }
 
     [Test]
     public void RenderEmptyMenuWithoutTitle ()
     {
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
       XmlNode containerDiv = GetAssertedContainerSpan();
       AssertTitleSpan(containerDiv, false, false);
     }
@@ -89,79 +94,175 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
     [Test]
     public void RenderEmptyMenuWithTitle ()
     {
-      _control.Stub(stub=>stub.TitleText).Return(c_MenuTitle);
+      _control.Setup(stub=>stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
 
-      XmlNode containerDiv = GetAssertedContainerSpan ();
-      AssertTitleSpan (containerDiv, true, false);
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpan(containerDiv, true, false);
     }
 
     [Test]
     public void RenderEmptyMenuWithTitleAndIcon ()
     {
-      _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
-      _control.Stub (stub => stub.TitleIcon).Return (s_titleIcon);
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
 
-      XmlNode containerDiv = GetAssertedContainerSpan ();
-      AssertTitleSpan (containerDiv, true, true);
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpan(containerDiv, true, true);
     }
 
     [Test]
     public void RenderPopulatedMenu ()
     {
-      _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
       PopulateMenu();
 
-      XmlNode containerDiv = GetAssertedContainerSpan ();
-      AssertTitleSpan (containerDiv, true, false);
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpan(containerDiv, true, false);
+    }
+
+    [Test]
+    public void RenderMenuWithHiddenTitleAndOnlyText ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, true, false);
+    }
+
+    [Test]
+    public void RenderMenuWithHiddenTitleAndOnlyIcon ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.Empty);
+      _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, false, true);
+    }
+
+    [Test]
+    public void RenderMenuWithHiddenTitleAndTextAndIcon ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.TitleIcon).Returns(s_titleIcon);
+      _control.Setup(stub => stub.ShowTitle).Returns(false);
+
+      PopulateMenu();
+
+      XmlNode containerDiv = GetAssertedContainerSpan();
+      AssertTitleSpanWithHiddenTitle(containerDiv, true, false);
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      _control.Stub (stub => stub.TitleText).Return (c_MenuTitle);
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText(c_MenuTitle));
+      _control.Setup(stub => stub.ShowTitle).Returns(true);
       PopulateMenu();
 
-      var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
-      renderer.Render (new DropDownMenuRenderingContext (_httpContextStub, _htmlHelper.Writer, _control));
-      
+      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
+      renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
+
       var document = _htmlHelper.GetResultDocument();
-      var containerDiv = document.GetAssertedChildElement ("span", 0);
-      containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.ControlType, "DropDownMenu");
-      containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.Content, c_MenuTitle);
-      containerDiv.AssertAttributeValueEquals (DiagnosticMetadataAttributes.IsDisabled, (!_control.Enabled).ToString().ToLower());
+      var containerDiv = document.GetAssertedChildElement("span", 0);
+      containerDiv.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "DropDownMenu");
+      containerDiv.AssertAttributeValueEquals(DiagnosticMetadataAttributes.Content, c_MenuTitle);
+      containerDiv.AssertAttributeValueEquals(DiagnosticMetadataAttributes.IsDisabled, (!_control.Object.Enabled).ToString().ToLower());
+    }
+
+    [Test]
+    public void RenderWithPrimaryButtonType ()
+    {
+      _control.Setup(stub => stub.ButtonType).Returns(ButtonType.Primary);
+
+      GetAssertedContainerSpan(ButtonType.Primary);
+    }
+
+    [Test]
+    public void RenderWithSupplementalButtonType ()
+    {
+      _control.Setup(stub => stub.ButtonType).Returns(ButtonType.Supplemental);
+
+      GetAssertedContainerSpan(ButtonType.Supplemental);
+    }
+
+    [Test]
+    public void RenderWebStrings ()
+    {
+      _control.Setup(stub => stub.TitleText).Returns(WebString.CreateFromText("Multiline\nTitle"));
+
+      var node = GetAssertedContainerSpan();
+
+      var titleNode = node.GetAssertedElementByID("DropDownMenu1_DropDownMenuLabel");
+      Assert.That(titleNode.InnerXml, Is.EqualTo("Multiline<br />Title"));
     }
 
     private void AssertTitleSpan (XmlNode containerDiv, bool withTitle, bool withIcon)
     {
       var hasTitle = withTitle || withIcon;
-      var titleDiv = containerDiv.GetAssertedChildElement ("span", 0);
-      titleDiv.AssertAttributeValueEquals ("class", "DropDownMenuSelect");
-      titleDiv.AssertChildElementCount (2);
+      var titleDiv = containerDiv.GetAssertedChildElement("span", 0);
+      titleDiv.AssertAttributeValueEquals("class", "DropDownMenuSelect");
+      titleDiv.AssertChildElementCount(2);
 
       AssertTitleAnchor(titleDiv, withTitle, withIcon);
-      AssertDropDownButton (titleDiv, hasTitle);
+      AssertDropDownButton(titleDiv, hasTitle);
+    }
+
+    private void AssertTitleSpanWithHiddenTitle (XmlNode containerDiv, bool withTitle, bool withIcon)
+    {
+      var titleDiv = containerDiv.GetAssertedChildElement("span", 0);
+      titleDiv.AssertAttributeValueEquals("class", "DropDownMenuSelect");
+      titleDiv.AssertChildElementCount(2);
+
+      AssertHiddenTitle(titleDiv, withTitle, withIcon);
+      AssertDropDownButton(titleDiv, false);
     }
 
     private void AssertDropDownButton (XmlNode titleDiv, bool hasTitle)
     {
-      var buttonAnchor = titleDiv.GetAssertedChildElement ("a", 1);
+      var buttonAnchor = titleDiv.GetAssertedChildElement("a", 1);
       if (hasTitle)
       {
-        buttonAnchor.AssertNoAttribute ("id");
-        buttonAnchor.AssertNoAttribute ("role");
-        buttonAnchor.AssertAttributeValueEquals ("aria-hidden", "true");
+        buttonAnchor.AssertNoAttribute("id");
+        buttonAnchor.AssertNoAttribute("role");
+        buttonAnchor.AssertAttributeValueEquals("aria-hidden", "true");
       }
       else
       {
-        buttonAnchor.AssertAttributeValueEquals ("id", _control.ClientID + "_DropDownMenuButton");
-        buttonAnchor.AssertAttributeValueEquals ("role", "button");
-        buttonAnchor.AssertAttributeValueEquals (StubLabelReferenceRenderer.LabelReferenceAttribute, _control.ClientID + "_DropDownMenuLabel");
-        buttonAnchor.AssertAttributeValueEquals (StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-        buttonAnchor.AssertNoAttribute ("aria-hidden");
+        buttonAnchor.AssertAttributeValueEquals("id", _control.Object.ClientID + "_DropDownMenuButton");
+        buttonAnchor.AssertAttributeValueEquals("role", "button");
+        buttonAnchor.AssertAttributeValueEquals(StubLabelReferenceRenderer.LabelReferenceAttribute, _control.Object.ClientID + "_DropDownMenuLabel");
+        buttonAnchor.AssertAttributeValueEquals(StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+        buttonAnchor.AssertNoAttribute("aria-hidden");
       }
-      var image = buttonAnchor.GetAssertedChildElement ("img", 0);
-      image.AssertAttributeValueEquals ("src", IconInfo.CreateSpacer(_resourceUrlFactory).Url);
-      image.AssertAttributeValueEquals ("alt", "");
+      var image = buttonAnchor.GetAssertedChildElement("img", 0);
+      image.AssertAttributeValueEquals("src", IconInfo.CreateSpacer(_resourceUrlFactory).Url);
+      image.AssertAttributeValueEquals("alt", "");
+    }
+
+    private void AssertHiddenTitle (XmlNode titleDiv, bool withTitle, bool withIcon)
+    {
+      if (!(withTitle || withIcon))
+        return;
+
+      var titleBody = titleDiv.GetAssertedChildElement("span", 0);
+      titleBody.AssertAttributeValueEquals("hidden", "hidden");
+      if (withTitle)
+      {
+        titleBody.AssertTextNode(c_MenuTitle, 0);
+      }
+      else
+      {
+        titleBody.AssertTextNode(c_IconAlternateText, 0);
+      }
     }
 
     private void AssertTitleAnchor (XmlNode titleDiv, bool withTitle, bool withIcon)
@@ -169,44 +270,51 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       if (!(withTitle || withIcon))
         return;
 
-      var titleAnchor = titleDiv.GetAssertedChildElement ("a", 0);
-      titleAnchor.AssertAttributeValueEquals ("href", "#");
-      titleAnchor.AssertNoAttribute ("onclick");
-      titleAnchor.AssertAttributeValueEquals (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
-      titleAnchor.AssertChildElementCount (withIcon ? 1 : 0);
+      var titleAnchor = titleDiv.GetAssertedChildElement("a", 0);
+      titleAnchor.AssertAttributeValueEquals("href", "#");
+      titleAnchor.AssertNoAttribute("onclick");
+      titleAnchor.AssertAttributeValueEquals(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
+      titleAnchor.AssertChildElementCount(withIcon ? 1 : 0);
       if (withTitle)
-        titleAnchor.AssertTextNode (c_MenuTitle, withIcon ? 1 : 0);
+        titleAnchor.AssertTextNode(c_MenuTitle, withIcon ? 1 : 0);
 
       if (withIcon)
       {
-        var icon = titleAnchor.GetAssertedChildElement ("img", 0);
-        icon.AssertAttributeValueEquals ("src", c_Icon_Url);
-        icon.AssertAttributeValueEquals ("alt", c_IconAlternateText);
-        icon.AssertStyleAttribute ("width", s_iconWidth.ToString ());
-        icon.AssertStyleAttribute ("height", s_iconHeight.ToString ());
+        var icon = titleAnchor.GetAssertedChildElement("img", 0);
+        icon.AssertAttributeValueEquals("src", c_Icon_Url);
+        icon.AssertAttributeValueEquals("alt", c_IconAlternateText);
+        icon.AssertStyleAttribute("width", s_iconWidth.ToString());
+        icon.AssertStyleAttribute("height", s_iconHeight.ToString());
       }
     }
 
-    private XmlNode GetAssertedContainerSpan ()
+    private XmlNode GetAssertedContainerSpan (ButtonType buttonType = ButtonType.Standard)
     {
-      var renderer = new DropDownMenuRenderer (_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
-      renderer.Render (new DropDownMenuRenderingContext (_httpContextStub, _htmlHelper.Writer, _control));
+      var buttonClass = buttonType switch {
+              ButtonType.Standard => "DropDownMenuContainer",
+              ButtonType.Primary => "DropDownMenuContainer primary",
+              ButtonType.Supplemental => "DropDownMenuContainer supplemental",
+              _ => throw new ArgumentOutOfRangeException(nameof(buttonType), buttonType, null)
+          };
+
+      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
+      renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
       var document = _htmlHelper.GetResultDocument();
-      var containerDiv = document.GetAssertedChildElement ("span", 0);
-      containerDiv.AssertAttributeValueEquals ("id", _control.ClientID);
-      containerDiv.AssertAttributeValueEquals ("class", "DropDownMenuContainer");
-      containerDiv.AssertChildElementCount (1);
+      var containerDiv = document.GetAssertedChildElement("span", 0);
+      containerDiv.AssertAttributeValueEquals("id", _control.Object.ClientID);
+      containerDiv.AssertAttributeValueEquals("class", buttonClass);
+      containerDiv.AssertChildElementCount(1);
 
       return containerDiv;
     }
 
     private void PopulateMenu ()
     {
-      AddItem (0, "Category1", CommandType.Event, false, true);
-      AddItem (1, "Category1", CommandType.Href, false, true);
-      AddItem (2, "Category2", CommandType.WxeFunction, false, true);
-      AddItem (3, "Category2", CommandType.WxeFunction, true, true);
-      AddItem (4, "Category2", CommandType.WxeFunction, false, false);
+      AddItem(0, "Category1", CommandType.Event, false, true);
+      AddItem(1, "Category1", CommandType.Href, false, true);
+      AddItem(2, "Category2", CommandType.WxeFunction, false, true);
+      AddItem(3, "Category2", CommandType.WxeFunction, true, true);
+      AddItem(4, "Category2", CommandType.WxeFunction, false, false);
     }
 
     private void AddItem (int index, string category, CommandType commandType, bool isDisabled, bool isVisible)
@@ -219,20 +327,20 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       const string disabledIconUrl = "~/Images/DisabledIcon.gif";
       const RequiredSelection requiredSelection = RequiredSelection.Any;
 
-      Command command = new Command (commandType);
+      Command command = new Command(commandType);
       if (commandType == CommandType.Href)
       {
         command.HrefCommand.Href = "~/Target.aspx?index={0}&itemID={1}";
         command.HrefCommand.Target = "_blank";
       }
 
-      _control.MenuItems.Add (
-          new WebMenuItem (
+      _control.Object.MenuItems.Add(
+          new WebMenuItem(
               id,
               category,
-              text,
-              new IconInfo (iconUrl, text, text, width, height),
-              new IconInfo (disabledIconUrl, text, text, width, height),
+              WebString.CreateFromText(text),
+              new IconInfo(iconUrl, text, text, width, height),
+              new IconInfo(disabledIconUrl, text, text, width, height),
               WebMenuItemStyle.IconAndText,
               requiredSelection,
               isDisabled,
@@ -243,11 +351,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       }
       else
       {
-        if (isVisible && _control.Enabled)
+        if (isVisible && _control.Object.Enabled)
         {
-          _control.Page.ClientScript.Expect (
-              mock => mock.GetPostBackClientHyperlink (Arg.Is<IControl> (_control), Arg.Text.Like (index.ToString ())))
-              .Return ("PostBackHyperLink:" + index);
+          Mock.Get(_control.Object.Page.ClientScript).Setup(
+                  mock => mock.GetPostBackClientHyperlink(_control.Object, index.ToString()))
+              .Returns("PostBackHyperLink:" + index)
+              .Verifiable();
         }
       }
     }

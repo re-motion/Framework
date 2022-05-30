@@ -29,40 +29,40 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     [Test]
     public void EmptyAce_Matches ()
     {
-      AccessControlEntry entry = AccessControlEntry.NewObject ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
+      AccessControlEntry entry = AccessControlEntry.NewObject();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
       SecurityToken token = TestHelper.CreateTokenWithoutUser();
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithRoleAndAbstractRole_AceForPositionFromOwningGroup_Matches ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Testtenant");
-      Position managerPosition = TestHelper.CreatePosition ("Manager");
-      Group group = TestHelper.CreateGroup ("Testgroup", null, tenant);
-      User user = CreateUser (tenant, group);
-      Role role = TestHelper.CreateRole (user, group, managerPosition);
-      AccessControlEntry entry = TestHelper.CreateAceWithPositionAndGroupCondition (managerPosition, GroupCondition.OwningGroup);
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateToken (user, null, group, null, new[] { TestHelper.CreateTestAbstractRole () });
+      Tenant tenant = TestHelper.CreateTenant("Testtenant");
+      Position managerPosition = TestHelper.CreatePosition("Manager");
+      Group group = TestHelper.CreateGroup("Testgroup", null, tenant);
+      User user = CreateUser(tenant, group);
+      Role role = TestHelper.CreateRole(user, group, managerPosition);
+      AccessControlEntry entry = TestHelper.CreateAceWithPositionAndGroupCondition(managerPosition, GroupCondition.OwningGroup);
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateToken(user, null, group, null, new[] { TestHelper.CreateTestAbstractRole() });
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     [Test]
     public void TokenWithTenantAndAbstractRole_AceForOwningTenant_Matches ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Testtenant");
-      Position managerPosition = TestHelper.CreatePosition ("Manager");
-      Group group = TestHelper.CreateGroup ("Testgroup", null, tenant);
-      User user = CreateUser (tenant, group);
-      AccessControlEntry entry = TestHelper.CreateAceWithOwningTenant ();
-      SecurityTokenMatcher matcher = new SecurityTokenMatcher (entry);
-      SecurityToken token = TestHelper.CreateToken (user, tenant, null, null, new[] { TestHelper.CreateTestAbstractRole () });
+      Tenant tenant = TestHelper.CreateTenant("Testtenant");
+      Position managerPosition = TestHelper.CreatePosition("Manager");
+      Group group = TestHelper.CreateGroup("Testgroup", null, tenant);
+      User user = CreateUser(tenant, group);
+      AccessControlEntry entry = TestHelper.CreateAceWithOwningTenant();
+      SecurityTokenMatcher matcher = new SecurityTokenMatcher(entry);
+      SecurityToken token = TestHelper.CreateToken(user, tenant, null, null, new[] { TestHelper.CreateTestAbstractRole() });
 
-      Assert.That (matcher.MatchesToken (token), Is.True);
+      Assert.That(matcher.MatchesToken(token), Is.True);
     }
 
     //[Test]

@@ -32,7 +32,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests.TestDomain
         where T1 : TConcreteInterfaceConstraint
         where T2 : List<TStructConstraint[]>
     {
-      return string.Format ("{0}, {1}, {2}", t1, t2, tSelf);
+      return string.Format("{0}, {1}, {2}", t1, t2, tSelf);
     }
   }
 }

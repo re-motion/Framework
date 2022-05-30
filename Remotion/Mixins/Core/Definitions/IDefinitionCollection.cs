@@ -16,10 +16,12 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Remotion.Mixins.Definitions
 {
   public interface IDefinitionCollection<TKey, TValue> : IEnumerable<TValue>
+      where TKey : notnull
   {
     TValue[] ToArray ();
     int Count { get; }

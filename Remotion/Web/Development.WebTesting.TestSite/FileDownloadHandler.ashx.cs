@@ -32,45 +32,44 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       switch (context.Request.Params["testMode"])
       {
         case null:
-          throw new HttpException (404, "FileDownloadHandler only returns files if the Parameter 'testMode' is set.");
+          throw new HttpException(404, "FileDownloadHandler only returns files if the Parameter 'testMode' is set.");
         case "xml":
-          AddFileToResponse (context, "SampleXmlFile.xml");
+          AddFileToResponse(context, "SampleXmlFile.xml", "SampleXmlFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.xml");
           break;
         case "txt":
-          AddFileToResponse (context, "SampleFile.txt");
+          AddFileToResponse(context, "SampleFile.txt", "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt");
           break;
         case "withoutExtension":
-          AddFileToResponse (context, "SampleFile.txt", "SampleFile");
+          AddFileToResponse(context, "SampleFile.txt", "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c");
           break;
         case "longRunning":
-          LongRunningResponse (context);
+          LongRunningResponse(context);
           break;
         case "zip":
-          ZipFileResponse (context, "SampleZipFile.zip");
+          ZipFileResponse(context, "SampleZipFile.zip");
           break;
         default:
-          throw new HttpException (404, "Parameter 'testMode' only supports 'txt', 'xml', 'withoutExtension', 'longRunning' and 'zip'.");
+          throw new HttpException(404, "Parameter 'testMode' only supports 'txt', 'xml', 'withoutExtension', 'longRunning' and 'zip'.");
       }
     }
 
     private static void AddFileToResponse (HttpContext context, string file)
     {
-      AddFileToResponse (context, file, file);
+      AddFileToResponse(context, file, file);
     }
 
     private static void AddFileToResponse (HttpContext context, string file, string fileName)
     {
       var response = context.Response;
-      var fullFilePath = context.Server.MapPath ("~/" + file);
+      var fullFilePath = context.Server.MapPath("~/" + file);
 
       response.Clear();
       response.ClearHeaders();
       response.ClearContent();
-      response.AddHeader ("Content-Disposition", "attachment; filename=" + fileName);
-      response.AddHeader ("Content-Length", file.Length.ToString());
+      response.AddHeader("Content-Disposition", "attachment; filename=" + fileName);
       response.ContentType = "text/plain";
       response.Flush();
-      response.TransmitFile (fullFilePath);
+      response.TransmitFile(fullFilePath);
       response.End();
     }
 
@@ -81,34 +80,33 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       response.Clear();
       response.ClearHeaders();
       response.ClearContent();
-      response.AddHeader ("Content-Disposition", "attachment; filename=SampleFile.txt");
+      response.AddHeader("Content-Disposition", "attachment; filename=SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt");
       BigInteger length = 1024 * 500;
       length = length * 2;
-      response.AddHeader ("Content-Length", length.ToString());  //Some high number so browser does not think we are finished
+      response.AddHeader("Content-Length", length.ToString());  //Some high number so browser does not think we are finished
       response.ContentType = "text/plain";
       response.Flush();
-       
+
       byte[] someMagicNumber = new byte[1024 * 500];
-      new Random().NextBytes (someMagicNumber);
-      response.OutputStream.Write (someMagicNumber, 0, someMagicNumber.Length);
+      new Random().NextBytes(someMagicNumber);
+      response.OutputStream.Write(someMagicNumber, 0, someMagicNumber.Length);
       response.OutputStream.Flush();
-      Thread.Sleep (TimeSpan.FromSeconds(5));
+      Thread.Sleep(TimeSpan.FromSeconds(5));
     }
 
     private void ZipFileResponse (HttpContext context, string fileName)
     {
       var response = context.Response;
-      var fullFilePath = context.Server.MapPath ("~/" + fileName);
-      var data = File.ReadAllBytes (fullFilePath);
+      var fullFilePath = context.Server.MapPath("~/" + fileName);
+      var data = File.ReadAllBytes(fullFilePath);
 
       response.Clear();
       response.ClearHeaders();
       response.ClearContent();
 
-      response.AddHeader ("Content-Disposition", "filename=download.zip");
-      response.AddHeader ("Content-Length", data.Length.ToString());
+      response.AddHeader("Content-Disposition", "filename=download_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.zip");
       response.ContentType = "application/x-zip-compressed";
-      response.TransmitFile (fullFilePath);
+      response.TransmitFile(fullFilePath);
 
       response.Flush();
       response.End();

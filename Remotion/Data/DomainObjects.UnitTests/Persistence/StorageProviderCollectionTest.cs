@@ -16,19 +16,19 @@
 // 
 using System;
 using System.Data.SqlClient;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
   [TestFixture]
   public class StorageProviderCollectionTest : StandardMappingTest
   {
-    private IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> _storageProviderCommandFactoryStub;
+    private Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>> _storageProviderCommandFactoryStub;
 
     private StorageProvider _provider;
 
@@ -38,12 +38,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       base.SetUp();
 
-      _storageProviderCommandFactoryStub = MockRepository.GenerateStub<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
+      _storageProviderCommandFactoryStub = new Mock<IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext>>();
 
-      _provider = new RdbmsProvider (
-          new RdbmsProviderDefinition ("TestDomain", new SqlStorageObjectFactory(), "ConnectionString"),
+      _provider = new RdbmsProvider(
+          new RdbmsProviderDefinition("TestDomain", new SqlStorageObjectFactory(), "ConnectionString"),
           NullPersistenceExtension.Instance,
-          _storageProviderCommandFactoryStub,
+          _storageProviderCommandFactoryStub.Object,
           () => new SqlConnection());
 
       _collection = new StorageProviderCollection();
@@ -52,21 +52,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void ContainsProviderTrue ()
     {
-      _collection.Add (_provider);
-      Assert.That (_collection.Contains (_provider), Is.True);
+      _collection.Add(_provider);
+      Assert.That(_collection.Contains(_provider), Is.True);
     }
 
     [Test]
     public void ContainsProviderFalse ()
     {
-      _collection.Add (_provider);
+      _collection.Add(_provider);
 
-      StorageProvider copy = new RdbmsProvider (
-          (RdbmsProviderDefinition) _provider.StorageProviderDefinition,
+      StorageProvider copy = new RdbmsProvider(
+          (RdbmsProviderDefinition)_provider.StorageProviderDefinition,
           NullPersistenceExtension.Instance,
-          _storageProviderCommandFactoryStub,
+          _storageProviderCommandFactoryStub.Object,
           () => new SqlConnection());
-      Assert.That (_collection.Contains (copy), Is.False);
+      Assert.That(_collection.Contains(copy), Is.False);
     }
   }
 }

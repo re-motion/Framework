@@ -22,30 +22,33 @@ using Remotion.Tools;
 namespace Remotion.Development.UnitTests.Core.UnitTesting
 {
   [TestFixture]
+#if !NETFRAMEWORK
+  [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
   public class AppDomainRunnerTest
   {
     [Test]
     public void ArgumentsArePassedInCorrectly ()
     {
-      AppDomainRunner.Run (delegate (object[] args)
+      AppDomainRunner.Run(delegate (object[] args)
         {
-          Assert.That (args.Length, Is.EqualTo (2));
-          Assert.That ("Foo", Is.EqualTo (args[0]));
-          Assert.That (4, Is.EqualTo (args[1]));
+          Assert.That(args.Length, Is.EqualTo(2));
+          Assert.That("Foo", Is.EqualTo(args[0]));
+          Assert.That(4, Is.EqualTo(args[1]));
         }, "Foo", 4);
 
-      AppDomainRunner.Run (delegate (object[] args)
+      AppDomainRunner.Run(delegate (object[] args)
       {
-        Assert.That (args.Length, Is.EqualTo (0));
+        Assert.That(args.Length, Is.EqualTo(0));
       });
     }
 
     [Test]
     public void SpecificAppBase ()
     {
-      AppDomainRunner.Run (@"C:\", delegate (object[] args)
+      AppDomainRunner.Run(@"C:\", delegate (object[] args)
       {
-        Assert.That (AppDomain.CurrentDomain.BaseDirectory, Is.EqualTo (@"C:\"));
+        Assert.That(AppContext.BaseDirectory, Is.EqualTo(@"C:\"));
       });
     }
 
@@ -53,11 +56,11 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     public void AppDomainIsCreated ()
     {
       AppDomain current = AppDomain.CurrentDomain;
-      AppDomainRunner.Run (
+      AppDomainRunner.Run(
           delegate (object[] args)
           {
-            Assert.That (AppDomain.CurrentDomain.FriendlyName, Is.EqualTo ("AppDomainRunner - AppDomain"));
-            Assert.That (AppDomain.CurrentDomain, Is.Not.SameAs (args[0]));
+            Assert.That(AppDomain.CurrentDomain.FriendlyName, Is.EqualTo("AppDomainRunner - AppDomain"));
+            Assert.That(AppDomain.CurrentDomain, Is.Not.SameAs(args[0]));
           },
           current);
     }
@@ -65,27 +68,31 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting
     [Test]
     public void TypesFromCurrentAssemblyCanBeAccessed ()
     {
-      AppDomainRunner.Run (delegate { new AppDomainRunnerTest(); });
+      AppDomainRunner.Run(delegate { new AppDomainRunnerTest(); });
     }
 
     [Test]
     public void TypesFromCurrentAssemblyCanBeAccessed_EvenWithDifferentBaseDirectory ()
     {
-      AppDomainRunner.Run (@"c:\", delegate { new AppDomainRunnerTest (); });
+      AppDomainRunner.Run(@"c:\", delegate { new AppDomainRunnerTest(); });
     }
 
     [Test]
     public void TypesFromRunnerBaseAssemblyCanBeAccessed_EvenWithDifferentBaseDirectory ()
     {
-      AppDomainRunner.Run (@"c:\", delegate { Dev.Null = typeof (AppDomainRunnerBase); });
+      AppDomainRunner.Run(@"c:\", delegate { Dev.Null = typeof(AppDomainRunnerBase); });
     }
 
     [Test]
     public void DoesntChangeCurrentSetup ()
     {
+#if NETFRAMEWORK
       string dynamicBaseBefore = AppDomain.CurrentDomain.SetupInformation.DynamicBase;
-      AppDomainRunner.Run (delegate { new AppDomainRunnerTest (); });
-      Assert.That (AppDomain.CurrentDomain.SetupInformation.DynamicBase, Is.EqualTo (dynamicBaseBefore));
+      AppDomainRunner.Run(delegate { new AppDomainRunnerTest(); });
+      Assert.That(AppDomain.CurrentDomain.SetupInformation.DynamicBase, Is.EqualTo(dynamicBaseBefore));
+#else
+      Assert.Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains");
+#endif
     }
   }
 }

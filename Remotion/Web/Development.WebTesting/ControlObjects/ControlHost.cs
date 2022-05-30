@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
 
     public ControlHost ([NotNull] ControlObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       _context = context;
     }
@@ -39,20 +39,26 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      return controlSelectionCommand.Select (_context.CloneForControlSelection());
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
+
+      return controlSelectionCommand.Select(_context.CloneForControlSelection());
     }
 
     /// <inheritdoc/>
-    public TControlObject GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
+    public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      return controlSelectionCommand.SelectOptional (_context.CloneForControlSelection());
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
+
+      return controlSelectionCommand.SelectOptional(_context.CloneForControlSelection());
     }
 
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      return controlSelectionCommand.Exists (_context.CloneForControlSelection());
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
+
+      return controlSelectionCommand.Exists(_context.CloneForControlSelection());
     }
   }
 }

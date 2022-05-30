@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization.Implementation;
 using Remotion.Globalization.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.UnitTests.Implementation
 {
@@ -31,82 +31,84 @@ namespace Remotion.Globalization.UnitTests.Implementation
     }
 
     private GlobalizationService _globalizationService;
-    private IResourceManagerResolver _resolverStub;
-    private IResourceManager _resourceManagerStub;
+    private Mock<IResourceManagerResolver> _resolverStub;
+    private Mock<IResourceManager> _resourceManagerStub;
     private ResolvedResourceManagerResult _resolvedResourceManagerResult;
 
     [SetUp]
     public void SetUp ()
     {
-      _resourceManagerStub = MockRepository.GenerateStub<IResourceManager>();
-      _resolvedResourceManagerResult = ResolvedResourceManagerResult.Create (_resourceManagerStub, NullResourceManager.Instance);
+      _resourceManagerStub = new Mock<IResourceManager>();
+      _resolvedResourceManagerResult = ResolvedResourceManagerResult.Create(_resourceManagerStub.Object, NullResourceManager.Instance);
 
-      _resolverStub = MockRepository.GenerateStub<IResourceManagerResolver>();
-      _globalizationService = new GlobalizationService (_resolverStub);
+      _resolverStub = new Mock<IResourceManagerResolver>();
+      _globalizationService = new GlobalizationService(_resolverStub.Object);
     }
 
     [Test]
-    public void GetResourceManager_WithTypeWithoutResources()
+    public void GetResourceManager_WithTypeWithoutResources ()
     {
-      var type = typeof (ResourceTarget);
-      var typeInformation = TypeAdapter.Create (type);
+      var type = typeof(ResourceTarget);
+      var typeInformation = TypeAdapter.Create(type);
 
-      _resourceManagerStub.Stub (stub=>stub.IsNull).Return (true);
-      _resolverStub.Stub (stub => stub.Resolve (type)).Return (_resolvedResourceManagerResult);
+      _resourceManagerStub.Setup(stub=>stub.IsNull).Returns(true);
+      _resolverStub.Setup(stub => stub.Resolve(type)).Returns(_resolvedResourceManagerResult);
 
-      var resourceManager = _globalizationService.GetResourceManager (typeInformation);
+      var resourceManager = _globalizationService.GetResourceManager(typeInformation);
 
       string value;
-      Assert.That (resourceManager.TryGetString ("property:Value1", out value), Is.False);
-      Assert.That (value, Is.Null);
+      Assert.That(resourceManager.TryGetString("property:Value1", out value), Is.False);
+      Assert.That(value, Is.Null);
     }
 
     [Test]
     public void GetResourceManager_WithExpectedType ()
     {
-      var type = typeof (ResourceTarget);
-      var typeInformation = TypeAdapter.Create (type);
+      var type = typeof(ResourceTarget);
+      var typeInformation = TypeAdapter.Create(type);
+      var outValue = "TheValue";
 
       _resourceManagerStub
-          .Stub (stub => stub.TryGetString (Arg.Is ("property:Value1"), out Arg<string>.Out ("TheValue").Dummy))
-          .Return (true);
-      _resolverStub.Stub (stub => stub.Resolve (type)).Return (_resolvedResourceManagerResult);
+          .Setup(stub => stub.TryGetString("property:Value1", out outValue))
+          .Returns(true);
+      _resolverStub.Setup(stub => stub.Resolve(type)).Returns(_resolvedResourceManagerResult);
 
-      var resourceManager = _globalizationService.GetResourceManager (typeInformation);
+      var resourceManager = _globalizationService.GetResourceManager(typeInformation);
 
       string value;
-      Assert.That (resourceManager.TryGetString ("property:Value1", out value), Is.True);
-      Assert.That (value, Is.EqualTo ("TheValue"));
+      Assert.That(resourceManager.TryGetString("property:Value1", out value), Is.True);
+      Assert.That(value, Is.EqualTo("TheValue"));
     }
 
     [Test]
     public void GetResourceManager_WithTypeNotSupportingConversionFromITypeInformationToType ()
     {
-      var typeInformation = MockRepository.GenerateStub<ITypeInformation>();
+      var typeInformation = new Mock<ITypeInformation>();
 
-      var result = _globalizationService.GetResourceManager (typeInformation);
+      var result = _globalizationService.GetResourceManager(typeInformation.Object);
 
-      _resolverStub.AssertWasNotCalled (stub => stub.Resolve (Arg<Type>.Is.Anything));
-      Assert.That (result, Is.EqualTo (NullResourceManager.Instance));
+      _resolverStub.Verify(stub => stub.Resolve(It.IsAny<Type>()), Times.Never());
+      Assert.That(result, Is.EqualTo(NullResourceManager.Instance));
     }
 
     [Test]
     public void GetResourceManagerTwice_SameFromCache ()
     {
-      var type = typeof (ResourceTarget);
-      var typeInformation = TypeAdapter.Create (type);
+      var type = typeof(ResourceTarget);
+      var typeInformation = TypeAdapter.Create(type);
+      var outValue = "TheValue";
 
       _resourceManagerStub
-          .Stub (stub => stub.TryGetString (Arg.Is ("property:Value1"), out Arg<string>.Out ("TheValue").Dummy))
-          .Return (true);
+          .Setup(stub => stub.TryGetString("property:Value1", out outValue))
+          .Returns(true);
 
-      _resolverStub.Stub (stub => stub.Resolve (type)).Return (_resolvedResourceManagerResult);
+      _resolverStub.Setup(stub => stub.Resolve(type)).Returns(_resolvedResourceManagerResult);
 
-      var resourceManager1 = _globalizationService.GetResourceManager (typeInformation);
-      var resourceManager2 = _globalizationService.GetResourceManager (typeInformation);
+      var resourceManager1 = _globalizationService.GetResourceManager(typeInformation);
+      var resourceManager2 = _globalizationService.GetResourceManager(typeInformation);
 
-      Assert.That (resourceManager1, Is.SameAs (resourceManager2));
-      _resolverStub.AssertWasCalled (stub => stub.Resolve (Arg<Type>.Is.Anything), options=>options.Repeat.Once());
+      Assert.That(resourceManager1, Is.SameAs(resourceManager2));
+      _resolverStub.Verify(stub => stub.Resolve(It.IsAny<Type>()), Times.AtLeastOnce);
     }
   }
 }

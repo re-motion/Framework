@@ -27,12 +27,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     public DomainObject CreateObjectReference (IObjectInitializationContext objectInitializationContext, ClientTransaction clientTransaction)
     {
-      throw new NotSupportedException ("ThrowingDomainObjectCreator.CreateObjectReference was invoked.");
+      throw new NotSupportedException("ThrowingDomainObjectCreator.CreateObjectReference was invoked.");
     }
 
     public DomainObject CreateNewObject (IObjectInitializationContext objectInitializationContext, ParamList constructorParameters, ClientTransaction clientTransaction)
     {
-      throw new NotSupportedException ("ThrowingDomainObjectCreator.CreateNewObject was invoked.");
+      throw new NotSupportedException("ThrowingDomainObjectCreator.CreateNewObject was invoked.");
     }
   }
 }

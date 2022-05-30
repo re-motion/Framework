@@ -24,41 +24,41 @@ namespace Remotion.Data.DomainObjects
   {
     void IDomainObjectCollectionEventRaiser.BeginAdd (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      OnAdding (new DomainObjectCollectionChangeEventArgs (domainObject));
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      OnAdding(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
     void IDomainObjectCollectionEventRaiser.EndAdd (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      OnAdded (new DomainObjectCollectionChangeEventArgs (domainObject));
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      OnAdded(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
     void IDomainObjectCollectionEventRaiser.BeginRemove (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      OnRemoving (new DomainObjectCollectionChangeEventArgs (domainObject));
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      OnRemoving(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
     void IDomainObjectCollectionEventRaiser.EndRemove (int index, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      OnRemoved (new DomainObjectCollectionChangeEventArgs (domainObject));
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      OnRemoved(new DomainObjectCollectionChangeEventArgs(domainObject));
     }
 
     void IDomainObjectCollectionEventRaiser.BeginDelete ()
     {
-      OnDeleting ();
+      OnDeleting();
     }
 
     void IDomainObjectCollectionEventRaiser.EndDelete ()
     {
-      OnDeleted ();
+      OnDeleted();
     }
 
     void IDomainObjectCollectionEventRaiser.WithinReplaceData ()
     {
-      OnReplaceData ();
+      OnReplaceData();
     }
   }
 }

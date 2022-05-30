@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions;
 using Remotion.SecurityManager.Domain;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes
 {
@@ -32,35 +33,35 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected new FormFunction<T> CurrentFunction
     {
-      get { return (FormFunction<T>) base.CurrentFunction; }
+      get { return (FormFunction<T>)base.CurrentFunction; }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       foreach (var control in _dataEditUserControls)
         control.DataSource.BusinessObject = CurrentFunction.CurrentObject;
 
       //Split to support IFormGridRowProvider
       if (IsPostBack)
-        LoadValuesInternal (true);
+        LoadValuesInternal(true);
     }
 
     protected override void OnLoadComplete (EventArgs e)
     {
       //Split to support IFormGridRowProvider
       if (!IsPostBack)
-        LoadValuesInternal (false);
+        LoadValuesInternal(false);
 
-      base.OnLoadComplete (e);
+      base.OnLoadComplete(e);
     }
 
     private void LoadValuesInternal (bool interim)
     {
       foreach (var control in _dataEditUserControls)
-        control.LoadValues (interim);
-      LoadValues (interim);
+        control.LoadValues(interim);
+      LoadValues(interim);
     }
 
     protected virtual void LoadValues (bool interim)
@@ -69,6 +70,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected void SaveButton_Click (object sender, EventArgs e)
     {
+      Assertion.IsNotNull(ClientTransaction.Current, "ClientTransaction.Current !=  when executing page lifecycle events.");
       bool isValid = true;
 
       PrepareValidation();
@@ -80,8 +82,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       if (isValid)
       {
         foreach (DataEditUserControl dataEditUserControl in _dataEditUserControls)
-          dataEditUserControl.SaveValues (false);
-        SaveValues (false);
+          dataEditUserControl.SaveValues(false);
+        SaveValues(false);
 
         if (ValidatePagePostSaveValues())
         {
@@ -91,7 +93,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
           }
           catch (Exception ex)
           {
-            if (IsValidationErrorException (ex))
+            if (IsValidationErrorException(ex))
             {
               ShowErrors();
               return;
@@ -137,17 +139,17 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       return true;
     }
 
-    protected override object SaveControlState ()
+    protected override object? SaveControlState ()
     {
       foreach (DataEditUserControl control in _dataEditUserControls)
-        control.SaveValues (true);
+        control.SaveValues(true);
 
-      return base.SaveControlState ();
+      return base.SaveControlState();
     }
 
     protected void RegisterDataEditUserControl (DataEditUserControl dataEditUserControl)
     {
-      _dataEditUserControls.Add (dataEditUserControl);
+      _dataEditUserControls.Add(dataEditUserControl);
     }
   }
 }

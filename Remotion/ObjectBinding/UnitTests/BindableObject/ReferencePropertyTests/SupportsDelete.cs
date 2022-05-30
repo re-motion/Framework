@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 {
@@ -28,7 +28,6 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
   [TestFixture]
   public class SupportsDelete : TestBase
   {
-    private MockRepository _mockRepository;
     private BindableObjectProvider _bindableObjectProviderForDeclaringType;
     private BindableObjectProvider _bindableObjectProviderForPropertyType;
 
@@ -36,134 +35,133 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
     {
       base.SetUp();
 
-      _mockRepository = new MockRepository();
-      _bindableObjectProviderForDeclaringType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
-      _bindableObjectProviderForPropertyType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
+      _bindableObjectProviderForDeclaringType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
+      _bindableObjectProviderForPropertyType = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
 
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (_bindableObjectProviderForDeclaringType);
-      BusinessObjectProvider.SetProvider<BindableObjectProviderForDeleteObjectServiceAttribute> (_bindableObjectProviderForPropertyType);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(_bindableObjectProviderForDeclaringType);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderForDeleteObjectServiceAttribute>(_bindableObjectProviderForPropertyType);
     }
 
     [Test]
     public void DeleteObjectServiceFromPropertyType ()
     {
-      IDeleteObjectServiceOnType serviceMock = _mockRepository.StrictMock<IDeleteObjectServiceOnType> ();
-      IBusinessObjectReferenceProperty property = DeleteProperty ("DeleteObjectServiceFromPropertyType");
+      var serviceMock = new Mock<IDeleteObjectServiceOnType>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = DeleteProperty("DeleteObjectServiceFromPropertyType");
 
-      Expect.Call (serviceMock.SupportsProperty (property)).Return (true);
-      _mockRepository.ReplayAll();
+      serviceMock.Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      _bindableObjectProviderForPropertyType.AddService (serviceMock);
+      _bindableObjectProviderForPropertyType.AddService(serviceMock.Object);
       bool actual = property.SupportsDelete;
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.True);
+      serviceMock.Verify();
+      Assert.That(actual, Is.True);
     }
 
     [Test]
     public void DeleteObjectServiceFromPropertyDeclaration ()
     {
-      var serviceMock = _mockRepository.StrictMock<IDeleteObjectServiceOnProperty>();
-      var createObjectServiceOnTypeStub = _mockRepository.StrictMock<IDeleteObjectServiceOnType>();
-      IBusinessObjectReferenceProperty property = DeleteProperty ("DeleteObjectServiceFromPropertyDeclaration");
+      var serviceMock = new Mock<IDeleteObjectServiceOnProperty>(MockBehavior.Strict);
+      var createObjectServiceOnTypeStub = new Mock<IDeleteObjectServiceOnType>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = DeleteProperty("DeleteObjectServiceFromPropertyDeclaration");
 
-      Expect.Call (serviceMock.SupportsProperty (property)).Return (true);
-      _mockRepository.ReplayAll();
+      serviceMock.Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      _bindableObjectProviderForPropertyType.AddService (createObjectServiceOnTypeStub);
-      _bindableObjectProviderForDeclaringType.AddService (serviceMock);
+      _bindableObjectProviderForPropertyType.AddService(createObjectServiceOnTypeStub.Object);
+      _bindableObjectProviderForDeclaringType.AddService(serviceMock.Object);
       bool actual = property.SupportsDelete;
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.True);
+      serviceMock.Verify();
+      createObjectServiceOnTypeStub.Verify();
+      Assert.That(actual, Is.True);
     }
 
     [Test]
     public void UnknownDeleteObjectService ()
     {
-      IBusinessObjectReferenceProperty property = DeleteProperty ("DeleteObjectServiceFromPropertyType");
+      IBusinessObjectReferenceProperty property = DeleteProperty("DeleteObjectServiceFromPropertyType");
 
-      Assert.That (property.SupportsDelete, Is.False);
+      Assert.That(property.SupportsDelete, Is.False);
     }
 
     [Test]
     public void WithoutDeleteObjectServiceAttribute_AndDefaultDeleteObjectService_FromPropertyDeclaration ()
     {
-      var deleteObjectServiceMock = _mockRepository.StrictMock<IDeleteObjectService> ();
-      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing ("NoDeleteObjectService");
+      var deleteObjectServiceMock = new Mock<IDeleteObjectService>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing("NoDeleteObjectService");
 
-      Expect.Call (deleteObjectServiceMock.SupportsProperty (property)).Return (true);
-      _mockRepository.ReplayAll();
+      deleteObjectServiceMock.Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (deleteObjectServiceMock);
+      _bindableObjectProviderForDeclaringType.AddService(deleteObjectServiceMock.Object);
       bool actual = property.SupportsDelete;
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.True);
+      deleteObjectServiceMock.Verify();
+      Assert.That(actual, Is.True);
     }
 
     [Test]
-    [Ignore ("TODO RM-4144: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4144: Extend fallback behavior to include property type.")]
     public void WithoutDeleteObjectServiceAttribute_AndDefaultDeleteObjectService_FromPropertyType ()
     {
-      var deleteObjectServiceMock = _mockRepository.StrictMock<IDeleteObjectService> ();
-      var businessObjectClassServiceMock = _mockRepository.StrictMock<IBusinessObjectClassService> ();
-      var businessObjectProviderMock = _mockRepository.StrictMock<IBusinessObjectProvider> ();
-      var businessObjectClassWithIdentityMock = _mockRepository.StrictMock<IBusinessObjectClassWithIdentity> ();
-      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing ("NoDeleteObjectService");
+      var deleteObjectServiceMock = new Mock<IDeleteObjectService>(MockBehavior.Strict);
+      var businessObjectClassServiceMock = new Mock<IBusinessObjectClassService>(MockBehavior.Strict);
+      var businessObjectProviderMock = new Mock<IBusinessObjectProvider>(MockBehavior.Strict);
+      var businessObjectClassWithIdentityMock = new Mock<IBusinessObjectClassWithIdentity>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing("NoDeleteObjectService");
 
-      Expect.Call (businessObjectClassWithIdentityMock.BusinessObjectProvider).Return (businessObjectProviderMock).Repeat.Any ();
-      Expect.Call (businessObjectProviderMock.GetService (typeof (IDeleteObjectService))).Return (deleteObjectServiceMock);
-      Expect.Call (businessObjectClassServiceMock.GetBusinessObjectClass (typeof (ClassFromOtherBusinessObjectImplementation)))
-          .Return (businessObjectClassWithIdentityMock);
-      Expect.Call (deleteObjectServiceMock.SupportsProperty (property)).Return (true);
-      _mockRepository.ReplayAll ();
+      businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns(deleteObjectServiceMock.Object).Verifiable();
+      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
+          .Returns(businessObjectClassWithIdentityMock.Object)
+          .Verifiable();
+      deleteObjectServiceMock.Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      _bindableObjectProviderForDeclaringType.AddService (businessObjectClassServiceMock);
+      _bindableObjectProviderForDeclaringType.AddService(businessObjectClassServiceMock.Object);
       bool actual = property.SupportsDelete;
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.True);
+      deleteObjectServiceMock.Verify();
+      businessObjectClassServiceMock.Verify();
+      businessObjectProviderMock.Verify();
+      businessObjectClassWithIdentityMock.Verify();
+      Assert.That(actual, Is.True);
     }
 
     [Test]
     public void WithoutDeleteObjectServiceAttribute_AndNoDefaultDeleteObjectService_FromPropertyDeclaration ()
     {
-      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing ("NoDeleteObjectService");
-
-      _mockRepository.ReplayAll ();
+      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing("NoDeleteObjectService");
 
       bool actual = property.SupportsDelete;
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.False);
+      Assert.That(actual, Is.False);
     }
 
     [Test]
-    [Ignore ("TODO RM-4144: Extend fallback behavior to include property type.")]
+    [Ignore("TODO RM-4144: Extend fallback behavior to include property type.")]
     public void WithoutDeleteObjectServiceAttribute_AndNoDefaultDeleteObjectService_FromPropertyType ()
     {
-      var businessObjectClassServiceMock = _mockRepository.StrictMock<IBusinessObjectClassService> ();
-      var businessObjectProviderMock = _mockRepository.StrictMock<IBusinessObjectProvider> ();
-      var businessObjectClassWithIdentityMock = _mockRepository.StrictMock<IBusinessObjectClassWithIdentity> ();
-      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing ("NoDeleteObjectService");
+      var businessObjectClassServiceMock = new Mock<IBusinessObjectClassService>(MockBehavior.Strict);
+      var businessObjectProviderMock = new Mock<IBusinessObjectProvider>(MockBehavior.Strict);
+      var businessObjectClassWithIdentityMock = new Mock<IBusinessObjectClassWithIdentity>(MockBehavior.Strict);
+      IBusinessObjectReferenceProperty property = DeletePropertyWithoutMixing("NoDeleteObjectService");
 
-      Expect.Call (businessObjectClassWithIdentityMock.BusinessObjectProvider).Return (businessObjectProviderMock).Repeat.Any ();
-      Expect.Call (businessObjectProviderMock.GetService (typeof (IDeleteObjectService))).Return (null);
-      Expect.Call (businessObjectClassServiceMock.GetBusinessObjectClass (typeof (ClassFromOtherBusinessObjectImplementation)))
-          .Return (businessObjectClassWithIdentityMock);
-      _mockRepository.ReplayAll ();
-      
-      _bindableObjectProviderForDeclaringType.AddService (businessObjectClassServiceMock);
+      businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
+      businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns((IBusinessObjectService)null).Verifiable();
+      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
+          .Returns(businessObjectClassWithIdentityMock.Object)
+          .Verifiable();
 
-      _mockRepository.VerifyAll ();
-      Assert.That (property.SupportsDelete, Is.False);
+      _bindableObjectProviderForDeclaringType.AddService(businessObjectClassServiceMock.Object);
+
+      businessObjectClassServiceMock.Verify();
+      businessObjectProviderMock.Verify();
+      businessObjectClassWithIdentityMock.Verify();
+      Assert.That(property.SupportsDelete, Is.False);
     }
 
     private ReferenceProperty DeleteProperty (string propertyName)
     {
-      PropertyBase.Parameters propertyParameters = GetPropertyParameters (propertyName);
-      return new ReferenceProperty (propertyParameters);
+      PropertyBase.Parameters propertyParameters = GetPropertyParameters(propertyName);
+      return new ReferenceProperty(propertyParameters);
     }
 
     private ReferenceProperty DeletePropertyWithoutMixing (string propertyName)
@@ -171,14 +169,14 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       PropertyBase.Parameters propertyParameters;
       using (MixinConfiguration.BuildNew().EnterScope())
       {
-        propertyParameters = GetPropertyParameters (propertyName);
+        propertyParameters = GetPropertyParameters(propertyName);
       }
-      return new ReferenceProperty (propertyParameters);
+      return new ReferenceProperty(propertyParameters);
     }
 
     private PropertyBase.Parameters GetPropertyParameters (string propertyName)
     {
-      return GetPropertyParameters (GetPropertyInfo (typeof (ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
+      return GetPropertyParameters(GetPropertyInfo(typeof(ClassWithBusinessObjectProperties), propertyName), _bindableObjectProviderForDeclaringType);
     }
   }
 #pragma warning restore 612,618

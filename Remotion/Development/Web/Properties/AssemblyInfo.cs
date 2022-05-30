@@ -17,8 +17,9 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Development Support Library for Web Applications")]
-[assembly: AssemblyDescription ("Library for unit testing, building, and other development-time activities of web applications.")]
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant (true)]
-
+#if NETFRAMEWORK
+[assembly: CLSCompliant(true)]
+#else
+[assembly: CLSCompliant(false)]
+#endif

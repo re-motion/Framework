@@ -29,33 +29,33 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class StyleSheetBlock : HtmlHeadElement
   {
-    private static readonly string s_tagName = HtmlTextWriterTag.Style.ToString ().ToLower ();
-    private static readonly string s_typeAttribute = HtmlTextWriterAttribute.Type.ToString ().ToLower ();
-   
+    private static readonly string s_tagName = HtmlTextWriterTag.Style.ToString().ToLower();
+    private static readonly string s_typeAttribute = HtmlTextWriterAttribute.Type.ToString().ToLower();
+
     private readonly StyleSheetElement[] _styleSheetElements;
 
     public StyleSheetBlock (IEnumerable<StyleSheetElement> styleSheetElements)
     {
-      ArgumentUtility.CheckNotNull ("styleSheetElements", styleSheetElements);
+      ArgumentUtility.CheckNotNull("styleSheetElements", styleSheetElements);
       _styleSheetElements = styleSheetElements.ToArray();
     }
 
     public ReadOnlyCollection<StyleSheetElement> StyleSheetElements
     {
-      get { return new ReadOnlyCollection<StyleSheetElement> (_styleSheetElements); }
+      get { return new ReadOnlyCollection<StyleSheetElement>(_styleSheetElements); }
     }
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      writer.WriteBeginTag (s_tagName);
-      writer.WriteAttribute (s_typeAttribute, "text/css");
-      writer.WriteLine ('>');
+      writer.WriteBeginTag(s_tagName);
+      writer.WriteAttribute(s_typeAttribute, "text/css");
+      writer.WriteLine('>');
       writer.Indent++;
 
       foreach (var element in _styleSheetElements)
-        element.Render (writer);
+        element.Render(writer);
 
       writer.Indent--;
       writer.WriteEndTag(s_tagName);

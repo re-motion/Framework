@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Remotion.ServiceLocation;
@@ -28,7 +29,7 @@ namespace Remotion.Globalization.Implementation
   /// delegates to them to retrieve localized name for a specified <see cref="Enum"/> value.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundEnumerationGlobalizationService : IEnumerationGlobalizationService
   {
     private readonly IReadOnlyCollection<IEnumerationGlobalizationService> _enumerationGlobalizationServices;
@@ -39,7 +40,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="enumerationGlobalizationServices"> The <see cref="IEnumerationGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundEnumerationGlobalizationService (IEnumerable<IEnumerationGlobalizationService> enumerationGlobalizationServices)
     {
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationServices", enumerationGlobalizationServices);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationServices", enumerationGlobalizationServices);
 
       _enumerationGlobalizationServices = enumerationGlobalizationServices.ToArray();
     }
@@ -49,13 +50,13 @@ namespace Remotion.Globalization.Implementation
       get { return _enumerationGlobalizationServices; }
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
       foreach (var service in _enumerationGlobalizationServices)
       {
-        if (service.TryGetEnumerationValueDisplayName (value, out result))
+        if (service.TryGetEnumerationValueDisplayName(value, out result))
           return true;
       }
 
@@ -65,15 +66,15 @@ namespace Remotion.Globalization.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
       Dictionary<CultureInfo,string> result = new Dictionary<CultureInfo, string>();
       foreach (var service in _enumerationGlobalizationServices)
       {
-        foreach (var localization in service.GetAvailableEnumDisplayNames (value))
+        foreach (var localization in service.GetAvailableEnumDisplayNames(value))
         {
-          if (!result.ContainsKey (localization.Key))
-            result.Add (localization.Key,localization.Value);
+          if (!result.ContainsKey(localization.Key))
+            result.Add(localization.Key,localization.Value);
         }
       }
 

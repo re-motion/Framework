@@ -16,45 +16,37 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using FluentValidation.Resources;
-using FluentValidation.Validators;
-using System.Linq;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Validation.Implementation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Base class for validation attributes used to substitute the API-based <see cref="ComponentValidationCollector{TValidatedType}"/>.
+  /// Base class for validation attributes used to substitute the API-based <see cref="ValidationRuleCollectorBase{TValidatedType}"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Property)]
+  [AttributeUsage(AttributeTargets.Property)]
   public abstract class AddingValidationAttributeBase : Attribute
   {
     /// <summary>
     /// Gets or sets a flag whether the constraint can be removed by an other component.
     /// </summary>
-    public bool IsHardConstraint { get; set; }
+    public bool IsRemovable { get; set; }
 
     /// <summary>
     /// Gets or sets the error message displayed when the validation fails.
     /// </summary>
-    public string ErrorMessage { get; set; }
+    public string? ErrorMessage { get; set; }
 
-    protected abstract IEnumerable<IPropertyValidator> GetValidators (PropertyInfo property); 
+    protected abstract IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory);
 
-    public IEnumerable<IPropertyValidator> GetPropertyValidators (PropertyInfo property)
+    public IEnumerable<IPropertyValidator> GetPropertyValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      
-      var validators = GetValidators(property).ToArray();
+      ArgumentUtility.CheckNotNull("property", property);
+      ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      if (!string.IsNullOrEmpty (ErrorMessage))
-      {
-        foreach (var validator in validators)
-          validator.ErrorMessageSource = new StaticStringSource (ErrorMessage); //Note: currently only static error messages are supported!
-      }
-
-      return validators;
+      return GetValidators(property, validationMessageFactory);
     }
   }
 }

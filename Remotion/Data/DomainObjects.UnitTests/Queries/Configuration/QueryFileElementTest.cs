@@ -29,36 +29,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     public void GetRootedPath_WithFullPath_ReturnsFullPath ()
     {
       string path = @"c:\foo\bar.txt";
-      Assert.That (QueryFileElement.GetRootedPath (path), Is.EqualTo (path));
+      Assert.That(QueryFileElement.GetRootedPath(path), Is.EqualTo(path));
     }
 
     [Test]
     public void GetRootedPath_WithRootedRelativePath_ReturnsFullPath ()
     {
       string path = @"\foo\bar.txt";
-      string fullPath = Path.GetFullPath (path);
-      Assert.That (QueryFileElement.GetRootedPath (path), Is.EqualTo (fullPath));
+      string fullPath = Path.GetFullPath(path);
+      Assert.That(QueryFileElement.GetRootedPath(path), Is.EqualTo(fullPath));
     }
 
     [Test]
     public void GetRootedPath_WithUnrootedPath_ReturnsPathRelativeToAppBase ()
     {
       string path = @"foo\bar.txt";
-      string fullPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, @"foo\bar.txt");
-      Assert.That (QueryFileElement.GetRootedPath (path), Is.EqualTo (fullPath));
+      string fullPath = Path.Combine(AppContext.BaseDirectory, @"foo\bar.txt");
+      Assert.That(QueryFileElement.GetRootedPath(path), Is.EqualTo(fullPath));
     }
 
     [Test]
+#if !NETFRAMEWORK
+    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
+#endif
     public void GetRootedPath_WithUnrootedPath_ReturnsPathRelativeToAppBase_InSeparateAddDomain ()
     {
       AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
+#if NETFRAMEWORK
       setup.ApplicationBase = @"c:\";
-      setup.DynamicBase = Path.GetTempPath ();
-      new AppDomainRunner (setup, delegate
+      setup.DynamicBase = Path.GetTempPath();
+#endif
+      new AppDomainRunner(setup, delegate
       {
         string path = @"foo\bar.txt";
-        string fullPath = Path.Combine (AppDomain.CurrentDomain.BaseDirectory, @"foo\bar.txt");
-        Assert.That (QueryFileElement.GetRootedPath (path), Is.EqualTo (fullPath));
+        string fullPath = Path.Combine(AppContext.BaseDirectory, @"foo\bar.txt");
+        Assert.That(QueryFileElement.GetRootedPath(path), Is.EqualTo(fullPath));
       }).Run();
     }
   }

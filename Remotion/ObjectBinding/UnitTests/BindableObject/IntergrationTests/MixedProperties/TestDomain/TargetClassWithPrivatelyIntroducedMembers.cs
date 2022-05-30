@@ -19,7 +19,7 @@ using Remotion.Mixins;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.MixedProperties.TestDomain
 {
-  [Uses (typeof (MixinClass), IntroducedMemberVisibility = MemberVisibility.Private)]
+  [Uses(typeof(MixinClass), IntroducedMemberVisibility = MemberVisibility.Private)]
   [BindableObject]
   public class TargetClassWithPrivatelyIntroducedMembers
   {

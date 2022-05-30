@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Utilities;
@@ -30,41 +30,41 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public TransportTransactionListener (DomainObjectTransporter transporter)
     {
-      ArgumentUtility.CheckNotNull ("transporter", transporter);
+      ArgumentUtility.CheckNotNull("transporter", transporter);
       _transporter = transporter;
     }
 
-    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       CheckDomainObjectForChangedProperty(domainObject);
     }
 
-    public override void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public override void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       if (!relationEndPointDefinition.IsVirtual)
-        CheckDomainObjectForChangedProperty (domainObject);
+        CheckDomainObjectForChangedProperty(domainObject);
     }
 
-    public override void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public override void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
-      throw new InvalidOperationException ("The transport transaction cannot be committed.");
+      throw new InvalidOperationException("The transport transaction cannot be committed.");
     }
 
-    public override void TransactionRollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public override void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
-      throw new InvalidOperationException ("The transport transaction cannot be rolled back.");
+      throw new InvalidOperationException("The transport transaction cannot be rolled back.");
     }
 
     private void CheckDomainObjectForChangedProperty (DomainObject domainObject)
     {
       if (_transporter == null)
-        throw new InvalidOperationException ("Cannot use the transported transaction for changing properties after it has been deserialized.");
+        throw new InvalidOperationException("Cannot use the transported transaction for changing properties after it has been deserialized.");
 
-      if (!_transporter.IsLoaded (domainObject.ID))
+      if (!_transporter.IsLoaded(domainObject.ID))
       {
-        string message = string.Format ("Object '{0}' cannot be modified for transportation because it hasn't been loaded yet. Load it before "
+        string message = string.Format("Object '{0}' cannot be modified for transportation because it hasn't been loaded yet. Load it before "
                                         + "manipulating it.", domainObject.ID);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
     }
   }

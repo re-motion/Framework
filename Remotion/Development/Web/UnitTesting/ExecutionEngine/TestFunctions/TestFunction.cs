@@ -25,26 +25,26 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
     public static readonly string Parameter1Name = "Parameter1";
     public static readonly string ReturnUrlValue = "DefaultReturn.html";
 
-    private WxeContext _wxeContextStep2;
-    private string _lastExecutedStepID;
+    private WxeContext? _wxeContextStep2;
+    private string? _lastExecutedStepID;
     private string _executionOrder = string.Empty;
 
     public TestFunction ()
-      :base (new NoneTransactionMode())
+      :base(new NoneTransactionMode())
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
     public TestFunction (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
       ReturnUrl = TestFunction.ReturnUrlValue;
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
-    public string Parameter1
+    [WxeParameter(1, false, WxeParameterDirection.In)]
+    public string? Parameter1
     {
-      get { return (string) Variables["Parameter1"]; }
+      get { return (string?)Variables["Parameter1"]; }
       set { Variables["Parameter1"] = value; }
     }
 
@@ -68,15 +68,15 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
 
     public void PublicStepMethod ()
     {
-      Step1 ();
+      Step1();
     }
 
     public void PublicStepMethodWithContext (WxeContext context)
     {
-      Step2 (context);
+      Step2(context);
     }
 
-    public string LastExecutedStepID
+    public string? LastExecutedStepID
     {
       get { return _lastExecutedStepID; }
     }
@@ -91,7 +91,7 @@ namespace Remotion.Development.Web.UnitTesting.ExecutionEngine.TestFunctions
       get { return Step3; }
     }
 
-    public WxeContext WxeContextStep2
+    public WxeContext? WxeContextStep2
     {
       get { return _wxeContextStep2; }
     }

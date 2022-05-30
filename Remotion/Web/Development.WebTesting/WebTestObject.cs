@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting
 
     protected WebTestObject ([NotNull] TWebTestObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       _context = context;
     }
@@ -50,6 +50,14 @@ namespace Remotion.Web.Development.WebTesting
     public ElementScope Scope
     {
       get { return Context.Scope; }
+    }
+
+    /// <summary>
+    /// Shortcut for <see cref="Context"/>.<see cref="WebTestObjectContext.Browser"/>.<see cref="Driver"/>.
+    /// </summary>
+    public IDriver Driver
+    {
+      get { return Context.Browser.Driver; }
     }
   }
 }

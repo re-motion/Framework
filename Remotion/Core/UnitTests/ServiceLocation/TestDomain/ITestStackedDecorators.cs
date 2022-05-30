@@ -23,12 +23,12 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof (ITestStackedDecorators), RegistrationType = RegistrationType.Single, Position = 1)]
+  [ImplementationFor(typeof(ITestStackedDecorators), RegistrationType = RegistrationType.Single, Position = 1)]
   public class TestStackedDecoratorsObject1 : ITestStackedDecorators
   {
   }
 
-  [ImplementationFor (typeof (ITestStackedDecorators), RegistrationType = RegistrationType.Decorator, Position = 1)]
+  [ImplementationFor(typeof(ITestStackedDecorators), RegistrationType = RegistrationType.Decorator, Position = 1)]
   public class TestStackedDecoratorsDecorator1 : ITestStackedDecorators
   {
     private readonly ITestStackedDecorators _decoratedObject;
@@ -44,7 +44,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
     }
   }
 
-  [ImplementationFor (typeof (ITestStackedDecorators), RegistrationType = RegistrationType.Decorator, Position = 2)]
+  [ImplementationFor(typeof(ITestStackedDecorators), RegistrationType = RegistrationType.Decorator, Position = 2)]
   public class TestStackedDecoratorsDecorator2 : ITestStackedDecorators
   {
     private readonly ITestStackedDecorators _decoratedObject;

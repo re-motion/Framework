@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -50,7 +51,9 @@ namespace Remotion.Data.DomainObjects
 /// ensure they are executed in the right context.
 /// </para>
 /// </remarks>
+#if FEATURE_SERIALIZATION
 [Serializable]
+#endif
 public class ClientTransaction
 {
   /// <summary>
@@ -63,7 +66,7 @@ public class ClientTransaction
   public static ClientTransaction CreateRootTransaction ()
   {
     var componentFactory = RootClientTransactionComponentFactory.Create();
-    return ObjectFactory.Create<ClientTransaction> (true, ParamList.Create (componentFactory));
+    return ObjectFactory.Create<ClientTransaction>(true, ParamList.Create(componentFactory));
   }
 
   /// <summary>
@@ -73,12 +76,12 @@ public class ClientTransaction
   /// <remarks>This method is a shortcut for calling <see cref="ClientTransactionScope.CurrentTransaction"/>, but it doesn't throw an exception but
   /// return <see langword="null"/> if no transaction exists for the current thread.
   /// </remarks>
-  public static ClientTransaction Current
+  public static ClientTransaction? Current
   {
     get
     {
       // Performance: In order to reduce SafeContext calls, we do not use HasCurrentTransaction/CurrentTransaction here
-      ClientTransactionScope activeScope = ClientTransactionScope.ActiveScope;
+      var activeScope = ClientTransactionScope.ActiveScope;
 
       if (activeScope != null && activeScope.ScopedTransaction != null)
         return activeScope.ScopedTransaction;
@@ -92,32 +95,32 @@ public class ClientTransaction
   /// <summary>
   /// Occurs when the <b>ClientTransaction</b> has created a subtransaction.
   /// </summary>
-  public event EventHandler<SubTransactionCreatedEventArgs> SubTransactionCreated;
+  public event EventHandler<SubTransactionCreatedEventArgs>? SubTransactionCreated;
 
   /// <summary>
   /// Occurs after the <b>ClientTransaction</b> has loaded a new object.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> Loaded;
+  public event EventHandler<ClientTransactionEventArgs>? Loaded;
 
   /// <summary>
   /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Commit"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionCommittingEventArgs> Committing;
+  public event EventHandler<ClientTransactionCommittingEventArgs>? Committing;
 
   /// <summary>
   /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Commit"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> Committed;
+  public event EventHandler<ClientTransactionEventArgs>? Committed;
 
   /// <summary>
   /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Rollback"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> RollingBack;
+  public event EventHandler<ClientTransactionEventArgs>? RollingBack;
 
   /// <summary>
   /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Rollback"/> operation.
   /// </summary>
-  public event EventHandler<ClientTransactionEventArgs> RolledBack;
+  public event EventHandler<ClientTransactionEventArgs>? RolledBack;
 
   private readonly IDictionary<Enum, object> _applicationData;
   private readonly ITransactionHierarchyManager _hierarchyManager;
@@ -133,31 +136,31 @@ public class ClientTransaction
 
   private bool _isDiscarded;
 
-  private readonly Guid _id = Guid.NewGuid ();
+  private readonly Guid _id = Guid.NewGuid();
 
   protected ClientTransaction (IClientTransactionComponentFactory componentFactory)
   {
-    ArgumentUtility.CheckNotNull ("componentFactory", componentFactory);
-    
-    _applicationData = componentFactory.CreateApplicationData (this);
-    _eventBroker = componentFactory.CreateEventBroker (this);
-    _hierarchyManager = componentFactory.CreateTransactionHierarchyManager (this, _eventBroker);
-    _hierarchyManager.InstallListeners (_eventBroker);
-    _enlistedDomainObjectManager = componentFactory.CreateEnlistedObjectManager (this);
-    _invalidDomainObjectManager = componentFactory.CreateInvalidDomainObjectManager (this, _eventBroker);
-    _persistenceStrategy = componentFactory.CreatePersistenceStrategy (this);
-    _dataManager = componentFactory.CreateDataManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _hierarchyManager);
-    _objectLifetimeAgent = componentFactory.CreateObjectLifetimeAgent (
-        this, _eventBroker, _invalidDomainObjectManager, _dataManager, _enlistedDomainObjectManager, _persistenceStrategy);
-    _queryManager = componentFactory.CreateQueryManager (this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _dataManager, _hierarchyManager);
-    _commitRollbackAgent = componentFactory.CreateCommitRollbackAgent (this, _eventBroker, _persistenceStrategy, _dataManager);
+    ArgumentUtility.CheckNotNull("componentFactory", componentFactory);
 
-    var extensions = componentFactory.CreateExtensions (this);
+    _applicationData = componentFactory.CreateApplicationData(this);
+    _eventBroker = componentFactory.CreateEventBroker(this);
+    _hierarchyManager = componentFactory.CreateTransactionHierarchyManager(this, _eventBroker);
+    _hierarchyManager.InstallListeners(_eventBroker);
+    _enlistedDomainObjectManager = componentFactory.CreateEnlistedObjectManager(this);
+    _invalidDomainObjectManager = componentFactory.CreateInvalidDomainObjectManager(this, _eventBroker);
+    _persistenceStrategy = componentFactory.CreatePersistenceStrategy(this);
+    _dataManager = componentFactory.CreateDataManager(this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _hierarchyManager);
+    _objectLifetimeAgent = componentFactory.CreateObjectLifetimeAgent(
+        this, _eventBroker, _invalidDomainObjectManager, _dataManager, _enlistedDomainObjectManager, _persistenceStrategy);
+    _queryManager = componentFactory.CreateQueryManager(this, _eventBroker, _invalidDomainObjectManager, _persistenceStrategy, _dataManager, _hierarchyManager);
+    _commitRollbackAgent = componentFactory.CreateCommitRollbackAgent(this, _eventBroker, _persistenceStrategy, _dataManager);
+
+    var extensions = componentFactory.CreateExtensions(this);
     foreach (var extension in extensions)
-      _eventBroker.Extensions.Add (extension);
+      _eventBroker.Extensions.Add(extension);
 
     _hierarchyManager.OnBeforeTransactionInitialize();
-    _eventBroker.RaiseTransactionInitializeEvent ();
+    _eventBroker.RaiseTransactionInitializeEvent();
   }
 
   internal ITransactionHierarchyManager HierarchyManager
@@ -169,8 +172,8 @@ public class ClientTransaction
   /// Gets the parent transaction for this <see cref="ClientTransaction"/>, or <see langword="null" /> if this transaction is a root transaction.
   /// </summary>
   /// <value>The parent transaction, or <see langword="null" /> if this transaction is a root transaction.</value>
-  public ClientTransaction ParentTransaction 
-  { 
+  public ClientTransaction? ParentTransaction
+  {
     get { return _hierarchyManager.ParentTransaction; }
   }
 
@@ -179,7 +182,7 @@ public class ClientTransaction
   /// </summary>
   /// <value>The active sub-transaction, or <see langword="null" /> if this transaction has no sub-transaction.</value>
   /// <remarks>When the <see cref="SubTransaction"/> is discarded, this property is automatically set to <see langword="null" />.</remarks>
-  public ClientTransaction SubTransaction
+  public ClientTransaction? SubTransaction
   {
     get { return _hierarchyManager.SubTransaction; }
   }
@@ -189,8 +192,8 @@ public class ClientTransaction
   /// If this <see cref="ClientTransaction"/> is itself a root transaction (i.e, it has no <see cref="ParentTransaction"/>), it is returned.
   /// </summary>
   /// <value>The root transaction of this <see cref="ClientTransaction"/>.</value>
-  public ClientTransaction RootTransaction 
-  { 
+  public ClientTransaction RootTransaction
+  {
     get { return _hierarchyManager.TransactionHierarchy.RootTransaction; }
   }
 
@@ -301,19 +304,19 @@ public class ClientTransaction
   {
     string rootOrSub = ParentTransaction == null ? "root" : "sub";
     string leafOrParent = SubTransaction == null ? "leaf" : "parent";
-    return string.Format ("ClientTransaction ({0}, {1}) {2}", rootOrSub, leafOrParent, ID);
+    return string.Format("ClientTransaction ({0}, {1}) {2}", rootOrSub, leafOrParent, ID);
   }
 
   protected internal void AddListener (IClientTransactionListener listener)
   {
-    ArgumentUtility.CheckNotNull ("listener", listener);
-    _eventBroker.AddListener (listener);
+    ArgumentUtility.CheckNotNull("listener", listener);
+    _eventBroker.AddListener(listener);
   }
 
   protected void RemoveListener (IClientTransactionListener listener)
   {
-    ArgumentUtility.CheckNotNull ("listener", listener);
-    _eventBroker.RemoveListener (listener);
+    ArgumentUtility.CheckNotNull("listener", listener);
+    _eventBroker.RemoveListener(listener);
   }
 
   /// <summary>
@@ -338,11 +341,11 @@ public class ClientTransaction
   {
     if (!_isDiscarded)
     {
-      _eventBroker.RaiseTransactionDiscardEvent ();
+      _eventBroker.RaiseTransactionDiscardEvent();
       _hierarchyManager.OnTransactionDiscard();
 
       _isDiscarded = true;
-      AddListener (new InvalidatedTransactionListener());
+      AddListener(new InvalidatedTransactionListener());
     }
   }
 
@@ -373,7 +376,7 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransactionScope EnterDiscardingScope ()
   {
-    return EnterScope (AutoRollbackBehavior.Discard);
+    return EnterScope(AutoRollbackBehavior.Discard);
   }
 
   /// <summary>
@@ -399,8 +402,8 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransactionScope EnterScope (AutoRollbackBehavior rollbackBehavior)
   {
-    var activationScope = _hierarchyManager.TransactionHierarchy.ActivateTransaction (this);
-    return new ClientTransactionScope (this, rollbackBehavior, activationScope);
+    var activationScope = _hierarchyManager.TransactionHierarchy.ActivateTransaction(this);
+    return new ClientTransactionScope(this, rollbackBehavior, activationScope);
   }
 
   /// <summary>
@@ -432,7 +435,7 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransactionScope EnterNonDiscardingScope ()
   {
-    return EnterScope (AutoRollbackBehavior.None);
+    return EnterScope(AutoRollbackBehavior.None);
   }
 
   /// <summary>
@@ -454,7 +457,7 @@ public class ClientTransaction
   /// </remarks>
   public IEnumerable<DomainObject> GetEnlistedDomainObjects ()
   {
-    return _enlistedDomainObjectManager.GetEnlistedDomainObjects ();
+    return _enlistedDomainObjectManager.GetEnlistedDomainObjects();
   }
 
   /// <summary>
@@ -470,10 +473,10 @@ public class ClientTransaction
   /// The <see cref="DataContainer"/> of the returned object might not have been loaded yet. In that case, it will be loaded on first
   /// access of the object's properties, and this might trigger an <see cref="ObjectsNotFoundException"/> if the container cannot be loaded.
   /// </remarks>
-  public DomainObject GetEnlistedDomainObject (ObjectID objectID)
+  public DomainObject? GetEnlistedDomainObject (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _enlistedDomainObjectManager.GetEnlistedDomainObject (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _enlistedDomainObjectManager.GetEnlistedDomainObject(objectID);
   }
 
   /// <summary>
@@ -490,35 +493,36 @@ public class ClientTransaction
   /// </remarks>
   public bool IsEnlisted (DomainObject domainObject)
   {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    return _enlistedDomainObjectManager.IsEnlisted (domainObject);
+    ArgumentUtility.CheckNotNull("domainObject", domainObject);
+    return _enlistedDomainObjectManager.IsEnlisted(domainObject);
   }
 
   /// <summary>
   /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this 
-  /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. If the object's data can't be found, an exception is thrown
-  /// and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. If the object's data can't be found, an exception is thrown,
+  /// the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set, and the object becomes <b>invalid</b>
+  /// in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The domain object whose data must be loaded.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
   /// <exception cref="ObjectInvalidException">The given <paramref name="objectID"/> is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found object's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   public void EnsureDataAvailable (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
 
-    _dataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
+    _dataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true);
   }
 
   /// <summary>
   /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
-  /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
-  /// <see cref="ClientTransaction"/>.
+  /// If an object's data can't be found, an exception is thrown, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null" />.</exception>
@@ -526,22 +530,22 @@ public class ClientTransaction
   /// <see cref="ClientTransaction"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the given <paramref name="objectIDs"/> is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found objects'
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>s
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   public void EnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-    DataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound: true);
+    DataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound: true);
   }
 
   /// <summary>
   /// Ensures that the data of the <see cref="DomainObject"/> with the given <see cref="ObjectID"/> has been loaded into this
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the object's data. The method returns a value indicating whether the
-  /// object's data was found. If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the 
-  /// <see cref="ClientTransaction"/>.
+  /// object's data was found. If the object's data can't be found, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The domain object whose data must be loaded.</param>
   /// <returns><see langword="true" /> if the object's data is now available in the <see cref="ClientTransaction"/>, <see langword="false" /> if the 
@@ -550,9 +554,9 @@ public class ClientTransaction
   /// <exception cref="ObjectInvalidException">The given <paramref name="objectID"/> is invalid in this transaction.</exception>
   public bool TryEnsureDataAvailable (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
 
-    var dataContainer = DataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound: false);
+    var dataContainer = DataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound: false);
     return dataContainer != null;
   }
 
@@ -560,7 +564,8 @@ public class ClientTransaction
   /// Ensures that the data for the <see cref="DomainObject"/>s with the given <see cref="ObjectID"/> values has been loaded into this 
   /// <see cref="ClientTransaction"/>. If it hasn't, this method loads the objects' data, performing a bulk load operation.
   /// The method returns a value indicating whether the data of all the objects was found.
-  /// If an object's data can't be found, the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// If an object's data can't be found, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectIDs">The <see cref="ObjectID"/> values whose data must be loaded.</param>
   /// <returns><see langword="true" /> if the data is now available in the <see cref="ClientTransaction"/> for all objects, <see langword="false" /> 
@@ -571,10 +576,10 @@ public class ClientTransaction
   /// <exception cref="ObjectInvalidException">One of the given <paramref name="objectIDs"/> is invalid in this transaction.</exception>
   public bool TryEnsureDataAvailable (IEnumerable<ObjectID> objectIDs)
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-    var dataContainers = DataManager.GetDataContainersWithLazyLoad (objectIDs, false);
-    return dataContainers.All (dc => dc != null);
+    var dataContainers = DataManager.GetDataContainersWithLazyLoad(objectIDs, false);
+    return dataContainers.All(dc => dc != null);
   }
 
   /// <summary>
@@ -584,9 +589,9 @@ public class ClientTransaction
   /// <returns></returns>
   protected internal ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-    return _persistenceStrategy.CreateNewObjectID (classDefinition);
+    return _persistenceStrategy.CreateNewObjectID(classDefinition);
   }
 
   /// <summary>
@@ -598,10 +603,10 @@ public class ClientTransaction
   /// <exception cref="ArgumentNullException">The <paramref name="endPointID"/> parameter is <see langword="null" />.</exception>
   public void EnsureDataComplete (RelationEndPointID endPointID)
   {
-    var endPoint = DataManager.GetRelationEndPointWithLazyLoad (endPointID);
+    var endPoint = DataManager.GetRelationEndPointWithLazyLoad(endPointID);
     endPoint.EnsureDataComplete();
 
-    Assertion.IsTrue (endPoint.IsDataComplete);
+    Assertion.IsTrue(endPoint.IsDataComplete);
   }
 
   /// <summary>
@@ -616,10 +621,10 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransaction CreateSubTransaction ()
   {
-    return CreateSubTransaction ((parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink) =>
+    return CreateSubTransaction((parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink) =>
     {
-      var componentFactory = SubClientTransactionComponentFactory.Create (parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink);
-      return ObjectFactory.Create<ClientTransaction> (true, ParamList.Create (componentFactory));
+      var componentFactory = SubClientTransactionComponentFactory.Create(parentTx, invalidDomainObjectManager, enlistedDomainObjectManager, hierarchyManager, eventSink);
+      return ObjectFactory.Create<ClientTransaction>(true, ParamList.Create(componentFactory));
     });
   }
 
@@ -640,19 +645,24 @@ public class ClientTransaction
   /// </remarks>
   public virtual ClientTransaction CreateSubTransaction (SubTransactionFactory subTransactionFactory)
   {
-    ArgumentUtility.CheckNotNull ("subTransactionFactory", subTransactionFactory);
+    ArgumentUtility.CheckNotNull("subTransactionFactory", subTransactionFactory);
 
-    return _hierarchyManager.CreateSubTransaction (
-        tx => subTransactionFactory (tx, _invalidDomainObjectManager, _enlistedDomainObjectManager, _hierarchyManager, _eventBroker));
+    return _hierarchyManager.CreateSubTransaction(
+        tx => subTransactionFactory(tx, _invalidDomainObjectManager, _enlistedDomainObjectManager, _hierarchyManager, _eventBroker));
   }
 
   /// <summary>
-  /// Returns whether at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed.
+  /// Returns whether at least one <see cref="DomainObject"/> in this <see cref="ClassDefinition"/> matches the supplied <see cref="DomainObjectState"/> predicate.
   /// </summary>
-  /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
-  public virtual bool HasChanged ()
+  /// <returns>
+  /// <see langword="true"/> if at least one <see cref="DomainObject"/> in this <see cref="ClassDefinition"/> matches the supplied <see cref="DomainObjectState"/> predicate;
+  /// otherwise, <see langword="false"/>.
+  /// </returns>
+  public bool HasObjectsWithState (Predicate<DomainObjectState> predicate)
   {
-    return _commitRollbackAgent.HasDataChanged();
+    ArgumentUtility.CheckNotNull("predicate", predicate);
+
+    return _commitRollbackAgent.HasData(predicate);
   }
 
   /// <summary>
@@ -665,11 +675,12 @@ public class ClientTransaction
   /// Committing a <see cref="ClientTransaction"/> raises a number of events:
   /// <list type="number">
   /// <item><description>
-  /// First, a chain of Commtting events is raised. Each Committing event can cancel the <see cref="Commit"/> operation by throwing an exception 
+  /// First, a chain of Committing events is raised. Each Committing event can cancel the <see cref="Commit"/> operation by throwing an exception 
   /// (which, after canceling the operation, will be propagated to the caller). Committing event handlers can also modify each 
   /// <see cref="DomainObject"/> being committed, and they can add or remove objects to or from the commit set. For example, if a Committing event
-  /// handler modifies a changed object so that it becomes <see cref="StateType.Unchanged"/>, that object will be removed from the commit set.
-  /// Or, if a handler modifies an unchanged object so that it becomes <see cref="StateType.Changed"/>, it will become part of the commit set.
+  /// handler modifies a changed object so that the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag is set,
+  /// that object will be removed from the commit set. Or, if a handler modifies an unchanged object so that it's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag is set, it will become part of the commit set.
   /// When a set of objects (a, b) is committed, the Committing event chain consists of the following events, raised in order:
   /// <list type="number">
   /// <item><description>
@@ -724,8 +735,9 @@ public class ClientTransaction
   /// First, a chain of RollingBack events is raised. Each RollingBack event can cancel the <see cref="Rollback"/> operation by throwing an exception 
   /// (which, after canceling the operation, will be propagated to the caller). RollingBack event handlers can also modify each 
   /// <see cref="DomainObject"/> being rolled back, and they can add or remove objects to or from the rollback set. For example, if a RollingBack event
-  /// handler modifies a changed object so that it becomes <see cref="StateType.Unchanged"/>, that object will no longer need to be rolled back.
-  /// Or, if a handler modifies an unchanged object so that it becomes <see cref="StateType.Changed"/>, it will become part of the rollback set.
+  /// handler modifies a changed object so that it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag is set,
+  /// that object will no longer need to be rolled back. Or, if a handler modifies an unchanged object so that it's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag is set, it will become part of the rollback set.
   /// When a set of objects (a, b) is rolled back, the RollingBack event chain consists of the following events, raised in order:
   /// <list type="number">
   /// <item><description>
@@ -762,16 +774,17 @@ public class ClientTransaction
 
   /// <summary>
   /// Gets a <see cref="DomainObject"/> that is already loaded or attempts to load it from the data source. If the object's data can't be found, an 
-  /// exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// exception is thrown, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set, and the object becomes
+  /// <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> that should be loaded. Must not be <see langword="null"/>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <see cref="DomainObject"/>s that are already deleted.</param>
   /// <returns>The <see cref="DomainObject"/> with the specified <paramref name="id"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// The object could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found object's
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   /// <exception cref="ObjectInvalidException">The object is invalid in this transaction.</exception>
   /// <exception cref="Persistence.StorageProviderException">
@@ -783,14 +796,15 @@ public class ClientTransaction
   /// <see langword="false" />.</exception>
   protected internal virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull("id", id);
 
-    return _objectLifetimeAgent.GetObject (id, includeDeleted);
+    return _objectLifetimeAgent.GetObject(id, includeDeleted);
   }
 
   /// <summary>
-  /// Gets an object that is already loaded (even if its marked <see cref="StateType.Invalid"/>) or attempts to load them from the data source. 
-  /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>.
+  /// Gets an object that is already loaded (even if its <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set)
+  /// or attempts to load them from the data source. If an object cannot be found, it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="objectID">The ID of the object to be retrieved.</param>
   /// <returns>
@@ -802,10 +816,10 @@ public class ClientTransaction
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the data source.
   /// </exception>
-  protected internal virtual DomainObject TryGetObject (ObjectID objectID)
+  protected internal virtual DomainObject? TryGetObject (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _objectLifetimeAgent.TryGetObject (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _objectLifetimeAgent.TryGetObject(objectID);
   }
 
   /// <summary>
@@ -815,35 +829,42 @@ public class ClientTransaction
   /// object with the given <see cref="ObjectID"/> actually exists in the data source, and it will also return invalid or deleted objects.
   /// </summary>
   /// <param name="objectID">The <see cref="ObjectID"/> to get an object reference for.</param>
-  /// <returns>An object with the given <see cref="ObjectID"/>, possibly in <see cref="StateType.NotLoadedYet"/>, <see cref="StateType.Deleted"/>,
-  /// or <see cref="StateType.Invalid"/> state.</returns>
+  /// <returns>
+  /// An object with the given <see cref="ObjectID"/>, possibly with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/>,
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/>, or <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flags set.
+  /// </returns>
   /// <remarks>
   /// <para>
   /// When an object with the given <paramref name="objectID"/> has already been enlisted in the transaction, that object is returned. Otherwise,
-  /// an object in <see cref="StateType.NotLoadedYet"/> state is created and enlisted without loading its data from the data source. In such a case,
-  /// the object's data is loaded when it's first needed; e.g., when one of its properties is accessed or when 
-  /// <see cref="EnsureDataAvailable(Remotion.Data.DomainObjects.ObjectID)"/> is called for its <see cref="ObjectID"/>. At that point, an
-  /// <see cref="ObjectsNotFoundException"/> may be triggered when the object's data cannot be found.
+  /// an object with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag set is created and enlisted
+  /// without loading its data from the data source. In such a case, the object's data is loaded when it's first needed; e.g., when one of its
+  /// properties is accessed or when <see cref="EnsureDataAvailable(Remotion.Data.DomainObjects.ObjectID)"/> is called for its <see cref="ObjectID"/>.
+  /// At that point, an <see cref="ObjectsNotFoundException"/> may be triggered when the object's data cannot be found.
   /// </para>
   /// </remarks>
   /// <exception cref="ArgumentNullException">The <paramref name="objectID"/> parameter is <see langword="null" />.</exception>
   protected internal virtual DomainObject GetObjectReference (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _objectLifetimeAgent.GetObjectReference (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _objectLifetimeAgent.GetObjectReference(objectID);
   }
 
   /// <summary>
-  /// Gets a reference to a <see cref="DomainObject"/> that is currently in <see cref="StateType.Invalid"/> state. If the object is not actually
-  /// invalid (check with <see cref="IsInvalid"/>), an exception is throws.
+  /// Gets a reference to a <see cref="DomainObject"/> that has <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set at this time.
+  /// If the object is not actually invalid (check with <see cref="ClientTransaction"/>.<see cref="IsInvalid"/>), an exception is throws.
   /// </summary>
   /// <param name="objectID">The object ID to get the <see cref="DomainObject"/> reference for.</param>
-  /// <returns>An object with the given <see cref="ObjectID"/> in <see cref="StateType.Invalid"/> state.</returns>
-  /// <exception cref="InvalidOperationException">The object is not currently in <see cref="StateType.Invalid"/> state.</exception>
+  /// <returns>
+  /// An object with the given <see cref="ObjectID"/> that has <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set.
+  /// </returns>
+  /// <exception cref="InvalidOperationException">
+  /// The object does not have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set at this time.
+  /// </exception>
   protected internal virtual DomainObject GetInvalidObjectReference (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _invalidDomainObjectManager.GetInvalidObjectReference (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _invalidDomainObjectManager.GetInvalidObjectReference(objectID);
   }
 
   /// <summary>
@@ -855,23 +876,23 @@ public class ClientTransaction
   /// </returns>
   public bool IsInvalid (ObjectID objectID)
   {
-    ArgumentUtility.CheckNotNull ("objectID", objectID);
-    return _invalidDomainObjectManager.IsInvalid (objectID);
+    ArgumentUtility.CheckNotNull("objectID", objectID);
+    return _invalidDomainObjectManager.IsInvalid(objectID);
   }
 
   protected internal virtual DomainObject NewObject (Type domainObjectType, ParamList constructorParameters)
   {
-    ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
-    ArgumentUtility.CheckNotNull ("constructorParameters", constructorParameters);
+    ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
+    ArgumentUtility.CheckNotNull("constructorParameters", constructorParameters);
 
-    var classDefinition = MappingConfiguration.Current.GetTypeDefinition (domainObjectType);
-    return _objectLifetimeAgent.NewObject (classDefinition, constructorParameters);
+    var classDefinition = MappingConfiguration.Current.GetTypeDefinition(domainObjectType);
+    return _objectLifetimeAgent.NewObject(classDefinition, constructorParameters);
   }
 
   /// <summary>
   /// Gets a number of objects that are already loaded or attempts to load them from the data source.
-  /// If an object's data can't be found, an exception is thrown, and the object is marked <see cref="StateType.Invalid"/> in the 
-  /// <see cref="ClientTransaction"/>.
+  /// If an object's data can't be found, an exception is thrown, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+  /// flag is set, and the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
@@ -881,21 +902,22 @@ public class ClientTransaction
   /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the expected type <typeparamref name="T"/>.</exception>
   /// <exception cref="ObjectInvalidException">One of the retrieved objects is invalid in this transaction.</exception>
   /// <exception cref="ObjectsNotFoundException">
-  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> marks
-  /// not found objects as <see cref="StateType.Invalid"/>, so calling this API again witht he same <see cref="ObjectID"/> results in a 
-  /// <see cref="ObjectInvalidException"/> being thrown.
+  /// One or more objects could not be found in the data source. Note that the <see cref="ClientTransaction"/> sets the not found objects'
+  /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag, so calling this API again with the same <see cref="ObjectID"/>
+  /// results in a <see cref="ObjectInvalidException"/> being thrown.
   /// </exception>
   protected internal T[] GetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
-    return _objectLifetimeAgent.GetObjects<T> (objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+    return _objectLifetimeAgent.GetObjects<T>(objectIDs);
   }
 
   /// <summary>
   /// Gets a number of objects that are already loaded (including invalid objects) or attempts to load them from the data source. 
-  /// If an object cannot be found, it will be marked <see cref="StateType.Invalid"/> in the <see cref="ClientTransaction"/>, and the result array will 
-  /// contain a <see langword="null" /> reference in its place.
+  /// If an object cannot be found, the object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set,
+  /// the object becomes <b>invalid</b> in the <see cref="ClientTransaction"/>, and the result array will contain a <see langword="null" />
+  /// reference in its place.
   /// </summary>
   /// <typeparam name="T">The type of objects expected to be returned. Specify <see cref="DomainObject"/> if no specific type is expected.</typeparam>
   /// <param name="objectIDs">The IDs of the objects to be retrieved.</param>
@@ -903,11 +925,11 @@ public class ClientTransaction
   /// <paramref name="objectIDs"/>. This list can contain invalid and <see langword="null" /> <see cref="DomainObject"/> references.</returns>
   /// <exception cref="ArgumentNullException">The <paramref name="objectIDs"/> parameter is <see langword="null"/>.</exception>
   /// <exception cref="InvalidCastException">One of the retrieved objects doesn't fit the specified type <typeparamref name="T"/>.</exception>
-  protected internal T[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
+  protected internal T?[] TryGetObjects<T> (IEnumerable<ObjectID> objectIDs)
       where T : DomainObject
   {
-    ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
-    return _objectLifetimeAgent.TryGetObjects<T> (objectIDs);
+    ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
+    return _objectLifetimeAgent.TryGetObjects<T>(objectIDs);
   }
 
   /// <summary>
@@ -917,21 +939,21 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> that is the current related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
-  protected internal virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObject? GetRelatedObject (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-      throw new ArgumentException ("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-    var objectEndPoint = (IObjectEndPoint) DataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-    DomainObject relatedObject = objectEndPoint.GetOppositeObject ();
+    var objectEndPoint = (IObjectEndPoint)DataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    DomainObject? relatedObject = objectEndPoint.GetOppositeObject();
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Current);
 
     return relatedObject;
   }
@@ -943,21 +965,21 @@ public class ClientTransaction
   /// <returns>The <see cref="DomainObject"/> that is the original related object.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to an <see cref="ObjectEndPoint"/></exception>
-  protected internal virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
+  protected internal virtual DomainObject? GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.One)
-      throw new ArgumentException ("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object (cardinality one).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-    var objectEndPoint = (IObjectEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-    DomainObject relatedObject = objectEndPoint.GetOriginalOppositeObject ();
+    var objectEndPoint = (IObjectEndPoint)_dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    DomainObject? relatedObject = objectEndPoint.GetOriginalOppositeObject();
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, relatedObject, ValueAccess.Original);
 
     return relatedObject;
   }
@@ -965,56 +987,80 @@ public class ClientTransaction
   /// <summary>
   /// Gets the related objects of a given <see cref="RelationEndPointID"/>.
   /// </summary>
-  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
-  /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
+  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+  /// <returns>An <see cref="IObjectList{IDomainObject}"/> or a <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="CollectionEndPoint"/></exception>
-  protected internal virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
+  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
+  protected internal virtual IReadOnlyList<IDomainObject> GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-      throw new ArgumentException ("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Current);
 
-    var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-    var relatedObjects = collectionEndPoint.Collection;
-    var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
+    IReadOnlyCollectionData<DomainObject> readOnlyRelatedObjects;
+    IReadOnlyList<IDomainObject> relatedObjects;
+    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
+    {
+      var domainObjectCollection = domainObjectCollectionEndPoint.Collection;
+      relatedObjects = (IReadOnlyList<IDomainObject>)domainObjectCollection;
+      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(domainObjectCollection);
+    }
+    else
+    {
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint)collectionEndPoint;
+      relatedObjects = virtualCollectionEndPoint.Collection;
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>)relatedObjects;
+    }
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Current);
 
     return relatedObjects;
   }
 
-  /// <summary>
-  /// Gets the original related objects of a given <see cref="RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
-  /// </summary>
-  /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="CollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
-  /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
-  /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="CollectionEndPoint"/></exception>
-  protected internal virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
+    /// <summary>
+    /// Gets the original related objects of a given <see cref="RelationEndPointID"/> at the point of instantiation, loading, commit or rollback.
+    /// </summary>
+    /// <param name="relationEndPointID">The <see cref="RelationEndPointID"/> to evaluate. It must refer to a <see cref="DomainObjectCollectionEndPoint"/>. Must not be <see langword="null"/>.</param>
+    /// <returns>An <see cref="IObjectList{IDomainObject}"/> or a <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="relationEndPointID"/> is <see langword="null"/>.</exception>
+    /// <exception cref="System.ArgumentException"><paramref name="relationEndPointID"/> does not refer to a <see cref="DomainObjectCollectionEndPoint"/></exception>
+    protected internal virtual IReadOnlyList<IDomainObject> GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
-    ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
+    ArgumentUtility.CheckNotNull("relationEndPointID", relationEndPointID);
 
     if (relationEndPointID.Definition.Cardinality != CardinalityType.Many)
-      throw new ArgumentException ("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
+      throw new ArgumentException("The given end-point ID does not denote a related object collection (cardinality many).", "relationEndPointID");
 
-    var domainObject = GetOriginatingObjectForRelationAccess (relationEndPointID);
+    var domainObject = GetOriginatingObjectForRelationAccess(relationEndPointID);
 
-    _eventBroker.RaiseRelationReadingEvent (domainObject, relationEndPointID.Definition, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadingEvent(domainObject, relationEndPointID.Definition, ValueAccess.Original);
 
-    var collectionEndPoint = (ICollectionEndPoint) _dataManager.GetRelationEndPointWithLazyLoad (relationEndPointID);
-    var relatedObjects = collectionEndPoint.GetCollectionWithOriginalData();
-    var readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (relatedObjects);
+    IReadOnlyCollectionData<DomainObject> readOnlyRelatedObjects;
+    IReadOnlyList<IDomainObject> relatedObjects;
+    var collectionEndPoint = _dataManager.GetRelationEndPointWithLazyLoad(relationEndPointID);
+    if (collectionEndPoint is IDomainObjectCollectionEndPoint domainObjectCollectionEndPoint)
+    {
+      var domainObjectCollection = domainObjectCollectionEndPoint.GetCollectionWithOriginalData();
+      relatedObjects = (IReadOnlyList<IDomainObject>)domainObjectCollection;
+      readOnlyRelatedObjects = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(domainObjectCollection);
+    }
+    else
+    {
+      var virtualCollectionEndPoint = (IVirtualCollectionEndPoint)collectionEndPoint;
+      relatedObjects = virtualCollectionEndPoint.GetCollectionWithOriginalData();
+      readOnlyRelatedObjects = (IReadOnlyCollectionData<DomainObject>)relatedObjects;
+    }
 
-    _eventBroker.RaiseRelationReadEvent (domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
+    _eventBroker.RaiseRelationReadEvent(domainObject, relationEndPointID.Definition, readOnlyRelatedObjects, ValueAccess.Original);
 
     return relatedObjects;
-  }  
+  }
 
   /// <summary>
   /// Deletes a <see cref="DomainObject"/>.
@@ -1026,8 +1072,8 @@ public class ClientTransaction
   /// </exception>
   protected internal virtual void Delete (DomainObject domainObject)
   {
-    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-    _objectLifetimeAgent.Delete (domainObject);
+    ArgumentUtility.CheckNotNull("domainObject", domainObject);
+    _objectLifetimeAgent.Delete(domainObject);
   }
 
   /// <summary>
@@ -1036,10 +1082,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnLoaded (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (Loaded != null)
-      Loaded (this, args);
+      Loaded(this, args);
   }
 
   /// <summary>
@@ -1048,10 +1094,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnCommitting (ClientTransactionCommittingEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (Committing != null)
-      Committing (this, args);
+      Committing(this, args);
   }
 
 
@@ -1061,10 +1107,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnCommitted (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (Committed != null)
-      Committed (this, args);
+      Committed(this, args);
   }
 
   /// <summary>
@@ -1073,10 +1119,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnRollingBack (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (RollingBack != null)
-      RollingBack (this, args);
+      RollingBack(this, args);
   }
 
   /// <summary>
@@ -1085,10 +1131,10 @@ public class ClientTransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected internal virtual void OnRolledBack (ClientTransactionEventArgs args)
   {
-    ArgumentUtility.CheckNotNull ("args", args);
+    ArgumentUtility.CheckNotNull("args", args);
 
     if (RolledBack != null)
-      RolledBack (this, args);
+      RolledBack(this, args);
   }
 
   /// <summary>
@@ -1097,10 +1143,10 @@ public class ClientTransaction
   /// <param name="eventArgs">A <see cref="Remotion.Data.DomainObjects.SubTransactionCreatedEventArgs"/> instance containing the event data.</param>
   protected internal virtual void OnSubTransactionCreated (SubTransactionCreatedEventArgs eventArgs)
   {
-    ArgumentUtility.CheckNotNull ("eventArgs", eventArgs);
-    
+    ArgumentUtility.CheckNotNull("eventArgs", eventArgs);
+
     if (SubTransactionCreated != null)
-      SubTransactionCreated (this, eventArgs);
+      SubTransactionCreated(this, eventArgs);
   }
 
   /// <summary>
@@ -1133,7 +1179,7 @@ public class ClientTransaction
   {
     // See  RM-5278 when thinking about removing the ToITransaction method.
 
-    return new ClientTransactionWrapper (this);
+    return new ClientTransactionWrapper(this);
   }
 
   private DomainObject GetOriginatingObjectForRelationAccess (RelationEndPointID relationEndPointID)
@@ -1142,7 +1188,8 @@ public class ClientTransaction
     // - the user can rely on property access triggering OnLoaded for initialization (e.g., for registering event handlers),
     // - the user gets an ObjectNotFoundException for the originating object rather than a "mandatory relation not set in database" exception (or a
     //   null result) when the originating object doesn't exist.
-    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+    Assertion.IsNotNull(relationEndPointID.ObjectID, "RelationEndPointID must indicate an existing endpoint at this point.");
+    DomainObject domainObject = GetObject(relationEndPointID.ObjectID, true);
     return domainObject;
   }
   // ReSharper restore UnusedParameter.Global

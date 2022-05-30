@@ -18,6 +18,8 @@
 using System;
 using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.TypePipe;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
@@ -27,24 +29,28 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   [SecurityManagerStorageGroup]
   public abstract class StateUsage : AccessControlObject
   {
-    public static StateUsage NewObject ()
+    public static StateUsage NewObject (StateDefinition stateDefinition)
     {
-      return NewObject<StateUsage> ();
+      ArgumentUtility.CheckNotNull("stateDefinition", stateDefinition);
+
+      return NewObject<StateUsage>(ParamList.Create(stateDefinition));
     }
 
-    protected StateUsage ()
+    protected StateUsage (StateDefinition stateDefinition)
     {
+      // ReSharper disable once VirtualMemberCallInConstructor
+      StateDefinition = stateDefinition;
     }
 
     [Mandatory]
-    public abstract StateDefinition StateDefinition { get; set; }
+    public abstract StateDefinition StateDefinition { get; protected set; }
 
-    [DBBidirectionalRelation ("StateUsages")]
+    [DBBidirectionalRelation("StateUsages")]
     [Mandatory]
-    protected abstract StateCombination StateCombination { get; }
-    
+    protected abstract StateCombination? StateCombination { get; }
+
     [StorageClassNone]
-    public SecurableClassDefinition Class
+    public SecurableClassDefinition? Class
     {
       get
       {
@@ -56,10 +62,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
-        Class.RegisterForCommit ();
+        Class.RegisterForCommit();
     }
   }
 }

@@ -29,8 +29,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   public class ObjectEndPointSetSameCommand : RelationEndPointModificationCommand
   {
     public ObjectEndPointSetSameCommand (IObjectEndPoint modifiedEndPoint, IClientTransactionEventSink transactionEventSink)
-        : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+        : base(
+            ArgumentUtility.CheckNotNull("modifiedEndPoint", modifiedEndPoint),
             modifiedEndPoint.GetOppositeObject(),
             modifiedEndPoint.GetOppositeObject(),
             transactionEventSink)
@@ -66,15 +66,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var oppositeEndPointDefinition = ModifiedEndPoint.Definition.GetOppositeEndPointDefinition ();
+      var oppositeEndPointDefinition = ModifiedEndPoint.Definition.GetOppositeEndPointDefinition();
       if (oppositeEndPointDefinition.IsAnonymous)
       {
-        return new ExpandedCommand (this);
+        return new ExpandedCommand(this);
       }
       else
       {
-        var oppositeEndPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRelationEndPoint> (NewRelatedObject);
-        return new ExpandedCommand (this, new RelationEndPointTouchCommand (oppositeEndPoint));
+        var oppositeEndPoint = ModifiedEndPoint.GetEndPointWithOppositeDefinition<IRelationEndPoint>(NewRelatedObject);
+        return new ExpandedCommand(this, new RelationEndPointTouchCommand(oppositeEndPoint));
       }
     }
   }

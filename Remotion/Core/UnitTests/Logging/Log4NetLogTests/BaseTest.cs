@@ -33,11 +33,11 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
     [SetUp]
     public virtual void SetUp ()
     {
-      _memoryAppender = new MemoryAppender ();
+      _memoryAppender = new MemoryAppender();
       var hierarchy = new Hierarchy();
-      ((IBasicRepositoryConfigurator) hierarchy).Configure (_memoryAppender);
-      _logger = hierarchy.GetLogger ("The Name");
-      _log = new Log4NetLog (_logger);
+      ((IBasicRepositoryConfigurator)hierarchy).Configure(_memoryAppender);
+      _logger = hierarchy.GetLogger("The Name");
+      _log = new Log4NetLog(_logger);
     }
 
     protected ILog Log
@@ -52,7 +52,7 @@ namespace Remotion.UnitTests.Logging.Log4NetLogTests
 
     protected LoggingEvent[] GetLoggingEvents ()
     {
-      return _memoryAppender.GetEvents ();
+      return _memoryAppender.GetEvents();
     }
 
     protected void SetLoggingThreshold (Level threshold)

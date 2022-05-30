@@ -35,15 +35,15 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull ("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNull ("labelIDs", labelIDs);
-      ArgumentUtility.CheckNotNull ("accessibilityAnnotationIDs", accessibilityAnnotationIDs);
+      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull("accessibilityAnnotationIDs", accessibilityAnnotationIDs);
 
-      var labelIDsJoined = string.Join (" ", labelIDs);
-      attributeAccessor.SetAttribute (LabelReferenceAttribute, labelIDsJoined);
+      var labelIDsJoined = string.Join(" ", labelIDs);
+      attributeAccessor.SetAttribute(LabelReferenceAttribute, labelIDsJoined);
 
-      var accessibilityAnnotationIDsJoined = string.Join (" ", accessibilityAnnotationIDs);
-      attributeAccessor.SetAttribute (AccessibilityAnnotationsAttribute, accessibilityAnnotationIDsJoined);
+      var accessibilityAnnotationIDsJoined = string.Join(" ", accessibilityAnnotationIDs);
+      attributeAccessor.SetAttribute(AccessibilityAnnotationsAttribute, accessibilityAnnotationIDsJoined);
     }
 
     public void AddLabelsReference (
@@ -51,14 +51,14 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
         IReadOnlyCollection<string> labelIDs,
         IReadOnlyCollection<string> accessibilityAnnotationIDs)
     {
-      ArgumentUtility.CheckNotNull ("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNull ("labelIDs", labelIDs);
+      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
 
-      var labelIDsJoined = string.Join (" ", labelIDs);
-      htmlTextWriter.AddAttribute (LabelReferenceAttribute, labelIDsJoined);
+      var labelIDsJoined = string.Join(" ", labelIDs);
+      htmlTextWriter.AddAttribute(LabelReferenceAttribute, labelIDsJoined);
 
-      var accessibilityAnnotationIDsJoined = string.Join (" ", accessibilityAnnotationIDs);
-      htmlTextWriter.AddAttribute (AccessibilityAnnotationsAttribute, accessibilityAnnotationIDsJoined);
+      var accessibilityAnnotationIDsJoined = string.Join(" ", accessibilityAnnotationIDs);
+      htmlTextWriter.AddAttribute(AccessibilityAnnotationsAttribute, accessibilityAnnotationIDsJoined);
     }
   }
 }

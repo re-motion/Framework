@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,73 +15,79 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Results;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Validation.Implementation;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 using Remotion.Validation.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Validation.UnitTests.Implementation
 {
   [TestFixture]
   public class TypedValidatorDecoratorTest
   {
-    private IValidationRule _validationRuleStub1;
-    private IValidationRule _validationRuleStub2;
+    private Mock<IValidationRule> _validationRuleStub1;
+    private Mock<IValidationRule> _validationRuleStub2;
     private Validator _validator;
     private TypedValidatorDecorator<Customer> _validatorDecorator;
     private ValidationFailure _validationFailure;
+    private Customer _validatedObject;
 
     [SetUp]
     public void SetUp ()
     {
-      _validationRuleStub1 = MockRepository.GenerateStub<IValidationRule>();
-      _validationRuleStub2 = MockRepository.GenerateStub<IValidationRule>();
+      _validatedObject = new Customer();
 
-      _validationFailure = new ValidationFailure ("PropertyName", "Failes");
+      _validationRuleStub1 = new Mock<IValidationRule>();
+      _validationRuleStub2 = new Mock<IValidationRule>();
 
-      _validator = new Validator (new[] { _validationRuleStub1, _validationRuleStub2 }, typeof (Customer));
-      _validatorDecorator = new TypedValidatorDecorator<Customer> (_validator);
+      _validationFailure = new ObjectValidationFailure(_validatedObject, "Error", "ValidationMessage");
+
+      _validator = new Validator(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }, typeof(Customer));
+      _validatorDecorator = new TypedValidatorDecorator<Customer>(_validator);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_validatorDecorator.Validator, Is.SameAs (_validator));
+      Assert.That(_validatorDecorator.Validator, Is.SameAs(_validator));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The validated type 'Address' is not supported by the passed validator.\r\nParameter name: validator")]
     public void Initialization_InvalidType ()
     {
-      new TypedValidatorDecorator<Address> (_validator);
+      Assert.That(
+          () => new TypedValidatorDecorator<Address>(_validator),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The validated type 'Address' is not supported by the passed validator.", "validator"));
     }
 
     [Test]
     public void Validate ()
     {
-      var customer = new Customer();
+      var customer = _validatedObject;
 
       _validationRuleStub1
-          .Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull))
-          .Return (new[] { _validationFailure });
+          .Setup(stub => stub.Validate(It.IsNotNull<ValidationContext>()))
+          .Returns(new[] { _validationFailure });
       _validationRuleStub2
-          .Stub (stub => stub.Validate (Arg<ValidationContext<Customer>>.Is.NotNull))
-          .Return (new ValidationFailure[0]);
+          .Setup(stub => stub.Validate(It.IsNotNull<ValidationContext>()))
+          .Returns(new ValidationFailure[0]);
 
-      var result = _validatorDecorator.Validate (customer);
+      var result = _validatorDecorator.Validate(customer);
 
-      Assert.That (result.Errors, Is.EquivalentTo (new[] { _validationFailure }));
+      Assert.That(result.Errors, Is.EquivalentTo(new[] { _validationFailure }));
     }
 
     [Test]
     public void Validate_InvalidInstance ()
     {
-      Assert.That (
-          () => ((IValidator) _validatorDecorator).Validate ("Invalid"),
-          Throws.InvalidOperationException.And.Message.EqualTo (
+      Assert.That(
+          () => ((IValidator)_validatorDecorator).Validate("Invalid"),
+          Throws.InvalidOperationException.And.Message.EqualTo(
               "Cannot validate instances of type 'String'. This validator can only validate instances of type 'Customer'."));
     }
 
@@ -90,49 +96,19 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var result = _validatorDecorator.CreateDescriptor();
 
-      Assert.That (result, Is.TypeOf (typeof (ValidatorDescriptor<Customer>)));
-      Assert.That (PrivateInvoke.GetNonPublicProperty (result, "Rules"), Is.EquivalentTo (new[] { _validationRuleStub1, _validationRuleStub2 }));
+      Assert.That(result.ValidationRules, Is.EquivalentTo(new[] { _validationRuleStub1.Object, _validationRuleStub2.Object }));
     }
 
     [Test]
     public void CanValidateInstancesOfType_Customer_True ()
     {
-      Assert.That (_validatorDecorator.CanValidateInstancesOfType (typeof (Customer)), Is.True);
+      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof(Customer)), Is.True);
     }
 
     [Test]
     public void CanValidateInstancesOfType_NoCustomer_False ()
     {
-      Assert.That (_validatorDecorator.CanValidateInstancesOfType (typeof (Address)), Is.False);
-    }
-
-    [Test]
-    public void GetEnumerator ()
-    {
-      var enumerator = _validatorDecorator.GetEnumerator();
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (_validationRuleStub1));
-      Assert.That (enumerator.MoveNext(), Is.True);
-      Assert.That (enumerator.Current, Is.SameAs (_validationRuleStub2));
-      Assert.That (enumerator.MoveNext(), Is.False);
-    }
-
-    [Test]
-    public void CascadeMode_Setter ()
-    {
-      Assert.That (
-          () => ((IValidator<Customer>) _validatorDecorator).CascadeMode = CascadeMode.StopOnFirstFailure,
-          Throws.TypeOf<NotSupportedException>()
-              .And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
-    }
-
-    [Test]
-    public void CascadeMode_Getter ()
-    {
-      Assert.That (
-          () => ((IValidator<Customer>) _validatorDecorator).CascadeMode,
-          Throws.TypeOf<NotSupportedException>()
-              .And.Message.EqualTo ("CascadeMode is not supported for a 'Remotion.Validation.Implementation.TypedValidatorDecorator`1'"));
+      Assert.That(_validatorDecorator.CanValidateInstancesOfType(typeof(Address)), Is.False);
     }
   }
 }

@@ -21,7 +21,7 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 {
-  [PermanentGuid ("BAA77408-32E6-4979-9914-8A12B71808F2")]
+  [PermanentGuid("BAA77408-32E6-4979-9914-8A12B71808F2")]
   [Instantiable]
   [DBTable]
   [DBStorageGroup]
@@ -34,9 +34,9 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 
     public static File NewObject (ClientTransaction clientTransaction)
     {
-      using (clientTransaction.EnterNonDiscardingScope ())
+      using (clientTransaction.EnterNonDiscardingScope())
       {
-        return DomainObject.NewObject<File> ();
+        return DomainObject.NewObject<File>();
       }
     }
 
@@ -49,10 +49,10 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 
     //[DemandPropertyGetterPermission (DomainAccessTypes.ReadName)]
     //[DemandPropertySetterPermission (DomainAccessTypes.WriteName)]
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [PermanentGuid ("4B073E2B-C56D-419c-8358-808FDEF669EF")]
+    [PermanentGuid("4B073E2B-C56D-419c-8358-808FDEF669EF")]
     public abstract Confidentiality Confidentiality { get; set; }
 
     [Mandatory]
@@ -62,7 +62,7 @@ namespace Remotion.SecurityManager.Clients.Web.Test.Domain
 
     public abstract Group Group { get; set; }
 
-    [DBBidirectionalRelation ("File")]
+    [DBBidirectionalRelation("File")]
     public abstract ObjectList<FileItem> Files { get; set; }
 
     public override User GetOwner ()

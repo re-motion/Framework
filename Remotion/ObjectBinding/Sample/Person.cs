@@ -21,18 +21,19 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Serialization;
 using Remotion.Collections;
+using Remotion.Globalization;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Sample
 {
-  [XmlRoot ("Person")]
+  [XmlRoot("Person")]
   [XmlType]
   [Serializable]
   public class Person : BindableXmlObject
   {
     public static Person GetObject (Guid id)
     {
-      return GetObject<Person> (id);
+      return GetObject<Person>(id);
     }
 
     public static Person CreateObject ()
@@ -42,7 +43,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public static Person CreateObject (Guid id)
     {
-      return CreateObject<Person> (id);
+      return CreateObject<Person>(id);
     }
 
     private string _firstName;
@@ -109,7 +110,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlAttribute]
-    [DisableEnumValues (MarriageStatus.Bigamist, MarriageStatus.Polygamist)]
+    [DisableEnumValues(MarriageStatus.Bigamist, MarriageStatus.Polygamist)]
     public MarriageStatus MarriageStatus
     {
       get { return _marriageStatus; }
@@ -117,7 +118,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid PartnerID
     {
       get { return _partnerID; }
@@ -127,12 +128,12 @@ namespace Remotion.ObjectBinding.Sample
     [XmlIgnore]
     public Person Partner
     {
-      get { return (_partnerID != Guid.Empty) ? Person.GetObject (_partnerID) : null; }
+      get { return (_partnerID != Guid.Empty) ? Person.GetObject(_partnerID) : null; }
       set { _partnerID = (value != null) ? value.ID : Guid.Empty; }
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid FatherID
     {
       get { return _fatherID; }
@@ -142,12 +143,12 @@ namespace Remotion.ObjectBinding.Sample
     [XmlIgnore]
     public Person Father
     {
-      get { return (_fatherID != Guid.Empty) ? Person.GetObject (_fatherID) : null; }
+      get { return (_fatherID != Guid.Empty) ? Person.GetObject(_fatherID) : null; }
       set { _fatherID = (value != null) ? value.ID : Guid.Empty; }
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid[] ChildIDs
     {
       get { return _childIDs; }
@@ -161,14 +162,14 @@ namespace Remotion.ObjectBinding.Sample
       {
         if (_children == null)
         {
-          _children = new ObservableCollection<Person> ((_childIDs??Enumerable.Empty<Guid>()).Select (Person.GetObject));
+          _children = new ObservableCollection<Person>((_childIDs??Enumerable.Empty<Guid>()).Select(Person.GetObject));
           _children.CollectionChanged +=
               (sender, args) =>
               {
                 _childIDs =
                     (_childIDs ?? Enumerable.Empty<Guid>())
-                        .Except ((args.OldItems ?? (IList) Enumerable.Empty<Person>()).Cast<Person>().Select (i => i.ID))
-                        .Concat ((args.NewItems ?? (IList) Enumerable.Empty<Person>()).Cast<Person>().Select (i => i.ID))
+                        .Except((args.OldItems ?? (IList)Enumerable.Empty<Person>()).Cast<Person>().Select(i => i.ID))
+                        .Concat((args.NewItems ?? (IList)Enumerable.Empty<Person>()).Cast<Person>().Select(i => i.ID))
                         .ToArray();
               };
         }
@@ -187,12 +188,12 @@ namespace Remotion.ObjectBinding.Sample
       {
         Children.Clear();
         foreach (var item in value)
-          Children.Add ((Person) item);
+          Children.Add((Person)item);
       }
     }
 
     [XmlElement]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid[] JobIDs
     {
       get { return _jobIDs; }
@@ -209,7 +210,7 @@ namespace Remotion.ObjectBinding.Sample
 
         Job[] jobs = new Job[_jobIDs.Length];
         for (int i = 0; i < _jobIDs.Length; i++)
-          jobs[i] = Job.GetObject (_jobIDs[i]);
+          jobs[i] = Job.GetObject(_jobIDs[i]);
 
         return jobs;
       }
@@ -217,7 +218,7 @@ namespace Remotion.ObjectBinding.Sample
       {
         if (value != null)
         {
-          ArgumentUtility.CheckNotNullOrItemsNull ("value", value);
+          ArgumentUtility.CheckNotNullOrItemsNull("value", value);
           _jobIDs = new Guid[value.Length];
           for (int i = 0; i < value.Length; i++)
             _jobIDs[i] = value[i].ID;
@@ -229,7 +230,7 @@ namespace Remotion.ObjectBinding.Sample
       }
     }
 
-    [XmlAttribute (DataType="date")]
+    [XmlAttribute(DataType="date")]
     [DateProperty]
     public DateTime DateOfDeath
     {
@@ -251,13 +252,34 @@ namespace Remotion.ObjectBinding.Sample
       set { _cv = value; }
     }
 
+    [XmlIgnore]
+    [MultiLingualName("IstVolljährig", "")]
+    public bool IsOfLegalAge => (DateTime.Now - DateOfBirth).Days > 365 * 18;
+
+    public string CVStringLiteral
+    {
+      get
+      {
+        if (_cv == null)
+          return null;
+        return string.Join("<br/>", _cv);
+      }
+    }
+
     public string CVString
     {
       get
       {
         if (_cv == null)
           return null;
-        return string.Join ("<br/>", _cv);
+        return string.Join("\r\n", _cv);
+      }
+      set
+      {
+        if (value == null)
+          _cv = null;
+        else
+          _cv = value.Replace("\r", "").Split('\n');
       }
     }
 
@@ -281,6 +303,7 @@ namespace Remotion.ObjectBinding.Sample
 
   public enum MarriageStatus
   {
+    [MultiLingualName("Vermählt", "")]
     Married,
     Single,
     Divorced,

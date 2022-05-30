@@ -20,6 +20,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.Enumerables;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTests.Core.UnitTesting.Enumerables
 {
@@ -32,9 +33,9 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Enumerables
       var source1 = new[] { 1, 2, 3 };
       var source2 = new[] { 1, 3, 2 };
 
-      Assert.That (new OneTimeEnumerable<int> (source1), Is.EqualTo (source1));
-      Assert.That (new OneTimeEnumerable<int> (source1), Is.Not.EqualTo (source2));
-      Assert.That (new OneTimeEnumerable<int> (source1), Is.EquivalentTo (source2));
+      Assert.That(new OneTimeEnumerable<int>(source1), Is.EqualTo(source1));
+      Assert.That(new OneTimeEnumerable<int>(source1), Is.Not.EqualTo(source2));
+      Assert.That(new OneTimeEnumerable<int>(source1), Is.EquivalentTo(source2));
     }
 
     [Test]
@@ -42,12 +43,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Enumerables
     {
       var source = Enumerable.Range(1, 3);
 
-      var oneTime = new OneTimeEnumerable<int> (source);
+      var oneTime = new OneTimeEnumerable<int>(source);
 
-      Assert.That (() => oneTime.GetEnumerator(), Throws.Nothing);
-      Assert.That (
+      Assert.That(() => oneTime.GetEnumerator(), Throws.Nothing);
+      Assert.That(
           () => oneTime.GetEnumerator(),
-          Throws.TypeOf<InvalidOperationException> ().With.Message.EqualTo ("OneTimeEnumerable can only be iterated once."));
+          Throws.TypeOf<InvalidOperationException>().With.Message.EqualTo("OneTimeEnumerable can only be iterated once."));
     }
 
     [Test]
@@ -55,12 +56,12 @@ namespace Remotion.Development.UnitTests.Core.UnitTesting.Enumerables
     {
       var source = new[] { 1, 2, 3 };
 
-      var oneTimeEnumerator = new OneTimeEnumerable<int> (source).GetEnumerator();
+      var oneTimeEnumerator = new OneTimeEnumerable<int>(source).GetEnumerator();
       oneTimeEnumerator.MoveNext();
 
-      Assert.That (
+      Assert.That(
           () => oneTimeEnumerator.Reset(),
-          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo ("OneTimeEnumerator does not support Reset()."));
+          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo("OneTimeEnumerator does not support Reset()."));
     }
   }
 }

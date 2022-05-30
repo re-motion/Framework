@@ -17,14 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Remotion.ObjectBinding.Design;
-using Remotion.ObjectBinding.Web.UI.Design;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
@@ -35,15 +33,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
   /// <summary> This control can be used to render text without any escaping applied. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/Class/*' />
-  [ToolboxItemFilter ("System.Web.UI")]
-  [Designer (typeof (BocDesigner))]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocLiteral : Control, IBusinessObjectBoundWebControl
   {
     #region BusinessObjectBinding implementation
 
     /// <summary>Gets the <see cref="BusinessObjectBinding"/> object used to manage the binding for this <see cref="BusinessObjectBoundWebControl"/>.</summary>
     /// <value> The <see cref="BusinessObjectBinding"/> instance used to manage this control's binding. </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public BusinessObjectBinding Binding
     {
       get { return _binding; }
@@ -51,9 +48,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets or sets the <see cref="IBusinessObjectDataSource"/> this <see cref="IBusinessObjectBoundWebControl"/> is bound to.</summary>
     /// <value> An <see cref="IBusinessObjectDataSource"/> providing the current <see cref="IBusinessObject"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public IBusinessObjectDataSource DataSource
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public IBusinessObjectDataSource? DataSource
     {
       get { return _binding.DataSource; }
       set { _binding.DataSource = value; }
@@ -64,12 +61,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   A string that can be used to query the <see cref="IBusinessObjectClass.GetPropertyDefinition"/> method for the 
     ///   <see cref="IBusinessObjectProperty"/>. 
     /// </value>
-    [Category ("Data")]
-    [Description ("The string representation of the Property.")]
-    [Editor (typeof (PropertyPickerEditor), typeof (UITypeEditor))]
-    [DefaultValue ("")]
-    [MergableProperty (false)]
-    public string PropertyIdentifier
+    [Category("Data")]
+    [Description("The string representation of the Property.")]
+    [DefaultValue("")]
+    [MergableProperty(false)]
+    public string? PropertyIdentifier
     {
       get { return _binding.PropertyIdentifier; }
       set { _binding.PropertyIdentifier = value; }
@@ -77,9 +73,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary>Gets or sets the <see cref="IBusinessObjectProperty"/> used for accessing the data to be loaded into <see cref="Value"/>.</summary>
     /// <value>An <see cref="IBusinessObjectProperty"/> that is part of the bound <see cref="IBusinessObject"/>'s <see cref="IBusinessObjectClass"/>.</value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IBusinessObjectProperty Property
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public IBusinessObjectProperty? Property
     {
       get { return _binding.Property; }
       set { _binding.Property = value; }
@@ -90,12 +86,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   this  <see cref="IBusinessObjectBoundWebControl"/> is bound to.
     /// </summary>
     /// <value>A string set to the <b>ID</b> of an <see cref="IBusinessObjectDataSourceControl"/> inside the current naming container.</value>
-    [TypeConverter (typeof (BusinessObjectDataSourceControlConverter))]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Data")]
-    [Description ("The ID of the BusinessObjectDataSourceControl control used as data source.")]
-    [DefaultValue ("")]
-    public string DataSourceControl
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Data")]
+    [Description("The ID of the BusinessObjectDataSourceControl control used as data source.")]
+    [DefaultValue("")]
+    public string? DataSourceControl
     {
       get { return _binding.DataSourceControl; }
       set { _binding.DataSourceControl = value; }
@@ -112,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </returns>
     public virtual bool SupportsProperty (IBusinessObjectProperty property)
     {
-      return _binding.SupportsProperty (property);
+      return _binding.SupportsProperty(property);
     }
 
     /// <summary>Gets a flag specifying whether the <see cref="IBusinessObjectBoundControl"/> has a valid binding configuration.</summary>
@@ -126,7 +121,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasValidBinding
     {
       get { return _binding.HasValidBinding; }
@@ -138,37 +133,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     //  statics
 
-    private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { typeof (IBusinessObjectStringProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { typeof(IBusinessObjectStringProperty) };
 
     // types
 
     // fields
 
     private BusinessObjectBinding _binding;
-    private string _value = string.Empty;
+    private string? _value = string.Empty;
     private LiteralMode _mode = LiteralMode.Transform;
 
     public BocLiteral ()
     {
-      _binding = new BusinessObjectBinding (this);
+      _binding = new BusinessObjectBinding(this);
     }
 
     /// <remarks>Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/> method.</remarks>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      EnsureChildControls ();
-      _binding.EnsureDataSource ();
-      if (!IsDesignMode)
-      {
-        Page.RegisterRequiresControlState (this);
-      }
+      base.OnInit(e);
+      EnsureChildControls();
+      _binding.EnsureDataSource();
+      Page!.RegisterRequiresControlState(this);
     }
 
     protected override void OnUnload (EventArgs e)
     {
       _binding.UnregisterDataSource();
-      base.OnUnload (e);
+      base.OnUnload(e);
     }
 
     /// <value> 
@@ -189,9 +181,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (!base.Visible)
           return false;
 
-        if (IsDesignMode)
-          return true;
-
         return HasValidBinding;
       }
       set { base.Visible = value; }
@@ -199,30 +188,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      if (!string.IsNullOrEmpty (_value))
+      if (!string.IsNullOrEmpty(_value))
       {
         if (_mode != LiteralMode.Encode)
-          writer.Write (_value);
+          writer.Write(_value);
         else
-          HttpUtility.HtmlEncode (_value, writer);
-      }
-      else if (IsDesignMode)
-      {
-        writer.Write ("##");
+          HttpUtility.HtmlEncode(_value, writer);
       }
     }
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
-      base.LoadControlState (values[0]);
-      _mode = (LiteralMode) values[1];
+      object?[] values = (object[]?)savedState!;
+      base.LoadControlState(values[0]);
+      _mode = (LiteralMode)values[1]!;
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[4];
-      values[0] = base.SaveControlState ();
+      object?[] values = new object?[4];
+      values[0] = base.SaveControlState();
       values[1] = _mode;
       return values;
     }
@@ -237,35 +222,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (DataSource == null)
         return;
-      
-      string value = null;
+
+      string? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (string) DataSource.BusinessObject.GetProperty (Property);
+        value = (string?)DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocLiteral.xml' path='BocLiteral/LoadUnboundValue/*' />
-    public void LoadUnboundValue (string value, bool interim)
+    public void LoadUnboundValue (string? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (string value, bool interim)
+    protected virtual void LoadValueInternal (string? value, bool interim)
     {
       Value = value;
     }
 
     /// <summary> Gets or sets the current value. </summary>
-    [Description ("The text to be shown in for the BocLiteral.")]
-    [Category ("Data")]
-    [DefaultValue ("")]
-    public string Value
+    [Description("The text to be shown in for the BocLiteral.")]
+    [Category("Data")]
+    [DefaultValue("")]
+    public string? Value
     {
       get { return _value; }
       set { _value = value; }
@@ -274,35 +259,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>Gets a flag indicating whether the <see cref="BocLiteral"/> contains a value. </summary>
     public bool HasValue
     {
-      get { return _value != null && _value.Trim ().Length > 0; }
+      get { return _value != null && _value.Trim().Length > 0; }
     }
 
-    object IBusinessObjectBoundControl.Value
+    object? IBusinessObjectBoundControl.Value
     {
       get { return ValueImplementation; }
       set { ValueImplementation = value; }
     }
 
     /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
-    protected virtual object ValueImplementation
+    protected virtual object? ValueImplementation
     {
       get { return Value; }
-      set { Value = (string) value; }
-    }
-
-    /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
-    /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
-    void IControlWithDesignTimeSupport.PreRenderForDesignMode ()
-    {
-      if (!IsDesignMode)
-        throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
-      EnsureChildControls ();
-      OnPreRender (EventArgs.Empty);
+      set { Value = (string?)value; }
     }
 
     bool IBusinessObjectBoundWebControl.SupportsPropertyMultiplicity (bool isList)
     {
-      return SupportsPropertyMultiplicity (isList);
+      return SupportsPropertyMultiplicity(isList);
     }
 
     /// <summary> The <see cref="BocLiteral"/> supports only scalar properties. </summary>
@@ -327,20 +302,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets the text to be written into the label for this control. </summary>
-    /// <value> <see langword="null"/> for the default implementation. </value>
-    [Browsable (false)]
-    public virtual string DisplayName
+    /// <value> <see cref="WebString.Empty"/> for the default implementation. </value>
+    [Browsable(false)]
+    public virtual WebString DisplayName
     {
-      get { return (Property != null) ? Property.DisplayName : null; }
+      get { return (Property != null) ? WebString.CreateFromText(Property.DisplayName) : WebString.Empty; }
     }
 
     void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
     }
 
-    HelpInfo ISmartControl.HelpInfo
+    HelpInfo? ISmartControl.HelpInfo
     {
-      get { return BusinessObjectBoundWebControl.GetHelpInfo (this); }
+      get { return BusinessObjectBoundWebControl.GetHelpInfo(this); }
     }
 
     bool ISmartControl.UseLabel
@@ -350,14 +325,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void ISmartControl.AssignLabel (string labelID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("labelID", labelID);
+      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
 
       //BocLiteral does not have a root element that could be labeled.
     }
 
     Control ISmartControl.TargetControl
     {
-      get { return (Control) this; }
+      get { return (Control)this; }
     }
 
     bool ISmartControl.IsRequired
@@ -370,21 +345,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return Enumerable.Empty<BaseValidator>();
     }
 
-    IPage IControl.Page
+    IPage? IControl.Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
-    /// <summary> Evalutes whether this control is in <b>Design Mode</b>. </summary>
-    [Browsable (false)]
-    protected bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode (this); }
-    }
-
-    [Category ("Behavior")]
-    [Description ("Determines whether the text is transformed or encoded.")]
-    [DefaultValue (LiteralMode.Transform)]
+    [Category("Behavior")]
+    [Description("Determines whether the text is transformed or encoded.")]
+    [DefaultValue(LiteralMode.Transform)]
     public LiteralMode Mode
     {
       get { return _mode; }

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -29,7 +30,7 @@ namespace Remotion.Globalization.Implementation
   /// applied to the respective <see cref="Enum"/> value.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor(typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class MultiLingualNameBasedEnumerationGlobalizationService : IEnumerationGlobalizationService
   {
@@ -39,26 +40,26 @@ namespace Remotion.Globalization.Implementation
     {
       protected override IEnumerable<MultiLingualNameAttribute> GetCustomAttributes (Enum value)
       {
-        ArgumentUtility.CheckNotNull ("value", value);
+        ArgumentUtility.CheckNotNull("value", value);
 
-        var field = value.GetType().GetField (value.ToString(), BindingFlags.Static | BindingFlags.Public);
+        var field = value.GetType().GetField(value.ToString(), BindingFlags.Static | BindingFlags.Public);
         if (field == null)
           return Enumerable.Empty<MultiLingualNameAttribute>();
-        return AttributeUtility.GetCustomAttributes<MultiLingualNameAttribute> (field, false);
+        return AttributeUtility.GetCustomAttributes<MultiLingualNameAttribute>(field, false);
       }
 
       protected override Assembly GetAssembly (Enum reflectionObject)
       {
-        ArgumentUtility.CheckNotNull ("reflectionObject", reflectionObject);
+        ArgumentUtility.CheckNotNull("reflectionObject", reflectionObject);
 
         return reflectionObject.GetType().Assembly;
       }
 
       protected override string GetContextForExceptionMessage (Enum value)
       {
-        ArgumentUtility.CheckNotNull ("value", value);
+        ArgumentUtility.CheckNotNull("value", value);
 
-        return string.Format ("The enum value '{0}' declared on type '{1}'", value, value.GetType());
+        return string.Format("The enum value '{0}' declared on type '{1}'", value, value.GetType());
       }
     }
 
@@ -68,18 +69,18 @@ namespace Remotion.Globalization.Implementation
     {
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      return _localizedNameForEnumerationProvider.TryGetLocalizedNameForCurrentUICulture (value, out result);
+      return _localizedNameForEnumerationProvider.TryGetLocalizedNameForCurrentUICulture(value, out result);
     }
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      return _localizedNameForEnumerationProvider.GetLocalizedNames (value);
+      return _localizedNameForEnumerationProvider.GetLocalizedNames(value);
     }
   }
 }

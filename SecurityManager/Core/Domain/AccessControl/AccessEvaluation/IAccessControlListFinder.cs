@@ -19,13 +19,12 @@ using System;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.Security;
-using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
  public interface IAccessControlListFinder
   {
     [CanBeNull]
-    IDomainObjectHandle<AccessControlList> Find (ISecurityContext context);
+    IDomainObjectHandle<AccessControlList>? Find (ISecurityContext context);
   }
 }

@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Mapping
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("mappingObjectFactory", mappingObjectFactory);
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("mappingObjectFactory", mappingObjectFactory);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
 
       _mappingObjectFactory = mappingObjectFactory;
       _nameResolver = nameResolver;
@@ -48,27 +48,27 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       var endPoints = new RelationEndPointDefinitionCollection();
       foreach (var propertyInfo in GetRelationPropertyInfos(classDefinition))
       {
-        var relationEndPoint = _mappingObjectFactory.CreateRelationEndPointDefinition (classDefinition, propertyInfo);
-        endPoints.Add (relationEndPoint);
+        var relationEndPoint = _mappingObjectFactory.CreateRelationEndPointDefinition(classDefinition, propertyInfo);
+        endPoints.Add(relationEndPoint);
       }
       return endPoints;
     }
 
     private IEnumerable<IPropertyInformation> GetRelationPropertyInfos (ClassDefinition classDefinition)
     {
-      var relationPropertyFinder = new RelationPropertyFinder (
+      var relationPropertyFinder = new RelationPropertyFinder(
           classDefinition.ClassType,
           classDefinition.BaseClass == null,
           true,
           _nameResolver,
           classDefinition.PersistentMixinFinder,
           _propertyMetadataProvider);
-      return relationPropertyFinder.FindPropertyInfos ();
+      return relationPropertyFinder.FindPropertyInfos();
     }
   }
 }

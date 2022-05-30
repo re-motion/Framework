@@ -22,11 +22,11 @@ using Remotion.SecurityManager.AclTools.Expansion.Infrastructure;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TestClasses
 {
-  internal class AclExpanderXray 
+  internal class AclExpanderXray
   {
-    public static IUserRoleAclAceCombinationFinder GetUserRoleAclAceCombinationFinder(AclExpander instance)
+    public static IUserRoleAclAceCombinationFinder GetUserRoleAclAceCombinationFinder (AclExpander instance)
     {
-      return (IUserRoleAclAceCombinationFinder) PrivateInvoke.GetNonPublicField (instance, "_userRoleAclAceCombinationFinder");
+      return (IUserRoleAclAceCombinationFinder)PrivateInvoke.GetNonPublicField(instance, "_userRoleAclAceCombinationFinder");
     }
   }
 }

@@ -17,13 +17,14 @@
 using System;
 using System.Collections.Specialized;
 using System.Text;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.ExecutionEngine.UrlMapping;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
 {
@@ -34,122 +35,120 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       base.SetUp();
 
-      UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (RootFunction.GetType(), "~/root.wxe"));
-      UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (SubFunction.GetType(), "~/sub.wxe"));
+      UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(RootFunction.GetType(), "~/root.wxe"));
+      UrlMappingConfiguration.Current.Mappings.Add(new UrlMappingEntry(SubFunction.Object.GetType(), "~/sub.wxe"));
 
-      Uri uri = new Uri ("http://localhost/AppDir/root.wxe");
+      Uri uri = new Uri("http://localhost/AppDir/root.wxe");
 
-      ResponseMock.Stub (stub => stub.ContentEncoding).Return (Encoding.Default).Repeat.Any();
+      ResponseMock.Setup(stub => stub.ContentEncoding).Returns(Encoding.UTF8);
 
-      RequestMock.Stub (stub => stub.Url).Return (uri).Repeat.Any();
-      RequestMock.Stub (stub => stub.ApplicationPath).Return ("/AppDir").Repeat.Any();
-      RequestMock.Stub (stub => stub.ContentEncoding).Return (Encoding.Default).Repeat.Any();
+      RequestMock.Setup(stub => stub.Url).Returns(uri);
+      RequestMock.Setup(stub => stub.ApplicationPath).Returns("/AppDir");
+      RequestMock.Setup(stub => stub.ContentEncoding).Returns(Encoding.UTF8);
     }
 
     [Test]
     public void IsExecuting ()
     {
-      IExecutionState executionState = CreateExecutionState (new WxePermaUrlOptions());
-      Assert.That (executionState.IsExecuting, Is.True);
+      IExecutionState executionState = CreateExecutionState(new WxePermaUrlOptions());
+      Assert.That(executionState.IsExecuting, Is.True);
     }
 
     [Test]
     public void ExecuteSubFunction_WithPermaUrl_GoesToExecutingSubFunction ()
     {
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
-      IExecutionState executionState = CreateExecutionState (permaUrlOptions);
+      IExecutionState executionState = CreateExecutionState(permaUrlOptions);
 
-      ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (Arg<RedirectingToSubFunctionState>.Is.NotNull))
-          .WhenCalled (
-          invocation =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (
-                nextState.Parameters.DestinationUrl,
-                Is.EqualTo ("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + WxeContext.FunctionToken));
-            Assert.That (nextState.Parameters.ResumeUrl, Is.EqualTo ("/AppDir/root.wxe?WxeFunctionToken=" + WxeContext.FunctionToken));
-          });
+      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+          .Callback(
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
+                Assert.That(
+                    nextState.Parameters.DestinationUrl,
+                    Is.EqualTo("/AppDir/sub.wxe?Parameter1=OtherValue&WxeFunctionToken=" + WxeContext.FunctionToken));
+                Assert.That(nextState.Parameters.ResumeUrl, Is.EqualTo("/AppDir/root.wxe?WxeFunctionToken=" + WxeContext.FunctionToken));
+              })
+          .Verifiable();
 
-      MockRepository.ReplayAll();
+      executionState.ExecuteSubFunction(WxeContext);
 
-      executionState.ExecuteSubFunction (WxeContext);
-
-      MockRepository.VerifyAll();
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
     public void ExecuteSubFunction_WithPermaUrl_WithCustumUrlParamters_GoesToExecutingSubFunction ()
     {
-      WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions (false, new NameValueCollection { { "Key", "Value" } });
-      IExecutionState executionState = CreateExecutionState (permaUrlOptions);
+      WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions(false, new NameValueCollection { { "Key", "Value" } });
+      IExecutionState executionState = CreateExecutionState(permaUrlOptions);
 
-      ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (Arg<RedirectingToSubFunctionState>.Is.NotNull))
-          .WhenCalled (
-          invocation =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
-            Assert.That (
-                nextState.Parameters.DestinationUrl,
-                Is.EqualTo ("/AppDir/sub.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
-            Assert.That (nextState.Parameters.ResumeUrl, Is.EqualTo ("/AppDir/root.wxe?WxeFunctionToken=" + WxeContext.FunctionToken));
-          });
+      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+          .Callback(
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
+                Assert.That(
+                    nextState.Parameters.DestinationUrl,
+                    Is.EqualTo("/AppDir/sub.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
+                Assert.That(nextState.Parameters.ResumeUrl, Is.EqualTo("/AppDir/root.wxe?WxeFunctionToken=" + WxeContext.FunctionToken));
+              })
+          .Verifiable();
 
-      MockRepository.ReplayAll();
+      executionState.ExecuteSubFunction(WxeContext);
 
-      executionState.ExecuteSubFunction (WxeContext);
-
-      MockRepository.VerifyAll();
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
     public void ExecuteSubFunction_WithPermaUrl_WithParentPermaUrl_GoesToExecutingSubFunction ()
     {
-      WxeContext.QueryString.Add ("Key", "Value");
+      WxeContext.QueryString.Add("Key", "Value");
 
-      WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions (true);
-      IExecutionState executionState = CreateExecutionState (permaUrlOptions);
+      WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions(true);
+      IExecutionState executionState = CreateExecutionState(permaUrlOptions);
 
-      ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (Arg<RedirectingToSubFunctionState>.Is.NotNull))
-          .WhenCalled (
-          invocation =>
-          {
-            var nextState = CheckExecutionState ((RedirectingToSubFunctionState) invocation.Arguments[0]);
+      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+          .Callback(
+              (IExecutionState executionState) =>
+              {
+                var nextState = CheckExecutionState((RedirectingToSubFunctionState)executionState);
 
-            string destinationUrl = UrlUtility.AddParameters (
-                "/AppDir/sub.wxe",
-                new NameValueCollection
-                {
-                    { "Parameter1", "OtherValue" },
-                    { WxeHandler.Parameters.WxeFunctionToken, WxeContext.FunctionToken },
-                    { WxeHandler.Parameters.ReturnUrl, "/AppDir/root.wxe?Key=Value" }
-                },
-                Encoding.Default);
-            Assert.That (nextState.Parameters.DestinationUrl, Is.EqualTo (destinationUrl));
+                string destinationUrl = UrlUtility.AddParameters(
+                    "/AppDir/sub.wxe",
+                    new NameValueCollection
+                    {
+                        { "Parameter1", "OtherValue" },
+                        { WxeHandler.Parameters.WxeFunctionToken, WxeContext.FunctionToken },
+                        { WxeHandler.Parameters.ReturnUrl, "/AppDir/root.wxe?Key=Value" }
+                    },
+                    Encoding.UTF8);
+                Assert.That(nextState.Parameters.DestinationUrl, Is.EqualTo(destinationUrl));
 
-            Assert.That (nextState.Parameters.ResumeUrl, Is.EqualTo ("/AppDir/root.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
-          });
+                Assert.That(nextState.Parameters.ResumeUrl, Is.EqualTo("/AppDir/root.wxe?Key=Value&WxeFunctionToken=" + WxeContext.FunctionToken));
+              })
+          .Verifiable();
 
-      MockRepository.ReplayAll();
+      executionState.ExecuteSubFunction(WxeContext);
 
-      executionState.ExecuteSubFunction (WxeContext);
-
-      MockRepository.VerifyAll();
+      ExecutionStateContextMock.Verify();
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The 'PreparingRedirectToSubFunctionState' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.\r\n"
-        + "Parameter name: parameters",
-        MatchType = MessageMatch.Contains)]
     public void Initialize_WithoutPermaUrl ()
     {
-      CreateExecutionState (WxePermaUrlOptions.Null);
+      Assert.That(
+          () => CreateExecutionState(WxePermaUrlOptions.Null),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The 'PreparingRedirectToSubFunctionState' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.",
+                  "parameters"));
     }
 
     private PreparingRedirectToSubFunctionState CreateExecutionState (WxePermaUrlOptions permaUrlOptions)
     {
-      return new PreparingRedirectToSubFunctionState (
-          ExecutionStateContextMock, new PreparingRedirectToSubFunctionStateParameters (SubFunction, PostBackCollection, permaUrlOptions));
+      return new PreparingRedirectToSubFunctionState(
+          ExecutionStateContextMock.Object, new PreparingRedirectToSubFunctionStateParameters(SubFunction.Object, PostBackCollection, permaUrlOptions));
     }
   }
 }

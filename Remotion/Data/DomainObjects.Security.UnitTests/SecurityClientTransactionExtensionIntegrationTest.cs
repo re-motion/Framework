@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
 using Remotion.Collections.Caching;
@@ -23,21 +24,20 @@ using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.Security;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.Security.UnitTests
 {
   [TestFixture]
   public class SecurityClientTransactionExtensionIntegrationTest : TestBase
   {
-    private ISecurityProvider _securityProviderStub;
-    private IPrincipalProvider _principalProviderStub;
-    private ISecurityPrincipal _securityPrincipalStub;
-    private IFunctionalSecurityStrategy _functionalSecurityStrategyStub;
+    private Mock<ISecurityProvider> _securityProviderStub;
+    private Mock<IPrincipalProvider> _principalProviderStub;
+    private Mock<ISecurityPrincipal> _securityPrincipalStub;
+    private Mock<IFunctionalSecurityStrategy> _functionalSecurityStrategyStub;
 
-    private ISecurityContext _securityContextStub;
-    private ISecurityContextFactory _securityContextFactoryStub;
-    
+    private Mock<ISecurityContext> _securityContextStub;
+    private Mock<ISecurityContextFactory> _securityContextFactoryStub;
+
     private ClientTransaction _clientTransaction;
     private ServiceLocatorScope _serviceLocatorScope;
 
@@ -45,26 +45,26 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     {
       base.SetUp();
 
-      _securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      _principalProviderStub = MockRepository.GenerateStub<IPrincipalProvider>();
-      _securityPrincipalStub = MockRepository.GenerateStub<ISecurityPrincipal>();
-      _functionalSecurityStrategyStub = MockRepository.GenerateStub<IFunctionalSecurityStrategy>();
+      _securityProviderStub = new Mock<ISecurityProvider>();
+      _principalProviderStub = new Mock<IPrincipalProvider>();
+      _securityPrincipalStub = new Mock<ISecurityPrincipal>();
+      _functionalSecurityStrategyStub = new Mock<IFunctionalSecurityStrategy>();
 
-      _principalProviderStub.Stub (stub => stub.GetPrincipal()).Return (_securityPrincipalStub);
+      _principalProviderStub.Setup(stub => stub.GetPrincipal()).Returns(_securityPrincipalStub.Object);
 
-      _securityContextStub = MockRepository.GenerateStub<ISecurityContext> ();
-      _securityContextFactoryStub = MockRepository.GenerateStub<ISecurityContextFactory> ();
+      _securityContextStub = new Mock<ISecurityContext>();
+      _securityContextFactoryStub = new Mock<ISecurityContextFactory>();
 
-      _securityContextFactoryStub.Stub (mock => mock.CreateSecurityContext ()).Return (_securityContextStub);
+      _securityContextFactoryStub.Setup(mock => mock.CreateSecurityContext()).Returns(_securityContextStub.Object);
 
       _clientTransaction = ClientTransaction.CreateRootTransaction();
-      _clientTransaction.Extensions.Add (new SecurityClientTransactionExtension());
+      _clientTransaction.Extensions.Add(new SecurityClientTransactionExtension());
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _securityProviderStub);
-      serviceLocator.RegisterSingle (() => _principalProviderStub);
-      serviceLocator.RegisterSingle (() => _functionalSecurityStrategyStub);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _securityProviderStub.Object);
+      serviceLocator.RegisterSingle(() => _principalProviderStub.Object);
+      serviceLocator.RegisterSingle(() => _functionalSecurityStrategyStub.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       _clientTransaction.EnterNonDiscardingScope();
     }
@@ -81,13 +81,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void AccessGranted_PropertyWithDefaultPermission ()
     {
       _securityProviderStub
-          .Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub))
-          .Return (new[] { AccessType.Get (GeneralAccessTypes.Read) });
+          .Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
 
       Dev.Null = securableObject.PropertyWithDefaultPermission;
@@ -97,173 +97,179 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void AccessGranted_PropertyWithCustomPermission ()
     {
       _securityProviderStub
-          .Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub))
-          .Return (new[] { AccessType.Get (TestAccessTypes.First) });
+          .Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(TestAccessTypes.First) });
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
 
       Dev.Null = securableObject.PropertyWithCustomPermission;
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException), ExpectedMessage =
-        "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_PropertyWithDefaultPermission ()
     {
-      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+      _securityProviderStub.Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
-
-      Dev.Null = securableObject.PropertyWithDefaultPermission;
+      Assert.That(
+          () => securableObject.PropertyWithDefaultPermission,
+          Throws.InstanceOf<PermissionDeniedException>()
+              .With.Message.EqualTo(
+                  "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException), ExpectedMessage =
-        "Access to method 'get_PropertyWithCustomPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_PropertyWithCustomPermission ()
     {
-      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+      _securityProviderStub.Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
-
-      Dev.Null = securableObject.PropertyWithCustomPermission;
+      Assert.That(
+          () => securableObject.PropertyWithCustomPermission,
+          Throws.InstanceOf<PermissionDeniedException>()
+              .With.Message.EqualTo(
+                  "Access to method 'get_PropertyWithCustomPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));
     }
 
     [Test]
     public void AccessGranted_MixedPropertyWithDefaultPermission ()
     {
       _securityProviderStub
-          .Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub))
-          .Return (new[] { AccessType.Get (GeneralAccessTypes.Read) });
+          .Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
 
-      Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithDefaultPermission;
+      Dev.Null = ((ISecurableObjectMixin)securableObject).MixedPropertyWithDefaultPermission;
     }
 
     [Test]
     public void AccessGranted_MixedPropertyWithCustomPermission ()
     {
       _securityProviderStub
-          .Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub))
-          .Return (new[] { AccessType.Get (TestAccessTypes.First) });
+          .Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object))
+          .Returns(new[] { AccessType.Get(TestAccessTypes.First) });
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
 
-      Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithCustomPermission;
+      Dev.Null = ((ISecurableObjectMixin)securableObject).MixedPropertyWithCustomPermission;
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException), ExpectedMessage =
-        "Access to method 'get_MixedPropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_MixedPropertyWithDefaultPermission ()
     {
-      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+      _securityProviderStub.Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
-
-      Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithDefaultPermission;
+      Assert.That(
+          () => ((ISecurableObjectMixin)securableObject).MixedPropertyWithDefaultPermission,
+          Throws.InstanceOf<PermissionDeniedException>()
+              .With.Message.EqualTo(
+                  "Access to method 'get_MixedPropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException), ExpectedMessage =
-        "Access to method 'get_MixedPropertyWithCustomPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_MixedPropertyWithCustomPermission ()
     {
-      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+      _securityProviderStub.Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       SecurableObject securableObject;
       using (SecurityFreeSection.Activate())
       {
-        securableObject = CreateSecurableObject (_securityContextFactoryStub);
+        securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
-
-      Dev.Null = ((ISecurableObjectMixin) securableObject).MixedPropertyWithCustomPermission;
+      Assert.That(
+          () => ((ISecurableObjectMixin)securableObject).MixedPropertyWithCustomPermission,
+          Throws.InstanceOf<PermissionDeniedException>()
+              .With.Message.EqualTo(
+                  "Access to method 'get_MixedPropertyWithCustomPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException), ExpectedMessage =
-        "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied.")]
     public void AccessDenied_SubTransaction ()
     {
-      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+      _securityProviderStub.Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
-      Assert.That (_clientTransaction.Extensions[SecurityClientTransactionExtension.DefaultKey], Is.Not.Null);
+      Assert.That(_clientTransaction.Extensions[SecurityClientTransactionExtension.DefaultKey], Is.Not.Null);
 
       var subTransaction = _clientTransaction.CreateSubTransaction();
-      Assert.That (subTransaction.Extensions[SecurityClientTransactionExtension.DefaultKey], Is.Not.Null);
+      Assert.That(subTransaction.Extensions[SecurityClientTransactionExtension.DefaultKey], Is.Not.Null);
 
-      using (subTransaction.EnterDiscardingScope ())
+      using (subTransaction.EnterDiscardingScope())
       {
         SecurableObject securableObject;
         using (SecurityFreeSection.Activate())
         {
-          securableObject = CreateSecurableObject (_securityContextFactoryStub, clientTransaction: subTransaction);
+          securableObject = CreateSecurableObject(_securityContextFactoryStub.Object, clientTransaction: subTransaction);
         }
 
-        Dev.Null = securableObject.PropertyWithDefaultPermission;
+        Assert.That(
+            () => securableObject.PropertyWithDefaultPermission,
+            Throws.InstanceOf<PermissionDeniedException>()
+                .With.Message.EqualTo(
+                    "Access to method 'get_PropertyWithDefaultPermission' on type 'Remotion.Data.DomainObjects.Security.UnitTests.TestDomain.SecurableObject' has been denied."));
       }
     }
 
     [Test]
     public void AutomaticCleanup_WhenDomainObjectCtorThrows_DoesNotRequireDeletePermissions ()
     {
-      _securityProviderStub.Stub (mock => mock.GetAccess (_securityContextStub, _securityPrincipalStub)).Return (new AccessType[0]);
+      _securityProviderStub.Setup(mock => mock.GetAccess(_securityContextStub.Object, _securityPrincipalStub.Object)).Returns(new AccessType[0]);
 
       _functionalSecurityStrategyStub
-          .Stub (
-              mock => mock.HasAccess (
-                  Arg.Is(  typeof (SecurableObject)),
-                  Arg.Is(_securityProviderStub),
-                  Arg.Is(_securityPrincipalStub),
-                  Arg<IReadOnlyList<AccessType>>.List.Equal( new[] { AccessType.Get (GeneralAccessTypes.Create) })))
-          .Return (true);
+          .Setup(
+              mock => mock.HasAccess(
+                  typeof(SecurableObject),
+                  _securityProviderStub.Object,
+                  _securityPrincipalStub.Object,
+                  new[] { AccessType.Get(GeneralAccessTypes.Create) }))
+          .Returns(true);
 
-      var exception = new Exception ("Test.");
+      var exception = new Exception("Test.");
       SecurableObject throwingObject = null;
 
-      Assert.That (
-          () => CreateSecurableObject (
-              _securityContextFactoryStub,
+      Assert.That(
+          () => CreateSecurableObject(
+              _securityContextFactoryStub.Object,
               action: obj =>
               {
                 throwingObject = obj;
                 throw exception;
               }),
-          Throws.Exception.SameAs (exception));
+          Throws.Exception.SameAs(exception));
 
-      Assert.That (_clientTransaction.IsEnlisted (throwingObject), Is.False);
+      Assert.That(_clientTransaction.IsEnlisted(throwingObject), Is.False);
     }
 
     private SecurableObject CreateSecurableObject (ISecurityContextFactory securityContextFactory, ClientTransaction clientTransaction = null, Action<SecurableObject> action = null)
     {
-      return SecurableObject.NewObject (
+      return SecurableObject.NewObject(
           clientTransaction ?? _clientTransaction,
-          ObjectSecurityStrategy.Create (securityContextFactory, InvalidationToken.Create()),
+          ObjectSecurityStrategy.Create(securityContextFactory, InvalidationToken.Create()),
           action);
     }
   }

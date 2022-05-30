@@ -15,32 +15,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 {
-  [ImplementationFor (typeof (IDatePickerPageRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IDatePickerPageRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerPageRenderer : IDatePickerPageRenderer
   {
     private readonly IResourceUrlFactory _resourceUrlFactory;
 
     public DatePickerPageRenderer (IResourceUrlFactory resourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
 
       _resourceUrlFactory = resourceUrlFactory;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (DatePickerPageRenderer).FullName + "_Script";
-      var scriptUrl = ResourceUrlFactory.CreateResourceUrl (typeof (DatePickerPageRenderer), ResourceType.Html, "DatePicker.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (key, scriptUrl);
+      string key = typeof(DatePickerPageRenderer).GetFullNameChecked() + "_Script";
+      var scriptUrl = ResourceUrlFactory.CreateResourceUrl(typeof(DatePickerPageRenderer), ResourceType.Html, "DatePicker.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(key, scriptUrl);
 
       htmlHeadAppender.RegisterPageStylesheetLink();
+      htmlHeadAppender.RegisterCommonStyleSheet();
     }
 
     protected IResourceUrlFactory ResourceUrlFactory

@@ -22,7 +22,9 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -33,9 +35,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class UserControlBinding : BusinessObjectBoundEditableWebControl, IControlWithResourceManager
   {
     private string _userControlPath = string.Empty;
-    private IDataEditControl _userControl;
-    private BusinessObjectReferenceDataSourceControl _referenceDataSource;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private IDataEditControl? _userControl;
+    private BusinessObjectReferenceDataSourceControl? _referenceDataSource;
+    private ReadOnlyCollection<BaseValidator>? _validators;
 
     public string UserControlPath
     {
@@ -43,44 +45,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _userControlPath = value; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public IDataEditControl UserControl
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public IDataEditControl? UserControl
     {
       get { return _userControl; }
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      if (! IsDesignMode)
+      base.OnInit(e);
+      TemplateControl control = (TemplateControl)Page!.LoadControl(_userControlPath);
+      Controls.Add(control);
+      _userControl = control as IDataEditControl;
+
+      if (_userControl != null && DataSource != null)
       {
-        TemplateControl control = (TemplateControl) Page.LoadControl (_userControlPath);
-        Controls.Add (control);
-        _userControl = control as IDataEditControl;
-
-        if (_userControl != null && DataSource != null)
+        IBusinessObjectDataSource dataSourceControl = DataSource;
+        if (Property != null)
         {
-          IBusinessObjectDataSource dataSourceControl = DataSource;
-          if (Property != null)
-          {
-            _referenceDataSource = new BusinessObjectReferenceDataSourceControl();
-            _referenceDataSource.DataSource = DataSource;
-            _referenceDataSource.Property = Property;
-            _referenceDataSource.Mode = DataSource.Mode;
-            dataSourceControl = _referenceDataSource;
-            Controls.Add (_referenceDataSource);
-          }
-
-          _userControl.Mode = dataSourceControl.Mode;
-          _userControl.BusinessObject = dataSourceControl.BusinessObject;
+          _referenceDataSource = new BusinessObjectReferenceDataSourceControl();
+          _referenceDataSource.DataSource = DataSource;
+          _referenceDataSource.Property = Property;
+          _referenceDataSource.Mode = DataSource.Mode;
+          dataSourceControl = _referenceDataSource;
+          Controls.Add(_referenceDataSource);
         }
+
+        _userControl.Mode = dataSourceControl.Mode;
+        _userControl.BusinessObject = dataSourceControl.BusinessObject;
       }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      Assertion.IsNotNull(DataSource, "DataSource must not be null.");
+      Assertion.IsNotNull(_userControl, "_userControl must not be null.");
+
+      base.OnLoad(e);
       if (_referenceDataSource != null)
         _referenceDataSource.Mode = DataSource.Mode;
       _userControl.Mode = DataSource.Mode;
@@ -89,38 +91,43 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadValue (bool interim)
     {
+      Assertion.IsNotNull(_userControl, "_userControl must not be null.");
+
       if (_referenceDataSource == null)
         throw new NotImplementedException();
 
-      _referenceDataSource.LoadValue (interim);
+      _referenceDataSource.LoadValue(interim);
       _userControl.BusinessObject = _referenceDataSource.BusinessObject;
-      _userControl.LoadValues (interim);
+      _userControl.LoadValues(interim);
     }
 
     public override bool SaveValue (bool interim)
     {
+      Assertion.IsNotNull(_userControl, "_userControl must not be null.");
+      Assertion.IsNotNull(_referenceDataSource, "_referenceDataSource must not be null.");
+
       // Validate to keep things consistent, i.e. all validators have executed during the save-operation.
       // Do not abort the save-operation because the value of the ReferenceDataSource should always be allowed to be written back into the parent.
       Validate();
 
-      _userControl.SaveValues (interim);
+      _userControl.SaveValues(interim);
       _referenceDataSource.BusinessObject = _userControl.BusinessObject;
 
-      return _referenceDataSource.SaveValue (interim);
+      return _referenceDataSource.SaveValue(interim);
     }
 
-    protected override sealed object ValueImplementation
+    protected override sealed object? ValueImplementation
     {
       get
       {
         if (_referenceDataSource == null)
-          throw new InvalidOperationException ("Cannot get value if no property is set.");
+          throw new InvalidOperationException("Cannot get value if no property is set.");
         return _referenceDataSource.Value;
       }
       set
       {
         if (_referenceDataSource == null)
-          throw new InvalidOperationException ("Cannot set value if no property is set.");
+          throw new InvalidOperationException("Cannot set value if no property is set.");
         _referenceDataSource.Value = value;
       }
     }
@@ -130,14 +137,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get
       {
         if (_referenceDataSource == null)
-          throw new InvalidOperationException ("Cannot analyze value if no property is set.");
+          throw new InvalidOperationException("Cannot analyze value if no property is set.");
         return _referenceDataSource.HasValue;
       }
     }
 
     public override bool IsDirty
     {
-      get { return _userControl.DataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any (control => control.IsDirty); }
+      get
+      {
+        Assertion.IsNotNull(_userControl, "_userControl must not be null.");
+
+        return _userControl.DataSource.GetBoundControlsWithValidBinding().OfType<IBusinessObjectBoundEditableWebControl>().Any(control => control.IsDirty);
+      }
     }
 
     public override string[] GetTrackedClientIDs ()
@@ -150,52 +162,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return false; }
     }
 
-    protected override void Render (HtmlTextWriter writer)
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
     {
-      if (IsDesignMode)
-      {
-        string type = "Unknown";
-        IBusinessObjectReferenceProperty property = Property as IBusinessObjectReferenceProperty;
-        if (property != null && property.ReferenceClass != null)
-          type = property.ReferenceClass.Identifier;
-
-        writer.Write (
-            "<table style=\"font-family: arial; font-size: x-small; BORDER-RIGHT: gray 1px solid; BORDER-TOP: white 1px solid; BORDER-LEFT: white 1px solid; BORDER-BOTTOM: gray 1px solid; BACKGROUND-COLOR: #d4d0c8\">"
-            + "<tr><td colspan=\"2\"><b>User Control</b></td></tr>"
-            + "<tr><td>Data Source:</td><td>{0}</td></tr>"
-            + "<tr><td>Property:</td><td>{1}</td></tr>"
-            + "<tr><td>Type:</td><td>{2}</td></tr>"
-            + "<tr><td>User Control:</td><td>{3}</td></tr>",
-            DataSourceControl,
-            PropertyIdentifier,
-            type,
-            _userControlPath);
-      }
-
-      base.Render (writer);
+      return NullBusinessObjectConstraintVisitor.Instance;
     }
 
     /// <inheritdoc />
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IUserControlBindingValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
       return _validators;
     }
 
     public override void PrepareValidation ()
     {
+      Assertion.IsNotNull(_userControl, "_userControl must not be null.");
+
       _userControl.PrepareValidation();
     }
 
     protected override Type[] SupportedPropertyInterfaces
     {
-      get { return new Type[] { typeof (IBusinessObjectReferenceProperty) }; }
+      get { return new Type[] { typeof(IBusinessObjectReferenceProperty) }; }
     }
 
     public IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (UserControlBinding));
+      return GetResourceManager(typeof(UserControlBinding));
     }
   }
 }

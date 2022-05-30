@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
-  [ImplementationFor (typeof (IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBusinessObjectReferenceDataSourceControlValidatorFactory : CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>, IBusinessObjectReferenceDataSourceControlValidatorFactory
   {
     public CompoundBusinessObjectReferenceDataSourceControlValidatorFactory (IEnumerable<IBusinessObjectReferenceDataSourceControlValidatorFactory> innerFactories)

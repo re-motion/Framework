@@ -1,5 +1,4 @@
 ﻿using System;
-using FluentValidation;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
@@ -22,23 +21,23 @@ namespace Remotion.Validation.UnitTests.Implementation
     public void SerializeAndDeserializeReturnsSameInstance ()
     {
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.Register (
-          new ServiceConfigurationEntry (
-              typeof (IValidatorBuilder),
-              new ServiceImplementationInfo (
-                  typeof (NonSerializableValidatorBuilder),
+      serviceLocator.Register(
+          new ServiceConfigurationEntry(
+              typeof(IValidatorBuilder),
+              new ServiceImplementationInfo(
+                  typeof(NonSerializableValidatorBuilder),
                   LifetimeKind.Singleton,
                   RegistrationType.Single),
-              new ServiceImplementationInfo (
-                  typeof (ValidatorBuilderSerializationDecorator),
+              new ServiceImplementationInfo(
+                  typeof(ValidatorBuilderSerializationDecorator),
                   LifetimeKind.InstancePerDependency,
                   RegistrationType.Decorator)));
 
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         var validatorBuilder = SafeServiceLocator.Current.GetInstance<IValidatorBuilder>();
-        var serializedValidatorBuild = Serializer.SerializeAndDeserialize (validatorBuilder);
-        Assert.That (serializedValidatorBuild, Is.SameAs (validatorBuilder));
+        var serializedValidatorBuild = Serializer.SerializeAndDeserialize(validatorBuilder);
+        Assert.That(serializedValidatorBuild, Is.SameAs(validatorBuilder));
       }
     }
   }

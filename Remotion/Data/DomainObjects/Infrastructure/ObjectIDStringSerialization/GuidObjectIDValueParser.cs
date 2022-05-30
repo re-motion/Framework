@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
@@ -24,18 +25,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
   /// </summary>
   public class GuidObjectIDValueParser : IObjectIDValueParser
   {
-    public static readonly GuidObjectIDValueParser Instance = new GuidObjectIDValueParser ();
+    public static readonly GuidObjectIDValueParser Instance = new GuidObjectIDValueParser();
 
     private GuidObjectIDValueParser ()
     {
     }
 
-    public bool TryParse (string stringValue, out object resultValue)
+    public bool TryParse (string stringValue, [MaybeNullWhen(false)] out object resultValue)
     {
-      ArgumentUtility.CheckNotNull ("stringValue", stringValue);
+      ArgumentUtility.CheckNotNull("stringValue", stringValue);
 
       Guid guidValue;
-      if (Guid.TryParse (stringValue, out guidValue))
+      if (Guid.TryParse(stringValue, out guidValue))
       {
         resultValue = guidValue;
         return true;

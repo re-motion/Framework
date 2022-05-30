@@ -25,13 +25,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a single object using the specified
   /// <see cref="IObjectReader{T}"/>.
   /// </summary>
-  public class ScalarValueLoadCommand : IStorageProviderCommand<object, IRdbmsProviderCommandExecutionContext>
+  public class ScalarValueLoadCommand : IStorageProviderCommand<object?, IRdbmsProviderCommandExecutionContext>
   {
     private readonly IDbCommandBuilder _dbCommandBuilder;
 
     public ScalarValueLoadCommand (IDbCommandBuilder dbCommandBuilder)
     {
-      ArgumentUtility.CheckNotNull ("dbCommandBuilder", dbCommandBuilder);
+      ArgumentUtility.CheckNotNull("dbCommandBuilder", dbCommandBuilder);
 
       _dbCommandBuilder = dbCommandBuilder;
     }
@@ -41,13 +41,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _dbCommandBuilder; }
     }
 
-    public object Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public object? Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
-      using (var command = _dbCommandBuilder.Create (executionContext))
+      using (var command = _dbCommandBuilder.Create(executionContext))
       {
-        return executionContext.ExecuteScalar (command);
+        return executionContext.ExecuteScalar(command);
       }
     }
   }

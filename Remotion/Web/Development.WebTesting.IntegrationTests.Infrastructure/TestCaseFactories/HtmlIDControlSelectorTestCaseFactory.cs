@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -24,7 +23,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Generi
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories
 {
   /// <summary>
-  /// Contains tests for <see cref="IHtmlIDControlSelector{TControlObject}"/> that are executed via <see cref="RemotionTestCaseSourceAttribute"/>
+  /// Contains tests for <see cref="IHtmlIDControlSelector{TControlObject}"/> that are executed via <see cref="TestCaseSourceAttribute"/>
   /// </summary>
   public class HtmlIDControlSelectorTestCaseFactory<TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, HtmlIDGenericTestPageParameter>
@@ -44,27 +43,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     [GenericPageTestMethod]
     public void Get_Returns_NotNull ()
     {
-      var control = Selector.GetByID (Parameter.VisibleControlID);
+      var control = Selector.GetByID(Parameter.VisibleControlID);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.VisibleControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.VisibleControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
+    public void Get_Throws_WebTestException ()
     {
-      Assert.That (
-          () => Selector.GetByID (Parameter.HiddenControlID),
-          Throws.InstanceOf<MissingHtmlException>());
+      Assert.That(
+          () => Selector.GetByID(Parameter.HiddenControlID),
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_NotNull ()
     {
-      var control = Selector.GetByIDOrNull (Parameter.VisibleControlID);
+      var control = Selector.GetByIDOrNull(Parameter.VisibleControlID);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.VisibleControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.VisibleControlID));
     }
 
     [GenericPageTestMethod]
@@ -72,26 +71,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       SwitchToIFrame();
 
-      var control = Selector.GetByIDOrNull (Parameter.VisibleControlID);
+      var control = Selector.GetByIDOrNull(Parameter.VisibleControlID);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.VisibleControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.VisibleControlID));
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_Null ()
     {
-      var control = Selector.GetByIDOrNull (Parameter.HiddenControlID);
+      var control = Selector.GetByIDOrNull(Parameter.HiddenControlID);
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_True ()
     {
-      var controlVisible = Selector.ExistsByID (Parameter.VisibleControlID);
+      var controlVisible = Selector.ExistsByID(Parameter.VisibleControlID);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
@@ -99,17 +98,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       SwitchToIFrame();
 
-      var controlVisible = Selector.ExistsByID (Parameter.VisibleControlID);
+      var controlVisible = Selector.ExistsByID(Parameter.VisibleControlID);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_False ()
     {
-      var controlVisible = Selector.ExistsByID (Parameter.HiddenControlID);
+      var controlVisible = Selector.ExistsByID(Parameter.HiddenControlID);
 
-      Assert.That (controlVisible, Is.False);
+      Assert.That(controlVisible, Is.False);
     }
   }
 }

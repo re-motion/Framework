@@ -26,35 +26,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     [Test]
     public void ObjectIDIsSerializable ()
     {
-      ObjectID id = Serializer.SerializeAndDeserialize (DomainObjectIDs.Order1);
-      Assert.That (id, Is.EqualTo (DomainObjectIDs.Order1));
+      ObjectID id = Serializer.SerializeAndDeserialize(DomainObjectIDs.Order1);
+      Assert.That(id, Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
     public void DeserializedContent_Value ()
     {
       ObjectID id = DomainObjectIDs.Order1;
-      ObjectID deserializedID = Serializer.SerializeAndDeserialize (id);
+      ObjectID deserializedID = Serializer.SerializeAndDeserialize(id);
 
-      Assert.That (deserializedID.Value, Is.EqualTo (id.Value));
+      Assert.That(deserializedID.Value, Is.EqualTo(id.Value));
     }
 
     [Test]
     public void DeserializedContent_ClassDefinition ()
     {
       ObjectID id = DomainObjectIDs.Order1;
-      ObjectID deserializedID = Serializer.SerializeAndDeserialize (id);
+      ObjectID deserializedID = Serializer.SerializeAndDeserialize(id);
 
-      Assert.That (deserializedID.ClassDefinition, Is.EqualTo (id.ClassDefinition));
+      Assert.That(deserializedID.ClassDefinition, Is.EqualTo(id.ClassDefinition));
     }
 
     [Test]
     public void DeserializedContent_HashCode ()
     {
       ObjectID id = DomainObjectIDs.Order1;
-      ObjectID deserializedID = Serializer.SerializeAndDeserialize (id);
+      ObjectID deserializedID = Serializer.SerializeAndDeserialize(id);
 
-      Assert.That (deserializedID.GetHashCode(), Is.EqualTo (id.GetHashCode()));
+      Assert.That(deserializedID.GetHashCode(), Is.EqualTo(id.GetHashCode()));
     }
   }
 }

@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 {
@@ -37,60 +38,61 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Initialization_WithoutEventRaiser ()
     {
-      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser ();
+      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser();
 
-      Assert.That (indirectRaiser.EventRaiser, Is.Null);
+      Assert.That(indirectRaiser.EventRaiser, Is.Null);
     }
 
     [Test]
     public void Initialization_WithEventRaiser ()
     {
-      var innerRaiserStub = MockRepository.GenerateStub<IDomainObjectCollectionEventRaiser> ();
-      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser (innerRaiserStub);
+      var innerRaiserStub = new Mock<IDomainObjectCollectionEventRaiser>();
+      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser(innerRaiserStub.Object);
 
-      Assert.That (indirectRaiser.EventRaiser, Is.SameAs (innerRaiserStub));
+      Assert.That(indirectRaiser.EventRaiser, Is.SameAs(innerRaiserStub.Object));
     }
 
     [Test]
     public void Members_AreDelegated ()
     {
-      CheckDelegation (raiser => raiser.BeginAdd (1, _order));
-      CheckDelegation (raiser => raiser.EndAdd (1, _order));
-      CheckDelegation (raiser => raiser.BeginRemove (1, _order));
-      CheckDelegation (raiser => raiser.EndRemove (1, _order));
-      CheckDelegation (raiser => raiser.BeginDelete());
-      CheckDelegation (raiser => raiser.EndDelete ());
-      CheckDelegation (raiser => raiser.WithinReplaceData());
+      CheckDelegation(raiser => raiser.BeginAdd(1, _order));
+      CheckDelegation(raiser => raiser.EndAdd(1, _order));
+      CheckDelegation(raiser => raiser.BeginRemove(1, _order));
+      CheckDelegation(raiser => raiser.EndRemove(1, _order));
+      CheckDelegation(raiser => raiser.BeginDelete());
+      CheckDelegation(raiser => raiser.EndDelete());
+      CheckDelegation(raiser => raiser.WithinReplaceData());
     }
 
     [Test]
     public void Members_ThrowWhenEventRaiserNotSet ()
     {
-      CheckThrowOnNoEventRaiser (raiser => raiser.BeginAdd (1, _order));
-      CheckThrowOnNoEventRaiser (raiser => raiser.EndAdd (1, _order));
-      CheckThrowOnNoEventRaiser (raiser => raiser.BeginRemove (1, _order));
-      CheckThrowOnNoEventRaiser (raiser => raiser.EndRemove (1, _order));
-      CheckThrowOnNoEventRaiser (raiser => raiser.BeginDelete ());
-      CheckThrowOnNoEventRaiser (raiser => raiser.EndDelete ());
-      CheckDelegation (raiser => raiser.WithinReplaceData());
+      CheckThrowOnNoEventRaiser(raiser => raiser.BeginAdd(1, _order));
+      CheckThrowOnNoEventRaiser(raiser => raiser.EndAdd(1, _order));
+      CheckThrowOnNoEventRaiser(raiser => raiser.BeginRemove(1, _order));
+      CheckThrowOnNoEventRaiser(raiser => raiser.EndRemove(1, _order));
+      CheckThrowOnNoEventRaiser(raiser => raiser.BeginDelete());
+      CheckThrowOnNoEventRaiser(raiser => raiser.EndDelete());
+      CheckDelegation(raiser => raiser.WithinReplaceData());
     }
 
     [Test]
     public void Serializable ()
     {
-      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser ();
-      Serializer.SerializeAndDeserialize (indirectRaiser);
+      var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser();
+      Serializer.SerializeAndDeserialize(indirectRaiser);
     }
 
-    private void CheckDelegation (Action<IDomainObjectCollectionEventRaiser> action)
+    private void CheckDelegation (Expression<Action<IDomainObjectCollectionEventRaiser>> action)
     {
       var indirectRaiser = new IndirectDomainObjectCollectionEventRaiser();
-      var actualRaiserMock = MockRepository.GenerateMock<IDomainObjectCollectionEventRaiser>();
-      indirectRaiser.EventRaiser = actualRaiserMock;
+      var actualRaiserMock = new Mock<IDomainObjectCollectionEventRaiser>();
+      indirectRaiser.EventRaiser = actualRaiserMock.Object;
 
-      action (indirectRaiser);
+      var compiledAction = action.Compile();
+      compiledAction(indirectRaiser);
 
-      actualRaiserMock.AssertWasCalled (action);
+      actualRaiserMock.Verify(action, Times.AtLeastOnce());
     }
 
     private void CheckThrowOnNoEventRaiser (Action<IDomainObjectCollectionEventRaiser> action)
@@ -99,8 +101,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
 
       try
       {
-        action (indirectRaiser);
-        Assert.Fail ("Expected InvalidOperationException");
+        action(indirectRaiser);
+        Assert.Fail("Expected InvalidOperationException");
       }
       catch (InvalidOperationException)
       {

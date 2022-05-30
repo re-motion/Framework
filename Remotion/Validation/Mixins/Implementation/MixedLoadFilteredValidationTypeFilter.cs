@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Mixins;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe.Implementation;
@@ -28,7 +29,7 @@ namespace Remotion.Validation.Mixins.Implementation
   /// Implements the <see cref="IValidationTypeFilter"/> interface and filters <see cref="IMixinTarget"/>, <see cref="IInitializableMixin"/>, 
   /// and <see cref="IInitializableObject"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, Position = 1, RegistrationType = RegistrationType.Multiple)]
   public class MixedLoadFilteredValidationTypeFilter : IValidationTypeFilter
   {
     private List<Type> _filterTypes;
@@ -40,19 +41,20 @@ namespace Remotion.Validation.Mixins.Implementation
 
     public bool IsValidatableType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return !_filterTypes.Contains (type);
+      return !_filterTypes.Contains(type);
     }
 
+    [MemberNotNull(nameof(_filterTypes))]
     private void Initialize ()
     {
       _filterTypes = new List<Type>(
           new[]
           {
-              typeof (IMixinTarget),
-              typeof (IInitializableMixin),
-              typeof (IInitializableObject)
+              typeof(IMixinTarget),
+              typeof(IInitializableMixin),
+              typeof(IInitializableObject)
           });
     }
   }

@@ -21,7 +21,7 @@ using System.Globalization;
 
 namespace Remotion.Utilities
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Globalization.dll", true)]
   internal static class EnumDescription
   {
     public static EnumValue[] GetAllValues (Type enumType)

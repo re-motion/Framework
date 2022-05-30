@@ -18,6 +18,7 @@ using System;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Queries.Configuration
@@ -36,6 +37,8 @@ public class QueryDefinition : ISerializable, IObjectReference
   // types
 
   // static members and constants
+  private static readonly NonPersistentProviderDefinition s_dummyStorageProviderDefinition =
+      new NonPersistentProviderDefinition("NonSerializedStorageProviderDefinition", new NonPersistentStorageObjectFactory());
 
   // member fields
 
@@ -43,9 +46,9 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   private readonly string _statement;
   private readonly QueryType _queryType;
-  private readonly Type _collectionType;
+  private readonly Type? _collectionType;
   private readonly StorageProviderDefinition _storageProviderDefinition;
-  
+
   // Note: _ispartOfQueryConfiguration is used only during the deserialization process. 
   // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
   private readonly bool _ispartOfQueryConfiguration;
@@ -71,7 +74,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// </exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="queryType"/> is not a valid enum value.</exception>
   public QueryDefinition (string queryID, StorageProviderDefinition storageProviderDefinition, string statement, QueryType queryType)
-    : this (queryID, storageProviderDefinition, statement, queryType, null)
+    : this(queryID, storageProviderDefinition, statement, queryType, null)
   {
   }
 
@@ -94,28 +97,28 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// </exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="queryType"/> is not a valid enum value.</exception>
   public QueryDefinition (
-      string queryID, 
+      string queryID,
       StorageProviderDefinition storageProviderDefinition,
-      string statement, 
-      QueryType queryType, 
-      Type collectionType)
+      string statement,
+      QueryType queryType,
+      Type? collectionType)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-    ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-    ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
-    ArgumentUtility.CheckValidEnumValue ("queryType", queryType);
+    ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+    ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+    ArgumentUtility.CheckNotNullOrEmpty("statement", statement);
+    ArgumentUtility.CheckValidEnumValue("queryType", queryType);
 
     if (queryType == QueryType.Scalar && collectionType != null)
-      throw new ArgumentException (string.Format ("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
+      throw new ArgumentException(string.Format("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
 
     if (queryType == QueryType.Collection && collectionType == null)
-      collectionType = typeof (DomainObjectCollection);
+      collectionType = typeof(DomainObjectCollection);
 
-    if (collectionType != null 
-        && !collectionType.Equals (typeof (DomainObjectCollection)) 
-        && !collectionType.IsSubclassOf (typeof (DomainObjectCollection)))
+    if (collectionType != null
+        && !collectionType.Equals(typeof(DomainObjectCollection))
+        && !collectionType.IsSubclassOf(typeof(DomainObjectCollection)))
     {
-      throw new ArgumentException (string.Format (
+      throw new ArgumentException(string.Format(
           "The collectionType of query '{0}' must be 'Remotion.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
     }
 
@@ -133,17 +136,24 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="context">The source and destination of a given serialized stream.</param>
   protected QueryDefinition (SerializationInfo info, StreamingContext context)
   {
-    _id = info.GetString ("ID");
-    _ispartOfQueryConfiguration = info.GetBoolean ("IsPartOfQueryConfiguration");
+    _id = info.GetString("ID")!;
+    _ispartOfQueryConfiguration = info.GetBoolean("IsPartOfQueryConfiguration");
 
     if (!_ispartOfQueryConfiguration)
     {
-       var storageProviderID = info.GetString ("StorageProviderID");
-       _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory (storageProviderID);
-
-      _statement = info.GetString ("Statement");
-      _queryType = (QueryType) info.GetValue ("QueryType", typeof (QueryType));
-      _collectionType = (Type) info.GetValue ("CollectionType", typeof (Type));
+       var storageProviderID = info.GetString("StorageProviderID")!;
+      _storageProviderDefinition = DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions.GetMandatory(storageProviderID);
+      _statement = info.GetString("Statement")!;
+      _queryType = (QueryType)info.GetValue("QueryType", typeof(QueryType))!;
+      _collectionType = (Type?)info.GetValue("CollectionType", typeof(Type));
+    }
+    else
+    {
+      // Populate with dummy-values during deserialization. Instance will be discarded through IObjectReference.GetRealObject()
+      _storageProviderDefinition = s_dummyStorageProviderDefinition;
+      _statement = "statement has not been serialized";
+      _queryType = (QueryType)(-1);
+      _collectionType = null;
     }
   }
 
@@ -184,7 +194,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <summary>
   /// If <see cref="QueryType"/> specifies a collection to be returned, <b>CollectionType</b> specifies the type of the collection. The default is <see cref="DomainObjectCollection"/>. 
   /// </summary>
-  public Type CollectionType
+  public Type? CollectionType
   {
     get { return _collectionType; }
   }
@@ -200,7 +210,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="context">The contextual information about the source or destination of the serialization.</param>
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    GetObjectData (info, context);
+    GetObjectData(info, context);
   }
 
   /// <summary>
@@ -213,17 +223,17 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <note type="inheritinfo">Overwrite this method to support serialization of derived classes.</note>
   protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    info.AddValue ("ID", _id);
+    info.AddValue("ID", _id);
 
-    bool isPartOfQueryConfiguration = DomainObjectsConfiguration.Current.Query.QueryDefinitions.Contains (this);
-    info.AddValue ("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
+    bool isPartOfQueryConfiguration = DomainObjectsConfiguration.Current.Query.QueryDefinitions.Contains(this);
+    info.AddValue("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
 
     if (!isPartOfQueryConfiguration)
     {
-      info.AddValue ("StorageProviderID", StorageProviderDefinition.Name);
-      info.AddValue ("Statement", _statement);
-      info.AddValue ("QueryType", _queryType);
-      info.AddValue ("CollectionType", _collectionType);
+      info.AddValue("StorageProviderID", StorageProviderDefinition.Name);
+      info.AddValue("Statement", _statement);
+      info.AddValue("QueryType", _queryType);
+      info.AddValue("CollectionType", _collectionType);
     }
   }
 
@@ -240,7 +250,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   object IObjectReference.GetRealObject (StreamingContext context)
   {
     if (_ispartOfQueryConfiguration)
-      return DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory (_id);
+      return DomainObjectsConfiguration.Current.Query.QueryDefinitions.GetMandatory(_id);
     else
       return this;
   }

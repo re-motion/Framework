@@ -24,6 +24,7 @@ using Remotion.Mixins.CodeGeneration;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
+using Remotion.TypePipe.Implementation;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTypeCodeGeneration
 {
@@ -31,39 +32,50 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
   public class LoadingFlushedCodeTest : CodeGenerationBaseTest
   {
     private IPipeline _savedPipeline;
+    private ServiceLocatorScope _serviceLocatorScope;
 
     public override void SetUp ()
     {
-      base.SetUp ();
-
       // Use a dedicated pipeline to ensure that this test does not interfere with other tests.
-      _savedPipeline = CreatePipeline ();
-      PipelineRegistry.SetDefaultPipeline (_savedPipeline);
+      _savedPipeline = CreatePipeline();
+      var pipelineRegistry = new DefaultPipelineRegistry(_savedPipeline);
+      var serviceLocator = DefaultServiceLocator.Create();
+      serviceLocator.RegisterSingle<IPipelineRegistry>(() => pipelineRegistry);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
+
+      base.SetUp();
+    }
+
+    public override void TearDown ()
+    {
+      base.TearDown();
+
+      _serviceLocatorScope.Dispose();
     }
 
     [Test]
-    [Ignore ("RM-5902")]
+    [Ignore("RM-5902")]
     public void DeserializeAfterFlusheCode ()
     {
-      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers));
-      var mixin = Mixin.Get<MixinWithAbstractMembers> (mixedInstance);
-      var serializedData = Serializer.Serialize (mixedInstance);
+      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));
+      var mixin = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
+      var serializedData = Serializer.Serialize(mixedInstance);
 
       _savedPipeline.CodeManager.FlushCodeToDisk();
-      var mixedInstanceA = (ClassOverridingMixinMembers) Serializer.Deserialize (serializedData);
-      var mixinA = Mixin.Get<MixinWithAbstractMembers> (mixedInstance);
+      var mixedInstanceA = (ClassOverridingMixinMembers)Serializer.Deserialize(serializedData);
+      var mixinA = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
 
-      Assert.That (mixedInstanceA.GetType(), Is.SameAs (mixedInstance.GetType()));
-      Assert.That (mixinA.GetType(), Is.SameAs (mixin.GetType()));
+      Assert.That(mixedInstanceA.GetType(), Is.SameAs(mixedInstance.GetType()));
+      Assert.That(mixinA.GetType(), Is.SameAs(mixin.GetType()));
     }
 
     [Test]
-    [Ignore ("RM-5902")]
+    [Ignore("RM-5902")]
     public void LoadFlushedCode_IncludesSerializationHelperTypes ()
     {
-      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers));
-      var mixin = Mixin.Get<MixinWithAbstractMembers> (mixedInstance);
-      var serializedData = Serializer.Serialize (mixedInstance);
+      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));
+      var mixin = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
+      var serializedData = Serializer.Serialize(mixedInstance);
 
       //var identifier = GetConcreteMixinIdentifier(mixin);
       var assembly = FlushAndLoadAssemblyWithoutLocking();
@@ -87,54 +99,63 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Test]
     public void LoadFlushedCode_DoesNotIncludesGeneratedMixinTypes ()
     {
-      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers> (typeof (MixinWithAbstractMembers));
-      var mixin = Mixin.Get<MixinWithAbstractMembers> (mixedInstance);
+#if !FEATURE_ASSEMBLYBUILDER_SAVE
+      Assert.Ignore(".NET does not support assembly persistence.");
+#endif
+
+      var mixedInstance = CreateMixedObject<ClassOverridingMixinMembers>(typeof(MixinWithAbstractMembers));
+      var mixin = Mixin.Get<MixinWithAbstractMembers>(mixedInstance);
 
       var identifier = GetConcreteMixinIdentifier(mixin);
       var assembly = FlushAndLoadAssemblyWithoutLocking();
 
       var pipelineForLoading = CreatePipeline();
-      pipelineForLoading.CodeManager.LoadFlushedCode (assembly);
+      pipelineForLoading.CodeManager.LoadFlushedCode(assembly);
 
-      var loadedMixinType = pipelineForLoading.ReflectionService.GetAdditionalType (identifier);
-      Assert.That (loadedMixinType, Is.Not.Null);
-      Assert.That (loadedMixinType.Assembly, Is.EqualTo (assembly));
+      var loadedMixinType = pipelineForLoading.ReflectionService.GetAdditionalType(identifier);
+      Assert.That(loadedMixinType, Is.Not.Null);
+      Assert.That(loadedMixinType.Assembly, Is.EqualTo(assembly));
 
       var mixedInstance2 = pipelineForLoading.Create<ClassOverridingMixinMembers>();
-      var mixin2 = Mixin.Get<MixinWithAbstractMembers> (mixedInstance2);
-      Assert.That (mixin2, Is.Not.TypeOf (loadedMixinType));
+      var mixin2 = Mixin.Get<MixinWithAbstractMembers>(mixedInstance2);
+      Assert.That(mixin2, Is.Not.TypeOf(loadedMixinType));
     }
 
     [Test]
     public void LoadFlushedCodeTwice ()
     {
-      CreateMixedType (typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
-      
-      var assembly = FlushAndLoadAssemblyWithoutLocking ();
+#if !FEATURE_ASSEMBLYBUILDER_SAVE
+      Assert.Ignore(".NET does not support assembly persistence.");
+#endif
 
-      var pipelineForLoading = CreatePipeline ();
-      pipelineForLoading.CodeManager.LoadFlushedCode (assembly);
-      Assert.That (() => pipelineForLoading.CodeManager.LoadFlushedCode (assembly), Throws.Nothing);
+      CreateMixedType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
+
+      var assembly = FlushAndLoadAssemblyWithoutLocking();
+
+      var pipelineForLoading = CreatePipeline();
+      pipelineForLoading.CodeManager.LoadFlushedCode(assembly);
+      Assert.That(() => pipelineForLoading.CodeManager.LoadFlushedCode(assembly), Throws.Nothing);
     }
 
     private IPipeline CreatePipeline ()
     {
-      return SafeServiceLocator.Current.GetInstance<IPipelineFactory>().Create (Pipeline.ParticipantConfigurationID, Pipeline.Participants.ToArray());
+      var pipelineFactory = SafeServiceLocator.Current.GetInstance<IPipelineFactory>();
+      return pipelineFactory.Create(Pipeline.ParticipantConfigurationID, Pipeline.Settings, Pipeline.Participants.ToArray());
     }
 
     private Assembly FlushAndLoadAssemblyWithoutLocking ()
     {
       var assemblyPaths = _savedPipeline.CodeManager.FlushCodeToDisk();
       var assemblyPath = assemblyPaths.Single();
-      AddSavedAssembly (assemblyPath);
-      var assembly = AssemblyLoader.LoadWithoutLocking (assemblyPath);
+      AddSavedAssembly(assemblyPath);
+      var assembly = AssemblyLoader.LoadWithoutLocking(assemblyPath);
       return assembly;
     }
 
     private ConcreteMixinTypeIdentifier GetConcreteMixinIdentifier (MixinWithAbstractMembers mixin)
     {
-      Assert.That (mixin, Is.AssignableTo<IGeneratedMixinType>());
-      var attribute = (ConcreteMixinTypeAttribute) mixin.GetType().GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false).Single();
+      Assert.That(mixin, Is.AssignableTo<IGeneratedMixinType>());
+      var attribute = (ConcreteMixinTypeAttribute)mixin.GetType().GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false).Single();
 
       return attribute.GetIdentifier();
     }

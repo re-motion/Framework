@@ -27,9 +27,9 @@ namespace Remotion.Web.Development.WebTesting.ModalDialogHandlers
     /// <inheritdoc/>
     public void HandleModalDialog (PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      context.Window.AcceptModalDialog ();
+      context.Window.AcceptModalDialog();
     }
   }
 }

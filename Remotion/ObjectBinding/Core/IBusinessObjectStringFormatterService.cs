@@ -37,6 +37,6 @@ namespace Remotion.ObjectBinding
     /// <returns> 
     ///   The string representation of the property value for the <paramref name="property"/> parameter. 
     /// </returns>
-    string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string format);
+    string GetPropertyString (IBusinessObject businessObject, IBusinessObjectProperty property, string? format);
   }
 }

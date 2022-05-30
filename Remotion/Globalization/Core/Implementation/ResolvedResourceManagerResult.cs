@@ -26,7 +26,7 @@ namespace Remotion.Globalization.Implementation
   /// <threadsafety static="true" instance="true"/>
   public sealed class ResolvedResourceManagerResult : INullObject
   {
-    public static readonly ResolvedResourceManagerResult Null = new ResolvedResourceManagerResult (
+    public static readonly ResolvedResourceManagerResult Null = new ResolvedResourceManagerResult(
         NullResourceManager.Instance,
         NullResourceManager.Instance,
         NullResourceManager.Instance);
@@ -36,13 +36,13 @@ namespace Remotion.Globalization.Implementation
         [NotNull] IResourceManager definedResourceManager,
         [NotNull] IResourceManager inheritedResourceManger)
     {
-      ArgumentUtility.CheckNotNull ("definedResourceManager", definedResourceManager);
-      ArgumentUtility.CheckNotNull ("inheritedResourceManger", inheritedResourceManger);
+      ArgumentUtility.CheckNotNull("definedResourceManager", definedResourceManager);
+      ArgumentUtility.CheckNotNull("inheritedResourceManger", inheritedResourceManger);
 
-      var combinedResourceManager = CombineResourceManagers (definedResourceManager, inheritedResourceManger);
+      var combinedResourceManager = CombineResourceManagers(definedResourceManager, inheritedResourceManger);
       if (combinedResourceManager.IsNull)
         return Null;
-      return new ResolvedResourceManagerResult (combinedResourceManager, definedResourceManager, inheritedResourceManger);
+      return new ResolvedResourceManagerResult(combinedResourceManager, definedResourceManager, inheritedResourceManger);
     }
 
     private readonly IResourceManager _resourceManager;
@@ -90,7 +90,7 @@ namespace Remotion.Globalization.Implementation
         return inheritedResourceManager;
       if (inheritedResourceManager.IsNull)
         return definedResourceManager;
-      return ResourceManagerSet.Create (definedResourceManager, inheritedResourceManager);
+      return ResourceManagerSet.Create(definedResourceManager, inheritedResourceManager);
     }
   }
 }

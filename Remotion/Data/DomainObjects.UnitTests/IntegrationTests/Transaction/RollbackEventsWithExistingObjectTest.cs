@@ -15,220 +15,311 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
-using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
-using Is = Rhino.Mocks.Constraints.Is;
-using List = Rhino.Mocks.Constraints.List;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
   [TestFixture]
   public class RollbackEventsWithExistingObjectTest : ClientTransactionBaseTest
   {
-    private MockRepository _mockRepository;
-
-    private ClientTransactionMockEventReceiver _clientTransactionMockEventReceiver;
-    private IClientTransactionExtension _clientTransactionExtensionMock;
-
     private Order _order1;
-    private DomainObjectMockEventReceiver _order1MockEventReceiver;
 
     private Customer _customer1;
-    private DomainObjectMockEventReceiver _customer1MockEventReceiver;
     private string _orginalCustomerName;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>();
       _customer1 = _order1.Customer;
       _orginalCustomerName = _customer1.Name;
-
-      _mockRepository = new MockRepository ();
-
-      _clientTransactionMockEventReceiver = _mockRepository.StrictMock<ClientTransactionMockEventReceiver> (TestableClientTransaction);
-      _clientTransactionExtensionMock = _mockRepository.StrictMock<IClientTransactionExtension> ();
-      _clientTransactionExtensionMock.Stub (stub => stub.Key).Return ("MockExtension");
-      _clientTransactionExtensionMock.Replay();
-      TestableClientTransaction.Extensions.Add (_clientTransactionExtensionMock);
-      _clientTransactionExtensionMock.BackToRecord();
-
-      _order1MockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (_order1);
-      _customer1MockEventReceiver = _mockRepository.StrictMock<DomainObjectMockEventReceiver> (_customer1);
     }
 
     public override void TearDown ()
     {
-      TestableClientTransaction.Extensions.Remove ("MockExtension");
-      base.TearDown ();
+      TestableClientTransaction.Extensions.Remove("MockExtension");
+      base.TearDown();
     }
 
     [Test]
     public void RollbackWithoutChanges ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 0));
+      var order1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var customer1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _customer1);
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
+      var sequence = new MockSequence();
 
-        _clientTransactionMockEventReceiver.RollingBack ();
-        _clientTransactionMockEventReceiver.RolledBack ();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(TestableClientTransaction, It.Is<IReadOnlyList<DomainObject>>(c => c.Count == 0)))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, Array.Empty<DomainObject>())
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRolledBack(TestableClientTransaction, Array.Empty<DomainObject>())
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(TestableClientTransaction, It.Is<IReadOnlyList<DomainObject>>(c => c.Count == 0)))
+          .Verifiable();
 
-        _clientTransactionExtensionMock.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 0));
-      }
+      TestableClientTransaction.Rollback();
 
-      _mockRepository.ReplayAll ();
-
-      TestableClientTransaction.Rollback ();
-
-      _mockRepository.VerifyAll ();
+      clientTransactionMockEventReceiver.Verify();
+      extensionMock.Verify();
+      order1MockEventReceiver.Verify();
+      customer1MockEventReceiver.Verify();
     }
 
     [Test]
     public void RollbackWithDomainObject ()
     {
       _order1.DeliveryDate = DateTime.Now;
-      _mockRepository.BackToRecord (_order1MockEventReceiver);
-      _mockRepository.BackToRecord (_clientTransactionExtensionMock);
 
-      using (_mockRepository.Ordered ())
-      {
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & List.IsIn (_order1));
+      var order1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var customer1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _customer1);
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
+      var sequence = new MockSequence();
 
-        _clientTransactionMockEventReceiver.RollingBack (_order1);
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(TestableClientTransaction, new DomainObject[] { _order1 }))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, _order1)
+          .Verifiable();
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
 
-        _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRolledBack(TestableClientTransaction, _order1)
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(TestableClientTransaction, new DomainObject[] { _order1 }))
+          .Verifiable();
 
-        _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+      TestableClientTransaction.Rollback();
 
-        _clientTransactionMockEventReceiver.RolledBack (_order1);
-
-        _clientTransactionExtensionMock.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & List.IsIn (_order1));
-      }
-
-      _mockRepository.ReplayAll ();
-
-      TestableClientTransaction.Rollback ();
-
-      _mockRepository.VerifyAll ();
+      clientTransactionMockEventReceiver.Verify();
+      extensionMock.Verify();
+      order1MockEventReceiver.Verify();
+      customer1MockEventReceiver.Verify();
     }
 
     [Test]
     public void ModifyOtherObjectInDomainObjectRollingBack ()
     {
       _order1.DeliveryDate = DateTime.Now;
-      _mockRepository.BackToRecord (_order1MockEventReceiver);
-      _mockRepository.BackToRecord (_clientTransactionExtensionMock);
 
-      using (_mockRepository.Ordered ())
-      {
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & new ContainsConstraint (_order1));
+      var order1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var customer1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _customer1);
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
+      var sequence = new MockSequence();
 
-        _clientTransactionMockEventReceiver.RollingBack (_order1);
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(TestableClientTransaction, new DomainObject[] { _order1 }))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, _order1)
+          .Verifiable();
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_order1, It.IsNotNull<EventArgs>()))
+          .Callback(new EventHandler(ChangeCustomerNameCallback))
+          .Verifiable();
 
-        _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
-        LastCall.Do (new EventHandler (ChangeCustomerNameCallback));
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanging(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>()))
+          .Verifiable();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanging(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
 
-        _clientTransactionExtensionMock.PropertyValueChanging (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments ();
-        _clientTransactionExtensionMock.PropertyValueChanged (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanged(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanged(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>()))
+          .Verifiable();
 
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & new ContainsConstraint (_customer1));
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(TestableClientTransaction, new DomainObject[] { _customer1 }))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, _customer1)
+          .Verifiable();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_customer1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
 
-        _clientTransactionMockEventReceiver.RollingBack (_customer1);
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(_customer1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRolledBack(TestableClientTransaction, _order1, _customer1)
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.RolledBack(
+                  TestableClientTransaction,
+                  It.Is<ReadOnlyCollection<DomainObject>>(_ => _.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+          .Verifiable();
 
-        _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+      TestableClientTransaction.Rollback();
 
-        _customer1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
-
-        _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull());
-
-        _clientTransactionMockEventReceiver.RolledBack (_order1, _customer1);
-
-        _clientTransactionExtensionMock.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
-      }
-
-      _mockRepository.ReplayAll ();
-
-      TestableClientTransaction.Rollback ();
-
-      _mockRepository.VerifyAll ();
+      clientTransactionMockEventReceiver.Verify();
+      extensionMock.Verify();
+      order1MockEventReceiver.Verify();
+      customer1MockEventReceiver.Verify();
     }
 
     [Test]
     public void ModifyOtherObjectInClientTransactionRollingBack ()
     {
       _order1.DeliveryDate = DateTime.Now;
-      _mockRepository.BackToRecord (_order1MockEventReceiver);
-      _mockRepository.BackToRecord (_clientTransactionExtensionMock);
 
-      using (_mockRepository.Ordered ())
-      {
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & List.IsIn (_order1));
+      var order1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var customer1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _customer1);
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
+      var sequence = new MockSequence();
 
-        _clientTransactionMockEventReceiver.RollingBack (_order1);
-        LastCall.Do (new EventHandler<ClientTransactionEventArgs> (ChangeCustomerNameCallback));
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(TestableClientTransaction, new DomainObject[] { _order1 }))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, _order1)
+          .Callback(new EventHandler<ClientTransactionEventArgs>(ChangeCustomerNameCallback))
+          .Verifiable();
 
-        _clientTransactionExtensionMock.PropertyValueChanging (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments ();
-        _clientTransactionExtensionMock.PropertyValueChanged (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanging(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>()))
+          .Verifiable();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanging(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
 
-        _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanged(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanged(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>()))
+          .Verifiable();
 
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & List.IsIn (_customer1));
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
 
-        _clientTransactionMockEventReceiver.RollingBack (_customer1);
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(TestableClientTransaction, new DomainObject[] { _customer1 }))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, _customer1)
+          .Verifiable();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_customer1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
 
-        _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(_customer1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
 
-        _customer1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull());
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRolledBack(TestableClientTransaction, _order1, _customer1)
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.RolledBack(
+                  TestableClientTransaction,
+                  It.Is<ReadOnlyCollection<DomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+          .Verifiable();
 
-        _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+      TestableClientTransaction.Rollback();
 
-        _clientTransactionMockEventReceiver.RolledBack (_order1, _customer1);
-
-        _clientTransactionExtensionMock.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
-      }
-
-      _mockRepository.ReplayAll ();
-
-      TestableClientTransaction.Rollback ();
-
-      _mockRepository.VerifyAll ();
+      clientTransactionMockEventReceiver.Verify();
+      extensionMock.Verify();
+      order1MockEventReceiver.Verify();
+      customer1MockEventReceiver.Verify();
     }
 
     [Test]
@@ -236,49 +327,83 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       _order1.DeliveryDate = DateTime.Now;
       _customer1.Name = "New customer name";
-      _mockRepository.BackToRecord (_order1MockEventReceiver);
-      _mockRepository.BackToRecord (_customer1MockEventReceiver);
-      _mockRepository.BackToRecord (_clientTransactionExtensionMock);
 
-      using (_mockRepository.Ordered ())
-      {
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 2) & List.ContainsAll (new DomainObject[] { _order1, _customer1 }));
+      var order1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var customer1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _customer1);
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
+      var sequence = new MockSequence();
 
-        _clientTransactionMockEventReceiver.RollingBack (_order1, _customer1);
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.RollingBack(
+                  TestableClientTransaction,
+                  It.Is<IReadOnlyList<DomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, _order1, _customer1)
+          .Verifiable();
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_order1, It.IsNotNull<EventArgs>()))
+          .Callback(new EventHandler(ChangeCustomerNameBackToOriginalCallback))
+          .Verifiable();
 
-        _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
-        LastCall.Do (new EventHandler (ChangeCustomerNameBackToOriginalCallback));
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanging(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>())).Verifiable();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanging(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
 
-        _clientTransactionExtensionMock.PropertyValueChanging (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments ();
-        _clientTransactionExtensionMock.PropertyValueChanged (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
-        
-        _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanged(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanged(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>()))
+          .Verifiable();
 
-        _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_customer1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
 
-        // Note: Customer1 must not raise a RolledBack event, because its Name has been set back to the OriginalValue.
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRolledBack(TestableClientTransaction, _order1)
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(TestableClientTransaction, new DomainObject[] { _order1 }))
+          .Verifiable();
 
-        _clientTransactionMockEventReceiver.RolledBack (_order1);
+      TestableClientTransaction.Rollback();
 
-        _clientTransactionExtensionMock.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & List.IsIn (_order1));
-      }
-
-      _mockRepository.ReplayAll ();
-
-      TestableClientTransaction.Rollback ();
-
-      _mockRepository.VerifyAll ();
+      clientTransactionMockEventReceiver.Verify();
+      extensionMock.Verify();
+      order1MockEventReceiver.Verify();
+      customer1MockEventReceiver.Verify();
     }
 
     [Test]
@@ -286,59 +411,94 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       _order1.DeliveryDate = DateTime.Now;
       _customer1.Name = "New customer name";
-      _mockRepository.BackToRecord (_order1MockEventReceiver);
-      _mockRepository.BackToRecord (_customer1MockEventReceiver);
-      _mockRepository.BackToRecord (_clientTransactionExtensionMock);
 
-      using (_mockRepository.Ordered ())
-      {
-        _clientTransactionExtensionMock.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
+      var order1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _order1);
+      var customer1MockEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, _customer1);
+      var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
+      var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
+      var sequence = new MockSequence();
 
-        _clientTransactionMockEventReceiver.RollingBack (_order1, _customer1);
-        LastCall.Do (new EventHandler<ClientTransactionEventArgs> (ChangeCustomerNameBackToOriginalCallback));
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.RollingBack(
+                  TestableClientTransaction,
+                  It.Is<IReadOnlyList<DomainObject>>(objs => objs.SetEquals(new DomainObject[] { _order1, _customer1 }))))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(TestableClientTransaction, _order1, _customer1)
+          .Callback(new EventHandler<ClientTransactionEventArgs>(ChangeCustomerNameBackToOriginalCallback))
+          .Verifiable();
 
-        _clientTransactionExtensionMock.PropertyValueChanging (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments ();
-        _customer1MockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments ();
-        _clientTransactionExtensionMock.PropertyValueChanged (TestableClientTransaction, null, null, null, null);
-        LastCall.IgnoreArguments ();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanging(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>()))
+          .Verifiable();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanging(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
 
-        _order1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.PropertyChanged(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(
+              _ => _.PropertyValueChanged(
+                  It.IsAny<ClientTransaction>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<PropertyDefinition>(),
+                  It.IsAny<object>(),
+                  It.IsAny<object>()))
+          .Verifiable();
 
-        _customer1MockEventReceiver.RollingBack (null, null);
-        LastCall.Constraints (Is.Same (_customer1), Is.NotNull ());
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
+      customer1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RollingBack(_customer1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
 
-        _order1MockEventReceiver.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (_order1), Is.NotNull ());
+      order1MockEventReceiver
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(_order1, It.IsNotNull<EventArgs>()))
+          .Verifiable();
+      clientTransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRolledBack(TestableClientTransaction, _order1)
+          .Verifiable();
+      extensionMock
+          .InSequence(sequence)
+          .Setup(_ => _.RolledBack(TestableClientTransaction, new DomainObject[] { _order1 }))
+          .Verifiable();
 
-        // Note: Customer1 must not raise a RolledBack event, because its Name has been set back to the OriginalValue.
+      TestableClientTransaction.Rollback();
 
-        _clientTransactionMockEventReceiver.RolledBack (_order1);
-
-        _clientTransactionExtensionMock.RolledBack (null, null);
-        LastCall.Constraints (Is.Same (TestableClientTransaction), Property.Value ("Count", 1) & List.IsIn (_order1));
-      }
-
-      _mockRepository.ReplayAll ();
-
-      TestableClientTransaction.Rollback ();
-
-      _mockRepository.VerifyAll ();
+      clientTransactionMockEventReceiver.Verify();
+      extensionMock.Verify();
+      order1MockEventReceiver.Verify();
+      customer1MockEventReceiver.Verify();
     }
 
     private void ChangeCustomerNameCallback (object sender, EventArgs e)
     {
-      ChangeCustomerName ();
+      ChangeCustomerName();
     }
 
     private void ChangeCustomerNameCallback (object sender, ClientTransactionEventArgs args)
     {
-      ChangeCustomerName ();
+      ChangeCustomerName();
     }
 
     private void ChangeCustomerName ()
@@ -348,17 +508,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     private void ChangeCustomerNameBackToOriginalCallback (object sender, EventArgs e)
     {
-      ChangeCustomerNameBackToOriginal ();
+      ChangeCustomerNameBackToOriginal();
     }
 
     private void ChangeCustomerNameBackToOriginalCallback (object sender, ClientTransactionEventArgs args)
     {
-      ChangeCustomerNameBackToOriginal ();
+      ChangeCustomerNameBackToOriginal();
     }
 
     private void ChangeCustomerNameBackToOriginal ()
     {
       _customer1.Name = _orginalCustomerName;
+    }
+
+    private static Mock<IClientTransactionExtension> AddExtensionToClientTransaction (TestableClientTransaction transaction)
+    {
+      var extensionMock = new Mock<IClientTransactionExtension>(MockBehavior.Strict);
+      extensionMock.Setup(stub => stub.Key).Returns("TestExtension");
+      transaction.Extensions.Add(extensionMock.Object);
+      extensionMock.Reset();
+
+      return extensionMock;
     }
   }
 }

@@ -36,7 +36,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// <param name="webApplicationPort">Port to be used when hosting the web application.</param>
     public IisExpressProcessWrapper ([NotNull] string webApplicationPath, int webApplicationPort)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("webApplicationPath", webApplicationPath);
+      ArgumentUtility.CheckNotNullOrEmpty("webApplicationPath", webApplicationPath);
 
       var startInfo = new ProcessStartInfo
                       {
@@ -47,11 +47,11 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
                           UseShellExecute = false
                       };
 
-      var programFilesPath = GetProgramFilesPath (startInfo);
-      var iisExpressExecutablePath = Path.Combine (programFilesPath, "IIS Express", "iisexpress.exe");
+      var programFilesPath = GetProgramFilesPath(startInfo);
+      var iisExpressExecutablePath = Path.Combine(programFilesPath, "IIS Express", "iisexpress.exe");
 
       startInfo.FileName = iisExpressExecutablePath;
-      startInfo.Arguments = string.Format ("/path:\"{0}\" /port:\"{1}\"", webApplicationPath, webApplicationPort);
+      startInfo.Arguments = string.Format("/path:\"{0}\" /port:\"{1}\"", webApplicationPath, webApplicationPort);
 
       _iisProcess = new Process { StartInfo = startInfo };
     }
@@ -62,7 +62,6 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     public void Run ()
     {
       _iisProcess.Start();
-      _iisProcess.WaitForExit();
     }
 
     /// <summary>
@@ -70,18 +69,27 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies
     /// </summary>
     public void Dispose ()
     {
+      const int exitTimeout = 10000;
+
       if (_iisProcess != null && !_iisProcess.HasExited)
       {
-        _iisProcess.CloseMainWindow();
+        _iisProcess.Kill();
+        var hasExited = _iisProcess.WaitForExit(exitTimeout);
+
+        if (!hasExited)
+          throw new InvalidOperationException($"The IIS process with the ID '{_iisProcess.Id}' did not exit within '{exitTimeout:N0}' ms after sending the kill command.");
+
         _iisProcess.Dispose();
       }
     }
 
     private static string GetProgramFilesPath (ProcessStartInfo startInfo)
     {
-      return string.IsNullOrEmpty (startInfo.EnvironmentVariables["ProgramFiles"])
+      var programFilesPath = string.IsNullOrEmpty(startInfo.EnvironmentVariables["ProgramFiles"])
           ? startInfo.EnvironmentVariables["ProgramFiles(x86)"]
           : startInfo.EnvironmentVariables["ProgramFiles"];
+
+      return Assertion.IsNotNull(programFilesPath, "Could not fetch the program files path from either environment variable 'ProgramFiles(x86)' and 'ProgramFiles'.");
     }
   }
 }

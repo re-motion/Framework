@@ -35,14 +35,14 @@ namespace Remotion.Validation.UnitTests.Implementation
     [Test]
     public void IsValid_FilteredTypes_ReturnFalse ()
     {
-      Assert.That (_filter.IsValidatableType (typeof (object)), Is.False);
-      Assert.That (_filter.IsValidatableType (typeof (ISerializable)), Is.False);
+      Assert.That(_filter.IsValidatableType(typeof(object)), Is.False);
+      Assert.That(_filter.IsValidatableType(typeof(ISerializable)), Is.False);
     }
 
     [Test]
     public void IsValid_NoneFilteredType_ReturnTrue ()
     {
-      Assert.That (_filter.IsValidatableType (typeof (string)), Is.True);
+      Assert.That(_filter.IsValidatableType(typeof(string)), Is.True);
     }
   }
 }

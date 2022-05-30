@@ -30,7 +30,7 @@ namespace Remotion.Web.UI.Controls
   ///   When added to the webform (inside the head element), the <see cref="HtmlHeadContents"/> 
   ///   control renderes the controls registered with <see cref="HtmlHeadAppender"/>.
   /// </summary>
-  [ToolboxData ("<{0}:HtmlHeadContents runat=\"server\" id=\"HtmlHeadContents\"></{0}:HtmlHeadContents>")]
+  [ToolboxData("<{0}:HtmlHeadContents runat=\"server\" id=\"HtmlHeadContents\"></{0}:HtmlHeadContents>")]
   public class HtmlHeadContents : Control, IHtmlHeadContents
   {
     public HtmlHeadContents ()
@@ -39,35 +39,34 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var htmlHeadAppender = HtmlHeadAppender.Current;
       var htmlHeadElements = htmlHeadAppender.GetHtmlHeadElements().ToArray();
 
-      var renderingContext = CreateRenderingContext (writer, htmlHeadElements);
+      var renderingContext = CreateRenderingContext(writer, htmlHeadElements);
       var renderer = CreateRenderer();
-      renderer.Render (renderingContext);
+      renderer.Render(renderingContext);
 
-      if (!ControlHelper.IsDesignMode (this))
-        htmlHeadAppender.SetAppended();
+      htmlHeadAppender.SetAppended();
     }
 
     protected virtual HtmlHeadContentsRenderingContext CreateRenderingContext (HtmlTextWriter writer, HtmlHeadElement[] htmlHeadElements)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      var renderingContext = new HtmlHeadContentsRenderingContext (Page.Context, writer, this, htmlHeadElements);
+      var renderingContext = new HtmlHeadContentsRenderingContext(Page!.Context!, writer, this, htmlHeadElements); // TODO RM-8118: not null assertion
       return renderingContext;
     }
 
     protected virtual IHtmlHeadContentsRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IHtmlHeadContentsRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IHtmlHeadContentsRenderer>();
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
   }
 }

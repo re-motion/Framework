@@ -30,71 +30,73 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
   {
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
     }
 
     [Test]
     public void FindAll ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
 
-      var groupTypes = GroupType.FindAll ();
+      var groupTypes = GroupType.FindAll();
 
-      Assert.That (groupTypes.Count(), Is.EqualTo (2));
+      Assert.That(groupTypes.Count(), Is.EqualTo(2));
     }
 
     [Test]
     public void DeleteGroupType_WithAccessControlEntry ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
         dbFixtures.CreateEmptyDomain();
-        GroupType groupType = testHelper.CreateGroupType ("GroupType");
-        AccessControlEntry ace = testHelper.CreateAceWithBranchOfOwningGroup (groupType);
-        ClientTransaction.Current.Commit ();
+        GroupType groupType = testHelper.CreateGroupType("GroupType");
+        AccessControlEntry ace = testHelper.CreateAceWithBranchOfOwningGroup(groupType);
+        ClientTransaction.Current.Commit();
 
-        groupType.Delete ();
+        groupType.Delete();
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (ace.State, Is.EqualTo (StateType.Invalid));
+        Assert.That(ace.State.IsInvalid, Is.True);
       }
     }
 
     [Test]
     public void DeleteGroupType_WithGroupTypePosition ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        GroupType groupType = testHelper.CreateGroupType ("GroupType");
-        Position position = testHelper.CreatePosition ("Position");
-        GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition (groupType, position);
+        GroupType groupType = testHelper.CreateGroupType("GroupType");
+        Position position = testHelper.CreatePosition("Position");
+        GroupTypePosition concretePosition = testHelper.CreateGroupTypePosition(groupType, position);
 
-        groupType.Delete ();
+        groupType.Delete();
 
-        Assert.That (concretePosition.State, Is.EqualTo (StateType.Invalid));
+        Assert.That(concretePosition.State.IsInvalid, Is.True);
       }
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "The GroupType 'groupType 1' is still assigned to at least one group. Please update or delete the dependent groups before proceeding.")]
     public void DeleteGroupType_WithGroup ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.Current);
-        Group group = Group.FindByTenant (tenant.GetHandle()).Where (g => g.Name == "parentGroup0").Single ();
+        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.Current);
+        Group group = Group.FindByTenant(tenant.GetHandle()).Where(g => g.Name == "parentGroup0").Single();
         GroupType groupType = group.GroupType;
 
-        groupType.Delete ();
+        Assert.That(
+            () => groupType.Delete(),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo(
+                    "The GroupType 'groupType 1' is still assigned to at least one group. Please update or delete the dependent groups before proceeding."));
       }
     }
 
@@ -104,7 +106,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
       GroupType groupType = GroupType.NewObject();
       groupType.Name = "GroupTypeName";
 
-      Assert.That (groupType.DisplayName, Is.EqualTo ("GroupTypeName"));
+      Assert.That(groupType.DisplayName, Is.EqualTo("GroupTypeName"));
     }
   }
 }

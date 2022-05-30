@@ -16,9 +16,8 @@
 // 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -28,25 +27,33 @@ namespace Remotion.Reflection
   /// </summary>
   public static class AssemblyTypeCache
   {
-    private static readonly ConcurrentDictionary<_Assembly, Tuple<ReadOnlyCollection<Type>, bool>> s_typeCache =
-        new ConcurrentDictionary<_Assembly, Tuple<ReadOnlyCollection<Type>, bool>>();
+    private static readonly ConcurrentDictionary<Assembly, (IReadOnlyCollection<Type> Types, bool IsGacAssembly)> s_typeCache = new();
 
-    [CLSCompliant (false)]
-    public static bool IsGacAssembly (_Assembly assembly)
+    public static bool IsGacAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      // C# compiler 7.2 already provides caching for anonymous method.
-      return s_typeCache.GetOrAdd (assembly, a => Tuple.Create (Array.AsReadOnly (a.GetTypes()), a.GlobalAssemblyCache)).Item2;
+      return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).IsGacAssembly;
     }
 
-    [CLSCompliant (false)]
-    public static ReadOnlyCollection<Type> GetTypes (_Assembly assembly)
+    public static IReadOnlyCollection<Type> GetTypes (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      // C# compiler 7.2 already provides caching for anonymous method.
-      return s_typeCache.GetOrAdd (assembly, a => Tuple.Create (Array.AsReadOnly (a.GetTypes()), a.GlobalAssemblyCache)).Item1;
+      return s_typeCache.GetOrAdd(assembly, GetTypeCacheValue).Types;
+    }
+
+    private static (IReadOnlyCollection<Type> Types, bool IsGacAssembly) GetTypeCacheValue (Assembly assembly)
+    {
+#if FEATURE_GAC
+      var isGacAssembly = assembly.GlobalAssemblyCache;
+#else
+      var isGacAssembly = false;
+#endif
+
+      var types = Array.AsReadOnly(assembly.GetTypes());
+
+      return (types, isGacAssembly);
     }
   }
 }

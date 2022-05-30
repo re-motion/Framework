@@ -17,8 +17,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
@@ -31,6 +31,7 @@ namespace Remotion.Collections.DataStore
   /// <typeparam name="TValue">The type of the values.</typeparam>
   [Serializable]
   public sealed class SimpleDataStore<TKey, TValue> : IDataStore<TKey, TValue>, IEnumerable<KeyValuePair<TKey, TValue>>
+      where TKey : notnull
   {
     private sealed class Enumerator : IEnumerator<KeyValuePair<TKey, TValue>>
     {
@@ -61,8 +62,8 @@ namespace Remotion.Collections.DataStore
         {
           var current = _inner.Current;
           var data = current.Value;
-          Assertion.DebugAssert (data.IsInitialized, "Uninitialized values should be skipped during MoveNext().");
-          return new KeyValuePair<TKey, TValue> (current.Key, data.Value);
+          Assertion.DebugAssert(data.IsInitialized, "Uninitialized values should be skipped during MoveNext().");
+          return new KeyValuePair<TKey, TValue>(current.Key, data.Value);
         }
       }
 
@@ -94,14 +95,14 @@ namespace Remotion.Collections.DataStore
 
     public SimpleDataStore ()
     {
-      _innerDictionary = new Dictionary<TKey, Data> ();
+      _innerDictionary = new Dictionary<TKey, Data>();
     }
 
-    public SimpleDataStore ([NotNull] IEqualityComparer<TKey> comparer)
+    public SimpleDataStore ([JetBrains.Annotations.NotNull] IEqualityComparer<TKey> comparer)
     {
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      _innerDictionary = new Dictionary<TKey, Data> (comparer);
+      _innerDictionary = new Dictionary<TKey, Data>(comparer);
     }
 
     bool INullObject.IsNull
@@ -117,30 +118,30 @@ namespace Remotion.Collections.DataStore
     /// <inheritdoc />
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
-      return TryGetValueInternal (key, out _);
+      return TryGetValueInternal(key, out _);
     }
 
     /// <inheritdoc />
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
       // value can be null
 
-      if (TryGetValueInternal (key, out _))
-        throw new ArgumentException (string.Format ("The store already contains an element with key '{0}'.", key), "key");
+      if (TryGetValueInternal(key, out _))
+        throw new ArgumentException(string.Format("The store already contains an element with key '{0}'.", key), "key");
 
-      _innerDictionary.Add (key, new Data (value));
+      _innerDictionary.Add(key, new Data(value));
     }
 
     /// <inheritdoc />
     public bool Remove (TKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
-      if (TryGetValueInternal (key, out _))
-        return _innerDictionary.Remove (key);
+      if (TryGetValueInternal(key, out _))
+        return _innerDictionary.Remove(key);
 
       return false;
     }
@@ -156,65 +157,65 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        ArgumentUtility.CheckNotNull ("key", key);
+        ArgumentUtility.CheckNotNull("key", key);
 
-        if (TryGetValueInternal (key, out var value))
+        if (TryGetValueInternal(key, out var value))
           return value;
 
-        string message = string.Format ("There is no element with key '{0}' in the store.", key);
-        throw new KeyNotFoundException (message);
+        string message = string.Format("There is no element with key '{0}' in the store.", key);
+        throw new KeyNotFoundException(message);
       }
-      set 
+      set
       {
-        ArgumentUtility.CheckNotNull ("key", key);
+        ArgumentUtility.CheckNotNull("key", key);
 
-        if (TryGetValueInternal (key, out _))
-          _innerDictionary.Remove (key);
-        _innerDictionary.Add (key, new Data (value));
+        if (TryGetValueInternal(key, out _))
+          _innerDictionary.Remove(key);
+        _innerDictionary.Add(key, new Data(value));
       }
     }
 
     /// <inheritdoc />
+    [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
-      TryGetValueInternal (key, out var value);
+      TryGetValueInternal(key, out var value);
       return value;
     }
 
     /// <inheritdoc />
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
-      return TryGetValueInternal (key, out value);
+      return TryGetValueInternal(key, out value);
     }
 
     /// <inheritdoc />
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
-      TValue value;
-      if (!TryGetValueInternal (key, out value))
+      if (!TryGetValueInternal(key, out var value))
       {
-        ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
+        ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
 
-        _innerDictionary.Add (key, new Data());
+        _innerDictionary.Add(key, new Data());
         try
         {
-          value = valueFactory (key);
+          value = valueFactory(key);
         }
         catch
         {
-          _innerDictionary.Remove (key);
+          _innerDictionary.Remove(key);
           throw;
         }
-        var data = new Data (value);
-        if (_innerDictionary.Remove (key))
-          _innerDictionary.Add (key, data);
+        var data = new Data(value);
+        if (_innerDictionary.Remove(key))
+          _innerDictionary.Add(key, data);
       }
 
       return value;
@@ -226,7 +227,7 @@ namespace Remotion.Collections.DataStore
     /// <returns>An <see cref="IEnumerator{T}"/> that iterates through the contents of this <see cref="SimpleDataStore{TKey,TValue}"/>.</returns>
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      return new Enumerator (_innerDictionary.GetEnumerator());
+      return new Enumerator(_innerDictionary.GetEnumerator());
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
@@ -234,11 +235,11 @@ namespace Remotion.Collections.DataStore
       return GetEnumerator();
     }
 
-    [MethodImpl (MethodImplOptions.AggressiveInlining)]
-    private bool TryGetValueInternal (TKey key, out TValue value)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool TryGetValueInternal (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
       Data data;
-      var hasData = _innerDictionary.TryGetValue (key, out data);
+      var hasData = _innerDictionary.TryGetValue(key, out data);
 
       value = data.Value;
 
@@ -252,17 +253,17 @@ namespace Remotion.Collections.DataStore
       // for this particular method. By moving the throw-statement to the helper method, this penalty could be avoided but the readability 
       // would suffer. Given that a) RyuJIT is expected to take over for JIT32 in a future release and that the x86 platform is not used for 
       // high-scale (web server) applications any longer, this optimization is skipped at this point.
-      throw CreateExceptionRecursiveKeyAccess (key);
+      throw CreateExceptionRecursiveKeyAccess(key);
     }
 
     /// <remarks>
     /// Method must be extracted into separate, non-inlined method because string-Format would otherwise incur a 20% performance overhead.
     /// </remarks>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     private static InvalidOperationException CreateExceptionRecursiveKeyAccess (TKey key)
     {
-      return new InvalidOperationException (
-          string.Format (
+      return new InvalidOperationException(
+          string.Format(
               "An attempt was detected to access the value for key ('{0}') during the factory operation of GetOrCreateValue(key, factory).",
               key));
     }

@@ -37,8 +37,8 @@ namespace Remotion.Security
 
     public InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator (IObjectSecurityStrategy objectSecurityStrategy)
     {
-      ArgumentUtility.CheckNotNull ("objectSecurityStrategy", objectSecurityStrategy);
-      
+      ArgumentUtility.CheckNotNull("objectSecurityStrategy", objectSecurityStrategy);
+
       _objectSecurityStrategy = objectSecurityStrategy;
     }
 
@@ -47,13 +47,13 @@ namespace Remotion.Security
         ISecurityPrincipal principal,
         IReadOnlyList<AccessType> requiredAccessTypes)
     {
-      ArgumentUtility.DebugCheckNotNull ("securityProvider", securityProvider);
-      ArgumentUtility.DebugCheckNotNull ("principal", principal);
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.DebugCheckNotNull("securityProvider", securityProvider);
+      ArgumentUtility.DebugCheckNotNull("principal", principal);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("requiredAccessTypes", requiredAccessTypes);
 
       if (_isEvaluatingAccess)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "Multiple reentrancies on InstanceBasedReEntrancyGuardedObjectSecurityStrategyDecorator.HasAccess(...) are not allowed as they can indicate a possible infinite recursion. "
             + "Use SecurityFreeSection.IsActive to guard the computation of the SecurityContext returned by ISecurityContextFactory.CreateSecurityContext().");
       }
@@ -61,7 +61,7 @@ namespace Remotion.Security
       try
       {
         _isEvaluatingAccess = true;
-        return _objectSecurityStrategy.HasAccess (securityProvider, principal, requiredAccessTypes);
+        return _objectSecurityStrategy.HasAccess(securityProvider, principal, requiredAccessTypes);
       }
       finally
       {

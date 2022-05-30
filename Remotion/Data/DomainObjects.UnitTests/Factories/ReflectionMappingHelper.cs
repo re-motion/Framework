@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     public static string GetPropertyName (Type type, string shortPropertyName)
     {
       if (type.IsGenericType && !type.IsGenericTypeDefinition)
-        type = type.GetGenericTypeDefinition ();
+        type = type.GetGenericTypeDefinition();
 
       return type.FullName + "." + shortPropertyName;
     }

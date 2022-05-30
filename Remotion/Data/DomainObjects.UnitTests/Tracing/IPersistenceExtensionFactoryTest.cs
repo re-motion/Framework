@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var factory = _serviceLocator.GetInstance<IPersistenceExtensionFactory>();
 
-      Assert.That (factory, Is.TypeOf<CompoundPersistenceExtensionFactory>());
+      Assert.That(factory, Is.TypeOf<CompoundPersistenceExtensionFactory>());
     }
 
     [Test]
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       var factory1 = _serviceLocator.GetInstance<IPersistenceExtensionFactory>();
       var factory2 = _serviceLocator.GetInstance<IPersistenceExtensionFactory>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

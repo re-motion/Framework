@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocAutoCompleteReferenceValueSelector : BocControlSelectorBase<BocAutoCompleteReferenceValueControlObject>
   {
     public BocAutoCompleteReferenceValueSelector ()
-        : base ("BocAutoCompleteReferenceValue")
+        : base("BocAutoCompleteReferenceValue")
     {
     }
 
@@ -36,10 +36,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new BocAutoCompleteReferenceValueControlObject (newControlObjectContext);
+      return new BocAutoCompleteReferenceValueControlObject(newControlObjectContext);
     }
   }
 }

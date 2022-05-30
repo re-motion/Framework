@@ -26,15 +26,15 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
-  [ImplementationFor (typeof (IAccessControlListFinder), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IAccessControlListFinder), Lifetime = LifetimeKind.Singleton)]
   public class AccessControlListFinder : IAccessControlListFinder
   {
     private readonly ISecurityContextRepository _securityContextRepository;
 
     public AccessControlListFinder (ISecurityContextRepository securityContextRepository)
     {
-      ArgumentUtility.CheckNotNull ("securityContextRepository", securityContextRepository);
-      
+      ArgumentUtility.CheckNotNull("securityContextRepository", securityContextRepository);
+
       _securityContextRepository = securityContextRepository;
     }
 
@@ -44,9 +44,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     ///   <paramref name="context"/> is not state-less and a <see cref="StatePropertyDefinition"/> is missing.<br/>- or -<br/>
     ///   <paramref name="context"/> is not state-less and contains an invalid state for a <see cref="StatePropertyDefinition"/>.
     /// </exception>
-    public IDomainObjectHandle<AccessControlList> Find (ISecurityContext context)
+    public IDomainObjectHandle<AccessControlList>? Find (ISecurityContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       // Status quo:
       // Don't match ACL if Context contains more properties then the Class
@@ -56,9 +56,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       // -> once the BaseClass contains less properties then the Context a match is no longer possible
       // -> Inheritance happens on a by-state base
 
-      for (var @class = GetClass (context.Class); @class != null; @class = GetClass (@class.BaseClass))
+      for (var @class = GetClass(context.Class); @class != null; @class = GetClass(@class.BaseClass))
       {
-        var foundAccessControlList = FindAccessControlList (@class, context);
+        var foundAccessControlList = FindAccessControlList(@class, context);
         if (foundAccessControlList != null)
           return foundAccessControlList;
 
@@ -70,19 +70,19 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return null;
     }
 
-    private SecurableClassDefinitionData GetClass (string className)
+    private SecurableClassDefinitionData? GetClass (string? className)
     {
       if (className == null)
         return null;
-      return _securityContextRepository.GetClass (className);
+      return _securityContextRepository.GetClass(className);
     }
 
-    private IDomainObjectHandle<AccessControlList> FindAccessControlList (SecurableClassDefinitionData classData, ISecurityContext context)
+    private IDomainObjectHandle<AccessControlList>? FindAccessControlList (SecurableClassDefinitionData classData, ISecurityContext context)
     {
       if (context.IsStateless)
         return classData.StatelessAccessControlList;
       else
-        return classData.StatefulAccessControlLists.Where (acl => MatchesStates (context, acl.States)).Select (acl => acl.Handle).FirstOrDefault();
+        return classData.StatefulAccessControlLists.Where(acl => MatchesStates(context, acl.States)).Select(acl => acl.Handle).FirstOrDefault();
     }
 
     private bool MatchesStates (ISecurityContext context, IReadOnlyCollection<State> states)
@@ -90,32 +90,32 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       if (context.GetNumberOfStates() > states.Count)
         return false;
 
-      return states.All (s => MatchesState (context, s));
+      return states.All(s => MatchesState(context, s));
     }
 
     private bool MatchesState (ISecurityContext context, State state)
     {
-      if (!context.ContainsState (state.PropertyName))
-        throw CreateAccessControlException ("The state '{0}' is missing in the security context.", state.PropertyName);
+      if (!context.ContainsState(state.PropertyName))
+        throw CreateAccessControlException("The state '{0}' is missing in the security context.", state.PropertyName);
 
-      var enumWrapper = context.GetState (state.PropertyName);
+      var enumWrapper = context.GetState(state.PropertyName);
 
-      var validStates = _securityContextRepository.GetStatePropertyValues (state.PropertyHandle);
-      if (!validStates.Contains (enumWrapper.Name))
+      var validStates = _securityContextRepository.GetStatePropertyValues(state.PropertyHandle);
+      if (!validStates.Contains(enumWrapper.Name))
       {
-        throw CreateAccessControlException (
+        throw CreateAccessControlException(
             "The state '{0}' is not defined for the property '{1}' of the securable class '{2}' or its base classes.",
             enumWrapper.Name,
             state.PropertyName,
             context.Class);
       }
 
-      return enumWrapper.Name.Equals (state.Value);
+      return enumWrapper.Name.Equals(state.Value);
     }
 
     private AccessControlException CreateAccessControlException (string message, params object[] args)
     {
-      return new AccessControlException (string.Format (message, args));
+      return new AccessControlException(string.Format(message, args));
     }
   }
 }

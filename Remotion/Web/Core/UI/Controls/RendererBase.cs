@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Web.UI;
-using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -34,8 +34,7 @@ namespace Remotion.Web.UI.Controls
   public abstract class RendererBase<TControl>
       where TControl : IStyledControl, IControlWithDiagnosticMetadata
   {
-    private readonly Dictionary<Tuple<Type, IResourceManager>, IResourceManager> _resourceManagerCache =
-        new Dictionary<Tuple<Type, IResourceManager>, IResourceManager>();
+    private readonly ConcurrentDictionary<Type, ConditionalWeakTable<IResourceManager, Lazy<IResourceManager>>> _resourceManagerCache = new();
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IGlobalizationService _globalizationService;
@@ -46,9 +45,9 @@ namespace Remotion.Web.UI.Controls
     /// </summary>
     protected RendererBase (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService, IRenderingFeatures renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      ArgumentUtility.CheckNotNull ("renderingFeatures", renderingFeatures);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
       _resourceUrlFactory = resourceUrlFactory;
       _globalizationService = globalizationService;
@@ -82,55 +81,63 @@ namespace Remotion.Web.UI.Controls
 
     protected void AddStandardAttributesToRender (RenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
 
-      if (!string.IsNullOrEmpty (renderingContext.Control.CssClass))
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, renderingContext.Control.CssClass);
+      if (!string.IsNullOrEmpty(renderingContext.Control.CssClass))
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, renderingContext.Control.CssClass);
 
-      CssStyleCollection styles = renderingContext.Control.ControlStyle.GetStyleAttributes (renderingContext.Control);
+      CssStyleCollection styles = renderingContext.Control.ControlStyle.GetStyleAttributes(renderingContext.Control);
       foreach (string style in styles.Keys)
-        renderingContext.Writer.AddStyleAttribute (style, styles[style]);
+        renderingContext.Writer.AddStyleAttribute(style, styles[style]);
 
       foreach (string attribute in renderingContext.Control.Attributes.Keys)
       {
-        string value = renderingContext.Control.Attributes[attribute];
-        if (!string.IsNullOrEmpty (value))
-          renderingContext.Writer.AddAttribute (attribute, value);
+        string? value = renderingContext.Control.Attributes[attribute];
+        if (!string.IsNullOrEmpty(value))
+          renderingContext.Writer.AddAttribute(attribute, value);
       }
 
       if (IsDiagnosticMetadataRenderingEnabled)
-        AddDiagnosticMetadataAttributes (renderingContext);
+        AddDiagnosticMetadataAttributes(renderingContext);
     }
 
     protected virtual void AddDiagnosticMetadataAttributes (RenderingContext<TControl> renderingContext)
     {
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.ControlType, renderingContext.Control.ControlType);
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ControlType, renderingContext.Control.ControlType);
     }
 
-    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, string stringValue)
+    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, string? stringValue)
     {
-      if (string.IsNullOrEmpty (stringValue))
-        scriptBuilder.Append ("null");
+      if (string.IsNullOrEmpty(stringValue))
+        scriptBuilder.Append("null");
       else
-        scriptBuilder.Append ("'").Append (ScriptUtility.EscapeClientScript (stringValue)).Append ("'");
+        scriptBuilder.Append("'").Append(ScriptUtility.EscapeClientScript(stringValue)).Append("'");
+    }
+
+    protected void AppendStringValueOrNullToScript (StringBuilder scriptBuilder, WebString? stringValue)
+    {
+      if (stringValue is { IsEmpty: false })
+        scriptBuilder.Append("'").Append(ScriptUtility.EscapeClientScript(stringValue.Value)).Append("'");
+      else
+        scriptBuilder.Append("null");
     }
 
     protected void AppendBooleanValueToScript (StringBuilder scriptBuilder, bool booleanValue)
     {
-      scriptBuilder.Append (booleanValue ? "true" : "false");
+      scriptBuilder.Append(booleanValue ? "true" : "false");
     }
 
-    protected void CheckScriptManager (IControl control, string errorMessageFormat, params object[] args)
+    protected void CheckScriptManager (IControl control, string errorMessageFormat, params object?[] args)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty ("errorMessageFormat", errorMessageFormat);
-      ArgumentUtility.CheckNotNull ("args", args);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty("errorMessageFormat", errorMessageFormat);
+      ArgumentUtility.CheckNotNull("args", args);
 
-      var page = control.Page.WrappedInstance;
-      if (page != null && ScriptManager.GetCurrent (page) == null)
-        throw new InvalidOperationException (string.Format (errorMessageFormat, args));
+      var page = control.Page?.WrappedInstance;
+      if (page != null && ScriptManager.GetCurrent(page) == null)
+        throw new InvalidOperationException(string.Format(errorMessageFormat, args));
     }
 
     /// <summary> Find the <see cref="IResourceManager"/> for this renderer. </summary>
@@ -141,12 +148,22 @@ namespace Remotion.Web.UI.Controls
     /// <returns>An <see cref="IResourceManager"/> from which all resources for this renderer can be obtained.</returns>
     protected IResourceManager GetResourceManager (Type localResourcesType, IResourceManager controlResourceManager)
     {
-      ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
-      ArgumentUtility.CheckNotNull ("controlResourceManager", controlResourceManager);
+      ArgumentUtility.CheckNotNull("localResourcesType", localResourcesType);
+      ArgumentUtility.CheckNotNull("controlResourceManager", controlResourceManager);
 
-      return _resourceManagerCache.GetOrCreateValue (
-          Tuple.Create (localResourcesType, controlResourceManager),
-          key => ResourceManagerSet.Create (key.Item2, _globalizationService.GetResourceManager (key.Item1)));
+      var table = _resourceManagerCache
+          .GetOrAdd(
+              localResourcesType,
+              _ => new ConditionalWeakTable<IResourceManager, Lazy<IResourceManager>>());
+
+      if (table.TryGetValue(controlResourceManager, out var cachedResult))
+        return cachedResult.Value;
+
+      var result = table.GetValue(
+          controlResourceManager,
+          mgr => new Lazy<IResourceManager>(() => ResourceManagerSet.Create(mgr, _globalizationService.GetResourceManager(localResourcesType))));
+
+      return result.Value;
     }
   }
 }

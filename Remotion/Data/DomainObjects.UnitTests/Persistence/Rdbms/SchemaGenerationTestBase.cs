@@ -33,14 +33,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
   public class SchemaGenerationTestBase : DatabaseTest
   {
     public SchemaGenerationTestBase ()
-        : base (new DatabaseAgent (SchemaGenerationConnectionString1), "Dummy.sql")
+        : base(new DatabaseAgent(SchemaGenerationConnectionString1), "Dummy.sql")
     {
     }
 
-    [TestFixtureSetUp]
-    public override void TestFixtureSetUp ()
+    [OneTimeSetUp]
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
     }
 
     [SetUp]
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       base.SetUp();
 
-      DomainObjectsConfiguration.SetCurrent (SchemaGenerationConfiguration.Instance.GetDomainObjectsConfiguration());
-      MappingConfiguration.SetCurrent (SchemaGenerationConfiguration.Instance.GetMappingConfiguration());
+      DomainObjectsConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetDomainObjectsConfiguration());
+      MappingConfiguration.SetCurrent(SchemaGenerationConfiguration.Instance.GetMappingConfiguration());
     }
 
     [TearDown]
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     protected RdbmsProviderDefinition SchemaGenerationFirstStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationFirstStorageProviderID]; }
+      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationFirstStorageProviderID]; }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationSecondStorageProviderDefinition
@@ -78,13 +78,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationSecondStorageProviderID];
+            (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationSecondStorageProviderID];
       }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationThirdStorageProviderDefinition
     {
-      get { return (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationThirdStorageProviderID]; }
+      get { return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationThirdStorageProviderID]; }
     }
 
     protected RdbmsProviderDefinition SchemaGenerationInternalStorageProviderDefinition
@@ -92,18 +92,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       get
       {
         return
-            (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationInternalStorageProviderID];
+            (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[SchemaGenerationInternalStorageProviderID];
       }
     }
 
     protected virtual TableScriptBuilder CreateTableBuilder ()
     {
-      return new TableScriptBuilder (new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
+      return new TableScriptBuilder(new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
     }
 
     protected virtual ViewScriptBuilder CreateViewBuilder ()
     {
-      return new ViewScriptBuilder (
+      return new ViewScriptBuilder(
           new SqlTableViewScriptElementFactory(),
           new SqlUnionViewScriptElementFactory(),
           new SqlFilterViewScriptElementFactory(),
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     protected virtual ViewScriptBuilder CreateExtendedViewBuilder ()
     {
-      return new ViewScriptBuilder (
+      return new ViewScriptBuilder(
           new ExtendedSqlTableViewScriptElementFactory(),
           new ExtendedSqlUnionViewScriptElementFactory(),
           new ExtendedSqlFilterViewScriptElementFactory(),
@@ -123,14 +123,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     protected virtual ForeignKeyConstraintScriptBuilder CreateConstraintBuilder ()
     {
-      return new ForeignKeyConstraintScriptBuilder (new SqlForeignKeyConstraintScriptElementFactory(), new SqlCommentScriptElementFactory());
+      return new ForeignKeyConstraintScriptBuilder(new SqlForeignKeyConstraintScriptElementFactory(), new SqlCommentScriptElementFactory());
     }
 
     protected virtual IndexScriptBuilder CreateIndexBuilder ()
     {
       return
-          new IndexScriptBuilder (
-              new SqlIndexScriptElementFactory (
+          new IndexScriptBuilder(
+              new SqlIndexScriptElementFactory(
                   new SqlIndexDefinitionScriptElementFactory(),
                   new SqlPrimaryXmlIndexDefinitionScriptElementFactory(),
                   new SqlSecondaryXmlIndexDefinitionScriptElementFactory()),
@@ -140,19 +140,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     protected virtual SynonymScriptBuilder CreateSynonymBuilder ()
     {
       var sqlSynonymScriptElementFactory = new SqlSynonymScriptElementFactory();
-      return new SynonymScriptBuilder (
+      return new SynonymScriptBuilder(
           sqlSynonymScriptElementFactory,
           sqlSynonymScriptElementFactory,
           sqlSynonymScriptElementFactory,
           sqlSynonymScriptElementFactory,
           new SqlCommentScriptElementFactory());
     }
- 
+
     protected PropertyDefinition GetPropertyDefinition<TSourceObject, TPropertyType> (Expression<Func<TSourceObject, TPropertyType>> expression)
         where TSourceObject : DomainObject
     {
-      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty (expression);
-      var classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (TSourceObject));
-      return classDefinition.ResolveProperty (PropertyInfoAdapter.Create (propertyInfo));
+      var propertyInfo = MemberInfoFromExpressionUtility.GetProperty(expression);
+      var classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(TSourceObject));
+      return classDefinition.ResolveProperty(PropertyInfoAdapter.Create(propertyInfo));
     }}
 }

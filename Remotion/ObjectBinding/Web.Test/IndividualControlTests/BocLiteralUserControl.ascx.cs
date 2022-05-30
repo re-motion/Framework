@@ -18,6 +18,7 @@ using System;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 
 namespace OBWTest.IndividualControlTests
 {
@@ -26,10 +27,10 @@ namespace OBWTest.IndividualControlTests
   {
     protected override void RegisterEventHandlers ()
     {
-      base.RegisterEventHandlers ();
+      base.RegisterEventHandlers();
 
-      this.CVTestSetNullButton.Click += new EventHandler (this.CVTestSetNullButton_Click);
-      this.CVTestSetNewValueButton.Click += new EventHandler (this.CVTestSetNewValueButton_Click);
+      this.CVTestSetNullButton.Click += new EventHandler(this.CVTestSetNullButton_Click);
+      this.CVTestSetNewValueButton.Click += new EventHandler(this.CVTestSetNewValueButton_Click);
     }
 
     public override IBusinessObjectDataSourceControl DataSource
@@ -37,19 +38,23 @@ namespace OBWTest.IndividualControlTests
       get { return CurrentObject; }
     }
 
+    public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+    {
+      get { return CurrentObjectValidationResultDispatchingValidator; }
+    }
+
     override protected void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      Person person = (Person) CurrentObject.BusinessObject;
+      Person person = (Person)CurrentObject.BusinessObject;
 
-      UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CVString");
-      UnboundCVField.LoadUnboundValue (person.CVString, IsPostBack);
+      UnboundCVField.LoadUnboundValue(person.CVStringLiteral, IsPostBack);
     }
 
     override protected void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     private void CVTestSetNullButton_Click (object sender, EventArgs e)

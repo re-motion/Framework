@@ -29,12 +29,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// <summary>
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValue"/> control.
   /// </summary>
-  public class BocDateTimeValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
+  public class BocDateTimeValueControlObject : BocControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly
   {
     private readonly bool _hasTimeField;
 
     public BocDateTimeValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       _hasTimeField = Scope[DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueHasTimeField] == "true";
     }
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public DateTime GetDateTime ()
     {
       var dateTimeString = GetDateTimeAsString();
-      return DateTime.Parse (dateTimeString);
+      return DateTime.Parse(dateTimeString);
     }
 
     /// <summary>
@@ -65,9 +65,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsReadOnly())
       {
-        dateTimeString = Scope.FindCss ("span:nth-child(1)").Text;
+        dateTimeString = Scope.FindCss("span:nth-child(1)").Text;
         if (_hasTimeField)
-          dateTimeString += " " + Scope.FindCss ("span:nth-child(3)").Text;
+          dateTimeString += " " + Scope.FindCss("span:nth-child(3)").Text;
       }
       else
       {
@@ -82,53 +82,53 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Sets the date component of the control to <paramref name="newDate"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
-    public UnspecifiedPageObject SetDate (DateTime newDate, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
+    public UnspecifiedPageObject SetDate (DateTime newDate, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var newDateString = newDate.ToShortDateString();
-      return SetDate (newDateString, actionOptions);
+      return SetDate(newDateString, actionOptions);
     }
 
     /// <summary>
     /// Sets the date component of the control to <paramref name="newDateString"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
-    public UnspecifiedPageObject SetDate ([NotNull] string newDateString, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
+    public UnspecifiedPageObject SetDate ([NotNull] string newDateString, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("newDateString", newDateString);
+      ArgumentUtility.CheckNotNull("newDateString", newDateString);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var dateScope = GetDateScope();
 
-      var actualActionOptions = MergeWithDefaultActionOptions (dateScope, actionOptions);
-      new FillWithAction (this, dateScope, newDateString, FinishInput.WithTab).Execute (actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(dateScope, actionOptions);
+      ExecuteAction(new FillWithAction(this, dateScope, newDateString, FinishInput.WithTab), actualActionOptions);
       return UnspecifiedPage();
     }
 
     /// <summary>
     /// Sets the time component of the control to <paramref name="newTime"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
-    public UnspecifiedPageObject SetTime (TimeSpan newTime, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
+    public UnspecifiedPageObject SetTime (TimeSpan newTime, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      var newTimeAsDateTime = DateTime.MinValue.Add (newTime);
+      var newTimeAsDateTime = DateTime.MinValue.Add(newTime);
 
       string newTimeString;
 
@@ -138,45 +138,45 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       else
         newTimeString = newTimeAsDateTime.ToShortTimeString();
 
-      return SetTime (newTimeString, actionOptions);
+      return SetTime(newTimeString, actionOptions);
     }
 
     /// <summary>
     /// Sets the time component of the control to <paramref name="newTimeString"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
-    public UnspecifiedPageObject SetTime ([NotNull] string newTimeString, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
+    public UnspecifiedPageObject SetTime ([NotNull] string newTimeString, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("newTimeString", newTimeString);
+      ArgumentUtility.CheckNotNull("newTimeString", newTimeString);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var timeScope = GetTimeScope();
 
-      var actualActionOptions = MergeWithDefaultActionOptions (timeScope, actionOptions);
-      new FillWithAction (this, timeScope, newTimeString, FinishInput.WithTab).Execute (actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(timeScope, actionOptions);
+      ExecuteAction(new FillWithAction(this, timeScope, newTimeString, FinishInput.WithTab), actualActionOptions);
       return UnspecifiedPage();
     }
 
     /// <summary>
     /// Sets the date component and the time component of the control to <paramref name="newDateTime"/>.
     /// </summary>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
-    public UnspecifiedPageObject SetDateTime (DateTime newDateTime, [CanBeNull] IWebTestActionOptions actionOptions = null)
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
+    public UnspecifiedPageObject SetDateTime (DateTime newDateTime, [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      SetDate (newDateTime, actionOptions);
+      SetDate(newDateTime, actionOptions);
       if (_hasTimeField)
-        SetTime (newDateTime.TimeOfDay, actionOptions);
+        SetTime(newDateTime.TimeOfDay, actionOptions);
       return UnspecifiedPage();
     }
 
@@ -188,12 +188,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return GetDateValidationErrors();
     }
 
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly(GetLabeledElementScope());
+    }
+
     /// <summary>
     /// Returns the validation errors for the date field.
     /// </summary>
     public IReadOnlyList<string> GetDateValidationErrors ()
     {
-      return GetValidationErrors (GetDateScope());
+      return GetValidationErrors(GetDateScope());
     }
 
     /// <summary>
@@ -201,14 +206,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public IReadOnlyList<string> GetTimeValidationErrors ()
     {
-      return GetValidationErrors (GetTimeScope());
+      return GetValidationErrors(GetTimeScope());
     }
     protected override ElementScope GetLabeledElementScope ()
     {
-      var dateScope = Scope.FindChild ("DateValue");
+      var dateScope = Scope.FindChild("DateValue");
 
       if (!dateScope.ExistsWorkaround())
-        return Scope.FindChild ("TimeValue");
+        return Scope.FindChild("TimeValue");
 
       return dateScope;
     }
@@ -221,17 +226,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
       var htmlID = GetHtmlID();
-      return new[] { string.Format ("{0}_DateValue", htmlID), string.Format ("{0}_TimeValue", htmlID) };
+      return new[] { string.Format("{0}_DateValue", htmlID), string.Format("{0}_TimeValue", htmlID) };
     }
 
     private ElementScope GetDateScope ()
     {
-      return Scope.FindTagWithAttribute ("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueDateField, "true");
+      return Scope.FindTagWithAttribute("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueDateField, "true");
     }
 
     private ElementScope GetTimeScope ()
     {
-      return Scope.FindTagWithAttribute ("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueTimeField, "true");
+      return Scope.FindTagWithAttribute("input", DiagnosticMetadataAttributesForObjectBinding.BocDateTimeValueTimeField, "true");
     }
   }
 }

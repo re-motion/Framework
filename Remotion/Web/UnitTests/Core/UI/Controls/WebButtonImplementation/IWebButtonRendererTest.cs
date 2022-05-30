@@ -35,19 +35,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonImplementation
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IWebButtonRenderer> ();
+      var factory = _serviceLocator.GetInstance<IWebButtonRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (WebButtonRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(WebButtonRenderer)));
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var factory1 = _serviceLocator.GetInstance<IWebButtonRenderer> ();
-      var factory2 = _serviceLocator.GetInstance<IWebButtonRenderer> ();
+      var factory1 = _serviceLocator.GetInstance<IWebButtonRenderer>();
+      var factory2 = _serviceLocator.GetInstance<IWebButtonRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

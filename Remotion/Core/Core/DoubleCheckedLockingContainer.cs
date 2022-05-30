@@ -25,9 +25,9 @@ namespace Remotion
   /// <remarks>Initialize the container during the construction of the parent object and assign the value using the <see cref="Value"/> property.</remarks>
   /// <threadsafety static="true" instance="true" />
   public class DoubleCheckedLockingContainer<T>
-      where T : class
+      where T : class?
   {
-    private T _value = null;
+    private T _value = null!;
     private readonly Func<T> _defaultFactory;
     private readonly object _sync = new object();
 
@@ -35,7 +35,7 @@ namespace Remotion
     /// <param name="defaultFactory">The delegate used to create the default value in case the value is <see langword="null" />.</param>
     public DoubleCheckedLockingContainer (Func<T> defaultFactory)
     {
-      ArgumentUtility.CheckNotNull ("defaultFactory", defaultFactory);
+      ArgumentUtility.CheckNotNull("defaultFactory", defaultFactory);
       _defaultFactory = defaultFactory;
     }
 
@@ -63,7 +63,7 @@ namespace Remotion
     {
       get
       {
-        T localValue = Volatile.Read (ref _value);
+        T localValue = Volatile.Read(ref _value);
         if (localValue == null)
         {
           lock (_sync)

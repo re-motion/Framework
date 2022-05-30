@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
@@ -40,31 +41,33 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	public class CheckValidEnumValue
 	{
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
-      ArgumentUtility.CheckValidEnumValue ("arg", (TestEnum) 4);
+		  Assert.That(
+		      () => ArgumentUtility.CheckValidEnumValue("arg", (TestEnum)4),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
-      ArgumentUtility.CheckValidEnumValue ("arg", (TestFlags) (1 | 8));
+		  Assert.That(
+		      () => ArgumentUtility.CheckValidEnumValue("arg", (TestFlags)(1 | 8)),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
     [Test]
 		public void Succeed_SingleValue ()
     {
-      Enum result = ArgumentUtility.CheckValidEnumValue ("arg", TestEnum.Value1);
-      Assert.That (result, Is.EqualTo (TestEnum.Value1));
+      Enum result = ArgumentUtility.CheckValidEnumValue("arg", TestEnum.Value1);
+      Assert.That(result, Is.EqualTo(TestEnum.Value1));
     }
 
 	  [Test]
 		public void Succeed_Flags ()
 	  {
-      Enum result = ArgumentUtility.CheckValidEnumValue ("arg", TestFlags.Flag1 | TestFlags.Flag2);
-      Assert.That (result, Is.EqualTo (TestFlags.Flag1 | TestFlags.Flag2));
+      Enum result = ArgumentUtility.CheckValidEnumValue("arg", TestFlags.Flag1 | TestFlags.Flag2);
+      Assert.That(result, Is.EqualTo(TestFlags.Flag1 | TestFlags.Flag2));
 	  }
 	}
 
@@ -72,46 +75,51 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 	public class CheckValidEnumValueAndTypeAndNotNull
 	{
 		[Test]
-		[ExpectedException (typeof (ArgumentNullException))]
 		public void Fail_Null ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", null);
+		  Assert.That(
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum>("arg", null),
+		      Throws.InstanceOf<ArgumentNullException>());
 		}
-    
+
     [Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", (TestEnum) 4);
+		  Assert.That(
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum>("arg", (TestEnum)4),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", (TestFlags) (1 | 8));
+		  Assert.That(
+		      () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags>("arg", (TestFlags)(1 | 8)),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 	  [Test]
-	  [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-	      "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
-	      + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg")]
 	  public void Fail_WrongType ()
 	  {
-	    ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", TestEnum.Value1);
+	    Assert.That(
+	        () => ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags>("arg", TestEnum.Value1),
+	        Throws.ArgumentException
+	            .With.ArgumentExceptionMessageEqualTo(
+	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.", "arg"));
 	  }
 
 	  [Test]
 		public void Succeed_SingleValue ()
 		{
-      TestEnum result = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum> ("arg", TestEnum.Value1);
-      Assert.That (result, Is.EqualTo (TestEnum.Value1));
+      TestEnum result = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestEnum>("arg", TestEnum.Value1);
+      Assert.That(result, Is.EqualTo(TestEnum.Value1));
 		}
 		[Test]
 		public void Succeed_Flags ()
 		{
-      TestFlags result = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags> ("arg", TestFlags.Flag1 | TestFlags.Flag2);
-		  Assert.That (result, Is.EqualTo (TestFlags.Flag1 | TestFlags.Flag2));
+      TestFlags result = ArgumentUtility.CheckValidEnumValueAndTypeAndNotNull<TestFlags>("arg", TestFlags.Flag1 | TestFlags.Flag2);
+		  Assert.That(result, Is.EqualTo(TestFlags.Flag1 | TestFlags.Flag2));
 		}
 	}
 
@@ -121,44 +129,48 @@ namespace Remotion.UnitTests.Utilities.ArgumentUtilityTests
 		[Test]
 		public void Succeed_Null ()
 		{
-      TestEnum? result = ArgumentUtility.CheckValidEnumValueAndType<TestEnum> ("arg", null);
-		  Assert.That (result, Is.Null);
+      TestEnum? result = ArgumentUtility.CheckValidEnumValueAndType<TestEnum>("arg", null);
+		  Assert.That(result, Is.Null);
 		}
-    
+
     [Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_UndefinedValue ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndType<TestEnum> ("arg", (TestEnum) 4);
+		  Assert.That(
+		      () => ArgumentUtility.CheckValidEnumValueAndType<TestEnum>("arg", (TestEnum)4),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentOutOfRangeException))]
 		public void Fail_PartiallyUndefinedFlags ()
 		{
-      ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", (TestFlags) (1 | 8));
+		  Assert.That(
+		      () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags>("arg", (TestFlags)(1 | 8)),
+		      Throws.InstanceOf<ArgumentOutOfRangeException>());
 		}
 
 	  [Test]
-	  [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-	      "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
-	      + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.\r\nParameter name: arg")]
 	  public void Fail_WrongType ()
 	  {
-	    ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", TestEnum.Value1);
+	    Assert.That(
+	        () => ArgumentUtility.CheckValidEnumValueAndType<TestFlags>("arg", TestEnum.Value1),
+	        Throws.ArgumentException
+	            .With.ArgumentExceptionMessageEqualTo(
+	                "Parameter 'arg' has type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestEnum' "
+	                + "when type 'Remotion.UnitTests.Utilities.ArgumentUtilityTests.TestFlags' was expected.", "arg"));
 	  }
 
 	  [Test]
 		public void Succeed_SingleValue ()
 		{
-      TestEnum? result = ArgumentUtility.CheckValidEnumValueAndType<TestEnum> ("arg", TestEnum.Value1);
-      Assert.That (result, Is.EqualTo (TestEnum.Value1));
+      TestEnum? result = ArgumentUtility.CheckValidEnumValueAndType<TestEnum>("arg", TestEnum.Value1);
+      Assert.That(result, Is.EqualTo(TestEnum.Value1));
 		}
 		[Test]
 		public void Succeed_Flags ()
 		{
-      TestFlags? result = ArgumentUtility.CheckValidEnumValueAndType<TestFlags> ("arg", TestFlags.Flag1 | TestFlags.Flag2);
-		  Assert.That (result, Is.EqualTo (TestFlags.Flag1 | TestFlags.Flag2));
+      TestFlags? result = ArgumentUtility.CheckValidEnumValueAndType<TestFlags>("arg", TestFlags.Flag1 | TestFlags.Flag2);
+		  Assert.That(result, Is.EqualTo(TestFlags.Flag1 | TestFlags.Flag2));
 		}
 	}
 }

@@ -15,11 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using JetBrains.Annotations;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
+using NUnit.Framework.Internal;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.PageObjects;
 
@@ -28,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
   /// <summary>
   /// Represents a class which contains test that are executed by using the <see cref="TestCaseSourceAttribute"/>.
   /// </summary>
-  public abstract class TestCaseFactoryBase
+  public abstract class TestCaseFactoryBase: IEnumerable
   {
     /// <summary>
     /// Marks a methods as a test method.
@@ -39,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// Test methods can be marked with NUnit attributes <see cref="CategoryAttribute"/>, <see cref="IgnoreAttribute"/>
     /// or <see cref="ExplicitAttribute"/>.
     /// </remarks>
-    [AttributeUsage (AttributeTargets.Method, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     protected class TestMethodAttribute : Attribute
     {
       public TestMethodAttribute ()
@@ -99,7 +102,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     [UsedImplicitly]
     protected virtual IEnumerable<TestCaseData> GetTests ()
     {
-      return GetTests<TestMethodAttribute> (CreateTestCaseData);
+      return GetTests<TestMethodAttribute>(CreateTestCaseData);
     }
 
     protected IEnumerable<TestCaseData> GetTests<T> (Func<T, MethodInfo, TestCaseData> testCaseDataFactory)
@@ -107,57 +110,65 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     {
       foreach (var method in GetType().GetMethods())
       {
-        var testCaseAttribute = (TestMethodAttribute) Attribute.GetCustomAttribute (method, typeof (TestMethodAttribute), true);
+        var testCaseAttribute = (TestMethodAttribute)Attribute.GetCustomAttribute(method, typeof(TestMethodAttribute), true);
         if (testCaseAttribute != null)
         {
-          if (method.ReturnType != typeof (void) || method.GetParameters().Length != 0)
-            throw new NotSupportedException ("Only methods with a void() signature are allowed as test methods.");
+          if (method.ReturnType != typeof(void) || method.GetParameters().Length != 0)
+            throw new NotSupportedException("Only methods with a void() signature are allowed as test methods.");
 
-          if (testCaseAttribute.GetType() != typeof (T))
+          if (testCaseAttribute.GetType() != typeof(T))
           {
-            throw new InvalidOperationException (
-                string.Format (
+            throw new InvalidOperationException(
+                string.Format(
                     "Method '{0}.{1}'s TestMethodAttribute must be a '{2}' but is a '{3}'.",
                     GetType().Name,
                     method.Name,
-                    typeof (T).Name,
+                    typeof(T).Name,
                     testCaseAttribute.GetType().Name));
           }
 
-          var testCaseData = testCaseDataFactory ((T) testCaseAttribute, method);
+          var testCaseData = testCaseDataFactory((T)testCaseAttribute, method);
           if (testCaseData != null)
           {
             // Handle TestName
             if (testCaseData.TestName == null)
             {
               if (testCaseAttribute.Name != null)
-                testCaseData.SetName (testCaseAttribute.Name);
+                testCaseData.SetName(testCaseAttribute.Name);
               else
               {
                 var prefix = TestPrefix;
-                if (string.IsNullOrWhiteSpace (prefix))
-                  testCaseData.SetName (method.Name);
+                if (string.IsNullOrWhiteSpace(prefix))
+                  testCaseData.SetName(method.Name);
                 else
-                  testCaseData.SetName (string.Format ("{0}_{1}", prefix, method.Name));
+                  testCaseData.SetName(string.Format("{0}_{1}", prefix, method.Name));
               }
             }
 
             // Handle CategoryAttribute
-            var categoryAttribute = (CategoryAttribute) Attribute.GetCustomAttribute (method, typeof (CategoryAttribute));
+            var categoryAttribute = (CategoryAttribute)Attribute.GetCustomAttribute(method, typeof(CategoryAttribute));
             if (categoryAttribute != null)
-              testCaseData.SetCategory (categoryAttribute.Name);
+              testCaseData.SetCategory(categoryAttribute.Name);
 
             // Handle IgnoreAttribute
-            var ignoreAttribute = (IgnoreAttribute) Attribute.GetCustomAttribute (method, typeof (IgnoreAttribute));
+            var ignoreAttribute = (IgnoreAttribute)Attribute.GetCustomAttribute(method, typeof(IgnoreAttribute));
             if (ignoreAttribute != null)
-              testCaseData.Ignore (ignoreAttribute.Reason);
+            {
+              var dummyTest = new TestSuite("");
+              ignoreAttribute.ApplyToTest(dummyTest);
+              testCaseData.Ignore((string)dummyTest.Properties.Get(PropertyNames.SkipReason));
+            }
 
             // Handle ExplicitAttribute
-            var explicitAttribute = (ExplicitAttribute) Attribute.GetCustomAttribute (method, typeof (ExplicitAttribute));
+            var explicitAttribute = (ExplicitAttribute)Attribute.GetCustomAttribute(method, typeof(ExplicitAttribute));
             if (explicitAttribute != null)
-              testCaseData.MakeExplicit (explicitAttribute.Reason);
+            {
+              var dummyTest = new TestSuite("");
+              explicitAttribute.ApplyToTest(dummyTest);
+              testCaseData.Explicit((string)dummyTest.Properties.Get(PropertyNames.SkipReason));
+            }
 
-            testCaseAttribute.Apply (testCaseData);
+            testCaseAttribute.Apply(testCaseData);
 
             yield return testCaseData;
           }
@@ -170,15 +181,15 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     protected void PrepareTest ([NotNull] TestMethodAttribute attribute, [NotNull] WebTestHelper helper, [NotNull] string url)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("helper", helper);
-      ArgumentUtility.CheckNotNull ("url", url);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("helper", helper);
+      ArgumentUtility.CheckNotNull("url", url);
 
-      helper.MainBrowserSession.Window.Visit (url);
+      helper.MainBrowserSession.Window.Visit(url);
       helper.AcceptPossibleModalDialog();
 
       _helper = helper;
-      _home = helper.CreateInitialPageObject<HtmlPageObject> (helper.MainBrowserSession);
+      _home = helper.CreateInitialPageObject<HtmlPageObject>(helper.MainBrowserSession);
     }
 
     /// <summary>
@@ -186,16 +197,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// </summary>
     protected virtual void RunTest ([NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull ("method", method);
+      ArgumentUtility.CheckNotNull("method", method);
 
       try
       {
-        method.Invoke (this, new object[0]);
+        method.Invoke(this, new object[0]);
       }
       catch (TargetInvocationException ex)
       {
         if (ex.InnerException != null)
-          ExceptionDispatchInfo.Capture (ex.InnerException).Throw();
+          ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
 
         throw;
       }
@@ -203,15 +214,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
 
     private TestCaseData CreateTestCaseData ([NotNull] TestMethodAttribute attribute, [NotNull] MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      ArgumentUtility.CheckNotNull ("method", method);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      ArgumentUtility.CheckNotNull("method", method);
 
-      return new TestCaseData (
-          (TestSetupAction) ((helper, url) =>
+      return new TestCaseData(
+          (TestSetupAction)((helper, url) =>
           {
-            PrepareTest (attribute, helper, url);
-            RunTest (method);
+            PrepareTest(attribute, helper, url);
+            RunTest(method);
           }));
+    }
+
+    public IEnumerator GetEnumerator ()
+    {
+      return GetTests().GetEnumerator();
     }
   }
 }

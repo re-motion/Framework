@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Security Metadata Export MSBuild Tasks")]
-[assembly: AssemblyDescription ("MSBuild tasks for extracting an assembly's security metadata.")]
-[assembly: AssemblyCulture ("")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]

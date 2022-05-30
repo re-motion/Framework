@@ -16,9 +16,13 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Web.UI;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -26,7 +30,7 @@ using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.ControlReplacing;
-using ExecuteByRedirect_PreProcessingSubFunctionState = 
+using ExecuteByRedirect_PreProcessingSubFunctionState =
   Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.ExecuteExternalByRedirect.PreProcessingSubFunctionState;
 
 namespace Remotion.Web.ExecutionEngine
@@ -37,21 +41,33 @@ namespace Remotion.Web.ExecutionEngine
   public class WxePageStep : WxeStep, IExecutionStateContext
   {
     private const int c_estimatedLargeObjectHeapThreshold = 85000;
+
+    internal static readonly IReadOnlyCollection<string> PageDirtyStates = new ReadOnlyCollection<string>(new[] { SmartPageDirtyStates.CurrentPage });
+
     private static readonly ConcurrentBag<MemoryStream> s_viewStateSerializationBufferPool = new ConcurrentBag<MemoryStream>();
+
+    internal static bool EvaluateDirtyStateOfPage (IWxePage wxePage)
+    {
+      ArgumentUtility.CheckNotNull("wxePage", wxePage);
+
+      return wxePage.GetDirtyStates(PageDirtyStates).Intersect(PageDirtyStates, StringComparer.InvariantCultureIgnoreCase).Any();
+    }
 
     private IWxePageExecutor _pageExecutor = new WxePageExecutor();
     private readonly ResourceObjectBase _page;
     private readonly string _pageToken;
-    private byte[] _pageState;
+    private byte[]? _pageState;
     private bool _isPostBack;
     private bool _isOutOfSequencePostBack;
     private bool _isExecutionStarted;
     private bool _isReturningPostBack;
-    private WxeFunction _returningFunction;
-    private NameValueCollection _postBackCollection;
+    private WxeFunction? _returningFunction;
+    private NameValueCollection? _postBackCollection;
+    private bool _isPageDirty;
+    private bool _isDirtyFromReturnState;
 
     [NonSerialized]
-    private WxeHandler _wxeHandler;
+    private WxeHandler? _wxeHandler;
 
     private IExecutionState _executionState = NullExecutionState.Null;
     private IUserControlExecutor _userControlExecutor = NullUserControlExecutor.Null;
@@ -59,20 +75,20 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
     public WxePageStep (string page)
-      : this (new ResourceObject (ArgumentUtility.CheckNotNullOrEmpty("page", page)))
+      : this(new ResourceObject(ArgumentUtility.CheckNotNullOrEmpty("page", page)))
     {
     }
 
     /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
     public WxePageStep (WxeVariableReference pageref)
-        : this (new ResourceObjectWithVarRef (pageref))
+        : this(new ResourceObjectWithVarRef(pageref))
     {
     }
 
     protected WxePageStep (ResourceObjectBase page)
     {
-      ArgumentUtility.CheckNotNull ("page", page);
+      ArgumentUtility.CheckNotNull("page", page);
 
       _page = page;
       _pageToken = Guid.NewGuid().ToString();
@@ -81,7 +97,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <summary> The URL of the page to be displayed by this <see cref="WxePageStep"/>. </summary>
     public string Page
     {
-      get { return _page.GetResourcePath (Variables); }
+      get { return _page.GetResourcePath(Variables!); } // TODO RM-8118: not null assertion
     }
 
     /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
@@ -104,7 +120,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <include file='..\doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Execute/*' />
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       if (_wxeHandler != null)
       {
@@ -126,13 +142,13 @@ namespace Remotion.Web.ExecutionEngine
       ClearReturnState();
 
       while (_executionState.IsExecuting)
-        _executionState.ExecuteSubFunction (context);
+        _executionState.ExecuteSubFunction(context);
 
-      _userControlExecutor.Execute (context);
+      _userControlExecutor.Execute(context);
 
       try
       {
-        _pageExecutor.ExecutePage (context, Page, _isPostBack);
+        _pageExecutor.ExecutePage(context, Page, _isPostBack);
       }
       finally
       {
@@ -144,51 +160,54 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (PreProcessingSubFunctionStateParameters parameters, WxeRepostOptions repostOptions)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
-      ArgumentUtility.CheckNotNull ("repostOptions", repostOptions);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("repostOptions", repostOptions);
 
       if (_executionState.IsExecuting)
-        throw new InvalidOperationException ("Cannot execute function while another function executes.");
+        throw new InvalidOperationException("Cannot execute function while another function executes.");
 
       _wxeHandler = parameters.Page.WxeHandler;
 
-      _executionState = new PreProcessingSubFunctionState (this, parameters, repostOptions);
+      _executionState = new PreProcessingSubFunctionState(this, parameters, repostOptions);
+      SetDirtyStateForCurrentPage(EvaluateDirtyStateOfPage(parameters.Page));
       Execute();
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunctionExternalByRedirect (PreProcessingSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
-      ArgumentUtility.CheckNotNull ("returnOptions", returnOptions);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
+      ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
 
       if (_executionState.IsExecuting)
-        throw new InvalidOperationException ("Cannot execute function while another function executes.");
+        throw new InvalidOperationException("Cannot execute function while another function executes.");
 
       _wxeHandler = parameters.Page.WxeHandler;
 
-      _executionState = new ExecuteByRedirect_PreProcessingSubFunctionState (this, parameters, returnOptions);
+      _executionState = new ExecuteByRedirect_PreProcessingSubFunctionState(this, parameters, returnOptions);
+      SetDirtyStateForCurrentPage(EvaluateDirtyStateOfPage(parameters.Page));
       Execute();
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void ExecuteFunction (WxeUserControl userControl, WxeFunction subFunction, Control sender, bool usesEventTarget)
     {
-      ArgumentUtility.CheckNotNull ("userControl", userControl);
-      ArgumentUtility.CheckNotNull ("subFunction", subFunction);
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("userControl", userControl);
+      ArgumentUtility.CheckNotNull("subFunction", subFunction);
+      ArgumentUtility.CheckNotNull("sender", sender);
 
-      IWxePage wxePage = userControl.WxePage;
+      IWxePage wxePage = userControl.WxePage!;
       _wxeHandler = wxePage.WxeHandler;
 
-      _userControlExecutor = new UserControlExecutor (this, userControl, subFunction, sender, usesEventTarget);
+      _userControlExecutor = new UserControlExecutor(this, userControl, subFunction, sender, usesEventTarget);
 
       IReplaceableControl replaceableControl = userControl;
       replaceableControl.Replacer.Controls.Clear();
       wxePage.SaveAllState();
+      SetDirtyStateForCurrentPage(EvaluateDirtyStateOfPage(wxePage));
 
       Execute();
     }
@@ -222,12 +241,13 @@ namespace Remotion.Web.ExecutionEngine
     ///   During the execution of a page, specifies whether the current postback cycle was caused by returning from a 
     ///   <see cref="WxeFunction"/>.
     /// </summary>
+    [MemberNotNullWhen(true, nameof(ReturningFunction))]
     public bool IsReturningPostBack
     {
       get { return _isReturningPostBack; }
     }
 
-    public WxeFunction ReturningFunction
+    public WxeFunction? ReturningFunction
     {
       get { return _returningFunction; }
     }
@@ -248,23 +268,25 @@ namespace Remotion.Web.ExecutionEngine
     ///     integrated data handling features to access the data.
     ///   </para>
     /// </remarks>
-    public NameValueCollection PostBackCollection
+    public NameValueCollection? PostBackCollection
     {
       get { return _postBackCollection; }
     }
 
-    public void SetPostBackCollection (NameValueCollection postBackCollection)
+    public void SetPostBackCollection (NameValueCollection? postBackCollection)
     {
       _postBackCollection = postBackCollection;
     }
 
-    public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection previousPostBackCollection)
+    public void SetReturnState (WxeFunction returningFunction, bool isReturningPostBack, NameValueCollection? previousPostBackCollection)
     {
-      ArgumentUtility.CheckNotNull ("returningFunction", returningFunction);
+      ArgumentUtility.CheckNotNull("returningFunction", returningFunction);
 
       _returningFunction = returningFunction;
       _isReturningPostBack = isReturningPostBack;
       _postBackCollection = previousPostBackCollection;
+      _isDirtyFromReturnState = _isDirtyFromReturnState
+                                || (returningFunction.ExceptionHandler.Exception == null && returningFunction.EvaluateDirtyState());
     }
 
     private void ClearReturnState ()
@@ -278,7 +300,7 @@ namespace Remotion.Web.ExecutionEngine
     {
       _isOutOfSequencePostBack = value;
     }
-    
+
     private void ClearIsOutOfSequencePostBack ()
     {
       _isOutOfSequencePostBack = false;
@@ -293,8 +315,7 @@ namespace Remotion.Web.ExecutionEngine
     /// <param name="state"> An <b>ASP.NET</b> viewstate object. </param>
     public void SavePageStateToPersistenceMedium (object state)
     {
-      MemoryStream outputStream;
-      if (s_viewStateSerializationBufferPool.TryTake (out outputStream))
+      if (s_viewStateSerializationBufferPool.TryTake(out var outputStream))
       {
         outputStream.Position = 0;
       }
@@ -308,7 +329,7 @@ namespace Remotion.Web.ExecutionEngine
       try
       {
         var serializer = new ObjectStateFormatter();
-        serializer.Serialize (outputStream, state);
+        serializer.Serialize(outputStream, state);
 
         // For the finished page state, a new byte-array must be allocated, i.e. the original array cannot be used.
         // The reason for this is that the viewstate may be deserialized more than once if a subfunction is called from the page.
@@ -317,7 +338,7 @@ namespace Remotion.Web.ExecutionEngine
       }
       finally
       {
-        s_viewStateSerializationBufferPool.Add (outputStream);
+        s_viewStateSerializationBufferPool.Add(outputStream);
       }
     }
 
@@ -327,10 +348,10 @@ namespace Remotion.Web.ExecutionEngine
     /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
     public object LoadPageStateFromPersistenceMedium ()
     {
-      using (var inputStream = new MemoryStream (_pageState, writable: false))
+      using (var inputStream = new MemoryStream(_pageState!, writable: false)) // TODO RM-8118: not null assertion
       {
         var serializer = new ObjectStateFormatter();
-        return serializer.Deserialize (inputStream);
+        return serializer.Deserialize(inputStream);
       }
     }
 
@@ -355,17 +376,17 @@ namespace Remotion.Web.ExecutionEngine
       get { return _userControlExecutor; }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetPageExecutor (IWxePageExecutor pageExecutor)
     {
-      ArgumentUtility.CheckNotNull ("pageExecutor", pageExecutor);
+      ArgumentUtility.CheckNotNull("pageExecutor", pageExecutor);
       _pageExecutor = pageExecutor;
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void SetUserControlExecutor (IUserControlExecutor userControlExecutor)
     {
-      ArgumentUtility.CheckNotNull ("userControlExecutor", userControlExecutor);
+      ArgumentUtility.CheckNotNull("userControlExecutor", userControlExecutor);
       _userControlExecutor = userControlExecutor;
     }
 
@@ -376,7 +397,7 @@ namespace Remotion.Web.ExecutionEngine
 
     WxeFunction IExecutionStateContext.CurrentFunction
     {
-      get { return ParentFunction; }
+      get { return ParentFunction ?? throw new WxeException("There must be a function associated to the current step while executing."); }
     }
 
     IExecutionState IExecutionStateContext.ExecutionState
@@ -386,9 +407,56 @@ namespace Remotion.Web.ExecutionEngine
 
     void IExecutionStateContext.SetExecutionState (IExecutionState executionState)
     {
-      ArgumentUtility.CheckNotNull ("executionState", executionState);
+      ArgumentUtility.CheckNotNull("executionState", executionState);
 
       _executionState = executionState;
     }
+
+    public void SetDirtyStateForCurrentPage (bool isDirty)
+    {
+      _isPageDirty = isDirty;
+    }
+
+    /// <summary>
+    /// Resets the dirty state set via <see cref="SetDirtyStateForCurrentPage"/> or any previously returned sub function.
+    /// </summary>
+    public override void ResetDirtyStateForExecutedSteps ()
+    {
+      base.ResetDirtyStateForExecutedSteps();
+
+      _isPageDirty = false;
+      _isDirtyFromReturnState = false;
+    }
+
+    /// <summary>
+    /// Evaluates the current dirty state for this <see cref="WxePageStep"/>.
+    /// </summary>
+    /// <remarks>
+    /// The evaluation includes the information for the currently executing <see cref="WxePage"/> (set via <see cref="SetDirtyStateForCurrentPage"/> during the page life cycle),
+    /// a currently executing sub function, and the aggregated dirty state of previously executed sub functions.
+    /// </remarks>
+    /// <returns><see langword="true" /> if the <see cref="WxePageStep"/> represents unsaved changes.</returns>
+    public override bool EvaluateDirtyState ()
+    {
+      if (IsDirtyStateEnabled)
+      {
+        if (_isPageDirty)
+          return true;
+
+        if (_isDirtyFromReturnState)
+          return true;
+      }
+
+      if (_executionState.IsExecuting && _executionState.Parameters.SubFunction.EvaluateDirtyState())
+        return true;
+
+      if (!_userControlExecutor.IsNull && _userControlExecutor.Function.EvaluateDirtyState())
+        return true;
+
+      return base.EvaluateDirtyState();
+    }
+
+    /// <inheritdoc />
+    public sealed override bool IsDirtyStateEnabled => base.IsDirtyStateEnabled;
   }
 }

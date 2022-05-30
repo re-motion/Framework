@@ -85,7 +85,7 @@ namespace JetBrains.Annotations
   ///   }
   /// }
   /// </code></example>
-  [AttributeUsage (AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
+  [AttributeUsage(AttributeTargets.Interface | AttributeTargets.Class | AttributeTargets.Struct)]
   sealed partial class CannotApplyEqualityOperatorAttribute : Attribute
   {
   }

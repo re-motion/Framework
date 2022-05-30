@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
@@ -29,58 +28,67 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithNoAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties> (
-          "NoAttribute", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
+          "NoAttribute",
+          DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub(stub => stub.IsNullable (propertyReflector.PropertyInfo))
-         .Return (true);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(true);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NoAttribute"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (TestExtensibleEnum)));
-      Assert.That (actual.IsNullable, Is.True);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (null));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NoAttribute"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(TestExtensibleEnum)));
+      Assert.That(actual.IsNullable, Is.True);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(null));
     }
 
     [Test]
     public void GetMetadata_WithNullableFromAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties> (
-          "NullableFromAttribute", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
+          "NullableFromAttribute",
+          DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub (stub => stub.IsNullable (propertyReflector.PropertyInfo))
-         .Return (true);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(true);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NullableFromAttribute"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (TestExtensibleEnum)));
-      Assert.That (actual.IsNullable, Is.True);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (null));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NullableFromAttribute"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(TestExtensibleEnum)));
+      Assert.That(actual.IsNullable, Is.True);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(null));
     }
 
     [Test]
     public void GetMetadata_WithNotNullableFromAttribute ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties> (
-          "NotNullable", DomainModelConstraintProviderStub);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
+          "NotNullable",
+          DomainModelConstraintProviderStub.Object);
 
       DomainModelConstraintProviderStub
-         .Stub (stub => stub.IsNullable (propertyReflector.PropertyInfo))
-         .Return (false);
+          .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
+          .Returns(false);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
-      Assert.That (actual.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NotNullable"));
-      Assert.That (actual.PropertyType, Is.SameAs (typeof (TestExtensibleEnum)));
-      Assert.That (actual.IsNullable, Is.False);
-      Assert.That (actual.MaxLength, Is.Null);
-      Assert.That (actual.DefaultValue, Is.EqualTo (TestExtensibleEnum.Values.Value1()));
+      Assert.That(
+          actual.PropertyName,
+          Is.EqualTo("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithExtensibleEnumProperties.NotNullable"));
+      Assert.That(actual.PropertyType, Is.SameAs(typeof(TestExtensibleEnum)));
+      Assert.That(actual.IsNullable, Is.False);
+      Assert.That(actual.MaxLength, Is.Null);
+      Assert.That(actual.DefaultValue, Is.EqualTo(TestExtensibleEnum.Values.Value1()));
     }
 
     // ReSharper disable UnusedMember.Local

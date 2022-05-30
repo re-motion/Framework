@@ -34,10 +34,10 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
     public CustomSequenceQueryAdapter (IQuery query, Func<IQueryResultRow, TResultItem> resultConversion)
         : base(query)
     {
-      ArgumentUtility.CheckNotNull ("resultConversion", resultConversion);
+      ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
 
       if (query.QueryType != QueryType.Custom)
-        throw new ArgumentException ("Only custom queries can be used to load custom results.", "query");
+        throw new ArgumentException("Only custom queries can be used to load custom results.", "query");
 
       _resultConversion = resultConversion;
     }
@@ -49,9 +49,9 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
 
     public override IEnumerable<TResultItem> Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull ("queryManager", queryManager);
+      ArgumentUtility.CheckNotNull("queryManager", queryManager);
 
-      return queryManager.GetCustom (this, _resultConversion);
+      return queryManager.GetCustom(this, _resultConversion);
     }
   }
 }

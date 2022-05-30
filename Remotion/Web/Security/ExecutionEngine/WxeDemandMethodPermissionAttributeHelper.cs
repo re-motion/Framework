@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
@@ -39,20 +41,20 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     public WxeDemandMethodPermissionAttributeHelper (Type functionType, WxeDemandTargetPermissionAttribute attribute)
     {
-      ArgumentUtility.CheckNotNull ("functionType", functionType);
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
+      ArgumentUtility.CheckNotNull("functionType", functionType);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
 
       switch (attribute.MethodType)
       {
         case MethodType.Instance:
-          CheckMethodNameNotNullOrEmpty (functionType, attribute.MethodName);
+          CheckMethodNameNotNullOrEmpty(functionType, attribute.MethodName);
           break;
         case MethodType.Static:
-          CheckSecurabeClassNotNull (functionType, attribute.SecurableClass);
-          CheckMethodNameNotNullOrEmpty (functionType, attribute.MethodName);
+          CheckSecurabeClassNotNull(functionType, attribute.SecurableClass);
+          CheckMethodNameNotNullOrEmpty(functionType, attribute.MethodName);
           break;
         case MethodType.Constructor:
-          CheckSecurabeClassNotNull (functionType, attribute.SecurableClass);
+          CheckSecurabeClassNotNull(functionType, attribute.SecurableClass);
           break;
       }
 
@@ -72,63 +74,63 @@ namespace Remotion.Web.Security.ExecutionEngine
       get { return _attribute.MethodType; }
     }
 
-    public string MethodName
+    public string? MethodName
     {
       get { return _attribute.MethodName; }
     }
 
-    public Type SecurableClass
+    public Type? SecurableClass
     {
       get { return _attribute.SecurableClass; }
     }
 
     public Type GetTypeOfSecurableObject ()
     {
-      WxeParameterDeclaration[] parameterDeclarations = WxeVariablesContainer.GetParameterDeclarations (_functionType);
-      WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (parameterDeclarations);
+      WxeParameterDeclaration[] parameterDeclarations = WxeVariablesContainer.GetParameterDeclarations(_functionType);
+      WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration(parameterDeclarations);
 
-      var actualParameterType = GetActualParameterType (parameterDeclaration.Type);
-      if (!typeof (ISecurableObject).IsAssignableFrom (actualParameterType))
+      var actualParameterType = GetActualParameterType(parameterDeclaration.Type);
+      if (!typeof(ISecurableObject).IsAssignableFrom(actualParameterType))
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
             "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' does not implement interface '{3}'.",
-            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
+            _attribute.GetType().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe(), typeof(ISecurableObject).GetFullNameSafe()));
       }
 
       if (SecurableClass == null)
         return actualParameterType;
 
-      CheckParameterDeclarationMatchesSecurableClass (actualParameterType, parameterDeclaration.Name);
+      CheckParameterDeclarationMatchesSecurableClass(actualParameterType, parameterDeclaration.Name);
 
       return SecurableClass;
     }
 
     public ISecurableObject GetSecurableObject (WxeFunction function)
     {
-      ArgumentUtility.CheckNotNullAndType ("function", function, _functionType);
-      
-      WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (function.VariablesContainer.ParameterDeclarations);
-      var tuple = GetActualParameterTypeAndValue (parameterDeclaration.Type, function.Variables[parameterDeclaration.Name]);
+      ArgumentUtility.CheckNotNullAndType("function", function, _functionType);
+
+      WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration(function.VariablesContainer.ParameterDeclarations);
+      var tuple = GetActualParameterTypeAndValue(parameterDeclaration.Type, function.Variables[parameterDeclaration.Name]);
       var actualParameterType = tuple.Item1;
       var parameterValue = tuple.Item2;
 
       if (parameterValue == null)
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is null.",
-           _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName));
+           _attribute.GetType().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe()));
       }
 
-      ISecurableObject securableObject = parameterValue as ISecurableObject;
+      ISecurableObject? securableObject = parameterValue as ISecurableObject;
       if (securableObject == null)
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
             "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' does not implement interface '{3}'.",
-            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
+            _attribute.GetType().Name, parameterDeclaration.Name, _functionType.GetFullNameSafe(), typeof(ISecurableObject).GetFullNameSafe()));
       }
 
       if (SecurableClass != null)
-        CheckParameterDeclarationMatchesSecurableClass (actualParameterType, parameterDeclaration.Name);
+        CheckParameterDeclarationMatchesSecurableClass(actualParameterType, parameterDeclaration.Name);
       return securableObject;
     }
 
@@ -136,85 +138,85 @@ namespace Remotion.Web.Security.ExecutionEngine
     {
       if (parameterDeclarations.Length == 0)
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
             "WxeFunction '{1}' has a {0} applied, but does not define any parameters to supply the 'this-object'.",
-            _attribute.GetType ().Name, _functionType.FullName));
+            _attribute.GetType().Name, _functionType.GetFullNameSafe()));
       }
 
-      if (string.IsNullOrEmpty (_attribute.ParameterName))
+      if (string.IsNullOrEmpty(_attribute.ParameterName))
         return parameterDeclarations[0];
 
       for (int i = 0; i < parameterDeclarations.Length; i++)
       {
-        if (string.Equals (parameterDeclarations[i].Name, _attribute.ParameterName, StringComparison.Ordinal))
+        if (string.Equals(parameterDeclarations[i].Name, _attribute.ParameterName, StringComparison.Ordinal))
           return parameterDeclarations[i];
       }
 
-      throw new WxeException (string.Format (
+      throw new WxeException(string.Format(
           "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is not a valid parameter of this function.",
-          _attribute.GetType ().Name, _attribute.ParameterName, _functionType.FullName));
+          _attribute.GetType().Name, _attribute.ParameterName, _functionType.GetFullNameSafe()));
     }
 
-    private void CheckMethodNameNotNullOrEmpty (Type functionType, string methodName)
+    private void CheckMethodNameNotNullOrEmpty (Type functionType, [System.Diagnostics.CodeAnalysis.NotNull] string? methodName)
     {
-      if (string.IsNullOrEmpty (methodName))
+      if (string.IsNullOrEmpty(methodName))
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
             "The {0} applied to WxeFunction '{1}' does not specify the method to get the required permissions from.",
-            _attribute.GetType ().Name, functionType.FullName));
+            _attribute.GetType().Name, functionType.GetFullNameSafe()));
       }
     }
 
     [AssertionMethod]
-    private void CheckSecurabeClassNotNull (Type functionType, Type securableClass)
+    private void CheckSecurabeClassNotNull (Type functionType, [System.Diagnostics.CodeAnalysis.NotNull] Type? securableClass)
     {
       if (securableClass == null)
       {
-        throw new WxeException (string.Format (
+        throw new WxeException(string.Format(
             "The {0} applied to WxeFunction '{1}' does not specify a type implementing interface '{2}'.",
-            _attribute.GetType ().Name, functionType.FullName, typeof (ISecurableObject).FullName));
+            _attribute.GetType().Name, functionType.GetFullNameSafe(), typeof(ISecurableObject).GetFullNameSafe()));
       }
     }
 
     private void CheckParameterDeclarationMatchesSecurableClass (Type parameterType, string parameterName)
     {
-      if (!parameterType.IsAssignableFrom (SecurableClass))
+      if (!parameterType.IsAssignableFrom(SecurableClass))
       {
-        throw new WxeException (
-            string.Format (
+        throw new WxeException(
+            string.Format(
                 "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is of type '{3}', which is not a base type of type '{4}'.",
-                _attribute.GetType ().Name,
+                _attribute.GetType().Name,
                 parameterName,
-                _functionType.FullName,
-                parameterType.FullName,
-                SecurableClass.FullName));
+                _functionType.GetFullNameSafe(),
+                parameterType.GetFullNameSafe(),
+                SecurableClass?.GetFullNameSafe() ?? "<null>"));
       }
     }
 
     private static Type GetActualParameterType (Type declaredParameterType)
     {
-      var handleAttribute = GetHandleAttribute (declaredParameterType);
+      var handleAttribute = GetHandleAttribute(declaredParameterType);
       if (handleAttribute != null)
-        return handleAttribute.GetReferencedType (declaredParameterType);
-      
+        return handleAttribute.GetReferencedType(declaredParameterType);
+
       return declaredParameterType;
     }
 
-    private static Tuple<Type, object> GetActualParameterTypeAndValue (Type declaredParameterType, object parameterValue)
+    private static Tuple<Type, object?> GetActualParameterTypeAndValue (Type declaredParameterType, object? parameterValue)
     {
       if (parameterValue == null)
-        return Tuple.Create (declaredParameterType, (object) null);
-        
-      var handleAttribute = GetHandleAttribute (declaredParameterType);
-      if (handleAttribute != null)
-        return Tuple.Create (handleAttribute.GetReferencedType (declaredParameterType), handleAttribute.GetReferencedInstance (parameterValue));
+        return Tuple.Create<Type, object?>(declaredParameterType, (object?)null);
 
-      return Tuple.Create (declaredParameterType, parameterValue);
+      var handleAttribute = GetHandleAttribute(declaredParameterType);
+      if (handleAttribute != null)
+        return Tuple.Create<Type, object?>(handleAttribute.GetReferencedType(declaredParameterType), handleAttribute.GetReferencedInstance(parameterValue));
+
+      return Tuple.Create<Type, object?>(declaredParameterType, parameterValue);
     }
 
-    private static IHandleAttribute GetHandleAttribute (Type declaredParameterType)
+    private static IHandleAttribute? GetHandleAttribute (Type declaredParameterType)
     {
-      return ((IHandleAttribute[]) declaredParameterType.GetCustomAttributes (typeof (IHandleAttribute), true)).FirstOrDefault ();
+      return ((IHandleAttribute[])declaredParameterType.GetCustomAttributes(typeof(IHandleAttribute), true)).FirstOrDefault();
     }
   }
 }

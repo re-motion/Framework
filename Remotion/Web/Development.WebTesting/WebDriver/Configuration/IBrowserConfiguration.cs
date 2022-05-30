@@ -21,7 +21,7 @@ using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
@@ -30,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
   /// Provides configuration needed to initialize and shut down the browser
   /// </summary>
   /// <seealso cref="ChromeConfiguration"/>
-  /// <seealso cref="InternetExplorerConfiguration"/>
+  /// <seealso cref="EdgeConfiguration"/>
   public interface IBrowserConfiguration
   {
     /// <summary>
@@ -51,9 +51,9 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration
     string WebDriverExecutableName { [NotNull] get; }
 
     /// <summary>
-    /// Gets a <see cref="AnnotateHelper"/>, which simplifies annotations like tooltips.
+    /// Gets a <see cref="BrowserAnnotateHelper"/>, which simplifies annotations like tooltips.
     /// </summary>
-    AnnotateHelper AnnotateHelper { [NotNull] get; }
+    BrowserAnnotateHelper BrowserAnnotateHelper { [NotNull] get; }
 
     /// <summary>
     /// Gets a <see cref="BrowserFactory"/> responsible for creating the browser instance.

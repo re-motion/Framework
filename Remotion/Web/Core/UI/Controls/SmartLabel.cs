@@ -20,8 +20,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
-using Remotion.Web.UI.Design;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
@@ -31,19 +31,18 @@ namespace Remotion.Web.UI.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class SmartLabel: WebControl, IControl
 {
-  private string _forControl = null;
-  private string _text = null;
+  private string? _forControl = null;
+  private WebString _text;
 
-  public SmartLabel()
+  public SmartLabel ()
   {
   }
 
   /// <summary>
   ///   The ID of the control to display a label for.
   /// </summary>
-  [TypeConverter (typeof (SmartControlToStringConverter))]
-  [Category ("Behavior")]
-  public string ForControl
+  [Category("Behavior")]
+  public string? ForControl
   {
     get { return _forControl; }
     set { _forControl = value; }
@@ -54,10 +53,10 @@ public class SmartLabel: WebControl, IControl
   ///   <see cref="ISmartControl "/> or the <see cref="ISmartControl"/> does provide a 
   ///   <see cref="ISmartControl.DisplayName"/>.
   /// </summary>
-  [Category ("Appearance")]
-  [Description ("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
-  [DefaultValue (null)]
-  public string Text
+  [Category("Appearance")]
+  [Description("The text displayed if the SmartLabel is not bound to an ISmartControl or the ISmartControl does provide a DisplayName.")]
+  [DefaultValue(null)]
+  public WebString Text
   {
     get { return _text; }
     set { _text = value; }
@@ -69,7 +68,7 @@ public class SmartLabel: WebControl, IControl
     {
       var clientID = GetClientIDForTarget();
 
-      if (string.IsNullOrEmpty (clientID))
+      if (string.IsNullOrEmpty(clientID))
         return HtmlTextWriterTag.Span;
       return HtmlTextWriterTag.Label;
     }
@@ -77,88 +76,82 @@ public class SmartLabel: WebControl, IControl
 
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
-    LoadResources (resourceManager);
+    var resourceManager = ResourceManagerUtility.GetResourceManager(this, true);
+    LoadResources(resourceManager);
 
-    if (!string.IsNullOrEmpty (ForControl))
+    if (!string.IsNullOrEmpty(ForControl))
     {
-      var smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
+      var smartControl = NamingContainer.FindControl(ForControl) as ISmartControl;
       if (smartControl != null)
-        smartControl.AssignLabel (ClientID);
+        smartControl.AssignLabel(ClientID);
     }
   }
 
-  protected override void Render(HtmlTextWriter writer)
+  protected override void Render (HtmlTextWriter writer)
   {
-    RenderBeginTag (writer);
-    string text = GetText();
+    RenderBeginTag(writer);
+    var text = GetText();
     // Do not HTML encode
-    writer.Write (text);
-    RenderEndTag (writer);
+    text.WriteTo(writer);
+    RenderEndTag(writer);
   }
 
-  public string GetText()
+  public WebString GetText ()
   {
-    if (! string.IsNullOrEmpty (_text))
+    if (!_text.IsEmpty)
       return _text;
 
-    string forControlBackUp = ForControl;
+    string? forControlBackUp = ForControl;
     ForControl = ForControl ?? string.Empty;
-    string text = string.Empty;
+    WebString text;
 
     if (ForControl == string.Empty)
     {
-      text = "[Label]";
+      text = WebString.CreateFromText("[Label]");
     }
     else
     {
-      ISmartControl smartControl = NamingContainer.FindControl (ForControl) as ISmartControl;
-      if (smartControl != null && smartControl.DisplayName != null)
+      ISmartControl? smartControl = NamingContainer.FindControl(ForControl) as ISmartControl;
+      if (smartControl != null && !smartControl.DisplayName.IsEmpty)
         text = smartControl.DisplayName;
       else
-        text = "[Label for " + ForControl + "]";
+        text = WebString.CreateFromText("[Label for " + ForControl + "]");
     }
     ForControl = forControlBackUp;
     return text;
   }
 
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
-    base.AddAttributesToRender (writer);
+    base.AddAttributesToRender(writer);
 
-    if (! ControlHelper.IsDesignMode (this))
-    {
-      var clientID = GetClientIDForTarget();
+    var clientID = GetClientIDForTarget();
 
-      if (!string.IsNullOrEmpty (clientID))
-        writer.AddAttribute (HtmlTextWriterAttribute.For, clientID);
+    if (!string.IsNullOrEmpty(clientID))
+      writer.AddAttribute(HtmlTextWriterAttribute.For, clientID);
 
-      // TODO: add <a href="ToName(target.ClientID)"> ...
-      // ToName: '.' -> '_'
-    }
+    // TODO: add <a href="ToName(target.ClientID)"> ...
+    // ToName: '.' -> '_'
   }
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    if (ControlHelper.IsDesignMode (this))
-      return;
-
-    string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (!string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
+    if (!string.IsNullOrEmpty(key))
+      Text = resourceManager.GetWebString(key, Text.Type);
   }
 
-  private string GetClientIDForTarget ()
+  private string? GetClientIDForTarget ()
   {
-    Control target = ControlHelper.FindControl (NamingContainer, ForControl);
+    Control? target = ControlHelper.FindControl(NamingContainer, ForControl);
     if (target is ISmartControl && target is IFocusableControl)
     {
-      if (((ISmartControl) target).UseLabel)
-        return ((IFocusableControl) target).FocusID;
+      if (((ISmartControl)target).UseLabel)
+        return ((IFocusableControl)target).FocusID;
 
       return null;
     }
@@ -171,9 +164,9 @@ public class SmartLabel: WebControl, IControl
     return null;
   }
 
-  public new IPage Page
+  public new IPage? Page
   {
-    get { return PageWrapper.CastOrCreate (base.Page); }
+    get { return PageWrapper.CastOrCreate(base.Page); }
   }
 }
 }

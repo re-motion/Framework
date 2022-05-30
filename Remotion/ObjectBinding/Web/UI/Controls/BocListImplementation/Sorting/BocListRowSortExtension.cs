@@ -25,25 +25,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting
   {
     public static IEnumerable<BocListRow> OrderBy (this IEnumerable<BocListRow> rows, BocListSortingOrderEntry[] sortingOrder)
     {
-      ArgumentUtility.CheckNotNull ("rows", rows);
-      ArgumentUtility.CheckNotNull ("sortingOrder", sortingOrder);
+      ArgumentUtility.CheckNotNull("rows", rows);
+      ArgumentUtility.CheckNotNull("sortingOrder", sortingOrder);
 
-      return rows.OrderBy (r => r, new CompoundComparer<BocListRow> (sortingOrder.GetComparers()));
+      return rows.OrderBy(r => r, new CompoundComparer<BocListRow>(sortingOrder.GetComparers()));
     }
 
     private static IEnumerable<IComparer<BocListRow>> GetComparers (this IEnumerable<BocListSortingOrderEntry> sortingOrder)
     {
       return sortingOrder
-          .Where (entry => entry.Direction != SortingDirection.None)
-          .Select (CreateComparer);
+          .Where(entry => entry.Direction != SortingDirection.None)
+          .Select(CreateComparer);
     }
 
     private static IComparer<BocListRow> CreateComparer (BocListSortingOrderEntry entry)
     {
+      Assertion.DebugIsNotNull(entry.Column, "entry.Column != null");
       var baseComparer = entry.Column.CreateCellValueComparer();
 
       if (entry.Direction == SortingDirection.Descending)
-        return new InvertedComparerDecorator<BocListRow> (baseComparer);
+        return new InvertedComparerDecorator<BocListRow>(baseComparer);
 
       return baseComparer;
     }

@@ -19,12 +19,12 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain
 {
-  [Uses (typeof (MixinAddingProperty))]
+  [Uses(typeof(MixinAddingProperty))]
   public class DerivedClassWithMixinWithDuplicateInterface : BaseClassWithMixinWithInterface
   {
     public new static DerivedClassWithMixinWithDuplicateInterface NewObject ()
     {
-      return NewObject<DerivedClassWithMixinWithDuplicateInterface> ();
+      return NewObject<DerivedClassWithMixinWithDuplicateInterface>();
     }
   }
 }

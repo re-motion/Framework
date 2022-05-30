@@ -25,23 +25,23 @@ namespace Remotion.Mixins.Context
   {
     internal static bool ContainsOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
     {
-      return GetOverrideForMixin (mixinContexts, mixinType) != null;
+      return GetOverrideForMixin(mixinContexts, mixinType) != null;
     }
 
-    internal static MixinContext GetOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
+    internal static MixinContext? GetOverrideForMixin (IEnumerable<MixinContext> mixinContexts, Type mixinType)
     {
-      Type typeToSearchFor = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition () : mixinType;
+      Type typeToSearchFor = mixinType.IsGenericType ? mixinType.GetGenericTypeDefinition() : mixinType;
 
       foreach (MixinContext mixin in mixinContexts)
       {
-        if (Reflection.TypeExtensions.CanAscribeTo (mixin.MixinType, typeToSearchFor))
+        if (Reflection.TypeExtensions.CanAscribeTo(mixin.MixinType, typeToSearchFor))
           return mixin;
       }
       return null;
     }
 
     public MixinContextCollection (IEnumerable<MixinContext> values)
-      : base (delegate (MixinContext context) { return context.MixinType; }, values)
+      : base(delegate (MixinContext context) { return context.MixinType; }, values)
     {
     }
 
@@ -55,10 +55,10 @@ namespace Remotion.Mixins.Context
     /// <exception cref="ArgumentNullException">The <paramref name="baseMixinType"/> parameter is <see langword="null"/>.</exception>
     public bool ContainsAssignableMixin (Type baseMixinType)
     {
-      ArgumentUtility.CheckNotNull ("baseMixinType", baseMixinType);
+      ArgumentUtility.CheckNotNull("baseMixinType", baseMixinType);
       foreach (MixinContext mixin in this)
       {
-        if (baseMixinType.IsAssignableFrom (mixin.MixinType))
+        if (baseMixinType.IsAssignableFrom(mixin.MixinType))
           return true;
       }
       return false;
@@ -73,8 +73,8 @@ namespace Remotion.Mixins.Context
     /// </returns>
     public bool ContainsOverrideForMixin (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      return ContainsOverrideForMixin (this, mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      return ContainsOverrideForMixin(this, mixinType);
     }
   }
 }

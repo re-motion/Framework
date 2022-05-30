@@ -26,14 +26,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain
   [Instantiable]
   public abstract class ClassWithPropertiesHavingStorageClassAttribute : DomainObject
   {
-    [StorageClass (StorageClass.Persistent)]
+    [StorageClass(StorageClass.Persistent)]
     public abstract int Persistent { get; set; }
 
     [StorageClassTransaction]
     public abstract int Transaction { get; set; }
 
     [StorageClassNone]
-    public object None 
+    public object None
     { get { return null; }
       set { }
     }

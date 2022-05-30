@@ -18,6 +18,7 @@ using System;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
@@ -29,41 +30,43 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void NewObject ()
     {
       ClassDerivedFromSimpleDomainObject instance = ClassDerivedFromSimpleDomainObject.NewObject();
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance.IntProperty, Is.EqualTo (0));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(instance.IntProperty, Is.EqualTo(0));
       instance.IntProperty = 5;
-      Assert.That (instance.IntProperty, Is.EqualTo (5));
+      Assert.That(instance.IntProperty, Is.EqualTo(5));
     }
 
     [Test]
     public void SimpleDomainObject_SupportsGetObjectViaHandle_AndObjectID ()
     {
-      var instance = ClassDerivedFromSimpleDomainObject.NewObject ();
+      var instance = ClassDerivedFromSimpleDomainObject.NewObject();
       var handle = instance.GetHandle();
 
       var gottenInstance1 = handle.GetObject();
-      Assert.That (gottenInstance1, Is.SameAs (instance));
+      Assert.That(gottenInstance1, Is.SameAs(instance));
 
-      var gottenInstance2 = instance.ID.GetObject<ClassDerivedFromSimpleDomainObject> ();
-      Assert.That (gottenInstance2, Is.SameAs (instance));
+      var gottenInstance2 = instance.ID.GetObject<ClassDerivedFromSimpleDomainObject>();
+      Assert.That(gottenInstance2, Is.SameAs(instance));
     }
 
     [Test]
     public void Serializable ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var instance = ClassDerivedFromSimpleDomainObject.NewObject();
       instance.IntProperty = 7;
 
-      var deserializedData = Serializer.SerializeAndDeserialize (Tuple.Create (ClientTransaction.Current, instance));
+      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(ClientTransaction.Current, instance));
       var deserializedInstance = deserializedData.Item2;
 
-      Assert.That (deserializedInstance.ID, Is.EqualTo (instance.ID));
-      Assert.That (deserializedInstance.RootTransaction, Is.SameAs (deserializedData.Item1));
+      Assert.That(deserializedInstance.ID, Is.EqualTo(instance.ID));
+      Assert.That(deserializedInstance.RootTransaction, Is.SameAs(deserializedData.Item1));
 
       using (deserializedData.Item1.EnterNonDiscardingScope())
       {
-        Assert.That (deserializedInstance, Is.Not.SameAs (instance));
-        Assert.That (deserializedInstance.IntProperty, Is.EqualTo (7));
+        Assert.That(deserializedInstance, Is.Not.SameAs(instance));
+        Assert.That(deserializedInstance.IntProperty, Is.EqualTo(7));
       }
     }
 
@@ -71,17 +74,17 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     [Test]
     public void DeserializationConstructor_CallsBase ()
     {
-      var serializable = ClassDerivedFromSimpleDomainObject_ImplementingISerializable.NewObject ();
+      var serializable = ClassDerivedFromSimpleDomainObject_ImplementingISerializable.NewObject();
 
-      var info = new SerializationInfo (typeof (ClassDerivedFromSimpleDomainObject_ImplementingISerializable), new FormatterConverter ());
-      var context = new StreamingContext ();
+      var info = new SerializationInfo(typeof(ClassDerivedFromSimpleDomainObject_ImplementingISerializable), new FormatterConverter());
+      var context = new StreamingContext();
 
-      serializable.GetObjectData (info, context);
-      Assert.That (info.MemberCount, Is.GreaterThan (0));
+      serializable.GetObjectData(info, context);
+      Assert.That(info.MemberCount, Is.GreaterThan(0));
 
-      var deserialized = 
-          (ClassDerivedFromSimpleDomainObject_ImplementingISerializable) Activator.CreateInstance (((object)serializable).GetType (), info, context);
-      Assert.That (deserialized.ID, Is.EqualTo (serializable.ID));
+      var deserialized =
+          (ClassDerivedFromSimpleDomainObject_ImplementingISerializable)Activator.CreateInstance(((object)serializable).GetType(), info, context);
+      Assert.That(deserialized.ID, Is.EqualTo(serializable.ID));
     }
   }
 }

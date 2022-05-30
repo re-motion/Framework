@@ -25,48 +25,38 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   /// </summary>
   public abstract class GenericTestPageParameterBase : IGenericTestPageParameter
   {
-    private readonly int _count;
-    private readonly string _id;
+    /// <inheritdoc />
+    public int Count { get; }
 
-    private bool _applied;
-
-    protected GenericTestPageParameterBase ([NotNull] string id, int count)
-    {
-      ArgumentUtility.CheckNotNull ("id", id);
-      if (count < 0)
-        count = 0;
-
-      _id = id;
-      _count = count;
-    }
+    /// <inheritdoc />
+    public string Name { get; }
 
     /// <summary>
     /// <see langword="true" /> if <see cref="Apply"/> has been called, otherwise <see langword="false" />.
     /// </summary>
-    public bool Applied
-    {
-      get { return _applied; }
-    }
+    public bool Applied { get; private set; }
 
-    /// <inheritdoc />
-    public int Count
-    {
-      get { return _count; }
-    }
+    private static readonly Lazy<TestConstants> s_testConstantsLazy = new Lazy<TestConstants>(() => new TestConstants());
+    protected static TestConstants TestConstants => s_testConstantsLazy.Value;
 
-    /// <inheritdoc />
-    public string Name
+    protected GenericTestPageParameterBase ([NotNull] string id, int count)
     {
-      get { return _id; }
+      ArgumentUtility.CheckNotNull("id", id);
+      if (count < 0)
+        count = 0;
+
+      Name = id;
+      Count = count;
     }
 
     /// <inheritdoc />
     public virtual void Apply (GenericTestPageParameter data)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("data", data);
+      ArgumentUtility.CheckNotNull("data", data);
 
-      Assertion.IsTrue (data.ArgumentCount == _count);
-      _applied = true;
+      Assertion.IsTrue(data.Arguments.Count == Count);
+
+      Applied = true;
     }
   }
 }

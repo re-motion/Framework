@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public RelationEndPointRegistrationAgent (IVirtualEndPointProvider virtualEndPointProvider)
     {
-      ArgumentUtility.CheckNotNull ("virtualEndPointProvider", virtualEndPointProvider);
+      ArgumentUtility.CheckNotNull("virtualEndPointProvider", virtualEndPointProvider);
       _virtualEndPointProvider = virtualEndPointProvider;
     }
 
@@ -40,80 +40,80 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public void RegisterEndPoint (IRelationEndPoint endPoint, RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("map", map);
-      
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("map", map);
+
       if (map[endPoint.ID] != null)
       {
-        var message = string.Format ("A relation end-point with ID '{0}' has already been registered.", endPoint.ID);
-        throw new InvalidOperationException (message);
+        var message = string.Format("A relation end-point with ID '{0}' has already been registered.", endPoint.ID);
+        throw new InvalidOperationException(message);
       }
-      
-      map.AddEndPoint (endPoint);
+
+      map.AddEndPoint(endPoint);
 
       var realObjectEndPoint = endPoint as IRealObjectEndPoint;
       if (realObjectEndPoint != null)
-        RegisterOppositeForRealObjectEndPoint (realObjectEndPoint);
+        RegisterOppositeForRealObjectEndPoint(realObjectEndPoint);
     }
 
     public void UnregisterEndPoint (IRelationEndPoint endPoint, RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("map", map);
-      
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("map", map);
+
       if (map[endPoint.ID] != endPoint)
       {
-        var message = string.Format ("End-point '{0}' is not part of this map.\r\nParameter name: endPoint", endPoint.ID);
-        throw new ArgumentException (message);
+        var message = string.Format("End-point '{0}' is not part of this map.", endPoint.ID);
+        throw new ArgumentException(message, "endPoint");
       }
 
       var realObjectEndPoint = endPoint as IRealObjectEndPoint;
       if (realObjectEndPoint != null)
-        UnregisterOppositeForRealObjectEndPoint (realObjectEndPoint, map);
+        UnregisterOppositeForRealObjectEndPoint(realObjectEndPoint, map);
 
-      map.RemoveEndPoint (endPoint.ID);
+      map.RemoveEndPoint(endPoint.ID);
     }
 
-    protected virtual IVirtualEndPoint RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
+    protected virtual IVirtualEndPoint? RegisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("realObjectEndPoint", realObjectEndPoint);
+      ArgumentUtility.CheckNotNull("realObjectEndPoint", realObjectEndPoint);
 
-      var oppositeVirtualEndPointID = RelationEndPointID.CreateOpposite (realObjectEndPoint.Definition, realObjectEndPoint.OriginalOppositeObjectID);
+      var oppositeVirtualEndPointID = RelationEndPointID.CreateOpposite(realObjectEndPoint.Definition, realObjectEndPoint.OriginalOppositeObjectID);
       if (oppositeVirtualEndPointID.Definition.IsAnonymous)
       {
-        realObjectEndPoint.MarkSynchronized ();
+        realObjectEndPoint.MarkSynchronized();
         return null;
       }
 
-      var oppositeVirtualEndPoint = _virtualEndPointProvider.GetOrCreateVirtualEndPoint (oppositeVirtualEndPointID);
-      oppositeVirtualEndPoint.RegisterOriginalOppositeEndPoint (realObjectEndPoint);
+      var oppositeVirtualEndPoint = _virtualEndPointProvider.GetOrCreateVirtualEndPoint(oppositeVirtualEndPointID);
+      oppositeVirtualEndPoint.RegisterOriginalOppositeEndPoint(realObjectEndPoint);
       return oppositeVirtualEndPoint;
     }
 
     protected virtual void UnregisterOppositeForRealObjectEndPoint (IRealObjectEndPoint realObjectEndPoint, RelationEndPointMap map)
     {
-      ArgumentUtility.CheckNotNull ("realObjectEndPoint", realObjectEndPoint);
-      ArgumentUtility.CheckNotNull ("map", map);
+      ArgumentUtility.CheckNotNull("realObjectEndPoint", realObjectEndPoint);
+      ArgumentUtility.CheckNotNull("map", map);
 
-      var oppositeEndPointID = RelationEndPointID.CreateOpposite (realObjectEndPoint.Definition, realObjectEndPoint.OriginalOppositeObjectID);
+      var oppositeEndPointID = RelationEndPointID.CreateOpposite(realObjectEndPoint.Definition, realObjectEndPoint.OriginalOppositeObjectID);
       if (oppositeEndPointID.Definition.IsAnonymous)
       {
-        realObjectEndPoint.ResetSyncState ();
+        realObjectEndPoint.ResetSyncState();
         return;
       }
-      
-      var oppositeEndPoint = _virtualEndPointProvider.GetOrCreateVirtualEndPoint (oppositeEndPointID);
+
+      var oppositeEndPoint = _virtualEndPointProvider.GetOrCreateVirtualEndPoint(oppositeEndPointID);
       if (oppositeEndPoint == null)
       {
-        var message = string.Format (
-            "Opposite end-point of '{0}' not found. When unregistering a non-virtual bidirectional end-point, the opposite end-point must exist.", 
+        var message = string.Format(
+            "Opposite end-point of '{0}' not found. When unregistering a non-virtual bidirectional end-point, the opposite end-point must exist.",
             realObjectEndPoint.ID);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
 
-      oppositeEndPoint.UnregisterOriginalOppositeEndPoint (realObjectEndPoint);
+      oppositeEndPoint.UnregisterOriginalOppositeEndPoint(realObjectEndPoint);
       if (oppositeEndPoint.CanBeCollected)
-        map.RemoveEndPoint (oppositeEndPoint.ID);
+        map.RemoveEndPoint(oppositeEndPoint.ID);
     }
   }
 }

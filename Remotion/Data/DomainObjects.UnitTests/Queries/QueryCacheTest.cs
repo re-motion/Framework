@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -29,49 +29,48 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private QueryCache _cache;
 
     [SetUp]
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
       _cache = new QueryCache();
     }
 
     [Test]
-    public void GetOrCreateQuery_Uncached()
+    public void GetOrCreateQuery_Uncached ()
     {
-      IQuery query = _cache.GetQuery<Order> ("id", orders => from o in orders where o.OrderNumber > 1 select o);
+      IQuery query = _cache.GetQuery<Order>("id", orders => from o in orders where o.OrderNumber > 1 select o);
 
-      Assert.That (query.Statement, Is.EqualTo (
+      Assert.That(query.Statement, Is.EqualTo(
         "SELECT [t0].[ID],[t0].[ClassID],[t0].[Timestamp],[t0].[OrderNo],[t0].[DeliveryDate],[t0].[OfficialID],[t0].[CustomerID],[t0].[CustomerIDClassID] "
         +"FROM [OrderView] AS [t0] WHERE ([t0].[OrderNo] > @1)"));
-      Assert.That (query.Parameters.Count, Is.EqualTo (1));
-      Assert.That (query.ID, Is.EqualTo ("id"));
+      Assert.That(query.Parameters.Count, Is.EqualTo(1));
+      Assert.That(query.ID, Is.EqualTo("id"));
     }
 
     [Test]
     public void GetOrCreateQuery_Cached ()
     {
-      IQuery query1 = _cache.GetQuery<Order> ("id", orders => from o in orders where o.OrderNumber > 1 select o);
-      IQuery query2 = _cache.GetQuery<Order> ("id", orders => from o in orders where o.OrderNumber > 1 select o);
+      IQuery query1 = _cache.GetQuery<Order>("id", orders => from o in orders where o.OrderNumber > 1 select o);
+      IQuery query2 = _cache.GetQuery<Order>("id", orders => from o in orders where o.OrderNumber > 1 select o);
 
-      Assert.That (query1, Is.SameAs (query2));
+      Assert.That(query1, Is.SameAs(query2));
     }
 
     [Test]
     public void ExecuteCollectionQuery ()
     {
-      IQuery query = _cache.GetQuery<Order> ("id", orders => from o in orders where o.OrderNumber > 1 select o);
+      IQuery query = _cache.GetQuery<Order>("id", orders => from o in orders where o.OrderNumber > 1 select o);
 
-      var queryManagerMock = MockRepository.GenerateMock<IQueryManager> ();
-      var clientTransactionStub = ClientTransactionObjectMother.CreateWithComponents<ClientTransaction> (queryManager: queryManagerMock);
+      var queryManagerMock = new Mock<IQueryManager>();
+      var clientTransactionStub = ClientTransactionObjectMother.CreateWithComponents<ClientTransaction>(queryManager: queryManagerMock.Object);
 
-      var expectedResult = new QueryResult<Order> (query, new Order[0]);
-      queryManagerMock.Expect (mock => mock.GetCollection<Order> (query)).Return (expectedResult);
-      queryManagerMock.Replay ();
+      var expectedResult = new QueryResult<Order>(query, new Order[0]);
+      queryManagerMock.Setup(mock => mock.GetCollection<Order>(query)).Returns(expectedResult).Verifiable();
 
-      var result = _cache.ExecuteCollectionQuery<Order> (clientTransactionStub, "id", orders => from o in orders where o.OrderNumber > 1 select o);
+      var result = _cache.ExecuteCollectionQuery<Order>(clientTransactionStub, "id", orders => from o in orders where o.OrderNumber > 1 select o);
 
-      queryManagerMock.VerifyAllExpectations ();
-      Assert.That (result, Is.SameAs (expectedResult));
+      queryManagerMock.Verify();
+      Assert.That(result, Is.SameAs(expectedResult));
     }
   }
 }

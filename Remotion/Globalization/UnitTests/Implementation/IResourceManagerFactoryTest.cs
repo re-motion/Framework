@@ -31,15 +31,15 @@ namespace Remotion.Globalization.UnitTests.Implementation
     {
       _serviceLocator = DefaultServiceLocator.Create();
     }
-    
+
     [Test]
     public void GetInstance_Once ()
     {
-      var factory = _serviceLocator.GetInstance<IResourceManagerFactory> ();
+      var factory = _serviceLocator.GetInstance<IResourceManagerFactory>();
 
-      Assert.That (factory, Is.TypeOf (typeof (CompoundResourceManagerFactory)));
-      var compoundFactories = ((CompoundResourceManagerFactory) factory).ResourceManagerFactories;
-      Assert.That (compoundFactories[0], Is.TypeOf<ResourceAttributeBasedResourceManagerFactory>());
+      Assert.That(factory, Is.TypeOf(typeof(CompoundResourceManagerFactory)));
+      var compoundFactories = ((CompoundResourceManagerFactory)factory).ResourceManagerFactories;
+      Assert.That(compoundFactories[0], Is.TypeOf<ResourceAttributeBasedResourceManagerFactory>());
     }
 
     [Test]
@@ -48,7 +48,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var factory1 = _serviceLocator.GetInstance<IResourceManagerFactory>();
       var factory2 = _serviceLocator.GetInstance<IResourceManagerFactory>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

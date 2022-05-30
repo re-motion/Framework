@@ -38,13 +38,13 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
     {
       var factory = _serviceLocator.GetInstance<IValidatedTypeResolver>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf<MixinTypeAwareValidatedTypeResolverDecorator>());
-      Assert.That (
-          ((MixinTypeAwareValidatedTypeResolverDecorator) factory).InnerResolver,
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf<MixinTypeAwareValidatedTypeResolverDecorator>());
+      Assert.That(
+          ((MixinTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver,
           Is.TypeOf<ClassTypeAwareValidatedTypeResolverDecorator>());
-      Assert.That (
-          ((GenericTypeAwareValidatedTypeResolverDecorator) ((ClassTypeAwareValidatedTypeResolverDecorator) ((MixinTypeAwareValidatedTypeResolverDecorator) factory).InnerResolver).InnerResolver).InnerResolver,
+      Assert.That(
+          ((GenericTypeAwareValidatedTypeResolverDecorator)((ClassTypeAwareValidatedTypeResolverDecorator)((MixinTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver).InnerResolver).InnerResolver,
           Is.TypeOf<NullValidatedTypeResolver>());
     }
 
@@ -54,7 +54,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
       var factory1 = _serviceLocator.GetInstance<IValidatedTypeResolver>();
       var factory2 = _serviceLocator.GetInstance<IValidatedTypeResolver>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

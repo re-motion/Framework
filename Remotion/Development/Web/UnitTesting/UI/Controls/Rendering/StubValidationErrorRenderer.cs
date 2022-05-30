@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
@@ -33,38 +34,41 @@ namespace Remotion.Development.Web.UnitTesting.UI.Controls.Rendering
     public void SetValidationErrorsReferenceOnControl (
         IAttributeAccessor attributeAccessor,
         string validationErrorID,
-        IReadOnlyCollection<string> validationErrors)
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("attributeAccessor", attributeAccessor);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("attributeAccessor", attributeAccessor);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
-      attributeAccessor.SetAttribute (ValidationErrorsIDAttribute, validationErrorID);
-      attributeAccessor.SetAttribute (ValidationErrorsAttribute, string.Join (" ", validationErrors));
+      attributeAccessor.SetAttribute(ValidationErrorsIDAttribute, validationErrorID);
+      attributeAccessor.SetAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));
     }
 
     public void AddValidationErrorsReference (
         AttributeCollection attributeCollection,
         string validationErrorID,
-        IReadOnlyCollection<string> validationErrors)
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("attributeCollection", attributeCollection);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("attributeCollection", attributeCollection);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
       attributeCollection[ValidationErrorsIDAttribute] = validationErrorID;
-      attributeCollection[ValidationErrorsAttribute] = string.Join (" ", validationErrors);
+      attributeCollection[ValidationErrorsAttribute] = string.Join(" ", validationErrors);
     }
 
-    public void RenderValidationErrors (HtmlTextWriter htmlTextWriter, string validationErrorID, IReadOnlyCollection<string> validationErrors)
+    public void RenderValidationErrors (
+        HtmlTextWriter htmlTextWriter,
+        string validationErrorID,
+        IReadOnlyCollection<PlainTextString> validationErrors)
     {
-      ArgumentUtility.CheckNotNull ("htmlTextWriter", htmlTextWriter);
-      ArgumentUtility.CheckNotNullOrEmpty ("validationErrorID", validationErrorID);
-      ArgumentUtility.CheckNotNull ("validationErrors", validationErrors);
+      ArgumentUtility.CheckNotNull("htmlTextWriter", htmlTextWriter);
+      ArgumentUtility.CheckNotNullOrEmpty("validationErrorID", validationErrorID);
+      ArgumentUtility.CheckNotNull("validationErrors", validationErrors);
 
-      htmlTextWriter.AddAttribute (ValidationErrorsIDAttribute, validationErrorID);
-      htmlTextWriter.AddAttribute (ValidationErrorsAttribute, string.Join (" ", validationErrors));
-      htmlTextWriter.RenderBeginTag ("fake");
+      htmlTextWriter.AddAttribute(ValidationErrorsIDAttribute, validationErrorID);
+      htmlTextWriter.AddAttribute(ValidationErrorsAttribute, string.Join(" ", validationErrors));
+      htmlTextWriter.RenderBeginTag("fake");
       htmlTextWriter.RenderEndTag();
     }
   }

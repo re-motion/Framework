@@ -17,8 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion DomainObjects Library")]
-[assembly: AssemblyDescription("Framework for working with and persisting domain models.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
-

@@ -29,31 +29,31 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
   public class DropDownMenuSelector : TypedControlSelectorBase<DropDownMenuControlObject>, ITextContentControlSelector<DropDownMenuControlObject>
   {
     public DropDownMenuSelector ()
-        : base ("DropDownMenu")
+        : base("DropDownMenu")
     {
     }
 
     /// <inheritdoc/>
     public DropDownMenuControlObject SelectPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("textContent", textContent);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
-      var scope = FindScopePerTextContent (context, textContent);
+      var scope = FindScopePerTextContent(context, textContent);
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public DropDownMenuControlObject SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
+    public DropDownMenuControlObject? SelectOptionalPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("textContent", textContent);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
-      var scope = FindScopePerTextContent (context, textContent);
+      var scope = FindScopePerTextContent(context, textContent);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -61,10 +61,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerTextContent (ControlSelectionContext context, string textContent)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("textContent", textContent);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNullOrEmpty("textContent", textContent);
 
-      var scope = FindScopePerTextContent (context, textContent);
+      var scope = FindScopePerTextContent(context, textContent);
 
       return scope.ExistsWorkaround();
     }
@@ -74,10 +74,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new DropDownMenuControlObject (newControlObjectContext);
+      return new DropDownMenuControlObject(newControlObjectContext);
     }
 
     private ElementScope FindScopePerTextContent (ControlSelectionContext context, string textContent)
@@ -88,7 +88,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.Selectors
                                    { DiagnosticMetadataAttributes.Content, textContent }
                                };
 
-      return context.Scope.FindTagWithAttributes ("*", diagnosticMetadata);
+      return context.Scope.FindTagWithAttributes("*", diagnosticMetadata);
     }
   }
 }

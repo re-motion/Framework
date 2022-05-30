@@ -15,41 +15,41 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Security.Configuration;
 using Remotion.Security.Metadata;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
   public class CreateSecurityClientFromConfiguration
   {
-    private ISecurityProvider _stubSecurityProvider;
-    private IPrincipalProvider _stubPrincipalProvider;
-    private IPermissionProvider _stubPermissionProvider;
-    private IMemberResolver _stubMemberResolver;
-    private IFunctionalSecurityStrategy _stubFunctionalSecurityStrategy;
+    private Mock<ISecurityProvider> _stubSecurityProvider;
+    private Mock<IPrincipalProvider> _stubPrincipalProvider;
+    private Mock<IPermissionProvider> _stubPermissionProvider;
+    private Mock<IMemberResolver> _stubMemberResolver;
+    private Mock<IFunctionalSecurityStrategy> _stubFunctionalSecurityStrategy;
     private ServiceLocatorScope _serviceLocatorScope;
 
     [SetUp]
     public void SetUp ()
     {
-      _stubSecurityProvider = MockRepository.GenerateStub<ISecurityProvider>();
-      _stubPrincipalProvider = MockRepository.GenerateStub<IPrincipalProvider>();
-      _stubPermissionProvider = MockRepository.GenerateStub<IPermissionProvider>();
-      _stubMemberResolver = MockRepository.GenerateStub<IMemberResolver>();
-      _stubFunctionalSecurityStrategy = MockRepository.GenerateStub<IFunctionalSecurityStrategy>();
+      _stubSecurityProvider = new Mock<ISecurityProvider>();
+      _stubPrincipalProvider = new Mock<IPrincipalProvider>();
+      _stubPermissionProvider = new Mock<IPermissionProvider>();
+      _stubMemberResolver = new Mock<IMemberResolver>();
+      _stubFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _stubSecurityProvider);
-      serviceLocator.RegisterSingle (() => _stubPrincipalProvider);
-      serviceLocator.RegisterSingle (() => _stubPermissionProvider);
-      serviceLocator.RegisterSingle (() => _stubMemberResolver);
-      serviceLocator.RegisterSingle (() => _stubFunctionalSecurityStrategy);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _stubSecurityProvider.Object);
+      serviceLocator.RegisterSingle(() => _stubPrincipalProvider.Object);
+      serviceLocator.RegisterSingle(() => _stubPermissionProvider.Object);
+      serviceLocator.RegisterSingle(() => _stubMemberResolver.Object);
+      serviceLocator.RegisterSingle(() => _stubFunctionalSecurityStrategy.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     [TearDown]
@@ -61,16 +61,16 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Create_WithEnabledAccessChecks_ReturnsSecurityClientWithMembersFromServiceLocator ()
     {
-      Assert.That (SecurityConfiguration.Current.DisableAccessChecks, Is.False);
+      Assert.That(SecurityConfiguration.Current.DisableAccessChecks, Is.False);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
 
-      Assert.IsInstanceOf (typeof (SecurityClient), securityClient);
-      Assert.That (securityClient.SecurityProvider , Is.SameAs (_stubSecurityProvider));
-      Assert.That (securityClient.PrincipalProvider , Is.SameAs (_stubPrincipalProvider));
-      Assert.That (securityClient.PermissionProvider , Is.SameAs (_stubPermissionProvider));
-      Assert.That (securityClient.MemberResolver , Is.SameAs (_stubMemberResolver));
-      Assert.That (securityClient.FunctionalSecurityStrategy , Is.SameAs (_stubFunctionalSecurityStrategy));
+      Assert.IsInstanceOf(typeof(SecurityClient), securityClient);
+      Assert.That(securityClient.SecurityProvider , Is.SameAs(_stubSecurityProvider.Object));
+      Assert.That(securityClient.PrincipalProvider , Is.SameAs(_stubPrincipalProvider.Object));
+      Assert.That(securityClient.PermissionProvider , Is.SameAs(_stubPermissionProvider.Object));
+      Assert.That(securityClient.MemberResolver , Is.SameAs(_stubMemberResolver.Object));
+      Assert.That(securityClient.FunctionalSecurityStrategy , Is.SameAs(_stubFunctionalSecurityStrategy.Object));
     }
 
     [Test]
@@ -83,7 +83,7 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
 
         SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
 
-        Assert.That (securityClient, Is.SameAs (SecurityClient.Null));
+        Assert.That(securityClient, Is.SameAs(SecurityClient.Null));
       }
       finally
       {
@@ -94,12 +94,12 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Create_WithNullSecurityProvider_ReturnsNullObject ()
     {
-      Assert.That (SecurityConfiguration.Current.DisableAccessChecks, Is.False);
-      _stubSecurityProvider.Stub (_ => _.IsNull).Return (true);
+      Assert.That(SecurityConfiguration.Current.DisableAccessChecks, Is.False);
+      _stubSecurityProvider.Setup(_ => _.IsNull).Returns(true);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
 
-      Assert.That (securityClient, Is.SameAs (SecurityClient.Null));
+      Assert.That(securityClient, Is.SameAs(SecurityClient.Null));
     }
   }
 }

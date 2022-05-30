@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _listener = new NotFoundObjectsClientTransactionListener();
     }
@@ -42,37 +42,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var objectIDs = new[] { objectID1, objectID2 };
 
       var parentTransaction = ClientTransaction.CreateRootTransaction();
-      var subTransaction1 = parentTransaction.CreateSubTransaction ();
-      var subTransaction2 = subTransaction1.CreateSubTransaction ();
+      var subTransaction1 = parentTransaction.CreateSubTransaction();
+      var subTransaction2 = subTransaction1.CreateSubTransaction();
 
-      Assert.That (parentTransaction.IsInvalid (objectID1), Is.False);
-      Assert.That (parentTransaction.IsInvalid (objectID2), Is.False);
-      Assert.That (subTransaction1.IsInvalid (objectID1), Is.False);
-      Assert.That (subTransaction1.IsInvalid (objectID2), Is.False);
-      Assert.That (subTransaction2.IsInvalid (objectID1), Is.False);
-      Assert.That (subTransaction2.IsInvalid (objectID2), Is.False);
+      Assert.That(parentTransaction.IsInvalid(objectID1), Is.False);
+      Assert.That(parentTransaction.IsInvalid(objectID2), Is.False);
+      Assert.That(subTransaction1.IsInvalid(objectID1), Is.False);
+      Assert.That(subTransaction1.IsInvalid(objectID2), Is.False);
+      Assert.That(subTransaction2.IsInvalid(objectID1), Is.False);
+      Assert.That(subTransaction2.IsInvalid(objectID2), Is.False);
 
-      _listener.ObjectsNotFound (parentTransaction, Array.AsReadOnly (objectIDs));
+      _listener.ObjectsNotFound(parentTransaction, Array.AsReadOnly(objectIDs));
 
-      Assert.That (parentTransaction.IsInvalid (objectID1), Is.True);
-      Assert.That (parentTransaction.IsInvalid (objectID2), Is.True);
-      Assert.That (subTransaction1.IsInvalid (objectID1), Is.True);
-      Assert.That (subTransaction1.IsInvalid (objectID2), Is.True);
-      Assert.That (subTransaction2.IsInvalid (objectID1), Is.True);
-      Assert.That (subTransaction1.IsInvalid (objectID2), Is.True);
+      Assert.That(parentTransaction.IsInvalid(objectID1), Is.True);
+      Assert.That(parentTransaction.IsInvalid(objectID2), Is.True);
+      Assert.That(subTransaction1.IsInvalid(objectID1), Is.True);
+      Assert.That(subTransaction1.IsInvalid(objectID2), Is.True);
+      Assert.That(subTransaction2.IsInvalid(objectID1), Is.True);
+      Assert.That(subTransaction1.IsInvalid(objectID2), Is.True);
 
-      Assert.That (
-          LifetimeService.GetObjectReference (parentTransaction, objectID1),
-          Is.SameAs (LifetimeService.GetObjectReference (subTransaction1, objectID1)));
-      Assert.That (
-          LifetimeService.GetObjectReference (parentTransaction, objectID1),
-          Is.SameAs (LifetimeService.GetObjectReference (subTransaction2, objectID1)));
+      Assert.That(
+          LifetimeService.GetObjectReference(parentTransaction, objectID1),
+          Is.SameAs(LifetimeService.GetObjectReference(subTransaction1, objectID1)));
+      Assert.That(
+          LifetimeService.GetObjectReference(parentTransaction, objectID1),
+          Is.SameAs(LifetimeService.GetObjectReference(subTransaction2, objectID1)));
     }
 
     [Test]
     public void Serializability ()
     {
-      Assert.That (() => Serializer.SerializeAndDeserialize (_listener), Throws.Nothing);
+      Assert.That(() => Serializer.SerializeAndDeserialize(_listener), Throws.Nothing);
     }
   }
 }

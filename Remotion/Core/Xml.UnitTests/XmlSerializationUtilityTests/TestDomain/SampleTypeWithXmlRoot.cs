@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 
 namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain
 {
-  [XmlRoot ( Namespace = "http://root-namespace")]
+  [XmlRoot( Namespace = "http://root-namespace")]
   public class SampleTypeWithXmlRoot
   {
   }

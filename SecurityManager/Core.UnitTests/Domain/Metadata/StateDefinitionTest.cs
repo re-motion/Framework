@@ -36,11 +36,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void DeleteFailsIfStateDefinitionIsAssociatedWithStateProperty ()
     {
-      var property = _testHelper.CreateConfidentialityProperty (0);
+      var property = _testHelper.CreateConfidentialityProperty(0);
       var state = property["Private"];
 
       var messge = "State 'Private' cannot be deleted because it is associated with state property 'Confidentiality'.";
-      Assert.That (() => state.Delete(), Throws.InvalidOperationException.And.Message.EqualTo (messge));
+      Assert.That(() => state.Delete(), Throws.InvalidOperationException.And.Message.EqualTo(messge));
     }
   }
 }

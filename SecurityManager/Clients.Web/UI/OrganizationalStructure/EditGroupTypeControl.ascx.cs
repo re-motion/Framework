@@ -20,6 +20,7 @@ using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
@@ -38,7 +39,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return CurrentObject; }
     }
 
-    protected override FormGridManager GetFormGridManager()
+    protected override FormGridManager GetFormGridManager ()
     {
       return FormGridManager;
     }
@@ -50,22 +51,22 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       var bocListInlineEditingConfigurator = ServiceLocator.GetInstance<BocListInlineEditingConfigurator>();
 
       PositionsList.EditModeControlFactory = ServiceLocator.GetInstance<EditableRowAutoCompleteControlFactory>();
-      bocListInlineEditingConfigurator.Configure (PositionsList, GroupTypePosition.NewObject);
+      bocListInlineEditingConfigurator.Configure(PositionsList, GroupTypePosition.NewObject);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        PositionsList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) PositionsList.FixedColumns.Find ("Position"), SortingDirection.Ascending));
+        PositionsList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)PositionsList.FixedColumns.FindMandatory("Position"), SortingDirection.Ascending));
       }
 
       if (PositionsList.IsReadOnly)
@@ -74,9 +75,9 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      GroupTypeLabel.Text = GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.GroupTypeLabelText);
+      GroupTypeLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetText(ResourceIdentifier.GroupTypeLabelText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
   }
 }

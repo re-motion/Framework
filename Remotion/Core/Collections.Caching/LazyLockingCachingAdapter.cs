@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using Remotion.Utilities;
@@ -36,9 +37,11 @@ namespace Remotion.Collections.Caching
   /// instances. This leads to the effect that the lock used for the synchronization of the data store is always held for a very short time only,
   /// even if the factory delegate for a specific value takes a long time to execute.
   /// </remarks>
-  [Obsolete ("This type is only used in conjunction by obsolete factory method CacheFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
+  [Obsolete("This type is only used in conjunction by obsolete factory method CacheFactory.CreateWithLazyLocking(...). (Version: 1.19.3)")]
   [Serializable]
-  public class LazyLockingCachingAdapter<TKey, TValue> : ICache<TKey, TValue> where TValue : class 
+  public class LazyLockingCachingAdapter<TKey, TValue> : ICache<TKey, TValue>
+      where TKey : notnull
+      where TValue : class?
   {
     public class Wrapper
     {
@@ -54,9 +57,9 @@ namespace Remotion.Collections.Caching
 
     public LazyLockingCachingAdapter (ICache<TKey, Lazy<Wrapper>> innerCache)
     {
-      ArgumentUtility.CheckNotNull ("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull("innerCache", innerCache);
 
-      _innerCache = new LockingCacheDecorator<TKey, Lazy<Wrapper>> (innerCache);
+      _innerCache = new LockingCacheDecorator<TKey, Lazy<Wrapper>>(innerCache);
     }
 
     public bool IsNull
@@ -66,41 +69,37 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
-      Lazy<Wrapper> value;
       Wrapper wrapper;
-      if (_innerCache.TryGetValue (key, out value))
+      if (_innerCache.TryGetValue(key, out var value))
         wrapper = value.Value;
       else
-        wrapper = GetOrCreateValueWithClosure (key, valueFactory); // Split to prevent closure being created during the TryGetValue-operation
+        wrapper = GetOrCreateValueWithClosure(key, valueFactory); // Split to prevent closure being created during the TryGetValue-operation
 
       return wrapper.Value;
     }
 
     private Wrapper GetOrCreateValueWithClosure (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
-      var result = _innerCache.GetOrCreateValue (
+      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
+      var result = _innerCache.GetOrCreateValue(
           key,
-          k => new Lazy<Wrapper> (() => new Wrapper (valueFactory (k)), LazyThreadSafetyMode.ExecutionAndPublication));
+          k => new Lazy<Wrapper>(() => new Wrapper(valueFactory(k)), LazyThreadSafetyMode.ExecutionAndPublication));
       return result.Value;
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
-      Lazy<Wrapper> result;
-
-      if (_innerCache.TryGetValue (key, out result))
+      if (_innerCache.TryGetValue(key, out var result))
       {
         value = result.Value.Value;
         return true;
       }
-
-      value = null;
+      value = null!;
       return false;
     }
 
@@ -116,12 +115,12 @@ namespace Remotion.Collections.Caching
 
     private IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
     {
-      return _innerCache.Select (item => new KeyValuePair<TKey, TValue> (item.Key, item.Value.Value.Value)).GetEnumerator();
+      return _innerCache.Select(item => new KeyValuePair<TKey, TValue>(item.Key, item.Value.Value.Value)).GetEnumerator();
     }
 
     public void Clear ()
     {
-      _innerCache.Clear ();
+      _innerCache.Clear();
     }
   }
 }

@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public ScriptStatement GetCommentElement (string comment)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("comment", comment);
+      ArgumentUtility.CheckNotNullOrEmpty("comment", comment);
 
-      return new ScriptStatement ("-- " + comment);
+      return new ScriptStatement("-- " + comment);
     }
   }
 }

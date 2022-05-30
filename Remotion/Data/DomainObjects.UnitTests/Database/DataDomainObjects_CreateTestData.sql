@@ -1,4 +1,4 @@
-use DBPrefix_TestDomain
+ï»¿use DBPrefix_TestDomain
 
 delete from [MixedDomains_TargetWithTwoUnidirectionalMixins]
 delete from [MixedDomains_TargetWithUnidirectionalMixin1]
@@ -30,6 +30,8 @@ delete from [OrderItemWithNewPropertyAccess]
 delete from [OrderWithNewPropertyAccess]
 delete from [Company]
 delete from [IndustrialSector]
+delete from [ProductReview]
+delete from [Product]
 delete from [Person]
 delete from [TableWithAllDataTypes]
 delete from [TableWithValidRelations]
@@ -128,12 +130,34 @@ insert into [Person] (ID, ClassID, [Name], [AssociatedCustomerCompanyID], [Assoc
     values ('{911957D1-483C-4a8b-AA53-FF07464C58F9}', 'Person', 'Contact person in two organizations', null, null)
 
 
+-- Product
+insert into [Product] (ID, ClassID, [Name], [Price]) 
+    values ('{BA684594-CF77-4009-A010-B70B30396A01}', 'Product', 'Pen', 1.0)
+
+insert into [Product] (ID, ClassID, [Name], [Price]) 
+    values ('{8DD65EF7-BDDA-433E-B081-725B4D53317D}', 'Product', 'Paper', 0.01)
+
+
+-- ProductReview
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{877540A7-FBCF-4BF3-9007-355EA43E796F}', 'ProductReview', '{BA684594-CF77-4009-A010-B70B30396A01}', '{2001BF42-2AA4-4c81-AD8E-73E9145411E9}', '2005-03-28 10:15:19', 'Writes blue')
+
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{C3E4587D-626E-40D2-9D79-67CB148BE842}', 'ProductReview', '{BA684594-CF77-4009-A010-B70B30396A01}', '{DC50A962-EC95-4cf6-A4E7-A6608EAA23C8}', '2008-01-04 14:21:09', 'Uses ink')
+
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{793157CD-10FF-468F-994B-AEA83ADE183B}', 'ProductReview', '{BA684594-CF77-4009-A010-B70B30396A01}', '{10F36130-E97B-4078-A535-B79E07F16AB2}', '2010-09-17 11:48:23', 'You have to press down at the top to get it work')
+
+insert into [ProductReview] (ID, ClassID, [ProductID], [ReviewerID], [CreatedAt], [Comment]) 
+    values ('{B4F0052E-5F8B-4D1F-BEF9-5AA8595E78A7}', 'ProductReview', '{8DD65EF7-BDDA-433E-B081-725B4D53317D}', '{2001BF42-2AA4-4c81-AD8E-73E9145411E9}', '2006-05-21 09:24:42', 'Needs a pen preserve information. Pen is not included.')
+
+
 -- IndustrialSector
 insert into [IndustrialSector] (ID, ClassID, [Name]) 
     values ('{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}', 'IndustrialSector', 'Raumschiffproduktion')
 
 insert into [IndustrialSector] (ID, ClassID, [Name]) 
-    values ('{8565A077-EA01-4b5d-BEAA-293DC484BDDC}', 'IndustrialSector', 'Tellerwäscherei')
+    values ('{8565A077-EA01-4b5d-BEAA-293DC484BDDC}', 'IndustrialSector', 'TellerwÃ¤scherei')
 
 insert into [IndustrialSector] (ID, ClassID, [Name]) 
     values ('{53B322BF-25D8-4fe1-96C8-508E055143E7}', 'IndustrialSector', 'Putzereibetrieb')
@@ -199,14 +223,14 @@ insert into [Company] (ID, ClassID, [Name], ContactPersonID, SupplierQuality, [I
 
 -- Distributor
 insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [IndustrialSectorID]) 
-    values ('{E4087155-D60A-4d31-95B3-9A401A3E4E78}', 'Distributor', 'Händler 1', '{70C91528-4DB4-4e6a-B3F8-70C53A728DCC}', 1, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
+    values ('{E4087155-D60A-4d31-95B3-9A401A3E4E78}', 'Distributor', 'HÃ¤ndler 1', '{70C91528-4DB4-4e6a-B3F8-70C53A728DCC}', 1, '{8565A077-EA01-4b5d-BEAA-293DC484BDDC}')
 
 insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [IndustrialSectorID]) 
-    values ('{247206C3-7B48-4e17-91DD-3363B568D7E4}', 'Distributor', 'Händler 2', '{19C04A28-094F-4d1f-9705-E2FC7107A68F}', 10, '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+    values ('{247206C3-7B48-4e17-91DD-3363B568D7E4}', 'Distributor', 'HÃ¤ndler 2', '{19C04A28-094F-4d1f-9705-E2FC7107A68F}', 10, '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
 
 -- This row does not conform to mapping, because it lacks a pointer to a contact person:
 insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [IndustrialSectorID]) 
-    values ('{1514D668-A0A5-40e9-AC22-F24900E0EB39}', 'Distributor', 'Händler 3', null, 5, '{53B322BF-25D8-4fe1-96C8-508E055143E7}')
+    values ('{1514D668-A0A5-40e9-AC22-F24900E0EB39}', 'Distributor', 'HÃ¤ndler 3', null, 5, '{53B322BF-25D8-4fe1-96C8-508E055143E7}')
 
 -- Order
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
@@ -343,7 +367,7 @@ insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID)
     '{92A8BB6A-412A-4fe3-9B09-3E1B6136E425}', 'Supplier')
 
 insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
-    values ('{6B801331-2163-4837-B20C-973BD9B8768E}', 'Ceo', 'Siegfried Drachentöter', 
+    values ('{6B801331-2163-4837-B20C-973BD9B8768E}', 'Ceo', 'Siegfried DrachentÃ¶ter', 
     '{E4087155-D60A-4d31-95B3-9A401A3E4E78}', 'Distributor')
 
 insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
@@ -409,7 +433,7 @@ insert into [TableWithAllDataTypes] (ID, ClassID, [Boolean], [Byte], [Date], [Da
     [StringWithNullValue], [ExtensibleEnumWithNullValue], [NaBooleanWithNullValue], [NaByteWithNullValue], [NaDateWithNullValue], [NaDateTimeWithNullValue], [NaDecimalWithNullValue], [NaDoubleWithNullValue], [NaEnumWithNullValue], [NaFlagsWithNullValue], [NaGuidWithNullValue], [NaInt16WithNullValue], [NaInt32WithNullValue], [NaInt64WithNullValue], [NaSingleWithNullValue], [NullableBinary]) 
     values 
     ('{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}', 'ClassWithAllDataTypes', 
-    0, 85, '2005/01/01', '2005/01/01 17:00', 123456.789, 987654.321, 1, 2, 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red', '{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}', 32767, 2147483647, 9223372036854775807, 6789.321, 'abcdeföäü', '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890', 0x0,
+    0, 85, '2005/01/01', '2005/01/01 17:00', 123456.789, 987654.321, 1, 2, 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red', '{236C2DCE-43BD-45ad-BDE6-15F8C05C4B29}', 32767, 2147483647, 9223372036854775807, 6789.321, 'abcdefÃ¶Ã¤Ã¼', '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890', 0x0,
     1, 78, '2005/02/01', '2005/02/01 05:00', 765.098, 654321.789, 2, 3, '{19B2DFBE-B7BB-448e-8002-F4DBF6032AE8}', 12000, -2147483647, 3147483647, 12.456,
     null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
     
@@ -418,7 +442,7 @@ insert into [TableWithAllDataTypes] (ID, ClassID, [Boolean], [Byte], [Date], [Da
     [StringWithNullValue], [ExtensibleEnumWithNullValue], [NaBooleanWithNullValue], [NaByteWithNullValue], [NaDateWithNullValue], [NaDateTimeWithNullValue], [NaDecimalWithNullValue], [NaDoubleWithNullValue], [NaEnumWithNullValue], [NaFlagsWithNullValue], [NaGuidWithNullValue], [NaInt16WithNullValue], [NaInt32WithNullValue], [NaInt64WithNullValue], [NaSingleWithNullValue], [NullableBinary]) 
     values 
     ('{583EC716-8443-4b55-92BF-09F7C8768529}', 'ClassWithAllDataTypes', 
-    1, 86, '2005/01/02', '2005/01/02 01:00', 654321.987, 456789.123, 0, 3, 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Blue', '{D2146236-FBD4-4b93-A835-26563FE3F043}', -32767, -2147483647, -9223372036854775807, -6789.321, 'üäöfedcba', '09876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321', 0x0,
+    1, 86, '2005/01/02', '2005/01/02 01:00', 654321.987, 456789.123, 0, 3, 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Blue', '{D2146236-FBD4-4b93-A835-26563FE3F043}', -32767, -2147483647, -9223372036854775807, -6789.321, 'Ã¼Ã¤Ã¶fedcba', '09876543210987654321098765432109876543210987654321098765432109876543210987654321098765432109876543210987654321', 0x0,
     1, 79, '2005/02/02', '2005/02/02 15:00', 123.111, -654321.789, 2, 1, '{8C21745D-1269-4cb2-BC81-E1B112A0C146}', 390, 2147483647, 2147483648, 321.321,
     null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null)
 

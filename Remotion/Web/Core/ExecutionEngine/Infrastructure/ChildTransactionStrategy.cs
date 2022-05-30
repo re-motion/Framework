@@ -26,21 +26,21 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   {
     public ChildTransactionStrategy (
         bool autoCommit, TransactionStrategyBase outerTransactionStrategy, ITransaction parentTransaction, IWxeFunctionExecutionContext executionContext)
-      : base (autoCommit, parentTransaction.CreateChild, outerTransactionStrategy, executionContext)
+      : base(autoCommit, parentTransaction.CreateChild, outerTransactionStrategy, executionContext)
     {
     }
 
     public override IWxeFunctionExecutionListener CreateExecutionListener (IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull ("innerListener", innerListener);
+      ArgumentUtility.CheckNotNull("innerListener", innerListener);
 
-      return new ChildTransactionExecutionListener (this, innerListener);
+      return new ChildTransactionExecutionListener(this, innerListener);
     }
 
     protected override void ReleaseTransaction ()
     {
-      base.ReleaseTransaction ();
-      OuterTransactionStrategy.UnregisterChildTransactionStrategy (this);
+      base.ReleaseTransaction();
+      OuterTransactionStrategy.UnregisterChildTransactionStrategy(this);
     }
   }
 }

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CustomizeVSWindowTitle>
+  <SettingsSet
+    AppendedString=" "
+    PatternIfRunningMode="Remotion - [gitBranchName] (Running)"
+    PatternIfBreakMode="Remotion - [gitBranchName] (Debugging)"
+    PatternIfDesignMode="Remotion - [gitBranchName]" />
+</CustomizeVSWindowTitle>

@@ -28,82 +28,82 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixinTy
     [Test]
     public void GeneratedTypeImplementsMarkerInterface ()
     {
-      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType (typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
-      Assert.That (typeof (IGeneratedMixinType).IsAssignableFrom (generatedType), Is.True);
+      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
+      Assert.That(typeof(IGeneratedMixinType).IsAssignableFrom(generatedType), Is.True);
     }
 
     [Test]
     public void GeneratedMixinTypeHasMixinTypeAttribute ()
     {
-      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType (typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
-      Assert.That (generatedType.IsDefined (typeof (ConcreteMixinTypeAttribute), false), Is.True);
+      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
+      Assert.That(generatedType.IsDefined(typeof(ConcreteMixinTypeAttribute), false), Is.True);
 
-      var attributes = (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false);
-      Assert.That (attributes.Length, Is.EqualTo (1));
+      var attributes = (ConcreteMixinTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false);
+      Assert.That(attributes.Length, Is.EqualTo(1));
     }
 
     [Test]
     public void MixinTypeAttribute_CanBeUsedToGetIdentifier ()
     {
-      var requestingClass = MixinConfiguration.ActiveConfiguration.GetContext (typeof (ClassOverridingMixinMembers));
+      var requestingClass = MixinConfiguration.ActiveConfiguration.GetContext(typeof(ClassOverridingMixinMembers));
 
-      MixinDefinition mixinDefinition = DefinitionObjectMother.GetTargetClassDefinition (requestingClass).Mixins[typeof (MixinWithAbstractMembers)];
-      Assert.That (mixinDefinition, Is.Not.Null);
+      MixinDefinition mixinDefinition = DefinitionObjectMother.GetTargetClassDefinition(requestingClass).Mixins[typeof(MixinWithAbstractMembers)];
+      Assert.That(mixinDefinition, Is.Not.Null);
 
-      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType (requestingClass, typeof (MixinWithAbstractMembers));
-      Assert.That (generatedType.IsDefined (typeof (ConcreteMixinTypeAttribute), false), Is.True);
+      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType(requestingClass, typeof(MixinWithAbstractMembers));
+      Assert.That(generatedType.IsDefined(typeof(ConcreteMixinTypeAttribute), false), Is.True);
 
-      var attributes = (ConcreteMixinTypeAttribute[]) generatedType.GetCustomAttributes (typeof (ConcreteMixinTypeAttribute), false);
-      Assert.That (attributes[0].GetIdentifier(), Is.EqualTo (mixinDefinition.GetConcreteMixinTypeIdentifier()));
+      var attributes = (ConcreteMixinTypeAttribute[])generatedType.GetCustomAttributes(typeof(ConcreteMixinTypeAttribute), false);
+      Assert.That(attributes[0].GetIdentifier(), Is.EqualTo(mixinDefinition.GetConcreteMixinTypeIdentifier()));
     }
 
     [Test]
     public void IdentifierMember_HoldsIdentifier ()
     {
-      var requestingClass = MixinConfiguration.ActiveConfiguration.GetContext (typeof (ClassOverridingMixinMembers));
+      var requestingClass = MixinConfiguration.ActiveConfiguration.GetContext(typeof(ClassOverridingMixinMembers));
 
-      MixinDefinition mixinDefinition = DefinitionObjectMother.GetTargetClassDefinition (requestingClass).Mixins[typeof (MixinWithAbstractMembers)];
-      Assert.That (mixinDefinition, Is.Not.Null);
-      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType (requestingClass, typeof (MixinWithAbstractMembers));
+      MixinDefinition mixinDefinition = DefinitionObjectMother.GetTargetClassDefinition(requestingClass).Mixins[typeof(MixinWithAbstractMembers)];
+      Assert.That(mixinDefinition, Is.Not.Null);
+      Type generatedType = CodeGenerationTypeMother.GetGeneratedMixinType(requestingClass, typeof(MixinWithAbstractMembers));
 
-      var identifier = generatedType.GetField ("__identifier").GetValue (null);
+      var identifier = generatedType.GetField("__identifier").GetValue(null);
 
-      Assert.That (identifier, Is.EqualTo (mixinDefinition.GetConcreteMixinTypeIdentifier()));
+      Assert.That(identifier, Is.EqualTo(mixinDefinition.GetConcreteMixinTypeIdentifier()));
     }
 
     [Test]
-    public void AbstractMixinWithoutAbstractMembers()
+    public void AbstractMixinWithoutAbstractMembers ()
     {
-      var instance = CreateMixedObject<NullTarget> (typeof (AbstractMixinWithoutAbstractMembers));
-      var m1 = Mixin.Get<AbstractMixinWithoutAbstractMembers> (instance);
-      Assert.That (m1, Is.Not.Null);
-      Assert.That (m1, Is.InstanceOf (typeof (AbstractMixinWithoutAbstractMembers)));
-      Assert.That (m1.GetType (), Is.Not.SameAs (typeof (AbstractMixinWithoutAbstractMembers)));
-      Assert.That (m1.M1 (), Is.EqualTo ("AbstractMixinWithoutAbstractMembers.M1"));
+      var instance = CreateMixedObject<NullTarget>(typeof(AbstractMixinWithoutAbstractMembers));
+      var m1 = Mixin.Get<AbstractMixinWithoutAbstractMembers>(instance);
+      Assert.That(m1, Is.Not.Null);
+      Assert.That(m1, Is.InstanceOf(typeof(AbstractMixinWithoutAbstractMembers)));
+      Assert.That(m1.GetType(), Is.Not.SameAs(typeof(AbstractMixinWithoutAbstractMembers)));
+      Assert.That(m1.M1(), Is.EqualTo("AbstractMixinWithoutAbstractMembers.M1"));
     }
 
     [Test]
     public void NestedInterfaceWithOverrides ()
     {
-      var generatedType = CodeGenerationTypeMother.GetGeneratedMixinType (typeof (ClassOverridingMixinMembers), typeof (MixinWithAbstractMembers));
-      var overrideInterface = generatedType.GetNestedType ("IOverriddenMethods");
+      var generatedType = CodeGenerationTypeMother.GetGeneratedMixinType(typeof(ClassOverridingMixinMembers), typeof(MixinWithAbstractMembers));
+      var overrideInterface = generatedType.GetNestedType("IOverriddenMethods");
 
-      Assert.That (overrideInterface, Is.Not.Null);
-      
-      var method = overrideInterface.GetMethod ("AbstractMethod");
-      Assert.That (method, Is.Not.Null);
-      Assert.That (method.ReturnType, Is.SameAs (typeof (string)));
+      Assert.That(overrideInterface, Is.Not.Null);
+
+      var method = overrideInterface.GetMethod("AbstractMethod");
+      Assert.That(method, Is.Not.Null);
+      Assert.That(method.ReturnType, Is.SameAs(typeof(string)));
 
       var parameters = method.GetParameters();
-      Assert.That (parameters.Length, Is.EqualTo (1));
-      Assert.That (parameters[0].ParameterType, Is.SameAs (typeof (int)));
-      Assert.That (parameters[0].Name, Is.EqualTo ("i"));
+      Assert.That(parameters.Length, Is.EqualTo(1));
+      Assert.That(parameters[0].ParameterType, Is.SameAs(typeof(int)));
+      Assert.That(parameters[0].Name, Is.EqualTo("i"));
 
-      var propertyAccessor = overrideInterface.GetMethod ("get_AbstractProperty");
-      Assert.That (propertyAccessor, Is.Not.Null);
+      var propertyAccessor = overrideInterface.GetMethod("get_AbstractProperty");
+      Assert.That(propertyAccessor, Is.Not.Null);
 
-      var eventAccessor = overrideInterface.GetMethod ("add_AbstractEvent");
-      Assert.That (eventAccessor, Is.Not.Null);
+      var eventAccessor = overrideInterface.GetMethod("add_AbstractEvent");
+      Assert.That(eventAccessor, Is.Not.Null);
     }
   }
 }

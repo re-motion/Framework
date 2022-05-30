@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Collections;
 using Remotion.Collections.DataStore;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.TestDomain
 {
@@ -27,12 +27,12 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
 
 
     public StubBusinessObjectProvider ()
-        : this (MockRepository.GenerateStub<IBusinessObjectServiceFactory>())
+        : this(new Mock<IBusinessObjectServiceFactory>().Object)
     {
     }
 
     public StubBusinessObjectProvider (IBusinessObjectServiceFactory serviceFactory)
-        : base (serviceFactory)
+        : base(serviceFactory)
     {
     }
 

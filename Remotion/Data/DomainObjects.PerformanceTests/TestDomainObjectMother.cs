@@ -26,105 +26,105 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
   {
     public static ClassWithRelationProperties[] PrepareDatabaseObjectsWithRelationProperties (int numberOfObjects)
     {
-      return PrepareDatabaseObjects<ClassWithRelationProperties> (numberOfObjects, CreateAndFillRelationPropertyObject);
+      return PrepareDatabaseObjects<ClassWithRelationProperties>(numberOfObjects, CreateAndFillRelationPropertyObject);
     }
 
     public static ClassWithValueProperties[] PrepareDatabaseObjectsWithValueProperties (int numberOfObjects)
     {
-      return PrepareDatabaseObjects<ClassWithValueProperties> (numberOfObjects, CreateAndFillValuePropertyObject);
+      return PrepareDatabaseObjects<ClassWithValueProperties>(numberOfObjects, CreateAndFillValuePropertyObject);
     }
 
     public static T[] PrepareDatabaseObjects<T> (int numberOfObjects, Func<T> factory) where T : DomainObject
     {
-      var objects = QueryFactory.CreateLinqQuery<T> ().Take (numberOfObjects).ToArray();
+      var objects = QueryFactory.CreateLinqQuery<T>().Take(numberOfObjects).ToArray();
       if (objects.Length < numberOfObjects)
       {
-        using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+        using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
         {
           for (int i = 0; i < numberOfObjects - objects.Length; i++)
-            factory ();
-          ClientTransaction.Current.Commit ();
+            factory();
+          ClientTransaction.Current.Commit();
         }
-        objects = QueryFactory.CreateLinqQuery<T> ().Take (numberOfObjects).ToArray ();
+        objects = QueryFactory.CreateLinqQuery<T>().Take(numberOfObjects).ToArray();
       }
       return objects;
     }
 
     public static ClassWithRelationProperties[] PrepareLocalObjectsWithRelationProperties (int numberOfObjects)
     {
-      return PrepareLocalObjects<ClassWithRelationProperties> (numberOfObjects, CreateAndFillRelationPropertyObject);
+      return PrepareLocalObjects<ClassWithRelationProperties>(numberOfObjects, CreateAndFillRelationPropertyObject);
     }
 
     public static ClassWithValueProperties[] PrepareLocalObjectsWithValueProperties (int numberOfObjects)
     {
-      return PrepareLocalObjects<ClassWithValueProperties> (numberOfObjects, CreateAndFillValuePropertyObject);
+      return PrepareLocalObjects<ClassWithValueProperties>(numberOfObjects, CreateAndFillValuePropertyObject);
     }
 
     public static T[] PrepareLocalObjects<T> (int numberOfObjects, Func<T> factory) where T : DomainObject
     {
       var objects = ClientTransaction.Current.GetEnlistedDomainObjects().OfType<T>()
-          .Where (obj => obj.State != StateType.NotLoadedYet).Take (numberOfObjects)
-          .ToList ();
+          .Where(obj => !obj.State.IsNotLoadedYet).Take(numberOfObjects)
+          .ToList();
 
       var remaining = numberOfObjects - objects.Count;
       for (int i = 0; i < remaining; i++)
-        objects.Add (factory ());
+        objects.Add(factory());
       return objects.ToArray();
     }
 
     public static ClassWithRelationProperties CreateAndFillRelationPropertyObject ()
     {
-      ClassWithRelationProperties instance = SimpleDomainObject<ClassWithRelationProperties>.NewObject ();
-      instance.Unary1 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary2 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary3 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary4 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary5 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary6 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary7 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary8 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary9 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
-      instance.Unary10 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject ();
+      ClassWithRelationProperties instance = SimpleDomainObject<ClassWithRelationProperties>.NewObject();
+      instance.Unary1 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary2 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary3 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary4 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary5 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary6 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary7 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary8 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary9 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
+      instance.Unary10 = SimpleDomainObject<OppositeClassWithAnonymousRelationProperties>.NewObject();
 
-      instance.Real1 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real2 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real3 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real4 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real5 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real6 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real7 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real8 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real9 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
-      instance.Real10 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject ();
+      instance.Real1 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real2 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real3 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real4 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real5 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real6 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real7 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real8 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real9 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
+      instance.Real10 = SimpleDomainObject<OppositeClassWithVirtualRelationProperties>.NewObject();
 
-      instance.Virtual1 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual2 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual3 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual4 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual5 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual6 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual7 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual8 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual9 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
-      instance.Virtual10 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject ();
+      instance.Virtual1 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual2 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual3 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual4 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual5 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual6 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual7 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual8 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual9 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
+      instance.Virtual10 = SimpleDomainObject<OppositeClassWithRealRelationProperties>.NewObject();
 
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
-      instance.Collection.Add (SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject ());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
+      instance.Collection.Add(SimpleDomainObject<OppositeClassWithCollectionRelationProperties>.NewObject());
 
       return instance;
     }
 
     public static ClassWithValueProperties CreateAndFillValuePropertyObject ()
     {
-      ClassWithValueProperties instance = SimpleDomainObject<ClassWithValueProperties>.NewObject ();
+      ClassWithValueProperties instance = SimpleDomainObject<ClassWithValueProperties>.NewObject();
       instance.BoolProperty1 = true;
       instance.BoolProperty2 = false;
       instance.BoolProperty3 = true;
@@ -147,16 +147,16 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       instance.IntProperty9 = 8;
       instance.IntProperty10 = 9;
 
-      instance.DateTimeProperty1 = new DateTime (2001, 01, 01, 01, 01, 01);
-      instance.DateTimeProperty2 = new DateTime (2002, 01, 01, 01, 02, 02);
-      instance.DateTimeProperty3 = new DateTime (2003, 01, 01, 01, 03, 03);
-      instance.DateTimeProperty4 = new DateTime (2004, 01, 01, 01, 04, 04);
-      instance.DateTimeProperty5 = new DateTime (2005, 01, 01, 01, 05, 05);
-      instance.DateTimeProperty6 = new DateTime (2006, 01, 01, 01, 06, 06);
-      instance.DateTimeProperty7 = new DateTime (2007, 01, 01, 01, 07, 07);
-      instance.DateTimeProperty8 = new DateTime (2008, 01, 01, 01, 08, 08);
-      instance.DateTimeProperty9 = new DateTime (2009, 01, 01, 01, 09, 09);
-      instance.DateTimeProperty10 = new DateTime (2010, 01, 01, 01, 10, 10);
+      instance.DateTimeProperty1 = new DateTime(2001, 01, 01, 01, 01, 01);
+      instance.DateTimeProperty2 = new DateTime(2002, 01, 01, 01, 02, 02);
+      instance.DateTimeProperty3 = new DateTime(2003, 01, 01, 01, 03, 03);
+      instance.DateTimeProperty4 = new DateTime(2004, 01, 01, 01, 04, 04);
+      instance.DateTimeProperty5 = new DateTime(2005, 01, 01, 01, 05, 05);
+      instance.DateTimeProperty6 = new DateTime(2006, 01, 01, 01, 06, 06);
+      instance.DateTimeProperty7 = new DateTime(2007, 01, 01, 01, 07, 07);
+      instance.DateTimeProperty8 = new DateTime(2008, 01, 01, 01, 08, 08);
+      instance.DateTimeProperty9 = new DateTime(2009, 01, 01, 01, 09, 09);
+      instance.DateTimeProperty10 = new DateTime(2010, 01, 01, 01, 10, 10);
 
       instance.StringProperty1 = "One";
       instance.StringProperty2 = "Two";
@@ -168,7 +168,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       instance.StringProperty8 = "Eight";
       instance.StringProperty9 = "Nine";
       instance.StringProperty10 = "Ten";
-      
+
       return instance;
     }
   }

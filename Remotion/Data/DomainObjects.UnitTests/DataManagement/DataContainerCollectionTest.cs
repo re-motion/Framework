@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
@@ -30,381 +31,360 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _dataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer ();
-      _collection = new DataContainerCollection ();
+      _dataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer();
+      _collection = new DataContainerCollection();
     }
 
     [Test]
     public void Add ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection.Count, Is.EqualTo(1));
     }
 
     [Test]
     public void Add_Generic ()
     {
-      ((IList<DataContainer>) _collection).Add (_dataContainer);
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      ((IList<DataContainer>)_collection).Add(_dataContainer);
+      Assert.That(_collection.Count, Is.EqualTo(1));
     }
 
     [Test]
     public void GetEnumerator_Generic ()
     {
-      _collection.Add (_dataContainer);
+      _collection.Add(_dataContainer);
 
-      using (var enumerator = _collection.GetEnumerator ())
+      using (var enumerator = _collection.GetEnumerator())
       {
-        Assert.That (enumerator.MoveNext (), Is.True);
-        Assert.That (enumerator.Current, Is.SameAs (_dataContainer));
-        Assert.That (enumerator.MoveNext (), Is.False);
+        Assert.That(enumerator.MoveNext(), Is.True);
+        Assert.That(enumerator.Current, Is.SameAs(_dataContainer));
+        Assert.That(enumerator.MoveNext(), Is.False);
       }
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Collection was modified during enumeration.")]
     public void GetEnumerator_Generic_ChecksVersion ()
     {
-      _collection.Add (_dataContainer);
+      _collection.Add(_dataContainer);
 
-      foreach (var dataContainer in _collection)
-        _collection.Remove (dataContainer.ID);
+      Assert.That(
+          () =>
+          {
+            foreach (var dataContainer in _collection)
+              _collection.Remove(dataContainer.ID);
+          },
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Collection was modified during enumeration."));
     }
 
     [Test]
     public void Item_Get_ObjectID ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection[_dataContainer.ID], Is.SameAs (_dataContainer));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection[_dataContainer.ID], Is.SameAs(_dataContainer));
     }
 
     [Test]
     public void Item_Get_Index ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection[0], Is.SameAs (_dataContainer));
-      Assert.That (((IList<DataContainer>) _collection)[0], Is.SameAs (_dataContainer));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection[0], Is.SameAs(_dataContainer));
+      Assert.That(((IList<DataContainer>)_collection)[0], Is.SameAs(_dataContainer));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException))]
     public void Item_Set_Index ()
     {
-      _collection.Add (_dataContainer);
-      ((IList<DataContainer>) _collection)[0] = _dataContainer;
+      _collection.Add(_dataContainer);
+      Assert.That(
+          () => ((IList<DataContainer>)_collection)[0] = _dataContainer,
+          Throws.InstanceOf<NotSupportedException>());
     }
 
     [Test]
     public void ContainsObjectIDTrue ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection.Contains (_dataContainer.ID), Is.True);
+      _collection.Add(_dataContainer);
+      Assert.That(_collection.Contains(_dataContainer.ID), Is.True);
     }
 
     [Test]
     public void ContainsObjectIDFalse ()
     {
-      Assert.That (_collection.Contains (_dataContainer.ID), Is.False);
+      Assert.That(_collection.Contains(_dataContainer.ID), Is.False);
     }
 
     [Test]
     public void CopyConstructor ()
     {
-      _collection.Add (_dataContainer);
+      _collection.Add(_dataContainer);
 
-      DataContainerCollection copiedCollection = new DataContainerCollection (_collection, false);
+      DataContainerCollection copiedCollection = new DataContainerCollection(_collection, false);
 
-      Assert.That (copiedCollection.Count, Is.EqualTo (1));
-      Assert.That (copiedCollection[0], Is.SameAs (_dataContainer));
+      Assert.That(copiedCollection.Count, Is.EqualTo(1));
+      Assert.That(copiedCollection[0], Is.SameAs(_dataContainer));
     }
 
     [Test]
     public void GetEmptyDifference ()
     {
-      DataContainerCollection difference = _collection.GetDifference (new DataContainerCollection ());
-      Assert.That (difference.Count, Is.EqualTo (0));
+      DataContainerCollection difference = _collection.GetDifference(new DataContainerCollection());
+      Assert.That(difference.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void GetDifferenceFromEmptySet ()
     {
-      _collection.Add (_dataContainer);
-      DataContainerCollection difference = _collection.GetDifference (new DataContainerCollection ());
-      Assert.That (difference.Count, Is.EqualTo (1));
-      Assert.That (difference[0], Is.SameAs (_dataContainer));
+      _collection.Add(_dataContainer);
+      DataContainerCollection difference = _collection.GetDifference(new DataContainerCollection());
+      Assert.That(difference.Count, Is.EqualTo(1));
+      Assert.That(difference[0], Is.SameAs(_dataContainer));
     }
 
     [Test]
     public void GetDifference ()
     {
-      DataContainer differentDataContainer = TestDataContainerObjectMother.CreateOrder2DataContainer ();
+      DataContainer differentDataContainer = TestDataContainerObjectMother.CreateOrder2DataContainer();
 
-      _collection.Add (_dataContainer);
-      _collection.Add (differentDataContainer);
+      _collection.Add(_dataContainer);
+      _collection.Add(differentDataContainer);
 
-      DataContainerCollection secondCollection = new DataContainerCollection ();
+      DataContainerCollection secondCollection = new DataContainerCollection();
 
-      secondCollection.Add (_dataContainer);
+      secondCollection.Add(_dataContainer);
 
-      DataContainerCollection difference = _collection.GetDifference (secondCollection);
+      DataContainerCollection difference = _collection.GetDifference(secondCollection);
 
-      Assert.That (difference.Count, Is.EqualTo (1));
-      Assert.That (difference[0], Is.SameAs (differentDataContainer));
+      Assert.That(difference.Count, Is.EqualTo(1));
+      Assert.That(difference[0], Is.SameAs(differentDataContainer));
     }
 
     [Test]
     public void EmptyMerge ()
     {
-      DataContainerCollection mergedCollection = _collection.Merge (new DataContainerCollection ());
-      Assert.That (mergedCollection.Count, Is.EqualTo (0));
+      DataContainerCollection mergedCollection = _collection.Merge(new DataContainerCollection());
+      Assert.That(mergedCollection.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void MergeCollectionAndEmptyCollection ()
     {
-      _collection.Add (_dataContainer);
-      DataContainerCollection mergedCollection = _collection.Merge (new DataContainerCollection ());
+      _collection.Add(_dataContainer);
+      DataContainerCollection mergedCollection = _collection.Merge(new DataContainerCollection());
 
-      Assert.That (mergedCollection.Count, Is.EqualTo (1));
-      Assert.That (mergedCollection[0], Is.SameAs (_dataContainer));
+      Assert.That(mergedCollection.Count, Is.EqualTo(1));
+      Assert.That(mergedCollection[0], Is.SameAs(_dataContainer));
     }
 
     [Test]
     public void MergeEmptyCollectionAndCollection ()
     {
-      DataContainerCollection secondCollection = new DataContainerCollection ();
-      secondCollection.Add (_dataContainer);
+      DataContainerCollection secondCollection = new DataContainerCollection();
+      secondCollection.Add(_dataContainer);
 
-      DataContainerCollection mergedCollection = _collection.Merge (secondCollection);
+      DataContainerCollection mergedCollection = _collection.Merge(secondCollection);
 
-      Assert.That (mergedCollection.Count, Is.EqualTo (0));
+      Assert.That(mergedCollection.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void MergeTwoCollectionsWithEqualDataContainer ()
     {
-      _collection.Add (_dataContainer);
+      _collection.Add(_dataContainer);
 
-      DataContainerCollection secondCollection = new DataContainerCollection ();
-      DataContainer container = TestDataContainerObjectMother.CreateOrder1DataContainer ();
-      secondCollection.Add (container);
+      DataContainerCollection secondCollection = new DataContainerCollection();
+      DataContainer container = TestDataContainerObjectMother.CreateOrder1DataContainer();
+      secondCollection.Add(container);
 
-      DataContainerCollection mergedCollection = _collection.Merge (secondCollection);
+      DataContainerCollection mergedCollection = _collection.Merge(secondCollection);
 
-      Assert.That (mergedCollection.Count, Is.EqualTo (1));
-      Assert.That (mergedCollection[0], Is.SameAs (container));
+      Assert.That(mergedCollection.Count, Is.EqualTo(1));
+      Assert.That(mergedCollection[0], Is.SameAs(container));
     }
 
     [Test]
     public void MergeTwoCollections ()
     {
-      _collection.Add (_dataContainer);
-      DataContainer order3 = TestDataContainerObjectMother.CreateOrder2DataContainer ();
-      _collection.Add (order3);
+      _collection.Add(_dataContainer);
+      DataContainer order3 = TestDataContainerObjectMother.CreateOrder2DataContainer();
+      _collection.Add(order3);
 
-      DataContainerCollection secondCollection = new DataContainerCollection ();
-      DataContainer order1 = TestDataContainerObjectMother.CreateOrder1DataContainer ();
-      secondCollection.Add (order1);
+      DataContainerCollection secondCollection = new DataContainerCollection();
+      DataContainer order1 = TestDataContainerObjectMother.CreateOrder1DataContainer();
+      secondCollection.Add(order1);
 
-      DataContainerCollection mergedCollection = _collection.Merge (secondCollection);
+      DataContainerCollection mergedCollection = _collection.Merge(secondCollection);
 
-      Assert.That (mergedCollection.Count, Is.EqualTo (2));
-      Assert.That (mergedCollection[_dataContainer.ID], Is.SameAs (order1));
-      Assert.That (mergedCollection[order3.ID], Is.SameAs (order3));
-    }
-
-    [Test]
-    public void GetByOriginalState ()
-    {
-      _collection.Add (_dataContainer);
-      DataContainerCollection originalContainers = _collection.GetByState (StateType.Unchanged);
-
-      Assert.That (originalContainers, Is.Not.Null);
-      Assert.That (originalContainers.Count, Is.EqualTo (1));
-      Assert.That (originalContainers[0], Is.SameAs (_dataContainer));
-    }
-
-    [Test]
-    public void GetByChangedState ()
-    {
-      _collection.Add (_dataContainer);
-      _collection.Add (TestDataContainerObjectMother.CreateCustomer1DataContainer ());
-
-      SetPropertyValue (_dataContainer, typeof (Order), "OrderNumber", 10);
-
-      DataContainerCollection changedContainers = _collection.GetByState (StateType.Changed);
-
-      Assert.That (changedContainers, Is.Not.Null);
-      Assert.That (changedContainers.Count, Is.EqualTo (1));
-      Assert.That (changedContainers[0], Is.SameAs (_dataContainer));
+      Assert.That(mergedCollection.Count, Is.EqualTo(2));
+      Assert.That(mergedCollection[_dataContainer.ID], Is.SameAs(order1));
+      Assert.That(mergedCollection[order3.ID], Is.SameAs(order3));
     }
 
     [Test]
     public void RemoveByID ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection.Count, Is.EqualTo(1));
 
-      _collection.Remove (_dataContainer.ID);
-      Assert.That (_collection.Count, Is.EqualTo (0));
+      _collection.Remove(_dataContainer.ID);
+      Assert.That(_collection.Count, Is.EqualTo(0));
+
+      _collection.Remove(_dataContainer.ID);
+      Assert.That(_collection.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void RemoveByDataContainer ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection.Count, Is.EqualTo(1));
 
-      var result = _collection.Remove (_dataContainer);
-      Assert.That (result, Is.True);
-      Assert.That (_collection.Count, Is.EqualTo (0));
+      var result = _collection.Remove(_dataContainer);
+      Assert.That(result, Is.True);
+      Assert.That(_collection.Count, Is.EqualTo(0));
 
-      result = _collection.Remove (_dataContainer);
-      Assert.That (result, Is.False);
-      Assert.That (_collection.Count, Is.EqualTo (0));
+      result = _collection.Remove(_dataContainer);
+      Assert.That(result, Is.False);
+      Assert.That(_collection.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void RemoveAt ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection.Count, Is.EqualTo(1));
 
-      _collection.RemoveAt (0);
-      Assert.That (_collection.Count, Is.EqualTo (0));
+      _collection.RemoveAt(0);
+      Assert.That(_collection.Count, Is.EqualTo(0));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void RemoveNullDataContainer ()
     {
-      _collection.Remove ((DataContainer) null);
+      Assert.That(
+          () => _collection.Remove((DataContainer)null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void RemoveNullObjectID ()
     {
-      _collection.Remove ((ObjectID) null);
+      Assert.That(
+          () => _collection.Remove((ObjectID)null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void ContainsDataContainerTrue ()
     {
-      _collection.Add (_dataContainer);
+      _collection.Add(_dataContainer);
 
-      Assert.That (_collection.Contains (_dataContainer), Is.True);
+      Assert.That(_collection.Contains(_dataContainer), Is.True);
     }
 
     [Test]
     public void ContainsDataContainerFalse ()
     {
-      _collection.Add (_dataContainer);
+      _collection.Add(_dataContainer);
 
-      DataContainer copy = DataContainer.CreateNew (_dataContainer.ID);
+      DataContainer copy = DataContainer.CreateNew(_dataContainer.ID);
 
-      Assert.That (_collection.Contains (copy), Is.False);
+      Assert.That(_collection.Contains(copy), Is.False);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void ContainsDataContainerNull ()
     {
-      _collection.Contains ((DataContainer) null);
+      Assert.That(
+          () => _collection.Contains((DataContainer)null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
     public void Clear ()
     {
-      _collection.Add (_dataContainer);
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection.Count, Is.EqualTo(1));
 
-      _collection.Clear ();
-      Assert.That (_collection.Count, Is.EqualTo (0));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
-    public void GetByInvalidState ()
-    {
-      _collection.GetByState ((StateType) 1000);
+      _collection.Clear();
+      Assert.That(_collection.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void Join ()
     {
-      DataContainer firstDataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer ();
-      DataContainerCollection firstCollection = new DataContainerCollection ();
-      firstCollection.Add (firstDataContainer);
+      DataContainer firstDataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer();
+      DataContainerCollection firstCollection = new DataContainerCollection();
+      firstCollection.Add(firstDataContainer);
 
-      DataContainer secondDataContainer = TestDataContainerObjectMother.CreateOrder2DataContainer ();
-      DataContainerCollection secondCollection = new DataContainerCollection ();
-      secondCollection.Add (secondDataContainer);
+      DataContainer secondDataContainer = TestDataContainerObjectMother.CreateOrder2DataContainer();
+      DataContainerCollection secondCollection = new DataContainerCollection();
+      secondCollection.Add(secondDataContainer);
 
-      DataContainerCollection joinedCollection = DataContainerCollection.Join (firstCollection, secondCollection);
-      Assert.That (joinedCollection.Count, Is.EqualTo (2));
-      Assert.That (joinedCollection[0].ID, Is.EqualTo (firstDataContainer.ID));
-      Assert.That (joinedCollection[1].ID, Is.EqualTo (secondDataContainer.ID));
+      DataContainerCollection joinedCollection = DataContainerCollection.Join(firstCollection, secondCollection);
+      Assert.That(joinedCollection.Count, Is.EqualTo(2));
+      Assert.That(joinedCollection[0].ID, Is.EqualTo(firstDataContainer.ID));
+      Assert.That(joinedCollection[1].ID, Is.EqualTo(secondDataContainer.ID));
     }
 
     [Test]
     public void JoinWithSameDataContainer ()
     {
-      DataContainer dataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer ();
-      DataContainerCollection firstCollection = new DataContainerCollection ();
-      firstCollection.Add (dataContainer);
+      DataContainer dataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer();
+      DataContainerCollection firstCollection = new DataContainerCollection();
+      firstCollection.Add(dataContainer);
 
-      DataContainerCollection secondCollection = new DataContainerCollection ();
-      secondCollection.Add (dataContainer);
+      DataContainerCollection secondCollection = new DataContainerCollection();
+      secondCollection.Add(dataContainer);
 
-      DataContainerCollection joinedCollection = DataContainerCollection.Join (firstCollection, secondCollection);
-      Assert.That (joinedCollection.Count, Is.EqualTo (1));
-      Assert.That (joinedCollection[0].ID, Is.EqualTo (dataContainer.ID));
+      DataContainerCollection joinedCollection = DataContainerCollection.Join(firstCollection, secondCollection);
+      Assert.That(joinedCollection.Count, Is.EqualTo(1));
+      Assert.That(joinedCollection[0].ID, Is.EqualTo(dataContainer.ID));
     }
 
     [Test]
     public void JoinWithDataContainersOfSameID ()
     {
-      DataContainer dataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer ();
-      DataContainerCollection firstCollection = new DataContainerCollection ();
-      firstCollection.Add (dataContainer);
+      DataContainer dataContainer = TestDataContainerObjectMother.CreateOrder1DataContainer();
+      DataContainerCollection firstCollection = new DataContainerCollection();
+      firstCollection.Add(dataContainer);
 
-      DataContainerCollection secondCollection = new DataContainerCollection ();
-      secondCollection.Add (TestDataContainerObjectMother.CreateOrder1DataContainer ());
+      DataContainerCollection secondCollection = new DataContainerCollection();
+      secondCollection.Add(TestDataContainerObjectMother.CreateOrder1DataContainer());
 
-      DataContainerCollection joinedCollection = DataContainerCollection.Join (firstCollection, secondCollection);
-      Assert.That (joinedCollection.Count, Is.EqualTo (1));
-      Assert.That (joinedCollection[0], Is.SameAs (dataContainer));
+      DataContainerCollection joinedCollection = DataContainerCollection.Join(firstCollection, secondCollection);
+      Assert.That(joinedCollection.Count, Is.EqualTo(1));
+      Assert.That(joinedCollection[0], Is.SameAs(dataContainer));
     }
 
     [Test]
     public void CopyTo_Generic ()
     {
       var destArray = new DataContainer[] { null, null, null };
-      _collection.Add (_dataContainer);
+      _collection.Add(_dataContainer);
 
-      ((IList<DataContainer>)_collection).CopyTo (destArray, 1);
+      ((IList<DataContainer>)_collection).CopyTo(destArray, 1);
 
-      Assert.That (destArray, Is.EqualTo (new[] { null, _dataContainer, null }));
+      Assert.That(destArray, Is.EqualTo(new[] { null, _dataContainer, null }));
     }
 
     [Test]
     public void IndexOf_Generic ()
     {
-      Assert.That (_collection.IndexOf (_dataContainer), Is.EqualTo (-1));
+      Assert.That(_collection.IndexOf(_dataContainer), Is.EqualTo(-1));
 
-      _collection.Add (_dataContainer);
-      Assert.That (_collection.IndexOf (_dataContainer), Is.EqualTo (0));
+      _collection.Add(_dataContainer);
+      Assert.That(_collection.IndexOf(_dataContainer), Is.EqualTo(0));
     }
 
     [Test]
     public void Insert ()
     {
-      _collection.Insert (0, _dataContainer);
+      _collection.Insert(0, _dataContainer);
 
-      Assert.That (_collection, Is.EqualTo (new[] { _dataContainer }));
+      Assert.That(_collection, Is.EqualTo(new[] { _dataContainer }));
     }
   }
 }

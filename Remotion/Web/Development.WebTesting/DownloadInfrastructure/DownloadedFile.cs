@@ -31,8 +31,8 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public DownloadedFile ([NotNull] string fullFilePath, [NotNull] string fileName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("fullFilePath", fullFilePath);
-      ArgumentUtility.CheckNotNullOrEmpty ("fileName", fileName);
+      ArgumentUtility.CheckNotNullOrEmpty("fullFilePath", fullFilePath);
+      ArgumentUtility.CheckNotNullOrEmpty("fileName", fileName);
 
       _fullFilePath = fullFilePath;
       _fileName = fileName;
@@ -53,19 +53,19 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// <inheritdoc/>
     public long FileLength
     {
-      get { return new FileInfo (_fullFilePath).Length; }
+      get { return new FileInfo(_fullFilePath).Length; }
     }
 
     /// <inheritdoc/>
     public FileStream GetStream ()
     {
-      return new FileStream (_fullFilePath, FileMode.Open);
+      return new FileStream(_fullFilePath, FileMode.Open);
     }
 
     /// <inheritdoc/>
     public void Delete ()
     {
-      File.Delete (_fullFilePath);
+      File.Delete(_fullFilePath);
     }
 
     /// <summary>
@@ -73,11 +73,11 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// </summary>
     public IDownloadedFile Move ([NotNull] string newFilePath)
     {
-      ArgumentUtility.CheckNotNull ("newFilePath", newFilePath);
+      ArgumentUtility.CheckNotNull("newFilePath", newFilePath);
 
-      File.Move (_fullFilePath, newFilePath);
-      
-      return new DownloadedFile (newFilePath, _fileName);
+      File.Move(_fullFilePath, newFilePath);
+
+      return new DownloadedFile(newFilePath, _fileName);
     }
 
     /// <summary>
@@ -85,9 +85,9 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// </summary>
     public DownloadedFile Rename ([NotNull] string newName)
     {
-      ArgumentUtility.CheckNotNull ("newName", newName);
-      
-      return new DownloadedFile (_fullFilePath, newName);
+      ArgumentUtility.CheckNotNull("newName", newName);
+
+      return new DownloadedFile(_fullFilePath, newName);
     }
   }
 }

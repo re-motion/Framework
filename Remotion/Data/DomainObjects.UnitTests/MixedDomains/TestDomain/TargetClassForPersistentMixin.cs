@@ -20,36 +20,36 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof (MixinAddingPersistentProperties))]
-  [Uses (typeof (NullMixin))]
-  [DBTable ("MixedDomains_Target")]
+  [Uses(typeof(MixinAddingPersistentProperties))]
+  [Uses(typeof(NullMixin))]
+  [DBTable("MixedDomains_Target")]
   [TestDomain]
   public class TargetClassForPersistentMixin : DomainObject, ISupportsGetObject
   {
     public static TargetClassForPersistentMixin NewObject ()
     {
-      return NewObject<TargetClassForPersistentMixin> ();
+      return NewObject<TargetClassForPersistentMixin>();
     }
 
     [StorageClassNone]
     public int RedirectedPersistentProperty
     {
-      [LinqPropertyRedirection (typeof (IMixinAddingPersistentProperties), "PersistentProperty")]
-      get { return ((IMixinAddingPersistentProperties) this).PersistentProperty; }
+      [LinqPropertyRedirection(typeof(IMixinAddingPersistentProperties), "PersistentProperty")]
+      get { return ((IMixinAddingPersistentProperties)this).PersistentProperty; }
     }
 
     [StorageClassNone]
     public ObjectList<RelationTargetForPersistentMixin> RedirectedCollectionProperty1Side
     {
-      [LinqPropertyRedirection (typeof (IMixinAddingPersistentProperties), "CollectionProperty1Side")]
-      get { return ((IMixinAddingPersistentProperties) this).CollectionProperty1Side; }
+      [LinqPropertyRedirection(typeof(IMixinAddingPersistentProperties), "CollectionProperty1Side")]
+      get { return ((IMixinAddingPersistentProperties)this).CollectionProperty1Side; }
     }
 
     [StorageClassNone]
     public IMixinAddingPersistentProperties MixedMembers
     {
       [LinqCastMethod]
-      get { return (IMixinAddingPersistentProperties) this; }
+      get { return (IMixinAddingPersistentProperties)this; }
     }
   }
 
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
     [LinqCastMethod]
     public static IMixinAddingPersistentProperties GetMixedMembers (this TargetClassForPersistentMixin that)
     {
-      return (IMixinAddingPersistentProperties) that;
+      return (IMixinAddingPersistentProperties)that;
     }
   }
 }

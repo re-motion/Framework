@@ -1,0 +1,19 @@
+<Project>
+
+  <Import Project="WebLibrary.props" />
+
+  <PropertyGroup>
+    <UseWebForms>true</UseWebForms>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <OutputPath>bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <IsPackable>false</IsPackable>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreForms.Web.Infrastructure.MachineConfig" Version="5.0.0-alpha.4" />
+    <PackageReference Include="CoreForms.Web.Infrastructure.Roslyn" Version="5.0.0-alpha.4" />
+  </ItemGroup>
+
+</Project>

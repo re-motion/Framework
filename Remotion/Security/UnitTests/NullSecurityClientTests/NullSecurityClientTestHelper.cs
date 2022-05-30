@@ -15,36 +15,34 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.NullSecurityClientTests
 {
   public class NullSecurityClientTestHelper
   {
-    public static NullSecurityClientTestHelper CreateForStatelessSecurity()
+    public static NullSecurityClientTestHelper CreateForStatelessSecurity ()
     {
       return new NullSecurityClientTestHelper();
     }
 
-    public static NullSecurityClientTestHelper CreateForStatefulSecurity()
+    public static NullSecurityClientTestHelper CreateForStatefulSecurity ()
     {
       return new NullSecurityClientTestHelper();
     }
 
-    private MockRepository _mocks;
-    private IObjectSecurityStrategy _mockObjectSecurityStrategy;
+    private Mock<IObjectSecurityStrategy> _mockObjectSecurityStrategy;
     private SecurableObject _securableObject;
 
-    private NullSecurityClientTestHelper()
+    private NullSecurityClientTestHelper ()
     {
-      _mocks = new MockRepository();
-      _mockObjectSecurityStrategy = _mocks.StrictMock<IObjectSecurityStrategy>();
-      
-      _securableObject = new SecurableObject (_mockObjectSecurityStrategy);
+      _mockObjectSecurityStrategy = new Mock<IObjectSecurityStrategy>(MockBehavior.Strict);
+
+      _securableObject = new SecurableObject(_mockObjectSecurityStrategy.Object);
     }
 
-    public NullSecurityClient CreateSecurityClient()
+    public NullSecurityClient CreateSecurityClient ()
     {
       return new NullSecurityClient();
     }
@@ -54,14 +52,9 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
       get { return _securableObject; }
     }
 
-    public void ReplayAll()
+    public void VerifyAll ()
     {
-      _mocks.ReplayAll();
-    }
-
-    public void VerifyAll()
-    {
-      _mocks.VerifyAll();
+      _mockObjectSecurityStrategy.Verify();
     }
   }
 }

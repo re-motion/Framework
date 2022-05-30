@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class TabbedMultiViewTestFunction : WxeFunction
   {
     public TabbedMultiViewTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("TabbedMultiViewTest.aspx");
+    private WxeStep Step1 = new WxePageStep("TabbedMultiViewTest.aspx");
   }
 }

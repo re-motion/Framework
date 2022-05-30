@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -23,7 +23,7 @@ namespace Remotion.Utilities
   /// <summary>
   /// Creates an <see cref="AdvancedEnumConverter"/> if the requested type is an enum.
   /// </summary>
-  [ImplementationFor (typeof (ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class EnumTypeConverterFactory : ITypeConverterFactory
   {
     public const int Position = AttributeBasedTypeConverterFactory.Position + 1;
@@ -32,12 +32,12 @@ namespace Remotion.Utilities
     {
     }
 
-    public TypeConverter CreateTypeConverterOrDefault (Type type)
+    public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if ((Nullable.GetUnderlyingType (type) ?? type).IsEnum)
-        return new AdvancedEnumConverter (type);
+      if ((Nullable.GetUnderlyingType(type) ?? type).IsEnum)
+        return new AdvancedEnumConverter(type);
       return null;
     }
   }

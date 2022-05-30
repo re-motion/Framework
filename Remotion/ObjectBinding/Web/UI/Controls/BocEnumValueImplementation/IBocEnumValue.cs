@@ -17,24 +17,25 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation
 {
   public interface IBocEnumValue : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
-    IEnumerationValueInfo EnumerationValueInfo { get; }
+    IEnumerationValueInfo? EnumerationValueInfo { get; }
     Style CommonStyle { get; }
     Style LabelStyle { get; }
     ListControlStyle ListControlStyle { get; }
     string NullIdentifier { get; }
-    IEnumerationValueInfo[] GetEnabledValues();
-    string GetNullItemText ();
+    IEnumerationValueInfo[] GetEnabledValues ();
+    PlainTextString GetNullItemText ();
     string GetValueName ();
 
     /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
-    IEnumerable<string> GetValidationErrors ();
+    IEnumerable<PlainTextString> GetValidationErrors ();
   }
 }

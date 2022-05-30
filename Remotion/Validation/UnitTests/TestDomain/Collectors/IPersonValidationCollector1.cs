@@ -15,15 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
 
 namespace Remotion.Validation.UnitTests.TestDomain.Collectors
 {
-  public class IPersonValidationCollector1 : ComponentValidationCollector<IPerson>
+  public class IPersonValidationRuleCollector1 : ValidationRuleCollectorBase<IPerson>
   {
-    public IPersonValidationCollector1 ()
+    public IPersonValidationRuleCollector1 ()
     {
-      AddRule (p => p.Birthday).NotEqual (DateTime.Now.AddYears(-500));
+      AddRule(p => p.Birthday).NotEqual(DateTime.Now.AddYears(-500));
     }
   }
 }

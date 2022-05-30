@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.ObjectBinding;
@@ -28,7 +29,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   /// <summary>
   /// Implementation of the <see cref="IBindablePropertyReadAccessStrategy"/> interface for <see cref="DomainObject"/>.
   /// </summary>
-  [ImplementationFor (typeof (IBindablePropertyReadAccessStrategy),
+  [ImplementationFor(typeof(IBindablePropertyReadAccessStrategy),
       Lifetime = LifetimeKind.Singleton,
       RegistrationType = RegistrationType.Multiple,
       Position = Position)]
@@ -36,40 +37,41 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
   {
     public const int Position = 79;
 
-    public bool CanRead (IBusinessObject businessObject, PropertyBase bindableProperty)
+    public bool CanRead (IBusinessObject? businessObject, PropertyBase bindableProperty)
     {
       // businessObject can be null
-      ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
 
       var domainObject = businessObject as DomainObject;
       if (domainObject == null)
         return true;
 
-      switch (domainObject.State)
-      {
-        case StateType.Unchanged:
-        case StateType.Changed:
-        case StateType.New:
-          return true;
-        case StateType.Deleted:
-        case StateType.Invalid:
-          return false;
-        case StateType.NotLoadedYet:
-          return domainObject.TryEnsureDataAvailable();
-        default:
-          throw new NotSupportedException(string.Format ("The StateType '{0}' is not supported.", domainObject.State));
-      }
+      var domainObjectState = domainObject.State;
+      if (domainObjectState.IsUnchanged)
+        return true;
+      else if (domainObjectState.IsChanged)
+        return true;
+      else if (domainObjectState.IsNew)
+        return true;
+      else if (domainObjectState.IsDeleted)
+        return false;
+      else if (domainObjectState.IsInvalid)
+        return false;
+      else if (domainObjectState.IsNotLoadedYet)
+        return domainObject.TryEnsureDataAvailable();
+      else
+        throw new NotSupportedException(string.Format("The {0} is not supported.", domainObjectState));
     }
 
     public bool IsPropertyAccessException (
         IBusinessObject businessObject,
         PropertyBase bindableProperty,
         Exception exception,
-        out BusinessObjectPropertyAccessException propertyAccessException)
+        [MaybeNullWhen(false)] out BusinessObjectPropertyAccessException propertyAccessException)
     {
-      ArgumentUtility.DebugCheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.DebugCheckNotNull ("bindableProperty", bindableProperty);
-      ArgumentUtility.DebugCheckNotNull ("exception", exception);
+      ArgumentUtility.DebugCheckNotNull("businessObject", businessObject);
+      ArgumentUtility.DebugCheckNotNull("bindableProperty", bindableProperty);
+      ArgumentUtility.DebugCheckNotNull("exception", exception);
 
       var isPropertyAccessException = exception is ObjectInvalidException
                                       || exception is ObjectDeletedException
@@ -77,14 +79,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
       if (isPropertyAccessException && businessObject is DomainObject)
       {
-        ArgumentUtility.CheckNotNull ("bindableProperty", bindableProperty);
+        ArgumentUtility.CheckNotNull("bindableProperty", bindableProperty);
 
-        var message = string.Format (
+        var message = string.Format(
             "An {0} occured while getting the value of property '{1}' for business object with ID '{2}'.",
             exception.GetType().Name,
             bindableProperty.Identifier,
-            ((DomainObject) businessObject).ID);
-        propertyAccessException = new BusinessObjectPropertyAccessException (message, exception);
+            ((DomainObject)businessObject).ID);
+        propertyAccessException = new BusinessObjectPropertyAccessException(message, exception);
         return true;
       }
       propertyAccessException = null;

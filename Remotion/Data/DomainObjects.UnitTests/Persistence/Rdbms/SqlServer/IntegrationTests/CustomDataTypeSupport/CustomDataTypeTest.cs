@@ -19,7 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport.TestDomain;
@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     private ServiceLocatorScope _serviceLocatorScope;
 
     public CustomDataTypeTest ()
-        : base (CreateEmptyTestDataFileName)
+        : base(CreateEmptyTestDataFileName)
     {
     }
 
@@ -44,13 +44,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       return new CustomDataTypeStorageObjectFactory();
     }
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IPersistableDataValidator> (() => new SimpleDataTypePropertyMaxLengthValidator());
-      serviceLocator.RegisterSingle<IDataContainerValidator> (() => new SimpleDataTypePropertyMaxLengthValidator());
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle<IPersistableDataValidator>(() => new SimpleDataTypePropertyMaxLengthValidator());
+      serviceLocator.RegisterSingle<IDataContainerValidator>(() => new SimpleDataTypePropertyMaxLengthValidator());
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     public override void TestFixtureTearDown ()
@@ -62,13 +62,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void InsertAndGetObject_WithCompoundDataType ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var obj = ClassWithCustomDataType.NewObject();
-        obj.CompoundDataTypeValue = new CompoundDataType ("StringValue", 50);
+        obj.CompoundDataTypeValue = new CompoundDataType("StringValue", 50);
         ClientTransaction.Current.Commit();
 
         id = obj.ID;
@@ -76,18 +74,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = ClassWithCustomDataType.GetObject (ClientTransaction.Current, id);
-        Assert.That (obj.CompoundDataTypeValue, Is.Not.Null);
-        Assert.That (obj.CompoundDataTypeValue.StringValue, Is.EqualTo ("StringValue"));
-        Assert.That (obj.CompoundDataTypeValue.Int32Value, Is.EqualTo (50));
+        var obj = ClassWithCustomDataType.GetObject(ClientTransaction.Current, id);
+        Assert.That(obj.CompoundDataTypeValue, Is.Not.Null);
+        Assert.That(obj.CompoundDataTypeValue.StringValue, Is.EqualTo("StringValue"));
+        Assert.That(obj.CompoundDataTypeValue.Int32Value, Is.EqualTo(50));
       }
     }
 
     [Test]
     public void InsertAndGetObject_WithCompoundDataType_Null ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -100,21 +96,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = ClassWithCustomDataType.GetObject (ClientTransaction.Current, id);
-        Assert.That (obj.CompoundDataTypeValue, Is.Null);
+        var obj = ClassWithCustomDataType.GetObject(ClientTransaction.Current, id);
+        Assert.That(obj.CompoundDataTypeValue, Is.Null);
       }
     }
 
     [Test]
     public void InsertAndGetObject_WithSimpleDataType ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var obj = ClassWithCustomDataType.NewObject();
-        obj.SimpleDataTypeValue = new SimpleDataType ("StringValue");
+        obj.SimpleDataTypeValue = new SimpleDataType("StringValue");
         ClientTransaction.Current.Commit();
 
         id = obj.ID;
@@ -122,9 +116,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var obj = ClassWithCustomDataType.GetObject (ClientTransaction.Current, id);
-        Assert.That (obj.SimpleDataTypeValue, Is.Not.Null);
-        Assert.That (obj.SimpleDataTypeValue.StringValue, Is.EqualTo ("StringValue"));
+        var obj = ClassWithCustomDataType.GetObject(ClientTransaction.Current, id);
+        Assert.That(obj.SimpleDataTypeValue, Is.Not.Null);
+        Assert.That(obj.SimpleDataTypeValue.StringValue, Is.EqualTo("StringValue"));
       }
     }
 
@@ -134,21 +128,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var obj = ClassWithCustomDataType.NewObject();
-        obj.SimpleDataTypeValue = new SimpleDataType (new string ('x', 200));
-        Assert.That (() => ClientTransaction.Current.Commit(), Throws.TypeOf<PropertyValueTooLongException>());
+        obj.SimpleDataTypeValue = new SimpleDataType(new string('x', 200));
+
+        using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+        {
+          Assert.That(() => ClientTransaction.Current.Commit(), Throws.TypeOf<PropertyValueTooLongException>());
+        }
       }
     }
 
     [Test]
     public void LinqQuery_WithSimpleDataType ()
     {
-      SetDatabaseModifyable();
-
       ObjectID id;
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var obj = ClassWithCustomDataType.NewObject();
-        obj.SimpleDataTypeValue = new SimpleDataType ("StringValue");
+        obj.SimpleDataTypeValue = new SimpleDataType("StringValue");
         ClientTransaction.Current.Commit();
 
         id = obj.ID;
@@ -157,24 +153,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var result = QueryFactory.CreateLinqQuery<ClassWithCustomDataType>()
-            .SingleOrDefault (o => o.SimpleDataTypeValue == new SimpleDataType ("StringValue"));
-        Assert.That (result, Is.Not.Null);
-        Assert.That (result.ID, Is.EqualTo (id));
+            .SingleOrDefault(o => o.SimpleDataTypeValue == new SimpleDataType("StringValue"));
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result.ID, Is.EqualTo(id));
       }
     }
 
     [Test]
     public void CreateSetupScript ()
     {
-      var scriptGenerator = new ScriptGenerator (
-          pd => pd.Factory.CreateSchemaScriptBuilder (pd),
+      var scriptGenerator = new ScriptGenerator(
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
           new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
-      var scripts = scriptGenerator.GetScripts (MappingConfiguration.Current.GetTypeDefinitions()).ToArray();
-      Assert.That (scripts.Length, Is.EqualTo (1));
-      Assert.That (
+      var scripts = scriptGenerator.GetScripts(MappingConfiguration.Current.GetTypeDefinitions()).ToArray();
+      Assert.That(scripts.Length, Is.EqualTo(1));
+      Assert.That(
           scripts[0].SetUpScript,
-          Is.EqualTo (
+          Is.EqualTo(
               @"USE DBPrefix_TestDomain
 -- Create all tables
 CREATE TABLE [dbo].[CustomDataType_ClassWithCustomDataType]

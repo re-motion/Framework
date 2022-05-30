@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Mapping;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -27,7 +28,8 @@ namespace Remotion.Data.DomainObjects
   /// </remarks>
   public class DBStorageGroupAttribute : StorageGroupAttribute
   {
-    public DBStorageGroupAttribute()
+    public DBStorageGroupAttribute ()
+        : base(DefaultStorageClass.Persistent)
     {
     }
   }

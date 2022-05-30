@@ -34,34 +34,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
         Type dotNetType = null,
         TypeConverter dotNetTypeConverter = null)
     {
-      return new StorageTypeInformation (
-          storageType ?? typeof (string),
+      return new StorageTypeInformation(
+          storageType ?? typeof(string),
           storageTypeName ?? "nvarchar(max)",
           storageDbType ?? DbType.String,
           isStorageTypeNullable ?? true,
           storageTypeLength ?? -1,
-          dotNetType ?? typeof (string),
-          dotNetTypeConverter ?? new DefaultConverter (typeof (string)));
+          dotNetType ?? typeof(string),
+          dotNetTypeConverter ?? new DefaultConverter(typeof(string)));
     }
 
     public static StorageTypeInformation CreateUniqueIdentifierStorageTypeInformation (bool isNullable = false)
     {
-      return new StorageTypeInformation (typeof (Guid), "uniqueidentifier", DbType.Guid, isNullable, null, typeof (Guid), new DefaultConverter (typeof (Guid)));
+      return new StorageTypeInformation(typeof(Guid), "uniqueidentifier", DbType.Guid, isNullable, null, typeof(Guid), new DefaultConverter(typeof(Guid)));
     }
 
     public static StorageTypeInformation CreateVarchar100StorageTypeInformation (bool isNullable = false)
     {
-      return new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, isNullable, 100, typeof (string), new DefaultConverter (typeof (string)));
+      return new StorageTypeInformation(typeof(string), "varchar(100)", DbType.String, isNullable, 100, typeof(string), new DefaultConverter(typeof(string)));
     }
 
     public static StorageTypeInformation CreateDateTimeStorageTypeInformation (bool isNullable = false)
     {
-      return new StorageTypeInformation (typeof (DateTime), "datetime", DbType.DateTime, isNullable, null, typeof (DateTime), new DefaultConverter (typeof (DateTime)));
+      return new StorageTypeInformation(typeof(DateTime), "datetime", DbType.DateTime, isNullable, null, typeof(DateTime), new DefaultConverter(typeof(DateTime)));
     }
 
     public static IStorageTypeInformation CreateBitStorageTypeInformation (bool isNullable = false)
     {
-      return new StorageTypeInformation (typeof (bool), "bit", DbType.Boolean, isNullable, null, typeof (bool), new DefaultConverter (typeof (bool)));
+      return new StorageTypeInformation(typeof(bool), "bit", DbType.Boolean, isNullable, null, typeof(bool), new DefaultConverter(typeof(bool)));
     }
   }
 }

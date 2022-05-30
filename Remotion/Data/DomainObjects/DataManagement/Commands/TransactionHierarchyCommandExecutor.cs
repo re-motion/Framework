@@ -34,16 +34,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public TransactionHierarchyCommandExecutor (Func<ClientTransaction, IDataManagementCommand> commandFactory)
     {
-      ArgumentUtility.CheckNotNull ("commandFactory", commandFactory);
+      ArgumentUtility.CheckNotNull("commandFactory", commandFactory);
       _commandFactory = commandFactory;
     }
 
     public bool TryExecuteCommandForTransactionHierarchy (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
-      var combinedCommand = CreateCombinedCommand (clientTransaction);
-      if (!combinedCommand.CanExecute ())
+      var combinedCommand = CreateCombinedCommand(clientTransaction);
+      if (!combinedCommand.CanExecute())
         return false;
 
       combinedCommand.NotifyAndPerform();
@@ -52,18 +52,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void ExecuteCommandForTransactionHierarchy (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
-      var combinedCommand = CreateCombinedCommand (clientTransaction);
+      var combinedCommand = CreateCombinedCommand(clientTransaction);
       combinedCommand.NotifyAndPerform();
     }
 
     private CompositeCommand CreateCombinedCommand (ClientTransaction clientTransaction)
     {
-      var allCommands = from tx in clientTransaction.LeafTransaction.CreateSequence (tx => tx.ParentTransaction)
-                        let command = _commandFactory (tx)
-                        select new UnlockingCommandDecorator (command, tx);
-      return new CompositeCommand (allCommands.Cast<IDataManagementCommand>());
+      var allCommands = from tx in clientTransaction.LeafTransaction.CreateSequence(tx => tx.ParentTransaction)
+                        let command = _commandFactory(tx)
+                        select new UnlockingCommandDecorator(command, tx);
+      return new CompositeCommand(allCommands.Cast<IDataManagementCommand>());
     }
 
     private class UnlockingCommandDecorator : DataManagementCommandDecoratorBase
@@ -86,8 +86,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
       protected override IDataManagementCommand Decorate (IDataManagementCommand decoratedCommand)
       {
-        ArgumentUtility.CheckNotNull ("decoratedCommand", decoratedCommand);
-        return new UnlockingCommandDecorator (decoratedCommand, _transactionToBeUnlocked);
+        ArgumentUtility.CheckNotNull("decoratedCommand", decoratedCommand);
+        return new UnlockingCommandDecorator(decoratedCommand, _transactionToBeUnlocked);
       }
     }
   }

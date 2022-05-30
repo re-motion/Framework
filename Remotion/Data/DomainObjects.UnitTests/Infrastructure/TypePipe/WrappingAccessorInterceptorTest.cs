@@ -42,10 +42,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [SetUp]
     public void SetUp ()
     {
-      _interceptedMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod ((object o) => o.Equals (null));
+      _interceptedMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod((object o) => o.Equals(null));
       _propertyName = "abc";
 
-      _interceptor = new WrappingAccessorInterceptor (_interceptedMethod, _propertyName);
+      _interceptor = new WrappingAccessorInterceptor(_interceptedMethod, _propertyName);
 
       _proxyType = MutableTypeObjectMother.Create();
     }
@@ -53,21 +53,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void Intercept_AddsOverride_AndWrapsBaseCallInTryFinally ()
     {
-      _interceptor.Intercept (_proxyType);
+      _interceptor.Intercept(_proxyType);
 
-      Assert.That (_proxyType.AddedMethods, Has.Count.EqualTo (1));
+      Assert.That(_proxyType.AddedMethods, Has.Count.EqualTo(1));
       var method = _proxyType.AddedMethods.Single();
 
       var expectedBody =
-          Expression.Block (
-              Expression.Call (typeof (CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant (_propertyName)),
-              Expression.TryFinally (
-                  Expression.Call (
-                      new ThisExpression (_proxyType),
-                      NonVirtualCallMethodInfoAdapter.Adapt (_interceptedMethod),
-                      Expression.Parameter (typeof (object), "obj")),
-                  Expression.Call (typeof (CurrentPropertyManager), "PropertyAccessFinished", null)));
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedBody, method.Body);
+          Expression.Block(
+              Expression.Call(typeof(CurrentPropertyManager), "PreparePropertyAccess", null, Expression.Constant(_propertyName)),
+              Expression.TryFinally(
+                  Expression.Call(
+                      new ThisExpression(_proxyType),
+                      NonVirtualCallMethodInfoAdapter.Adapt(_interceptedMethod),
+                      Expression.Parameter(typeof(object), "obj")),
+                  Expression.Call(typeof(CurrentPropertyManager), "PropertyAccessFinished", null)));
+      ExpressionTreeComparer.CheckAreEqualTrees(expectedBody, method.Body);
     }
   }
 }

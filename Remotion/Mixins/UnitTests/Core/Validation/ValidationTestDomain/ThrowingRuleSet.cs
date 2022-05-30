@@ -25,7 +25,7 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.ValidationTestDomain
   {
     public void Install (ValidatingVisitor visitor)
     {
-      visitor.TargetClassRules.Add (new DelegateValidationRule<TargetClassDefinition> (delegate { throw new InvalidOperationException (); }));
+      visitor.TargetClassRules.Add(new DelegateValidationRule<TargetClassDefinition>(delegate { throw new InvalidOperationException(); }));
     }
   }
 }

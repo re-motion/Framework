@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -24,56 +24,54 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
   public class GetPropertyString_WithStringProperty
   {
     private BusinessObjectStringFormatterService _stringFormatterService;
-    private MockRepository _mockRepository;
-    private IBusinessObject _mockBusinessObject;
-    private IBusinessObjectStringProperty _mockProperty;
+    private Mock<IBusinessObject> _mockBusinessObject;
+    private Mock<IBusinessObjectStringProperty> _mockProperty;
 
     [SetUp]
     public void SetUp ()
     {
-      _stringFormatterService = new BusinessObjectStringFormatterService ();
-      _mockRepository = new MockRepository ();
-      _mockBusinessObject = _mockRepository.StrictMock<IBusinessObject> ();
-      _mockProperty = _mockRepository.StrictMock<IBusinessObjectStringProperty> ();
+      _stringFormatterService = new BusinessObjectStringFormatterService();
+      _mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
+      _mockProperty = new Mock<IBusinessObjectStringProperty>(MockBehavior.Strict);
     }
 
     [Test]
     public void Scalar_WithValue ()
     {
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return ("ExpectedStringValue");
-      _mockRepository.ReplayAll();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns("ExpectedStringValue").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.EqualTo ("ExpectedStringValue"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("ExpectedStringValue"));
     }
 
     [Test]
     public void List_WithValue ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (new string[] { "First String", "Second String" });
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(new string[] { "First String", "Second String" }).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First String ... [2]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First String ... [2]"));
     }
 
     [Test]
     public void Scalar_WithNull ()
     {
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (null);
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object)null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.Empty);
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.Empty);
     }
   }
 }

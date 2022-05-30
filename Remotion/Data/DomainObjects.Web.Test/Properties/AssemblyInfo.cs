@@ -33,7 +33,7 @@ using Remotion.ObjectBinding.Security;
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -47,7 +47,6 @@ using Remotion.ObjectBinding.Security;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("")]
 [assembly: EnsureSecuritySupportForObjectBinding]
-

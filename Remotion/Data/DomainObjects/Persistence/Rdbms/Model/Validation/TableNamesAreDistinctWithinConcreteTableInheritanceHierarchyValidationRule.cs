@@ -30,21 +30,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
   {
     public TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule ()
     {
-      
+
     }
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       if (classDefinition.BaseClass == null) //if class definition is inheritance root class
       {
-        var allDistinctTableNames = new HashSet<string> ();
-        foreach (var tableName in FindAllTableDefinitions (classDefinition).Select (td => td.TableName.EntityName))
+        var allDistinctTableNames = new HashSet<string>();
+        foreach (var tableName in FindAllTableDefinitions(classDefinition).Select(td => td.TableName.EntityName))
         {
-          if (allDistinctTableNames.Contains (tableName))
+          if (allDistinctTableNames.Contains(tableName))
           {
-            yield return MappingValidationResult.CreateInvalidResultForType (
+            yield return MappingValidationResult.CreateInvalidResultForType(
                 classDefinition.ClassType,
                 "At least two classes in different inheritance branches derived from abstract class '{0}'"
                 + " specify the same entity name '{1}', which is not allowed.",
@@ -53,23 +53,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
           }
           else
           {
-            yield return MappingValidationResult.CreateValidResult ();
+            yield return MappingValidationResult.CreateValidResult();
           }
 
-          allDistinctTableNames.Add (tableName);
+          allDistinctTableNames.Add(tableName);
         }
       }
     }
 
     private IEnumerable<TableDefinition> FindAllTableDefinitions (ClassDefinition classDefinition)
     {
-      var tableDefinition = classDefinition.StorageEntityDefinition as TableDefinition;
+      var tableDefinition = classDefinition.HasStorageEntityDefinitionBeenSet ? classDefinition.StorageEntityDefinition as TableDefinition : null;
       if (tableDefinition != null)
         yield return tableDefinition;
 
       foreach (ClassDefinition derivedClass in classDefinition.DerivedClasses)
       {
-        var tableDefinitionsInDerivedClass = FindAllTableDefinitions (derivedClass);
+        var tableDefinitionsInDerivedClass = FindAllTableDefinitions(derivedClass);
         foreach (var tableDefinitionInDerivedClass in tableDefinitionsInDerivedClass)
           yield return tableDefinitionInDerivedClass;
       }

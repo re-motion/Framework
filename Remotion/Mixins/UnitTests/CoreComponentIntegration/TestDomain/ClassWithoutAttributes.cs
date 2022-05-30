@@ -20,6 +20,6 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
 {
   public class ClassWithoutAttributes
   {
-    
+
   }
 }

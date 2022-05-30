@@ -21,7 +21,7 @@ namespace Remotion.Extensions.UnitTests.Logging.LogExtensionsTests
 {
   public enum LogMessages
   {
-    [MultiLingualName ("The message with {0} and {1}.", "")]
+    [MultiLingualName("The message with {0} and {1}.", "")]
     TheMessage = 1
   }
 }

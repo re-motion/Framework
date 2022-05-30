@@ -35,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // construction and disposing
 
     public SearchFunction ()
-      : base (WxeTransactionMode.CreateRootWithAutoCommit)
+      : base(WxeTransactionMode.CreateRootWithAutoCommit)
     {
       ReturnUrl = "default.aspx";
     }
@@ -44,27 +44,27 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public ClassWithAllDataTypesSearch SearchObject
     {
-      get { return (ClassWithAllDataTypesSearch) Variables["SearchObject"]; }
+      get { return (ClassWithAllDataTypesSearch)Variables["SearchObject"]; }
       set { Variables["SearchObject"] = value; }
     }
 
     public IList Result
     {
-      get { return (IList) Variables["Result"]; }
+      get { return (IList)Variables["Result"]; }
       set { Variables["Result"] = value; }
     }
 
     public void Requery ()
     {
-      Result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection (SearchObject.CreateQuery()).ToCustomCollection();
+      Result = ClientTransactionScope.CurrentTransaction.QueryManager.GetCollection(SearchObject.CreateQuery()).ToCustomCollection();
     }
 
     private void Step1 ()
     {
-      SearchObject = ObjectFactory.Create<ClassWithAllDataTypesSearch> (ParamList.Empty);
+      SearchObject = ObjectFactory.Create<ClassWithAllDataTypesSearch>(ParamList.Empty);
       Requery();
     }
 
-    private WxePageStep Step2 = new WxePageStep ("SearchObject.aspx");
+    private WxePageStep Step2 = new WxePageStep("SearchObject.aspx");
   }
 }

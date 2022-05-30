@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
@@ -24,7 +25,6 @@ using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -33,53 +33,55 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
   /// </summary>
   public class SearchServiceTestHelper
   {
-    private IPersistenceStrategy _persistenceStrategyStub = MockRepository.GenerateStub<IPersistenceStrategy>();
+    private Mock<IPersistenceStrategy> _persistenceStrategyStub = new Mock<IPersistenceStrategy>();
 
     public T CreateStubbableTransaction<T> () where T : ClientTransaction
     {
-      _persistenceStrategyStub = MockRepository.GenerateStub<IFetchEnabledPersistenceStrategy>();
+      _persistenceStrategyStub = new Mock<IFetchEnabledPersistenceStrategy>().As<IPersistenceStrategy>();
       _persistenceStrategyStub
-          .Stub (stub => stub.CreateNewObjectID (Arg<ClassDefinition>.Is.Anything))
-          .Return (null)
-          .WhenCalled (mi => { mi.ReturnValue = new ObjectID((ClassDefinition) mi.Arguments[0], Guid.NewGuid ()); });
+          .Setup(stub => stub.CreateNewObjectID(It.IsAny<ClassDefinition>()))
+          .Returns((ClassDefinition classDefinition) => new ObjectID(classDefinition, Guid.NewGuid()));
 
-      IClientTransactionComponentFactory componentFactory = new ComponentFactoryWithSpecificPersistenceStrategy (_persistenceStrategyStub);
-      return (T) PrivateInvoke.CreateInstanceNonPublicCtor (typeof (T), componentFactory);
+      IClientTransactionComponentFactory componentFactory = new ComponentFactoryWithSpecificPersistenceStrategy(_persistenceStrategyStub.Object);
+      return (T)PrivateInvoke.CreateInstanceNonPublicCtor(typeof(T), componentFactory);
     }
 
     public void StubQueryResult (string queryID, ILoadedObjectData[] fakeResult)
     {
       _persistenceStrategyStub
-          .Stub (stub => stub.ExecuteCollectionQuery (Arg<IQuery>.Matches (q => q.ID == queryID), Arg<ILoadedObjectDataProvider>.Is.Anything))
-          .Return (fakeResult);
+          .Setup(
+              stub => stub.ExecuteCollectionQuery(
+                  It.Is<IQuery>(q => q.ID == queryID),
+                  It.IsAny<ILoadedObjectDataProvider>()))
+          .Returns(fakeResult);
     }
 
     public void StubSearchAllObjectsQueryResult (Type domainObjectType, params ILoadedObjectData[] fakeResult)
     {
-      var query = (IQuery) PrivateInvoke.InvokeNonPublicMethod (new BindableDomainObjectSearchAllService (), "GetQuery", domainObjectType);
+      var query = (IQuery)PrivateInvoke.InvokeNonPublicMethod(new BindableDomainObjectSearchAllService(), "GetQuery", domainObjectType);
 
-      StubQueryResult (query.ID, fakeResult);
+      StubQueryResult(query.ID, fakeResult);
     }
 
     public T CreateTransactionWithStubbedQuery<T> (string queryID) where T : ClientTransaction
     {
       var transaction = CreateStubbableTransaction<T>();
 
-      var fakeResultDataContainer = CreateFakeResultData (transaction);
-      StubQueryResult (queryID, new[] { fakeResultDataContainer });
-      
+      var fakeResultDataContainer = CreateFakeResultData(transaction);
+      StubQueryResult(queryID, new[] { fakeResultDataContainer });
+
       return transaction;
     }
 
     public ILoadedObjectData CreateFakeResultData (ClientTransaction clientTransaction)
     {
-      var existingDataContainer = DataContainer.CreateForExisting (
-          new ObjectID(typeof (OppositeBidirectionalBindableDomainObject), Guid.NewGuid ()),
+      var existingDataContainer = DataContainer.CreateForExisting(
+          new ObjectID(typeof(OppositeBidirectionalBindableDomainObject), Guid.NewGuid()),
           null,
           pd => pd.DefaultValue);
-      existingDataContainer.SetDomainObject (LifetimeService.GetObjectReference (clientTransaction, existingDataContainer.ID));
-      ClientTransactionTestHelper.GetDataManager (clientTransaction).RegisterDataContainer (existingDataContainer);
-      return new AlreadyExistingLoadedObjectData (existingDataContainer);
+      existingDataContainer.SetDomainObject(LifetimeService.GetObjectReference(clientTransaction, existingDataContainer.ID));
+      ClientTransactionTestHelper.GetDataManager(clientTransaction).RegisterDataContainer(existingDataContainer);
+      return new AlreadyExistingLoadedObjectData(existingDataContainer);
     }
   }
 }

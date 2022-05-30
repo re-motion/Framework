@@ -17,127 +17,129 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.UI.Design;
 
 namespace Remotion.Web.UI.Controls
 {
   /// <include file='..\..\doc\include\UI\Controls\DropDownMenu.xml' path='DropDownMenu/Class/*' />
-  [Designer (typeof (WebControlDesigner))]
   public class DropDownMenu : MenuBase, IDropDownMenu
   {
-    /// <summary> Only used by control developers. </summary>
-    public static readonly string OnHeadTitleClickScript = "DropDownMenu_OnHeadControlClick();";
+    #region Obsolete
 
-    private static readonly Action<HtmlTextWriter> s_emptyTitleRenderer = writer => { };
+    [Obsolete("This feature has removed. (Version 3.0.0)", true)]
+    public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
+    {
+      throw new NotSupportedException("This feature has removed. (Version 3.0.0)");
+    }
 
+    #endregion
+
+    private ButtonType _buttonType;
     private bool _showTitle = true;
-    private string _titleText = "";
-    private IconInfo _titleIcon;
+    private WebString _titleText;
+    private IconInfo? _titleIcon;
     private bool _enableGrouping = true;
     private bool _isBrowserCapableOfScripting;
 
-    private Action<HtmlTextWriter> _renderHeadTitleMethod;
     private string _getSelectionCount = "";
+    private string _loadMenuItemStatus = "";
 
-    public DropDownMenu (IControl ownerControl, Type[] supportedMenuItemTypes)
+    public DropDownMenu (IControl? ownerControl, Type[] supportedMenuItemTypes)
       :base(ownerControl, supportedMenuItemTypes)
     {
       Mode = MenuMode.DropDownMenu;
     }
 
-    public DropDownMenu (IControl ownerControl)
-        : this (ownerControl, new[] { typeof (WebMenuItem) })
+    public DropDownMenu (IControl? ownerControl)
+        : this(ownerControl, new[] { typeof(WebMenuItem) })
     {
     }
 
     public DropDownMenu ()
-        : this (null, new[] { typeof (WebMenuItem) })
+        : this(null, new[] { typeof(WebMenuItem) })
     {
     }
 
     protected override void OnInit (EventArgs e)
     {
-      if (!IsDesignMode)
-      {
-        var clientScriptBahavior = SafeServiceLocator.Current.GetInstance<IClientScriptBehavior> ();
-        _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting(Page.Context, this);
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
-      }
+      var clientScriptBahavior = SafeServiceLocator.Current.GetInstance<IClientScriptBehavior>();
+      _isBrowserCapableOfScripting = clientScriptBahavior.IsBrowserCapableOfScripting(Page!.Context, this);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       for (int i = 0; i < MenuItems.Count; i++)
       {
         WebMenuItem menuItem = MenuItems[i];
         if (menuItem.Command != null)
         {
-          menuItem.Command.RegisterForSynchronousPostBackOnDemand (
-              this, i.ToString(), string.Format ("DropDownMenu '{0}', MenuItem '{1}'", ID, menuItem.ItemID));
+          menuItem.Command.RegisterForSynchronousPostBackOnDemand(
+              this, i.ToString(), string.Format("DropDownMenu '{0}', MenuItem '{1}'", ID, menuItem.ItemID));
         }
       }
     }
 
     public void RenderAsContextMenu (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      if (WcagHelper.Instance.IsWcagDebuggingEnabled () && WcagHelper.Instance.IsWaiConformanceLevelARequired ())
-        WcagHelper.Instance.HandleError (1, this);
+      if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+        WcagHelper.Instance.HandleError(1, this);
 
-      var renderer = CreateRenderer ();
-      renderer.RenderAsContextMenu (CreateRenderingContext (writer));
+      var renderer = CreateRenderer();
+      renderer.RenderAsContextMenu(CreateRenderingContext(writer));
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual IDropDownMenuRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IDropDownMenuRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IDropDownMenuRenderer>();
     }
 
     protected virtual DropDownMenuRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new DropDownMenuRenderingContext (Page.Context, writer, this);
+      return new DropDownMenuRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: Not null assertion
     }
 
     public string GetBindOpenEventScript (string elementReference, string menuIDReference, bool moveToMousePosition)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("elementReference", elementReference);
-      ArgumentUtility.CheckNotNullOrEmpty ("menuIDReference", menuIDReference);
+      ArgumentUtility.CheckNotNullOrEmpty("elementReference", elementReference);
+      ArgumentUtility.CheckNotNullOrEmpty("menuIDReference", menuIDReference);
 
-      return string.Format (
-          "DropDownMenu_BindOpenEvent({0}, {1}, '{2}', {3}, {4});",
+      return string.Format(
+          "DropDownMenu.BindOpenEvent({0}, {1}, '{2}', {3}, {4});",
           elementReference,
           menuIDReference,
           GetEventType(),
-          string.IsNullOrEmpty (GetSelectionCount) ? "null" : GetSelectionCount,
+          string.IsNullOrEmpty(GetSelectionCount) ? "null" : GetSelectionCount,
           moveToMousePosition ? "true" : "false"
           );
     }
@@ -155,38 +157,40 @@ namespace Remotion.Web.UI.Controls
       }
     }
 
-    /// <summary> Only used by control developers. </summary>
-    /// <remarks>Note that setting the <see cref="ShowTitle"/> flag will override the <paramref name="renderHeadTitleMethod"/>.</remarks>
-    public void SetRenderHeadTitleMethodDelegate (Action<HtmlTextWriter> renderHeadTitleMethod)
+    IResourceManager IDropDownMenu.GetResourceManager ()
     {
-      _renderHeadTitleMethod = renderHeadTitleMethod;
+      return GetResourceManager();
     }
 
-    [Description ("Set false to remove the title from the DropDownMenu's button when it is rendered.")]
-    [DefaultValue (true)]
+    protected virtual IResourceManager GetResourceManager ()
+    {
+      return NullResourceManager.Instance;
+    }
+
+    /// <summary>
+    /// Gets or sets the button type that determines how the <see cref="DropDownMenu"/>'s button is displayed on the page.
+    /// </summary>
+    [Description("Determines how the button is displayed on the page.")]
+    [Category("Appearance")]
+    [DefaultValue(ButtonType.Standard)]
+    public ButtonType ButtonType
+    {
+      get { return _buttonType; }
+      set { _buttonType = value; }
+    }
+
+    [Description("Set false to remove the title from the DropDownMenu's button when it is rendered.")]
+    [DefaultValue(true)]
     public bool ShowTitle
     {
       get { return _showTitle; }
       set { _showTitle = value; }
     }
 
-    /// <remarks>
-    ///   The value will not be HTML encoded.
-    /// </remarks>
-    public string TitleText
+    public WebString TitleText
     {
       get { return _titleText; }
       set { _titleText = value; }
-    }
-
-    Action<HtmlTextWriter> IDropDownMenu.RenderHeadTitleMethod
-    {
-      get
-      {
-        if (!_showTitle)
-          return s_emptyTitleRenderer;
-        return _renderHeadTitleMethod;
-      }
     }
 
     string IDropDownMenu.MenuHeadClientID
@@ -194,7 +198,7 @@ namespace Remotion.Web.UI.Controls
       get { return ClientID + "_MenuDiv"; }
     }
 
-    public IconInfo TitleIcon
+    public IconInfo? TitleIcon
     {
       get { return _titleIcon; }
       set { _titleIcon = value; }
@@ -202,10 +206,10 @@ namespace Remotion.Web.UI.Controls
 
     public bool IsBrowserCapableOfScripting
     {
-      get { return IsDesignMode || _isBrowserCapableOfScripting; }
+      get { return _isBrowserCapableOfScripting; }
     }
 
-    [DefaultValue (true)]
+    [DefaultValue(true)]
     public bool EnableGrouping
     {
       get { return _enableGrouping; }
@@ -214,11 +218,23 @@ namespace Remotion.Web.UI.Controls
 
     public MenuMode Mode { get; set; }
 
-    [DefaultValue ("")]
+    [DefaultValue("")]
     public string GetSelectionCount
     {
       get { return _getSelectionCount; }
-      set { _getSelectionCount = value; }
+      set { _getSelectionCount = StringUtility.NullToEmpty(value); }
+    }
+
+    public string LoadMenuItemStatus
+    {
+      get { return _loadMenuItemStatus; }
+    }
+
+    public void SetLoadMenuItemStatus (string value)
+    {
+      ArgumentUtility.CheckNotEmpty("value", value);
+
+      _loadMenuItemStatus = value;
     }
 
     string IControlWithDiagnosticMetadata.ControlType

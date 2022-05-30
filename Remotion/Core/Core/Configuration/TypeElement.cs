@@ -24,14 +24,14 @@ namespace Remotion.Configuration
       where TBase : class
   {
     //TODO: test
-    public static ConfigurationProperty CreateTypeProperty (Type defaultValue)
+    public static ConfigurationProperty CreateTypeProperty (Type? defaultValue)
     {
-      return new ConfigurationProperty (
+      return new ConfigurationProperty(
           "type",
-          typeof (Type),
+          typeof(Type),
           defaultValue,
-          new TypeNameConverter (),
-          new SubclassTypeValidator (typeof (TBase)),
+          new TypeNameConverter(),
+          new SubclassTypeValidator(typeof(TBase)),
           ConfigurationPropertyOptions.IsRequired);
     }
 
@@ -39,16 +39,16 @@ namespace Remotion.Configuration
     private readonly ConfigurationProperty _typeProperty;
 
     public TypeElement ()
-      : this (null)
+      : this(null)
     {
     }
 
-    protected TypeElement (Type defaultValue)
+    protected TypeElement (Type? defaultValue)
     {
-      _typeProperty = CreateTypeProperty (defaultValue);
+      _typeProperty = CreateTypeProperty(defaultValue);
 
-      _properties = new ConfigurationPropertyCollection ();
-      _properties.Add (_typeProperty);
+      _properties = new ConfigurationPropertyCollection();
+      _properties.Add(_typeProperty);
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -56,18 +56,18 @@ namespace Remotion.Configuration
       get { return _properties; }
     }
 
-    public Type Type
+    public Type? Type
     {
-      get { return (Type) base[_typeProperty]; }
+      get { return (Type?)base[_typeProperty]; }
       set { base[_typeProperty] = value; }
     }
 
-    public TBase CreateInstance ()
+    public TBase? CreateInstance ()
     {
       if (Type == null)
         return null;
-        
-      return (TBase) Activator.CreateInstance (Type);
+
+      return (TBase?)Activator.CreateInstance(Type);
     }
   }
 
@@ -76,7 +76,7 @@ namespace Remotion.Configuration
     where TDefault : TBase
   {
     public TypeElement ()
-      : base (typeof (TDefault))
+      : base(typeof(TDefault))
     {
     }
   }

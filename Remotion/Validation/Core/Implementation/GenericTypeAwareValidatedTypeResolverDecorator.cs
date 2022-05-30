@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -23,16 +25,17 @@ using Remotion.Utilities;
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IComponentValidationCollector{TValidatedType}"/>.
+  /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via <see cref="IValidationRuleCollector{TValidatedType}"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IValidatedTypeResolver), Position = 0, RegistrationType = RegistrationType.Decorator)]
   public class GenericTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribeTo, Type? ItemType)> s_genericValidationRuleCollectorTypeCache = new();
     private readonly IValidatedTypeResolver _validatedTypeResolver;
 
     public GenericTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
     }
@@ -42,13 +45,27 @@ namespace Remotion.Validation.Implementation
       get { return _validatedTypeResolver; }
     }
 
-    public Type GetValidatedType (Type collectorType)
+    public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      if (TypeExtensions.CanAscribeTo (collectorType, typeof(IComponentValidationCollector<>)))
-        return TypeExtensions.GetAscribedGenericArguments (collectorType, typeof(IComponentValidationCollector<>)).Single();
-      return _validatedTypeResolver.GetValidatedType (collectorType);
+      var itemType = s_genericValidationRuleCollectorTypeCache.GetOrAdd(
+              collectorType,
+              static t =>
+              {
+                var canAscribeTo = typeof(IValidationRuleCollector).IsAssignableFrom(t) && t.CanAscribeTo(typeof(IValidationRuleCollector<>));
+                return ValueTuple.Create(
+                    canAscribeTo,
+                    canAscribeTo
+                        ? t.GetAscribedGenericArguments(typeof(IValidationRuleCollector<>))[0]
+                        : null);
+              })
+          .ItemType;
+
+      if (itemType != null)
+        return itemType;
+
+      return _validatedTypeResolver.GetValidatedType(collectorType);
     }
   }
 }

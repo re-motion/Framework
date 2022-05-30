@@ -29,14 +29,14 @@ using Remotion.SecurityManager.Domain.AccessControl;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Position")]
-  [PermanentGuid ("5BBE6C4D-DC88-4a27-8BFF-0AC62EE34333")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Position")]
+  [PermanentGuid("5BBE6C4D-DC88-4a27-8BFF-0AC62EE34333")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
   public abstract class Position : OrganizationalStructureObject, ISupportsGetObject
   {
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     public enum Methods
     {
@@ -46,7 +46,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     internal static Position NewObject ()
     {
-      return NewObject<Position> ();
+      return NewObject<Position>();
     }
 
     public static IQueryable<Position> FindAll ()
@@ -56,11 +56,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
              select p;
     }
 
-    [DemandPermission (SecurityManagerAccessTypes.AssignRole)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(SecurityManagerAccessTypes.AssignRole)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Dummy_AssignRole ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     //[DemandMethodPermission (GeneralAccessTypes.Create)]
@@ -69,11 +69,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     //  return SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition ();
     //}
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     protected Position ()
@@ -88,14 +88,14 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       }
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string UniqueIdentifier { get; set; }
 
-    [ObjectBinding (Visible = false)]
-    [PermanentGuid ("5C31F600-88F3-4ff7-988C-0E45A857AB4B")]
+    [ObjectBinding(Visible = false)]
+    [PermanentGuid("5C31F600-88F3-4ff7-988C-0E45A857AB4B")]
     public abstract Delegation Delegation { get; set; }
 
     [StorageClassNone]
@@ -105,7 +105,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       set { Delegation = value ? Delegation.Enabled : Delegation.Disabled; }
     }
 
-    [DBBidirectionalRelation ("Position")]
+    [DBBidirectionalRelation("Position")]
     public abstract ObjectList<GroupTypePosition> GroupTypes { get; }
 
     public override string DisplayName
@@ -115,28 +115,28 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
       using (DefaultTransactionContext.ClientTransaction.EnterNonDiscardingScope())
       {
-        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry> ().Where (ace => ace.SpecificPosition == this);
-        var roles = QueryFactory.CreateLinqQuery<Role>().Where (r => r.Position == this);
+        var aces = QueryFactory.CreateLinqQuery<AccessControlEntry>().Where(ace => ace.SpecificPosition == this);
+        var roles = QueryFactory.CreateLinqQuery<Role>().Where(r => r.Position == this);
 
-        _deleteHandler = new DomainObjectDeleteHandler (aces, roles, GroupTypes);
+        _deleteHandler = new DomainObjectDeleteHandler(aces, roles, GroupTypes);
       }
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     protected override IDictionary<string, Enum> GetStates ()
     {
-      IDictionary<string, Enum> states = base.GetStates ();
-      states.Add ("Delegation", Delegation);
+      IDictionary<string, Enum> states = base.GetStates();
+      states.Add("Delegation", Delegation);
 
       return states;
     }

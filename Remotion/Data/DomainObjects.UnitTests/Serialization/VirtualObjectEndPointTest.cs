@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoi
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -36,62 +37,65 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
     {
       base.SetUp();
 
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Employee3, ReflectionMappingHelper.GetPropertyName (typeof (Employee), "Computer"));
-      _endPoint = (VirtualObjectEndPoint) 
-          ((StateUpdateRaisingVirtualObjectEndPointDecorator) TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad (endPointID))
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Employee3, ReflectionMappingHelper.GetPropertyName(typeof(Employee), "Computer"));
+      _endPoint = (VirtualObjectEndPoint)((StateUpdateRaisingVirtualObjectEndPointDecorator)TestableClientTransaction.DataManager.GetRelationEndPointWithLazyLoad(endPointID))
           .InnerEndPoint;
+
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage =
-      "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualObjectEndPoint' in Assembly "
-        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     public void VirtualObjectEndPoint_IsNotSerializable ()
     {
-      Serializer.SerializeAndDeserialize (_endPoint);
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(_endPoint),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.Matches(
+                  "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualObjectEndPoint' in Assembly "
+                  + ".* is not marked as serializable."));
     }
 
     [Test]
     public void VirtualObjectEndPoint_IsFlattenedSerializable ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint, Is.Not.Null);
-      Assert.That (deserializedEndPoint, Is.Not.SameAs (_endPoint));
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint, Is.Not.Null);
+      Assert.That(deserializedEndPoint, Is.Not.SameAs(_endPoint));
     }
 
     [Test]
     public void UntouchedContent ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
-      Assert.That (deserializedEndPoint.HasBeenTouched, Is.False);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
+      Assert.That(deserializedEndPoint.HasBeenTouched, Is.False);
     }
 
     [Test]
     public void TouchedChangedContent ()
     {
-      _endPoint.CreateSetCommand (DomainObjectIDs.Computer2.GetObject<Computer> ()).Perform ();
+      _endPoint.CreateSetCommand(DomainObjectIDs.Computer2.GetObject<Computer>()).Perform();
       _endPoint.Touch();
 
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
 
-      Assert.That (deserializedEndPoint.Definition, Is.SameAs (_endPoint.Definition));
-      Assert.That (deserializedEndPoint.HasBeenTouched, Is.True);
-      Assert.That (_endPoint.OppositeObjectID, Is.EqualTo (DomainObjectIDs.Computer2));
-      Assert.That (_endPoint.OriginalOppositeObjectID, Is.EqualTo (DomainObjectIDs.Computer1));
+      Assert.That(deserializedEndPoint.Definition, Is.SameAs(_endPoint.Definition));
+      Assert.That(deserializedEndPoint.HasBeenTouched, Is.True);
+      Assert.That(_endPoint.OppositeObjectID, Is.EqualTo(DomainObjectIDs.Computer2));
+      Assert.That(_endPoint.OriginalOppositeObjectID, Is.EqualTo(DomainObjectIDs.Computer1));
     }
 
     [Test]
     public void Internals ()
     {
-      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize (_endPoint);
+      var deserializedEndPoint = FlattenedSerializer.SerializeAndDeserialize(_endPoint);
 
-      Assert.That (deserializedEndPoint.LazyLoader, Is.Not.Null);
-      Assert.That (deserializedEndPoint.EndPointProvider, Is.Not.Null);
-      Assert.That (deserializedEndPoint.TransactionEventSink, Is.Not.Null);
-      Assert.That (deserializedEndPoint.DataManagerFactory, Is.Not.Null);
+      Assert.That(deserializedEndPoint.LazyLoader, Is.Not.Null);
+      Assert.That(deserializedEndPoint.EndPointProvider, Is.Not.Null);
+      Assert.That(deserializedEndPoint.TransactionEventSink, Is.Not.Null);
+      Assert.That(deserializedEndPoint.DataManagerFactory, Is.Not.Null);
 
       var loadState = VirtualObjectEndPointTestHelper.GetLoadState(deserializedEndPoint);
-      Assert.That (loadState, Is.Not.Null);
+      Assert.That(loadState, Is.Not.Null);
     }
   }
 }

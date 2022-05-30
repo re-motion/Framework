@@ -17,9 +17,11 @@
 using System;
 using System.Reflection;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -34,6 +36,8 @@ namespace OBWTest.UI
   /// </summary>
   public class NavigationTabs : UserControl
   {
+    private const string c_mainContentScrollableKey = "MainContentScrollableKey";
+
     public enum WaiConformanceLevel
     {
       Undefined = 0,
@@ -44,50 +48,64 @@ namespace OBWTest.UI
 
     protected BocEnumValue WaiConformanceLevelField;
     protected TabbedMenu TabbedMenu;
-    
+    protected CheckBox MainContentScrollableCheckBox;
+
     public WaiConformanceLevel ConformanceLevel
     {
-      get { return (WaiConformanceLevel) WebConfiguration.Current.Wcag.ConformanceLevel; }
-      set { WebConfiguration.Current.Wcag.ConformanceLevel = (Remotion.Web.Configuration.WaiConformanceLevel) value; }
+      get { return (WaiConformanceLevel)WebConfiguration.Current.Wcag.ConformanceLevel; }
+      set { WebConfiguration.Current.Wcag.ConformanceLevel = (Remotion.Web.Configuration.WaiConformanceLevel)value; }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       Type itemType = GetType();
-      PropertyInfo propertyInfo = itemType.GetProperty ("ConformanceLevel");
-      EnumerationProperty property = new EnumerationProperty (
-          new PropertyBase.Parameters (
-              (BindableObjectProvider) BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>(),
-              PropertyInfoAdapter.Create (propertyInfo),
+      PropertyInfo propertyInfo = itemType.GetProperty("ConformanceLevel");
+      EnumerationProperty property = new EnumerationProperty(
+          new PropertyBase.Parameters(
+              (BindableObjectProvider)BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>(),
+              PropertyInfoAdapter.Create(propertyInfo),
               propertyInfo.PropertyType,
-              new Lazy<Type> (() => propertyInfo.PropertyType),
+              new Lazy<Type>(() => propertyInfo.PropertyType),
               null,
+              true,
               false,
               false,
               new BindableObjectDefaultValueStrategy(),
               SafeServiceLocator.Current.GetInstance<IBindablePropertyReadAccessStrategy>(),
               SafeServiceLocator.Current.GetInstance<IBindablePropertyWriteAccessStrategy>(),
-              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>()));
+              SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
+              SafeServiceLocator.Current.GetInstance<IBusinessObjectPropertyConstraintProvider>()));
 
       WaiConformanceLevelField.Property = property;
-      WaiConformanceLevelField.LoadUnboundValue (ConformanceLevel, IsPostBack);
+      WaiConformanceLevelField.LoadUnboundValue(ConformanceLevel, IsPostBack);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
-      string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme> ().Name;
-      TabbedMenu.StatusText = mode + " " + theme;
+      string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
+      TabbedMenu.StatusText = WebString.CreateFromText(mode + " " + theme);
+
+      var mainContentScrollable = (bool?)Session[c_mainContentScrollableKey] ?? false;
+      MainContentScrollableCheckBox.Checked = mainContentScrollable;
+      if (mainContentScrollable)
+        (Page.Master as StandardMode)?.SetPageContentScrollable();
     }
 
     private void WaiConformanceLevelField_SelectionChanged (object sender, EventArgs e)
     {
-      ConformanceLevel = (WaiConformanceLevel) WaiConformanceLevelField.Value;
+      ConformanceLevel = (WaiConformanceLevel)WaiConformanceLevelField.Value;
       WaiConformanceLevelField.IsDirty = false;
+    }
+
+    protected void MainContentScrollableCheckBox_OnCheckedChanged (object sender, EventArgs e)
+    {
+      var mainContentScrollable = MainContentScrollableCheckBox.Checked;
+      Session[c_mainContentScrollableKey] = mainContentScrollable;
     }
 
     #region Web Form Designer generated code
@@ -98,7 +116,7 @@ namespace OBWTest.UI
       // CODEGEN: This call is required by the ASP.NET Web Form Designer.
       //
       InitializeComponent();
-      base.OnInit (e);
+      base.OnInit(e);
     }
 
     /// <summary>
@@ -107,7 +125,7 @@ namespace OBWTest.UI
     /// </summary>
     private void InitializeComponent ()
     {
-      this.WaiConformanceLevelField.SelectionChanged += new System.EventHandler (this.WaiConformanceLevelField_SelectionChanged);
+      this.WaiConformanceLevelField.SelectionChanged += new System.EventHandler(this.WaiConformanceLevelField_SelectionChanged);
     }
 
     #endregion

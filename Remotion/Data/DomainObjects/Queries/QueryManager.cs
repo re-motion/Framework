@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.Queries
         IObjectLoader objectLoader,
         IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("persistenceStrategy", persistenceStrategy);
-      ArgumentUtility.CheckNotNull ("objectLoader", objectLoader);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
-      
+      ArgumentUtility.CheckNotNull("persistenceStrategy", persistenceStrategy);
+      ArgumentUtility.CheckNotNull("objectLoader", objectLoader);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+
       _persistenceStrategy = persistenceStrategy;
       _objectLoader = objectLoader;
       _transactionEventSink = transactionEventSink;
@@ -89,14 +89,14 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
     /// </exception>
-    public object GetScalar (IQuery query)
+    public object? GetScalar (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
       if (query.QueryType != QueryType.Scalar)
-        throw new ArgumentException ("A collection or custom query cannot be used with GetScalar.", "query");
+        throw new ArgumentException("A collection or custom query cannot be used with GetScalar.", "query");
 
-      return _persistenceStrategy.ExecuteScalarQuery (query);
+      return _persistenceStrategy.ExecuteScalarQuery(query);
     }
 
     /// <summary>
@@ -117,9 +117,9 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public QueryResult<DomainObject> GetCollection (IQuery query)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
-      return GetCollection<DomainObject> (query);
+      return GetCollection<DomainObject>(query);
     }
 
     /// <summary>
@@ -145,16 +145,16 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public QueryResult<T> GetCollection<T> (IQuery query) where T: DomainObject
     {
-      ArgumentUtility.CheckNotNull ("query", query);
+      ArgumentUtility.CheckNotNull("query", query);
 
       if (query.QueryType != QueryType.Collection)
-        throw new ArgumentException ("A scalar or custom query cannot be used with GetCollection.", "query");
+        throw new ArgumentException("A scalar or custom query cannot be used with GetCollection.", "query");
 
       var resultArray = _objectLoader
-          .GetOrLoadCollectionQueryResult (query)
-          .Select (data => ConvertLoadedDomainObject<T> (data.GetDomainObjectReference())).ToArray();
-      var queryResult = new QueryResult<T> (query, resultArray);
-      return _transactionEventSink.RaiseFilterQueryResultEvent (queryResult);
+          .GetOrLoadCollectionQueryResult(query)
+          .Select(data => ConvertLoadedDomainObject<T>(data.GetDomainObjectReference())).ToArray();
+      var queryResult = new QueryResult<T>(query, resultArray);
+      return _transactionEventSink.RaiseFilterQueryResultEvent(queryResult);
     }
 
     /// <summary>
@@ -175,30 +175,30 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </remarks>
     public IEnumerable<T> GetCustom<T> (IQuery query, Func<IQueryResultRow, T> rowReader)
     {
-      ArgumentUtility.CheckNotNull ("query", query);
-      ArgumentUtility.CheckNotNull ("rowReader", rowReader);
+      ArgumentUtility.CheckNotNull("query", query);
+      ArgumentUtility.CheckNotNull("rowReader", rowReader);
 
       if (query.QueryType != QueryType.Custom)
-        throw new ArgumentException ("A collection or scalar query cannot be used with GetCustom.", "query");
+        throw new ArgumentException("A collection or scalar query cannot be used with GetCustom.", "query");
 
       if (query.EagerFetchQueries.Count > 0)
-        throw new ArgumentException ("A custom query cannot have eager fetch queries defined.", "query");
+        throw new ArgumentException("A custom query cannot have eager fetch queries defined.", "query");
 
-      var queryResult = _persistenceStrategy.ExecuteCustomQuery (query).Select(rowReader);
-      return _transactionEventSink.RaiseFilterCustomQueryResultEvent (query, queryResult);
+      var queryResult = _persistenceStrategy.ExecuteCustomQuery(query).Select(rowReader);
+      return _transactionEventSink.RaiseFilterCustomQueryResultEvent(query, queryResult);
     }
 
-    private T ConvertLoadedDomainObject<T> (DomainObject domainObject) where T : DomainObject
+    private T? ConvertLoadedDomainObject<T> (DomainObject? domainObject) where T : DomainObject
     {
       if (domainObject == null || domainObject is T)
-        return (T) domainObject;
+        return (T?)domainObject;
       else
       {
-        var message = string.Format (
+        var message = string.Format(
             "The query returned an object of type '{0}', but a query result of type '{1}' was expected.",
-            domainObject.GetPublicDomainObjectType (),
-            typeof (T));
-        throw new UnexpectedQueryResultException (message);
+            domainObject.GetPublicDomainObjectType(),
+            typeof(T));
+        throw new UnexpectedQueryResultException(message);
       }
     }
 

@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.NullSecurityClientTests
 {
@@ -29,114 +29,96 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     private NullSecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
     private MethodInfo _methodInfo;
-    private IMethodInformation _methodInformation;
+    private Mock<IMethodInformation> _methodInformation;
 
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity ();
-      _securityClient = _testHelper.CreateSecurityClient ();
-      _methodInfo = typeof (SecurableObject).GetMethod ("Show");
-      _methodInformation = MockRepository.GenerateStub<IMethodInformation>();
+      _testHelper = NullSecurityClientTestHelper.CreateForStatefulSecurity();
+      _securityClient = _testHelper.CreateSecurityClient();
+      _methodInfo = typeof(SecurableObject).GetMethod("Show");
+      _methodInformation = new Mock<IMethodInformation>();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ReplayAll ();
+      _securityClient.CheckMethodAccess(_testHelper.SecurableObject, "Show");
 
-      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "Show");
-
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInfo ()
     {
-      _testHelper.ReplayAll ();
+      _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInfo);
 
-      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInfo);
-
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessGranted_WithMethodInformation ()
     {
-      _testHelper.ReplayAll ();
+      _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInformation);
-
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll ();
-
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, "Show");
+        _securityClient.CheckMethodAccess(_testHelper.SecurableObject, "Show");
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted_WithMethodInfo ()
     {
-      _testHelper.ReplayAll ();
-
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInfo);
+        _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInfo);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGrantedWithMethodInformation ()
     {
-      _testHelper.ReplayAll ();
-
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckMethodAccess (_testHelper.SecurableObject, _methodInformation);
+        _securityClient.CheckMethodAccess(_testHelper.SecurableObject, _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _testHelper.ReplayAll ();
+      _securityClient.CheckMethodAccess(new SecurableObject(null), "Show");
 
-      _securityClient.CheckMethodAccess (new SecurableObject (null), "Show");
-
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithMethodInfo ()
     {
-      _testHelper.ReplayAll ();
+      _securityClient.CheckMethodAccess(new SecurableObject(null), _methodInfo);
 
-      _securityClient.CheckMethodAccess (new SecurableObject (null), _methodInfo);
-
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithSecurityStrategyIsNull_WithMethodInformation ()
     {
-      _testHelper.ReplayAll ();
+      _securityClient.CheckMethodAccess(new SecurableObject(null), _methodInformation.Object);
 
-      _securityClient.CheckMethodAccess (new SecurableObject (null), _methodInformation);
-
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

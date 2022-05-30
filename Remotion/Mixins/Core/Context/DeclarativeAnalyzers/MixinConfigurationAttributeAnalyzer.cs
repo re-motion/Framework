@@ -33,20 +33,22 @@ namespace Remotion.Mixins.Context.DeclarativeAnalyzers
 
     public MixinConfigurationAttributeAnalyzer (Func<TAnalyzedEntity, IEnumerable<IMixinConfigurationAttribute<TAnalyzedEntity>>> attributeProvider)
     {
-      ArgumentUtility.CheckNotNull ("attributeProvider", attributeProvider);
+      ArgumentUtility.CheckNotNull("attributeProvider", attributeProvider);
 
       _attributeProvider = attributeProvider;
     }
 
     public virtual void Analyze (TAnalyzedEntity entity, MixinConfigurationBuilder configurationBuilder)
     {
-      ArgumentUtility.CheckNotNull ("entity", entity);
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
+#pragma warning disable 8714
+      ArgumentUtility.CheckNotNull("entity", entity);
+#pragma warning restore 8714
+      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
 
-      var attributes = _attributeProvider (entity);
+      var attributes = _attributeProvider(entity);
 
       foreach (var attribute in attributes)
-        attribute.Apply (configurationBuilder, entity);
+        attribute.Apply(configurationBuilder, entity);
     }
   }
 }

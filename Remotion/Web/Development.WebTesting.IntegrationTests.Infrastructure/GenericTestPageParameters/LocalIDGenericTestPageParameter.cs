@@ -26,47 +26,34 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 3;
 
-    private string _foundControlID;
-    private string _hiddenControlLocalID;
-    private string _visibleControlLocalID;
-
-    public LocalIDGenericTestPageParameter ()
-        : base (TestConstants.LocalIDSelectorID, c_parameterCount)
-    {
-    }
-
     /// <summary>
-    /// HTML id of the element with <see cref="VisibleControlLocalID"/>.
+    /// Local id of the visible control.
     /// </summary>
-    public string FoundControlID
-    {
-      get { return _foundControlID; }
-    }
+    public string VisibleControlLocalID { get; private set; }
 
     /// <summary>
     /// Local id of the hidden control.
     /// </summary>
-    public string HiddenControlLocalID
-    {
-      get { return _hiddenControlLocalID; }
-    }
+    public string HiddenControlLocalID { get; private set; }
 
     /// <summary>
-    /// Local id of the visible control.
+    /// HTML id of the element with <see cref="VisibleControlLocalID"/>.
     /// </summary>
-    public string VisibleControlLocalID
+    public string FoundControlID { get; private set; }
+
+    public LocalIDGenericTestPageParameter ()
+        : base(TestConstants.LocalIDSelectorID, c_parameterCount)
     {
-      get { return _visibleControlLocalID; }
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
-      _visibleControlLocalID = data[0];
-      _hiddenControlLocalID = data[1];
-      _foundControlID = data[2];
+      VisibleControlLocalID = data.Arguments[0];
+      HiddenControlLocalID = data.Arguments[1];
+      FoundControlID = data.Arguments[2];
     }
   }
 }

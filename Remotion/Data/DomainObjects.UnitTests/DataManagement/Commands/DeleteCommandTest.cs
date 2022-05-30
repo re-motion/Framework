@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
@@ -25,7 +26,6 @@ using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
@@ -34,177 +34,163 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
   {
     private TestableClientTransaction _transaction;
     private Order _order1;
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
 
     private DeleteCommand _deleteOrder1Command;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _transaction = new TestableClientTransaction();
-      _order1 = (Order) LifetimeService.GetObject (_transaction, DomainObjectIDs.Order1, false);
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
+      _order1 = (Order)LifetimeService.GetObject(_transaction, DomainObjectIDs.Order1, false);
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
 
-      _deleteOrder1Command = new DeleteCommand (_transaction, _order1, _transactionEventSinkWithMock);
+      _deleteOrder1Command = new DeleteCommand(_transaction, _order1, _transactionEventSinkWithMock.Object);
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_deleteOrder1Command.GetAllExceptions(), Is.Empty);
+      Assert.That(_deleteOrder1Command.GetAllExceptions(), Is.Empty);
     }
 
     [Test]
     public void Begin ()
     {
-      _transactionEventSinkWithMock.Expect (mock => mock.RaiseObjectDeletingEvent (_order1));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Setup(mock => mock.RaiseObjectDeletingEvent(_order1)).Verifiable();
 
-      _deleteOrder1Command.Begin ();
+      _deleteOrder1Command.Begin();
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public void Begin_TriggersEndPointModifications ()
     {
-      var mockRepository = _transactionEventSinkWithMock.GetMockRepository();
+      var endPointCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      endPointCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var endPointCommandMock = mockRepository.StrictMock<IDataManagementCommand> ();
-      endPointCommandMock.Stub (stub => stub.GetAllExceptions()).Return (new Exception[0]);
-      
-      using (mockRepository.Ordered ())
-      {
-        _transactionEventSinkWithMock.Expect (mock => mock.RaiseObjectDeletingEvent ( _order1));
-        endPointCommandMock.Expect (mock => mock.Begin());
-      }
+      var sequence = new MockSequence();
+      _transactionEventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectDeletingEvent(_order1)).Verifiable();
+      endPointCommandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
 
-      mockRepository.ReplayAll ();
+      var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
+      var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock.Object);
+      PrivateInvoke.SetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
-      var compositeCommand = (CompositeCommand) PrivateInvoke.GetNonPublicField (_deleteOrder1Command, "_endPointDeleteCommands");
-      var compositeCommandWithMockStep = compositeCommand.CombineWith (endPointCommandMock);
-      PrivateInvoke.SetNonPublicField (_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
+      _deleteOrder1Command.Begin();
 
-      _deleteOrder1Command.Begin ();
-
-      mockRepository.VerifyAll ();
-      mockRepository.BackToRecordAll (); // For Discard
+      endPointCommandMock.Verify();
+      endPointCommandMock.Reset(); // For Discard
     }
 
     [Test]
     public void End ()
     {
-      _transactionEventSinkWithMock.Expect (mock => mock.RaiseObjectDeletedEvent (_order1));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Setup(mock => mock.RaiseObjectDeletedEvent(_order1)).Verifiable();
 
-      _deleteOrder1Command.End ();
+      _deleteOrder1Command.End();
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify();
     }
 
     [Test]
     public void End_TriggersEndPointModifications ()
     {
-      var mockRepository = _transactionEventSinkWithMock.GetMockRepository();
+      var endPointCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
+      endPointCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var endPointCommandMock = mockRepository.StrictMock<IDataManagementCommand> ();
-      endPointCommandMock.Stub (stub => stub.GetAllExceptions ()).Return (new Exception[0]);
+      var sequence = new MockSequence();
+      endPointCommandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _transactionEventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectDeletedEvent(_order1)).Verifiable();
 
-      using (mockRepository.Ordered ())
-      {
-        endPointCommandMock.Expect (mock => mock.End ());
-        _transactionEventSinkWithMock.Expect (mock => mock.RaiseObjectDeletedEvent ( _order1));
-      }
+      var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
+      var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock.Object);
+      PrivateInvoke.SetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
 
-      mockRepository.ReplayAll ();
+      _deleteOrder1Command.End();
 
-      var compositeCommand = (CompositeCommand) PrivateInvoke.GetNonPublicField (_deleteOrder1Command, "_endPointDeleteCommands");
-      var compositeCommandWithMockStep = compositeCommand.CombineWith (endPointCommandMock);
-      PrivateInvoke.SetNonPublicField (_deleteOrder1Command, "_endPointDeleteCommands", compositeCommandWithMockStep);
-
-      _deleteOrder1Command.End ();
-
-      mockRepository.VerifyAll ();
-      mockRepository.BackToRecordAll (); // For Discard
+      endPointCommandMock.Verify();
+      endPointCommandMock.Reset(); // For Discard
     }
 
     [Test]
     public void Perform_PerformsEndPointDelete ()
     {
-      _deleteOrder1Command.Perform ();
+      _deleteOrder1Command.Perform();
 
-      _transaction.ExecuteInScope (() => Assert.That (_order1.OrderItems, Is.Empty));
+      _transaction.ExecuteInScope(() => Assert.That(_order1.OrderItems, Is.Empty));
     }
 
     [Test]
     public void Perform_DeletesExistingDataContainer ()
     {
-      _deleteOrder1Command.Perform ();
+      _deleteOrder1Command.Perform();
 
-      _transaction.ExecuteInScope (() => Assert.That (_order1.State, Is.EqualTo (StateType.Deleted)));
+      _transaction.ExecuteInScope(() => Assert.That(_order1.State.IsDeleted, Is.True));
     }
 
     [Test]
     public void Perform_DiscardsNewDataContainer ()
     {
-      var newOrder = _transaction.ExecuteInScope (() => Order.NewObject ());
-      var deleteNewOrderCommand = new DeleteCommand (_transaction, newOrder, _transactionEventSinkWithMock);
+      var newOrder = _transaction.ExecuteInScope(() => Order.NewObject());
+      var deleteNewOrderCommand = new DeleteCommand(_transaction, newOrder, _transactionEventSinkWithMock.Object);
 
-      deleteNewOrderCommand.Perform ();
+      deleteNewOrderCommand.Perform();
 
-      Assert.That (_transaction.IsInvalid (newOrder.ID), Is.True);
+      Assert.That(_transaction.IsInvalid(newOrder.ID), Is.True);
     }
 
     [Test]
     public void ExpandToAllRelatedObjects ()
     {
-      var extended = _deleteOrder1Command.ExpandToAllRelatedObjects ();
+      var extended = _deleteOrder1Command.ExpandToAllRelatedObjects();
 
       var commands = extended.GetNestedCommands();
-      Assert.That (commands.Count, Is.EqualTo (6)); // self, Official, OrderTicket, Customer, OrderItem1, OrderItem2
+      Assert.That(commands.Count, Is.EqualTo(6)); // self, Official, OrderTicket, Customer, OrderItem1, OrderItem2
 
-      Assert.That (commands, Has.Member(_deleteOrder1Command));
+      Assert.That(commands, Has.Member(_deleteOrder1Command));
 
-      var officialCommand = GetEndPointModificationCommand (commands, DomainObjectIDs.Official1);
-      Assert.That (officialCommand, Is.Not.Null);
-      Assert.That (officialCommand.OldRelatedObject, Is.SameAs (_order1));
-      Assert.That (officialCommand.NewRelatedObject, Is.Null);
+      var officialCommand = GetEndPointModificationCommand(commands, DomainObjectIDs.Official1);
+      Assert.That(officialCommand, Is.Not.Null);
+      Assert.That(officialCommand.OldRelatedObject, Is.SameAs(_order1));
+      Assert.That(officialCommand.NewRelatedObject, Is.Null);
 
-      var orderTicketCommand = GetEndPointModificationCommand (commands, DomainObjectIDs.OrderTicket1);
-      Assert.That (orderTicketCommand, Is.Not.Null);
-      Assert.That (orderTicketCommand.OldRelatedObject, Is.SameAs (_order1));
-      Assert.That (orderTicketCommand.NewRelatedObject, Is.Null);
+      var orderTicketCommand = GetEndPointModificationCommand(commands, DomainObjectIDs.OrderTicket1);
+      Assert.That(orderTicketCommand, Is.Not.Null);
+      Assert.That(orderTicketCommand.OldRelatedObject, Is.SameAs(_order1));
+      Assert.That(orderTicketCommand.NewRelatedObject, Is.Null);
 
-      var customerCommand = GetEndPointModificationCommand (commands, DomainObjectIDs.Customer1);
-      Assert.That (customerCommand, Is.Not.Null);
-      Assert.That (customerCommand.OldRelatedObject, Is.SameAs (_order1));
+      var customerCommand = GetEndPointModificationCommand(commands, DomainObjectIDs.Customer1);
+      Assert.That(customerCommand, Is.Not.Null);
+      Assert.That(customerCommand.OldRelatedObject, Is.SameAs(_order1));
 
-      var orderItem1Command = GetEndPointModificationCommand (commands, DomainObjectIDs.OrderItem1);
-      Assert.That (orderItem1Command, Is.Not.Null);
-      Assert.That (orderItem1Command.OldRelatedObject, Is.SameAs (_order1));
-      Assert.That (orderItem1Command.NewRelatedObject, Is.Null);
+      var orderItem1Command = GetEndPointModificationCommand(commands, DomainObjectIDs.OrderItem1);
+      Assert.That(orderItem1Command, Is.Not.Null);
+      Assert.That(orderItem1Command.OldRelatedObject, Is.SameAs(_order1));
+      Assert.That(orderItem1Command.NewRelatedObject, Is.Null);
 
-      var orderItem2Command = GetEndPointModificationCommand (commands, DomainObjectIDs.OrderItem2);
-      Assert.That (orderItem2Command, Is.Not.Null);
-      Assert.That (orderItem2Command.OldRelatedObject, Is.SameAs (_order1));
-      Assert.That (orderItem2Command.NewRelatedObject, Is.Null);
+      var orderItem2Command = GetEndPointModificationCommand(commands, DomainObjectIDs.OrderItem2);
+      Assert.That(orderItem2Command, Is.Not.Null);
+      Assert.That(orderItem2Command.OldRelatedObject, Is.SameAs(_order1));
+      Assert.That(orderItem2Command.NewRelatedObject, Is.Null);
     }
 
     private RelationEndPointModificationCommand GetEndPointModificationCommand (IEnumerable<IDataManagementCommand> commands, ObjectID objectID)
     {
       return commands
-          .Select (UnwrapCommand)
+          .Select(UnwrapCommand)
           .OfType<RelationEndPointModificationCommand>()
-          .SingleOrDefault (cmd => cmd.DomainObject.ID == objectID);
+          .SingleOrDefault(cmd => cmd.DomainObject.ID == objectID);
     }
 
     private IDataManagementCommand UnwrapCommand (IDataManagementCommand c)
     {
       if (c is RealObjectEndPointRegistrationCommandDecorator)
-        return ((RealObjectEndPointRegistrationCommandDecorator) c).DecoratedCommand;
+        return ((RealObjectEndPointRegistrationCommandDecorator)c).DecoratedCommand;
       else if (c is VirtualEndPointStateUpdatedRaisingCommandDecorator)
-        return ((VirtualEndPointStateUpdatedRaisingCommandDecorator) c).DecoratedCommand;
+        return ((VirtualEndPointStateUpdatedRaisingCommandDecorator)c).DecoratedCommand;
       else
         return c;
     }

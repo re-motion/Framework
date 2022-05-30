@@ -32,9 +32,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public ClassDefinition[] GetClassDefinitions ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition ("Fake", typeof (Company));
-      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection());
-      classDefinition.SetDerivedClasses (new ClassDefinition[0]);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition("Fake", typeof(Company));
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection());
+      classDefinition.SetDerivedClasses(new ClassDefinition[0]);
       return new[] { classDefinition };
     }
 
@@ -55,22 +55,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public IClassDefinitionValidator CreateClassDefinitionValidator ()
     {
-      return new ClassDefinitionValidator ();
+      return new ClassDefinitionValidator();
     }
 
     public IPropertyDefinitionValidator CreatePropertyDefinitionValidator ()
     {
-      return new PropertyDefinitionValidator ();
+      return new PropertyDefinitionValidator();
     }
 
     public IRelationDefinitionValidator CreateRelationDefinitionValidator ()
     {
-      return new RelationDefinitionValidator ();
+      return new RelationDefinitionValidator();
     }
 
     public ISortExpressionValidator CreateSortExpressionValidator ()
     {
-      return new SortExpressionValidator ();
+      return new SortExpressionValidator();
     }
   }
 }

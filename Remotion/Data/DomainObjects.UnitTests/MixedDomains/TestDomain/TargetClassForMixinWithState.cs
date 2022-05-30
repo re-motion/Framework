@@ -22,13 +22,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
   [DBTable]
   [TestDomain]
-  [Uses (typeof (MixinWithState))]
+  [Uses(typeof(MixinWithState))]
   [Serializable]
   public class TargetClassForMixinWithState : DomainObject
   {
     public static TargetClassForMixinWithState NewObject ()
     {
-      return NewObject<TargetClassForMixinWithState> ();
+      return NewObject<TargetClassForMixinWithState>();
     }
   }
 }

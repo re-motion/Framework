@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
+using Remotion.Reflection;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
@@ -28,10 +29,10 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class SerializationImplementer
   {
     private static readonly MethodInfo s_getObjectDataMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((ISerializable o) => o.GetObjectData (null, new StreamingContext()));
+        MemberInfoFromExpressionUtility.GetMethod((ISerializable o) => o.GetObjectData(null!, new StreamingContext()))!;
 
     private static readonly ConstructorInfo s_invalidOperationExceptionConstructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new InvalidOperationException ("message"));
+        MemberInfoFromExpressionUtility.GetConstructor(() => new InvalidOperationException("message"));
 
     private static readonly SerializationEventRaiser s_serializationEventRaiser = new SerializationEventRaiser();
 
@@ -43,52 +44,52 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     public static void ImplementGetObjectDataByDelegation (
         MutableType mutableType, Func<MethodBodyContextBase, bool, Expression> delegatingExpressionFunc)
     {
-      ArgumentUtility.CheckNotNull ("mutableType", mutableType);
-      ArgumentUtility.CheckNotNull ("delegatingExpressionFunc", delegatingExpressionFunc);
+      ArgumentUtility.CheckNotNull("mutableType", mutableType);
+      ArgumentUtility.CheckNotNull("delegatingExpressionFunc", delegatingExpressionFunc);
 
-      var baseIsISerializable = typeof (ISerializable).IsTypePipeAssignableFrom (mutableType.BaseType);
+      var baseIsISerializable = typeof(ISerializable).IsTypePipeAssignableFrom(mutableType.BaseType);
       var attributes = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final;
-      var md = MethodDeclaration.CreateEquivalent (s_getObjectDataMethod);
+      var md = MethodDeclaration.CreateEquivalent(s_getObjectDataMethod);
 
-      mutableType.AddMethod (
+      mutableType.AddMethod(
           s_getObjectDataMethod.Name,
           attributes,
           md,
           ctx =>
           {
-            var baseCall = baseIsISerializable ? ImplementBaseGetObjectDataCall (ctx) : Expression.Empty();
-            var delegatingExpression = delegatingExpressionFunc (ctx, baseIsISerializable) ?? Expression.Empty();
+            var baseCall = baseIsISerializable ? ImplementBaseGetObjectDataCall(ctx) : Expression.Empty();
+            var delegatingExpression = delegatingExpressionFunc(ctx, baseIsISerializable) ?? Expression.Empty();
 
-            return Expression.Block (baseCall, delegatingExpression);
+            return Expression.Block(baseCall, delegatingExpression);
           });
     }
 
     private static Expression ImplementBaseGetObjectDataCall (MethodBodyContextBase ctx)
     {
-      ConstructorInfo baseConstructor = ctx.DeclaringType.BaseType.GetConstructor (
+      ConstructorInfo? baseConstructor = ctx.DeclaringType.BaseType!.GetConstructor(
           BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
           null,
           CallingConventions.Any,
-          new[] { typeof (SerializationInfo), typeof (StreamingContext) },
+          new[] { typeof(SerializationInfo), typeof(StreamingContext) },
           null);
-      if (baseConstructor == null || !IsPublicOrProtected (baseConstructor))
+      if (baseConstructor == null || !IsPublicOrProtected(baseConstructor))
       {
-        string message = string.Format (
+        string message = string.Format(
             "No public or protected deserialization constructor in type {0} - serialization is not supported.",
-            ctx.DeclaringType.BaseType.FullName);
-        return Expression.Throw (Expression.New (s_invalidOperationExceptionConstructor, Expression.Constant (message)));
+            ctx.DeclaringType.BaseType.GetFullNameSafe());
+        return Expression.Throw(Expression.New(s_invalidOperationExceptionConstructor, Expression.Constant(message)));
       }
 
-      MethodInfo baseGetObjectDataMethod =
-          ctx.DeclaringType.BaseType.GetMethod ("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-      if (baseGetObjectDataMethod == null || !IsPublicOrProtected (baseGetObjectDataMethod))
+      MethodInfo? baseGetObjectDataMethod =
+          ctx.DeclaringType.BaseType.GetMethod("GetObjectData", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      if (baseGetObjectDataMethod == null || !IsPublicOrProtected(baseGetObjectDataMethod))
       {
-        string message = string.Format ("No public or protected GetObjectData in type {0} - serialization is not supported.",
-            ctx.DeclaringType.BaseType.FullName);
-        return Expression.Throw (Expression.New (s_invalidOperationExceptionConstructor, Expression.Constant (message)));
+        string message = string.Format("No public or protected GetObjectData in type {0} - serialization is not supported.",
+            ctx.DeclaringType.BaseType.GetFullNameSafe());
+        return Expression.Throw(Expression.New(s_invalidOperationExceptionConstructor, Expression.Constant(message)));
       }
 
-      return ctx.DelegateToBase (baseGetObjectDataMethod);
+      return ctx.DelegateToBase(baseGetObjectDataMethod);
     }
 
     //public static ConstructorEmitter ImplementDeserializationConstructorByThrowing (IClassEmitter classEmitter)
@@ -119,22 +120,22 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
     //    return null;
     //}
 
-    public static void RaiseOnDeserialization (object deserializedObject, object sender)
+    public static void RaiseOnDeserialization (object deserializedObject, object? sender)
     {
-      ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
-      s_serializationEventRaiser.RaiseDeserializationEvent (deserializedObject, sender);
+      ArgumentUtility.CheckNotNull("deserializedObject", deserializedObject);
+      s_serializationEventRaiser.RaiseDeserializationEvent(deserializedObject, sender);
     }
 
     public static void RaiseOnDeserializing (object deserializedObject, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
-      s_serializationEventRaiser.InvokeAttributedMethod (deserializedObject, typeof (OnDeserializingAttribute), context);
+      ArgumentUtility.CheckNotNull("deserializedObject", deserializedObject);
+      s_serializationEventRaiser.InvokeAttributedMethod(deserializedObject, typeof(OnDeserializingAttribute), context);
     }
 
     public static void RaiseOnDeserialized (object deserializedObject, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("deserializedObject", deserializedObject);
-      s_serializationEventRaiser.InvokeAttributedMethod (deserializedObject, typeof (OnDeserializedAttribute), context);
+      ArgumentUtility.CheckNotNull("deserializedObject", deserializedObject);
+      s_serializationEventRaiser.InvokeAttributedMethod(deserializedObject, typeof(OnDeserializedAttribute), context);
     }
   }
 }

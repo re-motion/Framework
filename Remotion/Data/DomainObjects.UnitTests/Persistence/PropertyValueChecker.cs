@@ -40,34 +40,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
     public void Check (PropertyDefinition propertyDefinition, DataContainer containerWithExpectedValue, DataContainer actualContainer)
     {
-      var expectedValue = containerWithExpectedValue.GetValue (propertyDefinition);
-      var actualValue = actualContainer.GetValue (propertyDefinition);
-      AreValuesEqual (
+      var expectedValue = containerWithExpectedValue.GetValue(propertyDefinition);
+      var actualValue = actualContainer.GetValue(propertyDefinition);
+      AreValuesEqual(
           expectedValue,
           actualValue,
-          string.Format ("Value, expected property name: '{0}'", propertyDefinition.PropertyName));
+          string.Format("Value, expected property name: '{0}'", propertyDefinition.PropertyName));
 
       if (expectedValue != null)
       {
-        Assert.AreEqual (expectedValue.GetType (), actualValue.GetType (),
-            string.Format ("Type of Value, expected property name: '{0}'", propertyDefinition.PropertyName));
+        Assert.AreEqual(expectedValue.GetType(), actualValue.GetType(),
+            string.Format("Type of Value, expected property name: '{0}'", propertyDefinition.PropertyName));
       }
 
-      var expectedOriginalValue = containerWithExpectedValue.GetValue (propertyDefinition, ValueAccess.Original);
-      var actualOriginalValue = actualContainer.GetValue (propertyDefinition, ValueAccess.Original);
-      AreValuesEqual (expectedOriginalValue, actualOriginalValue, string.Format ("OriginalValue, expected property name: '{0}'", propertyDefinition.PropertyName));
+      var expectedOriginalValue = containerWithExpectedValue.GetValue(propertyDefinition, ValueAccess.Original);
+      var actualOriginalValue = actualContainer.GetValue(propertyDefinition, ValueAccess.Original);
+      AreValuesEqual(expectedOriginalValue, actualOriginalValue, string.Format("OriginalValue, expected property name: '{0}'", propertyDefinition.PropertyName));
 
       if (expectedOriginalValue != null)
       {
-        Assert.AreEqual (expectedOriginalValue.GetType (), actualOriginalValue.GetType (),
-            string.Format ("Type of OriginalValue, expected property name: '{0}'", propertyDefinition.PropertyName));
+        Assert.AreEqual(expectedOriginalValue.GetType(), actualOriginalValue.GetType(),
+            string.Format("Type of OriginalValue, expected property name: '{0}'", propertyDefinition.PropertyName));
       }
 
-      Assert.AreEqual (containerWithExpectedValue.HasValueChanged (propertyDefinition), actualContainer.HasValueChanged (propertyDefinition),
-          string.Format ("HasChanged, expected property name: '{0}'", propertyDefinition.PropertyName));
+      Assert.AreEqual(containerWithExpectedValue.HasValueChanged(propertyDefinition), actualContainer.HasValueChanged(propertyDefinition),
+          string.Format("HasChanged, expected property name: '{0}'", propertyDefinition.PropertyName));
 
-      Assert.AreEqual (containerWithExpectedValue.HasValueBeenTouched (propertyDefinition), actualContainer.HasValueBeenTouched (propertyDefinition),
-          string.Format ("HasBeenTouched, expected property name: '{0}'", propertyDefinition.PropertyName));
+      Assert.AreEqual(containerWithExpectedValue.HasValueBeenTouched(propertyDefinition), actualContainer.HasValueBeenTouched(propertyDefinition),
+          string.Format("HasBeenTouched, expected property name: '{0}'", propertyDefinition.PropertyName));
     }
 
     private void AreValuesEqual (object expected, object actual, string message)
@@ -75,10 +75,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       if (expected == actual)
         return;
 
-      if (expected == null || expected.GetType () != typeof (byte[]))
-        Assert.AreEqual (expected, actual, message);
+      if (expected == null || expected.GetType() != typeof(byte[]))
+        Assert.AreEqual(expected, actual, message);
       else
-        ResourceManager.AreEqual ((byte[]) expected, (byte[]) actual, message);
+        ResourceManager.AreEqual((byte[])expected, (byte[])actual, message);
     }
   }
 }

@@ -24,16 +24,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> A collection of <see cref="BusinessObjectControlItem"/> objects. </summary>
   public abstract class BusinessObjectControlItemCollection : ControlItemCollection
   {
-    protected BusinessObjectControlItemCollection (IBusinessObjectBoundWebControl ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+    protected BusinessObjectControlItemCollection (IBusinessObjectBoundWebControl? ownerControl, Type[] supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public new IBusinessObjectBoundWebControl OwnerControl
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public new IBusinessObjectBoundWebControl? OwnerControl
     {
-      get { return (IBusinessObjectBoundWebControl) base.OwnerControl; }
+      get { return (IBusinessObjectBoundWebControl?)base.OwnerControl; }
       set { base.OwnerControl = value; }
     }
   }
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </remarks>
   public abstract class BusinessObjectControlItem : IControlItem
   {
-    private IBusinessObjectBoundWebControl _ownerControl;
+    private IBusinessObjectBoundWebControl? _ownerControl;
 
     /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
     protected virtual void OnOwnerControlChanged ()
@@ -54,9 +54,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this item belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public IBusinessObjectBoundWebControl OwnerControl
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public IBusinessObjectBoundWebControl? OwnerControl
     {
       get { return _ownerControl; }
       set
@@ -69,19 +69,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    IControl IControlItem.OwnerControl
+    IControl? IControlItem.OwnerControl
     {
       get { return _ownerControl; }
-      set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
+      set { OwnerControl = (IBusinessObjectBoundWebControl?)value; }
     }
 
     /// <summary> Not supported by base implementation. </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public virtual string ItemID
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public virtual string? ItemID
     {
       get { return null; }
-      set { throw new NotSupportedException ("Implement ItemID in a specialized class, if the class supports IDs."); }
+      set { throw new NotSupportedException("Implement ItemID in a specialized class, if the class supports IDs."); }
     }
 
     public virtual void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)

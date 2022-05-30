@@ -27,23 +27,23 @@ namespace Remotion.Utilities.AttributeRetrieval
   /// </summary>
   public sealed class PropertyCustomAttributeRetriever : InheritanceAwareCustomAttributeRetriever<PropertyInfo>
   {
-    protected override PropertyInfo GetBaseMember (PropertyInfo memberInfo)
+    protected override PropertyInfo? GetBaseMember (PropertyInfo memberInfo)
     {
-      var accessorMethod = memberInfo.GetGetMethod (true) ?? memberInfo.GetSetMethod (true);
-      Assertion.DebugAssert (accessorMethod != null, "A property must have an accessor.");
+      var accessorMethod = memberInfo.GetGetMethod(true) ?? memberInfo.GetSetMethod(true);
+      Assertion.DebugAssert(accessorMethod != null, "A property must have an accessor.");
 
-      var baseAccessor = GetBaseMethod (accessorMethod);
+      var baseAccessor = GetBaseMethod(accessorMethod);
       if (baseAccessor == null)
         return null;
 
       // Note: We're ignoring the case where a base property has a different name than the overriding property - that can't be implemented in C#/VB anyway.
-      Assertion.DebugAssert (baseAccessor.DeclaringType != null, "Global methods canot be overridden.");
-      return baseAccessor.DeclaringType.GetProperty (
+      Assertion.DebugAssert(baseAccessor.DeclaringType != null, "Global methods canot be overridden.");
+      return baseAccessor.DeclaringType.GetProperty(
           memberInfo.Name,
           BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance,
           null,
           memberInfo.PropertyType,
-          memberInfo.GetIndexParameters().Select (pi => pi.ParameterType).ToArray(),
+          memberInfo.GetIndexParameters().Select(pi => pi.ParameterType).ToArray(),
           null);
     }
   }

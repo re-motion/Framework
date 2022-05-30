@@ -21,7 +21,7 @@ namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA
 {
   public interface IPerson
   {
-    [NotNull]
+    [NotNullValidation(IsRemovable = true)]
     string FirstName { get; set; }
 
     string LastName { get; set; }

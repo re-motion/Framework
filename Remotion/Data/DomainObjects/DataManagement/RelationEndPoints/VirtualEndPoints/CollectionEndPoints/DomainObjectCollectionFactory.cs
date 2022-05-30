@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Reflection;
@@ -25,11 +27,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 {
   /// <summary>
   /// Creates <see cref="DomainObjectCollection"/> instances via reflection for use with the data management classes (mostly 
-  /// <see cref="CollectionEndPoint"/>).
+  /// <see cref="DomainObjectCollectionEndPoint"/>).
   /// </summary>
+  /// <seealso cref="ObjectListFactory"/>
   public class DomainObjectCollectionFactory
   {
-    public static readonly DomainObjectCollectionFactory Instance = new DomainObjectCollectionFactory ();
+    private static readonly ConcurrentDictionary<Type, (bool CanAscribe, Type? ItemType)> s_genericEnumerableTypeCache = new();
+
+    public static readonly DomainObjectCollectionFactory Instance = new DomainObjectCollectionFactory();
 
     private DomainObjectCollectionFactory ()
     {
@@ -47,19 +52,19 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// a single parameter of type <see cref="IDomainObjectCollectionData"/>.</exception>
     public DomainObjectCollection CreateCollection (Type collectionType, IDomainObjectCollectionData dataStrategy)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("dataStrategy", dataStrategy);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("dataStrategy", dataStrategy);
 
-      var ctor = collectionType.GetConstructor (
-          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
-          null, 
-          new[] { typeof (IDomainObjectCollectionData) }, 
+      var ctor = collectionType.GetConstructor(
+          BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+          null,
+          new[] { typeof(IDomainObjectCollectionData) },
           null);
-      
-      if (ctor == null)
-        throw CreateMissingConstructorException (collectionType);
 
-      return (DomainObjectCollection) ctor.Invoke (new[] { dataStrategy });
+      if (ctor == null)
+        throw CreateMissingConstructorException(collectionType);
+
+      return (DomainObjectCollection)ctor.Invoke(new[] { dataStrategy });
     }
 
     /// <summary>
@@ -72,18 +77,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// duplicates or <see langword="null" /> values.</param>
     /// <param name="requiredItemType">The required item type of the collection.</param>
     /// <returns>A stand-alone instance of <paramref name="collectionType"/>.</returns>
-    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content, Type requiredItemType)
+    public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content, Type? requiredItemType)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("content", content);
 
-      var eventRaiser = new IndirectDomainObjectCollectionEventRaiser ();
-      
-      var dataStore = new DomainObjectCollectionData ();
-      dataStore.AddRangeAndCheckItems (content, requiredItemType);
-      
-      var dataStrategy = DomainObjectCollection.CreateDataStrategyForStandAloneCollection (dataStore, requiredItemType, eventRaiser);
-      var collection = CreateCollection (collectionType, dataStrategy);
+      var eventRaiser = new IndirectDomainObjectCollectionEventRaiser();
+
+      var dataStore = new DomainObjectCollectionData();
+      dataStore.AddRangeAndCheckItems(content, requiredItemType);
+
+      var dataStrategy = DomainObjectCollection.CreateDataStrategyForStandAloneCollection(dataStore, requiredItemType, eventRaiser);
+      var collection = CreateCollection(collectionType, dataStrategy);
 
       eventRaiser.EventRaiser = collection;
 
@@ -105,16 +110,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// </remarks>
     public DomainObjectCollection CreateCollection (Type collectionType, IEnumerable<DomainObject> content)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("content", content);
 
       var requiredItemType = GetRequiredItemType(collectionType);
-      return CreateCollection (collectionType, content, requiredItemType);
+      return CreateCollection(collectionType, content, requiredItemType);
     }
 
     /// <summary>
     /// Creates a stand-alone read-only collection of the given <paramref name="collectionType"/> via reflection. Read-onlyness is enforced by a
-    /// <see cref="ReadOnlyCollectionDataDecorator"/>. The collection is initialized to have the given initial <paramref name="content"/>.
+    /// <see cref="ReadOnlyDomainObjectCollectionDataDecorator"/>. The collection is initialized to have the given initial <paramref name="content"/>.
     /// The collection must provide a constructor that takes a single parameter of type <see cref="IDomainObjectCollectionData"/>.
     /// </summary>
     /// <param name="collectionType">The type of the collection to create.</param>
@@ -125,24 +130,32 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     /// </remarks>
     public DomainObjectCollection CreateReadOnlyCollection (Type collectionType, IEnumerable<DomainObject> content)
     {
-      ArgumentUtility.CheckNotNull ("collectionType", collectionType);
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("collectionType", collectionType);
+      ArgumentUtility.CheckNotNull("content", content);
 
-      var dataStrategy = new ReadOnlyCollectionDataDecorator (new DomainObjectCollectionData (content));
-      return CreateCollection (collectionType, dataStrategy);
+      var dataStrategy = new ReadOnlyDomainObjectCollectionDataDecorator(new DomainObjectCollectionData(content));
+      return CreateCollection(collectionType, dataStrategy);
     }
 
-    private Type GetRequiredItemType (Type collectionType)
+    private Type? GetRequiredItemType (Type collectionType)
     {
-      if (TypeExtensions.CanAscribeTo (collectionType, typeof (IEnumerable<>)))
-        return TypeExtensions.GetAscribedGenericArguments (collectionType, typeof (IEnumerable<>))[0];
-      else
-        return null;
+      return s_genericEnumerableTypeCache.GetOrAdd(
+               collectionType,
+               static type =>
+               {
+                 var canAscribeTo = type.CanAscribeTo(typeof(IEnumerable<>));
+                 return ValueTuple.Create(
+                     canAscribeTo,
+                     canAscribeTo
+                         ? type.GetAscribedGenericArguments(typeof(IEnumerable<>))[0]
+                         : null);
+               })
+             .ItemType;
     }
 
     private MissingMethodException CreateMissingConstructorException (Type collectionType)
     {
-      var message = string.Format (
+      var message = string.Format(
           "Cannot create an instance of '{0}' because that type does not provide a constructor taking an IDomainObjectCollectionData object." + Environment.NewLine
           + "Example: " + Environment.NewLine
           + "public class {1} : ObjectList<...>" + Environment.NewLine
@@ -154,7 +167,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
           + "}}",
           collectionType,
           collectionType.Name);
-      return new MissingMethodException (message);
+      return new MissingMethodException(message);
     }
 
   }

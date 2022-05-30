@@ -26,6 +26,7 @@ using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent.Selectors;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.BocList
 {
@@ -35,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
           IFluentTitleSelector<ElementScope>,
           IFluentTitleContainsSelector<ElementScope>
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
@@ -45,8 +46,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
 
       _fluentList = fluentList;
       _fluentElement = fluentElement;
@@ -55,72 +56,72 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
-      var columns = _fluentList.Target.List.GetColumnDefinitions().Where (c => c.ItemID == itemID).Take (2).ToArray();
+      var columns = _fluentList.Target.List.GetColumnDefinitions().Where(c => c.ItemID == itemID).Take(2).ToArray();
 
       if (columns.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a header row with the specified item ID '{0}'.", itemID));
+        throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "Could not find a header row with the specified item ID '{0}'.", itemID);
       if (columns.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple header rows with the same item ID '{0}'.", itemID));
+        throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "There are multiple header rows with the same item ID '{0}'.", itemID);
 
-      var element = _fluentElement.Target.FindTagWithAttribute (
+      var element = _fluentElement.Target.FindTagWithAttribute(
           "th",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           columns[0].Index.ToString());
 
-      return FluentUtility.CreateFluentElementScope (element, ElementVisibility.PartiallyVisible);
+      return FluentUtility.CreateFluentElementScope(element, ElementVisibility.PartiallyVisible);
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithIndex (int oneBasedIndex)
     {
-      var element = _fluentElement.Target.FindTagWithAttribute (
+      var element = _fluentElement.Target.FindTagWithAttribute(
           "th",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           oneBasedIndex.ToString());
 
-      return FluentUtility.CreateFluentElementScope (element, ElementVisibility.PartiallyVisible);
+      return FluentUtility.CreateFluentElementScope(element, ElementVisibility.PartiallyVisible);
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithTitle (string title)
     {
-      ArgumentUtility.CheckNotNull ("title", title);
+      ArgumentUtility.CheckNotNull("title", title);
 
-      var columns = _fluentList.Target.List.GetColumnDefinitions().Where (c => c.Title == title).Take (2).ToArray();
+      var columns = _fluentList.Target.List.GetColumnDefinitions().Where(c => c.Title == title).Take(2).ToArray();
 
       if (columns.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a header row with the specified title '{0}'.", title));
+        throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "Could not find a header row with the specified title '{0}'.", title);
       if (columns.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple header rows with the same title '{0}'.", title));
+        throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "There are multiple header rows with the same title '{0}'.", title);
 
-      var element = _fluentElement.Target.FindTagWithAttribute (
+      var element = _fluentElement.Target.FindTagWithAttribute(
           "th",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           columns[0].Index.ToString());
 
-      return FluentUtility.CreateFluentElementScope (element, ElementVisibility.PartiallyVisible);
+      return FluentUtility.CreateFluentElementScope(element, ElementVisibility.PartiallyVisible);
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithTitleContains (string content)
     {
-      ArgumentUtility.CheckNotNull ("content", content);
+      ArgumentUtility.CheckNotNull("content", content);
 
-      var columns = _fluentList.Target.List.GetColumnDefinitions().Where (c => c.Title.Contains (content)).Take (2).ToArray();
+      var columns = _fluentList.Target.List.GetColumnDefinitions().Where(c => c.Title.Contains(content)).Take(2).ToArray();
 
       if (columns.Length == 0)
-        throw new MissingHtmlException (String.Format ("Could not find a header row where the title contains '{0}'.", content));
+        throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "Could not find a header row where the title contains '{0}'.", content);
       if (columns.Length > 1)
-        throw new AmbiguousException (String.Format ("There are multiple header rows where title contain '{0}'.", content));
+        throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "There are multiple header rows where title contain '{0}'.", content);
 
-      var element = _fluentElement.Target.FindTagWithAttribute (
+      var element = _fluentElement.Target.FindTagWithAttribute(
           "th",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           columns[0].Index.ToString());
 
-      return FluentUtility.CreateFluentElementScope (element, ElementVisibility.PartiallyVisible);
+      return FluentUtility.CreateFluentElementScope(element, ElementVisibility.PartiallyVisible);
     }
   }
 }

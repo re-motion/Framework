@@ -26,9 +26,9 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     [TearDown]
     public virtual void TearDown ()
     {
-      HttpContextHelper.SetCurrent (null);
+      HttpContextHelper.SetCurrent(null);
       WebConfigurationMock.Current = null;
-      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+      Remotion.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent(null);
     }
   }
 }

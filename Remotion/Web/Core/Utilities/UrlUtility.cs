@@ -39,19 +39,19 @@ namespace Remotion.Web.Utilities
     /// </remarks>
     public static string GetAbsoluteUrlWithProtocolAndHostname (HttpContextBase context, string virtualPath)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("virtualPath", virtualPath);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("virtualPath", virtualPath);
 
-      if (HasScheme (virtualPath))
+      if (HasScheme(virtualPath))
         return virtualPath;
 
       var hostHeader = context.Request.Headers["Host"];
       string serverPart;
-      if (string.IsNullOrEmpty (hostHeader))
-        serverPart = hostHeader ?? context.Request.Url.GetLeftPart (UriPartial.Authority);
+      if (string.IsNullOrEmpty(hostHeader))
+        serverPart = hostHeader ?? context.Request.Url.GetLeftPart(UriPartial.Authority);
       else
-        serverPart = context.Request.Url.GetLeftPart (UriPartial.Scheme) + hostHeader;
-      string resolvedPath = ResolveUrlCaseSensitive (context, virtualPath);
+        serverPart = context.Request.Url.GetLeftPart(UriPartial.Scheme) + hostHeader;
+      string resolvedPath = ResolveUrlCaseSensitive(context, virtualPath);
 
       return serverPart + resolvedPath;
     }
@@ -60,10 +60,10 @@ namespace Remotion.Web.Utilities
     /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
     /// <param name="virtualPath"> The virtual path. Must not be <see langword="null"/>. Must be rooted or absolute. </param>
     /// <returns> The absolute URL. </returns>
-    [Obsolete ("Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23 and Version 1.17.11)", true)]
+    [Obsolete("Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23 and Version 1.17.11)", true)]
     public static string GetAbsoluteUrl (HttpContextBase context, string virtualPath)
     {
-      throw new NotSupportedException (
+      throw new NotSupportedException(
           "Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23 and Version 1.17.11)");
     }
 
@@ -80,8 +80,8 @@ namespace Remotion.Web.Utilities
     /// </remarks>
     public static string ResolveUrlCaseSensitive (HttpContextBase context, string relativeUrl)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("relativeUrl", relativeUrl);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("relativeUrl", relativeUrl);
 
       // HtppResponse.ApplyAppPathModifier (string)
       // "~"            "/AppDir/"
@@ -99,7 +99,7 @@ namespace Remotion.Web.Utilities
       // "~/./path"     "/AppDir/path
       // "~/path/."     "/AppDir/path
 
-      if (HasScheme (relativeUrl))
+      if (HasScheme(relativeUrl))
         return relativeUrl;
 
       if (relativeUrl.Length == 0)
@@ -109,66 +109,66 @@ namespace Remotion.Web.Utilities
       // There is no known usage of cookieless sessions in re-motion applications.
       var session = context.Session;
       if (session != null && session.IsCookieless)
-        throw new InvalidOperationException ("Cookieless sessions are not supported for resolving URLs.");
+        throw new InvalidOperationException("Cookieless sessions are not supported for resolving URLs.");
 
-      var applicationPath = GetApplicationPathFromHttpContext (context);
-      Assertion.IsTrue (System.Web.VirtualPathUtility.IsAbsolute (applicationPath));
+      var applicationPath = GetApplicationPathFromHttpContext(context);
+      Assertion.IsTrue(System.Web.VirtualPathUtility.IsAbsolute(applicationPath));
 
       if (relativeUrl == "~")
-        return System.Web.VirtualPathUtility.AppendTrailingSlash (applicationPath);
+        return System.Web.VirtualPathUtility.AppendTrailingSlash(applicationPath);
 
       if (relativeUrl == "~/")
-        return System.Web.VirtualPathUtility.AppendTrailingSlash (applicationPath);
+        return System.Web.VirtualPathUtility.AppendTrailingSlash(applicationPath);
 
       if (relativeUrl[0] == '~' && relativeUrl[1] == '/')
       {
-        var virtualDirectory = relativeUrl.Substring (2);
+        var virtualDirectory = relativeUrl.Substring(2);
         // Protect nested root operatores given how they are not interpreted by HtppResponse.ApplyAppPathModifier (string)
         if (virtualDirectory.Length == 1 && virtualDirectory[0] == '~')
-          return System.Web.VirtualPathUtility.AppendTrailingSlash (applicationPath) + "~";
+          return System.Web.VirtualPathUtility.AppendTrailingSlash(applicationPath) + "~";
 
         if (virtualDirectory.Length > 1 && virtualDirectory[0] == '~')
-          return CombineVirtualPaths (applicationPath, "./" + virtualDirectory);
+          return CombineVirtualPaths(applicationPath, "./" + virtualDirectory);
 
-        return CombineVirtualPaths (applicationPath, virtualDirectory);
+        return CombineVirtualPaths(applicationPath, virtualDirectory);
       }
 
-      var virtualPathUriStyle = relativeUrl.Replace ('\\', '/');
+      var virtualPathUriStyle = relativeUrl.Replace('\\', '/');
       if (virtualPathUriStyle[0] == '\\' || virtualPathUriStyle[0] == '/')
         return virtualPathUriStyle;
 
-      var requestedDirectory = GetRequestedDirectory (context);
-      return System.Web.VirtualPathUtility.AppendTrailingSlash (requestedDirectory) + virtualPathUriStyle;
+      var requestedDirectory = GetRequestedDirectory(context);
+      return System.Web.VirtualPathUtility.AppendTrailingSlash(requestedDirectory) + virtualPathUriStyle;
     }
 
     private static string CombineVirtualPaths (string left, string right)
     {
-      return System.Web.VirtualPathUtility.Combine (System.Web.VirtualPathUtility.AppendTrailingSlash (left), right);
+      return System.Web.VirtualPathUtility.Combine(System.Web.VirtualPathUtility.AppendTrailingSlash(left), right);
     }
 
     private static string GetApplicationPathFromHttpContext (HttpContextBase context)
     {
-      var applicationPath = System.Web.VirtualPathUtility.AppendTrailingSlash (context.Request.ApplicationPath) ?? "/";
+      var applicationPath = System.Web.VirtualPathUtility.AppendTrailingSlash(context.Request.ApplicationPath) ?? "/";
       if (applicationPath == "/")
         return applicationPath;
 
-      Assertion.IsNotNull (context.Request.Url, "context.Request.Url != null");
-      var requestUrlAbsolutePath = System.Web.VirtualPathUtility.AppendTrailingSlash (context.Request.Url.AbsolutePath);
-      if (requestUrlAbsolutePath.StartsWith (applicationPath, StringComparison.OrdinalIgnoreCase))
-        return requestUrlAbsolutePath.Remove (applicationPath.Length - 1);
+      Assertion.IsNotNull(context.Request.Url, "context.Request.Url != null");
+      var requestUrlAbsolutePath = System.Web.VirtualPathUtility.AppendTrailingSlash(context.Request.Url.AbsolutePath);
+      if (requestUrlAbsolutePath.StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase))
+        return requestUrlAbsolutePath.Remove(applicationPath.Length - 1);
 
-      if (System.Web.VirtualPathUtility.AppendTrailingSlash (context.Request.Url.LocalPath).StartsWith (applicationPath, StringComparison.OrdinalIgnoreCase))
+      if (System.Web.VirtualPathUtility.AppendTrailingSlash(context.Request.Url.LocalPath).StartsWith(applicationPath, StringComparison.OrdinalIgnoreCase))
       {
-        var applicationPathPartsCount = applicationPath.Split (new[] { '/' }, StringSplitOptions.None).Length - 1;
+        var applicationPathPartsCount = applicationPath.Split(new[] { '/' }, StringSplitOptions.None).Length - 1;
 
         var calculatedApplicationPath = requestUrlAbsolutePath
-            .Split (new[] { '/' }, StringSplitOptions.None)
-            .Take (applicationPathPartsCount)
-            .Aggregate (new StringBuilder (requestUrlAbsolutePath.Length), (sb, part) => sb.Append (part).Append ("/"))
+            .Split(new[] { '/' }, StringSplitOptions.None)
+            .Take(applicationPathPartsCount)
+            .Aggregate(new StringBuilder(requestUrlAbsolutePath.Length), (sb, part) => sb.Append(part).Append("/"))
             .ToString();
 
-        Assertion.IsTrue (
-            requestUrlAbsolutePath.StartsWith (calculatedApplicationPath),
+        Assertion.IsTrue(
+            requestUrlAbsolutePath.StartsWith(calculatedApplicationPath),
             "Calculation of application path from request URL failed.\r\n"
             + "  Absolute path from request: {0}\r\n"
             + "  Calculated path: {1}\r\n"
@@ -180,8 +180,8 @@ namespace Remotion.Web.Utilities
         return calculatedApplicationPath;
       }
 
-      throw new InvalidOperationException (
-          string.Format (
+      throw new InvalidOperationException(
+          string.Format(
               "Cannot calculate the application path when the request URL does not start with the application path. "
               + "Possible reasons include the use of escape sequences in the path, e.g. when the application path contains whitespace.\r\n"
               + "  Absolute path from request: {0}\r\n"
@@ -192,12 +192,12 @@ namespace Remotion.Web.Utilities
 
     private static string GetRequestedDirectory (HttpContextBase context)
     {
-      Assertion.IsNotNull (context.Request.Url, "context.Request.Url != null");
+      Assertion.IsNotNull(context.Request.Url, "context.Request.Url != null");
       var absolutePath = context.Request.Url.AbsolutePath;
-      if (absolutePath.EndsWith ("/"))
+      if (absolutePath.EndsWith("/"))
         return absolutePath;
 
-      return absolutePath.Remove (absolutePath.LastIndexOf ('/'));
+      return absolutePath.Remove(absolutePath.LastIndexOf('/'));
     }
 
     /// <summary>
@@ -208,14 +208,14 @@ namespace Remotion.Web.Utilities
     /// <returns>The combined path.</returns>
     public static string Combine (string path1, string path2)
     {
-      string path = Path.Combine (path1, path2);
-      return path.Replace (@"\", "/");
+      string path = Path.Combine(path1, path2);
+      return path.Replace(@"\", "/");
     }
 
     /// <summary>
     /// Formats a URL string with URL encoding. (The <c>format</c> argument is not encoded.)
     /// </summary>
-    public static string FormatUrl (string format, params object[] args)
+    public static string FormatUrl (string format, params object[]? args)
     {
       if (args == null)
         return format;
@@ -223,27 +223,27 @@ namespace Remotion.Web.Utilities
       string[] encodedArgs = new string[args.Length];
       Encoding encoding = GetResponseEncoding();
       for (int i = 0; i < args.Length; ++i)
-        encodedArgs[i] = HttpUtility.UrlEncode (args[i].ToString(), encoding);
+        encodedArgs[i] = HttpUtility.UrlEncode(args[i].ToString()!, encoding); // TODO RM-8118: not null assertion
 
-      return string.Format (format, encodedArgs);
+      return string.Format(format, encodedArgs);
     }
 
 
     /// <summary> Adds a <paramref name="name"/>/<paramref name="value"/> pair to the <paramref name="url"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameter/*' />
-    public static string AddParameter (string url, string name, string value, Encoding encoding)
+    public static string AddParameter (string url, string? name, string value, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull ("url", url);
-      ArgumentUtility.CheckNotEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("encoding", encoding);
+      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentUtility.CheckNotEmpty("name", name);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("encoding", encoding);
 
       string delimiter;
-      bool hasQueryString = url.IndexOf ('?') != -1;
+      bool hasQueryString = url.IndexOf('?') != -1;
       if (hasQueryString)
       {
         char lastChar = url[url.Length - 1];
-        if (IsParameterDelimiter (lastChar))
+        if (IsParameterDelimiter(lastChar))
           delimiter = string.Empty;
         else
           delimiter = "&";
@@ -251,7 +251,7 @@ namespace Remotion.Web.Utilities
       else
         delimiter = "?";
 
-      value = HttpUtility.UrlEncode (value, encoding);
+      value = HttpUtility.UrlEncode(value, encoding);
       url += delimiter + (name != null ? name + "=" : "") + value;
 
       return url;
@@ -262,7 +262,7 @@ namespace Remotion.Web.Utilities
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameter/returns' />
     public static string AddParameter (string url, string name, string value)
     {
-      return AddParameter (url, name, value, GetResponseEncoding());
+      return AddParameter(url, name, value, GetResponseEncoding());
     }
 
 
@@ -272,20 +272,20 @@ namespace Remotion.Web.Utilities
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameters/*' />
     public static string AddParameters (string url, NameValueCollection queryStringCollection, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull ("queryStringCollection", queryStringCollection);
+      ArgumentUtility.CheckNotNull("queryStringCollection", queryStringCollection);
 
       for (int i = 0; i < queryStringCollection.Count; i++)
       {
-        var key = queryStringCollection.GetKey (i);
-        var values = queryStringCollection.GetValues (i);
+        var key = queryStringCollection.GetKey(i);
+        var values = queryStringCollection.GetValues(i);
         if (values == null)
         {
-          url = AddParameter (url, key, "", encoding);
+          url = AddParameter(url, key, "", encoding);
         }
         else
         {
           for (int j = 0; j < values.Length; j++)
-            url = AddParameter (url, key, values[j], encoding);
+            url = AddParameter(url, key, values[j], encoding);
         }
       }
 
@@ -299,14 +299,14 @@ namespace Remotion.Web.Utilities
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/AddParameters/returns' />
     public static string AddParameters (string url, NameValueCollection queryStringCollection)
     {
-      return AddParameters (url, queryStringCollection, GetResponseEncoding());
+      return AddParameters(url, queryStringCollection, GetResponseEncoding());
     }
 
     /// <summary> Builds a query string from the <paramref name="queryStringCollection"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/FormatQueryString/*' />
     public static string FormatQueryString (NameValueCollection queryStringCollection, Encoding encoding)
     {
-      return AddParameters (string.Empty, queryStringCollection, encoding);
+      return AddParameters(string.Empty, queryStringCollection, encoding);
     }
 
     /// <summary> Builds a query string from the <paramref name="queryStringCollection"/>. </summary>
@@ -314,61 +314,61 @@ namespace Remotion.Web.Utilities
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/FormatQueryString/returns' />
     public static string FormatQueryString (NameValueCollection queryStringCollection)
     {
-      return FormatQueryString (queryStringCollection, GetResponseEncoding());
+      return FormatQueryString(queryStringCollection, GetResponseEncoding());
     }
 
-    [Obsolete ("Use DeleteParameter (string, string, Encoding) instead. (Version: 1.18.2)")]
+    [Obsolete("Use DeleteParameter (string, string, Encoding) instead. (Version: 1.18.2)")]
     public static string DeleteParameter (string url, string name)
     {
-      return DeleteParameter (url, name, GetResponseEncoding());
+      return DeleteParameter(url, name, GetResponseEncoding());
     }
 
     /// <summary> Removes a <paramref name="name"/>/value pair from the <paramref name="url"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/DeleteParameter/*' />
     public static string DeleteParameter (string url, string name, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull ("url", url);
-      ArgumentUtility.CheckNotEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("encoding", encoding);
+      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentUtility.CheckNotEmpty("name", name);
+      ArgumentUtility.CheckNotNull("encoding", encoding);
 
-      var urlParts = url.Split (new []{'?'}, 2, StringSplitOptions.None);
+      var urlParts = url.Split(new []{'?'}, 2, StringSplitOptions.None);
       if (urlParts.Length == 1)
         return url;
       var urlPath = urlParts[0];
 
-      var queryString = HttpUtility.ParseQueryString (urlParts[1], encoding);
+      var queryString = HttpUtility.ParseQueryString(urlParts[1], encoding);
       if (queryString.Count == 0)
         return url;
 
-      queryString.Remove (name);
+      queryString.Remove(name);
 
       if (queryString.Count == 0)
         return urlPath;
       // Cannot use queryString.ToString() because of aspnet:DontUsePercentUUrlEncoding causing the URL Parameters to always be formatted as Unicode Code Points
-      return urlPath + FormatQueryString (queryString);
+      return urlPath + FormatQueryString(queryString);
     }
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/*' />
-    public static string GetParameter (string url, string name, Encoding encoding)
+    public static string? GetParameter (string url, string name, Encoding encoding)
     {
-      ArgumentUtility.CheckNotNull ("url", url);
-      ArgumentUtility.CheckNotEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("encoding", encoding);
+      ArgumentUtility.CheckNotNull("url", url);
+      ArgumentUtility.CheckNotEmpty("name", name);
+      ArgumentUtility.CheckNotNull("encoding", encoding);
 
-      var urlParts = url.Split (new []{'?'}, 2, StringSplitOptions.None);
+      var urlParts = url.Split(new []{'?'}, 2, StringSplitOptions.None);
       if (urlParts.Length == 1)
         return null;
-      var queryString = HttpUtility.ParseQueryString (urlParts[1], encoding);
+      var queryString = HttpUtility.ParseQueryString(urlParts[1], encoding);
       return queryString[name];
     }
 
     /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/param[@name="url" or @name="name"]' />
     /// <include file='..\doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/returns' />
-    public static string GetParameter (string url, string name)
+    public static string? GetParameter (string url, string name)
     {
-      return GetParameter (url, name, GetRequestEncoding());
+      return GetParameter(url, name, GetRequestEncoding());
     }
 
     /// <summary> Gets the index of the <paramref name="parameter"/> in the <paramref name="url"/>. </summary>
@@ -381,10 +381,10 @@ namespace Remotion.Web.Utilities
       int indexOfParameter;
       for (indexOfParameter = 1; indexOfParameter < url.Length; indexOfParameter++)
       {
-        indexOfParameter = url.IndexOf (parameter, indexOfParameter);
+        indexOfParameter = url.IndexOf(parameter, indexOfParameter);
         if (indexOfParameter == -1)
           break;
-        if (IsParameterDelimiter (url[indexOfParameter - 1]))
+        if (IsParameterDelimiter(url[indexOfParameter - 1]))
           break;
       }
       return indexOfParameter;
@@ -397,14 +397,14 @@ namespace Remotion.Web.Utilities
 
     private static bool HasScheme (string virtualPath)
     {
-      int colonIndex = virtualPath.IndexOf (':');
+      int colonIndex = virtualPath.IndexOf(':');
       if (colonIndex == -1)
         return false;
-      
-      int slashIndex = virtualPath.IndexOf ('/');
+
+      int slashIndex = virtualPath.IndexOf('/');
       if (slashIndex != -1)
         return (colonIndex < slashIndex);
-      
+
       return true;
     }
 

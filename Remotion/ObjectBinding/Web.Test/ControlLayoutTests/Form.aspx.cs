@@ -24,7 +24,7 @@ namespace OBWTest.ControlLayoutTests
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       //EnableAbort = false;
       EnableOutOfSequencePostBacks = true;
@@ -33,10 +33,10 @@ namespace OBWTest.ControlLayoutTests
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
-      CurrentObject.BusinessObject = (IBusinessObject) CurrentFunction.Person;
-      CurrentObject.LoadValues (IsPostBack);
+      CurrentObject.BusinessObject = (IBusinessObject)CurrentFunction.Person;
+      CurrentObject.LoadValues(IsPostBack);
     }
   }
 }

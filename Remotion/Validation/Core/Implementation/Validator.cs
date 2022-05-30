@@ -15,14 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation;
-using FluentValidation.Internal;
-using FluentValidation.Results;
 using Remotion.Utilities;
-using Remotion.Validation.Utilities;
+using Remotion.Validation.Results;
+using Remotion.Validation.Rules;
 
 namespace Remotion.Validation.Implementation
 {
@@ -36,8 +33,8 @@ namespace Remotion.Validation.Implementation
 
     public Validator (IEnumerable<IValidationRule> validationRules, Type validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validationRules", validationRules);
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validationRules", validationRules);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
       _validatedType = validatedType;
       _validationRules = validationRules.ToList().AsReadOnly();
@@ -49,72 +46,60 @@ namespace Remotion.Validation.Implementation
     }
 
     public IValidator<T> Create<T> ()
+        where T : notnull
     {
-      return new TypedValidatorDecorator<T> (this);
+      return new TypedValidatorDecorator<T>(this);
     }
 
     public ValidationResult Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      return Validate (new ValidationContext (instance, new PropertyChain(), new DefaultValidatorSelector()));
+      return Validate(new ValidationContext(instance));
     }
 
     public ValidationResult Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var failures = _validationRules.SelectMany (r => r.Validate (context)).ToList();
-      foreach (var failure in failures)
-        failure.SetValidatedInstance (context.InstanceToValidate);
+      var failures = _validationRules.SelectMany(r => r.Validate(context)).ToArray();
 
-      return new ValidationResult (failures);
+      return new ValidationResult(failures);
     }
 
-    public IValidatorDescriptor CreateDescriptor ()
+    public ValidatorDescriptor CreateDescriptor ()
     {
-      var typeToInstantiate = typeof (ValidatorDescriptor<>).MakeGenericType (_validatedType);
-      return (IValidatorDescriptor) Activator.CreateInstance (typeToInstantiate, _validationRules);
+      return new ValidatorDescriptor(_validationRules);
     }
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validatedType.IsAssignableFrom (type);
+      return _validatedType.IsAssignableFrom(type);
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      if (!CanValidateInstancesOfType (instance.GetType()))
+      if (!CanValidateInstancesOfType(instance.GetType()))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Cannot validate instances of type '{0}'. This validator can only validate instances of type '{1}'.",
                 instance.GetType().Name,
                 _validatedType.Name));
       }
 
-      return Validate (instance);
+      return Validate(instance);
     }
 
     ValidationResult IValidator.Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return Validate (context);
-    }
-
-    IEnumerator IEnumerable.GetEnumerator ()
-    {
-      return GetEnumerator();
-    }
-
-    public IEnumerator<IValidationRule> GetEnumerator ()
-    {
-      return _validationRules.GetEnumerator();
+      return Validate(context);
     }
   }
 }

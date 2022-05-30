@@ -32,11 +32,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   //  TODO: BocListItemCommand: Move long comment blocks to xml-file
   /// <summary> A <see cref="BocListItemCommand"/> defines an action the user can invoke on a datarow. </summary>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class BocListItemCommand : BocCommand
   {
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class ListItemHrefCommandInfo : BocHrefCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -49,7 +49,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ///   The URL to link to when the rendered command is clicked. The default value is 
       ///   an empty <see cref="String"/>. 
       /// </value>
-      [Description (
+      [Description(
           "The hyperlink reference of the command. Use {0} to insert the Business Object's index in the list and {1} to insert the Business Object's ID."
           )]
       public override string Href
@@ -60,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
-    [TypeConverter (typeof (ExpandableObjectConverter))]
+    [TypeConverter(typeof(ExpandableObjectConverter))]
     public class ListItemWxeFunctionCommandInfo : BocWxeFunctionCommandInfo
     {
       /// <summary> Initalizes a new instance </summary>
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
       ///   command is clicked. The default value is an empty <see cref="String"/>. 
       /// </value>
-      [Description (
+      [Description(
           "A comma separated list of parameters for the command. The following reference parameters are available: index, id, object, parent, parentproperty."
           )]
       public override string Parameters
@@ -118,27 +118,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
 
-    public new BocListItemCommandClickEventHandler Click;
-    private IBocListItemCommandState _commandState;
+    public new BocListItemCommandClickEventHandler? Click;
+    private IBocListItemCommandState? _commandState;
     private string _commandStateType = string.Empty;
     private ListItemHrefCommandInfo _hrefCommand;
     private ListItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
     public BocListItemCommand ()
-        : this (CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(CommandType.None, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
     public BocListItemCommand (CommandType defaultType)
-        : this (defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
     {
     }
 
     public BocListItemCommand (
         CommandType defaultType,
-        [CanBeNull] IWebSecurityAdapter webSecurityAdapter,
-        [CanBeNull] IWxeSecurityAdapter wxeSecurityAdapter)
-        : base (defaultType, webSecurityAdapter, wxeSecurityAdapter)
+        [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
+        [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
+        : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
       _hrefCommand = new ListItemHrefCommandInfo();
       _wxeFunctionCommand = new ListItemWxeFunctionCommandInfo();
@@ -149,8 +149,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (Click != null)
       {
-        BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs (this, column, listIndex, businessObject);
-        Click (OwnerControl, e);
+        BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs(this, column, listIndex, businessObject);
+        Click(OwnerControl, e);
       }
     }
 
@@ -180,10 +180,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         string postBackLink,
         string onClick,
         int listIndex,
-        string businessObjectID,
-        ISecurableObject securableObject)
+        string? businessObjectID,
+        ISecurableObject? securableObject)
     {
-      base.RenderBegin (writer, renderingFeatures, postBackLink, new string[] { listIndex.ToString(), businessObjectID }, onClick, securableObject);
+      base.RenderBegin(writer, renderingFeatures, postBackLink, new string?[] { listIndex.ToString(), businessObjectID }, onClick, securableObject);
     }
 
     /// <summary>
@@ -198,11 +198,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void ExecuteWxeFunction (IWxePage wxePage, int listIndex, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("wxePage", wxePage);
+      ArgumentUtility.CheckNotNull("wxePage", wxePage);
       if (!wxePage.IsReturningPostBack)
       {
-        NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndex, businessObject);
-        ExecuteWxeFunction (wxePage, parameters);
+        NameObjectCollection parameters = PrepareWxeFunctionParameters(listIndex, businessObject);
+        ExecuteWxeFunction(wxePage, parameters);
       }
     }
 
@@ -213,7 +213,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       parameters["index"] = listIndex;
       parameters["object"] = businessObject;
       if (businessObject is IBusinessObjectWithIdentity)
-        parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
+        parameters["id"] = ((IBusinessObjectWithIdentity)businessObject).UniqueIdentifier;
       else
         parameters["id"] = null;
       if (OwnerControl != null)
@@ -233,7 +233,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override HrefCommandInfo HrefCommand
     {
       get { return _hrefCommand; }
-      set { _hrefCommand = (ListItemHrefCommandInfo) value; }
+      set { _hrefCommand = (ListItemHrefCommandInfo)value; }
     }
 
     /// <summary>
@@ -244,20 +244,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public override WxeFunctionCommandInfo WxeFunctionCommand
     {
       get { return _wxeFunctionCommand; }
-      set { _wxeFunctionCommand = (ListItemWxeFunctionCommandInfo) value; }
+      set { _wxeFunctionCommand = (ListItemWxeFunctionCommandInfo)value; }
     }
 
     /// <summary> The <see cref="IBocListItemCommandState"/> to be used for evaluating whether to render the command. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public IBocListItemCommandState CommandState
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public IBocListItemCommandState? CommandState
     {
       get
       {
-        if (_commandState == null && !string.IsNullOrEmpty (_commandStateType))
+        if (_commandState == null && !string.IsNullOrEmpty(_commandStateType))
         {
-          Type type = WebTypeUtility.GetType (_commandStateType, true);
-          _commandState = (IBocListItemCommandState) Activator.CreateInstance (type, null);
+          Type type = WebTypeUtility.GetType(_commandStateType, true)!;
+          _commandState = (IBocListItemCommandState)Activator.CreateInstance(type, null)!;
         }
         return _commandState;
       }
@@ -271,11 +271,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
     /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [Description ("The IBocListItemCommandState to be used for evaluating whether to render the command.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("The IBocListItemCommandState to be used for evaluating whether to render the command.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public string CommandStateType
     {
       get { return _commandStateType; }
@@ -287,7 +287,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   ///   Represents the method that handles the <see cref="BocListItemCommand.Click"/> event
   ///   raised when clicking on a <see cref="Command"/> of type <see cref="CommandType.Event"/>.
   /// </summary>
-  public delegate void BocListItemCommandClickEventHandler (object sender, BocListItemCommandClickEventArgs e);
+  public delegate void BocListItemCommandClickEventHandler (object? sender, BocListItemCommandClickEventArgs e);
 
   /// <summary> Provides data for the <see cref="BocListItemCommand.Click"/> event. </summary>
   public class BocListItemCommandClickEventArgs : BocCommandClickEventArgs
@@ -300,8 +300,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCommandEnabledColumnDefinition column,
         int listIndex,
         IBusinessObject businessObject)
-        : base (command, businessObject)
+        : base(command, ArgumentUtility.CheckNotNull("businessObject", businessObject))
     {
+      ArgumentUtility.CheckNotNull("column", column);
+
       _column = column;
       _listIndex = listIndex;
     }
@@ -309,7 +311,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> The <see cref="BocListItemCommand"/> that caused the event. </summary>
     public new BocListItemCommand Command
     {
-      get { return (BocListItemCommand) base.Command; }
+      get { return (BocListItemCommand)base.Command; }
     }
 
     /// <summary> The <see cref="BocCommandEnabledColumnDefinition"/> to which the command belongs. </summary>
@@ -322,6 +324,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public int ListIndex
     {
       get { return _listIndex; }
+    }
+
+    /// <summary>
+    ///   The <see cref="IBusinessObject"/> on which the rendered command is applied on.
+    /// </summary>
+    public new IBusinessObject BusinessObject
+    {
+      get
+      {
+        Assertion.DebugIsNotNull(base.BusinessObject, "base.BusinessObject != null");
+        return base.BusinessObject;
+      }
     }
   }
 

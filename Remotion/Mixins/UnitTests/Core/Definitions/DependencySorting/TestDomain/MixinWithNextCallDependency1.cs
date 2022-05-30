@@ -20,6 +20,6 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting.TestDomai
 {
   public class MixinWithNextCallDependency1 : Mixin<object, INextCallDependency1>, INextCallDependency2
   {
-    
+
   }
 }

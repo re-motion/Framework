@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 #pragma warning disable 612,618
   [BindableObjectProviderForDeleteObjectService]
   [BindableObjectBaseClass]
-  [DeleteObjectServiceType (typeof (IDeleteObjectServiceOnType))]
+  [DeleteObjectServiceType(typeof(IDeleteObjectServiceOnType))]
   public class ClassWithDeleteObjectServiceTypeAttribute : ManualBusinessObject
   {
     public ClassWithDeleteObjectServiceTypeAttribute ()

@@ -16,6 +16,8 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Mixins.CodeGeneration;
+using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
 
@@ -23,24 +25,24 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
 {
   public abstract class CodeGenerationBaseTest
   {
-    private IPipeline _previousDefaultPipeline;
-
     [SetUp]
     public virtual void SetUp ()
     {
-      _previousDefaultPipeline = PipelineRegistry.DefaultPipeline;
-      PipelineRegistry.SetDefaultPipeline (Pipeline);
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      PipelineRegistry.SetDefaultPipeline (_previousDefaultPipeline);
     }
 
-    protected IPipelineRegistry PipelineRegistry
+    protected ObjectFactoryAdapter ObjectFactory
     {
-      get { return SetUpFixture.PipelineRegistry; }
+      get { return new ObjectFactoryAdapter(SafeServiceLocator.Current.GetInstance<IObjectFactoryImplementation>()); }
+    }
+
+    protected ITypeFactoryImplementation TypeFactory
+    {
+      get { return SafeServiceLocator.Current.GetInstance<ITypeFactoryImplementation>(); }
     }
 
     protected IPipeline Pipeline
@@ -51,34 +53,34 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     protected void AddSavedAssembly (string assemblyPath)
     {
       ArgumentUtility.CheckNotNullOrEmpty("assemblyPath", assemblyPath);
-      SetUpFixture.AddSavedAssembly (assemblyPath);
+      SetUpFixture.AddSavedAssembly(assemblyPath);
     }
 
     protected Type CreateMixedType (Type targetType, params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("mixinTypes", mixinTypes);
-      
-      using (MixinConfiguration.BuildNew().ForClass (targetType).AddMixins (mixinTypes).EnterScope())
+      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
+
+      using (MixinConfiguration.BuildNew().ForClass(targetType).AddMixins(mixinTypes).EnterScope())
       {
-        return TypeFactory.GetConcreteType (targetType);
+        return TypeFactory.GetConcreteType(targetType);
       }
     }
 
     protected T CreateMixedObject<T> (params Type[] mixinTypes)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("mixinTypes", mixinTypes);
+      ArgumentUtility.CheckNotNullOrEmpty("mixinTypes", mixinTypes);
 
-      using (MixinConfiguration.BuildNew().ForClass<T> ().AddMixins (mixinTypes).EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass<T>().AddMixins(mixinTypes).EnterScope())
       {
-        return ObjectFactory.Create<T> (ParamList.Empty);
+        return ObjectFactory.Create<T>(ParamList.Empty);
       }
     }
 
     protected Type CreateGeneratedTypeWithoutMixins (Type targetType)
     {
-      using (MixinConfiguration.BuildNew ().ForClass (targetType).Clear ().EnterScope ())
+      using (MixinConfiguration.BuildNew().ForClass(targetType).Clear().EnterScope())
       {
-        return TypeGenerationHelper.ForceTypeGeneration (targetType);
+        return TypeGenerationHelper.ForceTypeGeneration(targetType);
       }
     }
 

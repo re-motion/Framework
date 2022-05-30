@@ -29,7 +29,7 @@ namespace Remotion.Development.Web.UnitTesting.Infrastructure
 
     public IResourceUrl CreateThemedResourceUrl (ResourceType resourceType, string relativeUrl)
     {
-      return new StaticResourceUrl ("/" + relativeUrl);
+      return new StaticResourceUrl("/" + relativeUrl);
     }
   }
 }

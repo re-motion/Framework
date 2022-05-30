@@ -24,6 +24,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
+using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -39,39 +40,40 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       DeleteStateCombinationButtonText,
     }
 
-    private static readonly object s_deleteEvent = new object ();
+    private static readonly object s_deleteEvent = new object();
 
     public override IBusinessObjectDataSourceControl DataSource
     {
       get { return CurrentObject; }
     }
 
-    protected StateCombination CurrentStateCombination
+    public StateCombination CurrentStateCombination
     {
-      get { return (StateCombination) CurrentObject.BusinessObject; }
+      get { return Assertion.IsNotNull((StateCombination?)CurrentObject.BusinessObject, "CurrentStateCombination has not been set."); }
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      DeleteStateDefinitionButton.Icon = new IconInfo (
-          ResourceUrlFactory.CreateThemedResourceUrl (typeof (EditStateCombinationControl), ResourceType.Image, "DeleteItem.gif").GetUrl());
+      DeleteStateDefinitionButton.Icon = new IconInfo(
+          ResourceUrlFactory.CreateThemedResourceUrl(typeof(EditStateCombinationControl), ResourceType.Image, "sprite.svg#DeleteItem").GetUrl());
       DeleteStateDefinitionButton.Icon.AlternateText =
-          GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.DeleteStateCombinationButtonText);
+          GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.DeleteStateCombinationButtonText);
     }
 
     public override void LoadValues (bool interim)
     {
-      base.LoadValues (interim);
+      base.LoadValues(interim);
 
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
         if (!interim)
           FillStateDefinitionField();
 
-        var currentStateDefinition = GetStateDefinition (CurrentStateCombination);
-        StateDefinitionField.LoadUnboundValue (currentStateDefinition, interim);
+        var currentStateDefinition = GetStateDefinition(CurrentStateCombination);
+        StateDefinitionField.LoadUnboundValue(currentStateDefinition, interim);
         StateDefinitionContainer.Visible = true;
       }
       else
@@ -83,33 +85,34 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       RequiredStateCombinationValidator.ErrorMessage =
-          GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
-      
-      base.OnPreRender (e);
+          GetResourceManager(typeof(ResourceIdentifier)).GetString(ResourceIdentifier.RequiredStateCombinationValidatorErrorMessage);
+
+      base.OnPreRender(e);
     }
 
     private void FillStateDefinitionField ()
     {
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       var stateProperties = CurrentStateCombination.Class.StateProperties;
       if (stateProperties.Count > 1)
-        throw new NotSupportedException ("Only classes with a zero or one StatePropertyDefinition are supported.");
+        throw new NotSupportedException("Only classes with a zero or one StatePropertyDefinition are supported.");
 
-      var possibleStateDefinitions = new List<StateDefinition> ();
+      var possibleStateDefinitions = new List<StateDefinition>();
       if (stateProperties.Count > 0)
-        possibleStateDefinitions.AddRange (stateProperties[0].DefinedStates);
-      StateDefinitionField.SetBusinessObjectList (possibleStateDefinitions);
+        possibleStateDefinitions.AddRange(stateProperties[0].DefinedStates);
+      StateDefinitionField.SetBusinessObjectList(possibleStateDefinitions);
     }
 
-    private StateDefinition GetStateDefinition (StateCombination stateCombination)
+    private StateDefinition? GetStateDefinition (StateCombination stateCombination)
     {
       return stateCombination.GetStates().SingleOrDefault();
     }
 
     public override bool Validate ()
     {
-      bool isValid = base.Validate ();
+      bool isValid = base.Validate();
 
-      isValid &= ValidateStateCombination ();
+      isValid &= ValidateStateCombination();
 
       return isValid;
     }
@@ -117,6 +120,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     private bool ValidateStateCombination ()
     {
       bool isValid = true;
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
         RequiredStateCombinationValidator.Validate();
@@ -127,13 +131,16 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     public override bool SaveValues (bool interim)
     {
-      var hasSaved = base.SaveValues (interim);
+      var hasSaved = base.SaveValues(interim);
 
+      Assertion.IsNotNull(CurrentStateCombination.Class, "CurrentStateCombination.Class != null");
       if (CurrentStateCombination.Class.StateProperties.Count == 1)
       {
-        var stateDefinition = (StateDefinition) StateDefinitionField.Value;
+        var stateDefinition = (StateDefinition?)StateDefinitionField.Value;
+        StateDefinitionField.IsDirty = false;
         CurrentStateCombination.ClearStates();
-        CurrentStateCombination.AttachState (stateDefinition);
+        if (stateDefinition != null)
+          CurrentStateCombination.AttachState(stateDefinition);
       }
 
       return hasSaved;
@@ -141,20 +148,20 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void DeleteStateDefinitionButton_Click (object sender, EventArgs e)
     {
-      var handler = (EventHandler) Events[s_deleteEvent];
+      var handler = (EventHandler?)Events[s_deleteEvent];
       if (handler != null)
-        handler (this, EventArgs.Empty);
+        handler(this, EventArgs.Empty);
     }
 
     public event EventHandler Delete
     {
-      add { Events.AddHandler (s_deleteEvent, value); }
-      remove { Events.RemoveHandler (s_deleteEvent, value); }
+      add { Events.AddHandler(s_deleteEvent, value); }
+      remove { Events.RemoveHandler(s_deleteEvent, value); }
     }
 
     protected void RequiredStateCombinationValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = !string.IsNullOrEmpty (StateDefinitionField.BusinessObjectUniqueIdentifier);
+      args.IsValid = !string.IsNullOrEmpty(StateDefinitionField.BusinessObjectUniqueIdentifier);
     }
   }
 }

@@ -15,27 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
 {
   [TestFixture]
   public class HasComposedInterfaceMarkerAnalyzerTest
   {
-    private MockRepository _mockRepository;
-    private MixinConfigurationBuilder _configurationBuilderMock;
+    private Mock<MixinConfigurationBuilder> _configurationBuilderMock;
 
     private HasComposedInterfaceMarkerAnalyzer _analyzer;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder>((MixinConfiguration) null);
+      _configurationBuilderMock = new Mock<MixinConfigurationBuilder>(MockBehavior.Strict, (MixinConfiguration)null);
 
       _analyzer = new HasComposedInterfaceMarkerAnalyzer();
     }
@@ -43,42 +41,37 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
     [Test]
     public void Analyze_IncludesClasses_ImplementingIHasComposedInterface ()
     {
-      var classBuilderMock = MockRepository.GenerateStrictMock<ClassContextBuilder> (typeof (int));
+      var classBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, typeof(int));
 
-      _configurationBuilderMock.Expect (mock => mock.ForClass (typeof (ClassWithHasComposedInterfaces))).Return (classBuilderMock);
-      _configurationBuilderMock.Replay ();
+      _configurationBuilderMock.Setup(mock => mock.ForClass(typeof(ClassWithHasComposedInterfaces))).Returns(classBuilderMock.Object).Verifiable();
 
       classBuilderMock
-          .Expect (mock => mock.AddComposedInterfaces (
-              typeof (ClassWithHasComposedInterfaces.IComposedInterface1), 
-              typeof (ClassWithHasComposedInterfaces.IComposedInterface2)))
-          .Return (null);
-      classBuilderMock.Replay ();
+          .Setup(mock => mock.AddComposedInterfaces(
+              typeof(ClassWithHasComposedInterfaces.IComposedInterface1),
+              typeof(ClassWithHasComposedInterfaces.IComposedInterface2)))
+          .Returns((ClassContextBuilder)null)
+          .Verifiable();
 
-      _analyzer.Analyze (typeof (ClassWithHasComposedInterfaces), _configurationBuilderMock);
+      _analyzer.Analyze(typeof(ClassWithHasComposedInterfaces), _configurationBuilderMock.Object);
 
-      _configurationBuilderMock.VerifyAllExpectations ();
-      classBuilderMock.VerifyAllExpectations ();
+      _configurationBuilderMock.Verify();
+      classBuilderMock.Verify();
     }
 
     [Test]
     public void Analyze_IgnoresClasses_ImplementingIHasComposedInterfaceWithGenericParameters ()
     {
-      _configurationBuilderMock.Replay ();
+      _analyzer.Analyze(typeof(BaseClassWithHasComposedInterface<>), _configurationBuilderMock.Object);
 
-      _analyzer.Analyze (typeof (BaseClassWithHasComposedInterface<>), _configurationBuilderMock);
-
-      _configurationBuilderMock.AssertWasNotCalled (mock => mock.ForClass (Arg<Type>.Is.Anything));
+      _configurationBuilderMock.Verify(mock => mock.ForClass(It.IsAny<Type>()), Times.Never());
     }
 
     [Test]
     public void Analyze_IgnoresClasses_NotImplementingIHasComposedInterface ()
     {
-      _configurationBuilderMock.Replay ();
+      _analyzer.Analyze(typeof(object), _configurationBuilderMock.Object);
 
-      _analyzer.Analyze (typeof (object), _configurationBuilderMock);
-
-      _configurationBuilderMock.VerifyAllExpectations ();
+      _configurationBuilderMock.Verify();
     }
   }
 }

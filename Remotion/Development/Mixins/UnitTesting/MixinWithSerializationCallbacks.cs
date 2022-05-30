@@ -24,50 +24,50 @@ namespace Remotion.Development.Mixins.UnitTesting
   [Serializable]
   public class MixinWithSerializationCallbacks : Mixin<object>, IDeserializationCallback
   {
-    private static ISerializationEventReceiver s_receiver;
+    private static ISerializationEventReceiver? s_receiver;
 
     public static void SetStaticReceiver (ISerializationEventReceiver receiver)
     {
       s_receiver = receiver;
     }
 
-    protected virtual ISerializationEventReceiver StaticReceiver
+    protected virtual ISerializationEventReceiver? StaticReceiver
     {
       get { return s_receiver; }
     }
 
-    public void OnDeserialization (object sender)
+    public void OnDeserialization (object? sender)
     {
       if (StaticReceiver != null)
-        StaticReceiver.OnDeserialization (sender);
+        StaticReceiver.OnDeserialization(sender);
     }
 
     [OnDeserialized]
     public void OnDeserialized (StreamingContext context)
     {
       if (StaticReceiver != null)
-        StaticReceiver.OnDeserialized (context);
+        StaticReceiver.OnDeserialized(context);
     }
 
     [OnDeserializing]
     public void OnDeserializing (StreamingContext context)
     {
       if (StaticReceiver != null)
-        StaticReceiver.OnDeserializing (context);
+        StaticReceiver.OnDeserializing(context);
     }
 
     [OnSerialized]
     public void OnSerialized (StreamingContext context)
     {
       if (StaticReceiver != null)
-        StaticReceiver.OnSerialized (context);
+        StaticReceiver.OnSerialized(context);
     }
 
     [OnSerializing]
     public void OnSerializing (StreamingContext context)
     {
       if (StaticReceiver != null)
-        StaticReceiver.OnSerializing (context);
+        StaticReceiver.OnSerializing(context);
     }
   }
 }

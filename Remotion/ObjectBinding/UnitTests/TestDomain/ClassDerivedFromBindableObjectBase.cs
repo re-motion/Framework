@@ -23,13 +23,13 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   [Serializable]
   public class ClassDerivedFromBindableObjectBase : BindableObjectBase
   {
-    public ClassDerivedFromBindableObjectBase()
+    public ClassDerivedFromBindableObjectBase ()
     {
     }
 
     public ClassDerivedFromBindableObjectBase (IBindableObjectBaseImplementation implementation)
     {
-      PrivateInvoke.SetNonPublicField (this, "_implementation", implementation);
+      PrivateInvoke.SetNonPublicField(this, "_implementation", implementation);
     }
 
     public string String { get; set; }

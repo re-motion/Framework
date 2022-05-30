@@ -40,10 +40,10 @@ namespace Remotion.Xml.UnitTests
     [Test]
     public void GetSchemaWithSchemaFile ()
     {
-      SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
-      XmlSchema xmlSchema = schemaBaseMock.LoadSchema ("SchemaLoaderBaseMock.xsd");
-      Assert.That (xmlSchema, Is.Not.Null);
-      Assert.That (xmlSchema.TargetNamespace, Is.EqualTo ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock"));
+      SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
+      XmlSchema xmlSchema = schemaBaseMock.LoadSchema("SchemaLoaderBaseMock.xsd");
+      Assert.That(xmlSchema, Is.Not.Null);
+      Assert.That(xmlSchema.TargetNamespace, Is.EqualTo("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock"));
     }
 
     [Test]
@@ -51,27 +51,27 @@ namespace Remotion.Xml.UnitTests
     {
       try
       {
-        SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
-        schemaBaseMock.LoadSchema ("invalidSchemaFileName.xsd");
+        SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
+        schemaBaseMock.LoadSchema("invalidSchemaFileName.xsd");
 
-        Assert.Fail ("ApplicationException was expected.");
+        Assert.Fail("ApplicationException was expected.");
       }
       catch (ApplicationException ex)
       {
-        string expectedMessage = string.Format (
-            "Error loading schema resource 'invalidSchemaFileName.xsd' from assembly '{0}'.", typeof (SchemaLoaderBaseMock).Assembly.FullName);
+        string expectedMessage = string.Format(
+            "Error loading schema resource 'invalidSchemaFileName.xsd' from assembly '{0}'.", typeof(SchemaLoaderBaseMock).Assembly.FullName);
 
-        Assert.That (ex.Message, Is.EqualTo (expectedMessage));
+        Assert.That(ex.Message, Is.EqualTo(expectedMessage));
       }
     }
 
     [Test]
     public void GetSchemaSet ()
     {
-      SchemaLoaderBase schemaBaseMock = new SchemaLoaderBaseMock ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
-      XmlSchemaSet xmlSchemaSet = schemaBaseMock.LoadSchemaSet ();
-      Assert.That (xmlSchemaSet.Count, Is.EqualTo (1));
-      Assert.That (xmlSchemaSet.Contains ("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock"), Is.True);
+      SchemaLoaderBase schemaBaseMock = new SchemaLoaderBaseMock("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock");
+      XmlSchemaSet xmlSchemaSet = schemaBaseMock.LoadSchemaSet();
+      Assert.That(xmlSchemaSet.Count, Is.EqualTo(1));
+      Assert.That(xmlSchemaSet.Contains("http://www.re-motion.org/Core/Xml/Test/SchemaLoaderBaseMock"), Is.True);
     }
   }
 }

@@ -29,8 +29,8 @@ namespace Remotion.Web.UI.Controls
   /// </remarks>
   public interface IControlItem
   {
-    IControl OwnerControl { get; set; }
-    string ItemID { get; }
+    IControl? OwnerControl { get; set; }
+    string? ItemID { get; }
     void LoadResources ([NotNull] IResourceManager resourceManager, [NotNull] IGlobalizationService globalizationService);
   }
 }

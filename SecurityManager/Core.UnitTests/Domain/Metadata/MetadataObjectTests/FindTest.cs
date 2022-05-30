@@ -25,19 +25,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
   [TestFixture]
   public class FindTest : DomainTest
   {
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp ();
-      
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates (ClientTransaction.CreateRootTransaction());
+      base.OneTimeSetUp();
+
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      dbFixtures.CreateAndCommitSecurableClassDefinitionWithStates(ClientTransaction.CreateRootTransaction());
     }
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope();
     }
 
     [Test]
@@ -45,9 +45,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     {
       string metadataObjectID = "b8621bc9-9ab3-4524-b1e4-582657d6b420";
 
-      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find(metadataObjectID);
 
-      Assert.IsInstanceOf (typeof (SecurableClassDefinition), metadataObject);
+      Assert.IsInstanceOf(typeof(SecurableClassDefinition), metadataObject);
     }
 
     [Test]
@@ -55,9 +55,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     {
       string metadataObjectID = "38777218-cd4d-45ca-952d-c10b1104996a";
 
-      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find(metadataObjectID);
 
-      Assert.That (metadataObject, Is.Null);
+      Assert.That(metadataObject, Is.Null);
     }
 
     [Test]
@@ -65,12 +65,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     {
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|2";
 
-      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find(metadataObjectID);
 
-      Assert.IsInstanceOf (typeof (StateDefinition), metadataObject);
-      StateDefinition state = (StateDefinition) metadataObject;
-      Assert.That (state.Name, Is.EqualTo ("Reaccounted"));
-      Assert.That (state.Value, Is.EqualTo (2));
+      Assert.IsInstanceOf(typeof(StateDefinition), metadataObject);
+      StateDefinition state = (StateDefinition)metadataObject;
+      Assert.That(state.Name, Is.EqualTo("Reaccounted"));
+      Assert.That(state.Value, Is.EqualTo(2));
     }
 
     [Test]
@@ -78,9 +78,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     {
       string metadataObjectID = "9e689c4c-3758-436e-ac86-23171289fa5e|42";
 
-      MetadataObject metadataObject = MetadataObject.Find (metadataObjectID);
+      MetadataObject metadataObject = MetadataObject.Find(metadataObjectID);
 
-      Assert.That (metadataObject, Is.Null);
+      Assert.That(metadataObject, Is.Null);
     }
   }
 }

@@ -26,17 +26,17 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Combines one or more <see cref="IValidationTypeFilter"/>-instances. When calling <see cref="IsValidatableType"/>, all combined 
   /// <see cref="IValidationTypeFilter"/> instances must confirm that a <see cref="Type"/> can be used 
-  /// as the <see cref="IComponentValidationCollector.ValidatedType"/> of a <see cref="IComponentValidationCollector"/>.
+  /// as the <see cref="IValidationRuleCollector.ValidatedType"/> of a <see cref="IValidationRuleCollector"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundValidationTypeFilter : IValidationTypeFilter
   {
     private readonly ReadOnlyCollection<IValidationTypeFilter> _validationTypeFilters;
 
     public CompoundValidationTypeFilter (IEnumerable<IValidationTypeFilter> validationTypeFilters)
     {
-      ArgumentUtility.CheckNotNull ("validationTypeFilters", validationTypeFilters);
+      ArgumentUtility.CheckNotNull("validationTypeFilters", validationTypeFilters);
 
       _validationTypeFilters = validationTypeFilters.ToList().AsReadOnly();
     }
@@ -48,9 +48,9 @@ namespace Remotion.Validation.Implementation
 
     public bool IsValidatableType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validationTypeFilters.All (f => f.IsValidatableType (type));
+      return _validationTypeFilters.All(f => f.IsValidatableType(type));
     }
   }
 }

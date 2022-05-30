@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
     {
       var factory = new SqlCommentScriptElementFactory();
 
-      var result = factory.GetCommentElement ("test");
+      var result = factory.GetCommentElement("test");
 
-      Assert.That (result.Statement, Is.EqualTo ("-- test"));
+      Assert.That(result.Statement, Is.EqualTo("-- test"));
     }
   }
 }

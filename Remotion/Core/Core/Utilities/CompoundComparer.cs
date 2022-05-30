@@ -32,31 +32,31 @@ namespace Remotion.Utilities
   {
     private readonly IComparer<T>[] _comparers;
 
-    public CompoundComparer (params IComparer<T>[] comparers) 
-        : this ((IEnumerable<IComparer<T>>) ArgumentUtility.CheckNotNull ("comparers", comparers))
+    public CompoundComparer (params IComparer<T>[] comparers)
+        : this((IEnumerable<IComparer<T>>)ArgumentUtility.CheckNotNull("comparers", comparers))
     {
     }
 
     public CompoundComparer (IEnumerable<IComparer<T>> comparers)
     {
-      ArgumentUtility.CheckNotNull ("comparers", comparers);
+      ArgumentUtility.CheckNotNull("comparers", comparers);
 
       _comparers = comparers.ToArray();
     }
 
     public ReadOnlyCollection<IComparer<T>> Comparers
     {
-      get { return Array.AsReadOnly (_comparers); }
+      get { return Array.AsReadOnly(_comparers); }
     }
 
-    public int Compare (T x, T y)
+    public int Compare (T? x, T? y)
     {
       // This is not a LINQ query for performance reasons.
 
       // ReSharper disable LoopCanBeConvertedToQuery
       for (int i = 0; i < _comparers.Length; ++i)
       {
-        var comparisonResult = _comparers[i].Compare (x, y);
+        var comparisonResult = _comparers[i].Compare(x, y);
         if (comparisonResult != 0)
           return comparisonResult;
       }

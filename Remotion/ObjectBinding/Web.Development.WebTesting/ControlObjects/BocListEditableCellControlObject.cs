@@ -31,35 +31,35 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly BocListCellFunctionality _impl;
 
     public BocListEditableCellControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
-      _impl = new BocListCellFunctionality (context);
+      _impl = new BocListCellFunctionality(context);
     }
 
     /// <inheritdoc/>
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _impl.GetControl (controlSelectionCommand);
+      return _impl.GetControl(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
-    public TControlObject GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
+    public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _impl.GetControlOrNull (controlSelectionCommand);
+      return _impl.GetControlOrNull(controlSelectionCommand);
     }
 
     /// <inheritdoc/>
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _impl.HasControl (controlSelectionCommand);
+      return _impl.HasControl(controlSelectionCommand);
     }
   }
 }

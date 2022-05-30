@@ -26,7 +26,7 @@ namespace Remotion.ObjectBinding
   ///   Use this Attribute if you need to have one value of an enum that represents the undefined value.
   ///   This value is then mapped the undefined value for displaying in Business Object Controls controls.
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Enum, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Enum, AllowMultiple = false, Inherited = true)]
   public sealed class UndefinedEnumValueAttribute : Attribute
   {
     private readonly object _value;
@@ -37,8 +37,8 @@ namespace Remotion.ObjectBinding
     /// <param name="value">The enum value that should be the undefined value. Must not be <see langword="null"/>.</param>
     public UndefinedEnumValueAttribute (object value)
     {
-      ArgumentUtility.CheckNotNullAndType<Enum> ("value", value);
-      ArgumentUtility.CheckValidEnumValue ("value", (Enum) value);
+      ArgumentUtility.CheckNotNullAndType<Enum>("value", value);
+      ArgumentUtility.CheckValidEnumValue("value", (Enum)value);
 
       _value = value;
     }
@@ -50,7 +50,7 @@ namespace Remotion.ObjectBinding
     // http://connect.microsoft.com/VisualStudio/feedback/details/296032/customattributedata-throws-when-attribute-has-a-public-enum-property 
     public Enum GetValue ()
     {
-      return (Enum) _value;
+      return (Enum)_value;
     }
   }
 }

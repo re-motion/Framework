@@ -22,6 +22,6 @@ namespace Remotion.SecurityManager.Domain
   public interface IRevisionKey
   {
     Guid GlobalKey { get; }
-    string LocalKey { get; }
+    string? LocalKey { get; }
   }
 }

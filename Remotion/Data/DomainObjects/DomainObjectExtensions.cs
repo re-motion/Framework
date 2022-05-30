@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
@@ -36,14 +37,15 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The <paramref name="domainObjectOrNull"/>'s <see cref="DomainObject.ID"/>, or <see langword="null" /> if <paramref name="domainObjectOrNull"/>
     /// is <see langword="null" />.</returns>
     [CanBeNull]
-    [ContractAnnotation ("null => null; notnull => notnull")]
-    public static ObjectID GetSafeID ([CanBeNull] this IDomainObject domainObjectOrNull)
+    [ContractAnnotation("null => null; notnull => notnull")]
+    [return: NotNullIfNotNull("domainObjectOrNull")]
+    public static ObjectID? GetSafeID ([CanBeNull] this IDomainObject? domainObjectOrNull)
     {
       if (domainObjectOrNull == null)
         return null;
 
       var objectID = domainObjectOrNull.ID;
-      Assertion.DebugIsNotNull (objectID, "domainObjectOrNull.ID must not be null.");
+      Assertion.DebugIsNotNull(objectID, "domainObjectOrNull.ID must not be null.");
 
       return domainObjectOrNull.ID;
     }
@@ -55,13 +57,13 @@ namespace Remotion.Data.DomainObjects
     /// <typeparam name="T">The type to be used for the returned <see cref="IDomainObjectHandle{T}"/>.</typeparam>
     /// <param name="domainObject">The <see cref="IDomainObject"/> to get a handle for. Must not be <see langword="null" />.</param>
     /// <returns>A typed handle to the given <paramref name="domainObject"/>.</returns>
-    [NotNull]
-    public static IDomainObjectHandle<T> GetHandle<T> ([NotNull] this T domainObject) where T : IDomainObject
+    [JetBrains.Annotations.NotNull]
+    public static IDomainObjectHandle<T> GetHandle<T> ([JetBrains.Annotations.NotNull] this T domainObject) where T : IDomainObject
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       var objectID = domainObject.ID;
-      Assertion.DebugIsNotNull (objectID, "domainObject.ID must not be null.");
+      Assertion.DebugIsNotNull(objectID, "domainObject.ID must not be null.");
 
       return objectID.GetHandle<T>();
     }
@@ -78,8 +80,9 @@ namespace Remotion.Data.DomainObjects
     /// <returns>A typed handle to the given <paramref name="domainObjectOrNull"/>, or <see langword="null" /> if <paramref name="domainObjectOrNull"/>
     /// is <see langword="null" />.</returns>
     [CanBeNull]
-    [ContractAnnotation ("null => null; notnull => notnull")]
-    public static IDomainObjectHandle<T> GetSafeHandle<T> ([CanBeNull] this T domainObjectOrNull) where T : class, IDomainObject
+    [ContractAnnotation("null => null; notnull => notnull")]
+    [return: NotNullIfNotNull("domainObjectOrNull")]
+    public static IDomainObjectHandle<T>? GetSafeHandle<T> ([CanBeNull] this T? domainObjectOrNull) where T : class, IDomainObject
     {
       return domainObjectOrNull != null ? domainObjectOrNull.GetHandle() : null;
     }
@@ -87,12 +90,13 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Gets the current state of the <paramref name="domainObject"/> in the <see cref="ClientTransaction.ActiveTransaction"/>.
     /// </summary>
-    /// <param name="domainObject">The <see cref="IDomainObject"/> to get the <see cref="StateType"/> for. Must not be <see langword="null" />.</param>
-    public static StateType GetState ([NotNull] this IDomainObject domainObject)
+    /// <param name="domainObject">The <see cref="IDomainObject"/> to get the <see cref="DomainObjectState"/> for. Must not be <see langword="null" />.</param>
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
+    public static DomainObjectState GetState ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
-      var defaultTransactionContext = GetDefaultTransactionContext (domainObject);
+      var defaultTransactionContext = GetDefaultTransactionContext(domainObject);
       return defaultTransactionContext.State;
     }
 
@@ -103,11 +107,11 @@ namespace Remotion.Data.DomainObjects
     /// <value>The timestamp of the object.</value>
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
     [CanBeNull]
-    public static object GetTimestamp ([NotNull] this IDomainObject domainObject)
+    public static object? GetTimestamp ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
-      var defaultTransactionContext = GetDefaultTransactionContext (domainObject);
+      var defaultTransactionContext = GetDefaultTransactionContext(domainObject);
       return defaultTransactionContext.Timestamp;
     }
 
@@ -124,21 +128,21 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="IDomainObject.RootTransaction"/>. The <see cref="ClientTransaction.ActiveTransaction"/> is usually the 
     /// <see cref="ClientTransaction.LeafTransaction"/>, but it can be changed by using <see cref="ClientTransaction"/> APIs.
     /// </remarks>
-    [NotNull]
-    public static IDomainObjectTransactionContext GetDefaultTransactionContext ([NotNull] this IDomainObject domainObject)
+    [JetBrains.Annotations.NotNull]
+    public static IDomainObjectTransactionContext GetDefaultTransactionContext ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var rootTransaction = domainObject.RootTransaction;
-      Assertion.DebugAssert (rootTransaction != null, "domainObject.RootTransaction must not be null.");
+      Assertion.DebugAssert(rootTransaction != null, "domainObject.RootTransaction must not be null.");
 
       return domainObject.TransactionContext[rootTransaction.ActiveTransaction];
     }
 
     /// <summary>
     /// Ensures that the <paramref name="domainObject"/> is included in the commit set of its <see cref="ClientTransaction.ActiveTransaction"/>. 
-    /// The object may not be in state <see cref="StateType.Deleted"/>, and if its state is <see cref="StateType.NotLoadedYet"/>, 
-    /// this method loads the object's data.
+    /// The object may not have it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set,
+    /// and if its <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag is set, this method loads the object's data.
     /// </summary>
     /// <param name="domainObject">The <see cref="IDomainObject"/> to register for commit. Must not be <see langword="null" />.</param>
     /// <exception cref="ObjectDeletedException">The object has already been deleted.</exception>
@@ -148,32 +152,36 @@ namespace Remotion.Data.DomainObjects
     /// This operation affects the <see cref="DomainObject"/> as follows (in the default transaction):
     /// <list type="table">
     /// <item>
-    /// <term><see cref="StateType.NotLoadedYet"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag is set</term>
     /// <description>The object is loaded and then handled according to its new state, see below.</description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.Unchanged"/></term>
-    /// <description>The object's state is modified to be <see cref="StateType.Changed"/>, even though no property value is actually changed. The 
-    /// object will then behave like any <see cref="StateType.Changed"/> object. On commit (of a root transaction), it is checked for concurrency 
-    /// violations, and its timestamp is updated.</description>
-    /// </item>
-    /// <item>
-    /// <term><see cref="StateType.Changed"/></term>
-    /// <description>The object's state is modified so that even when all changed properties are reset to their original values (so that it would
-    /// usually become <see cref="StateType.Unchanged"/> again), it still remains <see cref="StateType.Changed"/>. In that case, the object will 
-    /// behave like in the <see cref="StateType.Unchanged"/> case above.
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag is set</term>
+    /// <description>
+    /// The object's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag will be set, even though no property value is
+    /// actually changed. The object will then behave like any object with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/>
+    /// flag set. On commit (of a root transaction), it is checked for concurrency violations, and its timestamp is updated.
     /// </description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.New"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag is set</term>
+    /// <description>
+    /// The object's state is modified so that even when all changed properties are reset to their original values (so that it would
+    /// usually have it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/> flag cleared), the flag remains set.
+    /// In that case, the object will behave as if the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> had been set
+    /// prior to calling <see cref="RegisterForCommit"/> (see above).
+    /// </description>
+    /// </item>
+    /// <item>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNew"/> flag is set</term>
     /// <description>The method has no effect.</description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.Deleted"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/> flag is set</term>
     /// <description>An <see cref="ObjectDeletedException"/> is thrown.</description>
     /// </item>
     /// <item>
-    /// <term><see cref="StateType.Invalid"/></term>
+    /// <term><see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag is set</term>
     /// <description>An <see cref="ObjectInvalidException"/> is thrown.</description>
     /// </item>
     /// </list>
@@ -183,9 +191,9 @@ namespace Remotion.Data.DomainObjects
     /// API are also rolled back.
     /// </para>
     /// </remarks>
-    public static void RegisterForCommit ([NotNull] this IDomainObject domainObject)
+    public static void RegisterForCommit ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       defaultTransactionContext.RegisterForCommit();
@@ -199,9 +207,9 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
     /// <exception cref="ObjectsNotFoundException">No data could be loaded for this <see cref="DomainObject"/> because the object was not
     /// found in the data source.</exception>
-    public static void EnsureDataAvailable ([NotNull] this IDomainObject domainObject)
+    public static void EnsureDataAvailable ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       defaultTransactionContext.EnsureDataAvailable();
@@ -215,9 +223,9 @@ namespace Remotion.Data.DomainObjects
     /// <returns><see langword="true" /> if the object's data is now available in the <see cref="ClientTransaction"/>, <see langword="false" /> if the 
     /// data couldn't be found.</returns>
     /// <exception cref="ObjectInvalidException">The object is invalid in the transaction.</exception>
-    public static bool TryEnsureDataAvailable ([NotNull] this IDomainObject domainObject)
+    public static bool TryEnsureDataAvailable ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
-      ArgumentUtility.DebugCheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
       var defaultTransactionContext = domainObject.GetDefaultTransactionContext();
       return defaultTransactionContext.TryEnsureDataAvailable();

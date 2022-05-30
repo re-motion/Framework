@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain.Mixins;
@@ -25,34 +26,38 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
   public class DocumentMixinTest
   {
     private DocumentMixin _mixin;
-    private ITenantBoundObject _targetStub;
+    private Mock<ITenantBoundObject> _targetStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<DocumentMixin, ITenantBoundObject> (out _targetStub);
+      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<DocumentMixin, ITenantBoundObject>(out _targetStub);
     }
-    
+
     [Test]
     public void TargetCommitting_ReplacesNullTitle ()
     {
-      _targetStub.Tenant = "TheTenant";
-      Assert.That (_mixin.Title, Is.Null);
+      _targetStub.SetupProperty(_ => _.Tenant);
 
-      _mixin.TargetEvents.OnCommitting ();
+      _targetStub.Object.Tenant = "TheTenant";
+      Assert.That(_mixin.Title, Is.Null);
 
-      Assert.That (_mixin.Title, Is.EqualTo ("(unnamed document of TheTenant)"));
+      _mixin.TargetEvents.OnCommitting();
+
+      Assert.That(_mixin.Title, Is.EqualTo("(unnamed document of TheTenant)"));
     }
 
     [Test]
     public void TargetCommitting_ReplacesEmptyTitle ()
     {
-      _targetStub.Tenant = "TheTenant";
+      _targetStub.SetupProperty(_ => _.Tenant);
+
+      _targetStub.Object.Tenant = "TheTenant";
       _mixin.Title = "";
 
-      _mixin.TargetEvents.OnCommitting ();
+      _mixin.TargetEvents.OnCommitting();
 
-      Assert.That (_mixin.Title, Is.EqualTo ("(unnamed document of TheTenant)"));
+      Assert.That(_mixin.Title, Is.EqualTo("(unnamed document of TheTenant)"));
     }
 
     [Test]
@@ -60,9 +65,9 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.Domain.Mixins
     {
       _mixin.Title = "Blah";
 
-      _mixin.TargetEvents.OnCommitting ();
+      _mixin.TargetEvents.OnCommitting();
 
-      Assert.That (_mixin.Title, Is.EqualTo ("Blah"));
+      Assert.That(_mixin.Title, Is.EqualTo("Blah"));
     }
   }
 }

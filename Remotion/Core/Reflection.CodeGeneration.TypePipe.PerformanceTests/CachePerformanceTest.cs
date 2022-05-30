@@ -31,7 +31,7 @@ using Remotion.Utilities;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
 {
-  [Explicit ("Performance measurement for caching")]
+  [Explicit("Performance measurement for caching")]
   [TestFixture]
   public class CachePerformanceTest
   {
@@ -40,31 +40,32 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
     {
       var participants = new IParticipant[]
                          {
-                           new MixinParticipant (
+                           new MixinParticipant(
                                SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
                                SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
                                SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
                                SafeServiceLocator.Current.GetInstance<IConcreteTypeMetadataImporter>()),
-                           new DomainObjectParticipant (
+                           new DomainObjectParticipant(
                                SafeServiceLocator.Current.GetInstance<ITypeDefinitionProvider>(),
                                SafeServiceLocator.Current.GetInstance<IInterceptedPropertyFinder>())
                          };
       var pipelineFactory = new RemotionPipelineFactory();
 
-      var pipeline = pipelineFactory.Create ("CachePerformanceTest", participants);
-      var typeCache = (ITypeCache) PrivateInvoke.GetNonPublicField (pipeline.ReflectionService, "_typeCache");
-      var constructorCallCache = (IConstructorCallCache) PrivateInvoke.GetNonPublicField (pipeline.ReflectionService, "_constructorCallCache");
-      var typeAssembler = (ITypeAssembler) PrivateInvoke.GetNonPublicField (pipeline, "_typeAssembler");
-      var typeID = typeAssembler.ComputeTypeID (typeof (DomainType));
+      var pipeline = pipelineFactory.Create("CachePerformanceTest", participants);
+      var typeCache = (ITypeCache)PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_typeCache");
+      var constructorCallCache = (IConstructorCallCache)PrivateInvoke.GetNonPublicField(pipeline.ReflectionService, "_constructorCallCache");
+      var typeAssembler = (ITypeAssembler)PrivateInvoke.GetNonPublicField(pipeline, "_typeAssembler");
+      var typeID = typeAssembler.ComputeTypeID(typeof(DomainType));
 
-      Func<Type> typeCacheFunc = () => typeCache.GetOrCreateType (typeID);
-      Func<Delegate> constructorDelegateCacheFunc = () => constructorCallCache.GetOrCreateConstructorCall (typeID, typeof (Func<object>), true);
+      Func<Type> typeCacheFunc = () => typeCache.GetOrCreateType(typeID);
+      Func<Delegate> constructorDelegateCacheFunc = () => constructorCallCache.GetOrCreateConstructorCall(typeID, typeof(Func<object>), true);
 
-      TimeThis ("TypePipe_Types", typeCacheFunc);
-      TimeThis ("TypePipe_ConstructorDelegates", constructorDelegateCacheFunc);
+      TimeThis("TypePipe_Types", typeCacheFunc);
+      TimeThis("TypePipe_ConstructorDelegates", constructorDelegateCacheFunc);
     }
 
     private static void TimeThis<T> (string testName, Func<T> func)
+        where T : notnull
     {
       // Warmup and cache population.
       func();
@@ -73,23 +74,23 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
       const int maxPow = 6;
       int hc = 0;
 
-      Console.WriteLine (testName);
+      Console.WriteLine(testName);
       for (int i = startPow; i <= maxPow; ++i)
       {
-        GC.Collect (2, GCCollectionMode.Forced);
+        GC.Collect(2, GCCollectionMode.Forced);
         GC.WaitForPendingFinalizers();
-        GC.Collect (2, GCCollectionMode.Forced);
+        GC.Collect(2, GCCollectionMode.Forced);
 
-        long requestedInstanceCount = (long) Math.Pow (10, i);
+        long requestedInstanceCount = (long)Math.Pow(10, i);
 
         StopwatchScope.MeasurementAction measurementAction =
-            (c, s) => Console.WriteLine (
+            (c, s) => Console.WriteLine(
                 "{0}: {1}ms, per call: {2}",
-                requestedInstanceCount.ToString (CultureInfo.InvariantCulture).PadLeft(8),
+                requestedInstanceCount.ToString(CultureInfo.InvariantCulture).PadLeft(8),
                 s.ElapsedTotal.TotalMilliseconds.ToString("0.0000").PadLeft(10),
                 (s.ElapsedTotal.TotalMilliseconds / requestedInstanceCount).ToString("0.000000"));
 
-        using (StopwatchScope.CreateScope (measurementAction))
+        using (StopwatchScope.CreateScope(measurementAction))
         {
           for (int j = 0; j < requestedInstanceCount; ++j)
           {
@@ -103,7 +104,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.PerformanceTests
     }
 
     [DBTable]
-    [Uses (typeof (object))]
+    [Uses(typeof(object))]
     public class DomainType : DomainObject { }
   }
 }

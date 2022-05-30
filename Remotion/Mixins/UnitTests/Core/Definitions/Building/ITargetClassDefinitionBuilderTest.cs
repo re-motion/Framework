@@ -21,8 +21,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       var factory = _serviceLocator.GetInstance<ITargetClassDefinitionBuilder>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (TargetClassDefinitionBuilder)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(TargetClassDefinitionBuilder)));
     }
 
     [Test]
@@ -31,7 +31,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
       var factory1 = _serviceLocator.GetInstance<ITargetClassDefinitionBuilder>();
       var factory2 = _serviceLocator.GetInstance<ITargetClassDefinitionBuilder>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

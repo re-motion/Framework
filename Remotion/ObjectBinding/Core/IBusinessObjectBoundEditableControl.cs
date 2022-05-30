@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding
     ///   Thrown if the bound <see cref="IBusinessObjectBoundControl.Property"/> is read-only but the <see cref="IBusinessObjectBoundControl.Value"/> is dirty.
     /// </exception>
     bool SaveValue (bool interim);
-  
+
     /// <summary>
     ///   Gets a flag that determines whether the control is to be displayed in read-only mode.
     /// </summary>

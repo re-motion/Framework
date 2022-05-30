@@ -20,94 +20,88 @@ using System.Text;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using OBWTest.ValidatorFactoryDecorators;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Resources;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace OBWTest
 {
 
-[MultiLingualResources ("OBWTest.Globalization.TestBasePage")]
+[MultiLingualResources("OBWTest.Globalization.TestBasePage")]
 public class TestWxeBasePage:
     WxePage,
     Remotion.Web.UI.Controls.IControl,
     IObjectWithResources //  Provides the WebForm's ResourceManager via GetResourceManager() 
     // IResourceUrlResolver //  Provides the URLs for this WebForm (e.g. to the FormGridManager)
-{  
+{
   private Button _nextButton = new Button();
 
-  protected override void OnInit(EventArgs e)
+  protected override void OnInit (EventArgs e)
   {
-    if (! ControlHelper.IsDesignMode (this))
+    try
     {
-      try
-      {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
-      try
-      {
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
-      }
-      catch (ArgumentException)
-      {}
-
-      _nextButton.ID = "NextButton";
-      _nextButton.Text = "Next";
-      WxeControls.AddAt (0, _nextButton);
+      Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
     }
+    catch (ArgumentException)
+    {}
+    try
+    {
+      Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
+    }
+    catch (ArgumentException)
+    {}
+
+    _nextButton.ID = "NextButton";
+    _nextButton.Text = "Next";
+    WxeControls.AddAt(0, _nextButton);
 
     ShowAbortConfirmation = ShowAbortConfirmation.Always;
     EnableAbort = false;
-    SwitchingValidatorFactoryState.Instance.UseFluentValidatorFactory = false;
-    base.OnInit (e);
+    base.OnInit(e);
     RegisterEventHandlers();
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+    ResourceDispatcher.Dispatch(this, ResourceManagerUtility.GetResourceManager(this));
 
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    HtmlHeadAppender.Current.RegisterPageStylesheetLink ();
+    HtmlHeadAppender.Current.RegisterPageStylesheetLink();
 
     var key = GetType().FullName + "_Global";
-    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    if (! HtmlHeadAppender.Current.IsRegistered(key))
     {
-      HtmlHeadAppender.Current.RegisterStylesheetLink (key, new StaticResourceUrl ("Html/global.css"));
+      HtmlHeadAppender.Current.RegisterStylesheetLink(key, new StaticResourceUrl("Html/global.css"));
     }
 
 
     LiteralControl stack = new LiteralControl();
 
     StringBuilder sb = new StringBuilder();
-    sb.Append ("<br /><div>");
-    sb.Append ("<b>Stack:</b><br />");
+    sb.Append("<br /><div>");
+    sb.Append("<b>Stack:</b><br />");
     for (WxeStep step = CurrentPageStep; step != null; step = step.ParentStep)
-      sb.AppendFormat ("{0}<br />", step.ToString());      
-    sb.Append ("</div>");
+      sb.AppendFormat("{0}<br />", step.ToString());
+    sb.Append("</div>");
     stack.Text = sb.ToString();
-    
-    WxeControls.Add (stack);
+
+    WxeControls.Add(stack);
   }
 
-  protected virtual void RegisterEventHandlers()
+  protected virtual void RegisterEventHandlers ()
   {
     _nextButton.Click += new EventHandler(NextButton_Click);
   }
 
-  protected virtual IResourceManager GetResourceManager()
+  protected virtual IResourceManager GetResourceManager ()
   {
     Type type = GetType();
-    return GlobalizationService.GetResourceManager (type);
+    return GlobalizationService.GetResourceManager(type);
   }
 
   protected IGlobalizationService GlobalizationService
@@ -115,7 +109,7 @@ public class TestWxeBasePage:
     get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
   }
 
-  IResourceManager IObjectWithResources.GetResourceManager()
+  IResourceManager IObjectWithResources.GetResourceManager ()
   {
     return GetResourceManager();
   }
@@ -128,7 +122,7 @@ public class TestWxeBasePage:
 //      return Page.ResolveUrl (resourceType.Name + "/" + relativeUrl);
 //  }
 
-  private void NextButton_Click(object sender, EventArgs e)
+  private void NextButton_Click (object sender, EventArgs e)
   {
     ExecuteNextStep();
   }

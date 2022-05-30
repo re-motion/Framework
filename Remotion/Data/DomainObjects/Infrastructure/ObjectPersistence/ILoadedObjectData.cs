@@ -23,8 +23,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public interface ILoadedObjectData : INullObject
   {
-    ObjectID ObjectID { get; }
-    DomainObject GetDomainObjectReference ();
+    ObjectID? ObjectID { get; }
+    DomainObject? GetDomainObjectReference ();
 
     void Accept (ILoadedObjectVisitor visitor);
   }

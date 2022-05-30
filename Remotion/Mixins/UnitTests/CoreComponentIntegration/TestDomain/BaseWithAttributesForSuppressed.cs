@@ -22,6 +22,6 @@ namespace Remotion.Mixins.UnitTests.CoreComponentIntegration.TestDomain
   [DerivedInherited("BaseWithAttributesForSuppressed")]
   public class BaseWithAttributesForSuppressed
   {
-    
+
   }
 }

@@ -30,9 +30,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnDefinition (string name, IStorageTypeInformation storageTypeInfo, bool isPartOfPrimaryKey)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("storageTypeInfo", storageTypeInfo);
-      
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("storageTypeInfo", storageTypeInfo);
+
       _name = name;
       _storageTypeInfo = storageTypeInfo;
       _isPartOfPrimaryKey = isPartOfPrimaryKey;

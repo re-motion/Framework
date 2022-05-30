@@ -28,14 +28,14 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     public static void DeserializeElement (ConfigurationElement configurationElement, string xmlFragment)
     {
-      ArgumentUtility.CheckNotNull ("configurationElement", configurationElement);
-      ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
+      ArgumentUtility.CheckNotNull("configurationElement", configurationElement);
+      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
 
-      using (XmlTextReader reader = new XmlTextReader (xmlFragment, XmlNodeType.Document, null))
+      using (XmlTextReader reader = new XmlTextReader(xmlFragment, XmlNodeType.Document, null))
       {
         reader.WhitespaceHandling = WhitespaceHandling.None;
         reader.IsStartElement();
-        PrivateInvoke.InvokeNonPublicMethod (configurationElement, "DeserializeElement", reader, false);
+        PrivateInvoke.InvokeNonPublicMethod(configurationElement, "DeserializeElement", reader, false);
       }
     }
 
@@ -45,19 +45,19 @@ namespace Remotion.Development.UnitTesting.Configuration
     /// <param name="configurationSection">The configuration to populate from the fragment.</param>
     /// <param name="xmlFragment">The XML fragment.</param>
     /// <param name="xsdContent">The content of the XSD, or <see langword="null"/> for no validation.</param>
-    public static void DeserializeSection (ConfigurationSection configurationSection, string xmlFragment, string xsdContent = null)
+    public static void DeserializeSection (ConfigurationSection configurationSection, string xmlFragment, string? xsdContent = null)
     {
-      ArgumentUtility.CheckNotNull ("configurationSection", configurationSection);
-      ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
+      ArgumentUtility.CheckNotNull("configurationSection", configurationSection);
+      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
 
-      using (XmlTextReader reader = new XmlTextReader (xmlFragment, XmlNodeType.Document, null))
+      using (XmlTextReader reader = new XmlTextReader(xmlFragment, XmlNodeType.Document, null))
       {
         reader.WhitespaceHandling = WhitespaceHandling.None;
-        PrivateInvoke.InvokeNonPublicMethod (configurationSection, "DeserializeSection", reader);
+        PrivateInvoke.InvokeNonPublicMethod(configurationSection, "DeserializeSection", reader);
       }
 
       if (xsdContent != null)
-        XmlSchemaValidation.Validate (xmlFragment, xsdContent);
+        XmlSchemaValidation.Validate(xmlFragment, xsdContent);
     }
   }
 }

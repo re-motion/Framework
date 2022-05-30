@@ -24,20 +24,24 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 {
   public class BindableDomainObjectGetObjectService : IGetObjectService
   {
-    public IBusinessObjectWithIdentity GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
+    public IBusinessObjectWithIdentity? GetObject (BindableObjectClassWithIdentity classWithIdentity, string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNull ("classWithIdentity", classWithIdentity);
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNull("classWithIdentity", classWithIdentity);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
-      var objectID = ObjectID.Parse (uniqueIdentifier);
-      var domainObjectOrNull = LifetimeService.TryGetObject (ClientTransaction.Current, objectID);
+      var clientTransaction = ClientTransaction.Current;
+      if (clientTransaction == null)
+        throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
+
+      var objectID = ObjectID.Parse(uniqueIdentifier);
+      var domainObjectOrNull = LifetimeService.TryGetObject(clientTransaction, objectID);
       if (domainObjectOrNull == null)
         return null;
-      if (domainObjectOrNull.State == StateType.Invalid)
+      if (domainObjectOrNull.State.IsInvalid)
         return null;
-      if (domainObjectOrNull.State == StateType.Deleted)
+      if (domainObjectOrNull.State.IsDeleted)
         return null;
-      return (IBusinessObjectWithIdentity) domainObjectOrNull;
+      return (IBusinessObjectWithIdentity)domainObjectOrNull;
     }
   }
 }

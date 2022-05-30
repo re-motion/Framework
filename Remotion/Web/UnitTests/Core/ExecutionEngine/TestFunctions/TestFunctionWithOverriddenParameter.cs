@@ -25,13 +25,13 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
     {
     }
 
-    [WxeParameter (1)]
+    [WxeParameter(1)]
     public string Parameter4 { get; set; }
 
-    [WxeParameter (2)]
+    [WxeParameter(2)]
     public override string Parameter1 { get; set; }
 
-    [WxeParameter (0)]
+    [WxeParameter(0)]
     public override string Variable { get; set; }
   }
 }

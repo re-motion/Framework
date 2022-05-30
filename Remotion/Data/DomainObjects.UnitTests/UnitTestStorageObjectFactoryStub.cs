@@ -25,7 +25,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Utilities;
@@ -36,22 +36,29 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition> (
-          "storageProviderDefinition", storageProviderDefinition);
-      return new UnitTestStorageProviderStub (providerDefiniton, persistenceExtension);
+      var providerDefiniton = ArgumentUtility.CheckNotNullAndType<UnitTestStorageProviderStubDefinition>(
+          "storageProviderDefinition",
+          storageProviderDefinition);
+      return new UnitTestStorageProviderStub(providerDefiniton, persistenceExtension);
     }
 
-    public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public IPersistenceModelLoader CreatePersistenceModelLoader (
+        StorageProviderDefinition storageProviderDefinition,
+        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new SqlStorageObjectFactory().CreatePersistenceModelLoader (storageProviderDefinition, storageProviderDefinitionFinder);
+      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
     }
 
-    public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (StorageProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry, IMappingConfiguration mappingConfiguration)
+    public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
+        StorageProviderDefinition storageProviderDefinition,
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
+        IMappingConfiguration mappingConfiguration)
     {
       throw new NotImplementedException();
     }
@@ -60,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       throw new NotImplementedException();
     }
-    
+
     public IEnumSerializer CreateEnumSerializer ()
     {
       throw new NotImplementedException();
@@ -156,7 +163,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
       throw new NotImplementedException();
     }
 
-    public ISqlQueryGenerator CreateSqlQueryGenerator (RdbmsProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
+    public ISqlQueryGenerator CreateSqlQueryGenerator (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
     {
       throw new NotImplementedException();
     }

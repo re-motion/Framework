@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests
 
     public StubDataSource (IBusinessObjectClass businessObjectClass)
     {
-      ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
+      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
 
       _businessObjectClass = businessObjectClass;
     }

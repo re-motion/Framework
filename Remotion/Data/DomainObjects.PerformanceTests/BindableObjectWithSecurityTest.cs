@@ -36,20 +36,20 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       var stubSecurityProvider = new StubSecurityProvider();
       var threadPrincipalProvider = new ThreadPrincipalProvider();
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<ISecurityProvider> (() => stubSecurityProvider);
-      serviceLocator.RegisterSingle<IPrincipalProvider> (() => threadPrincipalProvider);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle<ISecurityProvider>(() => stubSecurityProvider);
+      serviceLocator.RegisterSingle<IPrincipalProvider>(() => threadPrincipalProvider);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       var clientTransaction = new SecurityClientTransactionFactory().CreateRootTransaction();
       clientTransaction.To<ClientTransaction>().EnterDiscardingScope();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
       ClientTransactionScope.ResetActiveScope();
       _serviceLocatorScope.Dispose();
@@ -58,67 +58,67 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public override void BusinessObject_Property_IsAccessible ()
     {
-      Console.WriteLine (
-          "Expected average duration of BindableObjectWithSecurityTest for BusinessObject_Property_IsAccessible on reference system: ~0.53 µs (release build), ~2.7 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of BindableObjectWithSecurityTest for BusinessObject_Property_IsAccessible on reference system: ~0.53 Âµs (release build), ~2.7 Âµs (debug build)");
 
       base.BusinessObject_Property_IsAccessible();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void BusinessObject_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of BindableObjectWithSecurityTest for BusinessObject_GetProperty on reference system: ~2.4 µs (release build), ~7.3 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of BindableObjectWithSecurityTest for BusinessObject_GetProperty on reference system: ~2.4 Âµs (release build), ~7.3 Âµs (debug build)");
 
-      base.BusinessObject_GetProperty ();
+      base.BusinessObject_GetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void DynamicMethod_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of BindableObjectWithSecurityTest for DynamicMethod_GetProperty on reference system: ~1.8 µs (release build), ~5.2 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of BindableObjectWithSecurityTest for DynamicMethod_GetProperty on reference system: ~1.8 Âµs (release build), ~5.2 Âµs (debug build)");
 
-      base.DynamicMethod_GetProperty ();
+      base.DynamicMethod_GetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void DomainObject_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of BindableObjectWithSecurityTest for DomainObject_GetProperty on reference system: ~1.7 µs (release build), ~5.2 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of BindableObjectWithSecurityTest for DomainObject_GetProperty on reference system: ~1.7 Âµs (release build), ~5.2 Âµs (debug build)");
 
-      base.DomainObject_GetProperty ();
+      base.DomainObject_GetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void BusinessObject_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of BindableObjectWithSecurityTest for BusinessObject_SetProperty on reference system: ~2.5 µs (release build), ~6.4 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of BindableObjectWithSecurityTest for BusinessObject_SetProperty on reference system: ~2.5 Âµs (release build), ~6.4 Âµs (debug build)");
 
-      base.BusinessObject_SetProperty ();
+      base.BusinessObject_SetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public override void DomainObject_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of BindableObjectWithSecurityTest for DomainObject_SetProperty on reference system: 2.4 µs (release build), ~6.2 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of BindableObjectWithSecurityTest for DomainObject_SetProperty on reference system: 2.4 Âµs (release build), ~6.2 Âµs (debug build)");
 
-      base.DomainObject_SetProperty ();
+      base.DomainObject_SetProperty();
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
   }
 }

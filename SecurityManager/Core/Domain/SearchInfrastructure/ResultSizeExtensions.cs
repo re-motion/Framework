@@ -22,11 +22,11 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 {
   internal static class ResultSizeExtensions
   {
-    public static IQueryable<T> Apply<T> (this IQueryable<T> query, ResultSizeConstraint constraint)
+    public static IQueryable<T> Apply<T> (this IQueryable<T> query, ResultSizeConstraint? constraint)
     {
       if (constraint == null)
         return query;
-      return constraint.ApplyTo (query);
+      return constraint.ApplyTo(query);
     }
   }
 }

@@ -80,7 +80,7 @@ namespace JetBrains.Annotations
   ///   }
   /// }
   /// </code></example>
-  [AttributeUsage (
+  [AttributeUsage(
       AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Method |
       AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.GenericParameter)]
   sealed partial class ProvidesContextAttribute : Attribute

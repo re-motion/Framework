@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 {
@@ -30,14 +30,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void GetControlRowID ()
     {
       var rowIDProvider = new NullValueRowIDProvider();
-      Assert.That (() => rowIDProvider.GetControlRowID (new BocListRow (0, CreateObject())), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => rowIDProvider.GetControlRowID(new BocListRow(0, CreateObject())), Throws.TypeOf<NotSupportedException>());
     }
 
     [Test]
     public void GetItemRowID ()
     {
       var rowIDProvider = new NullValueRowIDProvider();
-      Assert.That (() => rowIDProvider.GetItemRowID (new BocListRow (0, CreateObject())), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => rowIDProvider.GetItemRowID(new BocListRow(0, CreateObject())), Throws.TypeOf<NotSupportedException>());
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var rowIDProvider = new NullValueRowIDProvider();
 
-      Assert.That (() => rowIDProvider.GetRowFromItemRowID (new IBusinessObject[0], "1"), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => rowIDProvider.GetRowFromItemRowID(new IBusinessObject[0], "1"), Throws.TypeOf<NotSupportedException>());
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var rowIDProvider = new NullValueRowIDProvider();
 
-      Assert.That (() => rowIDProvider.AddRow (new BocListRow (0, CreateObject())), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => rowIDProvider.AddRow(new BocListRow(0, CreateObject())), Throws.TypeOf<NotSupportedException>());
     }
 
     [Test]
@@ -61,19 +61,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var rowIDProvider = new NullValueRowIDProvider();
 
-      Assert.That (() => rowIDProvider.RemoveRow (new BocListRow (0, CreateObject())), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => rowIDProvider.RemoveRow(new BocListRow(0, CreateObject())), Throws.TypeOf<NotSupportedException>());
     }
 
     [Test]
     public void SerializeAndDeserialize ()
     {
       var obj = new NullValueRowIDProvider();
-      Assert.That (Serializer.SerializeAndDeserialize (obj), Is.Not.SameAs (obj));
+      Assert.That(Serializer.SerializeAndDeserialize(obj), Is.Not.SameAs(obj));
     }
 
     private IBusinessObject CreateObject ()
     {
-      return MockRepository.GenerateStub<IBusinessObject>();
+      return new Mock<IBusinessObject>().Object;
     }
   }
 }

@@ -29,35 +29,35 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     public void TryGetTypeDisplayName ()
     {
       var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
-      
+
       string resourceValue;
-      Assert.That (
-          service.TryGetEnumerationValueDisplayName (
+      Assert.That(
+          service.TryGetEnumerationValueDisplayName(
               EnumWithResourcesAndAttribute.ValueWithAttribute,
               out resourceValue),
           Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Attribute"));
+      Assert.That(resourceValue, Is.EqualTo("Attribute"));
 
-      Assert.That (
-          service.TryGetEnumerationValueDisplayName (
+      Assert.That(
+          service.TryGetEnumerationValueDisplayName(
               EnumWithResourcesAndAttribute.ValueWithResource,
               out resourceValue),
           Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Resource"));
+      Assert.That(resourceValue, Is.EqualTo("Resource"));
 
-      Assert.That (
-          service.TryGetEnumerationValueDisplayName (
+      Assert.That(
+          service.TryGetEnumerationValueDisplayName(
               EnumWithResourcesAndAttribute.ValueWithResourceAndAttribute,
               out resourceValue),
           Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("Resource"));
+      Assert.That(resourceValue, Is.EqualTo("Resource"));
 
-      Assert.That (
-          service.TryGetEnumerationValueDisplayName (
+      Assert.That(
+          service.TryGetEnumerationValueDisplayName(
               EnumWithResourcesAndAttribute.ValueWithoutResourceOrAttribute,
               out resourceValue),
           Is.False);
-      Assert.That (resourceValue, Is.Null);
+      Assert.That(resourceValue, Is.Null);
     }
 
     [Test]
@@ -65,20 +65,20 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     {
       var service = SafeServiceLocator.Current.GetInstance<IEnumerationGlobalizationService>();
 
-      var result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithAttribute).ToList();
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].Value, Is.EqualTo ("Attribute"));
+      var result = service.GetAvailableEnumDisplayNames(EnumWithResourcesAndAttribute.ValueWithAttribute).ToList();
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].Value, Is.EqualTo("Attribute"));
 
-      result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithResource).ToList();
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].Value, Is.EqualTo ("Resource"));
-    
-      result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithResourceAndAttribute).ToList();
-      Assert.That (result.Count, Is.EqualTo (1));
-      Assert.That (result[0].Value, Is.EqualTo ("Resource"));
+      result = service.GetAvailableEnumDisplayNames(EnumWithResourcesAndAttribute.ValueWithResource).ToList();
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].Value, Is.EqualTo("Resource"));
 
-      result = service.GetAvailableEnumDisplayNames (EnumWithResourcesAndAttribute.ValueWithoutResourceOrAttribute).ToList();
-      Assert.That (result.Any(), Is.False);
+      result = service.GetAvailableEnumDisplayNames(EnumWithResourcesAndAttribute.ValueWithResourceAndAttribute).ToList();
+      Assert.That(result.Count, Is.EqualTo(1));
+      Assert.That(result[0].Value, Is.EqualTo("Resource"));
+
+      result = service.GetAvailableEnumDisplayNames(EnumWithResourcesAndAttribute.ValueWithoutResourceOrAttribute).ToList();
+      Assert.That(result.Any(), Is.False);
     }
 
   }

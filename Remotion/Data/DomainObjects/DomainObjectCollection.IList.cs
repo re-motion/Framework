@@ -22,51 +22,51 @@ namespace Remotion.Data.DomainObjects
 {
   public partial class DomainObjectCollection
   {
-    bool IList.Contains (object value)
+    bool IList.Contains (object? value)
     {
       if (value is DomainObject)
-        return ContainsObject ((DomainObject) value);
+        return ContainsObject((DomainObject)value);
 
       if (value is ObjectID)
-        return Contains ((ObjectID) value);
+        return Contains((ObjectID)value);
 
       return false;
     }
 
-    int IList.IndexOf (object value)
+    int IList.IndexOf (object? value)
     {
       if (value is DomainObject)
-        return IndexOf ((DomainObject) value);
+        return IndexOf((DomainObject)value);
 
       if (value is ObjectID)
-        return IndexOf ((ObjectID) value);
+        return IndexOf((ObjectID)value);
 
       return -1;
     }
 
-    object IList.this[int index]
+    object? IList.this[int index]
     {
       get { return this[index]; }
-      set { this[index] = ArgumentUtility.CheckType<DomainObject> ("value", value); }
+      set { this[index] = ArgumentUtility.CheckType<DomainObject>("value", value); }
     }
 
-    int IList.Add (object value)
+    int IList.Add (object? value)
     {
-      return Add (ArgumentUtility.CheckNotNullAndType<DomainObject> ("value", value));
+      return Add(ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value!));
     }
 
-    void IList.Remove (object value)
+    void IList.Remove (object? value)
     {
       if (value is DomainObject)
-        Remove ((DomainObject) value);
+        Remove((DomainObject)value);
 
       if (value is ObjectID)
-        Remove ((ObjectID) value);
+        Remove((ObjectID)value);
     }
 
-    void IList.Insert (int index, object value)
+    void IList.Insert (int index, object? value)
     {
-      Insert (index, ArgumentUtility.CheckNotNullAndType<DomainObject> ("value", value));
+      Insert(index, ArgumentUtility.CheckNotNullAndType<DomainObject>("value", value!));
     }
 
     object ICollection.SyncRoot

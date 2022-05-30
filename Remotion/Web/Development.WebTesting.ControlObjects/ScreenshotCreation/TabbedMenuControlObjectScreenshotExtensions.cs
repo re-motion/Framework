@@ -31,9 +31,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
-      ArgumentUtility.CheckNotNull ("fluentTabbedMenu", fluentTabbedMenu);
+      ArgumentUtility.CheckNotNull("fluentTabbedMenu", fluentTabbedMenu);
 
-      return new ScreenshotTabbedMenuSelector (fluentTabbedMenu.Target.Scope.FindCss ("td.tabbedMainMenuCell"));
+      return new ScreenshotTabbedMenuSelector(fluentTabbedMenu.Target.Scope.FindCss("td.tabbedMainMenuCell"));
     }
 
     /// <summary>
@@ -41,11 +41,11 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static FluentScreenshotElement<ScreenshotTabbedSubMenu> GetSubMenu ([NotNull] this IFluentScreenshotElementWithCovariance<TabbedMenuControlObject> fluentTabbedMenu)
     {
-      ArgumentUtility.CheckNotNull ("fluentTabbedMenu", fluentTabbedMenu);
+      ArgumentUtility.CheckNotNull("fluentTabbedMenu", fluentTabbedMenu);
 
-      var target = fluentTabbedMenu.Target.Scope.FindCss ("td.tabbedSubMenuCell");
+      var target = fluentTabbedMenu.Target.Scope.FindCss("td.tabbedSubMenuCell");
 
-      return SelfResolvableFluentScreenshot.Create (new ScreenshotTabbedSubMenu (fluentTabbedMenu, target.ForElementScopeScreenshot()));
+      return SelfResolvableFluentScreenshot.Create(new ScreenshotTabbedSubMenu(fluentTabbedMenu, target.ForElementScopeScreenshot()));
     }
 
     /// <summary>
@@ -53,9 +53,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// </summary>
     public static ScreenshotTabbedMenuSelector SelectItem ([NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotTabbedSubMenu> fluentTabbedSubMenu)
     {
-      ArgumentUtility.CheckNotNull ("fluentTabbedSubMenu", fluentTabbedSubMenu);
+      ArgumentUtility.CheckNotNull("fluentTabbedSubMenu", fluentTabbedSubMenu);
 
-      return new ScreenshotTabbedMenuSelector (fluentTabbedSubMenu.Target.Element);
+      return new ScreenshotTabbedMenuSelector(fluentTabbedSubMenu.Target.Element);
     }
   }
 }

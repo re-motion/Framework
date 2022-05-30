@@ -36,15 +36,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     private readonly ClientTransaction _transaction;
     private readonly OrganizationalStructureFactory _factory;
 
-    public AccessControlTestHelper()
-      : this ( ClientTransaction.CreateRootTransaction ())
+    public AccessControlTestHelper ()
+      : this( ClientTransaction.CreateRootTransaction())
     {
     }
 
     public AccessControlTestHelper (ClientTransaction transaction)
     {
       _transaction = transaction;
-      _factory = new OrganizationalStructureFactory ();
+      _factory = new OrganizationalStructureFactory();
     }
 
     public ClientTransaction Transaction
@@ -54,34 +54,34 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurableClassDefinition CreateOrderClassDefinition ()
     {
-      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.Order");
+      return CreateClassDefinition("Remotion.SecurityManager.UnitTests.TestDomain.Order");
     }
 
     public SecurableClassDefinition CreateSpecialOrderClassDefinition (SecurableClassDefinition orderClassDefinition)
     {
-      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.SpecialOrder", orderClassDefinition);
+      return CreateClassDefinition("Remotion.SecurityManager.UnitTests.TestDomain.SpecialOrder", orderClassDefinition);
     }
 
     public SecurableClassDefinition CreatePremiumOrderClassDefinition (SecurableClassDefinition orderClassDefinition)
     {
-      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.PremiumOrder", orderClassDefinition);
+      return CreateClassDefinition("Remotion.SecurityManager.UnitTests.TestDomain.PremiumOrder", orderClassDefinition);
     }
 
     public SecurableClassDefinition CreateInvoiceClassDefinition ()
     {
-      return CreateClassDefinition ("Remotion.SecurityManager.UnitTests.TestDomain.Invoice");
+      return CreateClassDefinition("Remotion.SecurityManager.UnitTests.TestDomain.Invoice");
     }
 
     public SecurableClassDefinition CreateClassDefinition (string name)
     {
-      return CreateClassDefinition (name, null);
+      return CreateClassDefinition(name, null);
     }
 
     public SecurableClassDefinition CreateClassDefinition (string name, SecurableClassDefinition baseClass)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject ();
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
         classDefinition.Name = name;
         classDefinition.BaseClass = baseClass;
 
@@ -91,23 +91,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurableClassDefinition CreateOrderClassDefinitionWithProperties ()
     {
-      SecurableClassDefinition classDefinition = CreateOrderClassDefinition ();
-      CreateOrderStateProperty (classDefinition);
-      CreatePaymentStateProperty (classDefinition);
+      SecurableClassDefinition classDefinition = CreateOrderClassDefinition();
+      CreateOrderStateProperty(classDefinition);
+      CreatePaymentStateProperty(classDefinition);
 
       return classDefinition;
     }
 
     public StatelessAccessControlList CreateStatelessAcl (SecurableClassDefinition classDefinition)
     {
-      return CreateStatelessAcl (classDefinition, _transaction);
+      return CreateStatelessAcl(classDefinition, _transaction);
     }
 
     public StatelessAccessControlList CreateStatelessAcl (SecurableClassDefinition classDefinition, ClientTransaction transaction)
     {
-      using (transaction.EnterNonDiscardingScope ())
+      using (transaction.EnterNonDiscardingScope())
       {
-        var acl = StatelessAccessControlList.NewObject ();
+        var acl = StatelessAccessControlList.NewObject();
         classDefinition.StatelessAccessControlList = acl;
         return acl;
       }
@@ -115,19 +115,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public StatefulAccessControlList CreateStatefulAcl (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      return CreateStatefulAcl (classDefinition, _transaction, states);
+      return CreateStatefulAcl(classDefinition, _transaction, states);
     }
 
     private StatefulAccessControlList CreateStatefulAcl (SecurableClassDefinition classDefinition, ClientTransaction transaction, params StateDefinition[] states)
     {
-      using (transaction.EnterNonDiscardingScope ())
+      using (transaction.EnterNonDiscardingScope())
       {
-        var acl = StatefulAccessControlList.NewObject ();
-        classDefinition.StatefulAccessControlLists.Add (acl);
+        var acl = StatefulAccessControlList.NewObject();
+        classDefinition.StatefulAccessControlLists.Add(acl);
         StateCombination stateCombination = acl.CreateStateCombination();
 
         foreach (StateDefinition state in states)
-          stateCombination.AttachState (state);
+          stateCombination.AttachState(state);
 
         return acl;
       }
@@ -135,23 +135,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public StateCombination CreateStateCombination (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      return CreateStateCombination (classDefinition, _transaction, states);
+      return CreateStateCombination(classDefinition, _transaction, states);
     }
 
     public StateCombination CreateStateCombination (SecurableClassDefinition classDefinition, ClientTransaction transaction, params StateDefinition[] states)
     {
       using (transaction.EnterNonDiscardingScope())
       {
-        StatefulAccessControlList acl = CreateStatefulAcl (classDefinition, transaction, states);
+        StatefulAccessControlList acl = CreateStatefulAcl(classDefinition, transaction, states);
         return acl.StateCombinations[0];
-      }    
+      }
     }
 
     public StatePropertyDefinition CreateStateProperty (string name)
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        return StatePropertyDefinition.NewObject (Guid.NewGuid(), name);
+        return StatePropertyDefinition.NewObject(Guid.NewGuid(), name);
       }
     }
 
@@ -159,10 +159,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition orderStateProperty = CreateStateProperty ("State");
-        orderStateProperty.AddState (CreateState (EnumWrapper.Get (OrderState.Received).Name, 0));
-        orderStateProperty.AddState (CreateState (EnumWrapper.Get (OrderState.Delivered).Name, 1));
-        classDefinition.AddStateProperty (orderStateProperty);
+        StatePropertyDefinition orderStateProperty = CreateStateProperty("State");
+        orderStateProperty.AddState(CreateState(EnumWrapper.Get(OrderState.Received).Name, 0));
+        orderStateProperty.AddState(CreateState(EnumWrapper.Get(OrderState.Delivered).Name, 1));
+        classDefinition.AddStateProperty(orderStateProperty);
 
         return orderStateProperty;
       }
@@ -172,10 +172,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition paymentStateProperty = CreateStateProperty ("Payment");
-        paymentStateProperty.AddState (CreateState (EnumWrapper.Get(PaymentState.None).Name, 0));
-        paymentStateProperty.AddState (CreateState (EnumWrapper.Get (PaymentState.Paid).Name, 1));
-        classDefinition.AddStateProperty (paymentStateProperty);
+        StatePropertyDefinition paymentStateProperty = CreateStateProperty("Payment");
+        paymentStateProperty.AddState(CreateState(EnumWrapper.Get(PaymentState.None).Name, 0));
+        paymentStateProperty.AddState(CreateState(EnumWrapper.Get(PaymentState.Paid).Name, 1));
+        classDefinition.AddStateProperty(paymentStateProperty);
 
         return paymentStateProperty;
       }
@@ -185,10 +185,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition deliveryStateProperty = CreateStateProperty ("Delivery");
-        deliveryStateProperty.AddState (CreateState (EnumWrapper.Get(Delivery.Dhl).Name, 0));
-        deliveryStateProperty.AddState (CreateState (EnumWrapper.Get (Delivery.Post).Name, 1));
-        classDefinition.AddStateProperty (deliveryStateProperty);
+        StatePropertyDefinition deliveryStateProperty = CreateStateProperty("Delivery");
+        deliveryStateProperty.AddState(CreateState(EnumWrapper.Get(Delivery.Dhl).Name, 0));
+        deliveryStateProperty.AddState(CreateState(EnumWrapper.Get(Delivery.Post).Name, 1));
+        classDefinition.AddStateProperty(deliveryStateProperty);
 
         return deliveryStateProperty;
       }
@@ -199,7 +199,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_transaction.EnterNonDiscardingScope())
       {
         SecurableClassDefinition orderClass = CreateOrderClassDefinition();
-        return CreateOrderStateAndPaymentStateCombinations (orderClass);
+        return CreateOrderStateAndPaymentStateCombinations(orderClass);
       }
     }
 
@@ -207,14 +207,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
-        StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
+        StatePropertyDefinition orderState = CreateOrderStateProperty(classDefinition);
+        StatePropertyDefinition paymentState = CreatePaymentStateProperty(classDefinition);
 
         List<StateCombination> stateCombinations = new List<StateCombination>();
-        stateCombinations.Add (CreateStateCombination (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
-        stateCombinations.Add (CreateStateCombination (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name]));
-        stateCombinations.Add (CreateStateCombination (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
-        stateCombinations.Add (CreateStateCombination (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name]));
+        stateCombinations.Add(CreateStateCombination(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
+        stateCombinations.Add(CreateStateCombination(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name]));
+        stateCombinations.Add(CreateStateCombination(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
+        stateCombinations.Add(CreateStateCombination(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name]));
 
         return stateCombinations;
       }
@@ -233,15 +233,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
-        StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
+        StatePropertyDefinition orderState = CreateOrderStateProperty(classDefinition);
+        StatePropertyDefinition paymentState = CreatePaymentStateProperty(classDefinition);
 
         List<AccessControlList> acls = new List<AccessControlList>();
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name]));
-        acls.Add (CreateStatelessAcl (classDefinition));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name]));
+        acls.Add(CreateStatelessAcl(classDefinition));
 
         return acls;
       }
@@ -251,20 +251,20 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
-        StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
-        StatePropertyDefinition deliveryState = CreateDeliveryStateProperty (classDefinition);
+        StatePropertyDefinition orderState = CreateOrderStateProperty(classDefinition);
+        StatePropertyDefinition paymentState = CreatePaymentStateProperty(classDefinition);
+        StatePropertyDefinition deliveryState = CreateDeliveryStateProperty(classDefinition);
 
         List<AccessControlList> acls = new List<AccessControlList>();
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get (Delivery.Post).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Received).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name], deliveryState[EnumWrapper.Get (Delivery.Post).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get (Delivery.Post).Name]));
-        acls.Add (CreateStatefulAcl (classDefinition, orderState[EnumWrapper.Get (OrderState.Delivered).Name], paymentState[EnumWrapper.Get (PaymentState.Paid).Name], deliveryState[EnumWrapper.Get (Delivery.Post).Name]));
-        acls.Add (CreateStatelessAcl (classDefinition));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name], deliveryState[EnumWrapper.Get(Delivery.Dhl).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get(Delivery.Post).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Received).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name], deliveryState[EnumWrapper.Get(Delivery.Post).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.None).Name], deliveryState[EnumWrapper.Get(Delivery.Post).Name]));
+        acls.Add(CreateStatefulAcl(classDefinition, orderState[EnumWrapper.Get(OrderState.Delivered).Name], paymentState[EnumWrapper.Get(PaymentState.Paid).Name], deliveryState[EnumWrapper.Get(Delivery.Post).Name]));
+        acls.Add(CreateStatelessAcl(classDefinition));
 
         return acls;
       }
@@ -274,7 +274,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        List<AccessControlList> acls = CreateAclsForOrderAndPaymentAndDeliveryStates (classDefinition);
+        List<AccessControlList> acls = CreateAclsForOrderAndPaymentAndDeliveryStates(classDefinition);
         return acls[2];
       }
     }
@@ -283,8 +283,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
-        return (StatefulAccessControlList) acls[2];
+        List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates(classDefinition);
+        return (StatefulAccessControlList)acls[2];
       }
     }
 
@@ -292,8 +292,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
-        return (StatelessAccessControlList) acls[4];
+        List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates(classDefinition);
+        return (StatelessAccessControlList)acls[4];
       }
     }
 
@@ -306,10 +306,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         foreach (StatePropertyDefinition property in classDefinition.StateProperties)
         {
           if (property.Name == "State")
-            states.Add (property[EnumWrapper.Get (OrderState.Delivered).Name]);
+            states.Add(property[EnumWrapper.Get(OrderState.Delivered).Name]);
 
           if (property.Name == "Payment")
-            states.Add (property[EnumWrapper.Get(PaymentState.None).Name]);
+            states.Add(property[EnumWrapper.Get(PaymentState.None).Name]);
         }
 
         return states;
@@ -320,9 +320,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        StatePropertyDefinition property = CreateStateProperty ("Test");
-        property.AddState (CreateState ("Test1", 0));
-        property.AddState (CreateState ("Test2", 1));
+        StatePropertyDefinition property = CreateStateProperty("Test");
+        property.AddState(CreateState("Test1", 0));
+        property.AddState(CreateState("Test2", 1));
 
         return property;
       }
@@ -332,8 +332,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (metadataItemID, name, value);
-        classDefinition.AddAccessType (accessType);
+        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject(metadataItemID, name, value);
+        classDefinition.AddAccessType(accessType);
 
         return accessType;
       }
@@ -344,7 +344,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
       using (_transaction.EnterNonDiscardingScope())
       {
         AccessTypeDefinition accessType = CreateJournalizeAccessType();
-        classDefinition.AddAccessType (accessType);
+        classDefinition.AddAccessType(accessType);
 
         return accessType;
       }
@@ -354,7 +354,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        return AccessTypeDefinition.NewObject (Guid.NewGuid(), "Journalize", 42);
+        return AccessTypeDefinition.NewObject(Guid.NewGuid(), "Journalize", 42);
       }
     }
 
@@ -365,65 +365,65 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurityToken CreateTokenWithoutUser ()
     {
-      Principal principal = PrincipalTestHelper.Create (CreateTenant ("AnyTenant"), null, new Role[0]);
+      Principal principal = PrincipalTestHelper.Create(CreateTenant("AnyTenant"), null, new Role[0]);
       return SecurityToken.Create(principal, null, null, null, Enumerable.Empty<IDomainObjectHandle<AbstractRoleDefinition>>());
     }
 
     public SecurityToken CreateTokenWithOwningTenant (User principalUser, Tenant owningTenant)
     {
-      ArgumentUtility.CheckNotNull ("principalUser", principalUser);
-      return CreateToken (principalUser, owningTenant, null, null, null);
+      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      return CreateToken(principalUser, owningTenant, null, null, null);
     }
 
     public SecurityToken CreateTokenWithAbstractRole (params AbstractRoleDefinition[] roleDefinitions)
     {
-      Principal principal = PrincipalTestHelper.Create (CreateTenant ("AnyTenant"), null, new Role[0]);
-      return SecurityToken.Create (principal, null, null, null, roleDefinitions.Select (abstractRole => abstractRole.GetHandle()));
+      Principal principal = PrincipalTestHelper.Create(CreateTenant("AnyTenant"), null, new Role[0]);
+      return SecurityToken.Create(principal, null, null, null, roleDefinitions.Select(abstractRole => abstractRole.GetHandle()));
     }
 
     public SecurityToken CreateTokenWithOwningGroup (User principalUser, Group owningGroup)
     {
-      ArgumentUtility.CheckNotNull ("principalUser", principalUser);
-      return CreateToken (principalUser, null, owningGroup, null, null);
+      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      return CreateToken(principalUser, null, owningGroup, null, null);
     }
 
     public SecurityToken CreateTokenWithOwningUser (User principalUser, User owningUser)
     {
-      ArgumentUtility.CheckNotNull ("principalUser", principalUser);
-      return CreateToken (principalUser, null, null, owningUser, null);
+      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      return CreateToken(principalUser, null, null, owningUser, null);
     }
 
     public SecurityToken CreateToken (User principalUser, Tenant owningTenant, Group owningGroup, User owningUser, IEnumerable<AbstractRoleDefinition> abstractRoleDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("principalUser", principalUser);
-      var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>> ();
+      ArgumentUtility.CheckNotNull("principalUser", principalUser);
+      var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>>();
 
       if (abstractRoleDefinitions != null)
-        abstractRoles.AddRange (abstractRoleDefinitions.Select (abstractRole=>abstractRole.GetHandle()));
+        abstractRoles.AddRange(abstractRoleDefinitions.Select(abstractRole=>abstractRole.GetHandle()));
 
-      Principal principal = PrincipalTestHelper.Create (principalUser.Tenant, principalUser, principalUser.Roles);
-      return SecurityToken.Create (principal, owningTenant, owningGroup, owningUser, abstractRoles);
+      Principal principal = PrincipalTestHelper.Create(principalUser.Tenant, principalUser, principalUser.Roles);
+      return SecurityToken.Create(principal, owningTenant, owningGroup, owningUser, abstractRoles);
     }
 
     public AbstractRoleDefinition CreateTestAbstractRole ()
     {
-      return CreateAbstractRoleDefinition ("Test", 42);
+      return CreateAbstractRoleDefinition("Test", 42);
     }
 
     public AbstractRoleDefinition CreateAbstractRoleDefinition (string name, int value)
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        return AbstractRoleDefinition.NewObject (Guid.NewGuid(), name, value);
+        return AbstractRoleDefinition.NewObject(Guid.NewGuid(), name, value);
       }
     }
 
 
     public AccessControlEntry CreateAceWithNoMatchingRestrictions ()
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         return entry;
       }
     }
@@ -431,9 +431,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithOwningUser ()
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.UserCondition = UserCondition.Owner;
 
         return entry;
@@ -442,9 +442,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificUser (User user)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.UserCondition = UserCondition.SpecificUser;
         entry.SpecificUser = user;
 
@@ -456,7 +456,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.GroupCondition = GroupCondition.OwningGroup;
         entry.GroupHierarchyCondition = GroupHierarchyCondition.This;
 
@@ -466,11 +466,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificGroup (Group group)
     {
-      ArgumentUtility.CheckNotNull ("group", group);
+      ArgumentUtility.CheckNotNull("group", group);
 
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.GroupCondition = GroupCondition.SpecificGroup;
         entry.SpecificGroup = group;
         entry.GroupHierarchyCondition = GroupHierarchyCondition.This;
@@ -481,10 +481,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithBranchOfOwningGroup (GroupType groupType)
     {
-      ArgumentUtility.CheckNotNull ("groupType", groupType);
-      using (_transaction.EnterNonDiscardingScope ())
+      ArgumentUtility.CheckNotNull("groupType", groupType);
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.GroupCondition = GroupCondition.BranchOfOwningGroup;
         entry.SpecificGroupType = groupType;
 
@@ -494,10 +494,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificGroupType (GroupType groupType)
     {
-      ArgumentUtility.CheckNotNull ("groupType", groupType);
-      using (_transaction.EnterNonDiscardingScope ())
+      ArgumentUtility.CheckNotNull("groupType", groupType);
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.GroupCondition = GroupCondition.AnyGroupWithSpecificGroupType;
         entry.SpecificGroupType = groupType;
 
@@ -507,9 +507,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithoutGroupCondition ()
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.GroupCondition = GroupCondition.None;
 
         return entry;
@@ -521,7 +521,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.TenantCondition = TenantCondition.OwningTenant;
         entry.TenantHierarchyCondition = TenantHierarchyCondition.This;
 
@@ -531,11 +531,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithSpecificTenant (Tenant tenant)
     {
-      ArgumentUtility.CheckNotNull ("tenant", tenant);
+      ArgumentUtility.CheckNotNull("tenant", tenant);
 
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.TenantCondition = TenantCondition.SpecificTenant;
         entry.SpecificTenant = tenant;
         entry.TenantHierarchyCondition = TenantHierarchyCondition.This;
@@ -548,7 +548,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.SpecificAbstractRole = CreateTestAbstractRole();
 
         return entry;
@@ -557,9 +557,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessControlEntry CreateAceWithPosition (Position position)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.UserCondition = UserCondition.SpecificPosition;
         entry.SpecificPosition = position;
         return entry;
@@ -570,7 +570,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlEntry entry = AccessControlEntry.NewObject ();
+        AccessControlEntry entry = AccessControlEntry.NewObject();
         entry.UserCondition = UserCondition.SpecificPosition;
         entry.SpecificPosition = position;
         entry.GroupCondition = groupCondition;
@@ -585,10 +585,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessControlList acl = StatefulAccessControlList.NewObject ();
+        AccessControlList acl = StatefulAccessControlList.NewObject();
 
         foreach (AccessControlEntry ace in aces)
-          acl.AccessControlEntries.Add (ace);
+          acl.AccessControlEntries.Add(ace);
 
         return acl;
       }
@@ -598,22 +598,22 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        ace.AddAccessType (accessType);
+        ace.AddAccessType(accessType);
         if (!allowAccess.HasValue)
-          ace.RemoveAccess (accessType);
+          ace.RemoveAccess(accessType);
         else if (allowAccess.Value)
-          ace.AllowAccess (accessType);
+          ace.AllowAccess(accessType);
         else
-          ace.DenyAccess(accessType);        
+          ace.DenyAccess(accessType);
       }
     }
 
     public AccessTypeDefinition CreateReadAccessTypeAndAttachToAce (AccessControlEntry ace, bool? allowAccess)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition accessType = CreateReadAccessType ();
-        AttachAccessType (ace, accessType, allowAccess);
+        AccessTypeDefinition accessType = CreateReadAccessType();
+        AttachAccessType(ace, accessType, allowAccess);
 
         return accessType;
       }
@@ -621,10 +621,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateWriteAccessTypeAndAttachToAce (AccessControlEntry ace, bool? allowAccess)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition accessType = CreateWriteAccessType ();
-        AttachAccessType (ace, accessType, allowAccess);
+        AccessTypeDefinition accessType = CreateWriteAccessType();
+        AttachAccessType(ace, accessType, allowAccess);
 
         return accessType;
       }
@@ -632,10 +632,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateDeleteAccessTypeAndAttachToAce (AccessControlEntry ace, bool? allowAccess)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition accessType = CreateDeleteAccessType ();
-        AttachAccessType (ace, accessType, allowAccess);
+        AccessTypeDefinition accessType = CreateDeleteAccessType();
+        AttachAccessType(ace, accessType, allowAccess);
 
         return accessType;
       }
@@ -644,32 +644,32 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public AccessTypeDefinition CreateReadAccessType ()
     {
-      return CreateAccessType ("Read", 0);
+      return CreateAccessType("Read", 0);
     }
 
     public AccessTypeDefinition CreateWriteAccessType ()
     {
-      return CreateAccessType ("Write", 1);
+      return CreateAccessType("Write", 1);
     }
 
     public AccessTypeDefinition CreateDeleteAccessType ()
     {
-      return CreateAccessType ("Delete", 2);
+      return CreateAccessType("Delete", 2);
     }
 
 
     public AccessTypeDefinition CreateAccessType (Guid metadataItemID, string name, int value)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (metadataItemID, name, value);
+        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject(metadataItemID, name, value);
         return accessType;
       }
     }
 
     public AccessTypeDefinition CreateAccessType (string name, int value)
     {
-      return CreateAccessType (Guid.NewGuid (), name, value);
+      return CreateAccessType(Guid.NewGuid(), name, value);
     }
 
 
@@ -677,8 +677,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject (metadataItemID, name, value);
-        AttachAccessType (ace, accessType, allowAccess);
+        AccessTypeDefinition accessType = AccessTypeDefinition.NewObject(metadataItemID, name, value);
+        AttachAccessType(ace, accessType, allowAccess);
 
         return accessType;
       }
@@ -689,7 +689,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        Tenant tenant = _factory.CreateTenant ();
+        Tenant tenant = _factory.CreateTenant();
         tenant.Name = name;
 
         return tenant;
@@ -700,7 +700,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        Group group = _factory.CreateGroup ();
+        Group group = _factory.CreateGroup();
         group.Name = name;
         group.Parent = parent;
         group.Tenant = tenant;
@@ -711,9 +711,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
 
     public Group CreateGroup (string name, Group parent, Tenant tenant, GroupType groupType)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
-        Group group = _factory.CreateGroup ();
+        Group group = _factory.CreateGroup();
         group.Name = name;
         group.Parent = parent;
         group.Tenant = tenant;
@@ -728,18 +728,18 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        GroupType groupType = GroupType.NewObject ();
+        GroupType groupType = GroupType.NewObject();
         groupType.Name = name;
         return groupType;
       }
-    }      
+    }
 
 
     public User CreateUser (string userName, string firstName, string lastName, string title, Group owningGroup, Tenant tenant)
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        User user = _factory.CreateUser ();
+        User user = _factory.CreateUser();
         user.UserName = userName;
         user.FirstName = firstName;
         user.LastName = lastName;
@@ -755,7 +755,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        Position position = _factory.CreatePosition ();
+        Position position = _factory.CreatePosition();
         position.Name = name;
 
         return position;
@@ -766,7 +766,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        Role role = Role.NewObject ();
+        Role role = Role.NewObject();
         role.User = user;
         role.Group = group;
         role.Position = position;
@@ -780,14 +780,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     {
       foreach (AccessControlEntry ace in aces)
       {
-        acl.AccessControlEntries.Add (ace);
+        acl.AccessControlEntries.Add(ace);
       }
     }
 
-    
+
     private StateDefinition CreateState (string name, int value)
     {
-      StateDefinition state = StateDefinition.NewObject (name, value);
+      StateDefinition state = StateDefinition.NewObject(name, value);
       state.Index = value;
 
       return state;

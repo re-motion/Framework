@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing.Design;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -30,17 +30,22 @@ using System.Web.UI.WebControls;
 using JetBrains.Annotations;
 using Remotion.Globalization;
 using Remotion.Logging;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
+using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
@@ -49,7 +54,6 @@ using Remotion.Web.UI.Controls.PostBackTargets;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
-using StringArrayConverter = Remotion.Web.UI.Design.StringArrayConverter;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -59,16 +63,50 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/Class/*' />
   // TODO: see "Doc\Bugs and ToDos.txt"
-  [Designer (typeof (BocListDesigner))]
-  [DefaultEvent ("CommandClick")]
-  [ToolboxItemFilter ("System.Web.UI")]
-  public partial class BocList : 
-      BusinessObjectBoundEditableWebControl, 
+  [DefaultEvent("CommandClick")]
+  [ToolboxItemFilter("System.Web.UI")]
+  public partial class BocList :
+      BusinessObjectBoundEditableWebControl,
       IBocList,
       IPostBackEventHandler,
       IPostBackDataHandler,
       IResourceDispatchTarget
   {
+    #region Obsolete
+
+    /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>
+    /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
+    [Obsolete("Style via CSS instead. (Version 3.0.0)", true)]
+    public Unit MenuBlockItemOffset
+    {
+      get => throw new NotSupportedException("Style via CSS instead.");
+      set => throw new NotSupportedException("Style via CSS instead.");
+    }
+
+    /// <summary> Gets or sets the offset between the table and the menu block. </summary>
+    [Obsolete("Style via CSS instead. (Version 3.0.0)", true)]
+    public Unit MenuBlockOffset
+    {
+      get => throw new NotSupportedException("Style via CSS instead.");
+      set => throw new NotSupportedException("Style via CSS instead.");
+    }
+
+    /// <summary> Gets or sets the width reserved for the menu block. </summary>
+    [Obsolete("Use " + nameof(MenuBlockMinWidth) + " and " + nameof(MenuBlockMaxWidth) + " instead. (Version 3.0.0)", true)]
+    public Unit MenuBlockWidth
+    {
+      get => throw new NotSupportedException($"Use {nameof(MenuBlockMinWidth)} and {nameof(MenuBlockMaxWidth)} instead.");
+      set => throw new NotSupportedException($"Use {nameof(MenuBlockMinWidth)} and {nameof(MenuBlockMaxWidth)} instead.");
+    }
+
+    [Obsolete("For DependDB only.", true)]
+    private new BaseValidator[] CreateValidators ()
+    {
+      throw new NotImplementedException("For DependDB only.");
+    }
+
+    #endregion
+
     //  constants
     private const string c_currentPageControlName = "_Boc_CurrentPage";
     private const string c_availableViewsListIDSuffix = "_Boc_AvailableViewsList";
@@ -83,8 +121,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private const string c_customCellEventPrefix = "CustomCell=";
 
     private const string c_eventRowEditModePrefix = "RowEditMode=";
-    private const string c_rowEditModeRequiredFieldIcon = "RequiredField.gif";
-    private const string c_rowEditModeValidationErrorIcon = "ValidationError.gif";
+    private const string c_rowEditModeRequiredFieldIcon = "sprite.svg#RequiredField";
+    private const string c_rowEditModeValidationErrorIcon = "sprite.svg#ValidationError";
 
     /// <summary> Prefix applied to the post back argument of the sort buttons. </summary>
     public const string SortCommandPrefix = "Sort=";
@@ -109,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see cref="M:Remotion.Globalization.IResourceManager.TryGetString(string, out string)"/>.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocList")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocList")]
     public enum ResourceIdentifier
     {
       EmptyListMessage,
@@ -132,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       SelectRowLabelText,
       IndexColumnTitle,
       /// <summary> The menu title text used for an automatically generated row menu column. </summary>
-      RowMenuTitle
+      RowMenuTitle,
     }
 
     public enum RowEditModeCommand
@@ -149,9 +187,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     // static members
-    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof (IBusinessObjectReferenceProperty) };
+    private static readonly Type[] s_supportedPropertyInterfaces = new[] { typeof(IBusinessObjectReferenceProperty) };
 
-    private static readonly ILog s_log = LogManager.GetLogger (MethodBase.GetCurrentMethod().DeclaringType);
+    private static readonly ILog s_log = LogManager.GetLogger(MethodBase.GetCurrentMethod()!.DeclaringType!);
 
     private static readonly object s_menuItemClickEvent = new object();
     private static readonly object s_listItemCommandClickEvent = new object();
@@ -169,12 +207,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     // member fields
-    
+
     private IRowIDProvider _rowIDProvider = new NullValueRowIDProvider();
 
     private readonly PlaceHolder _availableViewsListPlaceHolder;
 
-    private string _availableViewsListTitle;
+    private WebString _availableViewsListTitle;
 
     /// <summary> The predefined column definition sets that the user can choose from at run-time. </summary>
     private readonly BocListViewCollection _availableViews;
@@ -183,7 +221,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showAvailableViewsList = true;
 
     /// <summary> The current <see cref="BocListView"/>. May be set at run time. </summary>
-    private BocListView _selectedView;
+    private BocListView? _selectedView;
 
     /// <summary> 
     ///   The zero-based index of the <see cref="BocListView"/> selected from 
@@ -193,8 +231,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private bool _isSelectedViewIndexSet;
 
-    /// <summary> The <see cref="IList"/> displayed by the <see cref="BocList"/>. </summary>
-    private IList _value;
+    /// <summary> The <see cref="IReadOnlyList{IBusinessObject}"/> displayed by the <see cref="BocList"/>. Can additionally implement <see cref="IList"/> for modification.</summary>
+    private IReadOnlyList<IBusinessObject>? _value;
 
     /// <summary> The user independent column definitions. </summary>
     private readonly BocColumnDefinitionCollection _fixedColumns;
@@ -203,10 +241,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Contains a <see cref="BocColumnDefinition"/> for each property of the bound 
     ///   <see cref="IBusinessObject"/>. 
     /// </summary>
-    private BocColumnDefinition[] _allPropertyColumns;
+    private BocColumnDefinition[]? _allPropertyColumns;
 
     /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
-    private BocColumnDefinition[] _columnDefinitions;
+    private BocColumnDefinition[]? _columnDefinitions;
 
     private bool _hasAppendedAllPropertyColumnDefinitions;
 
@@ -218,9 +256,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showListMenu = true;
 
     private RowMenuDisplay _rowMenuDisplay = RowMenuDisplay.Undefined;
-    private string _optionsTitle;
-    private string[] _hiddenMenuItems;
-    private Unit _menuBlockWidth = Unit.Empty;
+    private WebString _optionsTitle;
+    private string[]? _hiddenMenuItems;
     private Unit _menuBlockOffset = Unit.Empty;
     private Unit _menuBlockItemOffset = Unit.Empty;
     private readonly DropDownMenu _optionsMenu;
@@ -233,7 +270,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showMenuForEmptyListEditMode = true;
     private bool _showEmptyListReadOnlyMode;
     private bool _showMenuForEmptyListReadOnlyMode;
-    private string _emptyListMessage;
+    private WebString _emptyListMessage;
     private bool _showEmptyListMessage;
 
     /// <summary> Determines whether to generate columns for all properties. </summary>
@@ -253,8 +290,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private BocListSortingOrderEntry[] _sortingOrder = new BocListSortingOrderEntry[0];
 
-    private ReadOnlyCollection<BocListRow> _indexedRowsSorted;
-    private ReadOnlyCollection<SortedRow> _currentPageRows;
+    private ReadOnlyCollection<BocListRow>? _indexedRowsSorted;
+    private ReadOnlyCollection<SortedRow>? _currentPageRows;
 
     /// <summary> Determines whether to enable the selecting of the data rows. </summary>
     private RowSelection _selection = RowSelection.Undefined;
@@ -263,7 +300,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private HashSet<string> _selectorControlCheckedState = new HashSet<string>();
 
     private RowIndex _index = RowIndex.Undefined;
-    private string _indexColumnTitle;
+    private WebString _indexColumnTitle;
     private int? _indexOffset;
 
     /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
@@ -295,28 +332,41 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private bool _showEditModeValidationMarkers;
     private bool _disableEditModeValidationMessages;
 
-    private string _errorMessage;
+    private PlainTextString _errorMessage;
     private bool? _isBrowserCapableOfSCripting;
-    private ScalarLoadPostDataTarget _currentPagePostBackTarget;
+    private ScalarLoadPostDataTarget? _currentPagePostBackTarget;
 
     private readonly IRenderingFeatures _renderingFeatures;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private ReadOnlyCollection<BaseValidator>? _validators;
+
+    private string? _controlServicePath;
+    private string? _controlServiceArguments;
 
     private bool _hasPreRenderCompleted;
 
     // construction and disposing
 
+    protected IWebServiceFactory WebServiceFactory { get; }
+
     public BocList ()
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
     {
+    }
+
+    protected BocList ([JetBrains.Annotations.NotNull] IWebServiceFactory webServiceFactory)
+    {
+      ArgumentUtility.CheckNotNull("webServiceFactory", webServiceFactory);
+
       _availableViewsListPlaceHolder = new PlaceHolder();
-      _editModeController = new EditModeController (new EditModeHost (this));
-      _optionsMenu = new DropDownMenu (this);
-      _listMenu = new ListMenu (this);
-      _availableViews = new BocListViewCollection (this);
-      _fixedColumns = new BocColumnDefinitionCollection (this);
+      _editModeController = new EditModeController(new EditModeHost(this));
+      _optionsMenu = new DropDownMenu(this);
+      _listMenu = new ListMenu(this);
+      _availableViews = new BocListViewCollection(this);
+      _fixedColumns = new BocColumnDefinitionCollection(this);
       _fixedColumns.CollectionChanged += delegate { OnColumnsChanged(); };
 
       _renderingFeatures = ServiceLocator.GetInstance<IRenderingFeatures>();
+      WebServiceFactory = webServiceFactory;
     }
 
     // methods and properties
@@ -326,28 +376,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _optionsMenu.ID = ID + c_optionsMenuIDSuffix;
       _optionsMenu.EventCommandClick += MenuItemEventCommandClick;
       _optionsMenu.WxeFunctionCommandClick += MenuItemWxeFunctionCommandClick;
-      Controls.Add (_optionsMenu);
+      Controls.Add(_optionsMenu);
 
       _listMenu.ID = ID + c_listMenuIDSuffix;
       _listMenu.EventCommandClick += MenuItemEventCommandClick;
       _listMenu.WxeFunctionCommandClick += MenuItemWxeFunctionCommandClick;
-      Controls.Add (_listMenu);
+      Controls.Add(_listMenu);
 
-      Controls.Add (_availableViewsListPlaceHolder);
+      Controls.Add(_availableViewsListPlaceHolder);
 
       var availableViewsListPostBackTarget = new ScalarLoadPostDataTarget();
       availableViewsListPostBackTarget.ID = ID + c_availableViewsListIDSuffix;
       availableViewsListPostBackTarget.DataChanged += HandleSelectedViewChanged;
-      _availableViewsListPlaceHolder.Controls.Add (availableViewsListPostBackTarget);
+      _availableViewsListPlaceHolder.Controls.Add(availableViewsListPostBackTarget);
 
       _currentPagePostBackTarget = new ScalarLoadPostDataTarget();
       _currentPagePostBackTarget.ID = ID + c_currentPageControlName;
       _currentPagePostBackTarget.ClientIDMode = ClientIDMode.AutoID;
       _currentPagePostBackTarget.DataChanged += HandleCurrentPageChanged;
-      Controls.Add (_currentPagePostBackTarget);
+      Controls.Add(_currentPagePostBackTarget);
 
       _editModeController.ID = ID + "_EditModeController";
-      Controls.Add ((Control) _editModeController);
+      Controls.Add((Control)_editModeController);
 
       CreateChildControlsForRowMenus();
       CreateChildControlsForCustomColumns();
@@ -357,38 +407,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       _availableViews.CollectionChanged += AvailableViews_CollectionChanged;
       Binding.BindingChanged += Binding_BindingChanged;
 
-      if (!IsDesignMode)
-      {
-        Page.RegisterRequiresPostBack (this);
-        InitializeMenusItems();
-      }
+      Page!.RegisterRequiresPostBack(this);
+      InitializeMenusItems();
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender, EditModeControlFactory);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender, EditModeControlFactory);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (ControlExistedInPreviousRequest)
       {
         var columns = EnsureColumnsGot();
         EnsureEditModeRestored();
         EnsureRowMenusInitialized();
-        EnsureCustomColumnsInitialized (columns);
+        EnsureCustomColumnsInitialized(columns);
       }
     }
 
@@ -396,32 +443,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
     void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
     {
-      RaisePostBackEvent (eventArgument);
+      RaisePostBackEvent(eventArgument);
     }
 
     /// <param name="eventArgument"> &lt;prefix&gt;=&lt;value&gt; </param>
     protected virtual void RaisePostBackEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
 
       eventArgument = eventArgument.Trim();
-      if (eventArgument.StartsWith (c_eventListItemCommandPrefix))
-        HandleListItemCommandEvent (eventArgument.Substring (c_eventListItemCommandPrefix.Length));
-      else if (eventArgument.StartsWith (SortCommandPrefix))
-        HandleResorting (eventArgument.Substring (SortCommandPrefix.Length));
-      else if (eventArgument.StartsWith (c_customCellEventPrefix))
-        HandleCustomCellEvent (eventArgument.Substring (c_customCellEventPrefix.Length));
-      else if (eventArgument.StartsWith (c_eventRowEditModePrefix))
-        HandleRowEditModeEvent (eventArgument.Substring (c_eventRowEditModePrefix.Length));
+      if (eventArgument.StartsWith(c_eventListItemCommandPrefix))
+        HandleListItemCommandEvent(eventArgument.Substring(c_eventListItemCommandPrefix.Length));
+      else if (eventArgument.StartsWith(SortCommandPrefix))
+        HandleResorting(eventArgument.Substring(SortCommandPrefix.Length));
+      else if (eventArgument.StartsWith(c_customCellEventPrefix))
+        HandleCustomCellEvent(eventArgument.Substring(c_customCellEventPrefix.Length));
+      else if (eventArgument.StartsWith(c_eventRowEditModePrefix))
+        HandleRowEditModeEvent(eventArgument.Substring(c_eventRowEditModePrefix.Length));
       else
-        throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
+        throw new ArgumentException("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
     }
 
     /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
     bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
       if (RequiresLoadPostData)
-        return LoadPostData (postDataKey, postCollection);
+        return LoadPostData(postDataKey, postCollection);
       else
         return false;
     }
@@ -441,36 +488,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_editModeController.IsRowEditModeActive)
         return false;
 
-      LoadSelectionPostData (postCollection);
+      LoadSelectionPostData(postCollection);
 
       return false;
     }
 
-    private void HandleSelectedViewChanged (object sender, EventArgs e)
+    private void HandleSelectedViewChanged (object? sender, EventArgs e)
     {
+      ArgumentUtility.CheckNotNull("sender", sender!);
+
       if (!RequiresLoadPostData)
         return;
 
-      SelectedViewIndex = int.Parse (((ScalarLoadPostDataTarget) sender).Value);
+      var value = ((ScalarLoadPostDataTarget)sender).Value;
+      Assertion.IsNotNull(value, "sender.Value != null");
+      SelectedViewIndex = int.Parse(value);
     }
 
-    private void HandleCurrentPageChanged (object sender, EventArgs e)
+    private void HandleCurrentPageChanged (object? sender, EventArgs e)
     {
+      ArgumentUtility.CheckNotNull("sender", sender!);
+
       if (!RequiresLoadPostData)
         return;
 
       if (!IsPagingEnabled)
         return;
 
-      _newPageIndex = int.Parse (((ScalarLoadPostDataTarget) sender).Value);
+      var value = ((ScalarLoadPostDataTarget)sender).Value;
+      Assertion.IsNotNull(value, "sender.Value != null");
+      _newPageIndex = int.Parse(value);
     }
 
     private void LoadSelectionPostData (NameValueCollection postCollection)
     {
       _selectorControlCheckedState.Clear();
 
-      string dataRowSelectorControlFilter = ((IBocList) this).GetSelectorControlName ();
-      var values = postCollection.GetValues (dataRowSelectorControlFilter);
+      string dataRowSelectorControlFilter = ((IBocList)this).GetSelectorControlName();
+      var values = postCollection.GetValues(dataRowSelectorControlFilter);
       if (values == null)
         return;
 
@@ -479,7 +534,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if ((_selection == RowSelection.SingleCheckBox || _selection == RowSelection.SingleRadioButton) && (_selectorControlCheckedState.Count == 1))
           break;
 
-        _selectorControlCheckedState.Add (rowID);
+        _selectorControlCheckedState.Add(rowID);
       }
     }
 
@@ -492,54 +547,54 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt; </param>
     private void HandleListItemCommandEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
 
       if (Value == null)
       {
-        throw new InvalidOperationException (
-            string.Format ("The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
+        throw new InvalidOperationException(
+            string.Format("The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
       }
 
-      string[] eventArgumentParts = eventArgument.Split (new[] { ',' }, 2);
+      string[] eventArgumentParts = eventArgument.Split(new[] { ',' }, 2);
 
       //  First part: column index
       int columnIndex;
       eventArgumentParts[0] = eventArgumentParts[0].Trim();
       try
       {
-        columnIndex = int.Parse (eventArgumentParts[0]);
+        columnIndex = int.Parse(eventArgumentParts[0]);
       }
       catch (FormatException ex)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.", ex);
       }
 
       BocColumnDefinition[] columns = EnsureColumnsGot();
       if (columnIndex >= columns.Length)
       {
-        throw new ArgumentOutOfRangeException (
+        throw new ArgumentOutOfRangeException(
             "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
-            (Exception) null);
+            (Exception?)null);
       }
 
-      BocCommandEnabledColumnDefinition column = (BocCommandEnabledColumnDefinition) columns[columnIndex];
+      BocCommandEnabledColumnDefinition column = (BocCommandEnabledColumnDefinition)columns[columnIndex];
       if (column.Command == null)
       {
-        throw new ArgumentOutOfRangeException (
-            string.Format ("The BocList '{0}' does not have a command inside column {1}.", ID, columnIndex));
+        throw new ArgumentOutOfRangeException(
+            string.Format("The BocList '{0}' does not have a command inside column {1}.", ID, columnIndex));
       }
       BocListItemCommand command = column.Command;
 
       //  Second part: list index
-      BocListRow row;
+      BocListRow? row;
       try
       {
-        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
+        row = RowIDProvider.GetRowFromItemRowID(Value, eventArgumentParts[1].Trim());
       }
       catch (FormatException ex)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "Second part of argument 'eventArgument' does not match the expected format. Expected format: <column-index>,<row-ID>'.", ex);
       }
 
@@ -550,13 +605,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         case CommandType.Event:
         {
-          OnListItemCommandClick (column, row.Index, row.BusinessObject);
+          OnListItemCommandClick(column, row.Index, row.BusinessObject);
           break;
         }
         case CommandType.WxeFunction:
         {
           if (Page is IWxePage)
-            command.ExecuteWxeFunction ((IWxePage) Page, row.Index, row.BusinessObject);
+            command.ExecuteWxeFunction((IWxePage)Page, row.Index, row.BusinessObject);
           //else
           //  command.ExecuteWxeFunction (Page, row.Index, row.BusinessObject);
           break;
@@ -572,52 +627,52 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt;,&lt;row-ID&gt;[,&lt;customArgument&gt;] </param>
     private void HandleCustomCellEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
 
       if (Value == null)
       {
-        throw new InvalidOperationException (
-            string.Format ("The BocList '{0}' does not have a Value when attempting to handle the custom cell event.", ID));
+        throw new InvalidOperationException(
+            string.Format("The BocList '{0}' does not have a Value when attempting to handle the custom cell event.", ID));
       }
 
-      string[] eventArgumentParts = eventArgument.Split (new[] { ',' }, 3);
+      string[] eventArgumentParts = eventArgument.Split(new[] { ',' }, 3);
 
       //  First part: column index
       int columnIndex;
       eventArgumentParts[0] = eventArgumentParts[0].Trim();
       try
       {
-        columnIndex = int.Parse (eventArgumentParts[0]);
+        columnIndex = int.Parse(eventArgumentParts[0]);
       }
       catch (Exception ex)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>[,<customArgument>]'.", ex);
       }
 
       BocColumnDefinition[] columns = EnsureColumnsGot();
       if (columnIndex >= columns.Length)
       {
-        throw new ArgumentOutOfRangeException (
+        throw new ArgumentOutOfRangeException(
             "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
-            (Exception) null);
+            (Exception?)null);
       }
 
       //  Second part: list index
-      BocListRow row;
+      BocListRow? row;
       try
       {
-        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[1].Trim());
+        row = RowIDProvider.GetRowFromItemRowID(Value, eventArgumentParts[1].Trim());
       }
       catch (FormatException ex)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "Second part of argument 'eventArgument' does not match the expected format. Expected format: <column-index>,<row-ID>[,<customArgument>]'.",
             ex);
       }
 
       //  Thrid part, optional: customCellArgument
-      string customCellArgument = null;
+      string? customCellArgument = null;
       if (eventArgumentParts.Length == 3)
       {
         eventArgumentParts[2] = eventArgumentParts[2].Trim();
@@ -627,34 +682,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (row == null)
         return;
 
-      BocCustomColumnDefinition column = (BocCustomColumnDefinition) columns[columnIndex];
-      OnCustomCellClick (column, row.BusinessObject, customCellArgument);
+      BocCustomColumnDefinition column = (BocCustomColumnDefinition)columns[columnIndex];
+      OnCustomCellClick(column, row.BusinessObject, customCellArgument);
     }
 
     /// <summary> Handles post back events raised by an row edit mode event. </summary>
     /// <param name="eventArgument"> &lt;row-ID&gt;,&lt;command&gt; </param>
     private void HandleRowEditModeEvent (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
 
       if (Value == null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
       }
 
-      string[] eventArgumentParts = eventArgument.Split (new char[] { ',' }, 2);
+      string[] eventArgumentParts = eventArgument.Split(new char[] { ',' }, 2);
 
       //  First part: list index
-      BocListRow row;
+      BocListRow? row;
       try
       {
-        row = RowIDProvider.GetRowFromItemRowID (Value, eventArgumentParts[0].Trim());
+        row = RowIDProvider.GetRowFromItemRowID(Value, eventArgumentParts[0].Trim());
       }
       catch (FormatException ex)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "First part of argument 'eventArgument' does not match the expected format. Expected format: <row-ID>,<command>'.",
             ex);
       }
@@ -664,11 +719,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       eventArgumentParts[1] = eventArgumentParts[1].Trim();
       try
       {
-        command = (RowEditModeCommand) Enum.Parse (typeof (RowEditModeCommand), eventArgumentParts[1]);
+        command = (RowEditModeCommand)Enum.Parse(typeof(RowEditModeCommand), eventArgumentParts[1]);
       }
       catch (Exception ex)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "Second part of argument 'eventArgument' must be an integer. Expected format: <list-index>,<command>'.", ex);
       }
 
@@ -679,17 +734,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         case RowEditModeCommand.Edit:
         {
-          SwitchRowIntoEditMode (row.Index);
+          SwitchRowIntoEditMode(row.Index);
           break;
         }
         case RowEditModeCommand.Save:
         {
-          EndRowEditMode (true);
+          EndRowEditMode(true);
           break;
         }
         case RowEditModeCommand.Cancel:
         {
-          EndRowEditMode (false);
+          EndRowEditMode(false);
           break;
         }
         default:
@@ -708,14 +763,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (column != null && column.Command != null)
       {
-        column.Command.OnClick (column, listIndex, businessObject);
-        BocListItemCommandClickEventHandler commandClickHandler =
-            (BocListItemCommandClickEventHandler) Events[s_listItemCommandClickEvent];
+        column.Command.OnClick(column, listIndex, businessObject);
+        BocListItemCommandClickEventHandler? commandClickHandler =
+            (BocListItemCommandClickEventHandler?)Events[s_listItemCommandClickEvent];
         if (commandClickHandler != null)
         {
           BocListItemCommandClickEventArgs e =
-              new BocListItemCommandClickEventArgs (column.Command, column, listIndex, businessObject);
-          commandClickHandler (this, e);
+              new BocListItemCommandClickEventArgs(column.Command, column, listIndex, businessObject);
+          commandClickHandler(this, e);
         }
       }
     }
@@ -723,16 +778,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected virtual void OnCustomCellClick (
         BocCustomColumnDefinition column,
         IBusinessObject businessObject,
-        string argument)
+        string? argument)
     {
-      BocCustomCellClickArguments args = new BocCustomCellClickArguments (this, businessObject, column);
-      column.CustomCell.Click (args, argument);
-      BocCustomCellClickEventHandler clickHandler =
-          (BocCustomCellClickEventHandler) Events[s_customCellClickEvent];
+      BocCustomCellClickArguments args = new BocCustomCellClickArguments(this, businessObject, column);
+      column.CustomCell.Click(args, argument);
+      BocCustomCellClickEventHandler? clickHandler =
+          (BocCustomCellClickEventHandler?)Events[s_customCellClickEvent];
       if (clickHandler != null)
       {
-        BocCustomCellClickEventArgs e = new BocCustomCellClickEventArgs (column, businessObject, argument);
-        clickHandler (this, e);
+        BocCustomCellClickEventArgs e = new BocCustomCellClickEventArgs(column, businessObject, argument);
+        clickHandler(this, e);
       }
     }
 
@@ -740,18 +795,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="eventArgument"> &lt;column-index&gt; </param>
     private void HandleResorting (string eventArgument)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+      ArgumentUtility.CheckNotNullOrEmpty("eventArgument", eventArgument);
 
       int columnIndex;
       try
       {
         if (eventArgument.Length == 0)
           throw new FormatException();
-        columnIndex = int.Parse (eventArgument);
+        columnIndex = int.Parse(eventArgument);
       }
       catch (FormatException)
       {
-        throw new ArgumentException ("Argument 'eventArgument' must be an integer.");
+        throw new ArgumentException("Argument 'eventArgument' must be an integer.");
       }
 
       // Get columns from current life cycle. Once a sorting event was fired, no one will change the columns in this page life cycle.
@@ -759,30 +814,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (columnIndex >= columns.Length)
       {
-        throw new ArgumentOutOfRangeException (
+        throw new ArgumentOutOfRangeException(
             "eventArgument",
             eventArgument,
             "Column index was out of the range of valid values. Index must be less than the number of displayed columns.'");
       }
       var column = columns[columnIndex];
-      if (!(column is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition) column).IsSortable))
-        throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not sortable column at index" + columnIndex + ".");
+      if (!(column is IBocSortableColumnDefinition && ((IBocSortableColumnDefinition)column).IsSortable))
+        throw new ArgumentOutOfRangeException("The BocList '" + ID + "' does not sortable column at index" + columnIndex + ".");
 
       var oldSortingOrder = GetSortingOrder();
-      var workingSortingOrder = new List<BocListSortingOrderEntry> (oldSortingOrder);
+      var workingSortingOrder = new List<BocListSortingOrderEntry>(oldSortingOrder);
 
-      var oldSortingOrderEntry = workingSortingOrder.FirstOrDefault (entry => entry.Column == column) ?? BocListSortingOrderEntry.Empty;
+      var oldSortingOrderEntry = workingSortingOrder.FirstOrDefault(entry => entry.Column == column) ?? BocListSortingOrderEntry.Empty;
 
       BocListSortingOrderEntry newSortingOrderEntry;
       //  Cycle: Ascending -> Descending -> None -> Ascending
       if (! oldSortingOrderEntry.IsEmpty)
       {
-        workingSortingOrder.Remove (oldSortingOrderEntry);
+        workingSortingOrder.Remove(oldSortingOrderEntry);
         switch (oldSortingOrderEntry.Direction)
         {
           case SortingDirection.Ascending:
           {
-            newSortingOrderEntry = new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Descending);
+            newSortingOrderEntry = new BocListSortingOrderEntry(oldSortingOrderEntry.Column!, SortingDirection.Descending);
             break;
           }
           case SortingDirection.Descending:
@@ -792,18 +847,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           }
           case SortingDirection.None:
           {
-            newSortingOrderEntry = new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Ascending);
+            newSortingOrderEntry = new BocListSortingOrderEntry(oldSortingOrderEntry.Column!, SortingDirection.Ascending);
             break;
           }
           default:
           {
-            throw new InvalidOperationException (string.Format ("SortingDirection '{0}' is not valid.", oldSortingOrderEntry.Direction));
+            throw new InvalidOperationException(string.Format("SortingDirection '{0}' is not valid.", oldSortingOrderEntry.Direction));
           }
         }
       }
       else
       {
-        newSortingOrderEntry = new BocListSortingOrderEntry ((IBocSortableColumnDefinition) column, SortingDirection.Ascending);
+        newSortingOrderEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition)column, SortingDirection.Ascending);
       }
 
       if (newSortingOrderEntry.IsEmpty)
@@ -812,75 +867,71 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           var entry = workingSortingOrder[0];
           workingSortingOrder.Clear();
-          workingSortingOrder.Add (entry);
+          workingSortingOrder.Add(entry);
         }
       }
       else
       {
         if (! IsMultipleSortingEnabled)
           workingSortingOrder.Clear();
-        workingSortingOrder.Add (newSortingOrderEntry);
+        workingSortingOrder.Add(newSortingOrderEntry);
       }
 
       var newSortingOrder = workingSortingOrder.ToArray();
 
-      OnSortingOrderChanging (oldSortingOrder, newSortingOrder);
+      OnSortingOrderChanging(oldSortingOrder, newSortingOrder);
       _sortingOrder = workingSortingOrder.ToArray();
-      OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
+      OnSortingOrderChanged(oldSortingOrder, newSortingOrder);
       OnSortedRowsChanged();
     }
 
     protected virtual void OnSortingOrderChanging (
         BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
     {
-      BocListSortingOrderChangeEventHandler handler =
-          (BocListSortingOrderChangeEventHandler) Events[s_sortingOrderChangingEvent];
+      BocListSortingOrderChangeEventHandler? handler =
+          (BocListSortingOrderChangeEventHandler?)Events[s_sortingOrderChangingEvent];
       if (handler != null)
       {
         BocListSortingOrderChangeEventArgs e =
-            new BocListSortingOrderChangeEventArgs (oldSortingOrder, newSortingOrder);
-        handler (this, e);
+            new BocListSortingOrderChangeEventArgs(oldSortingOrder, newSortingOrder);
+        handler(this, e);
       }
     }
 
     protected virtual void OnSortingOrderChanged (
         BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
     {
-      BocListSortingOrderChangeEventHandler handler =
-          (BocListSortingOrderChangeEventHandler) Events[s_sortingOrderChangedEvent];
+      BocListSortingOrderChangeEventHandler? handler =
+          (BocListSortingOrderChangeEventHandler?)Events[s_sortingOrderChangedEvent];
       if (handler != null)
       {
         BocListSortingOrderChangeEventArgs e =
-            new BocListSortingOrderChangeEventArgs (oldSortingOrder, newSortingOrder);
-        handler (this, e);
+            new BocListSortingOrderChangeEventArgs(oldSortingOrder, newSortingOrder);
+        handler(this, e);
       }
     }
 
     /// <summary> Is raised when the sorting order of the <see cref="BocList"/> is about to change. </summary>
     /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
-    [Category ("Action")]
-    [Description ("Occurs when the sorting order of the BocList is about to change.")]
+    [Category("Action")]
+    [Description("Occurs when the sorting order of the BocList is about to change.")]
     public event BocListSortingOrderChangeEventHandler SortingOrderChanging
     {
-      add { Events.AddHandler (s_sortingOrderChangingEvent, value); }
-      remove { Events.RemoveHandler (s_sortingOrderChangingEvent, value); }
+      add { Events.AddHandler(s_sortingOrderChangingEvent, value); }
+      remove { Events.RemoveHandler(s_sortingOrderChangingEvent, value); }
     }
 
     /// <summary> Is raised when the sorting order of the <see cref="BocList"/> has changed. </summary>
     /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
-    [Category ("Action")]
-    [Description ("Occurs when the sorting order of the BocList has to changed.")]
+    [Category("Action")]
+    [Description("Occurs when the sorting order of the BocList has to changed.")]
     public event BocListSortingOrderChangeEventHandler SortingOrderChanged
     {
-      add { Events.AddHandler (s_sortingOrderChangedEvent, value); }
-      remove { Events.RemoveHandler (s_sortingOrderChangedEvent, value); }
+      add { Events.AddHandler(s_sortingOrderChangedEvent, value); }
+      remove { Events.RemoveHandler(s_sortingOrderChangedEvent, value); }
     }
 
-    [Obsolete ("For DependDB only.", true)]
-    private new BaseValidator[] CreateValidators ()
-    {
-      throw new NotImplementedException ("For DependDB only.");
-    }
+
 
     /// <summary>
     ///   Generates a <see cref="EditModeValidator"/>.
@@ -894,66 +945,66 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocListValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList().AsReadOnly();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
-      if (!string.IsNullOrEmpty (ErrorMessage))
-        UpdateValidtaorErrorMessages<EditModeValidator> (ErrorMessage);
+      if (!ErrorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<EditModeValidator>(ErrorMessage);
 
       return _validators;
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
     /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
     protected virtual void EvaluateWaiConformity (BocColumnDefinition[] columns)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
+      ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
 
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
       {
         if (ShowOptionsMenu)
-          WcagHelper.Instance.HandleError (1, this, "ShowOptionsMenu");
+          WcagHelper.Instance.HandleError(1, this, "ShowOptionsMenu");
         if (ShowListMenu)
-          WcagHelper.Instance.HandleError (1, this, "ShowListMenu");
+          WcagHelper.Instance.HandleError(1, this, "ShowListMenu");
         if (ShowAvailableViewsList)
-          WcagHelper.Instance.HandleError (1, this, "ShowAvailableViewsList");
+          WcagHelper.Instance.HandleError(1, this, "ShowAvailableViewsList");
         bool isPagingEnabled = _pageSize != null && _pageSize.Value != 0;
         if (isPagingEnabled)
-          WcagHelper.Instance.HandleError (1, this, "PageSize");
+          WcagHelper.Instance.HandleError(1, this, "PageSize");
         if (EnableSorting)
-          WcagHelper.Instance.HandleWarning (1, this, "EnableSorting");
+          WcagHelper.Instance.HandleWarning(1, this, "EnableSorting");
         if (RowMenuDisplay == RowMenuDisplay.Automatic)
-          WcagHelper.Instance.HandleError (1, this, "RowMenuDisplay");
+          WcagHelper.Instance.HandleError(1, this, "RowMenuDisplay");
 
         for (int i = 0; i < columns.Length; i++)
         {
           if (columns[i] is BocRowEditModeColumnDefinition)
-            WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}]", i));
+            WcagHelper.Instance.HandleError(1, this, string.Format("Columns[{0}]", i));
 
-          BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
+          BocCommandEnabledColumnDefinition? commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
           if (commandColumn != null)
           {
             bool hasPostBackColumnCommand = commandColumn.Command != null
                                             && (commandColumn.Command.Type == CommandType.Event
                                                 || commandColumn.Command.Type == CommandType.WxeFunction);
             if (hasPostBackColumnCommand)
-              WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}].Command", i));
+              WcagHelper.Instance.HandleError(1, this, string.Format("Columns[{0}].Command", i));
           }
 
           if (columns[i] is BocDropDownMenuColumnDefinition)
-            WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}]", i));
+            WcagHelper.Instance.HandleError(1, this, string.Format("Columns[{0}]", i));
         }
       }
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelDoubleARequired())
       {
         if (IsSelectionEnabled && ! IsIndexEnabled)
-          WcagHelper.Instance.HandleError (2, this, "Selection");
+          WcagHelper.Instance.HandleError(2, this, "Selection");
       }
     }
 
@@ -972,7 +1023,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocColumnDefinition[] columns = EnsureColumnsGot();
       EnsureChildControls();
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       // Must be executed before CalculateCurrentPage
       if (_editModeController.IsRowEditModeActive)
@@ -984,39 +1035,47 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_editedRowIndex.HasValue)
       {
         var currentRow = EnsureBocListRowsForCurrentPageGot()
-                             .FirstOrDefault (r => r.ValueRow.Index == _editedRowIndex.Value)
+                             .FirstOrDefault(r => r.ValueRow.Index == _editedRowIndex.Value)
                          ??
                          EnsureSortedBocListRowsGot()
-                             .Select ((row, index) => new SortedRow (row, index))
-                             .FirstOrDefault (r => r.ValueRow.Index == _editedRowIndex.Value);
+                             .Select((row, index) => new SortedRow(row, index))
+                             .FirstOrDefault(r => r.ValueRow.Index == _editedRowIndex.Value);
 
         if (currentRow == null)
           _newPageIndex = null;
         else
-          _newPageIndex = currentRow.SortedIndex / _pageSize.Value;
+          _newPageIndex = currentRow.SortedIndex / _pageSize!.Value;
       }
 
-      CalculateCurrentPage (_newPageIndex);
+      CalculateCurrentPage(_newPageIndex);
 
       EnsureEditModeValidatorsRestored();
 
-      LoadResources (GetResourceManager(), GlobalizationService);
+      LoadResources(GetResourceManager(), GlobalizationService);
 
-      if (!IsDesignMode)
-      {
-        PreRenderMenuItems();
-        PreRenderListItemCommands();
+      PreRenderMenuItems();
+      PreRenderListItemCommands();
 
-        EnsureRowMenusInitialized();
-        PreRenderRowMenusItems();
+      EnsureRowMenusInitialized();
+      PreRenderRowMenusItems();
 
-        EnsureCustomColumnsInitialized (columns);
-        PreRenderCustomColumns();
+      EnsureCustomColumnsInitialized(columns);
+      PreRenderCustomColumns();
 
-        _optionsMenu.GetSelectionCount = GetSelectionCountScript();
-      }
+      _optionsMenu.GetSelectionCount = GetSelectionCountScript();
+
+      CheckControlService();
 
       SetPreRenderComplete();
+    }
+
+    private void CheckControlService ()
+    {
+      if (string.IsNullOrEmpty(ControlServicePath))
+        return;
+
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath(this, ControlServicePath);
+      WebServiceFactory.CreateJsonService<IBocListWebService>(virtualServicePath);
     }
 
     /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>
@@ -1033,10 +1092,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected void SetPageIndex (int pageIndex)
     {
       if (pageIndex < 0)
-        throw new ArgumentOutOfRangeException ("pageIndex", "The page index must not be less then zero.");
+        throw new ArgumentOutOfRangeException("pageIndex", "The page index must not be less then zero.");
 
       if (!IsPagingEnabled)
-        throw new InvalidOperationException (string.Format ("The page index cannot be set on BoocList '{0}' unless paging is enabled.", ID));
+        throw new InvalidOperationException(string.Format("The page index cannot be set on BoocList '{0}' unless paging is enabled.", ID));
 
       _newPageIndex = pageIndex;
     }
@@ -1052,12 +1111,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else
       {
-        Assertion.IsFalse (_editModeController.IsListEditModeActive, "ListEditMode cannot be enabled when paging is enabled and vice versa.");
+        Assertion.IsFalse(_editModeController.IsListEditModeActive, "ListEditMode cannot be enabled when paging is enabled and vice versa.");
 
         if (newPageIndex.HasValue)
           _currentPageIndex = newPageIndex.Value;
 
-        _pageCount = (int) Math.Ceiling ((double) Value.Count / _pageSize.Value);
+        _pageCount = (int)Math.Ceiling((double)Value.Count / _pageSize.Value);
         if (_currentPageIndex >= _pageCount)
           _currentPageIndex = _pageCount - 1;
 
@@ -1069,39 +1128,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         OnDisplayedRowsChanged();
     }
 
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return new BocListConstraintVisitor(this);
+    }
+
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       if (Page != null)
-        Page.VerifyRenderingInServerForm (this);
+        Page.VerifyRenderingInServerForm(this);
 
       CreateAvailableViewsList();
 
-      BocColumnDefinition[] renderColumns = EnsureColumnsGot ();
-      EvaluateWaiConformity (renderColumns);
-
-      if (IsDesignMode)
-      {
-        //  Normally set in OnPreRender, which is omitted during design-time
-        if (_pageCount == 0)
-          _pageCount = 1;
-      }
+      BocColumnDefinition[] renderColumns = EnsureColumnsGot();
+      EvaluateWaiConformity(renderColumns);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext (writer, GetColumnRenderers (renderColumns)));
+      renderer.Render(CreateRenderingContext(writer, GetColumnRenderers(renderColumns)));
     }
 
     protected virtual IBocListRenderer CreateRenderer ()
     {
-      return ServiceLocator.GetInstance<IBocListRenderer> ();
+      return ServiceLocator.GetInstance<IBocListRenderer>();
     }
 
     protected virtual BocListRenderingContext CreateRenderingContext (HtmlTextWriter writer, BocColumnRenderer[] columnRenderers)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new BocListRenderingContext (Context, writer, this, columnRenderers);
+      Assertion.IsNotNull(Context, "Context must not be null.");
+
+      return new BocListRenderingContext(Context, writer, this, CreateBusinessObjectWebServiceContext(), columnRenderers);
+    }
+
+    private BusinessObjectWebServiceContext CreateBusinessObjectWebServiceContext ()
+    {
+      return BusinessObjectWebServiceContext.Create(DataSource, Property, ControlServiceArguments);
     }
 
     public bool HasNavigator
@@ -1112,7 +1176,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && _showEmptyListReadOnlyMode
                                 || !isReadOnly && _showEmptyListEditMode;
-        if (!IsDesignMode && !HasValue && !showForEmptyList)
+        if (!HasValue && !showForEmptyList)
           hasNavigator = false;
         return hasNavigator;
       }
@@ -1139,8 +1203,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
 
         bool showAvailableViewsList = _showAvailableViewsList
-                                      && (_availableViews.Count > 1
-                                          || IsDesignMode);
+                                      && _availableViews.Count > 1;
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && _showEmptyListReadOnlyMode
                                 || ! isReadOnly && _showEmptyListEditMode;
@@ -1155,7 +1218,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (!_isBrowserCapableOfSCripting.HasValue)
         {
-          var preRenderer = ServiceLocator.GetInstance<IClientScriptBehavior> ();
+          var preRenderer = ServiceLocator.GetInstance<IClientScriptBehavior>();
           _isBrowserCapableOfSCripting = preRenderer.IsBrowserCapableOfScripting(Context, this);
         }
         return _isBrowserCapableOfSCripting.Value;
@@ -1178,8 +1241,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
 
         bool showOptionsMenu = ShowOptionsMenu
-                               && (OptionsMenuItems.Count > 0
-                                   || IsDesignMode);
+                               && OptionsMenuItems.Count > 0;
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && ShowMenuForEmptyListReadOnlyMode
                                 || ! isReadOnly && ShowMenuForEmptyListEditMode;
@@ -1204,8 +1266,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
 
         bool showListMenu = ShowListMenu
-                            && (ListMenuItems.Count > 0
-                                || IsDesignMode);
+                            && ListMenuItems.Count > 0;
         bool isReadOnly = IsReadOnly;
         bool showForEmptyList = isReadOnly && ShowMenuForEmptyListReadOnlyMode
                                 || ! isReadOnly && ShowMenuForEmptyListEditMode;
@@ -1226,9 +1287,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       availableViewsList.EnableViewState = false;
       availableViewsList.AutoPostBack = true;
       _availableViewsListPlaceHolder.Controls.Clear();
-      _availableViewsListPlaceHolder.Controls.Add (availableViewsList);
+      _availableViewsListPlaceHolder.Controls.Add(availableViewsList);
 
-      Assertion.IsTrue (availableViewsList.Items.Count == 0, "availableViewsList should never have values after it is created.");
+      Assertion.IsTrue(availableViewsList.Items.Count == 0, "availableViewsList should never have values after it is created.");
 
       if (_availableViews != null)
       {
@@ -1236,10 +1297,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         {
           BocListView columnDefinitionCollection = _availableViews[i];
 
-          ListItem item = new ListItem (columnDefinitionCollection.Title, i.ToString());
+          ListItem item = new ListItem(columnDefinitionCollection.Title, i.ToString());
           if (_renderingFeatures.EnableDiagnosticMetadata)
             item.Attributes[DiagnosticMetadataAttributes.ItemID] = columnDefinitionCollection.ItemID;
-          availableViewsList.Items.Add (item);
+          availableViewsList.Items.Add(item);
           if (_selectedViewIndex != null && _selectedViewIndex == i)
             item.Selected = true;
         }
@@ -1251,12 +1312,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       Image requiredIcon = new Image();
       var themedResourceUrlResolver = ServiceLocator.GetInstance<IInfrastructureResourceUrlFactory>();
-      requiredIcon.ImageUrl = themedResourceUrlResolver.CreateThemedResourceUrl (ResourceType.Image, c_rowEditModeRequiredFieldIcon).GetUrl();
+      requiredIcon.ImageUrl = themedResourceUrlResolver.CreateThemedResourceUrl(ResourceType.Image, c_rowEditModeRequiredFieldIcon).GetUrl();
 
       IResourceManager resourceManager = GetResourceManager();
       requiredIcon.AlternateText = "*";
-      requiredIcon.ToolTip = resourceManager.GetString (ResourceIdentifier.RequiredFieldTitle);
-      requiredIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      requiredIcon.ToolTip = resourceManager.GetString(ResourceIdentifier.RequiredFieldTitle);
+      requiredIcon.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       requiredIcon.CssClass = "validationRequiredMarker";
       return requiredIcon;
@@ -1267,105 +1328,107 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       Image validationErrorIcon = new Image();
       var urlFactory = ServiceLocator.GetInstance<IInfrastructureResourceUrlFactory>();
-      validationErrorIcon.ImageUrl = urlFactory.CreateThemedResourceUrl (ResourceType.Image, c_rowEditModeValidationErrorIcon).GetUrl();
+      validationErrorIcon.ImageUrl = urlFactory.CreateThemedResourceUrl(ResourceType.Image, c_rowEditModeValidationErrorIcon).GetUrl();
 
       IResourceManager resourceManager = GetResourceManager();
       validationErrorIcon.AlternateText = "!";
-      validationErrorIcon.Attributes.Add (HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      validationErrorIcon.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
 
       var validationErrorMarker = new HtmlGenericControl("span");
-      validationErrorMarker.Controls.Add (validationErrorIcon);
+      validationErrorMarker.Controls.Add(validationErrorIcon);
       validationErrorMarker.Attributes["class"] = "validationErrorMarker";
-      validationErrorMarker.Attributes["title"] = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoTitle);
+      validationErrorMarker.Attributes["title"] = resourceManager.GetString(ResourceIdentifier.ValidationErrorInfoTitle);
 
       return validationErrorMarker;
     }
 
     protected virtual void OnDataRowRendering (BocListDataRowRenderEventArgs e)
     {
-      BocListDataRowRenderEventHandler handler = (BocListDataRowRenderEventHandler) Events[s_dataRowRenderEvent];
+      BocListDataRowRenderEventHandler? handler = (BocListDataRowRenderEventHandler?)Events[s_dataRowRenderEvent];
       if (handler != null)
-        handler (this, e);
+        handler(this, e);
     }
 
     void IBocList.OnDataRowRendering (BocListDataRowRenderEventArgs e)
     {
-      OnDataRowRendering (e);
+      OnDataRowRendering(e);
     }
 
     private string GetListItemCommandArgument (int columnIndex, BocListRow row)
     {
-      return c_eventListItemCommandPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row);
+      return c_eventListItemCommandPrefix + columnIndex + "," + RowIDProvider.GetItemRowID(row);
     }
 
     string IBocList.GetListItemCommandArgument (int columnIndex, BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
-      return GetListItemCommandArgument (columnIndex, row);
+      ArgumentUtility.CheckNotNull("row", row);
+      return GetListItemCommandArgument(columnIndex, row);
     }
 
     string IBocList.GetRowEditCommandArgument (BocListRow row, RowEditModeCommand command)
     {
-      return c_eventRowEditModePrefix + RowIDProvider.GetItemRowID (row) + "," + command;
+      return c_eventRowEditModePrefix + RowIDProvider.GetItemRowID(row) + "," + command;
     }
 
     string IBocList.GetCustomCellPostBackClientEvent (int columnIndex, BocListRow row, string customCellArgument)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
-      
+      ArgumentUtility.CheckNotNull("row", row);
+
       if (_editModeController.IsRowEditModeActive)
         return "return false;";
-      string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, row, customCellArgument);
-      return Page.ClientScript.GetPostBackEventReference (this, postBackArgument) + ";";
+      string postBackArgument = FormatCustomCellPostBackArgument(columnIndex, row, customCellArgument);
+      return Page!.ClientScript.GetPostBackEventReference(this, postBackArgument) + ";";
     }
 
     void IBocList.RegisterCustomCellForSynchronousPostBack (int columnIndex, BocListRow row, string customCellArgument)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
-      if (!ControlHelper.IsNestedInUpdatePanel (this))
+      if (!ControlHelper.IsNestedInUpdatePanel(this))
         return;
 
       var smartPage = Page as ISmartPage;
       if (smartPage == null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "BocList '{0}', column '{1}': Registering a custom column for a synchronous post back is only supported on pages implementing ISmartPage when used within an UpdatePanel.",
                 ID, columnIndex));
       }
 
-      string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, row, customCellArgument);
-      smartPage.RegisterCommandForSynchronousPostBack (this, postBackArgument);
+      string postBackArgument = FormatCustomCellPostBackArgument(columnIndex, row, customCellArgument);
+      smartPage.RegisterCommandForSynchronousPostBack(this, postBackArgument);
     }
 
     private string FormatCustomCellPostBackArgument (int columnIndex, BocListRow row, string customCellArgument)
     {
       if (customCellArgument == null)
-        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row);
+        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID(row);
       else
-        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID (row) + "," + customCellArgument;
+        return c_customCellEventPrefix + columnIndex + "," + RowIDProvider.GetItemRowID(row) + "," + customCellArgument;
     }
 
 
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
+      object?[] values = (object?[])savedState!;
 
-      base.LoadControlState (values[0]);
-      _selectedViewIndex = (int?) values[1];
-      _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value = (string) values[2];
-      _currentPageIndex = (int) values[3];
-      _sortingOrder = (BocListSortingOrderEntry[]) values[4];
-      _selectorControlCheckedState = (HashSet<string>) values[5];
-      _rowIDProvider = (IRowIDProvider) values[6];
+      base.LoadControlState(values[0]);
+      _selectedViewIndex = (int?)values[1];
+      _availableViewsListPlaceHolder.Controls.Cast<ScalarLoadPostDataTarget>().Single().Value = (string?)values[2];
+      _currentPageIndex = (int)values[3]!;
+      _sortingOrder = (BocListSortingOrderEntry[])values[4]!;
+      _selectorControlCheckedState = (HashSet<string>)values[5]!;
+      _rowIDProvider = (IRowIDProvider)values[6]!;
 
-      _currentPagePostBackTarget.Value = _currentPageIndex.ToString (CultureInfo.InvariantCulture);
+      Assertion.IsNotNull(_currentPagePostBackTarget, "_currentPagePostBackTarget must not be null.");
+
+      _currentPagePostBackTarget.Value = _currentPageIndex.ToString(CultureInfo.InvariantCulture);
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[7];
+      object?[] values = new object?[7];
 
       values[0] = base.SaveControlState();
       values[1] = _selectedViewIndex;
@@ -1388,56 +1451,77 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      IList value = null;
+      IReadOnlyList<IBusinessObject>? valueAsList;
 
       if (DataSource.BusinessObject != null)
-        value = (IList) DataSource.BusinessObject.GetProperty (Property);
+      {
+        var value = DataSource.BusinessObject.GetProperty(Property);
+        if (value == null)
+          valueAsList = null;
+        else if (value is IReadOnlyList<IBusinessObject>)
+          valueAsList = (IReadOnlyList<IBusinessObject>)value;
+        else if (value is IList)
+          valueAsList = new BusinessObjectListAdapter<IBusinessObject>((IList)value);
+        else
+          throw new InvalidCastException(string.Format("Cannot cast '{0}' to type IReadOnlyList<IBusinessObject> or IList.", value.GetType()));
+      }
+      else
+      {
+        valueAsList = null;
+      }
 
-      LoadValueInternal (value, interim);
+      LoadValueInternal(valueAsList, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <param name="value"> 
-    ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObject"/> to load,
-    ///   or <see langword="null"/>. 
+    ///   The <see cref="IReadOnlyList{IBusinessObject}"/> of objects to load, or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IBusinessObject[] value, bool interim)
+    public void LoadUnboundValue (IReadOnlyList<IBusinessObject>? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
-    /// <param name="value"> 
-    ///   The <see cref="IList"/> of objects implementing <see cref="IBusinessObject"/> to load,
-    ///   or <see langword="null"/>. 
+    /// <param name="value">
+    ///   The <see cref="IList"/> of objects to load, or <see langword="null"/>.
     /// </param>
     /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IList value, bool interim)
+    public void LoadUnboundValueAsList (IList value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      IReadOnlyList<IBusinessObject>? valueAsList;
+
+      if (value == null)
+        valueAsList = null;
+      else if (value is IReadOnlyList<IBusinessObject>)
+        valueAsList = (IReadOnlyList<IBusinessObject>)value;
+      else
+        valueAsList = new BusinessObjectListAdapter<IBusinessObject>(value);
+
+      LoadValueInternal(valueAsList, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="O:Remotion.ObjectBinding.Web.UI.Controls.BocList.LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (IList value, bool interim)
+    protected virtual void LoadValueInternal (IReadOnlyList<IBusinessObject>? value, bool interim)
     {
       if (! interim)
       {
         if (_editModeController.IsRowEditModeActive)
-          EndRowEditMode (false);
+          EndRowEditMode(false);
         else if (_editModeController.IsListEditModeActive)
-          EndListEditMode (false);
+          EndListEditMode(false);
       }
 
       if (interim)
       {
-        SetValue (value, ValueMode.Interim);
+        SetValue(value, ValueMode.Interim);
       }
       else
       {
-        SetValue (value, ValueMode.Complete);
+        SetValue(value, ValueMode.Complete);
         IsDirty = false;
         InitializeRowIDProvider();
       }
@@ -1461,13 +1545,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
         if (_editModeController.IsRowEditModeActive)
         {
-          EndRowEditMode (true);
+          EndRowEditMode(true);
           if (_editModeController.IsRowEditModeActive)
             return false;
         }
         else if (_editModeController.IsListEditModeActive)
         {
-          EndListEditMode (true);
+          EndListEditMode(true);
           if (_editModeController.IsListEditModeActive)
             return false;
         }
@@ -1488,7 +1572,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
     protected virtual IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     IResourceManager IControlWithResourceManager.GetResourceManager ()
@@ -1499,11 +1583,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Handles refreshing the bound control. </summary>
     /// <param name="sender"> The source of the event. </param>
     /// <param name="e"> An <see cref="EventArgs"/> object that contains the event data. </param>
-    private void Binding_BindingChanged (object sender, EventArgs e)
+    private void Binding_BindingChanged (object? sender, EventArgs e)
     {
       _allPropertyColumns = null;
     }
-    
+
     protected virtual void InitializeMenusItems ()
     {
     }
@@ -1513,13 +1597,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_hiddenMenuItems == null)
         return;
 
-      BocDropDownMenu.HideMenuItems (ListMenuItems, _hiddenMenuItems);
-      BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
+      BocDropDownMenu.HideMenuItems(ListMenuItems, _hiddenMenuItems);
+      BocDropDownMenu.HideMenuItems(OptionsMenuItems, _hiddenMenuItems);
     }
 
     private BocColumnRenderer[] GetColumnRenderers (BocColumnDefinition[] columns)
     {
-      var columnRendererBuilder = new BocColumnRendererArrayBuilder (columns, ServiceLocator, WcagHelper.Instance);
+      var columnRendererBuilder = new BocColumnRendererArrayBuilder(columns, ServiceLocator, WcagHelper.Instance);
       columnRendererBuilder.IsListReadOnly = IsReadOnly;
       columnRendererBuilder.EnableIcon = EnableIcon;
       columnRendererBuilder.IsListEditModeActive = _editModeController.IsListEditModeActive;
@@ -1530,7 +1614,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       columnRendererBuilder.IsSelectionEnabled = IsSelectionEnabled;
       columnRendererBuilder.SortingOrder = GetSortingOrder();
 
-      return columnRendererBuilder.CreateColumnRenderers ();
+      return columnRendererBuilder.CreateColumnRenderers();
     }
 
     private BocColumnDefinition[] GetAllPropertyColumns ()
@@ -1540,11 +1624,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       IBusinessObjectProperty[] properties;
       if (DataSource == null)
+      {
         properties = new IBusinessObjectProperty[0];
+      }
       else if (Property == null)
+      {
+        Assertion.IsNotNull(DataSource.BusinessObjectClass, "DataSource.BusinessObjectClass must not be null.");
         properties = DataSource.BusinessObjectClass.GetPropertyDefinitions();
+      }
       else
+      {
         properties = Property.ReferenceClass.GetPropertyDefinitions();
+      }
 
       _allPropertyColumns = new BocColumnDefinition[properties.Length];
       for (int i = 0; i < properties.Length; i++)
@@ -1552,8 +1643,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObjectProperty property = properties[i];
         BocSimpleColumnDefinition column = new BocSimpleColumnDefinition();
         column.ItemID = property.Identifier;
-        column.ColumnTitle = property.DisplayName;
-        column.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new[] { property }));
+        column.ColumnTitle = WebString.CreateFromText(property.DisplayName);
+        column.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { property }));
         column.OwnerControl = this;
         _allPropertyColumns[i] = column;
       }
@@ -1562,32 +1653,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void PreRenderListItemCommands ()
     {
-      if (IsDesignMode)
-        return;
       if (!HasValue)
         return;
 
       BocColumnDefinition[] columns = EnsureColumnsGot();
       var commandColumns =
-          columns.Select ((column, index) => new { Column = column as BocCommandEnabledColumnDefinition, Index = index })
-                 .Where (d => d.Column != null && d.Column.Command != null)
+          columns.Select((column, index) => new { Column = column as BocCommandEnabledColumnDefinition, Index = index })
+                 .Where(d => d.Column != null && d.Column.Command != null)
                  .ToArray();
 
       foreach (var commandColumn in commandColumns)
       {
         foreach (var row in EnsureBocListRowsForCurrentPageGot())
         {
-          commandColumn.Column.Command.RegisterForSynchronousPostBackOnDemand (
+          commandColumn.Column!.Command!.RegisterForSynchronousPostBackOnDemand(
               this,
-              GetListItemCommandArgument (commandColumn.Index, row.ValueRow),
-              string.Format ("BocList '{0}', Column '{1}'", ID, commandColumn.Column.ItemID));
+              GetListItemCommandArgument(commandColumn.Index, row.ValueRow),
+              string.Format("BocList '{0}', Column '{1}'", ID, commandColumn.Column.ItemID));
         }
       }
     }
 
     private BocColumnDefinition[] EnsureColumnsGot ()
     {
-      if (_columnDefinitions == null || IsDesignMode)
+      if (_columnDefinitions == null)
         _columnDefinitions = GetColumnsInternal();
       return _columnDefinitions;
     }
@@ -1604,15 +1693,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       List<BocColumnDefinition> columnDefinitionList = new List<BocColumnDefinition>();
 
-      AppendFixedColumns (columnDefinitionList);
+      AppendFixedColumns(columnDefinitionList);
       if (_showAllProperties)
-        EnsureAllPropertyColumnsDefinitionsAppended (null, columnDefinitionList);
-      AppendRowMenuColumn (columnDefinitionList);
-      AppendSelectedViewColumns (columnDefinitionList);
+        EnsureAllPropertyColumnsDefinitionsAppended(null, columnDefinitionList);
+      AppendRowMenuColumn(columnDefinitionList);
+      AppendSelectedViewColumns(columnDefinitionList);
 
-      var columnDefinitions = GetColumns (columnDefinitionList.ToArray());
+      var columnDefinitions = GetColumns(columnDefinitionList.ToArray());
 
-      CheckRowMenuColumns (columnDefinitions);
+      CheckRowMenuColumns(columnDefinitions);
 
       return columnDefinitions;
     }
@@ -1623,19 +1712,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (columnDefinition is BocAllPropertiesPlaceholderColumnDefinition)
         {
-          EnsureAllPropertyColumnsDefinitionsAppended (
-              (BocAllPropertiesPlaceholderColumnDefinition) columnDefinition, columnDefinitionList);
+          EnsureAllPropertyColumnsDefinitionsAppended(
+              (BocAllPropertiesPlaceholderColumnDefinition)columnDefinition, columnDefinitionList);
         }
         else
-          columnDefinitionList.Add (columnDefinition);
+          columnDefinitionList.Add(columnDefinition);
       }
     }
 
     private void AppendRowMenuColumn (List<BocColumnDefinition> columnDefinitionList)
     {
-      BocDropDownMenuColumnDefinition dropDownMenuColumn = GetRowMenuColumn();
+      BocDropDownMenuColumnDefinition? dropDownMenuColumn = GetRowMenuColumn();
       if (dropDownMenuColumn != null)
-        columnDefinitionList.Add (dropDownMenuColumn);
+        columnDefinitionList.Add(dropDownMenuColumn);
     }
 
     private void AppendSelectedViewColumns (List<BocColumnDefinition> columnDefinitionList)
@@ -1648,16 +1737,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (columnDefinition is BocAllPropertiesPlaceholderColumnDefinition)
         {
-          EnsureAllPropertyColumnsDefinitionsAppended (
-              (BocAllPropertiesPlaceholderColumnDefinition) columnDefinition, columnDefinitionList);
+          EnsureAllPropertyColumnsDefinitionsAppended(
+              (BocAllPropertiesPlaceholderColumnDefinition)columnDefinition, columnDefinitionList);
         }
         else
-          columnDefinitionList.Add (columnDefinition);
+          columnDefinitionList.Add(columnDefinition);
       }
     }
 
     private void EnsureAllPropertyColumnsDefinitionsAppended (
-        BocAllPropertiesPlaceholderColumnDefinition placeholderColumnDefinition, List<BocColumnDefinition> columnDefinitionList)
+        BocAllPropertiesPlaceholderColumnDefinition? placeholderColumnDefinition, List<BocColumnDefinition> columnDefinitionList)
     {
       if (_hasAppendedAllPropertyColumnDefinitions)
         return;
@@ -1671,8 +1760,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (! placeholderColumnDefinition.Width.IsEmpty)
         {
           double value = placeholderColumnDefinition.Width.Value / allPropertyColumnDefinitions.Length;
-          value = Math.Round (value, 1);
-          width = new Unit (value, placeholderColumnDefinition.Width.Type);
+          value = Math.Round(value, 1);
+          width = new Unit(value, placeholderColumnDefinition.Width.Type);
         }
         cssClass = placeholderColumnDefinition.CssClass;
       }
@@ -1683,7 +1772,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         columnDefinition.Width = width;
       }
 
-      columnDefinitionList.AddRange (allPropertyColumnDefinitions);
+      columnDefinitionList.AddRange(allPropertyColumnDefinitions);
       _hasAppendedAllPropertyColumnDefinitions = true;
     }
 
@@ -1708,10 +1797,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     ///   Gets a flag set <see langword="true"/> if the <see cref="Value"/> is sorted before it is displayed.
     /// </summary>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool HasSortingKeys
     {
-      get { return _sortingOrder.Any (entry => !entry.IsEmpty); }
+      get { return _sortingOrder.Any(entry => !entry.IsEmpty); }
     }
 
     /// <summary> Sets the sorting order for the <see cref="BocList"/>. </summary>
@@ -1733,10 +1822,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <exception cref="InvalidOperationException">EnableMultipleSorting == False &amp;&amp; sortingOrder.Length > 1</exception>
     public void SetSortingOrder (params BocListSortingOrderEntry[] newSortingOrder)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
+      ArgumentUtility.CheckNotNullOrItemsNull("newSortingOrder", newSortingOrder);
 
       if (! IsMultipleSortingEnabled && newSortingOrder.Length > 1)
-        throw new InvalidOperationException (string.Format ("Attempted to set multiple sorting keys on BocList '{0}' but EnableMultipleSorting is False.", ID));
+        throw new InvalidOperationException(string.Format("Attempted to set multiple sorting keys on BocList '{0}' but EnableMultipleSorting is False.", ID));
       else
         _sortingOrder = newSortingOrder.ToArray();
 
@@ -1771,32 +1860,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           {
             if (entry.Column == null)
             {
-              var newEntry = new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[entry.ColumnIndex], entry.Direction);
-              newEntry.SetColumnIndex (entry.ColumnIndex);
+              var newEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[entry.ColumnIndex], entry.Direction);
+              newEntry.SetColumnIndex(entry.ColumnIndex);
               return newEntry;
             }
             else
             {
-              var newIndex = Array.IndexOf (columns, entry.Column);
+              var newIndex = Array.IndexOf(columns, entry.Column);
               if (newIndex == entry.ColumnIndex)
               {
                 return entry;
               }
               else if (newIndex >= 0)
               {
-                entry.SetColumnIndex (newIndex);
+                entry.SetColumnIndex(newIndex);
                 return entry;
               }
               else
               {
-                var newEntry = new BocListSortingOrderEntry ((IBocSortableColumnDefinition) columns[entry.ColumnIndex], entry.Direction);
-                newEntry.SetColumnIndex (entry.ColumnIndex);
+                var newEntry = new BocListSortingOrderEntry((IBocSortableColumnDefinition)columns[entry.ColumnIndex], entry.Direction);
+                newEntry.SetColumnIndex(entry.ColumnIndex);
                 return newEntry;
               }
             }
           };
 
-      _sortingOrder = _sortingOrder.Where (entry => !entry.IsEmpty).Select (entryProcessor).ToArray();
+      _sortingOrder = _sortingOrder.Where(entry => !entry.IsEmpty).Select(entryProcessor).ToArray();
 
       return _sortingOrder.ToArray();
     }
@@ -1810,14 +1899,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   An <see cref="IBusinessObject"/> array sorted by the sorting keys or <see langword="null"/> if the list is
     ///   not sorted.
     /// </returns>
-    public IBusinessObject[] GetSortedRows ()
+    public IBusinessObject[]? GetSortedRows ()
     {
       if (! HasSortingKeys)
         return null;
 
       var sortedRows = EnsureSortedBocListRowsGot();
 
-      return sortedRows.Select (r => r.BusinessObject).ToArray();
+      return sortedRows.Select(r => r.BusinessObject).ToArray();
     }
 
     protected ReadOnlyCollection<BocListRow> EnsureSortedBocListRowsGot ()
@@ -1832,19 +1921,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!HasValue)
         return new BocListRow[0];
 
-      var rows = Value.Cast<IBusinessObject>().Select ((row, rowIndex) => new BocListRow (rowIndex, row));
+      var rows = Value.Cast<IBusinessObject>().Select((row, rowIndex) => new BocListRow(rowIndex, row));
 
-      return SortBocListRows (rows, GetSortingOrder());
+      return SortBocListRows(rows, GetSortingOrder());
     }
 
     protected virtual IEnumerable<BocListRow> SortBocListRows (IEnumerable<BocListRow> rows, BocListSortingOrderEntry[] sortingOrder)
     {
-      ArgumentUtility.CheckNotNull ("rows", rows);
-      ArgumentUtility.CheckNotNull ("sortingOrder", sortingOrder);
+      ArgumentUtility.CheckNotNull("rows", rows);
+      ArgumentUtility.CheckNotNull("sortingOrder", sortingOrder);
 
-      return rows.OrderBy (sortingOrder);
+      return rows.OrderBy(sortingOrder);
     }
-    
+
     protected ReadOnlyCollection<SortedRow> EnsureBocListRowsForCurrentPageGot ()
     {
       if (_currentPageRows == null)
@@ -1854,14 +1943,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected IEnumerable<SortedRow> GetBocListRowsForCurrentPage ()
     {
-      var result = EnsureSortedBocListRowsGot().Select ((row, index) => new SortedRow (row, index));
+      var result = EnsureSortedBocListRowsGot().Select((row, index) => new SortedRow(row, index));
 
       if (IsPagingEnabled)
       {
         // ReSharper disable PossibleInvalidOperationException
         int pageSize = PageSize.Value;
         // ReSharper restore PossibleInvalidOperationException
-        result = result.Skip (_currentPageIndex * pageSize).Take (pageSize);
+        result = result.Skip(_currentPageIndex * pageSize).Take(pageSize);
       }
 
       return result;
@@ -1870,11 +1959,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     BocListRowRenderingContext[] IBocList.GetRowsToRender ()
     {
       return EnsureBocListRowsForCurrentPageGot()
-          .Select (
-              data => new BocListRowRenderingContext (
+          .Select(
+              data => new BocListRowRenderingContext(
                           data.ValueRow,
                           data.SortedIndex,
-                          _selectorControlCheckedState.Contains (RowIDProvider.GetItemRowID (data.ValueRow))))
+                          _selectorControlCheckedState.Contains(RowIDProvider.GetItemRowID(data.ValueRow))))
           .ToArray();
     }
 
@@ -1885,42 +1974,42 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (HasSortingKeys)
       {
-        var staticColumns = new HashSet<BocColumnDefinition> (_fixedColumns.Cast<BocColumnDefinition>().Concat (GetAllPropertyColumns()));
+        var staticColumns = new HashSet<BocColumnDefinition?>(_fixedColumns.Cast<BocColumnDefinition>().Concat(GetAllPropertyColumns()));
         var oldSortingOrder = GetSortingOrder();
         var oldCount = oldSortingOrder.Length;
-        _sortingOrder = oldSortingOrder.Where (entry => staticColumns.Contains ((BocColumnDefinition) entry.Column)).ToArray();
+        _sortingOrder = oldSortingOrder.Where(entry => staticColumns.Contains((BocColumnDefinition?)entry.Column)).ToArray();
       }
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    void IResourceDispatchTarget.Dispatch (IDictionary values)
+    void IResourceDispatchTarget.Dispatch (IDictionary<string, WebString> values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      Dispatch (values);
+      ArgumentUtility.CheckNotNull("values", values);
+      Dispatch(values);
     }
 
     /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
     /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-    protected virtual void Dispatch (IDictionary values)
+    protected virtual void Dispatch (IDictionary<string, WebString> values)
     {
-      HybridDictionary fixedColumnValues = new HybridDictionary();
-      HybridDictionary optionsMenuItemValues = new HybridDictionary();
-      HybridDictionary listMenuItemValues = new HybridDictionary();
-      HybridDictionary propertyValues = new HybridDictionary();
+      var fixedColumnValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var optionsMenuItemValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var listMenuItemValues = new Dictionary<string, IDictionary<string, WebString>>();
+      var propertyValues = new Dictionary<string, WebString>();
 
       //  Parse the values
 
-      foreach (DictionaryEntry entry in values)
+      foreach (var entry in values)
       {
-        string key = (string) entry.Key;
-        string[] keyParts = key.Split (new[] { ':' }, 3);
+        string key = entry.Key;
+        string[] keyParts = key.Split(new[] { ':' }, 3);
 
         //  Is a property/value entry?
         if (keyParts.Length == 1)
         {
           string property = keyParts[0];
-          propertyValues.Add (property, entry.Value);
+          propertyValues.Add(property, entry.Value);
         }
             //  Is collection entry?
         else if (keyParts.Length == 3)
@@ -1930,7 +2019,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           string elementID = keyParts[1];
           string property = keyParts[2];
 
-          IDictionary currentCollection = null;
+          IDictionary<string,IDictionary<string,WebString>>? currentCollection = null;
 
           //  Switch to the right collection
           switch (collectionID)
@@ -1953,8 +2042,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             default:
             {
               //  Invalid collection property
-              s_log.Debug (
-                  "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page
+              s_log.Debug(
+                  "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
                   + "' does not contain a collection property named '" + collectionID + "'.");
               break;
             }
@@ -1964,112 +2053,137 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           if (currentCollection != null)
           {
             //  Get the dictonary for the current element
-            IDictionary elementValues = (IDictionary) currentCollection[elementID];
-
             //  If no dictonary exists, create it and insert it into the elements hashtable.
-            if (elementValues == null)
+            if (!currentCollection.TryGetValue(elementID, out var elementValues))
             {
-              elementValues = new HybridDictionary();
+              elementValues = new Dictionary<string, WebString>();
               currentCollection[elementID] = elementValues;
             }
 
             //  Insert the argument and resource's value into the dictonary for the specified element.
-            elementValues.Add (property, entry.Value);
+            elementValues.Add(property, entry.Value);
           }
         }
         else
         {
           //  Not supported format or invalid property
-          s_log.Debug (
-              "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().FullName + "' on page '" + Page
+          s_log.Debug(
+              "BocList '" + ID + "' in naming container '" + NamingContainer.GetType().GetFullNameSafe() + "' on page '" + Page
               + "' received a resource with an invalid or unknown key '" + key
               + "'. Required format: 'property' or 'collectionID:elementID:property'.");
         }
       }
 
       //  Dispatch simple properties
-      ResourceDispatcher.DispatchGeneric (this, propertyValues);
+      ResourceDispatcher.DispatchGeneric(this, propertyValues);
 
       //  Dispatch to collections
-      _fixedColumns.Dispatch (fixedColumnValues, this, "FixedColumns");
-      OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
-      ListMenuItems.Dispatch (listMenuItemValues, this, "ListMenuItems");
+      _fixedColumns.Dispatch(fixedColumnValues, this, "FixedColumns");
+      OptionsMenuItems.Dispatch(optionsMenuItemValues, this, "OptionsMenuItems");
+      ListMenuItems.Dispatch(listMenuItemValues, this, "ListMenuItems");
     }
 
     /// <summary> Loads the resources into the control's properties. </summary>
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      if (IsDesignMode)
-        return;
-      base.LoadResources (resourceManager, globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string key;
-      key = ResourceManagerUtility.GetGlobalResourceKey (IndexColumnTitle);
-      if (! string.IsNullOrEmpty (key))
-        IndexColumnTitle = resourceManager.GetString (key);
+      base.LoadResources(resourceManager, globalizationService);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (EmptyListMessage);
-      if (! string.IsNullOrEmpty (key))
-        EmptyListMessage = resourceManager.GetString (key);
+      string? key;
+      key = ResourceManagerUtility.GetGlobalResourceKey(IndexColumnTitle.GetValue());
+      if (! string.IsNullOrEmpty(key))
+        IndexColumnTitle = resourceManager.GetWebString(key, IndexColumnTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
-      if (! string.IsNullOrEmpty (key))
-        OptionsTitle = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(EmptyListMessage.GetValue());
+      if (! string.IsNullOrEmpty(key))
+        EmptyListMessage = resourceManager.GetWebString(key, EmptyListMessage.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (AvailableViewsListTitle);
-      if (! string.IsNullOrEmpty (key))
-        AvailableViewsListTitle = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(OptionsTitle.GetValue());
+      if (! string.IsNullOrEmpty(key))
+        OptionsTitle = resourceManager.GetWebString(key, OptionsTitle.Type);
 
-      key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
-      if (! string.IsNullOrEmpty (key))
-        ErrorMessage = resourceManager.GetString (key);
+      key = ResourceManagerUtility.GetGlobalResourceKey(AvailableViewsListTitle.GetValue());
+      if (! string.IsNullOrEmpty(key))
+        AvailableViewsListTitle = resourceManager.GetWebString(key, AvailableViewsListTitle.Type);
 
-      _fixedColumns.LoadResources (resourceManager, globalizationService);
-      OptionsMenuItems.LoadResources (resourceManager, globalizationService);
-      ListMenuItems.LoadResources (resourceManager, globalizationService);
+      key = ResourceManagerUtility.GetGlobalResourceKey(ErrorMessage.GetValue());
+      if (! string.IsNullOrEmpty(key))
+        ErrorMessage = resourceManager.GetText(key);
+
+      _fixedColumns.LoadResources(resourceManager, globalizationService);
+      OptionsMenuItems.LoadResources(resourceManager, globalizationService);
+      ListMenuItems.LoadResources(resourceManager, globalizationService);
     }
 
     /// <summary> Is raised when a data row is rendered. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a data row is rendered.")]
+    [Category("Action")]
+    [Description("Occurs when a data row is rendered.")]
     public event BocListDataRowRenderEventHandler DataRowRender
     {
-      add { Events.AddHandler (s_dataRowRenderEvent, value); }
-      remove { Events.RemoveHandler (s_dataRowRenderEvent, value); }
+      add { Events.AddHandler(s_dataRowRenderEvent, value); }
+      remove { Events.RemoveHandler(s_dataRowRenderEvent, value); }
     }
 
     /// <summary> The <see cref="IBusinessObjectReferenceProperty"/> object this control is bound to. </summary>
     /// <value>An <see cref="IBusinessObjectReferenceProperty"/> object.</value>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public new IBusinessObjectReferenceProperty Property
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public new IBusinessObjectReferenceProperty? Property
     {
-      get { return (IBusinessObjectReferenceProperty) base.Property; }
-      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty> ("value", value); }
+      get { return (IBusinessObjectReferenceProperty?)base.Property; }
+      set { base.Property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty>("value", value); }
     }
 
     /// <summary> Gets or sets the current value. </summary>
     /// <value> An object implementing <see cref="IList"/>. </value>
     /// <remarks> The dirty state is reset when the value is set. </remarks>
-    [Browsable (false)]
-    public new IList Value
+    [Browsable(false)]
+    public new IReadOnlyList<IBusinessObject>? Value
     {
       get { return GetValue(); }
       set
       {
-        SetValue (value, ValueMode.Complete);
+        SetValue(value, ValueMode.Complete);
         IsDirty = true;
         InitializeRowIDProvider();
+      }
+    }
+
+    /// <summary> Gets or sets the current value. </summary>
+    /// <value> A list of <see cref="IBusinessObject"/> implementations or <see langword="null"/>. </value>
+    [Browsable(false)]
+    public IList? ValueAsList
+    {
+      get
+      {
+        var value = Value;
+
+        if (value == null)
+          return null;
+        else if (value is BusinessObjectListAdapter<IBusinessObject>)
+          return ((BusinessObjectListAdapter<IBusinessObject>)value).WrappedList;
+        else if (value is IList)
+          return (IList)value;
+        else
+          throw new InvalidOperationException("The value only implements the IReadOnlyList<IBusinessObject> interface. Use the Value property to access the value.");
+      }
+      set
+      {
+        if (value == null)
+          Value = null;
+        else if (value is IReadOnlyList<IBusinessObject>)
+          Value = (IReadOnlyList<IBusinessObject>)value;
+        else
+          Value = new BusinessObjectListAdapter<IBusinessObject>(value);
       }
     }
 
     /// <summary>
     /// Gets the value from the backing field.
     /// </summary>
-    private IList GetValue()
+    private IReadOnlyList<IBusinessObject>? GetValue ()
     {
       return _value;
     }
@@ -2080,7 +2194,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks>
     /// <para>Setting the value via this method does not affect the control's dirty state.</para>
     /// </remarks>
-    private void SetValue (IList value, ValueMode mode)
+    private void SetValue (IReadOnlyList<IBusinessObject>? value, ValueMode mode)
     {
       _value = value;
       OnSortedRowsChanged();
@@ -2094,13 +2208,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
     /// <value> The value must be of type <see cref="IList"/>. </value>
-    protected override sealed object ValueImplementation
+    protected sealed override object? ValueImplementation
     {
-      get { return Value; }
-      set { Value = ArgumentUtility.CheckType<IList> ("value", value); }
+      get
+      {
+        var value = Value;
+        if (value is BusinessObjectListAdapter<IBusinessObject>)
+          return ((BusinessObjectListAdapter<IBusinessObject>)value).WrappedList;
+        else
+          return value;
+      }
+      set
+      {
+        if (value == null)
+        {
+          Value = null;
+        }
+        else if (value is IReadOnlyList<IBusinessObject>)
+        {
+          Value = (IReadOnlyList<IBusinessObject>)value;
+        }
+        else if (value is IList)
+        {
+          Value = new BusinessObjectListAdapter<IBusinessObject>((IList)value);
+        }
+        else
+        {
+          throw new ArgumentException(
+              string.Format(
+                  "Parameter type '{0}' is not supported. Parameters must implement interface IReadOnlyList<IBusinessObject> or IList.",
+                  value.GetType()),
+              "value");
+        }
+      }
     }
 
     /// <summary>Gets a flag indicating whether the <see cref="BocList"/> contains a value. </summary>
+    [MemberNotNullWhen(true, nameof(_value))]
+    [MemberNotNullWhen(true, nameof(Value))]
     public override bool HasValue
     {
       get { return _value != null && _value.Count > 0; }
@@ -2176,11 +2321,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets the user independent column definitions. </summary>
     /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
     //  Default category
-    [Description ("The user independent column definitions.")]
-    [DefaultValue ((string) null)]
+    [Description("The user independent column definitions.")]
+    [DefaultValue((string?)null)]
     public BocColumnDefinitionCollection FixedColumns
     {
       get { return _fixedColumns; }
@@ -2193,8 +2338,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     //  //  Default category
     //  [Description ("The predefined column definition sets that the user can choose from at run-time.")]
     //  [DefaultValue ((string) null)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     public BocListViewCollection AvailableViews
     {
       get { return _availableViews; }
@@ -2204,9 +2349,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets the selected <see cref="BocListView"/> used to
     ///   supplement the <see cref="FixedColumns"/>.
     /// </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public BocListView SelectedView
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public BocListView? SelectedView
     {
       get
       {
@@ -2217,7 +2362,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         bool hasChanged = _selectedView != value;
         _selectedView = value;
-        ArgumentUtility.CheckNotNullOrEmpty ("AvailableViews", _availableViews);
+        ArgumentUtility.CheckNotNullOrEmpty("AvailableViews", _availableViews);
         _selectedViewIndex = null;
 
         if (_selectedView != null)
@@ -2232,7 +2377,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           }
 
           if (_selectedViewIndex == null)
-            throw new ArgumentOutOfRangeException ("value");
+            throw new ArgumentOutOfRangeException("value");
         }
 
         if (hasChanged)
@@ -2269,14 +2414,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (value != null
             && (value.Value < 0 || value.Value >= _availableViews.Count))
-          throw new ArgumentOutOfRangeException ("value");
+          throw new ArgumentOutOfRangeException("value");
 
         if ((_editModeController.IsRowEditModeActive || _editModeController.IsListEditModeActive)
             && _isSelectedViewIndexSet
             && _selectedViewIndex != value)
         {
-          throw new InvalidOperationException (
-              string.Format ("The selected column definition set cannot be changed while the BocList '{0}' is in row edit mode.", ID));
+          throw new InvalidOperationException(
+              string.Format("The selected column definition set cannot be changed while the BocList '{0}' is in row edit mode.", ID));
         }
 
         bool hasIndexChanged = _selectedViewIndex != value;
@@ -2298,7 +2443,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    private void AvailableViews_CollectionChanged (object sender, CollectionChangeEventArgs e)
+    private void AvailableViews_CollectionChanged (object? sender, CollectionChangeEventArgs e)
     {
       if (_selectedViewIndex == null
           && _availableViews.Count > 0)
@@ -2321,14 +2466,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> An array of <see cref="IBusinessObject"/> objects. </returns>
     public IBusinessObject[] GetSelectedBusinessObjects ()
     {
-      return GetSelectedRowsInternal().Select (r => r.BusinessObject).ToArray();
+      return GetSelectedRowsInternal().Select(r => r.BusinessObject).ToArray();
     }
 
     /// <summary> Gets indices for the rows selected in the <see cref="BocList"/>. </summary>
     /// <returns> An array of <see cref="int"/> values. </returns>
     public int[] GetSelectedRows ()
     {
-      return GetSelectedRowsInternal().Select (r => r.Index).ToArray();
+      return GetSelectedRowsInternal().Select(r => r.Index).ToArray();
     }
 
     private IEnumerable<BocListRow> GetSelectedRowsInternal ()
@@ -2337,27 +2482,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return Enumerable.Empty<BocListRow>();
 
       return _selectorControlCheckedState
-          .Select (rowID => RowIDProvider.GetRowFromItemRowID (Value, rowID))
-          .Where (r => r != null)
-          .OrderBy (r => r.Index);
+          .Select(rowID => RowIDProvider.GetRowFromItemRowID(Value, rowID)!)
+          .Where(r => r != null)
+          .OrderBy(r => r.Index);
     }
 
     /// <summary> Sets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
-    /// <param name="selectedObjects"> An <see cref="IList"/> of <see cref="IBusinessObject"/> objects. </param>>
+    /// <param name="selectedObjects"> An <see cref="IReadOnlyList{IBusinessObject}"/> of objects. </param>>
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if the number of rows do not match the <see cref="Selection"/> mode 
     ///   or the <see cref="Value"/> is <see langword="null"/>.
     /// </exception>
-    public void SetSelectedBusinessObjects (IList selectedObjects)
+    public void SetSelectedBusinessObjects (IReadOnlyList<IBusinessObject> selectedObjects)
     {
-      ArgumentUtility.CheckNotNull ("selectedObjects", selectedObjects);
-      ArgumentUtility.CheckItemsNotNullAndType ("selectedObjects", selectedObjects, typeof (IBusinessObject));
+      ArgumentUtility.CheckNotNullOrItemsNull("selectedObjects", selectedObjects);
 
       if (Value == null)
-        throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
+        throw new InvalidOperationException(string.Format("The BocList '{0}' does not have a Value.", ID));
 
-      var selectedRows = ListUtility.IndicesOf (Value, selectedObjects.Cast<IBusinessObject>());
-      SetSelectedRows (selectedRows.ToArray());
+      var selectedRows = ListUtility.IndicesOf(Value, selectedObjects);
+      SetSelectedRows(selectedRows.ToArray());
     }
 
 
@@ -2367,17 +2511,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void SetSelectedRows (int[] selectedRows)
     {
       if (Value == null)
-        throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
+        throw new InvalidOperationException(string.Format("The BocList '{0}' does not have a Value.", ID));
 
       foreach (var rowIndex in selectedRows)
       {
         if (rowIndex < 0)
-          throw new ArgumentException ("Negative row-indices are not supported for selection.", "selectedRows");
+          throw new ArgumentException("Negative row-indices are not supported for selection.", "selectedRows");
 
         if (rowIndex >= Value.Count)
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The Value of the BocList '{0}' only contains {1} rows but an attempt was made to select row #{2}.",
                   ID,
                   Value.Count,
@@ -2385,7 +2529,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
       }
 
-      SetSelectedRows (selectedRows.Select (rowIndex => new BocListRow (rowIndex, (IBusinessObject) Value[rowIndex])).ToArray());
+      SetSelectedRows(selectedRows.Select(rowIndex => new BocListRow(rowIndex, Value[rowIndex])).ToArray());
     }
 
     private void SetSelectedRows (BocListRow[] selectedRows)
@@ -2393,19 +2537,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if ((_selection == RowSelection.Undefined || _selection == RowSelection.Disabled)
           && selectedRows.Length > 0)
       {
-        throw new InvalidOperationException (string.Format ("Cannot select rows if the BocList '{0}' is set to RowSelection.Disabled.", ID));
+        throw new InvalidOperationException(string.Format("Cannot select rows if the BocList '{0}' is set to RowSelection.Disabled.", ID));
       }
 
       if ((_selection == RowSelection.SingleCheckBox
            || _selection == RowSelection.SingleRadioButton)
           && selectedRows.Length > 1)
       {
-        throw new InvalidOperationException (string.Format ("Cannot select more than one row if the BocList '{0}' is set to RowSelection.Single.", ID));
+        throw new InvalidOperationException(string.Format("Cannot select more than one row if the BocList '{0}' is set to RowSelection.Single.", ID));
       }
 
       _selectorControlCheckedState.Clear();
       foreach (var row in selectedRows)
-        _selectorControlCheckedState.Add (RowIDProvider.GetItemRowID (row));
+        _selectorControlCheckedState.Add(RowIDProvider.GetItemRowID(row));
     }
 
     /// <summary>
@@ -2419,43 +2563,43 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void SynchronizeRows ()
     {
       OnSortedRowsChanged();
-      ((EditModeController) _editModeController).SynchronizeEditModeControls (EnsureColumnsGot());
+      ((EditModeController)_editModeController).SynchronizeEditModeControls(EnsureColumnsGot());
     }
 
     /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public void AddRows (IBusinessObject[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
 
-      _editModeController.AddRows (businessObjects, EnsureColumnsGot());
+      _editModeController.AddRows(businessObjects, EnsureColumnsGot());
     }
 
     /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public int AddRow (IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      return _editModeController.AddRow (businessObject, EnsureColumnsGot());
+      return _editModeController.AddRow(businessObject, EnsureColumnsGot());
     }
 
     /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public void RemoveRows (IBusinessObject[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
 
-      _editModeController.RemoveRows (businessObjects);
+      _editModeController.RemoveRows(businessObjects);
     }
 
     /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     public void RemoveRow (IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      _editModeController.RemoveRow (businessObject);
+      _editModeController.RemoveRow(businessObject);
     }
 
     /// <summary> 
@@ -2468,16 +2612,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Value == null)
         return;
       if (index > Value.Count)
-        throw new ArgumentOutOfRangeException ("index");
+        throw new ArgumentOutOfRangeException("index");
 
-      RemoveRow ((IBusinessObject) Value[index]);
+      RemoveRow(Value[index]);
     }
 
     private BocListRow[] AddRowsImplementation (IBusinessObject[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
 
-      var newValue = ListUtility.AddRange (Value, businessObjects, Property, false, true);
+      IList? valueAsList;
+      try
+      {
+        valueAsList = ValueAsList;
+      }
+      catch (InvalidOperationException ex)
+      {
+        throw new InvalidOperationException(
+            "The BocList is bound to a collection that does not implement the IList interface. "
+            + "Add and remove rows is not supported for collections that do not implement the IList interface.",
+            ex);
+      }
+
+      var newValue = ListUtility.AddRange(valueAsList, businessObjects, Property, false, true);
 
       if (newValue == null)
       {
@@ -2486,12 +2643,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else
       {
-        SetValue (newValue, ValueMode.Complete);
+        IReadOnlyList<IBusinessObject> newValueAsReadOnlyList;
+        if (newValue is IReadOnlyList<IBusinessObject>)
+          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>)newValue;
+        else
+          newValueAsReadOnlyList = new BusinessObjectListAdapter<IBusinessObject>(newValue);
+
+        SetValue(newValueAsReadOnlyList, ValueMode.Complete);
         IsDirty = true;
 
-        var rows = ListUtility.IndicesOf (newValue, businessObjects).ToArray();
-        foreach (var row in rows.OrderBy (r => r.Index))
-          RowIDProvider.AddRow (row);
+        var rows = ListUtility.IndicesOf(newValueAsReadOnlyList, businessObjects).ToArray();
+        foreach (var row in rows.OrderBy(r => r.Index))
+          RowIDProvider.AddRow(row);
 
         return rows;
       }
@@ -2499,13 +2662,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private BocListRow[] RemoveRowsImplementation (IBusinessObject[] businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
 
-      if (Value == null)
+      IList? valueAsList;
+      try
+      {
+        valueAsList = ValueAsList;
+      }
+      catch (InvalidOperationException ex)
+      {
+        throw new InvalidOperationException(
+            "The BocList is bound to a collection that does not implement the IList interface. "
+            + "Add and remove rows is not supported for collections that do not implement the IList interface.",
+            ex);
+      }
+
+      if (valueAsList == null)
         return new BocListRow[0];
 
-      var rows = ListUtility.IndicesOf (Value, businessObjects).ToArray();
-      var newValue = ListUtility.Remove (Value, rows.Select (r => r.BusinessObject).ToArray(), Property, false);
+      var rows = ListUtility.IndicesOf(valueAsList.Cast<IBusinessObject>(), businessObjects).ToArray();
+      var newValue = ListUtility.Remove(valueAsList, rows.Select(r => r.BusinessObject).ToArray(), Property, false);
 
       if (newValue == null)
       {
@@ -2514,11 +2690,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
       else
       {
-        SetValue (newValue, ValueMode.Complete);
+        IReadOnlyList<IBusinessObject> newValueAsReadOnlyList;
+        if (newValue is IReadOnlyList<IBusinessObject>)
+          newValueAsReadOnlyList = (IReadOnlyList<IBusinessObject>)newValue;
+        else
+          newValueAsReadOnlyList = new BusinessObjectListAdapter<IBusinessObject>(newValue);
+
+        SetValue(newValueAsReadOnlyList, ValueMode.Complete);
         IsDirty = true;
 
-        foreach (var row in rows.OrderByDescending (r => r.Index))
-          RowIDProvider.RemoveRow (row);
+        foreach (var row in rows.OrderByDescending(r => r.Index))
+          RowIDProvider.RemoveRow(row);
 
         return rows;
       }
@@ -2541,7 +2723,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="index"> The index of the row to be edited. </param>
     public void SwitchRowIntoEditMode (int index)
     {
-      _editModeController.SwitchRowIntoEditMode (index, EnsureColumnsGot());
+      _editModeController.SwitchRowIntoEditMode(index, EnsureColumnsGot());
       OnStateOfDisplayedRowsChanged();
     }
 
@@ -2559,12 +2741,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (IsPagingEnabled)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Cannot switch BocList '{0}' in to List Edit Mode: Paging Enabled.", ID));
       }
 
-      _editModeController.SwitchListIntoEditMode (EnsureColumnsGot());
+      _editModeController.SwitchListIntoEditMode(EnsureColumnsGot());
       OnStateOfDisplayedRowsChanged();
     }
 
@@ -2578,7 +2760,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> to add. Must not be <see langword="null"/>. </param>
     public bool AddAndEditRow (IBusinessObject businessObject)
     {
-      return _editModeController.AddAndEditRow (businessObject, EnsureColumnsGot());
+      return _editModeController.AddAndEditRow(businessObject, EnsureColumnsGot());
     }
 
     /// <summary>
@@ -2593,7 +2775,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void EndRowEditMode (bool saveChanges)
     {
-      _editModeController.EndRowEditMode (saveChanges, EnsureColumnsGot());
+      _editModeController.EndRowEditMode(saveChanges, EnsureColumnsGot());
     }
 
     /// <summary>
@@ -2608,12 +2790,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </param>
     public void EndListEditMode (bool saveChanges)
     {
-      _editModeController.EndListEditMode (saveChanges, EnsureColumnsGot());
+      _editModeController.EndListEditMode(saveChanges, EnsureColumnsGot());
     }
 
     private void EnsureEditModeRestored ()
     {
-      _editModeController.EnsureEditModeRestored (EnsureColumnsGot());
+      _editModeController.EnsureEditModeRestored(EnsureColumnsGot());
     }
 
     private void EnsureEditModeValidatorsRestored ()
@@ -2643,20 +2825,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return _editModeController.Validate();
     }
 
-    private EditModeValidator GetEditModeValidator ()
+    private EditModeValidator? GetEditModeValidator ()
     {
       return _validators.GetValidator<EditModeValidator>();
     }
 
     private void SetFocusImplementation (IFocusableControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       var focusID = control.FocusID;
-      if (string.IsNullOrEmpty (focusID))
+      if (string.IsNullOrEmpty(focusID))
         return;
 
-      Page.SetFocus (focusID);
+      Page!.SetFocus(focusID);
     }
 
     /// <summary>
@@ -2665,7 +2847,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <exception cref="InvalidOperationException">
     /// Thrown if the <see cref="BocList"/> is not currently in row-edit-mode or the <see cref="Value"/> has not yet been set.
     /// </exception>
-    public BocListRow GetEditedRow()
+    public BocListRow GetEditedRow ()
     {
       return _editModeController.GetEditedRow();
     }
@@ -2675,7 +2857,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Queried where the rendering depends on whether the list is in edit mode. 
     ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
     /// </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsRowEditModeActive
     {
       get { return _editModeController.IsRowEditModeActive; }
@@ -2686,7 +2868,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Queried where the rendering depends on whether the list is in edit mode. 
     ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
     /// </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     public bool IsListEditModeActive
     {
       get { return _editModeController.IsListEditModeActive; }
@@ -2696,9 +2878,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to show the asterisks in the title row for columns having 
     ///   edit mode controls.
     /// </summary>
-    [Description ("Set false to hide the asterisks in the title row for columns having edit mode control.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (true)]
+    [Description("Set false to hide the asterisks in the title row for columns having edit mode control.")]
+    [Category("Edit Mode")]
+    [DefaultValue(true)]
     public bool ShowEditModeRequiredMarkers
     {
       get { return _showEditModeRequiredMarkers; }
@@ -2709,9 +2891,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to show an exclamation mark in front of each control with 
     ///   an validation error.
     /// </summary>
-    [Description ("Set true to show an exclamation mark in front of each control with an validation error.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (false)]
+    [Description("Set true to show an exclamation mark in front of each control with an validation error.")]
+    [Category("Edit Mode")]
+    [DefaultValue(false)]
     public bool ShowEditModeValidationMarkers
     {
       get { return _showEditModeValidationMarkers; }
@@ -2721,10 +2903,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     ///   Gets or sets a flag that determines whether to render validation messages and client side validators.
     /// </summary>
-    [Description ("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")
+    [Description("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")
     ]
-    [Category ("Edit Mode")]
-    [DefaultValue (false)]
+    [Category("Edit Mode")]
+    [DefaultValue(false)]
     public bool DisableEditModeValidationMessages
     {
       get { return _disableEditModeValidationMessages; }
@@ -2736,9 +2918,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="false"/> to prevent the <see cref="EditModeValidator"/> from being created by
     ///   <see cref="CreateValidators(bool)"/>.
     /// </remarks>
-    [Description ("Enables the EditModeValidator.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (true)]
+    [Description("Enables the EditModeValidator.")]
+    [Category("Edit Mode")]
+    [DefaultValue(true)]
     public bool EnableEditModeValidator
     {
       get { return _enableEditModeValidator; }
@@ -2749,9 +2931,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> 
     ///   <see langword="false"/> to prevent the focus from getting set by <see cref="SwitchRowIntoEditMode"/> or <see cref="SwitchListIntoEditMode"/>.
     /// </remarks>
-    [Description ("Enables automatically setting the focus when switching to edit mode.")]
-    [Category ("Edit Mode")]
-    [DefaultValue (true)]
+    [Description("Enables automatically setting the focus when switching to edit mode.")]
+    [Category("Edit Mode")]
+    [DefaultValue(true)]
     public bool EnableAutoFocusOnSwitchToEditMode
     {
       get { return _enableAutoFocusOnSwitchToEditMode; }
@@ -2759,53 +2941,53 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised before the changes to the editable row are saved. </summary>
-    [Category ("Action")]
-    [Description ("Is raised before the changes to the editable row are saved.")]
+    [Category("Action")]
+    [Description("Is raised before the changes to the editable row are saved.")]
     public event BocListEditableRowChangesEventHandler EditableRowChangesSaving
     {
-      add { Events.AddHandler (s_editableRowChangesSavingEvent, value); }
-      remove { Events.RemoveHandler (s_editableRowChangesSavingEvent, value); }
+      add { Events.AddHandler(s_editableRowChangesSavingEvent, value); }
+      remove { Events.RemoveHandler(s_editableRowChangesSavingEvent, value); }
     }
 
     /// <summary> Is raised after the changes to the editable row have been saved. </summary>
-    [Category ("Action")]
-    [Description ("Is raised after the changes to the editable row have been saved.")]
+    [Category("Action")]
+    [Description("Is raised after the changes to the editable row have been saved.")]
     public event BocListItemEventHandler EditableRowChangesSaved
     {
-      add { Events.AddHandler (s_editableRowChangesSavedEvent, value); }
-      remove { Events.RemoveHandler (s_editableRowChangesSavedEvent, value); }
+      add { Events.AddHandler(s_editableRowChangesSavedEvent, value); }
+      remove { Events.RemoveHandler(s_editableRowChangesSavedEvent, value); }
     }
 
     /// <summary> Is raised before the changes to the editable row are canceled. </summary>
-    [Category ("Action")]
-    [Description ("Is raised before the changes to the editable row are canceled.")]
+    [Category("Action")]
+    [Description("Is raised before the changes to the editable row are canceled.")]
     public event BocListEditableRowChangesEventHandler EditableRowChangesCanceling
     {
-      add { Events.AddHandler (s_editableRowChangesCancelingEvent, value); }
-      remove { Events.RemoveHandler (s_editableRowChangesCancelingEvent, value); }
+      add { Events.AddHandler(s_editableRowChangesCancelingEvent, value); }
+      remove { Events.RemoveHandler(s_editableRowChangesCancelingEvent, value); }
     }
 
     /// <summary> Is raised after the changes to the editable row have been canceled. </summary>
-    [Category ("Action")]
-    [Description ("Is raised after the changes to the editable row have been canceled.")]
+    [Category("Action")]
+    [Description("Is raised after the changes to the editable row have been canceled.")]
     public event BocListItemEventHandler EditableRowChangesCanceled
     {
-      add { Events.AddHandler (s_editableRowChangesCanceledEvent, value); }
-      remove { Events.RemoveHandler (s_editableRowChangesCanceledEvent, value); }
+      add { Events.AddHandler(s_editableRowChangesCanceledEvent, value); }
+      remove { Events.RemoveHandler(s_editableRowChangesCanceledEvent, value); }
     }
 
     /// <summary> 
     ///   Gets or sets the <see cref="EditableRowDataSourceFactory"/> used to create the data souce for the edit mode
     ///   controls.
     /// </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public EditableRowDataSourceFactory EditModeDataSourceFactory
     {
       get { return _editModeDataSourceFactory; }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
+        ArgumentUtility.CheckNotNull("value", value);
         _editModeDataSourceFactory = value;
       }
     }
@@ -2813,14 +2995,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> 
     ///   Gets or sets the <see cref="EditableRowControlFactory"/> used to create the controls for the edit mode.
     /// </summary>
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public EditableRowControlFactory EditModeControlFactory
     {
       get { return _editModeControlFactory; }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
+        ArgumentUtility.CheckNotNull("value", value);
         _editModeControlFactory = value;
       }
     }
@@ -2831,29 +3013,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObjectDataSource dataSource,
         IBusinessObjectBoundEditableWebControl[] controls)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull ("dataSource", dataSource);
-      ArgumentUtility.CheckNotNull ("controls", controls);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("dataSource", dataSource);
+      ArgumentUtility.CheckNotNull("controls", controls);
 
-      BocListEditableRowChangesEventHandler handler =
-          (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesSavingEvent];
+      BocListEditableRowChangesEventHandler? handler =
+          (BocListEditableRowChangesEventHandler?)Events[s_editableRowChangesSavingEvent];
       if (handler != null)
       {
         BocListEditableRowChangesEventArgs e =
-            new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
-        handler (this, e);
+            new BocListEditableRowChangesEventArgs(index, businessObject, dataSource, controls);
+        handler(this, e);
       }
     }
 
     protected virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesSavedEvent];
+      BocListItemEventHandler? handler = (BocListItemEventHandler?)Events[s_editableRowChangesSavedEvent];
       if (handler != null)
       {
-        BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
-        handler (this, e);
+        BocListItemEventArgs e = new BocListItemEventArgs(index, businessObject);
+        handler(this, e);
       }
     }
 
@@ -2863,29 +3045,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         IBusinessObjectDataSource dataSource,
         IBusinessObjectBoundEditableWebControl[] controls)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-      ArgumentUtility.CheckNotNull ("dataSource", dataSource);
-      ArgumentUtility.CheckNotNull ("controls", controls);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("dataSource", dataSource);
+      ArgumentUtility.CheckNotNull("controls", controls);
 
-      BocListEditableRowChangesEventHandler handler =
-          (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesCancelingEvent];
+      BocListEditableRowChangesEventHandler? handler =
+          (BocListEditableRowChangesEventHandler?)Events[s_editableRowChangesCancelingEvent];
       if (handler != null)
       {
         BocListEditableRowChangesEventArgs e =
-            new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
-        handler (this, e);
+            new BocListEditableRowChangesEventArgs(index, businessObject, dataSource, controls);
+        handler(this, e);
       }
     }
-    
+
     protected virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesCanceledEvent];
+      BocListItemEventHandler? handler = (BocListItemEventHandler?)Events[s_editableRowChangesCanceledEvent];
       if (handler != null)
       {
-        BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
-        handler (this, e);
+        BocListItemEventArgs e = new BocListItemEventArgs(index, businessObject);
+        handler(this, e);
       }
     }
 
@@ -2893,62 +3075,62 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <remarks> Sets the dirty state. </remarks>
     protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)
     {
-      AddRows (businessObjects);
+      AddRows(businessObjects);
     }
 
     /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
     /// <remarks> Sets the dirty state. </remarks>
     protected virtual void RemoveBusinessObjects (IBusinessObject[] businessObjects)
     {
-      RemoveRows (businessObjects);
+      RemoveRows(businessObjects);
     }
 
     private void MenuItemEventCommandClick (object sender, WebMenuItemClickEventArgs e)
     {
-      OnMenuItemEventCommandClick (e.Item);
+      OnMenuItemEventCommandClick(e.Item);
     }
 
     /// <summary> Fires the <see cref="MenuItemClick"/> event. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
     protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
     {
-      ArgumentUtility.CheckNotNull ("menuItem", menuItem);
+      ArgumentUtility.CheckNotNull("menuItem", menuItem);
 
       // Just pro forma. MenuBase already fired Command.Click before click-handler is invoked.
       // OnClick only fires once because of a guard-condition.
       if (menuItem.Command != null)
-        menuItem.Command.OnClick ();
+        menuItem.Command.OnClick();
 
       if (menuItem is BocMenuItem && menuItem.Command is BocMenuItemCommand)
-        ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+        ((BocMenuItemCommand)menuItem.Command).OnClick((BocMenuItem)menuItem);
 
-      WebMenuItemClickEventHandler menuItemClickHandler = (WebMenuItemClickEventHandler) Events[s_menuItemClickEvent];
+      WebMenuItemClickEventHandler? menuItemClickHandler = (WebMenuItemClickEventHandler?)Events[s_menuItemClickEvent];
       if (menuItemClickHandler != null)
       {
-        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
-        menuItemClickHandler (this, e);
+        WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs(menuItem);
+        menuItemClickHandler(this, e);
       }
     }
 
     private void MenuItemWxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
     {
-      OnMenuItemWxeFunctionCommandClick (e.Item);
+      OnMenuItemWxeFunctionCommandClick(e.Item);
     }
 
     /// <summary> Handles the click to a WXE function command. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocList.xml' path='BocList/OnMenuItemWxeFunctionCommandClick/*' />
     protected virtual void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem)
     {
-      ArgumentUtility.CheckNotNull ("menuItem", menuItem);
+      ArgumentUtility.CheckNotNull("menuItem", menuItem);
 
       if (menuItem.Command == null)
         return;
 
       if (menuItem is BocMenuItem)
       {
-        BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+        BocMenuItemCommand command = (BocMenuItemCommand)menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
+          command.ExecuteWxeFunction((IWxePage)Page, GetSelectedRows(), GetSelectedBusinessObjects());
         //else
         //  command.ExecuteWxeFunction (Page, GetSelectedRows(), GetSelectedBusinessObjects());
       }
@@ -2956,7 +3138,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
-          command.ExecuteWxeFunction ((IWxePage) Page, null);
+          command.ExecuteWxeFunction((IWxePage)Page, null);
         //else
         //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
@@ -2979,12 +3161,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     void IBocMenuItemContainer.InsertBusinessObjects (IBusinessObject[] businessObjects)
     {
-      InsertBusinessObjects (businessObjects);
+      InsertBusinessObjects(businessObjects);
     }
 
     void IBocMenuItemContainer.RemoveBusinessObjects (IBusinessObject[] businessObjects)
     {
-      RemoveBusinessObjects (businessObjects);
+      RemoveBusinessObjects(businessObjects);
     }
 
     /// <summary> 
@@ -2992,10 +3174,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   and the additonal column sets  (read-only mode only). 
     /// </summary>
     /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
-    [Category ("Appearance")]
-    [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (read-only mode only).")
+    [Category("Appearance")]
+    [Description("Determines whether the list headers and the additional column sets will be rendered if no data is provided (read-only mode only).")
     ]
-    [DefaultValue (false)]
+    [DefaultValue(false)]
     public virtual bool ShowEmptyListReadOnlyMode
     {
       get { return _showEmptyListReadOnlyMode; }
@@ -3007,9 +3189,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   and the additonal column sets (edit mode only). 
     /// </summary>
     /// <value> <see langword="false"/> to hide the headers and the addtional column sets if the list is empty. </value>
-    [Category ("Appearance")]
-    [Description ("Determines whether the list headers and the additional column sets will be rendered if no data is provided (edit mode only).")]
-    [DefaultValue (true)]
+    [Category("Appearance")]
+    [Description("Determines whether the list headers and the additional column sets will be rendered if no data is provided (edit mode only).")]
+    [DefaultValue(true)]
     public virtual bool ShowEmptyListEditMode
     {
       get { return _showEmptyListEditMode; }
@@ -3021,9 +3203,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (read-only mode only).
     /// </summary>
     /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
-    [Category ("Menu")]
-    [Description ("Determines whether the options and list menus will be rendered if no data is provided (read-only mode only).")]
-    [DefaultValue (false)]
+    [Category("Menu")]
+    [Description("Determines whether the options and list menus will be rendered if no data is provided (read-only mode only).")]
+    [DefaultValue(false)]
     public virtual bool ShowMenuForEmptyListReadOnlyMode
     {
       get { return _showMenuForEmptyListReadOnlyMode; }
@@ -3035,9 +3217,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (edit mode only).
     /// </summary>
     /// <value> <see langword="false"/> to hide the option and list menus if the list is empty. </value>
-    [Category ("Menu")]
-    [Description ("Determines whether the options and list menus will be rendered if no data is provided (edit mode only).")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Determines whether the options and list menus will be rendered if no data is provided (edit mode only).")]
+    [DefaultValue(true)]
     public virtual bool ShowMenuForEmptyListEditMode
     {
       get { return _showMenuForEmptyListEditMode; }
@@ -3049,9 +3231,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   for each property of the bound object.
     /// </summary>
     /// <value> <see langword="true"/> show all properties of the bound business object. </value>
-    [Category ("Appearance")]
-    [Description ("Indicates whether the control automatically generates a column for each property of the bound object.")]
-    [DefaultValue (false)]
+    [Category("Appearance")]
+    [Description("Indicates whether the control automatically generates a column for each property of the bound object.")]
+    [DefaultValue(false)]
     public virtual bool ShowAllProperties
     {
       get { return _showAllProperties; }
@@ -3063,9 +3245,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   column.
     /// </summary>
     /// <value> <see langword="true"/> to enable the icon. </value>
-    [Category ("Appearance")]
-    [Description ("Enables the icon in front of the first value column.")]
-    [DefaultValue (true)]
+    [Category("Appearance")]
+    [Description("Enables the icon in front of the first value column.")]
+    [DefaultValue(true)]
     public virtual bool EnableIcon
     {
       get { return _enableIcon; }
@@ -3076,9 +3258,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to to enable cleint side sorting.
     /// </summary>
     /// <value> <see langword="true"/> to enable the sorting buttons. </value>
-    [Category ("Behavior")]
-    [Description ("Enables the sorting button in front of each value column's header.")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description("Enables the sorting button in front of each value column's header.")]
+    [DefaultValue(true)]
     public virtual bool EnableSorting
     {
       get { return _enableSorting; }
@@ -3106,9 +3288,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="NaBooleanEnum.True"/> to show the sorting order index after the button. 
     ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="true"/>.
     /// </value>
-    [Category ("Appearance")]
-    [Description ("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
-    [DefaultValue (typeof (bool?), "")]
+    [Category("Appearance")]
+    [Description("Enables the sorting order display after each sorting button. Undefined is interpreted as true.")]
+    [DefaultValue(typeof(bool?), "")]
     public virtual bool? ShowSortingOrder
     {
       get { return _showSortingOrder; }
@@ -3125,9 +3307,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return IsShowSortingOrderEnabled; }
     }
 
-    [Category ("Behavior")]
-    [Description ("Enables sorting by multiple columns. Undefined is interpreted as true.")]
-    [DefaultValue (typeof (bool?), "")]
+    [Category("Behavior")]
+    [Description("Enables sorting by multiple columns. Undefined is interpreted as true.")]
+    [DefaultValue(typeof(bool?), "")]
     public virtual bool? EnableMultipleSorting
     {
       get { return _enableMultipleSorting; }
@@ -3137,7 +3319,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (!IsMultipleSortingEnabled)
         {
           var oldCount = _sortingOrder.Length;
-          _sortingOrder = _sortingOrder.Where (o => !o.IsEmpty).Take (1).ToArray();
+          _sortingOrder = _sortingOrder.Where(o => !o.IsEmpty).Take(1).ToArray();
           if (_sortingOrder.Length != oldCount)
             OnSortedRowsChanged();
         }
@@ -3153,9 +3335,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to display the options menu.
     /// </summary>
     /// <value> <see langword="true"/> to show the options menu. </value>
-    [Category ("Menu")]
-    [Description ("Enables the options menu.")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Enables the options menu.")]
+    [DefaultValue(true)]
     public virtual bool ShowOptionsMenu
     {
       get { return _showOptionsMenu; }
@@ -3166,9 +3348,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a flag that determines whether to display the list menu.
     /// </summary>
     /// <value> <see langword="true"/> to show the list menu. </value>
-    [Category ("Menu")]
-    [Description ("Enables the list menu.")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Enables the list menu.")]
+    [DefaultValue(true)]
     public virtual bool ShowListMenu
     {
       get { return _showListMenu; }
@@ -3177,9 +3359,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets a value that determines if the row menu is being displayed. </summary>
     /// <value> <see cref="Controls.RowMenuDisplay.Undefined"/> is interpreted as <see cref="Controls.RowMenuDisplay.Disabled"/>. </value>
-    [Category ("Menu")]
-    [Description ("Enables the row menu. Undefined is interpreted as Disabled.")]
-    [DefaultValue (RowMenuDisplay.Undefined)]
+    [Category("Menu")]
+    [Description("Enables the row menu. Undefined is interpreted as Disabled.")]
+    [DefaultValue(RowMenuDisplay.Undefined)]
     public RowMenuDisplay RowMenuDisplay
     {
       get { return _rowMenuDisplay; }
@@ -3193,9 +3375,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   If row selection is enabled, the control displays a checkbox in front of each row
     ///   and highlights selected data rows.
     /// </remarks>
-    [Category ("Behavior")]
-    [Description ("Indicates whether row selection is enabled.")]
-    [DefaultValue (RowSelection.Undefined)]
+    [Category("Behavior")]
+    [Description("Indicates whether row selection is enabled.")]
+    [DefaultValue(RowSelection.Undefined)]
     public virtual RowSelection Selection
     {
       get { return _selection; }
@@ -3214,9 +3396,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Defaults to <see cref="RowIndex.Undefined"/>, which is interpreted as <see langword="RowIndex.Disabled"/>.
     /// </value>
     /// <remarks> If row selection is enabled, the control displays an index in front of each row. </remarks>
-    [Category ("Appearance")]
-    [Description ("Indicates whether the row index is enabled. Undefined is interpreted as Disabled.")]
-    [DefaultValue (RowIndex.Undefined)]
+    [Category("Appearance")]
+    [Description("Indicates whether the row index is enabled. Undefined is interpreted as Disabled.")]
+    [DefaultValue(RowIndex.Undefined)]
     public virtual RowIndex Index
     {
       get { return _index; }
@@ -3235,9 +3417,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the offset for the rendered index. </summary>
     /// <value> Defaults to <see langword="null"/>. </value>
-    [Category ("Appearance")]
-    [Description ("The offset for the rendered index.")]
-    [DefaultValue (typeof (int?), "")]
+    [Category("Appearance")]
+    [Description("The offset for the rendered index.")]
+    [DefaultValue(typeof(int?), "")]
     public int? IndexOffset
     {
       get { return _indexOffset; }
@@ -3246,11 +3428,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
 
     /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
-    [Category ("Appearance")]
-    [Description ("The text that is displayed in the index column's title row. The value will not be HTML encoded.")]
-    [DefaultValue (null)]
-    public string IndexColumnTitle
+    [Category("Appearance")]
+    [Description("The text that is displayed in the index column's title row.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString IndexColumnTitle
     {
       get { return _indexColumnTitle; }
       set { _indexColumnTitle = value; }
@@ -3273,9 +3454,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   An integer greater than zero to limit the number of rows per page to the specified value,
     ///   or zero, less than zero or <see langword="null"/> to show all rows.
     /// </value>
-    [Category ("Appearance")]
-    [Description ("The number of rows displayed per page. Set PageSize to null/0 to show all rows.")]
-    [DefaultValue (typeof (int?), "")]
+    [Category("Appearance")]
+    [Description("The number of rows displayed per page. Set PageSize to null/0 to show all rows.")]
+    [DefaultValue(typeof(int?), "")]
     public virtual int? PageSize
     {
       get { return _pageSize; }
@@ -3286,12 +3467,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         else if (value == 0)
           _pageSize = 0;
         else if (_editModeController.IsListEditModeActive)
-          throw new InvalidOperationException ("Paging cannot be enabled (i.e. the PageSize cannot be set) when ListEditMode is active.");
+          throw new InvalidOperationException("Paging cannot be enabled (i.e. the PageSize cannot be set) when ListEditMode is active.");
         else
           _pageSize = value;
       }
     }
 
+    [MemberNotNullWhen(true, nameof(_pageSize))]
+    [MemberNotNullWhen(true, nameof(PageSize))]
     protected bool IsPagingEnabled
     {
       get { return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && _pageSize != null && _pageSize.Value != 0; }
@@ -3310,9 +3493,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   <see langword="true"/> to force showing the page info, even if the rows fit onto a single 
     ///   page.
     /// </value>
-    [Category ("Behavior")]
-    [Description ("Indicates whether to the show the page count even when there is just one page.")]
-    [DefaultValue (false)]
+    [Category("Behavior")]
+    [Description("Indicates whether to the show the page count even when there is just one page.")]
+    [DefaultValue(false)]
     public bool AlwaysShowPageInfo
     {
       get { return _alwaysShowPageInfo; }
@@ -3320,20 +3503,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text rendered if the list is empty. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
-    [Category ("Appearance")]
-    [Description ("The text if the list is empty. The value will not be HTML encoded.")]
-    [DefaultValue (null)]
-    public string EmptyListMessage
+    [Category("Appearance")]
+    [Description("The text if the list is empty.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString EmptyListMessage
     {
       get { return _emptyListMessage; }
       set { _emptyListMessage = value; }
     }
 
     /// <summary> Gets or sets a flag whether to render the <see cref="EmptyListMessage"/>. </summary>
-    [Category ("Appearance")]
-    [Description ("A flag that determines whether the EmpryListMessage is rendered.")]
-    [DefaultValue (false)]
+    [Category("Appearance")]
+    [Description("A flag that determines whether the EmpryListMessage is rendered.")]
+    [DefaultValue(false)]
     public bool ShowEmptyListMessage
     {
       get { return _showEmptyListMessage; }
@@ -3343,9 +3525,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Gets or sets a flag that determines whether the client script is enabled. </summary>
     /// <remarks> Effects only advanced scripts used for selcting data rows. </remarks>
     /// <value> <see langref="true"/> to enable the client script. </value>
-    [Category ("Behavior")]
-    [Description (" True to enable the client script for BocList features. ")]
-    [DefaultValue (true)]
+    [Category("Behavior")]
+    [Description(" True to enable the client script for BocList features. ")]
+    [DefaultValue(true)]
     public bool EnableClientScript
     {
       get { return _enableClientScript; }
@@ -3353,94 +3535,73 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Is raised when a column type <see cref="BocCustomColumnDefinition"/> is clicked on. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a custom column is clicked on.")]
+    [Category("Action")]
+    [Description("Occurs when a custom column is clicked on.")]
     public event BocCustomCellClickEventHandler CustomCellClick
     {
-      add { Events.AddHandler (s_customCellClickEvent, value); }
-      remove { Events.RemoveHandler (s_customCellClickEvent, value); }
+      add { Events.AddHandler(s_customCellClickEvent, value); }
+      remove { Events.RemoveHandler(s_customCellClickEvent, value); }
     }
 
     /// <summary> Is raised when a column with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Occurs when a column with a command of type Event is clicked inside an column.")]
+    [Category("Action")]
+    [Description("Occurs when a column with a command of type Event is clicked inside an column.")]
     public event BocListItemCommandClickEventHandler ListItemCommandClick
     {
-      add { Events.AddHandler (s_listItemCommandClickEvent, value); }
-      remove { Events.RemoveHandler (s_listItemCommandClickEvent, value); }
+      add { Events.AddHandler(s_listItemCommandClickEvent, value); }
+      remove { Events.RemoveHandler(s_listItemCommandClickEvent, value); }
     }
 
     /// <summary> Is raised when a menu item with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
-    [Category ("Action")]
-    [Description ("Is raised when a menu item with a command of type Event is clicked.")]
+    [Category("Action")]
+    [Description("Is raised when a menu item with a command of type Event is clicked.")]
     public event WebMenuItemClickEventHandler MenuItemClick
     {
-      add { Events.AddHandler (s_menuItemClickEvent, value); }
-      remove { Events.RemoveHandler (s_menuItemClickEvent, value); }
-    }
-
-    /// <summary> Gets or sets the offset between the items in the <c>menu block</c>. </summary>
-    /// <remarks> The <see cref="MenuBlockOffset"/> is applied as a <c>margin</c> attribute. </remarks>
-    [Category ("Menu")]
-    [Description ("The offset between the items in the menu section.")]
-    [DefaultValue (typeof (Unit), "")]
-    public Unit MenuBlockItemOffset
-    {
-      get { return _menuBlockItemOffset; }
-      set { _menuBlockItemOffset = value; }
+      add { Events.AddHandler(s_menuItemClickEvent, value); }
+      remove { Events.RemoveHandler(s_menuItemClickEvent, value); }
     }
 
     /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s options menu. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Menu")]
-    [Description ("The menu items displayed by options menu.")]
-    [DefaultValue ((string) null)]
-    [Editor (typeof (BocMenuItemCollectionEditor), typeof (UITypeEditor))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Menu")]
+    [Description("The menu items displayed by options menu.")]
+    [DefaultValue((string?)null)]
     public WebMenuItemCollection OptionsMenuItems
     {
       get { return _optionsMenu.MenuItems; }
     }
 
     /// <summary> Gets the <see cref="BocMenuItem"/> objects displayed in the <see cref="BocList"/>'s menu area. </summary>
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Menu")]
-    [Description ("The menu items displayed in the list's menu area.")]
-    [DefaultValue ((string) null)]
-    [Editor (typeof (BocMenuItemCollectionEditor), typeof (UITypeEditor))]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Menu")]
+    [Description("The menu items displayed in the list's menu area.")]
+    [DefaultValue((string?)null)]
     public WebMenuItemCollection ListMenuItems
     {
       get { return _listMenu.MenuItems; }
     }
 
-    /// <summary> Gets or sets the width reserved for the menu block. </summary>
-    [Category ("Menu")]
-    [Description ("The width reserved for the menu block.")]
-    [DefaultValue (typeof (Unit), "")]
-    public Unit MenuBlockWidth
-    {
-      get { return _menuBlockWidth; }
-      set { _menuBlockWidth = value; }
-    }
+    /// <inheritdoc />
+    [Category("Menu")]
+    [Description("The minimum width reserved for the menu block.")]
+    [DefaultValue(typeof(Unit), "")]
+    public Unit MenuBlockMinWidth { get; set; }
 
-    /// <summary> Gets or sets the offset between the table and the menu block. </summary>
-    [Category ("Menu")]
-    [Description ("The offset between the table and the menu block.")]
-    [DefaultValue (typeof (Unit), "")]
-    public Unit MenuBlockOffset
-    {
-      get { return _menuBlockOffset; }
-      set { _menuBlockOffset = value; }
-    }
+    /// <inheritdoc />
+    [Category("Menu")]
+    [Description("The maximum width reserved for the menu block.")]
+    [DefaultValue(typeof(Unit), "")]
+    public Unit MenuBlockMaxWidth { get; set; }
 
     /// <summary> Gets or sets the list of menu items to be hidden. </summary>
     /// <value> The <see cref="WebMenuItem.ItemID"/> values of the menu items to hide. </value>
-    [Category ("Menu")]
-    [Description ("The list of menu items to be hidden, identified by their ItemIDs.")]
-    [DefaultValue ((string) null)]
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [TypeConverter (typeof (StringArrayConverter))]
+    [Category("Menu")]
+    [Description("The list of menu items to be hidden, identified by their ItemIDs.")]
+    [DefaultValue((string?)null)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [TypeConverter(typeof(StringArrayConverter))]
     public string[] HiddenMenuItems
     {
       get
@@ -3456,9 +3617,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Gets or sets a value that indicates whether the control displays a drop down list 
     ///   containing the available column definition sets.
     /// </summary>
-    [Category ("Menu")]
-    [Description ("Indicates whether the control displays a drop down list containing the available views.")]
-    [DefaultValue (true)]
+    [Category("Menu")]
+    [Description("Indicates whether the control displays a drop down list containing the available views.")]
+    [DefaultValue(true)]
     public bool ShowAvailableViewsList
     {
       get { return _showAvailableViewsList; }
@@ -3466,30 +3627,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
-    /// <remarks> The value will not be HTML encoded. </remarks>
-    [Category ("Menu")]
-    [Description ("The text that is rendered as a title for the list of available views. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
-    public string AvailableViewsListTitle
+    [Category("Menu")]
+    [Description("The text that is rendered as a title for the list of available views.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString AvailableViewsListTitle
     {
       get { return _availableViewsListTitle; }
       set { _availableViewsListTitle = value; }
     }
 
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
-    [Category ("Menu")]
-    [Description ("The text that is rendered as a label for the options menu.")]
-    [DefaultValue ("")]
-    public string OptionsTitle
+    [Category("Menu")]
+    [Description("The text that is rendered as a label for the options menu.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString OptionsTitle
     {
       get { return _optionsTitle; }
       set { _optionsTitle = value; }
     }
 
     /// <summary> Gets or sets the rendering option for the <c>list menu</c>. </summary>
-    [Category ("Menu")]
-    [Description ("Defines how the items will be rendered.")]
-    [DefaultValue (ListMenuLineBreaks.All)]
+    [Category("Menu")]
+    [Description("Defines how the items will be rendered.")]
+    [DefaultValue(ListMenuLineBreaks.All)]
     public ListMenuLineBreaks ListMenuLineBreaks
     {
       get { return _listMenu.LineBreaks; }
@@ -3501,17 +3661,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if there is an error.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
-    public string ErrorMessage
+    [Description("Validation message displayed if there is an error.")]
+    [Category("Validator")]
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString ErrorMessage
     {
       get { return _errorMessage; }
       set
       {
         _errorMessage = value;
-        UpdateValidtaorErrorMessages<EditModeValidator> (_errorMessage);
+        UpdateValidatorErrorMessages<EditModeValidator>(_errorMessage);
       }
+    }
+
+    [Category("Behavior")]
+    [DefaultValue("")]
+    public string? ControlServicePath
+    {
+      get { return _controlServicePath; }
+      set { _controlServicePath = value ?? string.Empty; }
+    }
+
+    [Category("Behavior")]
+    [DefaultValue("")]
+    [Description("Additional arguments passed to the control service.")]
+    public string? ControlServiceArguments
+    {
+      get { return _controlServiceArguments; }
+      set { _controlServiceArguments = StringUtility.EmptyToNull(value); }
     }
 
     bool IBocList.HasClientScript
@@ -3521,10 +3698,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected bool HasClientScript
     {
-      get { return (!IsDesignMode && EnableClientScript); }
+      get { return EnableClientScript; }
     }
 
-    DropDownList IBocList.GetAvailableViewsList ()
+    DropDownList? IBocList.GetAvailableViewsList ()
     {
       return _availableViewsListPlaceHolder.Controls.OfType<DropDownList>().SingleOrDefault();
     }
@@ -3533,8 +3710,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        if (string.IsNullOrEmpty (OptionsTitle))
-          _optionsMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+        if (OptionsTitle.IsEmpty)
+          _optionsMenu.TitleText = GetResourceManager().GetText(ResourceIdentifier.OptionsTitle);
         else
           _optionsMenu.TitleText = OptionsTitle;
 
@@ -3557,22 +3734,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     ReadOnlyCollection<DropDownMenu> IBocList.RowMenus
     {
-      get { return new ReadOnlyCollection<DropDownMenu> (_rowMenus.ToArray()); }
+      get { return new ReadOnlyCollection<DropDownMenu>(_rowMenus.ToArray()); }
     }
 
     ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> IBocList.CustomColumns
     {
-      get { return new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]> (_customColumnControls); }
+      get { return new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]>(_customColumnControls); }
     }
 
-    bool IBocRenderableControl.IsDesignMode
+    IEnumerable<PlainTextString> IBocList.GetValidationErrors ()
     {
-      get { return IsDesignMode; }
-    }
-
-    IEnumerable<string> IBocList.GetValidationErrors ()
-    {
-      return GetRegisteredValidators().Where (v => !v.IsValid).Select (v => v.ErrorMessage).Distinct();
+      return GetRegisteredValidators()
+          .Where(v => !v.IsValid)
+          .Select(v => v.ErrorMessage)
+          .Select(PlainTextString.CreateFromText)
+          .Distinct();
     }
 
     IEnumerable<string> IControlWithLabel.GetLabelIDs ()
@@ -3582,9 +3758,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public string GetSelectorControlValue (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
-      return RowIDProvider.GetItemRowID (row);
+      return RowIDProvider.GetItemRowID(row);
     }
 
     string IBocList.GetSelectorControlName ()
@@ -3597,7 +3773,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_allRowsSelectorPostfix;
     }
 
-    string IBocList.GetSelectionChangedHandlerScript()
+    string IBocList.GetSelectionChangedHandlerScript ()
     {
       return GetSelectionChangedHandlerScript();
     }
@@ -3622,15 +3798,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!HasListMenu)
         return "function(){{}}";
 
-      Assertion.IsTrue (_listMenu.Visible, "BocList '{0}': The ListMenu must remain visible if BocList.HasListMenu is evaluates 'true'.", ID);
+      Assertion.IsTrue(_listMenu.Visible, "BocList '{0}': The ListMenu must remain visible if BocList.HasListMenu is evaluates 'true'.", ID);
 
-      return string.Format ("function(bocList, isInitializing) {{ {0} }}", _listMenu.GetUpdateScriptReference (GetSelectionCountScript()));
+      return string.Format("function(bocList, isInitializing) {{ {0} }}", _listMenu.GetUpdateScriptReference(GetSelectionCountScript()));
     }
 
     [PublicAPI]
     protected string GetSelectionCountScript ()
     {
-      return "function() { return BocList_GetSelectionCount ('" + ClientID + "'); }";
+      return "function() { return BocList.GetSelectionCount ('" + ClientID + "'); }";
     }
 
     private IRowIDProvider RowIDProvider
@@ -3638,17 +3814,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _rowIDProvider; }
     }
 
-    private void InitializeRowIDProvider()
+    private void InitializeRowIDProvider ()
     {
       if (Value == null)
         _rowIDProvider = new NullValueRowIDProvider();
       else if (GetBusinessObjectClass() is IBusinessObjectClassWithIdentity)
         _rowIDProvider = new UniqueIdentifierBasedRowIDProvider();
       else
-        _rowIDProvider = new IndexBasedRowIDProvider (Value.Cast<IBusinessObject>());
+        _rowIDProvider = new IndexBasedRowIDProvider(Value);
     }
 
-    protected IBusinessObjectClass GetBusinessObjectClass ()
+    protected IBusinessObjectClass? GetBusinessObjectClass ()
     {
       if (Property != null)
         return Property.ReferenceClass;
@@ -3700,8 +3876,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (_hasPreRenderCompleted)
       {
-        throw new InvalidOperationException (
-            string.Format ("Cannot perform the requested operation on BocList '{0}' because the PreRender phase has already completed.", ID));
+        throw new InvalidOperationException(
+            string.Format("Cannot perform the requested operation on BocList '{0}' because the PreRender phase has already completed.", ID));
       }
     }
 
@@ -3722,6 +3898,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     string IBocList.GetCurrentPageControlName ()
     {
+      Assertion.DebugIsNotNull(_currentPagePostBackTarget, "_currentPagePostBackTarget must not be null.");
+
       return _currentPagePostBackTarget.UniqueID;
     }
 

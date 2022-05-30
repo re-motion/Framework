@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -55,20 +54,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </summary>
     void NewObjectCreating (ClientTransaction clientTransaction, Type type);
 
-    void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs);
-    void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects);
-    void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs);
+    void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs);
+    void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
+    void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs);
 
-    void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects);
-    void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects);
+    void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects);
+    void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects);
 
     void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject);
     void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject);
 
     void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess);
-    void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess);
-    void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
-    void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
+    void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
+    void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
     void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
 
@@ -80,7 +79,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <param name="relationEndPointDefinition">The relation endpoint definition of the relation that has been read.</param>
     /// <param name="relatedObject">The related object that is returned to the reader.</param>
     /// <param name="valueAccess">An indicator whether the current or original values have been read.</param>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess);
+    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess);
 
     /// <summary>
     /// Indicates that a collection-value relation has been read.
@@ -90,11 +89,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <param name="relationEndPointDefinition">The relation endpoint definition of the relation that has been read.</param>
     /// <param name="relatedObjects">
     ///   A read-only wrapper of the related object data that is returned to the reader. Implementors should check the 
-    ///   <see cref="ReadOnlyDomainObjectCollectionAdapter{T}.IsDataComplete"/> property before accessing the collection data in order to avoid reloading 
+    ///   <see cref="IReadOnlyCollectionData{T}.IsDataComplete"/> property before accessing the collection data in order to avoid reloading 
     ///   an unloaded collection end-point.
     /// </param>
     /// <param name="valueAccess">An indicator whether the current or original values have been read.</param>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess);
+    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess);
 
     /// <summary>
     /// Indicates that a relation is about to change. 
@@ -113,8 +112,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
 
     /// <summary>
     /// Indicates that a relation has been changed. 
@@ -133,18 +132,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
 
     QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject;
     IEnumerable<T> FilterCustomQueryResult<T> (ClientTransaction clientTransaction, IQuery query, IEnumerable<T> results);
 
     void TransactionCommitting (
-        ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
-    void TransactionCommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData);
-    void TransactionCommitted (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects);
-    void TransactionRollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects);
-    void TransactionRolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects);
+        ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
+    void TransactionCommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData);
+    void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
+    void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
+    void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects);
 
     void RelationEndPointMapRegistering (ClientTransaction clientTransaction, IRelationEndPoint endPoint);
     void RelationEndPointMapUnregistering (ClientTransaction clientTransaction, RelationEndPointID endPointID);
@@ -156,8 +155,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container);
     void DataContainerMapUnregistering (ClientTransaction clientTransaction, DataContainer container);
 
-    void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState);
+    void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState);
     void VirtualRelationEndPointStateUpdated (ClientTransaction clientTransaction, RelationEndPointID endPointID, bool? newEndPointChangeState);
-    
+
   }
 }

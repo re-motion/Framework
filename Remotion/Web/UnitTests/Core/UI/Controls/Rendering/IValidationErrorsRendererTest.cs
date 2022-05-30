@@ -37,8 +37,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     {
       var factory = _serviceLocator.GetInstance<IValidationErrorRenderer>();
 
-      Assert.That (factory, Is.Not.Null);
-      Assert.That (factory, Is.TypeOf (typeof (ValidationErrorRenderer)));
+      Assert.That(factory, Is.Not.Null);
+      Assert.That(factory, Is.TypeOf(typeof(ValidationErrorRenderer)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
       var factory1 = _serviceLocator.GetInstance<IValidationErrorRenderer>();
       var factory2 = _serviceLocator.GetInstance<IValidationErrorRenderer>();
 
-      Assert.That (factory1, Is.SameAs (factory2));
+      Assert.That(factory1, Is.SameAs(factory2));
     }
   }
 }

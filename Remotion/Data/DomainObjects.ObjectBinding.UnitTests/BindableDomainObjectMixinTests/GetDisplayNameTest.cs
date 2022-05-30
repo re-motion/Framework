@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
@@ -22,25 +23,24 @@ using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
 {
   [TestFixture]
   public class GetDisplayNameTest : ObjectBindingTestBase
   {
-    private IBindablePropertyReadAccessStrategy _bindablePropertyReadAccessStrategyMock;
+    private Mock<IBindablePropertyReadAccessStrategy> _bindablePropertyReadAccessStrategyMock;
     private ServiceLocatorScope _serviceLocatorScope;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _bindablePropertyReadAccessStrategyMock = MockRepository.GenerateStrictMock<IBindablePropertyReadAccessStrategy>();
+      _bindablePropertyReadAccessStrategyMock = new Mock<IBindablePropertyReadAccessStrategy>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _bindablePropertyReadAccessStrategyMock);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _bindablePropertyReadAccessStrategyMock.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     public override void TearDown ()
@@ -52,21 +52,21 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void DisplayName ()
     {
-      BindableDomainObjectMixin bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin> (SampleBindableMixinDomainObject.NewObject ());
+      BindableDomainObjectMixin bindableObjectMixin = Mixin.Get<BindableDomainObjectMixin>(SampleBindableMixinDomainObject.NewObject());
 
-      Assert.That (
-          ((IBusinessObjectWithIdentity) bindableObjectMixin).DisplayName,
-          Is.EqualTo ("Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SampleBindableMixinDomainObject, Remotion.Data.DomainObjects.ObjectBinding.UnitTests"));
+      Assert.That(
+          ((IBusinessObjectWithIdentity)bindableObjectMixin).DisplayName,
+          Is.EqualTo("Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.SampleBindableMixinDomainObject, Remotion.Data.DomainObjects.ObjectBinding.UnitTests"));
     }
 
     [Test]
     public void OverriddenDisplayName ()
     {
-      var businessObject = (IBusinessObjectWithIdentity) SampleBindableMixinDomainObjectWithOverriddenDisplayName.NewObject();
+      var businessObject = (IBusinessObjectWithIdentity)SampleBindableMixinDomainObjectWithOverriddenDisplayName.NewObject();
 
-      Assert.That (
+      Assert.That(
           businessObject.DisplayName,
-          Is.EqualTo ("TheDisplayName"));
+          Is.EqualTo("TheDisplayName"));
     }
   }
 }

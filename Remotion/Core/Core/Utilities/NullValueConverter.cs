@@ -31,28 +31,28 @@ namespace Remotion.Utilities
     {
     }
 
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType!); // Override nullability for release v3.0 of re-motion to prevent changes during release phase
 
-      return NullableTypeUtility.IsNullableType (destinationType);
+      return NullableTypeUtility.IsNullableType(destinationType);
     }
 
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
 
-      return NullableTypeUtility.IsNullableType (sourceType);
+      return NullableTypeUtility.IsNullableType(sourceType);
     }
 
-    public override bool IsValid (ITypeDescriptorContext context, object value)
+    public override bool IsValid (ITypeDescriptorContext? context, object? value)
     {
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
       return value == null;
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
     }
 
-    public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
 // ReSharper disable HeuristicUnreachableCode
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -61,17 +61,17 @@ namespace Remotion.Utilities
 // ReSharper restore HeuristicUnreachableCode
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
 
-      throw new NotSupportedException (string.Format ("Value '{0}' cannot be converted to null.", value));
+      throw new NotSupportedException(string.Format("Value '{0}' cannot be converted to null.", value));
     }
 
-    public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
       if (value != null)
-        throw new NotSupportedException (string.Format ("Value '{0}' is not supported by this converter.", value));
+        throw new NotSupportedException(string.Format("Value '{0}' is not supported by this converter.", value));
 
 // ReSharper disable HeuristicUnreachableCode
-      if (!CanConvertTo (context, destinationType))
-        throw new NotSupportedException (string.Format ("Null value cannot be converted to type '{0}'.", destinationType));
+      if (!CanConvertTo(context, destinationType))
+        throw new NotSupportedException(string.Format("Null value cannot be converted to type '{0}'.", destinationType));
 
       return null;
 // ReSharper restore HeuristicUnreachableCode

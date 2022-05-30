@@ -16,11 +16,9 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using FluentValidation.Validators;
+using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
-using Remotion.Validation.Rules;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
@@ -32,11 +30,11 @@ namespace Remotion.Validation.Implementation
   /// <threadsafety static="true" instance="false" />
   public interface IAttributesBasedValidationPropertyRuleReflector
   {
-    PropertyInfo ValidatedProperty { get; }
-    Expression<Func<object, object>> GetPropertyAccessExpression (Type validatedType);
-    IEnumerable<IPropertyValidator> GetAddingPropertyValidators ();
-    IEnumerable<IPropertyValidator> GetHardConstraintPropertyValidators ();
-    IEnumerable<ValidatorRegistration> GetRemovingPropertyRegistrations ();
-    IEnumerable<IMetaValidationRule> GetMetaValidationRules ();
+    IPropertyInformation ValidatedProperty { get; }
+    Func<object, object> GetValidatedPropertyFunc (Type validatedType);
+    IEnumerable<IPropertyValidator> GetRemovablePropertyValidators ();
+    IEnumerable<IPropertyValidator> GetNonRemovablePropertyValidators ();
+    IEnumerable<RemovingValidatorRegistration> GetRemovingValidatorRegistrations ();
+    IEnumerable<IPropertyMetaValidationRule> GetMetaValidationRules ();
   }
 }

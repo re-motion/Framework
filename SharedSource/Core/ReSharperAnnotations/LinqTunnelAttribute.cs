@@ -70,7 +70,7 @@ namespace JetBrains.Annotations
   /// .Where). This annotation allows inference of [InstantHandle] annotation for parameters
   /// of delegate type by analyzing LINQ method chains.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   sealed partial class LinqTunnelAttribute : Attribute
   {
   }

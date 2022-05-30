@@ -32,18 +32,18 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     // construction and disposing
 
     public TestFunctionWithThisObject (SecurableObject thisObject, object someObject)
-      : base (new NoneTransactionMode(), thisObject, someObject)
+      : base(new NoneTransactionMode(), thisObject, someObject)
     {
     }
 
     // methods and properties
 
-    [WxeParameter (0, true, WxeParameterDirection.In)]
+    [WxeParameter(0, true, WxeParameterDirection.In)]
     public SecurableObject ThisObject
     {
       get
       {
-        return (SecurableObject) Variables["ThisObject"];
+        return (SecurableObject)Variables["ThisObject"];
       }
       set
       {
@@ -51,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
       }
     }
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public object SomeObject
     {
       get

@@ -26,24 +26,24 @@ namespace Remotion.Reflection
 
     private readonly string _memberName;
     private readonly BindingFlags _bindingFlags;
-    private readonly Binder _binder;
+    private readonly Binder? _binder;
     private readonly CallingConventions _callingConvention;
-    private readonly ParameterModifier[] _parameterModifiers;
+    private readonly ParameterModifier[]? _parameterModifiers;
 
     public MemberLookupInfo (string memberName, BindingFlags bindingFlags)
-        : this (memberName, bindingFlags, null, CallingConventions.Any, null)
+        : this(memberName, bindingFlags, null, CallingConventions.Any, null)
     {
     }
 
     public MemberLookupInfo (string memberName)
-        : this (memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
+        : this(memberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)
     {
     }
 
     public MemberLookupInfo (
-        string memberName, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
+        string memberName, BindingFlags bindingFlags, Binder? binder, CallingConventions callingConvention, ParameterModifier[]? parameterModifiers)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("memberName", memberName);
+      ArgumentUtility.CheckNotNullOrEmpty("memberName", memberName);
 
       _memberName = memberName;
       _bindingFlags = bindingFlags;
@@ -62,7 +62,7 @@ namespace Remotion.Reflection
       get { return _bindingFlags; }
     }
 
-    public Binder Binder
+    public Binder? Binder
     {
       get { return _binder; }
     }
@@ -72,21 +72,21 @@ namespace Remotion.Reflection
       get { return _callingConvention; }
     }
 
-    public ParameterModifier[] ParameterModifiers
+    public ParameterModifier[]? ParameterModifiers
     {
       get { return _parameterModifiers; }
     }
 
     public Type[] GetParameterTypes (Type delegateType)
     {
-      return GetSignature (delegateType).Item1;
+      return GetSignature(delegateType).Item1;
     }
 
     public Tuple<Type[], Type> GetSignature (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
-      return DelegateFactory.GetSignature (delegateType);
+      return DelegateFactory.GetSignature(delegateType);
     }
   }
 }

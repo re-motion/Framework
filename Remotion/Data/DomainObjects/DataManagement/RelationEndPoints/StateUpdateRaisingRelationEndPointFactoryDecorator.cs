@@ -17,6 +17,7 @@
 using System;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
@@ -25,7 +26,6 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   /// Decorates <see cref="IRelationEndPointFactory"/> instances by wrapping the created <see cref="IVirtualEndPoint"/> instances into decorators
   /// that cause <see cref="IVirtualEndPointStateUpdateListener"/> events to be raised.
   /// </summary>
-  [Serializable]
   public class StateUpdateRaisingRelationEndPointFactoryDecorator : IRelationEndPointFactory
   {
     private readonly IRelationEndPointFactory _innerFactory;
@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public StateUpdateRaisingRelationEndPointFactoryDecorator (IRelationEndPointFactory innerFactory, IVirtualEndPointStateUpdateListener listener)
     {
-      ArgumentUtility.CheckNotNull ("innerFactory", innerFactory);
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("innerFactory", innerFactory);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       _innerFactory = innerFactory;
       _listener = listener;
@@ -52,19 +52,41 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 
     public IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer)
     {
-      return _innerFactory.CreateRealObjectEndPoint (endPointID, dataContainer);
+      return _innerFactory.CreateRealObjectEndPoint(endPointID, dataContainer);
     }
 
     public IVirtualObjectEndPoint CreateVirtualObjectEndPoint (RelationEndPointID endPointID)
     {
-      var endPoint = _innerFactory.CreateVirtualObjectEndPoint (endPointID);
-      return new StateUpdateRaisingVirtualObjectEndPointDecorator (endPoint, _listener);
+      var endPoint = _innerFactory.CreateVirtualObjectEndPoint(endPointID);
+      return new StateUpdateRaisingVirtualObjectEndPointDecorator(endPoint, _listener);
     }
 
-    public ICollectionEndPoint CreateCollectionEndPoint (RelationEndPointID endPointID)
+    public IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID)
     {
-      var endPoint = _innerFactory.CreateCollectionEndPoint (endPointID);
-      return new StateUpdateRaisingCollectionEndPointDecorator (endPoint, _listener);
+      var endPoint = _innerFactory.CreateVirtualCollectionEndPoint(endPointID);
+      return new StateUpdateRaisingVirtualCollectionEndPointDecorator(endPoint, _listener);
     }
+
+    public IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID)
+    {
+      var endPoint = _innerFactory.CreateDomainObjectCollectionEndPoint(endPointID);
+      return new StateUpdateRaisingDomainObjectCollectionEndPointDecorator(endPoint, _listener);
+    }
+
+    #region Serialization
+
+    private StateUpdateRaisingRelationEndPointFactoryDecorator (FlattenedDeserializationInfo info)
+    {
+      _innerFactory = info.GetValueForHandle<IRelationEndPointFactory>();
+      _listener = info.GetValueForHandle<IVirtualEndPointStateUpdateListener>();
+    }
+
+    void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
+    {
+      info.AddHandle(_innerFactory);
+      info.AddHandle(_listener);
+    }
+
+    #endregion
   }
 }

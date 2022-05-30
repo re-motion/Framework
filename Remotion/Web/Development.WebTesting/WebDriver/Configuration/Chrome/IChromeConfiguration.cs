@@ -17,6 +17,7 @@
 using System;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
 {
@@ -29,19 +30,25 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
     /// <summary>
     /// Gets the full path to chrome.exe.
     /// </summary>
-    [CanBeNull]
-    string BinaryPath { get; }
+    [NotNull]
+    string BrowserBinaryPath { get; }
+
+    /// <summary>
+    /// Gets the full path to chromedriver.exe.
+    /// </summary>
+    [NotNull]
+    string DriverBinaryPath { get; }
 
     /// <summary>
     /// Gets the path to the user directories, which is used by the started Chrome. If the path does not exists, it will be automatically created at startup.
     /// </summary>
-    [CanBeNull]
+    [NotNull]
     string UserDirectoryRoot { get; }
 
     /// <summary>
-    /// Defines whether the infrastructure should delete the given <see cref="UserDirectoryRoot"/>.
+    /// Defines the behavior of tests depending on the <c>CommandLineFlagSecurityWarningsEnabled</c> registry flag.
     /// </summary>
-    bool EnableUserDirectoryRootCleanup { get; }
+    ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
 
     /// <summary>
     /// Creates the <see cref="ChromeOptions"/> used when instantiating the Chrome browser.

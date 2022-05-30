@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+
+  <Target Name="CopyPdbFilesToOutput" AfterTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <_pdbFiles Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="$([System.IO.File]::Exists('%(RootDir)%(Directory)%(Filename).pdb'))"/>
+      <ReferenceCopyLocalPaths Include="@(_pdbFiles)"/>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CopyTestHostAppConfigs" AfterTargets="_CopyAppConfigFile" Condition="'$(TargetFramework)' == 'net6.0-windows' AND Exists('$(OutDir)\$(AssemblyName).dll.config')">
+    <ItemGroup>
+      <_testHostAppConfig Include="$(OutDir)\testhost.dll.config" />
+      <_testHostAppConfig Include="$(OutDir)\testhost.x86.dll.config" />
+      <_testHostAppConfig Include="$(OutDir)\ReSharperTestRunner.dll.config" />
+      <_testHostAppConfig Include="$(OutDir)\ReSharperTestRunner32.dll.config" />
+      <_testHostAppConfig Include="$(OutDir)\ReSharperTestRunner64.dll.config" />
+    </ItemGroup>
+    <!-- We copy from the output directory because linked app configs are not located in the project directory -->
+    <Copy SourceFiles="$(OutDir)\$(AssemblyName).dll.config" DestinationFiles="%(_testHostAppConfig.Identity)" />
+    <ItemGroup>
+      <FileWrites Include="@(_testHostAppConfig)" />
+    </ItemGroup>
+  </Target>
+
+</Project>

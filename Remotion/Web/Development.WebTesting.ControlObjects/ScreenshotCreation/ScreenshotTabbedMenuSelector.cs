@@ -38,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
 
     public ScreenshotTabbedMenuSelector ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       _scope = scope;
     }
@@ -46,9 +46,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithHtmlID (string htmlID)
     {
-      ArgumentUtility.CheckNotNull ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNull("htmlID", htmlID);
 
-      var item = _scope.FindId (htmlID);
+      var item = _scope.FindId(htmlID);
 
       return item.ForElementScopeScreenshot();
     }
@@ -56,9 +56,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNull ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("itemID", itemID);
 
-      var item = _scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID);
+      var item = _scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID);
 
       return item.ForElementScopeScreenshot();
     }
@@ -66,9 +66,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithIndex (int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("oneBasedIndex", oneBasedIndex);
+      ArgumentUtility.CheckNotNull("oneBasedIndex", oneBasedIndex);
 
-      var item = _scope.FindXPath (string.Format ("(.//li/span/span[2])[{0}]", oneBasedIndex));
+      var item = _scope.FindXPath(string.Format("(.//li/span/span[2])[{0}]", oneBasedIndex));
 
       return item.ForElementScopeScreenshot();
     }
@@ -76,9 +76,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
-      var item = _scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.Content, displayText);
+      var item = _scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, displayText);
 
       return item.ForElementScopeScreenshot();
     }
@@ -86,9 +86,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     /// <inheritdoc />
     public FluentScreenshotElement<ElementScope> WithDisplayTextContains (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
-      var item = _scope.FindTagWithAttributeUsingOperator (
+      var item = _scope.FindTagWithAttributeUsingOperator(
           "span",
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,

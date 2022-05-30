@@ -55,23 +55,23 @@ public class BidirectionalStringConverter: TypeConverter
   /// <see cref="BidirectionalStringConverter"/>, however, only supports objects for which round-tripping is supported. This method therefore only
   /// returns <see langword="true"/> for types whose values can be converted both into and back from a string.
   /// </remarks>
-  public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+  public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
   {
     if (sourceType == null)
       return false;
     // check whether we can _parse_ the source type; only then, we can perform round-tripping
-    return StringUtility.CanParse (sourceType);
+    return StringUtility.CanParse(sourceType);
   }
 
   /// <summary> Test: Can convert from <see cref="String"/> to <paramref name="destinationType"/>? </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="destinationType"> The <see cref="Type"/>  to convert a <see cref="String"/> value to. </param>
   /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-  public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+  public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
   {
     if (destinationType == null)
       return false;
-    return StringUtility.CanParse (destinationType);
+    return StringUtility.CanParse(destinationType);
   }
 
   /// <summary> Converts <paramref name="value"/> into a <see cref="String"/>. </summary>
@@ -83,13 +83,13 @@ public class BidirectionalStringConverter: TypeConverter
   /// <remarks>
   ///   Conversions from <see cref="Single"/> and <see cref="Double"/> are done using "R" as format string. 
   /// </remarks>
-  public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+  public override object ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
   {
     if (value == null)
       return string.Empty;
-    if (CanConvertFrom (context, value.GetType()))
-      return StringUtility.Format (value, culture);
-    throw new NotSupportedException (string.Format ("Cannot convert from '{0}' to String.", value.GetType()));
+    if (CanConvertFrom(context, value.GetType()))
+      return StringUtility.Format(value, culture);
+    throw new NotSupportedException(string.Format("Cannot convert from '{0}' to String.", value.GetType()));
   }
 
   /// <summary> Convertes a <see cref="String"/> into the <paramref name="destinationType"/>. </summary>
@@ -99,16 +99,16 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="destinationType"> The destination <see cref="Type"/>. Must not be <see langword="null"/>. </param>
   /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
   /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
-  public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+  public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+    ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
     if (value == null)
       value = string.Empty;
 
-    if (value is string && CanConvertTo (context, destinationType))
-      return StringUtility.Parse (destinationType, (string) value, culture);
-    return base.ConvertTo (context, culture, value, destinationType);
+    if (value is string && CanConvertTo(context, destinationType))
+      return StringUtility.Parse(destinationType, (string)value, culture);
+    return base.ConvertTo(context, culture, value, destinationType);
   }
 
   /// <summary>
@@ -117,7 +117,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <returns> <see langword="false"/>. </returns>
-  public override bool GetStandardValuesExclusive (ITypeDescriptorContext context)
+  public override bool GetStandardValuesExclusive (ITypeDescriptorContext? context)
   {
     return false;
   }
@@ -125,7 +125,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <summary> Returns whether this object supports a standard set of values that can be picked from a list. </summary>
   /// <param name="context"> An ITypeDescriptorContext that provides a format context. </param>
   /// <returns> <see langword="false"/>. </returns>
-  public override bool GetStandardValuesSupported (ITypeDescriptorContext context)
+  public override bool GetStandardValuesSupported (ITypeDescriptorContext? context)
   {
     return false;
   }

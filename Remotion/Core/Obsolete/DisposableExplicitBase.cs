@@ -20,7 +20,7 @@ using System;
 
 namespace Remotion
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Extensions.dll", true)]
   internal abstract class DisposableExplicitBase
   {
     protected abstract void Dispose (bool disposing);

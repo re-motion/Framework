@@ -34,8 +34,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public InterfaceImplementationMethodInformation (IMethodInformation implementationMethodInfo, IMethodInformation declarationMethodInfo)
     {
-      ArgumentUtility.CheckNotNull ("implementationMethodInfo", implementationMethodInfo);
-      ArgumentUtility.CheckNotNull ("declarationMethodInfo", declarationMethodInfo);
+      ArgumentUtility.CheckNotNull("implementationMethodInfo", implementationMethodInfo);
+      ArgumentUtility.CheckNotNull("declarationMethodInfo", declarationMethodInfo);
 
       _implementationMethodInfo = implementationMethodInfo;
       _declarationMethodInfo = declarationMethodInfo;
@@ -46,53 +46,53 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _implementationMethodInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _implementationMethodInfo.DeclaringType; }
     }
 
-    public ITypeInformation GetOriginalDeclaringType ()
+    public ITypeInformation? GetOriginalDeclaringType ()
     {
       return _implementationMethodInfo.GetOriginalDeclaringType();
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
       return _implementationMethodInfo.GetCustomAttribute<T>(inherited);
     }
 
     public T[] GetCustomAttributes<T> (bool inherited) where T: class
     {
-      return _implementationMethodInfo.GetCustomAttributes<T> (inherited);
+      return _implementationMethodInfo.GetCustomAttributes<T>(inherited);
     }
 
     public bool IsDefined<T> (bool inherited) where T: class
     {
-      return _implementationMethodInfo.IsDefined<T> (inherited);
+      return _implementationMethodInfo.IsDefined<T>(inherited);
     }
 
-    public IMethodInformation FindInterfaceImplementation (Type implementationType)
+    public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
-      
-      return _implementationMethodInfo.FindInterfaceImplementation (implementationType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
+
+      return _implementationMethodInfo.FindInterfaceImplementation(implementationType);
     }
 
     public IEnumerable<IMethodInformation> FindInterfaceDeclarations ()
     {
-      return EnumerableUtility.Singleton (_declarationMethodInfo);
+      return EnumerableUtility.Singleton(_declarationMethodInfo);
     }
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T)(object)GetFastInvoker (typeof (T));
+      return (T)(object)GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNull ("delegateType", delegateType);
+      ArgumentUtility.CheckNotNull("delegateType", delegateType);
 
-      return _declarationMethodInfo.GetFastInvoker (delegateType);
+      return _declarationMethodInfo.GetFastInvoker(delegateType);
     }
 
     public ParameterInfo[] GetParameters ()
@@ -105,7 +105,7 @@ namespace Remotion.ObjectBinding.BindableObject
       return _implementationMethodInfo.GetOriginalDeclaration();
     }
 
-    public IPropertyInformation FindDeclaringProperty ()
+    public IPropertyInformation? FindDeclaringProperty ()
     {
       return _implementationMethodInfo.FindDeclaringProperty();
     }
@@ -115,22 +115,22 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _implementationMethodInfo.ReturnType; }
     }
 
-    public object Invoke (object instance, object[] parameters)
+    public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      
-      return _declarationMethodInfo.Invoke (instance, parameters);
+      ArgumentUtility.CheckNotNull("instance", instance!);
+
+      return _declarationMethodInfo.Invoke(instance, parameters);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != GetType()) 
+      if (obj.GetType() != GetType())
         return false;
 
-      var other = (InterfaceImplementationMethodInformation) obj;
-      return _implementationMethodInfo.Equals (other._implementationMethodInfo) && _declarationMethodInfo.Equals (other._declarationMethodInfo);
+      var other = (InterfaceImplementationMethodInformation)obj;
+      return _implementationMethodInfo.Equals(other._implementationMethodInfo) && _declarationMethodInfo.Equals(other._declarationMethodInfo);
     }
 
     public override int GetHashCode ()
@@ -140,7 +140,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string ToString ()
     {
-      return string.Format ("{0} (impl of '{1}')", _implementationMethodInfo.Name, _declarationMethodInfo.DeclaringType.Name);
+      return string.Format("{0} (impl of '{1}')", _implementationMethodInfo.Name, _declarationMethodInfo.DeclaringType!.Name);
     }
 
     bool INullObject.IsNull

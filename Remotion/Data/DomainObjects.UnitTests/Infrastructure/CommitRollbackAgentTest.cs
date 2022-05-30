@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -26,22 +28,20 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.RhinoMocks.UnitTesting;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.FunctionalProgramming;
 using Remotion.TypePipe;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
   [TestFixture]
   public class CommitRollbackAgentTest : StandardMappingTest
   {
-    private MockRepository _mockRepository;
 
-    private IClientTransactionEventSink _eventSinkWithMock;
-    private IPersistenceStrategy _persistenceStrategyMock;
-    private IDataManager _dataManagerMock;
+    private Mock<IClientTransactionEventSink> _eventSinkWithMock;
+    private Mock<IPersistenceStrategy> _persistenceStrategyMock;
+    private Mock<IDataManager> _dataManagerMock;
     private ClientTransaction _clientTransaction;
 
     private CommitRollbackAgent _agent;
@@ -53,246 +53,318 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     private PersistableData _fakeChangedPersistableItem;
     private PersistableData _fakeNewPersistableItem;
     private PersistableData _fakeDeletedPersistableItem;
+    private Expression<Func<Predicate<DomainObjectState>,bool>> _predicateThatMatchesOnlyChangedDataContainers;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _mockRepository = new MockRepository();
-
-      _eventSinkWithMock = _mockRepository.StrictMock<IClientTransactionEventSink>();
-      _persistenceStrategyMock = _mockRepository.StrictMock<IPersistenceStrategy> ();
-      _dataManagerMock = _mockRepository.StrictMock<IDataManager> ();
+      _eventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
+      _persistenceStrategyMock = new Mock<IPersistenceStrategy>(MockBehavior.Strict);
+      _dataManagerMock = new Mock<IDataManager>(MockBehavior.Strict);
       _clientTransaction = ClientTransactionObjectMother.Create();
 
-      _agent = new CommitRollbackAgent (_clientTransaction, _eventSinkWithMock, _persistenceStrategyMock, _dataManagerMock);
+      _agent = new CommitRollbackAgent(_clientTransaction, _eventSinkWithMock.Object, _persistenceStrategyMock.Object, _dataManagerMock.Object);
 
-      _fakeChangedDomainObject = LifetimeService.NewObject (_clientTransaction, typeof (Order), ParamList.Empty);
-      _fakeNewDomainObject = LifetimeService.NewObject (_clientTransaction, typeof (Order), ParamList.Empty);
-      _fakeDeletedDomainObject = LifetimeService.NewObject (_clientTransaction, typeof (Order), ParamList.Empty);
+      _fakeChangedDomainObject = LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
+      _fakeNewDomainObject = LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
+      _fakeDeletedDomainObject = LifetimeService.NewObject(_clientTransaction, typeof(Order), ParamList.Empty);
 
       var fakeDataContainer1 = DataContainerObjectMother.Create();
       var fakeDataContainer2 = DataContainerObjectMother.Create();
       var fakeDataContainer3 = DataContainerObjectMother.Create();
 
-      _fakeChangedPersistableItem = new PersistableData (_fakeChangedDomainObject, StateType.Changed, fakeDataContainer1, new IRelationEndPoint[0]);
-      _fakeNewPersistableItem = new PersistableData (_fakeNewDomainObject, StateType.New, fakeDataContainer2, new IRelationEndPoint[0]);
-      _fakeDeletedPersistableItem = new PersistableData (_fakeDeletedDomainObject, StateType.Deleted, fakeDataContainer3, new IRelationEndPoint[0]);
+      _fakeChangedPersistableItem = new PersistableData(
+          _fakeChangedDomainObject,
+          new DomainObjectState.Builder().SetChanged().Value,
+          fakeDataContainer1,
+          new IRelationEndPoint[0]);
+
+      _fakeNewPersistableItem = new PersistableData(
+          _fakeNewDomainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          fakeDataContainer2,
+          new IRelationEndPoint[0]);
+
+      _fakeDeletedPersistableItem = new PersistableData(
+          _fakeDeletedDomainObject,
+          new DomainObjectState.Builder().SetDeleted().Value,
+          fakeDataContainer3,
+          new IRelationEndPoint[0]);
+
+      _predicateThatMatchesOnlyChangedDataContainers =
+          predicate => predicate(new DomainObjectState.Builder().SetNew().Value)
+                       && predicate(new DomainObjectState.Builder().SetChanged().Value)
+                       && predicate(new DomainObjectState.Builder().SetDeleted().Value)
+                       && predicate(new DomainObjectState.Builder().SetChanged().SetDeleted().Value)
+                       && predicate(new DomainObjectState.Builder().SetChanged().SetNotLoadedYet().Value)
+                       && !predicate(new DomainObjectState.Builder().SetUnchanged().Value)
+                       && !predicate(new DomainObjectState.Builder().SetInvalid().Value)
+                       && !predicate(new DomainObjectState.Builder().SetNotLoadedYet().Value);
     }
 
     [Test]
-    public void HasDataChanged_True ()
+    public void HasData_WithNonEmptyResult_ReturnsTrue ()
     {
       var fakeDomainObject = DomainObjectMother.CreateFakeObject<Order>();
-      var fakeDataContainer = DataContainer.CreateNew (fakeDomainObject.ID);
+      var fakeDataContainer = DataContainer.CreateNew(fakeDomainObject.ID);
 
-      var item = new PersistableData (fakeDomainObject, StateType.Changed, fakeDataContainer, new IRelationEndPoint[0]);
+      var item = new PersistableData(
+          fakeDomainObject,
+          new DomainObjectState.Builder().Value,
+          fakeDataContainer,
+          new IRelationEndPoint[0]);
 
-      _dataManagerMock.Stub (stub => stub.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New)).Return (new[] { item });
-      _mockRepository.ReplayAll ();
+      var data = new[] { item };
+      Predicate<DomainObjectState> predicate = _ => true;
+      _dataManagerMock.Setup(stub => stub.GetLoadedDataByObjectState(predicate)).Returns(data);
 
-      var result = _agent.HasDataChanged();
-      Assert.That (result, Is.True);
+      var result = _agent.HasData(predicate);
+      Assert.That(result, Is.True);
     }
 
     [Test]
-    public void HasDataChanged_False ()
+    public void HasData_WithEmptyResult_ReturnsFalse ()
     {
-      _dataManagerMock
-          .Stub (stub => stub.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-          .Return (new PersistableData[0]);
-      _mockRepository.ReplayAll ();
+      var data = new PersistableData[0];
+      Predicate<DomainObjectState> predicate = _ => true;
+      _dataManagerMock.Setup(stub => stub.GetLoadedDataByObjectState(predicate)).Returns(data);
 
-      var result = _agent.HasDataChanged ();
-      Assert.That (result, Is.False);
+      var result = _agent.HasData(predicate);
+      Assert.That(result, Is.False);
     }
 
     [Test]
     public void Commit ()
     {
-      using (_mockRepository.Ordered())
-      {
-        // First run of BeginCommit: fakeChangedPersistableItem, _fakeNewPersistableItem in commit set - event raised for both
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem });
-        ExpectTransactionCommitting (_fakeChangedDomainObject, _fakeNewDomainObject);
+      var sequence = new MockSequence();
 
-        // Second run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set 
+        // First run of BeginCommit: fakeChangedPersistableItem, _fakeNewPersistableItem in commit set - event raised for both
+      _dataManagerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+            .Returns(new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem })
+            .Verifiable();
+      ExpectTransactionCommitting(sequence, new[] { _fakeChangedDomainObject, _fakeNewDomainObject });
+
+        // Second run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set
         // Event is raised just for _fakeDeletedPersistableItem - the others have already got their event
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem });
-        ExpectTransactionCommitting (_fakeDeletedDomainObject);
+      _dataManagerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+            .Returns(new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem })
+            .Verifiable();
+      ExpectTransactionCommitting(sequence, new[] { _fakeDeletedDomainObject });
 
         // End of BeginCommit: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - events already raised for all of those
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
+      _dataManagerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+            .Returns(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem })
+            .Verifiable();
 
         // CommitValidate: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - this is what actually gets committed
-        ExpectTransactionCommitValidate (new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
-        
+      ExpectTransactionCommitValidate(sequence, new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
+
         // Commit _fakeNewPersistableItem, _fakeDeletedPersistableItem found earlier
-        ExpectPersistData (_fakeNewPersistableItem, _fakeDeletedPersistableItem);
-        _dataManagerMock.Expect (mock => mock.Commit());
+      ExpectPersistData(sequence, new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
+      _dataManagerMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
         // Raise event for _fakeNewPersistableItem only, _fakeDeletedPersistableItem was deleted
-        ExpectTransactionCommitted (_fakeNewDomainObject);
-      }
-      _mockRepository.ReplayAll();
+        ExpectTransactionCommitted(sequence, new[] { _fakeNewDomainObject });
 
       _agent.CommitData();
 
-      _mockRepository.VerifyAll();
+      _eventSinkWithMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
     }
 
     [Test]
     public void Commit_WithRegisterForAdditionalEvents ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        // First run of BeginCommit: fakeChangedPersistableItem, _fakeNewPersistableItem in commit set - event raised for both
-        // fakeChangedDomainObject and _fakeNewDomainObject are both reregistered
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem });
-        ExpectTransactionCommitting (_fakeChangedDomainObject, _fakeNewDomainObject)
-            .WhenCalled (mi => GetEventRegistrar (mi).RegisterForAdditionalCommittingEvents (_fakeChangedDomainObject, _fakeNewDomainObject));
+      var sequence = new MockSequence();
 
-        // Second run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, fakeDeletedPersistableItem in commit set 
-        // Event is raised for all three - two have been reregistered, one is added to the commit set
-        // _fakeChangedDomainObject is again reregistered
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem });
-        ExpectTransactionCommitting (_fakeChangedDomainObject, _fakeDeletedDomainObject, _fakeNewDomainObject)
-            .WhenCalled (mi => GetEventRegistrar(mi).RegisterForAdditionalCommittingEvents (_fakeChangedDomainObject));
+      // First run of BeginCommit: fakeChangedPersistableItem, _fakeNewPersistableItem in commit set - event raised for both
+      // fakeChangedDomainObject and _fakeNewDomainObject are both reregistered
+      _dataManagerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+          .Returns(new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem })
+          .Verifiable();
+      ExpectTransactionCommitting(
+          sequence,
+          new[] { _fakeChangedDomainObject, _fakeNewDomainObject },
+          (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrar) =>
+              eventRegistrar.RegisterForAdditionalCommittingEvents(_fakeChangedDomainObject, _fakeNewDomainObject));
 
-        // Third run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, fakeDeletedPersistableItem in commit set 
-        // Event is raised only for _fakeChangedDomainObject, it was reregistered
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem });
-        ExpectTransactionCommitting (_fakeChangedDomainObject);
+      // Second run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, fakeDeletedPersistableItem in commit set
+      // Event is raised for all three - two have been reregistered, one is added to the commit set
+      // _fakeChangedDomainObject is again reregistered
+      _dataManagerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+          .Returns(new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem })
+          .Verifiable();
+      ExpectTransactionCommitting(
+          sequence,
+          new[] { _fakeChangedDomainObject, _fakeDeletedDomainObject, _fakeNewDomainObject },
+          (IReadOnlyList<DomainObject> _, ICommittingEventRegistrar eventRegistrar) =>
+              eventRegistrar.RegisterForAdditionalCommittingEvents(_fakeChangedDomainObject));
 
-        // End of BeginCommit: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - events already raised for all of those
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
+      // Third run of BeginCommit: _fakeChangedPersistableItem, _fakeNewPersistableItem, fakeDeletedPersistableItem in commit set
+      // Event is raised only for _fakeChangedDomainObject, it was reregistered
+      _dataManagerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+          .Returns(new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem })
+          .Verifiable();
+      ExpectTransactionCommitting(sequence, new[] { _fakeChangedDomainObject });
 
-        // CommitValidate: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - this is what actually gets committed
-        ExpectTransactionCommitValidate (_fakeNewPersistableItem, _fakeDeletedPersistableItem);
+      // End of BeginCommit: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - events already raised for all of those
+      _dataManagerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+          .Returns(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem })
+          .Verifiable();
 
-        // Commit _fakeNewPersistableItem, _fakeDeletedPersistableItem found earlier
-        ExpectPersistData (_fakeNewPersistableItem, _fakeDeletedPersistableItem);
-        _dataManagerMock.Expect (mock => mock.Commit ());
+      // CommitValidate: _fakeNewPersistableItem, _fakeDeletedPersistableItem in commit set - this is what actually gets committed
+      ExpectTransactionCommitValidate(sequence, new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
 
-        // Raise event for _fakeNewPersistableItem only, _fakeDeletedPersistableItem was deleted
-        ExpectTransactionCommitted (_fakeNewDomainObject);
-      }
-      _mockRepository.ReplayAll ();
+      // Commit _fakeNewPersistableItem, _fakeDeletedPersistableItem found earlier
+      ExpectPersistData(sequence, new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
+      _dataManagerMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
-      _agent.CommitData ();
+      // Raise event for _fakeNewPersistableItem only, _fakeDeletedPersistableItem was deleted
+      ExpectTransactionCommitted(sequence, new[] { _fakeNewDomainObject });
 
-      _mockRepository.VerifyAll ();
+      _agent.CommitData();
+
+      _eventSinkWithMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
     }
 
     [Test]
     public void Rollback ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        // First run of BeginRollback: fakeChangedPersistableItem, _fakeNewPersistableItem in rollback set - event raised for both
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem });
-        ExpectTransactionRollingBack (_fakeChangedDomainObject, _fakeNewDomainObject);
+      var sequence = new MockSequence();
 
-        // Second run of BeginRollback: fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem in rollback set 
-        // Event is raised just for _fakeDeletedPersistableItem -  the others have alreay got their event
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem });
-        ExpectTransactionRollingBack (_fakeDeletedDomainObject);
+      // First run of BeginRollback: fakeChangedPersistableItem, _fakeNewPersistableItem in rollback set - event raised for both
+      _dataManagerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+          .Returns(new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem })
+          .Verifiable();
+      ExpectTransactionRollingBack(sequence, new[] { _fakeChangedDomainObject, _fakeNewDomainObject });
 
-        // End of BeginRollback: _fakeNewPersistableItem, _fakeDeletedPersistableItem in rollback set - events already raised for all of those
-        _dataManagerMock
-            .Expect (mock => mock.GetLoadedDataByObjectState (StateType.Changed, StateType.Deleted, StateType.New))
-            .Return (new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem });
+      // Second run of BeginRollback: fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem in rollback set
+      // Event is raised just for _fakeDeletedPersistableItem -  the others have alreay got their event
+      _dataManagerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+          .Returns(new[] { _fakeChangedPersistableItem, _fakeNewPersistableItem, _fakeDeletedPersistableItem })
+          .Verifiable();
+      ExpectTransactionRollingBack(sequence, new[] { _fakeDeletedDomainObject });
 
-        // Rollback
-        _dataManagerMock.Expect (mock => mock.Rollback ());
+      // End of BeginRollback: _fakeNewPersistableItem, _fakeDeletedPersistableItem in rollback set - events already raised for all of those
+      _dataManagerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.GetLoadedDataByObjectState(It.Is(_predicateThatMatchesOnlyChangedDataContainers)))
+          .Returns(new[] { _fakeNewPersistableItem, _fakeDeletedPersistableItem })
+          .Verifiable();
 
-        // Raise event only for _fakeDeletedPersistableItem, _fakeNewPersistableItem was New
-        ExpectTransactionRolledBack (_fakeDeletedDomainObject);
-      }
-      _mockRepository.ReplayAll ();
+      // Rollback
+      _dataManagerMock.InSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
 
-      _agent.RollbackData ();
+      // Raise event only for _fakeDeletedPersistableItem, _fakeNewPersistableItem was New
+      ExpectTransactionRolledBack(sequence, new[] { _fakeDeletedDomainObject });
 
-      _mockRepository.VerifyAll ();
+      _agent.RollbackData();
+
+      _eventSinkWithMock.Verify();
+      _persistenceStrategyMock.Verify();
+      _dataManagerMock.Verify();
     }
 
     [Test]
     public void Serializable ()
     {
-      var instance = new CommitRollbackAgent (
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
+      var instance = new CommitRollbackAgent(
           _clientTransaction,
           new SerializableClientTransactionEventSinkFake(),
           new SerializablePersistenceStrategyFake(),
           new SerializableDataManagerFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.ClientTransaction, Is.Not.Null);
-      Assert.That (deserializedInstance.EventSink, Is.Not.Null);
-      Assert.That (deserializedInstance.PersistenceStrategy, Is.Not.Null);
-      Assert.That (deserializedInstance.DataManager, Is.Not.Null);
+      Assert.That(deserializedInstance.ClientTransaction, Is.Not.Null);
+      Assert.That(deserializedInstance.EventSink, Is.Not.Null);
+      Assert.That(deserializedInstance.PersistenceStrategy, Is.Not.Null);
+      Assert.That(deserializedInstance.DataManager, Is.Not.Null);
     }
 
-    private IMethodOptions<RhinoMocksExtensions.VoidType> ExpectTransactionCommitting (params DomainObject[] domainObjects)
+    private void ExpectTransactionCommitting (
+        MockSequence sequence,
+        DomainObject[] domainObjects,
+        Action<IReadOnlyList<DomainObject>, ICommittingEventRegistrar> callback = null)
     {
-      return _eventSinkWithMock.Expect (mock => mock.RaiseTransactionCommittingEvent (
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (domainObjects),
-          Arg<CommittingEventRegistrar>.Is.TypeOf))
-          .WhenCalled (mi => Assert.That (((CommittingEventRegistrar) mi.Arguments[1]).ClientTransaction, Is.SameAs (_clientTransaction)));
+      _eventSinkWithMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.RaiseTransactionCommittingEvent(
+                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
+                  It.IsNotNull<CommittingEventRegistrar>()))
+          .Callback(
+              (IReadOnlyList<DomainObject> domainObjectsParameter, ICommittingEventRegistrar eventRegistrarParameter) =>
+              {
+                Assert.That(((CommittingEventRegistrar)eventRegistrarParameter).ClientTransaction, Is.SameAs(_clientTransaction));
+                if (callback != null)
+                  callback(domainObjectsParameter, eventRegistrarParameter);
+              })
+          .Verifiable();
     }
 
-    private void ExpectTransactionCommitValidate (params PersistableData[] persistableData)
+    private void ExpectTransactionCommitValidate (MockSequence sequence, PersistableData[] persistableData)
     {
-      _eventSinkWithMock.Expect (mock => mock.RaiseTransactionCommitValidateEvent (
-          Arg<ReadOnlyCollection<PersistableData>>.List.Equivalent (persistableData)));
+      _eventSinkWithMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseTransactionCommitValidateEvent(It.Is<ReadOnlyCollection<PersistableData>>(p => p.SetEquals(persistableData))))
+          .Verifiable();
     }
 
-    private void ExpectPersistData (params PersistableData[] persistableDatas)
+    private void ExpectPersistData (MockSequence sequence, PersistableData[] persistableDatas)
     {
-      _persistenceStrategyMock.Expect (mock => mock.PersistData (Arg<IEnumerable<PersistableData>>.List.Equivalent (persistableDatas)));
+      _persistenceStrategyMock
+          .InSequence(sequence)
+          .Setup(mock => mock.PersistData(It.Is<IEnumerable<PersistableData>>(p => p.SetEquals(persistableDatas))))
+          .Verifiable();
     }
 
-    private void ExpectTransactionCommitted (params DomainObject[] domainObjects)
+    private void ExpectTransactionCommitted (MockSequence sequence, DomainObject[] domainObjects)
     {
-      _eventSinkWithMock.Expect (mock => mock.RaiseTransactionCommittedEvent (
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (domainObjects)));
+      _eventSinkWithMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseTransactionCommittedEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Verifiable();
     }
 
-    private void ExpectTransactionRollingBack (params DomainObject[] domainObjects)
+    private void ExpectTransactionRollingBack (MockSequence sequence, DomainObject[] domainObjects)
     {
-      _eventSinkWithMock.Expect (mock => mock.RaiseTransactionRollingBackEvent (
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (domainObjects)));
+      _eventSinkWithMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseTransactionRollingBackEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Verifiable();
     }
 
-    private void ExpectTransactionRolledBack (params DomainObject[] domainObjects)
+    private void ExpectTransactionRolledBack (MockSequence sequence, DomainObject[] domainObjects)
     {
-      _eventSinkWithMock.Expect (mock => mock.RaiseTransactionRolledBackEvent (
-          Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (domainObjects)));
+      _eventSinkWithMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RaiseTransactionRolledBackEvent(It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Verifiable();
     }
-
-
-    private ICommittingEventRegistrar GetEventRegistrar (MethodInvocation mi)
-    {
-      return ((ICommittingEventRegistrar) mi.Arguments[1]);
-    }
-
   }
 }

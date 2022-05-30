@@ -28,7 +28,7 @@ public class ConfigurationBase
 
   // member fields
 
-  private string _applicationName;
+  private string? _applicationName;
 
   // construction and disposing
 
@@ -40,15 +40,15 @@ public class ConfigurationBase
 
   /// <summary> XML Deserialization contructor. </summary>
   /// <exclude />
-  protected ConfigurationBase()
+  protected ConfigurationBase ()
   {
   }
 
   // methods and properties
 
   /// <summary> Gets the application name that is specified in the XML configuration file.  </summary>
-  [XmlAttribute ("application")]
-  public string ApplicationName
+  [XmlAttribute("application")]
+  public string? ApplicationName
   {
     get { return _applicationName; }
   }

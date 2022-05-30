@@ -24,10 +24,10 @@ namespace OBWTest.ViewLayoutTests
   public class TestFunction : WxeFunction
   {
     public TestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
-    private WxeStep Step1 = new WxePageStep ("ViewLayoutTests/Form.aspx");
+    private WxeStep Step1 = new WxePageStep("ViewLayoutTests/Form.aspx");
   }
 }

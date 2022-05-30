@@ -33,7 +33,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
 
     public FirstControlSelectionCommand ([NotNull] IFirstControlSelector<TControlObject> controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
       _controlSelector = controlSelector;
     }
@@ -41,17 +41,17 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectFirst (context);
+      return _controlSelector.SelectFirst(context);
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptional (ControlSelectionContext context)
+    public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectFirstOrNull (context);
+      return _controlSelector.SelectFirstOrNull(context);
     }
   }
 }

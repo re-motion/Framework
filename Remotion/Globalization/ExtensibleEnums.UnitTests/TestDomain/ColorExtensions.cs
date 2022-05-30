@@ -19,7 +19,7 @@ using Remotion.ExtensibleEnums;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
 {
-  [MultiLingualResources ("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.ColorExtensions")]
+  [MultiLingualResources("Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.Resources.ColorExtensions")]
   public static class ColorExtensions
   {
     public static ExtensibleEnumDefinition<Color> LastCallArgument;
@@ -27,12 +27,12 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
     public static Color Red (this ExtensibleEnumDefinition<Color> definition)
     {
       LastCallArgument = definition;
-      return new Color ("Color", "Red");
+      return new Color("Color", "Red");
     }
 
     public static Color Green (this ExtensibleEnumDefinition<Color> definition)
     {
-      return new Color ("Color", "Green");
+      return new Color("Color", "Green");
     }
   }
 }

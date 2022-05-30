@@ -26,23 +26,23 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public DomainObjectTypeIsNotGenericValidationRule ()
     {
-      
+
     }
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return Validate (classDefinition.ClassType);
+      return Validate(classDefinition.ClassType);
     }
 
     private MappingValidationResult Validate (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       if (type.IsGenericType)// && !ReflectionUtility.IsDomainObjectBase(type))
       {
-        return MappingValidationResult.CreateInvalidResultForType (type, "Generic domain objects are not supported.");
+        return MappingValidationResult.CreateInvalidResultForType(type, "Generic domain objects are not supported.");
       }
       return MappingValidationResult.CreateValidResult();
     }

@@ -85,14 +85,14 @@ namespace Remotion.Mixins
   /// <threadsafety static="true" instance="true" />
   public partial class MixinConfiguration
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (MixinConfiguration));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixinConfiguration));
 
     private readonly ClassContextCollection _classContexts;
 
     /// <summary>
     /// Initializes an empty mixin configuration.
     /// </summary>
-    public MixinConfiguration () : this (new ClassContextCollection ())
+    public MixinConfiguration () : this(new ClassContextCollection())
     {
     }
 
@@ -142,21 +142,21 @@ namespace Remotion.Mixins
     /// If <paramref name="targetOrConcreteType"/> is already a generated type, the <see cref="ClassContext"/> used for its generation is returned.
     /// </para>
     /// </remarks>
-    public ClassContext GetContext (Type targetOrConcreteType)
+    public ClassContext? GetContext (Type targetOrConcreteType)
     {
-      ArgumentUtility.CheckNotNull ("targetOrConcreteType", targetOrConcreteType);
+      ArgumentUtility.CheckNotNull("targetOrConcreteType", targetOrConcreteType);
 
-      if (MixinTypeUtility.IsGeneratedConcreteMixedType (targetOrConcreteType))
+      if (MixinTypeUtility.IsGeneratedConcreteMixedType(targetOrConcreteType))
       {
-        var classContextForConcreteType = MixinTypeUtility.GetClassContextForConcreteType (targetOrConcreteType);
+        var classContextForConcreteType = MixinTypeUtility.GetClassContextForConcreteType(targetOrConcreteType);
         // Theoretically, classContextForConcreteType should never be null here. However, the heuristics of IsGeneratedConcreteMixedType can be 
         // wrong, which is why we allow for a null classContextForConcreteType in the assertion below.
-        Assertion.IsTrue (classContextForConcreteType == null || classContextForConcreteType.Type != targetOrConcreteType);
+        Assertion.IsTrue(classContextForConcreteType == null || classContextForConcreteType.Type != targetOrConcreteType);
         return classContextForConcreteType;
       }
 
-      ClassContext context = ClassContexts.GetWithInheritance (targetOrConcreteType);
-      Assertion.IsTrue (context == null || context.Type == targetOrConcreteType);
+      ClassContext? context = ClassContexts.GetWithInheritance(targetOrConcreteType);
+      Assertion.IsTrue(context == null || context.Type == targetOrConcreteType);
       if (context == null || context.IsEmpty())
         return null;
       else
@@ -171,8 +171,8 @@ namespace Remotion.Mixins
     /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
     public IDisposable EnterScope ()
     {
-      var scope = new MixinConfigurationScope (PeekActiveConfiguration);
-      SetActiveConfiguration (this);
+      var scope = new MixinConfigurationScope(PeekActiveConfiguration);
+      SetActiveConfiguration(this);
       return scope;
     }
 
@@ -187,13 +187,13 @@ namespace Remotion.Mixins
     /// which it cannot make a closed generic type. Because closed types are needed for validation, this <see cref="MixinConfiguration"/>
     /// cannot be validated as a whole. Even in this case, the configuration might still be correct, but validation is deferred to
     /// <see cref="TargetClassDefinitionFactory.CreateAndValidate"/>.</exception>
-    public ValidationLogData Validate()
+    public ValidationLogData Validate ()
     {
       var definitions = from classContext in ClassContexts
                         where !classContext.Type.IsGenericTypeDefinition && !classContext.Type.IsInterface
-                        select (IVisitableDefinition) TargetClassDefinitionFactory.CreateWithoutValidation (classContext);
+                        select (IVisitableDefinition)TargetClassDefinitionFactory.CreateWithoutValidation(classContext);
 
-      return Validator.Validate (definitions);
+      return Validator.Validate(definitions);
     }
   }
 }

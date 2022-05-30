@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -33,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting a control by <paramref name="itemID"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="ItemIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -44,10 +43,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return fluentControlSelector.GetControl (new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (itemID));
+      return fluentControlSelector.GetControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
 
     /// <summary>
@@ -58,16 +57,16 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="ItemIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByItemIDOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByItemIDOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string itemID)
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return fluentControlSelector.GetControlOrNull (new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (itemID));
+      return fluentControlSelector.GetControlOrNull(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
 
     /// <summary>
@@ -83,10 +82,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IItemIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return fluentControlSelector.HasControl (new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (itemID));
+      return fluentControlSelector.HasControl(new ItemIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(itemID));
     }
   }
 }

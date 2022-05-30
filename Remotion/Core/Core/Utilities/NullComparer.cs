@@ -25,7 +25,7 @@ namespace Remotion.Utilities
   /// <typeparam name="T"></typeparam>
   public class NullComparer<T> : IComparer<T>, INullObject
   {
-    public int Compare (T x, T y)
+    public int Compare (T? x, T? y)
     {
       return 0;
     }

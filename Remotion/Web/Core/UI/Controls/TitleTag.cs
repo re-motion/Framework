@@ -15,8 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
 using System.Web.UI;
 using Remotion.Utilities;
+using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -25,28 +27,32 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public class TitleTag : HtmlHeadElement
   {
-    private readonly string _title;
+    private readonly PlainTextString _title;
 
-    public TitleTag (string title)
+    public TitleTag (PlainTextString title)
     {
-      ArgumentUtility.CheckNotNull ("title", title);
+      ArgumentUtility.CheckNotNull("title", title);
 
       _title = title;
     }
 
-    public string Title
+    public PlainTextString Title
     {
       get { return _title; }
     }
 
     public override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      writer.RenderBeginTag (HtmlTextWriterTag.Title);
-      writer.WriteEncodedText (_title);
+      writer.RenderBeginTag(HtmlTextWriterTag.Title);
+
+      // title-tag does not support HTML-tags, including line breaks.
+      // By using a PlainTextString and manually encoding the  value, we can ensure that no linebreaks are rendered.
+      writer.WriteEncodedText(_title.GetValue());
+
       writer.RenderEndTag();
-      writer.WriteLine ();
+      writer.WriteLine();
     }
   }
 }

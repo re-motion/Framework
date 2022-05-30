@@ -23,12 +23,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
   public class TestFunction2 : WxeFunction
   {
     public TestFunction2 (ITransactionMode transactionMode)
-        : base (transactionMode, new WxeParameterDeclaration[0], new object[0])
+        : base(transactionMode, new WxeParameterDeclaration[0], new object[0])
     {
     }
 
     public TestFunction2 ()
-      : base (WxeTransactionMode<TestTransactionFactory>.None, new WxeParameterDeclaration[0], new object[0])
+      : base(WxeTransactionMode<TestTransactionFactory>.None, new WxeParameterDeclaration[0], new object[0])
     {
     }
 
@@ -39,7 +39,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     public new void SetExecutionListener (IWxeFunctionExecutionListener value)
     {
-      base.SetExecutionListener (value);
+      base.SetExecutionListener(value);
     }
 
     public new TransactionStrategyBase TransactionStrategy
@@ -49,7 +49,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 
     public new void SetTransactionMode (ITransactionMode transactionMode)
     {
-      base.SetTransactionMode (transactionMode);
+      base.SetTransactionMode(transactionMode);
     }
   }
 }

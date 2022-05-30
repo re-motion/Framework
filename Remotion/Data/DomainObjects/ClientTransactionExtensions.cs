@@ -35,10 +35,10 @@ namespace Remotion.Data.DomainObjects
     /// <returns>The result of <paramref name="func"/>.</returns>
     public static T ExecuteInScope<T> (this ClientTransaction clientTransaction, Func<T> func)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("func", func);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("func", func);
 
-      using (EnterScopeOnDemand (clientTransaction))
+      using (EnterScopeOnDemand(clientTransaction))
       {
         return func();
       }
@@ -53,16 +53,16 @@ namespace Remotion.Data.DomainObjects
     /// <param name="action">The delegate to be executed.</param>
     public static void ExecuteInScope (this ClientTransaction clientTransaction, Action action)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("action", action);
 
-      using (EnterScopeOnDemand (clientTransaction))
+      using (EnterScopeOnDemand(clientTransaction))
       {
         action();
       }
     }
 
-    private static IDisposable EnterScopeOnDemand (ClientTransaction clientTransaction)
+    private static IDisposable? EnterScopeOnDemand (ClientTransaction clientTransaction)
     {
       if (clientTransaction.ActiveTransaction != clientTransaction)
         return clientTransaction.EnterNonDiscardingScope();
@@ -71,6 +71,18 @@ namespace Remotion.Data.DomainObjects
         return clientTransaction.EnterNonDiscardingScope();
 
       return null;
+    }
+
+    /// <summary>
+    /// Returns whether at least one <see cref="DomainObject"/> in the <see cref="ClientTransaction"/> has been changed.
+    /// </summary>
+    /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in the <see cref="ClientTransaction"/> has been changed; otherwise, <see langword="false"/>.</returns>
+    public static bool HasChanged (this ClientTransaction clientTransaction)
+    {
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+
+      // Place tests in order of probability to reduce number of checks required until a match for a typical usage scenario
+      return clientTransaction.HasObjectsWithState(state => state.IsChanged || state.IsNew || state.IsDeleted);
     }
   }
 }

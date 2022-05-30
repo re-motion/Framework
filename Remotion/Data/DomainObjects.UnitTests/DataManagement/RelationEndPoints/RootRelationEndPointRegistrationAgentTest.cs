@@ -15,155 +15,147 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
   [TestFixture]
   public class RootRelationEndPointRegistrationAgentTest : StandardMappingTest
   {
-    private IVirtualEndPointProvider _virtualEndPointProviderMock;
+    private Mock<IVirtualEndPointProvider> _virtualEndPointProviderMock;
     private RelationEndPointMap _map;
 
     private RootRelationEndPointRegistrationAgent _agent;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _virtualEndPointProviderMock = MockRepository.GenerateStrictMock<IVirtualEndPointProvider> ();
-      _map = new RelationEndPointMap (MockRepository.GenerateStub<IClientTransactionEventSink> ());
+      _virtualEndPointProviderMock = new Mock<IVirtualEndPointProvider>(MockBehavior.Strict);
+      _map = new RelationEndPointMap(new Mock<IClientTransactionEventSink>().Object);
 
-      _agent = new RootRelationEndPointRegistrationAgent (_virtualEndPointProviderMock);
+      _agent = new RootRelationEndPointRegistrationAgent(_virtualEndPointProviderMock.Object);
     }
 
     [Test]
     public void RegisterEndPoint_RealEndPoint_PointingToNonNull_Unidirectional ()
     {
-      var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
-      var unidirectionalEndPointID = RelationEndPointID.Create (DomainObjectIDs.Location1, typeof (Location), "Client");
-      endPointMock.Stub (stub => stub.ID).Return (unidirectionalEndPointID);
-      endPointMock.Stub (stub => stub.Definition).Return (unidirectionalEndPointID.Definition);
-      endPointMock.Stub (stub => stub.OriginalOppositeObjectID).Return (DomainObjectIDs.Client1);
+      var endPointMock = new Mock<IRealObjectEndPoint>(MockBehavior.Strict);
+      var unidirectionalEndPointID = RelationEndPointID.Create(DomainObjectIDs.Location1, typeof(Location), "Client");
+      endPointMock.Setup(stub => stub.ID).Returns(unidirectionalEndPointID);
+      endPointMock.Setup(stub => stub.Definition).Returns(unidirectionalEndPointID.Definition);
+      endPointMock.Setup(stub => stub.OriginalOppositeObjectID).Returns(DomainObjectIDs.Client1);
 
-      endPointMock.Expect (mock => mock.MarkSynchronized ());
-      endPointMock.Replay ();
+      endPointMock.Setup(mock => mock.MarkSynchronized()).Verifiable();
 
-      _virtualEndPointProviderMock.Replay ();
+      _agent.RegisterEndPoint(endPointMock.Object, _map);
 
-      _agent.RegisterEndPoint (endPointMock, _map);
-
-      endPointMock.VerifyAllExpectations ();
-      Assert.That (_map, Has.Member (endPointMock));
+      endPointMock.Verify();
+      Assert.That(_map, Has.Member(endPointMock.Object));
     }
 
     [Test]
     public void RegisterEndPoint_RealEndPoint_PointingToNonNull_OppositeCollectionEndPoint ()
     {
-      var endPointMock = CreateRealObjectEndPointMock (DomainObjectIDs.OrderItem1, "Order", DomainObjectIDs.Order1);
+      var endPointMock = CreateRealObjectEndPointMock(DomainObjectIDs.OrderItem1, "Order", DomainObjectIDs.Order1);
 
-      var oppositeEndPointMock = MockRepository.GenerateStrictMock<ICollectionEndPoint> ();
-      oppositeEndPointMock.Stub (stub => stub.IsDataComplete).Return (false);
-      oppositeEndPointMock.Expect (mock => mock.RegisterOriginalOppositeEndPoint (endPointMock));
-      oppositeEndPointMock.Replay ();
+      var oppositeEndPointMock = new Mock<ICollectionEndPoint<ICollectionEndPointData>>(MockBehavior.Strict);
+      oppositeEndPointMock.Setup(stub => stub.IsDataComplete).Returns(false);
+      oppositeEndPointMock.Setup(mock => mock.RegisterOriginalOppositeEndPoint(endPointMock.Object)).Verifiable();
 
-      var oppositeEndPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderItems");
+      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderItems");
       _virtualEndPointProviderMock
-          .Expect (mock => mock.GetOrCreateVirtualEndPoint (oppositeEndPointID))
-          .Return (oppositeEndPointMock);
-      _virtualEndPointProviderMock.Replay ();
+          .Setup(mock => mock.GetOrCreateVirtualEndPoint(oppositeEndPointID))
+          .Returns(oppositeEndPointMock.Object)
+          .Verifiable();
 
-      _agent.RegisterEndPoint (endPointMock, _map);
+      _agent.RegisterEndPoint(endPointMock.Object, _map);
 
-      endPointMock.VerifyAllExpectations ();
-      _virtualEndPointProviderMock.VerifyAllExpectations ();
+      endPointMock.Verify();
+      _virtualEndPointProviderMock.Verify();
 
-      oppositeEndPointMock.AssertWasNotCalled (mock => mock.MarkDataComplete (Arg<DomainObject[]>.Is.Anything));
-      oppositeEndPointMock.VerifyAllExpectations ();
-      
-      Assert.That (_map, Has.Member (endPointMock));
+      oppositeEndPointMock.Verify(mock => mock.MarkDataComplete(It.IsAny<DomainObject[]>()), Times.Never());
+      oppositeEndPointMock.Verify();
+
+      Assert.That(_map, Has.Member(endPointMock.Object));
     }
 
     [Test]
     public void RegisterEndPoint_RealEndPoint_PointingToNonNull_OppositeObjectEndPoint_VirtualEndPointNotYetComplete ()
     {
-      var objectReference = DomainObjectMother.CreateFakeObject<OrderItem> ();
+      var objectReference = DomainObjectMother.CreateFakeObject<OrderItem>();
 
-      var endPointMock = CreateRealObjectEndPointMock (DomainObjectIDs.OrderTicket1, "Order", DomainObjectIDs.Order1);
-      endPointMock.Stub (stub => stub.GetDomainObjectReference()).Return (objectReference);
-      
-      var oppositeEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint> ();
-      oppositeEndPointMock.Stub (stub => stub.IsDataComplete).Return (false);
-      oppositeEndPointMock.Expect (mock => mock.RegisterOriginalOppositeEndPoint (endPointMock));
-      oppositeEndPointMock.Expect (mock => mock.MarkDataComplete (objectReference));
-      oppositeEndPointMock.Replay ();
+      var endPointMock = CreateRealObjectEndPointMock(DomainObjectIDs.OrderTicket1, "Order", DomainObjectIDs.Order1);
+      endPointMock.Setup(stub => stub.GetDomainObjectReference()).Returns(objectReference);
 
-      var oppositeEndPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var oppositeEndPointMock = new Mock<IVirtualObjectEndPoint>(MockBehavior.Strict);
+      oppositeEndPointMock.Setup(stub => stub.IsDataComplete).Returns(false);
+      oppositeEndPointMock.Setup(mock => mock.RegisterOriginalOppositeEndPoint(endPointMock.Object)).Verifiable();
+      oppositeEndPointMock.Setup(mock => mock.MarkDataComplete(objectReference)).Verifiable();
+
+      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       _virtualEndPointProviderMock
-          .Expect (mock => mock.GetOrCreateVirtualEndPoint (oppositeEndPointID))
-          .Return (oppositeEndPointMock);
-      _virtualEndPointProviderMock.Replay ();
+          .Setup(mock => mock.GetOrCreateVirtualEndPoint(oppositeEndPointID))
+          .Returns(oppositeEndPointMock.Object)
+          .Verifiable();
 
-      _agent.RegisterEndPoint (endPointMock, _map);
+      _agent.RegisterEndPoint(endPointMock.Object, _map);
 
-      endPointMock.VerifyAllExpectations ();
-      _virtualEndPointProviderMock.VerifyAllExpectations ();
-      oppositeEndPointMock.VerifyAllExpectations ();
-      Assert.That (_map, Has.Member (endPointMock));
+      endPointMock.Verify();
+      _virtualEndPointProviderMock.Verify();
+      oppositeEndPointMock.Verify();
+      Assert.That(_map, Has.Member(endPointMock.Object));
     }
 
     [Test]
     public void RegisterEndPoint_RealEndPoint_PointingToNonNull_OppositeObjectEndPoint_VirtualEndPointAlreadyComplete ()
     {
-      var objectReference = DomainObjectMother.CreateFakeObject<OrderItem> ();
-      var endPointMock = CreateRealObjectEndPointMock (DomainObjectIDs.OrderTicket1, "Order", DomainObjectIDs.Order1);
-      endPointMock.Stub (stub => stub.GetDomainObjectReference ()).Return (objectReference);
-      endPointMock.Replay ();
+      var objectReference = DomainObjectMother.CreateFakeObject<OrderItem>();
+      var endPointMock = CreateRealObjectEndPointMock(DomainObjectIDs.OrderTicket1, "Order", DomainObjectIDs.Order1);
+      endPointMock.Setup(stub => stub.GetDomainObjectReference()).Returns(objectReference);
 
-      var oppositeEndPointMock = MockRepository.GenerateStrictMock<IVirtualObjectEndPoint> ();
-      oppositeEndPointMock.Stub (stub => stub.IsDataComplete).Return (true);
-      oppositeEndPointMock.Expect (mock => mock.RegisterOriginalOppositeEndPoint (endPointMock));
-      oppositeEndPointMock.Replay ();
+      var oppositeEndPointMock = new Mock<IVirtualObjectEndPoint>(MockBehavior.Strict);
+      oppositeEndPointMock.Setup(stub => stub.IsDataComplete).Returns(true);
+      oppositeEndPointMock.Setup(mock => mock.RegisterOriginalOppositeEndPoint(endPointMock.Object)).Verifiable();
 
-      var oppositeEndPointID = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "OrderTicket");
+      var oppositeEndPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "OrderTicket");
       _virtualEndPointProviderMock
-          .Expect (mock => mock.GetOrCreateVirtualEndPoint (oppositeEndPointID))
-          .Return (oppositeEndPointMock);
-      _virtualEndPointProviderMock.Replay ();
+          .Setup(mock => mock.GetOrCreateVirtualEndPoint(oppositeEndPointID))
+          .Returns(oppositeEndPointMock.Object)
+          .Verifiable();
 
-      _agent.RegisterEndPoint (endPointMock, _map);
+      _agent.RegisterEndPoint(endPointMock.Object, _map);
 
-      oppositeEndPointMock.AssertWasNotCalled (mock => mock.MarkDataComplete (Arg<DomainObject>.Is.Anything));
-      endPointMock.VerifyAllExpectations ();
-      _virtualEndPointProviderMock.VerifyAllExpectations ();
-      oppositeEndPointMock.VerifyAllExpectations ();
-      Assert.That (_map, Has.Member (endPointMock));
+      oppositeEndPointMock.Verify(mock => mock.MarkDataComplete(It.IsAny<DomainObject>()), Times.Never());
+      endPointMock.Verify();
+      _virtualEndPointProviderMock.Verify();
+      oppositeEndPointMock.Verify();
+      Assert.That(_map, Has.Member(endPointMock.Object));
     }
 
     [Test]
     public void Serialization ()
     {
-      var agent = new RootRelationEndPointRegistrationAgent (new SerializableVirtualEndPointProviderFake ());
+      var agent = new RootRelationEndPointRegistrationAgent(new SerializableVirtualEndPointProviderFake());
 
-      var deserializedAgent = Serializer.SerializeAndDeserialize (agent);
+      var deserializedAgent = Serializer.SerializeAndDeserialize(agent);
 
-      Assert.That (deserializedAgent.VirtualEndPointProvider, Is.Not.Null);
+      Assert.That(deserializedAgent.VirtualEndPointProvider, Is.Not.Null);
     }
 
-    private IRealObjectEndPoint CreateRealObjectEndPointMock (ObjectID originatingObjectID, string shortPropertyName, ObjectID oppositeObjectID)
+    private Mock<IRealObjectEndPoint> CreateRealObjectEndPointMock (ObjectID originatingObjectID, string shortPropertyName, ObjectID oppositeObjectID)
     {
-      var endPointMock = MockRepository.GenerateStrictMock<IRealObjectEndPoint> ();
-      var relationEndPointID = RelationEndPointID.Create (originatingObjectID, originatingObjectID.ClassDefinition.ClassType, shortPropertyName);
-      endPointMock.Stub (stub => stub.ID).Return (relationEndPointID);
-      endPointMock.Stub (stub => stub.Definition).Return (relationEndPointID.Definition);
-      endPointMock.Stub (stub => stub.OriginalOppositeObjectID).Return (oppositeObjectID);
-      endPointMock.Replay ();
+      var endPointMock = new Mock<IRealObjectEndPoint>(MockBehavior.Strict);
+      var relationEndPointID = RelationEndPointID.Create(originatingObjectID, originatingObjectID.ClassDefinition.ClassType, shortPropertyName);
+      endPointMock.Setup(stub => stub.ID).Returns(relationEndPointID);
+      endPointMock.Setup(stub => stub.Definition).Returns(relationEndPointID.Definition);
+      endPointMock.Setup(stub => stub.OriginalOppositeObjectID).Returns(oppositeObjectID);
       return endPointMock;
     }
   }

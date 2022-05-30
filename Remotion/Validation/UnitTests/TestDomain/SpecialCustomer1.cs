@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
 using Remotion.Validation.Attributes.Validation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.TestDomain
 {
@@ -24,9 +24,9 @@ namespace Remotion.Validation.UnitTests.TestDomain
   {
     public override string LastName { get; set; }
 
-    [Length (0, 10)]
-    [NotNull]
-    [RemoveValidator (typeof (LengthValidator))]
+    [LengthValidation(0, 10, IsRemovable = true)]
+    [NotNullValidation(IsRemovable = true)]
+    [RemoveValidator(typeof(LengthValidator))]
     public override string UserName { get; set; }
   }
 }

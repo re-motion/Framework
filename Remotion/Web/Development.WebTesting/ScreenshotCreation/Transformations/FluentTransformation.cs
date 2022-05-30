@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 
@@ -24,6 +25,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
   /// A transformation that applies the <see cref="ScreenshotTransformationCollection{T}"/> of the target <see cref="IFluentScreenshotElement{T}"/>.
   /// </summary>
   public class FluentTransformation<T> : IScreenshotTransformation<IFluentScreenshotElement<T>>
+      where T : notnull
   {
     private readonly ScreenshotTransformationCollection<T> _transformations;
 
@@ -42,18 +44,22 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
     public ScreenshotTransformationContext<IFluentScreenshotElement<T>> BeginApply (
         ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      return ConvertContextBack (_transformations.BeginApply (ConvertContext (context)), context.Target);
+      ArgumentUtility.CheckNotNull("context", context);
+
+      return ConvertContextBack(_transformations.BeginApply(ConvertContext(context)), context.Target);
     }
 
     /// <inheritdoc />
     public void EndApply (ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      _transformations.EndApply (ConvertContext (context));
+      ArgumentUtility.CheckNotNull("context", context);
+
+      _transformations.EndApply(ConvertContext(context));
     }
 
     private ScreenshotTransformationContext<T> ConvertContext (ScreenshotTransformationContext<IFluentScreenshotElement<T>> context)
     {
-      return new ScreenshotTransformationContext<T> (
+      return new ScreenshotTransformationContext<T>(
           context.Manipulation,
           context.Graphics,
           context.Target.Resolver,
@@ -65,11 +71,11 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Transformations
         ScreenshotTransformationContext<T> context,
         IFluentScreenshotElement<T> source)
     {
-      return new ScreenshotTransformationContext<IFluentScreenshotElement<T>> (
+      return new ScreenshotTransformationContext<IFluentScreenshotElement<T>>(
           context.Manipulation,
           context.Graphics,
           FluentResolver<T>.Instance,
-          FluentUtility.CloneWith (source, context.Target),
+          FluentUtility.CloneWith(source, context.Target),
           context.ResolvedElement);
     }
   }

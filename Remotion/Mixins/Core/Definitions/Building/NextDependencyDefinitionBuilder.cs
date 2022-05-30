@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions.Building
@@ -29,52 +30,52 @@ namespace Remotion.Mixins.Definitions.Building
 
     public NextCallDependencyDefinitionBuilder (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
       _mixin = mixin;
     }
 
     protected override RequirementDefinitionBase GetRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       return _mixin.TargetClass.RequiredNextCallTypes[type];
     }
 
     protected override RequirementDefinitionBase CreateRequirement (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      Assertion.IsTrue (type != typeof (object), "This method will not be called for typeof (object).");
+      Assertion.IsTrue(type != typeof(object), "This method will not be called for typeof (object).");
 
       if (!type.IsInterface)
       {
-        string message = string.Format ("Next call dependencies must be interfaces (or System.Object), but mixin {0} (on class {1} has a dependency "
-            + "on a class: {2}.", _mixin.FullName, _mixin.TargetClass.FullName, type.FullName);
-        throw new ConfigurationException (message);
+        string message = string.Format("Next call dependencies must be interfaces (or System.Object), but mixin {0} (on class {1} has a dependency "
+            + "on a class: {2}.", _mixin.FullName, _mixin.TargetClass.FullName, type.GetFullNameSafe());
+        throw new ConfigurationException(message);
       }
 
-      return new RequiredNextCallTypeDefinition (_mixin.TargetClass, type);
+      return new RequiredNextCallTypeDefinition(_mixin.TargetClass, type);
     }
 
     protected override void AddRequirement (RequirementDefinitionBase requirement)
     {
-      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      _mixin.TargetClass.RequiredNextCallTypes.Add ((RequiredNextCallTypeDefinition) requirement);
+      _mixin.TargetClass.RequiredNextCallTypes.Add((RequiredNextCallTypeDefinition)requirement);
     }
 
-    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase aggregator)
+    protected override DependencyDefinitionBase CreateDependency (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull ("requirement", requirement);
+      ArgumentUtility.CheckNotNull("requirement", requirement);
 
-      return new NextCallDependencyDefinition ((RequiredNextCallTypeDefinition) requirement, _mixin, (NextCallDependencyDefinition)aggregator);
+      return new NextCallDependencyDefinition((RequiredNextCallTypeDefinition)requirement, _mixin, (NextCallDependencyDefinition?)aggregator);
     }
 
     protected override void AddDependency (DependencyDefinitionBase dependency)
     {
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
-      if (!_mixin.NextCallDependencies.ContainsKey (dependency.RequiredType.Type))
-        _mixin.NextCallDependencies.Add ((NextCallDependencyDefinition) dependency);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
+      if (!_mixin.NextCallDependencies.ContainsKey(dependency.RequiredType.Type))
+        _mixin.NextCallDependencies.Add((NextCallDependencyDefinition)dependency);
     }
   }
 }

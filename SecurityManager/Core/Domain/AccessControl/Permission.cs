@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static Permission NewObject ()
     {
-      return NewObject<Permission> ();
+      return NewObject<Permission>();
     }
 
     protected Permission ()
@@ -38,16 +38,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public abstract bool? Allowed { get; set; }
 
-    [DBColumn ("AccessTypeDefinitionID")]
+    [DBColumn("AccessTypeDefinitionID")]
     [Mandatory]
     public abstract AccessTypeDefinition AccessType { get; set; }
 
-    [DBBidirectionalRelation ("PermissionsInternal")]
+    [DBBidirectionalRelation("PermissionsInternal")]
     [Mandatory]
-    public abstract AccessControlEntry AccessControlEntry { get; }
-    
+    public abstract AccessControlEntry? AccessControlEntry { get; }
+
     [StorageClassNone]
-    public SecurableClassDefinition Class
+    public SecurableClassDefinition? Class
     {
       get
       {
@@ -59,7 +59,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();

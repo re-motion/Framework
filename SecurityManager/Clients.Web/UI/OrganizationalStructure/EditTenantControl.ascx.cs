@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
@@ -24,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
@@ -38,7 +40,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       TenantLabelText,
     }
 
-    private BocAutoCompleteReferenceValue _parentField;
+    /// <remarks>Initialized during <see cref="OnInit"/>.</remarks>
+    private BocAutoCompleteReferenceValue _parentField = default!;
 
     public override IBusinessObjectDataSourceControl DataSource
     {
@@ -47,7 +50,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected new EditTenantFormFunction CurrentFunction
     {
-      get { return (EditTenantFormFunction) base.CurrentFunction; }
+      get { return (EditTenantFormFunction)base.CurrentFunction; }
     }
 
     protected override FormGridManager GetFormGridManager ()
@@ -60,19 +63,20 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return NameField; }
     }
 
+    [MemberNotNull(nameof(_parentField))]
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      _parentField = GetControl<BocAutoCompleteReferenceValue> ("ParentField", "Parent");
+      _parentField = GetControl<BocAutoCompleteReferenceValue>("ParentField", "Parent");
 
-      if (string.IsNullOrEmpty (_parentField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (_parentField);
+      if (string.IsNullOrEmpty(_parentField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(_parentField);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (ChildrenList.IsReadOnly)
         ChildrenList.Selection = RowSelection.Disabled;
@@ -80,25 +84,25 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      
-      ParentValidator.ErrorMessage = resourceManager.GetString (ResourceIdentifier.ParentValidatorErrorMessage);
-      TenantLabel.Text = resourceManager.GetString (ResourceIdentifier.TenantLabelText);
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
 
-      base.OnPreRender (e);
+      ParentValidator.ErrorMessage = resourceManager.GetString(ResourceIdentifier.ParentValidatorErrorMessage);
+      TenantLabel.Text = resourceManager.GetText(ResourceIdentifier.TenantLabelText);
+
+      base.OnPreRender(e);
     }
 
     protected void ParentValidator_ServerValidate (object source, ServerValidateEventArgs args)
     {
-      args.IsValid = IsParentHierarchyValid ((Tenant) _parentField.Value);
+      args.IsValid = IsParentHierarchyValid((Tenant?)_parentField.Value);
     }
 
-    private bool IsParentHierarchyValid (Tenant group)
+    private bool IsParentHierarchyValid (Tenant? tenant)
     {
-      var groups = group.CreateSequence (g => g.Parent, g => g != null && g != CurrentFunction.CurrentObject && g.Parent != group).ToArray();
-      if (groups.Length == 0)
+      var tenants = tenant.CreateSequence(g => g.Parent, g => g != CurrentFunction.CurrentObject && g.Parent != tenant).ToArray();
+      if (tenants.Length == 0)
         return false;
-      if (groups.Last().Parent != null)
+      if (tenants.Last().Parent != null)
         return false;
       return true;
     }

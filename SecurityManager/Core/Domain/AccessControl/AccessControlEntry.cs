@@ -32,7 +32,7 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -44,7 +44,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     }
 
     private SecurityTokenMatcher _matcher;
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected AccessControlEntry ()
     {
@@ -54,57 +54,57 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       UserCondition = UserCondition.None;
       // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-      _matcher = new SecurityTokenMatcher (this);
+      _matcher = new SecurityTokenMatcher(this);
     }
 
     // methods and properties
 
     protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded (loadMode);
+      base.OnLoaded(loadMode);
 
       if (loadMode == LoadMode.WholeDomainObjectInitialized)
-        _matcher = new SecurityTokenMatcher (this);
+        _matcher = new SecurityTokenMatcher(this);
     }
 
     public abstract int Index { get; set; }
 
-    [DisableEnumValues (typeof (AccessControlEntryPropertiesEnumerationValueFilter))]
+    [DisableEnumValues(typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
     public abstract TenantCondition TenantCondition { get; set; }
 
     public abstract TenantHierarchyCondition TenantHierarchyCondition { get; set; }
 
-    [DisableEnumValues (typeof (AccessControlEntryPropertiesEnumerationValueFilter))]
+    [DisableEnumValues(typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
     public abstract GroupCondition GroupCondition { get; set; }
 
     public abstract GroupHierarchyCondition GroupHierarchyCondition { get; set; }
 
-    [DisableEnumValues (typeof (AccessControlEntryPropertiesEnumerationValueFilter))]
+    [DisableEnumValues(typeof(AccessControlEntryPropertiesEnumerationValueFilter))]
     public abstract UserCondition UserCondition { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof (TenantPropertyTypeSearchService))]
-    public abstract Tenant SpecificTenant { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(TenantPropertyTypeSearchService))]
+    public abstract Tenant? SpecificTenant { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof (GroupPropertyTypeSearchService))]
-    public abstract Group SpecificGroup { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(GroupPropertyTypeSearchService))]
+    public abstract Group? SpecificGroup { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof (GroupTypePropertyTypeSearchService))]
-    public abstract GroupType SpecificGroupType { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(GroupTypePropertyTypeSearchService))]
+    public abstract GroupType? SpecificGroupType { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof (PositionPropertyTypeSearchService))]
-    public abstract Position SpecificPosition { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(PositionPropertyTypeSearchService))]
+    public abstract Position? SpecificPosition { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof (UserPropertyTypeSearchService))]
-    public abstract User SpecificUser { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
+    public abstract User? SpecificUser { get; set; }
 
-    [SearchAvailableObjectsServiceType (typeof (AbstractRoleDefinitionPropertyTypeSearchService))]
-    public abstract AbstractRoleDefinition SpecificAbstractRole { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(AbstractRoleDefinitionPropertyTypeSearchService))]
+    public abstract AbstractRoleDefinition? SpecificAbstractRole { get; set; }
 
-    [DBBidirectionalRelation ("AccessControlEntries")]
-    public abstract AccessControlList AccessControlList { get; set; }
+    [DBBidirectionalRelation("AccessControlEntries")]
+    public abstract AccessControlList? AccessControlList { get; set; }
 
     [StorageClassNone]
-    public SecurableClassDefinition Class
+    public SecurableClassDefinition? Class
     {
       get
       {
@@ -114,15 +114,18 @@ namespace Remotion.SecurityManager.Domain.AccessControl
       }
     }
 
-    [DBBidirectionalRelation ("AccessControlEntry")]
+    [DBBidirectionalRelation("AccessControlEntry")]
     protected abstract ObjectList<Permission> PermissionsInternal { get; }
 
     public ReadOnlyCollection<Permission> GetPermissions ()
     {
+      if (Class == null)
+        throw new InvalidOperationException("Cannot get permissions if no securable class definition is assigned to this access control entry.");
+
       if (Class.AccessTypes.Count != PermissionsInternal.Count)
       {
-        throw new InvalidOperationException (
-            string.Format ("Inconsistent access type definition found for securable class definition '{0}'.", Class.Name));
+        throw new InvalidOperationException(
+            string.Format("Inconsistent access type definition found for securable class definition '{0}'.", Class.Name));
       }
 
       var permissions = (from accessType in Class.AccessTypes
@@ -132,8 +135,8 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
       if (Class.AccessTypes.Count != permissions.Count)
       {
-        throw new InvalidOperationException (
-            string.Format ("Inconsistent access type definition found for securable class definition '{0}'.", Class.Name));
+        throw new InvalidOperationException(
+            string.Format("Inconsistent access type definition found for securable class definition '{0}'.", Class.Name));
       }
 
       return permissions;
@@ -141,39 +144,39 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
     {
-      return PermissionsInternal.Where (p => (p.Allowed.HasValue && p.Allowed.Value)).Select (p => p.AccessType).ToArray ();
+      return PermissionsInternal.Where(p => (p.Allowed.HasValue && p.Allowed.Value)).Select(p => p.AccessType).ToArray();
     }
 
     public AccessTypeDefinition[] GetDeniedAccessTypes ()
     {
-      return PermissionsInternal.Where (p => (p.Allowed.HasValue && !p.Allowed.Value)).Select (p => p.AccessType).ToArray ();
+      return PermissionsInternal.Where(p => (p.Allowed.HasValue && !p.Allowed.Value)).Select(p => p.AccessType).ToArray();
     }
 
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      if (FindPermission (accessType) != null)
+      if (FindPermission(accessType) != null)
       {
-        throw new ArgumentException (
-            string.Format ("The access type '{0}' has already been added to this access control entry.", accessType.Name), "accessType");
+        throw new ArgumentException(
+            string.Format("The access type '{0}' has already been added to this access control entry.", accessType.Name), "accessType");
       }
 
       var permission = Permission.NewObject();
       permission.AccessType = accessType;
       permission.Allowed = null;
-      PermissionsInternal.Add (permission);
+      PermissionsInternal.Add(permission);
     }
 
     public void RemoveAccessType (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      var permission = FindPermission (accessType);
+      var permission = FindPermission(accessType);
       if (permission == null)
       {
-        throw new ArgumentException (
-            string.Format ("The access type '{0}' is not associated with the access control entry.", accessType.Name), "accessType");
+        throw new ArgumentException(
+            string.Format("The access type '{0}' is not associated with the access control entry.", accessType.Name), "accessType");
       }
 
       permission.Delete();
@@ -181,121 +184,121 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public void AllowAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      var permission = GetPermission (accessType);
+      var permission = GetPermission(accessType);
       permission.Allowed = true;
     }
 
     public void DenyAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      var permission = GetPermission (accessType);
+      var permission = GetPermission(accessType);
       permission.Allowed = false;
     }
 
     public void RemoveAccess (AccessTypeDefinition accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      var permission = GetPermission (accessType);
+      var permission = GetPermission(accessType);
       permission.Allowed = null;
     }
 
     public bool MatchesToken (SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull ("token", token);
+      ArgumentUtility.CheckNotNull("token", token);
 
-      return _matcher.MatchesToken (token);
+      return _matcher.MatchesToken(token);
     }
 
     private Permission GetPermission (AccessTypeDefinition accessType)
     {
-      var permission = FindPermission (accessType);
+      var permission = FindPermission(accessType);
       if (permission == null)
       {
-        throw new ArgumentException (
-            string.Format ("The access type '{0}' is not assigned to this access control entry.", accessType.Name), "accessType");
+        throw new ArgumentException(
+            string.Format("The access type '{0}' is not assigned to this access control entry.", accessType.Name), "accessType");
       }
 
       return permission;
     }
 
-    private Permission FindPermission (AccessTypeDefinition accessType)
+    private Permission? FindPermission (AccessTypeDefinition accessType)
     {
-      return PermissionsInternal.Where (p => p.AccessType.ID == accessType.ID).SingleOrDefault();
+      return PermissionsInternal.Where(p => p.AccessType.ID == accessType.ID).SingleOrDefault();
     }
 
     //TODO: Rewrite with test
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
-      _deleteHandler = new DomainObjectDeleteHandler (PermissionsInternal);
+      _deleteHandler = new DomainObjectDeleteHandler(PermissionsInternal);
     }
 
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
 
     public AccessControlEntryValidationResult Validate ()
     {
       var result = new AccessControlEntryValidationResult();
 
-      if (State != StateType.Deleted)
+      if (!State.IsDeleted)
       {
         if (TenantCondition == TenantCondition.OwningTenant && TenantHierarchyCondition == TenantHierarchyCondition.Undefined)
-          result.SetError (AccessControlEntryValidationError.IsTenantHierarchyConditionMissing);
+          result.SetError(AccessControlEntryValidationError.IsTenantHierarchyConditionMissing);
 
         if (TenantCondition == TenantCondition.OwningTenant && TenantHierarchyCondition == TenantHierarchyCondition.Parent)
-          result.SetError (AccessControlEntryValidationError.IsTenantHierarchyConditionOnlyParent);
+          result.SetError(AccessControlEntryValidationError.IsTenantHierarchyConditionOnlyParent);
 
         if (TenantCondition == TenantCondition.SpecificTenant && SpecificTenant == null)
-          result.SetError (AccessControlEntryValidationError.IsSpecificTenantMissing);
+          result.SetError(AccessControlEntryValidationError.IsSpecificTenantMissing);
 
         if (TenantCondition == TenantCondition.SpecificTenant && TenantHierarchyCondition == TenantHierarchyCondition.Undefined)
-          result.SetError (AccessControlEntryValidationError.IsTenantHierarchyConditionMissing);
+          result.SetError(AccessControlEntryValidationError.IsTenantHierarchyConditionMissing);
 
         if (TenantCondition == TenantCondition.SpecificTenant && TenantHierarchyCondition == TenantHierarchyCondition.Parent)
-          result.SetError (AccessControlEntryValidationError.IsTenantHierarchyConditionOnlyParent);
+          result.SetError(AccessControlEntryValidationError.IsTenantHierarchyConditionOnlyParent);
 
         if (GroupCondition == GroupCondition.AnyGroupWithSpecificGroupType && SpecificGroupType == null)
-          result.SetError (AccessControlEntryValidationError.IsSpecificGroupTypeMissing);
+          result.SetError(AccessControlEntryValidationError.IsSpecificGroupTypeMissing);
 
         if (GroupCondition == GroupCondition.BranchOfOwningGroup && SpecificGroupType == null)
-          result.SetError (AccessControlEntryValidationError.IsSpecificGroupTypeMissing);
+          result.SetError(AccessControlEntryValidationError.IsSpecificGroupTypeMissing);
 
         if (GroupCondition == GroupCondition.OwningGroup && GroupHierarchyCondition == GroupHierarchyCondition.Undefined)
-          result.SetError (AccessControlEntryValidationError.IsGroupHierarchyConditionMissing);
+          result.SetError(AccessControlEntryValidationError.IsGroupHierarchyConditionMissing);
 
         if (GroupCondition == GroupCondition.OwningGroup && GroupHierarchyCondition == GroupHierarchyCondition.Parent)
-          result.SetError (AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyParent);
+          result.SetError(AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyParent);
 
         if (GroupCondition == GroupCondition.OwningGroup && GroupHierarchyCondition == GroupHierarchyCondition.Children)
-          result.SetError (AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyChildren);
+          result.SetError(AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyChildren);
 
         if (GroupCondition == GroupCondition.SpecificGroup && SpecificGroup == null)
-          result.SetError (AccessControlEntryValidationError.IsSpecificGroupMissing);
+          result.SetError(AccessControlEntryValidationError.IsSpecificGroupMissing);
 
         if (GroupCondition == GroupCondition.SpecificGroup && GroupHierarchyCondition == GroupHierarchyCondition.Undefined)
-          result.SetError (AccessControlEntryValidationError.IsGroupHierarchyConditionMissing);
+          result.SetError(AccessControlEntryValidationError.IsGroupHierarchyConditionMissing);
 
         if (GroupCondition == GroupCondition.SpecificGroup && GroupHierarchyCondition == GroupHierarchyCondition.Parent)
-          result.SetError (AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyParent);
+          result.SetError(AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyParent);
 
         if (GroupCondition == GroupCondition.SpecificGroup && GroupHierarchyCondition == GroupHierarchyCondition.Children)
-          result.SetError (AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyChildren);
+          result.SetError(AccessControlEntryValidationError.IsGroupHierarchyConditionOnlyChildren);
 
         if (UserCondition == UserCondition.SpecificUser && SpecificUser == null)
-          result.SetError (AccessControlEntryValidationError.IsSpecificUserMissing);
+          result.SetError(AccessControlEntryValidationError.IsSpecificUserMissing);
 
         if (UserCondition == UserCondition.SpecificPosition && SpecificPosition == null)
-          result.SetError (AccessControlEntryValidationError.IsSpecificPositionMissing);
+          result.SetError(AccessControlEntryValidationError.IsSpecificPositionMissing);
       }
 
       return result;
@@ -305,9 +308,9 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     {
       AccessControlEntryValidationResult result = Validate();
       if (!result.IsValid)
-        throw new ConstraintViolationException (result.GetErrorMessage());
+        throw new ConstraintViolationException(result.GetErrorMessage());
 
-      if (State != StateType.Deleted)
+      if (!State.IsDeleted)
       {
         if (TenantCondition != TenantCondition.SpecificTenant)
           SpecificTenant = null;
@@ -331,7 +334,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
           SpecificPosition = null;
       }
 
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();

@@ -17,31 +17,33 @@
 using System;
 using System.Xml.Serialization;
 using Remotion.Mixins;
+using Remotion.ObjectBinding.BindableObject;
+using Remotion.Reflection;
 
 namespace Remotion.ObjectBinding.Sample
 {
   [Serializable]
   [BindableObjectWithIdentity]
-  public class BindableXmlObject
+  public class BindableXmlObject : IBusinessObjectWithIdentity
   {
     protected static T GetObject<T> (Guid id)
       where T:BindableXmlObject
     {
-      return (T) XmlReflectionBusinessObjectStorageProvider.Current.GetObject (typeof (T), id);
+      return (T)XmlReflectionBusinessObjectStorageProvider.Current.GetObject(typeof(T), id);
     }
 
     protected static T CreateObject<T> ()
        where T : BindableXmlObject
     {
-      return XmlReflectionBusinessObjectStorageProvider.Current.CreateObject<T> ();
+      return XmlReflectionBusinessObjectStorageProvider.Current.CreateObject<T>();
     }
 
     protected static T CreateObject<T> (Guid id)
          where T : BindableXmlObject
     {
-      return XmlReflectionBusinessObjectStorageProvider.Current.CreateObject<T> (id);
+      return XmlReflectionBusinessObjectStorageProvider.Current.CreateObject<T>(id);
     }
-  
+
     internal Guid _id;
 
     protected BindableXmlObject ()
@@ -49,7 +51,7 @@ namespace Remotion.ObjectBinding.Sample
     }
 
     [XmlIgnore]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public Guid ID
     {
       get { return _id; }
@@ -59,12 +61,12 @@ namespace Remotion.ObjectBinding.Sample
     [OverrideMixin]
     public virtual string DisplayName
     {
-      get { return GetType().FullName; }
+      get { return GetType().GetFullNameChecked(); }
     }
 
     [XmlIgnore]
     [OverrideMixin]
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public string UniqueIdentifier
     {
       get { return _id.ToString(); }
@@ -72,7 +74,27 @@ namespace Remotion.ObjectBinding.Sample
 
     public void SaveObject ()
     {
-      XmlReflectionBusinessObjectStorageProvider.Current.SaveObject (this);
+      XmlReflectionBusinessObjectStorageProvider.Current.SaveObject(this);
+    }
+
+    IBusinessObjectClass IBusinessObject.BusinessObjectClass
+    {
+      get { return Mixin.Get<BindableObjectWithIdentityMixin>(this).BusinessObjectClass; }
+    }
+
+    object IBusinessObject.GetProperty (IBusinessObjectProperty property)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin>(this).GetProperty(property);
+    }
+
+    string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
+    {
+      return Mixin.Get<BindableObjectWithIdentityMixin>(this).GetPropertyString(property, format);
+    }
+
+    void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
+    {
+      Mixin.Get<BindableObjectWithIdentityMixin>(this).SetProperty(property, value);
     }
   }
 }

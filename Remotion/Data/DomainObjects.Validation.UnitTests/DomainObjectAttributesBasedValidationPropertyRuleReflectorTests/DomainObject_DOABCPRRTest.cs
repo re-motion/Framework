@@ -17,11 +17,15 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using FluentValidation.Validators;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
+using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Reflection;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttributesBasedValidationPropertyRuleReflectorTests
 {
@@ -40,135 +44,310 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryStringPropertyAttributeReflector;
     private DomainObjectAttributesBasedValidationPropertyRuleReflector _propertyWithMandatoryAttributeReflector;
     private DomainObjectAttributesBasedValidationPropertyRuleReflector _binaryPropertyReflector;
-    private PropertyInfo _collectionProperty;
-    private DomainObjectAttributesBasedValidationPropertyRuleReflector _collectionPropertyReflector;
-
+    private PropertyInfo _domainObjectCollectionProperty;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _domainObjectCollectionPropertyReflector;
+    private PropertyInfo _virtualCollectionProperty;
+    private DomainObjectAttributesBasedValidationPropertyRuleReflector _virtualCollectionPropertyReflector;
+    private Mock<IValidationMessageFactory> _validationMessageFactoryStub;
+    private DomainModelConstraintProvider _domainModelConstraintProvider;
 
     [SetUp]
     public void SetUp ()
     {
-      _propertyWithoutAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithoutAttribute");
-      _propertyWithMandatoryAttribute = typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryAttribute");
+      _propertyWithoutAttribute = typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithoutAttribute");
+      _propertyWithMandatoryAttribute = typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithMandatoryAttribute");
       _propertyWithNullableStringPropertyAttribute =
-          typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithNullableStringPropertyAttribute");
+          typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithNullableStringPropertyAttribute");
       _propertyWithMandatoryStringPropertyAttribute =
-          typeof (TypeWithDomainObjectAttributes).GetProperty ("PropertyWithMandatoryStringPropertyAttribute");
-      _binaryProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("BinaryProperty");
-      _collectionProperty = typeof (TypeWithDomainObjectAttributes).GetProperty ("CollectionProperty");
+          typeof(TypeWithDomainObjectAttributes).GetProperty("PropertyWithMandatoryStringPropertyAttribute");
+      _binaryProperty = typeof(TypeWithDomainObjectAttributes).GetProperty("BinaryProperty");
+      _domainObjectCollectionProperty = typeof(TypeWithDomainObjectAttributes).GetProperty("DomainObjectCollectionProperty");
+      _virtualCollectionProperty = typeof(TypeWithDomainObjectAttributes).GetProperty("VirtualCollectionProperty");
 
-      var domainModelConstraintProvider = new DomainModelConstraintProvider();
+      _domainModelConstraintProvider = new DomainModelConstraintProvider();
+      _validationMessageFactoryStub = new Mock<IValidationMessageFactory>();
 
-      _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+      _propertyWithoutAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _propertyWithoutAttribute,
           _propertyWithoutAttribute,
-          domainModelConstraintProvider);
-      _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          _domainModelConstraintProvider,
+          _validationMessageFactoryStub.Object);
+      _propertyWithMandatoryAttributeReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _propertyWithMandatoryAttribute,
           _propertyWithMandatoryAttribute,
-          domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          _validationMessageFactoryStub.Object);
       _propertyWithNullableStringPropertyAttributeReflector =
-          new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          new DomainObjectAttributesBasedValidationPropertyRuleReflector(
               _propertyWithNullableStringPropertyAttribute,
               _propertyWithNullableStringPropertyAttribute,
-              domainModelConstraintProvider);
+              _domainModelConstraintProvider,
+              _validationMessageFactoryStub.Object);
       _propertyWithMandatoryStringPropertyAttributeReflector =
-          new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+          new DomainObjectAttributesBasedValidationPropertyRuleReflector(
               _propertyWithMandatoryStringPropertyAttribute,
               _propertyWithMandatoryStringPropertyAttribute,
-              domainModelConstraintProvider);
-      _binaryPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
+              _domainModelConstraintProvider,
+              _validationMessageFactoryStub.Object);
+      _binaryPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
           _binaryProperty,
           _binaryProperty,
-          domainModelConstraintProvider);
-      _collectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector (
-          _collectionProperty,
-          _collectionProperty,
-          domainModelConstraintProvider); 
+          _domainModelConstraintProvider,
+          _validationMessageFactoryStub.Object);
+      _domainObjectCollectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
+          _domainObjectCollectionProperty,
+          _domainObjectCollectionProperty,
+          _domainModelConstraintProvider,
+          _validationMessageFactoryStub.Object);
+      _virtualCollectionPropertyReflector = new DomainObjectAttributesBasedValidationPropertyRuleReflector(
+          _virtualCollectionProperty,
+          _virtualCollectionProperty,
+          _domainModelConstraintProvider,
+          _validationMessageFactoryStub.Object);
     }
 
     [Test]
     public void NoAttributes ()
     {
-      Assert.That (_propertyWithoutAttributeReflector.GetAddingPropertyValidators().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetHardConstraintPropertyValidators().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetRemovingPropertyRegistrations().Any(), Is.False);
-      Assert.That (_propertyWithoutAttributeReflector.GetMetaValidationRules().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetRemovablePropertyValidators().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetNonRemovablePropertyValidators().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetRemovingValidatorRegistrations().Any(), Is.False);
+      Assert.That(_propertyWithoutAttributeReflector.GetMetaValidationRules().Any(), Is.False);
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_MandatoryAttribute ()
+    public void GetNonRemovablePropertyValidators_MandatoryAttribute ()
     {
-      var result = _propertyWithMandatoryAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotNullValidator>(),
+                  PropertyInfoAdapter.Create(_propertyWithMandatoryAttribute)))
+          .Returns(validationMessageStub.Object);
 
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
+      var result = _propertyWithMandatoryAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
-    public void GettAddingPropertyValidators_NullableStringPropertyAttribute ()
+    [Ignore("TODO RM-5906")]
+    public void GetRemovablePropertyValidators_MandatoryAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
-      var result = _propertyWithNullableStringPropertyAttributeReflector.GetAddingPropertyValidators().ToArray();
-
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (10));
     }
 
     [Test]
-    public void GettAddingPropertyValidators_MandatoryStringPropertyAttribute ()
+    public void GetRemovablePropertyValidators_NullableStringPropertyAttribute ()
     {
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetAddingPropertyValidators().ToArray();
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<MaximumLengthValidator>(),
+                  PropertyInfoAdapter.Create(_propertyWithNullableStringPropertyAttribute)))
+          .Returns(validationMessageStub.Object);
 
-      Assert.That (result.Count(), Is.EqualTo (2));
-      Assert.That (result[0], Is.TypeOf (typeof (LengthValidator)));
-      Assert.That (((LengthValidator) result[0]).Max, Is.EqualTo (20));
-      Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
+      var result = _propertyWithNullableStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
+      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(10));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
-    public void GettAddingPropertyValidators_BinaryProperty ()
+    [Ignore("TODO RM-5906")]
+    public void GetRemovablePropertyValidators_NullableStringPropertyAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
-      var result = _binaryPropertyReflector.GetAddingPropertyValidators ().ToArray ();
-
-      Assert.That (result.Count (), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (NotEmptyValidator)));
     }
 
     [Test]
-    public void GettAddingPropertyValidators_CollectionProperty ()
+    public void GetRemovablePropertyValidators_MandatoryStringPropertyAttribute ()
     {
-      var result = _collectionPropertyReflector.GetHardConstraintPropertyValidators ().ToArray ();
+      var lengthValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<MaximumLengthValidator>(),
+                  PropertyInfoAdapter.Create(_propertyWithMandatoryStringPropertyAttribute)))
+          .Returns(lengthValidationMessageStub.Object);
 
-      Assert.That (result.Count (), Is.EqualTo (2));
-      Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
-      Assert.That (result[1], Is.TypeOf (typeof (NotEmptyValidator)));
+      var notEmptyValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotEmptyValidator>(),
+                  PropertyInfoAdapter.Create(_propertyWithMandatoryStringPropertyAttribute)))
+          .Returns(notEmptyValidationMessageStub.Object);
 
-      Assert.That (_collectionPropertyReflector.GetAddingPropertyValidators().ToArray(), Is.Empty);
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovablePropertyValidators().ToArray();
+
+      lengthValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for Length");
+      Assert.That(result.Length, Is.EqualTo(2));
+      Assert.That(result[0], Is.TypeOf(typeof(MaximumLengthValidator)));
+      Assert.That(((MaximumLengthValidator)result[0]).Max, Is.EqualTo(20));
+      Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for Length"));
+
+      notEmptyValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for NotEmpty");
+      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
+      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_NullableStringPropertyAttribute ()
+    [Ignore("TODO RM-5906")]
+    public void GetRemovablePropertyValidators_MandatoryStringPropertyAttributeAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
     {
-      var result = _propertyWithNullableStringPropertyAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
-
-      Assert.That (result.Any(), Is.False);
     }
 
     [Test]
-    public void GetHardConstraintPropertyValidators_MandatoryStringPropertyAttribute ()
+    public void GetRemovablePropertyValidators_BinaryProperty ()
     {
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetHardConstraintPropertyValidators().ToArray();
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotEmptyValidator>(),
+                  PropertyInfoAdapter.Create(_binaryProperty)))
+          .Returns(validationMessageStub.Object);
 
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (NotNullValidator)));
+      var result = _binaryPropertyReflector.GetRemovablePropertyValidators().ToArray();
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyValidator)));
+      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+    }
+
+    [Test]
+    [Ignore("TODO RM-5906")]
+    public void GetRemovablePropertyValidators_BinaryPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    {
+    }
+
+    [Test]
+    public void GetNonRemovablePropertyValidators_DomainObjectCollectionProperty ()
+    {
+      var notNullValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotNullValidator>(),
+                  PropertyInfoAdapter.Create(_domainObjectCollectionProperty)))
+          .Returns(notNullValidationMessageStub.Object);
+
+      var notEmptyValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotEmptyValidator>(),
+                  PropertyInfoAdapter.Create(_domainObjectCollectionProperty)))
+          .Returns(notEmptyValidationMessageStub.Object);
+
+      var result = _domainObjectCollectionPropertyReflector.GetNonRemovablePropertyValidators().ToArray();
+
+      notNullValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for NotNull");
+      Assert.That(result.Count(), Is.EqualTo(2));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
+
+      notEmptyValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for NotEmpty");
+      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
+      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
+    }
+
+    [Test]
+    public void GetRemovablePropertyValidators_DomainObjectCollectionProperty ()
+    {
+      Assert.That(_domainObjectCollectionPropertyReflector.GetRemovablePropertyValidators().ToArray(), Is.Empty);
+    }
+
+    [Test]
+    public void GetNonRemovablePropertyValidators_VirtualCollectionProperty ()
+    {
+      var notNullValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotNullValidator>(),
+                  PropertyInfoAdapter.Create(_virtualCollectionProperty)))
+          .Returns(notNullValidationMessageStub.Object);
+
+      var notEmptyValidationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotEmptyValidator>(),
+                  PropertyInfoAdapter.Create(_virtualCollectionProperty)))
+          .Returns(notEmptyValidationMessageStub.Object);
+
+      var result = _virtualCollectionPropertyReflector.GetNonRemovablePropertyValidators().ToArray();
+
+      notNullValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for NotNull");
+      Assert.That(result.Count(), Is.EqualTo(2));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotNull"));
+
+      notEmptyValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for NotEmpty");
+      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
+      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString(), Is.EqualTo("Stub Message for NotEmpty"));
+    }
+
+    [Test]
+    public void GetRemovablePropertyValidators_VirtualCollectionProperty ()
+    {
+      Assert.That(_virtualCollectionPropertyReflector.GetRemovablePropertyValidators().ToArray(), Is.Empty);
+    }
+
+    [Test]
+    [Ignore("TODO RM-5906")]
+    public void GetRemovablePropertyValidators_DomainObjectCollectionPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    {
+    }
+
+    [Test]
+    [Ignore("TODO RM-5906")]
+    public void GetRemovablePropertyValidators_VirtualCollectionPropertyAndValidationMessageFactoryReturnsNull_ThrowsInvalidOperationException ()
+    {
+    }
+
+    [Test]
+    public void GetNonRemovablePropertyValidators_NullableStringPropertyAttribute ()
+    {
+      var result = _propertyWithNullableStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
+
+      Assert.That(result.Any(), Is.False);
+    }
+
+    [Test]
+    public void GetNonRemovablePropertyValidators_MandatoryStringPropertyAttribute ()
+    {
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(
+              _ => _.CreateValidationMessageForPropertyValidator(
+                  It.IsAny<NotNullValidator>(),
+                  PropertyInfoAdapter.Create(_propertyWithMandatoryStringPropertyAttribute)))
+          .Returns(validationMessageStub.Object);
+
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetNonRemovablePropertyValidators().ToArray();
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(NotNullValidator)));
+      Assert.That(((NotNullValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
     public void GetRemovingPropertyRegistrations ()
     {
-      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovingPropertyRegistrations().ToArray();
+      var result = _propertyWithMandatoryStringPropertyAttributeReflector.GetRemovingValidatorRegistrations().ToArray();
 
-      Assert.That (result.Any(), Is.False);
+      Assert.That(result.Any(), Is.False);
     }
 
     [Test]
@@ -176,7 +355,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithMandatoryAttributeReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That (result.Any(), Is.False);
+      Assert.That(result.Any(), Is.False);
     }
 
     [Test]
@@ -184,9 +363,26 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
     {
       var result = _propertyWithNullableStringPropertyAttributeReflector.GetMetaValidationRules().ToArray();
 
-      Assert.That (result.Count(), Is.EqualTo (1));
-      Assert.That (result[0], Is.TypeOf (typeof (RemotionMaxLengthMetaValidationRule)));
-      Assert.That (((RemotionMaxLengthMetaValidationRule) result[0]).MaxLength, Is.EqualTo (10));
+      Assert.That(result.Count(), Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(RemotionMaxLengthPropertyMetaValidationRule)));
+      Assert.That(((RemotionMaxLengthPropertyMetaValidationRule)result[0]).MaxLength, Is.EqualTo(10));
+    }
+
+    [Test]
+    public void Initialize_WithDerivedImplementationProperty_ThrowsArgumentException ()
+    {
+      var overriddenProperty = typeof(DerivedTypeWithDomainObjectAttributes).GetProperty("PropertyWithNullableStringPropertyAttribute");
+
+      Assert.That(
+          () => new DomainObjectAttributesBasedValidationPropertyRuleReflector(
+              interfaceProperty: _propertyWithNullableStringPropertyAttribute,
+              implementationProperty: overriddenProperty,
+              domainModelConstraintProvider: _domainModelConstraintProvider,
+              validationMessageFactory: _validationMessageFactoryStub.Object),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The property 'PropertyWithNullableStringPropertyAttribute' was used from the overridden declaration on type "
+              + "'Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain.DerivedTypeWithDomainObjectAttributes' "
+              + "but only original declarations are supported.", "implementationProperty"));
     }
   }
 }

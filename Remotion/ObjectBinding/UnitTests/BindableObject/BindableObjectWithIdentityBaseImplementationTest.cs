@@ -17,8 +17,10 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Reflection;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -28,53 +30,59 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void Create ()
     {
-      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase ();
-      var mixin = BindableObjectWithIdentityBaseImplementation.Create (wrapper);
-      Assert.That (mixin.BusinessObjectClass, Is.Not.Null);
-      Assert.That (PrivateInvoke.GetNonPublicProperty (mixin, "Target"), Is.SameAs (wrapper));
+      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase();
+      var mixin = BindableObjectWithIdentityBaseImplementation.Create(wrapper);
+      Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
+      Assert.That(PrivateInvoke.GetNonPublicProperty(mixin, "Target"), Is.SameAs(wrapper));
     }
 
     [Test]
     public void Deserialization ()
     {
-      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase ();
-      var mixin = BindableObjectWithIdentityBaseImplementation.Create (wrapper);
-      var deserializedData = Serializer.SerializeAndDeserialize (Tuple.Create (mixin, wrapper));
-      Assert.That (deserializedData.Item1.BusinessObjectClass, Is.Not.Null);
-      Assert.That (PrivateInvoke.GetNonPublicProperty (deserializedData.Item1, "Target"), Is.SameAs (deserializedData.Item2));
+      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase();
+      var mixin = BindableObjectWithIdentityBaseImplementation.Create(wrapper);
+      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(mixin, wrapper));
+      Assert.That(deserializedData.Item1.BusinessObjectClass, Is.Not.Null);
+      Assert.That(PrivateInvoke.GetNonPublicProperty(deserializedData.Item1, "Target"), Is.SameAs(deserializedData.Item2));
     }
 
     [Test]
     public void UniqueIdentifierViaImplementation ()
     {
-      var instance = new ClassDerivedFromBindableObjectWithIdentityBase ();
-      instance.SetUniqueIdentifier ("uniqueID");
-      var mixin = (BindableObjectWithIdentityMixin) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (mixin.UniqueIdentifier, Is.EqualTo ("uniqueID"));
+      var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
+      instance.SetUniqueIdentifier("uniqueID");
+      var mixin = (BindableObjectWithIdentityMixin)PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(mixin.UniqueIdentifier, Is.EqualTo("uniqueID"));
     }
 
     [Test]
     public void BaseDisplayName ()
     {
-      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase ();
-      var implementation = BindableObjectWithIdentityBaseImplementation.Create (wrapper);
-      Assert.That (implementation.BaseDisplayName, Is.EqualTo (wrapper.BusinessObjectClass.Identifier));
+      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase();
+      var implementation = BindableObjectWithIdentityBaseImplementation.Create(wrapper);
+      Assert.That(implementation.BaseDisplayName, Is.EqualTo(wrapper.BusinessObjectClass.Identifier));
     }
 
     [Test]
     public void DisplayName_ViaImplementation_Default ()
     {
-      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase ();
-      var implementation = BindableObjectWithIdentityBaseImplementation.Create (wrapper);
-      Assert.That (implementation.DisplayName, Is.EqualTo (wrapper.BusinessObjectClass.Identifier));
+      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBase();
+      var implementation = BindableObjectWithIdentityBaseImplementation.Create(wrapper);
+      Assert.That(implementation.DisplayName, Is.EqualTo(wrapper.BusinessObjectClass.Identifier));
     }
 
     [Test]
     public void DisplayName_ViaImplementation_Overridden ()
     {
-      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBaseOverridingDisplayName ();
-      var implementation = BindableObjectWithIdentityBaseImplementation.Create (wrapper);
-      Assert.That (implementation.DisplayName, Is.EqualTo ("Overrotten!"));
+      var wrapper = new ClassDerivedFromBindableObjectWithIdentityBaseOverridingDisplayName();
+      var implementation = BindableObjectWithIdentityBaseImplementation.Create(wrapper);
+      Assert.That(implementation.DisplayName, Is.EqualTo("Overrotten!"));
+    }
+
+    [Test]
+    public void BindableObjectWithIdentityMixin_ImplementsMixinWithoutBaseObjectDependency ()
+    {
+      Assert.That(typeof(BindableObjectWithIdentityBaseImplementation).CanAscribeTo(typeof(Mixin<,>)), Is.False);
     }
   }
 }

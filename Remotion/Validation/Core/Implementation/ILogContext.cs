@@ -16,8 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using FluentValidation;
-using FluentValidation.Validators;
+using Remotion.Validation.RuleCollectors;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
@@ -29,9 +29,16 @@ namespace Remotion.Validation.Implementation
   {
     void ValidatorRemoved (
         IPropertyValidator removedValidator,
-        ValidatorRegistrationWithContext[] removingValidatorRegistrationsWithContext,
-        IValidationRule validationRule);
+        RemovingPropertyValidatorRegistration[] removingPropertyValidatorRegistrations,
+        IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
 
-    IEnumerable<LogContextInfo> GetLogContextInfos (IValidationRule validationRule);
+    IEnumerable<PropertyValidatorLogContextInfo> GetLogContextInfos (IAddingPropertyValidationRuleCollector addingPropertyValidationRuleCollector);
+
+    void ValidatorRemoved (
+        IObjectValidator removedValidator,
+        RemovingObjectValidatorRegistration[] removingObjectValidatorRegistrations,
+        IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector);
+
+    IEnumerable<ObjectValidatorLogContextInfo> GetLogContextInfos (IAddingObjectValidationRuleCollector addingObjectValidationRuleCollector);
   }
 }

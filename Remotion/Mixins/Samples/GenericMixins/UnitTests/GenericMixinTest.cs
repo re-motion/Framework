@@ -27,14 +27,14 @@ namespace Remotion.Mixins.Samples.GenericMixins.UnitTests
     [Test]
     public void MixinClosedWithGenericTypeParameterFromTargetClassWithOpenGenericParameter ()
     {
-      ObjectFactory.Create<DerivedTargetClass<DerivedParameterClass>> (ParamList.Empty);
-    } 
+      ObjectFactory.Create<DerivedTargetClass<DerivedParameterClass>>(ParamList.Empty);
+    }
 
     [Test]
-    [Ignore ("Mixin's type parameter cannot be inferred when target type is already a closed type.")]
+    [Ignore("Mixin's type parameter cannot be inferred when target type is already a closed type.")]
     public void MixinClosedWithGenericTypeParameterFromClosedTargetClass ()
     {
-      ObjectFactory.Create<DerivedTargetClassWithClosedParameter> (ParamList.Empty);
-    } 
+      ObjectFactory.Create<DerivedTargetClassWithClosedParameter>(ParamList.Empty);
+    }
   }
 }

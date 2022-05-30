@@ -21,11 +21,13 @@ using System.Web.UI.HtmlControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
-public class TestTabbedPersonJobsUserControl : 
+public class TestTabbedPersonJobsUserControl :
     DataEditUserControl, IControl, IFormGridRowProvider
 {
   protected BocList ListField;
@@ -34,13 +36,14 @@ public class TestTabbedPersonJobsUserControl :
   protected BocMultilineTextValue MultilineTextField;
 
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
   private AutoInitDictionary<HtmlTable,FormGridRowInfoCollection> _listOfFormGridRowInfos = new AutoInitDictionary<HtmlTable,FormGridRowInfoCollection>();
   private AutoInitDictionary<HtmlTable,StringCollection> _listOfHiddenRows = new AutoInitDictionary<HtmlTable,StringCollection>();
   private Control _incomeField;
 
-  protected override void OnLoad(EventArgs e)
+  protected override void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
     _incomeField.Visible = false;
   }
 
@@ -49,17 +52,22 @@ public class TestTabbedPersonJobsUserControl :
     get { return CurrentObject; }
   }
 
+  public BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
   public virtual StringCollection GetHiddenRows (HtmlTable table)
   {
-    return (StringCollection) _listOfHiddenRows[table];
+    return (StringCollection)_listOfHiddenRows[table];
   }
 
   public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
   {
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
   }
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -67,33 +75,33 @@ public class TestTabbedPersonJobsUserControl :
 		InitializeComponent();
 		base.OnInit(e);
 
-    PrepareAdditonalRows ();
-    InitalizeListFieldMenuItems ();
-    InitializeListFieldViews ();
+    PrepareAdditonalRows();
+    InitalizeListFieldMenuItems();
+    InitializeListFieldViews();
   }
-	
+
   private void InitalizeListFieldMenuItems ()
   {
     BocMenuItem menuItem = null;
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText("Paste");
     menuItem.Category = "Edit";
     menuItem.IsDisabled = true;
     menuItem.Command.Type = CommandType.Event;
-    ListField.ListMenuItems.Add (menuItem);
-  
+    ListField.ListMenuItems.Add(menuItem);
+
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
-    menuItem.Text = "Delete";
+    menuItem.Text = WebString.CreateFromText("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    ListField.ListMenuItems.Add (menuItem);
+    ListField.ListMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
@@ -101,78 +109,78 @@ public class TestTabbedPersonJobsUserControl :
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
     menuItem.Command.Type = CommandType.Event;
-    ListField.ListMenuItems.Add (menuItem);
+    ListField.ListMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
-    menuItem.Text = "Open";
+    menuItem.Text = WebString.CreateFromText("Open");
     menuItem.Category = "Object";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
     menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
-    ListField.OptionsMenuItems.Add (menuItem);
+    ListField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
-    menuItem.Text = "Copy";
+    menuItem.Text = WebString.CreateFromText("Copy");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    ListField.OptionsMenuItems.Add (menuItem);
+    ListField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
-    menuItem.Text = "Cut";
+    menuItem.Text = WebString.CreateFromText("Cut");
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    ListField.OptionsMenuItems.Add (menuItem);
+    ListField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText("Paste");
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    ListField.OptionsMenuItems.Add (menuItem);
+    ListField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Duplicate";
-    menuItem.Text = "Duplicate";
+    menuItem.Text = WebString.CreateFromText("Duplicate");
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    ListField.OptionsMenuItems.Add (menuItem);
+    ListField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
-    menuItem.Text = "Delete";
+    menuItem.Text = WebString.CreateFromText("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    ListField.OptionsMenuItems.Add (menuItem);
+    ListField.OptionsMenuItems.Add(menuItem);
   }
 
   private void InitializeListFieldViews ()
   {
-    IBusinessObjectProperty endDate = ListField.Property.ReferenceClass.GetPropertyDefinition ("EndDate");
-    
+    IBusinessObjectProperty endDate = ListField.Property.ReferenceClass.GetPropertyDefinition("EndDate");
+
     BocSimpleColumnDefinition endDateColumnDefinition = new BocSimpleColumnDefinition();
-    endDateColumnDefinition.ColumnTitle = "EndDate";
-    endDateColumnDefinition.SetPropertyPath (BusinessObjectPropertyPath.CreateStatic (new[] { endDate }));
+    endDateColumnDefinition.ColumnTitle = WebString.CreateFromText("EndDate");
+    endDateColumnDefinition.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { endDate }));
 
     BocListView emptyView = new BocListView();
     emptyView.Title = "Empty";
-    emptyView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {});
+    emptyView.ColumnDefinitions.AddRange(new BocColumnDefinition[] {});
 
     BocListView datesView = new BocListView();
     datesView.Title = "Dates";
-    datesView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {endDateColumnDefinition});
+    datesView.ColumnDefinitions.AddRange(new BocColumnDefinition[] {endDateColumnDefinition});
 
-    ListField.AvailableViews.AddRange (new BocListView[] {emptyView, datesView});
+    ListField.AvailableViews.AddRange(new BocListView[] {emptyView, datesView});
   }
 
   private void PrepareAdditonalRows ()
@@ -186,10 +194,10 @@ public class TestTabbedPersonJobsUserControl :
     _incomeField = incomeField;
 
     //  A new row
-    newRows.Add (new FormGridRowInfo(
-        incomeField, 
-        FormGridRowInfo.RowType.ControlInRowWithLabel, 
-        MultilineTextField.ID, 
+    newRows.Add(new FormGridRowInfo(
+        incomeField,
+        FormGridRowInfo.RowType.ControlInRowWithLabel,
+        MultilineTextField.ID,
         FormGridRowInfo.RowPosition.AfterRowWithID));
 
   }
@@ -200,7 +208,7 @@ public class TestTabbedPersonJobsUserControl :
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

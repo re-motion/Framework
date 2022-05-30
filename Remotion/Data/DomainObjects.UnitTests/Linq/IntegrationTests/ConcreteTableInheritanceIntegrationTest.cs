@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       base.SetUp();
 
-      _concreteObjectIDs = new TableInheritanceDomainObjectIDs (Configuration);
+      _concreteObjectIDs = new TableInheritanceDomainObjectIDs(Configuration);
     }
 
     [Test]
@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where c.Name == "Kunde 3"
         select c);
 
-      CheckQueryResult (customer, DomainObjectIDs.Customer3);
+      CheckQueryResult(customer, DomainObjectIDs.Customer3);
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         select c);
       // ReSharper restore RedundantNameQualifier
 
-      CheckQueryResult (customer, DomainObjectIDs.Customer1);
+      CheckQueryResult(customer, DomainObjectIDs.Customer1);
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where c.Name == "Kunde 3"
         select o);
 
-      CheckQueryResult (orders, DomainObjectIDs.Order3);
+      CheckQueryResult(orders, DomainObjectIDs.Order3);
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where c.IndustrialSector.ID == DomainObjectIDs.IndustrialSector2
         select c);
 
-      CheckQueryResult (customers, DomainObjectIDs.Customer3, DomainObjectIDs.Customer2);
+      CheckQueryResult(customers, DomainObjectIDs.Customer3, DomainObjectIDs.Customer2);
     }
 
     [Test]
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query = QueryFactory.CreateLinqQuery<Customer>().OfType<Company>();
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Customer1,
           DomainObjectIDs.Customer2,
@@ -99,7 +99,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query = QueryFactory.CreateLinqQuery<Customer>().OfType<Customer>();
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Customer1,
           DomainObjectIDs.Customer2,
@@ -109,21 +109,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void ConcreteObject_OfType_UnrelatedType_ThrowsInvalidOperation_SingleTableInheritance ()
     {
       var query = QueryFactory.CreateLinqQuery<Company>().OfType<Order>();
-
-      CheckQueryResult (query);
+      Assert.That(
+          () => CheckQueryResult(query),
+          Throws.InvalidOperationException);
     }
 
     [Test]
     public void ConcreteObjects_Is_SelectingBaseType_SingleTableInheritance ()
     {
       // ReSharper disable once IsExpressionAlwaysTrue
-      var query = QueryFactory.CreateLinqQuery<Customer>().Where (c=> c is Company);
+      var query = QueryFactory.CreateLinqQuery<Customer>().Where(c=> c is Company);
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Customer1,
           DomainObjectIDs.Customer2,
@@ -136,9 +136,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void ConcreteObjects_Is_SelectingSameType_SingleTableInheritance ()
     {
       // ReSharper disable once IsExpressionAlwaysTrue
-      var query = QueryFactory.CreateLinqQuery<Customer>().Where (c=> c is Customer);
+      var query = QueryFactory.CreateLinqQuery<Customer>().Where(c=> c is Customer);
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Customer1,
           DomainObjectIDs.Customer2,
@@ -154,7 +154,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where c.Name == "Firma 2"
         select c);
 
-      CheckQueryResult (company, DomainObjectIDs.Company2);
+      CheckQueryResult(company, DomainObjectIDs.Company2);
     }
 
     [Test]
@@ -164,7 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where o.Customer.Name == "Kunde 4"
         select o);
 
-      CheckQueryResult (
+      CheckQueryResult(
           order,
           DomainObjectIDs.Order4,
           DomainObjectIDs.Order5);
@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where c.IndustrialSector.ID == DomainObjectIDs.IndustrialSector2 && c.Name == "Firma 2"
         select c);
 
-      CheckQueryResult (company, DomainObjectIDs.Company2);
+      CheckQueryResult(company, DomainObjectIDs.Company2);
     }
 
     [Test]
@@ -185,15 +185,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var partnerIDs = new[]
                        {
-                           (Guid) DomainObjectIDs.Partner1.Value,
-                           (Guid) DomainObjectIDs.Distributor1.Value,
-                           (Guid) DomainObjectIDs.Supplier1.Value,
-                           (Guid) DomainObjectIDs.Company1.Value,
-                           (Guid) DomainObjectIDs.Customer1.Value
+                           (Guid)DomainObjectIDs.Partner1.Value,
+                           (Guid)DomainObjectIDs.Distributor1.Value,
+                           (Guid)DomainObjectIDs.Supplier1.Value,
+                           (Guid)DomainObjectIDs.Company1.Value,
+                           (Guid)DomainObjectIDs.Customer1.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Partner>().Where (p => partnerIDs.Contains ((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<Company>().OfType<Partner>().Where(p => partnerIDs.Contains((Guid)p.ID.Value));
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Partner1,
           DomainObjectIDs.Distributor1,
@@ -205,15 +205,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var partnerIDs = new[]
                        {
-                           (Guid) DomainObjectIDs.Partner1.Value,
-                           (Guid) DomainObjectIDs.Distributor1.Value,
-                           (Guid) DomainObjectIDs.Supplier1.Value,
-                           (Guid) DomainObjectIDs.Company1.Value,
-                           (Guid) DomainObjectIDs.Customer1.Value
+                           (Guid)DomainObjectIDs.Partner1.Value,
+                           (Guid)DomainObjectIDs.Distributor1.Value,
+                           (Guid)DomainObjectIDs.Supplier1.Value,
+                           (Guid)DomainObjectIDs.Company1.Value,
+                           (Guid)DomainObjectIDs.Customer1.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<Company>().Where (c => c is Partner).Where (p => partnerIDs.Contains ((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<Company>().Where(c => c is Partner).Where(p => partnerIDs.Contains((Guid)p.ID.Value));
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           DomainObjectIDs.Partner1,
           DomainObjectIDs.Distributor1,
@@ -227,7 +227,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where f.Name == "Datei im Root"
         select f);
 
-      CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
+      CheckQueryResult(fsi, _concreteObjectIDs.FileRoot);
     }
 
     [Test]
@@ -237,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where f.ParentFolder.Name == "Root"
         select f);
 
-      CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
+      CheckQueryResult(fsi, _concreteObjectIDs.FileRoot);
     }
 
     [Test]
@@ -245,10 +245,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query = from c in QueryFactory.CreateLinqQuery<TIClient>()
         from domainBase in c.AssignedObjects
-        where domainBase.CreatedAt == new DateTime (2006, 01, 03)
+        where domainBase.CreatedAt == new DateTime(2006, 01, 03)
         select domainBase;
 
-      CheckQueryResult (query, _concreteObjectIDs.Person);
+      CheckQueryResult(query, _concreteObjectIDs.Person);
     }
 
     [Test]
@@ -258,7 +258,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where f.Size == 512
         select f);
 
-      CheckQueryResult (fsi, _concreteObjectIDs.File1);
+      CheckQueryResult(fsi, _concreteObjectIDs.File1);
     }
 
     [Test]
@@ -268,7 +268,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
         select f);
 
-      CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
+      CheckQueryResult(fsi, _concreteObjectIDs.FileRoot);
     }
 
     [Test]
@@ -276,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query = QueryFactory.CreateLinqQuery<TIPerson>().OfType<TIDomainBase>();
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           _concreteObjectIDs.Person,
           _concreteObjectIDs.Person2,
@@ -290,28 +290,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var query = QueryFactory.CreateLinqQuery<TICustomer>().OfType<TICustomer>();
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           _concreteObjectIDs.Customer,
           _concreteObjectIDs.Customer2);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException))]
     public void ConcreteObject_OfType_UnrelatedType_ThrowsInvalidOperation ()
     {
       var query = QueryFactory.CreateLinqQuery<TICustomer>().OfType<TIFile>();
-
-      CheckQueryResult (query);
+      Assert.That(
+          () => CheckQueryResult(query),
+          Throws.InvalidOperationException);
     }
 
     [Test]
     public void ConcreteObjects_Is_SelectingBaseType ()
     {
       // ReSharper disable once IsExpressionAlwaysTrue
-      var query = QueryFactory.CreateLinqQuery<TIPerson>().Where (b=> b is TIDomainBase);
+      var query = QueryFactory.CreateLinqQuery<TIPerson>().Where(b=> b is TIDomainBase);
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           _concreteObjectIDs.Person,
           _concreteObjectIDs.Person2,
@@ -324,9 +324,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     public void ConcreteObjects_Is_SelectingSameType ()
     {
       // ReSharper disable once IsExpressionAlwaysTrue
-      var query = QueryFactory.CreateLinqQuery<TICustomer>().Where (b=> b is TICustomer);
+      var query = QueryFactory.CreateLinqQuery<TICustomer>().Where(b=> b is TICustomer);
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           _concreteObjectIDs.Customer,
           _concreteObjectIDs.Customer2);
@@ -339,7 +339,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where f.Name == "Datei im Root"
         select f);
 
-      CheckQueryResult (fsi, _concreteObjectIDs.FileRoot);
+      CheckQueryResult(fsi, _concreteObjectIDs.FileRoot);
     }
 
     [Test]
@@ -349,7 +349,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
         where f.ParentFolder.ID == _concreteObjectIDs.FolderRoot
         select f);
 
-      CheckQueryResult (fsi, _concreteObjectIDs.FileRoot, _concreteObjectIDs.Folder1);
+      CheckQueryResult(fsi, _concreteObjectIDs.FileRoot, _concreteObjectIDs.Folder1);
     }
 
     [Test]
@@ -357,13 +357,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var personIDs = new[]
                        {
-                           (Guid) _concreteObjectIDs.Person.Value,
-                           (Guid) _concreteObjectIDs.Customer.Value,
-                           (Guid) _concreteObjectIDs.OrganizationalUnit.Value
+                           (Guid)_concreteObjectIDs.Person.Value,
+                           (Guid)_concreteObjectIDs.Customer.Value,
+                           (Guid)_concreteObjectIDs.OrganizationalUnit.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().OfType<TIPerson>().Where (p => personIDs.Contains ((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().OfType<TIPerson>().Where(p => personIDs.Contains((Guid)p.ID.Value));
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           _concreteObjectIDs.Person,
           _concreteObjectIDs.Customer);
@@ -374,13 +374,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var personIDs = new[]
                        {
-                           (Guid) _concreteObjectIDs.Person.Value,
-                           (Guid) _concreteObjectIDs.Customer.Value,
-                           (Guid) _concreteObjectIDs.OrganizationalUnit.Value
+                           (Guid)_concreteObjectIDs.Person.Value,
+                           (Guid)_concreteObjectIDs.Customer.Value,
+                           (Guid)_concreteObjectIDs.OrganizationalUnit.Value
                        };
-      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().Where (b => b is TIPerson).Where (p => personIDs.Contains ((Guid) p.ID.Value));
+      var query = QueryFactory.CreateLinqQuery<TIDomainBase>().Where(b => b is TIPerson).Where(p => personIDs.Contains((Guid)p.ID.Value));
 
-      CheckQueryResult (
+      CheckQueryResult(
           query,
           _concreteObjectIDs.Person,
           _concreteObjectIDs.Customer);

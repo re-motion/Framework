@@ -193,13 +193,13 @@
     <value>"{0}" access allowed</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.PermissionUndefinedText" xml:space="preserve">
-    <value>"{0}" access not defined</value>
+    <value>"{0}" access undefined</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.BranchOfOwningGroupLabel" xml:space="preserve">
     <value>Within the same</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_This" xml:space="preserve">
-    <value>Only this group</value>
+    <value>This group only</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.GroupHierarchyCondition_ThisAndChildren" xml:space="preserve">
     <value>This group or children</value>
@@ -211,7 +211,7 @@
     <value>This group or parents or children</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.TenantHierarchyCondition_This" xml:space="preserve">
-    <value>Only this tenant</value>
+    <value>This tenant only</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.Classes.AccessControl.CollapsedAccessControlConditionsRenderer.TenantHierarchyCondition_ThisAndParent" xml:space="preserve">
     <value>This tenant or parents</value>
@@ -226,9 +226,9 @@
     <value>any</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificGroupFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>No group matches the entered name. Correct your input.</value>
+    <value>No group matches the name entered. Correct your input.</value>
   </data>
   <data name="Remotion.SecurityManager.Clients.Web.UI.AccessControl.EditAccessControlEntryControl.SpecificUserFieldInvalidItemErrorMessage" xml:space="preserve">
-    <value>No user matches the entered name. Correct your input.</value>
+    <value>No user matches the name entered. Correct your input.</value>
   </data>
 </root>

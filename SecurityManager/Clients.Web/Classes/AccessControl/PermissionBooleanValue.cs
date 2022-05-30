@@ -29,15 +29,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.AccessControl
     {
       var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
 
-      return new BocBooleanValueResourceSet (
+      return new BocBooleanValueResourceSet(
           "Permission",
-          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "PermissionGranted.gif").GetUrl(),
-          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "PermissionDenied.gif").GetUrl(),
-          resourceUrlFactory.CreateThemedResourceUrl (typeof (PermissionBooleanValue), ResourceType.Image, "PermissionUndefined.gif").GetUrl(),
-          "Granted",
-          "Denied",
-          "Undefined"
-          );
+          resourceUrlFactory.CreateThemedResourceUrl(typeof(PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionGranted").GetUrl(),
+          resourceUrlFactory.CreateThemedResourceUrl(typeof(PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionDenied").GetUrl(),
+          resourceUrlFactory.CreateThemedResourceUrl(typeof(PermissionBooleanValue), ResourceType.Image, "sprite.svg#PermissionUndefined").GetUrl(),
+          PlainTextString.CreateFromText("Granted"),
+          PlainTextString.CreateFromText("Denied"),
+          PlainTextString.CreateFromText("Undefined"));
     }
   }
 }

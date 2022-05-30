@@ -15,178 +15,184 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.FluentBuilders;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class UsesAttributeTest
   {
-    private readonly Type _userType = typeof (object);
-
-    private MockRepository _mockRepository;
-    private MixinConfigurationBuilder _configurationBuilderMock;
+    private readonly Type _userType = typeof(object);
+    private Mock<MixinConfigurationBuilder> _configurationBuilderMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder> ((MixinConfiguration) null);
+      _configurationBuilderMock = new Mock<MixinConfigurationBuilder>(MockBehavior.Strict, (MixinConfiguration)null);
     }
 
     [Test]
     public void Initialization_Defaults ()
     {
-      UsesAttribute attribute = new UsesAttribute (typeof (string));
-      Assert.That (attribute.AdditionalDependencies, Is.Empty);
-      Assert.That (attribute.SuppressedMixins, Is.Empty);
-      Assert.That (attribute.MixinType, Is.EqualTo (typeof (string)));
-      Assert.That (attribute.IntroducedMemberVisibility, Is.EqualTo (MemberVisibility.Private));
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      Assert.That(attribute.AdditionalDependencies, Is.Empty);
+      Assert.That(attribute.SuppressedMixins, Is.Empty);
+      Assert.That(attribute.MixinType, Is.EqualTo(typeof(string)));
+      Assert.That(attribute.IntroducedMemberVisibility, Is.EqualTo(MemberVisibility.Private));
     }
 
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new UsesAttribute (typeof (string));
-      Assert.That (attribute.IgnoresDuplicates, Is.False);
+      var attribute = new UsesAttribute(typeof(string));
+      Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
 
     [Test]
     public void Apply ()
     {
-      UsesAttribute attribute = new UsesAttribute (typeof (string));
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
 
       _configurationBuilderMock
-          .Expect (
-              mock => mock.AddMixinToClass (
+          .Setup(
+              mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
-                  CreateExpectedOrigin (attribute)))
-          .Return (null);
+                  CreateExpectedOrigin(attribute, null)))
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, _userType);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _userType);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
     public void Apply_AdditionalDependencies ()
     {
-      UsesAttribute attribute = new UsesAttribute (typeof (string));
-      attribute.AdditionalDependencies = new[] { typeof (int) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.AdditionalDependencies = new[] { typeof(int) };
 
       _configurationBuilderMock
-          .Expect (
-              mock => mock.AddMixinToClass (
+          .Setup(
+              mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
-                  CreateExpectedOrigin (attribute)))
-          .Return (null);
+                  CreateExpectedOrigin(attribute, null)))
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, _userType);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _userType);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
     public void Apply_SuppressedMixins ()
     {
-      UsesAttribute attribute = new UsesAttribute (typeof (string));
-      attribute.SuppressedMixins = new[] { typeof (double) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.SuppressedMixins = new[] { typeof(double) };
 
       _configurationBuilderMock
-          .Expect (
-              mock => mock.AddMixinToClass (
+          .Setup(
+              mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
-                  CreateExpectedOrigin (attribute)))
-          .Return (null);
+                  CreateExpectedOrigin(attribute, null)))
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, _userType);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _userType);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
     public void Apply_PrivateVisibility ()
     {
-      UsesAttribute attribute = new UsesAttribute (typeof (string));
-      attribute.SuppressedMixins = new[] { typeof (double) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.SuppressedMixins = new[] { typeof(double) };
       attribute.IntroducedMemberVisibility = MemberVisibility.Private;
 
       _configurationBuilderMock
-          .Expect (
-              mock => mock.AddMixinToClass (
+          .Setup(
+              mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Private,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
-                  CreateExpectedOrigin (attribute)))
-          .Return (null);
+                  CreateExpectedOrigin(attribute, null)))
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, _userType);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _userType);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
     public void Apply_PublicVisibility ()
     {
-      UsesAttribute attribute = new UsesAttribute (typeof (string));
-      attribute.SuppressedMixins = new[] { typeof (double) };
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
+      attribute.SuppressedMixins = new[] { typeof(double) };
       attribute.IntroducedMemberVisibility = MemberVisibility.Public;
 
       _configurationBuilderMock
-          .Expect (
-              mock => mock.AddMixinToClass (
+          .Setup(
+              mock => mock.AddMixinToClass(
                   MixinKind.Used,
                   _userType,
-                  typeof (string),
+                  typeof(string),
                   MemberVisibility.Public,
                   attribute.AdditionalDependencies,
                   attribute.SuppressedMixins,
-                  CreateExpectedOrigin (attribute)))
-          .Return (null);
+                  CreateExpectedOrigin(attribute, null)))
+          .Returns((MixinConfigurationBuilder)null)
+          .Verifiable();
 
-      _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, _userType);
-      _mockRepository.VerifyAll();
+      attribute.Apply(_configurationBuilderMock.Object, _userType);
+      _configurationBuilderMock.Verify();
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationException), ExpectedMessage = "Text")]
     public void Apply_InvalidOperation ()
     {
-      UsesAttribute attribute = new UsesAttribute (typeof (string));
+      UsesAttribute attribute = new UsesAttribute(typeof(string));
       _configurationBuilderMock
-          .Expect (mock => mock.AddMixinToClass (MixinKind.Used, null, null, MemberVisibility.Private, null, null, null))
-          .IgnoreArguments()
-          .Throw (new InvalidOperationException ("Text"));
+          .Setup(
+              mock => mock.AddMixinToClass(
+                  It.IsAny<MixinKind>(),
+                  It.IsAny<Type>(),
+                  It.IsAny<Type>(),
+                  It.IsAny<MemberVisibility>(),
+                  It.IsAny<IEnumerable<Type>>(),
+                  It.IsAny<IEnumerable<Type>>(),
+                  It.IsAny<MixinContextOrigin>()))
+          .Throws(new InvalidOperationException("Text"));
 
-      _mockRepository.ReplayAll();
-      attribute.Apply (_configurationBuilderMock, _userType);
+      Assert.That(
+          () => attribute.Apply(_configurationBuilderMock.Object, _userType),
+          Throws.InstanceOf<ConfigurationException>()
+              .With.Message.EqualTo("Text"));
     }
 
     private MixinContextOrigin CreateExpectedOrigin (UsesAttribute attribute, Type userType = null)
     {
-      return MixinContextOrigin.CreateForCustomAttribute (attribute, userType ?? _userType);
+      return MixinContextOrigin.CreateForCustomAttribute(attribute, userType ?? _userType);
     }
   }
 }

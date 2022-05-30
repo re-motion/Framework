@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.TypePipe.MutableReflection.MemberSignatures;
@@ -26,17 +27,17 @@ namespace Remotion.Mixins.Definitions.Building
   public class OverridesAnalyzer<TMember>
       where TMember : MemberDefinitionBase
   {
-    private static readonly MemberSignatureEqualityComparer s_signatureComparer = new MemberSignatureEqualityComparer ();
+    private static readonly MemberSignatureEqualityComparer s_signatureComparer = new MemberSignatureEqualityComparer();
 
     private readonly Type _attributeType;
     private readonly IEnumerable<TMember> _baseMembers;
 
-    private MultiDictionary<string, TMember> _baseMembersByNameCache = null;
+    private MultiDictionary<string, TMember>? _baseMembersByNameCache = null;
 
     public OverridesAnalyzer (Type attributeType, IEnumerable<TMember> baseMembers)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("attributeType", attributeType, typeof (IOverrideAttribute));
-      ArgumentUtility.CheckNotNull ("baseMembers", baseMembers);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("attributeType", attributeType, typeof(IOverrideAttribute));
+      ArgumentUtility.CheckNotNull("baseMembers", baseMembers);
 
       _attributeType = attributeType;
       _baseMembers = baseMembers;
@@ -44,25 +45,25 @@ namespace Remotion.Mixins.Definitions.Building
 
     public IEnumerable<MemberOverridePair<TMember>> Analyze (IEnumerable<TMember> overriderMembers)
     {
-      ArgumentUtility.CheckNotNull ("overriderMembers", overriderMembers);
+      ArgumentUtility.CheckNotNull("overriderMembers", overriderMembers);
 
       foreach (TMember member in overriderMembers)
       {
-        var overrideAttribute = (IOverrideAttribute) AttributeUtility.GetCustomAttribute (member.MemberInfo, _attributeType, true);
+        var overrideAttribute = (IOverrideAttribute?)AttributeUtility.GetCustomAttribute(member.MemberInfo, _attributeType, true);
         if (overrideAttribute != null)
         {
-          TMember baseMember = FindOverriddenMember (overrideAttribute, member);
+          TMember? baseMember = FindOverriddenMember(overrideAttribute, member);
 
           if (baseMember == null)
           {
-            string message = string.Format (
+            string message = string.Format(
                 "The member overridden by '{0}' declared by type '{1}' could not be found. Candidates: {2}.",
                 member.MemberInfo,
                 member.DeclaringClass.FullName,
-                BuildCandidateStringForExceptionMessage (BaseMembersByName[member.Name]));
-            throw new ConfigurationException (message);
+                BuildCandidateStringForExceptionMessage(BaseMembersByName[member.Name]));
+            throw new ConfigurationException(message);
           }
-          yield return new MemberOverridePair<TMember> (baseMember, member);
+          yield return new MemberOverridePair<TMember>(baseMember, member);
         }
       }
     }
@@ -76,55 +77,56 @@ namespace Remotion.Mixins.Definitions.Building
       }
     }
 
+    [MemberNotNull(nameof(_baseMembersByNameCache))]
     private void EnsureMembersCached ()
     {
       if (_baseMembersByNameCache == null)
       {
-        _baseMembersByNameCache = new MultiDictionary<string, TMember> ();
+        _baseMembersByNameCache = new MultiDictionary<string, TMember>();
         foreach (TMember member in _baseMembers)
-          _baseMembersByNameCache.Add (member.Name, member);
+          _baseMembersByNameCache.Add(member.Name, member);
       }
     }
 
-    private TMember FindOverriddenMember (IOverrideAttribute attribute, TMember overrider)
+    private TMember? FindOverriddenMember (IOverrideAttribute attribute, TMember overrider)
     {
       var candidates = from candidate in BaseMembersByName[overrider.Name]
                        let candidateType = candidate.DeclaringClass.Type
-                       where OverriddenMemberTypeMatches (candidateType, attribute.OverriddenType)
-                       where s_signatureComparer.Equals (candidate.MemberInfo, overrider.MemberInfo)
+                       where OverriddenMemberTypeMatches(candidateType, attribute.OverriddenType)
+                       where s_signatureComparer.Equals(candidate.MemberInfo, overrider.MemberInfo)
                        select candidate;
 
       try
       {
-        return candidates.SingleOrDefault ();
+        return candidates.SingleOrDefault();
       }
       catch (InvalidOperationException)
       {
-        string message = string.Format (
+        string message = string.Format(
               "Ambiguous override: Member '{0}' declared by type '{1}' could override any of the following: {2}.",
               overrider.MemberInfo,
               overrider.DeclaringClass.FullName,
-              BuildCandidateStringForExceptionMessage (candidates));
-        throw new ConfigurationException (message);
+              BuildCandidateStringForExceptionMessage(candidates));
+        throw new ConfigurationException(message);
       }
     }
 
     private string BuildCandidateStringForExceptionMessage (IEnumerable<TMember> candidates)
     {
-      var candidatesByType = candidates.ToLookup (md => md.DeclaringClass);
-      return string.Join ("; ", candidatesByType.Select (group => string.Join (", ", @group.Select (md => "'" + md.MemberInfo.ToString () + "'")) + " (on '" + @group.Key.FullName + "')"));
+      var candidatesByType = candidates.ToLookup(md => md.DeclaringClass);
+      return string.Join("; ", candidatesByType.Select(group => string.Join(", ", @group.Select(md => "'" + md.MemberInfo.ToString() + "'")) + " (on '" + @group.Key.FullName + "')"));
     }
 
-    private bool OverriddenMemberTypeMatches (Type overriddenMemberType, Type requiredType)
+    private bool OverriddenMemberTypeMatches (Type overriddenMemberType, Type? requiredType)
     {
       if (requiredType == null) // no type required
         return true;
 
-      if (requiredType.IsAssignableFrom (overriddenMemberType)) // same type or base type required
+      if (requiredType.IsAssignableFrom(overriddenMemberType)) // same type or base type required
         return true;
 
-      if (requiredType.IsGenericTypeDefinition 
-          && overriddenMemberType.IsGenericType 
+      if (requiredType.IsGenericTypeDefinition
+          && overriddenMemberType.IsGenericType
           && overriddenMemberType.GetGenericTypeDefinition() == requiredType)
       {
         return true;

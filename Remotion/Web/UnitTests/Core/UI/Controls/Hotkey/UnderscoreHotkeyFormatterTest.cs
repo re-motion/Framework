@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
+using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls.Hotkey;
 
@@ -24,12 +26,25 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
   public class UnderscoreHotkeyFormatterTest
   {
     [Test]
-    public void Format_NoEncoding_WithHotkey ()
+    public void WriteTo_WithHotkey_ResultUsesUTagsForHighlighting ()
     {
-      var formatter = new UnderscoreHotkeyFormatter();
-      var textWithHotkey = new TextWithHotkey ("foo bar", 4);
+      var webString = WebString.CreateFromText("foo &bar");
 
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("foo <u>b</u>ar"));
+      var formatter = new UnderscoreHotkeyFormatter();
+
+      var renderedString = ExecuteWithHtmlTextWriter(writer => formatter.WriteTo(writer, webString));
+      Assert.That(renderedString, Is.EqualTo("foo <u>b</u>ar"));
+    }
+
+    private string ExecuteWithHtmlTextWriter (Action<HtmlTextWriter> action)
+    {
+      using var stringWriter = new StringWriter();
+      using var htmlTextWriter = new HtmlTextWriter(stringWriter);
+
+      action(htmlTextWriter);
+      htmlTextWriter.Flush();
+
+      return stringWriter.ToString();
     }
   }
 }

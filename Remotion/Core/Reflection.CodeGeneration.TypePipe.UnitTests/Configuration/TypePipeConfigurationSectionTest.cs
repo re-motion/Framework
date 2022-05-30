@@ -37,10 +37,12 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     [Test]
     public void ExampleConfiguration ()
     {
-      DeserializeSection (TypePipeConfigurationSection.ExampleConfiguration);
+      DeserializeSection(TypePipeConfigurationSection.ExampleConfiguration);
 
-      Assert.That (_section.ForceStrongNaming.ElementInformation.IsPresent, Is.True);
-      Assert.That (_section.ForceStrongNaming.KeyFilePath, Is.EqualTo ("keyFile.snk"));
+#pragma warning disable SYSLIB0017
+      Assert.That(_section.ForceStrongNaming.ElementInformation.IsPresent, Is.True);
+      Assert.That(_section.ForceStrongNaming.KeyFilePath, Is.EqualTo("keyFile.snk"));
+#pragma warning restore
       Assert.That(_section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent, Is.True);
     }
 
@@ -48,19 +50,23 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     public void Empty ()
     {
       var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns} />";
-      DeserializeSection (xmlFragment);
-      
-      Assert.That (_section.ForceStrongNaming.ElementInformation.IsPresent, Is.False);
-      Assert.That (_section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent, Is.False);
+      DeserializeSection(xmlFragment);
+
+#pragma warning disable SYSLIB0017
+      Assert.That(_section.ForceStrongNaming.ElementInformation.IsPresent, Is.False);
+#pragma warning restore
+      Assert.That(_section.EnableSerializationWithoutAssemblySaving.ElementInformation.IsPresent, Is.False);
     }
 
     [Test]
     public void ForceStrongNaming ()
     {
       var xmlFragment = @"<remotion.reflection.codeGeneration.typePipe {xmlns}><forceStrongNaming/></remotion.reflection.codeGeneration.typePipe>";
-      DeserializeSection (xmlFragment);
+      DeserializeSection(xmlFragment);
 
-      Assert.That (_section.ForceStrongNaming.ElementInformation.IsPresent, Is.True);
+#pragma warning disable SYSLIB0017
+      Assert.That(_section.ForceStrongNaming.ElementInformation.IsPresent, Is.True);
+#pragma warning restore
     }
 
     [Test]
@@ -73,26 +79,28 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = "Example configuration:", MatchType = MessageMatch.Contains)]
     public void InvalidSection ()
     {
       var xmlFragment = "<remotion.reflection.codeGeneration.typePipe {xmlns}><invalid /></remotion.reflection.codeGeneration.typePipe>";
-      DeserializeSection (xmlFragment);
+      Assert.That(
+          () => DeserializeSection(xmlFragment),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.Contains("Example configuration:"));
     }
 
     private void DeserializeSection (string xmlFragment)
     {
-      xmlFragment = xmlFragment.Replace ("{xmlns}", "xmlns=\"" + _section.XmlNamespace + "\"");
+      xmlFragment = xmlFragment.Replace("{xmlns}", "xmlns=\"" + _section.XmlNamespace + "\"");
       var xsdContent = GetSchemaContent();
 
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment, xsdContent);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment, xsdContent);
     }
 
     private string GetSchemaContent ()
     {
-      var assembly = typeof (TypePipeConfigurationSection).Assembly;
-      using (var resourceStream = assembly.GetManifestResourceStream ("Remotion.Reflection.CodeGeneration.TypePipe.Schemas.TypePipeConfigurationSchema.xsd"))
-      using (var reader = new StreamReader (resourceStream))
+      var assembly = typeof(TypePipeConfigurationSection).Assembly;
+      using (var resourceStream = assembly.GetManifestResourceStream("Remotion.Reflection.CodeGeneration.TypePipe.Schemas.TypePipeConfigurationSchema.xsd"))
+      using (var reader = new StreamReader(resourceStream))
         return reader.ReadToEnd();
     }
   }

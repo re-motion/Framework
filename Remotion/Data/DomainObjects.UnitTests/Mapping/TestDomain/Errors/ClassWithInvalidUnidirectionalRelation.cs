@@ -24,6 +24,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     {
     }
 
-    public abstract ObjectList<ClassWithInvalidUnidirectionalRelation> LeftSide { get; }
+    public abstract ObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForDomainObjectCollection { get; }
+
+    public abstract IObjectList<ClassWithInvalidUnidirectionalRelation> LeftSideForVirtualCollection { get; }
   }
 }

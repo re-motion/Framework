@@ -29,17 +29,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
   public class WrappingAccessorInterceptor : IAccessorInterceptor
   {
     private static readonly MethodInfo s_preparePropertyAccess =
-        MemberInfoFromExpressionUtility.GetMethod (() => CurrentPropertyManager.PreparePropertyAccess ("propertyName"));
+        MemberInfoFromExpressionUtility.GetMethod(() => CurrentPropertyManager.PreparePropertyAccess("propertyName"));
     private static readonly MethodInfo s_propertyAccessFinished =
-        MemberInfoFromExpressionUtility.GetMethod (() => CurrentPropertyManager.PropertyAccessFinished ());
+        MemberInfoFromExpressionUtility.GetMethod(() => CurrentPropertyManager.PropertyAccessFinished());
 
     private readonly MethodInfo _interceptedAccessorMethod;
     private readonly string _propertyName;
 
     public WrappingAccessorInterceptor (MethodInfo interceptedAccessorMethod, string propertyName)
     {
-      ArgumentUtility.CheckNotNull ("interceptedAccessorMethod", interceptedAccessorMethod);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("interceptedAccessorMethod", interceptedAccessorMethod);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
       _interceptedAccessorMethod = interceptedAccessorMethod;
       _propertyName = propertyName;
@@ -47,9 +47,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     public void Intercept (MutableType proxyType)
     {
-      ArgumentUtility.CheckNotNull ("proxyType", proxyType);
+      ArgumentUtility.CheckNotNull("proxyType", proxyType);
 
-      proxyType.GetOrAddOverride (_interceptedAccessorMethod).SetBody (ctx => WrapBody (CreateBody (ctx)));
+      proxyType.GetOrAddOverride(_interceptedAccessorMethod).SetBody(ctx => WrapBody(CreateBody(ctx)));
     }
 
     protected virtual Expression CreateBody (MethodBodyModificationContext ctx)
@@ -59,11 +59,11 @@ namespace Remotion.Data.DomainObjects.Infrastructure.TypePipe
 
     private Expression WrapBody (Expression body)
     {
-      return Expression.Block (
-          Expression.Call (s_preparePropertyAccess, Expression.Constant (_propertyName)),
-          Expression.TryFinally (
+      return Expression.Block(
+          Expression.Call(s_preparePropertyAccess, Expression.Constant(_propertyName)),
+          Expression.TryFinally(
               body,
-              Expression.Call (s_propertyAccessFinished)));
+              Expression.Call(s_propertyAccessFinished)));
     }
   }
 }

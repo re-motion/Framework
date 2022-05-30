@@ -20,8 +20,8 @@ using Remotion.Mixins;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain.MixinAddedTwiceWithDifferentNullability
 {
   // In this class, the mixin property must be nullable in the database because there is a non-abstract base class that doesn't have the property.
-  [Uses (typeof (PersistentMixinAddedTwice))]
-  [ClassID ("MixinAddedTwiceWithDifferentNullability_TargetClassBelowDBTable")]
+  [Uses(typeof(PersistentMixinAddedTwice))]
+  [ClassID("MixinAddedTwiceWithDifferentNullability_TargetClassBelowDBTable")]
   public class TargetClassBelowDBTable : BaseClassWithDBTable
   {
   }

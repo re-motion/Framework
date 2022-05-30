@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Validation Library")]
-[assembly: AssemblyDescription ("Provides a validation infrastructure based on the FluentValidation library.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

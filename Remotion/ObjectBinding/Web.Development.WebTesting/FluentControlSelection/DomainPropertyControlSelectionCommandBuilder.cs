@@ -37,12 +37,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
       where TControlObject : ControlObject
   {
     private readonly string _domainProperty;
-    private readonly string _domainClass;
+    private readonly string? _domainClass;
 
-    public DomainPropertyControlSelectionCommandBuilder ([NotNull] string domainProperty, [CanBeNull] string domainClass = null)
+    public DomainPropertyControlSelectionCommandBuilder ([NotNull] string domainProperty, [CanBeNull] string? domainClass = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty ("domainClass", domainClass);
+      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
+      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
       _domainProperty = domainProperty;
       _domainClass = domainClass;
@@ -51,25 +51,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelecti
     /// <inheritdoc/>
     IControlSelectionCommand<TControlObject> IControlSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new DomainPropertyControlSelectionCommand<TControlObject> (controlSelector, _domainProperty, _domainClass);
+      return new DomainPropertyControlSelectionCommand<TControlObject>(controlSelector, _domainProperty, _domainClass);
     }
 
     /// <inheritdoc/>
     IControlOptionalSelectionCommand<TControlObject> IControlOptionalSelectionCommandBuilder<TControlSelector, TControlObject>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new DomainPropertyControlSelectionCommand<TControlObject> (controlSelector, _domainProperty, _domainClass);
+      return new DomainPropertyControlSelectionCommand<TControlObject>(controlSelector, _domainProperty, _domainClass);
     }
 
     /// <inheritdoc/>
     IControlExistsCommand IControlExistsCommandBuilder<TControlSelector>.Using (TControlSelector controlSelector)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
 
-      return new DomainPropertyControlSelectionCommand<TControlObject> (controlSelector, _domainProperty, _domainClass);
+      return new DomainPropertyControlSelectionCommand<TControlObject>(controlSelector, _domainProperty, _domainClass);
     }
   }
 }

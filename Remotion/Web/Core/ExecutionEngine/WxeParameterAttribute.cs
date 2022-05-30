@@ -21,21 +21,21 @@ using Remotion.Utilities;
 
 namespace Remotion.Web.ExecutionEngine
 {
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
   public class WxeParameterAttribute : Attribute
   {
-    public static WxeParameterAttribute GetAttribute (PropertyInfo property)
+    public static WxeParameterAttribute? GetAttribute (PropertyInfo property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      WxeParameterAttribute attribute = AttributeUtility.GetCustomAttribute<WxeParameterAttribute> (property, false);
+      WxeParameterAttribute? attribute = AttributeUtility.GetCustomAttribute<WxeParameterAttribute>(property, false);
       if (attribute == null)
         return null;
 
       if (!property.IsOriginalDeclaration())
       {
-        throw new WxeException (
-            string.Format (
+        throw new WxeException(
+            string.Format(
                 "Property '{0}', overridden by '{1}', has a WxeParameterAttribute applied. The WxeParameterAttribute may only be applied to the original declaration of a property.",
                 property.Name,
                 property.DeclaringType));
@@ -51,17 +51,17 @@ namespace Remotion.Web.ExecutionEngine
     private readonly WxeParameterDirection _direction;
 
     public WxeParameterAttribute (int index, WxeParameterDirection direction)
-        : this (index, null, direction)
+        : this(index, null, direction)
     {
     }
 
     public WxeParameterAttribute (int index, bool required)
-        : this (index, required, WxeParameterDirection.In )
+        : this(index, required, WxeParameterDirection.In )
     {
     }
 
     public WxeParameterAttribute (int index)
-        : this (index, null, WxeParameterDirection.In)
+        : this(index, null, WxeParameterDirection.In)
     {
     }
 
@@ -74,7 +74,7 @@ namespace Remotion.Web.ExecutionEngine
     ///     and <see langword="false"/> for reference types. </param>
     /// <param name="direction"> Declares the parameter as input or output parameter, or both. </param>
     public WxeParameterAttribute (int index , bool required, WxeParameterDirection direction)
-        : this (index, (bool?) required, direction)
+        : this(index, (bool?)required, direction)
     {
     }
 
@@ -90,9 +90,9 @@ namespace Remotion.Web.ExecutionEngine
       get { return _index; }
     }
 
-    public bool Required
+    public bool? Required
     {
-      get { return _required.Value; }
+      get { return _required; }
     }
 
     public WxeParameterDirection Direction

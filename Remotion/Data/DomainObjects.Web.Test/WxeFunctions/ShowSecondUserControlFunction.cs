@@ -23,24 +23,24 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
   [Serializable]
   public class ShowSecondUserControlFunction : WxeFunction
   {
-    public ShowSecondUserControlFunction(ITransactionMode transactionMode, params object[] actualParameters) : base(transactionMode, actualParameters)
+    public ShowSecondUserControlFunction (ITransactionMode transactionMode, params object[] actualParameters) : base(transactionMode, actualParameters)
     {
     }
 
     [WxeParameter(0, true, WxeParameterDirection.In)]
     public ClassWithAllDataTypes ObjectWithAllDataTypes
     {
-      get { return (ClassWithAllDataTypes) Variables["ObjectWithAllDataTypes"]; }
+      get { return (ClassWithAllDataTypes)Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 
-    [WxeParameter (1, WxeParameterDirection.Out)]
+    [WxeParameter(1, WxeParameterDirection.Out)]
     public ClassWithAllDataTypes ReturnedObjectWithAllDataTypes
     {
-      get { return (ClassWithAllDataTypes) Variables["ReturnedObjectWithAllDataTypes"]; }
+      get { return (ClassWithAllDataTypes)Variables["ReturnedObjectWithAllDataTypes"]; }
       set { Variables["ReturnedObjectWithAllDataTypes"] = value; }
     }
 
-    private WxeStep Step1 = new WxeUserControlStep ("~/SecondControl.ascx");
+    private WxeStep Step1 = new WxeUserControlStep("~/SecondControl.ascx");
   }
 }

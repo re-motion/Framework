@@ -30,12 +30,12 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   {
     public static FlatClassContext Create (ClassContext classContext)
     {
-      ArgumentUtility.CheckNotNull ("classContext", classContext);
+      ArgumentUtility.CheckNotNull("classContext", classContext);
 
-      var serializer = new FlatClassContextSerializer ();
-      classContext.Serialize (serializer);
+      var serializer = new FlatClassContextSerializer();
+      classContext.Serialize(serializer);
 
-      return new FlatClassContext (serializer.Values);
+      return new FlatClassContext(serializer.Values);
     }
 
     private readonly object[] _serializedValues;
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
 
     public object GetRealValue ()
     {
-      return ClassContext.Deserialize (new FlatClassContextDeserializer (_serializedValues));
+      return ClassContext.Deserialize(new FlatClassContextDeserializer(_serializedValues));
     }
   }
 }

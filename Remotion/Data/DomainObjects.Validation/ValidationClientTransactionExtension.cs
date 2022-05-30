@@ -16,133 +16,112 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Text;
-using FluentValidation;
-using FluentValidation.Results;
-using Remotion.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation;
-using Remotion.Validation.Utilities;
+using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
   public class ValidationClientTransactionExtension : ClientTransactionExtensionBase
   {
-    private readonly IValidatorBuilder _validatorBuilder;
-    private readonly Func<Type, IValidator> _validatorBuilderFunc;
+    private readonly IValidatorProvider _validatorProvider;
 
     public static string DefaultKey
     {
-      get { return typeof (ValidationClientTransactionExtension).FullName; }
+      get { return typeof(ValidationClientTransactionExtension).GetFullNameChecked(); }
     }
 
-    public ValidationClientTransactionExtension (IValidatorBuilder validatorBuilder)
-        : this (DefaultKey, validatorBuilder)
+    public ValidationClientTransactionExtension (IValidatorProvider validatorProvider)
+        : this(DefaultKey, validatorProvider)
     {
     }
 
-    public ValidationClientTransactionExtension (string key, IValidatorBuilder validatorBuilder)
-        : base (key)
+    public ValidationClientTransactionExtension (string key, IValidatorProvider validatorProvider)
+        : base(key)
     {
-      ArgumentUtility.CheckNotNull ("validatorBuilder", validatorBuilder);
+      ArgumentUtility.CheckNotNull("validatorProvider", validatorProvider);
 
-      _validatorBuilder = validatorBuilder;
-
-      // Optimized for memory allocations
-      _validatorBuilderFunc = _validatorBuilder.BuildValidator;
+      _validatorProvider = validatorProvider;
     }
 
-    public IValidatorBuilder ValidatorBuilder
+    public IValidatorProvider ValidatorProvider
     {
-      get { return _validatorBuilder; }
+      get { return _validatorProvider; }
     }
 
-    public override void CommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public override void CommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("committedData", committedData);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("committedData", committedData);
 
       var validatorCache = new Dictionary<Type, IValidator>();
 
-      List<ValidationResult> invariantCultureInvalidValidationResults;
-      using (new CultureScope (CultureInfo.InvariantCulture, CultureInfo.InvariantCulture))
-      {
-        invariantCultureInvalidValidationResults = Validate (committedData, validatorCache);
-      }
-
-      if (!invariantCultureInvalidValidationResults.Any())
+      var validationResults = Validate(committedData, validatorCache);
+      if (!validationResults.Any())
         return;
 
-      var invalidDomainObjects =
-          invariantCultureInvalidValidationResults.SelectMany (vr => vr.Errors)
-              .Select (err => err.GetValidatedInstance())
-              .Distinct()
-              .Cast<DomainObject>();
+      var validationFailures = validationResults.SelectMany(vr => vr.Errors).ToArray();
+      var invalidDomainObjects = validationFailures.Select(err => err.ValidatedObject).Distinct().Cast<DomainObject>().ToArray();
+      var invariantErrorMessage = BuildErrorMessage(validationFailures);
 
-      var objectsToRevalidate = committedData.Where (cd => invalidDomainObjects.Contains (cd.DomainObject)).ToList().AsReadOnly();
-      var localizedInvalidValidationResults = Validate (objectsToRevalidate, validatorCache);
-      var invariantErrorMessage = BuildErrorMesage (invariantCultureInvalidValidationResults.SelectMany (vr => vr.Errors));
-
-      throw new DomainObjectFluentValidationException (
+      throw new ExtendedDomainObjectValidationException(
           invalidDomainObjects,
-          localizedInvalidValidationResults.SelectMany (e => e.Errors),
+          validationFailures,
           invariantErrorMessage);
     }
 
-    private static string BuildErrorMesage (IEnumerable<ValidationFailure> errors)
+    private static string BuildErrorMessage (IEnumerable<ValidationFailure> errors)
     {
-      var errorsByValidatedObjects = errors.ToLookup (e => e.GetValidatedInstance ());
+      var errorsByValidatedObjects = errors.ToLookup(e => e.ValidatedObject);
 
-      var errorMessage = new StringBuilder ("One or more DomainObject contain inconsistent data:\r\n\r\n");
+      var errorMessage = new StringBuilder("One or more DomainObject contain inconsistent data:");
+      errorMessage.AppendLine();
       foreach (var errorByValidatedObject in errorsByValidatedObjects)
       {
-        errorMessage.AppendLine (GetKeyText (errorByValidatedObject.Key));
-        errorMessage.AppendLine (
-            string.Join (
-                "\r\n",
-                errorByValidatedObject.Select (t => " -- " + t.PropertyName + ": " + t.ErrorMessage)));
-        errorMessage.AppendLine ();
+        errorMessage.AppendLine();
+        errorMessage.AppendLine(GetKeyText(errorByValidatedObject.Key));
+        errorByValidatedObject
+            .OfType<PropertyValidationFailure>().OrderBy(f=>f.ValidatedProperty.Name)
+            .Aggregate(errorMessage, (sb, f) => sb.Append(" -- ").Append(f.ValidatedProperty.Name).Append(": " ).Append(f.ErrorMessage).AppendLine());
+        errorByValidatedObject
+            .OfType<ObjectValidationFailure>()
+            .Aggregate(errorMessage, (sb, f) => sb.Append(" -- ").Append(f.ErrorMessage).AppendLine());
       }
-      return errorMessage.ToString ();
+      return errorMessage.ToString();
     }
 
     private static string GetKeyText (object validatedInstance)
     {
       var domainObject = validatedInstance as DomainObject;
       if (domainObject != null)
-        return string.Format ("Object '{0}' with ID '{1}':", domainObject.ID.ClassID, domainObject.ID.Value);
-      return string.Format ("Validation error on object of Type '{0}':", validatedInstance.GetType ().FullName);
+        return string.Format("Object '{0}' with ID '{1}':", domainObject.ID.ClassID, domainObject.ID.Value);
+      return string.Format("Validation error on object of Type '{0}':", validatedInstance.GetType().GetFullNameSafe());
     }
 
-    private List<ValidationResult> Validate (ReadOnlyCollection<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)
+    private List<ValidationResult> Validate (IReadOnlyList<PersistableData> domainObjectsToValidate, Dictionary<Type, IValidator> validatorCache)
     {
-      ArgumentUtility.CheckNotNull ("domainObjectsToValidate", domainObjectsToValidate);
+      ArgumentUtility.CheckNotNull("domainObjectsToValidate", domainObjectsToValidate);
 
-      var invalidValidationResults = new List<ValidationResult> ();
+      var invalidValidationResults = new List<ValidationResult>();
 
       foreach (var item in domainObjectsToValidate)
       {
-        if (item.DomainObjectState == StateType.Deleted)
+        if (item.DomainObjectState.IsDeleted)
           continue;
 
-        Assertion.IsTrue (
-            item.DomainObjectState != StateType.NotLoadedYet && item.DomainObjectState != StateType.Invalid,
-            "No unloaded or invalid objects get this far.");
+        Assertion.IsFalse(item.DomainObjectState.IsNotLoadedYet, "No unloaded objects get this far.");
+        Assertion.IsFalse(item.DomainObjectState.IsInvalid, "No invalid objects get this far.");
 
-        var validator = validatorCache.GetOrCreateValue (item.DomainObject.GetPublicDomainObjectType(), _validatorBuilderFunc);
-        
-        var validationResult = validator.Validate (item.DomainObject);
+        var validator = _validatorProvider.GetValidator(item.DomainObject.GetPublicDomainObjectType());
 
-        // C# compiler 7.2 already provides caching for anonymous method.
-        foreach (var validationFailure in validationResult.Errors.Where (vr => vr.GetValidatedInstance () == null))
-          validationFailure.SetValidatedInstance (item.DomainObject);
+        var validationResult = validator.Validate(item.DomainObject);
 
         if (!validationResult.IsValid)
-          invalidValidationResults.Add (validationResult);
+          invalidValidationResults.Add(validationResult);
       }
       return invalidValidationResults;
     }

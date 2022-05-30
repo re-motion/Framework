@@ -24,7 +24,8 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.DomainImplementation
 {
   /// <summary>
-  /// Provides functionality for resurrecting objects marked as <see cref="StateType.Invalid"/> within a <see cref="ClientTransaction"/> hierarchy.
+  /// Provides functionality for resurrecting objects that have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag set
+  /// within a <see cref="ClientTransaction"/> hierarchy.
   /// </summary>
   /// <remarks>
   /// <para>
@@ -71,8 +72,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       public MarkNotInvalidCommand (IDataManager dataManager, ObjectID objectID)
       {
-        ArgumentUtility.CheckNotNull ("dataManager", dataManager);
-        ArgumentUtility.CheckNotNull ("objectID", objectID);
+        ArgumentUtility.CheckNotNull("dataManager", dataManager);
+        ArgumentUtility.CheckNotNull("objectID", objectID);
 
         _dataManager = dataManager;
         _objectID = objectID;
@@ -90,7 +91,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       public void Perform ()
       {
-        _dataManager.MarkNotInvalid (_objectID);
+        _dataManager.MarkNotInvalid(_objectID);
       }
 
       public void End ()
@@ -100,7 +101,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
 
       public ExpandedCommand ExpandToAllRelatedObjects ()
       {
-        return new ExpandedCommand (this);
+        return new ExpandedCommand(this);
       }
     }
 
@@ -115,11 +116,11 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// least one <see cref="ClientTransaction"/> of the transaction hierarchy identified by <paramref name="clientTransaction"/>.</exception>
     public static void ResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      var executor = new TransactionHierarchyCommandExecutor (tx => CreateMarkNotInvalidCommand (tx, objectID));
-      executor.ExecuteCommandForTransactionHierarchy (clientTransaction);
+      var executor = new TransactionHierarchyCommandExecutor(tx => CreateMarkNotInvalidCommand(tx, objectID));
+      executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     /// <summary>
@@ -135,28 +136,27 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </returns>
     public static bool TryResurrectInvalidObject (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      var executor = new TransactionHierarchyCommandExecutor (tx => CreateMarkNotInvalidCommand (tx, objectID));
-      return executor.TryExecuteCommandForTransactionHierarchy (clientTransaction);
+      var executor = new TransactionHierarchyCommandExecutor(tx => CreateMarkNotInvalidCommand(tx, objectID));
+      return executor.TryExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     private static IDataManagementCommand CreateMarkNotInvalidCommand (ClientTransaction tx, ObjectID objectID)
     {
-      if (!tx.IsInvalid (objectID))
+      if (!tx.IsInvalid(objectID))
       {
-        var message = string.Format (
-            "Cannot resurrect object '{0}' because it is not invalid within the whole transaction hierarchy. In transaction '{1}', the object has "
-            + "state '{2}'.",
+        var message = string.Format(
+            "Cannot resurrect object '{0}' because it is not invalid within the whole transaction hierarchy. In transaction '{1}', the object has {2}.",
             objectID,
             tx,
-            tx.GetObjectReference (objectID).TransactionContext[tx].State);
-        var exception = new InvalidOperationException (message);
-        return new ExceptionCommand (exception);
+            tx.GetObjectReference(objectID).TransactionContext[tx].State);
+        var exception = new InvalidOperationException(message);
+        return new ExceptionCommand(exception);
       }
 
-      return new MarkNotInvalidCommand (tx.DataManager, objectID);
+      return new MarkNotInvalidCommand(tx.DataManager, objectID);
     }
   }
 }

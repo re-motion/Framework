@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public StorageClassAttribute (StorageClass storageClass)
     {
-      ArgumentUtility.CheckValidEnumValue ("storageClass", storageClass);
+      ArgumentUtility.CheckValidEnumValue("storageClass", storageClass);
       _storageClass = storageClass;
     }
 

@@ -19,12 +19,13 @@
 
 using System;
 
+#nullable enable
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
   partial interface IPEVerifyPathSource
   {
     // Returns a valid path or null
-    string GetPEVerifyPath (PEVerifyVersion version);
+    string? GetPEVerifyPath (PEVerifyVersion version);
     string GetLookupDiagnostics (PEVerifyVersion version);
   }
 }

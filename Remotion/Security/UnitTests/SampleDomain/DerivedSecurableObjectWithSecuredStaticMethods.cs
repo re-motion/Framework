@@ -20,7 +20,7 @@ namespace Remotion.Security.UnitTests.SampleDomain
 {
   public class DerivedSecurableObjectWithSecuredStaticMethods : SecurableObjectWithSecuredStaticMethods
   {
-    [DemandPermission (TestAccessTypes.Fourth)]
+    [DemandPermission(TestAccessTypes.Fourth)]
     public static void DerivedStaticMethod ()
     {
     }

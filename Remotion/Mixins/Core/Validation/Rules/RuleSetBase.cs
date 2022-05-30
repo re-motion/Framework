@@ -25,24 +25,24 @@ namespace Remotion.Mixins.Validation.Rules
 
     protected void SingleShould (bool test, IValidationLog log, IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("rule", rule);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("rule", rule);
 
       if (!test)
-        log.Warn (rule);
+        log.Warn(rule);
       else
-        log.Succeed (rule);
+        log.Succeed(rule);
     }
 
     protected void SingleMust (bool test, IValidationLog log, IValidationRule rule)
     {
-      ArgumentUtility.CheckNotNull ("log", log);
-      ArgumentUtility.CheckNotNull ("rule", rule);
+      ArgumentUtility.CheckNotNull("log", log);
+      ArgumentUtility.CheckNotNull("rule", rule);
 
       if (!test)
-        log.Fail (rule);
+        log.Fail(rule);
       else
-        log.Succeed (rule);
+        log.Succeed(rule);
     }
   }
 }

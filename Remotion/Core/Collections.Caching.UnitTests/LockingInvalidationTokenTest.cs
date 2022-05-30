@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -24,14 +25,14 @@ namespace Remotion.Collections.Caching.UnitTests
   public class LockingInvalidationTokenTest
   {
 #if DEBUG
-    [Ignore ("Skipped if DEBUG build")]
+    [Ignore("Skipped if DEBUG build")]
 #endif
     [Test]
     public void GetCurrent_FromSameCacheInvalidationToken_ReturnsSameRevisionTwice ()
     {
       var token = InvalidationToken.CreatWithLocking();
 
-      Assert.That (token.GetCurrent(), Is.EqualTo (token.GetCurrent()));
+      Assert.That(token.GetCurrent(), Is.EqualTo(token.GetCurrent()));
     }
 
     [Test]
@@ -42,12 +43,12 @@ namespace Remotion.Collections.Caching.UnitTests
 
       if (token1.GetHashCode() == token2.GetHashCode())
       {
-        Assert.Ignore (
+        Assert.Ignore(
             "GetHashCode() happened to have returned the same value for different CacheInvalidationToken instances. "
             + "This means the same seed value has been used and the tokens should not be used for comparission.");
       }
 
-      Assert.That (token1.GetCurrent(), Is.Not.EqualTo (token2.GetCurrent()));
+      Assert.That(token1.GetCurrent(), Is.Not.EqualTo(token2.GetCurrent()));
     }
 
     [Test]
@@ -57,7 +58,7 @@ namespace Remotion.Collections.Caching.UnitTests
 
       var revision = token.GetCurrent();
 
-      Assert.That (token.IsCurrent (revision), Is.True);
+      Assert.That(token.IsCurrent(revision), Is.True);
     }
 
     [Test]
@@ -68,11 +69,11 @@ namespace Remotion.Collections.Caching.UnitTests
       var revision = token.GetCurrent();
       token.Invalidate();
 
-      Assert.That (token.IsCurrent (revision), Is.False);
+      Assert.That(token.IsCurrent(revision), Is.False);
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void IsCurrent_WithRevisionFromDifferentToken_ThrowsArgumentException ()
@@ -80,25 +81,25 @@ namespace Remotion.Collections.Caching.UnitTests
       var token1 = InvalidationToken.CreatWithLocking();
       var token2 = InvalidationToken.CreatWithLocking();
 
-      Assert.That (
-          () => token2.IsCurrent (token1.GetCurrent()),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The Revision used for the comparision was not created by the current CacheInvalidationToken.\r\nParameter name: revision"));
+      Assert.That(
+          () => token2.IsCurrent(token1.GetCurrent()),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The Revision used for the comparision was not created by the current CacheInvalidationToken.", "revision"));
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
     public void IsCurrent_WithRevisionFromDefaultConstructor_ThrowsArgumentException ()
     {
       var token = InvalidationToken.CreatWithLocking();
 
-      Assert.That (
-          () => token.IsCurrent (new InvalidationToken.Revision()),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The Revision used for the comparision was either created via the default constructor or the associated CacheInvalidationToken has already been garbage collected.\r\n"
-              + "Parameter name: revision"));
+      Assert.That(
+          () => token.IsCurrent(new InvalidationToken.Revision()),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The Revision used for the comparision was either created via the default constructor or the associated CacheInvalidationToken has already been garbage collected.",
+              "revision"));
     }
 
     [Test]
@@ -107,16 +108,16 @@ namespace Remotion.Collections.Caching.UnitTests
       var token = InvalidationToken.CreatWithLocking();
       var revision = token.GetCurrent();
 
-      var deserializedObjects = Serializer.SerializeAndDeserialize (new object[] { token, revision });
-      var deserializedToken = (InvalidationToken) deserializedObjects[0];
-      var deserializedRevision = (InvalidationToken.Revision) deserializedObjects[1];
+      var deserializedObjects = Serializer.SerializeAndDeserialize(new object[] { token, revision });
+      var deserializedToken = (InvalidationToken)deserializedObjects[0];
+      var deserializedRevision = (InvalidationToken.Revision)deserializedObjects[1];
 
-      Assert.That (deserializedToken.IsCurrent (deserializedRevision), Is.True);
+      Assert.That(deserializedToken.IsCurrent(deserializedRevision), Is.True);
 #if DEBUG
-      Assert.That (
-          () => token.IsCurrent (deserializedRevision),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The Revision used for the comparision was not created by the current CacheInvalidationToken.\r\nParameter name: revision"));
+      Assert.That(
+          () => token.IsCurrent(deserializedRevision),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The Revision used for the comparision was not created by the current CacheInvalidationToken.", "revision"));
 #endif
     }
   }

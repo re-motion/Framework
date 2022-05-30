@@ -20,27 +20,28 @@ using System.Threading;
 using JetBrains.Annotations;
 using log4net;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Configuration;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
   /// <summary>
   /// Executes a given <see cref="Action"/> repeatedly (using the given retry interval) until no exception is thrown during execution or until the
-  /// given timeout has been reached (in which case the final exception is rethrown).
+  /// given timeout has been reached (in which case the last exception is rethrown).
   /// </summary>
   /// <remarks>
   /// This utility shall be used whenever JavaScript scripts may alter the DOM during the <see cref="Action"/> is executed.
   /// </remarks>
   public class RetryUntilTimeout
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (RetryUntilTimeout));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(RetryUntilTimeout));
 
-    private readonly RetryUntilTimeout<object> _retryUntilTimeout;
+    private readonly RetryUntilTimeout<object?> _retryUntilTimeout;
 
     public RetryUntilTimeout ([NotNull] Action action, TimeSpan timeout, TimeSpan retryInterval)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNull("action", action);
 
-      _retryUntilTimeout = new RetryUntilTimeout<object> (
+      _retryUntilTimeout = new RetryUntilTimeout<object?>(
           () =>
           {
             action();
@@ -55,34 +56,61 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       _retryUntilTimeout.Run();
     }
 
-    public static void Run ([NotNull] Action action)
+    /// <summary>
+    /// Executes a given <see cref="Action"/> repeatedly (using the given retry interval) until no exception is thrown during execution or until the
+    /// given timeout has been reached (in which case the last exception is rethrown).
+    /// </summary>
+    /// <param name="action">The <see cref="Action"/> to be executed repeatedly.</param>
+    /// <param name="timeout">
+    /// The timeout after which no more retries are made and the last exception is rethrown. Defaults to the value of the <see cref="DriverConfiguration.SearchTimeout"/>
+    /// property of the <see cref="DriverConfiguration"/> retrieved by calling <see cref="WebTestConfigurationFactory.CreateDriverConfiguration"/> if no value is provided.
+    /// </param>
+    /// <param name="retryInterval">
+    /// The interval to wait between two executions. Defaults to the value of the <see cref="DriverConfiguration.RetryInterval"/> property of the
+    /// <see cref="DriverConfiguration"/> retrieved by calling <see cref="WebTestConfigurationFactory.CreateDriverConfiguration"/> if no value is provided.
+    /// </param>
+    public static void Run ([NotNull] Action action, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
-      ArgumentUtility.CheckNotNull ("action", action);
-      var configuration = new WebTestConfigurationFactory ().CreateTestInfrastructureConfiguration();
+      ArgumentUtility.CheckNotNull("action", action);
+      var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
-      var retryUntilTimeout = new RetryUntilTimeout (
+      var retryUntilTimeout = new RetryUntilTimeout(
           action,
-          configuration.SearchTimeout,
-          configuration.RetryInterval);
+          timeout ?? configuration.SearchTimeout,
+          retryInterval ?? configuration.RetryInterval);
       retryUntilTimeout.Run();
     }
 
-    public static TReturnType Run<TReturnType> ([NotNull] Func<TReturnType> func)
+    /// <summary>
+    /// Executes a given <see cref="Func{TReturnType}"/> repeatedly (using the given retry interval) until no exception is thrown during execution or
+    /// until the given timeout has been reached (in which case the last exception is rethrown).
+    /// </summary>
+    /// <param name="func">The <see cref="Func{TReturnType}"/> to be executed repeatedly.</param>
+    /// <param name="timeout">
+    /// The timeout after which no more retries are made and the last exception is rethrown. Defaults to the value of the <see cref="DriverConfiguration.SearchTimeout"/>
+    /// property of the <see cref="DriverConfiguration"/> retrieved by calling <see cref="WebTestConfigurationFactory.CreateDriverConfiguration"/> if no value is provided.
+    /// </param>
+    /// <param name="retryInterval">
+    /// The interval to wait between two executions. Defaults to the value of the <see cref="DriverConfiguration.RetryInterval"/> property of the
+    /// <see cref="DriverConfiguration"/> retrieved by calling <see cref="WebTestConfigurationFactory.CreateDriverConfiguration"/> if no value is provided.
+    /// </param>
+    /// <returns>Returns the <typeparamref name="TReturnType"/> object returned by <paramref name="func"/>.</returns>
+    public static TReturnType Run<TReturnType> ([NotNull] Func<TReturnType> func, TimeSpan? timeout = null, TimeSpan? retryInterval = null)
     {
-      ArgumentUtility.CheckNotNull ("func", func);
-      var configuration = new WebTestConfigurationFactory ().CreateTestInfrastructureConfiguration ();
+      ArgumentUtility.CheckNotNull("func", func);
+      var configuration = new WebTestConfigurationFactory().CreateDriverConfiguration();
 
-      var retryUntilTimeout = new RetryUntilTimeout<TReturnType> (
+      var retryUntilTimeout = new RetryUntilTimeout<TReturnType>(
           func,
-          configuration.SearchTimeout,
-          configuration.RetryInterval);
+          timeout ?? configuration.SearchTimeout,
+          retryInterval ?? configuration.RetryInterval);
       return retryUntilTimeout.Run();
     }
   }
 
   /// <summary>
   /// Executes a given <see cref="Func{TReturnType}"/> repeatedly (using the given retry interval) until no exception is thrown during execution or
-  /// until the given timeout has been reached (in which case the final exception is rethrown).
+  /// until the given timeout has been reached (in which case the last exception is rethrown).
   /// </summary>
   /// <remarks>
   /// This utility shall be used whenever JavaScript scripts may alter the DOM during the <see cref="Func{TReturnType}"/> is executed.
@@ -91,7 +119,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     // Todo RM-6337: Find out why DriverScope.RetryUntilTimeout is so slow.
 
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (RetryUntilTimeout<TReturnType>));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(RetryUntilTimeout<TReturnType>));
 
     private readonly Func<TReturnType> _func;
     private readonly TimeSpan _timeout;
@@ -99,7 +127,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
     public RetryUntilTimeout ([NotNull] Func<TReturnType> func, TimeSpan timeout, TimeSpan retryInterval)
     {
-      ArgumentUtility.CheckNotNull ("func", func);
+      ArgumentUtility.CheckNotNull("func", func);
 
       _func = func;
       _timeout = timeout;
@@ -120,12 +148,12 @@ namespace Remotion.Web.Development.WebTesting.Utilities
         {
           if (stopwatch.ElapsedMilliseconds < _timeout.TotalMilliseconds)
           {
-            s_log.Debug ("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
-            Thread.Sleep (_retryInterval);
+            s_log.Debug("RetryUntilTimeout failed with " + ex.GetType().Name + " - trying again.");
+            Thread.Sleep(_retryInterval);
           }
           else
           {
-            s_log.Warn ("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
+            s_log.Warn("RetryUntilTimeout failed with " + ex.GetType().Name + " - timeout elapsed, failing.");
             throw;
           }
         }

@@ -19,9 +19,9 @@ using System.Globalization;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
 {
@@ -29,23 +29,19 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
   {
     private NumericValidator _validator;
     private TextBox _textBox;
-    private MockRepository _mockRepository;
     private CultureInfo _cultureBackup;
 
 
     [SetUp]
     public virtual void SetUp ()
     {
-      _mockRepository = new MockRepository();
       _textBox = new TextBox();
       _textBox.ID = "TextBox";
-      Control namingContainer = _mockRepository.StrictMultiMock<Control> (typeof (INamingContainer));
-      SetupResult.For (namingContainer.FindControl ("TextBox")).Return (_textBox);
-      _validator = new NumericValidatorMock (namingContainer);
+      var namingContainer = new Mock<Control>(MockBehavior.Strict);
+      namingContainer.Setup(_ => _.FindControl("TextBox")).Returns(_textBox).Verifiable();
+      _validator = new NumericValidatorMock((Control)namingContainer.As<INamingContainer>().Object);
       _validator.ControlToValidate = _textBox.ID;
 
-      _mockRepository.ReplayAll();
-      
       _cultureBackup = Thread.CurrentThread.CurrentCulture;
       Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
     }
@@ -64,11 +60,6 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.NumericValidatorTests
     protected TextBox TextBox
     {
       get { return _textBox; }
-    }
-
-    public MockRepository MockRepository
-    {
-      get { return _mockRepository; }
     }
   }
 }

@@ -170,46 +170,46 @@ namespace Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests
     [Test]
     public void NonInterfaceProperties ()
     {
-      Type type = typeof (ClassWithoutInterfaceProperties);
-      PropertyInfo[] properties = type.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-      Assert.That (properties.Length, Is.EqualTo (11));
+      Type type = typeof(ClassWithoutInterfaceProperties);
+      PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      Assert.That(properties.Length, Is.EqualTo(11));
 
       foreach (PropertyInfo property in properties)
-        Assert.That (property.GuessIsExplicitInterfaceProperty(), Is.False);
+        Assert.That(property.GuessIsExplicitInterfaceProperty(), Is.False);
     }
 
     [Test]
     public void InterfaceProperties ()
     {
-      Type type = typeof (ClassWithInterfaceProperties);
-      PropertyInfo[] properties = type.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-      Assert.That (properties.Length, Is.EqualTo (11));
+      Type type = typeof(ClassWithInterfaceProperties);
+      PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      Assert.That(properties.Length, Is.EqualTo(11));
 
-      Array.Sort (properties, delegate (PropertyInfo one, PropertyInfo two)
+      Array.Sort(properties, delegate (PropertyInfo one, PropertyInfo two)
       {
-        return GetShortName (one.Name).CompareTo (GetShortName (two.Name));
+        return GetShortName(one.Name).CompareTo(GetShortName(two.Name));
       });
 
-      Assert.That (properties[0].Name, Is.EqualTo ("Property01"));
-      Assert.That (properties[1].Name, Is.EqualTo ("Property02"));
-      Assert.That (properties[2].Name, Is.EqualTo ("Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests.GuessIsExplicitInterfaceProperty.Interface.Property03"));
+      Assert.That(properties[0].Name, Is.EqualTo("Property01"));
+      Assert.That(properties[1].Name, Is.EqualTo("Property02"));
+      Assert.That(properties[2].Name, Is.EqualTo("Remotion.UnitTests.Reflection.PropertyInfoExtensionsTests.GuessIsExplicitInterfaceProperty.Interface.Property03"));
 
-      Assert.That (properties[0].GuessIsExplicitInterfaceProperty(), Is.False);
-      Assert.That (properties[1].GuessIsExplicitInterfaceProperty(), Is.False);
-      Assert.That (properties[2].GuessIsExplicitInterfaceProperty(), Is.True);
-      Assert.That (properties[3].GuessIsExplicitInterfaceProperty(), Is.False);
-      Assert.That (properties[4].GuessIsExplicitInterfaceProperty(), Is.False);
-      Assert.That (properties[5].GuessIsExplicitInterfaceProperty(), Is.False);
-      Assert.That (properties[6].GuessIsExplicitInterfaceProperty(), Is.True);
-      Assert.That (properties[7].GuessIsExplicitInterfaceProperty(), Is.False);
-      Assert.That (properties[8].GuessIsExplicitInterfaceProperty(), Is.False);
-      Assert.That (properties[9].GuessIsExplicitInterfaceProperty(), Is.True);
-      Assert.That (properties[10].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[0].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[1].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[2].GuessIsExplicitInterfaceProperty(), Is.True);
+      Assert.That(properties[3].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[4].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[5].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[6].GuessIsExplicitInterfaceProperty(), Is.True);
+      Assert.That(properties[7].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[8].GuessIsExplicitInterfaceProperty(), Is.False);
+      Assert.That(properties[9].GuessIsExplicitInterfaceProperty(), Is.True);
+      Assert.That(properties[10].GuessIsExplicitInterfaceProperty(), Is.False);
     }
 
     private string GetShortName (string name)
     {
-      return name.Substring (name.LastIndexOf ('.') + 1);
+      return name.Substring(name.LastIndexOf('.') + 1);
     }
   }
 }

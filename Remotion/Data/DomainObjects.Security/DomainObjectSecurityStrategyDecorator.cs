@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Security
         IDomainObjectSecurityContextFactory securityContextFactory,
         RequiredSecurityForStates requiredSecurityForStates)
     {
-      ArgumentUtility.CheckNotNull ("innerStrategy", innerStrategy);
-      ArgumentUtility.CheckNotNull ("securityContextFactory", securityContextFactory);
+      ArgumentUtility.CheckNotNull("innerStrategy", innerStrategy);
+      ArgumentUtility.CheckNotNull("securityContextFactory", securityContextFactory);
 
       _innerStrategy = innerStrategy;
       _securityContextFactory = securityContextFactory;
@@ -54,7 +54,7 @@ namespace Remotion.Data.DomainObjects.Security
       if (!isSecurityRequiredForDeleted && _securityContextFactory.IsDeleted)
         return true;
 
-      return _innerStrategy.HasAccess (securityService, principal, requiredAccessTypes);
+      return _innerStrategy.HasAccess(securityService, principal, requiredAccessTypes);
     }
 
     public IObjectSecurityStrategy InnerStrategy

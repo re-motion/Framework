@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class ElementScopeTestFunction : WxeFunction
   {
     public ElementScopeTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("ElementScopeTest.aspx");
+    private WxeStep Step1 = new WxePageStep("ElementScopeTest.aspx");
   }
 }

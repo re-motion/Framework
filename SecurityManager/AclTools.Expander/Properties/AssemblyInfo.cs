@@ -18,7 +18,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Security Manager ACL Expander")]
-//[assembly: AssemblyDescription("")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

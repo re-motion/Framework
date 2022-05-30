@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   /// </remarks>
   public struct TransportedDomainObjects
   {
-    private ClientTransaction _dataTransaction;
-    private ReadOnlyCollection<DomainObject> _transportedObjects;
+    private ClientTransaction? _dataTransaction;
+    private ReadOnlyCollection<DomainObject>? _transportedObjects;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TransportedDomainObjects"/> class. This constructor is typically only used internally,
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="transportedObjects">The transported objects.</param>
     public TransportedDomainObjects (ClientTransaction dataTransaction, List<DomainObject> transportedObjects)
     {
-      ArgumentUtility.CheckNotNull ("dataTransaction", dataTransaction);
+      ArgumentUtility.CheckNotNull("dataTransaction", dataTransaction);
 
       _dataTransaction = dataTransaction;
       _transportedObjects = transportedObjects.AsReadOnly();
@@ -52,7 +52,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// inspect the data in an application.
     /// </summary>
     /// <value>The transaction holding the data of the transported objects.</value>
-    public ClientTransaction DataTransaction
+    public ClientTransaction? DataTransaction
     {
       get { return _dataTransaction; }
     }
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// Gets the transported objects. Use <see cref="DataTransaction"/> to inspect or change their data before calling <see cref="FinishTransport()"/>.
     /// </summary>
     /// <value>The transported objects.</value>
-    public ReadOnlyCollection<DomainObject> TransportedObjects
+    public ReadOnlyCollection<DomainObject>? TransportedObjects
     {
       get { return _transportedObjects; }
     }
@@ -74,7 +74,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// cannot be used any longer after calling this method.</remarks>
     public void FinishTransport ()
     {
-      FinishTransport (delegate { return true; });
+      FinishTransport(delegate { return true; });
     }
 
     /// <summary>
@@ -88,14 +88,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// cannot be used any longer after calling this method.</remarks>
     public void FinishTransport (Func<DomainObject, bool> filter)
     {
-      ArgumentUtility.CheckNotNull ("filter", filter);
+      ArgumentUtility.CheckNotNull("filter", filter);
 
       if (DataTransaction == null)
-        throw new InvalidOperationException ("FinishTransport can only be called once.");
+        throw new InvalidOperationException("FinishTransport can only be called once.");
 
-      DataTransaction.AddListener (new TransportFinishTransactionListener (filter));
-      DataTransaction.Commit ();
-      DataTransaction.Discard ();
+      DataTransaction.AddListener(new TransportFinishTransactionListener(filter));
+      DataTransaction.Commit();
+      DataTransaction.Discard();
 
       _dataTransaction = null;
       _transportedObjects = null;

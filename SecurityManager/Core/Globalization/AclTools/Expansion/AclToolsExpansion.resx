@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AccessRightsNameTableHeader" xml:space="preserve">
-    <value>Granted permissions</value>
+    <value>Permissions granted</value>
   </data>
   <data name="ClassTableHeader" xml:space="preserve">
     <value>Class</value>
   </data>
   <data name="DeniedRightsTableHeader" xml:space="preserve">
-    <value>Denied permissions</value>
+    <value>Permissions denied</value>
   </data>
   <data name="FirstNameTableHeader" xml:space="preserve">
     <value>First name</value>
@@ -145,10 +145,10 @@
     <value>or its parents</value>
   </data>
   <data name="OwningGroupEqualsTableHeader" xml:space="preserve">
-    <value>Group of the object is set to</value>
+    <value>Object group is set to</value>
   </data>
   <data name="OwningTenantEqualsTableHeader" xml:space="preserve">
-    <value>Tenant of the object is set to</value>
+    <value>Object tenant is set to</value>
   </data>
   <data name="PageTitle" xml:space="preserve">
     <value>re-motion ACL Expansion - Users</value>
@@ -169,7 +169,7 @@
     <value>User must have abstract role</value>
   </data>
   <data name="UserMustOwnTableHeader" xml:space="preserve">
-    <value>User must have ownership</value>
+    <value>User must be owner</value>
   </data>
   <data name="UserTableHeader" xml:space="preserve">
     <value>User</value>

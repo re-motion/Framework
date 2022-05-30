@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -26,18 +26,18 @@ namespace Remotion.Utilities.AttributeRetrieval
   /// </summary>
   public sealed class EventCustomAttributeRetriever : InheritanceAwareCustomAttributeRetriever<EventInfo>
   {
-    protected override EventInfo GetBaseMember (EventInfo memberInfo)
+    protected override EventInfo? GetBaseMember (EventInfo memberInfo)
     {
-      var accessorMethod = memberInfo.GetAddMethod (true);
-      Assertion.DebugAssert (accessorMethod != null, "A Event must have an add accessor.");
+      var accessorMethod = memberInfo.GetAddMethod(true);
+      Assertion.DebugAssert(accessorMethod != null, "A Event must have an add accessor.");
 
-      var baseAccessor = GetBaseMethod (accessorMethod);
+      var baseAccessor = GetBaseMethod(accessorMethod);
       if (baseAccessor == null)
         return null;
 
       // Note: We're ignoring the case where a base event has a different name than the overriding event - that can't be implemented in C#/VB anyway.
-      Assertion.DebugAssert (baseAccessor.DeclaringType != null, "Global methods canot be overridden.");
-      return baseAccessor.DeclaringType.GetEvent (memberInfo.Name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+      Assertion.DebugAssert(baseAccessor.DeclaringType != null, "Global methods canot be overridden.");
+      return baseAccessor.DeclaringType.GetEvent(memberInfo.Name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
     }
   }
 }

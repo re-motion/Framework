@@ -15,10 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -28,20 +27,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void Serialization ()
     {
-      ObjectDeletedException exception = new ObjectDeletedException (DomainObjectIDs.Order1);
+      ObjectDeletedException exception = new ObjectDeletedException(DomainObjectIDs.Order1);
 
-      using (MemoryStream memoryStream = new MemoryStream ())
-      {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (memoryStream, exception);
-        memoryStream.Seek (0, SeekOrigin.Begin);
+      var deserializedException = Serializer.SerializeAndDeserialize(exception);
 
-        formatter = new BinaryFormatter ();
-
-        exception = (ObjectDeletedException) formatter.Deserialize (memoryStream);
-
-        Assert.That (exception.ID, Is.EqualTo (DomainObjectIDs.Order1));
-      }
+      Assert.That(deserializedException.ID, Is.EqualTo(DomainObjectIDs.Order1));
     }
   }
 }

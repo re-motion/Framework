@@ -24,17 +24,17 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
-  [Explicit ("Performance tests")]
+  [Explicit("Performance tests")]
   public class MixinTypeUtilityPerformanceTest
   {
     private Type _unmixedType;
     private Type _targetType;
     private Type _concreteType;
 
-    [TestFixtureSetUp]
-    public void TestFixtureSetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
-      Console.WriteLine (
+      Console.WriteLine(
           "{0}\t{1}\t{2}\t{3}\t{4}",
           "Operation",
           "Tested Type",
@@ -46,20 +46,20 @@ namespace Remotion.Mixins.UnitTests.Core
     [SetUp]
     public void SetUp ()
     {
-      _unmixedType = typeof (object);
-      _targetType = typeof (BaseType3);
-      _concreteType = MixinTypeUtility.GetConcreteMixedType (typeof (BaseType3));
+      _unmixedType = typeof(object);
+      _targetType = typeof(BaseType3);
+      _concreteType = MixinTypeUtility.GetConcreteMixedType(typeof(BaseType3));
     }
 
     [Test]
     public void IsGeneratedConcreteMixedType ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.IsGeneratedConcreteMixedType (type);
+          acc ^= MixinTypeUtility.IsGeneratedConcreteMixedType(type);
         }
         return acc;
       });
@@ -68,12 +68,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void IsGeneratedByMixinEngine ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.IsGeneratedByMixinEngine (type);
+          acc ^= MixinTypeUtility.IsGeneratedByMixinEngine(type);
         }
         return acc;
       });
@@ -82,12 +82,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetConcreteMixedType ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.GetConcreteMixedType (type) != null;
+          acc ^= MixinTypeUtility.GetConcreteMixedType(type) != null;
         }
         return acc;
       });
@@ -96,12 +96,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void IsAssignableFrom ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.IsAssignableFrom (typeof (IComparable), type);
+          acc ^= MixinTypeUtility.IsAssignableFrom(typeof(IComparable), type);
         }
         return acc;
       });
@@ -110,12 +110,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void HasMixins ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.HasMixins (type);
+          acc ^= MixinTypeUtility.HasMixins(type);
         }
         return acc;
       });
@@ -124,12 +124,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetAscribableMixinOnUnmixedTypes ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.GetAscribableMixinType (type, typeof (BT1Mixin1)) != null;
+          acc ^= MixinTypeUtility.GetAscribableMixinType(type, typeof(BT1Mixin1)) != null;
         }
         return acc;
       });
@@ -138,12 +138,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void HasAscribableMixin ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.HasAscribableMixin (type, typeof (BT3Mixin3<,>));
+          acc ^= MixinTypeUtility.HasAscribableMixin(type, typeof(BT3Mixin3<,>));
         }
         return acc;
       });
@@ -152,12 +152,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetMixinTypes ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.GetMixinTypes (type).Count() != 0;
+          acc ^= MixinTypeUtility.GetMixinTypes(type).Count() != 0;
         }
         return acc;
       });
@@ -166,12 +166,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetMixinTypesExact ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.GetMixinTypesExact (type) != null;
+          acc ^= MixinTypeUtility.GetMixinTypesExact(type) != null;
         }
         return acc;
       });
@@ -180,12 +180,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void CreateInstance ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.CreateInstance (type) != null;
+          acc ^= MixinTypeUtility.CreateInstance(type) != null;
         }
         return acc;
       });
@@ -194,12 +194,12 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void GetUnderlyingTargetType ()
     {
-      TimeThis (MethodBase.GetCurrentMethod (), (type, runs) =>
+      TimeThis(MethodBase.GetCurrentMethod(), (type, runs) =>
       {
         bool acc = false;
         for (long l = 0; l < runs; ++l)
         {
-          acc ^= MixinTypeUtility.GetUnderlyingTargetType (type) != null;
+          acc ^= MixinTypeUtility.GetUnderlyingTargetType(type) != null;
         }
         return acc;
       });
@@ -207,27 +207,27 @@ namespace Remotion.Mixins.UnitTests.Core
 
     private void TimeThis<T> (MethodBase callingMethod, Func<Type, long, T> testLoop, long runs = 100000, Tuple<Type, string>[] types = null)
     {
-      types = types ?? new[] { Tuple.Create (_unmixedType, "unmixed type"), Tuple.Create (_targetType, "target type"), Tuple.Create (_concreteType, "concrete type") };
+      types = types ?? new[] { Tuple.Create(_unmixedType, "unmixed type"), Tuple.Create(_targetType, "target type"), Tuple.Create(_concreteType, "concrete type") };
       foreach (var tuple in types)
       {
-        TimeThis (testLoop, runs, callingMethod, tuple.Item1, tuple.Item2);
+        TimeThis(testLoop, runs, callingMethod, tuple.Item1, tuple.Item2);
       }
     }
 
     private void TimeThis<T> (Func<Type, long, T> testLoop, long runs, MethodBase callingMethod, Type testedType, string testedTypeDescription)
     {
       // Warm up
-      testLoop (testedType, 1);
+      testLoop(testedType, 1);
 
-      GC.Collect (2, GCCollectionMode.Forced);
+      GC.Collect(2, GCCollectionMode.Forced);
       GC.WaitForPendingFinalizers();
-      GC.Collect (2, GCCollectionMode.Forced);
+      GC.Collect(2, GCCollectionMode.Forced);
 
-      var sw = Stopwatch.StartNew ();
-      var result = testLoop (testedType, runs);
+      var sw = Stopwatch.StartNew();
+      var result = testLoop(testedType, runs);
       var elapsed = sw.Elapsed;
 
-      Console.WriteLine (
+      Console.WriteLine(
           "{0}\t{1}\t{2:n0}\t{3}\t{4:n}",
           callingMethod.Name,
           testedTypeDescription,

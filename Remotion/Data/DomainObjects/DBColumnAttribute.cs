@@ -21,7 +21,7 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects
 {
   /// <summary>Overrides the name used as the column name in the <b>RDBMS</b>.</summary>
-  [AttributeUsage (AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public class DBColumnAttribute : Attribute, IStorageSpecificIdentifierAttribute
   {
     private string _name;
@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects
     /// <param name="name">The name. Must not be <see langword="null" /> or empty.</param>
     public DBColumnAttribute (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
       _name = name;
     }
 
@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects
       get { return _name; }
     }
 
-    string IStorageSpecificIdentifierAttribute.Identifier
+    string? IStorageSpecificIdentifierAttribute.Identifier
     {
       get { return Name; }
     }

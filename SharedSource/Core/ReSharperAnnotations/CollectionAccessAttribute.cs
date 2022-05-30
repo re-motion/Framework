@@ -69,7 +69,7 @@ namespace JetBrains.Annotations
   /// Indicates how method, constructor invocation or property access
   /// over collection type affects content of the collection.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Property)]
   sealed partial class CollectionAccessAttribute : Attribute
   {
     public CollectionAccessAttribute (CollectionAccessType collectionAccessType)

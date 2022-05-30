@@ -15,45 +15,45 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using System.Web;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.WebTabStripImplementation;
 using Remotion.Web.UI.Controls.WebTabStripImplementation.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rendering
 {
   [TestFixture]
   public class WebTabRendererAdapterTest
   {
-    private HttpContextBase _httpContextStub;
-    private HtmlTextWriter _htmlTextWriterStub;
+    private Mock<HttpContextBase> _httpContextStub;
+    private Mock<HtmlTextWriter> _htmlTextWriterStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _httpContextStub = MockRepository.GenerateStub<HttpContextBase>();
-      _htmlTextWriterStub = MockRepository.GenerateStub<HtmlTextWriter>();
+      _httpContextStub = new Mock<HttpContextBase>();
+      _htmlTextWriterStub = new Mock<HtmlTextWriter>(TextWriter.Null);
     }
 
     [Test]
     public void Render ()
     {
-      var webTabRendererMock = MockRepository.GenerateStrictMock<IWebTabRenderer>();
-      var webTabStub = MockRepository.GenerateStub<IWebTab>();
-      var renderingContext = new WebTabStripRenderingContext (
-          _httpContextStub, _htmlTextWriterStub, new WebTabStripMock(), new WebTabRendererAdapter[0]);
+      var webTabRendererMock = new Mock<IWebTabRenderer>(MockBehavior.Strict);
+      var webTabStub = new Mock<IWebTab>();
+      var renderingContext = new WebTabStripRenderingContext(
+          _httpContextStub.Object, _htmlTextWriterStub.Object, new WebTabStripMock(), new WebTabRendererAdapter[0]);
        var webTabStyle = new WebTabStyle();
 
-      webTabRendererMock.Expect (mock => mock.Render (renderingContext, webTabStub, true, true, webTabStyle));
-      webTabRendererMock.Replay();
+      webTabRendererMock.Setup(mock => mock.Render(renderingContext, webTabStub.Object, true, true, webTabStyle)).Verifiable();
 
-      var rendererAdapter = new WebTabRendererAdapter (webTabRendererMock, webTabStub, true, true, webTabStyle);
-      rendererAdapter.Render (renderingContext);
+      var rendererAdapter = new WebTabRendererAdapter(webTabRendererMock.Object, webTabStub.Object, true, true, webTabStyle);
+      rendererAdapter.Render(renderingContext);
 
-      webTabRendererMock.VerifyAllExpectations();
+      webTabRendererMock.Verify();
     }
 
   }

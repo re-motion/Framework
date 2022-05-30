@@ -29,31 +29,27 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity ();
-      _securityClient = _testHelper.CreateSecurityClient ();
+      _testHelper = NullSecurityClientTestHelper.CreateForStatelessSecurity();
+      _securityClient = _testHelper.CreateSecurityClient();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ReplayAll ();
+      _securityClient.CheckConstructorAccess(typeof(SecurableObject));
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject));
-
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll ();
-
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckConstructorAccess (typeof (SecurableObject));
+        _securityClient.CheckConstructorAccess(typeof(SecurableObject));
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

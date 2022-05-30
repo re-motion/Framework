@@ -18,220 +18,220 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
   [TestFixture]
   public class SerializedObjectIDStoragePropertyDefinitionTest : StandardMappingTest
   {
-    private IRdbmsStoragePropertyDefinition _serializedIDPropertyStub;
+    private Mock<IRdbmsStoragePropertyDefinition> _serializedIDPropertyStub;
     private SerializedObjectIDStoragePropertyDefinition _serializedObjectIDStoragePropertyDefinition;
 
-    private IColumnValueProvider _columnValueProviderStub;
-    private IDbCommand _dbCommandStub;
-    private IDbDataParameter _dbDataParameterStub;
+    private Mock<IColumnValueProvider> _columnValueProviderStub;
+    private Mock<IDbCommand> _dbCommandStub;
+    private Mock<IDbDataParameter> _dbDataParameterStub;
     private ColumnDefinition _columnDefinition;
 
     public override void SetUp ()
     {
       base.SetUp();
-      
-      _serializedIDPropertyStub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition>();
-      _serializedObjectIDStoragePropertyDefinition = new SerializedObjectIDStoragePropertyDefinition (_serializedIDPropertyStub);
 
-      _columnValueProviderStub = MockRepository.GenerateStub<IColumnValueProvider> ();
-      _dbCommandStub = MockRepository.GenerateStub<IDbCommand>();
-      _dbDataParameterStub = MockRepository.GenerateStub<IDbDataParameter>();
-      _dbCommandStub.Stub (stub => stub.CreateParameter()).Return (_dbDataParameterStub).Repeat.Once();
-      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn ();
+      _serializedIDPropertyStub = new Mock<IRdbmsStoragePropertyDefinition>();
+      _serializedObjectIDStoragePropertyDefinition = new SerializedObjectIDStoragePropertyDefinition(_serializedIDPropertyStub.Object);
+
+      _columnValueProviderStub = new Mock<IColumnValueProvider>();
+      _dbCommandStub = new Mock<IDbCommand>();
+      _dbDataParameterStub = new Mock<IDbDataParameter>();
+      _dbCommandStub.Setup(stub => stub.CreateParameter()).Returns(_dbDataParameterStub.Object);
+      _columnDefinition = ColumnDefinitionObjectMother.CreateColumn();
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_serializedObjectIDStoragePropertyDefinition.SerializedIDProperty, Is.SameAs (_serializedIDPropertyStub));
+      Assert.That(_serializedObjectIDStoragePropertyDefinition.SerializedIDProperty, Is.SameAs(_serializedIDPropertyStub.Object));
     }
 
     [Test]
     public void PropertyType ()
     {
-      Assert.That (_serializedObjectIDStoragePropertyDefinition.PropertyType, Is.SameAs (typeof (ObjectID)));
+      Assert.That(_serializedObjectIDStoragePropertyDefinition.PropertyType, Is.SameAs(typeof(ObjectID)));
     }
 
     [Test]
     public void CanCreateForeignKeyConstraint ()
     {
-      Assert.That (_serializedObjectIDStoragePropertyDefinition.CanCreateForeignKeyConstraint, Is.False);
+      Assert.That(_serializedObjectIDStoragePropertyDefinition.CanCreateForeignKeyConstraint, Is.False);
     }
 
     [Test]
     public void GetColumnsForComparison ()
     {
-      _serializedIDPropertyStub.Stub (stub => stub.GetColumnsForComparison()).Return (new[] { _columnDefinition });
-      Assert.That (_serializedObjectIDStoragePropertyDefinition.GetColumnsForComparison (), Is.EqualTo (new[] { _columnDefinition }));
+      _serializedIDPropertyStub.Setup(stub => stub.GetColumnsForComparison()).Returns(new[] { _columnDefinition });
+      Assert.That(_serializedObjectIDStoragePropertyDefinition.GetColumnsForComparison(), Is.EqualTo(new[] { _columnDefinition }));
     }
 
     [Test]
     public void GetColumns ()
     {
-      _serializedIDPropertyStub.Stub (stub => stub.GetColumns ()).Return (new[] { _columnDefinition });
-      Assert.That (_serializedObjectIDStoragePropertyDefinition.GetColumns(), Is.EqualTo (_serializedIDPropertyStub.GetColumns()));
+      _serializedIDPropertyStub.Setup(stub => stub.GetColumns()).Returns(new[] { _columnDefinition });
+      Assert.That(_serializedObjectIDStoragePropertyDefinition.GetColumns(), Is.EqualTo(_serializedIDPropertyStub.Object.GetColumns()));
     }
 
     [Test]
     public void SplitValue ()
     {
-      var columnValue = new ColumnValue (_columnDefinition, DomainObjectIDs.OrderItem1);
+      var columnValue = new ColumnValue(_columnDefinition, DomainObjectIDs.OrderItem1);
 
-      _serializedIDPropertyStub.Stub (stub => stub.SplitValue (DomainObjectIDs.OrderItem1.ToString())).Return (new[] { columnValue });
+      _serializedIDPropertyStub.Setup(stub => stub.SplitValue(DomainObjectIDs.OrderItem1.ToString())).Returns(new[] { columnValue });
 
-      var result = _serializedObjectIDStoragePropertyDefinition.SplitValue (DomainObjectIDs.OrderItem1);
+      var result = _serializedObjectIDStoragePropertyDefinition.SplitValue(DomainObjectIDs.OrderItem1);
 
-      Assert.That (result, Is.EqualTo (new[] { columnValue }));
+      Assert.That(result, Is.EqualTo(new[] { columnValue }));
     }
 
     [Test]
     public void SplitValue_NullObjectID ()
     {
-      var columnValue = new ColumnValue (_columnDefinition, DomainObjectIDs.OrderItem1);
+      var columnValue = new ColumnValue(_columnDefinition, DomainObjectIDs.OrderItem1);
 
-      _serializedIDPropertyStub.Stub (stub => stub.SplitValue (null)).Return (new[] { columnValue });
+      _serializedIDPropertyStub.Setup(stub => stub.SplitValue(null)).Returns(new[] { columnValue });
 
-      var result = _serializedObjectIDStoragePropertyDefinition.SplitValue (null);
+      var result = _serializedObjectIDStoragePropertyDefinition.SplitValue(null);
 
-      Assert.That (result, Is.EqualTo (new[] { columnValue }));
+      Assert.That(result, Is.EqualTo(new[] { columnValue }));
     }
 
     [Test]
     public void SplitValueForComparison ()
     {
-      var columnValue1 = new ColumnValue (_columnDefinition, null);
-      _serializedIDPropertyStub.Stub (stub => stub.SplitValueForComparison (DomainObjectIDs.Order1.ToString ())).Return (new[] { columnValue1 });
+      var columnValue1 = new ColumnValue(_columnDefinition, null);
+      _serializedIDPropertyStub.Setup(stub => stub.SplitValueForComparison(DomainObjectIDs.Order1.ToString())).Returns(new[] { columnValue1 });
 
-      var result = _serializedObjectIDStoragePropertyDefinition.SplitValueForComparison (DomainObjectIDs.Order1).ToArray ();
+      var result = _serializedObjectIDStoragePropertyDefinition.SplitValueForComparison(DomainObjectIDs.Order1).ToArray();
 
-      Assert.That (result, Is.EqualTo (new[] { columnValue1 }));
+      Assert.That(result, Is.EqualTo(new[] { columnValue1 }));
     }
 
     [Test]
     public void SplitValueForComparison_NullValue ()
     {
-      var columnValue1 = new ColumnValue (_columnDefinition, null);
-      _serializedIDPropertyStub.Stub (stub => stub.SplitValueForComparison (null)).Return (new[] { columnValue1 });
+      var columnValue1 = new ColumnValue(_columnDefinition, null);
+      _serializedIDPropertyStub.Setup(stub => stub.SplitValueForComparison(null)).Returns(new[] { columnValue1 });
 
-      var result = _serializedObjectIDStoragePropertyDefinition.SplitValueForComparison (null).ToArray ();
+      var result = _serializedObjectIDStoragePropertyDefinition.SplitValueForComparison(null).ToArray();
 
-      Assert.That (result, Is.EqualTo (new[] { columnValue1 }));
+      Assert.That(result, Is.EqualTo(new[] { columnValue1 }));
     }
 
     [Test]
     public void SplitValuesForComparison ()
     {
-      var row1 = new ColumnValueTable.Row (new[] { "1" });
-      var row2 = new ColumnValueTable.Row (new[] { "2" });
-      var columnValueTable = new ColumnValueTable (new[] { _columnDefinition }, new[] { row1, row2 });
+      var row1 = new ColumnValueTable.Row(new[] { "1" });
+      var row2 = new ColumnValueTable.Row(new[] { "2" });
+      var columnValueTable = new ColumnValueTable(new[] { _columnDefinition }, new[] { row1, row2 });
 
       _serializedIDPropertyStub
-          .Stub (stub => stub.SplitValuesForComparison (Arg<IEnumerable<object>>.List.Equal (
-              new[] { DomainObjectIDs.Order1.ToString (), DomainObjectIDs.Order3.ToString () })))
-          .Return (columnValueTable);
+          .Setup(stub => stub.SplitValuesForComparison(new[] { DomainObjectIDs.Order1.ToString(), DomainObjectIDs.Order3.ToString() }))
+          .Returns(columnValueTable);
 
-      var result = _serializedObjectIDStoragePropertyDefinition.SplitValuesForComparison (new object[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
+      var result = _serializedObjectIDStoragePropertyDefinition.SplitValuesForComparison(new object[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
 
-      ColumnValueTableTestHelper.CheckTable (columnValueTable, result);
+      ColumnValueTableTestHelper.CheckTable(columnValueTable, result);
     }
 
     [Test]
     public void SplitValuesForComparison_NullValue ()
     {
-      var row1 = new ColumnValueTable.Row (new[] { "1" });
-      var row2 = new ColumnValueTable.Row (new[] { "2" });
-      var columnValueTable = new ColumnValueTable (new[] { _columnDefinition }, new[] { row1, row2 });
+      var row1 = new ColumnValueTable.Row(new[] { "1" });
+      var row2 = new ColumnValueTable.Row(new[] { "2" });
+      var columnValueTable = new ColumnValueTable(new[] { _columnDefinition }, new[] { row1, row2 });
 
-      // Bug in Rhino Mocks: List.Equal constraint cannot handle nulls within the sequence
       _serializedIDPropertyStub
-          .Stub (stub => stub.SplitValuesForComparison (
-              Arg<IEnumerable<object>>.Matches (seq => seq.SequenceEqual (new[] { null, DomainObjectIDs.Order3.ToString () }))))
-          .Return (columnValueTable);
+          .Setup(stub => stub.SplitValuesForComparison(new[] { null, DomainObjectIDs.Order3.ToString() }))
+          .Returns(columnValueTable);
 
-      var result = _serializedObjectIDStoragePropertyDefinition.SplitValuesForComparison (new object[] { null, DomainObjectIDs.Order3 });
+      var result = _serializedObjectIDStoragePropertyDefinition.SplitValuesForComparison(new object[] { null, DomainObjectIDs.Order3 });
 
-      ColumnValueTableTestHelper.CheckTable (columnValueTable, result);
+      ColumnValueTableTestHelper.CheckTable(columnValueTable, result);
     }
 
     [Test]
     public void CombineValue ()
     {
-      _serializedIDPropertyStub.Stub (stub => stub.CombineValue (_columnValueProviderStub)).Return (DomainObjectIDs.Order1.ToString ());
+      _serializedIDPropertyStub.Setup(stub => stub.CombineValue(_columnValueProviderStub.Object)).Returns(DomainObjectIDs.Order1.ToString());
 
-      var result = _serializedObjectIDStoragePropertyDefinition.CombineValue (_columnValueProviderStub);
+      var result = _serializedObjectIDStoragePropertyDefinition.CombineValue(_columnValueProviderStub.Object);
 
-      Assert.That (result, Is.TypeOf (typeof (ObjectID)));
-      Assert.That (((ObjectID) result).Value.ToString (), Is.EqualTo (DomainObjectIDs.Order1.Value.ToString ()));
-      Assert.That (((ObjectID) result).ClassID, Is.EqualTo ("Order"));
+      Assert.That(result, Is.TypeOf(typeof(ObjectID)));
+      Assert.That(((ObjectID)result).Value.ToString(), Is.EqualTo(DomainObjectIDs.Order1.Value.ToString()));
+      Assert.That(((ObjectID)result).ClassID, Is.EqualTo("Order"));
     }
 
     [Test]
     public void CombineValue_ValueIsNull_ReturnsNull ()
     {
-      _serializedIDPropertyStub.Stub (stub => stub.CombineValue (_columnValueProviderStub)).Return (null);
+      _serializedIDPropertyStub.Setup(stub => stub.CombineValue(_columnValueProviderStub.Object)).Returns((object)null);
 
-      var result = _serializedObjectIDStoragePropertyDefinition.CombineValue (_columnValueProviderStub);
+      var result = _serializedObjectIDStoragePropertyDefinition.CombineValue(_columnValueProviderStub.Object);
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void UnifyWithEquivalentProperties_CombinesProperties ()
     {
-      var serializedIDProperty1Mock = MockRepository.GenerateStrictMock<IRdbmsStoragePropertyDefinition> ();
-      var property1 = new SerializedObjectIDStoragePropertyDefinition (serializedIDProperty1Mock);
+      var serializedIDProperty1Mock = new Mock<IRdbmsStoragePropertyDefinition>(MockBehavior.Strict);
+      var property1 = new SerializedObjectIDStoragePropertyDefinition(serializedIDProperty1Mock.Object);
 
-      var serializedIDProperty2Stub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition> ();
-      var property2 = new SerializedObjectIDStoragePropertyDefinition (serializedIDProperty2Stub);
+      var serializedIDProperty2Stub = new Mock<IRdbmsStoragePropertyDefinition>();
+      var property2 = new SerializedObjectIDStoragePropertyDefinition(serializedIDProperty2Stub.Object);
 
-      var serializedIDProperty3Stub = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition> ();
-      var property3 = new SerializedObjectIDStoragePropertyDefinition (serializedIDProperty3Stub);
+      var serializedIDProperty3Stub = new Mock<IRdbmsStoragePropertyDefinition>();
+      var property3 = new SerializedObjectIDStoragePropertyDefinition(serializedIDProperty3Stub.Object);
 
-      var fakeUnifiedSerializedIDProperty = MockRepository.GenerateStub<IRdbmsStoragePropertyDefinition> ();
+      var fakeUnifiedSerializedIDProperty = new Mock<IRdbmsStoragePropertyDefinition>();
       serializedIDProperty1Mock
-          .Expect (
-              mock => mock.UnifyWithEquivalentProperties (
-                  Arg<IEnumerable<IRdbmsStoragePropertyDefinition>>.List.Equal (new[] { serializedIDProperty2Stub, serializedIDProperty3Stub })))
-          .Return (fakeUnifiedSerializedIDProperty);
+          .Setup(mock => mock.UnifyWithEquivalentProperties(new[] { serializedIDProperty2Stub.Object, serializedIDProperty3Stub.Object }))
+          .Returns(fakeUnifiedSerializedIDProperty.Object)
+          .Verifiable();
 
-      var result = property1.UnifyWithEquivalentProperties (new[] { property2, property3 });
+      var result = property1.UnifyWithEquivalentProperties(new[] { property2, property3 });
 
-      fakeUnifiedSerializedIDProperty.VerifyAllExpectations ();
+      fakeUnifiedSerializedIDProperty.Verify();
 
-      Assert.That (result, Is.TypeOf<SerializedObjectIDStoragePropertyDefinition> ());
-      Assert.That (((SerializedObjectIDStoragePropertyDefinition) result).SerializedIDProperty, Is.SameAs (fakeUnifiedSerializedIDProperty));
+      Assert.That(result, Is.TypeOf<SerializedObjectIDStoragePropertyDefinition>());
+      Assert.That(((SerializedObjectIDStoragePropertyDefinition)result).SerializedIDProperty, Is.SameAs(fakeUnifiedSerializedIDProperty.Object));
     }
 
     [Test]
     public void UnifyWithEquivalentProperties_ThrowsForDifferentStoragePropertyType ()
     {
-      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ();
+      var property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty();
 
-      Assert.That (
-          () => _serializedObjectIDStoragePropertyDefinition.UnifyWithEquivalentProperties (new[] { property2 }),
-          Throws.ArgumentException.With.Message.EqualTo (
+      Assert.That(
+          () => _serializedObjectIDStoragePropertyDefinition.UnifyWithEquivalentProperties(new[] { property2 }),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Only equivalent properties can be combined, but this property has type 'SerializedObjectIDStoragePropertyDefinition', and the "
-              + "given property has type 'SimpleStoragePropertyDefinition'.\r\nParameter name: equivalentProperties"));
+              + "given property has type 'SimpleStoragePropertyDefinition'.", "equivalentProperties"));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = "String-serialized ObjectID values cannot be used as foreign keys.")]
     public void CreateForeignKeyConstraint ()
     {
-      _serializedObjectIDStoragePropertyDefinition.CreateForeignKeyConstraint (
-          cols => { throw new Exception ("Should not be called."); }, 
-          new EntityNameDefinition ("entityschema", "entityname"), 
-          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty);
+      Assert.That(
+          () => _serializedObjectIDStoragePropertyDefinition.CreateForeignKeyConstraint(
+          cols => { throw new Exception("Should not be called."); },
+          new EntityNameDefinition("entityschema", "entityname"),
+          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo(
+                  "String-serialized ObjectID values cannot be used as foreign keys."));
     }
   }
 }

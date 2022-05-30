@@ -25,12 +25,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
   {
     public static TypeWithAllDataTypes Create ()
     {
-      return ObjectFactory.Create<TypeWithAllDataTypes> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithAllDataTypes>(true, ParamList.Empty);
     }
 
     public static TypeWithAllDataTypes Create (string stringValue, int int32Value)
     {
-      return ObjectFactory.Create<TypeWithAllDataTypes> (true, ParamList.Create (stringValue, int32Value));
+      return ObjectFactory.Create<TypeWithAllDataTypes>(true, ParamList.Create(stringValue, int32Value));
     }
 
     private bool _boolean;

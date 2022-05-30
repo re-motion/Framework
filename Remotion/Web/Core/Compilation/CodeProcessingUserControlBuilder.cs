@@ -28,7 +28,7 @@ namespace Remotion.Web.Compilation
   /// <remarks>
   /// Use the <see cref="FileLevelControlBuilderAttribute"/> to apply the extension point to a class derived from <see cref="UserControl"/>.
   /// </remarks>
-  public class CodeProcessingUserControlBuilder : FileLevelUserControlBuilder 
+  public class CodeProcessingUserControlBuilder : FileLevelUserControlBuilder
   {
     public override void ProcessGeneratedCode (
         CodeCompileUnit codeCompileUnit,
@@ -37,13 +37,13 @@ namespace Remotion.Web.Compilation
         CodeMemberMethod buildMethod,
         CodeMemberMethod dataBindingMethod)
     {
-      ArgumentUtility.CheckNotNull ("codeCompileUnit", codeCompileUnit);
-      ArgumentUtility.CheckNotNull ("baseType", baseType);
-      ArgumentUtility.CheckNotNull ("derivedType", derivedType);
-      ArgumentUtility.CheckNotNull ("buildMethod", buildMethod);
+      ArgumentUtility.CheckNotNull("codeCompileUnit", codeCompileUnit);
+      ArgumentUtility.CheckNotNull("baseType", baseType);
+      ArgumentUtility.CheckNotNull("derivedType", derivedType);
+      ArgumentUtility.CheckNotNull("buildMethod", buildMethod);
 
       var processor = SafeServiceLocator.Current.GetInstance<IControlBuilderCodeProcessor>();
-      processor.ProcessGeneratedCode (
+      processor.ProcessGeneratedCode(
           codeCompileUnit,
           baseType,
           derivedType,
@@ -59,7 +59,7 @@ namespace Remotion.Web.Compilation
         CodeMemberMethod buildMethod,
         CodeMemberMethod dataBindingMethod)
     {
-      base.ProcessGeneratedCode (codeCompileUnit, baseType, derivedType, buildMethod, dataBindingMethod);
+      base.ProcessGeneratedCode(codeCompileUnit, baseType, derivedType, buildMethod, dataBindingMethod);
     }
   }
 }

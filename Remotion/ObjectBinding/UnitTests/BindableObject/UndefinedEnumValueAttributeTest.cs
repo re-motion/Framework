@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -32,33 +33,37 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void Initialize ()
     {
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (TestEnum.Undefined);
+      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute(TestEnum.Undefined);
 
-      Assert.That (undefinedValueAttribute.GetValue(), Is.EqualTo (TestEnum.Undefined));
+      Assert.That(undefinedValueAttribute.GetValue(), Is.EqualTo(TestEnum.Undefined));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentOutOfRangeException))]
     public void InitializeWithInvalidValue ()
     {
-      TestEnum invalidValue = (TestEnum) (-1);
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (invalidValue);
+      TestEnum invalidValue = (TestEnum)(-1);
+      Assert.That(
+          () => new UndefinedEnumValueAttribute(invalidValue),
+          Throws.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'value' has type 'Remotion.ObjectBinding.UnitTests.BindableObject.UndefinedEnumValueAttributeTest' "
-        + "when type 'System.Enum' was expected.\r\nParameter name: value")]
     public void InitializeWithObjectOfInvalidType ()
     {
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (this);
+      Assert.That(
+          () => new UndefinedEnumValueAttribute(this),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'value' has type 'Remotion.ObjectBinding.UnitTests.BindableObject.UndefinedEnumValueAttributeTest' "
+                  + "when type 'System.Enum' was expected.", "value"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
     public void InitializeWithNull ()
     {
-      UndefinedEnumValueAttribute undefinedValueAttribute = new UndefinedEnumValueAttribute (null);
+      Assert.That(
+          () => new UndefinedEnumValueAttribute(null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
   }
 }

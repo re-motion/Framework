@@ -49,7 +49,7 @@
               <td>
               </td>
               <td>
-                <remotion:BocTextValue ID="LevelOneStringValueField" runat="server" DataSourceControl="LevelOneDataSource"
+                <remotion:BocTextValue ID="LevelOneStringValueField" runat="server" DataSourceControl="LevelOneDataSource" EnableOptionalValidators="true"
                   PropertyIdentifier="StringValue" />
               </td>
             </tr>
@@ -57,13 +57,13 @@
               <td>
               </td>
               <td>
-                <remotion:BocTextValue ID="LevelOneIntValueField" runat="server" DataSourceControl="LevelOneDataSource"
+                <remotion:BocTextValue ID="LevelOneIntValueField" runat="server" DataSourceControl="LevelOneDataSource" EnableOptionalValidators="true"
                   PropertyIdentifier="IntValue" />
               </td>
             </tr>
           </table>
 
-          <remotion:BusinessObjectReferenceDataSourceControl ID="LevelTwoDataSource" runat="server" DataSourceControl="LevelOneDataSource" PropertyIdentifier="ReferenceValue" />
+          <remotion:BusinessObjectReferenceDataSourceControl ID="LevelTwoDataSource" runat="server" DataSourceControl="LevelOneDataSource" EnableOptionalValidators="true" PropertyIdentifier="ReferenceValue" />
           <table id="LevelTwoFormGrid" runat="server">
             <tr>
               <td>
@@ -74,7 +74,7 @@
               <td>
               </td>
               <td>
-                <remotion:BocTextValue ID="LevelTwoStringValueField" runat="server" DataSourceControl="LevelTwoDataSource"
+                <remotion:BocTextValue ID="LevelTwoStringValueField" runat="server" DataSourceControl="LevelTwoDataSource" EnableOptionalValidators="true"
                   PropertyIdentifier="StringValue" />
               </td>
             </tr>
@@ -82,13 +82,13 @@
               <td>
               </td>
               <td>
-                <remotion:BocTextValue ID="LevelTwoIntValueField" runat="server" DataSourceControl="LevelTwoDataSource"
+                <remotion:BocTextValue ID="LevelTwoIntValueField" runat="server" DataSourceControl="LevelTwoDataSource" EnableOptionalValidators="true"
                   PropertyIdentifier="IntValue" />
               </td>
             </tr>
           </table>
 
-          <remotion:BusinessObjectReferenceDataSourceControl ID="LevelThreeDataSource" runat="server" DataSourceControl="LevelTwoDataSource" PropertyIdentifier="ReferenceValue" />
+          <remotion:BusinessObjectReferenceDataSourceControl ID="LevelThreeDataSource" runat="server" DataSourceControl="LevelTwoDataSource" EnableOptionalValidators="true" PropertyIdentifier="ReferenceValue" />
           <table id="LevelThreeFormGrid" runat="server">
             <tr>
               <td>
@@ -99,7 +99,7 @@
               <td>
               </td>
               <td>
-                <remotion:BocTextValue ID="LevelThreeStringValueField" runat="server" DataSourceControl="LevelThreeDataSource"
+                <remotion:BocTextValue ID="LevelThreeStringValueField" runat="server" DataSourceControl="LevelThreeDataSource" EnableOptionalValidators="true"
                   PropertyIdentifier="StringValue" />
               </td>
             </tr>
@@ -107,7 +107,7 @@
               <td>
               </td>
               <td>
-                <remotion:BocTextValue ID="LevelThreeIntValueField" runat="server" DataSourceControl="LevelThreeDataSource"
+                <remotion:BocTextValue ID="LevelThreeIntValueField" runat="server" DataSourceControl="LevelThreeDataSource" EnableOptionalValidators="true"
                   PropertyIdentifier="IntValue" />
                 <asp:CustomValidator ID="LevelThreeIntValueFieldCustomValidator" runat="server" OnServerValidate="LevelThreeIntValueFieldCustomValidator_OnServerValidate" ErrorMessage="Most not be 0" ControlToValidate="LevelThreeIntValueField" />
               </td>

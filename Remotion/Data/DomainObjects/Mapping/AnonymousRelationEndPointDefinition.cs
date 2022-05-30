@@ -24,21 +24,25 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Represents the non-existing side of a unidirectional relationship.
   /// </summary>
-  [DebuggerDisplay ("{GetType().Name}: Cardinality: {Cardinality}")]
-  public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition
+  [DebuggerDisplay("{GetType().Name}: Cardinality: {Cardinality}")]
+  public class AnonymousRelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
 
     public AnonymousRelationEndPointDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       _classDefinition = classDefinition;
     }
 
     public RelationDefinition RelationDefinition
     {
-      get { return _relationDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_relationDefinition, "RelationDefinition has not been set for this relation end point.");
+        return _relationDefinition;
+      }
     }
 
     public ClassDefinition ClassDefinition
@@ -46,12 +50,12 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _classDefinition; }
     }
 
-    public string PropertyName
+    public string? PropertyName
     {
       get { return null; }
     }
 
-    public IPropertyInformation PropertyInfo 
+    public IPropertyInformation? PropertyInfo
     {
       get { return null; }
     }
@@ -78,9 +82,14 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       _relationDefinition = relationDefinition;
+    }
+
+    public bool HasRelationDefinitionBeenSet
+    {
+      get { return _relationDefinition != null; }
     }
   }
 }

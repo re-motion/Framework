@@ -33,10 +33,15 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Private constructor, may be obtained via a <see cref="PageObjectContext"/> or via control selection.
     /// </summary>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// </exception>
     internal ControlObjectContext ([NotNull] PageObject pageObject, [NotNull] ElementScope scope)
-        : base (scope)
+        : base(scope)
     {
-      ArgumentUtility.CheckNotNull ("pageObject", pageObject);
+      ArgumentUtility.CheckNotNull("pageObject", pageObject);
 
       _pageObject = pageObject;
     }
@@ -72,17 +77,24 @@ namespace Remotion.Web.Development.WebTesting
     /// <see cref="BrowserWindow"/> and on the same page.
     /// </summary>
     /// <param name="scope">The scope of the other <see cref="ControlObject"/>.</param>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// <para>- or -</para>
+    /// If server error has occurred.
+    /// </exception>
     public ControlObjectContext CloneForControl ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       try
       {
-        return new ControlObjectContext (PageObject, scope);
+        return new ControlObjectContext(PageObject, scope);
       }
-      catch (MissingHtmlException)
+      catch (WebTestException)
       {
-        PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError (PageObject.Scope);
+        PageObject.Context.RequestErrorDetectionStrategy.CheckPageForError(PageObject.Scope);
 
         throw;
       }
@@ -101,7 +113,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       var rootScope = Window.GetRootScope();
 
-      var cloneForNewPage = new PageObjectContext (Browser, Window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context.ParentContext);
+      var cloneForNewPage = new PageObjectContext(Browser, Window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context.ParentContext);
 
       // No error page detection. See remarks documentation on this method.
 
@@ -120,11 +132,11 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("windowLocator", windowLocator);
+      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 
-      var context = CloneForNewWindowInternal (windowLocator);
+      var context = CloneForNewWindowInternal(windowLocator);
       context.Window.MaximiseWindow();
       return context;
     }
@@ -141,19 +153,19 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     public PageObjectContext CloneForNewPopupWindow ([NotNull] string windowLocator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("windowLocator", windowLocator);
+      ArgumentUtility.CheckNotNullOrEmpty("windowLocator", windowLocator);
 
       // No error page detection. See remarks documentation on this method.
 
-      return CloneForNewWindowInternal (windowLocator);
+      return CloneForNewWindowInternal(windowLocator);
     }
 
     private PageObjectContext CloneForNewWindowInternal (string windowLocator)
     {
-      var window = Browser.FindWindow (windowLocator);
+      var window = Browser.FindWindow(windowLocator);
       var rootScope = window.GetRootScope();
 
-      return new PageObjectContext (Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context);
+      return new PageObjectContext(Browser, window, PageObject.Context.RequestErrorDetectionStrategy, rootScope, PageObject.Context);
     }
 
     /// <summary>
@@ -168,7 +180,7 @@ namespace Remotion.Web.Development.WebTesting
     {
       // No error page detection. See remarks documentation on this method.
 
-      return new ControlSelectionContext (PageObject, Scope);
+      return new ControlSelectionContext(PageObject, Scope);
     }
   }
 }

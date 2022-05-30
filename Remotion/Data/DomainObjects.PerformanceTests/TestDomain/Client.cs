@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
   [DBTable]
   public abstract class Client : DomainObject, ISupportsGetObject
   {
-    public static Client NewObject()
+    public static Client NewObject ()
     {
       return DomainObject.NewObject<Client>();
     }
@@ -31,13 +31,13 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength= 100)]
+    [StringProperty(IsNullable = false, MaximumLength= 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Client")]
+    [DBBidirectionalRelation("Client")]
     public abstract ObjectList<File> Files { get; }
 
-    [DBBidirectionalRelation ("Client")]
+    [DBBidirectionalRelation("Client")]
     public abstract ObjectList<ClientBoundBaseClass> ClientBoundBaseClasses { get; }
   }
 }

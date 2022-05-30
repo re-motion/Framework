@@ -23,7 +23,7 @@ namespace Remotion.Security
   /// Represents a nullable <see cref="ISecurityProvider"/> according to the "Null Object Pattern".
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(ISecurityProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
   public class NullSecurityProvider : ISecurityProvider
   {
     public const int Position = Int32.MaxValue;

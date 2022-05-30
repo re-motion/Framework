@@ -21,7 +21,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   public class ExtensibleEnumWithDuplicateAttribute : ExtensibleEnum<ExtensibleEnumWithDuplicateAttribute>
   {
     public ExtensibleEnumWithDuplicateAttribute (string id)
-        : base (id)
+        : base(id)
     {
     }
   }

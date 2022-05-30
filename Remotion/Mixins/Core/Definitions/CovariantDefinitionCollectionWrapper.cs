@@ -21,21 +21,22 @@ using System.Diagnostics;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("Count = {Count}")]
+  [DebuggerDisplay("Count = {Count}")]
   public class CovariantDefinitionCollectionWrapper<TKey, TValue, TValueBase> : IDefinitionCollection<TKey, TValueBase>
+      where TKey : notnull
       where TValue : class, TValueBase
       where TValueBase : IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<TKey, TValue> _items;
 
-    public CovariantDefinitionCollectionWrapper(UniqueDefinitionCollection<TKey, TValue> items)
+    public CovariantDefinitionCollectionWrapper (UniqueDefinitionCollection<TKey, TValue> items)
     {
       _items = items;
     }
 
-    public TValueBase[] ToArray()
+    public TValueBase[] ToArray ()
     {
-      return _items.ToArray ();
+      return _items.ToArray();
     }
 
     public int Count
@@ -45,7 +46,7 @@ namespace Remotion.Mixins.Definitions
 
     public bool ContainsKey (TKey key)
     {
-      return _items.ContainsKey (key);
+      return _items.ContainsKey(key);
     }
 
     public TValueBase this [int index]
@@ -58,7 +59,7 @@ namespace Remotion.Mixins.Definitions
       get { return _items[key]; }
     }
 
-    public IEnumerator<TValueBase> GetEnumerator()
+    public IEnumerator<TValueBase> GetEnumerator ()
     {
       foreach (TValue item in _items)
         yield return item;

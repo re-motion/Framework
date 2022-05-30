@@ -27,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
     /// <summary>
     /// Extends <see cref="TestCaseFactoryBase.TestMethodAttribute"/> for the generic test page.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Method, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
     protected class GenericPageTestMethodAttribute : TestMethodAttribute
     {
       public GenericPageTestMethodAttribute ()
@@ -49,9 +49,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure
       /// <inheritdoc />
       public override void Apply (TestCaseData data)
       {
-        base.Apply (data);
+        base.Apply(data);
 
-        data.SetCategory ("GenericTest");
+        data.SetCategory("GenericTest");
       }
     }
   }

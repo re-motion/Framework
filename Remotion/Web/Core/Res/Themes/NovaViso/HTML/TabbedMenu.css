@@ -1,0 +1,133 @@
+:root
+{
+  --tabbedMenu-horizontal-padding: 0;
+}
+.tabbedMenu
+{
+  --tabbedMenu-separator: var(--remotion-themed-border-width) solid var(--color-contrast-separator);
+  --tabbedMenu-min-height: calc(var(--remotion-themed-spacing) * 7);
+  --tabbedMenu-border-width: 4px;
+}
+
+table.tabbedMenu
+{
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+table.tabbedMenu tr
+{
+  border-top: var(--tabbedMenu-separator);
+  border-bottom: var(--tabbedMenu-separator);
+}
+
+td.tabbedMainMenuCell
+{
+  background-color: var(--color-contrast);
+}
+
+td.tabbedMainMenuCell,
+td.tabbedSubMenuCell
+{
+  padding-top: var(--remotion-themed-spacing);
+  padding-bottom: 0;
+  padding-left: var(--tabbedMenu-horizontal-padding);
+  padding-right: var(--tabbedMenu-horizontal-padding);
+}
+
+td.tabbedMenuStatusCell
+{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  white-space: nowrap;
+  min-height: var(--tabbedMenu-min-height);
+  padding: 0 var(--remotion-themed-spacing-large);
+  padding-top: var(--remotion-themed-spacing);
+  font: var(--remotion-themed-font-bold);
+}
+
+div.tabbedSubMenu div.tabStripTabsPane.empty
+{
+  min-height: var(--tabbedMenu-min-height);
+}
+
+div.tabbedMainMenu span.tabStripTabSeparator,
+div.tabbedSubMenu span.tabStripTabSeparator
+{
+  display: none;
+}
+
+div.tabbedMainMenu span.tabStripTab,
+div.tabbedMainMenu span.tabStripTabSelected,
+div.tabbedSubMenu span.tabStripTab,
+div.tabbedSubMenu span.tabStripTabSelected
+{
+  font: var(--remotion-themed-font-bold);
+}
+
+div.tabbedMainMenu span.tabStripTab a,
+div.tabbedMainMenu span.tabStripTabSelected a,
+div.tabbedSubMenu span.tabStripTab a,
+div.tabbedSubMenu span.tabStripTabSelected a
+{
+  min-height: calc(var(--tabbedMenu-min-height) - var(--tabbedMenu-border-width));
+  color: var(--color-standard-text);
+  text-decoration: none;
+  width: auto;
+  border-bottom: solid var(--tabbedMenu-border-width) transparent;
+  box-sizing: border-box;
+}
+
+div.tabbedMainMenu span.tabStripTab a:focus,
+div.tabbedMainMenu span.tabStripTabSelected a:focus,
+div.tabbedSubMenu span.tabStripTab a:focus,
+div.tabbedSubMenu span.tabStripTabSelected a:focus
+{
+  outline: none;
+}
+
+div.tabbedMainMenu span.tabStripTabSelected a,
+div.tabbedSubMenu span.tabStripTabSelected a,
+div.tabbedMainMenu span.tabStripTab:not(.disabled):hover a,
+div.tabbedMainMenu span.tabStripTabSelected:not(.disabled):hover a,
+div.tabbedSubMenu span.tabStripTab:not(.disabled):hover a,
+div.tabbedSubMenu span.tabStripTabSelected:not(.disabled):hover a
+{
+  border-bottom-color: var(--color-primary);
+}
+
+div.tabbedMainMenu span.tabStripTab a span.anchorBody,
+div.tabbedMainMenu span.tabStripTabSelected a span.anchorBody,
+div.tabbedSubMenu span.tabStripTab a span.anchorBody,
+div.tabbedSubMenu span.tabStripTabSelected a span.anchorBody
+{
+  border: var(--remotion-themed-border-placeholder);
+  border-radius: var(--remotion-themed-border-radius);
+  padding: var(--remotion-themed-spacing);
+}
+
+div.tabbedMainMenu span.tabStripTab a:focus span.anchorBody,
+div.tabbedMainMenu span.tabStripTabSelected a:focus span.anchorBody,
+div.tabbedSubMenu span.tabStripTab a:focus span.anchorBody,
+div.tabbedSubMenu span.tabStripTabSelected a:focus span.anchorBody
+{
+  background-color: var(--remotion-themed-background-color-focus);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+div.tabbedMainMenu .tabStripTab.disabled a,
+div.tabbedSubMenu .tabStripTab.disabled a
+{
+  color: var(--color-disabled-text);
+}
+
+div.tabbedMainMenu .tabStripTabSelected.disabled,
+div.tabbedSubMenu .tabStripTabSelected.disabled
+{
+  color: var(--color-disabled-text);
+  border-bottom-color: var(--color-disabled-border);
+}

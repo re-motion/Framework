@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     public override IScriptElement GetCreateElement (SqlIndexDefinition indexDefinition, EntityNameDefinition ownerName)
     {
-      ArgumentUtility.CheckNotNull ("indexDefinition", indexDefinition);
-      ArgumentUtility.CheckNotNull ("ownerName", ownerName);
+      ArgumentUtility.CheckNotNull("indexDefinition", indexDefinition);
+      ArgumentUtility.CheckNotNull("ownerName", ownerName);
 
       return new ScriptStatement(
-      string.Format (
+      string.Format(
          "CREATE {0}{1} INDEX [{2}]\r\n"
          + "  ON [{3}].[{4}] ({5}){6}{7}",
          indexDefinition.IsUnique.HasValue && indexDefinition.IsUnique.Value ? "UNIQUE " : string.Empty,
@@ -43,19 +43,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
          indexDefinition.IndexName,
          ownerName.SchemaName ?? DefaultSchema,
          ownerName.EntityName,
-         GetIndexedColumnNames (indexDefinition.Columns),
+         GetIndexedColumnNames(indexDefinition.Columns),
          indexDefinition.IncludedColumns != null
-             ? "\r\n  INCLUDE (" + string.Join (", ", indexDefinition.IncludedColumns.Select (c => "[" + c.Name + "]")) + ")"
+             ? "\r\n  INCLUDE (" + string.Join(", ", indexDefinition.IncludedColumns.Select(c => "[" + c.Name + "]")) + ")"
              : string.Empty,
-         GetCreateIndexOptions (GetCreateIndexOptionItems (indexDefinition))));
+         GetCreateIndexOptions(GetCreateIndexOptionItems(indexDefinition))));
     }
 
     protected override IEnumerable<string> GetCreateIndexOptionItems (SqlIndexDefinition indexDefinition)
     {
       var options = new List<string>();
-      options.Add (GetIndexOption ("IGNORE_DUP_KEY", indexDefinition.IgnoreDupKey));
-      options.Add (GetIndexOption ("ONLINE", indexDefinition.Online));
-      options.AddRange (base.GetCreateIndexOptionItems (indexDefinition));
+      options.Add(GetIndexOption("IGNORE_DUP_KEY", indexDefinition.IgnoreDupKey));
+      options.Add(GetIndexOption("ONLINE", indexDefinition.Online));
+      options.AddRange(base.GetCreateIndexOptionItems(indexDefinition));
       return options;
     }
   }

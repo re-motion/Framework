@@ -28,30 +28,30 @@ namespace Remotion.Data.DomainObjects.Linq.ExecutableQueries
   /// are converted to this type via the <see cref="ResultConversion"/> delegate.</typeparam>
   public class ScalarQueryAdapter<T> : QueryAdapterBase<T>
   {
-    private readonly Func<object, T> _resultConversion;
+    private readonly Func<object?, T> _resultConversion;
 
-    public ScalarQueryAdapter (IQuery query, Func<object, T> resultConversion)
-      : base (ArgumentUtility.CheckNotNull ("query", query))
+    public ScalarQueryAdapter (IQuery query, Func<object?, T> resultConversion)
+      : base(ArgumentUtility.CheckNotNull("query", query))
     {
-      ArgumentUtility.CheckNotNull ("resultConversion", resultConversion);
+      ArgumentUtility.CheckNotNull("resultConversion", resultConversion);
 
       if (query.QueryType != QueryType.Scalar)
-        throw new ArgumentException ("Only scalar queries can be used to load scalar results.", "query");
+        throw new ArgumentException("Only scalar queries can be used to load scalar results.", "query");
 
       _resultConversion = resultConversion;
     }
 
-    public Func<object, T> ResultConversion
+    public Func<object?, T> ResultConversion
     {
       get { return _resultConversion; }
     }
 
     public override T Execute (IQueryManager queryManager)
     {
-      ArgumentUtility.CheckNotNull ("queryManager", queryManager);
+      ArgumentUtility.CheckNotNull("queryManager", queryManager);
 
-      var scalarValue = queryManager.GetScalar (this);
-      return _resultConversion (scalarValue);
+      var scalarValue = queryManager.GetScalar(this);
+      return _resultConversion(scalarValue);
     }
   }
 }

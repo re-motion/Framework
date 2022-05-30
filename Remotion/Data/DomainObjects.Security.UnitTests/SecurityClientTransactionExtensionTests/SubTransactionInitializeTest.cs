@@ -29,33 +29,33 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       base.SetUp();
 
-      _testHelper = new TestHelper ();
-      _extension = new SecurityClientTransactionExtension ();
+      _testHelper = new TestHelper();
+      _extension = new SecurityClientTransactionExtension();
     }
 
     [Test]
     public void SubTransactionInitialize_AddsExtensionToSubTransaction ()
     {
       var subTransaction = ClientTransaction.CreateRootTransaction();
-      _testHelper.AddExtension (_extension);
-      
-      _extension.SubTransactionInitialize (_testHelper.Transaction, subTransaction);
-      
-      Assert.That (subTransaction.Extensions[_extension.Key], Is.SameAs (_extension));
+      _testHelper.AddExtension(_extension);
+
+      _extension.SubTransactionInitialize(_testHelper.Transaction, subTransaction);
+
+      Assert.That(subTransaction.Extensions[_extension.Key], Is.SameAs(_extension));
     }
 
     [Test]
     public void SubTransactionInitialize_IgnoresExtensionIfAlreadyExists ()
     {
       var subTransaction = ClientTransaction.CreateRootTransaction();
-      _testHelper.AddExtension (_extension);
+      _testHelper.AddExtension(_extension);
 
       var existingExtension = new SecurityClientTransactionExtension();
-      subTransaction.Extensions.Add (existingExtension);
+      subTransaction.Extensions.Add(existingExtension);
 
-      _extension.SubTransactionInitialize (_testHelper.Transaction, subTransaction);
-      
-      Assert.That (subTransaction.Extensions[_extension.Key], Is.SameAs (existingExtension));
+      _extension.SubTransactionInitialize(_testHelper.Transaction, subTransaction);
+
+      Assert.That(subTransaction.Extensions[_extension.Key], Is.SameAs(existingExtension));
     }
   }
 }

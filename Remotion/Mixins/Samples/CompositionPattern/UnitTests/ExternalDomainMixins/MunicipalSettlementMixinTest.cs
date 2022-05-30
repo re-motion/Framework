@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain;
 using Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins;
@@ -26,29 +27,32 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
   public class MunicipalSettlementMixinTest
   {
     private MunicipalSettlementMixin _mixin;
-    private ISettlement _targetStub;
+    private Mock<ISettlement> _targetStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<MunicipalSettlementMixin, ISettlement> (out _targetStub);
+      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<MunicipalSettlementMixin, ISettlement>(out _targetStub);
     }
 
     [Test]
     public void OnTargetReferenceInitializing ()
     {
-      Assert.That (_mixin.MunicipalityID, Is.EqualTo (12));
+      Assert.That(_mixin.MunicipalityID, Is.EqualTo(12));
     }
 
     [Test]
     public void GetDescriptionForMayors ()
     {
-      _targetStub.Title = "Title";
-      _targetStub.SettlementKind = "Kind";
+      _targetStub.SetupProperty(_ => _.Title);
+      _targetStub.SetupProperty(_ => _.SettlementKind);
+
+      _targetStub.Object.Title = "Title";
+      _targetStub.Object.SettlementKind = "Kind";
 
       var result = _mixin.GetDescriptionForMayors();
 
-      Assert.That (result, Is.EqualTo ("MunicipalSettlement: Title (Kind), 12"));
+      Assert.That(result, Is.EqualTo("MunicipalSettlement: Title (Kind), 12"));
     }
   }
 }

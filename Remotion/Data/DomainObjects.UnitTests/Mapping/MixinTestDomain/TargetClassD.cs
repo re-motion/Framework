@@ -21,9 +21,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MixinTestDomain
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof (MixinA))]
+  [Uses(typeof(MixinA))]
   public abstract class TargetClassD : TargetClassBase
   {
-    
+
   }
 }

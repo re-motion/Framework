@@ -46,22 +46,22 @@ namespace Remotion.Data.DomainObjects.DataManagement
     private DataContainerMap _dataContainerMap;
     private DomainObjectStateCache _domainObjectStateCache;
 
-    private object[] _deserializedData; // only used for deserialization
+    private object[]? _deserializedData; // only used for deserialization
 
     public DataManager (
-        ClientTransaction clientTransaction, 
+        ClientTransaction clientTransaction,
         IClientTransactionEventSink transactionEventSink,
         IDataContainerEventListener dataContainerEventListener,
         IInvalidDomainObjectManager invalidDomainObjectManager,
         IObjectLoader objectLoader,
         IRelationEndPointManager relationEndPointManager)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
-      ArgumentUtility.CheckNotNull ("dataContainerEventListener", dataContainerEventListener);
-      ArgumentUtility.CheckNotNull ("invalidDomainObjectManager", invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull ("objectLoader", objectLoader);
-      ArgumentUtility.CheckNotNull ("relationEndPointManager", relationEndPointManager);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("dataContainerEventListener", dataContainerEventListener);
+      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull("objectLoader", objectLoader);
+      ArgumentUtility.CheckNotNull("relationEndPointManager", relationEndPointManager);
 
       _clientTransaction = clientTransaction;
       _transactionEventSink = transactionEventSink;
@@ -70,8 +70,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _objectLoader = objectLoader;
       _relationEndPointManager = relationEndPointManager;
 
-      _dataContainerMap = new DataContainerMap (_transactionEventSink);
-      _domainObjectStateCache = new DomainObjectStateCache (clientTransaction);
+      _dataContainerMap = new DataContainerMap(_transactionEventSink);
+      _domainObjectStateCache = new DomainObjectStateCache(clientTransaction);
     }
 
     public ClientTransaction ClientTransaction
@@ -99,287 +99,295 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return _relationEndPointManager.RelationEndPoints; }
     }
 
-    public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
+    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Predicate<DomainObjectState> predicate)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("domainObjectStates", domainObjectStates);
-
-      var stateSet = new StateValueSet (domainObjectStates);
+      ArgumentUtility.CheckNotNull("predicate", predicate);
 
       var matchingObjects = from dataContainer in DataContainers
-                            let domainObject = dataContainer.DomainObject
-                            let state = domainObject.TransactionContext[_clientTransaction].State
-                            where stateSet.Matches (state)
-                            let associatedEndPointSequence = 
-                                dataContainer.AssociatedRelationEndPointIDs.Select (GetRelationEndPointWithoutLoading).Where (ep => ep != null)
-                            select new PersistableData (domainObject, state, dataContainer, associatedEndPointSequence);
+          let domainObject = dataContainer.DomainObject
+          let state = domainObject.TransactionContext[_clientTransaction].State
+          where predicate(state)
+          let associatedEndPointSequence =
+              dataContainer.AssociatedRelationEndPointIDs.Select(GetRelationEndPointWithoutLoading).Where(ep => ep != null)
+          select new PersistableData(domainObject, state, dataContainer, associatedEndPointSequence);
       return matchingObjects;
     }
 
     public void RegisterDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
       if (!dataContainer.HasDomainObject)
-        throw new InvalidOperationException ("The DomainObject of a DataContainer must be set before it can be registered with a transaction.");
+        throw new InvalidOperationException("The DomainObject of a DataContainer must be set before it can be registered with a transaction.");
 
       if (_dataContainerMap[dataContainer.ID] != null)
-        throw new InvalidOperationException (string.Format ("A DataContainer with ID '{0}' already exists in this transaction.", dataContainer.ID));
+        throw new InvalidOperationException(string.Format("A DataContainer with ID '{0}' already exists in this transaction.", dataContainer.ID));
 
-      dataContainer.SetClientTransaction (_clientTransaction);
-      dataContainer.SetEventListener (_dataContainerEventListener);
+      dataContainer.SetClientTransaction(_clientTransaction);
+      dataContainer.SetEventListener(_dataContainerEventListener);
 
-      _dataContainerMap.Register (dataContainer);
-      _relationEndPointManager.RegisterEndPointsForDataContainer (dataContainer);
+      _dataContainerMap.Register(dataContainer);
+      _relationEndPointManager.RegisterEndPointsForDataContainer(dataContainer);
     }
 
     public void Discard (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
 
-      var unregisterEndPointsCommand = _relationEndPointManager.CreateUnregisterCommandForDataContainer (dataContainer);
-      var unregisterDataContainerCommand = CreateUnregisterDataContainerCommand (dataContainer.ID);
-      var compositeCommand = new CompositeCommand (unregisterEndPointsCommand, unregisterDataContainerCommand);
+      var unregisterEndPointsCommand = _relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer);
+      var unregisterDataContainerCommand = CreateUnregisterDataContainerCommand(dataContainer.ID);
+      var compositeCommand = new CompositeCommand(unregisterEndPointsCommand, unregisterDataContainerCommand);
 
       try
       {
-        compositeCommand.NotifyAndPerform ();
+        compositeCommand.NotifyAndPerform();
       }
       catch (Exception ex)
       {
-        var message = string.Format ("Cannot discard data for object '{0}': {1}", dataContainer.ID, ex.Message);
-        throw new InvalidOperationException (message, ex);
+        var message = string.Format("Cannot discard data for object '{0}': {1}", dataContainer.ID, ex.Message);
+        throw new InvalidOperationException(message, ex);
       }
 
-      dataContainer.Discard ();
+      dataContainer.Discard();
 
       var domainObject = dataContainer.DomainObject;
-      _invalidDomainObjectManager.MarkInvalid (domainObject);
+      _invalidDomainObjectManager.MarkInvalid(domainObject);
     }
 
     public void MarkInvalid (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       // This uses IsEnlisted rather than a RootTransaction check because the DomainObject reference is used inside the ClientTransaction, and we
       // explicitly want to allow only objects enlisted in the transaction.
-      if (!_clientTransaction.IsEnlisted (domainObject))
+      if (!_clientTransaction.IsEnlisted(domainObject))
       {
-        throw CreateClientTransactionsDifferException (
+        throw CreateClientTransactionsDifferException(
             "Cannot mark DomainObject '{0}' invalid, because it belongs to a different ClientTransaction.",
             domainObject.ID);
       }
 
       if (DataContainers[domainObject.ID] != null)
       {
-        var message = string.Format ("Cannot mark DomainObject '{0}' invalid because there is data registered for the object.", domainObject.ID);
-        throw new InvalidOperationException (message);
+        var message = string.Format("Cannot mark DomainObject '{0}' invalid because there is data registered for the object.", domainObject.ID);
+        throw new InvalidOperationException(message);
       }
 
-      _invalidDomainObjectManager.MarkInvalid (domainObject);
+      _invalidDomainObjectManager.MarkInvalid(domainObject);
     }
 
     public void MarkNotInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      if (!_invalidDomainObjectManager.MarkNotInvalid (objectID))
+      if (!_invalidDomainObjectManager.MarkNotInvalid(objectID))
       {
-        var message = string.Format ("Cannot clear the invalid state from object '{0}' - it wasn't marked invalid in the first place.", objectID);
-        throw new InvalidOperationException (message);
+        var message = string.Format("Cannot clear the invalid state from object '{0}' - it wasn't marked invalid in the first place.", objectID);
+        throw new InvalidOperationException(message);
       }
     }
 
     public void Commit ()
     {
-      var deletedDataContainers = _dataContainerMap.Where (dc => dc.State == StateType.Deleted).ToList();
+      var deletedDataContainers = _dataContainerMap.Where(dc => dc.State.IsDeleted).ToList();
 
       _relationEndPointManager.CommitAllEndPoints();
 
       foreach (var deletedDataContainer in deletedDataContainers)
-        Discard (deletedDataContainer);
+        Discard(deletedDataContainer);
 
       _dataContainerMap.CommitAllDataContainers();
     }
 
     public void Rollback ()
     {
-      var newDataContainers = _dataContainerMap.Where (dc => dc.State == StateType.New).ToList();
+      var newDataContainers = _dataContainerMap.Where(dc => dc.State.IsNew).ToList();
 
       // roll back end point state before discarding data containers because Discard checks that no dangling end points are created
       _relationEndPointManager.RollbackAllEndPoints();
 
       // discard new data containers before rolling back data container state - new data containers cannot be rolled back
       foreach (var newDataContainer in newDataContainers)
-        Discard (newDataContainer);
+        Discard(newDataContainer);
 
       _dataContainerMap.RollbackAllDataContainers();
     }
 
-    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
+    public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      if (_invalidDomainObjectManager.IsInvalid (objectID))
-        throw new ObjectInvalidException (objectID);
+      if (_invalidDomainObjectManager.IsInvalid(objectID))
+        throw new ObjectInvalidException(objectID);
 
       return DataContainers[objectID];
     }
 
-    public StateType GetState (ObjectID objectID)
+    public DomainObjectState GetState (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return _domainObjectStateCache.GetState (objectID);
+      return _domainObjectStateCache.GetState(objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
+    public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       // GetDataContainerWithoutLoading guards against invalid IDs.
-      var dataContainer = GetDataContainerWithoutLoading (objectID);
+      var dataContainer = GetDataContainerWithoutLoading(objectID);
       if (dataContainer != null)
         return dataContainer;
 
-      _objectLoader.LoadObject (objectID, throwOnNotFound);
+      _objectLoader.LoadObject(objectID, throwOnNotFound);
 
       // Since LoadObjects might have marked IDs as invalid, we need to use DataContainers[...] instead of GetDataContainerWithoutLoading here.
       return DataContainers[objectID];
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer?> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       // GetDataContainerWithoutLoading below guards against invalid IDs.
 
       var objectIDsAsCollection = objectIDs.ConvertToCollection();
       // Note that the empty list check is just an "optimization": IObjectLoader works well with empty ObjectID lists, but it seems waste to go 
       // through that whole call chain even if no IDs are to be loaded.
-      var idsToBeLoaded = objectIDsAsCollection.Where (id => GetDataContainerWithoutLoading (id) == null).ConvertToCollection();
+      var idsToBeLoaded = objectIDsAsCollection.Where(id => GetDataContainerWithoutLoading(id) == null).ConvertToCollection();
       if (idsToBeLoaded.Any())
-        _objectLoader.LoadObjects (idsToBeLoaded, throwOnNotFound);
+        _objectLoader.LoadObjects(idsToBeLoaded, throwOnNotFound);
 
       // Since LoadObjects might have marked IDs as invalid, we need to use DataContainers[...] instead of GetDataContainerWithoutLoading here.
-      return objectIDsAsCollection.Select (id => DataContainers[id]);
+      return objectIDsAsCollection.Select(id => DataContainers[id]);
     }
 
     public void LoadLazyCollectionEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      var collectionEndPoint = GetRelationEndPointWithoutLoading (endPointID) as ICollectionEndPoint;
+      var collectionEndPoint = GetRelationEndPointWithoutLoading(endPointID) as ICollectionEndPoint<ICollectionEndPointData>;
 
       if (collectionEndPoint == null)
-        throw new ArgumentException ("The given ID does not identify an ICollectionEndPoint managed by this DataManager.", "endPointID");
+        throw new ArgumentException("The given ID does not identify an ICollectionEndPoint managed by this DataManager.", "endPointID");
 
       if (collectionEndPoint.IsDataComplete)
-        throw new InvalidOperationException ("The given end-point cannot be loaded, its data is already complete.");
+        throw new InvalidOperationException("The given end-point cannot be loaded, its data is already complete.");
 
-      var loadedData = _objectLoader.GetOrLoadRelatedObjects (endPointID);
-      var domainObjects = loadedData.Select (data => data.GetDomainObjectReference()).ToArray();
-      collectionEndPoint.MarkDataComplete (domainObjects);
+      var loadedData = _objectLoader.GetOrLoadRelatedObjects(endPointID);
+      var domainObjects = loadedData.Select(
+          data =>
+          {
+            Assertion.IsFalse(data.IsNull, "ILoadedObjectData.ObjectID: {0}", data.ObjectID);
+
+            var domainObjectReference = data.GetDomainObjectReference();
+            Assertion.DebugIsNotNull(domainObjectReference, "data.GetDomainObjectReference() != null");
+
+            return domainObjectReference;
+          }).ToArray();
+      collectionEndPoint.MarkDataComplete(domainObjects);
     }
 
     public void LoadLazyVirtualObjectEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      var virtualObjectEndPoint = GetRelationEndPointWithoutLoading (endPointID) as IVirtualObjectEndPoint;
+      var virtualObjectEndPoint = GetRelationEndPointWithoutLoading(endPointID) as IVirtualObjectEndPoint;
 
       if (virtualObjectEndPoint == null)
-        throw new ArgumentException ("The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.", "endPointID");
+        throw new ArgumentException("The given ID does not identify an IVirtualObjectEndPoint managed by this DataManager.", "endPointID");
 
       if (virtualObjectEndPoint.IsDataComplete)
-        throw new InvalidOperationException ("The given end-point cannot be loaded, its data is already complete.");
+        throw new InvalidOperationException("The given end-point cannot be loaded, its data is already complete.");
 
-      var loadedObjectData = _objectLoader.GetOrLoadRelatedObject (endPointID);
+      var loadedObjectData = _objectLoader.GetOrLoadRelatedObject(endPointID);
       var domainObject = loadedObjectData.GetDomainObjectReference();
 
       // Since RelationEndPointManager.RegisterEndPoint contains a query optimization for 1:1 relations, it is possible that
       // loading the related object has already marked the end-point complete. In that case, we won't call it again (to avoid an exception).
       if (!virtualObjectEndPoint.IsDataComplete)
-        virtualObjectEndPoint.MarkDataComplete (domainObject);
+        virtualObjectEndPoint.MarkDataComplete(domainObject);
     }
 
     public DataContainer LoadLazyDataContainer (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
       if (_dataContainerMap[objectID] != null)
-        throw new InvalidOperationException ("The given DataContainer cannot be loaded, its data is already available.");
+        throw new InvalidOperationException("The given DataContainer cannot be loaded, its data is already available.");
 
-      return GetDataContainerWithLazyLoad (objectID, throwOnNotFound: true);
+      return GetDataContainerWithLazyLoad(objectID, throwOnNotFound: true)!;
     }
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      return _relationEndPointManager.GetRelationEndPointWithLazyLoad (endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      return _relationEndPointManager.GetRelationEndPointWithLazyLoad(endPointID);
     }
 
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
+    public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      return _relationEndPointManager.GetRelationEndPointWithoutLoading (endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      return _relationEndPointManager.GetRelationEndPointWithoutLoading(endPointID);
     }
 
     public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
-      return _relationEndPointManager.GetOrCreateVirtualEndPoint (endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
+      return _relationEndPointManager.GetOrCreateVirtualEndPoint(endPointID);
     }
 
     public IDataManagementCommand CreateDeleteCommand (DomainObject deletedObject)
     {
-      ArgumentUtility.CheckNotNull ("deletedObject", deletedObject);
+      ArgumentUtility.CheckNotNull("deletedObject", deletedObject);
 
       // This uses IsEnlisted rather than a RootTransaction check because the DomainObject reference is used inside the ClientTransaction, and we
       // explicitly want to allow only objects enlisted in the transaction.
-      if (!_clientTransaction.IsEnlisted (deletedObject))
+      if (!_clientTransaction.IsEnlisted(deletedObject))
       {
-        throw CreateClientTransactionsDifferException (
+        throw CreateClientTransactionsDifferException(
             "Cannot delete DomainObject '{0}', because it belongs to a different ClientTransaction.",
             deletedObject.ID);
       }
 
-      DomainObjectCheckUtility.EnsureNotInvalid (deletedObject, ClientTransaction);
+      DomainObjectCheckUtility.EnsureNotInvalid(deletedObject, ClientTransaction);
 
-      if (deletedObject.TransactionContext[_clientTransaction].State == StateType.Deleted)
+      if (deletedObject.TransactionContext[_clientTransaction].State.IsDeleted)
         return new NopCommand();
 
-      return new DeleteCommand (_clientTransaction, deletedObject, _transactionEventSink);
+      return new DeleteCommand(_clientTransaction, deletedObject, _transactionEventSink);
     }
 
     public IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       var domainObjects = new List<DomainObject>();
-      var problematicDataContainers = new List<KeyValuePair<ObjectID, StateType>>();
+      var problematicDataContainers = new List<KeyValuePair<ObjectID, DataContainerState>>();
       var commands = new List<IDataManagementCommand>();
+      var dataContainerStateDiscarded = new DataContainerState.Builder().SetDiscarded().Value;
 
       foreach (var objectID in objectIDs)
       {
-        if (_invalidDomainObjectManager.IsInvalid (objectID))
+        if (_invalidDomainObjectManager.IsInvalid(objectID))
         {
-          problematicDataContainers.Add (new KeyValuePair<ObjectID, StateType> (objectID, StateType.Invalid));
+          problematicDataContainers.Add(new KeyValuePair<ObjectID, DataContainerState>(objectID, dataContainerStateDiscarded));
         }
         else
         {
-          var dataContainer = GetDataContainerWithoutLoading (objectID);
+          var dataContainer = GetDataContainerWithoutLoading(objectID);
           if (dataContainer != null)
           {
-            domainObjects.Add (dataContainer.DomainObject);
+            domainObjects.Add(dataContainer.DomainObject);
 
-            if (dataContainer.State != StateType.Unchanged)
+            if (dataContainer.State.IsUnchanged)
             {
-              problematicDataContainers.Add (new KeyValuePair<ObjectID, StateType> (dataContainer.ID, dataContainer.State));
+              commands.Add(CreateUnregisterDataContainerCommand(objectID));
+              commands.Add(_relationEndPointManager.CreateUnregisterCommandForDataContainer(dataContainer));
             }
             else
             {
-              commands.Add (CreateUnregisterDataContainerCommand (objectID));
-              commands.Add (_relationEndPointManager.CreateUnregisterCommandForDataContainer (dataContainer));
+              problematicDataContainers.Add(new KeyValuePair<ObjectID, DataContainerState>(dataContainer.ID, dataContainer.State));
             }
           }
         }
@@ -387,76 +395,91 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       if (problematicDataContainers.Count != 0)
       {
-        var itemList = string.Join (", ", problematicDataContainers.Select (dc => string.Format ("'{0}' ({1})", dc.Key, dc.Value)));
-        var message = string.Format (
+        var itemList = string.Join(", ", problematicDataContainers.Select(dc => string.Format("'{0}' ({1})", dc.Key, dc.Value)));
+        var message = string.Format(
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: {0}.",
             itemList);
-        return new ExceptionCommand (new InvalidOperationException (message));
+        return new ExceptionCommand(new InvalidOperationException(message));
       }
 
       if (domainObjects.Count == 0)
       {
-        Assertion.IsTrue (commands.Count == 0);
+        Assertion.IsTrue(commands.Count == 0);
         return new NopCommand();
       }
       else
       {
-        var compositeCommand = new CompositeCommand (commands);
-        return new UnloadCommand (domainObjects, compositeCommand, _transactionEventSink);
+        var compositeCommand = new CompositeCommand(commands);
+        return new UnloadCommand(domainObjects, compositeCommand, _transactionEventSink);
       }
     }
 
     public IDataManagementCommand CreateUnloadVirtualEndPointsCommand (params RelationEndPointID[] endPointIDs)
     {
-      ArgumentUtility.CheckNotNull ("endPointIDs", endPointIDs);
+      ArgumentUtility.CheckNotNull("endPointIDs", endPointIDs);
 
-      var endPointsOfNewOrDeletedObjects = (from endPointID in endPointIDs
-                                            let owningDataContainer = GetDataContainerWithoutLoading (endPointID.ObjectID)
-                                            where owningDataContainer != null && (owningDataContainer.State == StateType.Deleted || owningDataContainer.State == StateType.New)
-                                            select endPointID).ConvertToCollection();
+      var endPointsOfNewOrDeletedObjects = endPointIDs
+          .Where(endPointID => endPointID.ObjectID != null)
+          .Where(
+              endPointID =>
+              {
+                Assertion.DebugIsNotNull(endPointID.ObjectID, "endPointID.ObjectID != null");
+                var owningDataContainer = GetDataContainerWithoutLoading(endPointID.ObjectID);
+                return owningDataContainer != null && (owningDataContainer.State.IsDeleted || owningDataContainer.State.IsNew);
+              })
+          .ToList();
       if (endPointsOfNewOrDeletedObjects.Count > 0)
       {
         var message = "Cannot unload the following relation end-points because they belong to new or deleted objects: "
-            + string.Join (", ", endPointsOfNewOrDeletedObjects) + ".";
-        var exception = new InvalidOperationException (message);
-        return new ExceptionCommand (exception);
+            + string.Join(", ", endPointsOfNewOrDeletedObjects) + ".";
+        var exception = new InvalidOperationException(message);
+        return new ExceptionCommand(exception);
       }
 
-      return _relationEndPointManager.CreateUnloadVirtualEndPointsCommand (endPointIDs);
+      return _relationEndPointManager.CreateUnloadVirtualEndPointsCommand(endPointIDs);
     }
 
     public IDataManagementCommand CreateUnloadAllCommand ()
     {
-      return new UnloadAllCommand (_relationEndPointManager, _dataContainerMap, _invalidDomainObjectManager, _transactionEventSink);
+      return new UnloadAllCommand(_relationEndPointManager, _dataContainerMap, _invalidDomainObjectManager, _transactionEventSink);
     }
 
-    private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
+    private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object?[] args)
     {
-      return new ClientTransactionsDifferException (String.Format (message, args));
+      return new ClientTransactionsDifferException(String.Format(message, args));
     }
 
     private UnregisterDataContainerCommand CreateUnregisterDataContainerCommand (ObjectID objectID)
     {
-      return new UnregisterDataContainerCommand (objectID, _dataContainerMap);
+      return new UnregisterDataContainerCommand(objectID, _dataContainerMap);
     }
 
     #region Serialization
 
     protected DataManager (SerializationInfo info, StreamingContext context)
     {
-      _deserializedData = (object[]) info.GetValue ("doInfo.GetData", typeof (object[]));
+      _deserializedData = (object[])info.GetValue("doInfo.GetData", typeof(object[]))!;
+      _clientTransaction = null!;
+      _transactionEventSink = null!;
+      _dataContainerEventListener = null!;
+      _dataContainerMap = null!;
+      _relationEndPointManager = null!;
+      _domainObjectStateCache = null!;
+      _invalidDomainObjectManager = null!;
+      _objectLoader = null!;
     }
 
-    void IDeserializationCallback.OnDeserialization (object sender)
+    void IDeserializationCallback.OnDeserialization (object? sender)
     {
-      var doInfo = new FlattenedDeserializationInfo (_deserializedData);
-      _clientTransaction = doInfo.GetValueForHandle<ClientTransaction> ();
-      _transactionEventSink = doInfo.GetValueForHandle<IClientTransactionEventSink> ();
-      _dataContainerEventListener = doInfo.GetValueForHandle<IDataContainerEventListener> ();
+      Assertion.IsNotNull(_deserializedData, "_deserializedData != null");
+      var doInfo = new FlattenedDeserializationInfo(_deserializedData);
+      _clientTransaction = doInfo.GetValueForHandle<ClientTransaction>();
+      _transactionEventSink = doInfo.GetValueForHandle<IClientTransactionEventSink>();
+      _dataContainerEventListener = doInfo.GetValueForHandle<IDataContainerEventListener>();
       _dataContainerMap = doInfo.GetValue<DataContainerMap>();
       _relationEndPointManager = doInfo.GetValueForHandle<RelationEndPointManager>();
       _domainObjectStateCache = doInfo.GetValue<DomainObjectStateCache>();
-      _invalidDomainObjectManager = doInfo.GetValue<IInvalidDomainObjectManager> ();
+      _invalidDomainObjectManager = doInfo.GetValue<IInvalidDomainObjectManager>();
       _objectLoader = doInfo.GetValueForHandle<IObjectLoader>();
 
       _deserializedData = null;
@@ -466,16 +489,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
       var doInfo = new FlattenedSerializationInfo();
-      doInfo.AddHandle (_clientTransaction);
-      doInfo.AddHandle (_transactionEventSink);
-      doInfo.AddHandle (_dataContainerEventListener);
-      doInfo.AddValue (_dataContainerMap);
-      doInfo.AddHandle (_relationEndPointManager);
-      doInfo.AddValue (_domainObjectStateCache);
-      doInfo.AddValue (_invalidDomainObjectManager);
-      doInfo.AddHandle (_objectLoader);
-      
-      info.AddValue ("doInfo.GetData", doInfo.GetData());
+      doInfo.AddHandle(_clientTransaction);
+      doInfo.AddHandle(_transactionEventSink);
+      doInfo.AddHandle(_dataContainerEventListener);
+      doInfo.AddValue(_dataContainerMap);
+      doInfo.AddHandle(_relationEndPointManager);
+      doInfo.AddValue(_domainObjectStateCache);
+      doInfo.AddValue(_invalidDomainObjectManager);
+      doInfo.AddHandle(_objectLoader);
+
+      info.AddValue("doInfo.GetData", doInfo.GetData());
     }
 
     #endregion

@@ -31,95 +31,95 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
   {
     public IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions)
     {
-      var entityDefinitions = new RdbmsStorageEntityDefinitionProvider().GetEntityDefinitions (classDefinitions).ToList();
+      var entityDefinitions = new RdbmsStorageEntityDefinitionProvider().GetEntityDefinitions(classDefinitions).ToList();
 
       var tableDefinitions = entityDefinitions.OfType<TableDefinition>().ToList();
       if (tableDefinitions.Count() > 0)
       {
         var firstTableDefinition = tableDefinitions[0];
-        var newTableDefinition = new TableDefinition (
+        var newTableDefinition = new TableDefinition(
             firstTableDefinition.StorageProviderDefinition,
             firstTableDefinition.TableName,
-            new EntityNameDefinition (firstTableDefinition.ViewName.SchemaName, "NewViewName"),
+            new EntityNameDefinition(firstTableDefinition.ViewName.SchemaName, "NewViewName"),
             firstTableDefinition.ObjectIDProperty,
             firstTableDefinition.TimestampProperty,
             firstTableDefinition.DataProperties,
             firstTableDefinition.Constraints,
             new IIndexDefinition[0],
             new EntityNameDefinition[0]);
-        entityDefinitions.Remove (firstTableDefinition);
-        entityDefinitions.Add (newTableDefinition);
+        entityDefinitions.Remove(firstTableDefinition);
+        entityDefinitions.Add(newTableDefinition);
 
-        entityDefinitions.Add (CreateNewFilterViewDefinition (newTableDefinition));
-        entityDefinitions.Add (CreateNewTableDefinitionWithIndexes (newTableDefinition.StorageProviderDefinition));
-        entityDefinitions.Add (CreateNewTableDefinitionWithNonClusteredPrimaryKey (newTableDefinition.StorageProviderDefinition));
+        entityDefinitions.Add(CreateNewFilterViewDefinition(newTableDefinition));
+        entityDefinitions.Add(CreateNewTableDefinitionWithIndexes(newTableDefinition.StorageProviderDefinition));
+        entityDefinitions.Add(CreateNewTableDefinitionWithNonClusteredPrimaryKey(newTableDefinition.StorageProviderDefinition));
       }
 
       return entityDefinitions;
     }
-    
+
     private FilterViewDefinition CreateNewFilterViewDefinition (TableDefinition tableDefinition)
     {
-      return new FilterViewDefinition (
+      return new FilterViewDefinition(
           tableDefinition.StorageProviderDefinition,
-          new EntityNameDefinition (tableDefinition.TableName.SchemaName, "AddedView"),
+          new EntityNameDefinition(tableDefinition.TableName.SchemaName, "AddedView"),
           tableDefinition,
           new[] { "ClassID" },
           tableDefinition.ObjectIDProperty,
           tableDefinition.TimestampProperty,
           tableDefinition.DataProperties,
           new IIndexDefinition[0],
-          new[] { new EntityNameDefinition (tableDefinition.ViewName.SchemaName, "AddedViewSynonym") });
+          new[] { new EntityNameDefinition(tableDefinition.ViewName.SchemaName, "AddedViewSynonym") });
     }
 
     private TableDefinition CreateNewTableDefinitionWithIndexes (StorageProviderDefinition storageProviderDefinition)
     {
       var storageProperty1 =
-          new SimpleStoragePropertyDefinition (
-              typeof (Guid),
-              new ColumnDefinition (
+          new SimpleStoragePropertyDefinition(
+              typeof(Guid),
+              new ColumnDefinition(
                   "ID",
-                  new StorageTypeInformation (typeof (Guid), "uniqueidentifier", DbType.Guid, false, null, typeof (Guid), new GuidConverter()),
+                  new StorageTypeInformation(typeof(Guid), "uniqueidentifier", DbType.Guid, false, null, typeof(Guid), new GuidConverter()),
                   true));
       var storageProperty2 =
-          new SimpleStoragePropertyDefinition (
-              typeof (string),
-              new ColumnDefinition (
+          new SimpleStoragePropertyDefinition(
+              typeof(string),
+              new ColumnDefinition(
                   "FirstName",
-                  new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, 100, typeof (string), new StringConverter ()),
+                  new StorageTypeInformation(typeof(string), "varchar(100)", DbType.String, false, 100, typeof(string), new StringConverter()),
                   false));
       var storageProperty3 =
-          new SimpleStoragePropertyDefinition (
-              typeof (string),
-              new ColumnDefinition (
+          new SimpleStoragePropertyDefinition(
+              typeof(string),
+              new ColumnDefinition(
                   "LastName",
-                  new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, 100, typeof (string), new StringConverter ()),
+                  new StorageTypeInformation(typeof(string), "varchar(100)", DbType.String, false, 100, typeof(string), new StringConverter()),
                   false));
       var storageProperty4 =
-          new SimpleStoragePropertyDefinition (
-              typeof (string),
-              new ColumnDefinition (
+          new SimpleStoragePropertyDefinition(
+              typeof(string),
+              new ColumnDefinition(
                   "XmlColumn1",
-                  new StorageTypeInformation (typeof (string), "xml", DbType.Xml, false, null, typeof (string), new StringConverter ()),
+                  new StorageTypeInformation(typeof(string), "xml", DbType.Xml, false, null, typeof(string), new StringConverter()),
                   false));
 
-      var tableName = new EntityNameDefinition (null, "IndexTestTable");
-      var viewName = new EntityNameDefinition (null, "IndexTestView");
+      var tableName = new EntityNameDefinition(null, "IndexTestTable");
+      var viewName = new EntityNameDefinition(null, "IndexTestView");
 
-      var nonClusteredUniqueIndex = new SqlIndexDefinition (
-          "IDX_NonClusteredUniqueIndex", new[] { new SqlIndexedColumnDefinition (storageProperty1.ColumnDefinition) }, null, false, true, true, false);
-      var nonClusteredNonUniqueIndex = new SqlIndexDefinition (
+      var nonClusteredUniqueIndex = new SqlIndexDefinition(
+          "IDX_NonClusteredUniqueIndex", new[] { new SqlIndexedColumnDefinition(storageProperty1.ColumnDefinition) }, null, false, true, true, false);
+      var nonClusteredNonUniqueIndex = new SqlIndexDefinition(
           "IDX_NonClusteredNonUniqueIndex",
           new[]
-          { new SqlIndexedColumnDefinition (storageProperty2.ColumnDefinition), new SqlIndexedColumnDefinition (storageProperty3.ColumnDefinition) },
+          { new SqlIndexedColumnDefinition(storageProperty2.ColumnDefinition), new SqlIndexedColumnDefinition(storageProperty3.ColumnDefinition) },
           new[] { storageProperty1.ColumnDefinition },
           false,
           false,
           false,
           false);
-      var indexWithOptionsSet = new SqlIndexDefinition (
+      var indexWithOptionsSet = new SqlIndexDefinition(
           "IDX_IndexWithSeveralOptions",
-          new[] { new SqlIndexedColumnDefinition (storageProperty2.ColumnDefinition, IndexOrder.Desc) },
+          new[] { new SqlIndexedColumnDefinition(storageProperty2.ColumnDefinition, IndexOrder.Desc) },
           null,
           false,
           true,
@@ -133,9 +133,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           true,
           true,
           2);
-      var primaryXmlIndex = new SqlPrimaryXmlIndexDefinition (
+      var primaryXmlIndex = new SqlPrimaryXmlIndexDefinition(
           "IDX_PrimaryXmlIndex", storageProperty4.ColumnDefinition, true, 3, true, true, false, true, true, 2);
-      var secondaryXmlIndex1 = new SqlSecondaryXmlIndexDefinition (
+      var secondaryXmlIndex1 = new SqlSecondaryXmlIndexDefinition(
           "IDX_SecondaryXmlIndex1",
           storageProperty4.ColumnDefinition,
           "IDX_PrimaryXmlIndex",
@@ -147,9 +147,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           false,
           false,
           false);
-      var secondaryXmlIndex2 = new SqlSecondaryXmlIndexDefinition (
+      var secondaryXmlIndex2 = new SqlSecondaryXmlIndexDefinition(
           "IDX_SecondaryXmlIndex2", storageProperty4.ColumnDefinition, "IDX_PrimaryXmlIndex", SqlSecondaryXmlIndexKind.Value, false, 8, true);
-      var secondaryXmlIndex3 = new SqlSecondaryXmlIndexDefinition (
+      var secondaryXmlIndex3 = new SqlSecondaryXmlIndexDefinition(
           "IDX_SecondaryXmlIndex3",
           storageProperty4.ColumnDefinition,
           "IDX_PrimaryXmlIndex",
@@ -162,12 +162,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
           true,
           false);
 
-      return CreateCustomTable (
+      return CreateCustomTable(
           storageProviderDefinition,
           tableName,
           viewName,
           new[] { storageProperty1, storageProperty2, storageProperty3, storageProperty4 },
-          new[] { new PrimaryKeyConstraintDefinition ("PK_IndexTestTable_ID", true, new[] { storageProperty1.ColumnDefinition }) },
+          new[] { new PrimaryKeyConstraintDefinition("PK_IndexTestTable_ID", true, new[] { storageProperty1.ColumnDefinition }) },
           new IIndexDefinition[]
           {
               nonClusteredUniqueIndex,
@@ -182,30 +182,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
 
     private TableDefinition CreateNewTableDefinitionWithNonClusteredPrimaryKey (StorageProviderDefinition storageProviderDefinition)
     {
-      var tableName = new EntityNameDefinition (null, "PKTestTable");
-      var viewName = new EntityNameDefinition (null, "PKTestView");
+      var tableName = new EntityNameDefinition(null, "PKTestTable");
+      var viewName = new EntityNameDefinition(null, "PKTestView");
 
-      var column1 = new ColumnDefinition (
+      var column1 = new ColumnDefinition(
           "ID",
-          new StorageTypeInformation (typeof (Guid), "uniqueidentifier", DbType.Guid, false, null, typeof (Guid), new GuidConverter ()),
+          new StorageTypeInformation(typeof(Guid), "uniqueidentifier", DbType.Guid, false, null, typeof(Guid), new GuidConverter()),
           true);
-      var column2 = new ColumnDefinition (
+      var column2 = new ColumnDefinition(
           "Name",
-          new StorageTypeInformation (typeof (string), "varchar(100)", DbType.String, false, 100, typeof (string), new StringConverter ()),
+          new StorageTypeInformation(typeof(string), "varchar(100)", DbType.String, false, 100, typeof(string), new StringConverter()),
           false);
 
-      var property1 = new SimpleStoragePropertyDefinition (typeof (Guid), column1);
-      var property2 = new SimpleStoragePropertyDefinition (typeof (string), column2);
+      var property1 = new SimpleStoragePropertyDefinition(typeof(Guid), column1);
+      var property2 = new SimpleStoragePropertyDefinition(typeof(string), column2);
 
-      var nonClusteredUniqueIndex = new SqlIndexDefinition (
-          "IDX_ClusteredUniqueIndex", new[] { new SqlIndexedColumnDefinition (column2) }, null, true, true, true, false);
-      
-      return CreateCustomTable (
+      var nonClusteredUniqueIndex = new SqlIndexDefinition(
+          "IDX_ClusteredUniqueIndex", new[] { new SqlIndexedColumnDefinition(column2) }, null, true, true, true, false);
+
+      return CreateCustomTable(
           storageProviderDefinition,
           tableName,
           viewName,
           new[] { property1, property2 },
-          new[] { new PrimaryKeyConstraintDefinition ("PK_PKTestTable_ID", false, new[] { column1 }) },
+          new[] { new PrimaryKeyConstraintDefinition("PK_PKTestTable_ID", false, new[] { column1 }) },
           new IIndexDefinition[] { nonClusteredUniqueIndex });
     }
 
@@ -217,25 +217,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Sche
         PrimaryKeyConstraintDefinition[] constraints,
         IEnumerable<IIndexDefinition> indexes)
     {
-      var idColumn = new ColumnDefinition (
+      var idColumn = new ColumnDefinition(
           "ObjectID",
-          new StorageTypeInformation (typeof (Int32), "integer", DbType.Int32, false, null, typeof (int), new Int32Converter ()),
+          new StorageTypeInformation(typeof(Int32), "integer", DbType.Int32, false, null, typeof(int), new Int32Converter()),
           true);
-      var classIDColumn = new ColumnDefinition (
+      var classIDColumn = new ColumnDefinition(
           "ClassID",
-          new StorageTypeInformation (typeof (string), "varchar", DbType.String, false, -1, typeof (string), new StringConverter ()),
+          new StorageTypeInformation(typeof(string), "varchar", DbType.String, false, -1, typeof(string), new StringConverter()),
           false);
-      var timestampColumn = new ColumnDefinition (
+      var timestampColumn = new ColumnDefinition(
           "Timestamp",
-          new StorageTypeInformation (typeof (DateTime), "datetime", DbType.DateTime, true, null, typeof (DateTime), new DateTimeConverter()),
+          new StorageTypeInformation(typeof(DateTime), "datetime", DbType.DateTime, true, null, typeof(DateTime), new DateTimeConverter()),
           false);
 
-      var objectIDProperty = new ObjectIDStoragePropertyDefinition (
-          new SimpleStoragePropertyDefinition (typeof (object), idColumn),
-          new SimpleStoragePropertyDefinition (typeof (string), classIDColumn));
-      var timestampProperty = new SimpleStoragePropertyDefinition (typeof (object), timestampColumn);
+      var objectIDProperty = new ObjectIDStoragePropertyDefinition(
+          new SimpleStoragePropertyDefinition(typeof(object), idColumn),
+          new SimpleStoragePropertyDefinition(typeof(string), classIDColumn));
+      var timestampProperty = new SimpleStoragePropertyDefinition(typeof(object), timestampColumn);
 
-      return new TableDefinition (
+      return new TableDefinition(
           storageProviderDefinition,
           tableName,
           viewName,

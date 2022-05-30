@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using JetBrains.Annotations;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -29,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.Infrastructure
     /// <summary>
     /// Adds the required parameters to the specified <paramref name="parameterCollection"/>.
     /// </summary>
-    void AddParameters ([NotNull] GenericTestPageParameterCollection parameterCollection, [NotNull] TOptions options);
+    void AddParameters ([NotNull] Dictionary<string, GenericTestPageParameter> parameterCollection, [NotNull] TOptions options);
 
     /// <summary>
     /// Creates a new control from the specified <paramref name="options"/>.

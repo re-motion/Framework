@@ -16,165 +16,157 @@
 // 
 using System;
 using System.Collections.ObjectModel;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
   [TestFixture]
   public class LoadedObjectDataRegistrationListenerTest : StandardMappingTest
   {
-    private MockRepository _mockRepository;
-    private IClientTransactionEventSink _eventSinkWithMock;
-    private ITransactionHierarchyManager _hierarchyManagerMock;
+    private Mock<IClientTransactionEventSink> _eventSinkWithMock;
+    private Mock<ITransactionHierarchyManager> _hierarchyManagerMock;
 
     private LoadedObjectDataRegistrationListener _decorator;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _mockRepository = new MockRepository();
-      _eventSinkWithMock = _mockRepository.StrictMock<IClientTransactionEventSink>();
-      _hierarchyManagerMock = _mockRepository.StrictMock<ITransactionHierarchyManager> ();
+      _eventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
+      _hierarchyManagerMock = new Mock<ITransactionHierarchyManager>(MockBehavior.Strict);
 
-      _decorator = new LoadedObjectDataRegistrationListener (_eventSinkWithMock, _hierarchyManagerMock);
+      _decorator = new LoadedObjectDataRegistrationListener(_eventSinkWithMock.Object, _hierarchyManagerMock.Object);
     }
 
     [Test]
     public void OnBeforeObjectRegistration ()
     {
-      var loadedObjectIDs = Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-      using (_mockRepository.Ordered ())
-      {
-        _hierarchyManagerMock.Expect (mock => mock.OnBeforeObjectRegistration (loadedObjectIDs));
-        _eventSinkWithMock.Expect (mock => mock.RaiseObjectsLoadingEvent ( loadedObjectIDs));
-      }
-      _mockRepository.ReplayAll();
+      var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
+      var sequence = new MockSequence();
+      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      _eventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectsLoadingEvent(loadedObjectIDs)).Verifiable();
 
-      _decorator.OnBeforeObjectRegistration (loadedObjectIDs);
+      _decorator.OnBeforeObjectRegistration(loadedObjectIDs);
 
-      _mockRepository.VerifyAll();
+      _eventSinkWithMock.Verify();
+      _hierarchyManagerMock.Verify();
     }
 
     [Test]
     public void OnBeforeObjectRegistration_ExceptionInInnerListener ()
     {
-      var loadedObjectIDs = Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
+      var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
 
-      var exception = new Exception ("Test");
-      using (_mockRepository.Ordered ())
-      {
-        _hierarchyManagerMock.Expect (mock => mock.OnBeforeObjectRegistration (loadedObjectIDs)).Throw (exception);
-      }
-      _mockRepository.ReplayAll ();
+      var exception = new Exception("Test");
+      var sequence = new MockSequence();
+      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Throws(exception).Verifiable();
 
-      Assert.That (() => _decorator.OnBeforeObjectRegistration (loadedObjectIDs), Throws.Exception.SameAs (exception));
+      Assert.That(() => _decorator.OnBeforeObjectRegistration(loadedObjectIDs), Throws.Exception.SameAs(exception));
 
-      _eventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectsLoadingEvent ( Arg<ReadOnlyCollection<ObjectID>>.Is.Anything));
-      _hierarchyManagerMock.VerifyAllExpectations ();
+      _eventSinkWithMock.Verify(mock => mock.RaiseObjectsLoadingEvent(It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
+      _hierarchyManagerMock.Verify();
     }
 
     [Test]
     public void OnBeforeObjectRegistration_ExceptionInEventSink_CausesHierarchyManagerToBeNotifiedOfEnd ()
     {
-      var loadedObjectIDs = Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
+      var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
 
-      var exception = new Exception ("Test");
-      using (_mockRepository.Ordered ())
-      {
-        _hierarchyManagerMock.Expect (mock => mock.OnBeforeObjectRegistration (loadedObjectIDs));
-        _eventSinkWithMock.Expect (mock => mock.RaiseObjectsLoadingEvent (loadedObjectIDs)).Throw (exception);
-        _hierarchyManagerMock.Expect (mock => mock.OnAfterObjectRegistration (loadedObjectIDs));
-      }
-      _mockRepository.ReplayAll ();
+      var exception = new Exception("Test");
+      var sequence = new MockSequence();
+      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      _eventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectsLoadingEvent(loadedObjectIDs)).Throws(exception).Verifiable();
+      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs)).Verifiable();
 
-      Assert.That (() => _decorator.OnBeforeObjectRegistration (loadedObjectIDs), Throws.Exception.SameAs (exception));
+      Assert.That(() => _decorator.OnBeforeObjectRegistration(loadedObjectIDs), Throws.Exception.SameAs(exception));
 
-      _mockRepository.VerifyAll();
+      _eventSinkWithMock.Verify();
+      _hierarchyManagerMock.Verify();
     }
 
     [Test]
     public void OnAfterObjectRegistration ()
     {
-      var loadedObjectIDs = Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-      var actuallyLoadedDomainObjects = Array.AsReadOnly (new[] { DomainObjectMother.CreateFakeObject(), DomainObjectMother.CreateFakeObject() });
-      
-      using (_mockRepository.Ordered ())
-      {
-        _eventSinkWithMock.Expect (mock => mock.RaiseObjectsLoadedEvent ( actuallyLoadedDomainObjects));
-        _hierarchyManagerMock.Expect (mock => mock.OnAfterObjectRegistration (loadedObjectIDs));
-      }
-      _mockRepository.ReplayAll ();
+      var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
+      var actuallyLoadedDomainObjects = Array.AsReadOnly(new[] { DomainObjectMother.CreateFakeObject(), DomainObjectMother.CreateFakeObject() });
 
-      _decorator.OnAfterObjectRegistration (loadedObjectIDs, actuallyLoadedDomainObjects);
+      var sequence = new MockSequence();
+      _eventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectsLoadedEvent(actuallyLoadedDomainObjects)).Verifiable();
+      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs)).Verifiable();
 
-      _mockRepository.VerifyAll ();
+      _decorator.OnAfterObjectRegistration(loadedObjectIDs, actuallyLoadedDomainObjects);
+
+      _eventSinkWithMock.Verify();
+      _hierarchyManagerMock.Verify();
     }
 
     [Test]
     public void OnAfterObjectRegistration_ExceptionInEventSink_HierarchyManager_IsStillNotified ()
     {
-      var loadedObjectIDs = Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-      var actuallyLoadedDomainObjects = Array.AsReadOnly (new[] { DomainObjectMother.CreateFakeObject (), DomainObjectMother.CreateFakeObject () });
+      var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
+      var actuallyLoadedDomainObjects = Array.AsReadOnly(new[] { DomainObjectMother.CreateFakeObject(), DomainObjectMother.CreateFakeObject() });
 
-      var exception = new Exception ("Test");
-      using (_mockRepository.Ordered ())
-      {
-        _eventSinkWithMock.Expect (mock => mock.RaiseObjectsLoadedEvent ( actuallyLoadedDomainObjects))
-            .Throw (exception);
-        _hierarchyManagerMock.Expect (mock => mock.OnAfterObjectRegistration (loadedObjectIDs));
-      }
-      _mockRepository.ReplayAll ();
+      var exception = new Exception("Test");
+      var sequence = new MockSequence();
+      _eventSinkWithMock
+            .InSequence(sequence)
+            .Setup(mock => mock.RaiseObjectsLoadedEvent(actuallyLoadedDomainObjects))
+            .Throws(exception)
+            .Verifiable();
+      _hierarchyManagerMock
+            .InSequence(sequence)
+            .Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs))
+            .Verifiable();
 
-      Assert.That (() => _decorator.OnAfterObjectRegistration (loadedObjectIDs, actuallyLoadedDomainObjects), Throws.Exception.SameAs (exception));
+      Assert.That(() => _decorator.OnAfterObjectRegistration(loadedObjectIDs, actuallyLoadedDomainObjects), Throws.Exception.SameAs(exception));
 
-      _mockRepository.VerifyAll ();
+      _eventSinkWithMock.Verify();
+      _hierarchyManagerMock.Verify();
     }
 
     [Test]
     public void OnAfterObjectRegistration_NoLoadedObjects ()
     {
-      var loadedObjectIDs = Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-      var actuallyLoadedDomainObjects = Array.AsReadOnly (new DomainObject[0]);
+      var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
+      var actuallyLoadedDomainObjects = Array.AsReadOnly(new DomainObject[0]);
 
-      _hierarchyManagerMock.Expect (mock => mock.OnAfterObjectRegistration (loadedObjectIDs));
-      _mockRepository.ReplayAll ();
+      _hierarchyManagerMock.Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs)).Verifiable();
 
-      _decorator.OnAfterObjectRegistration (loadedObjectIDs, actuallyLoadedDomainObjects);
+      _decorator.OnAfterObjectRegistration(loadedObjectIDs, actuallyLoadedDomainObjects);
 
-      _eventSinkWithMock.AssertWasNotCalled (mock => mock.RaiseObjectsLoadedEvent ( Arg<ReadOnlyCollection<DomainObject>>.Is.Anything));
-      _hierarchyManagerMock.VerifyAllExpectations ();
+      _eventSinkWithMock.Verify(mock => mock.RaiseObjectsLoadedEvent(It.IsAny<ReadOnlyCollection<DomainObject>>()), Times.Never());
+      _hierarchyManagerMock.Verify();
     }
 
     [Test]
     public void OnObjectsNotFound ()
     {
-      var notFoundObjectIDs = Array.AsReadOnly (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-      
-      _eventSinkWithMock.Expect (mock => mock.RaiseObjectsNotFoundEvent ( notFoundObjectIDs));
-      _mockRepository.ReplayAll();
+      var notFoundObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
 
-      _decorator.OnObjectsNotFound (notFoundObjectIDs);
+      _eventSinkWithMock.Setup(mock => mock.RaiseObjectsNotFoundEvent(notFoundObjectIDs)).Verifiable();
 
-      _mockRepository.VerifyAll();
+      _decorator.OnObjectsNotFound(notFoundObjectIDs);
+
+      _eventSinkWithMock.Verify();
+      _hierarchyManagerMock.Verify();
     }
 
     [Test]
     public void Serializable ()
     {
-      var instance = new LoadedObjectDataRegistrationListener (
+      var instance = new LoadedObjectDataRegistrationListener(
           new SerializableClientTransactionEventSinkFake(), new SerializableTransactionHierarchyManagerFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
 
-      Assert.That (deserializedInstance.EventSink, Is.Not.Null);
-      Assert.That (deserializedInstance.HierarchyManager, Is.Not.Null);
+      Assert.That(deserializedInstance.EventSink, Is.Not.Null);
+      Assert.That(deserializedInstance.HierarchyManager, Is.Not.Null);
     }
   }
 }

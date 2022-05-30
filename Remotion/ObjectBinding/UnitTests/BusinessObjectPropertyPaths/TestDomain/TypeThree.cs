@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.TestDomai
   {
     public static TypeThree Create ()
     {
-      return ObjectFactory.Create<TypeThree> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeThree>(true, ParamList.Empty);
     }
 
     protected TypeThree ()

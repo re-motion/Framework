@@ -32,27 +32,27 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
   public class RemotionModuleBuilderFactoryDecorator : IModuleBuilderFactory
   {
     private static readonly ConstructorInfo s_nonApplicationAssemblyAttributeConstructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new NonApplicationAssemblyAttribute());
+        MemberInfoFromExpressionUtility.GetConstructor(() => new NonApplicationAssemblyAttribute());
 
     private readonly IModuleBuilderFactory _moduleBuilderFactory;
 
-    [CLSCompliant (false)]
+    [CLSCompliant(false)]
     public RemotionModuleBuilderFactoryDecorator (IModuleBuilderFactory moduleBuilderFactory)
     {
-      ArgumentUtility.CheckNotNull ("moduleBuilderFactory", moduleBuilderFactory);
+      ArgumentUtility.CheckNotNull("moduleBuilderFactory", moduleBuilderFactory);
 
       _moduleBuilderFactory = moduleBuilderFactory;
     }
 
-    [CLSCompliant (false)]
+    [CLSCompliant(false)]
     public IModuleBuilder CreateModuleBuilder (string assemblyName, string assemblyDirectoryOrNull, bool strongNamed, string keyFilePathOrNull)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
 
-      var moduleBuilder = _moduleBuilderFactory.CreateModuleBuilder (assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull);
+      var moduleBuilder = _moduleBuilderFactory.CreateModuleBuilder(assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull);
 
-      var attribute = new CustomAttributeDeclaration (s_nonApplicationAssemblyAttributeConstructor, new object[0]);
-      moduleBuilder.AssemblyBuilder.SetCustomAttribute (attribute);
+      var attribute = new CustomAttributeDeclaration(s_nonApplicationAssemblyAttributeConstructor, new object[0]);
+      moduleBuilder.AssemblyBuilder.SetCustomAttribute(attribute);
 
       return moduleBuilder;
     }

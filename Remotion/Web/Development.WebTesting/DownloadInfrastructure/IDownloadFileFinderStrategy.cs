@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
     /// Throws <see cref="FileNotFoundException"/> if it cant uniquely identify the downloaded file.
     /// </summary>
     string FindDownloadedFile ([NotNull] IReadOnlyCollection<string> newFiles);
-    
+
     /// <summary>
     /// Checks if the detected newFiles contain a pre download artifact.
     /// </summary>

@@ -21,7 +21,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Security
 {
-  [ImplementationFor (typeof (IPrincipalProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(IPrincipalProvider), Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
   public sealed class ThreadPrincipalProvider : IPrincipalProvider
   {
     public const int Position = Int32.MaxValue;
@@ -33,11 +33,13 @@ namespace Remotion.Security
 
     public ISecurityPrincipal GetPrincipal ()
     {
-      IIdentity identity = Thread.CurrentPrincipal.Identity;
-      if (!identity.IsAuthenticated)
+      var identity = Thread.CurrentPrincipal?.Identity;
+
+      if (identity is null or { IsAuthenticated: false })
         return s_nullSecurityPrincipal;
 
-      return new SecurityPrincipal (identity.Name, null, null, null);
+      // TODO RM-7873: Add notnull assertion
+      return new SecurityPrincipal(identity.Name!, null, null, null);
     }
 
     bool INullObject.IsNull

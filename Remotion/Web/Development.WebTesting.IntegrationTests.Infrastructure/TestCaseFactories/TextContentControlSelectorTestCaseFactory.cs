@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -24,7 +23,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Generi
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories
 {
   /// <summary>
-  /// Contains tests for <see cref="ITextContentControlSelector{TControlObject}"/> that are executed via <see cref="RemotionTestCaseSourceAttribute"/>
+  /// Contains tests for <see cref="ITextContentControlSelector{TControlObject}"/> that are executed via <see cref="TestCaseSourceAttribute"/>
   /// </summary>
   public class TextContentControlSelectorTestCaseFactory<TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, TextContentGenericTestPageParameter>
@@ -44,27 +43,27 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     [GenericPageTestMethod]
     public void Get_Returns_NotNull ()
     {
-      var control = Selector.GetByTextContent (Parameter.VisibleControlTextContent);
+      var control = Selector.GetByTextContent(Parameter.VisibleControlTextContent);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
+    public void Get_Throws_WebTestException ()
     {
-      Assert.That (
-          () => Selector.GetByTextContent (Parameter.HiddenControlTextContent),
-          Throws.InstanceOf<MissingHtmlException>());
+      Assert.That(
+          () => Selector.GetByTextContent(Parameter.HiddenControlTextContent),
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_NotNull ()
     {
-      var control = Selector.GetByTextContentOrNull (Parameter.VisibleControlTextContent);
+      var control = Selector.GetByTextContentOrNull(Parameter.VisibleControlTextContent);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
@@ -72,26 +71,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       SwitchToIFrame();
 
-      var control = Selector.GetByTextContentOrNull (Parameter.VisibleControlTextContent);
+      var control = Selector.GetByTextContentOrNull(Parameter.VisibleControlTextContent);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_Null ()
     {
-      var control = Selector.GetByTextContentOrNull (Parameter.HiddenControlTextContent);
+      var control = Selector.GetByTextContentOrNull(Parameter.HiddenControlTextContent);
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_True ()
     {
-      var controlVisible = Selector.ExistsByTextContent (Parameter.VisibleControlTextContent);
+      var controlVisible = Selector.ExistsByTextContent(Parameter.VisibleControlTextContent);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
@@ -99,17 +98,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       SwitchToIFrame();
 
-      var controlVisible = Selector.ExistsByTextContent (Parameter.VisibleControlTextContent);
+      var controlVisible = Selector.ExistsByTextContent(Parameter.VisibleControlTextContent);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_False ()
     {
-      var controlVisible = Selector.ExistsByTextContent (Parameter.HiddenControlTextContent);
+      var controlVisible = Selector.ExistsByTextContent(Parameter.HiddenControlTextContent);
 
-      Assert.That (controlVisible, Is.False);
+      Assert.That(controlVisible, Is.False);
     }
   }
 }

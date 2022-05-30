@@ -30,61 +30,61 @@ namespace Remotion.Mixins.Definitions.Building
 
     public MemberImplementationFinder (Type declaringType, MixinDefinition implementingMixin)
     {
-      ArgumentUtility.CheckNotNull ("implementingMixin", implementingMixin);
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
+      ArgumentUtility.CheckNotNull("implementingMixin", implementingMixin);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
 
       _declaringType = declaringType;
       _mixin = implementingMixin;
 
-      _mappingDictionary = new Dictionary<MethodInfo, MethodInfo> ();
-      InterfaceMapping mapping = _mixin.GetAdjustedInterfaceMap (_declaringType);
+      _mappingDictionary = new Dictionary<MethodInfo, MethodInfo>();
+      InterfaceMapping mapping = _mixin.GetAdjustedInterfaceMap(_declaringType);
       for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
-        _mappingDictionary.Add (mapping.InterfaceMethods[i], mapping.TargetMethods[i]);
+        _mappingDictionary.Add(mapping.InterfaceMethods[i], mapping.TargetMethods[i]);
 
-      _allMethods = new UniqueDefinitionCollection<MethodInfo, MethodDefinition> (delegate (MethodDefinition m) {return m.MethodInfo; });
-      foreach (MethodDefinition method in _mixin.GetAllMethods ())
-        _allMethods.Add (method);
+      _allMethods = new UniqueDefinitionCollection<MethodInfo, MethodDefinition>(delegate (MethodDefinition m) {return m.MethodInfo; });
+      foreach (MethodDefinition method in _mixin.GetAllMethods())
+        _allMethods.Add(method);
     }
 
-    public MethodDefinition FindMethodImplementation (MethodInfo methodToFind)
+    public MethodDefinition? FindMethodImplementation (MethodInfo methodToFind)
     {
-      MethodInfo targetMethod;
-      if (_mappingDictionary.TryGetValue (methodToFind, out targetMethod))
+      MethodInfo? targetMethod;
+      if (_mappingDictionary.TryGetValue(methodToFind, out targetMethod))
         return _allMethods[targetMethod];
       else
         return null;
     }
 
-    public PropertyDefinition FindPropertyImplementation (PropertyInfo propertyToFind)
+    public PropertyDefinition? FindPropertyImplementation (PropertyInfo propertyToFind)
     {
-      MethodDefinition accessorImplementer = null;
+      MethodDefinition? accessorImplementer = null;
 
-      MethodInfo getter = propertyToFind.GetGetMethod ();
-      MethodInfo setter = propertyToFind.GetSetMethod ();
+      MethodInfo? getter = propertyToFind.GetGetMethod();
+      MethodInfo? setter = propertyToFind.GetSetMethod();
 
       if (getter != null)
-        accessorImplementer = FindMethodImplementation (getter);
+        accessorImplementer = FindMethodImplementation(getter);
 
       if (accessorImplementer == null && setter != null)
-        accessorImplementer = FindMethodImplementation (setter);
+        accessorImplementer = FindMethodImplementation(setter);
 
       if (accessorImplementer != null)
       {
-        PropertyDefinition property = accessorImplementer.Parent as PropertyDefinition;
+        PropertyDefinition? property = accessorImplementer.Parent as PropertyDefinition;
         return property;
       }
       else
         return null;
     }
 
-    public EventDefinition FindEventImplementation (EventInfo eventToFind)
+    public EventDefinition? FindEventImplementation (EventInfo eventToFind)
     {
-      MethodInfo accessor = eventToFind.GetAddMethod ();
-      MethodDefinition accessorImplementer = FindMethodImplementation (accessor);
+      MethodInfo? accessor = eventToFind.GetAddMethod();
+      MethodDefinition? accessorImplementer = FindMethodImplementation(accessor!);
 
       if (accessorImplementer != null)
       {
-        EventDefinition eventDefinition = accessorImplementer.Parent as EventDefinition;
+        EventDefinition? eventDefinition = accessorImplementer.Parent as EventDefinition;
         return eventDefinition;
       }
       else

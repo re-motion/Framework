@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Text;
 using Remotion.Mixins.Definitions;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Validation
@@ -33,10 +34,10 @@ namespace Remotion.Mixins.Validation
 
       public Args (ValidatingVisitor validator, TDefinition definition, IValidationLog log, DelegateValidationRule<TDefinition> self)
       {
-        ArgumentUtility.CheckNotNull ("validator", validator);
-        ArgumentUtility.CheckNotNull ("definition", definition);
-        ArgumentUtility.CheckNotNull ("log", log);
-        ArgumentUtility.CheckNotNull ("self", self);
+        ArgumentUtility.CheckNotNull("validator", validator);
+        ArgumentUtility.CheckNotNull("definition", definition);
+        ArgumentUtility.CheckNotNull("log", log);
+        ArgumentUtility.CheckNotNull("self", self);
 
         _validator = validator;
         _self = self;
@@ -68,9 +69,9 @@ namespace Remotion.Mixins.Validation
     private static string GetRuleName (Rule rule)
     {
       MethodInfo method = rule.Method;
-      var attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute> (method, true);
+      var attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute>(method, true);
       if (attribute == null || attribute.RuleName == null)
-        return method.DeclaringType.FullName + "." + rule.Method.Name;
+        return method.DeclaringType!.GetFullNameChecked() + "." + rule.Method.Name;
       else
         return attribute.RuleName;
     }
@@ -78,25 +79,25 @@ namespace Remotion.Mixins.Validation
     private static string GetMessage (Rule rule)
     {
       MethodInfo method = rule.Method;
-      var attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute> (method, true);
+      var attribute = AttributeUtility.GetCustomAttribute<DelegateRuleDescriptionAttribute>(method, true);
       if (attribute == null || attribute.Message == null)
-        return FormatMessage (rule.Method.Name);
+        return FormatMessage(rule.Method.Name);
       else
         return attribute.Message;
     }
 
     private static string FormatMessage (string message)
     {
-      var sb = new StringBuilder ();
+      var sb = new StringBuilder();
 
       for (int i = 0; i < message.Length; ++i)
       {
-        if (i > 0 && char.IsUpper (message[i]))
-          sb.Append (' ').Append (char.ToLower (message[i]));
+        if (i > 0 && char.IsUpper(message[i]))
+          sb.Append(' ').Append(char.ToLower(message[i]));
         else
-          sb.Append (message[i]);
+          sb.Append(message[i]);
       }
-      return sb.ToString ();
+      return sb.ToString();
     }
 
     public delegate void Rule (Args args);
@@ -105,11 +106,11 @@ namespace Remotion.Mixins.Validation
     private readonly string _ruleName;
     private readonly string _message;
 
-    public DelegateValidationRule(Rule rule, string ruleName, string message)
+    public DelegateValidationRule (Rule rule, string ruleName, string message)
     {
-      ArgumentUtility.CheckNotNull ("rule", rule);
-      ArgumentUtility.CheckNotNull ("ruleName", ruleName);
-      ArgumentUtility.CheckNotNull ("message", message);
+      ArgumentUtility.CheckNotNull("rule", rule);
+      ArgumentUtility.CheckNotNull("ruleName", ruleName);
+      ArgumentUtility.CheckNotNull("message", message);
 
       _rule = rule;
       _ruleName = ruleName;
@@ -117,7 +118,7 @@ namespace Remotion.Mixins.Validation
     }
 
     public DelegateValidationRule (Rule rule)
-        : this (ArgumentUtility.CheckNotNull("rule", rule), GetRuleName(rule), GetMessage(rule))
+        : this(ArgumentUtility.CheckNotNull("rule", rule), GetRuleName(rule), GetMessage(rule))
     {
     }
 
@@ -138,10 +139,10 @@ namespace Remotion.Mixins.Validation
 
     public void Execute (ValidatingVisitor validator, TDefinition definition, IValidationLog log)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      ArgumentUtility.CheckNotNull ("definition", definition);
-      ArgumentUtility.CheckNotNull ("log", log);
-      RuleDelegate (new Args(validator, definition, log, this));
+      ArgumentUtility.CheckNotNull("validator", validator);
+      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentUtility.CheckNotNull("log", log);
+      RuleDelegate(new Args(validator, definition, log, this));
     }
   }
 }

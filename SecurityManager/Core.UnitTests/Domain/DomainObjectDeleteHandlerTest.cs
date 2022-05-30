@@ -31,113 +31,115 @@ namespace Remotion.SecurityManager.UnitTests.Domain
     {
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       testHelper.Transaction.EnterDiscardingScope();
-      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant ("name", "id"), testHelper.CreateTenant ("name", "id") };
+      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant("name", "id"), testHelper.CreateTenant("name", "id") };
       testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler (list);
+      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler(list);
 
       deleteHandler.Delete();
 
-      Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list[0].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list[1].State, Is.EqualTo (StateType.Deleted));
+      Assert.That(deleteHandler.IsDeleted);
+      Assert.That(list[0].State.IsDeleted, Is.True);
+      Assert.That(list[1].State.IsDeleted, Is.True);
     }
 
     [Test]
     public void InitializeWithTwoObjectLists_AndDelete ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      testHelper.Transaction.EnterDiscardingScope ();
-      var list1 = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant ("name", "id"), testHelper.CreateTenant ("name", "id") };
-      var list2 = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant ("name", "id"), testHelper.CreateTenant ("name", "id") };
-      testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      testHelper.Transaction.EnterDiscardingScope();
+      var list1 = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant("name", "id"), testHelper.CreateTenant("name", "id") };
+      var list2 = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant("name", "id"), testHelper.CreateTenant("name", "id") };
+      testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler (list1, list2);
+      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler(list1, list2);
 
-      deleteHandler.Delete ();
+      deleteHandler.Delete();
 
-      Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list1[0].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list1[1].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list2[0].State, Is.EqualTo (StateType.Deleted));
-      Assert.That (list2[1].State, Is.EqualTo (StateType.Deleted));
+      Assert.That(deleteHandler.IsDeleted);
+      Assert.That(list1[0].State.IsDeleted, Is.True);
+      Assert.That(list1[1].State.IsDeleted, Is.True);
+      Assert.That(list2[0].State.IsDeleted, Is.True);
+      Assert.That(list2[1].State.IsDeleted, Is.True);
     }
 
     [Test]
     public void InitializeWithEmptyObjectList_AndDelete ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      testHelper.Transaction.EnterDiscardingScope ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      testHelper.Transaction.EnterDiscardingScope();
       var list = new ObjectList<BaseSecurityManagerObject>();
-      testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ();
+      testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler (list);
+      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler(list);
 
-      deleteHandler.Delete ();
-   
-      Assert.That (deleteHandler.IsDeleted);
+      deleteHandler.Delete();
+
+      Assert.That(deleteHandler.IsDeleted);
     }
 
     [Test]
     public void InitializeWithoutObjectLists_AndDelete ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      testHelper.Transaction.EnterDiscardingScope ();
-      testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      testHelper.Transaction.EnterDiscardingScope();
+      testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler ();
+      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler();
 
-      deleteHandler.Delete ();
+      deleteHandler.Delete();
 
-      Assert.That (deleteHandler.IsDeleted);
+      Assert.That(deleteHandler.IsDeleted);
     }
 
     [Test]
     public void InitializeWithDuplicateObject_AndDelete ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      testHelper.Transaction.EnterDiscardingScope ();
-      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant ("name", "id") };
-      testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      testHelper.Transaction.EnterDiscardingScope();
+      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant("name", "id") };
+      testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler (list, list);
+      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler(list, list);
 
-      deleteHandler.Delete ();
+      deleteHandler.Delete();
 
-      Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list[0].State, Is.EqualTo (StateType.Deleted));
+      Assert.That(deleteHandler.IsDeleted);
+      Assert.That(list[0].State.IsDeleted, Is.True);
     }
 
     [Test]
     public void InitializeWithDuplicateObject_AndDeleteWhileObjectIsNew ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      testHelper.Transaction.EnterDiscardingScope ();
-      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant ("name", "id") };
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      testHelper.Transaction.EnterDiscardingScope();
+      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant("name", "id") };
 
-      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler (list, list);
+      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler(list, list);
 
-      deleteHandler.Delete ();
+      deleteHandler.Delete();
 
-      Assert.That (deleteHandler.IsDeleted);
-      Assert.That (list[0].State, Is.EqualTo (StateType.Invalid));
+      Assert.That(deleteHandler.IsDeleted);
+      Assert.That(list[0].State.IsInvalid, Is.True);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The Delete operation my only be performed once.")]
     public void Delete_Twice ()
     {
-      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper ();
-      testHelper.Transaction.EnterDiscardingScope ();
-      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant ("name", "id")};
-      testHelper.Transaction.CreateSubTransaction ().EnterDiscardingScope ();
+      OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
+      testHelper.Transaction.EnterDiscardingScope();
+      var list = new ObjectList<BaseSecurityManagerObject> { testHelper.CreateTenant("name", "id")};
+      testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler (list);
+      DomainObjectDeleteHandler deleteHandler = new DomainObjectDeleteHandler(list);
 
-      deleteHandler.Delete ();
-      Assert.That (deleteHandler.IsDeleted);
-      
-      deleteHandler.Delete ();
+      deleteHandler.Delete();
+      Assert.That(deleteHandler.IsDeleted);
+      Assert.That(
+          () => deleteHandler.Delete(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The Delete operation my only be performed once."));
     }
 
   }

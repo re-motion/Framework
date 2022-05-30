@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public RemoveCurrentTransactionScopeFunction ()
-        : base (WxeTransactionMode<ClientTransactionFactory>.CreateRoot)
+        : base(WxeTransactionMode<ClientTransactionFactory>.CreateRoot)
     {
     }
 

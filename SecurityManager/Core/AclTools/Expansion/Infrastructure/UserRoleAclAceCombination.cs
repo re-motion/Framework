@@ -19,6 +19,7 @@ using System;
 using Remotion.Collections;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
 {
@@ -29,19 +30,43 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
   public class UserRoleAclAceCombination : IEquatable<UserRoleAclAceCombination>
   {
     private static readonly CompoundValueEqualityComparer<UserRoleAclAceCombination> _userRoleAclAceCombinationsComparer =
-      new CompoundValueEqualityComparer<UserRoleAclAceCombination> (x => new object[] { x.Role, x.Ace });
+      new CompoundValueEqualityComparer<UserRoleAclAceCombination>(x => new object[] { x.Role, x.Ace });
 
 
     public UserRoleAclAceCombination (Role role, AccessControlEntry ace)
     {
+      ArgumentUtility.CheckNotNull("role", role);
+      ArgumentUtility.CheckNotNull("ace", ace);
+      if (role.User == null)
+        throw new ArgumentException("Role must have a User set.", "role");
+      if (ace.AccessControlList == null)
+        throw new ArgumentException("AccessControlEntry must have an AccessControlList set.", "ace");
+
       Role = role;
       Ace = ace;
     }
 
-    public Role Role { get; private set; }
-    public User User { get { return Role.User; } }
-    public AccessControlEntry Ace { get; private set; }
-    public AccessControlList Acl { get { return Ace.AccessControlList; } }
+    public Role Role { get; }
+
+    public User User
+    {
+      get
+      {
+        Assertion.DebugIsNotNull(Role.User, "Role.User != null");
+        return Role.User;
+      }
+    }
+
+    public AccessControlEntry Ace { get; }
+
+    public AccessControlList Acl
+    {
+      get
+      {
+        Assertion.DebugIsNotNull(Ace.AccessControlList, "Ace.AccessControlList != null");
+        return Ace.AccessControlList;
+      }
+    }
 
     public static CompoundValueEqualityComparer<UserRoleAclAceCombination> Comparer
     {
@@ -53,14 +78,14 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       return _userRoleAclAceCombinationsComparer.GetHashCode(this);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return _userRoleAclAceCombinationsComparer.Equals (this, obj);
+      return _userRoleAclAceCombinationsComparer.Equals(this, obj);
     }
 
-    public bool Equals (UserRoleAclAceCombination other)
+    public bool Equals (UserRoleAclAceCombination? other)
     {
-      return _userRoleAclAceCombinationsComparer.Equals (this, other);
+      return _userRoleAclAceCombinationsComparer.Equals(this, other);
     }
   }
 }

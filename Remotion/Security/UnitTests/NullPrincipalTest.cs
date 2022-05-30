@@ -33,16 +33,16 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void Initialize ()
     {
-      Assert.That (_principal.User, Is.Null);
-      Assert.That (_principal.Roles, Is.Null);
-      Assert.That (_principal.SubstitutedUser, Is.Null);
-      Assert.That (_principal.SubstitutedRoles, Is.Null);
+      Assert.That(_principal.User, Is.Null);
+      Assert.That(_principal.Roles, Is.Null);
+      Assert.That(_principal.SubstitutedUser, Is.Null);
+      Assert.That(_principal.SubstitutedRoles, Is.Null);
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (_principal.IsNull, Is.True);
+      Assert.That(_principal.IsNull, Is.True);
     }
   }
 }

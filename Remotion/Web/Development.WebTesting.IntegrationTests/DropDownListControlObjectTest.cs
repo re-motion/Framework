@@ -17,6 +17,8 @@
 using System;
 using Coypu;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -32,21 +34,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class DropDownListControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
     public void GenericTests (GenericSelectorTestAction<DropDownListSelector, DropDownListControlObject> testAction)
     {
-      testAction (Helper, e => e.DropDownLists(), "dropDownList");
+      testAction(Helper, e => e.DropDownLists(), "dropDownList");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<DropDownListSelector, DropDownListControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<DropDownListSelector, DropDownListControlObject> testAction)
     {
-      testAction (Helper, e => e.DropDownLists(), "dropDownList");
+      testAction(Helper, e => e.DropDownLists(), "dropDownList");
     }
 
     [Test]
@@ -54,12 +56,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.DropDownLists().GetByLocalID ("DropDownList5_Disabled");
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.SelectOption().WithDisplayText ("EventItem"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithItemID ("ItemID4"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption ("ItemID4"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      var control = home.DropDownLists().GetByLocalID("DropDownList5_Disabled");
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
+          () => control.SelectOption().WithDisplayText("EventItem"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption.WithDisplayText").Message));
+      Assert.That(
+          () => control.SelectOption().WithIndex(1),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption.WithIndex").Message));
+      Assert.That(
+          () => control.SelectOption().WithItemID("ItemID4"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption.WithItemID").Message));
+      Assert.That(
+          () => control.SelectOption("ItemID4"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption(value)").Message));
     }
 
     [Test]
@@ -67,16 +77,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList4");
+      var dropDownList = home.DropDownLists().GetByLocalID("MyDropDownList4");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(dropDownList);
 
-      dropDownList.SelectOption().WithItemID ("B");
-      Assert.That (dropDownList.Scope["value"], Is.EqualTo ("B"));
+      dropDownList.SelectOption().WithItemID("B");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(dropDownList.Scope["value"], Is.EqualTo("B"));
 
-      dropDownList.SelectOption().WithIndex (3);
-      Assert.That (dropDownList.Scope["value"], Is.EqualTo ("C"));
+      dropDownList.SelectOption().WithIndex(3);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(dropDownList.Scope["value"], Is.EqualTo("C"));
 
-      dropDownList.SelectOption().WithDisplayText ("A");
-      Assert.That (dropDownList.Scope["value"], Is.EqualTo ("B"));
+      dropDownList.SelectOption().WithDisplayText("A");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(dropDownList.Scope["value"], Is.EqualTo("B"));
     }
 
     [Test]
@@ -84,8 +98,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
-      AssertSelectedOption (dropDownList, "Item1Value", -1, "Item1");
+      var dropDownList = home.DropDownLists().GetByLocalID("MyDropDownList");
+      AssertSelectedOption(dropDownList, "Item1Value", -1, "Item1");
     }
 
     private static void AssertSelectedOption (
@@ -96,10 +110,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var optionDefinition = dropDownList.GetSelectedOption();
 
-      Assert.That (optionDefinition.ItemID, Is.EqualTo (expectedItemID));
-      Assert.That (optionDefinition.Index, Is.EqualTo (expectedIndex));
-      Assert.That (optionDefinition.Text, Is.EqualTo (expectedText));
-      Assert.That (optionDefinition.IsSelected, Is.True);
+      Assert.That(optionDefinition.ItemID, Is.EqualTo(expectedItemID));
+      Assert.That(optionDefinition.Index, Is.EqualTo(expectedIndex));
+      Assert.That(optionDefinition.Text, Is.EqualTo(expectedText));
+      Assert.That(optionDefinition.IsSelected, Is.True);
     }
 
     [Test]
@@ -107,20 +121,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
+      var dropDownList = home.DropDownLists().GetByLocalID("MyDropDownList");
 
       var options = dropDownList.GetOptionDefinitions();
-      Assert.That (options.Count, Is.EqualTo (3));
+      Assert.That(options.Count, Is.EqualTo(3));
 
-      Assert.That (options[0].ItemID, Is.EqualTo ("Item1Value"));
-      Assert.That (options[0].Index, Is.EqualTo (1));
-      Assert.That (options[0].Text, Is.EqualTo ("Item1"));
-      Assert.That (options[0].IsSelected, Is.True);
+      Assert.That(options[0].ItemID, Is.EqualTo("Item1Value"));
+      Assert.That(options[0].Index, Is.EqualTo(1));
+      Assert.That(options[0].Text, Is.EqualTo("Item1"));
+      Assert.That(options[0].IsSelected, Is.True);
 
-      Assert.That (options[2].ItemID, Is.EqualTo ("Item3Value"));
-      Assert.That (options[2].Index, Is.EqualTo (3));
-      Assert.That (options[2].Text, Is.EqualTo ("Item3"));
-      Assert.That (options[2].IsSelected, Is.False);
+      Assert.That(options[2].ItemID, Is.EqualTo("Item3Value"));
+      Assert.That(options[2].Index, Is.EqualTo(3));
+      Assert.That(options[2].Text, Is.EqualTo("Item3"));
+      Assert.That(options[2].IsSelected, Is.False);
     }
 
     [Test]
@@ -128,9 +142,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
-      dropDownList.SelectOption ("Item2Value");
-      Assert.That (dropDownList.GetText(), Is.EqualTo ("Item2"));
+      var dropDownList = home.DropDownLists().GetByLocalID("MyDropDownList");
+      dropDownList.SelectOption("Item2Value");
+      Assert.That(dropDownList.GetText(), Is.EqualTo("Item2"));
     }
 
     [Test]
@@ -138,16 +152,20 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList");
+      var dropDownList = home.DropDownLists().GetByLocalID("MyDropDownList");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(dropDownList);
 
-      dropDownList.SelectOption ("Item3Value");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item3|Item3Value"));
+      dropDownList.SelectOption("Item3Value");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("Item3|Item3Value"));
 
-      dropDownList.SelectOption().WithIndex (2);
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item2|Item2Value"));
+      dropDownList.SelectOption().WithIndex(2);
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("Item2|Item2Value"));
 
-      dropDownList.SelectOption().WithDisplayText ("Item1");
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Item1|Item1Value"));
+      dropDownList.SelectOption().WithDisplayText("Item1");
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("Item1|Item1Value"));
     }
 
     [Test]
@@ -155,21 +173,25 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var dropDownList = home.DropDownLists().GetByLocalID ("MyDropDownList3");
+      var dropDownList = home.DropDownLists().GetByLocalID("MyDropDownList3");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(dropDownList);
 
-      dropDownList.SelectOption ("Item3Value", Opt.ContinueImmediately());
-      Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item3Value"));
+      dropDownList.SelectOption("Item3Value", Opt.ContinueImmediately());
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(dropDownList.GetSelectedOption().ItemID, Is.EqualTo("Item3Value"));
 
-      dropDownList.SelectOption().WithIndex (2, Opt.ContinueImmediately());
-      Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item2Value"));
+      dropDownList.SelectOption().WithIndex(2, Opt.ContinueImmediately());
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(dropDownList.GetSelectedOption().ItemID, Is.EqualTo("Item2Value"));
 
-      dropDownList.SelectOption().WithDisplayText ("Item1", Opt.ContinueImmediately());
-      Assert.That (dropDownList.GetSelectedOption().ItemID, Is.EqualTo ("Item1Value"));
+      dropDownList.SelectOption().WithDisplayText("Item1", Opt.ContinueImmediately());
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(dropDownList.GetSelectedOption().ItemID, Is.EqualTo("Item1Value"));
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("DropDownListTest.wxe");
+      return Start<WxePageObject>("DropDownListTest.wxe");
     }
   }
 }

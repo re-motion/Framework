@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using Coypu;
 using JetBrains.Annotations;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.ControlSelection;
@@ -31,7 +30,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Extension method for selecting a control by HTML <paramref name="id"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="HtmlIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -42,10 +41,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IHtmlIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
-      return fluentControlSelector.GetControl (new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (id));
+      return fluentControlSelector.GetControl(new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(id));
     }
 
     /// <summary>
@@ -56,22 +55,23 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="HtmlIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByIDOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByIDOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string id)
         where TControlSelector : IHtmlIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
-      return fluentControlSelector.GetControlOrNull (new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (id));
+      return fluentControlSelector.GetControlOrNull(new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(id));
     }
 
     /// <summary>
     /// Extension method for checking if a control with the given HTML <paramref name="id"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="HtmlIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -81,17 +81,17 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IHtmlIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("id", id);
 
-      return fluentControlSelector.HasControl (new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (id));
+      return fluentControlSelector.HasControl(new HtmlIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(id));
     }
 
     /// <summary>
     /// Extension method for selecting a control by <paramref name="oneBasedIndex"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="IndexControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -102,9 +102,9 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IIndexControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.GetControl (new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject> (oneBasedIndex));
+      return fluentControlSelector.GetControl(new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject>(oneBasedIndex));
     }
 
     /// <summary>
@@ -115,21 +115,22 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="IndexControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByIndexOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByIndexOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         int oneBasedIndex)
         where TControlSelector : IIndexControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.GetControlOrNull (new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject> (oneBasedIndex));
+      return fluentControlSelector.GetControlOrNull(new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject>(oneBasedIndex));
     }
 
     /// <summary>
     /// Extension method for checking if a control with the given <paramref name="oneBasedIndex"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="IndexControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -139,9 +140,9 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IIndexControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.HasControl (new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject> (oneBasedIndex));
+      return fluentControlSelector.HasControl(new IndexControlSelectionCommandBuilder<TControlSelector, TControlObject>(oneBasedIndex));
     }
 
     /// <summary>
@@ -150,7 +151,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// e.g. <see cref="GetByID{TControlSelector,TControlObject}"/>.
     /// </summary>
     /// <returns>The control object for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="LocalIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -161,10 +162,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ILocalIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
-      return fluentControlSelector.GetControl (new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (localID));
+      return fluentControlSelector.GetControl(new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(localID));
     }
 
     /// <summary>
@@ -177,16 +178,16 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="LocalIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByLocalIDOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByLocalIDOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string localID)
         where TControlSelector : ILocalIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
-      return fluentControlSelector.GetControlOrNull (new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (localID));
+      return fluentControlSelector.GetControlOrNull(new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(localID));
     }
 
     /// <summary>
@@ -195,6 +196,7 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// e.g. <see cref="ExistsByID{TControlSelector,TControlObject}"/>.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="LocalIDControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -204,17 +206,17 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ILocalIDControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("localID", localID);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("localID", localID);
 
-      return fluentControlSelector.HasControl (new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject> (localID));
+      return fluentControlSelector.HasControl(new LocalIDControlSelectionCommandBuilder<TControlSelector, TControlObject>(localID));
     }
 
     /// <summary>
     /// Extension method for selecting a control by <paramref name="title"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="TitleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -225,10 +227,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITitleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
-      return fluentControlSelector.GetControl (new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject> (title));
+      return fluentControlSelector.GetControl(new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject>(title));
     }
 
     /// <summary>
@@ -239,22 +241,23 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="TitleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByTitleOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByTitleOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string title)
         where TControlSelector : ITitleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
-      return fluentControlSelector.GetControlOrNull (new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject> (title));
+      return fluentControlSelector.GetControlOrNull(new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject>(title));
     }
 
     /// <summary>
     /// Extension method for checking if a control with the given <paramref name="title"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="TitleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -264,17 +267,17 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITitleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("title", title);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("title", title);
 
-      return fluentControlSelector.HasControl (new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject> (title));
+      return fluentControlSelector.HasControl(new TitleControlSelectionCommandBuilder<TControlSelector, TControlObject>(title));
     }
 
     /// <summary>
     /// Extension method for selecting the first matching control.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="FirstControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -284,9 +287,9 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : IFirstControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.GetControl (new FirstControlSelectionCommandBuilder<TControlSelector, TControlObject>());
+      return fluentControlSelector.GetControl(new FirstControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
 
     /// <summary>
@@ -297,22 +300,22 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="FirstControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject FirstOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? FirstOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector)
         where TControlSelector : IFirstControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.GetControlOrNull (new FirstControlSelectionCommandBuilder<TControlSelector, TControlObject>());
+      return fluentControlSelector.GetControlOrNull(new FirstControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
 
     /// <summary>
     /// Extension method for selecting the only matching control.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found.</exception>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If multiple matching controls are found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="SingleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -322,35 +325,35 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ISingleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.GetControl (new SingleControlSelectionCommandBuilder<TControlSelector, TControlObject>());
+      return fluentControlSelector.GetControl(new SingleControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
 
     /// <summary>
     /// Extension method for selecting the only matching control.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
-    /// <exception cref="AmbiguousException">If multiple matching controls are found.</exception>
+    /// <exception cref="WebTestException">If multiple matching controls are found.</exception>
     /// <remarks>
     /// Uses the <see cref="SingleControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject SingleOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? SingleOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector)
         where TControlSelector : ISingleControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
 
-      return fluentControlSelector.GetControlOrNull (new SingleControlSelectionCommandBuilder<TControlSelector, TControlObject>());
+      return fluentControlSelector.GetControlOrNull(new SingleControlSelectionCommandBuilder<TControlSelector, TControlObject>());
     }
 
     /// <summary>
     /// Extension method for selecting a control by <paramref name="text"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If the control cannot be found.</exception>
+    /// <exception cref="WebTestException">If the control cannot be found.</exception>
     /// <remarks>
     /// Uses the <see cref="TextContentControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -361,10 +364,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITextContentControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("text", text);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("text", text);
 
-      return fluentControlSelector.GetControl (new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject> (text));
+      return fluentControlSelector.GetControl(new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject>(text));
     }
 
     /// <summary>
@@ -375,22 +378,23 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
     /// Uses the <see cref="TextContentControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
     [CanBeNull]
-    public static TControlObject GetByTextContentOrNull<TControlSelector, TControlObject> (
+    public static TControlObject? GetByTextContentOrNull<TControlSelector, TControlObject> (
         [NotNull] this IFluentControlSelector<TControlSelector, TControlObject> fluentControlSelector,
         [NotNull] string text)
         where TControlSelector : ITextContentControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("text", text);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("text", text);
 
-      return fluentControlSelector.GetControlOrNull (new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject> (text));
+      return fluentControlSelector.GetControlOrNull(new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject>(text));
     }
 
     /// <summary>
     /// Extension method for checking if a control with the given <paramref name="text"/> exists.
     /// </summary>
     /// <returns><see langword="true" /> if a control has been found; otherwise, <see langword="false" />.</returns>
+    /// <exception cref="WebTestException">If the control cannot be found due to ambiguity.</exception>
     /// <remarks>
     /// Uses the <see cref="TextContentControlSelectionCommandBuilder{TControlSelector,TControlObject}"/>.
     /// </remarks>
@@ -400,10 +404,10 @@ namespace Remotion.Web.Development.WebTesting.FluentControlSelection
         where TControlSelector : ITextContentControlSelector<TControlObject>
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("fluentControlSelector", fluentControlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("text", text);
+      ArgumentUtility.CheckNotNull("fluentControlSelector", fluentControlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("text", text);
 
-      return fluentControlSelector.HasControl (new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject> (text));
+      return fluentControlSelector.HasControl(new TextContentControlSelectionCommandBuilder<TControlSelector, TControlObject>(text));
     }
   }
 }

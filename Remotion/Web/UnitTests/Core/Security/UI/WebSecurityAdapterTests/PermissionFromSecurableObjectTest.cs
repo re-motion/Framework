@@ -35,15 +35,15 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [SetUp]
     public void SetUp ()
     {
-      _securityAdapter = new WebSecurityAdapter ();
+      _securityAdapter = new WebSecurityAdapter();
 
-      _testHelper = new WebPermissionProviderTestHelper ();
+      _testHelper = new WebPermissionProviderTestHelper();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _testHelper.SecurityProvider);
-      serviceLocator.RegisterSingle (() => _testHelper.PrincipalProvider);
-      serviceLocator.RegisterSingle (() => _testHelper.FunctionalSecurityStrategy);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _testHelper.SecurityProvider);
+      serviceLocator.RegisterSingle(() => _testHelper.PrincipalProvider);
+      serviceLocator.RegisterSingle(() => _testHelper.FunctionalSecurityStrategy);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     [TearDown]
@@ -55,78 +55,70 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [Test]
     public void HasAccessGranted_WithoutHandler ()
     {
-      _testHelper.ReplayAll ();
+      bool hasAccess = _securityAdapter.HasAccess(_testHelper.CreateSecurableObject(), null);
 
-      bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), null);
-
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccessGranted_WithinSecurityFreeSection ()
     {
-      _testHelper.ReplayAll ();
-
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+        hasAccess = _securityAdapter.HasAccess(_testHelper.CreateSecurableObject(), new EventHandler(TestEventHandler));
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccessGranted ()
     {
-      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, true);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectHasAccess(new Enum[] { GeneralAccessTypes.Read }, true);
 
-      bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess(_testHelper.CreateSecurableObject(), new EventHandler(TestEventHandler));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccessDenied ()
     {
-      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessTypes.Read }, false);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectHasAccess(new Enum[] { GeneralAccessTypes.Read }, false);
 
-      bool hasAccess = _securityAdapter.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess(_testHelper.CreateSecurableObject(), new EventHandler(TestEventHandler));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.False);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void HasAccessGranted_WithSecurableObjectSetToNull ()
     {
-      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, true);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectHasStatelessAccessForSecurableObject(new Enum[] { GeneralAccessTypes.Read }, true);
 
-      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess(null, new EventHandler(TestEventHandler));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccessDenied_WithSecurableObjectSetToNull ()
     {
-      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessTypes.Read }, false);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectHasStatelessAccessForSecurableObject(new Enum[] { GeneralAccessTypes.Read }, false);
 
-      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess(null, new EventHandler(TestEventHandler));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.False);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.False);
     }
 
-    [DemandTargetMethodPermission (SecurableObject.Method.Show)]
+    [DemandTargetMethodPermission(SecurableObject.Method.Show)]
     private void TestEventHandler (object sender, EventArgs args)
     {
     }

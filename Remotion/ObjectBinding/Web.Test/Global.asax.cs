@@ -20,8 +20,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web;
-using Microsoft.Practices.ServiceLocation;
-using OBWTest.ValidatorFactoryDecorators;
+using System.Web.Configuration;
+using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ObjectBinding;
@@ -37,23 +37,24 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Validati
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories;
-using Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Configuration;
+using Remotion.Web.Infrastructure;
 
 namespace OBWTest
 {
   public class Global : HttpApplication
   {
+    private const string c_writeReflectionBusinessObjectToDiskAppSettingName = "WriteBusinessObjectsToDisk";
+
     private WaiConformanceLevel _waiConformanceLevelBackup;
     private static ResourceVirtualPathProvider _resourceVirtualPathProvider;
 
     public Global ()
     {
       //  Initialize Logger
-      LogManager.GetLogger (typeof (Global));
+      LogManager.GetLogger(typeof(Global));
       InitializeComponent();
     }
 
@@ -67,148 +68,77 @@ namespace OBWTest
     protected void Application_Start (Object sender, EventArgs e)
     {
       LogManager.Initialize();
-      
-      string objectPath = Server.MapPath ("~/objects");
-      if (!Directory.Exists (objectPath))
-        Directory.CreateDirectory (objectPath);
-      var defaultServiceLocator = DefaultServiceLocator.Create ();
 
-      RegisterSwitchingValidatorFactories(defaultServiceLocator);
-      //defaultServiceLocator.RegisterSingle<ResourceTheme> (() => new ResourceTheme.Other());
+      string objectPath = Server.MapPath("~/objects");
+      if (!Directory.Exists(objectPath))
+        Directory.CreateDirectory(objectPath);
+      var defaultServiceLocator = DefaultServiceLocator.Create();
 
-      ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
+      //defaultServiceLocator.RegisterSingle<ResourceTheme> (() => new ResourceTheme.NovaGray());
 
-      XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider (objectPath);
-      XmlReflectionBusinessObjectStorageProvider.SetCurrent (provider);
-      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService (typeof (IGetObjectService), provider);
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
+
+      IReflectionBusinessObjectStorageProvider reflectionBusinessObjectStorageProvider;
+      var writeReflectionBusinessObjectToDiskSetting = WebConfigurationManager.AppSettings[c_writeReflectionBusinessObjectToDiskAppSettingName];
+      if (StringComparer.OrdinalIgnoreCase.Equals(writeReflectionBusinessObjectToDiskSetting, true.ToString()))
+      {
+        reflectionBusinessObjectStorageProvider = new FileSystemReflectionBusinessObjectStorageProvider(objectPath);
+      }
+      else
+      {
+        var httpContextProvider = SafeServiceLocator.Current.GetInstance<IHttpContextProvider>();
+        reflectionBusinessObjectStorageProvider = new SessionStateReflectionBusinessObjectStorageProvider(
+            httpContextProvider,
+            new InMemoryWithFileSystemReadFallbackReflectionBusinessObjectStorageProviderFactory(objectPath));
+      }
+
+      var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
+      XmlReflectionBusinessObjectStorageProvider provider = new XmlReflectionBusinessObjectStorageProvider(reflectionBusinessObjectStorageProvider);
+      XmlReflectionBusinessObjectStorageProvider.SetCurrent(provider);
+      BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>().AddService(typeof(IGetObjectService), provider);
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-                            .AddService (typeof (ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
+                            .AddService(typeof(ISearchAvailableObjectsService), new BindableXmlObjectSearchService());
       BusinessObjectProvider.GetProvider<BindableObjectWithIdentityProviderAttribute>()
-                            .AddService (typeof (IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService());
+                            .AddService(typeof(IBusinessObjectWebUIService), new ReflectionBusinessObjectWebUIService(resourceUrlFactory));
 
-      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDefaultValueService());
-      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService (new ReferenceDataSourceTestDeleteObjectService());
+      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService(new ReferenceDataSourceTestDefaultValueService());
+      BusinessObjectProvider.GetProvider<BindableObjectProviderAttribute>().AddService(new ReferenceDataSourceTestDeleteObjectService());
 
-      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
-          new[]
-          {
-              new ResourcePathMapping ("Remotion.Web", @"..\..\Web\Core\res"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web", @"..\..\ObjectBinding\Web\res"),
-              new ResourcePathMapping ("Remotion.Web.Legacy", @"..\..\Web\Legacy\res"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Legacy", @"..\..\ObjectBinding\Web.Legacy\res")
-          },
-          FileExtensionHandlerMapping.Default);
-      _resourceVirtualPathProvider.Register ();
+      var developmentResourcesExistTestPath = Path.Combine(Server.MapPath("~/"), @"..\Web.ClientScript");
+      var isResourceMappingRequired = Directory.Exists(developmentResourcesExistTestPath);
+      if (isResourceMappingRequired)
+      {
+#if DEBUG
+        const string configuration = "Debug";
+#else
+        const string configuration = "Release";
+#endif
+        _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
+            new[]
+            {
+                new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Web\ClientScript\bin\{configuration}\dist"),
+                new ResourcePathMapping("Remotion.Web/Image", @"..\..\Web\Core\res\Image"),
+                new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Web\Core\res\Themes"),
+                new ResourcePathMapping("Remotion.Web/UI", @"..\..\Web\Core\res\UI"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Sample/Image", @"..\..\ObjectBinding\Sample\res\Image"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Web/Html", @$"..\..\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Web/Themes", @"..\..\ObjectBinding\Web\res\Themes"),
+                new ResourcePathMapping("Remotion.Web.Preview", @"..\..\Web\Preview\res"),
+                new ResourcePathMapping("Remotion.ObjectBinding.Web.Preview", @"..\..\ObjectBinding\Web.Preview\res")
+            },
+            FileExtensionHandlerMapping.Default);
+        _resourceVirtualPathProvider.Register();
+      }
+      else
+      {
+        _resourceVirtualPathProvider = new ResourceVirtualPathProvider(new ResourcePathMapping[0], new FileExtensionHandlerMapping[0]);
+      }
 
       //var bundle = new Bundle ("~/bundles/css");
       //foreach (var resourcePathMapping in _resourceVirtualPathProvider.Mappings)
       //  BundleCssFilesRecursively ((ResourceVirtualDirectory) _resourceVirtualPathProvider.GetDirectory(resourcePathMapping.VirtualPath), bundle);
 
       //BundleTable.Bundles.Add (bundle);
-    }
-
-    private static void RegisterSwitchingValidatorFactories (DefaultServiceLocator defaultServiceLocator)
-    {
-      var compoundBocAutoCompleteReferenceValueValidatorFactory =
-          new CompoundBocAutoCompleteReferenceValueValidatorFactory (
-              new IBocAutoCompleteReferenceValueValidatorFactory[] { new BocAutoCompleteReferenceValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocAutoCompleteReferenceValueValidatorFactory = new SwitchingBocAutoCompleteReferenceValueValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocAutoCompleteReferenceValueValidatorFactoryDecorator (
-              compoundBocAutoCompleteReferenceValueValidatorFactory),
-          new BocAutoCompleteReferenceValueValidatorFactory());
-      defaultServiceLocator.RegisterSingle<IBocAutoCompleteReferenceValueValidatorFactory> (() => bocAutoCompleteReferenceValueValidatorFactory);
-
-      var compoundBocBooleanValueValidatorFactory = new CompoundBocBooleanValueValidatorFactory (
-          new IBocBooleanValueValidatorFactory[] { new BocBooleanValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocBooleanValueValidatorFactory = new SwitchingBocBooleanValueValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocBooleanValueValidatorFactoryDecorator (
-              compoundBocBooleanValueValidatorFactory), // Fluent
-          new BocBooleanValueValidatorFactory ()); // Not Fluent
-      defaultServiceLocator.RegisterSingle<IBocBooleanValueValidatorFactory> (() => bocBooleanValueValidatorFactory);
-
-      var compoundBocCheckBoxValidatorFactory = new CompoundBocCheckBoxValidatorFactory (
-          new IBocCheckBoxValidatorFactory[] { new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocCheckBoxValidatorFactory = new SwitchingBocCheckBoxValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocCheckBoxValidatorFactoryDecorator (
-              compoundBocCheckBoxValidatorFactory),
-          new CompoundValidatorFactory<IBocCheckBox>(Enumerable.Empty<IBocValidatorFactory<IBocCheckBox>>()));
-      defaultServiceLocator.RegisterSingle<IBocCheckBoxValidatorFactory> (() => bocCheckBoxValidatorFactory);
-
-      var compoundBocDateTimeValueValidatorFactory = new CompoundBocDateTimeValueValidatorFactory (
-          new IBocDateTimeValueValidatorFactory[] { new BocDateTimeValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocDateTimeValueValidatorFactory = new SwitchingBocDateTimeValueValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocDateTimeValueValidatorFactoryDecorator (
-              compoundBocDateTimeValueValidatorFactory),
-          new BocDateTimeValueValidatorFactory ());
-      defaultServiceLocator.RegisterSingle<IBocDateTimeValueValidatorFactory> (() => bocDateTimeValueValidatorFactory);
-
-      var compoundBocEnumValueValidatorFactory = new CompoundBocEnumValueValidatorFactory (
-          new IBocEnumValueValidatorFactory[] { new BocEnumValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocEnumValueValidatorFactory = new SwitchingBocEnumValueValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocEnumValueValidatorFactoryDecorator (
-              compoundBocEnumValueValidatorFactory),
-          new BocEnumValueValidatorFactory ());
-      defaultServiceLocator.RegisterSingle<IBocEnumValueValidatorFactory> (() => bocEnumValueValidatorFactory);
-
-      var compoundBocListValidatorFactory = new CompoundBocListValidatorFactory (
-          new IBocListValidatorFactory[] { new BocListValidatorFactory(), new FluentValidationBocListValidatorFactory() });
-      var bocListValidatorFactory = new SwitchingBocListValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocListValidatorFactoryDecorator (
-              compoundBocListValidatorFactory),
-          new BocListValidatorFactory ());
-      defaultServiceLocator.RegisterSingle<IBocListValidatorFactory> (() => bocListValidatorFactory);
-
-      var compoundBocMultilineTextValueValidatorFactory = new CompoundBocMultilineTextValueValidatorFactory (
-          new IBocMultilineTextValueValidatorFactory[] { new BocMultilineTextValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocMultilineTextValueValidatorFactory = new SwitchingBocMultilineTextValueValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocMultilineTextValueValidatorFactoryDecorator (
-              compoundBocMultilineTextValueValidatorFactory),
-          new BocMultilineTextValueValidatorFactory ());
-      defaultServiceLocator.RegisterSingle<IBocMultilineTextValueValidatorFactory> (() => bocMultilineTextValueValidatorFactory);
-
-      var compoundBocReferenceValueValidatorFactory = new CompoundBocReferenceValueValidatorFactory (
-          new IBocReferenceValueValidatorFactory[] { new BocReferenceValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocReferenceValueValidatorFactory = new SwitchingBocReferenceValueValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocReferenceValueValidatorFactoryDecorator (
-              compoundBocReferenceValueValidatorFactory),
-          new BocReferenceValueValidatorFactory ());
-      defaultServiceLocator.RegisterSingle<IBocReferenceValueValidatorFactory> (() => bocReferenceValueValidatorFactory);
-
-      var compoundBocTextValueValidatorFactory = new CompoundBocTextValueValidatorFactory (
-          new IBocTextValueValidatorFactory[] { new BocTextValueValidatorFactory(), new FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory() });
-      var bocTextValueValidatorFactory = new SwitchingBocTextValueValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBocTextValueValidatorFactoryDecorator (
-              compoundBocTextValueValidatorFactory),
-          new BocTextValueValidatorFactory ());
-      defaultServiceLocator.RegisterSingle<IBocTextValueValidatorFactory> (() => bocTextValueValidatorFactory);
-
-      var compoundBusinessObjectReferenceDataSourceControlValidatorFactory = new CompoundBusinessObjectReferenceDataSourceControlValidatorFactory (
-          new IBusinessObjectReferenceDataSourceControlValidatorFactory[] { new FluentValidationBocReferenceDataSourceValidatorFactory() });
-      var businessObjectReferenceDataSourceControlValidatorFactory = new SwitchingBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator (
-              compoundBusinessObjectReferenceDataSourceControlValidatorFactory),
-          new CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl> (Enumerable.Empty<IBocValidatorFactory<BusinessObjectReferenceDataSourceControl>> ()));
-      defaultServiceLocator.RegisterSingle<IBusinessObjectReferenceDataSourceControlValidatorFactory> (
-          () => businessObjectReferenceDataSourceControlValidatorFactory);
-
-      var compoundUserControlBindingValidatorFactory = new CompoundUserControlBindingValidatorFactory (
-          new IUserControlBindingValidatorFactory[] { new UserControlBindingValidatorFactory(), new FluentValidationUserControlBindingValidatorFactory() });
-      var userControlBindingValidatorFactory = new SwitchingUserControlBindingValidatorFactoryDecorator (
-          SwitchingValidatorFactoryState.Instance,
-          new FilteringUserControlBindingValidatorFactoryDecorator (
-              compoundUserControlBindingValidatorFactory),
-          new UserControlBindingValidatorFactory ());
-      defaultServiceLocator.RegisterSingle<IUserControlBindingValidatorFactory> (() => userControlBindingValidatorFactory);
     }
 
     //private void BundleCssFilesRecursively (ResourceVirtualDirectory virtualDirectory, Bundle bundle)
@@ -238,14 +168,14 @@ namespace OBWTest
 
       try
       {
-        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture (Request.UserLanguages[0]);
+        Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Request.UserLanguages[0]);
       }
       catch (ArgumentException)
       {
       }
       try
       {
-        Thread.CurrentThread.CurrentUICulture = new CultureInfo (Request.UserLanguages[0]);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(Request.UserLanguages[0]);
       }
       catch (ArgumentException)
       {

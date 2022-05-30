@@ -17,7 +17,9 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManagement
 {
@@ -29,18 +31,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _rootTransaction = ClientTransaction.CreateRootTransaction();
-      _hierarchy = new ClientTransactionHierarchy (_rootTransaction);
+      _hierarchy = new ClientTransactionHierarchy(_rootTransaction);
     }
 
     [Test]
     public void Initialization_SetsEverythingToTheRootTransaction ()
     {
-      Assert.That (_hierarchy.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
@@ -48,27 +50,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       var subTransaction = _rootTransaction.CreateSubTransaction();
 
-      _hierarchy.AppendLeafTransaction (subTransaction);
+      _hierarchy.AppendLeafTransaction(subTransaction);
 
-      Assert.That (_hierarchy.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (subTransaction));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(subTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void AppendLeafTransaction_Twice_SetsLeafTransaction ()
     {
-      var subTransaction1 = _rootTransaction.CreateSubTransaction ();
+      var subTransaction1 = _rootTransaction.CreateSubTransaction();
 
-      _hierarchy.AppendLeafTransaction (subTransaction1);
+      _hierarchy.AppendLeafTransaction(subTransaction1);
 
-      var subTransaction2 = subTransaction1.CreateSubTransaction ();
+      var subTransaction2 = subTransaction1.CreateSubTransaction();
 
-      _hierarchy.AppendLeafTransaction (subTransaction2);
-      
-      Assert.That (_hierarchy.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (subTransaction2));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      _hierarchy.AppendLeafTransaction(subTransaction2);
+
+      Assert.That(_hierarchy.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(subTransaction2));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
@@ -76,128 +78,128 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       var unrelatedTransaction = ClientTransactionObjectMother.Create();
 
-      Assert.That (
-          () => _hierarchy.AppendLeafTransaction (unrelatedTransaction), 
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The new LeafTransaction must have the previous LeafTransaction as its parent.\r\nParameter name: leafTransaction"));
+      Assert.That(
+          () => _hierarchy.AppendLeafTransaction(unrelatedTransaction),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The new LeafTransaction must have the previous LeafTransaction as its parent.", "leafTransaction"));
 
-      Assert.That (_hierarchy.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void RemoveLeafTransaction_RevertsLeafToParentTransaction ()
     {
-      var subTransaction = _rootTransaction.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction);
+      var subTransaction = _rootTransaction.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction);
 
-      _hierarchy.RemoveLeafTransaction ();
+      _hierarchy.RemoveLeafTransaction();
 
-      Assert.That (_hierarchy.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void RemoveLeafTransaction_InLargerHierarchy_RevertsStepByStep ()
     {
-      var subTransaction1 = _rootTransaction.CreateSubTransaction ();
-      var subTransaction2 = subTransaction1.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction1);
-      _hierarchy.AppendLeafTransaction (subTransaction2);
+      var subTransaction1 = _rootTransaction.CreateSubTransaction();
+      var subTransaction2 = subTransaction1.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction1);
+      _hierarchy.AppendLeafTransaction(subTransaction2);
 
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (subTransaction2));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(subTransaction2));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
 
-      _hierarchy.RemoveLeafTransaction ();
+      _hierarchy.RemoveLeafTransaction();
 
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (subTransaction1));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(subTransaction1));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
 
-      _hierarchy.RemoveLeafTransaction ();
+      _hierarchy.RemoveLeafTransaction();
 
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void RemoveLeafTransaction_WithRootTransaction_Throws ()
     {
-      Assert.That (
-          () => _hierarchy.RemoveLeafTransaction(), Throws.InvalidOperationException.With.Message.EqualTo ("Cannot remove the root transaction."));
+      Assert.That(
+          () => _hierarchy.RemoveLeafTransaction(), Throws.InvalidOperationException.With.Message.EqualTo("Cannot remove the root transaction."));
 
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void ActivateTransaction_ChangesActiveTransaction ()
     {
-      var subTransaction = _rootTransaction.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction);
+      var subTransaction = _rootTransaction.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction);
 
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
 
-      _hierarchy.ActivateTransaction (subTransaction);
+      _hierarchy.ActivateTransaction(subTransaction);
 
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (subTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(subTransaction));
     }
 
     [Test]
     public void ActivateTransaction_ReturnsScopeForRevertingActiveTransaction ()
     {
-      var subTransaction = _rootTransaction.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction);
+      var subTransaction = _rootTransaction.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction);
 
-      var scope = _hierarchy.ActivateTransaction (subTransaction);
+      var scope = _hierarchy.ActivateTransaction(subTransaction);
 
-      Assert.That (scope, Is.Not.Null);
+      Assert.That(scope, Is.Not.Null);
       scope.Dispose();
 
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void ActivateTransaction_MultipleTimes_ReturnsScopesRevertingStepByStep ()
     {
-      var subTransaction1 = _rootTransaction.CreateSubTransaction ();
-      var subTransaction2 = subTransaction1.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction1);
-      _hierarchy.AppendLeafTransaction (subTransaction2);
+      var subTransaction1 = _rootTransaction.CreateSubTransaction();
+      var subTransaction2 = subTransaction1.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction1);
+      _hierarchy.AppendLeafTransaction(subTransaction2);
 
-      var scope1 = _hierarchy.ActivateTransaction (subTransaction1);
-      var scope2 = _hierarchy.ActivateTransaction (subTransaction2);
+      var scope1 = _hierarchy.ActivateTransaction(subTransaction1);
+      var scope2 = _hierarchy.ActivateTransaction(subTransaction2);
 
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (subTransaction2));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(subTransaction2));
 
       scope2.Dispose();
 
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (subTransaction1));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(subTransaction1));
 
       scope1.Dispose();
 
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void ActivateTransaction_WithLeafTransactionChanges ()
     {
-      var subTransaction1 = _rootTransaction.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction1);
+      var subTransaction1 = _rootTransaction.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction1);
 
-      _hierarchy.ActivateTransaction (subTransaction1);
+      _hierarchy.ActivateTransaction(subTransaction1);
 
-      var subTransaction2 = subTransaction1.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction2);
+      var subTransaction2 = subTransaction1.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction2);
 
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (subTransaction2));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (subTransaction1));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(subTransaction2));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(subTransaction1));
 
-      _hierarchy.RemoveLeafTransaction ();
+      _hierarchy.RemoveLeafTransaction();
 
-      Assert.That (_hierarchy.LeafTransaction, Is.SameAs (subTransaction1));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (subTransaction1));
+      Assert.That(_hierarchy.LeafTransaction, Is.SameAs(subTransaction1));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(subTransaction1));
     }
 
     [Test]
@@ -205,37 +207,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     {
       var unrelatedTransaction = ClientTransactionObjectMother.Create();
 
-      Assert.That (
-          () => _hierarchy.ActivateTransaction (unrelatedTransaction),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "The activated transaction must be from this ClientTransactionHierarchy.\r\nParameter name: clientTransaction"));
+      Assert.That(
+          () => _hierarchy.ActivateTransaction(unrelatedTransaction),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "The activated transaction must be from this ClientTransactionHierarchy.", "clientTransaction"));
 
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void ActivateTransaction_CallingScopesOutOfOrder_Throws ()
     {
-      var subTransaction = _rootTransaction.CreateSubTransaction ();
-      _hierarchy.AppendLeafTransaction (subTransaction);
+      var subTransaction = _rootTransaction.CreateSubTransaction();
+      _hierarchy.AppendLeafTransaction(subTransaction);
 
-      var scope1 = _hierarchy.ActivateTransaction (subTransaction);
-      _hierarchy.ActivateTransaction (_rootTransaction);
+      var scope1 = _hierarchy.ActivateTransaction(subTransaction);
+      _hierarchy.ActivateTransaction(_rootTransaction);
 
-      Assert.That (
+      Assert.That(
           () => scope1.Dispose(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("The scopes returned by ActivateTransaction must be disposed inside out."));
-      Assert.That (_hierarchy.ActiveTransaction, Is.SameAs (_rootTransaction));
+          Throws.InvalidOperationException.With.Message.EqualTo("The scopes returned by ActivateTransaction must be disposed inside out."));
+      Assert.That(_hierarchy.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void Serializable ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (_hierarchy);
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      Assert.That (deserialized.ActiveTransaction, Is.Not.Null);
-      Assert.That (deserialized.RootTransaction, Is.Not.Null);
-      Assert.That (deserialized.LeafTransaction, Is.Not.Null);
+      var deserialized = Serializer.SerializeAndDeserialize(_hierarchy);
+
+      Assert.That(deserialized.ActiveTransaction, Is.Not.Null);
+      Assert.That(deserialized.RootTransaction, Is.Not.Null);
+      Assert.That(deserialized.LeafTransaction, Is.Not.Null);
     }
   }
 }

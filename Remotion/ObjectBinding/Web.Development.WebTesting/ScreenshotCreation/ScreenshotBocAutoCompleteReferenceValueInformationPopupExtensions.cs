@@ -32,10 +32,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
   /// </summary>
   public static class ScreenshotBocAutoCompleteReferenceValueInformationPopupExtensions
   {
-    private const string c_getElementScript = "return $(arguments[0]).getAutoCompleteInformationPopUp().getElement();";
-    private const string c_hideScript = "$(arguments[0]).getAutoCompleteInformationPopUp().hide();";
-    private const string c_showScript = "$(arguments[0]).getAutoCompleteInformationPopUp().show (arguments[1]);";
-    private const string c_isVisibleScript = "return $(arguments[0]).getAutoCompleteInformationPopUp().visible();";
+    private const string c_getElementScript = "return arguments[0].getAutoCompleteInformationPopUp().getElement();";
+    private const string c_hideScript = "arguments[0].getAutoCompleteInformationPopUp().hide();";
+    private const string c_showScript = "arguments[0].getAutoCompleteInformationPopUp().show (arguments[1]);";
+    private const string c_isVisibleScript = "return arguments[0].getAutoCompleteInformationPopUp().visible();";
 
     /// <summary>
     /// Returns a fluent <see cref="IWebElement"/> representing the popup DOM element.
@@ -44,15 +44,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     internal static FluentScreenshotElement<IWebElement> GetElement (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
+      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
 
       if (!fluentInformationPopup.IsVisible())
-        throw new InvalidOperationException ("The popup is not visible.");
+        throw new InvalidOperationException("The popup is not visible.");
 
-      var result = JavaScriptExecutor.ExecuteStatement<IWebElement> (
+      var result = JavaScriptExecutor.ExecuteStatement<IWebElement>(
           fluentInformationPopup.GetExecutor(),
           c_getElementScript,
           fluentInformationPopup.GetInputField());
+
+      Assertion.IsNotNull(result, "The result of the executed statement must not be null.");
 
       return result.ForWebElementScreenshot();
     }
@@ -64,10 +66,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
         [NotNull] string message)
     {
-      ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
-      ArgumentUtility.CheckNotNull ("message", message);
+      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
+      ArgumentUtility.CheckNotNull("message", message);
 
-      JavaScriptExecutor.ExecuteVoidStatement (fluentInformationPopup.GetExecutor(), c_showScript, fluentInformationPopup.GetInputField(), message);
+      JavaScriptExecutor.ExecuteVoidStatement(fluentInformationPopup.GetExecutor(), c_showScript, fluentInformationPopup.GetInputField(), message);
     }
 
     /// <summary>
@@ -76,9 +78,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static void Hide (
           [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
+      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
 
-      JavaScriptExecutor.ExecuteVoidStatement (fluentInformationPopup.GetExecutor(), c_hideScript, fluentInformationPopup.GetInputField());
+      JavaScriptExecutor.ExecuteVoidStatement(fluentInformationPopup.GetExecutor(), c_hideScript, fluentInformationPopup.GetInputField());
     }
 
     /// <summary>
@@ -87,9 +89,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static bool IsVisible (
           [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
+      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
 
-      return JavaScriptExecutor.ExecuteStatement<bool> (
+      return JavaScriptExecutor.ExecuteStatement<bool>(
           fluentInformationPopup.GetExecutor(),
           c_isVisibleScript,
           fluentInformationPopup.GetInputField());
@@ -103,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup,
         int timeout = 3000)
     {
-      ArgumentUtility.CheckNotNull ("fluentInformationPopup", fluentInformationPopup);
+      ArgumentUtility.CheckNotNull("fluentInformationPopup", fluentInformationPopup);
 
       var watch = new Stopwatch();
       watch.Start();
@@ -114,22 +116,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
           return;
 
         if (watch.ElapsedMilliseconds >= timeout)
-          throw new TimeoutException ("Could not wait for the timeout in the specified amount of time.");
+          throw new TimeoutException("Could not wait for the timeout in the specified amount of time.");
 
-        Thread.Sleep (50);
+        Thread.Sleep(50);
       } while (true);
     }
 
     private static IJavaScriptExecutor GetExecutor (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      return JavaScriptExecutor.GetJavaScriptExecutor (fluentInformationPopup.Target.AutoComplete);
+      return JavaScriptExecutor.GetJavaScriptExecutor(fluentInformationPopup.Target.AutoComplete);
     }
 
     private static IWebElement GetInputField (
         this IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueInformationPopup> fluentInformationPopup)
     {
-      return (IWebElement) fluentInformationPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
+      return (IWebElement)fluentInformationPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }
   }
 }

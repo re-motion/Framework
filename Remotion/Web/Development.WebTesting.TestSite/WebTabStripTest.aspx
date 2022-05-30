@@ -26,11 +26,27 @@
   </remotion:WebTabStrip>
   <div id="scope">
     <h3>WebTabStrip2</h3>
-    <remotion:WebTabStrip ID="MyTabStrip2" runat="server">
+    <remotion:WebTabStrip ID="MyTabStrip2" Width="100px" runat="server">
       <Tabs>
-        <remotion:WebTab ItemID="Tab1" Text="Tab1Label"/>
+        <remotion:WebTab ItemID="Tab1" Icon-Url="~/Images/SampleIcon.gif" Text="This is a very long text that should wrap."/>
         <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
       </Tabs>
     </remotion:WebTabStrip>
   </div>
+  <remotion:WebTabStrip ID="MyTabStripWithAccessKeys" runat="server">
+    <Tabs>
+      <remotion:WebTab ItemID="Tab1" Text="Tab1Label"/>
+      <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
+      <remotion:WebTab ItemID="Tab3" Text="Tab3 disabled" IsDisabled="True"/>
+      <remotion:WebTab ItemID="TabWithAccessKey" Text="Tab with access key" AccessKey="A"/>
+      <remotion:WebTab ItemID="TabWithImplicitAccessKey" Text="Tab with implicit access &key"/>
+      <remotion:WebTab ItemID="TabDisabledWithAccessKey" Text="Tab disabled with access key" IsDisabled="True" AccessKey="D"/>
+    </Tabs>
+  </remotion:WebTabStrip>
+  <h3>WebTabStrip1</h3>
+  <remotion:WebTabStrip ID="MyTabStripWithUmlaut" style="width: 300px" runat="server">
+    <Tabs>
+      <remotion:WebTab ItemID="Tab1" Text="(html)UmlautÖ"/>
+    </Tabs>
+  </remotion:WebTabStrip>
 </asp:Content>

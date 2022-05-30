@@ -25,14 +25,14 @@ namespace Remotion.Validation.Mixins.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithMixinAttribute"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 2, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IValidatedTypeResolver), Position = 2, RegistrationType = RegistrationType.Decorator)]
   public class MixinTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _validatedTypeResolver;
 
     public MixinTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver validatedTypeResolver)
     {
-      ArgumentUtility.CheckNotNull ("validatedTypeResolver", validatedTypeResolver);
+      ArgumentUtility.CheckNotNull("validatedTypeResolver", validatedTypeResolver);
 
       _validatedTypeResolver = validatedTypeResolver;
     }
@@ -42,13 +42,13 @@ namespace Remotion.Validation.Mixins.Implementation
       get { return _validatedTypeResolver; }
     }
 
-    public Type GetValidatedType (Type collectorType)
+    public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      if (collectorType.IsDefined (typeof (ApplyWithMixinAttribute), false))
-        return AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute> (collectorType, false).MixinType;
-      return _validatedTypeResolver.GetValidatedType (collectorType);
+      if (collectorType.IsDefined(typeof(ApplyWithMixinAttribute), false))
+        return AttributeUtility.GetCustomAttribute<ApplyWithMixinAttribute>(collectorType, false)!.MixinType;
+      return _validatedTypeResolver.GetValidatedType(collectorType);
     }
   }
 }

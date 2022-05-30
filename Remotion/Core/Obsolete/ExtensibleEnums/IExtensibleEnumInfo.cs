@@ -21,7 +21,7 @@ using System.Reflection;
 
 namespace Remotion.ExtensibleEnums
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.ExtensibleEnums.dll", true)]
   internal interface IExtensibleEnumInfo
   {
     IExtensibleEnum Value { get; }

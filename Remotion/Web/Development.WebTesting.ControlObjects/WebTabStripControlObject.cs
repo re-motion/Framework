@@ -31,35 +31,37 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class WebTabStripControlObject : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithTabs, IFluentControlObjectWithTabs
   {
     public WebTabStripControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
     /// <inheritdoc/>
     public WebTabStripTabDefinition GetSelectedTab ()
     {
-      var tabScope = Scope.FindCss ("span.tabStripTabSelected");
-      return new WebTabStripTabDefinition (
+      var tabScope = Scope.FindCss("span.tabStripTabSelected");
+      return new WebTabStripTabDefinition(
           tabScope[DiagnosticMetadataAttributes.ItemID],
           -1,
           tabScope[DiagnosticMetadataAttributes.Content],
-          tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true");
+          tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true",
+          tabScope.FindCss("a")?["accesskey"] ?? string.Empty);
     }
 
     /// <inheritdoc/>
     public IReadOnlyList<WebTabStripTabDefinition> GetTabDefinitions ()
     {
       const string cssSelector = "span.tabStripTab, span.tabStripTabSelected";
-      return RetryUntilTimeout.Run (
+      return RetryUntilTimeout.Run(
           () =>
-              Scope.FindAllCss (cssSelector)
-                  .Select (
+              Scope.FindAllCss(cssSelector)
+                  .Select(
                       (tabScope, i) =>
-                          new WebTabStripTabDefinition (
+                          new WebTabStripTabDefinition(
                               tabScope[DiagnosticMetadataAttributes.ItemID],
                               i + 1,
                               tabScope[DiagnosticMetadataAttributes.Content],
-                              tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true"))
+                              tabScope[DiagnosticMetadataAttributes.IsDisabled] == "true",
+                              tabScope.FindCss("a")?["accesskey"] ?? string.Empty))
                   .ToList());
     }
 
@@ -70,69 +72,105 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SwitchTo (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return SwitchTo().WithItemID (itemID, actionOptions);
+      var itemScope = Scope.FindTagWithAttribute("span.tabStripTab", DiagnosticMetadataAttributes.ItemID, itemID);
+      var itemCommand = FindItemCommand(itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SwitchTo(itemID)");
+
+      return SwitchTo(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      var itemScope = Scope.FindTagWithAttribute ("span.tabStripTab", DiagnosticMetadataAttributes.ItemID, itemID);
-      return SwitchTo (itemScope, actionOptions);
+      var itemScope = Scope.FindTagWithAttribute("span.tabStripTab", DiagnosticMetadataAttributes.ItemID, itemID);
+      var itemCommand = FindItemCommand(itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SwitchTo.WithItemID");
+
+      return SwitchTo(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
-      var xPathSelector = string.Format (
+      var xPathSelector = string.Format(
           "(.//span{0})[{1}]",
-          DomSelectorUtility.CreateHasOneOfClassesCheckForXPath (new[] { "tabStripTab", "tabStripTabSelected" }),
+          DomSelectorUtility.CreateHasOneOfClassesCheckForXPath(new[] { "tabStripTab", "tabStripTabSelected" }),
           oneBasedIndex);
-      var itemScope = Scope.FindXPath (xPathSelector);
-      return SwitchTo (itemScope, actionOptions);
+      var itemScope = Scope.FindXPath(xPathSelector);
+      var itemCommand = FindItemCommand(itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SwitchTo.WithIndex");
+
+      return SwitchTo(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithHtmlID (string htmlID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("htmlID", htmlID);
+      ArgumentUtility.CheckNotNullOrEmpty("htmlID", htmlID);
 
-      var itemScope = Scope.FindId (htmlID);
-      return SwitchTo (itemScope, actionOptions);
+      var itemScope = Scope.FindId(htmlID);
+      var itemCommand = FindItemCommand(itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SwitchTo.WithHtmlID");
+
+      return SwitchTo(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
 
-      var itemScope = Scope.FindTagWithAttribute ("span.tabStripTab", DiagnosticMetadataAttributes.Content, displayText);
-      return SwitchTo (itemScope, actionOptions);
+      var itemScope = Scope.FindTagWithAttribute("span.tabStripTab", DiagnosticMetadataAttributes.Content, displayText);
+      var itemCommand = FindItemCommand(itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SwitchTo.WithDisplayText");
+
+      return SwitchTo(itemCommand, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithTabs.WithDisplayTextContains (string containsDisplayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
+      ArgumentUtility.CheckNotNullOrEmpty("containsDisplayText", containsDisplayText);
 
-      var itemScope = Scope.FindTagWithAttributeUsingOperator (
+      var itemScope = Scope.FindTagWithAttributeUsingOperator(
           "span.tabStripTab",
           CssComparisonOperator.SubstringMatch,
           DiagnosticMetadataAttributes.Content,
           containsDisplayText);
-      return SwitchTo (itemScope, actionOptions);
+      var itemCommand = FindItemCommand(itemScope);
+
+      if (itemCommand.IsDisabled())
+        throw AssertionExceptionUtility.CreateCommandDisabledException(Driver, operationName: "SwitchTo.WithDisplayTextContains");
+
+      return SwitchTo(itemCommand, actionOptions);
     }
 
-    private UnspecifiedPageObject SwitchTo (ElementScope tabScope, IWebTestActionOptions actionOptions)
+    private UnspecifiedPageObject SwitchTo (CommandControlObject itemCommand, IWebTestActionOptions? actionOptions)
     {
-      var tabCommandScope = tabScope.FindLink();
-      var tabCommand = new CommandControlObject (Context.CloneForControl (tabCommandScope));
-      return tabCommand.Click (actionOptions);
+      return itemCommand.Click(actionOptions);
+    }
+
+    private CommandControlObject FindItemCommand (ElementScope itemScope)
+    {
+      var itemCommandScope = itemScope.FindLink();
+
+      return new CommandControlObject(Context.CloneForControl(itemCommandScope));
     }
   }
 }

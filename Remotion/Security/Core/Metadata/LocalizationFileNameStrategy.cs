@@ -17,18 +17,27 @@
 using System;
 using System.Globalization;
 using System.IO;
+using Remotion.Utilities;
 
 namespace Remotion.Security.Metadata
 {
   public class LocalizationFileNameStrategy
   {
+
     public string GetLocalizationFileName (string metadataFilename, CultureInfo culture)
     {
-      string baseFilename = Path.GetFileNameWithoutExtension (metadataFilename);
-      string basePath = Path.GetDirectoryName (metadataFilename);
-      string baseFilePath = Path.Combine (basePath, baseFilename);
+      ArgumentUtility.CheckNotNullOrEmpty("metadataFilename", metadataFilename);
+      ArgumentUtility.CheckNotNull("culture", culture);
 
-      if (string.IsNullOrEmpty (culture.Name))
+      string baseFilename = Path.GetFileNameWithoutExtension(metadataFilename);
+
+      string? basePath = Path.GetDirectoryName(metadataFilename);
+      if (basePath == null)
+        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+
+      string baseFilePath = Path.Combine(basePath, baseFilename);
+
+      if (string.IsNullOrEmpty(culture.Name))
         return baseFilePath + ".Localization.xml";
 
       return baseFilePath + ".Localization." + culture.Name + ".xml";
@@ -36,14 +45,20 @@ namespace Remotion.Security.Metadata
 
     public string[] GetLocalizationFileNames (string metadataFilename)
     {
-      string baseFileName = Path.GetFileNameWithoutExtension (metadataFilename);
-      string basePath = Path.GetDirectoryName (metadataFilename);
+      ArgumentUtility.CheckNotNullOrEmpty("metadataFilename", metadataFilename);
+
+      string baseFileName = Path.GetFileNameWithoutExtension(metadataFilename);
+
+      string? basePath = Path.GetDirectoryName(metadataFilename);
+      if (basePath == null)
+        throw new ArgumentException("The metadata filename must denote a path that is not a root directory.", "metadataFilename");
+
       string searchPattern = baseFileName + ".Localization.*xml";
 
       if (basePath == string.Empty)
         basePath = ".";
 
-      return Directory.GetFiles (basePath, searchPattern, SearchOption.TopDirectoryOnly);
+      return Directory.GetFiles(basePath, searchPattern, SearchOption.TopDirectoryOnly);
     }
   }
 }

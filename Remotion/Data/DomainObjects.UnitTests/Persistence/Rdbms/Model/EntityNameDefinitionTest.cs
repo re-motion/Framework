@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -26,88 +27,88 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Initialization ()
     {
-      var definition = new EntityNameDefinition ("schema", "entity");
-      Assert.That (definition.SchemaName, Is.EqualTo ("schema"));
-      Assert.That (definition.EntityName, Is.EqualTo ("entity"));
+      var definition = new EntityNameDefinition("schema", "entity");
+      Assert.That(definition.SchemaName, Is.EqualTo("schema"));
+      Assert.That(definition.EntityName, Is.EqualTo("entity"));
     }
 
     [Test]
     public void Initialization_NullSchemaName ()
     {
-      var definition = new EntityNameDefinition (null, "entity");
-      Assert.That (definition.SchemaName, Is.Null);
-      Assert.That (definition.EntityName, Is.EqualTo ("entity"));
+      var definition = new EntityNameDefinition(null, "entity");
+      Assert.That(definition.SchemaName, Is.Null);
+      Assert.That(definition.EntityName, Is.EqualTo("entity"));
     }
 
     [Test]
     public void Initialization_NullEntityName ()
     {
-      Assert.That (() => new EntityNameDefinition ("schema", null), Throws.TypeOf<ArgumentNullException> ());
+      Assert.That(() => new EntityNameDefinition("schema", null), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
     public void Initialization_EmptyNames ()
     {
-      Assert.That (
-          () => new EntityNameDefinition ("", "entity"),
-          Throws.ArgumentException.And.Message.EqualTo ("Parameter 'schemaName' cannot be empty.\r\nParameter name: schemaName"));
-      Assert.That (
-          () => new EntityNameDefinition ("schema", ""),
-          Throws.ArgumentException.And.Message.EqualTo ("Parameter 'entityName' cannot be empty.\r\nParameter name: entityName"));
+      Assert.That(
+          () => new EntityNameDefinition("", "entity"),
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo("Parameter 'schemaName' cannot be empty.", "schemaName"));
+      Assert.That(
+          () => new EntityNameDefinition("schema", ""),
+          Throws.ArgumentException.And.ArgumentExceptionMessageEqualTo("Parameter 'entityName' cannot be empty.", "entityName"));
     }
 
     [Test]
     public void Equals_True ()
     {
-      var one = new EntityNameDefinition ("schema", "entity");
-      var two = new EntityNameDefinition ("schema", "entity");
+      var one = new EntityNameDefinition("schema", "entity");
+      var two = new EntityNameDefinition("schema", "entity");
 
-      Assert.That (one, Is.EqualTo (two));
+      Assert.That(one, Is.EqualTo(two));
     }
 
     [Test]
     public void Equals_True_WithNullSchema ()
     {
-      var one = new EntityNameDefinition (null, "entity");
-      var two = new EntityNameDefinition (null, "entity");
+      var one = new EntityNameDefinition(null, "entity");
+      var two = new EntityNameDefinition(null, "entity");
 
-      Assert.That (one, Is.EqualTo (two));
+      Assert.That(one, Is.EqualTo(two));
     }
 
     [Test]
     public void Equals_False_DifferentSchema ()
     {
-      var one = new EntityNameDefinition ("schema1", "entity");
-      var two = new EntityNameDefinition ("schema2", "entity");
+      var one = new EntityNameDefinition("schema1", "entity");
+      var two = new EntityNameDefinition("schema2", "entity");
 
-      Assert.That (one, Is.Not.EqualTo (two));
+      Assert.That(one, Is.Not.EqualTo(two));
     }
 
     [Test]
     public void Equals_False_DifferentEntityName ()
     {
-      var one = new EntityNameDefinition ("schema", "entity1");
-      var two = new EntityNameDefinition ("schema", "entity2");
+      var one = new EntityNameDefinition("schema", "entity1");
+      var two = new EntityNameDefinition("schema", "entity2");
 
-      Assert.That (one, Is.Not.EqualTo (two));
+      Assert.That(one, Is.Not.EqualTo(two));
     }
 
     [Test]
     public void GetHashCode_EqualObjects ()
     {
-      var one = new EntityNameDefinition ("schema", "entity");
-      var two = new EntityNameDefinition ("schema", "entity");
+      var one = new EntityNameDefinition("schema", "entity");
+      var two = new EntityNameDefinition("schema", "entity");
 
-      Assert.That (one.GetHashCode (), Is.EqualTo (two.GetHashCode ()));
+      Assert.That(one.GetHashCode(), Is.EqualTo(two.GetHashCode()));
     }
 
     [Test]
     public void GetHashCode_EqualObjects_WithNullSchema ()
     {
-      var one = new EntityNameDefinition (null, "entity");
-      var two = new EntityNameDefinition (null, "entity");
+      var one = new EntityNameDefinition(null, "entity");
+      var two = new EntityNameDefinition(null, "entity");
 
-      Assert.That (one.GetHashCode (), Is.EqualTo (two.GetHashCode ()));
+      Assert.That(one.GetHashCode(), Is.EqualTo(two.GetHashCode()));
     }
   }
 }

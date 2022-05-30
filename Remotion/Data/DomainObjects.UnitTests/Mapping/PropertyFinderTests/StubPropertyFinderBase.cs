@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
         IMemberInformationNameResolver nameResolver,
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
+        : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
     }
 
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
         bool includeBaseProperties,
         bool includeMixinProperties,
         IPersistentMixinFinder persistentMixinFinder)
-        : this (
+        : this(
             type,
             includeBaseProperties,
             includeMixinProperties,
@@ -57,7 +57,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      return new StubPropertyFinderBase (
+      return new StubPropertyFinderBase(
           type,
           includeBaseProperties,
           includeMixinProperties,

@@ -15,32 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using Remotion.Data.DomainObjects.DataManagement;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   public static class DataManagementCommandTestHelper
   {
-    public static void ExpectNotifyAndPerform (IDataManagementCommand commandMock)
+    public static void ExpectNotifyAndPerform (Mock<IDataManagementCommand> commandMock)
     {
-      using (commandMock.GetMockRepository ().Ordered ())
-      {
-        commandMock.Expect (mock => mock.Begin());
-        commandMock.Expect (mock => mock.Begin());
-        commandMock.Expect (mock => mock.Perform());
-        commandMock.Expect (mock => mock.End());
-        commandMock.Expect (mock => mock.End());
-      }
-    }
-
-    public static void AssertNotifyAndPerformWasCalled (IDataManagementCommand commandMock)
-    {
-      commandMock.AssertWasCalled (mock => mock.Begin ());
-      commandMock.AssertWasCalled (mock => mock.Begin ());
-      commandMock.AssertWasCalled (mock => mock.Perform ());
-      commandMock.AssertWasCalled (mock => mock.End ());
-      commandMock.AssertWasCalled (mock => mock.End ());
+      var sequence = new MockSequence();
+      commandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      commandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      commandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      commandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      commandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
     }
   }
 }

@@ -28,56 +28,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     [Test]
     public void EnsureNotInvalid_Valid ()
     {
-      var order = Order.NewObject ();
+      var order = Order.NewObject();
 
-      DomainObjectCheckUtility.EnsureNotInvalid (order, ClientTransaction.Current);
+      DomainObjectCheckUtility.EnsureNotInvalid(order, ClientTransaction.Current);
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
     public void EnsureNotInvalid_Discarded ()
     {
-      var order = Order.NewObject ();
-      order.Delete ();
-      DomainObjectCheckUtility.EnsureNotInvalid (order, ClientTransaction.Current);
+      var order = Order.NewObject();
+      order.Delete();
+      Assert.That(
+          () => DomainObjectCheckUtility.EnsureNotInvalid(order, ClientTransaction.Current),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void CheckIfRightTransaction_Works_ForSameRootTransaction ()
     {
-      var order = Order.NewObject ();
+      var order = Order.NewObject();
 
-      DomainObjectCheckUtility.CheckIfRightTransaction (order, ClientTransaction.Current);
+      DomainObjectCheckUtility.CheckIfRightTransaction(order, ClientTransaction.Current);
     }
 
     [Test]
     public void CheckIfRightTransaction_Works_ForLeftSubTransaction ()
     {
-      var order = TestableClientTransaction.CreateSubTransaction().ExecuteInScope (() => Order.NewObject());
+      var order = TestableClientTransaction.CreateSubTransaction().ExecuteInScope(() => Order.NewObject());
 
-      DomainObjectCheckUtility.CheckIfRightTransaction (order, TestableClientTransaction);
+      DomainObjectCheckUtility.CheckIfRightTransaction(order, TestableClientTransaction);
     }
 
     [Test]
     public void CheckIfRightTransaction_Works_ForRightSubTransaction ()
     {
-      var order = Order.NewObject ();
+      var order = Order.NewObject();
 
       var subTransaction = TestableClientTransaction.CreateSubTransaction();
-      DomainObjectCheckUtility.CheckIfRightTransaction (order, subTransaction);
+      DomainObjectCheckUtility.CheckIfRightTransaction(order, subTransaction);
     }
 
     [Test]
-    [ExpectedException (typeof (ClientTransactionsDifferException), ExpectedMessage = "Domain object 'Order|.*|System.Guid' cannot be used in the "
-        + "given transaction as it was loaded or created in another transaction. Enter a scope for the transaction, or call EnlistInTransaction to "
-        + "enlist the object in the transaction. (If no transaction was explicitly given, ClientTransaction.Current was used.)",
-          MatchType = MessageMatch.Regex)]
     public void CheckIfRightTransaction_Fails ()
     {
-      var order = Order.NewObject ();
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      var order = Order.NewObject();
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        DomainObjectCheckUtility.CheckIfRightTransaction (order, ClientTransaction.Current);
+        Assert.That(
+            () => DomainObjectCheckUtility.CheckIfRightTransaction(order, ClientTransaction.Current),
+            Throws.InstanceOf<ClientTransactionsDifferException>()
+                .With.Message.Matches(
+                    "Domain object 'Order|.*|System.Guid' cannot be used in the "
+                    + "given transaction as it was loaded or created in another transaction. Enter a scope for the transaction, or call EnlistInTransaction to "
+                    + "enlist the object in the transaction. (If no transaction was explicitly given, ClientTransaction.Current was used.)"));
       }
     }
 
@@ -86,17 +89,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var relatedObject = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
 
-      DomainObjectCheckUtility.EnsureNotDeleted (relatedObject, TestableClientTransaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(relatedObject, TestableClientTransaction);
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectDeletedException))]
     public void EnsureNotDeleted_Deleted ()
     {
       var relatedObject = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
-      relatedObject.Delete ();
-
-      DomainObjectCheckUtility.EnsureNotDeleted (relatedObject, TestableClientTransaction);
+      relatedObject.Delete();
+      Assert.That(
+          () => DomainObjectCheckUtility.EnsureNotDeleted(relatedObject, TestableClientTransaction),
+          Throws.InstanceOf<ObjectDeletedException>());
     }
   }
 }

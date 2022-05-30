@@ -30,10 +30,10 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     private readonly Action<ElementScope> _action;
 
     public CustomAction ([NotNull] ControlObject control, [NotNull] ElementScope scope, [NotNull] string name, [NotNull] Action<ElementScope> action)
-        : base (control, scope)
+        : base(control, scope)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("action", action);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("action", action);
 
       _name = name;
       _action = action;
@@ -48,9 +48,9 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      _action (scope);
+      _action(scope);
     }
   }
 }

@@ -15,48 +15,46 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context.FluentBuilders;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
   [TestFixture]
   public class IgnoresMixinAttributeTest
   {
-    private static readonly Type s_targetClassType = typeof (string);
-    private static readonly Type s_mixinType = typeof (int);
+    private static readonly Type s_targetClassType = typeof(string);
+    private static readonly Type s_mixinType = typeof(int);
 
-    private MockRepository _mockRepository;
-    private MixinConfigurationBuilder _configurationBuilderMock;
-    private ClassContextBuilder _classBuilderMock;
+    private Mock<MixinConfigurationBuilder> _configurationBuilderMock;
+    private Mock<ClassContextBuilder> _classBuilderMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository ();
-      _configurationBuilderMock = _mockRepository.StrictMock<MixinConfigurationBuilder> ((MixinConfiguration) null);
-      _classBuilderMock = _mockRepository.StrictMock<ClassContextBuilder> (_configurationBuilderMock, s_targetClassType);
+      _configurationBuilderMock = new Mock<MixinConfigurationBuilder>(MockBehavior.Strict, (MixinConfiguration)null);
+      _classBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, _configurationBuilderMock.Object, s_targetClassType);
     }
 
     [Test]
     public void IgnoresDuplicates ()
     {
-      var attribute = new IgnoresMixinAttribute (typeof (string));
-      Assert.That (attribute.IgnoresDuplicates, Is.False);
+      var attribute = new IgnoresMixinAttribute(typeof(string));
+      Assert.That(attribute.IgnoresDuplicates, Is.False);
     }
-    
+
     [Test]
     public void AnalyzeIgnoresMixinAttribute ()
     {
-      IgnoresMixinAttribute attribute = new IgnoresMixinAttribute (s_mixinType);
+      IgnoresMixinAttribute attribute = new IgnoresMixinAttribute(s_mixinType);
 
-      _configurationBuilderMock.Expect (mock => mock.ForClass (s_targetClassType)).Return (_classBuilderMock);
-      _classBuilderMock.Expect (mock => mock.SuppressMixin (s_mixinType)).Return (_classBuilderMock);
+      _configurationBuilderMock.Setup(mock => mock.ForClass(s_targetClassType)).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock.Setup(mock => mock.SuppressMixin(s_mixinType)).Returns(_classBuilderMock.Object).Verifiable();
 
-      _mockRepository.ReplayAll ();
-      attribute.Apply (_configurationBuilderMock, s_targetClassType);
-      _mockRepository.VerifyAll ();
+      attribute.Apply(_configurationBuilderMock.Object, s_targetClassType);
+      _configurationBuilderMock.Verify();
+      _classBuilderMock.Verify();
     }
   }
 }

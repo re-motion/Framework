@@ -20,12 +20,10 @@ using System.Resources;
 using System.Web.UI;
 using Remotion.Globalization;
 
-[assembly: TagPrefix ("Remotion.ObjectBinding.Web.UI.Controls", "remotion")]
+[assembly: TagPrefix("Remotion.ObjectBinding.Web.UI.Controls", "remotion")]
 
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
 
-[assembly: AssemblyTitle ("re-motion ObjectBinding Web Controls (Preview) Library")]
-[assembly: AssemblyDescription ("Contains pre-release versions of new web controls for 2-way databinding with business objects.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

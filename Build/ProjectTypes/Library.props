@@ -1,0 +1,29 @@
+<Project>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>1591</NoWarn>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <IsPackable>True</IsPackable>
+    <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);JETBRAINS_ANNOTATIONS;</DefineConstants>
+    <Nullable Condition="'$(TargetFramework)' == 'net48'">annotations</Nullable>
+    <Nullable Condition="'$(TargetFramework)' != 'net48'">enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schemas\*.xsd">
+      <Pack>true</Pack>
+      <PackagePath>schema</PackagePath>
+    </EmbeddedResource>
+    <Content Include="FacetManifest.xml" Condition="Exists('FacetManifest.xml')">
+      <Pack>true</Pack>
+      <PackagePath>.</PackagePath>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+  </ItemGroup>
+
+</Project>

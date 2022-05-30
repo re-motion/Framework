@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public InitializedEventDomainObjectTransactionContextDecorator (IDomainObjectTransactionContext actualContext)
     {
-      ArgumentUtility.CheckNotNull ("actualContext", actualContext);
+      ArgumentUtility.CheckNotNull("actualContext", actualContext);
 
       _actualContext = actualContext;
     }
@@ -40,17 +40,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _actualContext.ClientTransaction; }
     }
 
-    public StateType State
+    public DomainObjectState State
     {
-      get
-      {
-        throw CreateInvalidOperationException();
-      }
-    }
-
-    public bool IsInvalid
-    {
-      get { return _actualContext.IsInvalid; }
+      get { throw CreateInvalidOperationException(); }
     }
 
     public object Timestamp
@@ -75,7 +67,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private InvalidOperationException CreateInvalidOperationException ()
     {
-      return new InvalidOperationException ("While the OnReferenceInitializing event is executing, this member cannot be used.");
+      return new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
   }
 }

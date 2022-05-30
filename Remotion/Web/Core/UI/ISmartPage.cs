@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Web.UI;
@@ -37,7 +38,27 @@ namespace Remotion.Web.UI
     new ISmartPageClientScriptManager ClientScript { get; }
 
     /// <summary> Gets the post back data for the page. </summary>
-    NameValueCollection GetPostBackCollection ();
+    NameValueCollection? GetPostBackCollection ();
+
+    /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
+    /// <value> <see langword="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
+    bool IsDirty { get; set; }
+
+    /// <summary>
+    /// Evaluates the page's dirty state and returns a list of identifiers, one for each distinct dirty state condition.
+    /// </summary>
+    /// <param name="requestedStates">
+    /// Optional list of dirty state conditions the caller is interested in. When this parameter is set, the implementation may optimize the evaluation of the dirty state
+    /// to only test for a specific dirty state condition if it was actually requested.
+    /// </param>
+    /// <returns>
+    /// The set of dirty states. Note that the result may contain values that have not been requested by the caller.
+    /// </returns>
+    /// <remarks>
+    ///   Evaluates if either <see cref="IsDirty"/> is <see langword="true" />
+    ///   or if any control registered using <see cref="RegisterControlForDirtyStateTracking"/> has values that must be persisted before the user leaves the page.
+    /// </remarks>
+    IEnumerable<string> GetDirtyStates (IReadOnlyCollection<string>? requestedStates = null);
 
     /// <summary>
     ///   Registers a control implementing <see cref="IEditableControl"/> for tracking of it's server- and client-side
@@ -47,33 +68,35 @@ namespace Remotion.Web.UI
     void RegisterControlForDirtyStateTracking (IEditableControl control);
 
     /// <summary>
-    ///   Resgisters a <see cref="Control.ClientID"/> for the tracking of the controls client-side dirty state.
+    ///   Registers a <see cref="Control.ClientID"/> for the tracking of the controls client-side dirty state.
     /// </summary>
     /// <param name="clientID"> The ID of an HTML input/textarea/select element. </param>
+    /// <remarks>
+    ///   Note that this is only required for controls that do not implement <see cref="IEditableControl"/>
+    ///   and therefor cannot be registered using <see cref="RegisterControlForDirtyStateTracking"/>.
+    /// </remarks>
     void RegisterControlForClientSideDirtyStateTracking (string clientID);
 
-    /// <summary> 
-    ///   Evaluates whether any control regsitered using <see cref="RegisterControlForDirtyStateTracking"/>
-    ///   has values that must be persisted before the user leaves the page. 
+    /// <summary>
+    ///   Gets the flag that determines whether to include this page's dirty state when evaluating <see cref="GetDirtyStates"/>.
     /// </summary>
-    /// <returns> <see langword="true"/> if the page is dirty (i.e. has unpersisted changes). </returns>
-    bool EvaluateDirtyState();
+    bool IsDirtyStateEnabled { get; }
 
     /// <summary>
     ///   Gets a flag that determines whether the dirty state will be taken into account when displaying the abort 
     ///   confirmation dialog.
     /// </summary>
     /// <value> 
-    ///   <see langword="true"/> to invoke <see cref="EvaluateDirtyState"/> and track changes on the client. 
+    ///   <see langword="true"/> to invoke <see cref="GetDirtyStates"/> and track changes on the client.
     /// </value>
-    bool IsDirtyStateTrackingEnabled { get; }
+    bool HasUnconditionalAbortConfirmation { get; }
 
     /// <summary>
     ///   Gets or sets a flag that determines whether to display a confirmation dialog before leaving the page. 
     ///  </summary>
     /// <value> <see langword="true"/> to display the confirmation dialog. </value>
     /// <remarks> 
-    ///   If <see cref="IsDirtyStateTrackingEnabled"/> evaluates <see langword="true"/>, a confirmation will only be 
+    ///   If <see cref="HasUnconditionalAbortConfirmation"/> evaluates <see langword="false"/>, a confirmation will only be
     ///   displayed if the page is dirty.
     /// </remarks>
     bool IsAbortConfirmationEnabled { get; }
@@ -82,19 +105,18 @@ namespace Remotion.Web.UI
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
     /// </remarks>
-    string AbortMessage { get; }
+    WebString AbortMessage { get; }
 
     /// <summary> Gets the message displayed when the user attempts to submit while the page is already submitting. </summary>
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
     /// </remarks>
-    string StatusIsSubmittingMessage { get; }
+    WebString StatusIsSubmittingMessage { get; }
 
-    /// <summary> 
-    ///   Gets a flag whether the is submitting status messages will be displayed when the user tries to postback while 
-    ///   a request is being processed.
+    /// <summary>
+    ///   Gets a flag whether the status messages (i.e. is-submitting) will be displayed when the user tries to e.g. postback while a request is being processed.
     /// </summary>
-    bool IsStatusIsSubmittingMessageEnabled { get; }
+    bool AreStatusMessagesEnabled { get; }
 
     /// <summary>
     ///   Gets a flag whether a queued submit should be executed or aborted upon completion of the postback.
@@ -111,7 +133,7 @@ namespace Remotion.Web.UI
     ///   Regisiters a Java Script function used to evaluate whether to continue with the submit.
     ///   Signature: <c>bool Function (isAborting, hasSubmitted, hasUnloaded, isCached)</c>
     /// </summary>
-    string CheckFormStateFunction { get; set; }
+    string? CheckFormStateFunction { get; set; }
 
     /// <summary>
     /// Registers individual event arguments for a control as a synchronous postback target.
@@ -133,7 +155,7 @@ namespace Remotion.Web.UI
     void RegisterControlForSynchronousPostBack ([NotNull] Control control);
 
     /// <summary> Saves the ControlState and the ViewState of the ASP.NET page. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     void SaveAllState ();
   }
 }

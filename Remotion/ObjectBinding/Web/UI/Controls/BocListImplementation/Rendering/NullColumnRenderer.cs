@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return true; }
     }
 
-    public BocColumnDefinition Column
+    public BocColumnDefinition? Column
     {
       get { return null; }
     }

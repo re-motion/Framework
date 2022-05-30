@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Runtime.Remoting.Contexts;
 using NUnit.Framework;
 
 namespace Remotion.Reflection.UnitTests
@@ -34,97 +33,98 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void Initialization ()
     {
-      Assert.That (_nullMethodInformation.Name, Is.Null);
-      Assert.That (_nullMethodInformation.DeclaringType, Is.Null);
-      Assert.That (_nullMethodInformation.ReturnType, Is.Null);
+      Assert.That(_nullMethodInformation.Name, Is.Null);
+      Assert.That(_nullMethodInformation.DeclaringType, Is.Null);
+      Assert.That(_nullMethodInformation.ReturnType, Is.Null);
     }
 
     [Test]
     public void GetOriginalDeclaringType ()
     {
-      Assert.That (_nullMethodInformation.GetOriginalDeclaringType(), Is.Null);
+      Assert.That(_nullMethodInformation.GetOriginalDeclaringType(), Is.Null);
     }
 
     [Test]
     public void GetCustomAttribute ()
     {
-      Assert.That (_nullMethodInformation.GetCustomAttribute<SynchronizationAttribute> (false), Is.Null);
-      Assert.That (_nullMethodInformation.GetCustomAttribute<SynchronizationAttribute> (true), Is.Null);
+      Assert.That(_nullMethodInformation.GetCustomAttribute<ObsoleteAttribute>(false), Is.Null);
+      Assert.That(_nullMethodInformation.GetCustomAttribute<ObsoleteAttribute>(true), Is.Null);
     }
 
     [Test]
     public void GetCustomAttributes ()
     {
-      Assert.That (_nullMethodInformation.GetCustomAttributes<SynchronizationAttribute[]> (false), Is.Empty);
-      Assert.That (_nullMethodInformation.GetCustomAttributes<SynchronizationAttribute[]> (true), Is.Empty);
+      Assert.That(_nullMethodInformation.GetCustomAttributes<ObsoleteAttribute[]>(false), Is.Empty);
+      Assert.That(_nullMethodInformation.GetCustomAttributes<ObsoleteAttribute[]>(true), Is.Empty);
     }
 
     [Test]
     public void IsDefined ()
     {
-      Assert.That (_nullMethodInformation.IsDefined<SynchronizationAttribute> (false), Is.False);
-      Assert.That (_nullMethodInformation.IsDefined<SynchronizationAttribute> (true), Is.False);
+      Assert.That(_nullMethodInformation.IsDefined<ObsoleteAttribute>(false), Is.False);
+      Assert.That(_nullMethodInformation.IsDefined<ObsoleteAttribute>(true), Is.False);
     }
 
     [Test]
     public void Invoke ()
     {
-      Assert.That (_nullMethodInformation.Invoke (new object(), null), Is.Null);
+      Assert.That(_nullMethodInformation.Invoke(new object(), null), Is.Null);
     }
 
     [Test]
-    [ExpectedException(typeof(InvalidOperationException))]
     public void FindInterfaceImplementation ()
     {
-      _nullMethodInformation.FindInterfaceImplementation (typeof (object));
+      Assert.That(
+          () => _nullMethodInformation.FindInterfaceImplementation(typeof(object)),
+          Throws.InvalidOperationException);
     }
 
     [Test]
     public void FindInterfaceDeclaration ()
     {
-      Assert.That (_nullMethodInformation.FindInterfaceDeclarations(), Is.Null);
+      Assert.That(_nullMethodInformation.FindInterfaceDeclarations(), Is.Null);
     }
 
     [Test]
     public void FindDeclaringProperty ()
     {
-      Assert.That (_nullMethodInformation.FindDeclaringProperty (), Is.Null);
+      Assert.That(_nullMethodInformation.FindDeclaringProperty(), Is.Null);
     }
 
     [Test]
     public void GetFastInvoker_WithReferenceTypeReturnType ()
     {
-      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object, object>> ();
+      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object, object>>();
 
-      Assert.That (invoker (new object(), null), Is.Null);
+      Assert.That(invoker(new object(), null), Is.Null);
     }
 
     [Test]
     public void GetFastInvoker_WithValueTypeReturnType ()
     {
-      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object, int>> ();
+      var invoker = _nullMethodInformation.GetFastInvoker<Func<object, object, int>>();
 
-      Assert.That (invoker (new object(), null), Is.EqualTo (0));
+      Assert.That(invoker(new object(), null), Is.EqualTo(0));
     }
-    
+
     [Test]
     public void GetFastInvoker_WithoutReturnType ()
     {
-      var invoker = _nullMethodInformation.GetFastInvoker<Action<object, object>> ();
+      var invoker = _nullMethodInformation.GetFastInvoker<Action<object, object>>();
 
-     invoker (new object(), null);
+     invoker(new object(), null);
     }
 
     [Test]
     public void GetParameters ()
     {
-      Assert.That (_nullMethodInformation.GetParameters().Length, Is.EqualTo (0));
+      Assert.That(_nullMethodInformation.GetParameters().Length, Is.EqualTo(0));
     }
 
     [Test]
     public void GetOriginalDeclaration ()
     {
-      Assert.That (_nullMethodInformation.GetOriginalDeclaration (), Is.SameAs(_nullMethodInformation));
+      Assert.That(_nullMethodInformation.GetOriginalDeclaration(), Is.SameAs(_nullMethodInformation));
     }
 
     [Test]
@@ -132,26 +132,26 @@ namespace Remotion.Reflection.UnitTests
     {
       var nullMethodInformation2 = new NullMethodInformation();
 
-      Assert.That (_nullMethodInformation.Equals (nullMethodInformation2), Is.True);
-      Assert.That (_nullMethodInformation.Equals (null), Is.False);
+      Assert.That(_nullMethodInformation.Equals(nullMethodInformation2), Is.True);
+      Assert.That(_nullMethodInformation.Equals(null), Is.False);
     }
 
     [Test]
     public void TestGetHashCode ()
     {
-      Assert.That (_nullMethodInformation.GetHashCode(), Is.EqualTo (0));
+      Assert.That(_nullMethodInformation.GetHashCode(), Is.EqualTo(0));
     }
 
     [Test]
     public void To_String ()
     {
-      Assert.That (_nullMethodInformation.ToString(), Is.EqualTo ("NullMethodInformation"));
+      Assert.That(_nullMethodInformation.ToString(), Is.EqualTo("NullMethodInformation"));
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (_nullMethodInformation.IsNull, Is.True);
+      Assert.That(_nullMethodInformation.IsNull, Is.True);
     }
   }
 }

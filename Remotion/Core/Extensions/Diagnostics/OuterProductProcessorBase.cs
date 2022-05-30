@@ -22,8 +22,8 @@ namespace Remotion.Diagnostics
   /// Convenience class to derive OuterProductIndexGenerator-processors from. Already supplies ProcessingState-functionality,
   /// just requiring override implementation of <see cref="DoBeforeLoop"/> and <see cref="DoAfterLoop"/>.
   /// </summary>
-  public class OuterProductProcessorBase : IOuterProductProcessor 
-  { 
+  public class OuterProductProcessorBase : IOuterProductProcessor
+  {
     private OuterProductProcessingState _processingState;
     /// <summary>
     /// The current <see cref="ProcessingState"/> to be used during callbacks.
@@ -52,7 +52,7 @@ namespace Remotion.Diagnostics
     {
       return true;
     }
-      
+
     /// <summary>
     /// Internal use only: Used by OuterProductIndexGenerator class to set the current <see cref="ProcessingState"/> before invoking a callback.
     /// </summary>
@@ -60,6 +60,6 @@ namespace Remotion.Diagnostics
     public void SetProcessingState (OuterProductProcessingState processingState)
     {
       _processingState = processingState;
-    } 
+    }
   }
 }

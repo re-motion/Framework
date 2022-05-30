@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -51,6 +52,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
   public class ListControlStyle : Style
   {
+    private class CompatibleListBox : ListBox
+    {
+      public override bool SupportsDisabledAttribute => true;
+    }
+
     private ListControlType _controlType = ListControlType.DropDownList;
     private bool? _autoPostBack;
     private int? _listBoxRows;
@@ -61,105 +67,122 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private RepeatLayout _radionButtonListRepeatLayout = RepeatLayout.Table;
     private TextAlign _radioButtonListTextAlign = TextAlign.Right;
     private bool _radioButtonListNullValueVisible = true;
+    private bool _dropDownListNullValueTextVisible = false;
 
-    [Description ("The type of control that is used in edit mode.")]
-    [Category ("Behavior")]
-    [DefaultValue (ListControlType.DropDownList)]
-    [NotifyParentProperty (true)]
+    [Description("The type of control that is used in edit mode.")]
+    [Category("Behavior")]
+    [DefaultValue(ListControlType.DropDownList)]
+    [NotifyParentProperty(true)]
     public ListControlType ControlType
     {
       get { return _controlType; }
       set { _controlType = value; }
     }
 
-    [Description ("Automatically postback to the server after the text is modified.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("Automatically postback to the server after the text is modified.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? AutoPostBack
     {
       get { return _autoPostBack; }
       set { _autoPostBack = value; }
     }
 
-    [Description ("The number of visible rows to display.")]
-    [Category ("Appearance")]
-    [DefaultValue (typeof (int?), "")]
-    [NotifyParentProperty (true)]
+    [Description("The number of visible rows to display.")]
+    [Category("Appearance")]
+    [DefaultValue(typeof(int?), "")]
+    [NotifyParentProperty(true)]
     public int? ListBoxRows
     {
       get { return _listBoxRows; }
       set { _listBoxRows = value; }
     }
 
-    [Description ("The padding between each item.")]
-    [Category ("Layout")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("The padding between each item.")]
+    [Category("Layout")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public int? RadioButtonListCellPadding
     {
       get { return _radioButtonListCellPadding; }
       set { _radioButtonListCellPadding = value; }
     }
 
-    [Description ("The spacing between each item.")]
-    [Category ("Layout")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("The spacing between each item.")]
+    [Category("Layout")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public int? RadioButtonListCellSpacing
     {
       get { return _radioButtonListCellSpacing; }
       set { _radioButtonListCellSpacing = value; }
     }
 
-    [Description ("The number of columns to use to lay out the items.")]
-    [Category ("Layout")]
-    [DefaultValue (typeof (int?), "")]
-    [NotifyParentProperty (true)]
+    [Description("The number of columns to use to lay out the items.")]
+    [Category("Layout")]
+    [DefaultValue(typeof(int?), "")]
+    [NotifyParentProperty(true)]
     public int? RadioButtonListRepeatColumns
     {
       get { return _radioButtonListRepeatColumns; }
       set { _radioButtonListRepeatColumns = value; }
     }
 
-    [Description ("The direction in which items are laid out.")]
-    [Category ("Layout")]
-    [DefaultValue (RepeatDirection.Vertical)]
-    [NotifyParentProperty (true)]
+    [Description("The direction in which items are laid out.")]
+    [Category("Layout")]
+    [DefaultValue(RepeatDirection.Vertical)]
+    [NotifyParentProperty(true)]
     public RepeatDirection RadioButtonListRepeatDirection
     {
       get { return _radioButtonListRepeatDirection; }
       set { _radioButtonListRepeatDirection = value; }
     }
 
-    [Description ("Whether items are repeated in a table or in-flow.")]
-    [Category ("Layout")]
-    [DefaultValue (RepeatLayout.Table)]
-    [NotifyParentProperty (true)]
+    [Description("Whether items are repeated in a table or in-flow.")]
+    [Category("Layout")]
+    [DefaultValue(RepeatLayout.Table)]
+    [NotifyParentProperty(true)]
     public RepeatLayout RadionButtonListRepeatLayout
     {
       get { return _radionButtonListRepeatLayout; }
       set { _radionButtonListRepeatLayout = value; }
     }
 
-    [Description ("The alignment of the text label with respect to each item.")]
-    [Category ("Appearance")]
-    [DefaultValue (TextAlign.Right)]
-    [NotifyParentProperty (true)]
+    [Description("The alignment of the text label with respect to each item.")]
+    [Category("Appearance")]
+    [DefaultValue(TextAlign.Right)]
+    [NotifyParentProperty(true)]
     public TextAlign RadioButtonListTextAlign
     {
       get { return _radioButtonListTextAlign; }
       set { _radioButtonListTextAlign = value; }
     }
 
-    [Description ("A flag that determines whether to show the null value in the radio button list.")]
-    [Category ("Behavior")]
-    [DefaultValue (true)]
-    [NotifyParentProperty (true)]
+    [Description("A flag that determines whether to show the null value in the radio button list.")]
+    [Category("Behavior")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
     public bool RadioButtonListNullValueVisible
     {
       get { return _radioButtonListNullValueVisible; }
       set { _radioButtonListNullValueVisible = value; }
+    }
+
+    /// <summary>
+    /// Gets or sets a flag that determines whether to show the text for <see langword="null" /> in the drop-down list.
+    /// </summary>
+    /// <remarks>
+    /// For some combinations of browser and screen reader, this flag must be set in order to properly announce <see langword="null" /> to the user.
+    /// </remarks>
+    [Description("A flag that determines whether to show the text for the null value in the drop-down list.")]
+    [Category("Behavior")]
+    [DefaultValue(false)]
+    [NotifyParentProperty(true)]
+    public bool DropDownListNullValueTextVisible
+    {
+      get { return _dropDownListNullValueTextVisible; }
+      set { _dropDownListNullValueTextVisible = value; }
     }
 
     public ListControl Create (bool applyStyle)
@@ -171,22 +194,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           control = new DropDownList();
           break;
         case ListControlType.ListBox:
-          control = new ListBox();
+          control = new CompatibleListBox();
           break;
         case ListControlType.RadioButtonList:
           control = new RadioButtonList();
           break;
         default:
-          throw new NotSupportedException ("Control type " + _controlType);
+          throw new NotSupportedException("Control type " + _controlType);
       }
       if (applyStyle)
-        ApplyStyle (control);
+        ApplyStyle(control);
       return control;
     }
 
     public void ApplyCommonStyle (ListControl listControl)
     {
-      listControl.ApplyStyle (this);
+      listControl.ApplyStyle(this);
       if (_autoPostBack != null)
         listControl.AutoPostBack = _autoPostBack.Value;
     }
@@ -194,18 +217,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public void ApplyStyle (ListControl listControl)
     {
       if (listControl is ListBox)
-        ApplyStyle ((ListBox) listControl);
+        ApplyStyle((ListBox)listControl);
       else if (listControl is DropDownList)
-        ApplyStyle ((DropDownList) listControl);
+        ApplyStyle((DropDownList)listControl);
       else if (listControl is RadioButtonList)
-        ApplyStyle ((RadioButtonList) listControl);
+        ApplyStyle((RadioButtonList)listControl);
       else
-        ApplyCommonStyle (listControl);
+        ApplyCommonStyle(listControl);
     }
 
     public void ApplyStyle (ListBox listBox)
     {
-      ApplyCommonStyle (listBox);
+      ApplyCommonStyle(listBox);
 
       if (_listBoxRows != null)
         listBox.Rows = _listBoxRows.Value;
@@ -213,12 +236,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void ApplyStyle (DropDownList dropDownList)
     {
-      ApplyCommonStyle (dropDownList);
+      ApplyCommonStyle(dropDownList);
     }
 
     public void ApplyStyle (RadioButtonList radioButtonList)
     {
-      ApplyCommonStyle (radioButtonList);
+      ApplyCommonStyle(radioButtonList);
 
       if (_radioButtonListCellPadding != null)
         radioButtonList.CellPadding = _radioButtonListCellPadding.Value;
@@ -238,20 +261,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class DropDownListStyle : Style
   {
     private bool? _autoPostBack;
+    private bool _nullValueTextVisible;
 
-    [Description ("Automatically postback to the server after the text is modified.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("Automatically postback to the server after the text is modified.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? AutoPostBack
     {
       get { return _autoPostBack; }
       set { _autoPostBack = value; }
     }
 
+    /// <summary>
+    /// Gets or sets a flag that determines whether to show the text for <see langword="null" />.
+    /// </summary>
+    /// <remarks>
+    /// For some combinations of browser and screen reader, this flag must be set in order to properly announce <see langword="null" /> to the user.
+    /// </remarks>
+    [Description("A flag that determines whether to show the text for the null value.")]
+    [Category("Behavior")]
+    [DefaultValue(false)]
+    [NotifyParentProperty(true)]
+    public bool NullValueTextVisible
+    {
+      get { return _nullValueTextVisible; }
+      set { _nullValueTextVisible = value; }
+    }
+
     public void ApplyStyle (DropDownList dropDownList)
     {
-      dropDownList.ApplyStyle (this);
+      dropDownList.ApplyStyle(this);
       if (_autoPostBack != null)
         dropDownList.AutoPostBack = _autoPostBack.Value;
     }
@@ -270,7 +310,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public virtual void ApplyStyle (TextBox textBox)
     {
-      textBox.ApplyStyle (this);
+      textBox.ApplyStyle(this);
 
       if (_maxLength != null && _checkClientSideMaxLength != false)
         textBox.MaxLength = _maxLength.Value;
@@ -287,8 +327,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void CopyFrom (Style s)
     {
-      base.CopyFrom (s);
-      SingleRowTextBoxStyle ts = s as SingleRowTextBoxStyle;
+      base.CopyFrom(s);
+      SingleRowTextBoxStyle? ts = s as SingleRowTextBoxStyle;
       if (ts != null)
       {
         if (_checkClientSideMaxLength != false)
@@ -298,52 +338,52 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Description ("The width of the textbox in characters.")]
-    [Category ("Appearance")]
-    [DefaultValue (typeof (int?), "")]
-    [NotifyParentProperty (true)]
+    [Description("The width of the textbox in characters.")]
+    [Category("Appearance")]
+    [DefaultValue(typeof(int?), "")]
+    [NotifyParentProperty(true)]
     public int? Columns
     {
       get { return _columns; }
       set { _columns = value; }
     }
 
-    [Description ("The maximum number of characters that can be entered.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (int?), "")]
-    [NotifyParentProperty (true)]
+    [Description("The maximum number of characters that can be entered.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(int?), "")]
+    [NotifyParentProperty(true)]
     public int? MaxLength
     {
       get { return _maxLength; }
       set { _maxLength = value; }
     }
 
-    [Description ("Whether the text in the control can be changed or not.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("Whether the text in the control can be changed or not.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? ReadOnly
     {
       get { return _readOnly; }
       set { _readOnly = value; }
     }
 
-    [Description ("Automatically postback to the server after the text is modified.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("Automatically postback to the server after the text is modified.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? AutoPostBack
     {
       get { return _autoPostBack; }
       set { _autoPostBack = value; }
     }
 
-    [Description (
+    [Description(
         "Whether the text in the control can exceed its max length during input. If true, MaxLength is only used for validation after the input is completed."
         )]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? CheckClientSideMaxLength
     {
       get { return _checkClientSideMaxLength; }
@@ -357,7 +397,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class TextBoxStyle : SingleRowTextBoxStyle
   {
     private const string c_scriptFileUrl = "TextBoxStyle.js";
-    private static readonly string s_scriptFileKey = typeof (TextBoxStyle).FullName + "_Script";
+    private static readonly string s_scriptFileKey = typeof(TextBoxStyle).GetFullNameChecked() + "_Script";
 
     private int? _rows;
     private BocTextBoxMode _textMode;
@@ -371,13 +411,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     public TextBoxStyle ()
-        : this (BocTextBoxMode.SingleLine)
+        : this(BocTextBoxMode.SingleLine)
     {
     }
 
     public override void ApplyStyle (TextBox textBox)
     {
-      base.ApplyStyle (textBox);
+      base.ApplyStyle(textBox);
 
       if (_rows != null)
         textBox.Rows = _rows.Value;
@@ -387,9 +427,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (_textMode == BocTextBoxMode.MultiLine
           && MaxLength != null
-          && CheckClientSideMaxLength != false
-          && ! ControlHelper.IsDesignModeForControl (textBox))
-        textBox.Attributes.Add ("onkeydown", "return TextBoxStyle_OnKeyDown (this, " + MaxLength.Value + ");");
+          && CheckClientSideMaxLength != false)
+        textBox.Attributes.Add("onkeydown", "return TextBoxStyle.OnKeyDown (this, " + MaxLength.Value + ");");
 
       textBox.TextMode = GetSystemWebTextMode();
     }
@@ -412,17 +451,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public void RegisterJavaScriptInclude (IResourceUrlFactory resourceUrlFactory, HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("resourceUrlFactory", resourceUrlFactory);
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      var scriptUrl = resourceUrlFactory.CreateResourceUrl (typeof (TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
-      htmlHeadAppender.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
+      var scriptUrl = resourceUrlFactory.CreateResourceUrl(typeof(TextBoxStyle), ResourceType.Html, c_scriptFileUrl);
+      htmlHeadAppender.RegisterJavaScriptInclude(s_scriptFileKey, scriptUrl);
     }
 
     public override void CopyFrom (Style s)
     {
-      base.CopyFrom (s);
-      TextBoxStyle ts = s as TextBoxStyle;
+      base.CopyFrom(s);
+      TextBoxStyle? ts = s as TextBoxStyle;
       if (ts != null)
       {
         Rows = ts.Rows;
@@ -431,19 +470,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    [Description ("The number of lines to display for a multiline textbox.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (int?), "")]
-    [NotifyParentProperty (true)]
+    [Description("The number of lines to display for a multiline textbox.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(int?), "")]
+    [NotifyParentProperty(true)]
     public int? Rows
     {
       get { return _rows; }
       set { _rows = value; }
     }
 
-    [Description ("The behavior mode of the textbox.")]
-    [Category ("Behavior")]
-    [NotifyParentProperty (true)]
+    [Description("The behavior mode of the textbox.")]
+    [Category("Behavior")]
+    [NotifyParentProperty(true)]
     public BocTextBoxMode TextMode
     {
       get { return _textMode; }
@@ -462,10 +501,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _textMode = _defaultTextMode;
     }
 
-    [Description ("Gets or sets a value indicating whether the text should be wrapped in edit mode.")]
-    [Category ("Behavior")]
-    [DefaultValue (typeof (bool?), "")]
-    [NotifyParentProperty (true)]
+    [Description("Gets or sets a value indicating whether the text should be wrapped in edit mode.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    [NotifyParentProperty(true)]
     public bool? Wrap
     {
       get { return _wrap; }

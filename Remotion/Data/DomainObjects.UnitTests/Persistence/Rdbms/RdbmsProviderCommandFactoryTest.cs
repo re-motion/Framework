@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Configuration;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -31,7 +32,6 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Fact
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -49,24 +49,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       base.SetUp();
 
       var rdbmsPersistenceModelProvider = new RdbmsPersistenceModelProvider();
-      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider ();
-      var dataContainerValidator = new CompoundDataContainerValidator (Enumerable.Empty<IDataContainerValidator>());
-      
+      var storageTypeInformationProvider = new SqlStorageTypeInformationProvider();
+      var dataContainerValidator = new CompoundDataContainerValidator(Enumerable.Empty<IDataContainerValidator>());
+
       var storageNameProvider = new ReflectionBasedStorageNameProvider();
-      var infrastructureStoragePropertyDefinitionProvider = 
-          new InfrastructureStoragePropertyDefinitionProvider (storageTypeInformationProvider, storageNameProvider);
+      var infrastructureStoragePropertyDefinitionProvider =
+          new InfrastructureStoragePropertyDefinitionProvider(storageTypeInformationProvider, storageNameProvider);
       var storageProviderDefinitionFinder = new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage);
-      var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory (
-          new ValueStoragePropertyDefinitionFactory (storageTypeInformationProvider, storageNameProvider),
-          new RelationStoragePropertyDefinitionFactory (
+      var dataStoragePropertyDefinitionFactory = new DataStoragePropertyDefinitionFactory(
+          new ValueStoragePropertyDefinitionFactory(storageTypeInformationProvider, storageNameProvider),
+          new RelationStoragePropertyDefinitionFactory(
               TestDomainStorageProviderDefinition, false, storageNameProvider, storageTypeInformationProvider, storageProviderDefinitionFinder));
-      _factory = new RdbmsProviderCommandFactory (
+      _factory = new RdbmsProviderCommandFactory(
           TestDomainStorageProviderDefinition,
-          new SqlDbCommandBuilderFactory (new SqlDialect()),
+          new SqlDbCommandBuilderFactory(new SqlDialect()),
           rdbmsPersistenceModelProvider,
-          new ObjectReaderFactory (
+          new ObjectReaderFactory(
               rdbmsPersistenceModelProvider, infrastructureStoragePropertyDefinitionProvider, storageTypeInformationProvider, dataContainerValidator),
-          new TableDefinitionFinder (rdbmsPersistenceModelProvider),
+          new TableDefinitionFinder(rdbmsPersistenceModelProvider),
           dataStoragePropertyDefinitionFactory);
 
       _objectID1 = DomainObjectIDs.Order1;
@@ -77,81 +77,81 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [Test]
     public void CreateForSingleIDLookup ()
     {
-      var result = _factory.CreateForSingleIDLookup (_objectID1);
+      var result = _factory.CreateForSingleIDLookup(_objectID1);
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
 
     [Test]
     public void CreateForSortedMultiIDLookup ()
     {
-      var result = _factory.CreateForSortedMultiIDLookup (new[] { _objectID1 });
+      var result = _factory.CreateForSortedMultiIDLookup(new[] { _objectID1 });
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
 
     [Test]
     public void CreateForRelationLookup ()
     {
-      var relationEndPointDefinition = (RelationEndPointDefinition) GetEndPointDefinition (typeof (OrderItem), "Order");
+      var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(OrderItem), "Order");
 
-      var result = _factory.CreateForRelationLookup (relationEndPointDefinition, DomainObjectIDs.Order1, null);
+      var result = _factory.CreateForRelationLookup(relationEndPointDefinition, DomainObjectIDs.Order1, null);
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
 
     [Test]
     public void CreateForDataContainerQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery>();
-      queryStub.Stub (stub => stub.Statement).Return ("Statement");
-      queryStub.Stub (stub => stub.Parameters).Return (new QueryParameterCollection());
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup(stub => stub.Statement).Returns("Statement");
+      queryStub.Setup(stub => stub.Parameters).Returns(new QueryParameterCollection());
 
-      var result = _factory.CreateForDataContainerQuery (queryStub);
+      var result = _factory.CreateForDataContainerQuery(queryStub.Object);
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
 
     [Test]
     public void CreateForCustomQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery> ();
-      queryStub.Stub (stub => stub.Statement).Return ("Statement");
-      queryStub.Stub (stub => stub.Parameters).Return (new QueryParameterCollection ());
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup(stub => stub.Statement).Returns("Statement");
+      queryStub.Setup(stub => stub.Parameters).Returns(new QueryParameterCollection());
 
-      var result = _factory.CreateForCustomQuery (queryStub);
+      var result = _factory.CreateForCustomQuery(queryStub.Object);
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
 
     [Test]
     public void CreateForScalarQuery ()
     {
-      var queryStub = MockRepository.GenerateStub<IQuery> ();
-      queryStub.Stub (stub => stub.Statement).Return ("Statement");
-      queryStub.Stub (stub => stub.Parameters).Return (new QueryParameterCollection ());
+      var queryStub = new Mock<IQuery>();
+      queryStub.Setup(stub => stub.Statement).Returns("Statement");
+      queryStub.Setup(stub => stub.Parameters).Returns(new QueryParameterCollection());
 
-      var result = _factory.CreateForScalarQuery (queryStub);
+      var result = _factory.CreateForScalarQuery(queryStub.Object);
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
 
     [Test]
     public void CreateForMultiTimestampLookup ()
     {
-      var result = _factory.CreateForMultiTimestampLookup (new[] { _objectID1, _objectID2, _objectID3 });
+      var result = _factory.CreateForMultiTimestampLookup(new[] { _objectID1, _objectID2, _objectID3 });
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
 
     [Test]
     public void CreateForSave ()
     {
-      var dataContainer = DataContainer.CreateNew (DomainObjectIDs.Computer1);
-      SetPropertyValue (dataContainer, typeof (Computer), "SerialNumber", "123456");
-      var result = _factory.CreateForSave (new[] { dataContainer });
+      var dataContainer = DataContainer.CreateNew(DomainObjectIDs.Computer1);
+      SetPropertyValue(dataContainer, typeof(Computer), "SerialNumber", "123456");
+      var result = _factory.CreateForSave(new[] { dataContainer });
 
-      Assert.That (result, Is.Not.Null);
+      Assert.That(result, Is.Not.Null);
     }
   }
 }

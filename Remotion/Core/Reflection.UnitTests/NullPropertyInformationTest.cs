@@ -33,119 +33,122 @@ namespace Remotion.Reflection.UnitTests
     [Test]
     public void Initialization ()
     {
-      Assert.That (_nullPropertyInformation.Name, Is.Null);
-      Assert.That (_nullPropertyInformation.DeclaringType, Is.Null);
-      Assert.That (_nullPropertyInformation.PropertyType, Is.EqualTo (typeof (INullObject)));
-      Assert.That (_nullPropertyInformation.CanBeSetFromOutside, Is.False);
+      Assert.That(_nullPropertyInformation.Name, Is.Null);
+      Assert.That(_nullPropertyInformation.DeclaringType, Is.Null);
+      Assert.That(_nullPropertyInformation.PropertyType, Is.EqualTo(typeof(INullObject)));
+      Assert.That(_nullPropertyInformation.CanBeSetFromOutside, Is.False);
     }
 
     [Test]
     public void GetOriginalDeclaringType ()
     {
-      Assert.That (_nullPropertyInformation.GetOriginalDeclaringType(), Is.Null);
+      Assert.That(_nullPropertyInformation.GetOriginalDeclaringType(), Is.Null);
     }
 
     [Test]
     public void GetOriginalDeclaration ()
     {
-      Assert.That (_nullPropertyInformation.GetOriginalDeclaration(), Is.SameAs (_nullPropertyInformation));
+      Assert.That(_nullPropertyInformation.GetOriginalDeclaration(), Is.SameAs(_nullPropertyInformation));
     }
 
 
     [Test]
     public void GetCustomAttribute ()
     {
-      Assert.That (_nullPropertyInformation.GetCustomAttribute<ThreadStaticAttribute> (false), Is.Null);
-      Assert.That (_nullPropertyInformation.GetCustomAttribute<ThreadStaticAttribute> (true), Is.Null);
+      Assert.That(_nullPropertyInformation.GetCustomAttribute<ThreadStaticAttribute>(false), Is.Null);
+      Assert.That(_nullPropertyInformation.GetCustomAttribute<ThreadStaticAttribute>(true), Is.Null);
     }
 
     [Test]
     public void GetCustomAttributes ()
     {
-      Assert.That (_nullPropertyInformation.GetCustomAttributes<ThreadStaticAttribute> (false), Is.Empty);
-      Assert.That (_nullPropertyInformation.GetCustomAttributes<ThreadStaticAttribute> (true), Is.Empty);
+      Assert.That(_nullPropertyInformation.GetCustomAttributes<ThreadStaticAttribute>(false), Is.Empty);
+      Assert.That(_nullPropertyInformation.GetCustomAttributes<ThreadStaticAttribute>(true), Is.Empty);
     }
 
     [Test]
     public void IsDefined ()
     {
-      Assert.That (_nullPropertyInformation.IsDefined<ThreadStaticAttribute> (false), Is.False);
-      Assert.That (_nullPropertyInformation.IsDefined<ThreadStaticAttribute> (true), Is.False);
+      Assert.That(_nullPropertyInformation.IsDefined<ThreadStaticAttribute>(false), Is.False);
+      Assert.That(_nullPropertyInformation.IsDefined<ThreadStaticAttribute>(true), Is.False);
     }
 
     [Test]
     public void GetValue ()
     {
-      Assert.That (_nullPropertyInformation.GetValue (new object(), null), Is.Null);
+      Assert.That(_nullPropertyInformation.GetValue(new object(), null), Is.Null);
     }
 
     [Test]
     public void GetGetMethod ()
     {
-      var result = _nullPropertyInformation.GetGetMethod (false);
+      var result = _nullPropertyInformation.GetGetMethod(false);
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result, Is.TypeOf (typeof (NullMethodInformation)));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.TypeOf(typeof(NullMethodInformation)));
     }
 
     [Test]
     public void GetSetMethod ()
     {
-      var result = _nullPropertyInformation.GetSetMethod (false);
+      var result = _nullPropertyInformation.GetSetMethod(false);
 
-      Assert.That (result, Is.Not.Null);
-      Assert.That (result, Is.TypeOf (typeof (NullMethodInformation)));
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.TypeOf(typeof(NullMethodInformation)));
     }
 
     [Test]
     public void GetIndexParameters ()
     {
-      Assert.That (_nullPropertyInformation.GetIndexParameters().Length, Is.EqualTo (0));
+      Assert.That(_nullPropertyInformation.GetIndexParameters().Length, Is.EqualTo(0));
     }
 
     [Test]
     public void GetAccessors ()
     {
-      Assert.That (_nullPropertyInformation.GetAccessors (false).Length, Is.EqualTo (0));
+      Assert.That(_nullPropertyInformation.GetAccessors(false).Length, Is.EqualTo(0));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "FindInterfaceImplementation can only be called on inteface properties.")]
     public void FindInterfaceImplementation ()
     {
-      _nullPropertyInformation.FindInterfaceImplementation (typeof (object));
+      Assert.That(
+          () => _nullPropertyInformation.FindInterfaceImplementation(typeof(object)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "FindInterfaceImplementation can only be called on inteface properties."));
     }
 
     [Test]
     public void FindInterfaceDeclaration ()
     {
-      Assert.That (_nullPropertyInformation.FindInterfaceDeclarations (), Is.Null);
+      Assert.That(_nullPropertyInformation.FindInterfaceDeclarations(), Is.Null);
     }
     [Test]
     public void TestEquals ()
     {
-      var nullPropertyInformation2 = new NullPropertyInformation ();
+      var nullPropertyInformation2 = new NullPropertyInformation();
 
-      Assert.That (_nullPropertyInformation.Equals (nullPropertyInformation2), Is.True);
-      Assert.That (_nullPropertyInformation.Equals (null), Is.False);
+      Assert.That(_nullPropertyInformation.Equals(nullPropertyInformation2), Is.True);
+      Assert.That(_nullPropertyInformation.Equals(null), Is.False);
     }
 
     [Test]
     public void TestGetHashCode ()
     {
-      Assert.That (_nullPropertyInformation.GetHashCode (), Is.EqualTo (0));
+      Assert.That(_nullPropertyInformation.GetHashCode(), Is.EqualTo(0));
     }
 
     [Test]
     public void To_String ()
     {
-      Assert.That (_nullPropertyInformation.ToString(), Is.EqualTo("NullPropertyInformation"));
+      Assert.That(_nullPropertyInformation.ToString(), Is.EqualTo("NullPropertyInformation"));
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (_nullPropertyInformation.IsNull, Is.True);
+      Assert.That(_nullPropertyInformation.IsNull, Is.True);
     }
   }
 }

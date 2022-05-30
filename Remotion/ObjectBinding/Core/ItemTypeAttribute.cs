@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding
   /// <summary>
   /// Specifies the type of items for properties returning an <see cref="IList"/>.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
   public sealed class ItemTypeAttribute : Attribute
   {
     private Type _itemType;
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="System.ArgumentNullException"><paramref name="itemType"/> is <see langword="null"/>.</exception>
     public ItemTypeAttribute (Type itemType)
     {
-      ArgumentUtility.CheckNotNull ("itemType", itemType);
+      ArgumentUtility.CheckNotNull("itemType", itemType);
 
       _itemType = itemType;
     }

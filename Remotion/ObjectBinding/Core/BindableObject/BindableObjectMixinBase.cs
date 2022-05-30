@@ -33,11 +33,11 @@ namespace Remotion.ObjectBinding.BindableObject
       where TBindableObject: class
   {
     [NonSerialized]
-    private MixinConfiguration _mixinConfigurationAtInstantiationTime;
+    private MixinConfiguration _mixinConfigurationAtInstantiationTime = null!;
     [NonSerialized]
-    private BindableObjectProvider _bindableObjectProvider;
+    private BindableObjectProvider _bindableObjectProvider = null!;
     [NonSerialized]
-    private DoubleCheckedLockingContainer<BindableObjectClass> _bindableObjectClass;
+    private DoubleCheckedLockingContainer<BindableObjectClass> _bindableObjectClass = null!;
 
     protected abstract Type GetTypeForBindableObjectClass ();
 
@@ -48,18 +48,18 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception">
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public object GetProperty (IBusinessObjectProperty property)
+    public object? GetProperty (IBusinessObjectProperty property)
     {
-      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
-      
-      object nativeValue = propertyBase.GetValue ((IBusinessObject) Target);
-      
-      if (!propertyBase.IsList && propertyBase.IsDefaultValue(((IBusinessObject) Target)))
+      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>("property", property);
+
+      object nativeValue = propertyBase.GetValue((IBusinessObject)Target);
+
+      if (!propertyBase.IsList && propertyBase.IsDefaultValue(((IBusinessObject)Target)))
         return null;
       else
-        return propertyBase.ConvertFromNativePropertyType (nativeValue);
+        return propertyBase.ConvertFromNativePropertyType(nativeValue);
     }
-    
+
     /// <overloads> Sets the value accessed through the specified property. </overloads>
     /// <summary> Sets the value accessed through the specified <see cref="IBusinessObjectProperty"/>. </summary>
     /// <param name="property"> 
@@ -69,11 +69,11 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public void SetProperty (IBusinessObjectProperty property, object value)
+    public void SetProperty (IBusinessObjectProperty property, object? value)
     {
-      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase> ("property", property);
-      
-      object nativeValue = propertyBase.ConvertToNativePropertyType (value);
+      var propertyBase = ArgumentUtility.CheckNotNullAndType<PropertyBase>("property", property);
+
+      object? nativeValue = propertyBase.ConvertToNativePropertyType(value);
 
       propertyBase.SetValue((IBusinessObject)Target, nativeValue);
     }
@@ -90,12 +90,14 @@ namespace Remotion.ObjectBinding.BindableObject
     /// <exception cref="Exception"> 
     ///   Thrown if the <paramref name="property"/> is not part of this business object's class. 
     /// </exception>
-    public string GetPropertyString (IBusinessObjectProperty property, string format)
+    public string GetPropertyString (IBusinessObjectProperty property, string? format)
     {
       var stringFormatterService =
-          (IBusinessObjectStringFormatterService)
-          BusinessObjectClass.BusinessObjectProvider.GetService (typeof (IBusinessObjectStringFormatterService));
-      return stringFormatterService.GetPropertyString ((IBusinessObject) Target, property, format);
+          (IBusinessObjectStringFormatterService?)BusinessObjectClass.BusinessObjectProvider.GetService(typeof(IBusinessObjectStringFormatterService));
+
+      Assertion.IsNotNull(stringFormatterService, "An implementation of {0} must be available.", nameof(IBusinessObjectStringFormatterService));
+
+      return stringFormatterService.GetPropertyString((IBusinessObject)Target, property, format);
     }
 
     /// <summary> Gets the <see cref="BindableObjectClass"/> of this business object. </summary>
@@ -116,29 +118,29 @@ namespace Remotion.ObjectBinding.BindableObject
     {
       base.OnInitialized();
 
-      var typeForBindableObjectClass = GetTypeForBindableObjectClass ();
+      var typeForBindableObjectClass = GetTypeForBindableObjectClass();
       _mixinConfigurationAtInstantiationTime = MixinConfiguration.ActiveConfiguration;
-      _bindableObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType (typeForBindableObjectClass);
-      _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass> (InitializeBindableObjectClass);
+      _bindableObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType(typeForBindableObjectClass);
+      _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass>(InitializeBindableObjectClass);
     }
 
     protected override void OnDeserialized ()
     {
       base.OnDeserialized();
 
-      var typeForBindableObjectClass = GetTypeForBindableObjectClass ();
+      var typeForBindableObjectClass = GetTypeForBindableObjectClass();
       _mixinConfigurationAtInstantiationTime = MixinConfiguration.ActiveConfiguration;
-      _bindableObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType (typeForBindableObjectClass);
-      _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass> (InitializeBindableObjectClass);
+      _bindableObjectProvider = BindableObjectProvider.GetProviderForBindableObjectType(typeForBindableObjectClass);
+      _bindableObjectClass = new DoubleCheckedLockingContainer<BindableObjectClass>(InitializeBindableObjectClass);
     }
 
     private BindableObjectClass InitializeBindableObjectClass ()
     {
       // reactivate the mixin configuration to get the bindable object class originally expected
-      using (_mixinConfigurationAtInstantiationTime.EnterScope ())
+      using (_mixinConfigurationAtInstantiationTime.EnterScope())
       {
         var targetType = GetTypeForBindableObjectClass();
-        return _bindableObjectProvider.GetBindableObjectClass (targetType);
+        return _bindableObjectProvider.GetBindableObjectClass(targetType);
       }
     }
   }

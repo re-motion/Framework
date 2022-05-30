@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   /// </summary>
   public interface IIndexScriptElementFactory
   {
-    IScriptElement GetCreateElement (IIndexDefinition indexDefinition, EntityNameDefinition ownerName); 
-    IScriptElement GetDropElement (IIndexDefinition indexDefinition, EntityNameDefinition ownerName); 
+    IScriptElement GetCreateElement (IIndexDefinition indexDefinition, EntityNameDefinition ownerName);
+    IScriptElement GetDropElement (IIndexDefinition indexDefinition, EntityNameDefinition ownerName);
   }
 }

@@ -29,15 +29,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _storageProviderManager = new StorageProviderManager (NullPersistenceExtension.Instance);
+      _storageProviderManager = new StorageProviderManager(NullPersistenceExtension.Instance);
     }
 
     public override void TearDown ()
     {
       base.TearDown();
-      _storageProviderManager.Dispose ();
+      _storageProviderManager.Dispose();
     }
 
     [Test]
@@ -45,9 +45,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     {
       StorageProvider provider = _storageProviderManager[c_testDomainProviderID];
 
-      Assert.That (provider, Is.Not.Null);
-      Assert.That (provider.GetType (), Is.EqualTo (typeof (RdbmsProvider)));
-      Assert.That (provider.StorageProviderDefinition.Name, Is.EqualTo (c_testDomainProviderID));
+      Assert.That(provider, Is.Not.Null);
+      Assert.That(provider.GetType(), Is.EqualTo(typeof(RdbmsProvider)));
+      Assert.That(provider.StorageProviderDefinition.Name, Is.EqualTo(c_testDomainProviderID));
     }
 
     [Test]
@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
       StorageProvider provider1 = _storageProviderManager[c_testDomainProviderID];
       StorageProvider provider2 = _storageProviderManager[c_testDomainProviderID];
 
-      Assert.That (provider2, Is.SameAs (provider1));
+      Assert.That(provider2, Is.SameAs(provider1));
     }
 
     [Test]
@@ -66,13 +66,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 
       using (_storageProviderManager)
       {
-        provider = (RdbmsProvider) _storageProviderManager[c_testDomainProviderID];
-        provider.LoadDataContainer (DomainObjectIDs.Order1);
+        provider = (RdbmsProvider)_storageProviderManager[c_testDomainProviderID];
+        provider.LoadDataContainer(DomainObjectIDs.Order1);
 
-        Assert.That (provider.IsConnected, Is.True);
+        Assert.That(provider.IsConnected, Is.True);
       }
 
-      Assert.That (provider.IsConnected, Is.False);
+      Assert.That(provider.IsConnected, Is.False);
     }
   }
 }

@@ -20,18 +20,21 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Remotion.Collections;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace OBWTest
 {
-public class TestTabbedPersonDetailsUserControl : 
+public class TestTabbedPersonDetailsUserControl :
     DataEditUserControl, IControl, IFormGridRowProvider
 {
   protected BocTextValue FirstNameField;
   protected BocTextValue LastNameField;
   protected FormGridManager FormGridManager;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
   protected BocDateTimeValue DateOfBirthField;
   protected BocReferenceValue PartnerField;
   protected BocBooleanValue DeceasedField;
@@ -47,17 +50,22 @@ public class TestTabbedPersonDetailsUserControl :
     get { return CurrentObject; }
   }
 
+  public BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
   public virtual StringCollection GetHiddenRows (HtmlTable table)
   {
-    return (StringCollection) _listOfHiddenRows[table];
+    return (StringCollection)_listOfHiddenRows[table];
   }
 
   public virtual FormGridRowInfoCollection GetAdditionalRows (HtmlTable table)
   {
-    return (FormGridRowInfoCollection) _listOfFormGridRowInfos[table];
+    return (FormGridRowInfoCollection)_listOfFormGridRowInfos[table];
   }
 
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
     StringCollection hiddenRows = (StringCollection)_listOfHiddenRows[FormGrid];
     FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
@@ -66,65 +74,65 @@ public class TestTabbedPersonDetailsUserControl :
     InitalizePartnerFieldMenuItems();
 	  CreateExtraFormGrid("Init");
 	}
-	
-  private void InitalizePartnerFieldMenuItems()
+
+  private void InitalizePartnerFieldMenuItems ()
   {
     BocMenuItem menuItem = null;
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Open";
-    menuItem.Text = "Open";
+    menuItem.Text = WebString.CreateFromText("Open");
     menuItem.Category = "Object";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.WxeFunction;
     menuItem.Command.WxeFunctionCommand.Parameters = "objects";
     menuItem.Command.WxeFunctionCommand.TypeName = "OBWTest.ViewPersonsWxeFunction,OBWTest";
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
-    menuItem.Text = "Copy";
+    menuItem.Text = WebString.CreateFromText("Copy");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Cut";
-    menuItem.Text = "Cut";
+    menuItem.Text = WebString.CreateFromText("Cut");
     menuItem.Category = "Edit";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Paste";
-    menuItem.Text = "Paste";
+    menuItem.Text = WebString.CreateFromText("Paste");
     menuItem.Category = "Edit";
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
 
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Delete";
-    menuItem.Text = "Delete";
+    menuItem.Text = WebString.CreateFromText("Delete");
     menuItem.Category = "Edit";
     menuItem.Icon.Url = "Images/DeleteItem.gif";
     menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
-    PartnerField.OptionsMenuItems.Add (menuItem);
+    PartnerField.OptionsMenuItems.Add(menuItem);
   }
 
   protected void ShowExtraFormGridButton_Click (object sender, EventArgs e)
   {
-    var textField = (BocTextValue) ((HtmlTable) ExtraFormGridPlaceHolder.Controls[0]).Rows[1].Cells[2].Controls[0];
-    Assertion.IsTrue (DataSource.GetAllBoundControls().Contains (textField));
+    var textField = (BocTextValue)((HtmlTable)ExtraFormGridPlaceHolder.Controls[0]).Rows[1].Cells[2].Controls[0];
+    Assertion.IsTrue(DataSource.GetAllBoundControls().Contains(textField));
 
-    CreateExtraFormGrid ("Button");
+    CreateExtraFormGrid("Button");
 
-    Assertion.IsFalse (DataSource.GetAllBoundControls().Contains (textField));
+    Assertion.IsFalse(DataSource.GetAllBoundControls().Contains(textField));
   }
 
   private void CreateExtraFormGrid (string contextInformation)
@@ -133,21 +141,21 @@ public class TestTabbedPersonDetailsUserControl :
     formGrid.ID = "ExtraFormGrid";
 
     var titleRow = new HtmlTableRow();
-    titleRow.Cells.Add (new HtmlTableCell { ColSpan = 2, InnerText = "Extra FormGrid from " + contextInformation });
-    formGrid.Rows.Add (titleRow);
+    titleRow.Cells.Add(new HtmlTableCell { ColSpan = 2, InnerText = "Extra FormGrid from " + contextInformation });
+    formGrid.Rows.Add(titleRow);
 
     var dataRow = new HtmlTableRow();
-    dataRow.Cells.Add (new HtmlTableCell());
+    dataRow.Cells.Add(new HtmlTableCell());
     var controlCell = new HtmlTableCell();
-    controlCell.Controls.Add (new BocTextValue { ID = "TextField", Required = true, DataSource = DataSource });
-    dataRow.Cells.Add (controlCell);
-    formGrid.Rows.Add (dataRow);
+    controlCell.Controls.Add(new BocTextValue { ID = "TextField", Required = true, DataSource = DataSource });
+    dataRow.Cells.Add(controlCell);
+    formGrid.Rows.Add(dataRow);
 
     ExtraFormGridPlaceHolder.Controls.Clear();
-    ExtraFormGridPlaceHolder.Controls.Add (formGrid);
-    if (FormGridManager.IsFormGridRegistered (formGrid))
-      FormGridManager.UnregisterFormGrid (formGrid);
-    FormGridManager.RegisterFormGrid (formGrid);
+    ExtraFormGridPlaceHolder.Controls.Add(formGrid);
+    if (FormGridManager.IsFormGridRegistered(formGrid))
+      FormGridManager.UnregisterFormGrid(formGrid);
+    FormGridManager.RegisterFormGrid(formGrid);
 
 
   }

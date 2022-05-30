@@ -27,6 +27,8 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
     public static readonly string IsBound = "data-is-bound";
     public static readonly string BoundType = "data-bound-type";
     public static readonly string BoundProperty = "data-bound-property";
+    public static readonly string HasPropertyPaths = "data-has-propertypaths";
+    public static readonly string BoundPropertyPaths = "data-bound-propertypaths";
     public static readonly string NullIdentifier = "data-null-identifier";
 
     public static readonly string BocBooleanValueIsTriState = "data-bocbooleanvalue-is-tristate";
@@ -40,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
 
     public static readonly string BocListCellContents = "data-boclist-cell-contents";
     public static readonly string BocListCellIndex = "data-boclist-cell-index";
-    public static readonly string BocListColumnHasDiagnosticMetadata = "data-boclist-column-has-dma";
+    public static readonly string BocListColumnHasContentAttribute = "data-boclist-column-has-content-attribute";
     // Note: do not change value without chaning usages in JavaScript files.
     public static readonly string BocListHasFakeTableHead = "data-boclist-has-fake-table-head";
     // Note: do not change value without chaning usages in JavaScript files.

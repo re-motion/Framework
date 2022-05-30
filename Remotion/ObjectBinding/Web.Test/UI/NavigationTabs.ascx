@@ -39,6 +39,12 @@
 </PersistedCommand>
 </remotion:submenutab>
 
+<remotion:submenutab Text="DropDown" ItemID="BocDropDownMenu">
+<persistedcommand>
+<remotion:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocDropDownMenuUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></remotion:navigationcommand>
+</PersistedCommand>
+</remotion:submenutab>
+
 <remotion:submenutab Text="Enum" ItemID="BocEnumValue">
 <persistedcommand>
 <remotion:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocEnumValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></remotion:navigationcommand>
@@ -109,6 +115,8 @@
 </Tabs>
 </remotion:TabbedMenu>
 <div style="WIDTH: 100%;TEXT-ALIGN: right">
+<asp:CheckBox ID="MainContentScrollableCheckBox" runat="server" AutoPostBack="True" Text="Main content scrollable" OnCheckedChanged="MainContentScrollableCheckBox_OnCheckedChanged"/>
+<span>|</span>
 WAI Conformance Level: 
 <remotion:BocEnumValue id="WaiConformanceLevelField" runat="server" Required="true">
 <listcontrolstyle autopostback="True">

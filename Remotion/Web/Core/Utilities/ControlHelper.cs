@@ -41,7 +41,7 @@ namespace Remotion.Web.Utilities
     {
       get { return "__VIEWSTATE"; }
     }
-    
+
     public static string AsyncPostBackErrorKey
     {
       get { return "System.Web.UI.PageRequestManager:AsyncPostBackError"; }
@@ -59,13 +59,13 @@ namespace Remotion.Web.Utilities
 
     public static bool IsNestedInUpdatePanel (Control child)
     {
-      ArgumentUtility.CheckNotNull ("child", child);
+      ArgumentUtility.CheckNotNull("child", child);
 
-      var scriptManager = ScriptManager.GetCurrent (child.Page);
+      var scriptManager = ScriptManager.GetCurrent(child.Page!);
       if (scriptManager == null)
         return false;
 
-      for (Control current = child; current != null && !(current is Page); current = current.Parent)
+      for (Control? current = child; current != null && !(current is Page); current = current.Parent)
       {
         if (current is UpdatePanel)
           return true;
@@ -76,60 +76,58 @@ namespace Remotion.Web.Utilities
     public static Control[] GetControlsRecursive (Control parentControl, Type type)
     {
       ArrayList controlList = new ArrayList();
-      GetControlsRecursiveInternal (parentControl, type, controlList);
+      GetControlsRecursiveInternal(parentControl, type, controlList);
       if (type.IsInterface)
-        type = typeof (Control);
-      return (Control[]) controlList.ToArray (type);
+        type = typeof(Control);
+      return (Control[])controlList.ToArray(type);
     }
 
     public static Control[] GetControlsRecursive (Control parentControl, Type type, Control[] stopList)
     {
       ArrayList controlList = new ArrayList();
-      GetControlsRecursiveInternal (parentControl, type, new ArrayList (stopList), controlList);
+      GetControlsRecursiveInternal(parentControl, type, new ArrayList(stopList), controlList);
       if (type.IsInterface)
-        type = typeof (Control);
-      return (Control[]) controlList.ToArray (type);
+        type = typeof(Control);
+      return (Control[])controlList.ToArray(type);
     }
 
-    private static void GetControlsRecursiveInternal
-        (Control parentControl, Type type, ArrayList stopList, ArrayList controlList)
+    private static void GetControlsRecursiveInternal (Control parentControl, Type type, ArrayList stopList, ArrayList controlList)
     {
       ControlCollection controls = parentControl.Controls;
       for (int i = 0; i < controls.Count; ++i)
       {
         Control control = controls[i];
-        if (!stopList.Contains (control))
+        if (!stopList.Contains(control))
         {
-          if (type.IsInstanceOfType (control))
-            controlList.Add (control);
+          if (type.IsInstanceOfType(control))
+            controlList.Add(control);
 
-          GetControlsRecursiveInternal (control, type, stopList, controlList);
+          GetControlsRecursiveInternal(control, type, stopList, controlList);
         }
       }
     }
 
-    private static void GetControlsRecursiveInternal
-        (Control parentControl, Type type, ArrayList controlList)
+    private static void GetControlsRecursiveInternal (Control parentControl, Type type, ArrayList controlList)
     {
       ControlCollection controls = parentControl.Controls;
       for (int i = 0; i < controls.Count; ++i)
       {
         Control control = controls[i];
-        if (type.IsInstanceOfType (control))
-          controlList.Add (control);
+        if (type.IsInstanceOfType(control))
+          controlList.Add(control);
 
-        GetControlsRecursiveInternal (control, type, controlList);
+        GetControlsRecursiveInternal(control, type, controlList);
       }
     }
 
     public static bool ValidateOrder (BaseValidator smallerValidator, BaseValidator largerValidator, Type type)
     {
-      TextBox smallerField = smallerValidator.NamingContainer.FindControl (smallerValidator.ControlToValidate) as TextBox;
+      TextBox? smallerField = smallerValidator.NamingContainer.FindControl(smallerValidator.ControlToValidate) as TextBox;
       if (smallerField == null)
-        throw new ArgumentException ("ControlToValidate must be TextBox", "smallerValidator");
-      TextBox largerField = largerValidator.NamingContainer.FindControl (largerValidator.ControlToValidate) as TextBox;
+        throw new ArgumentException("ControlToValidate must be TextBox", "smallerValidator");
+      TextBox? largerField = largerValidator.NamingContainer.FindControl(largerValidator.ControlToValidate) as TextBox;
       if (largerField == null)
-        throw new ArgumentException ("ControlToValidate must be TextBox", "largerValidator");
+        throw new ArgumentException("ControlToValidate must be TextBox", "largerValidator");
 
       if (smallerField.Text.Trim() == string.Empty || largerField.Text.Trim() == string.Empty)
         return true;
@@ -139,10 +137,10 @@ namespace Remotion.Web.Utilities
       if (!(smallerValidator.IsValid && largerValidator.IsValid))
         return true;
 
-      IComparable smallerValue = (IComparable) Convert.ChangeType (smallerField.Text, type);
-      IComparable largerValue = (IComparable) Convert.ChangeType (largerField.Text, type);
+      IComparable smallerValue = (IComparable)Convert.ChangeType(smallerField.Text, type);
+      IComparable largerValue = (IComparable)Convert.ChangeType(largerField.Text, type);
 
-      if (smallerValue.CompareTo (largerValue) > 0)
+      if (smallerValue.CompareTo(largerValue) > 0)
         return false;
       else
         return true;
@@ -151,14 +149,14 @@ namespace Remotion.Web.Utilities
     /// <summary>
     ///   This method returns the nearest containing Template Control (i.e., Page or User Control).
     /// </summary>
-    public static TemplateControl GetParentTemplateControl (Control control)
+    public static TemplateControl? GetParentTemplateControl (Control control)
     {
-      for (Control parent = control;
+      for (Control? parent = control;
            parent != null;
            parent = parent.Parent)
       {
         if (parent is TemplateControl)
-          return (TemplateControl) parent;
+          return (TemplateControl)parent;
       }
       return null;
     }
@@ -176,12 +174,9 @@ namespace Remotion.Web.Utilities
     /// <returns> 
     ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
     /// </returns>
+    [Obsolete("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
     public static bool IsDesignModeForControl (Control control)
     {
-      if (control.Site != null && control.Site.DesignMode)
-        return true;
-      if (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode)
-        return true;
       return false;
     }
 
@@ -198,21 +193,16 @@ namespace Remotion.Web.Utilities
     /// <returns> 
     ///   Returns <see langword="true"/> if the <paramref name="control"/> is in design mode.
     /// </returns>
+    [Obsolete("Design-mode support has been removed, method always returns false. (Version: 3.0.0)", false)]
     public static bool IsDesignMode (IControl control)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-
-      if (control.Site != null && control.Site.DesignMode)
-        return true;
-      if (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode)
-        return true;
       return false;
     }
 
-    public static Control FindControl (Control namingContainer, string controlID)
+    public static Control? FindControl (Control namingContainer, string? controlID)
     {
-      ArgumentUtility.CheckNotNull ("namingContainer", namingContainer);
-      if (string.IsNullOrEmpty (controlID))
+      ArgumentUtility.CheckNotNull("namingContainer", namingContainer);
+      if (string.IsNullOrEmpty(controlID))
         return null;
 
       try
@@ -220,12 +210,15 @@ namespace Remotion.Web.Utilities
         //  WORKAROUND: In Designmode the very first call to FindControl results in a duplicate entry.
         //  Once that initial confusion has passed, everything seems to work just fine.
         //  Reason unknown (bug in Remotion-code or bug in Framework-code)
-        return namingContainer.FindControl (controlID);
+        return namingContainer.FindControl(controlID);
       }
       catch (HttpException)
       {
-        if (IsDesignModeForControl (namingContainer))
-          return namingContainer.FindControl (controlID);
+#pragma warning disable 618
+        var isDesignMode = IsDesignModeForControl(namingContainer);
+#pragma warning restore 618
+        if (isDesignMode)
+          return namingContainer.FindControl(controlID);
         else
           throw;
       }
@@ -233,27 +226,27 @@ namespace Remotion.Web.Utilities
 
     public static bool IsResponseTextXml (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      return context.Response.ContentType.Equals ("TEXT/XML", StringComparison.OrdinalIgnoreCase);
+      ArgumentUtility.CheckNotNull("context", context);
+      return context.Response.ContentType.Equals("TEXT/XML", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool IsResponseTextXHtml (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      return context.Response.ContentType.Equals ("TEXT/XHTML", StringComparison.OrdinalIgnoreCase);
+      ArgumentUtility.CheckNotNull("context", context);
+      return context.Response.ContentType.Equals("TEXT/XHTML", StringComparison.OrdinalIgnoreCase);
     }
 
     public static bool IsXmlConformResponseTextRequired (HttpContextBase context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      XhtmlConformanceSection xhtmlConformanceSection = (XhtmlConformanceSection) WebConfigurationManager.GetSection ("system.web/xhtmlConformance");
-      Assertion.IsNotNull (xhtmlConformanceSection, "Config section 'system.web/xhtmlConformance' was not found.");
+      XhtmlConformanceSection xhtmlConformanceSection = (XhtmlConformanceSection)WebConfigurationManager.GetSection("system.web/xhtmlConformance");
+      Assertion.IsNotNull(xhtmlConformanceSection, "Config section 'system.web/xhtmlConformance' was not found.");
 
       if (xhtmlConformanceSection.Mode != XhtmlConformanceMode.Legacy)
         return true;
 
-      return IsResponseTextXml (context) || IsResponseTextXHtml (context);
+      return IsResponseTextXml(context) || IsResponseTextXHtml(context);
     }
   }
 }

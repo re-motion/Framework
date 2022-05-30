@@ -17,18 +17,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation.Validators;
 using Remotion.Validation.MetaValidation;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.MetaValidation.Rules
 {
-  public class MaxValidatorCountRule : MetaValidationRuleBase<IPropertyValidator>
+  public class MaxValidatorCountRule : PropertyMetaValidationRuleBase<IPropertyValidator>
   {
     public override IEnumerable<MetaValidationRuleValidationResult> Validate (IEnumerable<IPropertyValidator> validationRules)
     {
       if(validationRules.Count()>3)
         yield return
-            MetaValidationRuleValidationResult.CreateInvalidResult (
+            MetaValidationRuleValidationResult.CreateInvalidResult(
                 "More than three validators per property are not allowed!");
       else
         yield return MetaValidationRuleValidationResult.CreateValidResult();

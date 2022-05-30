@@ -18,21 +18,22 @@
 using System;
 using System.Collections.Generic;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 {
   internal class FakeElementEqualityComparer : IEqualityComparer<Element>
   {
-    private readonly Func<Element, Element, bool> _equals;
+    private readonly Func<Element?, Element?, bool> _equals;
 
-    public FakeElementEqualityComparer (Func<Element, Element, bool> equals)
+    public FakeElementEqualityComparer (Func<Element?, Element?, bool> equals)
     {
       _equals = @equals;
     }
 
-    public bool Equals (Element x, Element y)
+    public bool Equals (Element? x, Element? y)
     {
-      return _equals (x, y);
+      return _equals(x, y);
     }
 
     public int GetHashCode (Element obj)

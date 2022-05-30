@@ -30,66 +30,66 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     [Test]
     public void InitializeWithQueryID ()
     {
-      var parameters = new QueryParameterCollection ();
-      var query = (Query) QueryFactory.CreateQueryFromConfiguration ("OrderQuery", parameters);
+      var parameters = new QueryParameterCollection();
+      var query = (Query)QueryFactory.CreateQueryFromConfiguration("OrderQuery", parameters);
 
       QueryDefinition definition = DomainObjectsConfiguration.Current.Query.QueryDefinitions["OrderQuery"];
-      Assert.That (query.Definition, Is.SameAs (definition));
-      Assert.That (query.ID, Is.EqualTo (definition.ID));
-      Assert.That (query.CollectionType, Is.EqualTo (definition.CollectionType));
-      Assert.That (query.QueryType, Is.EqualTo (definition.QueryType));
-      Assert.That (query.Statement, Is.EqualTo (definition.Statement));
-      Assert.That (query.StorageProviderDefinition, Is.EqualTo (definition.StorageProviderDefinition));
-      Assert.That (query.Parameters, Is.SameAs (parameters));
+      Assert.That(query.Definition, Is.SameAs(definition));
+      Assert.That(query.ID, Is.EqualTo(definition.ID));
+      Assert.That(query.CollectionType, Is.EqualTo(definition.CollectionType));
+      Assert.That(query.QueryType, Is.EqualTo(definition.QueryType));
+      Assert.That(query.Statement, Is.EqualTo(definition.Statement));
+      Assert.That(query.StorageProviderDefinition, Is.EqualTo(definition.StorageProviderDefinition));
+      Assert.That(query.Parameters, Is.SameAs(parameters));
     }
 
     [Test]
     public void InitializeWithQueryDefinition ()
     {
-      var parameters = new QueryParameterCollection ();
+      var parameters = new QueryParameterCollection();
 
-      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType ();
-      var query = new Query (definition, parameters);
+      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType();
+      var query = new Query(definition, parameters);
 
-      Assert.That (query.Definition, Is.SameAs (definition));
-      Assert.That (query.ID, Is.EqualTo (definition.ID));
-      Assert.That (query.Parameters, Is.SameAs (parameters));
+      Assert.That(query.Definition, Is.SameAs(definition));
+      Assert.That(query.ID, Is.EqualTo(definition.ID));
+      Assert.That(query.Parameters, Is.SameAs(parameters));
     }
 
     [Test]
     public void EagerFetchQueries ()
     {
-      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType ();
-      var query1 = new Query (definition, new QueryParameterCollection ());
+      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType();
+      var query1 = new Query(definition, new QueryParameterCollection());
 
-      Assert.That (query1.EagerFetchQueries, Is.Not.Null);
-      Assert.That (query1.EagerFetchQueries.Count, Is.EqualTo (0));
+      Assert.That(query1.EagerFetchQueries, Is.Not.Null);
+      Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(0));
 
-      var query2 = new Query (definition, new QueryParameterCollection ());
-      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");
+      var query2 = new Query(definition, new QueryParameterCollection());
+      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
 
-      query1.EagerFetchQueries.Add (endPointDefinition, query2);
-      Assert.That (query1.EagerFetchQueries.Count, Is.EqualTo (1));
+      query1.EagerFetchQueries.Add(endPointDefinition, query2);
+      Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(1));
     }
 
     [Test]
     public void EagerFetchQueries_Recursive ()
     {
-      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType ();
-      var query1 = new Query (definition, new QueryParameterCollection ());
+      QueryDefinition definition = TestQueryFactory.CreateOrderQueryWithCustomCollectionType();
+      var query1 = new Query(definition, new QueryParameterCollection());
 
-      Assert.That (query1.EagerFetchQueries, Is.Not.Null);
-      Assert.That (query1.EagerFetchQueries.Count, Is.EqualTo (0));
+      Assert.That(query1.EagerFetchQueries, Is.Not.Null);
+      Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(0));
 
-      var query2 = new Query (definition, new QueryParameterCollection ());
-      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");
+      var query2 = new Query(definition, new QueryParameterCollection());
+      var endPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
 
-      query1.EagerFetchQueries.Add (endPointDefinition, query2);
-      Assert.That (query1.EagerFetchQueries.Count, Is.EqualTo (1));
+      query1.EagerFetchQueries.Add(endPointDefinition, query2);
+      Assert.That(query1.EagerFetchQueries.Count, Is.EqualTo(1));
 
-      var query3 = new Query (definition, new QueryParameterCollection ());
-      query2.EagerFetchQueries.Add (endPointDefinition, query3);
-      Assert.That (query2.EagerFetchQueries.Count, Is.EqualTo (1));
+      var query3 = new Query(definition, new QueryParameterCollection());
+      query2.EagerFetchQueries.Add(endPointDefinition, query3);
+      Assert.That(query2.EagerFetchQueries.Count, Is.EqualTo(1));
 
     }
   }

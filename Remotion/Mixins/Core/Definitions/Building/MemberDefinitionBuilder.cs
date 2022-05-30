@@ -28,12 +28,12 @@ namespace Remotion.Mixins.Definitions.Building
 
     private readonly ClassDefinitionBase _classDefinition;
     private readonly Predicate<MethodInfo> _methodFilter;
-    private readonly HashSet<MethodInfo> _specialMethods = new HashSet<MethodInfo> ();
+    private readonly HashSet<MethodInfo> _specialMethods = new HashSet<MethodInfo>();
 
     public MemberDefinitionBuilder (ClassDefinitionBase classDefinition, Predicate<MethodInfo> methodFilter)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("methodFilter", methodFilter);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("methodFilter", methodFilter);
 
       _classDefinition = classDefinition;
       _methodFilter = methodFilter;
@@ -41,37 +41,37 @@ namespace Remotion.Mixins.Definitions.Building
 
     public void Apply (Type type)
     {
-      IEnumerable<MethodInfo> methods = ReflectionUtility.RecursiveGetAllMethods (type, c_bindingFlags);
-      IEnumerable<PropertyInfo> properties = ReflectionUtility.RecursiveGetAllProperties (type, c_bindingFlags);
-      IEnumerable<EventInfo> events = ReflectionUtility.RecursiveGetAllEvents (type, c_bindingFlags);
+      IEnumerable<MethodInfo> methods = ReflectionUtility.RecursiveGetAllMethods(type, c_bindingFlags);
+      IEnumerable<PropertyInfo> properties = ReflectionUtility.RecursiveGetAllProperties(type, c_bindingFlags);
+      IEnumerable<EventInfo> events = ReflectionUtility.RecursiveGetAllEvents(type, c_bindingFlags);
 
-      var overriddenMemberFilter = new OverriddenMemberFilter ();
+      var overriddenMemberFilter = new OverriddenMemberFilter();
 
-      methods = overriddenMemberFilter.RemoveOverriddenMembers (methods);
-      properties = overriddenMemberFilter.RemoveOverriddenMembers (properties);
-      events = overriddenMemberFilter.RemoveOverriddenMembers (events);
+      methods = overriddenMemberFilter.RemoveOverriddenMembers(methods);
+      properties = overriddenMemberFilter.RemoveOverriddenMembers(properties);
+      events = overriddenMemberFilter.RemoveOverriddenMembers(events);
 
-      AnalyzeProperties (properties);
-      AnalyzeEvents (events);
-      AnalyzeMethods (methods);
+      AnalyzeProperties(properties);
+      AnalyzeEvents(events);
+      AnalyzeMethods(methods);
     }
 
     private void AnalyzeProperties (IEnumerable<PropertyInfo> properties)
     {
       foreach (PropertyInfo property in properties)
       {
-        MethodInfo getMethod = property.GetGetMethod (true);
-        MethodInfo setMethod = property.GetSetMethod (true);
+        MethodInfo? getMethod = property.GetGetMethod(true);
+        MethodInfo? setMethod = property.GetSetMethod(true);
 
-        MethodDefinition getMethodDefinition = CreateSpecialMethodDefinition (getMethod);
-        MethodDefinition setMethodDefinition = CreateSpecialMethodDefinition (setMethod);
+        MethodDefinition? getMethodDefinition = CreateSpecialMethodDefinition(getMethod);
+        MethodDefinition? setMethodDefinition = CreateSpecialMethodDefinition(setMethod);
 
         if (getMethodDefinition != null || setMethodDefinition != null)
         {
-          var definition = new PropertyDefinition (property, _classDefinition, getMethodDefinition, setMethodDefinition);
-          var attributeBuilder = new AttributeDefinitionBuilder (definition);
-          attributeBuilder.Apply (property);
-          _classDefinition.Properties.Add (definition);
+          var definition = new PropertyDefinition(property, _classDefinition, getMethodDefinition, setMethodDefinition);
+          var attributeBuilder = new AttributeDefinitionBuilder(definition);
+          attributeBuilder.Apply(property);
+          _classDefinition.Properties.Add(definition);
         }
       }
     }
@@ -80,18 +80,19 @@ namespace Remotion.Mixins.Definitions.Building
     {
       foreach (EventInfo eventInfo in events)
       {
-        MethodInfo addMethod = eventInfo.GetAddMethod (true);
-        MethodInfo removeMethod = eventInfo.GetRemoveMethod (true);
+        MethodInfo? addMethod = eventInfo.GetAddMethod(true);
+        MethodInfo? removeMethod = eventInfo.GetRemoveMethod(true);
 
-        MethodDefinition addMethodDefinition = CreateSpecialMethodDefinition (addMethod);
-        MethodDefinition removeMethodDefinition = CreateSpecialMethodDefinition (removeMethod);
+        MethodDefinition? addMethodDefinition = CreateSpecialMethodDefinition(addMethod);
+        MethodDefinition? removeMethodDefinition = CreateSpecialMethodDefinition(removeMethod);
 
+        // TODO RM-7689 addMethodDefinition and removeMethodDefinition should be present.
         if (addMethodDefinition != null || removeMethodDefinition != null)
         {
-          var definition = new EventDefinition (eventInfo, _classDefinition, addMethodDefinition, removeMethodDefinition);
-          var attributeBuilder = new AttributeDefinitionBuilder (definition);
-          attributeBuilder.Apply (eventInfo);
-          _classDefinition.Events.Add (definition);
+          var definition = new EventDefinition(eventInfo, _classDefinition, addMethodDefinition!, removeMethodDefinition!);
+          var attributeBuilder = new AttributeDefinitionBuilder(definition);
+          attributeBuilder.Apply(eventInfo);
+          _classDefinition.Events.Add(definition);
         }
       }
     }
@@ -100,24 +101,24 @@ namespace Remotion.Mixins.Definitions.Building
     {
       foreach (MethodInfo method in methods)
       {
-        if (!_specialMethods.Contains (method) && _methodFilter (method))
+        if (!_specialMethods.Contains(method) && _methodFilter(method))
         {
-          var definition = new MethodDefinition (method, _classDefinition);
-          var attributeBuilder = new AttributeDefinitionBuilder (definition);
-          attributeBuilder.Apply (method);
-          _classDefinition.Methods.Add (definition);
+          var definition = new MethodDefinition(method, _classDefinition);
+          var attributeBuilder = new AttributeDefinitionBuilder(definition);
+          attributeBuilder.Apply(method);
+          _classDefinition.Methods.Add(definition);
         }
       }
     }
 
-    private MethodDefinition CreateSpecialMethodDefinition (MethodInfo methodInfo)
+    private MethodDefinition? CreateSpecialMethodDefinition (MethodInfo? methodInfo)
     {
-      if (methodInfo != null && _methodFilter (methodInfo))
+      if (methodInfo != null && _methodFilter(methodInfo))
       {
-        var methodDefinition = new MethodDefinition (methodInfo, _classDefinition);
-        var attributeBuilder = new AttributeDefinitionBuilder (methodDefinition);
-        attributeBuilder.Apply (methodInfo);
-        _specialMethods.Add (methodInfo);
+        var methodDefinition = new MethodDefinition(methodInfo, _classDefinition);
+        var attributeBuilder = new AttributeDefinitionBuilder(methodDefinition);
+        attributeBuilder.Apply(methodInfo);
+        _specialMethods.Add(methodInfo);
         return methodDefinition;
       }
       else

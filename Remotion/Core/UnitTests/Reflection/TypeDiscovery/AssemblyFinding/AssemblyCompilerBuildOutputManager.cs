@@ -30,7 +30,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     private readonly string _sourceDirectoryRoot;
     private readonly string[] _alwaysReferencedAssemblies;
 
-    private readonly HashSet<string> _generatedAssemblyPaths = new HashSet<string> ();
+    private readonly HashSet<string> _generatedAssemblyPaths = new HashSet<string>();
     private readonly HashSet<string> _generatedDirectories = new HashSet<string>();
 
     private bool _isDisposed = false;
@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
       _alwaysReferencedAssemblies = alwaysReferencedAssemblies;
 
       if (createBuildOutputDirectory)
-        CreateEmptyDirectory (_buildOutputDirectory);
+        CreateEmptyDirectory(_buildOutputDirectory);
     }
 
     public string BuildOutputDirectory
@@ -63,59 +63,63 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       if (_isDisposed)
         return;
-      
+
       _isDisposed = true;
 
       foreach (var generatedAssemblyPath in _generatedAssemblyPaths)
-        FileUtility.DeleteAndWaitForCompletion (generatedAssemblyPath);
+        FileUtility.DeleteAndWaitForCompletion(generatedAssemblyPath);
 
       foreach (var generatedDirectory in _generatedDirectories)
-        Directory.Delete (generatedDirectory, true);
+        Directory.Delete(generatedDirectory, true);
     }
 
     public string CompileInSeparateAppDomain (string outputAssemblyFileName, params string[] referencedAssemblies)
     {
-      var outputAssemblyPath = Path.Combine (_buildOutputDirectory, outputAssemblyFileName);
-      var allReferencedAssemblies = _alwaysReferencedAssemblies.Concat (referencedAssemblies).ToArray();
-      var fullSourceDirectory = Path.Combine (_sourceDirectoryRoot, Path.GetFileNameWithoutExtension (outputAssemblyFileName));
-      var assemblyCompiler = new AssemblyCompiler (fullSourceDirectory, outputAssemblyPath, allReferencedAssemblies);
-      
-      assemblyCompiler.CompileInSeparateAppDomain ();
-      _generatedAssemblyPaths.Add (outputAssemblyPath);
+      var outputAssemblyPath = Path.Combine(_buildOutputDirectory, outputAssemblyFileName);
+      var allReferencedAssemblies = _alwaysReferencedAssemblies.Concat(referencedAssemblies).ToArray();
+      var fullSourceDirectory = Path.Combine(_sourceDirectoryRoot, Path.GetFileNameWithoutExtension(outputAssemblyFileName));
+      var assemblyCompiler = new AssemblyCompiler(fullSourceDirectory, outputAssemblyPath, allReferencedAssemblies);
+
+#if NETFRAMEWORK
+      assemblyCompiler.CompileInSeparateAppDomain();
+      _generatedAssemblyPaths.Add(outputAssemblyPath);
       return outputAssemblyPath;
+#else
+      throw new PlatformNotSupportedException("Compiling in a separate assembly is not supported in .NET 5.");
+#endif
     }
 
     public string RenameGeneratedAssembly (string oldFileName, string newFileName)
     {
-      var oldAssemblyPath = Path.Combine (_buildOutputDirectory, oldFileName);
-      var newAssemblyPath = Path.Combine (_buildOutputDirectory, newFileName);
-      File.Move (oldAssemblyPath, newAssemblyPath);
-      _generatedAssemblyPaths.Remove (oldAssemblyPath);
-      _generatedAssemblyPaths.Add (newAssemblyPath);
+      var oldAssemblyPath = Path.Combine(_buildOutputDirectory, oldFileName);
+      var newAssemblyPath = Path.Combine(_buildOutputDirectory, newFileName);
+      File.Move(oldAssemblyPath, newAssemblyPath);
+      _generatedAssemblyPaths.Remove(oldAssemblyPath);
+      _generatedAssemblyPaths.Add(newAssemblyPath);
       return newAssemblyPath;
     }
 
     public void CopyAllGeneratedAssembliesToNewDirectory (string destinationDirectory)
     {
-      CreateEmptyDirectory (destinationDirectory);
+      CreateEmptyDirectory(destinationDirectory);
 
       foreach (var generatedAssemblyPath in _generatedAssemblyPaths.ToArray())
       {
-        string fileName = Path.GetFileName (generatedAssemblyPath);
-        var sourceAssemblyPath = Path.Combine (_buildOutputDirectory, fileName);
-        var destinationAssemblyPath = Path.Combine (destinationDirectory, fileName);
-        File.Copy (sourceAssemblyPath, destinationAssemblyPath);
-        _generatedAssemblyPaths.Add (destinationDirectory);
+        string fileName = Path.GetFileName(generatedAssemblyPath);
+        var sourceAssemblyPath = Path.Combine(_buildOutputDirectory, fileName);
+        var destinationAssemblyPath = Path.Combine(destinationDirectory, fileName);
+        File.Copy(sourceAssemblyPath, destinationAssemblyPath);
+        _generatedAssemblyPaths.Add(destinationDirectory);
       }
     }
 
     private void CreateEmptyDirectory (string directory)
     {
-      if (Directory.Exists (directory))
-        Directory.Delete (directory, true);
+      if (Directory.Exists(directory))
+        Directory.Delete(directory, true);
 
-      Directory.CreateDirectory (directory);
-      _generatedDirectories.Add (directory);
+      Directory.CreateDirectory(directory);
+      _generatedDirectories.Add(directory);
     }
   }
 }

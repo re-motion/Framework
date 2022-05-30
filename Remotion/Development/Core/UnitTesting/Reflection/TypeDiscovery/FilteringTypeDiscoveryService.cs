@@ -29,37 +29,37 @@ namespace Remotion.Development.UnitTesting.Reflection.TypeDiscovery
 
     public static FilteringTypeDiscoveryService CreateFromNamespaceWhitelist (ITypeDiscoveryService decoratedTypeDiscoveryService, params string[] whitelistedNamespaces)
     {
-      ArgumentUtility.CheckNotNull ("decoratedTypeDiscoveryService", decoratedTypeDiscoveryService);
-      ArgumentUtility.CheckNotNullOrEmpty ("whitelistedNamespaces", whitelistedNamespaces);
+      ArgumentUtility.CheckNotNull("decoratedTypeDiscoveryService", decoratedTypeDiscoveryService);
+      ArgumentUtility.CheckNotNullOrEmpty("whitelistedNamespaces", whitelistedNamespaces);
 
-      return new FilteringTypeDiscoveryService (
+      return new FilteringTypeDiscoveryService(
           decoratedTypeDiscoveryService,
-          type => whitelistedNamespaces.Any (whitelistedNamespace => GetNamespaceSafe (type).StartsWith (whitelistedNamespace)));
+          type => whitelistedNamespaces.Any(whitelistedNamespace => GetNamespaceSafe(type).StartsWith(whitelistedNamespace)));
     }
 
     public static FilteringTypeDiscoveryService CreateFromNamespaceBlacklist (ITypeDiscoveryService decoratedTypeDiscoveryService, params string[] blacklistedNamespaces)
     {
-      ArgumentUtility.CheckNotNull ("decoratedTypeDiscoveryService", decoratedTypeDiscoveryService);
-      ArgumentUtility.CheckNotNullOrEmpty ("blacklistedNamespaces", blacklistedNamespaces);
+      ArgumentUtility.CheckNotNull("decoratedTypeDiscoveryService", decoratedTypeDiscoveryService);
+      ArgumentUtility.CheckNotNullOrEmpty("blacklistedNamespaces", blacklistedNamespaces);
 
-      return new FilteringTypeDiscoveryService (
+      return new FilteringTypeDiscoveryService(
           decoratedTypeDiscoveryService,
-          type => !blacklistedNamespaces.Any (blacklistedNamespace => GetNamespaceSafe (type).StartsWith (blacklistedNamespace)));
+          type => !blacklistedNamespaces.Any(blacklistedNamespace => GetNamespaceSafe(type).StartsWith(blacklistedNamespace)));
     }
 
     public FilteringTypeDiscoveryService (ITypeDiscoveryService decoratedTypeDiscoveryService, Func<Type, bool> filter)
     {
-      ArgumentUtility.CheckNotNull ("decoratedTypeDiscoveryService", decoratedTypeDiscoveryService);
-      ArgumentUtility.CheckNotNull ("filter", filter);
+      ArgumentUtility.CheckNotNull("decoratedTypeDiscoveryService", decoratedTypeDiscoveryService);
+      ArgumentUtility.CheckNotNull("filter", filter);
 
       _decoratedTypeDiscoveryService = decoratedTypeDiscoveryService;
       _filter = filter;
     }
 
-    public ICollection GetTypes (Type baseType, bool excludeGlobalTypes)
+    public ICollection GetTypes (Type? baseType, bool excludeGlobalTypes)
     {
-      var collection = _decoratedTypeDiscoveryService.GetTypes (baseType, excludeGlobalTypes);
-      return collection.Cast<Type>().Where (_filter).ToList();
+      var collection = _decoratedTypeDiscoveryService.GetTypes(baseType, excludeGlobalTypes);
+      return collection.Cast<Type>().Where(_filter).ToList();
     }
 
     private static string GetNamespaceSafe (Type type)

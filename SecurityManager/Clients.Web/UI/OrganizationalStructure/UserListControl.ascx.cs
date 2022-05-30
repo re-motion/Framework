@@ -16,7 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
@@ -29,6 +29,7 @@ using Remotion.SecurityManager.Configuration;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 {
@@ -49,51 +50,51 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        UserList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) UserList.FixedColumns[0], SortingDirection.Ascending));
+        UserList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)UserList.FixedColumns[0], SortingDirection.Ascending));
       }
-      UserList.LoadUnboundValue (GetValues(), IsPostBack);
+      UserList.LoadUnboundValue(GetValues(), IsPostBack);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
       Type userType = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.GetUserType();
-      NewUserButton.Visible = securityClient.HasConstructorAccess (userType);
+      NewUserButton.Visible = securityClient.HasConstructorAccess(userType);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      UserListLabel.Text = resourceManager.GetString (ResourceIdentifier.UserListLabelText);
-      NewUserButton.Text = resourceManager.GetString (ResourceIdentifier.NewUserButtonText);
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
+      UserListLabel.Text = resourceManager.GetText(ResourceIdentifier.UserListLabelText);
+      NewUserButton.Text = resourceManager.GetText(ResourceIdentifier.NewUserButtonText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      ResetListOnTenantChange (UserList);
+      ResetListOnTenantChange(UserList);
     }
 
     protected void UserList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
-      HandleEditItemClick (UserList, e);
+      HandleEditItemClick(UserList, e);
     }
 
     protected void NewUserButton_Click (object sender, EventArgs e)
     {
-      HandleNewButtonClick (UserList);
+      HandleNewButtonClick(UserList);
     }
 
-    protected override IList GetValues ()
+    protected override IReadOnlyList<User> GetValues ()
     {
-      return User.FindByTenant (CurrentFunction.TenantHandle).ToArray();
+      return User.FindByTenant(CurrentFunction.TenantHandle).ToArray();
     }
 
-    protected override FormFunction<User> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<User> editedObject)
+    protected override FormFunction<User> CreateEditFunction (ITransactionMode transactionMode, IDomainObjectHandle<User>? editedObject)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 
-      return new EditUserFormFunction (transactionMode, editedObject);
+      return new EditUserFormFunction(transactionMode, editedObject);
     }
   }
 }

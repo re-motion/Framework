@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
 {
@@ -30,48 +30,48 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void CreateTransactionStrategy_WithoutParentFunction ()
     {
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
-      
-      ITransactionMode transactionMode = new NoneTransactionMode ();
-      TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy (new TestFunction2 (transactionMode), context);
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      Assert.That (strategy, Is.InstanceOf (typeof (NoneTransactionStrategy)));
-      Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (NullTransactionStrategy.Null));
+      ITransactionMode transactionMode = new NoneTransactionMode();
+      TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(new TestFunction2(transactionMode), context);
+
+      Assert.That(strategy, Is.InstanceOf(typeof(NoneTransactionStrategy)));
+      Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(NullTransactionStrategy.Null));
     }
 
     [Test]
     public void CreateTransactionStrategy_WithParentFunction ()
     {
-      ITransactionMode transactionMode = new NoneTransactionMode ();
+      ITransactionMode transactionMode = new NoneTransactionMode();
 
-      WxeFunction parentFunction = new TestFunction2 (new NoneTransactionMode());
-      WxeFunction childFunction = new TestFunction2 (transactionMode);
-      parentFunction.Add (childFunction);
+      WxeFunction parentFunction = new TestFunction2(new NoneTransactionMode());
+      WxeFunction childFunction = new TestFunction2(transactionMode);
+      parentFunction.Add(childFunction);
 
-      WxeStep stepMock = MockRepository.GenerateMock<WxeStep> ();
-      childFunction.Add (stepMock);
+      var stepMock = new Mock<WxeStep>();
+      childFunction.Add(stepMock.Object);
 
-      WxeContextFactory wxeContextFactory = new WxeContextFactory ();
-      WxeContext context = wxeContextFactory.CreateContext (new TestFunction ());
+      WxeContextFactory wxeContextFactory = new WxeContextFactory();
+      WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Expect (mock => mock.Execute (context)).WhenCalled (
-          invocation =>
+      stepMock.Setup(mock => mock.Execute(context)).Callback(
+          (WxeContext context) =>
           {
-            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy (childFunction, context);
-            Assert.That (strategy, Is.InstanceOf (typeof (NoneTransactionStrategy)));
-            Assert.That (strategy.OuterTransactionStrategy, Is.SameAs (((TestFunction2)parentFunction).TransactionStrategy));
-          });
+            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
+            Assert.That(strategy, Is.InstanceOf(typeof(NoneTransactionStrategy)));
+            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
+          }).Verifiable();
 
-      parentFunction.Execute (context);
+      parentFunction.Execute(context);
     }
 
     [Test]
     public void IsSerializeable ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (new NoneTransactionMode ());
+      var deserialized = Serializer.SerializeAndDeserialize(new NoneTransactionMode());
 
-      Assert.That (deserialized.AutoCommit, Is.False);
+      Assert.That(deserialized.AutoCommit, Is.False);
     }
   }
 }

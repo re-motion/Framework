@@ -15,12 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
+using Remotion.Mixins;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -28,7 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering cells of <see cref="BocDropDownMenuColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof (IBocDropDownMenuColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocDropDownMenuColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocDropDownMenuColumnRenderer : BocColumnRendererBase<BocDropDownMenuColumnDefinition>, IBocDropDownMenuColumnRenderer
   {
     /// <summary>
@@ -43,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, renderingFeatures, cssClasses)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses)
     {
     }
 
@@ -62,36 +66,59 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         bool showIcon)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       if (renderingContext.Control.RowMenus.Count <= rowIndex)
       {
-        renderingContext.Writer.Write (c_whiteSpace);
+        renderingContext.Writer.Write(c_whiteSpace);
         return;
       }
 
       var dropDownMenu = renderingContext.Control.RowMenus[rowIndex];
 
       if (renderingContext.Control.HasClientScript)
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin div
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div); // Begin div
 
       dropDownMenu.Enabled = !renderingContext.Control.EditModeController.IsRowEditModeActive;
 
       dropDownMenu.ShowTitle = renderingContext.ColumnDefinition.ShowMenuTitle;
       dropDownMenu.TitleText = renderingContext.ColumnDefinition.MenuTitleText;
       dropDownMenu.TitleIcon = renderingContext.ColumnDefinition.MenuTitleIcon;
-      dropDownMenu.RenderControl (renderingContext.Writer);
+
+      if (!string.IsNullOrEmpty(renderingContext.Control.ControlServicePath))
+      {
+        var stringValueParametersDictionary = new Dictionary<string, string?>();
+        stringValueParametersDictionary.Add("controlID", renderingContext.Control.ID);
+        stringValueParametersDictionary.Add(
+            "controlType",
+            TypeUtility.GetPartialAssemblyQualifiedName(MixinTypeUtility.GetUnderlyingTargetType(renderingContext.Control.GetType())));
+        stringValueParametersDictionary.Add("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
+        stringValueParametersDictionary.Add("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
+        stringValueParametersDictionary.Add("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
+        stringValueParametersDictionary.Add("rowIndex", dataRowRenderEventArgs.ListIndex.ToString());
+        stringValueParametersDictionary.Add(
+            "rowBusinessObject",
+            (dataRowRenderEventArgs.BusinessObject as IBusinessObjectWithIdentity)?.UniqueIdentifier);
+        stringValueParametersDictionary.Add("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
+
+        dropDownMenu.SetLoadMenuItemStatus(
+            renderingContext.Control.ControlServicePath,
+            nameof(IBocListWebService.GetMenuItemStatusForRowMenu),
+            stringValueParametersDictionary);
+      }
+
+      dropDownMenu.RenderControl(renderingContext.Writer);
 
       renderingContext.Writer.RenderEndTag(); // End div
     }
 
     protected override void AddDiagnosticMetadataAttributes (BocColumnRenderingContext<BocDropDownMenuColumnDefinition> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
 
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownRowDropDownMenuCell, "true");
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownRowDropDownMenuCell, "true");
     }
   }
 }

@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinImplementingSimpleInterface))]
-  public class ClassDerivedFromBaseClassWithHasComleteInterface 
+  [Uses(typeof(MixinImplementingSimpleInterface))]
+  public class ClassDerivedFromBaseClassWithHasComleteInterface
       : BaseClassWithHasComposedInterface<ClassDerivedFromBaseClassWithHasComleteInterface.IComposedInterface>
   {
     public interface IComposedInterface : ISimpleInterface
@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
       string M1 ();
     }
 
-    public string M1()
+    public string M1 ()
     {
       return "ClassDerivedFromBaseClassWithHasComleteInterface.M1";
     }

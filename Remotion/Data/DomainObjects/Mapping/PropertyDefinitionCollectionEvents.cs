@@ -29,7 +29,7 @@ public class PropertyDefinitionAddingEventArgs : EventArgs
 
   public PropertyDefinitionAddingEventArgs (PropertyDefinition propertyDefinition)
   {
-    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+    ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
     _propertyDefinition = propertyDefinition;
   }
@@ -46,7 +46,7 @@ public class PropertyDefinitionAddedEventArgs : EventArgs
 
   public PropertyDefinitionAddedEventArgs (PropertyDefinition propertyDefinition)
   {
-    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+    ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
     _propertyDefinition = propertyDefinition;
   }

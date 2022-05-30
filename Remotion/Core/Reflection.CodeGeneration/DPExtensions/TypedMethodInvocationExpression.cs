@@ -34,9 +34,9 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public TypedMethodInvocationExpression (TypeReference callTarget, MethodInfo method, params Expression[] arguments)
     {
-      ArgumentUtility.CheckNotNull ("callTarget", callTarget);
-      ArgumentUtility.CheckNotNull ("method", method);
-      ArgumentUtility.CheckNotNull ("arguments", arguments);
+      ArgumentUtility.CheckNotNull("callTarget", callTarget);
+      ArgumentUtility.CheckNotNull("method", method);
+      ArgumentUtility.CheckNotNull("arguments", arguments);
 
       _callTarget = callTarget;
       _method = method;
@@ -50,31 +50,31 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      LoadOwnersRecursively (_callTarget.OwnerReference, gen);
+      LoadOwnersRecursively(_callTarget.OwnerReference, gen);
 
       if (_callTarget.Type.IsValueType)
-        _callTarget.LoadAddressOfReference (gen);
+        _callTarget.LoadAddressOfReference(gen);
       else
-        _callTarget.LoadReference (gen);
+        _callTarget.LoadReference(gen);
 
       foreach (Expression argument in _arguments)
-        argument.Emit (member, gen);
+        argument.Emit(member, gen);
 
-      EmitCall (member, gen);
+      EmitCall(member, gen);
     }
 
     private void LoadOwnersRecursively (Reference owner, ILGenerator gen)
     {
       if (owner != null)
       {
-        LoadOwnersRecursively (owner.OwnerReference, gen);
-        owner.LoadReference (gen);
+        LoadOwnersRecursively(owner.OwnerReference, gen);
+        owner.LoadReference(gen);
       }
     }
 
     protected virtual void EmitCall (IMemberEmitter member, ILGenerator gen)
     {
-      gen.Emit (OpCodes.Call, _method);
+      gen.Emit(OpCodes.Call, _method);
     }
   }
 }

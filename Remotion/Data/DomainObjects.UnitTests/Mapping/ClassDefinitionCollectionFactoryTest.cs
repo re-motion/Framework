@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -30,157 +30,159 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private Dictionary<Type, ClassDefinition> _classDefinitions;
     private ClassDefinitionCollectionFactory _classDefinitionCollectionFactory;
-    private IMappingObjectFactory _mappingObjectFactoryMock;
+    private Mock<IMappingObjectFactory> _mappingObjectFactoryMock;
     private ClassDefinition _fakeClassDefinition;
 
     [SetUp]
     public void SetUp ()
     {
       _classDefinitions = new Dictionary<Type, ClassDefinition>();
-      _mappingObjectFactoryMock = MockRepository.GenerateStrictMock<IMappingObjectFactory>();
-      _classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory (_mappingObjectFactoryMock);
-      _fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order));
+      _mappingObjectFactoryMock = new Mock<IMappingObjectFactory>(MockBehavior.Strict);
+      _classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory(_mappingObjectFactoryMock.Object);
+      _fakeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
     }
 
     [Test]
     public void CreateClassDefinitionCollection ()
     {
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (Order), null))
-          .Return (_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(Order), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
-      var classDefinitions = _classDefinitionCollectionFactory.CreateClassDefinitionCollection (new[] { typeof (Order) });
+      var classDefinitions = _classDefinitionCollectionFactory.CreateClassDefinitionCollection(new[] { typeof(Order) });
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
+      _mappingObjectFactoryMock.Verify();
 
-      Assert.That (classDefinitions, Is.EqualTo (new[] { _fakeClassDefinition }));
+      Assert.That(classDefinitions, Is.EqualTo(new[] { _fakeClassDefinition }));
     }
 
     [Test]
     public void CreateClassDefinitionCollection_NoTypes ()
     {
-      var classDefinitions = _classDefinitionCollectionFactory.CreateClassDefinitionCollection (new Type[0]);
+      var classDefinitions = _classDefinitionCollectionFactory.CreateClassDefinitionCollection(new Type[0]);
 
-      Assert.That (classDefinitions, Is.Empty);
+      Assert.That(classDefinitions, Is.Empty);
     }
 
     [Test]
     public void CreateClassDefinitionCollection_DerivedClassAreSet ()
     {
-      var fakeClassDefinitionCompany = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Company));
-      var fakeClassDefinitionPartner = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Partner), baseClass: fakeClassDefinitionCompany);
-      var fakeClassDefinitionCustomer = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Customer), baseClass: fakeClassDefinitionCompany);
+      var fakeClassDefinitionCompany = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Company));
+      var fakeClassDefinitionPartner = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Partner), baseClass: fakeClassDefinitionCompany);
+      var fakeClassDefinitionCustomer = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Customer), baseClass: fakeClassDefinitionCompany);
 
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (Order), null))
-          .Return (_fakeClassDefinition);
+          .Setup(mock => mock.CreateClassDefinition(typeof(Order), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (Company), null))
-          .Return (fakeClassDefinitionCompany);
+          .Setup(mock => mock.CreateClassDefinition(typeof(Company), null))
+          .Returns(fakeClassDefinitionCompany)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (Partner), fakeClassDefinitionCompany))
-          .Return (fakeClassDefinitionPartner);
+          .Setup(mock => mock.CreateClassDefinition(typeof(Partner), fakeClassDefinitionCompany))
+          .Returns(fakeClassDefinitionPartner)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (Customer), fakeClassDefinitionCompany))
-          .Return (fakeClassDefinitionCustomer);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(Customer), fakeClassDefinitionCompany))
+          .Returns(fakeClassDefinitionCustomer)
+          .Verifiable();
 
       var classDefinitions =
-          _classDefinitionCollectionFactory.CreateClassDefinitionCollection (
-              new[] { typeof (Order), typeof (Company), typeof (Partner), typeof (Customer) });
+          _classDefinitionCollectionFactory.CreateClassDefinitionCollection(
+              new[] { typeof(Order), typeof(Company), typeof(Partner), typeof(Customer) });
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
-      
-      Assert.That (classDefinitions.Length, Is.EqualTo (4));
-      
-      var orderClassDefinition = classDefinitions.Single (cd => cd.ClassType == typeof (Order));
-      Assert.That (orderClassDefinition.DerivedClasses.Count, Is.EqualTo (0));
+      _mappingObjectFactoryMock.Verify();
 
-      var companyClassDefinition = classDefinitions.Single (cd => cd.ClassType == typeof (Company));
-      Assert.That (companyClassDefinition.DerivedClasses, Is.EquivalentTo (new[] { fakeClassDefinitionPartner, fakeClassDefinitionCustomer }));
+      Assert.That(classDefinitions.Length, Is.EqualTo(4));
+
+      var orderClassDefinition = classDefinitions.Single(cd => cd.ClassType == typeof(Order));
+      Assert.That(orderClassDefinition.DerivedClasses.Count, Is.EqualTo(0));
+
+      var companyClassDefinition = classDefinitions.Single(cd => cd.ClassType == typeof(Company));
+      Assert.That(companyClassDefinition.DerivedClasses, Is.EquivalentTo(new[] { fakeClassDefinitionPartner, fakeClassDefinitionCustomer }));
     }
-    
+
     [Test]
     public void GetClassDefinition_ForDerivedClass_WithStorageGroupAttribute_IgnoresBaseClass ()
     {
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (ClassWithDifferentProperties), null))
-          .Return (_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(ClassWithDifferentProperties), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
-      var result = _classDefinitionCollectionFactory.GetClassDefinition (_classDefinitions, typeof (ClassWithDifferentProperties));
+      var result = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(ClassWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (_fakeClassDefinition));
+      _mappingObjectFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeClassDefinition));
     }
 
     [Test]
     public void GetClassDefinition_ForNonDerivedClass_WithoutStorageGroupAttribute ()
     {
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (ClassWithoutStorageGroupWithDifferentProperties), null))
-          .Return (_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(ClassWithoutStorageGroupWithDifferentProperties), null))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
-      var result = _classDefinitionCollectionFactory.GetClassDefinition (_classDefinitions, typeof (ClassWithoutStorageGroupWithDifferentProperties));
+      var result = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(ClassWithoutStorageGroupWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (_fakeClassDefinition));
+      _mappingObjectFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeClassDefinition));
     }
 
     [Test]
     public void GetClassDefinition_ForDerivedClass ()
     {
-      var fakeBaseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (ClassWithDifferentProperties));
+      var fakeBaseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithDifferentProperties));
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (ClassWithDifferentProperties), null))
-          .Return (fakeBaseClassDefinition);
+          .Setup(mock => mock.CreateClassDefinition(typeof(ClassWithDifferentProperties), null))
+          .Returns(fakeBaseClassDefinition)
+          .Verifiable();
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (DerivedClassWithDifferentProperties), fakeBaseClassDefinition))
-          .Return (_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(DerivedClassWithDifferentProperties), fakeBaseClassDefinition))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
-      var result = _classDefinitionCollectionFactory.GetClassDefinition (_classDefinitions, typeof (DerivedClassWithDifferentProperties));
+      var result = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(DerivedClassWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (_fakeClassDefinition));
+      _mappingObjectFactoryMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeClassDefinition));
     }
 
     [Test]
     public void GetClassDefinition_ForDerivedClass_WithBaseClassAlreadyInClassDefinitionCollection ()
     {
-      var expectedBaseClass = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (ClassWithDifferentProperties));
-      _classDefinitions.Add (expectedBaseClass.ClassType, expectedBaseClass);
+      var expectedBaseClass = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(ClassWithDifferentProperties));
+      _classDefinitions.Add(expectedBaseClass.ClassType, expectedBaseClass);
 
       _mappingObjectFactoryMock
-          .Expect (mock => mock.CreateClassDefinition (typeof (DerivedClassWithDifferentProperties), expectedBaseClass))
-          .Return (_fakeClassDefinition);
-      _mappingObjectFactoryMock.Replay();
+          .Setup(mock => mock.CreateClassDefinition(typeof(DerivedClassWithDifferentProperties), expectedBaseClass))
+          .Returns(_fakeClassDefinition)
+          .Verifiable();
 
-      var actual = _classDefinitionCollectionFactory.GetClassDefinition (_classDefinitions, typeof (DerivedClassWithDifferentProperties));
+      var actual = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(DerivedClassWithDifferentProperties));
 
-      _mappingObjectFactoryMock.VerifyAllExpectations();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (_classDefinitions.Count, Is.EqualTo (2));
-      Assert.That (_fakeClassDefinition, Is.SameAs (actual));
+      _mappingObjectFactoryMock.Verify();
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(_classDefinitions.Count, Is.EqualTo(2));
+      Assert.That(_fakeClassDefinition, Is.SameAs(actual));
     }
 
     [Test]
     public void GetClassDefinition_ForDerivedClass_WithDerivedClassAlreadyInClassDefinitionCollection ()
     {
-      var existing = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (Order));
-      _classDefinitions.Add (existing.ClassType, existing);
+      var existing = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(Order));
+      _classDefinitions.Add(existing.ClassType, existing);
 
-      _mappingObjectFactoryMock.Replay();
+      var actual = _classDefinitionCollectionFactory.GetClassDefinition(_classDefinitions, typeof(Order));
 
-      var actual = _classDefinitionCollectionFactory.GetClassDefinition (_classDefinitions, typeof (Order));
-
-      _mappingObjectFactoryMock.VerifyAllExpectations();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (_classDefinitions.Count, Is.EqualTo (1));
-      Assert.That (_classDefinitions[typeof (Order)], Is.SameAs (actual));
-      Assert.That (actual, Is.SameAs (existing));
+      _mappingObjectFactoryMock.Verify();
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(_classDefinitions.Count, Is.EqualTo(1));
+      Assert.That(_classDefinitions[typeof(Order)], Is.SameAs(actual));
+      Assert.That(actual, Is.SameAs(existing));
     }
   }
 }

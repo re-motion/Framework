@@ -34,16 +34,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   {
     public static RoleProxy Create (Role role)
     {
-      ArgumentUtility.CheckNotNull ("role", role);
+      ArgumentUtility.CheckNotNull("role", role);
 
-      return new RoleProxy (
+      return new RoleProxy(
           role.GetHandle(),
-          ((IBusinessObjectWithIdentity) role).UniqueIdentifier,
-          ((IBusinessObjectWithIdentity) role).DisplayName);
+          ((IBusinessObjectWithIdentity)role).UniqueIdentifier,
+          ((IBusinessObjectWithIdentity)role).DisplayName);
     }
 
     private RoleProxy (IDomainObjectHandle<Role> handle, string uniqueIdentifier, string displayName)
-      : base (handle, uniqueIdentifier, displayName)
+      : base(handle, uniqueIdentifier, displayName)
     {
     }
   }

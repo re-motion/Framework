@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -28,9 +30,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering table cells of <see cref="BocCompoundColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof (IBocCompoundColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocCompoundColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCompoundColumnRenderer : BocValueColumnRendererBase<BocCompoundColumnDefinition>, IBocCompoundColumnRenderer
   {
+    private readonly IRenderingFeatures _renderingFeatures;
+
     /// <summary>
     /// Contructs a renderer bound to a <see cref="BocList"/> to render, an <see cref="HtmlTextWriter"/> to render to, and a
     /// <see cref="BocCompoundColumnDefinition"/> column for which to render cells.
@@ -43,8 +47,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, renderingFeatures, cssClasses)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses)
     {
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+
+      _renderingFeatures = renderingFeatures;
     }
 
     /// <summary>
@@ -54,12 +61,40 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="businessObject">The <see cref="IBusinessObject"/> whose property will be rendered.</param>
     /// <param name="editableRow">Ignored.</param>
     protected override void RenderCellDataForEditMode (
-        BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow)
+        BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow? editableRow)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      RenderValueColumnCellText (renderingContext, renderingContext.ColumnDefinition.GetStringValue (businessObject));
+      RenderValueColumnCellText(renderingContext, PlainTextString.CreateFromText(renderingContext.ColumnDefinition.GetStringValue(businessObject)));
+    }
+
+    /// <summary>
+    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCompoundColumnDefinition"/>.
+    /// </summary>
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    {
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+      {
+        var boundPropertyPaths = renderingContext.ColumnDefinition.PropertyPathBindings.ToArray().Select(x => x.PropertyPathIdentifier);
+        var joinedBoundPropertyPaths = string.Join("\u001e", boundPropertyPaths);
+
+        if (!string.IsNullOrEmpty(joinedBoundPropertyPaths))
+        {
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute(
+              DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
+              joinedBoundPropertyPaths);
+        }
+        else
+        {
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+        }
+      }
+
+      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
     }
   }
 }

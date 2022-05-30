@@ -20,7 +20,7 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.MixedMapping
 {
-  [NonIntroduced (typeof (IDomainObjectMixin))]
+  [NonIntroduced(typeof(IDomainObjectMixin))]
   public class HookedDomainObjectMixin : Mixin<Order>, IDomainObjectMixin
   {
     public event EventHandler InitializationHandler;
@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     public int OnLoadedCount;
     public LoadMode OnLoadedLoadMode;
     public bool OnCreatedCalled;
-    
+
     public bool OnDomainObjectReferenceInitializingCalled;
     public int OnDomainObjectReferenceInitializingCount;
 
@@ -38,31 +38,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
       OnLoadedCalled = true;
       OnLoadedLoadMode = loadMode;
       ++OnLoadedCount;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       ++Target.OrderNumber;
-      Assert.That (Target.OrderItems, Is.Not.Null);
+      Assert.That(Target.OrderItems, Is.Not.Null);
     }
 
     public void OnDomainObjectCreated ()
     {
       OnCreatedCalled = true;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       Target.OrderNumber += 2;
-      Assert.That (Target.OrderItems, Is.Not.Null);
+      Assert.That(Target.OrderItems, Is.Not.Null);
     }
 
     public void OnDomainObjectReferenceInitializing ()
     {
       OnDomainObjectReferenceInitializingCalled = true;
       ++OnDomainObjectReferenceInitializingCount;
-      Assert.That (Target.ID, Is.Not.Null);
+      Assert.That(Target.ID, Is.Not.Null);
       if (InitializationHandler != null)
-        InitializationHandler (this, EventArgs.Empty);
+        InitializationHandler(this, EventArgs.Empty);
     }
 
-    public new Order Target 
-    { 
-      get { return base.Target; } 
+    public new Order Target
+    {
+      get { return base.Target; }
     }
   }
 }

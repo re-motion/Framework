@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class DropDownMenuTestFunction : WxeFunction
   {
     public DropDownMenuTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("DropDownMenuTest.aspx");
+    private WxeStep Step1 = new WxePageStep("DropDownMenuTest.aspx");
   }
 }

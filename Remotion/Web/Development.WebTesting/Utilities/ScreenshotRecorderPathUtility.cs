@@ -16,6 +16,8 @@
 // 
 using System;
 using System.IO;
+using JetBrains.Annotations;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
@@ -33,14 +35,19 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="PathTooLongException">
     /// If the resulting file path would be longer than 259 characters (despite shortening of the <paramref name="baseFileName"/>).
     /// </exception>
-    public static string GetFullScreenshotFilePath (string screenshotDirectory, string baseFileName, string suffix, string extension)
+    public static string GetFullScreenshotFilePath ([NotNull] string screenshotDirectory, [NotNull] string baseFileName, [NotNull] string suffix, [NotNull] string extension)
     {
-      var sanitizedBaseFileName = SanitizeFileName (baseFileName);
-      var filePath = GetFullScreenshotFilePathInternal (screenshotDirectory, sanitizedBaseFileName, suffix, extension);
+      ArgumentUtility.CheckNotNull("screenshotDirectory", screenshotDirectory);
+      ArgumentUtility.CheckNotNull("baseFileName", baseFileName);
+      ArgumentUtility.CheckNotNull("suffix", suffix);
+      ArgumentUtility.CheckNotNull("extension", extension);
+
+      var sanitizedBaseFileName = SanitizeFileName(baseFileName);
+      var filePath = GetFullScreenshotFilePathInternal(screenshotDirectory, sanitizedBaseFileName, suffix, extension);
       if (filePath.Length > 259)
       {
-        var shortenedSanitizedBaseFileName = ShortenBaseFileName (filePath, sanitizedBaseFileName);
-        filePath = GetFullScreenshotFilePathInternal (screenshotDirectory, shortenedSanitizedBaseFileName, suffix, extension);
+        var shortenedSanitizedBaseFileName = ShortenBaseFileName(filePath, sanitizedBaseFileName);
+        filePath = GetFullScreenshotFilePathInternal(screenshotDirectory, shortenedSanitizedBaseFileName, suffix, extension);
       }
 
       return filePath;
@@ -52,8 +59,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// </summary>
     private static string GetFullScreenshotFilePathInternal (string screenshotDirectory, string baseFileName, string suffix, string extension)
     {
-      var fileName = string.Format ("{0}.{1}.{2}", baseFileName, suffix, extension);
-      return Path.Combine (screenshotDirectory, fileName);
+      var fileName = string.Format("{0}.{1}.{2}", baseFileName, suffix, extension);
+      return Path.Combine(screenshotDirectory, fileName);
     }
 
     /// <summary>
@@ -62,7 +69,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private static string SanitizeFileName (string fileName)
     {
       foreach (var c in Path.GetInvalidFileNameChars())
-        fileName = fileName.Replace (c, '_');
+        fileName = fileName.Replace(c, '_');
 
       return fileName;
     }
@@ -76,11 +83,11 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       var overflow = fullFilePath.Length - 259;
       if (overflow > baseFileName.Length - 1)
       {
-        throw new PathTooLongException (
-            string.Format ("Could not save screenshot to '{0}', the file path is too long and cannot be reduced to 259 characters.", fullFilePath));
+        throw new PathTooLongException(
+            string.Format("Could not save screenshot to '{0}', the file path is too long and cannot be reduced to 259 characters.", fullFilePath));
       }
 
-      return baseFileName.Substring (0, baseFileName.Length - overflow);
+      return baseFileName.Substring(0, baseFileName.Length - overflow);
     }
   }
 }

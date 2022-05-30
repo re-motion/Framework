@@ -15,7 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
@@ -27,7 +30,6 @@ using Remotion.TypePipe.Expressions;
 using Remotion.TypePipe.MutableReflection;
 using Remotion.TypePipe.MutableReflection.BodyBuilding;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
 {
@@ -38,53 +40,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     private string _propertyName;
     private Type _propertyType;
 
-    private ImplementingAccessorInterceptorBase _interceptorPartialMock;
+    private Mock<ImplementingAccessorInterceptorBase> _interceptorPartialMock;
 
     private MutableType _proxyType;
 
     [SetUp]
     public void SetUp ()
     {
-      _interceptedMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod ((object o) => o.Equals (null));
+      _interceptedMethod = NormalizingMemberInfoFromExpressionUtility.GetMethod((object o) => o.Equals(null));
       _propertyName = "abc";
-      _propertyType = typeof (int);
+      _propertyType = typeof(int);
 
-      _interceptorPartialMock = MockRepository.GeneratePartialMock<ImplementingAccessorInterceptorBase> (
-          _interceptedMethod, _propertyName, _propertyType);
+      _interceptorPartialMock = new Mock<ImplementingAccessorInterceptorBase>(_interceptedMethod, _propertyName, _propertyType) { CallBase = true };
 
-      _proxyType = MutableTypeObjectMother.Create (typeof (DomainObject));
+      _proxyType = MutableTypeObjectMother.Create(typeof(DomainObject));
     }
 
     [Test]
     public void CreateBody_BuildsCorrectBody_UsingAbstractTemplateMembers ()
     {
       var accessorImplementationMethod =
-          NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition ((PropertyAccessor a) => a.SetValue<object> (null));
-      var arguments = new Expression[] { Expression.Parameter (typeof (int), "param") };
-      var ctx = new MethodBodyModificationContext (_proxyType, false, new ParameterExpression[0], Type.EmptyTypes, typeof (int), null, null);
+          NormalizingMemberInfoFromExpressionUtility.GetGenericMethodDefinition((PropertyAccessor a) => a.SetValue<object>(null));
+      var arguments = new Expression[] { Expression.Parameter(typeof(int), "param") };
+      var expectedCtx = new MethodBodyModificationContext(_proxyType, false, new ParameterExpression[0], Type.EmptyTypes, typeof(int), null, null);
       _interceptorPartialMock
-          .Stub (stub => PrivateInvoke.GetNonPublicProperty (stub, "AccessorImplementationMethod"))
-          .Return (accessorImplementationMethod);
+          .Protected()
+          .SetupGet<MethodInfo>("AccessorImplementationMethod")
+          .Returns(accessorImplementationMethod);
       _interceptorPartialMock
-          .Stub (stub => PrivateInvoke.InvokeNonPublicMethod (stub, "GetArguments", Arg<MethodBaseBodyContextBase>.Is.Anything))
-          .WhenCalled (mi => Assert.That (mi.Arguments[0], Is.SameAs (ctx)))
-          .Return (arguments);
+          .Protected()
+          .Setup<IEnumerable<Expression>>("GetArguments", true, ItExpr.IsAny<MethodBodyModificationContext>())
+          .Callback((MethodBodyModificationContext ctx) => Assert.That(ctx, Is.SameAs(expectedCtx)))
+          .Returns(arguments);
 
-      var result = (Expression) PrivateInvoke.InvokeNonPublicMethod (_interceptorPartialMock, "CreateBody", ctx);
+      var result = (Expression)PrivateInvoke.InvokeNonPublicMethod(_interceptorPartialMock.Object, "CreateBody", expectedCtx);
 
       var expectedbody =
-          Expression.Call (
-              Expression.Call (
-                  Expression.Property (
-                      new ThisExpression (_proxyType),
-                      typeof (DomainObject).GetProperty ("Properties", BindingFlags.Instance | BindingFlags.NonPublic)),
+          Expression.Call(
+              Expression.Call(
+                  Expression.Property(
+                      new ThisExpression(_proxyType),
+                      typeof(DomainObject).GetProperty("Properties", BindingFlags.Instance | BindingFlags.NonPublic)),
                   "get_Item",
                   null,
-                  Expression.Constant ("abc")),
+                  Expression.Constant("abc")),
               "SetValue",
-              new[] { typeof (int) },
+              new[] { typeof(int) },
               arguments);
-      ExpressionTreeComparer.CheckAreEqualTrees (expectedbody, result);
+      ExpressionTreeComparer.CheckAreEqualTrees(expectedbody, result);
     }
   }
 }

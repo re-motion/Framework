@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+#pragma warning disable REMOTION0001
 using System;
 using NUnit.Framework;
 using Remotion.Web.Utilities;
@@ -26,55 +27,127 @@ namespace Remotion.Web.UnitTests.Core.Utilities
     [Test]
     public void HtmlEncode_DoubleQuote ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\"b"), Is.EqualTo ("a&quot;b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\"b"), Is.EqualTo("a&quot;b"));
     }
 
     [Test]
     public void HtmlEncode_SingleQuote ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a'b"), Is.EqualTo ("a&#39;b"));
+      Assert.That(HtmlUtility.HtmlEncode("a'b"), Is.EqualTo("a&#39;b"));
     }
 
     [Test]
     public void HtmlEncode_NewLine ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\nb"), Is.EqualTo ("a<br />b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\nb"), Is.EqualTo("a<br />b"));
     }
 
     [Test]
     public void HtmlEncode_LineFeed ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\rb"), Is.EqualTo ("a<br />b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\rb"), Is.EqualTo("a<br />b"));
     }
 
     [Test]
     public void HtmlEncode_LineFeedNewLine ()
     {
-      Assert.That (HtmlUtility.HtmlEncode ("a\r\nb"), Is.EqualTo ("a<br />b"));
+      Assert.That(HtmlUtility.HtmlEncode("a\r\nb"), Is.EqualTo("a<br />b"));
     }
 
     [Test]
-    public void StripHtmlTags ()
+    public void ExtractPlainText ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags ("SimpleString"), Is.EqualTo ("SimpleString"));
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("SimpleString")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
     }
 
     [Test]
-    public void StripHtmlTags_Empty ()
+    public void ExtractPlainText_Empty ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags (""), Is.EqualTo (""));
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("")),
+          Is.EqualTo(PlainTextString.CreateFromText("")));
     }
 
     [Test]
-    public void StripHtmlTags_OpenedAndClosedTagRemoval ()
+    public void ExtractPlainText_OpenedAndClosedTagRemoval ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags ("<span>SimpleS<i>tr<b>i</b>n</i></span>g"), Is.EqualTo ("SimpleString"));
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
     }
 
     [Test]
-    public void StripHtmlTags_SelfClosingTagRemoval ()
+    public void ExtractPlainText_SelfClosingTagRemoval ()
     {
-      Assert.That (HtmlUtility.StripHtmlTags ("Simple<br/>Stri<img src=\"WithAttributes.html\"/>ng"), Is.EqualTo ("SimpleString"));
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<div/>Stri<img src=\"WithAttributes.html\"/>ng")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesLineBreaks ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br/>Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesLineBreaks2 ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br />Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_ReplacesMultipleLineBreaks ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Simple<br/><br/>Stri<b>n</b>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("Simple\n\nString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithEncodedWebString_StripsHtmlTags ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("SimpleString")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithPlainTextWebString_DoesNotStripHtmlTags ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("<span>SimpleS<i>tr<b>i</b>n</i></span>g")),
+          Is.EqualTo(PlainTextString.CreateFromText("<span>SimpleS<i>tr<b>i</b>n</i></span>g")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithUmlautInPlainTextWebString ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromText("Text-Umlaut ö")),
+          Is.EqualTo(PlainTextString.CreateFromText("Text-Umlaut ö")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithUmlautInEncodedWebString ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Html-Umlaut ö")),
+          Is.EqualTo(PlainTextString.CreateFromText("Html-Umlaut ö")));
+    }
+
+    [Test]
+    public void ExtractPlainText_WithEncodedUmlautInEncodedWebString ()
+    {
+      Assert.That(
+          HtmlUtility.ExtractPlainText(WebString.CreateFromHtml("Html-Encoded-Umlaut &#246;")),
+          Is.EqualTo(PlainTextString.CreateFromText("Html-Encoded-Umlaut ö")));
     }
   }
 }

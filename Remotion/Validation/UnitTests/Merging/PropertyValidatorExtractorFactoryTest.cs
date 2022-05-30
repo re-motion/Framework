@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
-using Rhino.Mocks;
+using Remotion.Validation.RuleCollectors;
 
 namespace Remotion.Validation.UnitTests.Merging
 {
@@ -30,15 +31,15 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _factory = new PropertyValidatorExtractorFactory ();
+      _factory = new PropertyValidatorExtractorFactory();
     }
 
     [Test]
     public void Create ()
     {
-      var result = _factory.Create (new ValidatorRegistrationWithContext[0], MockRepository.GenerateStub<ILogContext>());
+      var result = _factory.Create(new RemovingPropertyValidatorRegistration[0], new Mock<ILogContext>().Object);
 
-      Assert.That (result, Is.TypeOf (typeof (PropertyValidatorExtractor)));
+      Assert.That(result, Is.TypeOf(typeof(PropertyValidatorExtractor)));
     }
   }
 }

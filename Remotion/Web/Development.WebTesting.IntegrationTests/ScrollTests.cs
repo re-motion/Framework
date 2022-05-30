@@ -20,13 +20,16 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using Coypu;
 using NUnit.Framework;
-using Remotion.Web.Development.WebTesting.IntegrationTests.ScreenshotCreation;
+using OpenQA.Selenium;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -36,31 +39,31 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void PositioningTest ()
     {
-      RunScrollTest (
+      RunScrollTest(
           "outerA",
           "blockA",
-          new WebPadding (1),
-          (b, e) => { b.Crop (e, ElementScopeResolver.Instance, new ScreenshotCropping (new WebPadding (1))); });
+          new WebPadding(1),
+          (b, e) => { b.Crop(e, ElementScopeResolver.Instance, new ScreenshotCropping(new WebPadding(1))); });
     }
 
     [Test]
     public void PositioningTestWithBigBlock ()
     {
-      RunScrollTest (
+      RunScrollTest(
           "outerB",
           "blockB",
-          new WebPadding (1),
-          (b, e) => { b.Crop (e, ElementScopeResolver.Instance, new ScreenshotCropping (new WebPadding (1))); });
+          new WebPadding(1),
+          (b, e) => { b.Crop(e, ElementScopeResolver.Instance, new ScreenshotCropping(new WebPadding(1))); });
     }
 
     [Test]
     public void PaddingTest ()
     {
-      RunScrollTest (
+      RunScrollTest(
           "outerC",
           "blockC",
-          new WebPadding (30),
-          (b, e) => { b.Crop (e, ElementScopeResolver.Instance, new ScreenshotCropping (new WebPadding (1))); });
+          new WebPadding(30),
+          (b, e) => { b.Crop(e, ElementScopeResolver.Instance, new ScreenshotCropping(new WebPadding(1))); });
     }
 
     private void RunScrollTest (
@@ -72,28 +75,32 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var box = home.Scope.FindId (boxId);
-      var block = home.Scope.FindId (blockId);
+      // TODO RM-8379: In Edge and Chrome, the web test is too fast, resulting in screenshotting an empty page.
+      if (Helper.BrowserConfiguration.IsChromium())
+        Thread.Sleep(TimeSpan.FromMilliseconds(1000));
+
+      var box = home.Scope.FindId(boxId);
+      var block = home.Scope.FindId(blockId);
 
       var failed = new List<KeyValuePair<string, Exception>>();
 
       var count = 0;
-      foreach (var contentAlignment in Enum.GetValues (typeof (ContentAlignment)).Cast<ContentAlignment>())
+      foreach (var contentAlignment in Enum.GetValues(typeof(ContentAlignment)).Cast<ContentAlignment>())
       {
         count++;
 
-        box.ScrollToElement (block, contentAlignment, padding);
+        box.ScrollToElement(block, contentAlignment, padding);
 
         var contentAlignmentText = contentAlignment.ToString();
-        var testName = string.Join ("_", methodName, contentAlignmentText);
+        var testName = string.Join("_", methodName, contentAlignmentText);
 
         try
         {
-          ScreenshotTesting.RunTest<ElementScope, ScrollTests> (Helper, test, ScreenshotTestingType.Both, testName, box, 0, 0d);
+          ScreenshotTesting.RunTest<ElementScope, ScrollTests>(Helper, test, ScreenshotTestingType.Both, testName, box, 0, 0d);
         }
         catch (Exception ex)
         {
-          failed.Add (new KeyValuePair<string, Exception> (contentAlignmentText, ex));
+          failed.Add(new KeyValuePair<string, Exception>(contentAlignmentText, ex));
         }
       }
 
@@ -101,24 +108,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         var stringBuilder = new StringBuilder();
 
-        var failRate = failed.Count / (float) count;
-        stringBuilder.AppendLine (string.Format ("{0}/{1} '{2}' tests failed (fail rate: {3:P}):", failed.Count, count, methodName, failRate));
+        var failRate = failed.Count / (float)count;
+        stringBuilder.AppendLine(string.Format("{0}/{1} '{2}' tests failed (fail rate: {3:P}):", failed.Count, count, methodName, failRate));
         stringBuilder.AppendLine();
 
         foreach (var fail in failed)
         {
-          stringBuilder.AppendLine (string.Format (" # Sub test '{0}' failed:", fail.Key));
-          stringBuilder.AppendLine (fail.Value.ToString());
+          stringBuilder.AppendLine(string.Format(" # Sub test '{0}' failed:", fail.Key));
+          stringBuilder.AppendLine(fail.Value.ToString());
           stringBuilder.AppendLine();
         }
 
-        Assert.Fail (stringBuilder.ToString());
+        Assert.Fail(stringBuilder.ToString());
       }
     }
 
     private HtmlPageObject Start ()
     {
-      return Start<HtmlPageObject> ("ScrollTest.aspx");
+      return Start<HtmlPageObject>("ScrollTest.aspx");
     }
   }
 }

@@ -30,20 +30,20 @@ namespace Remotion.SecurityManager.Domain.Metadata
       {
         try
         {
-          if (metadataID.Contains ("|"))
+          if (metadataID.Contains("|"))
           {
-            string[] metadataIDParts = metadataID.Split (new char[] { '|' }, 2);
-            Guid metadataItemID = new Guid (metadataIDParts[0]);
-            int stateValue = int.Parse (metadataIDParts[1]);
+            string[] metadataIDParts = metadataID.Split(new char[] { '|' }, 2);
+            Guid metadataItemID = new Guid(metadataIDParts[0]);
+            int stateValue = int.Parse(metadataIDParts[1]);
 
-            return new MetadataID (metadataItemID, stateValue);
+            return new MetadataID(metadataItemID, stateValue);
           }
 
-          return new MetadataID (new Guid (metadataID), null);
+          return new MetadataID(new Guid(metadataID), null);
         }
         catch (FormatException exception)
         {
-          throw new ArgumentException (string.Format ("The metadata ID '{0}' is invalid.", metadataID), "metadataID", exception);
+          throw new ArgumentException(string.Format("The metadata ID '{0}' is invalid.", metadataID), "metadataID", exception);
         }
       }
 
@@ -59,9 +59,9 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     public IQueryable<MetadataObject> CreateQuery (string metadataReference)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("metadataReference", metadataReference);
+      ArgumentUtility.CheckNotNullOrEmpty("metadataReference", metadataReference);
 
-      MetadataID metadataID = MetadataID.Parse (metadataReference);
+      MetadataID metadataID = MetadataID.Parse(metadataReference);
 
       if (metadataID.StateValue.HasValue)
       {

@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
@@ -24,7 +25,6 @@ using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
-using Rhino.Mocks;
 using ParamList = Remotion.TypePipe.ParamList;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObjectMixinTests
@@ -49,10 +49,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
       _subTxScope = subTx.EnterDiscardingScope();
 
       _loadedObject = objectID.GetObject<SampleBindableMixinDomainObject>();
-      _loadedBusinessObject = (IBusinessObject) _loadedObject;
+      _loadedBusinessObject = (IBusinessObject)_loadedObject;
 
       _newObject = SampleBindableMixinDomainObject.NewObject();
-      _newBusinessOrder = (IBusinessObject) _newObject;
+      _newBusinessOrder = (IBusinessObject)_newObject;
     }
 
     public override void TearDown ()
@@ -64,20 +64,20 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void GetPropertyReturnsNonNullIfDefaultValue_OnExistingObject ()
     {
-      Assert.That (_loadedBusinessObject.GetProperty ("Int32"), Is.Not.Null);
-      Assert.That (_loadedBusinessObject.GetProperty ("Int32"), Is.EqualTo (_loadedObject.Int32));
+      Assert.That(_loadedBusinessObject.GetProperty("Int32"), Is.Not.Null);
+      Assert.That(_loadedBusinessObject.GetProperty("Int32"), Is.EqualTo(_loadedObject.Int32));
     }
 
     [Test]
     public void GetPropertyReturnsNullIfDefaultValue_OnNewObject ()
     {
-      Assert.That (_newBusinessOrder.GetProperty ("Int32"), Is.Null);
+      Assert.That(_newBusinessOrder.GetProperty("Int32"), Is.Null);
     }
 
     [Test]
     public void GetPropertyReturnsNonNullIfDefaultListValue_OnNewObject ()
     {
-      Assert.That (_newBusinessOrder.GetProperty ("List"), Is.Not.Null);
+      Assert.That(_newBusinessOrder.GetProperty("List"), Is.Not.Null);
     }
 
     [Test]
@@ -85,8 +85,8 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     {
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (_newBusinessOrder.GetProperty ("Int32"), Is.Not.Null);
-        Assert.That (_newBusinessOrder.GetProperty ("Int32"), Is.EqualTo (_newObject.Int32));
+        Assert.That(_newBusinessOrder.GetProperty("Int32"), Is.Not.Null);
+        Assert.That(_newBusinessOrder.GetProperty("Int32"), Is.EqualTo(_newObject.Int32));
       }
     }
 
@@ -94,89 +94,90 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     public void GetPropertyReturnsNonNullIfNonDefaultValue_OnExistingObject ()
     {
       _loadedObject.Int32 = _loadedObject.Int32;
-      Assert.That (_loadedBusinessObject.GetProperty ("Int32"), Is.Not.Null);
+      Assert.That(_loadedBusinessObject.GetProperty("Int32"), Is.Not.Null);
     }
 
     [Test]
     public void GetPropertyReturnsNonNullIfNonDefaultValue_OnNewObject ()
     {
       _newObject.Int32 = _newObject.Int32;
-      Assert.That (_newBusinessOrder.GetProperty ("Int32"), Is.Not.Null);
+      Assert.That(_newBusinessOrder.GetProperty("Int32"), Is.Not.Null);
     }
 
     [Test]
     public void GetPropertyDefaultForNonMappingProperties ()
     {
-      var businessObject = (IBusinessObject)
-                           LifetimeService.NewObject (ClientTransaction.Current, typeof (BindableDomainObjectWithProperties), ParamList.Empty);
-      Assert.That (businessObject.GetProperty ("RequiredPropertyNotInMapping"), Is.Not.Null);
-      Assert.That (businessObject.GetProperty ("RequiredPropertyNotInMapping"), Is.EqualTo (true));
+      var businessObject = (IBusinessObject)LifetimeService.NewObject(ClientTransaction.Current, typeof(BindableDomainObjectWithProperties), ParamList.Empty);
+      Assert.That(businessObject.GetProperty("RequiredPropertyNotInMapping"), Is.Not.Null);
+      Assert.That(businessObject.GetProperty("RequiredPropertyNotInMapping"), Is.EqualTo(true));
     }
 
     [Test]
     public void GetProperty_CustomIPropertyInformationImplementation ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (bool));
-      propertyInformationStub.Stub (stub => stub.GetIndexParameters ()).Return (new ParameterInfo[0]);
-      propertyInformationStub.Stub (stub => stub.GetGetMethod (true)).Return (MethodInfoAdapter.Create(typeof (object).GetMethod ("ToString")));
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns(MethodInfoAdapter.Create(typeof(object).GetMethod("ToString")));
 
-      var booleanProperty = CreateProperty (propertyInformationStub);
+      var booleanProperty = CreateProperty(propertyInformationStub.Object);
 
-      var result = _newBusinessOrder.GetProperty (booleanProperty);
+      var result = _newBusinessOrder.GetProperty(booleanProperty);
 
-      Assert.That (result.ToString ().StartsWith ("SampleBindableMixinDomainObject"), Is.True);
+      Assert.That(result.ToString().StartsWith("SampleBindableMixinDomainObject"), Is.True);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property has no getter.")]
     public void PropertyWithNoGetter ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation>();
-      propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (bool));
-      propertyInformationStub.Stub (stub => stub.GetIndexParameters()).Return (new ParameterInfo[0]);
-      propertyInformationStub.Stub (stub => stub.GetGetMethod (true)).Return (null);
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInformationStub.Setup(stub => stub.GetGetMethod(true)).Returns((IMethodInformation)null);
 
-      var booleanProperty = CreateProperty (propertyInformationStub);
-
-      _newBusinessOrder.GetProperty (booleanProperty);
+      var booleanProperty = CreateProperty(propertyInformationStub.Object);
+      Assert.That(
+          () => _newBusinessOrder.GetProperty(booleanProperty),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Property has no getter."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Property has no setter.")]
     public void PropertyWithNoSetter ()
     {
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation> ();
-      propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (bool));
-      propertyInformationStub.Stub (stub => stub.GetIndexParameters ()).Return (new ParameterInfo[0]);
-      propertyInformationStub.Stub (stub => stub.GetSetMethod (true)).Return (null);
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      propertyInformationStub.Setup(stub => stub.GetSetMethod(true)).Returns((IMethodInformation)null);
 
-      var booleanProperty = CreateProperty (propertyInformationStub);
-
-      _newBusinessOrder.SetProperty (booleanProperty, new object());
+      var booleanProperty = CreateProperty(propertyInformationStub.Object);
+      Assert.That(
+          () => _newBusinessOrder.SetProperty(booleanProperty, new object()),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Property has no setter."));
     }
 
     private BooleanProperty CreateProperty (IPropertyInformation propertyInformation)
     {
       var businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
-      return new BooleanProperty (GetPropertyParameters (propertyInformation, businessObjectProvider));
+      return new BooleanProperty(GetPropertyParameters(propertyInformation, businessObjectProvider));
     }
 
     private BindableObjectProvider CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ()
     {
-      return new BindableObjectProvider (BindableObjectMetadataFactory.Create(), MockRepository.GenerateStub<IBusinessObjectServiceFactory>());
+      return new BindableObjectProvider(BindableObjectMetadataFactory.Create(), new Mock<IBusinessObjectServiceFactory>().Object);
     }
 
     private PropertyBase.Parameters GetPropertyParameters (IPropertyInformation property, BindableObjectProvider provider)
     {
-      PropertyReflector reflector = PropertyReflector.Create (property, provider);
-      return (PropertyBase.Parameters) PrivateInvoke.InvokeNonPublicMethod (
-          reflector, typeof (PropertyReflector), "CreateParameters", GetUnderlyingType (reflector));
+      PropertyReflector reflector = PropertyReflector.Create(property, provider);
+      return (PropertyBase.Parameters)PrivateInvoke.InvokeNonPublicMethod(
+          reflector, typeof(PropertyReflector), "CreateParameters", GetUnderlyingType(reflector));
     }
 
     private Type GetUnderlyingType (PropertyReflector reflector)
     {
-      return (Type) PrivateInvoke.InvokeNonPublicMethod (reflector, typeof (PropertyReflector), "GetUnderlyingType");
+      return (Type)PrivateInvoke.InvokeNonPublicMethod(reflector, typeof(PropertyReflector), "GetUnderlyingType");
     }
   }
 }

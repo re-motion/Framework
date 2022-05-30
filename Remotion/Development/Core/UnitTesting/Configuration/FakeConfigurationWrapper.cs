@@ -29,58 +29,57 @@ namespace Remotion.Development.UnitTesting.Configuration
   /// </summary>
   public sealed class FakeConfigurationWrapper : ConfigurationWrapper
   {
-    private Dictionary<string, object> _sections = new Dictionary<string, object> ();
+    private Dictionary<string, object> _sections = new Dictionary<string, object>();
     private ConnectionStringsSection _connectionStringsSection = new ConnectionStringsSection();
     private NameValueCollection _appSettings = new NameValueCollection();
 
-    public FakeConfigurationWrapper()
+    public FakeConfigurationWrapper ()
     {
     }
 
     public void SetUpSection (string configKey, object section)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("configKey", configKey);
-      ArgumentUtility.CheckNotNull ("section", section);
+      ArgumentUtility.CheckNotNullOrEmpty("configKey", configKey);
+      ArgumentUtility.CheckNotNull("section", section);
 
-      _sections.Add (configKey, section);
+      _sections.Add(configKey, section);
     }
 
     public void SetUpConnectionString (string name, string connectionString, string providerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
 
-      _connectionStringsSection.ConnectionStrings.Add (new ConnectionStringSettings (name, connectionString, providerName));
+      _connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, providerName));
     }
 
     public void SetUpAppSetting (string name, string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      _appSettings.Add (name, value);
+      _appSettings.Add(name, value);
     }
 
-    public override object GetSection (string sectionName)
+    public override object? GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("sectionName", sectionName);
+      ArgumentUtility.CheckNotNullOrEmpty("sectionName", sectionName);
 
-      object value;
-      if (_sections.TryGetValue (sectionName, out value))
+      if (_sections.TryGetValue(sectionName, out var value))
         return value;
       return null;
     }
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       return _connectionStringsSection.ConnectionStrings[name];
     }
 
-    public override string GetAppSetting (string name)
+    public override string? GetAppSetting (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       return _appSettings[name];
     }

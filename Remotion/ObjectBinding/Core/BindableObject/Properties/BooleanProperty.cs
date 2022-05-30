@@ -24,9 +24,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
 
     public BooleanProperty (Parameters parameters)
-        : base (parameters)
+        : base(parameters)
     {
-      _booleanToEnumPropertyConverter = new BooleanToEnumPropertyConverter (this);
+      _booleanToEnumPropertyConverter = new BooleanToEnumPropertyConverter(this);
     }
 
     /// <summary> Returns the human readable value of the boolean property. </summary>
@@ -35,7 +35,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <remarks> The value of this property may depend on the current culture. </remarks>
     public string GetDisplayName (bool value)
     {
-      return BindableObjectGlobalizationService.GetBooleanValueDisplayName (value);
+      return BindableObjectGlobalizationService.GetBooleanValueDisplayName(value);
     }
 
     /// <summary> Returns the default value to be assumed if the boolean property returns <see langword="null"/>. </summary>
@@ -46,7 +46,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// </remarks>
     public bool? GetDefaultValue (IBusinessObjectClass objectClass)
     {
-      if (IsNullable)
+      if (IsNullableDotNetType)
         return null;
       return false;
     }
@@ -55,7 +55,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <returns> 
     ///   A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the values defined in the enumeration. 
     /// </returns>
-    public IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
+    public IEnumerationValueInfo[] GetAllValues (IBusinessObject? businessObject)
     {
       return _booleanToEnumPropertyConverter.GetValues();
     }
@@ -64,7 +64,7 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine the enabled enum values. </param>
     /// <returns>A list of <see cref="IEnumerationValueInfo"/> objects encapsulating the enabled values in the enumeration. </returns>
     /// <remarks> CLS type enums do not inherently support the disabling of its values. </remarks>
-    public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
+    public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject? businessObject)
     {
       return _booleanToEnumPropertyConverter.GetValues();
     }
@@ -74,18 +74,18 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
     /// <param name="value"> The enumeration value to return the <see cref="IEnumerationValueInfo"/> for. </param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="value"/>. </returns>
-    public IEnumerationValueInfo GetValueInfoByValue (object value, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByValue (object? value, IBusinessObject? businessObject)
     {
-      return _booleanToEnumPropertyConverter.GetValueInfoByValue (value);
+      return _booleanToEnumPropertyConverter.GetValueInfoByValue(value);
     }
 
     /// <summary> Returns a specific enumeration value. </summary>
     /// <param name="identifier">The string identifying the  enumeration value to return the <see cref="IEnumerationValueInfo"/> for.</param>
     /// <param name="businessObject"> The <see cref="IBusinessObject"/> used to determine whether the enum value is enabled. </param>
     /// <returns> The <see cref="IEnumerationValueInfo"/> object for the provided <paramref name="identifier"/>. </returns>
-    public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier, IBusinessObject businessObject)
+    public IEnumerationValueInfo? GetValueInfoByIdentifier (string? identifier, IBusinessObject? businessObject)
     {
-      return _booleanToEnumPropertyConverter.GetValueInfoByIdentifier (identifier);
+      return _booleanToEnumPropertyConverter.GetValueInfoByIdentifier(identifier);
     }
   }
 }

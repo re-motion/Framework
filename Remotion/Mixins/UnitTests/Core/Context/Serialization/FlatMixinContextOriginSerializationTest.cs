@@ -26,7 +26,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     private FlatMixinContextOriginSerializer _serializer;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
       _serializer = new FlatMixinContextOriginSerializer();
     }
@@ -34,32 +34,32 @@ namespace Remotion.Mixins.UnitTests.Core.Context.Serialization
     [Test]
     public void AddKind ()
     {
-      _serializer.AddKind ("some kind");
-      Assert.That (_serializer.Values[0], Is.EqualTo ("some kind"));
-      
-      var deserializer = new FlatMixinContextOriginDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetKind (), Is.EqualTo ("some kind"));
+      _serializer.AddKind("some kind");
+      Assert.That(_serializer.Values[0], Is.EqualTo("some kind"));
+
+      var deserializer = new FlatMixinContextOriginDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetKind(), Is.EqualTo("some kind"));
     }
 
     [Test]
     public void AddAssembly ()
     {
       var someAssembly = GetType().Assembly;
-      _serializer.AddAssembly (someAssembly);
-      Assert.That (_serializer.Values[1], Is.EqualTo (someAssembly.FullName));
+      _serializer.AddAssembly(someAssembly);
+      Assert.That(_serializer.Values[1], Is.EqualTo(someAssembly.FullName));
 
-      var deserializer = new FlatMixinContextOriginDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetAssembly (), Is.EqualTo (someAssembly));
+      var deserializer = new FlatMixinContextOriginDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetAssembly(), Is.EqualTo(someAssembly));
     }
 
     [Test]
     public void AddLocation ()
     {
-      _serializer.AddLocation ("some location");
-      Assert.That (_serializer.Values[2], Is.EqualTo ("some location"));
+      _serializer.AddLocation("some location");
+      Assert.That(_serializer.Values[2], Is.EqualTo("some location"));
 
-      var deserializer = new FlatMixinContextOriginDeserializer (_serializer.Values);
-      Assert.That (deserializer.GetLocation (), Is.EqualTo ("some location"));
+      var deserializer = new FlatMixinContextOriginDeserializer(_serializer.Values);
+      Assert.That(deserializer.GetLocation(), Is.EqualTo("some location"));
     }
   }
 }

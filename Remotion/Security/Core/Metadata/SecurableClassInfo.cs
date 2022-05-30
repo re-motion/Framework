@@ -30,8 +30,8 @@ namespace Remotion.Security.Metadata
 
     private List<StatePropertyInfo> _properties = new List<StatePropertyInfo>();
     private List<EnumValueInfo> _accessTypes = new List<EnumValueInfo>();
-    private SecurableClassInfo _baseClass;
-    private List<SecurableClassInfo> _derivedClasses = new List<SecurableClassInfo> ();
+    private SecurableClassInfo? _baseClass;
+    private List<SecurableClassInfo> _derivedClasses = new List<SecurableClassInfo>();
 
     // construction and disposing
 
@@ -51,7 +51,7 @@ namespace Remotion.Security.Metadata
       get { return _accessTypes; }
     }
 
-    public SecurableClassInfo BaseClass
+    public SecurableClassInfo? BaseClass
     {
       get { return _baseClass; }
       set { _baseClass = value; }
@@ -61,6 +61,6 @@ namespace Remotion.Security.Metadata
     {
       get { return _derivedClasses; }
     }
-	
+
   }
 }

@@ -28,46 +28,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void UpdateTimestamps_ByNonExistingID ()
     {
-      var objectID = new ObjectID(typeof (ClassWithAllDataTypes), new Guid ("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
-      var dataContainer = DataContainer.CreateForExisting (objectID, null, pd => pd.DefaultValue);
+      var objectID = new ObjectID(typeof(ClassWithAllDataTypes), new Guid("{E067A627-BA3F-4ee5-8B61-1F46DC28DFC3}"));
+      var dataContainer = DataContainer.CreateForExisting(objectID, null, pd => pd.DefaultValue);
 
-      Assert.That (
-          () => Provider.UpdateTimestamps (new[] { dataContainer }), 
+      Assert.That(
+          () => Provider.UpdateTimestamps(new[] { dataContainer }),
           Throws.TypeOf<RdbmsProviderException>()
-            .With.Message.EqualTo ("No timestamp found for object 'ClassWithAllDataTypes|e067a627-ba3f-4ee5-8b61-1f46dc28dfc3|System.Guid'."));
+            .With.Message.EqualTo("No timestamp found for object 'ClassWithAllDataTypes|e067a627-ba3f-4ee5-8b61-1f46dc28dfc3|System.Guid'."));
     }
 
     [Test]
     public void UpdateTimestamps_ByID ()
     {
-      var dataContainerLoadedFromDB = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject;
-      var dataContainerCreatedInMemory = DataContainer.CreateForExisting (DomainObjectIDs.ClassWithAllDataTypes1, null, pd => pd.DefaultValue);
-      Assert.That (dataContainerCreatedInMemory.Timestamp, Is.Null);
-      
-      Provider.UpdateTimestamps (new[] { dataContainerCreatedInMemory });
+      var dataContainerLoadedFromDB = Provider.LoadDataContainer(DomainObjectIDs.ClassWithAllDataTypes1).LocatedObject;
+      var dataContainerCreatedInMemory = DataContainer.CreateForExisting(DomainObjectIDs.ClassWithAllDataTypes1, null, pd => pd.DefaultValue);
+      Assert.That(dataContainerCreatedInMemory.Timestamp, Is.Null);
 
-      Assert.That (dataContainerCreatedInMemory.Timestamp, Is.Not.Null);
-      Assert.That (dataContainerCreatedInMemory.Timestamp, Is.EqualTo (dataContainerLoadedFromDB.Timestamp));
+      Provider.UpdateTimestamps(new[] { dataContainerCreatedInMemory });
+
+      Assert.That(dataContainerCreatedInMemory.Timestamp, Is.Not.Null);
+      Assert.That(dataContainerCreatedInMemory.Timestamp, Is.EqualTo(dataContainerLoadedFromDB.Timestamp));
     }
 
     [Test]
     public void UpdateTimestamps_Multiple ()
     {
-      var dataContainer1 = DataContainer.CreateForExisting (DomainObjectIDs.ClassWithAllDataTypes1, null, pd => pd.DefaultValue);
-      var dataContainer2 = DataContainer.CreateForExisting (DomainObjectIDs.ClassWithAllDataTypes2, null, pd => pd.DefaultValue);
-      Assert.That (dataContainer1.Timestamp, Is.Null);
-      Assert.That (dataContainer2.Timestamp, Is.Null);
-      
-      Provider.UpdateTimestamps (new[] { dataContainer1, dataContainer2 });
+      var dataContainer1 = DataContainer.CreateForExisting(DomainObjectIDs.ClassWithAllDataTypes1, null, pd => pd.DefaultValue);
+      var dataContainer2 = DataContainer.CreateForExisting(DomainObjectIDs.ClassWithAllDataTypes2, null, pd => pd.DefaultValue);
+      Assert.That(dataContainer1.Timestamp, Is.Null);
+      Assert.That(dataContainer2.Timestamp, Is.Null);
 
-      Assert.That (dataContainer1.Timestamp, Is.Not.Null);
-      Assert.That (dataContainer2.Timestamp, Is.Not.Null);
+      Provider.UpdateTimestamps(new[] { dataContainer1, dataContainer2 });
+
+      Assert.That(dataContainer1.Timestamp, Is.Not.Null);
+      Assert.That(dataContainer2.Timestamp, Is.Not.Null);
     }
 
     [Test]
     public void UpdateTimestamps_Empty ()
     {
-      Provider.UpdateTimestamps (new DataContainer[0]);
+      Provider.UpdateTimestamps(new DataContainer[0]);
     }
   }
 }

@@ -20,6 +20,12 @@
 </asp:Content>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:ScriptManager ID="ScriptManager" runat="server" />
+  <style type="text/css">
+    .TreeBlock
+    {
+      --treeview-background-color: var(--color-contrast-background);
+    }
+  </style>
     <h1>
       SingleTest TreeView</h1>
     <table style="width: 100%">
@@ -30,7 +36,7 @@
           <asp:Button ID="RefreshPesonTreeViewButton" runat="server" Text="Refresh"></asp:Button>
         </td>
         <td style="width: 33%; vertical-align: top">
-          <remotion:WebTreeView ID="WebTreeView" runat="server" CssClass="TreeBlock" Width="150px" EnableScrollBars="True" />
+          <remotion:WebTreeView ID="WebTreeView" runat="server" CssClass="TreeBlock" Width="150px" Height="30em" EnableScrollBars="True" EnableTopLevelGrouping="True"/>
           <p>
             <asp:Button ID="PostBackButton" runat="server" Text="PostBack"></asp:Button></p>
           <p>
@@ -41,7 +47,7 @@
         <td style="width: 33%; vertical-align: top">
           <asp:UpdatePanel ID="UpdatePanel" runat="server">
             <ContentTemplate>
-              <ros:PersonTreeView ID="PersonTreeViewWithMenus" runat="server" DataSourceControl="CurrentObject" CssClass="TreeBlock" EnableTopLevelExpander="False" EnableLookAheadEvaluation="True" />
+              <ros:PersonTreeView ID="PersonTreeViewWithMenus" runat="server" DataSourceControl="CurrentObject" Width="150px" CssClass="TreeBlock" EnableTopLevelExpander="False" EnableLookAheadEvaluation="True" ControlServicePath="IndividualControlTests/BocTreeViewWebService.asmx" ControlServiceArguments="ControlServiceArgs" />
             </ContentTemplate>
           </asp:UpdatePanel>
         </td>

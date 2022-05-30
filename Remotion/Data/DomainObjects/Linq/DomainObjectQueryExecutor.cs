@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Queries;
@@ -35,8 +36,8 @@ namespace Remotion.Data.DomainObjects.Linq
 
     public DomainObjectQueryExecutor (StorageProviderDefinition storageProviderDefinition, IDomainObjectQueryGenerator queryGenerator)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("queryGenerator", queryGenerator);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("queryGenerator", queryGenerator);
 
       _storageProviderDefinition = storageProviderDefinition;
       _queryGenerator = queryGenerator;
@@ -60,18 +61,19 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>
     /// The result of the executed query, converted to <typeparam name="T"/>.
     /// </returns>
+    [return: MaybeNull]
     public T ExecuteScalar<T> (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull ("queryModel", queryModel);
+      ArgumentUtility.CheckNotNull("queryModel", queryModel);
 
       if (ClientTransaction.Current == null)
-        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread.");
+        throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
 
-      var fetchQueryModelBuilders = RemoveTrailingFetchRequests (queryModel);
-      if (fetchQueryModelBuilders.Any ())
-        throw new NotSupportedException ("Scalar queries cannot perform eager fetching.");
+      var fetchQueryModelBuilders = RemoveTrailingFetchRequests(queryModel);
+      if (fetchQueryModelBuilders.Any())
+        throw new NotSupportedException("Scalar queries cannot perform eager fetching.");
 
-      var query = _queryGenerator.CreateScalarQuery<T> ("<dynamic query>", _storageProviderDefinition, queryModel);
+      var query = _queryGenerator.CreateScalarQuery<T>("<dynamic query>", _storageProviderDefinition, queryModel);
       return query.Execute(ClientTransaction.Current.QueryManager);
     }
 
@@ -86,14 +88,15 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <returns>
     /// The result of the executed query, converted to <typeparam name="T"/>.
     /// </returns>
+    [return: MaybeNull]
     public T ExecuteSingle<T> (QueryModel queryModel, bool returnDefaultWhenEmpty)
     {
-      ArgumentUtility.CheckNotNull ("queryModel", queryModel);
+      ArgumentUtility.CheckNotNull("queryModel", queryModel);
 
       if (ClientTransaction.Current == null)
-        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread.");
+        throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
 
-      var sequence = ExecuteCollection<T> (queryModel);
+      var sequence = ExecuteCollection<T>(queryModel);
 
       if (returnDefaultWhenEmpty)
         return sequence.SingleOrDefault();
@@ -111,28 +114,28 @@ namespace Remotion.Data.DomainObjects.Linq
     /// </returns>
     public IEnumerable<T> ExecuteCollection<T> (QueryModel queryModel)
     {
-      ArgumentUtility.CheckNotNull ("queryModel", queryModel);
+      ArgumentUtility.CheckNotNull("queryModel", queryModel);
 
       if (ClientTransaction.Current == null)
-        throw new InvalidOperationException ("No ClientTransaction has been associated with the current thread.");
+        throw new InvalidOperationException("No ClientTransaction has been associated with the current thread.");
 
-      var fetchQueryModelBuilders = RemoveTrailingFetchRequests (queryModel);
+      var fetchQueryModelBuilders = RemoveTrailingFetchRequests(queryModel);
 
-      var query = _queryGenerator.CreateSequenceQuery<T> (
+      var query = _queryGenerator.CreateSequenceQuery<T>(
           "<dynamic query>",
           _storageProviderDefinition,
           queryModel,
           fetchQueryModelBuilders);
-      return query.Execute (ClientTransaction.Current.QueryManager); 
+      return query.Execute(ClientTransaction.Current.QueryManager);
     }
 
     private ICollection<FetchQueryModelBuilder> RemoveTrailingFetchRequests (QueryModel queryModel)
     {
-      var result = new List<FetchQueryModelBuilder> ();
+      var result = new List<FetchQueryModelBuilder>();
       for (int i = queryModel.ResultOperators.Count - 1; i >= 0 && queryModel.ResultOperators[i] is FetchRequestBase; --i)
       {
-        result.Add (new FetchQueryModelBuilder (queryModel.ResultOperators[i] as FetchRequestBase, queryModel, i));
-        queryModel.ResultOperators.RemoveAt (i);
+        result.Add(new FetchQueryModelBuilder(queryModel.ResultOperators[i] as FetchRequestBase, queryModel, i));
+        queryModel.ResultOperators.RemoveAt(i);
       }
       return result;
     }

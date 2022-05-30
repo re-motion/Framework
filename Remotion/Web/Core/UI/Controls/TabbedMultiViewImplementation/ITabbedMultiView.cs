@@ -27,7 +27,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation
   /// </summary>
   public interface ITabbedMultiView : IStyledControl, IControlWithDiagnosticMetadata
   {
-    bool IsDesignMode { get; }
     string ActiveViewClientID { get; }
     Style ActiveViewStyle { get; }
     Style TopControlsStyle { get; }
@@ -37,6 +36,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation
     IWebTabStrip TabStrip { get; }
     string ActiveViewContentClientID { get; }
     string WrapperClientID { get; }
-    Control GetActiveView ();
+    Control? GetActiveView ();
   }
 }

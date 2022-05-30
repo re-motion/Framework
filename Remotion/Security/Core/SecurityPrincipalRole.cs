@@ -35,8 +35,8 @@ namespace Remotion.Security
     /// <param name="position">The position in the <paramref name="group"/>. Must not be empty.</param>
     public SecurityPrincipalRole (string group, string position)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("group", group);
-      ArgumentUtility.CheckNotEmpty ("position", position);
+      ArgumentUtility.CheckNotNullOrEmpty("group", group);
+      ArgumentUtility.CheckNotEmpty("position", position);
 
       _group = group;
       _position = position;
@@ -52,31 +52,31 @@ namespace Remotion.Security
       get { return _position; }
     }
 
-    bool IEquatable<SecurityPrincipalRole>.Equals (SecurityPrincipalRole other)
+    bool IEquatable<SecurityPrincipalRole>.Equals (SecurityPrincipalRole? other)
     {
       if (other == null)
         return false;
 
-      if (!string.Equals (this._group, other._group, StringComparison.Ordinal))
+      if (!string.Equals(this._group, other._group, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._position, other._position, StringComparison.Ordinal))
+      if (!string.Equals(this._position, other._position, StringComparison.Ordinal))
         return false;
 
       return true;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      SecurityPrincipalRole other = obj as SecurityPrincipalRole;
+      SecurityPrincipalRole? other = obj as SecurityPrincipalRole;
       if (other == null)
         return false;
-      return ((IEquatable<SecurityPrincipalRole>) this).Equals (other);
+      return ((IEquatable<SecurityPrincipalRole>)this).Equals(other);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (_group, _position);
+      return EqualityUtility.GetRotatedHashCode(_group, _position);
     }
   }
 }

@@ -53,12 +53,12 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
         QueryDefinitionCollection collection,
         bool makeCollectionReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("collection", collection);
 
       foreach (QueryDefinition queryDefinition in collection)
-        Add (queryDefinition);
+        Add(queryDefinition);
 
-      this.SetIsReadOnly (makeCollectionReadOnly);
+      this.SetIsReadOnly(makeCollectionReadOnly);
     }
 
     // methods and properties
@@ -66,39 +66,43 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <summary>
     /// Returns the <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>. If no <see cref="QueryDefinition"/> can be found an exception is thrown.
     /// </summary>
-    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to be found.</param>
+    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to be found. Must not be <see langword="null"/> or empty.</param>
     /// <returns>The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>.</returns>
     /// <exception cref="QueryConfigurationException">The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/> could not be found.</exception>
     public QueryDefinition GetMandatory (string queryID)
     {
-      if (!Contains (queryID))
-        throw CreateQueryConfigurationException ("QueryDefinition '{0}' does not exist.", queryID);
+      ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
 
-      return this[queryID];
+      var queryDefinition = this[queryID];
+      if (queryDefinition == null)
+        throw CreateQueryConfigurationException("QueryDefinition '{0}' does not exist.", queryID);
+
+      return queryDefinition;
     }
 
     private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)
     {
-      return new ArgumentException (string.Format (message, args), parameterName);
+      return new ArgumentException(string.Format(message, args), parameterName);
     }
 
     private QueryConfigurationException CreateQueryConfigurationException (
         string message,
         params object[] args)
     {
-      return new QueryConfigurationException (string.Format (message, args));
+      return new QueryConfigurationException(string.Format(message, args));
     }
 
     public void Merge (QueryDefinitionCollection source)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
       foreach (QueryDefinition query in source)
       {
-        if (Contains (query.ID))
-          throw new DuplicateQueryDefinitionException (this[query.ID], query);
+        var existingQueryDefinition = this[query.ID];
+        if (existingQueryDefinition != null)
+          throw new DuplicateQueryDefinitionException(existingQueryDefinition, query);
         else
-          Add (query);
+          Add(query);
       }
     }
 
@@ -113,21 +117,21 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
     public bool Contains (QueryDefinition queryDefinition)
     {
-      ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
+      ArgumentUtility.CheckNotNull("queryDefinition", queryDefinition);
 
-      return BaseContains (queryDefinition.ID, queryDefinition);
+      return BaseContains(queryDefinition.ID, queryDefinition);
     }
 
     /// <summary>
     /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
     /// </summary>
-    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
+    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/> or empty.</param>
     /// <returns><see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/></exception>
     public bool Contains (string queryID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-      return BaseContainsKey (queryID);
+      ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+      return BaseContainsKey(queryID);
     }
 
     /// <summary>
@@ -139,19 +143,19 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// </exception>
     public QueryDefinition this [int index]
     {
-      get { return (QueryDefinition) BaseGetObject (index); }
+      get { return (QueryDefinition)BaseGetObject(index); }
     }
 
     /// <summary>
     /// Gets the <see cref="QueryDefinition"/> with a given <see cref="QueryDefinition.ID"/> from the <see cref="QueryDefinitionCollection"/>.
     /// </summary>
     /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="queryID"/> was not found.</remarks>
-    public QueryDefinition this [string queryID]
+    public QueryDefinition? this [string queryID]
     {
       get
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
-        return (QueryDefinition) BaseGetObject (queryID);
+        ArgumentUtility.CheckNotNullOrEmpty("queryID", queryID);
+        return (QueryDefinition?)BaseGetObject(queryID);
       }
     }
 
@@ -164,15 +168,15 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/>.</exception>
     public int Add (QueryDefinition queryDefinition)
     {
-      ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
+      ArgumentUtility.CheckNotNull("queryDefinition", queryDefinition);
 
-      if (Contains (queryDefinition.ID))
+      if (Contains(queryDefinition.ID))
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "QueryDefinition '{0}' already exists in collection.", "queryDefinition", queryDefinition.ID);
       }
 
-      return BaseAdd (queryDefinition.ID, queryDefinition);
+      return BaseAdd(queryDefinition.ID, queryDefinition);
     }
 
     #endregion

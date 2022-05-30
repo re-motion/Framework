@@ -35,20 +35,20 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
     // construction and disposing
 
-    public LoadObjectsTest()
+    public LoadObjectsTest ()
     {
     }
 
     // methods and properties
 
-    public override void TestFixtureSetUp()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
-      _clientID = new ObjectID("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
+      _clientID = new ObjectID("Client", new Guid("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
       _fileID = new ObjectID("File", Guid.NewGuid());
 
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
         Client.NewObject();
         File.NewObject();
@@ -58,16 +58,16 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     }
 
     [Test]
-    public void LoadObjectsOverRelationTest()
+    public void LoadObjectsOverRelationTest ()
     {
       const int numberOfTests = 10;
 
-      Console.WriteLine ("Expected average duration of LoadObjectsOverRelationTest on reference system: ~230 ms (release build), ~313 ms (debug build)");
+      Console.WriteLine("Expected average duration of LoadObjectsOverRelationTest on reference system: ~230 ms (release build), ~313 ms (debug build)");
 
-      Stopwatch stopwatch = new Stopwatch ();
+      Stopwatch stopwatch = new Stopwatch();
       for (int i = 0; i < numberOfTests; i++)
       {
-        using (ClientTransaction.CreateRootTransaction().EnterScope (AutoRollbackBehavior.None))
+        using (ClientTransaction.CreateRootTransaction().EnterScope(AutoRollbackBehavior.None))
         {
           Client client = _clientID.GetObject<Client>();
 
@@ -77,25 +77,25 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
           stopwatch.Stop();
 
-          Assert.That (files.Count, Is.EqualTo (6000));
+          Assert.That(files.Count, Is.EqualTo(6000));
         }
       }
 
       double averageMilliSeconds = stopwatch.ElapsedMilliseconds / numberOfTests;
-      Console.WriteLine ("LoadObjectsOverRelationTest (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString ("n"));
+      Console.WriteLine("LoadObjectsOverRelationTest (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString("n"));
     }
 
     [Test]
-    public void LoadObjectsOverRelationWithAbstractBaseClass()
+    public void LoadObjectsOverRelationWithAbstractBaseClass ()
     {
       const int numberOfTests = 10;
 
-      Console.WriteLine ("Expected average duration of LoadObjectsOverRelationWithAbstractBaseClass on reference system: ~193 ms (release build), ~262 ms (debug build)");
+      Console.WriteLine("Expected average duration of LoadObjectsOverRelationWithAbstractBaseClass on reference system: ~193 ms (release build), ~262 ms (debug build)");
 
-      Stopwatch stopwatch = new Stopwatch ();
+      Stopwatch stopwatch = new Stopwatch();
       for (int i = 0; i < numberOfTests; i++)
       {
-        using (ClientTransaction.CreateRootTransaction ().EnterScope (AutoRollbackBehavior.None))
+        using (ClientTransaction.CreateRootTransaction().EnterScope(AutoRollbackBehavior.None))
         {
           Client client = _clientID.GetObject<Client>();
 
@@ -104,13 +104,13 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
           DomainObjectCollection clientBoundBaseClasses = client.ClientBoundBaseClasses;
 
           stopwatch.Stop();
-          Assert.That (clientBoundBaseClasses.Count, Is.EqualTo (4000));
+          Assert.That(clientBoundBaseClasses.Count, Is.EqualTo(4000));
         }
       }
 
       double averageMilliSeconds = stopwatch.ElapsedMilliseconds / numberOfTests;
-      Console.WriteLine (
-          "LoadObjectsOverRelationWithAbstractBaseClass (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString ("n"));
+      Console.WriteLine(
+          "LoadObjectsOverRelationWithAbstractBaseClass (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString("n"));
     }
   }
 }

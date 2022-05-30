@@ -37,40 +37,51 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
       _service = new BindableDomainObjectGetObjectService();
 
       _instance = SampleBindableDomainObject.NewObject();
-      _businessObjectClass = (BindableObjectClassWithIdentity) ((IBusinessObject) _instance).BusinessObjectClass;
-      _id =  ((IBusinessObjectWithIdentity) _instance).UniqueIdentifier;
+      _businessObjectClass = (BindableObjectClassWithIdentity)((IBusinessObject)_instance).BusinessObjectClass;
+      _id =  ((IBusinessObjectWithIdentity)_instance).UniqueIdentifier;
     }
 
     [Test]
-    public void GetObject_ObjectExists()
+    public void GetObject_ObjectExists ()
     {
-      Assert.That (_service.GetObject (_businessObjectClass, _id), Is.SameAs (_instance));
+      Assert.That(_service.GetObject(_businessObjectClass, _id), Is.SameAs(_instance));
     }
 
     [Test]
     public void GetObject_ObjectNotFound ()
     {
-      Assert.That (_service.GetObject (_businessObjectClass, new ObjectID(typeof (SampleBindableDomainObject), Guid.NewGuid()).ToString()), Is.Null);
+      Assert.That(_service.GetObject(_businessObjectClass, new ObjectID(typeof(SampleBindableDomainObject), Guid.NewGuid()).ToString()), Is.Null);
     }
 
     [Test]
-    public void GetObject_ObjectInvalid()
+    public void GetObject_ObjectInvalid ()
     {
       _instance.Delete();
-      Assert.That (_instance.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(_instance.State.IsInvalid, Is.True);
 
-      Assert.That (_service.GetObject (_businessObjectClass, _id), Is.Null);
+      Assert.That(_service.GetObject(_businessObjectClass, _id), Is.Null);
     }
 
     [Test]
-    public void GetObject_ObjectDeleted()
+    public void GetObject_ObjectDeleted ()
     {
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         _instance.Delete();
-        Assert.That (_instance.State, Is.EqualTo (StateType.Deleted));
+        Assert.That(_instance.State.IsDeleted, Is.True);
 
-        Assert.That (_service.GetObject (_businessObjectClass, _id), Is.Null);
+        Assert.That(_service.GetObject(_businessObjectClass, _id), Is.Null);
+      }
+    }
+
+    [Test]
+    public void GetObject_NoClientTransaction_ThrowsInvalidOperationException ()
+    {
+      using (ClientTransactionScope.EnterNullScope())
+      {
+        Assert.That(
+            () => _service.GetObject(_businessObjectClass, _id),
+            Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
       }
     }
   }

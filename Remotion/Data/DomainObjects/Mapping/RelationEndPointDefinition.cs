@@ -24,26 +24,26 @@ namespace Remotion.Data.DomainObjects.Mapping
   /// <summary>
   /// Represents the non-anonymous, foreign-key side of a bidirectional or unidirectional relationship.
   /// </summary>
-  [DebuggerDisplay ("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
-  public class RelationEndPointDefinition : IRelationEndPointDefinition
+  [DebuggerDisplay("{GetType().Name}: {PropertyName}, Cardinality: {Cardinality}")]
+  public class RelationEndPointDefinition : IRelationEndPointDefinition, IRelationEndPointDefinitionSetter
   {
-    private RelationDefinition _relationDefinition;
+    private RelationDefinition? _relationDefinition;
     private readonly ClassDefinition _classDefinition;
     private readonly PropertyDefinition _propertyDefinition;
     private readonly bool _isMandatory;
 
     public RelationEndPointDefinition (PropertyDefinition propertyDefinition, bool isMandatory)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+
       if (!propertyDefinition.IsObjectID)
       {
-        throw CreateMappingException (
+        throw CreateMappingException(
             "Relation definition error: Property '{0}' of class '{1}' is of type '{2}', but non-virtual properties must be of type '{3}'.",
             propertyDefinition.PropertyName,
             propertyDefinition.ClassDefinition.ID,
             propertyDefinition.PropertyType,
-            typeof (ObjectID));
+            typeof(ObjectID));
       }
 
       _classDefinition = propertyDefinition.ClassDefinition;
@@ -53,14 +53,23 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public void SetRelationDefinition (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       _relationDefinition = relationDefinition;
     }
 
+    public bool HasRelationDefinitionBeenSet
+    {
+      get { return _relationDefinition != null; }
+    }
+
     public RelationDefinition RelationDefinition
     {
-      get { return _relationDefinition; }
+      get
+      {
+        Assertion.IsNotNull(_relationDefinition, "RelationDefinition has not been set for this relation end point.");
+        return _relationDefinition;
+      }
     }
 
     public ClassDefinition ClassDefinition
@@ -83,7 +92,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return CardinalityType.One; }
     }
 
-    public IPropertyInformation PropertyInfo 
+    public IPropertyInformation PropertyInfo
     {
       get { return _propertyDefinition.PropertyInfo; }
     }
@@ -105,7 +114,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private MappingException CreateMappingException (string message, params object[] args)
     {
-      return new MappingException (string.Format (message, args));
+      return new MappingException(string.Format(message, args));
     }
   }
 }

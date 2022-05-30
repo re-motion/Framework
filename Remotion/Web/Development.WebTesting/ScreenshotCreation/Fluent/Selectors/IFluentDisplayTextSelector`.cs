@@ -24,6 +24,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent.Selector
   /// via the specified display text.
   /// </summary>
   public interface IFluentDisplayTextSelector<TResult> : IFluentSelector
+      where TResult : notnull
   {
     /// <summary>
     /// Selects the item with the specified <paramref name="displayText"/>.

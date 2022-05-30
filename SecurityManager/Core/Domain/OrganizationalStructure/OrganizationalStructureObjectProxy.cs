@@ -35,9 +35,9 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected OrganizationalStructureObjectProxy (IDomainObjectHandle<T> handle, string uniqueIdentifier, string displayName)
     {
-      ArgumentUtility.CheckNotNull ("handle", handle);
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
-      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
+      ArgumentUtility.CheckNotNull("handle", handle);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
       _handle = handle;
       _uniqueIdentifier = uniqueIdentifier;
@@ -64,13 +64,13 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       get { return _displayName; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
       if (this.GetType() != obj.GetType())
         return false;
-      return this._handle.Equals (((OrganizationalStructureObjectProxy<T>) obj)._handle);
+      return this._handle.Equals(((OrganizationalStructureObjectProxy<T>)obj)._handle);
     }
 
     public override int GetHashCode ()

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
@@ -28,58 +29,63 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// </summary>
   public class SortedPropertyComparer : IComparer<DomainObject>
   {
-    public static IComparer<DomainObject> CreateCompoundComparer (IEnumerable<SortedPropertySpecification> sortedPropertySpecifications, IDataManager dataManager)
+    public static IComparer<DomainObject> CreateCompoundComparer (
+        IEnumerable<SortedPropertySpecification> sortedPropertySpecifications,
+        IDataContainerMapReadOnlyView dataManager,
+        ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull ("sortedPropertySpecifications", sortedPropertySpecifications);
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
-      
-      var propertyComparers = sortedPropertySpecifications.Select (sp => (IComparer<DomainObject>) new SortedPropertyComparer (sp, dataManager));
-      return new CompoundComparer<DomainObject> (propertyComparers);
+      ArgumentUtility.CheckNotNull("sortedPropertySpecifications", sortedPropertySpecifications);
+      ArgumentUtility.CheckNotNull("dataManager", dataManager);
+
+      var comparers = sortedPropertySpecifications.Select(sp => (IComparer<DomainObject>)new SortedPropertyComparer(sp, dataManager, valueAccess));
+      return new CompoundComparer<DomainObject>(comparers);
     }
 
-    private readonly SortedPropertySpecification _sortedPropertySpecification;
-    private readonly IDataManager _dataManager;
+    public SortedPropertySpecification SortedPropertySpecification { get; }
+    public IDataContainerMapReadOnlyView DataContainerMap { get; }
+    public ValueAccess ValueAccess { get; }
 
-    public SortedPropertyComparer (SortedPropertySpecification sortedPropertySpecification, IDataManager dataManager)
+    public SortedPropertyComparer (
+        SortedPropertySpecification sortedPropertySpecification,
+        IDataContainerMapReadOnlyView dataContainerMap,
+        ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull ("sortedPropertySpecification", sortedPropertySpecification);
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull("sortedPropertySpecification", sortedPropertySpecification);
+      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
 
-      _dataManager = dataManager;
-      _sortedPropertySpecification = sortedPropertySpecification;
+      SortedPropertySpecification = sortedPropertySpecification;
+      DataContainerMap = dataContainerMap;
+      ValueAccess = valueAccess;
     }
 
-    public SortedPropertySpecification SortedPropertySpecification
+    public int Compare (DomainObject? x, DomainObject? y)
     {
-      get { return _sortedPropertySpecification; }
-    }
+      if (x == null && y == null)
+        return 0;
+      if (x == null)
+        return SortedPropertySpecification.Order == SortOrder.Ascending ? 1 : -1;
+      if (y == null)
+        return SortedPropertySpecification.Order == SortOrder.Ascending ? -1 : 1;
 
-    public IDataManager DataManager
-    {
-      get { return _dataManager; }
-    }
+      var valueX = GetComparedKey(x);
+      var valueY = GetComparedKey(y);
 
-    public int Compare (DomainObject x, DomainObject y)
-    {
-      ArgumentUtility.CheckNotNull ("x", x);
-      ArgumentUtility.CheckNotNull ("y", y);
-
-      var valueX = GetComparedKey (x);
-      var valueY = GetComparedKey (y);
-
-      if (_sortedPropertySpecification.Order == SortOrder.Ascending)
-        return Comparer<object>.Default.Compare (valueX, valueY);
+      if (SortedPropertySpecification.Order == SortOrder.Ascending)
+        return Comparer.Default.Compare(valueX, valueY);
       else
-        return -Comparer<object>.Default.Compare (valueX, valueY);
+        return -Comparer.Default.Compare(valueX, valueY);
     }
 
-    private object GetComparedKey (DomainObject domainObject)
+    private object? GetComparedKey (DomainObject domainObject)
     {
-      var dataContainer = _dataManager.GetDataContainerWithLazyLoad (domainObject.ID, throwOnNotFound: true);
-      if (!_sortedPropertySpecification.PropertyDefinition.ClassDefinition.IsSameOrBaseClassOf (dataContainer.ClassDefinition))
+      var dataContainer = DataContainerMap[domainObject.ID];
+      if (dataContainer == null)
         return null;
 
-      return dataContainer.GetValueWithoutEvents (_sortedPropertySpecification.PropertyDefinition, ValueAccess.Current);
+      if (!SortedPropertySpecification.PropertyDefinition.ClassDefinition.IsSameOrBaseClassOf(dataContainer.ClassDefinition))
+        return null;
+
+      return dataContainer.GetValueWithoutEvents(SortedPropertySpecification.PropertyDefinition, ValueAccess);
     }
   }
 }

@@ -18,16 +18,24 @@ using System;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.EnablingClassIDsInAllForeignKeys
 {
   public class ExtendedStorageObjectFactory : SqlStorageObjectFactory
   {
-    protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (RdbmsProviderDefinition storageProviderDefinition, IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider, IStorageProviderDefinitionFinder providerDefinitionFinder)
+    protected override IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IStorageTypeInformationProvider storageTypeInformationProvider,
+        IStorageNameProvider storageNameProvider,
+        IStorageProviderDefinitionFinder providerDefinitionFinder)
     {
-      return new RelationStoragePropertyDefinitionFactory (
-          storageProviderDefinition, true, storageNameProvider, storageTypeInformationProvider, providerDefinitionFinder);
+      return new RelationStoragePropertyDefinitionFactory(
+          storageProviderDefinition,
+          true,
+          storageNameProvider,
+          storageTypeInformationProvider,
+          providerDefinitionFinder);
     }
   }
 }

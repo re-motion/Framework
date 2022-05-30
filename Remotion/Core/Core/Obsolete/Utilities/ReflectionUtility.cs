@@ -20,7 +20,7 @@ using System.Reflection;
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
-  [Obsolete ("Use TypeExtensions, PropertyInfoExtensions, and MethodInfoExtensions instead. (Version 1.15.17.0)", true)]
+  [Obsolete("Use TypeExtensions, PropertyInfoExtensions, and MethodInfoExtensions instead. (Version 1.15.17.0)", true)]
   public static class ReflectionUtility
   {
     /// <summary>
@@ -32,10 +32,10 @@ namespace Remotion.Utilities
     /// <see langword="true"/> if the <paramref name="type"/> is the <paramref name="ascribeeType"/> or its instantiation, 
     /// its subclass or the implementation of an interface in case the <paramref name="ascribeeType"/> is an interface.
     /// </returns>
-    [Obsolete ("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
+    [Obsolete("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
     public static bool CanAscribe (Type type, Type ascribeeType)
     {
-      throw new NotSupportedException ("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)");
+      throw new NotSupportedException("Use Remotion.Reflection.TypeExtensions.CanAscribeTo (type, ascribeeType) instead. (Version 1.15.17.0)");
     }
 
     /// <summary>
@@ -53,10 +53,10 @@ namespace Remotion.Utilities
     /// Thrown if the <paramref name="type"/> is an interface and implements the interface <paramref name="ascribeeType"/> or its instantiations
     /// more than once.
     /// </exception>
-    [Obsolete ("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
+    [Obsolete("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)", true)]
     public static Type[] GetAscribedGenericArguments (Type type, Type ascribeeType)
     {
-      throw new NotSupportedException ("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)");
+      throw new NotSupportedException("Use Remotion.Reflection.TypeExtensions.GetAscribedGenericArguments (type, ascribeeType) instead. (Version 1.15.17.0)");
     }
   }
 }

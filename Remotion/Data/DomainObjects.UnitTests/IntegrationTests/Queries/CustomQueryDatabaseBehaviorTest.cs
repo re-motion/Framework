@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 {
@@ -30,22 +30,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
   public class CustomQueryDatabaseBehaviorTest : QueryTestBase
   {
     private ServiceLocatorScope _serviceLocatorScope;
-    private IPersistenceExtension _persistenceExtensionMock;
+    private Mock<IPersistenceExtension> _persistenceExtensionMock;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      var persistenceExtensionFactoryStub = MockRepository.GenerateStub<IPersistenceExtensionFactory>();
-      _persistenceExtensionMock = MockRepository.GenerateMock<IPersistenceExtension>();
+      var persistenceExtensionFactoryStub = new Mock<IPersistenceExtensionFactory>();
+      _persistenceExtensionMock = new Mock<IPersistenceExtension>();
 
       persistenceExtensionFactoryStub
-          .Stub (stub => stub.CreatePersistenceExtensions (TestableClientTransaction.ID))
-          .Return (new[] { _persistenceExtensionMock });
+          .Setup(stub => stub.CreatePersistenceExtensions(TestableClientTransaction.ID))
+          .Returns(new[] { _persistenceExtensionMock.Object });
 
       var locator = DefaultServiceLocator.Create();
-      locator.RegisterSingle<IPersistenceExtensionFactory> (() => persistenceExtensionFactoryStub);
-      _serviceLocatorScope = new ServiceLocatorScope (locator);
+      locator.RegisterSingle<IPersistenceExtensionFactory>(() => persistenceExtensionFactoryStub.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(locator);
     }
 
     public override void TearDown ()
@@ -57,72 +57,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     [Test]
     public void CompleteIteration_CompletelyExecutesQuery ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("CustomQuery");
+      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
 
-      QueryManager.GetCustom (query, QueryResultRowTestHelper.ExtractRawValues).ToList();
+      QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues).ToList();
 
-      _persistenceExtensionMock
-        .AssertWasCalled (mock => mock.ConnectionOpened (Arg<Guid>.Is.Anything));
-      _persistenceExtensionMock
-          .AssertWasCalled (
-              mock => mock.QueryExecuting (
-                  Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<string>.Is.Anything, Arg<IDictionary<string, object>>.Is.Anything));
-      _persistenceExtensionMock
-          .AssertWasCalled (mock => mock.QueryExecuted (Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<TimeSpan>.Is.Anything));
-      _persistenceExtensionMock.AssertWasCalled (
-          mock => mock.QueryCompleted (Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<TimeSpan>.Is.Anything, Arg<int>.Is.Anything));
-      _persistenceExtensionMock.AssertWasCalled (mock => mock.ConnectionClosed (Arg<Guid>.Is.Anything));
+      _persistenceExtensionMock.Verify(mock => mock.ConnectionOpened(It.IsAny<Guid>()), Times.AtLeastOnce());
+      _persistenceExtensionMock.Verify(
+          mock => mock.QueryExecuting(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<IDictionary<string, object>>()),
+          Times.AtLeastOnce());
+      _persistenceExtensionMock.Verify(mock => mock.QueryExecuted(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<TimeSpan>()), Times.AtLeastOnce());
+      _persistenceExtensionMock.Verify(mock => mock.QueryCompleted(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<TimeSpan>(), It.IsAny<int>()), Times.AtLeastOnce());
+      _persistenceExtensionMock.Verify(mock => mock.ConnectionClosed(It.IsAny<Guid>()), Times.AtLeastOnce());
     }
 
     [Test]
     public void NoIteration_DoesNotOpenConnection ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("CustomQuery");
+      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
 
-      QueryManager.GetCustom (query, QueryResultRowTestHelper.ExtractRawValues);
+      QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 
-      _persistenceExtensionMock
-          .AssertWasNotCalled (mock => mock.ConnectionOpened (Arg<Guid>.Is.Anything));
-      _persistenceExtensionMock
-          .AssertWasNotCalled (
-              mock => mock.QueryExecuting (
-                  Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<string>.Is.Anything, Arg<IDictionary<string, object>>.Is.Anything));
-      _persistenceExtensionMock
-          .AssertWasNotCalled (mock => mock.QueryExecuted (Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<TimeSpan>.Is.Anything));
-      _persistenceExtensionMock
-          .AssertWasNotCalled (
-              mock => mock.QueryCompleted (Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<TimeSpan>.Is.Anything, Arg<int>.Is.Anything));
-      _persistenceExtensionMock.AssertWasNotCalled (mock => mock.ConnectionClosed (Arg<Guid>.Is.Anything));
+      _persistenceExtensionMock.Verify(mock => mock.ConnectionOpened(It.IsAny<Guid>()), Times.Never());
+      _persistenceExtensionMock.Verify(
+          mock => mock.QueryExecuting(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<IDictionary<string, object>>()),
+          Times.Never());
+      _persistenceExtensionMock.Verify(mock => mock.QueryExecuted(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<TimeSpan>()), Times.Never());
+      _persistenceExtensionMock.Verify(mock => mock.QueryCompleted(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<TimeSpan>(), It.IsAny<int>()), Times.Never());
+      _persistenceExtensionMock.Verify(mock => mock.ConnectionClosed(It.IsAny<Guid>()), Times.Never());
     }
 
     [Test]
     public void DuringIteration_QueryStaysActive ()
     {
-      var query = QueryFactory.CreateQueryFromConfiguration ("CustomQuery");
+      var query = QueryFactory.CreateQueryFromConfiguration("CustomQuery");
 
-      var result = QueryManager.GetCustom (query, QueryResultRowTestHelper.ExtractRawValues);
+      var result = QueryManager.GetCustom(query, QueryResultRowTestHelper.ExtractRawValues);
 
-      using (var iterator = result.GetEnumerator ())
+      using (var iterator = result.GetEnumerator())
       {
         iterator.MoveNext();
 
-        _persistenceExtensionMock
-            .AssertWasCalled (mock => mock.ConnectionOpened (Arg<Guid>.Is.Anything));
-        _persistenceExtensionMock
-            .AssertWasCalled (
-                mock =>
-                mock.QueryExecuting (
-                    Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<string>.Is.Anything, Arg<IDictionary<string, object>>.Is.Anything));
-        _persistenceExtensionMock
-            .AssertWasCalled (mock => mock.QueryExecuted (Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<TimeSpan>.Is.Anything));
-        _persistenceExtensionMock.AssertWasNotCalled (
-            mock => mock.QueryCompleted (Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<TimeSpan>.Is.Anything, Arg<int>.Is.Anything));
-        _persistenceExtensionMock.AssertWasNotCalled (mock => mock.ConnectionClosed (Arg<Guid>.Is.Anything));
+        _persistenceExtensionMock.Verify(mock => mock.ConnectionOpened(It.IsAny<Guid>()), Times.AtLeastOnce());
+        _persistenceExtensionMock.Verify(
+            mock => mock.QueryExecuting(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<IDictionary<string, object>>()),
+            Times.AtLeastOnce());
+        _persistenceExtensionMock.Verify(mock => mock.QueryExecuted(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<TimeSpan>()), Times.AtLeastOnce());
+        _persistenceExtensionMock.Verify(mock => mock.QueryCompleted(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<TimeSpan>(), It.IsAny<int>()), Times.Never());
+        _persistenceExtensionMock.Verify(mock => mock.ConnectionClosed(It.IsAny<Guid>()), Times.Never());
       }
 
-      _persistenceExtensionMock.AssertWasCalled (
-          mock => mock.QueryCompleted (Arg<Guid>.Is.Anything, Arg<Guid>.Is.Anything, Arg<TimeSpan>.Is.Anything, Arg<int>.Is.Anything));
-      _persistenceExtensionMock.AssertWasCalled (mock => mock.ConnectionClosed (Arg<Guid>.Is.Anything));
+      _persistenceExtensionMock.Verify(mock => mock.QueryCompleted(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<TimeSpan>(), It.IsAny<int>()), Times.AtLeastOnce());
+      _persistenceExtensionMock.Verify(mock => mock.ConnectionClosed(It.IsAny<Guid>()), Times.AtLeastOnce());
     }
   }
 }

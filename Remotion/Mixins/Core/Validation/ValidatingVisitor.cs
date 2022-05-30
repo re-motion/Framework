@@ -25,32 +25,32 @@ namespace Remotion.Mixins.Validation
   {
     private readonly IValidationLog _validationLog;
 
-    private readonly List<IValidationRule<TargetClassDefinition>> _targetClassRules = new List<IValidationRule<TargetClassDefinition>> ();
-    private readonly List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>> ();
-    private readonly List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>> ();
-    private readonly IList<IValidationRule<NonInterfaceIntroductionDefinition>> _nonIntroductedInterfaceRules = new List<IValidationRule<NonInterfaceIntroductionDefinition>> ();
-    private readonly List<IValidationRule<MethodIntroductionDefinition>> _methodIntroductionRules = new List<IValidationRule<MethodIntroductionDefinition>> ();
-    private readonly List<IValidationRule<PropertyIntroductionDefinition>> _propertyIntroductionRules = new List<IValidationRule<PropertyIntroductionDefinition>> ();
-    private readonly List<IValidationRule<EventIntroductionDefinition>> _eventIntroductionRules = new List<IValidationRule<EventIntroductionDefinition>> ();
-    private readonly List<IValidationRule<MethodDefinition>> _methodRules = new List<IValidationRule<MethodDefinition>> ();
-    private readonly List<IValidationRule<PropertyDefinition>> _propertyRules = new List<IValidationRule<PropertyDefinition>> ();
-    private readonly List<IValidationRule<EventDefinition>> _eventRules = new List<IValidationRule<EventDefinition>> ();
-    private readonly List<IValidationRule<RequiredTargetCallTypeDefinition>> _requiredTargetCallTypeRules = new List<IValidationRule<RequiredTargetCallTypeDefinition>> ();
-    private readonly List<IValidationRule<RequiredNextCallTypeDefinition>> _requiredNextCallTypeRules = new List<IValidationRule<RequiredNextCallTypeDefinition>> ();
-    private readonly List<IValidationRule<RequiredMixinTypeDefinition>> _requiredMixinTypeRules = new List<IValidationRule<RequiredMixinTypeDefinition>> ();
-    private readonly List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new List<IValidationRule<RequiredMethodDefinition>> ();
-    private readonly List<IValidationRule<TargetCallDependencyDefinition>> _targetCallDependencyRules = new List<IValidationRule<TargetCallDependencyDefinition>> ();
-    private readonly List<IValidationRule<NextCallDependencyDefinition>> _nextCallDependencyRules = new List<IValidationRule<NextCallDependencyDefinition>> ();
-    private readonly List<IValidationRule<MixinDependencyDefinition>> _mixinDependencyRules = new List<IValidationRule<MixinDependencyDefinition>> ();
-    private readonly List<IValidationRule<ComposedInterfaceDependencyDefinition>> _composedInterfaceDependencyRules = new List<IValidationRule<ComposedInterfaceDependencyDefinition>> ();
-    private readonly List<IValidationRule<AttributeDefinition>> _attributeRules = new List<IValidationRule<AttributeDefinition>> ();
-    private readonly List<IValidationRule<AttributeIntroductionDefinition>> _attributeIntroductionRules = new List<IValidationRule<AttributeIntroductionDefinition>> ();
-    private readonly List<IValidationRule<NonAttributeIntroductionDefinition>> _nonAttributeIntroductionRules = new List<IValidationRule<NonAttributeIntroductionDefinition>> ();
-    private readonly List<IValidationRule<SuppressedAttributeIntroductionDefinition>> _suppressedAttributeIntroductionRules = new List<IValidationRule<SuppressedAttributeIntroductionDefinition>> ();
+    private readonly List<IValidationRule<TargetClassDefinition>> _targetClassRules = new List<IValidationRule<TargetClassDefinition>>();
+    private readonly List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>>();
+    private readonly List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>>();
+    private readonly IList<IValidationRule<NonInterfaceIntroductionDefinition>> _nonIntroductedInterfaceRules = new List<IValidationRule<NonInterfaceIntroductionDefinition>>();
+    private readonly List<IValidationRule<MethodIntroductionDefinition>> _methodIntroductionRules = new List<IValidationRule<MethodIntroductionDefinition>>();
+    private readonly List<IValidationRule<PropertyIntroductionDefinition>> _propertyIntroductionRules = new List<IValidationRule<PropertyIntroductionDefinition>>();
+    private readonly List<IValidationRule<EventIntroductionDefinition>> _eventIntroductionRules = new List<IValidationRule<EventIntroductionDefinition>>();
+    private readonly List<IValidationRule<MethodDefinition>> _methodRules = new List<IValidationRule<MethodDefinition>>();
+    private readonly List<IValidationRule<PropertyDefinition>> _propertyRules = new List<IValidationRule<PropertyDefinition>>();
+    private readonly List<IValidationRule<EventDefinition>> _eventRules = new List<IValidationRule<EventDefinition>>();
+    private readonly List<IValidationRule<RequiredTargetCallTypeDefinition>> _requiredTargetCallTypeRules = new List<IValidationRule<RequiredTargetCallTypeDefinition>>();
+    private readonly List<IValidationRule<RequiredNextCallTypeDefinition>> _requiredNextCallTypeRules = new List<IValidationRule<RequiredNextCallTypeDefinition>>();
+    private readonly List<IValidationRule<RequiredMixinTypeDefinition>> _requiredMixinTypeRules = new List<IValidationRule<RequiredMixinTypeDefinition>>();
+    private readonly List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new List<IValidationRule<RequiredMethodDefinition>>();
+    private readonly List<IValidationRule<TargetCallDependencyDefinition>> _targetCallDependencyRules = new List<IValidationRule<TargetCallDependencyDefinition>>();
+    private readonly List<IValidationRule<NextCallDependencyDefinition>> _nextCallDependencyRules = new List<IValidationRule<NextCallDependencyDefinition>>();
+    private readonly List<IValidationRule<MixinDependencyDefinition>> _mixinDependencyRules = new List<IValidationRule<MixinDependencyDefinition>>();
+    private readonly List<IValidationRule<ComposedInterfaceDependencyDefinition>> _composedInterfaceDependencyRules = new List<IValidationRule<ComposedInterfaceDependencyDefinition>>();
+    private readonly List<IValidationRule<AttributeDefinition>> _attributeRules = new List<IValidationRule<AttributeDefinition>>();
+    private readonly List<IValidationRule<AttributeIntroductionDefinition>> _attributeIntroductionRules = new List<IValidationRule<AttributeIntroductionDefinition>>();
+    private readonly List<IValidationRule<NonAttributeIntroductionDefinition>> _nonAttributeIntroductionRules = new List<IValidationRule<NonAttributeIntroductionDefinition>>();
+    private readonly List<IValidationRule<SuppressedAttributeIntroductionDefinition>> _suppressedAttributeIntroductionRules = new List<IValidationRule<SuppressedAttributeIntroductionDefinition>>();
 
-    public ValidatingVisitor(IValidationLog validationLog)
+    public ValidatingVisitor (IValidationLog validationLog)
     {
-      ArgumentUtility.CheckNotNull ("validationLog", validationLog);
+      ArgumentUtility.CheckNotNull("validationLog", validationLog);
       _validationLog = validationLog;
     }
 
@@ -161,151 +161,151 @@ namespace Remotion.Mixins.Validation
 
     public void Visit (TargetClassDefinition targetClass)
     {
-      ArgumentUtility.CheckNotNull ("targetClass", targetClass);
-      CheckRules (_targetClassRules, targetClass);
+      ArgumentUtility.CheckNotNull("targetClass", targetClass);
+      CheckRules(_targetClassRules, targetClass);
     }
 
     public void Visit (MixinDefinition mixin)
     {
-      ArgumentUtility.CheckNotNull ("mixin", mixin);
-      CheckRules (_mixinRules, mixin);
+      ArgumentUtility.CheckNotNull("mixin", mixin);
+      CheckRules(_mixinRules, mixin);
     }
 
     public void Visit (InterfaceIntroductionDefinition interfaceIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("interfaceIntroduction", interfaceIntroduction);
-      CheckRules (_interfaceIntroductionRules, interfaceIntroduction);
+      ArgumentUtility.CheckNotNull("interfaceIntroduction", interfaceIntroduction);
+      CheckRules(_interfaceIntroductionRules, interfaceIntroduction);
     }
 
     public void Visit (NonInterfaceIntroductionDefinition nonIntroductionDefinition)
     {
-      ArgumentUtility.CheckNotNull ("nonIntroductionDefinition", nonIntroductionDefinition);
-      CheckRules (_nonIntroductedInterfaceRules, nonIntroductionDefinition);
+      ArgumentUtility.CheckNotNull("nonIntroductionDefinition", nonIntroductionDefinition);
+      CheckRules(_nonIntroductedInterfaceRules, nonIntroductionDefinition);
     }
 
     public void Visit (MethodIntroductionDefinition methodIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("methodIntroduction", methodIntroduction);
-      CheckRules (_methodIntroductionRules, methodIntroduction);
+      ArgumentUtility.CheckNotNull("methodIntroduction", methodIntroduction);
+      CheckRules(_methodIntroductionRules, methodIntroduction);
     }
 
     public void Visit (PropertyIntroductionDefinition propertyIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("propertyIntroduction", propertyIntroduction);
-      CheckRules (_propertyIntroductionRules, propertyIntroduction);
+      ArgumentUtility.CheckNotNull("propertyIntroduction", propertyIntroduction);
+      CheckRules(_propertyIntroductionRules, propertyIntroduction);
     }
 
     public void Visit (EventIntroductionDefinition eventIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("eventIntroduction", eventIntroduction);
-      CheckRules (_eventIntroductionRules, eventIntroduction);
+      ArgumentUtility.CheckNotNull("eventIntroduction", eventIntroduction);
+      CheckRules(_eventIntroductionRules, eventIntroduction);
     }
 
     public void Visit (MethodDefinition method)
     {
-      ArgumentUtility.CheckNotNull ("method", method);
-      CheckRules (_methodRules, method);
+      ArgumentUtility.CheckNotNull("method", method);
+      CheckRules(_methodRules, method);
     }
 
     public void Visit (PropertyDefinition property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      CheckRules (_propertyRules, property);
+      ArgumentUtility.CheckNotNull("property", property);
+      CheckRules(_propertyRules, property);
     }
 
     public void Visit (EventDefinition eventDefinition)
     {
-      ArgumentUtility.CheckNotNull ("eventDefinition", eventDefinition);
-      CheckRules (_eventRules, eventDefinition);
+      ArgumentUtility.CheckNotNull("eventDefinition", eventDefinition);
+      CheckRules(_eventRules, eventDefinition);
     }
 
     public void Visit (RequiredTargetCallTypeDefinition requiredTargetCallType)
     {
-      ArgumentUtility.CheckNotNull ("requiredTargetCallType", requiredTargetCallType);
-      CheckRules (_requiredTargetCallTypeRules, requiredTargetCallType);
+      ArgumentUtility.CheckNotNull("requiredTargetCallType", requiredTargetCallType);
+      CheckRules(_requiredTargetCallTypeRules, requiredTargetCallType);
     }
 
     public void Visit (RequiredNextCallTypeDefinition requiredNextCallType)
     {
-      ArgumentUtility.CheckNotNull ("requiredNextCallType", requiredNextCallType);
-      CheckRules (_requiredNextCallTypeRules, requiredNextCallType);
+      ArgumentUtility.CheckNotNull("requiredNextCallType", requiredNextCallType);
+      CheckRules(_requiredNextCallTypeRules, requiredNextCallType);
     }
 
     public void Visit (RequiredMixinTypeDefinition requiredMixinType)
     {
-      ArgumentUtility.CheckNotNull ("requiredMixinType", requiredMixinType);
-      CheckRules (_requiredMixinTypeRules, requiredMixinType);
+      ArgumentUtility.CheckNotNull("requiredMixinType", requiredMixinType);
+      CheckRules(_requiredMixinTypeRules, requiredMixinType);
     }
 
     public void Visit (RequiredMethodDefinition requiredMethod)
     {
-      ArgumentUtility.CheckNotNull ("requiredMethod", requiredMethod);
-      CheckRules (_requiredMethodRules, requiredMethod);
+      ArgumentUtility.CheckNotNull("requiredMethod", requiredMethod);
+      CheckRules(_requiredMethodRules, requiredMethod);
     }
 
     public void Visit (TargetCallDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
-      CheckRules (_targetCallDependencyRules, dependency);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
+      CheckRules(_targetCallDependencyRules, dependency);
     }
 
     public void Visit (NextCallDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
-      CheckRules (_nextCallDependencyRules, dependency);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
+      CheckRules(_nextCallDependencyRules, dependency);
     }
 
     public void Visit (MixinDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
-      CheckRules (_mixinDependencyRules, dependency);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
+      CheckRules(_mixinDependencyRules, dependency);
     }
 
     public void Visit (ComposedInterfaceDependencyDefinition dependency)
     {
-      ArgumentUtility.CheckNotNull ("dependency", dependency);
-      CheckRules (_composedInterfaceDependencyRules, dependency);
+      ArgumentUtility.CheckNotNull("dependency", dependency);
+      CheckRules(_composedInterfaceDependencyRules, dependency);
     }
 
     public void Visit (AttributeDefinition attribute)
     {
-      ArgumentUtility.CheckNotNull ("attribute", attribute);
-      CheckRules (_attributeRules, attribute);
+      ArgumentUtility.CheckNotNull("attribute", attribute);
+      CheckRules(_attributeRules, attribute);
     }
 
     public void Visit (AttributeIntroductionDefinition attributeIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("attributeIntroduction", attributeIntroduction);
-      CheckRules (_attributeIntroductionRules, attributeIntroduction);
+      ArgumentUtility.CheckNotNull("attributeIntroduction", attributeIntroduction);
+      CheckRules(_attributeIntroductionRules, attributeIntroduction);
     }
 
     public void Visit (NonAttributeIntroductionDefinition nonAttributeIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("nonAttributeIntroduction", nonAttributeIntroduction);
-      CheckRules (_nonAttributeIntroductionRules, nonAttributeIntroduction);
+      ArgumentUtility.CheckNotNull("nonAttributeIntroduction", nonAttributeIntroduction);
+      CheckRules(_nonAttributeIntroductionRules, nonAttributeIntroduction);
     }
 
     public void Visit (SuppressedAttributeIntroductionDefinition suppressedAttributeIntroduction)
     {
-      ArgumentUtility.CheckNotNull ("suppressedAttributeIntroduction", suppressedAttributeIntroduction);
-      CheckRules (_suppressedAttributeIntroductionRules, suppressedAttributeIntroduction);
+      ArgumentUtility.CheckNotNull("suppressedAttributeIntroduction", suppressedAttributeIntroduction);
+      CheckRules(_suppressedAttributeIntroductionRules, suppressedAttributeIntroduction);
     }
 
     private void CheckRules<TDefinition> (IEnumerable<IValidationRule<TDefinition>> rules, TDefinition definition) where TDefinition : IVisitableDefinition
     {
-      _validationLog.ValidationStartsFor (definition);
+      _validationLog.ValidationStartsFor(definition);
       foreach (IValidationRule<TDefinition> rule in rules)
       {
         try
         {
-          rule.Execute (this, definition, _validationLog);
+          rule.Execute(this, definition, _validationLog);
         }
         catch (Exception ex)
         {
-          _validationLog.UnexpectedException (rule, ex);
+          _validationLog.UnexpectedException(rule, ex);
         }
       }
-      _validationLog.ValidationEndsFor (definition);
+      _validationLog.ValidationEndsFor(definition);
     }
   }
 }

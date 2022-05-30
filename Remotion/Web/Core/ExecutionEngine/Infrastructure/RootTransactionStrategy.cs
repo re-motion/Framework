@@ -26,15 +26,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   {
     public RootTransactionStrategy (
         bool autoCommit, Func<ITransaction> transactionFactory, TransactionStrategyBase outerTransactionStrategy, IWxeFunctionExecutionContext executionContext)
-      : base (autoCommit, transactionFactory, outerTransactionStrategy, executionContext)
+      : base(autoCommit, transactionFactory, outerTransactionStrategy, executionContext)
     {
     }
 
     public override IWxeFunctionExecutionListener CreateExecutionListener (IWxeFunctionExecutionListener innerListener)
     {
-      ArgumentUtility.CheckNotNull ("innerListener", innerListener);
+      ArgumentUtility.CheckNotNull("innerListener", innerListener);
 
-      return new RootTransactionExecutionListener (this, innerListener);
+      return new RootTransactionExecutionListener(this, innerListener);
     }
   }
 }

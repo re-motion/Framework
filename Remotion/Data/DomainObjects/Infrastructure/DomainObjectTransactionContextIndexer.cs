@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -29,18 +30,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public DomainObjectTransactionContextIndexer (DomainObject domainObject, bool isInitializedEventExecuting)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
       _domainObject = domainObject;
       _isInitializedEventExecuting = isInitializedEventExecuting;
     }
 
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public IDomainObjectTransactionContext this[ClientTransaction clientTransaction]
     {
       get
       {
-        var context = new DomainObjectTransactionContext (_domainObject, clientTransaction);
+        var context = new DomainObjectTransactionContext(_domainObject, clientTransaction);
         if (_isInitializedEventExecuting)
-          return new InitializedEventDomainObjectTransactionContextDecorator (context);
+          return new InitializedEventDomainObjectTransactionContextDecorator(context);
         else
           return context;
       }

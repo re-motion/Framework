@@ -42,7 +42,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.StorageProviderException">
     ///   An error occurred while executing the query.
     /// </exception>
-    object GetScalar (IQuery query);
+    object? GetScalar (IQuery query);
 
     /// <summary>
     /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     /// <remarks>
     /// The <see cref="QueryResult{T}"/> can contain <see langword="null"/> values and deleted items. To check whether an item has been deleted,
-    /// compare its <see cref="DomainObject.State"/> property to <see cref="StateType.Deleted"/>.
+    /// check the <see cref="DomainObjectState.IsDeleted"/> flag of its <see cref="DomainObject.State"/> property.
     /// </remarks>
     QueryResult<DomainObject> GetCollection (IQuery query);
 
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     /// <remarks>
     /// The <see cref="QueryResult{T}"/> can contain <see langword="null"/> values and deleted items. To check whether an item has been deleted,
-    /// compare its <see cref="DomainObject.State"/> property to <see cref="StateType.Deleted"/>.
+    /// check the <see cref="DomainObjectState.IsDeleted"/> flag of its <see cref="DomainObject.State"/> property.
     /// </remarks>
     QueryResult<T> GetCollection<T> (IQuery query) where T : DomainObject;
 

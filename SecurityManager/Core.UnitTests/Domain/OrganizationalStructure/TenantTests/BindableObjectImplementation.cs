@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding;
 using Remotion.ObjectBinding;
@@ -24,7 +25,6 @@ using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.TenantTests
 {
@@ -34,80 +34,80 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     [Test]
     public void Get_UniqueIdentifier ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", "UID: testTenant");
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
 
-      Assert.IsNotEmpty (tenant.UniqueIdentifier);
+      Assert.IsNotEmpty(tenant.UniqueIdentifier);
     }
 
     [Test]
     public void GetDisplayName ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("Tenantname", "UID");
+      Tenant tenant = TestHelper.CreateTenant("Tenantname", "UID");
 
-      Assert.That (tenant.DisplayName, Is.EqualTo ("Tenantname"));
+      Assert.That(tenant.DisplayName, Is.EqualTo("Tenantname"));
     }
 
     [Test]
     public void GetAndSet_UniqueIdentifier ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", string.Empty);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);
 
       tenant.UniqueIdentifier = "My Unique Identifier";
 
-      Assert.That (tenant.UniqueIdentifier, Is.EqualTo ("My Unique Identifier"));
+      Assert.That(tenant.UniqueIdentifier, Is.EqualTo("My Unique Identifier"));
     }
 
     [Test]
     public void GetAndSet_UniqueIdentifierFromBusinessObjectWithIdentity ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", string.Empty);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);
       IBusinessObjectWithIdentity businessObject = tenant;
 
       tenant.UniqueIdentifier = "My Unique Identifier";
 
-      Assert.That (businessObject.UniqueIdentifier, Is.EqualTo (tenant.ID.ToString()));
+      Assert.That(businessObject.UniqueIdentifier, Is.EqualTo(tenant.ID.ToString()));
     }
 
     [Test]
     public void GetProperty_UniqueIdentifier ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", string.Empty);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);
       IBusinessObjectWithIdentity businessObject = tenant;
 
       tenant.UniqueIdentifier = "My Unique Identifier";
 
-      Assert.That (businessObject.GetProperty ("UniqueIdentifier"), Is.EqualTo ("My Unique Identifier"));
-      Assert.That (businessObject.UniqueIdentifier, Is.EqualTo (tenant.ID.ToString()));
+      Assert.That(businessObject.GetProperty("UniqueIdentifier"), Is.EqualTo("My Unique Identifier"));
+      Assert.That(businessObject.UniqueIdentifier, Is.EqualTo(tenant.ID.ToString()));
     }
 
     [Test]
     public void SetProperty_UniqueIdentifier ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", string.Empty);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);
       IBusinessObjectWithIdentity businessObject = tenant;
 
-      businessObject.SetProperty ("UniqueIdentifier", "My Unique Identifier");
-      Assert.That (tenant.UniqueIdentifier, Is.EqualTo ("My Unique Identifier"));
-      Assert.That (businessObject.UniqueIdentifier, Is.EqualTo (tenant.ID.ToString()));
+      businessObject.SetProperty("UniqueIdentifier", "My Unique Identifier");
+      Assert.That(tenant.UniqueIdentifier, Is.EqualTo("My Unique Identifier"));
+      Assert.That(businessObject.UniqueIdentifier, Is.EqualTo(tenant.ID.ToString()));
     }
 
     [Test]
     public void GetPropertyDefinition_UniqueIdentifier ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", string.Empty);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);
       IBusinessObjectWithIdentity businessObject = tenant;
       tenant.UniqueIdentifier = "My Unique Identifier";
 
-      IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition ("UniqueIdentifier");
+      IBusinessObjectProperty property = businessObject.BusinessObjectClass.GetPropertyDefinition("UniqueIdentifier");
 
-      Assert.IsInstanceOf (typeof (IBusinessObjectStringProperty), property);
-      Assert.That (businessObject.GetProperty (property), Is.EqualTo ("My Unique Identifier"));
+      Assert.IsInstanceOf(typeof(IBusinessObjectStringProperty), property);
+      Assert.That(businessObject.GetProperty(property), Is.EqualTo("My Unique Identifier"));
     }
 
     [Test]
     public void GetPropertyDefinitions_CheckForUniqueIdentifier ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", string.Empty);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);
       IBusinessObjectWithIdentity businessObject = tenant;
 
       IBusinessObjectProperty[] properties = businessObject.BusinessObjectClass.GetPropertyDefinitions();
@@ -115,39 +115,39 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       bool isFound = false;
       foreach (PropertyBase property in properties)
       {
-        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType == TypeAdapter.Create (typeof (Tenant)))
+        if (property.Identifier == "UniqueIdentifier" && property.PropertyInfo.DeclaringType == TypeAdapter.Create(typeof(Tenant)))
         {
           isFound = true;
           break;
         }
       }
 
-      Assert.IsTrue (isFound, "Property UnqiueIdentifier declared on Tenant was not found.");
+      Assert.IsTrue(isFound, "Property UnqiueIdentifier declared on Tenant was not found.");
     }
 
     [Test]
     public void SearchParents ()
     {
-      ISearchAvailableObjectsService searchServiceStub = MockRepository.GenerateStub<ISearchAvailableObjectsService>();
-      ISearchAvailableObjectsArguments args = MockRepository.GenerateStub<ISearchAvailableObjectsArguments>();
+      var searchServiceStub = new Mock<ISearchAvailableObjectsService>();
+      var args = new Mock<ISearchAvailableObjectsArguments>();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
       BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>()
-          .AddService (typeof (TenantPropertyTypeSearchService), searchServiceStub);
-      IBusinessObjectClass tenantClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Tenant));
-      IBusinessObjectReferenceProperty parentProperty = (IBusinessObjectReferenceProperty) tenantClass.GetPropertyDefinition ("Parent");
-      Assert.That (parentProperty, Is.Not.Null);
+          .AddService(typeof(TenantPropertyTypeSearchService), searchServiceStub.Object);
+      IBusinessObjectClass tenantClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Tenant));
+      IBusinessObjectReferenceProperty parentProperty = (IBusinessObjectReferenceProperty)tenantClass.GetPropertyDefinition("Parent");
+      Assert.That(parentProperty, Is.Not.Null);
 
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", string.Empty);
-      var expected = new[] { MockRepository.GenerateStub<IBusinessObject> () };
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", string.Empty);
+      var expected = new[] { new Mock<IBusinessObject>().Object };
 
-      searchServiceStub.Stub (stub => stub.SupportsProperty (parentProperty)).Return (true);
-      searchServiceStub.Stub (stub => stub.Search (tenant, parentProperty, args)).Return (expected);
+      searchServiceStub.Setup(stub => stub.SupportsProperty(parentProperty)).Returns(true);
+      searchServiceStub.Setup(stub => stub.Search(tenant, parentProperty, args.Object)).Returns(expected);
 
-      Assert.That (parentProperty.SupportsSearchAvailableObjects, Is.True);
+      Assert.That(parentProperty.SupportsSearchAvailableObjects, Is.True);
 
-      IBusinessObject[] actual = parentProperty.SearchAvailableObjects (tenant, args);
-      Assert.That (actual, Is.SameAs (expected));
+      IBusinessObject[] actual = parentProperty.SearchAvailableObjects(tenant, args.Object);
+      Assert.That(actual, Is.SameAs(expected));
     }
   }
 }

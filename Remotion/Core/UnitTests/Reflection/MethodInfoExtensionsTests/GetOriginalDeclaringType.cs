@@ -17,11 +17,10 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Reflection;
 using Remotion.UnitTests.Reflection.TestDomain.MethodInfoExtensions;
-using Remotion.Utilities;
+using MethodInfoExtensions = Remotion.Reflection.MethodInfoExtensions;
 
-namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
+namespace Remotion.UnitTests.Reflection.MethodInfoExtensionsTests
 {
   [TestFixture]
   public class GetOriginalDeclaringType
@@ -29,55 +28,55 @@ namespace Remotion.UnitTests.Utilities.ReflectionUtilityTests
     [Test]
     public void GetOriginalDeclaringType_ForMethodOnBaseClass ()
     {
-      MethodInfo MethodInfo = GetMethodInfo<ClassWithDifferentMethods> ("GetString");
+      MethodInfo MethodInfo = GetMethodInfo<ClassWithDifferentMethods>("GetString");
 
-      Assert.That (MethodInfoExtensions.GetOriginalDeclaringType (MethodInfo), Is.SameAs (typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
     [Test]
     public void GetOriginalDeclaringType_ForMethodOnDerivedClass ()
     {
-      MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods> ("GetOtherString");
+      MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods>("GetOtherString");
 
-      Assert.That (MethodInfoExtensions.GetOriginalDeclaringType (MethodInfo), Is.SameAs (typeof (DerivedClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(DerivedClassWithDifferentMethods)));
     }
 
     [Test]
     public void GetOriginalDeclaringType_ForNewMethodOnDerivedClass ()
     {
-      MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods> ("GetString");
+      MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods>("GetString");
 
-      Assert.That (MethodInfoExtensions.GetOriginalDeclaringType (MethodInfo), Is.SameAs (typeof (DerivedClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(DerivedClassWithDifferentMethods)));
     }
 
     [Test]
     public void GetOriginalDeclaringType_ForOverriddenMethodOnBaseClass ()
     {
-      MethodInfo MethodInfo = GetMethodInfo<ClassWithDifferentMethods> ("GetInt32");
+      MethodInfo MethodInfo = GetMethodInfo<ClassWithDifferentMethods>("GetInt32");
 
-      Assert.That (MethodInfoExtensions.GetOriginalDeclaringType (MethodInfo), Is.SameAs (typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
     [Test]
     public void GetOriginalDeclaringType_ForOverriddenMethodOnDerivedClass ()
     {
-      MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods> ("GetInt32");
+      MethodInfo MethodInfo = GetMethodInfo<DerivedClassWithDifferentMethods>("GetInt32");
 
-      Assert.That (MethodInfoExtensions.GetOriginalDeclaringType (MethodInfo), Is.SameAs (typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
     [Test]
     public void GetOriginalDeclaringType_ForOverriddenMethodOnDerivedOfDerivedClass ()
     {
-      MethodInfo MethodInfo = GetMethodInfo<DerivedOfDerivedClassWithDifferentMethods> ("GetInt32");
+      MethodInfo MethodInfo = GetMethodInfo<DerivedOfDerivedClassWithDifferentMethods>("GetInt32");
 
-      Assert.That (MethodInfoExtensions.GetOriginalDeclaringType (MethodInfo), Is.SameAs (typeof (ClassWithDifferentMethods)));
+      Assert.That(MethodInfoExtensions.GetOriginalDeclaringType(MethodInfo), Is.SameAs(typeof(ClassWithDifferentMethods)));
     }
 
 
     protected MethodInfo GetMethodInfo<T> (string method)
     {
-      return typeof (T).GetMethod (method, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+      return typeof(T).GetMethod(method, BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
     }
   }
 }

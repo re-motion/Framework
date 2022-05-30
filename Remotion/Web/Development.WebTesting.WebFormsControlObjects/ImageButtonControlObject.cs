@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class ImageButtonControlObject : WebFormsControlObject, IClickableControlObject, ISupportsDisabledState
   {
     public ImageButtonControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -51,32 +51,32 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject Click (IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject Click (IWebTestActionOptions? actionOptions = null)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (Scope, actionOptions);
-      new ClickAction (this, Scope).Execute (actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(Scope, actionOptions);
+      ExecuteAction(new ClickAction(this, Scope), actualActionOptions);
       return UnspecifiedPage();
     }
 
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      if (IsPostBackLink (scope))
-        return ((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy;
+      if (IsPostBackLink(scope))
+        return ((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy;
 
-      return ((IWebFormsPageObject) Context.PageObject).NavigationCompletionDetectionStrategy;
+      return ((IWebFormsPageObject)Context.PageObject).NavigationCompletionDetectionStrategy;
     }
 
     private bool IsPostBackLink (ElementScope scope)
     {
       const string doPostBackWithOptionsScript = "DoPostBackWithOptions";
 
-      return scope["onclick"] != null && scope["onclick"].Contains (doPostBackWithOptionsScript);
+      return scope["onclick"] != null && scope["onclick"].Contains(doPostBackWithOptionsScript);
     }
   }
 }

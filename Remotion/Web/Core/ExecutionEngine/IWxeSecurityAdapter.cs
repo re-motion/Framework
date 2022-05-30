@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+Ôªø// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -21,11 +21,11 @@ namespace Remotion.Web.ExecutionEngine
   //verwendet in wxe um security abfragen zu tun.
   public interface IWxeSecurityAdapter
   {
-    // verwendet wenn function l‰uft. 
+    // verwendet wenn function l√§uft. 
     bool HasAccess (WxeFunction function);
     //verwendet bevor wxefunction initialisiert wurde und nur typ bekannt ist.
     bool HasStatelessAccess (Type functionType);
-    // verwendet wenn function l‰uft. zb um zurgriffe auf urls (= wxefunction) zu sch¸tzen.
+    // verwendet wenn function l√§uft. zb um zurgriffe auf urls (= wxefunction) zu sch√ºtzen.
     void CheckAccess (WxeFunction function);
   }
 }

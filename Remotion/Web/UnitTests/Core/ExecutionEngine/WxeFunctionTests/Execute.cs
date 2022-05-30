@@ -16,222 +16,208 @@
 // 
 using System;
 using System.Threading;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 {
   [TestFixture]
   public class Execute
   {
-    private MockRepository _mockRepository;
     private WxeContext _context;
-    private IWxeFunctionExecutionListener _executionListenerMock;
+    private Mock<IWxeFunctionExecutionListener> _executionListenerMock;
 
     [SetUp]
     public void SetUp ()
     {
       TestFunction rootFunction = new TestFunction();
       WxeContextFactory contextFactory = new WxeContextFactory();
-      _context = contextFactory.CreateContext (rootFunction);
-      _mockRepository = new MockRepository();
+      _context = contextFactory.CreateContext(rootFunction);
 
-      _executionListenerMock = _mockRepository.StrictMock<IWxeFunctionExecutionListener>();
+      _executionListenerMock = new Mock<IWxeFunctionExecutionListener>(MockBehavior.Strict);
     }
 
     [Test]
     public void Test_NoException ()
     {
-      TestFunction2 function = new TestFunction2 ();
-      function.SetExecutionListener (_executionListenerMock);
+      TestFunction2 function = new TestFunction2();
+      function.SetExecutionListener(_executionListenerMock.Object);
 
-      using (_mockRepository.Ordered ())
-      {
-        _executionListenerMock.Expect (mock => mock.OnExecutionPlay (_context));
-        _executionListenerMock.Expect (mock => mock.OnExecutionStop (_context));
-      }
+      var sequence = new MockSequence();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
 
-      _mockRepository.ReplayAll();
+      function.Execute(_context);
 
-      function.Execute (_context);
-
-      _mockRepository.VerifyAll();
+      _executionListenerMock.Verify();
     }
 
     [Test]
     public void Test_WithTransactionStrategy ()
     {
-      ITransactionMode transactionModeMock = _mockRepository.StrictMock<ITransactionMode>();
-      TestFunction2 function = new TestFunction2 (transactionModeMock);
-      TransactionStrategyBase transactionStrategyMock = MockRepository.GenerateMock<TransactionStrategyBase>();
-      transactionModeMock.Expect (mock => mock.CreateTransactionStrategy (function, _context)).Return (transactionStrategyMock);
-      transactionStrategyMock.Expect (mock => mock.CreateExecutionListener (Arg<IWxeFunctionExecutionListener>.Is.NotNull))
-          .Return (_executionListenerMock);
+      var transactionModeMock = new Mock<ITransactionMode>(MockBehavior.Strict);
+      TestFunction2 function = new TestFunction2(transactionModeMock.Object);
+      var transactionStrategyMock = new Mock<TransactionStrategyBase>();
+      transactionModeMock.Setup(mock => mock.CreateTransactionStrategy(function, _context)).Returns(transactionStrategyMock.Object).Verifiable();
+      transactionStrategyMock.Setup(mock => mock.CreateExecutionListener(It.IsNotNull<IWxeFunctionExecutionListener>()))
+          .Returns(_executionListenerMock.Object)
+          .Verifiable();
 
-      using (_mockRepository.Ordered ())
-      {
-        _executionListenerMock.Expect (mock => mock.OnExecutionPlay (_context));
-        _executionListenerMock.Expect (mock => mock.OnExecutionStop (_context));
-      }
+      var sequence = new MockSequence();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      function.Execute(_context);
 
-      function.Execute (_context);
-
-      _mockRepository.VerifyAll ();
-      Assert.That (function.ExecutionListener, Is.SameAs (_executionListenerMock));
+      _executionListenerMock.Verify();
+      transactionModeMock.Verify();
+      Assert.That(function.ExecutionListener, Is.SameAs(_executionListenerMock.Object));
     }
 
     [Test]
     public void Test_ReEntryAfterThreadAbort ()
     {
-      TestFunction2 function = new TestFunction2 ();
-      function.SetExecutionListener (_executionListenerMock);
-      
-      WxeStep step1 = MockRepository.GenerateMock<WxeStep> ();
-      step1.Expect (mock => mock.Execute (_context)).WhenCalled (invocation => Thread.CurrentThread.Abort ()).Repeat.Once();
-      function.Add (step1);
+      TestFunction2 function = new TestFunction2();
+      function.SetExecutionListener(_executionListenerMock.Object);
 
-      WxeStep step2 = MockRepository.GenerateMock<WxeStep>();
-      step2.Expect (mock => mock.Execute (_context));
-      function.Add (step2);
+      var step1 = new Mock<WxeStep>();
+      step1.Setup(mock => mock.Execute(_context)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
+      function.Add(step1.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _executionListenerMock.Expect (mock => mock.OnExecutionPlay (_context));
-        _executionListenerMock.Expect (mock => mock.OnExecutionPause (_context));
-      }
-      _mockRepository.ReplayAll();
+      var step2 = new Mock<WxeStep>();
+      step2.Setup(mock => mock.Execute(_context)).Verifiable();
+      function.Add(step2.Object);
+
+      var sequence1 = new MockSequence();
+      _executionListenerMock.InSequence(sequence1).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InSequence(sequence1).Setup(mock => mock.OnExecutionPause(_context)).Verifiable();
 
       try
       {
-        function.Execute (_context);
+        function.Execute(_context);
         Assert.Fail();
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
-      _mockRepository.VerifyAll();
-      _mockRepository.BackToRecordAll();
+      _executionListenerMock.Verify();
+      step1.Verify(mock => mock.Execute(_context), Times.Once);
+      step2.Verify(mock => mock.Execute(_context), Times.Never);
 
-      using (_mockRepository.Ordered())
-      {
-        _executionListenerMock.Expect (mock => mock.OnExecutionPlay (_context));
-        _executionListenerMock.Expect (mock => mock.OnExecutionStop (_context));
-      }
-      _mockRepository.ReplayAll();
+      _executionListenerMock.Reset();
+      step1.Reset();
+      step1.Reset();
 
-      function.Execute (_context);
+      var sequence2 = new MockSequence();
+      _executionListenerMock.InSequence(sequence2).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InSequence(sequence2).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
 
-      _mockRepository.VerifyAll();
+      function.Execute(_context);
+
+      _executionListenerMock.Verify();
+      step1.Verify(mock => mock.Execute(_context), Times.Once);
+      step2.Verify(mock => mock.Execute(_context), Times.Once);
     }
 
     [Test]
     public void Test_ThreadAbort_WithFatalException ()
     {
-      TestFunction2 function = new TestFunction2 ();
-      function.SetExecutionListener (_executionListenerMock);
+      TestFunction2 function = new TestFunction2();
+      function.SetExecutionListener(_executionListenerMock.Object);
 
-      WxeStep step1 = MockRepository.GenerateMock<WxeStep> ();
-      step1.Expect (mock => mock.Execute (_context)).WhenCalled (invocation => Thread.CurrentThread.Abort ());
-      function.Add (step1);
+      var step1 = new Mock<WxeStep>();
+      step1.Setup(mock => mock.Execute(_context)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
+      function.Add(step1.Object);
 
-      var fatalExecutionException = new WxeFatalExecutionException (new Exception ("Pause exception"), null);
+      var fatalExecutionException = new WxeFatalExecutionException(new Exception("Pause exception"), null);
 
-      using (_mockRepository.Ordered ())
-      {
-        _executionListenerMock.Expect (mock => mock.OnExecutionPlay (_context));
-        _executionListenerMock.Expect (mock => mock.OnExecutionPause (_context)).Throw (fatalExecutionException);
-      }
-      _mockRepository.ReplayAll ();
+      var sequence = new MockSequence();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(_context)).Throws(fatalExecutionException).Verifiable();
 
       try
       {
-        function.Execute (_context);
-        Assert.Fail ();
+        function.Execute(_context);
+        Assert.Fail();
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException, Is.SameAs (fatalExecutionException));
-        Thread.ResetAbort ();
+        Assert.That(actualException, Is.SameAs(fatalExecutionException));
+        WxeThreadAbortHelper.ResetAbort();
       }
-    } 
+    }
 
     [Test]
     public void Test_FailAfterException ()
     {
-      TestFunction2 function = new TestFunction2 ();
-      function.SetExecutionListener (_executionListenerMock);
-      
-      WxeStep step1 = MockRepository.GenerateMock<WxeStep> ();
-      Exception stepException = new Exception ("StepException");
-      step1.Expect (mock => mock.Execute (_context)).Throw (stepException);
-      function.Add (step1);
+      TestFunction2 function = new TestFunction2();
+      function.SetExecutionListener(_executionListenerMock.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _executionListenerMock.Expect (mock => mock.OnExecutionPlay (_context));
-        _executionListenerMock.Expect (mock => mock.OnExecutionFail (_context, stepException));
-      }
-      _mockRepository.ReplayAll();
+      var step1 = new Mock<WxeStep>();
+      Exception stepException = new Exception("StepException");
+      step1.Setup(mock => mock.Execute(_context)).Throws(stepException).Verifiable();
+      function.Add(step1.Object);
+
+      var sequence = new MockSequence();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionFail(_context, stepException)).Verifiable();
 
       try
       {
-        function.Execute (_context);
+        function.Execute(_context);
         Assert.Fail();
       }
       catch (WxeUnhandledException actualException)
       {
-        Assert.That (actualException.InnerException, Is.SameAs (stepException));
+        Assert.That(actualException.InnerException, Is.SameAs(stepException));
       }
 
-      _mockRepository.VerifyAll();
+      _executionListenerMock.Verify();
     }
 
     [Test]
     public void Test_FailAfterExceptionAndFailInListener ()
     {
-      TestFunction2 function = new TestFunction2 ();
-      function.SetExecutionListener (_executionListenerMock);
-      
-      WxeStep step1 = MockRepository.GenerateMock<WxeStep> ();
-      Exception stepException = new Exception ("StepException");
-      step1.Expect (mock => mock.Execute (_context)).Throw (stepException);
-      function.Add (step1);
+      TestFunction2 function = new TestFunction2();
+      function.SetExecutionListener(_executionListenerMock.Object);
 
-      Exception listenerException = new Exception ("ListenerException");
+      var step1 = new Mock<WxeStep>();
+      Exception stepException = new Exception("StepException");
+      step1.Setup(mock => mock.Execute(_context)).Throws(stepException).Verifiable();
+      function.Add(step1.Object);
 
-      using (_mockRepository.Ordered())
-      {
-        _executionListenerMock.Expect (mock => mock.OnExecutionPlay (_context));
-        _executionListenerMock.Expect (mock => mock.OnExecutionFail (_context, stepException)).Throw (listenerException);
-      }
-      _mockRepository.ReplayAll();
+      Exception listenerException = new Exception("ListenerException");
+
+      var sequence = new MockSequence();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionFail(_context, stepException)).Throws(listenerException).Verifiable();
 
       try
       {
-        function.Execute (_context);
+        function.Execute(_context);
         Assert.Fail();
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException.InnerException, Is.SameAs (stepException));
-        Assert.That (actualException.OuterException, Is.SameAs (listenerException));
+        Assert.That(actualException.InnerException, Is.SameAs(stepException));
+        Assert.That(actualException.OuterException, Is.SameAs(listenerException));
       }
 
-      _mockRepository.VerifyAll();
+      _executionListenerMock.Verify();
     }
 
     [Test]
     public void Test_UseNullListener ()
     {
       TestFunction2 function = new TestFunction2();
-      function.Execute (_context);
+      function.Execute(_context);
     }
   }
 }

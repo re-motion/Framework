@@ -32,11 +32,11 @@ namespace Remotion.Data.DomainObjects
     private readonly object _invalidValue;
 
     public InvalidEnumValueException (string message, string propertyName, Type propertyType, object invalidValue)
-        : base (message)
+        : base(message)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("message", message);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+      ArgumentUtility.CheckNotNullOrEmpty("message", message);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
 
       _propertyName = propertyName;
       _underlyingPropertyType = propertyType;
@@ -44,11 +44,11 @@ namespace Remotion.Data.DomainObjects
     }
 
     protected InvalidEnumValueException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _propertyName = info.GetString ("PropertyName");
-      _underlyingPropertyType = (Type) info.GetValue ("UnderlyingPropertyType", typeof (Type));
-      _invalidValue = info.GetValue ("InvalidValue", typeof (object));
+      _propertyName = info.GetString("PropertyName")!;
+      _underlyingPropertyType = (Type)info.GetValue("UnderlyingPropertyType", typeof(Type))!;
+      _invalidValue = info.GetValue("InvalidValue", typeof(object))!;
     }
 
     public string PropertyName
@@ -68,11 +68,11 @@ namespace Remotion.Data.DomainObjects
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("PropertyName", _propertyName);
-      info.AddValue ("UnderlyingPropertyType", _underlyingPropertyType);
-      info.AddValue ("InvalidValue", _invalidValue);
+      info.AddValue("PropertyName", _propertyName);
+      info.AddValue("UnderlyingPropertyType", _underlyingPropertyType);
+      info.AddValue("InvalidValue", _invalidValue);
     }
   }
 }

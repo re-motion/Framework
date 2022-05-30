@@ -30,9 +30,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocAutoCompleteReferenceValueSelectListSelector : IFluentDisplayTextSelector, IFluentIndexSelector
   {
-    private const string c_selectWithIndex = "$(arguments[0]).getAutoCompleteSelectList().selectItem (arguments[1] - 1);";
+    private const string c_selectWithIndex = "arguments[0].getAutoCompleteSelectList().selectItem (arguments[1] - 1);";
 
-    private const string c_selectWithDisplayText = @"var a = $(arguments[0]).getAutoCompleteSelectList();
+    private const string c_selectWithDisplayText = @"var a = arguments[0].getAutoCompleteSelectList();
 var text = arguments[1]; 
 var predicate = (function (data) 
 { 
@@ -51,7 +51,7 @@ return true;";
     public ScreenshotBocAutoCompleteReferenceValueSelectListSelector (
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentAutoComplete)
     {
-      ArgumentUtility.CheckNotNull ("fluentAutoComplete", fluentAutoComplete);
+      ArgumentUtility.CheckNotNull("fluentAutoComplete", fluentAutoComplete);
 
       _fluentAutoComplete = fluentAutoComplete;
     }
@@ -59,24 +59,24 @@ return true;";
     /// <inheritdoc />
     public void WithDisplayText (string displayText)
     {
-      ArgumentUtility.CheckNotNull ("displayText", displayText);
+      ArgumentUtility.CheckNotNull("displayText", displayText);
 
-      var executor = JavaScriptExecutor.GetJavaScriptExecutor (_fluentAutoComplete.Target.AutoComplete);
-      var ok = JavaScriptExecutor.ExecuteStatement<bool> (executor, c_selectWithDisplayText, GetInputField (_fluentAutoComplete), displayText);
+      var executor = JavaScriptExecutor.GetJavaScriptExecutor(_fluentAutoComplete.Target.AutoComplete);
+      var ok = JavaScriptExecutor.ExecuteStatement<bool>(executor, c_selectWithDisplayText, GetInputField(_fluentAutoComplete), displayText);
       if (!ok)
-        throw new InvalidOperationException (string.Format ("Could not find an item with the Display text '{0}'", displayText));
+        throw new InvalidOperationException(string.Format("Could not find an item with the Display text '{0}'", displayText));
     }
 
     /// <inheritdoc />
     public void WithIndex (int oneBasedIndex)
     {
-      var executor = JavaScriptExecutor.GetJavaScriptExecutor (_fluentAutoComplete.Target.AutoComplete);
-      JavaScriptExecutor.ExecuteVoidStatement (executor, c_selectWithIndex, GetInputField (_fluentAutoComplete), oneBasedIndex);
+      var executor = JavaScriptExecutor.GetJavaScriptExecutor(_fluentAutoComplete.Target.AutoComplete);
+      JavaScriptExecutor.ExecuteVoidStatement(executor, c_selectWithIndex, GetInputField(_fluentAutoComplete), oneBasedIndex);
     }
 
     private static IWebElement GetInputField (IFluentScreenshotElementWithCovariance<ScreenshotBocAutoCompleteReferenceValueSelectList> fluentPopup)
     {
-      return (IWebElement) fluentPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
+      return (IWebElement)fluentPopup.Target.AutoComplete.ForControlObjectScreenshot().GetValue().GetTarget().Native;
     }
   }
 }

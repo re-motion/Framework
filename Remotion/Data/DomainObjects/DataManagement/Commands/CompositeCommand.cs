@@ -38,23 +38,23 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public CompositeCommand (IEnumerable<IDataManagementCommand> commands)
     {
-      ArgumentUtility.CheckNotNull ("commands", commands);
+      ArgumentUtility.CheckNotNull("commands", commands);
 
       // Manual iteration instead of List ctor + LINQ to avoid having to iterate the commands twice
-      var commandList = new List<IDataManagementCommand> ();
+      var commandList = new List<IDataManagementCommand>();
       var exceptionList = new List<Exception>();
       foreach (var command in commands)
       {
-        commandList.Add (command);
-        var exceptions = Assertion.IsNotNull (command.GetAllExceptions(), "GetAllExceptions must return a non-null sequence.");
-        exceptionList.AddRange (exceptions);
+        commandList.Add(command);
+        var exceptions = Assertion.IsNotNull(command.GetAllExceptions(), "GetAllExceptions must return a non-null sequence.");
+        exceptionList.AddRange(exceptions);
       }
       _commands = commandList.AsReadOnly();
       _exceptions = exceptionList.AsReadOnly();
     }
 
     public CompositeCommand (params IDataManagementCommand[] commands)
-        : this ((IEnumerable<IDataManagementCommand>) commands)
+        : this((IEnumerable<IDataManagementCommand>)commands)
     {
     }
 
@@ -70,41 +70,41 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void Perform ()
     {
-      this.EnsureCanExecute ();
+      this.EnsureCanExecute();
 
       foreach (var command in _commands)
-        command.Perform ();
+        command.Perform();
     }
 
     public void Begin ()
     {
-      this.EnsureCanExecute ();
+      this.EnsureCanExecute();
 
       foreach (var command in _commands)
-        command.Begin ();
+        command.Begin();
     }
 
     public void End ()
     {
-      this.EnsureCanExecute ();
+      this.EnsureCanExecute();
 
       for (int i = _commands.Count - 1; i >= 0; i--)
-        _commands[i].End ();
+        _commands[i].End();
     }
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (_commands.SelectMany (nestedCommand => nestedCommand.ExpandToAllRelatedObjects().GetNestedCommands()));
+      return new ExpandedCommand(_commands.SelectMany(nestedCommand => nestedCommand.ExpandToAllRelatedObjects().GetNestedCommands()));
     }
 
     public CompositeCommand CombineWith (IEnumerable<IDataManagementCommand> commands)
     {
-      return new CompositeCommand (_commands.Concat (commands));
+      return new CompositeCommand(_commands.Concat(commands));
     }
 
     public CompositeCommand CombineWith (params IDataManagementCommand[] commands)
     {
-      return CombineWith ((IEnumerable<IDataManagementCommand>) commands);
+      return CombineWith((IEnumerable<IDataManagementCommand>)commands);
     }
   }
 }

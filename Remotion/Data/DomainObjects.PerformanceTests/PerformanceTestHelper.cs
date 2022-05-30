@@ -23,10 +23,10 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
   {
     public static void TimeAndOutput (long testRuns, string testName, Func<bool> operation)
     {
-      Console.WriteLine ("Executing {0}...", testName);
-      var result = GetResult (testRuns, operation);
+      Console.WriteLine("Executing {0}...", testName);
+      var result = GetResult(testRuns, operation);
       double averageMilliSeconds = result.TotalMilliseconds / testRuns;
-      Console.WriteLine (string.Format ("{0} (executed {1}x): Average duration: {2} ms", testName, testRuns, averageMilliSeconds.ToString ("n")));
+      Console.WriteLine(string.Format("{0} (executed {1}x): Average duration: {2} ms", testName, testRuns, averageMilliSeconds.ToString("n")));
     }
 
     public static TimeSpan GetResult (long testRuns, Func<bool> operation)
@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 	      result &= operation();
 	    }
       stopwatch.Stop();
-	
-	    Console.WriteLine (result);
-	
+
+	    Console.WriteLine(result);
+
 	    var elapsed = stopwatch.Elapsed;
 	    return elapsed;
     }

@@ -38,25 +38,27 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     public static DomainObjectCreator CreateDomainObjectCreator ()
     {
       var pipelineRegistry = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>();
-      return new DomainObjectCreator (pipelineRegistry);
+      return new DomainObjectCreator(pipelineRegistry);
     }
 
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (MappingReflector));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MappingReflector));
     private readonly IMemberInformationNameResolver _nameResolver;
     private readonly IMappingObjectFactory _mappingObjectFactory;
     private readonly ITypeDiscoveryService _typeDiscoveryService;
     private readonly IClassIDProvider _classIDProvider;
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
-    
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
+
     // This ctor is required when the MappingReflector is instantiated as a configuration element from a config file.
     public MappingReflector ()
-        : this (
+        : this(
             ContextAwareTypeUtility.GetTypeDiscoveryService(),
             new ClassIDProvider(),
             SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
             new PropertyMetadataReflector(),
-            SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider> (),
+            SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
+            SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
             CreateDomainObjectCreator())
     {
     }
@@ -67,25 +69,29 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator domainObjectCreator)
     {
-      ArgumentUtility.CheckNotNull ("typeDiscoveryService", typeDiscoveryService);
-      ArgumentUtility.CheckNotNull ("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("domainObjectCreator", domainObjectCreator);
+      ArgumentUtility.CheckNotNull("typeDiscoveryService", typeDiscoveryService);
+      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("domainObjectCreator", domainObjectCreator);
 
       _typeDiscoveryService = typeDiscoveryService;
       _classIDProvider = classIDProvider;
       _propertyMetadataProvider = propertyMetadataProvider;
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
       _nameResolver = nameResolver;
-      _mappingObjectFactory = new ReflectionBasedMappingObjectFactory (
+      _mappingObjectFactory = new ReflectionBasedMappingObjectFactory(
           _nameResolver,
           _classIDProvider,
           _propertyMetadataProvider,
           _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider,
           domainObjectCreator);
     }
 
@@ -96,41 +102,41 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public ClassDefinition[] GetClassDefinitions ()
     {
-      s_log.Info ("Reflecting class definitions...");
+      s_log.Info("Reflecting class definitions...");
 
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Info, "Time needed to reflect class definitions: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect class definitions: {elapsed}."))
       {
         var types = GetDomainObjectTypesSorted();
-        var classDefinitions = MappingObjectFactory.CreateClassDefinitionCollection (types);
+        var classDefinitions = MappingObjectFactory.CreateClassDefinitionCollection(types);
 
         return classDefinitions
-            .LogAndReturnValue (s_log, LogLevel.Info, result => string.Format ("Generated {0} class definitions.", result.Length));
+            .LogAndReturnValue(s_log, LogLevel.Info, result => string.Format("Generated {0} class definitions.", result.Length));
       }
     }
 
     public RelationDefinition[] GetRelationDefinitions (IDictionary<Type, ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
-      s_log.InfoFormat ("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      s_log.InfoFormat("Reflecting relation definitions of {0} class definitions...", classDefinitions.Count);
 
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Info, "Time needed to reflect relation definitions: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to reflect relation definitions: {elapsed}."))
       {
-        var relationDefinitions = MappingObjectFactory.CreateRelationDefinitionCollection (classDefinitions);
+        var relationDefinitions = MappingObjectFactory.CreateRelationDefinitionCollection(classDefinitions);
         return relationDefinitions
-            .LogAndReturnValue (s_log, LogLevel.Info, result => string.Format ("Generated {0} relation definitions.", result.Length));
+            .LogAndReturnValue(s_log, LogLevel.Info, result => string.Format("Generated {0} relation definitions.", result.Length));
       }
     }
 
     private IEnumerable<Type> GetDomainObjectTypes ()
     {
-      return (from type in _typeDiscoveryService.GetTypes (typeof (DomainObject), false).Cast<Type>()
-              where !ReflectionUtility.IsTypeIgnoredForMappingConfiguration (type)
+      return (from type in _typeDiscoveryService.GetTypes(typeof(DomainObject), excludeGlobalTypes: false).Cast<Type>()
+              where !ReflectionUtility.IsTypeIgnoredForMappingConfiguration(type)
               select type).Distinct();
     }
 
     private Type[] GetDomainObjectTypesSorted ()
     {
-      return GetDomainObjectTypes().OrderBy (t => t.FullName, StringComparer.OrdinalIgnoreCase).ToArray();
+      return GetDomainObjectTypes().OrderBy(t => t.GetFullNameChecked(), StringComparer.OrdinalIgnoreCase).ToArray();
     }
 
     bool IMappingLoader.ResolveTypes
@@ -150,7 +156,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public IClassDefinitionValidator CreateClassDefinitionValidator ()
     {
-      return new ClassDefinitionValidator (
+      return new ClassDefinitionValidator(
           new DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule(),
           new DomainObjectTypeIsNotGenericValidationRule(),
           new InheritanceHierarchyFollowsClassHierarchyValidationRule(),
@@ -162,18 +168,20 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public IPropertyDefinitionValidator CreatePropertyDefinitionValidator ()
     {
-      return new PropertyDefinitionValidator (
-          new MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule (_nameResolver, _propertyMetadataProvider),
+      return new PropertyDefinitionValidator(
+          new MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule(_nameResolver, _propertyMetadataProvider),
           new MappingAttributesAreSupportedForPropertyTypeValidationRule(),
           new StorageClassIsSupportedValidationRule(),
-          new PropertyTypeIsSupportedValidationRule());
+          new PropertyTypeIsSupportedValidationRule(),
+          new MandatoryNetEnumTypeHasValuesDefinedValidationRule(),
+          new MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule());
     }
 
     public IRelationDefinitionValidator CreateRelationDefinitionValidator ()
     {
-      return new RelationDefinitionValidator (
+      return new RelationDefinitionValidator(
           new RdbmsRelationEndPointCombinationIsSupportedValidationRule(),
-          new SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule(),
+          new SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule(),
           new VirtualRelationEndPointCardinalityMatchesPropertyTypeValidationRule(),
           new VirtualRelationEndPointPropertyTypeIsSupportedValidationRule(),
           new ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule(),
@@ -186,7 +194,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
 
     public ISortExpressionValidator CreateSortExpressionValidator ()
     {
-      return new SortExpressionValidator (new SortExpressionIsValidValidationRule());
+      return new SortExpressionValidator(new SortExpressionIsValidValidationRule());
     }
   }
 }

@@ -27,41 +27,41 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   {
     public static void Add (this IDomainObjectCollectionData data, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("data", data);
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("data", data);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
-      data.Insert (data.Count, domainObject);
+      data.Insert(data.Count, domainObject);
     }
 
     public static void AddRange (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects)
     {
-      ArgumentUtility.CheckNotNull ("data", data);
-      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull("data", data);
+      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
       foreach (var domainObject in domainObjects)
-        Add (data, domainObject);
+        Add(data, domainObject);
     }
 
-    public static void AddRangeAndCheckItems (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects, Type requiredItemType)
+    public static void AddRangeAndCheckItems (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects, Type? requiredItemType)
     {
-      ArgumentUtility.CheckNotNull ("data", data);
-      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull("data", data);
+      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
       var index = 0;
       foreach (var domainObject in domainObjects)
       {
         if (domainObject == null)
-          throw ArgumentUtility.CreateArgumentItemNullException ("domainObjects", index);
-        if (requiredItemType != null && !requiredItemType.IsInstanceOfType (domainObject))
-          throw ArgumentUtility.CreateArgumentItemTypeException ("domainObjects", index, requiredItemType, domainObject.ID.ClassDefinition.ClassType);
-        if (data.ContainsObjectID (domainObject.ID))
+          throw ArgumentUtility.CreateArgumentItemNullException("domainObjects", index);
+        if (requiredItemType != null && !requiredItemType.IsInstanceOfType(domainObject))
+          throw ArgumentUtility.CreateArgumentItemTypeException("domainObjects", index, requiredItemType, domainObject.ID.ClassDefinition.ClassType);
+        if (data.ContainsObjectID(domainObject.ID))
         {
-          throw new ArgumentException (
-              string.Format ("Item {1} of parameter '{0}' is a duplicate ('{2}').", "domainObjects", index, domainObject.ID),
+          throw new ArgumentException(
+              string.Format("Item {1} of parameter '{0}' is a duplicate ('{2}').", "domainObjects", index, domainObject.ID),
               "domainObjects");
         }
 
-        data.Add (domainObject);
+        data.Add(domainObject);
 
         ++index;
       }
@@ -69,25 +69,25 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public static void ReplaceContents (this IDomainObjectCollectionData data, IEnumerable<DomainObject> domainObjects)
     {
-      ArgumentUtility.CheckNotNull ("data", data);
-      ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
+      ArgumentUtility.CheckNotNull("data", data);
+      ArgumentUtility.CheckNotNull("domainObjects", domainObjects);
 
-      data.Clear ();
-      data.AddRange (domainObjects);
+      data.Clear();
+      data.AddRange(domainObjects);
     }
 
     public static bool SetEquals (this IDomainObjectCollectionData collection, IEnumerable<DomainObject> comparedSet)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
-      ArgumentUtility.CheckNotNull ("comparedSet", comparedSet);
+      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull("comparedSet", comparedSet);
 
-      var setOfComparedObjects = new HashSet<DomainObject> (); // this is used to get rid of all duplicates to get a correct result
+      var setOfComparedObjects = new HashSet<DomainObject>(); // this is used to get rid of all duplicates to get a correct result
       foreach (var domainObject in comparedSet)
       {
-        if (collection.GetObject (domainObject.ID) != domainObject)
+        if (collection.GetObject(domainObject.ID) != domainObject)
           return false;
 
-        setOfComparedObjects.Add (domainObject);
+        setOfComparedObjects.Add(domainObject);
       }
 
       // the collection must contain exactly the same number of items as the comparedSet (duplicates ignored)

@@ -37,39 +37,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     [Test]
     public void RelationDefinitionWithNoTypeNotFoundClassDefinition ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (DerivedValidationDomainObjectClass));
-      var endPoint = new AnonymousRelationEndPointDefinition (classDefinition);
-      var relationDefinition = new RelationDefinition ("ID", endPoint, endPoint);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
+      var endPoint = new AnonymousRelationEndPointDefinition(classDefinition);
+      var relationDefinition = new RelationDefinition("ID", endPoint, endPoint);
 
-      var validationResult = _validationRule.Validate (relationDefinition);
+      var validationResult = _validationRule.Validate(relationDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void RelationDefinitionWithTypeNotFoundClassDefinition ()
     {
-      var classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType (
+      var classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType(
           "Test",
-          typeof (ClassOutOfInheritanceHierarchy),
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty ("Property")));
-      var endPoint = new VirtualRelationEndPointDefinition (
+          typeof(ClassOutOfInheritanceHierarchy),
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("Property")));
+      var endPoint = new VirtualObjectRelationEndPointDefinition(
           classDefinition,
           "RelationProperty",
           false,
-          CardinalityType.One,
-          null,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty ("Property")));
-      var relationDefinition = new RelationDefinition ("ID", endPoint, endPoint);
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("Property")));
+      var relationDefinition = new RelationDefinition("ID", endPoint, endPoint);
 
-      var validationResult = _validationRule.Validate (relationDefinition);
+      var validationResult = _validationRule.Validate(relationDefinition);
 
       var expectedMessage =
           "The relation property 'Property' has return type 'String', which is not a part of the mapping. "
           + "Relation properties must not point to classes above the inheritance root.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
           + "Property: Property";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }
 }

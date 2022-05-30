@@ -34,37 +34,37 @@ public sealed class FormGridRowInfoCollection : CollectionBase
   /// </param>
   public FormGridRowInfoCollection (FormGridRowInfo[] values)
   {
-    ArgumentUtility.CheckNotNull ("values", values);
+    ArgumentUtility.CheckNotNull("values", values);
 
     for (int index = 0; index < values.Length; index++)
     {
       if (values[index] == null)
-        throw new ArgumentNullException ("values[" + index + "]");
+        throw new ArgumentNullException("values[" + index + "]");
     }
 
-    InnerList.AddRange (values);
+    InnerList.AddRange(values);
   }
 
   /// <summary> Initalizates a new <see cref="FormGridRowInfoCollection"/> class. </summary>
-  public FormGridRowInfoCollection()
+  public FormGridRowInfoCollection ()
   {}
 
   /// <summary> Allows only the insertion of form grid row prototypes. </summary>
   /// <param name="index"> The zero-based index at which to insert value. </param>
   /// <param name="value"> The new value of the element at index. </param>
-  protected override void OnInsert (int index, object value)
+  protected override void OnInsert (int index, object? value)
   {
-    ArgumentUtility.CheckNotNullAndType<FormGridRowInfo> ("value", value);
-    base.OnInsert (index, value);
+    ArgumentUtility.CheckNotNullAndType<FormGridRowInfo>("value", value!);
+    base.OnInsert(index, value);
   }
 
   /// <summary> Adds the form grid row prototype to the end of the list. </summary>
   /// <param name="value"> The new form grid row prototype. </param>
   public void Add (FormGridRowInfo value)
   {
-    OnInsert (InnerList.Count, value);
-    int index = InnerList.Add (value);
-    OnInsertComplete (index, value);
+    OnInsert(InnerList.Count, value);
+    int index = InnerList.Add(value);
+    OnInsertComplete(index, value);
   }
 }
 

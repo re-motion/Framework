@@ -42,7 +42,7 @@ namespace Remotion.Web.ExecutionEngine
   public class WxeCallExternalException : WxeIgnorableException
   {
     public WxeCallExternalException ()
-      : base ("This exception does not indicate an error. It is used to cancel the processing of an event handler that used "
+      : base("This exception does not indicate an error. It is used to cancel the processing of an event handler that used "
               + "WxeCallOptionsExternal. Please catch this exception when invoking a page's Call method.")
     {
     }

@@ -26,7 +26,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
     /// </summary>
     /// <param name="message">The error message string. </param>
     public SqlBatchCommandException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
@@ -37,7 +37,7 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
     /// <param name="message">The error message string. </param>
     /// <param name="innerException">The inner exception reference. </param>
     public SqlBatchCommandException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
   }

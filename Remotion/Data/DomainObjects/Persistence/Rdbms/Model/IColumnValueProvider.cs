@@ -23,6 +23,6 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   /// </summary>
   public interface IColumnValueProvider
   {
-    object GetValueForColumn (ColumnDefinition columnDefinition);
+    object? GetValueForColumn (ColumnDefinition columnDefinition);
   }
 }

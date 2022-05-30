@@ -39,13 +39,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     public void Find_WithoutStateProperties_ReturnsStatefulAcl ()
     {
       var acl = CreateStatefulAcl();
-      StubClassDefinition<Customer> (acl);
+      StubClassDefinition<Customer>(acl);
       var context = CreateContextForCustomer();
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl.Handle));
+      Assert.That(foundAcl, Is.EqualTo(acl.Handle));
     }
 
     [Test]
@@ -55,183 +55,183 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
       var context = CreateContextForCustomer();
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.Null);
+      Assert.That(foundAcl, Is.Null);
     }
 
     [Test]
     public void Find_WithMatchingState_ReturnsStatefulAcl ()
     {
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None);
-      StubClassDefinition<Order> (
-          CreateStatefulAcl (OrderState_Received, PaymentState_None),
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None);
+      StubClassDefinition<Order>(
+          CreateStatefulAcl(OrderState_Received, PaymentState_None),
           acl);
-      var context = CreateContextForOrder (OrderState.Delivered, PaymentState.None);
+      var context = CreateContextForOrder(OrderState.Delivered, PaymentState.None);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl.Handle));
+      Assert.That(foundAcl, Is.EqualTo(acl.Handle));
     }
 
     [Test]
     public void Find_WithMissingStateInContext_ThrowsAccessControlException ()
     {
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None, CreateState ("MissingState", "Value"));
-      StubClassDefinition<Order> (acl);
-      var context = CreateContextForOrder (OrderState.Delivered, PaymentState.None);
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None, CreateState("MissingState", "Value"));
+      StubClassDefinition<Order>(acl);
+      var context = CreateContextForOrder(OrderState.Delivered, PaymentState.None);
 
       var aclFinder = CreateAccessControlListFinder();
-      Assert.That (
-          () => aclFinder.Find (context),
-          Throws.TypeOf<AccessControlException>().And.Message.EqualTo ("The state 'MissingState' is missing in the security context."));
+      Assert.That(
+          () => aclFinder.Find(context),
+          Throws.TypeOf<AccessControlException>().And.Message.EqualTo("The state 'MissingState' is missing in the security context."));
     }
 
     [Test]
     public void Find_WithInvalidStateValueInContext_ThrowsAccessControlException ()
     {
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None);
-      StubClassDefinition<Order> (acl);
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None);
+      StubClassDefinition<Order>(acl);
 
       var states = new Dictionary<string, Enum>();
-      states.Add ("State", Delivery.Post);
-      states.Add ("Payment", PaymentState.None);
-      var context = SecurityContext.Create (typeof (Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      states.Add("State", Delivery.Post);
+      states.Add("Payment", PaymentState.None);
+      var context = SecurityContext.Create(typeof(Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
 
       var aclFinder = CreateAccessControlListFinder();
-      Assert.That (
-          () => aclFinder.Find (context),
+      Assert.That(
+          () => aclFinder.Find(context),
           Throws.TypeOf<AccessControlException>()
-                .And.Message.EqualTo (
+                .And.Message.EqualTo(
                     "The state 'Post|Remotion.SecurityManager.UnitTests.TestDomain.Delivery, Remotion.SecurityManager.UnitTests' is not defined "
                     + "for the property 'State' of the securable class 'Remotion.SecurityManager.UnitTests.TestDomain.Order, Remotion.SecurityManager.UnitTests' "
                     + "or its base classes."));
     }
-    
+
     [Test]
     public void Find_WithUnknownStatePropertyInContext_ReturnsNull ()
     {
       StubClassDefinition<Customer>();
 
       var states = new Dictionary<string, Enum>();
-      states.Add ("Unknown", Delivery.Post);
-      var context = SecurityContext.Create (typeof (Customer), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      states.Add("Unknown", Delivery.Post);
+      var context = SecurityContext.Create(typeof(Customer), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.Null);
+      Assert.That(foundAcl, Is.Null);
     }
 
     [Test]
     public void Find_WithInheritedAcl_ReturnsStatefulAclFromBaseClass ()
     {
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None);
-      StubClassDefinition<Order> (acl);
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None);
+      StubClassDefinition<Order>(acl);
       StubClassDefinitionWithoutStatelessAcl<SpecialOrder, Order>();
-      var context = CreateContextForSpecialOrder (OrderState.Delivered, PaymentState.None);
+      var context = CreateContextForSpecialOrder(OrderState.Delivered, PaymentState.None);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl.Handle));
+      Assert.That(foundAcl, Is.EqualTo(acl.Handle));
     }
 
     [Test]
     public void Find_WithInheritedAclAndClassHasStatelessAcl_ReturnsNull ()
     {
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None);
-      StubClassDefinition<Order> (acl);
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None);
+      StubClassDefinition<Order>(acl);
       StubClassDefinition<SpecialOrder, Order>();
-      var context = CreateContextForSpecialOrder (OrderState.Delivered, PaymentState.None);
+      var context = CreateContextForSpecialOrder(OrderState.Delivered, PaymentState.None);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.Null);
+      Assert.That(foundAcl, Is.Null);
     }
 
     [Test]
     public void Find_WithAclAndInteritedAclMatchingStates_ReturnsStatefulAclFromDerivedClass ()
     {
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None);
-      StubClassDefinition<Order> (CreateStatefulAcl (OrderState_Delivered, PaymentState_None));
-      StubClassDefinition<SpecialOrder, Order> (acl);
-      var context = CreateContextForSpecialOrder (OrderState.Delivered, PaymentState.None);
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None);
+      StubClassDefinition<Order>(CreateStatefulAcl(OrderState_Delivered, PaymentState_None));
+      StubClassDefinition<SpecialOrder, Order>(acl);
+      var context = CreateContextForSpecialOrder(OrderState.Delivered, PaymentState.None);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl.Handle));
+      Assert.That(foundAcl, Is.EqualTo(acl.Handle));
     }
 
     [Test]
     public void Find_WithInheritedAclMatchingStatesAndAclNotMatchingStates_ReturnsNull ()
     {
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None);
-      StubClassDefinition<Order> (acl);
-      StubClassDefinitionWithoutStatelessAcl<SpecialOrder, Order> ( CreateStatefulAcl (OrderState_Received, PaymentState_None));
-      var context = CreateContextForSpecialOrder (OrderState.Delivered, PaymentState.None);
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None);
+      StubClassDefinition<Order>(acl);
+      StubClassDefinitionWithoutStatelessAcl<SpecialOrder, Order>( CreateStatefulAcl(OrderState_Received, PaymentState_None));
+      var context = CreateContextForSpecialOrder(OrderState.Delivered, PaymentState.None);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.Null);
+      Assert.That(foundAcl, Is.Null);
     }
 
     [Test]
     public void Find_WithInheritedAclNotDefiningStateAndAclMatchingStates_ReturnsStatefulAclFromDerivedClass ()
     {
-      StubClassDefinition<Order> (CreateStatefulAcl (OrderState_Delivered, PaymentState_None));
-      var acl = CreateStatefulAcl (OrderState_Delivered, PaymentState_None, Delivery_Dhl);
-      StubClassDefinitionWithoutStatelessAcl<PremiumOrder, Order> (acl);
-      var context = CreateContextForPremiumOrder (OrderState.Delivered, PaymentState.None, Delivery.Dhl);
+      StubClassDefinition<Order>(CreateStatefulAcl(OrderState_Delivered, PaymentState_None));
+      var acl = CreateStatefulAcl(OrderState_Delivered, PaymentState_None, Delivery_Dhl);
+      StubClassDefinitionWithoutStatelessAcl<PremiumOrder, Order>(acl);
+      var context = CreateContextForPremiumOrder(OrderState.Delivered, PaymentState.None, Delivery.Dhl);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.EqualTo (acl.Handle));
+      Assert.That(foundAcl, Is.EqualTo(acl.Handle));
     }
 
     [Test]
     public void Find_WithInheritedAclNotDefiningStateAndAclNotMatchingStates_ReturnsNull ()
     {
-      StubClassDefinition<Order> (CreateStatefulAcl (OrderState_Delivered, PaymentState_None));
-      var acl = CreateStatefulAcl (OrderState_Received, PaymentState_None, Delivery_Dhl);
-      StubClassDefinitionWithoutStatelessAcl<PremiumOrder, Order> (acl);
-      var context = CreateContextForPremiumOrder (OrderState.Delivered, PaymentState.None, Delivery.Post);
+      StubClassDefinition<Order>(CreateStatefulAcl(OrderState_Delivered, PaymentState_None));
+      var acl = CreateStatefulAcl(OrderState_Received, PaymentState_None, Delivery_Dhl);
+      StubClassDefinitionWithoutStatelessAcl<PremiumOrder, Order>(acl);
+      var context = CreateContextForPremiumOrder(OrderState.Delivered, PaymentState.None, Delivery.Post);
 
       var aclFinder = CreateAccessControlListFinder();
-      var foundAcl = aclFinder.Find (context);
+      var foundAcl = aclFinder.Find(context);
 
-      Assert.That (foundAcl, Is.Null);
+      Assert.That(foundAcl, Is.Null);
     }
 
     private void StubClassDefinition<TClass> ([NotNull] params StatefulAccessControlListData[] statefulAcls)
         where TClass : ISecurableObject
     {
-      StubClassDefinition<TClass> (CreateStatelessAcl(), statefulAcls);
+      StubClassDefinition<TClass>(CreateStatelessAcl(), statefulAcls);
     }
 
     private void StubClassDefinition<TClass, TBaseClass> ([NotNull] params StatefulAccessControlListData[] statefulAcls)
         where TClass : TBaseClass
         where TBaseClass : ISecurableObject
     {
-      StubClassDefinition<TClass, TBaseClass> (CreateStatelessAcl(), statefulAcls);
+      StubClassDefinition<TClass, TBaseClass>(CreateStatelessAcl(), statefulAcls);
     }
 
     private void StubClassDefinitionWithoutStatelessAcl<TClass, TBaseClass> ([NotNull] params StatefulAccessControlListData[] statefulAcls)
         where TClass : TBaseClass
         where TBaseClass : ISecurableObject
     {
-      StubClassDefinition<TClass, TBaseClass> (null, statefulAcls);
+      StubClassDefinition<TClass, TBaseClass>(null, statefulAcls);
     }
 
     private SecurityContext CreateContextForCustomer ()
     {
-      return SecurityContext.Create (
-          typeof (Customer),
+      return SecurityContext.Create(
+          typeof(Customer),
           "owner",
           "ownerGroup",
           "ownerTenant",
@@ -242,29 +242,29 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     private SecurityContext CreateContextForOrder (OrderState orderState, PaymentState paymentState)
     {
       var states = new Dictionary<string, Enum>();
-      states.Add ("State", orderState);
-      states.Add ("Payment", paymentState);
+      states.Add("State", orderState);
+      states.Add("Payment", paymentState);
 
-      return SecurityContext.Create (typeof (Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      return SecurityContext.Create(typeof(Order), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
     }
 
     private SecurityContext CreateContextForSpecialOrder (OrderState orderState, PaymentState paymentState)
     {
       var states = new Dictionary<string, Enum>();
-      states.Add ("State", orderState);
-      states.Add ("Payment", paymentState);
+      states.Add("State", orderState);
+      states.Add("Payment", paymentState);
 
-      return SecurityContext.Create (typeof (SpecialOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      return SecurityContext.Create(typeof(SpecialOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
     }
 
     private SecurityContext CreateContextForPremiumOrder (OrderState orderState, PaymentState paymentState, Delivery delivery)
     {
       var states = new Dictionary<string, Enum>();
-      states.Add ("State", orderState);
-      states.Add ("Payment", paymentState);
-      states.Add ("Delivery", delivery);
+      states.Add("State", orderState);
+      states.Add("Payment", paymentState);
+      states.Add("Delivery", delivery);
 
-      return SecurityContext.Create (typeof (PremiumOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
+      return SecurityContext.Create(typeof(PremiumOrder), "owner", "ownerGroup", "ownerTenant", states, new Enum[0]);
     }
   }
 }

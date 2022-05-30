@@ -1,0 +1,318 @@
+﻿:root
+{
+  --singleview-topcontrols-padding: 0 0 var(--remotion-themed-spacing) 0;
+  --tabbedMenu-horizontal-padding: calc(var(--remotion-themed-spacing-large) - var(--remotion-themed-spacing));
+  --accesscontrollist-permission-image-width: 16px;
+  --imagebutton-image-width: 16px;
+}
+
+html
+{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+html body
+{
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+form
+{
+  height: 100%;
+  width: 100%;
+}
+
+div#ErrorContainer
+{
+  color: var(--color-indicator-error-text);
+  background-color: var(--color-indicator-error-background);
+  font: var(--remotion-themed-font-bold);
+  padding-top: var(--remotion-themed-spacing);
+  padding-bottom: var(--remotion-themed-spacing);
+  padding-left: var(--remotion-themed-spacing-large);
+  padding-right: var(--remotion-themed-spacing-large);
+}
+
+div#ErrorContainer:empty
+{
+  display: none;
+}
+
+div.singleViewTopControls div.content div#CurrentTenantControl > div
+{
+  float: right;
+  clear: both;
+}
+
+div.singleViewBottomControls button
+{
+  margin-right: var(--remotion-themed-spacing);
+}
+
+button.imageButton
+{
+  border: var(--remotion-themed-border-placeholder);
+  background-color: Transparent;
+  padding: var(--remotion-themed-spacing-small);
+}
+
+button.imageButton img
+{
+  height: var(--imagebutton-image-width);
+  width: var(--imagebutton-image-width);
+}
+
+div.singleViewTopControls div.content h1.pageTitle
+{
+  padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-large) 0 var(--remotion-themed-spacing-large);
+}
+
+h2.accessControlListTitle
+{
+  margin-top: var(--remotion-themed-spacing);
+  margin-bottom: var(--remotion-themed-spacing);
+}
+
+div.accessControlListContainer
+{
+  --accesscontrollist-border: var(--remotion-themed-border-width) solid var(--color-standard-separator);
+
+  width: 100%;
+  border-top: var(--accesscontrollist-border);
+}
+
+div.accessControlListContainer table.accessControlList
+{
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+div.accessControlListContainer td.stateCombinationsButtons,
+div.accessControlListContainer td.stateCombinationsContainer
+{
+  border-right: var(--accesscontrollist-border);
+  width: 13em;
+}
+
+div.accessControlListContainer td.stateCombinationsButtons
+{
+  vertical-align: top;
+  padding-top: var(--remotion-themed-spacing);
+  padding-right: var(--remotion-themed-spacing-large);
+}
+
+div.accessControlListContainer td.stateCombinationsButtons button
+{
+  width: 100%;
+  margin-bottom: var(--remotion-themed-spacing);
+}
+
+div.accessControlListContainer td.accessControlEntriesButtons,
+div.accessControlListContainer td.accessControlEntriesContainer
+{
+  border-left: var(--accesscontrollist-border);
+  padding-left: var(--remotion-themed-spacing);
+  padding-top: var(--remotion-themed-spacing);
+}
+
+div.accessControlListContainer td.stateCombinationsButtons,
+div.accessControlListContainer td.accessControlEntriesButtons
+{
+  padding-bottom: var(--remotion-themed-spacing);
+}
+
+div.accessControlListContainer td.accessControlEntriesButtons
+{
+  text-align: right;
+  vertical-align: top;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable
+{
+  border-collapse: collapse;
+  border-style: none;
+  width: 100%;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable th.titleCellHorizontal,
+div.accessControlListContainer table.accessControlEntriesTable th.titleCellVertical
+{
+  border-bottom: var(--accesscontrollist-border);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable th.titleCellHorizontal
+{
+  text-align: left;
+  vertical-align: bottom;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable th.titleCellVertical
+{
+  text-align: left;
+  vertical-align: bottom;
+  width: var(--remotion-themed-spacing-large);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable th.titleCellVertical div
+{
+  background-color: var(--remotion-themed-background-color-page);
+  zoom: 1;
+  display: inline-block;
+  transform: rotate(270deg);
+  transform-origin: 50% 25%;
+  max-width: 1.4em !important;
+  white-space: nowrap;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable th.titleCellVertical
+{
+  max-width:1.4em !important;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable tr.header
+{
+}
+
+div.accessControlListContainer table.accessControlEntriesTable tr.odd
+{
+  background-color: var(--remotion-themed-background-color-page);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable tr.even
+{
+  background-color: var(--color-contrast-background);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.conditionCell
+{
+  width: 20%;
+  padding-top: calc(var(--remotion-themed-spacing) / 2);
+  padding-bottom: calc(var(--remotion-themed-spacing) / 2);
+  padding-right: var(--remotion-themed-spacing);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell
+{
+  padding: calc(var(--remotion-themed-spacing) / 2);
+  border-left: var(--accesscontrollist-border);
+  border-right: var(--accesscontrollist-border);
+  text-align: center;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue
+{
+  width: calc(2 * var(--remotion-themed-spacing-small) + 2 * var(--remotion-themed-border-width) + var(--accesscontrollist-permission-image-width)) !important;
+  min-height: unset;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue:hover
+{
+  border: var(--remotion-themed-border-hover);
+  background-color: var(--remotion-themed-background-color-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue:focus-within
+{
+  border: var(--remotion-themed-border-focus);
+  background-color: var(--remotion-themed-background-color-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue:focus-within:hover
+{
+  border: var(--remotion-themed-border-focus-hover);
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue a[role=checkbox]
+{
+  margin-left: 0;
+  margin-right: 0;
+  padding: var(--remotion-themed-spacing-small);
+  cursor: pointer;
+}
+
+div.accessControlListContainer table.accessControlEntriesTable td.buttonCell
+{
+  padding: calc(var(--remotion-themed-spacing) / 2);
+}
+
+div.accessControlListContainer table.accessControlEntriesTable .bocBooleanValue img
+{
+  height: var(--accesscontrollist-permission-image-width);
+  width: var(--accesscontrollist-permission-image-width);
+}
+
+div.accessControlListContainer table.accessControlEntryExpanded
+{
+  background-color: var(--remotion-themed-background-color-page);
+  width: 100%
+}
+
+div.accessControlListContainer table.accessControlEntryExpanded td.formGridTopDataRow
+{
+  border-top: 0;
+}
+
+div.accessControlListContainer table.accessControlEntryExpanded td.formGridTitleCell
+{
+  display: none;
+}
+
+div.accessControlListContainer tr.underlinedMarkerCellRow td.formGridMarkersCell
+{
+  border-top: 0;
+  border-bottom: 0;
+}
+
+div.listControlContent
+{
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 1fr min-content;
+}
+
+div.listControlContent .listControlList
+{
+  grid-row: 1;
+}
+
+div.listControlContent .listControlButtons
+{
+  grid-row: 2;
+  padding-top: var(--remotion-themed-spacing-large);
+  padding-bottom: var(--remotion-themed-spacing-large);
+}
+
+div.listControlContent .listControlList .formGridTable
+{
+  height: 100%;
+  width: 100%;
+}
+
+div.listControlContent .listControlList .formGridControlsCell:not(.formGridTopDataRow)
+{
+  height: 100%;
+}
+
+div.listControlContent .listControlList .bocList
+{
+  height: 100%;
+}
+
+td.bocListDataCell a img.Icon
+{
+  height: var(--default-icon-size);
+  width: var(--default-icon-size);
+}

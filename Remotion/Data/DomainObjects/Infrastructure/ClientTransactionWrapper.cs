@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     protected internal ClientTransactionWrapper (ClientTransaction wrappedInstance)
     {
-      ArgumentUtility.CheckNotNull ("wrappedInstance", wrappedInstance);
+      ArgumentUtility.CheckNotNull("wrappedInstance", wrappedInstance);
       _wrappedInstance = wrappedInstance;
     }
 
@@ -45,9 +45,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public TTransaction To<TTransaction> ()
     {
 // ReSharper disable NotResolvedInText - We use the generic parameter on purpose.
-      ArgumentUtility.CheckTypeIsAssignableFrom ("TTransaction", typeof (TTransaction), typeof (ClientTransaction));
+      ArgumentUtility.CheckTypeIsAssignableFrom("TTransaction", typeof(TTransaction), typeof(ClientTransaction));
 // ReSharper restore NotResolvedInText
-      return (TTransaction) (object) _wrappedInstance;
+      return (TTransaction)(object)_wrappedInstance;
     }
 
     /// <summary> Commits the transaction. </summary>
@@ -96,9 +96,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     ///   An instance of the of a type implementing <see cref="ITransaction"/> or <see langword="null"/> if the
     ///   transaction is a root transaction.
     /// </value>
-    public virtual ITransaction Parent
+    public virtual ITransaction? Parent
     {
-      get { return _wrappedInstance.ParentTransaction.ToITransaction(); }
+      get { return _wrappedInstance.ParentTransaction?.ToITransaction(); }
     }
 
     /// <summary>Gets a flag describing whether the transaction is a child transaction.</summary>
@@ -138,17 +138,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <remarks>If the type of of of the objects is not supported by the transaction, the object must be ignored.</remarks>
     public virtual void EnsureCompatibility (IEnumerable objects)
     {
-      ArgumentUtility.CheckNotNull ("objects", objects);
+      ArgumentUtility.CheckNotNull("objects", objects);
 
       var domainObjects = objects.OfType<DomainObject>().Distinct();
-      var incompatibleObjects = domainObjects.Where (obj => _wrappedInstance.RootTransaction != obj.RootTransaction).ToArray();
+      var incompatibleObjects = domainObjects.Where(obj => _wrappedInstance.RootTransaction != obj.RootTransaction).ToArray();
       if (incompatibleObjects.Length > 0)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The following objects are incompatible with the target transaction: {0}. Objects of type '{1}' could be used instead.",
-            string.Join (", ", incompatibleObjects.Select (obj => obj.ID.ToString())),
-            typeof (IDomainObjectHandle<>));
-        throw new InvalidOperationException (message);
+            string.Join(", ", incompatibleObjects.Select(obj => obj.ID.ToString())),
+            typeof(IDomainObjectHandle<>));
+        throw new InvalidOperationException(message);
       }
     }
   }

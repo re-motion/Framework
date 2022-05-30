@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends (typeof (BaseType7))]
+  [Extends(typeof(BaseType7))]
   public class BT7Mixin0 : Mixin<object, IBT7Mixin2>
   {
     [OverrideTarget]

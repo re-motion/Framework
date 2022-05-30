@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// </summary>
     /// <param name="message">The exception message.</param>
     public TransportationException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
@@ -40,7 +40,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
     /// <param name="message">The exception message.</param>
     /// <param name="innerException">The inner exception.</param>
     public TransportationException (string message, Exception innerException)
-      : base (message, innerException)
+      : base(message, innerException)
     {
     }
 

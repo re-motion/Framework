@@ -20,6 +20,7 @@ using Remotion.Context;
 
 namespace Remotion.UnitTests.Context
 {
+#if NETFRAMEWORK
   [TestFixture]
   public class CallContextStorageProviderTest
   {
@@ -28,50 +29,51 @@ namespace Remotion.UnitTests.Context
     [SetUp]
     public void SetUp ()
     {
-      _provider = new CallContextStorageProvider ();
-      _provider.FreeData ("Foo");
+      _provider = new CallContextStorageProvider();
+      _provider.FreeData("Foo");
     }
 
     [TearDown]
     public void TearDown ()
     {
-      _provider.FreeData ("Foo");
+      _provider.FreeData("Foo");
     }
 
     [Test]
     public void GetData_WithoutValue ()
     {
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
+      Assert.That(_provider.GetData("Foo"), Is.Null);
     }
 
     [Test]
     public void SetData ()
     {
-      _provider.SetData ("Foo", 45);
-      Assert.That (_provider.GetData ("Foo"), Is.EqualTo (45));
+      _provider.SetData("Foo", 45);
+      Assert.That(_provider.GetData("Foo"), Is.EqualTo(45));
     }
 
     [Test]
     public void SetData_Null ()
     {
-      _provider.SetData ("Foo", 45);
-      _provider.SetData ("Foo", null);
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
+      _provider.SetData("Foo", 45);
+      _provider.SetData("Foo", null);
+      Assert.That(_provider.GetData("Foo"), Is.Null);
     }
 
     [Test]
     public void FreeData ()
     {
-      _provider.SetData ("Foo", 45);
-      _provider.FreeData ("Foo");
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
+      _provider.SetData("Foo", 45);
+      _provider.FreeData("Foo");
+      Assert.That(_provider.GetData("Foo"), Is.Null);
     }
 
     [Test]
     public void FreeData_WithoutValue ()
     {
-      _provider.FreeData ("Foo");
-      Assert.That (_provider.GetData ("Foo"), Is.Null);
+      _provider.FreeData("Foo");
+      Assert.That(_provider.GetData("Foo"), Is.Null);
     }
   }
+#endif
 }

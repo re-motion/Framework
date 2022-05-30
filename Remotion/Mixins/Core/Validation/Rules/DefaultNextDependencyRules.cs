@@ -23,14 +23,14 @@ namespace Remotion.Mixins.Validation.Rules
   {
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.NextCallDependencyRules.Add (new DelegateValidationRule<NextCallDependencyDefinition> (DependencyMustBeSatisfied));
+      visitor.NextCallDependencyRules.Add(new DelegateValidationRule<NextCallDependencyDefinition>(DependencyMustBeSatisfied));
     }
 
-    [DelegateRuleDescription (Message = "An interface specified via the mixins's TNext type parameter is neither implemented by the target "
+    [DelegateRuleDescription(Message = "An interface specified via the mixins's TNext type parameter is neither implemented by the target "
         + "type nor another mixin.")]
     private void DependencyMustBeSatisfied (DelegateValidationRule<NextCallDependencyDefinition>.Args args)
     {
-      SingleMust (args.Definition.GetImplementer() != null || args.Definition.IsAggregate, args.Log, args.Self);
+      SingleMust(args.Definition.GetImplementer() != null || args.Definition.IsAggregate, args.Log, args.Self);
     }
   }
 }

@@ -31,10 +31,10 @@ namespace Remotion.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public ImportException () : this ("A metadata import exception occurred.") { }
-    public ImportException (string message) : base (message) { }
-    public ImportException (string message, Exception inner) : base (message, inner) { }
-    protected ImportException (SerializationInfo info, StreamingContext context) : base (info, context) { }
+    public ImportException () : this("A metadata import exception occurred.") { }
+    public ImportException (string message) : base(message) { }
+    public ImportException (string message, Exception inner) : base(message, inner) { }
+    protected ImportException (SerializationInfo info, StreamingContext context) : base(info, context) { }
 
     // methods and properties
 

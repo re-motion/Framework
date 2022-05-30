@@ -1,105 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EDD6570E-13D6-4F77-B912-9E76A2B86665}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Collections.Caching.UnitTests</RootNamespace>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion Collections Caching Unit Tests</AssemblyTitle>
     <AssemblyName>Remotion.Collections.Caching.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>0067</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0067</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="CacheFactoryTest.cs" />
-    <Compile Include="InvalidationTokenTest.cs" />
-    <Compile Include="CacheTest.cs" />
-    <Compile Include="ConcurrentCacheTest.cs" />
-    <Compile Include="InvalidationTokenBasedCacheDecoratorTest.cs" />
-    <Compile Include="LazyLockingCachingAdapterTest.cs" />
-    <Compile Include="LockingCacheDecoratorTest.cs" />
-    <Compile Include="LockingInvalidationTokenTest.cs" />
-    <Compile Include="NullCacheTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\EnumerableExtensions.cs" />
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\..\Development\Moq\Development.Moq.csproj" />
+    <ProjectReference Include="..\Collections.Caching\Core.Collections.Caching.csproj" />
+    <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{b719a305-0493-4c72-88fe-9a2fc6964578}</Project>
-      <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Development\RhinoMocks\Development.RhinoMocks.csproj">
-      <Project>{2177143e-345f-4faa-9958-1ae2b5eed242}</Project>
-      <Name>Development.RhinoMocks</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Collections.Caching\Core.Collections.Caching.csproj">
-      <Project>{2d4d3106-4853-4d18-b80b-797a2015328f}</Project>
-      <Name>Core.Collections.Caching</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Core.Core.csproj">
-      <Project>{2aa369ec-a4e7-4d75-9101-efa90e902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

@@ -20,6 +20,6 @@ namespace Remotion.Utilities
 {
   public partial class MemberInfoEqualityComparer<T>
   {
-     
+
   }
 }

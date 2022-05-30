@@ -23,6 +23,9 @@ using System.Reflection;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle("Integration Tests for Remotion DomainObjects Web Library")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
+#if NETFRAMEWORK
 [assembly: CLSCompliant(true)]
+#else
+[assembly: CLSCompliant(false)]
+#endif

@@ -17,9 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
@@ -40,43 +40,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     public void IsNull ()
     {
       var result = _extension.IsNull;
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void ConnectionOpened ()
     {
-      _extension.ConnectionOpened (_connectionID);
+      _extension.ConnectionOpened(_connectionID);
     }
 
     [Test]
     public void ConnectionClosed ()
     {
-      _extension.ConnectionClosed (_connectionID);
+      _extension.ConnectionClosed(_connectionID);
     }
 
     [Test]
     public void TransactionBegan ()
     {
-      _extension.TransactionBegan (_connectionID, IsolationLevel.Chaos);      
+      _extension.TransactionBegan(_connectionID, IsolationLevel.Chaos);
     }
 
     [Test]
     public void TransactionCommitted ()
     {
-      _extension.TransactionCommitted (_connectionID);      
+      _extension.TransactionCommitted(_connectionID);
     }
 
     [Test]
     public void TransactionRolledBack ()
     {
-      _extension.TransactionRolledBack (_connectionID);
+      _extension.TransactionRolledBack(_connectionID);
     }
 
     [Test]
     public void TransactionDisposed ()
     {
-      _extension.TransactionDisposed (_connectionID);
+      _extension.TransactionDisposed(_connectionID);
     }
 
     [Test]
@@ -84,8 +84,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var queryID = Guid.NewGuid();
       var commandText = "commandText";
-      var parameters = MockRepository.GenerateMock<IDictionary<string, object>>();
-      _extension.QueryExecuting (_connectionID, queryID, commandText, parameters);
+      var parameters = new Mock<IDictionary<string, object>>();
+      _extension.QueryExecuting(_connectionID, queryID, commandText, parameters.Object);
     }
 
     [Test]
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var queryID = Guid.NewGuid();
       var durationOfQueryExecution = new TimeSpan();
-      _extension.QueryExecuted (_connectionID, queryID, durationOfQueryExecution);
+      _extension.QueryExecuted(_connectionID, queryID, durationOfQueryExecution);
     }
 
     [Test]
@@ -102,7 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       var queryID = Guid.NewGuid();
       var durationOfDataRead = new TimeSpan();
       var rowCount = 6;
-      _extension.QueryCompleted (_connectionID, queryID, durationOfDataRead, rowCount);
+      _extension.QueryCompleted(_connectionID, queryID, durationOfDataRead, rowCount);
     }
 
     [Test]
@@ -110,7 +110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var queryID = Guid.NewGuid();
       var ex = new Exception();
-      _extension.QueryError (_connectionID, queryID, ex);
+      _extension.QueryError(_connectionID, queryID, ex);
     }
   }
 }

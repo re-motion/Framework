@@ -16,49 +16,49 @@
 // 
 using System;
 using System.Linq;
-using FluentValidation.Validators;
+using Moq;
 using NUnit.Framework;
 using Remotion.Validation.MetaValidation.Rules.Custom;
 using Remotion.Validation.UnitTests.TestDomain;
-using Rhino.Mocks;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.MetaValidation.Rules.Custom
 {
   [TestFixture]
   public class AnyRuleAppliedMetaValidationRuleTest
   {
-    private AnyRuleAppliedMetaValidationRule _rule;
-    private IPropertyValidator _propertyValidatorStub1;
-    private IPropertyValidator _propertyValidatorStub2;
+    private AnyRuleAppliedPropertyMetaValidationRule _rule;
+    private Mock<IPropertyValidator> _propertyValidatorStub1;
+    private Mock<IPropertyValidator> _propertyValidatorStub2;
 
     [SetUp]
     public void SetUp ()
     {
-      _propertyValidatorStub1 = MockRepository.GenerateStub<IPropertyValidator>();
-      _propertyValidatorStub2 = MockRepository.GenerateStub<IPropertyValidator>();
+      _propertyValidatorStub1 = new Mock<IPropertyValidator>();
+      _propertyValidatorStub2 = new Mock<IPropertyValidator>();
 
-      _rule = new AnyRuleAppliedMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
+      _rule = new AnyRuleAppliedPropertyMetaValidationRule(typeof(Customer).GetProperty("UserName"));
     }
 
     [Test]
     public void Validate_NoValidators ()
     {
-      var result = _rule.Validate (new IPropertyValidator[0]).Single();
+      var result = _rule.Validate(new IPropertyValidator[0]).Single();
 
-      Assert.That (result.IsValid, Is.False);
-      Assert.That (
+      Assert.That(result.IsValid, Is.False);
+      Assert.That(
           result.Message,
-          Is.EqualTo (
-              "'AnyRuleAppliedMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
+          Is.EqualTo(
+              "'AnyRuleAppliedPropertyMetaValidationRule' failed for property 'Remotion.Validation.UnitTests.TestDomain.Customer.UserName': "
               + "No validation rules defined."));
     }
 
     [Test]
     public void Validate_WithValidators ()
     {
-      var result = _rule.Validate (new[] { _propertyValidatorStub1, _propertyValidatorStub2 }).Single();
+      var result = _rule.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }).Single();
 
-      Assert.That (result.IsValid, Is.True);
+      Assert.That(result.IsValid, Is.True);
     }
   }
 }

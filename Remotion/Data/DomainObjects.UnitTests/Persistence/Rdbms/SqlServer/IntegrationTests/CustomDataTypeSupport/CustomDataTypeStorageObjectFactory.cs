@@ -18,7 +18,7 @@ using System;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Linq.SqlBackend.MappingResolution;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.CustomDataTypeSupport
@@ -27,8 +27,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   {
     public override IStorageTypeInformationProvider CreateStorageTypeInformationProvider (RdbmsProviderDefinition rdmsStorageProviderDefinition)
     {
-      return new CustomDataTypeStorageTypeInformationProviderDecorator (
-          base.CreateStorageTypeInformationProvider (rdmsStorageProviderDefinition));
+      return new CustomDataTypeStorageTypeInformationProviderDecorator(
+          base.CreateStorageTypeInformationProvider(rdmsStorageProviderDefinition));
     }
 
     protected override IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (
@@ -37,8 +37,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         IStorageNameProvider storageNameProvider,
         IStorageProviderDefinitionFinder providerDefinitionFinder)
     {
-      return new CustomDataTypeStorageProeprtyDefinitionFactoryDecorator (
-          base.CreateDataStoragePropertyDefinitionFactory (
+      return new CustomDataTypeStorageProeprtyDefinitionFactoryDecorator(
+          base.CreateDataStoragePropertyDefinitionFactory(
               storageProviderDefinition,
               storageTypeInformationProvider,
               storageNameProvider,
@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
         RdbmsProviderDefinition storageProviderDefinition,
         IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      return new SimpleDataTypeMappingResolverDecorator (
-          base.CreateMappingResolver (storageProviderDefinition, persistenceModelProvider),
+      return new SimpleDataTypeMappingResolverDecorator(
+          base.CreateMappingResolver(storageProviderDefinition, persistenceModelProvider),
           persistenceModelProvider);
     }
   }

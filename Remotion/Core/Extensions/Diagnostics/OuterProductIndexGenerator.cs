@@ -26,12 +26,12 @@ namespace Remotion.Diagnostics
   /// </summary>
   /// <include file='..\doc\include\Diagnostics\OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample1/*' />
   /// <include file='..\doc\include\Diagnostics\OuterProduct.xml' path='OuterProductIndexGenerator/ClassExample2/*' />
-  public class OuterProductIndexGenerator 
+  public class OuterProductIndexGenerator
   {
     private int _numberElementsProcessed;
-    private int[] _numberElementsPerDimension;
+    private int[] _numberElementsPerDimension = null!;
     private int _numberElementsOverall;
-    private int[] _currentDimensionIndices;
+    private int[] _currentDimensionIndices = null!;
 
 
     ///<overloads>
@@ -46,7 +46,7 @@ namespace Remotion.Diagnostics
     /// <param name="numberElementsPerDimension">"Number of loops for each for"-loop array</param>
     public OuterProductIndexGenerator (int[] numberElementsPerDimension)
     {
-      Init ((int[]) numberElementsPerDimension.Clone ());
+      Init((int[])numberElementsPerDimension.Clone());
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ namespace Remotion.Diagnostics
     /// <param name="array">Array from whose dimensions the dimensions of the outer product will be initialized.</param>
     public OuterProductIndexGenerator (Array array)
     {
-      Init (array);
+      Init(array);
     }
 
 
@@ -106,9 +106,9 @@ namespace Remotion.Diagnostics
       int[] numberElementsPerDimension = new int[numberDimensions];
       for (int dimensionIndex = 0; dimensionIndex < numberDimensions; ++dimensionIndex)
       {
-        numberElementsPerDimension[dimensionIndex] = array.GetLength (dimensionIndex);
+        numberElementsPerDimension[dimensionIndex] = array.GetLength(dimensionIndex);
       }
-      Init (numberElementsPerDimension);
+      Init(numberElementsPerDimension);
     }
 
     private void Init (int[] numberElementsPerDimension)
@@ -122,7 +122,7 @@ namespace Remotion.Diagnostics
     {
       int rank = _numberElementsPerDimension.Length;
       _currentDimensionIndices = new int[rank];
-      _numberElementsOverall = CalculateOuterProductNumberElementsOverall (_numberElementsPerDimension);
+      _numberElementsOverall = CalculateOuterProductNumberElementsOverall(_numberElementsPerDimension);
       _numberElementsProcessed = 0;
     }
 
@@ -149,7 +149,7 @@ namespace Remotion.Diagnostics
       }
     }
 
- 
+
     /// <summary>
     /// The recursive method which implements the variable number of for-loops together with processing callbacks to the outerProductProcessor.
     /// </summary>
@@ -162,24 +162,24 @@ namespace Remotion.Diagnostics
         return;
       }
 
-      var processingState = new OuterProductProcessingState (this, dimensionIndex);
+      var processingState = new OuterProductProcessingState(this, dimensionIndex);
 
 
       for (int currentDimensionIndex = 0; currentDimensionIndex < _numberElementsPerDimension[dimensionIndex]; ++currentDimensionIndex)
       {
         DimensionIndices[dimensionIndex] = currentDimensionIndex;
-        
-        outerProductProcessor.SetProcessingState (processingState);
-        bool continueProcessingBeforeLoop = outerProductProcessor.DoBeforeLoop ();
+
+        outerProductProcessor.SetProcessingState(processingState);
+        bool continueProcessingBeforeLoop = outerProductProcessor.DoBeforeLoop();
         if (!continueProcessingBeforeLoop)
         {
           break;
         }
-        
-        ProcessOuterProductRecursive (dimensionIndex + 1, outerProductProcessor);
 
-        outerProductProcessor.SetProcessingState (processingState);
-        bool continueProcessingAfterLoop = outerProductProcessor.DoAfterLoop ();
+        ProcessOuterProductRecursive(dimensionIndex + 1, outerProductProcessor);
+
+        outerProductProcessor.SetProcessingState(processingState);
+        bool continueProcessingAfterLoop = outerProductProcessor.DoAfterLoop();
         if (!continueProcessingAfterLoop)
         {
           break;
@@ -199,7 +199,7 @@ namespace Remotion.Diagnostics
       //Init (_numberElementsPerDimension);
       //TODO: NO reset in type, builders are one way
       InitProcessing();
-      ProcessOuterProductRecursive (0, outerProductProcessor);
+      ProcessOuterProductRecursive(0, outerProductProcessor);
     }
 
 

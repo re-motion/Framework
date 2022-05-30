@@ -33,8 +33,9 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public InvalidPropertyInformation (ITypeInformation declaringType, string name, Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
 
       _declaringType = declaringType;
       _name = name;
@@ -61,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       return this;
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T : class
+    public T? GetCustomAttribute<T> (bool inherited) where T : class
     {
       return null;
     }
@@ -86,33 +87,33 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return false; }
     }
 
-    public object GetValue (object instance, object[] indexParameters)
+    public object? GetValue (object? instance, object[]? indexParameters)
     {
       return null;
     }
 
-    public void SetValue (object instance, object value, object[] indexParameters)
+    public void SetValue (object? instance, object? value, object[]? indexParameters)
     {
     }
 
-    public IMethodInformation GetGetMethod (bool nonPublic)
+    public IMethodInformation? GetGetMethod (bool nonPublic)
     {
       return null;
     }
 
-    public IMethodInformation GetSetMethod (bool nonPublic)
+    public IMethodInformation? GetSetMethod (bool nonPublic)
     {
       return null;
     }
 
-    public IPropertyInformation FindInterfaceImplementation (Type implementationType)
+    public IPropertyInformation? FindInterfaceImplementation (Type implementationType)
     {
-      throw new InvalidOperationException ("FindInterfaceImplementation can only be called on inteface properties.");
+      throw new InvalidOperationException("FindInterfaceImplementation can only be called on interface properties.");
     }
 
     public IEnumerable<IPropertyInformation> FindInterfaceDeclarations ()
     {
-      return null;
+      return Array.Empty<IPropertyInformation>();
     }
 
     public ParameterInfo[] GetIndexParameters ()
@@ -125,9 +126,9 @@ namespace Remotion.Data.DomainObjects.Mapping
       return new IMethodInformation[0];
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return ReferenceEquals (this, obj);
+      return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode ()
@@ -137,7 +138,7 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     public override string ToString ()
     {
-      return string.Format ("{0} (invalid property)", _name);
+      return string.Format("{0} (invalid property)", _name);
     }
 
     bool INullObject.IsNull

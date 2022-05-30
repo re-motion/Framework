@@ -32,9 +32,9 @@ public sealed class ControlFactory
     InlineEdit
   }
 
-  public static IBusinessObjectBoundWebControl CreateControl (IBusinessObjectProperty property)
+  public static IBusinessObjectBoundWebControl? CreateControl (IBusinessObjectProperty property)
   {
-    return CreateControl (property, EditMode.Edit);
+    return CreateControl(property, EditMode.Edit);
   }
 
   /// <summary>
@@ -46,7 +46,7 @@ public sealed class ControlFactory
   /// <returns> 
   ///   A new, uninitialized business object bound control that can handle the specified property. 
   /// </returns>
-  public static IBusinessObjectBoundWebControl CreateControl (IBusinessObjectProperty property, EditMode editMode)
+  public static IBusinessObjectBoundWebControl? CreateControl (IBusinessObjectProperty property, EditMode editMode)
   {
     if (! property.IsList)
     {
@@ -72,7 +72,7 @@ public sealed class ControlFactory
     return null;
   }
 
-	private ControlFactory()
+	private ControlFactory ()
 	{
 	}
 }

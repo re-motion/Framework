@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Remotion.ExtensibleEnums;
@@ -29,7 +30,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
   /// delegates to them to retrieve localized name for a specified <see cref="IExtensibleEnum"/>.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IExtensibleEnumGlobalizationService), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public sealed class CompoundExtensibleEnumGlobalizationService : IExtensibleEnumGlobalizationService
   {
     private readonly IReadOnlyCollection<IExtensibleEnumGlobalizationService> _extensibleEnumGlobalizationServices;
@@ -40,7 +41,7 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
     /// <param name="extensibleEnumGlobalizationServices"> The <see cref="IExtensibleEnumGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundExtensibleEnumGlobalizationService (IEnumerable<IExtensibleEnumGlobalizationService> extensibleEnumGlobalizationServices)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumGlobalizationServices", extensibleEnumGlobalizationServices);
+      ArgumentUtility.CheckNotNull("extensibleEnumGlobalizationServices", extensibleEnumGlobalizationServices);
 
       _extensibleEnumGlobalizationServices = extensibleEnumGlobalizationServices.ToArray();
     }
@@ -50,13 +51,13 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
       get { return _extensibleEnumGlobalizationServices; }
     }
 
-    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, out string result)
+    public bool TryGetExtensibleEnumValueDisplayName (IExtensibleEnum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
       foreach (var service in _extensibleEnumGlobalizationServices)
       {
-        if (service.TryGetExtensibleEnumValueDisplayName (value, out result))
+        if (service.TryGetExtensibleEnumValueDisplayName(value, out result))
           return true;
       }
 
@@ -66,16 +67,16 @@ namespace Remotion.Globalization.ExtensibleEnums.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (IExtensibleEnum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      Dictionary<CultureInfo, string> result = new Dictionary<CultureInfo, string> ();
+      Dictionary<CultureInfo, string> result = new Dictionary<CultureInfo, string>();
 
       foreach (var service in _extensibleEnumGlobalizationServices)
       {
-        foreach (var localization in service.GetAvailableEnumDisplayNames (value))
+        foreach (var localization in service.GetAvailableEnumDisplayNames(value))
         {
-          if (!result.ContainsKey (localization.Key))
-            result.Add (localization.Key, localization.Value);
+          if (!result.ContainsKey(localization.Key))
+            result.Add(localization.Key, localization.Value);
         }
       }
 

@@ -28,19 +28,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Role
     [Test]
     public void CascadeToSubstitution ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      Group userGroup = TestHelper.CreateGroup ("UserGroup", Guid.NewGuid().ToString(), null, tenant);
-      Group roleGroup = TestHelper.CreateGroup ("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
-      User user = TestHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
-      Position position = TestHelper.CreatePosition ("Position");
-      Role role = TestHelper.CreateRole (user, roleGroup, position);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
+      Group userGroup = TestHelper.CreateGroup("UserGroup", Guid.NewGuid().ToString(), null, tenant);
+      Group roleGroup = TestHelper.CreateGroup("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
+      User user = TestHelper.CreateUser("user", "Firstname", "Lastname", "Title", userGroup, tenant);
+      Position position = TestHelper.CreatePosition("Position");
+      Role role = TestHelper.CreateRole(user, roleGroup, position);
 
       Substitution substitution = Substitution.NewObject();
       substitution.SubstitutedRole = role;
 
       role.Delete();
 
-      Assert.That (substitution.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(substitution.State.IsInvalid, Is.True);
     }
   }
 }

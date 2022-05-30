@@ -22,7 +22,7 @@ namespace Remotion.UnitTests.Reflection.CodeGeneration
   public class TestMethodReferencingAttribute : MethodReferencingAttribute
   {
     public TestMethodReferencingAttribute (Type declaringType, string methodName, string methodSignature)
-        : base (declaringType, methodName, methodSignature)
+        : base(declaringType, methodName, methodSignature)
     {
     }
   }

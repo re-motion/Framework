@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -36,7 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
   /// Provides a label for rendering a <see cref="BocMultilineTextValue"/> control in read-only mode. 
   /// Rendering is done by the parent class.
   /// </summary>
-  [ImplementationFor (typeof (IBocMultilineTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocMultilineTextValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocMultilineTextValueRenderer : BocTextValueRendererBase<IBocMultilineTextValue>, IBocMultilineTextValueRenderer
   {
     public BocMultilineTextValueRenderer (
@@ -45,26 +46,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures, labelReferenceRenderer, validationErrorRenderer)
     {
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender, TextBoxStyle textBoxStyle)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      textBoxStyle.RegisterJavaScriptInclude (ResourceUrlFactory, htmlHeadAppender);
+      textBoxStyle.RegisterJavaScriptInclude(ResourceUrlFactory, htmlHeadAppender);
 
-      string key = typeof (BocMultilineTextValueRenderer).FullName + "_Style";
-      var url = ResourceUrlFactory.CreateThemedResourceUrl (typeof (BocMultilineTextValueRenderer), ResourceType.Html, "BocMultilineTextValue.css");
-      htmlHeadAppender.RegisterStylesheetLink (key, url, HtmlHeadAppender.Priority.Library);
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
+      string key = typeof(BocMultilineTextValueRenderer).GetFullNameChecked() + "_Style";
+      var url = ResourceUrlFactory.CreateThemedResourceUrl(typeof(BocMultilineTextValueRenderer), ResourceType.Html, "BocMultilineTextValue.css");
+      htmlHeadAppender.RegisterStylesheetLink(key, url, HtmlHeadAppender.Priority.Library);
     }
 
     public void Render (BocMultilineTextValueRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      base.Render (renderingContext);
+      base.Render(renderingContext);
     }
 
     protected override Label GetLabel (BocRenderingContext<IBocMultilineTextValue> renderingContext)
@@ -73,35 +76,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       label.ID = renderingContext.Control.GetValueName();
       label.EnableViewState = false;
 
-      string[] lines = renderingContext.Control.Value;
-      string text = RenderUtility.JoinLinesWithEncoding (lines ?? Enumerable.Empty<string>());
+      string[]? lines = renderingContext.Control.Value;
+      string text = RenderUtility.JoinLinesWithEncoding(lines ?? Enumerable.Empty<string>());
 
-      if (string.IsNullOrEmpty (text) && renderingContext.Control.IsDesignMode)
-      {
-        text = c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
       label.Text = text;
 
       label.Width = Unit.Empty;
       label.Height = Unit.Empty;
-      label.ApplyStyle (renderingContext.Control.CommonStyle);
-      label.ApplyStyle (renderingContext.Control.LabelStyle);
+      label.ApplyStyle(renderingContext.Control.CommonStyle);
+      label.ApplyStyle(renderingContext.Control.LabelStyle);
 
-      label.Attributes.Add ("tabindex", "0");
+      label.Attributes.Add("tabindex", "0");
       // Screenreaders (JAWS v18) will not read the contents of a span with role=textbox,
       // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
       //label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Textbox);
       //label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.SetLabelsReferenceOnControl (label, labelIDs, new[] { label.ID });
+      LabelReferenceRenderer.SetLabelsReferenceOnControl(label, labelIDs, new[] { label.ClientID });
 
       return label;
     }
 
-    public override string GetCssClassBase(IBocMultilineTextValue control)
+    public override string GetCssClassBase (IBocMultilineTextValue control)
     {
       return "bocMultilineTextValue";
     }

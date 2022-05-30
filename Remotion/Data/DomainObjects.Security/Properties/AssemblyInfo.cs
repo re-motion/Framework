@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Security Support for DomainObjects")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Security and Remotion.Data.DomainObjects assemblies.")]
-[assembly: AssemblyCulture ("")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]

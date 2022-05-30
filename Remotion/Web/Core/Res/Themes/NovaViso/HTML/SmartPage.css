@@ -1,0 +1,98 @@
+/* Style applied to the SmartPage. */
+
+#SmartPageStatusIsSubmittingMessage
+{
+  background-color: var(--remotion-themed-background-color-page);
+  box-sizing: border-box;
+  box-shadow: var(--remotion-themed-popup-shadow);
+  z-index: var(--z-index-max);
+
+  font: var(--remotion-themed-font-bold);
+  color: var(--color-disabled-text);
+}
+
+/* region: ASP.NET error page */
+.SmartPageErrorBody
+{
+  text-align:left;
+  background-color: white;
+  overflow: auto;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.5em;
+}
+
+.SmartPageErrorBody > div
+{
+  font-family: "Verdana" !important;
+  font-weight: normal !important;
+  font-size: 0.85em !important;
+  color: black !important;
+}
+
+.SmartPageErrorBody p
+{
+  font-family: "Verdana" !important;
+  font-weight: normal !important;
+  color: black !important;
+  margin-top: -5px !important;
+}
+
+.SmartPageErrorBody b
+{
+  font-family: "Verdana" !important;
+  font-weight: bold !important;
+  color: black !important;
+  margin-top: -5px !important;
+}
+
+.SmartPageErrorBody h1
+{
+  font-family: "Verdana" !important;
+  font-weight: normal !important;
+  font-size: 18pt !important;
+  color: red !important;
+}
+
+.SmartPageErrorBody h2
+{
+  font-family: "Verdana" !important;
+  font-weight: normal !important;
+  font-size: 14pt !important;
+  color: maroon !important;
+}
+
+.SmartPageErrorBody pre
+{
+  font-family: "Lucida Console" !important;
+  font-size: .9em !important;
+}
+
+.SmartPageErrorBody .marker
+{
+  font-weight: bold !important;
+  color: black !important;
+  text-decoration: none !important;
+}
+
+.SmartPageErrorBody.version
+{
+  color: gray !important;
+}
+
+.SmartPageErrorBody .error
+{
+  margin-bottom: 10px !important;
+}
+
+.SmartPageErrorBody .expandable
+{
+  text-decoration: underline !important;
+  font-weight: bold !important;
+  color: navy !important;
+  cursor: hand !important;
+}
+/* end region */

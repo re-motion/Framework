@@ -34,11 +34,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ObjectIDWithoutClassIDStoragePropertyDefinition (IRdbmsStoragePropertyDefinition valueProperty, ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("valueProperty", valueProperty);
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("valueProperty", valueProperty);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       if (classDefinition.IsAbstract)
-        throw new ArgumentException ("ObjectIDs without ClassIDs cannot have abstract ClassDefinitions.", "classDefinition");
+        throw new ArgumentException("ObjectIDs without ClassIDs cannot have abstract ClassDefinitions.", "classDefinition");
 
       _valueProperty = valueProperty;
       _classDefinition = classDefinition;
@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public Type PropertyType
     {
-      get { return typeof (ObjectID); }
+      get { return typeof(ObjectID); }
     }
 
     public IRdbmsStoragePropertyDefinition ValueProperty
@@ -75,44 +75,44 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
       return _valueProperty.GetColumns();
     }
 
-    public IEnumerable<ColumnValue> SplitValue (object value)
+    public IEnumerable<ColumnValue> SplitValue (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
-      CheckClassDefinition (objectID, "value");
+      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      CheckClassDefinition(objectID, "value");
 
-      var innerValue = GetValueOrNull (objectID);
-      return _valueProperty.SplitValue (innerValue);
+      var innerValue = GetValueOrNull(objectID);
+      return _valueProperty.SplitValue(innerValue);
     }
 
-    public IEnumerable<ColumnValue> SplitValueForComparison (object value)
+    public IEnumerable<ColumnValue> SplitValueForComparison (object? value)
     {
-      var objectID = ArgumentUtility.CheckType<ObjectID> ("value", value);
-      CheckClassDefinition (objectID, "value");
+      var objectID = ArgumentUtility.CheckType<ObjectID>("value", value);
+      CheckClassDefinition(objectID, "value");
 
-      var innerValue = GetValueOrNull (objectID);
-      return _valueProperty.SplitValueForComparison (innerValue);
+      var innerValue = GetValueOrNull(objectID);
+      return _valueProperty.SplitValueForComparison(innerValue);
     }
 
-    public ColumnValueTable SplitValuesForComparison (IEnumerable<object> values)
+    public ColumnValueTable SplitValuesForComparison (IEnumerable<object?> values)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
+      ArgumentUtility.CheckNotNull("values", values);
 
-      var innerValues = values.Select (
+      var innerValues = values.Select(
           v =>
           {
-            var objectID = (ObjectID) v;
-            CheckClassDefinition (objectID, "values");
-            return GetValueOrNull (objectID);
+            var objectID = (ObjectID?)v;
+            CheckClassDefinition(objectID, "values");
+            return GetValueOrNull(objectID);
           });
 
-      return _valueProperty.SplitValuesForComparison (innerValues);
+      return _valueProperty.SplitValuesForComparison(innerValues);
     }
 
-    public object CombineValue (IColumnValueProvider columnValueProvider)
+    public object? CombineValue (IColumnValueProvider columnValueProvider)
     {
-      ArgumentUtility.CheckNotNull ("columnValueProvider", columnValueProvider);
+      ArgumentUtility.CheckNotNull("columnValueProvider", columnValueProvider);
 
-      var value = _valueProperty.CombineValue (columnValueProvider);
+      var value = _valueProperty.CombineValue(columnValueProvider);
       if (value == null)
         return null;
       return new ObjectID(_classDefinition, value);
@@ -120,16 +120,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public IRdbmsStoragePropertyDefinition UnifyWithEquivalentProperties (IEnumerable<IRdbmsStoragePropertyDefinition> equivalentProperties)
     {
-      ArgumentUtility.CheckNotNull ("equivalentProperties", equivalentProperties);
-      var checkedProperties = equivalentProperties.Select (property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+      ArgumentUtility.CheckNotNull("equivalentProperties", equivalentProperties);
+      var checkedProperties = equivalentProperties.Select(property => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
           this,
           property,
           "equivalentProperties",
-          prop => Tuple.Create<string, object> ("class definition", prop.ClassDefinition)
-          )).ToArray ();
+          prop => Tuple.Create<string, object?>("class definition", prop.ClassDefinition)
+          )).ToArray();
 
-      var unifiedValueProperty = _valueProperty.UnifyWithEquivalentProperties (checkedProperties.Select (p => p.ValueProperty));
-      return new ObjectIDWithoutClassIDStoragePropertyDefinition (unifiedValueProperty, _classDefinition);
+      var unifiedValueProperty = _valueProperty.UnifyWithEquivalentProperties(checkedProperties.Select(p => p.ValueProperty));
+      return new ObjectIDWithoutClassIDStoragePropertyDefinition(unifiedValueProperty, _classDefinition);
     }
 
     public ForeignKeyConstraintDefinition CreateForeignKeyConstraint (
@@ -137,22 +137,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         EntityNameDefinition referencedTableName,
         ObjectIDStoragePropertyDefinition referencedObjectIDProperty)
     {
-      ArgumentUtility.CheckNotNull ("nameProvider", nameProvider);
-      ArgumentUtility.CheckNotNull ("referencedTableName", referencedTableName);
-      ArgumentUtility.CheckNotNull ("referencedObjectIDProperty", referencedObjectIDProperty);
+      ArgumentUtility.CheckNotNull("nameProvider", nameProvider);
+      ArgumentUtility.CheckNotNull("referencedTableName", referencedTableName);
+      ArgumentUtility.CheckNotNull("referencedObjectIDProperty", referencedObjectIDProperty);
 
       var referencingColumns = ValueProperty.GetColumnsForComparison();
-      var referencedColumns = referencedObjectIDProperty.ValueProperty.GetColumnsForComparison ();
-      return new ForeignKeyConstraintDefinition (nameProvider (referencingColumns), referencedTableName, referencingColumns, referencedColumns);
+      var referencedColumns = referencedObjectIDProperty.ValueProperty.GetColumnsForComparison();
+      return new ForeignKeyConstraintDefinition(nameProvider(referencingColumns), referencedTableName, referencingColumns, referencedColumns);
     }
 
-    private void CheckClassDefinition (ObjectID objectID, string paramName)
+    private void CheckClassDefinition (ObjectID? objectID, string paramName)
     {
       if (objectID != null && objectID.ClassDefinition != _classDefinition)
-        throw new ArgumentException ("The specified ObjectID has an invalid ClassDefinition.", paramName);
+        throw new ArgumentException("The specified ObjectID has an invalid ClassDefinition.", paramName);
     }
 
-    private object GetValueOrNull (ObjectID objectID)
+    private object? GetValueOrNull (ObjectID? objectID)
     {
       return objectID == null ? null : objectID.Value;
     }

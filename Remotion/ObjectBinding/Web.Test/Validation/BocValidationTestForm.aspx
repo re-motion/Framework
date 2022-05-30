@@ -88,10 +88,7 @@
                 <td><remotion:bocreferencevalue id=ReferenceField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Partner" NullItemErrorMessage="Fehler">
             <dropdownliststyle autopostback="True">
             </DropDownListStyle>
-
-            <PersistedCommand>
-            <remotion:BocCommand Type="None"></remotion:BocCommand>
-            </PersistedCommand></remotion:bocreferencevalue></td></tr>
+            </remotion:bocreferencevalue></td></tr>
               <tr>
                 <td></td>
                 <td><remotion:bocbooleanvalue id=BooleanField runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Deceased" errormessage="Fehler" AutoPostBack="True"></remotion:bocbooleanvalue></td></tr>
@@ -175,7 +172,7 @@
         <p>
             <remotion:formgridmanager id=FormGridManager runat="server"  visible="true"></remotion:formgridmanager>
             <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
-            <remotion:BocDataSourceValidationFailureDisptachingValidator ID="DataSourceValidationFailureDisptachingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BocDataSourceValidationFailureDisptachingValidator>
+            <remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="DataSourceControlValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server"></remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator>
             
            
         </p>

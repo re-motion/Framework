@@ -24,7 +24,7 @@ using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
@@ -40,84 +40,84 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
   public class DomainObjectsConfigurationTest
   {
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
-      DomainObjectsConfiguration.SetCurrent (null);
+      DomainObjectsConfiguration.SetCurrent(null);
     }
 
     [Test]
-    public void GetAndSet()
+    public void GetAndSet ()
     {
       IDomainObjectsConfiguration configuration =
-          new FakeDomainObjectsConfiguration (new MappingLoaderConfiguration(), new StorageConfiguration(), new QueryConfiguration());
-      DomainObjectsConfiguration.SetCurrent (configuration);
+          new FakeDomainObjectsConfiguration(new MappingLoaderConfiguration(), new StorageConfiguration(), new QueryConfiguration());
+      DomainObjectsConfiguration.SetCurrent(configuration);
 
-      Assert.That (DomainObjectsConfiguration.Current, Is.SameAs (configuration));
+      Assert.That(DomainObjectsConfiguration.Current, Is.SameAs(configuration));
     }
 
     [Test]
-    public void Get()
+    public void Get ()
     {
-      Assert.That (DomainObjectsConfiguration.Current, Is.Not.Null);
+      Assert.That(DomainObjectsConfiguration.Current, Is.Not.Null);
     }
 
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
       DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-      Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
-      Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
+      Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+      Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
     }
 
     [Test]
-    public void Initialize_WithConfigurationHavingMinimumSettings()
+    public void Initialize_WithConfigurationHavingMinimumSettings ()
     {
       using (TempFile configFile = new TempFile())
       {
-        SetUpConfigurationWrapper (ConfigurationFactory.LoadConfigurationFromFile (configFile, ResourceManager.GetDomainObjectsConfigurationWithMinimumSettings()));
+        SetUpConfigurationWrapper(ConfigurationFactory.LoadConfigurationFromFile(configFile, ResourceManager.GetDomainObjectsConfigurationWithMinimumSettings()));
 
         DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-        Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition.Factory, Is.TypeOf<SqlStorageObjectFactory>());
-        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo (1));
-        Assert.That (domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+        Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition.Factory, Is.TypeOf<SqlStorageObjectFactory>());
+        Assert.That(domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo(1));
+        Assert.That(domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
       }
     }
 
     [Test]
     public void Initialize_WithResolvedInterfaceStorageObjectFactory ()
     {
-      using (TempFile configFile = new TempFile ())
+      using (TempFile configFile = new TempFile())
       {
-        SetUpConfigurationWrapper (
-            ConfigurationFactory.LoadConfigurationFromFile (
+        SetUpConfigurationWrapper(
+            ConfigurationFactory.LoadConfigurationFromFile(
                 configFile, ResourceManager.GetDomainObjectsConfigurationWithResolvedInterfaceStorageObjectFactory()));
 
-        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration ();
+        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-        Assert.That (domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition.Factory, Is.TypeOf<CustomStorageObjectFactory>());
-        Assert.That (domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+        Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition.Factory, Is.TypeOf<CustomStorageObjectFactory>());
+        Assert.That(domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
       }
     }
 
     [Test]
     public void Initialize_WithUnresolvedInterfaceStorageObjectFactory ()
     {
-      using (TempFile configFile = new TempFile ())
+      using (TempFile configFile = new TempFile())
       {
-        SetUpConfigurationWrapper (
-            ConfigurationFactory.LoadConfigurationFromFile (
+        SetUpConfigurationWrapper(
+            ConfigurationFactory.LoadConfigurationFromFile(
                 configFile, ResourceManager.GetDomainObjectsConfigurationWithUnresolvedInterfaceStorageObjectFactory()));
 
-        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration ();
+        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-        Assert.That (
-            () => domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, 
-            Throws.TypeOf<ConfigurationErrorsException>().With.Message.StringStarting (
+        Assert.That(
+            () => domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition,
+            Throws.TypeOf<ConfigurationErrorsException>().With.Message.StartsWith(
                 "The factory type 'Remotion.Data.DomainObjects.UnitTests.Configuration.DomainObjectsConfigurationTest+IUnresolvedCustomStorageObjectFactory' "
                 + "specified in the configuration of the 'Test' StorageProvider definition cannot be instantiated because it is abstract. Either "
                 + "register an implementation of 'IUnresolvedCustomStorageObjectFactory' in the configured service locator, or specify a non-abstract "
@@ -128,85 +128,85 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void Initialize_WithMixedStorageObjectFactory ()
     {
-      using (TempFile configFile = new TempFile ())
-      {
-        SetUpConfigurationWrapper (
-            ConfigurationFactory.LoadConfigurationFromFile (
-                configFile, ResourceManager.GetDomainObjectsConfigurationWithMixedStorageObjectFactory ()));
-
-        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration ();
-
-        Assert.That (Mixin.Get<FakeMixin> (domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition.Factory), Is.Not.Null);
-      }
-    }
-
-    [Test]
-    public void Initialize_WithConfigurationHavingCustomMappingLoader()
-    {
       using (TempFile configFile = new TempFile())
       {
-        SetUpConfigurationWrapper (ConfigurationFactory.LoadConfigurationFromFile (configFile, ResourceManager.GetDomainObjectsConfigurationWithFakeMappingLoader()));
+        SetUpConfigurationWrapper(
+            ConfigurationFactory.LoadConfigurationFromFile(
+                configFile, ResourceManager.GetDomainObjectsConfigurationWithMixedStorageObjectFactory()));
 
         DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-        Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.MappingLoader.MappingLoaderType, Is.SameAs (typeof (FakeMappingLoader)));
-
-        Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo (1));
-        Assert.That (domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+        Assert.That(Mixin.Get<FakeMixin>(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition.Factory), Is.Not.Null);
       }
     }
 
     [Test]
-    public void Initialize_WithConfigurationHavingCustomSectionGroupName()
+    public void Initialize_WithConfigurationHavingCustomMappingLoader ()
+    {
+      using (TempFile configFile = new TempFile())
+      {
+        SetUpConfigurationWrapper(ConfigurationFactory.LoadConfigurationFromFile(configFile, ResourceManager.GetDomainObjectsConfigurationWithFakeMappingLoader()));
+
+        DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
+
+        Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.MappingLoader.MappingLoaderType, Is.SameAs(typeof(FakeMappingLoader)));
+
+        Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo(1));
+        Assert.That(domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+      }
+    }
+
+    [Test]
+    public void Initialize_WithConfigurationHavingCustomSectionGroupName ()
     {
       using (TempFile configFile = new TempFile())
       {
         System.Configuration.Configuration configuration =
-            ConfigurationFactory.LoadConfigurationFromFile (configFile, ResourceManager.GetDomainObjectsConfigurationWithCustomSectionGroupName());
-        SetUpConfigurationWrapper (configuration);
+            ConfigurationFactory.LoadConfigurationFromFile(configFile, ResourceManager.GetDomainObjectsConfigurationWithCustomSectionGroupName());
+        SetUpConfigurationWrapper(configuration);
 
-        DomainObjectsConfiguration domainObjectsConfiguration = (DomainObjectsConfiguration) configuration.GetSectionGroup ("domainObjects");
+        DomainObjectsConfiguration domainObjectsConfiguration = (DomainObjectsConfiguration)configuration.GetSectionGroup("domainObjects");
         // For ReSharper's sake
-        Assertion.IsNotNull (domainObjectsConfiguration);
-        
-        Assert.That (domainObjectsConfiguration.SectionGroupName, Is.EqualTo ("domainObjects"));
-        Assert.That (domainObjectsConfiguration.MappingLoader, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
-        Assert.That (domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo (1));
-        Assert.That (domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
+        Assertion.IsNotNull(domainObjectsConfiguration);
+
+        Assert.That(domainObjectsConfiguration.SectionGroupName, Is.EqualTo("domainObjects"));
+        Assert.That(domainObjectsConfiguration.MappingLoader, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage.DefaultStorageProviderDefinition, Is.Not.Null);
+        Assert.That(domainObjectsConfiguration.Storage.StorageProviderDefinitions.Count, Is.EqualTo(1));
+        Assert.That(domainObjectsConfiguration.Storage.StorageGroups, Is.Empty);
       }
     }
 
     [Test]
-    public void GetMappingLoader_SameInstanceTwice()
+    public void GetMappingLoader_SameInstanceTwice ()
     {
       DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-      Assert.That (domainObjectsConfiguration.MappingLoader, Is.SameAs (domainObjectsConfiguration.MappingLoader));
+      Assert.That(domainObjectsConfiguration.MappingLoader, Is.SameAs(domainObjectsConfiguration.MappingLoader));
     }
 
     [Test]
-    public void GetStorage_SameInstanceTwice()
+    public void GetStorage_SameInstanceTwice ()
     {
       DomainObjectsConfiguration domainObjectsConfiguration = new DomainObjectsConfiguration();
 
-      Assert.That (domainObjectsConfiguration.Storage, Is.SameAs (domainObjectsConfiguration.Storage));
+      Assert.That(domainObjectsConfiguration.Storage, Is.SameAs(domainObjectsConfiguration.Storage));
     }
 
     private void SetUpConfigurationWrapper (System.Configuration.Configuration configuration)
     {
-      ConfigurationWrapper.SetCurrent (ConfigurationWrapper.CreateFromConfigurationObject (configuration));
+      ConfigurationWrapper.SetCurrent(ConfigurationWrapper.CreateFromConfigurationObject(configuration));
     }
 
     public interface ICustomStorageObjectFactory : IStorageObjectFactory
     {
     }
 
-    [ImplementationFor (typeof (ICustomStorageObjectFactory))]
+    [ImplementationFor(typeof(ICustomStorageObjectFactory))]
     public class CustomStorageObjectFactory : SqlStorageObjectFactory, ICustomStorageObjectFactory
     {
     }
@@ -215,7 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
     {
     }
 
-    [Uses (typeof (FakeMixin))]
+    [Uses(typeof(FakeMixin))]
     public class MixedCustomStorageObjectFactory : SqlStorageObjectFactory
     {
     }

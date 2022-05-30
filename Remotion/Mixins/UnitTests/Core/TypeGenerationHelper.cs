@@ -30,9 +30,9 @@ namespace Remotion.Mixins.UnitTests.Core
   {
     public static readonly IPipeline Pipeline =
         SafeServiceLocator.Current.GetInstance<IPipelineFactory>()
-            .Create (
+            .Create(
             "TypeGenerationHelper",
-            new MixinParticipant (
+            new MixinParticipant(
                 SafeServiceLocator.Current.GetInstance<IConfigurationProvider>(),
                 SafeServiceLocator.Current.GetInstance<IMixinTypeProvider>(),
                 SafeServiceLocator.Current.GetInstance<ITargetTypeModifier>(),
@@ -40,25 +40,25 @@ namespace Remotion.Mixins.UnitTests.Core
 
     public static Type ForceTypeGeneration (Type targetType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
 
-      var classContext = MixinConfiguration.ActiveConfiguration.GetContext (targetType)
-                         ?? new ClassContext (targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
+      var classContext = MixinConfiguration.ActiveConfiguration.GetContext(targetType)
+                         ?? new ClassContext(targetType, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
 
       // Explicitly pass classContext in to the MixinParticipant; that way we generate a mixed type even if there are no mixins on the type.
-      return Pipeline.ReflectionService.GetAssembledType (new AssembledTypeID (targetType, new[] { classContext }));
+      return Pipeline.ReflectionService.GetAssembledType(new AssembledTypeID(targetType, new[] { classContext }));
     }
 
     public static object ForceTypeGenerationAndCreateInstance (Type targetType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
 
-      return Activator.CreateInstance (ForceTypeGeneration (targetType));
+      return Activator.CreateInstance(ForceTypeGeneration(targetType));
     }
 
     public static T ForceTypeGenerationAndCreateInstance<T> ()
     {
-      return (T) ForceTypeGenerationAndCreateInstance (typeof (T));
+      return (T)ForceTypeGenerationAndCreateInstance(typeof(T));
     }
   }
 }

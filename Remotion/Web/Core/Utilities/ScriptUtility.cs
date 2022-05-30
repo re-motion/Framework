@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Text;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -25,7 +26,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.Web.Utilities
 {
   /// <summary> Utility class for client-side scripts. </summary>
-  [ImplementationFor (typeof (IScriptUtility), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IScriptUtility), Lifetime = LifetimeKind.Singleton)]
   public class ScriptUtility : IScriptUtility
   {
     private readonly IInfrastructureResourceUrlFactory _infrastructureResourceUrlFactory;
@@ -33,6 +34,18 @@ namespace Remotion.Web.Utilities
     public static IScriptUtility Instance
     {
       get { return SafeServiceLocator.Current.GetInstance<IScriptUtility>(); }
+    }
+
+    /// <summary>Escapes special characters (e.g. <c>\n</c>) in the passed <see cref="WebString"/>.</summary>
+    /// <param name="input">The unescaped input.</param>
+    /// <returns>The string with special characters escaped.</returns>
+    /// <remarks>
+    /// This is required when adding client script to the page containing special characters. ASP.NET automatically
+    /// escapes client scripts created by <see cref="O:System.Web.UI.ClientScriptManager.GetPostBackEventReference">ClientScript.GetPostBackEventReference.</see>.
+    /// </remarks>
+    public static string EscapeClientScript (WebString input)
+    {
+      return EscapeClientScript(input.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks));
     }
 
     /// <summary> Escapes special characters (e.g. <c>\n</c>) in the passed string. </summary>
@@ -44,9 +57,9 @@ namespace Remotion.Web.Utilities
     /// </remarks>
     public static string EscapeClientScript (string input)
     {
-      ArgumentUtility.CheckNotNull ("input", input);
+      ArgumentUtility.CheckNotNull("input", input);
 
-      StringBuilder output = new StringBuilder (input.Length + 5);
+      StringBuilder output = new StringBuilder(input.Length + 5);
       for (int idxChars = 0; idxChars < input.Length; idxChars++)
       {
         char c = input[idxChars];
@@ -54,27 +67,27 @@ namespace Remotion.Web.Utilities
         {
           case '\t':
             {
-              output.Append (@"\t");
+              output.Append(@"\t");
               break;
             }
           case '\n':
             {
-              output.Append (@"\n");
+              output.Append(@"\n");
               break;
             }
           case '\r':
             {
-              output.Append (@"\r");
+              output.Append(@"\r");
               break;
             }
           case '"':
             {
-              output.Append ("\\\"");
+              output.Append("\\\"");
               break;
             }
           case '\'':
             {
-              output.Append (@"\'");
+              output.Append(@"\'");
               break;
             }
           case '\\':
@@ -85,76 +98,76 @@ namespace Remotion.Web.Utilities
                 char nextChar = input[idxChars + 1];
                 if (prevChar == '<' && nextChar == '/')
                 {
-                  output.Append (c);
+                  output.Append(c);
                   break;
                 }
               }
-              output.Append (@"\\");
+              output.Append(@"\\");
               break;
             }
           case '\v':
             {
-              output.Append (c);
+              output.Append(c);
               break;
             }
           case '\f':
             {
-              output.Append (c);
+              output.Append(c);
               break;
             }
           default:
             {
-              output.Append (c);
+              output.Append(c);
               break;
             }
         }
       }
-      return output.ToString ();
+      return output.ToString();
     }
 
     public ScriptUtility (IInfrastructureResourceUrlFactory infrastructureResourceUrlFactory)
     {
-      ArgumentUtility.CheckNotNull ("infrastructureResourceUrlFactory", infrastructureResourceUrlFactory);
-      
+      ArgumentUtility.CheckNotNull("infrastructureResourceUrlFactory", infrastructureResourceUrlFactory);
+
       _infrastructureResourceUrlFactory = infrastructureResourceUrlFactory;
     }
 
     public void RegisterJavaScriptInclude (IControl control, HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      string key = typeof (ScriptUtility).FullName + "_StyleUtility";
-      if (!htmlHeadAppender.IsRegistered (key))
+      string key = typeof(ScriptUtility).GetFullNameChecked() + "_StyleUtility";
+      if (!htmlHeadAppender.IsRegistered(key))
       {
-        var url = _infrastructureResourceUrlFactory.CreateThemedResourceUrl (ResourceType.Html, "StyleUtility.js");
+        var url = _infrastructureResourceUrlFactory.CreateThemedResourceUrl(ResourceType.Html, "StyleUtility.js");
 
-        htmlHeadAppender.RegisterUtilitiesJavaScriptInclude ();
-        htmlHeadAppender.RegisterJavaScriptInclude (key, url);
+        htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
+        htmlHeadAppender.RegisterJavaScriptInclude(key, url);
 
-        control.Page.ClientScript.RegisterClientScriptBlock (control, typeof(ScriptUtility), key, "StyleUtility.AddBrowserSwitch();");
+        control.Page!.ClientScript.RegisterClientScriptBlock(control, typeof(ScriptUtility), key, "StyleUtility.AddBrowserSwitch();");
       }
     }
 
-    public void RegisterElementForBorderSpans (IControl control, string jQuerySelectorForBorderSpanTarget)
+    public void RegisterElementForBorderSpans (IControl control, string cssSelectorForBorderSpanTarget)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty ("jQuerySelectorForBorderSpanTarget", jQuerySelectorForBorderSpanTarget);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty("cssSelectorForBorderSpanTarget", cssSelectorForBorderSpanTarget);
 
-      string key = "BorderSpans_" + jQuerySelectorForBorderSpanTarget;
-      string script = string.Format ("StyleUtility.CreateBorderSpans ('{0}');", jQuerySelectorForBorderSpanTarget);
-      control.Page.ClientScript.RegisterStartupScriptBlock (control, typeof (ScriptUtility), key, script);
+      string key = "BorderSpans_" + cssSelectorForBorderSpanTarget;
+      string script = string.Format("StyleUtility.CreateBorderSpans ('{0}');", cssSelectorForBorderSpanTarget);
+      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof(ScriptUtility), key, script);
     }
 
-    public void RegisterResizeOnElement (IControl control, string jquerySelector, string eventHandler)
+    public void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNullOrEmpty ("jquerySelector", jquerySelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("eventHandler", eventHandler);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNullOrEmpty("cssSelector", cssSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("eventHandler", eventHandler);
 
       string key = control.ClientID + "_ResizeEventHandler";
-      string script = string.Format ("PageUtility.Instance.RegisterResizeHandler({0}, {1});", jquerySelector, eventHandler);
-      control.Page.ClientScript.RegisterStartupScriptBlock (control, typeof (ScriptUtility), key, script);
+      string script = string.Format("PageUtility.Instance.RegisterResizeHandler({0}, {1});", cssSelector, eventHandler);
+      control.Page!.ClientScript.RegisterStartupScriptBlock(control, typeof(ScriptUtility), key, script);
     }
   }
 }

@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -29,21 +30,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var result = DomainObjectIDs.Order1.GetHandle<Order>();
 
-      Assert.That (result, Is.TypeOf<DomainObjectHandle<Order>> ());
-      Assert.That (result.ObjectID, Is.EqualTo (DomainObjectIDs.Order1));
-      Assert.That (VariableTypeInferrer.GetVariableType (result), Is.SameAs (typeof (IDomainObjectHandle<Order>)));
+      Assert.That(result, Is.TypeOf<DomainObjectHandle<Order>>());
+      Assert.That(result.ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
+      Assert.That(VariableTypeInferrer.GetVariableType(result), Is.SameAs(typeof(IDomainObjectHandle<Order>)));
     }
 
     [Test]
     public void GetHandle_FromID_InvalidType_ThrowsInvalidCastException ()
     {
-      Assert.That (
+      Assert.That(
           () => DomainObjectIDs.Order1.GetHandle<OrderItem>(),
           Throws.TypeOf<ArgumentException>()
-                .With.Message.EqualTo (
+                .With.ArgumentExceptionMessageEqualTo(
                     "The ObjectID 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' cannot be represented as an "
-                    + "'IDomainObjectHandle<Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem>'.\r\n"
-                    + "Parameter name: T"));
+                    + "'IDomainObjectHandle<Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem>'.",
+                    "T"));
     }
 
     [Test]
@@ -51,26 +52,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var result = DomainObjectIDs.Order1.GetHandle<Order>();
 
-      Assert.That (result, Is.AssignableTo<IDomainObjectHandle<Order>> ());
-      Assert.That (result, Is.AssignableTo<IDomainObjectHandle<TestDomainBase>> ());
-      Assert.That (result, Is.AssignableTo<IDomainObjectHandle<DomainObject>> ());
+      Assert.That(result, Is.AssignableTo<IDomainObjectHandle<Order>>());
+      Assert.That(result, Is.AssignableTo<IDomainObjectHandle<TestDomainBase>>());
+      Assert.That(result, Is.AssignableTo<IDomainObjectHandle<DomainObject>>());
     }
 
     [Test]
     public void GetHandle_FromID_AllowsCovariantTypeParameters ()
     {
-      var result1 = DomainObjectIDs.Order1.GetHandle<Order> ();
-      var result2 = DomainObjectIDs.Order1.GetHandle<TestDomainBase> ();
-      var result3 = DomainObjectIDs.Order1.GetHandle<DomainObject> ();
+      var result1 = DomainObjectIDs.Order1.GetHandle<Order>();
+      var result2 = DomainObjectIDs.Order1.GetHandle<TestDomainBase>();
+      var result3 = DomainObjectIDs.Order1.GetHandle<DomainObject>();
 
-      Assert.That (result1, Is.TypeOf<DomainObjectHandle<Order>> ());
-      Assert.That (VariableTypeInferrer.GetVariableType (result1), Is.SameAs (typeof (IDomainObjectHandle<Order>)));
+      Assert.That(result1, Is.TypeOf<DomainObjectHandle<Order>>());
+      Assert.That(VariableTypeInferrer.GetVariableType(result1), Is.SameAs(typeof(IDomainObjectHandle<Order>)));
 
-      Assert.That (result2, Is.TypeOf<DomainObjectHandle<Order>> ());
-      Assert.That (VariableTypeInferrer.GetVariableType (result2), Is.SameAs (typeof (IDomainObjectHandle<TestDomainBase>)));
+      Assert.That(result2, Is.TypeOf<DomainObjectHandle<Order>>());
+      Assert.That(VariableTypeInferrer.GetVariableType(result2), Is.SameAs(typeof(IDomainObjectHandle<TestDomainBase>)));
 
-      Assert.That (result3, Is.TypeOf<DomainObjectHandle<Order>> ());
-      Assert.That (VariableTypeInferrer.GetVariableType (result3), Is.SameAs (typeof (IDomainObjectHandle<DomainObject>)));
+      Assert.That(result3, Is.TypeOf<DomainObjectHandle<Order>>());
+      Assert.That(VariableTypeInferrer.GetVariableType(result3), Is.SameAs(typeof(IDomainObjectHandle<DomainObject>)));
     }
 
     [Test]
@@ -78,46 +79,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       Order order = Order.NewObject();
 
-      var orderTypedHandle = order.GetHandle ();
-      var testDomainBaseTypedHandle1 = ((TestDomainBase) order).GetHandle ();
-      var testDomainBaseTypedHandle2 = order.GetHandle<TestDomainBase> ();
-      var domainObjectTypedHandle = ((DomainObject) order).GetHandle ();
+      var orderTypedHandle = order.GetHandle();
+      var testDomainBaseTypedHandle1 = ((TestDomainBase)order).GetHandle();
+      var testDomainBaseTypedHandle2 = order.GetHandle<TestDomainBase>();
+      var domainObjectTypedHandle = ((DomainObject)order).GetHandle();
 
-      Assert.That (orderTypedHandle.ObjectID, Is.EqualTo (order.ID));
-      Assert.That (orderTypedHandle, Is.TypeOf<DomainObjectHandle<Order>> ());
-      Assert.That (VariableTypeInferrer.GetVariableType (orderTypedHandle), Is.SameAs (typeof (IDomainObjectHandle<Order>)));
+      Assert.That(orderTypedHandle.ObjectID, Is.EqualTo(order.ID));
+      Assert.That(orderTypedHandle, Is.TypeOf<DomainObjectHandle<Order>>());
+      Assert.That(VariableTypeInferrer.GetVariableType(orderTypedHandle), Is.SameAs(typeof(IDomainObjectHandle<Order>)));
 
-      Assert.That (testDomainBaseTypedHandle1, Is.EqualTo (orderTypedHandle));
-      Assert.That (VariableTypeInferrer.GetVariableType (testDomainBaseTypedHandle1), Is.SameAs (typeof (IDomainObjectHandle<TestDomainBase>)));
+      Assert.That(testDomainBaseTypedHandle1, Is.EqualTo(orderTypedHandle));
+      Assert.That(VariableTypeInferrer.GetVariableType(testDomainBaseTypedHandle1), Is.SameAs(typeof(IDomainObjectHandle<TestDomainBase>)));
 
-      Assert.That (testDomainBaseTypedHandle2, Is.EqualTo (orderTypedHandle));
-      Assert.That (VariableTypeInferrer.GetVariableType (testDomainBaseTypedHandle2), Is.SameAs (typeof (IDomainObjectHandle<TestDomainBase>)));
+      Assert.That(testDomainBaseTypedHandle2, Is.EqualTo(orderTypedHandle));
+      Assert.That(VariableTypeInferrer.GetVariableType(testDomainBaseTypedHandle2), Is.SameAs(typeof(IDomainObjectHandle<TestDomainBase>)));
 
-      Assert.That (domainObjectTypedHandle, Is.EqualTo (orderTypedHandle));
-      Assert.That (VariableTypeInferrer.GetVariableType (domainObjectTypedHandle), Is.SameAs (typeof (IDomainObjectHandle<DomainObject>)));
+      Assert.That(domainObjectTypedHandle, Is.EqualTo(orderTypedHandle));
+      Assert.That(VariableTypeInferrer.GetVariableType(domainObjectTypedHandle), Is.SameAs(typeof(IDomainObjectHandle<DomainObject>)));
     }
 
     [Test]
     public void GetHandle_Null ()
     {
-      Assert.That (() => ((Order) null).GetHandle (), Throws.TypeOf<ArgumentNullException>());
+      Assert.That(() => ((Order)null).GetHandle(), Throws.TypeOf<ArgumentNullException>());
     }
 
     [Test]
     public void GetSafeHandle_FromObject ()
     {
-      Order order = Order.NewObject ();
+      Order order = Order.NewObject();
 
-      var handle = order.GetSafeHandle ();
-      Assert.That (handle.ObjectID, Is.EqualTo (order.ID));
-      Assert.That (handle, Is.TypeOf<DomainObjectHandle<Order>> ());
-      Assert.That (VariableTypeInferrer.GetVariableType (handle), Is.SameAs (typeof (IDomainObjectHandle<Order>)));
+      var handle = order.GetSafeHandle();
+      Assert.That(handle.ObjectID, Is.EqualTo(order.ID));
+      Assert.That(handle, Is.TypeOf<DomainObjectHandle<Order>>());
+      Assert.That(VariableTypeInferrer.GetVariableType(handle), Is.SameAs(typeof(IDomainObjectHandle<Order>)));
     }
 
     [Test]
     public void GetSafeHandle_Null ()
     {
-      Assert.That (((Order) null).GetSafeHandle(), Is.Null);
+      Assert.That(((Order)null).GetSafeHandle(), Is.Null);
     }
 
     [Test]
@@ -125,10 +126,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var handle = DomainObjectIDs.Order1.GetHandle<Order>();
 
-      var deserialized = Serializer.SerializeAndDeserialize (handle);
+      var deserialized = Serializer.SerializeAndDeserialize(handle);
 
-      Assert.That (deserialized, Is.TypeOf<DomainObjectHandle<Order>>());
-      Assert.That (deserialized.ObjectID, Is.EqualTo (DomainObjectIDs.Order1));
+      Assert.That(deserialized, Is.TypeOf<DomainObjectHandle<Order>>());
+      Assert.That(deserialized.ObjectID, Is.EqualTo(DomainObjectIDs.Order1));
     }
   }
 }

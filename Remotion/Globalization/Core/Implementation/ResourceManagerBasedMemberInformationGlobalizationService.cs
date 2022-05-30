@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Remotion.Reflection;
@@ -35,7 +36,7 @@ namespace Remotion.Globalization.Implementation
   /// The long name is resolved using <see cref="IMemberInformationNameResolver"/>.
   /// </remarks>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton,
+  [ImplementationFor(typeof(IMemberInformationGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class ResourceManagerBasedMemberInformationGlobalizationService : IMemberInformationGlobalizationService
   {
@@ -48,8 +49,8 @@ namespace Remotion.Globalization.Implementation
         IGlobalizationService globalizationService,
         IMemberInformationNameResolver memberInformationNameResolver)
     {
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      ArgumentUtility.CheckNotNull ("memberInformationNameResolver", memberInformationNameResolver);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("memberInformationNameResolver", memberInformationNameResolver);
 
       _globalizationService = globalizationService;
       _memberInformationNameResolver = memberInformationNameResolver;
@@ -58,15 +59,15 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetTypeDisplayName (
         ITypeInformation typeInformation,
         ITypeInformation typeInformationForResourceResolution,
-        out string result)
+        [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      result = GetStringOrDefault (
+      result = GetStringOrDefault(
           typeInformationForResourceResolution,
           typeInformation.Name,
-          _memberInformationNameResolver.GetTypeName (typeInformation),
+          _memberInformationNameResolver.GetTypeName(typeInformation),
           "type:");
 
       return result != null;
@@ -75,15 +76,15 @@ namespace Remotion.Globalization.Implementation
     public bool TryGetPropertyDisplayName (
         IPropertyInformation propertyInformation,
         ITypeInformation typeInformationForResourceResolution,
-        out string result)
+        [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
-      result = GetStringOrDefault (
+      result = GetStringOrDefault(
           typeInformationForResourceResolution,
           propertyInformation.Name,
-          _memberInformationNameResolver.GetPropertyName (propertyInformation),
+          _memberInformationNameResolver.GetPropertyName(propertyInformation),
           "property:");
 
       return result != null;
@@ -91,45 +92,45 @@ namespace Remotion.Globalization.Implementation
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       var prefix = "property:";
       var shortName = prefix + propertyInformation.Name;
-      var longName = prefix + _memberInformationNameResolver.GetPropertyName (propertyInformation);
+      var longName = prefix + _memberInformationNameResolver.GetPropertyName(propertyInformation);
 
-      var resourceManager = _globalizationService.GetResourceManager (typeInformationForResourceResolution);
-      var result = resourceManager.GetAvailableStrings (longName);
+      var resourceManager = _globalizationService.GetResourceManager(typeInformationForResourceResolution);
+      var result = resourceManager.GetAvailableStrings(longName);
       if (!result.Any())
-        result = resourceManager.GetAvailableStrings (shortName);
+        result = resourceManager.GetAvailableStrings(shortName);
 
       return result;
     }
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableTypeDisplayNames (ITypeInformation typeInformation, ITypeInformation typeInformationForResourceResolution)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
-      ArgumentUtility.CheckNotNull ("typeInformationForResourceResolution", typeInformationForResourceResolution);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
 
       var prefix = "type:";
       var shortName = prefix + typeInformation.Name;
-      var longName = prefix + _memberInformationNameResolver.GetTypeName (typeInformation);
+      var longName = prefix + _memberInformationNameResolver.GetTypeName(typeInformation);
 
-      var resourceManager = _globalizationService.GetResourceManager (typeInformationForResourceResolution);
+      var resourceManager = _globalizationService.GetResourceManager(typeInformationForResourceResolution);
 
-      var result = resourceManager.GetAvailableStrings (longName);
-      if (!result.Any ())
-        result = resourceManager.GetAvailableStrings (shortName);
+      var result = resourceManager.GetAvailableStrings(longName);
+      if (!result.Any())
+        result = resourceManager.GetAvailableStrings(shortName);
 
       return result;
     }
 
-    private string GetStringOrDefault (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
+    private string? GetStringOrDefault (ITypeInformation typeInformation, string shortMemberName, string longMemberName, string resourcePrefix)
     {
-      var resourceManager = _globalizationService.GetResourceManager (typeInformation);
+      var resourceManager = _globalizationService.GetResourceManager(typeInformation);
 
-      return resourceManager.GetStringOrDefault (resourcePrefix + longMemberName)
-             ?? resourceManager.GetStringOrDefault (resourcePrefix + shortMemberName);
+      return resourceManager.GetStringOrDefault(resourcePrefix + longMemberName)
+             ?? resourceManager.GetStringOrDefault(resourcePrefix + shortMemberName);
     }
   }
 }

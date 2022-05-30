@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
+using Remotion.Web.Contracts.DiagnosticMetadata;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
 {
@@ -25,24 +27,27 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class DropDownMenuControlObject : DropDownMenuControlObjectBase
   {
     public DropDownMenuControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
-    [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]
+    /// <summary>
+    /// Returns the button type of the DropDownMenu's button.
+    /// </summary>
+    public ButtonType GetButtonType ()
+    {
+      return (ButtonType)Enum.Parse(typeof(ButtonType), Scope[DiagnosticMetadataAttributes.ButtonType]);
+    }
+
+    [Obsolete("Use the Open() method instead. (Version 1.17.15.0)", false)]
     protected void OpenDropDownMenu ()
     {
       Open();
     }
 
-    /// <inheritdoc/>
-    public override void Open ()
+    protected override void PerformOpen (ElementScope menuButtonScope)
     {
-      if (!IsOpen())
-      {
-        var dropDownMenuButtonScope = Scope.FindCss ("a.DropDownMenuButton");
-        dropDownMenuButtonScope.Click();
-      }
+      menuButtonScope.Click();
     }
   }
 }

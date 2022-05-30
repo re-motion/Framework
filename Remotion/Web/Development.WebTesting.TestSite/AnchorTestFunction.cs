@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class AnchorTestFunction : WxeFunction
   {
     public AnchorTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("AnchorTest.aspx");
+    private WxeStep Step1 = new WxePageStep("AnchorTest.aspx");
   }
 }

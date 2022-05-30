@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -33,41 +34,41 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <remarks>
   ///   May only be added to an <see cref="IBusinessObjectBoundWebControl"/>.
   /// </remarks>
-  [TypeConverter (typeof (ExpandableObjectConverter))]
+  [TypeConverter(typeof(ExpandableObjectConverter))]
   public class BocMenuItem : WebMenuItem
   {
     public BocMenuItem (
         string id,
         string category,
-        string text,
+        WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
         RequiredSelection requiredSelection,
         bool isDisabled,
         BocMenuItemCommand command)
-        : this (id, category, text, icon, disabledIcon, WebMenuItemStyle.IconAndText, requiredSelection, isDisabled, command)
+        : this(id, category, text, icon, disabledIcon, WebMenuItemStyle.IconAndText, requiredSelection, isDisabled, command)
     {
     }
 
     public BocMenuItem (
-        string id,
-        string category,
-        string text,
+        string? id,
+        string? category,
+        WebString text,
         IconInfo icon,
         IconInfo disabledIcon,
         WebMenuItemStyle style,
         RequiredSelection requiredSelection,
         bool isDisabled,
         BocMenuItemCommand command)
-        : base (id, category, text, icon, disabledIcon, style, requiredSelection, isDisabled, command)
+        : base(id, category, text, icon, disabledIcon, style, requiredSelection, isDisabled, command)
     {
     }
 
     public BocMenuItem ()
-        : this (
+        : this(
             null,
             null,
-            null,
+            WebString.Empty,
             new IconInfo(),
             new IconInfo(),
             WebMenuItemStyle.IconAndText,
@@ -83,42 +84,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return "BocMenuItem"; }
     }
 
-    public override Command Command
+    public override Command? Command
     {
       get { return base.Command; }
-      set { base.Command = (BocCommand) value; }
+      set { base.Command = (BocCommand?)value; }
     }
 
     /// <summary> Gets or sets the <see cref="IBusinessObjectBoundWebControl"/> to which this object belongs. </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public new IBusinessObjectBoundWebControl OwnerControl
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public new IBusinessObjectBoundWebControl? OwnerControl
     {
-      get { return (IBusinessObjectBoundWebControl) base.OwnerControlImplementation; }
+      get { return (IBusinessObjectBoundWebControl?)base.OwnerControlImplementation; }
       set { base.OwnerControlImplementation = value; }
     }
 
-    protected override IControl OwnerControlImplementation
+    protected override IControl? OwnerControlImplementation
     {
       get { return OwnerControl; }
-      set { OwnerControl = (IBusinessObjectBoundWebControl) value; }
+      set { OwnerControl = (IBusinessObjectBoundWebControl?)value; }
     }
 
     protected override void OnOwnerControlChanged ()
     {
       base.OnOwnerControlChanged();
-      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer> ("OwnerControl", OwnerControl);
+      ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer>("OwnerControl", OwnerControl!);
     }
 
-    protected IBocMenuItemContainer BocMenuItemContainer
+    protected IBocMenuItemContainer? BocMenuItemContainer
     {
-      get { return (IBocMenuItemContainer) OwnerControl; }
+      get { return (IBocMenuItemContainer?)OwnerControl; }
     }
 
     public override bool EvaluateVisible ()
     {
       if (! base.EvaluateVisible())
         return false;
+
+      Assertion.IsNotNull(BocMenuItemContainer, "BocMenuItemContainer must not be null.");
 
       bool isReadOnly = BocMenuItemContainer.IsReadOnly;
       bool isSelectionEnabled = BocMenuItemContainer.IsSelectionEnabled;

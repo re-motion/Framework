@@ -17,7 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
@@ -27,8 +28,10 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Services;
 using Remotion.Web.UI.Controls;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -54,6 +57,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     private TypeWithReference _businessObject;
     private IBusinessObjectDataSource _dataSource;
     private IBusinessObjectReferenceProperty _propertyReferenceValue;
+    private Mock<IWebServiceFactory> _webServiceFactoryStub;
 
     public BocReferenceValueTest ()
     {
@@ -63,26 +67,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public override void SetUp ()
     {
       base.SetUp();
-      _bocReferenceValue = new BocReferenceValueMock();
+
+      _webServiceFactoryStub = new Mock<IWebServiceFactory>();
+
+      _bocReferenceValue = new BocReferenceValueMock(_webServiceFactoryStub.Object);
       _bocReferenceValue.ID = "BocReferenceValue";
       _bocReferenceValue.ShowOptionsMenu = false;
-      _bocReferenceValue.Command.Type = CommandType.None;
-      _bocReferenceValue.Command.Show = CommandShow.Always;
       _bocReferenceValue.InternalValue = Guid.Empty.ToString();
-      NamingContainer.Controls.Add (_bocReferenceValue);
+      NamingContainer.Controls.Add(_bocReferenceValue);
 
       _businessObject = TypeWithReference.Create();
 
       _propertyReferenceValue =
-          (IBusinessObjectReferenceProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("ReferenceValue");
+          (IBusinessObjectReferenceProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue");
 
-      _dataSource = new StubDataSource (((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
 
-      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>
-          (new GetObjectService ((IBusinessObjectWithIdentity) TypeWithReference.Create()));
-      ((IBusinessObject) _businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>
-          (new ReflectionBusinessObjectWebUIService());
+      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService((IBusinessObjectWithIdentity)TypeWithReference.Create()));
+      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
     }
 
 
@@ -92,8 +95,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
       _bocReferenceValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.False);
     }
 
     [Test]
@@ -103,8 +106,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue.ShowOptionsMenu = true;
       _bocReferenceValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.False);
     }
 
 
@@ -115,10 +118,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue.DropDownListStyle.AutoPostBack = true;
       _bocReferenceValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocReferenceValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("DropDownListStyle.AutoPostBack"));
+      Assert.That(WcagHelperMock.HasWarning, Is.True);
+      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
+      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocReferenceValue));
+      Assert.That(WcagHelperMock.Property, Is.EqualTo("DropDownListStyle.AutoPostBack"));
     }
 
 
@@ -129,10 +132,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue.ShowOptionsMenu = true;
       _bocReferenceValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasError, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocReferenceValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("ShowOptionsMenu"));
+      Assert.That(WcagHelperMock.HasError, Is.True);
+      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
+      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocReferenceValue));
+      Assert.That(WcagHelperMock.Property, Is.EqualTo("ShowOptionsMenu"));
     }
 
 
@@ -141,109 +144,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
       _bocReferenceValue.ShowOptionsMenu = true;
-      _bocReferenceValue.OptionsMenuItems.Add (new WebMenuItem());
-      Assert.That (_bocReferenceValue.HasOptionsMenu, Is.False);
+      _bocReferenceValue.OptionsMenuItems.Add(new WebMenuItem());
+      Assert.That(_bocReferenceValue.HasOptionsMenu, Is.False);
     }
 
     [Test]
     public void IsOptionsMenuVisibleWithoutWcagOverride ()
     {
-      ControlInvoker invoker = new ControlInvoker (_bocReferenceValue);
+      ControlInvoker invoker = new ControlInvoker(_bocReferenceValue);
       invoker.InitRecursive();
 
       WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
       _bocReferenceValue.ShowOptionsMenu = true;
-      _bocReferenceValue.OptionsMenuItems.Add (new WebMenuItem());
-      Assert.That (_bocReferenceValue.HasOptionsMenu, Is.True);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithEventCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command.Type = CommandType.Event;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasError, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocReferenceValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("Command"));
-    }
-
-    [Test]
-    public void IsEventCommandDisabledWithWcagOverride ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocReferenceValue.Command.Type = CommandType.Event;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.False);
-    }
-
-    [Test]
-    public void IsEventCommandEnabledWithoutWcagOverride ()
-    {
-      _businessObject.ReferenceValue = TypeWithReference.Create();
-      _bocReferenceValue.DataSource = _dataSource;
-      _bocReferenceValue.Property = _propertyReferenceValue;
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-      _bocReferenceValue.Command.Type = CommandType.Event;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.True);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithWxeFunctionCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command.Type = CommandType.WxeFunction;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasError, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocReferenceValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("Command"));
-    }
-
-    [Test]
-    public void IsWxeFunctionCommandDisabledWithWcagOverride ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-      _bocReferenceValue.Command.Type = CommandType.WxeFunction;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.False);
-    }
-
-    [Test]
-    public void IsWxeFunctionCommandEnabledWithoutWcagOverride ()
-    {
-      _businessObject.ReferenceValue = TypeWithReference.Create();
-      _bocReferenceValue.DataSource = _dataSource;
-      _bocReferenceValue.Property = _propertyReferenceValue;
-      WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-      _bocReferenceValue.Command.Type = CommandType.WxeFunction;
-      Assert.That (((IBocReferenceValueBase) _bocReferenceValue).IsCommandEnabled(), Is.True);
-    }
-
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithHrefCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command.Type = CommandType.Href;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
-    }
-
-    [Test]
-    public void EvaluateWaiConformityDebugLevelAWithoutCommand ()
-    {
-      WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-      _bocReferenceValue.Command = null;
-      _bocReferenceValue.EvaluateWaiConformity();
-
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      _bocReferenceValue.OptionsMenuItems.Add(new WebMenuItem());
+      Assert.That(_bocReferenceValue.HasOptionsMenu, Is.True);
     }
 
 
@@ -252,8 +166,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _bocReferenceValue.ReadOnly = true;
       string[] actual = _bocReferenceValue.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (0));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(0));
     }
 
     [Test]
@@ -261,20 +175,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _bocReferenceValue.ReadOnly = false;
       string[] actual = _bocReferenceValue.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (((IBocReferenceValue)_bocReferenceValue).GetValueName()));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(1));
+      Assert.That(actual[0], Is.EqualTo(((IBocReferenceValue)_bocReferenceValue).GetValueName()));
     }
 
 
     [Test]
     public void SetValueToObject ()
     {
-      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = false;
       _bocReferenceValue.Value = referencedObject;
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (referencedObject));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(referencedObject));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -282,24 +196,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _bocReferenceValue.IsDirty = false;
       _bocReferenceValue.Value = null;
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (null));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(null));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
 
     [Test]
     public void HasValue_ValueIsSet_ReturnsTrue ()
     {
-      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity referencedObject = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.Value = referencedObject;
-      Assert.That (_bocReferenceValue.HasValue, Is.True);
+      Assert.That(_bocReferenceValue.HasValue, Is.True);
     }
 
     [Test]
     public void HasValue_ValueIsNull_ReturnsFalse ()
     {
       _bocReferenceValue.Value = null;
-      Assert.That (_bocReferenceValue.HasValue, Is.False);
+      Assert.That(_bocReferenceValue.HasValue, Is.False);
     }
 
     [Test]
@@ -311,9 +225,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadValue (true);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (null));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      _bocReferenceValue.LoadValue(true);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(null));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -325,9 +239,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadValue (false);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (_businessObject.ReferenceValue));
-      Assert.That (_bocReferenceValue.IsDirty, Is.False);
+      _bocReferenceValue.LoadValue(false);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(_businessObject.ReferenceValue));
+      Assert.That(_bocReferenceValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -336,40 +250,40 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _businessObject.ReferenceValue = null;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadValue (false);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (_businessObject.ReferenceValue));
-      Assert.That (_bocReferenceValue.IsDirty, Is.False);
+      _bocReferenceValue.LoadValue(false);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(_businessObject.ReferenceValue));
+      Assert.That(_bocReferenceValue.IsDirty, Is.False);
     }
 
     [Test]
     public void LoadValueAndInterimFalseWithDataSourceNull ()
     {
-      var value = (IBusinessObjectWithIdentity) TypeWithReference.Create ();
+      var value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.DataSource = null;
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = value;
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadValue (false);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (value));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      _bocReferenceValue.LoadValue(false);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(value));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
     [Test]
     public void LoadValueAndInterimFalseWithPropertyNull ()
     {
-      var value = (IBusinessObjectWithIdentity) TypeWithReference.Create ();
+      var value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = null;
       _bocReferenceValue.Value = value;
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadValue (false);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (value));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      _bocReferenceValue.LoadValue(false);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(value));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -378,39 +292,39 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource.BusinessObject = null;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create ();
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadValue (false);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (null));
-      Assert.That (_bocReferenceValue.IsDirty, Is.False);
+      _bocReferenceValue.LoadValue(false);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(null));
+      Assert.That(_bocReferenceValue.IsDirty, Is.False);
     }
 
 
     [Test]
     public void LoadUnboundValueAndInterimTrue ()
     {
-      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadUnboundValue (value, true);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (null));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      _bocReferenceValue.LoadUnboundValue(value, true);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(null));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
     [Test]
     public void LoadUnboundValueAndInterimFalseWithObject ()
     {
-      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadUnboundValue (value, false);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (value));
-      Assert.That (_bocReferenceValue.IsDirty, Is.False);
+      _bocReferenceValue.LoadUnboundValue(value, false);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(value));
+      Assert.That(_bocReferenceValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -418,86 +332,86 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       IBusinessObjectWithIdentity value = null;
       _bocReferenceValue.Property = _propertyReferenceValue;
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) TypeWithReference.Create();
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)TypeWithReference.Create();
       _bocReferenceValue.IsDirty = true;
 
-      _bocReferenceValue.LoadUnboundValue (value, false);
-      Assert.That (_bocReferenceValue.Value, Is.EqualTo (value));
-      Assert.That (_bocReferenceValue.IsDirty, Is.False);
+      _bocReferenceValue.LoadUnboundValue(value, false);
+      Assert.That(_bocReferenceValue.Value, Is.EqualTo(value));
+      Assert.That(_bocReferenceValue.IsDirty, Is.False);
     }
 
     [Test]
     public void SaveValueAndInterimTrue ()
     {
-      var value = TypeWithReference.Create ();
+      var value = TypeWithReference.Create();
       _businessObject.ReferenceValue = value;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
 
-      var result = _bocReferenceValue.SaveValue (true);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (value));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      var result = _bocReferenceValue.SaveValue(true);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(value));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
     [Test]
     public void SaveValueAndInterimFalse ()
     {
-      var value = TypeWithReference.Create ();
+      var value = TypeWithReference.Create();
       _businessObject.ReferenceValue = value;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
 
-      var result = _bocReferenceValue.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (null));
-      Assert.That (_bocReferenceValue.IsDirty, Is.False);
+      var result = _bocReferenceValue.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(null));
+      Assert.That(_bocReferenceValue.IsDirty, Is.False);
     }
 
     [Test]
     public void SaveValueAndNotValid ()
     {
-      var value = TypeWithReference.Create ();
+      var value = TypeWithReference.Create();
       _businessObject.ReferenceValue = value;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = true;
-      _bocReferenceValue.RegisterValidator (new AlwaysInvalidValidator());
+      _bocReferenceValue.RegisterValidator(new AlwaysInvalidValidator());
 
-      var result = _bocReferenceValue.SaveValue (false);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (value));
-      Assert.That (_bocReferenceValue.IsDirty, Is.True);
+      var result = _bocReferenceValue.SaveValue(false);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(value));
+      Assert.That(_bocReferenceValue.IsDirty, Is.True);
     }
 
     [Test]
     public void SaveValueAndIsDirtyFalse ()
     {
-      var value = TypeWithReference.Create ();
+      var value = TypeWithReference.Create();
       _businessObject.ReferenceValue = value;
       _bocReferenceValue.DataSource = _dataSource;
       _bocReferenceValue.Property = _propertyReferenceValue;
       _bocReferenceValue.Value = null;
       _bocReferenceValue.IsDirty = false;
 
-      var result = _bocReferenceValue.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.ReferenceValue, Is.EqualTo (value));
-      Assert.That (_bocReferenceValue.IsDirty, Is.False);
+      var result = _bocReferenceValue.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.ReferenceValue, Is.EqualTo(value));
+      Assert.That(_bocReferenceValue.IsDirty, Is.False);
     }
 
     [Test]
     public void GetValidationValue_ValueSet ()
     {
-        var value = TypeWithReference.Create ("Name");
-      _bocReferenceValue.Value = (IBusinessObjectWithIdentity) value;
+        var value = TypeWithReference.Create("Name");
+      _bocReferenceValue.Value = (IBusinessObjectWithIdentity)value;
 
-      Assert.That (_bocReferenceValue.ValidationValue, Is.EqualTo (value.UniqueIdentifier));
+      Assert.That(_bocReferenceValue.ValidationValue, Is.EqualTo(value.UniqueIdentifier));
     }
 
     [Test]
@@ -505,31 +419,105 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _bocReferenceValue.Value = null;
 
-      Assert.That (_bocReferenceValue.ValidationValue, Is.Null);
+      Assert.That(_bocReferenceValue.ValidationValue, Is.Null);
     }
 
     [Test]
     public void GetValueName ()
     {
-      Assert.That (((IBocReferenceValue)_bocReferenceValue).GetValueName(), Is.EqualTo ("NamingContainer_BocReferenceValue_Value"));
+      Assert.That(((IBocReferenceValue)_bocReferenceValue).GetValueName(), Is.EqualTo("NamingContainer_BocReferenceValue_Value"));
     }
 
     [Test]
     public void CreateValidators_UsesValidatorFactory ()
     {
       var control = new BocReferenceValue();
-      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
-      var factoryMock = MockRepository.GenerateMock<IBocReferenceValueValidatorFactory>();
-      serviceLocatorMock.Expect (m => m.GetInstance<IBocReferenceValueValidatorFactory>()).Return (factoryMock);
-      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+      var serviceLocatorMock = new Mock<IServiceLocator>();
+      var factoryMock = new Mock<IBocReferenceValueValidatorFactory>();
+      serviceLocatorMock.Setup(m => m.GetInstance<IBocReferenceValueValidatorFactory>()).Returns(factoryMock.Object).Verifiable();
+      factoryMock.Setup(f => f.CreateValidators(control, false)).Returns(new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock))
+      using (new ServiceLocatorScope(serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }
 
-      factoryMock.VerifyAllExpectations();
-      serviceLocatorMock.VerifyAllExpectations();
+      factoryMock.Verify();
+      serviceLocatorMock.Verify();
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextVisible_WithTextFromProperty ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = true;
+      control.NullItemText = PlainTextString.CreateFromText("The null item");
+
+      var dropDownList = new DropDownList();
+      ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      Assert.That(dropDownList.Items.Count, Is.EqualTo(1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That(singleItem.Value, Is.EqualTo("==null=="));
+      Assert.That(singleItem.Text, Is.EqualTo("The null item"));
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextVisible_WithTextFromResourceManager ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = true;
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Count, Is.EqualTo(1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That(singleItem.Value, Is.EqualTo("==null=="));
+      Assert.That(singleItem.Text, Is.Not.Empty);
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextNotVisible_WithTextFromProperty ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = false;
+      control.NullItemText = PlainTextString.CreateFromText("The null item");
+
+      var dropDownList = new DropDownList();
+      ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      Assert.That(dropDownList.Items.Count, Is.EqualTo(1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That(singleItem.Value, Is.EqualTo("==null=="));
+      Assert.That(singleItem.Text, Is.Empty);
+      Assert.That(singleItem.Attributes["label"], Is.EqualTo(" "));
+      Assert.That(singleItem.Attributes["aria-label"], Is.EqualTo("The null item"));
+    }
+
+    [Test]
+    public void PopulateDropDownList_WithNullValueTextNotVisible_WithTextFromResourceManager ()
+    {
+      var control = new BocReferenceValue();
+      control.DropDownListStyle.NullValueTextVisible = false;
+
+      var dropDownList = new DropDownList();
+      using (CultureScope.CreateInvariantCultureScope())
+      {
+        ((IBocReferenceValue)control).PopulateDropDownList(dropDownList);
+      }
+
+      Assert.That(dropDownList.Items.Count, Is.EqualTo(1));
+      var singleItem = dropDownList.Items[0];
+
+      Assert.That(singleItem.Value, Is.EqualTo("==null=="));
+      Assert.That(singleItem.Text, Is.Empty);
+      Assert.That(singleItem.Attributes["label"], Is.EqualTo(" "));
+      Assert.That(singleItem.Attributes["aria-label"], Is.Not.Empty);
     }
   }
 }

@@ -29,25 +29,25 @@ namespace Remotion.Security
     /// Gets the name of the user. The <see cref="User"/> must always be specified.
     /// </summary>
     [CanBeNull]
-    string User { get; }
+    string? User { get; }
 
     /// <summary>
     /// Gets the collection of active roles of the user. The <see cref="Roles"/> collection is optional and can be empty.
     /// </summary>
     [CanBeNull]
-    IReadOnlyList<ISecurityPrincipalRole> Roles { get; }
+    IReadOnlyList<ISecurityPrincipalRole>? Roles { get; }
 
     /// <summary>
     /// Gets the name of the user that is being substitued. 
     /// The <see cref="SubstitutedUser"/> must be specified if a <see cref="SubstitutedRoles"/> are specified.
     /// </summary>
     [CanBeNull]
-    string SubstitutedUser { get; }
+    string? SubstitutedUser { get; }
 
     /// <summary>
     /// Gets the collection of active roles of the user. The <see cref="Roles"/> collection is optional and can be empty.
     /// </summary>
     [CanBeNull]
-    IReadOnlyList<ISecurityPrincipalRole> SubstitutedRoles { get; }
+    IReadOnlyList<ISecurityPrincipalRole>? SubstitutedRoles { get; }
   }
 }

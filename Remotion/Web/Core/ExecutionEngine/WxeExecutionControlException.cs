@@ -29,7 +29,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     protected WxeExecutionControlException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

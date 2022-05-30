@@ -36,9 +36,9 @@ namespace Remotion.Validation.UnitTests.Attributes.MetaValidation
     [Test]
     public void GetMetaValidationRule ()
     {
-      var result = _attribute.GetMetaValidationRule (typeof (Customer).GetProperty ("UserName"));
+      var result = _attribute.GetMetaValidationRule(typeof(Customer).GetProperty("UserName"));
 
-      Assert.That (result.GetType(), Is.EqualTo (typeof (AnyRuleAppliedMetaValidationRule)));
+      Assert.That(result.GetType(), Is.EqualTo(typeof(AnyRuleAppliedPropertyMetaValidationRule)));
     }
   }
 }

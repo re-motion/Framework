@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocTreeViewSelector : BocControlSelectorBase<BocTreeViewControlObject>
   {
     public BocTreeViewSelector ()
-        : base ("BocTreeView")
+        : base("BocTreeView")
     {
     }
 
@@ -36,10 +36,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new BocTreeViewControlObject (newControlObjectContext);
+      return new BocTreeViewControlObject(newControlObjectContext);
     }
   }
 }

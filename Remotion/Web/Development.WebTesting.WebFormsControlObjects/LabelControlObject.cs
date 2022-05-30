@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   public class LabelControlObject : WebFormsControlObject, IControlObjectWithText
   {
     public LabelControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -41,7 +41,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     /// <inheritdoc/>
     protected override ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy (ElementScope scope)
     {
-      throw new NotSupportedException ("The LabelControlObject does not support any interaction.");
+      throw new NotSupportedException("The LabelControlObject does not support any interaction.");
     }
   }
 }

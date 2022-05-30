@@ -22,10 +22,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Re
   {
     public RelationEndPointPropertyClass1 RelationPopertyWithoutBidirectionalRelationAttribute { get; set; }
 
-    [DBBidirectionalRelation ("RelationProperty2")]
+    [DBBidirectionalRelation("RelationProperty2")]
     public RelationEndPointPropertyClass1 RelationPopertyWithNonMatchingPropertyName { get; set; }
 
-    [DBBidirectionalRelation ("RelationProperty2")]
+    [DBBidirectionalRelation("RelationProperty2")]
     public RelationEndPointPropertyClass1 RelationProperty2 { get; set; }
   }
 }

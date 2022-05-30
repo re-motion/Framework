@@ -40,50 +40,50 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void GetObjectInHierarchy ()
     {
-      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee>();
 
-      Assert.That (employee, Is.Not.Null);
-      Assert.That (employee.ID, Is.EqualTo (DomainObjectIDs.Employee1));
+      Assert.That(employee, Is.Not.Null);
+      Assert.That(employee.ID, Is.EqualTo(DomainObjectIDs.Employee1));
     }
 
     [Test]
     public void GetChildren ()
     {
-      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       DomainObjectCollection subordinates = employee.Subordinates;
 
-      Assert.That (subordinates, Is.Not.Null);
-      Assert.That (subordinates.Count, Is.EqualTo (2));
-      Assert.That (subordinates[DomainObjectIDs.Employee4], Is.Not.Null);
-      Assert.That (subordinates[DomainObjectIDs.Employee5], Is.Not.Null);
+      Assert.That(subordinates, Is.Not.Null);
+      Assert.That(subordinates.Count, Is.EqualTo(2));
+      Assert.That(subordinates[DomainObjectIDs.Employee4], Is.Not.Null);
+      Assert.That(subordinates[DomainObjectIDs.Employee5], Is.Not.Null);
     }
 
     [Test]
     public void GetChildrenTwice ()
     {
-      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       DomainObjectCollection subordinates = employee.Subordinates;
 
-      Assert.That (ReferenceEquals (subordinates, employee.Subordinates), Is.True);
+      Assert.That(ReferenceEquals(subordinates, employee.Subordinates), Is.True);
     }
 
     [Test]
     public void GetParent ()
     {
-      Employee employee = DomainObjectIDs.Employee4.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee4.GetObject<Employee>();
       Employee supervisor = employee.Supervisor;
 
-      Assert.That (supervisor, Is.Not.Null);
-      Assert.That (supervisor.ID, Is.EqualTo (DomainObjectIDs.Employee1));
+      Assert.That(supervisor, Is.Not.Null);
+      Assert.That(supervisor.ID, Is.EqualTo(DomainObjectIDs.Employee1));
     }
 
     [Test]
     public void GetParentTwice ()
     {
-      Employee employee1 = DomainObjectIDs.Employee4.GetObject<Employee> ();
-      Employee employee2 = DomainObjectIDs.Employee5.GetObject<Employee> ();
+      Employee employee1 = DomainObjectIDs.Employee4.GetObject<Employee>();
+      Employee employee2 = DomainObjectIDs.Employee5.GetObject<Employee>();
 
-      Assert.That (ReferenceEquals (employee1.Supervisor, employee2.Supervisor), Is.True);
+      Assert.That(ReferenceEquals(employee1.Supervisor, employee2.Supervisor), Is.True);
     }
   }
 }

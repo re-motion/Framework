@@ -27,80 +27,80 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
   public abstract class ObjectEndPoint : RelationEndPoint, IObjectEndPoint
   {
     protected ObjectEndPoint (ClientTransaction clientTransaction, RelationEndPointID id)
-        : base (clientTransaction, id)
+        : base(clientTransaction, id)
     {
       if (id.Definition.Cardinality != CardinalityType.One)
-        throw new ArgumentException ("End point ID must refer to an end point with cardinality 'One'.", "id");
+        throw new ArgumentException("End point ID must refer to an end point with cardinality 'One'.", "id");
 
-      Assertion.IsFalse (id.Definition.IsAnonymous);
+      Assertion.IsFalse(id.Definition.IsAnonymous);
     }
 
-    public abstract ObjectID OppositeObjectID { get; }
-    public abstract ObjectID OriginalOppositeObjectID { get; }
+    public abstract ObjectID? OppositeObjectID { get; }
+    public abstract ObjectID? OriginalOppositeObjectID { get; }
 
-    public abstract DomainObject GetOppositeObject ();
-    public abstract DomainObject GetOriginalOppositeObject ();
+    public abstract DomainObject? GetOppositeObject ();
+    public abstract DomainObject? GetOriginalOppositeObject ();
 
     protected abstract void SetOppositeObjectDataFromSubTransaction (IObjectEndPoint sourceObjectEndPoint);
 
-    public abstract IDataManagementCommand CreateSetCommand (DomainObject newRelatedObject);
-    
+    public abstract IDataManagementCommand CreateSetCommand (DomainObject? newRelatedObject);
+
     public override void ValidateMandatory ()
     {
       if (OppositeObjectID == null)
       {
-        throw new MandatoryRelationNotSetException (
-            GetDomainObjectReference(), 
-            PropertyName, 
-            string.Format ("Mandatory relation property '{0}' of domain object '{1}' cannot be null.", PropertyName, ObjectID));
+        throw new MandatoryRelationNotSetException(
+            GetDomainObjectReference(),
+            PropertyName,
+            string.Format("Mandatory relation property '{0}' of domain object '{1}' cannot be null.", PropertyName, ObjectID));
       }
     }
 
     public override sealed IDataManagementCommand CreateRemoveCommand (DomainObject removedRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("removedRelatedObject", removedRelatedObject);
+      ArgumentUtility.CheckNotNull("removedRelatedObject", removedRelatedObject);
 
       if (removedRelatedObject.ID != OppositeObjectID)
       {
-        string removedID = removedRelatedObject.ID.ToString();
-        string currentID = OppositeObjectID != null ? OppositeObjectID.ToString() : "<null>";
+        var removedID = removedRelatedObject.ID.ToString();
+        var currentID = OppositeObjectID != null ? OppositeObjectID.ToString() : "<null>";
 
-        var message = string.Format (
+        var message = string.Format(
             "Cannot remove object '{0}' from object end point '{1}' - it currently holds object '{2}'.",
             removedID,
             PropertyName,
             currentID);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
 
-      return CreateSetCommand (null);
+      return CreateSetCommand(null);
     }
 
     public override sealed void SetDataFromSubTransaction (IRelationEndPoint source)
     {
-      var sourceObjectEndPoint = ArgumentUtility.CheckNotNullAndType<ObjectEndPoint> ("source", source);
+      var sourceObjectEndPoint = ArgumentUtility.CheckNotNullAndType<ObjectEndPoint>("source", source);
 
       if (Definition != sourceObjectEndPoint.Definition)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot set this end point's value from '{0}'; the end points do not have the same end point definition.",
             source.ID);
-        throw new ArgumentException (message, "source");
+        throw new ArgumentException(message, "source");
       }
 
-      SetOppositeObjectDataFromSubTransaction (sourceObjectEndPoint);
+      SetOppositeObjectDataFromSubTransaction(sourceObjectEndPoint);
 
       if (sourceObjectEndPoint.HasBeenTouched || HasChanged)
         Touch();
     }
-    
-    public RelationEndPointID GetOppositeRelationEndPointID ()
+
+    public RelationEndPointID? GetOppositeRelationEndPointID ()
     {
       var oppositeEndPointDefinition = Definition.GetOppositeEndPointDefinition();
       if (oppositeEndPointDefinition.IsAnonymous)
         return null;
 
-      var oppositeEndPointID = RelationEndPointID.Create (OppositeObjectID, oppositeEndPointDefinition);
+      var oppositeEndPointID = RelationEndPointID.Create(OppositeObjectID, oppositeEndPointDefinition);
       return oppositeEndPointID;
     }
 
@@ -117,7 +117,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     #region Serialization
 
     protected ObjectEndPoint (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
     }
 

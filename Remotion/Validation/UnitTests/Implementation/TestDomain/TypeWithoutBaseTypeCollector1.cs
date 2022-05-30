@@ -15,17 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
 using Remotion.Validation.UnitTests.TestDomain.ValidationRules;
 
 namespace Remotion.Validation.UnitTests.Implementation.TestDomain
 {
-  public class TypeWithoutBaseTypeCollector1 : ComponentValidationCollector<TypeWithoutBaseType>
+  public class TypeWithoutBaseTypeCollector1 : ValidationRuleCollectorBase<TypeWithoutBaseType>
   {
     public TypeWithoutBaseTypeCollector1 ()
     {
-      AddRule (t => t.Property1).NotRemovable().NotNull().NotEqual ("test");
-      AddRule (t => t.Property2).AddMetaValidationRule (new MaxLengthMetaValidationRule()).Length (0, 20);
+      AddRule(t => t.Property1).NotNull().NotEqual("test");
+      AddRule(t => t.Property2).CanBeRemoved().AddMetaValidationRule(new MaxLengthPropertyMetaValidationRule()).Length(0, 20);
     }
   }
 }

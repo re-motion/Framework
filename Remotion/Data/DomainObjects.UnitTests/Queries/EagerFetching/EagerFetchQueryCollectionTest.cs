@@ -38,63 +38,66 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.EagerFetching
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _query1 = QueryFactory.CreateQuery (TestQueryFactory.CreateOrderSumQueryDefinition ());
-      _query2 = QueryFactory.CreateQuery (TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
+      _query1 = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderSumQueryDefinition());
+      _query2 = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
 
-      _endPointDefinition1 = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition (typeof (Order).FullName + ".OrderItems");
-      _endPointDefinition2 = DomainObjectIDs.Customer1.ClassDefinition.GetMandatoryRelationEndPointDefinition (typeof (Customer).FullName + ".Orders");
-      
-      _objectEndPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition (typeof (Order).FullName + ".OrderTicket");
+      _endPointDefinition1 = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderItems");
+      _endPointDefinition2 = DomainObjectIDs.Customer1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Customer).FullName + ".Orders");
 
-      _collection = new EagerFetchQueryCollection ();
+      _objectEndPointDefinition = DomainObjectIDs.Order1.ClassDefinition.GetMandatoryRelationEndPointDefinition(typeof(Order).FullName + ".OrderTicket");
+
+      _collection = new EagerFetchQueryCollection();
     }
 
     [Test]
     public void Add ()
     {
-      _collection.Add (_endPointDefinition1, _query1);
-      Assert.That (_collection.ToArray (), Is.EquivalentTo (
-          new[] { 
-              new KeyValuePair<IRelationEndPointDefinition, IQuery> (_endPointDefinition1, _query1) 
+      _collection.Add(_endPointDefinition1, _query1);
+      Assert.That(_collection.ToArray(), Is.EquivalentTo(
+          new[] {
+              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition1, _query1)
           }));
 
-      _collection.Add (_endPointDefinition2, _query2);
-      Assert.That (_collection.ToArray (), Is.EquivalentTo (
-          new[] { 
-              new KeyValuePair<IRelationEndPointDefinition, IQuery> (_endPointDefinition1, _query1), 
-              new KeyValuePair<IRelationEndPointDefinition, IQuery> (_endPointDefinition2, _query2) 
+      _collection.Add(_endPointDefinition2, _query2);
+      Assert.That(_collection.ToArray(), Is.EquivalentTo(
+          new[] {
+              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition1, _query1),
+              new KeyValuePair<IRelationEndPointDefinition, IQuery>(_endPointDefinition2, _query2)
           }));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "There is already an eager fetch query for relation end point " 
-        + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'.")]
     public void Add_Twice ()
     {
-      _collection.Add (_endPointDefinition1, _query1);
-      _collection.Add (_endPointDefinition1, _query2);
+      _collection.Add(_endPointDefinition1, _query1);
+      Assert.That(
+          () => _collection.Add(_endPointDefinition1, _query2),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "There is already an eager fetch query for relation end point "
+                  + "'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems'."));
     }
 
     [Test]
     public void Add_ForObjectEndPoint ()
     {
-      _collection.Add (_objectEndPointDefinition, _query1);
-      Assert.That (_collection.ToArray (), Is.EquivalentTo (
+      _collection.Add(_objectEndPointDefinition, _query1);
+      Assert.That(_collection.ToArray(), Is.EquivalentTo(
           new[] {
-            new KeyValuePair<IRelationEndPointDefinition, IQuery> (_objectEndPointDefinition, _query1)
+            new KeyValuePair<IRelationEndPointDefinition, IQuery>(_objectEndPointDefinition, _query1)
           }));
     }
 
     [Test]
     public void Count ()
     {
-      Assert.That (_collection.Count, Is.EqualTo (0));
-      _collection.Add (_endPointDefinition1, _query1);
-      Assert.That (_collection.Count, Is.EqualTo (1));
-      _collection.Add (_endPointDefinition2, _query2);
-      Assert.That (_collection.Count, Is.EqualTo (2));
+      Assert.That(_collection.Count, Is.EqualTo(0));
+      _collection.Add(_endPointDefinition1, _query1);
+      Assert.That(_collection.Count, Is.EqualTo(1));
+      _collection.Add(_endPointDefinition2, _query2);
+      Assert.That(_collection.Count, Is.EqualTo(2));
     }
   }
 }

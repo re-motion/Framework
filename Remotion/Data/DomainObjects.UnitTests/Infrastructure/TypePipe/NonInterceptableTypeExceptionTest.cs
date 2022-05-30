@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
@@ -27,13 +28,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     [Test]
     public void Serializable ()
     {
-      var instance = new NonInterceptableTypeException ("Mess", typeof (string), new InvalidOperationException ("Inner"));
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (instance);
+      var instance = new NonInterceptableTypeException("Mess", typeof(string), new InvalidOperationException("Inner"));
 
-      Assert.That (deserializedInstance.Message, Is.EqualTo ("Mess"));
-      Assert.That (deserializedInstance.Type, Is.SameAs (typeof (string)));
-      Assert.That (deserializedInstance.InnerException, Is.TypeOf<InvalidOperationException>());
+      var deserializedInstance = Serializer.SerializeAndDeserialize(instance);
+
+      Assert.That(deserializedInstance.Message, Is.EqualTo("Mess"));
+      Assert.That(deserializedInstance.Type, Is.SameAs(typeof(string)));
+      Assert.That(deserializedInstance.InnerException, Is.TypeOf<InvalidOperationException>());
     }
   }
 }

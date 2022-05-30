@@ -23,8 +23,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.M
     [DBColumn("Computer2ID")]
     public Computer Computer
     {
-      get { return Properties[typeof (MixinAddingUnidirectionalRelation2), "Computer"].GetValue<Computer>(); }
-      set { Properties[typeof (MixinAddingUnidirectionalRelation2), "Computer"].SetValue (value); }
+      get { return Properties[typeof(MixinAddingUnidirectionalRelation2), "Computer"].GetValue<Computer>(); }
+      set { Properties[typeof(MixinAddingUnidirectionalRelation2), "Computer"].SetValue(value); }
     }
   }
 }

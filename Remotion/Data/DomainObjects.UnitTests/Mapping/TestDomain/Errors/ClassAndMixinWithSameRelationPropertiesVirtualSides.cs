@@ -21,10 +21,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
 {
   [DBTable]
   [Instantiable]
-  [Uses (typeof (MixinVirtualSides))]
+  [Uses(typeof(MixinVirtualSides))]
   public abstract class TargetClassWithRelationPropertyVirtualSides : DomainObject
   {
-    [DBBidirectionalRelation ("Opposite", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("Opposite", ContainsForeignKey = false)]
     [DBColumn("One")]
     public abstract RelationTargetVirtualSides Relation { get; set; }
   }
@@ -33,18 +33,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
   [Instantiable]
   public abstract class RelationTargetVirtualSides : DomainObject
   {
-    [DBBidirectionalRelation ("Relation", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Relation", ContainsForeignKey = true)]
     public abstract TargetClassWithRelationPropertyVirtualSides Opposite { get; set; }
   }
 
   public class MixinVirtualSides : DomainObjectMixin<TargetClassWithRelationPropertyVirtualSides>
   {
-    [DBBidirectionalRelation ("Opposite", ContainsForeignKey = false)]
-    [DBColumn ("Two")]
+    [DBBidirectionalRelation("Opposite", ContainsForeignKey = false)]
+    [DBColumn("Two")]
     public RelationTargetVirtualSides Relation
     {
-      get { return Properties[typeof (MixinVirtualSides), "Relation"].GetValue<RelationTargetVirtualSides> (); }
-      set { Properties[typeof (MixinVirtualSides), "Relation"].SetValue (value); }
+      get { return Properties[typeof(MixinVirtualSides), "Relation"].GetValue<RelationTargetVirtualSides>(); }
+      set { Properties[typeof(MixinVirtualSides), "Relation"].SetValue(value); }
     }
   }
 }

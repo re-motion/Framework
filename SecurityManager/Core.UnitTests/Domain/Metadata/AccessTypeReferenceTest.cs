@@ -29,9 +29,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
       _testHelper = new MetadataTestHelper();
-      _testHelper.Transaction.EnterNonDiscardingScope ();
+      _testHelper.Transaction.EnterNonDiscardingScope();
     }
 
     [Test]
@@ -40,14 +40,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       AccessTypeReference accessTypeReference = AccessTypeReference.NewObject();
 
       accessTypeReference.Index = 1;
-      Assert.That (accessTypeReference.Index, Is.EqualTo (1));
+      Assert.That(accessTypeReference.Index, Is.EqualTo(1));
     }
 
     [Test]
     public void OnCommitting_WithChangedAccessTypeReference_RegistersClassForCommit ()
     {
       var classDefinition = SecurableClassDefinition.NewObject();
-      var accessType = _testHelper.CreateAccessTypeCreate (0);
+      var accessType = _testHelper.CreateAccessTypeCreate(0);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -55,13 +55,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
-        classDefinition.AddAccessType (accessType);
+        classDefinition.AddAccessType(accessType);
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
 
@@ -69,8 +69,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
     public void OnCommitting_WithDeletedAccessTypeReference_RegistersClassForCommit ()
     {
       var classDefinition = SecurableClassDefinition.NewObject();
-      var accessType = _testHelper.CreateAccessTypeCreate (0);
-      classDefinition.AddAccessType (accessType);
+      var accessType = _testHelper.CreateAccessTypeCreate(0);
+      classDefinition.AddAccessType(accessType);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -78,13 +78,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
-        classDefinition.RemoveAccessType (accessType);
+        classDefinition.RemoveAccessType(accessType);
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
   }

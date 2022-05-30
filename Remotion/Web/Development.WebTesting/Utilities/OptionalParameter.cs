@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
@@ -26,7 +27,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   {
     public static implicit operator OptionalParameter<T> (T value)
     {
-      return new OptionalParameter<T> (value);
+      return new OptionalParameter<T>(value);
     }
 
     public static explicit operator T (OptionalParameter<T> optionalParameter)
@@ -60,7 +61,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       get
       {
         if (!_hasValue)
-          throw new InvalidOperationException ("Optional parameter has no value.");
+          throw new InvalidOperationException("Optional parameter has no value.");
         return _value;
       }
     }
@@ -69,7 +70,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// Returns <see cref="Value"/> if <see cref="HasValue"/> == <see langword="true" />, otherwise <paramref name="defaultValue"/>.
     /// </summary>
     [CanBeNull]
-    public T GetValueOrDefault (T defaultValue)
+    [return: NotNullIfNotNull("defaultValue")]
+    public T? GetValueOrDefault (T? defaultValue)
     {
       if (_hasValue)
         return _value;
@@ -77,28 +79,28 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     }
 
     /// <inheritdoc />
-    public override bool Equals (object other)
+    public override bool Equals (object? other)
     {
       if (!_hasValue)
         return other == null;
       if (other == null)
         return false;
-      return _value.Equals (other);
+      return _value!.Equals(other);
     }
 
     /// <inheritdoc />
     public override int GetHashCode ()
     {
       if (_hasValue)
-        return _value.GetHashCode();
+        return _value!.GetHashCode();
       return 0;
     }
 
     /// <inheritdoc />
-    public override string ToString ()
+    public override string? ToString ()
     {
       if (_hasValue)
-        return _value.ToString();
+        return _value!.ToString();
       return string.Empty;
     }
   }

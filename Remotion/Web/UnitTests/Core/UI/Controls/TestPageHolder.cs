@@ -35,35 +35,35 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
     public TestPageHolder (bool initializeState, RequestMode requestMode)
     {
-      _page = new PageMock ();
+      _page = new PageMock();
       if (requestMode == RequestMode.PostBack)
-        _page.SetRequestValueCollection (new NameValueCollection ());
+        _page.SetRequestValueCollection(new NameValueCollection());
 
-      _otherNamingContainer = new NamingContainerMock ();
+      _otherNamingContainer = new NamingContainerMock();
       _otherNamingContainer.ID = "OtherNamingContainer";
-      _page.Controls.Add (_otherNamingContainer);
+      _page.Controls.Add(_otherNamingContainer);
 
-      _otherControl = new ControlMock ();
+      _otherControl = new ControlMock();
       _otherControl.ID = "OtherControl";
-      _otherNamingContainer.Controls.Add (_otherControl);
+      _otherNamingContainer.Controls.Add(_otherControl);
 
       _namingContainer = new ReplaceableControlMock();
       _namingContainer.ID = "NamingContainer";
-      _page.Controls.Add (_namingContainer);
+      _page.Controls.Add(_namingContainer);
 
-      _parent = new ControlMock ();
+      _parent = new ControlMock();
       _parent.ID = "Parent";
-      _namingContainer.Controls.Add (_parent);
+      _namingContainer.Controls.Add(_parent);
 
-      _child = new ControlMock ();
+      _child = new ControlMock();
       _child.ID = "Child";
-      _parent.Controls.Add (_child);
+      _parent.Controls.Add(_child);
 
-      _child2 = new Control ();
+      _child2 = new Control();
       _child2.ID = "Child2";
-      _parent.Controls.Add (_child2);
+      _parent.Controls.Add(_child2);
 
-      _pageInvoker = new ControlInvoker (_page);
+      _pageInvoker = new ControlInvoker(_page);
 
       if (initializeState)
       {
@@ -77,7 +77,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
         _otherControl.ValueInControlState = "OtherValue";
       }
 
-      Page.RegisterViewStateHandler ();
+      Page.RegisterViewStateHandler();
     }
 
     public PageMock Page

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -37,8 +36,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <param name="text">The text to fill in.</param>
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
-    UnspecifiedPageObject FillWith ([NotNull] string text, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
+    UnspecifiedPageObject FillWith ([NotNull] string text, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Fills the control with the given <paramref name="text"/> and afterwards executes the given <paramref name="finishInputWith"/> action.
@@ -47,10 +46,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <param name="finishInputWith">What to do after the text has been filled in (see <see cref="FinishInput"/> for supported default options).</param>
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
-    /// <exception cref="MissingHtmlException">The element is currently disabled.</exception>
+    /// <exception cref="WebTestException">The element is currently disabled.</exception>
     UnspecifiedPageObject FillWith (
         [NotNull] string text,
         [NotNull] FinishInputWithAction finishInputWith,
-        [CanBeNull] IWebTestActionOptions actionOptions = null);
+        [CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 }

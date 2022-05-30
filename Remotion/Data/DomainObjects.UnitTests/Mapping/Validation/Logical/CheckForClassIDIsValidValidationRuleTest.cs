@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+Ôªø// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -33,55 +33,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
     }
 
     [Test]
-    [TestCase ("a")]
-    [TestCase ("‰")]
-    [TestCase ("_")]
-    [TestCase ("a‰")]
-    [TestCase ("a_")]
-    [TestCase ("a1")]
+    [TestCase("a")]
+    [TestCase("√§")]
+    [TestCase("_")]
+    [TestCase("a√§")]
+    [TestCase("a_")]
+    [TestCase("a1")]
     public void ValidClassID (string classID)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: classID);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
-    [TestCase ("a|")]
-    [TestCase ("1a")]
-    [TestCase ("a.a")]
-    [TestCase ("a a")]
-    [TestCase ("a+a")]
+    [TestCase("a|")]
+    [TestCase("1a")]
+    [TestCase("a.a")]
+    [TestCase("a a")]
+    [TestCase("a+a")]
     public void InvalidClassID (string classID)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: classID);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
       var expectedMessage =
-          string.Format (
+          string.Format(
               "The Class-ID '{0}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.\r\n\r\n"
               + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order",
               classID);
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
     [Test]
     public void IntegrationTestForObjectIDStringSerializer ()
     {
       var classID = "Class" + ObjectIDStringSerializer.Delimiter + "End";
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (id: classID);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(id: classID);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
       var expectedMessage =
-          string.Format (
+          string.Format(
               "The Class-ID '{0}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.\r\n\r\n"
               + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order",
               classID);
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }
 }

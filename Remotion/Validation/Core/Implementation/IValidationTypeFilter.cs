@@ -19,8 +19,8 @@ using System;
 namespace Remotion.Validation.Implementation
 {
   /// <summary>
-  /// The <see cref="IValidationTypeFilter"/> interface is used to confirm whether a <see cref="Type"/> can be used as the <see cref="IComponentValidationCollector.ValidatedType"/>
-  /// of a <see cref="IComponentValidationCollector"/>.
+  /// The <see cref="IValidationTypeFilter"/> interface is used to confirm whether a <see cref="Type"/> can be used as the <see cref="IValidationRuleCollector.ValidatedType"/>
+  /// of a <see cref="IValidationRuleCollector"/>.
   /// </summary>
   public interface IValidationTypeFilter
   {

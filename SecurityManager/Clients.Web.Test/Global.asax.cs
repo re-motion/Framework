@@ -16,7 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;
 using Remotion.SecurityManager.Clients.Web.Classes;
@@ -39,24 +39,34 @@ namespace Remotion.SecurityManager.Clients.Web.Test
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.IClientTransactionExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
       //defaultServiceLocator.Register (typeof (Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof (Remotion.Data.DomainObjects.UberProfIntegration.LinqToSqlExtensionFactory), LifetimeKind.Singleton);
       //defaultServiceLocator.RegisterMultiple<IOrganizationalStructureEditControlFormGridRowProvider<EditUserControl>> (() => new EditUserControlFormGridRowProvider());
-      defaultServiceLocator.Register (typeof (IRenderingFeatures), typeof (WithDiagnosticMetadataRenderingFeatures), LifetimeKind.Singleton);
+      defaultServiceLocator.Register(typeof(IRenderingFeatures), typeof(WithDiagnosticMetadataRenderingFeatures), LifetimeKind.Singleton);
 
-      ServiceLocator.SetLocatorProvider (() => defaultServiceLocator);
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
-      Assertion.IsTrue (
+      Assertion.IsTrue(
           defaultServiceLocator.GetInstance<IPrincipalProvider>() is SecurityManagerPrincipalProvider,
           "Wrong IPrincipalProvider is configured");
 
-      _resourceVirtualPathProvider = new ResourceVirtualPathProvider (
+#if DEBUG
+      const string configuration = "Debug";
+#else
+      const string configuration = "Release";
+#endif
+
+      _resourceVirtualPathProvider = new ResourceVirtualPathProvider(
           new[]
           {
-              new ResourcePathMapping ("Remotion.Web", @"..\..\Remotion\Web\Core\res"),
-              new ResourcePathMapping ("Remotion.Web.Legacy", @"..\..\Remotion\Web\Legacy\Res"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web", @"..\..\Remotion\ObjectBinding\Web\res"),
-              new ResourcePathMapping ("Remotion.ObjectBinding.Web.Legacy", @"..\..\Remotion\ObjectBinding\Web.Legacy\Res"),
-              new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/Html", @"..\Clients.Web\res\Html"),
-              new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/Themes", @"..\Clients.Web\res\Themes"),
-              new ResourcePathMapping ("Remotion.SecurityManager.Clients.Web/UI", @"..\Clients.Web\UI"),
+              new ResourcePathMapping("Remotion.Web/Html", @$"..\..\Remotion\Web\ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.Web/Image", @"..\..\Remotion\Web\Core\res\Image"),
+              new ResourcePathMapping("Remotion.Web/Themes", @"..\..\Remotion\Web\Core\res\Themes"),
+              new ResourcePathMapping("Remotion.Web/UI", @"..\..\Remotion\Web\Core\res\UI"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Html", @$"..\..\Remotion\ObjectBinding\Web.ClientScript\bin\{configuration}\dist"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web/Themes", @"..\..\Remotion\ObjectBinding\Web\res\Themes"),
+              new ResourcePathMapping("Remotion.Web.Legacy", @"..\..\Remotion\Web\Legacy\Res"),
+              new ResourcePathMapping("Remotion.ObjectBinding.Web.Legacy", @"..\..\Remotion\ObjectBinding\Web.Legacy\Res"),
+              new ResourcePathMapping("Remotion.SecurityManager.Clients.Web/Html", @"..\Clients.Web\res\Html"),
+              new ResourcePathMapping("Remotion.SecurityManager.Clients.Web/Themes", @"..\Clients.Web\res\Themes"),
+              new ResourcePathMapping("Remotion.SecurityManager.Clients.Web/UI", @"..\Clients.Web\UI"),
           },
           FileExtensionHandlerMapping.Default);
       _resourceVirtualPathProvider.Register();

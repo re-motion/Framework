@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlObjects
@@ -25,21 +26,20 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class ContextMenuControlObject : DropDownMenuControlObjectBase
   {
     public ContextMenuControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
-    [Obsolete ("Use the Open() method instead. (Version 1.17.15.0)", false)]
+    [Obsolete("Use the Open() method instead. (Version 1.17.15.0)", false)]
     protected void OpenDropDownMenu ()
     {
       Open();
     }
 
     /// <inheritdoc/>
-    public override void Open ()
+    protected override void PerformOpen (ElementScope menuButtonScope)
     {
-      if (!IsOpen())
-        Scope.ContextClick (Context);
+      menuButtonScope.ContextClick(Context);
     }
   }
 }

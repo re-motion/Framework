@@ -16,11 +16,13 @@
 // 
 using System;
 using System.Threading;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates;
 using Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
-using Rhino.Mocks;
+using Remotion.Web.UnitTests.Core.Utilities;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStepExecutionStates.Execute
 {
@@ -32,58 +34,54 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     public override void SetUp ()
     {
       base.SetUp();
-      _executionState = new ReturningFromSubFunctionState (
-          ExecutionStateContextMock, new RedirectingToSubFunctionStateParameters(SubFunction, PostBackCollection, "dummy", "/resumeUrl.wxe"));
+      _executionState = new ReturningFromSubFunctionState(
+          ExecutionStateContextMock.Object, new RedirectingToSubFunctionStateParameters(SubFunction.Object, PostBackCollection, "dummy", "/resumeUrl.wxe"));
     }
 
-    protected override OtherTestFunction CreateSubFunction ()
+    protected override Mock<OtherTestFunction> CreateSubFunction ()
     {
-      return MockRepository.StrictMock<OtherTestFunction>();
+      return new Mock<OtherTestFunction>(MockBehavior.Strict);
     }
 
     [Test]
     public void IsExecuting ()
     {
-      Assert.That (_executionState.IsExecuting, Is.True);
+      Assert.That(_executionState.IsExecuting, Is.True);
     }
 
     [Test]
     public void ExecuteSubFunction ()
     {
-      using (MockRepository.Ordered())
-      {
-        ResponseMock.Expect (mock => mock.Redirect ("/resumeUrl.wxe")).WhenCalled (invocation => Thread.CurrentThread.Abort ());
-        ExecutionStateContextMock.Expect (mock => mock.SetExecutionState (Arg<PostProcessingSubFunctionState>.Is.NotNull))
-            .WhenCalled (invocation => CheckExecutionState ((PostProcessingSubFunctionState) invocation.Arguments[0]));
-      }
-
-      MockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      ResponseMock.InSequence(sequence).Setup(mock => mock.Redirect("/resumeUrl.wxe")).Callback((string url) => WxeThreadAbortHelper.Abort()).Verifiable();
+      ExecutionStateContextMock.InSequence(sequence)
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<PostProcessingSubFunctionState>()))
+          .Callback((IExecutionState executionState) => CheckExecutionState((PostProcessingSubFunctionState)executionState))
+          .Verifiable();
 
       try
       {
-        _executionState.ExecuteSubFunction (WxeContext);
+        _executionState.ExecuteSubFunction(WxeContext);
         Assert.Fail();
       }
       catch (ThreadAbortException)
       {
-        Thread.ResetAbort();
+        WxeThreadAbortHelper.ResetAbort();
       }
 
-      MockRepository.VerifyAll();
+      VerifyAll();
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Redirect to '/resumeUrl.wxe' failed.")]
     public void ExecuteSubFunction_WithFailedRedirect ()
     {
-      using (MockRepository.Ordered())
-      {
-        ResponseMock.Expect (mock => mock.Redirect ("/resumeUrl.wxe"));
-      }
+      var sequence = new MockSequence();
+      ResponseMock.InSequence(sequence).Setup(mock => mock.Redirect("/resumeUrl.wxe")).Verifiable();
 
-      MockRepository.ReplayAll();
-
-      _executionState.ExecuteSubFunction (WxeContext);
+      Assert.That(
+          () => _executionState.ExecuteSubFunction(WxeContext),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Redirect to '/resumeUrl.wxe' failed."));
     }
   }
 }

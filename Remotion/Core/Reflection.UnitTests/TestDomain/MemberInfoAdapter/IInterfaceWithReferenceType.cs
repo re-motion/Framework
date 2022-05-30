@@ -30,7 +30,7 @@ namespace Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter
     T this[int i] { get; set; }
     T this[int i, DateTime j] { get; set; }
     T this[int i, DateTime j, string k] { get; set; }
-    T ExplicitInterfaceMethod (); 
+    T ExplicitInterfaceMethod ();
     T ImplicitInterfaceMethod ();
   }
 }

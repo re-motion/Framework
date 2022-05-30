@@ -18,8 +18,9 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -28,20 +29,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator locator)
     {
-      throw new NotSupportedException (GetType().Name + " cannot be rendered directly, but must be replaced by other column definitions.");
+      throw new NotSupportedException(GetType().Name + " cannot be rendered directly, but must be replaced by other column definitions.");
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public override string ItemID
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public override string? ItemID
     {
       get { return base.ItemID; }
       set { base.ItemID = value; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public override string ColumnTitle
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public override WebString ColumnTitle
     {
       get { return base.ColumnTitle; }
       set { base.ColumnTitle = value; }
@@ -49,11 +50,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the combined width of the generated column definitions. </summary>
     /// <value> A <see cref="Unit"/> providing the combined width of the generated columns when they are rendered. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Layout")]
-    [Description ("The width used for all generated property columns combined.")]
-    [DefaultValue (typeof (Unit), "")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Layout")]
+    [Description("The width used for all generated property columns combined.")]
+    [DefaultValue(typeof(Unit), "")]
+    [NotifyParentProperty(true)]
     public new Unit Width
     {
       get { return base.Width; }
@@ -62,11 +63,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the CSS-class of the generated column definitions. </summary>
     /// <value> A <see cref="string"/> providing the CSS-class added to the class attribute when the columns are rendered. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Layout")]
-    [Description ("The CSS-class of the generated columns' cells.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Layout")]
+    [Description("The CSS-class of the generated columns' cells.")]
+    [DefaultValue("")]
+    [NotifyParentProperty(true)]
     public new string CssClass
     {
       get { return base.CssClass; }

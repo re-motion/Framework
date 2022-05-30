@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public SortExpressionDefinition (IEnumerable<SortedPropertySpecification> sortedProperties)
     {
-      ArgumentUtility.CheckNotNull ("sortedProperties", sortedProperties);
+      ArgumentUtility.CheckNotNull("sortedProperties", sortedProperties);
       _sortedProperties = sortedProperties.ToList().AsReadOnly();
 
       if (_sortedProperties.Count == 0)
-        throw new ArgumentException ("A SortExpressionDefinition must contain at least one sorted property.", "sortedProperties");
+        throw new ArgumentException("A SortExpressionDefinition must contain at least one sorted property.", "sortedProperties");
     }
 
     public ReadOnlyCollection<SortedPropertySpecification> SortedProperties
@@ -45,7 +45,7 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public override string ToString ()
     {
-      return string.Join (", ", SortedProperties);
+      return string.Join(", ", SortedProperties);
     }
   }
 }

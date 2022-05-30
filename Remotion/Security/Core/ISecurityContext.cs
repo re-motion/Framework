@@ -24,13 +24,13 @@ namespace Remotion.Security
   /// </summary>
   /// <remarks>
   /// Use the the <see cref="ISecurityContextFactory"/> to create an instance of an object implementing <see cref="ISecurityContext"/>. This factory 
-  /// is typically used by the <see cref="ISecurityStrategy"/>'s <see cref="ISecurityStrategy.HasAccess"/> method to create a
+  /// is typically used by the <see cref="IObjectSecurityStrategy"/>'s <see cref="IObjectSecurityStrategy.HasAccess"/> method to create a
   /// security context for a security query.
   /// </remarks>
   public interface ISecurityContext
   {
     /// <summary>
-    /// Gets the type name of the <see cref="ISecurableObject"/> for which the permissions are to be evaluated by the <see cref="ISecurityStrategy"/>.
+    /// Gets the type name of the <see cref="ISecurableObject"/> for which the permissions are to be evaluated by the <see cref="IObjectSecurityStrategy"/>.
     /// </summary>
     /// <value>
     /// A <see cref="string"/> that uniquely identifies the type of the <see cref="ISecurableObject"/> to the <see cref="IServiceProvider"/>.
@@ -51,7 +51,7 @@ namespace Remotion.Security
     /// A <see cref="string"/> that uniquely identifies the owning user of the <see cref="ISecurableObject"/> to the <see cref="ISecurityProvider"/>.
     /// This property may return <see langword="null" />.
     /// </value>
-    string Owner { get; }
+    string? Owner { get; }
 
     /// <summary>
     /// Gets the name of the group that owns the <see cref="ISecurableObject"/>.
@@ -60,7 +60,7 @@ namespace Remotion.Security
     /// A <see cref="string"/> that uniquely identifies the owning group of the <see cref="ISecurableObject"/> to the <see cref="ISecurityProvider"/>.
     /// This property may return <see langword="null" />.
     /// </value>
-    string OwnerGroup { get; }
+    string? OwnerGroup { get; }
 
     /// <summary>
     /// Gets the name of the tenant that owns the <see cref="ISecurableObject"/>.
@@ -69,7 +69,7 @@ namespace Remotion.Security
     /// A <see cref="string"/> that uniquely identifies the owning tenant of the <see cref="ISecurableObject"/> to the <see cref="ISecurityProvider"/>.
     /// This property may return <see langword="null" />.
     /// </value>
-    string OwnerTenant { get; }
+    string? OwnerTenant { get; }
 
     /// <summary>
     /// Gets the list of abstract roles the current user has in regards to the <see cref="ISecurableObject"/>.

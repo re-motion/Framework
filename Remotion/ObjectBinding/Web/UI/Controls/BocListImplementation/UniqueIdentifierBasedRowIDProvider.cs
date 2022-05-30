@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using Remotion.Utilities;
@@ -31,40 +32,40 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
   {
     public string GetControlRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
-      return EscapeUniqueIdentifier (((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier);
+      return EscapeUniqueIdentifier(((IBusinessObjectWithIdentity)row.BusinessObject).UniqueIdentifier);
     }
 
     public string GetItemRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
-      return FormatItemRowID (row.Index, ((IBusinessObjectWithIdentity) row.BusinessObject).UniqueIdentifier);
+      return FormatItemRowID(row.Index, ((IBusinessObjectWithIdentity)row.BusinessObject).UniqueIdentifier);
     }
 
-    public BocListRow GetRowFromItemRowID (IList values, string rowID)
+    public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      ArgumentUtility.CheckNotNull ("rowID", rowID);
+      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckNotNull("rowID", rowID);
 
-      var tuple = ParseItemRowID (rowID);
+      var tuple = ParseItemRowID(rowID);
       int rowIndex = tuple.Item1;
       string uniqueIdentifier = tuple.Item2;
 
-      if (rowIndex < values.Count && ((IBusinessObjectWithIdentity) values[rowIndex]).UniqueIdentifier == uniqueIdentifier)
+      if (rowIndex < values.Count && ((IBusinessObjectWithIdentity)values[rowIndex]).UniqueIdentifier == uniqueIdentifier)
       {
-        return new BocListRow (rowIndex, (IBusinessObjectWithIdentity) values[rowIndex]);
+        return new BocListRow(rowIndex, (IBusinessObjectWithIdentity)values[rowIndex]);
       }
       else
       {
         for (int indexDown = rowIndex - 1, indexUp = rowIndex + 1; indexDown >= 0 || indexUp < values.Count; indexDown--, indexUp++)
         {
-          if (indexDown >= 0 && indexDown < values.Count && ((IBusinessObjectWithIdentity) values[indexDown]).UniqueIdentifier == uniqueIdentifier)
-            return new BocListRow (indexDown, ((IBusinessObjectWithIdentity) values[indexDown]));
+          if (indexDown >= 0 && indexDown < values.Count && ((IBusinessObjectWithIdentity)values[indexDown]).UniqueIdentifier == uniqueIdentifier)
+            return new BocListRow(indexDown, ((IBusinessObjectWithIdentity)values[indexDown]));
 
           if (indexUp < values.Count && ((IBusinessObjectWithIdentity)values[indexUp]).UniqueIdentifier == uniqueIdentifier)
-            return new BocListRow (indexUp,  ((IBusinessObjectWithIdentity)values[indexUp]));
+            return new BocListRow(indexUp,  ((IBusinessObjectWithIdentity)values[indexUp]));
         }
       }
 
@@ -81,36 +82,36 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     private static string FormatItemRowID (int rowIndex, string uniqueIdentifier)
     {
-      return rowIndex.ToString (CultureInfo.InvariantCulture) + "|" + uniqueIdentifier;
+      return rowIndex.ToString(CultureInfo.InvariantCulture) + "|" + uniqueIdentifier;
     }
 
     private Tuple<int, string> ParseItemRowID (string rowID)
     {
-      var parts = rowID.Split (new[] { '|' }, 2);
+      var parts = rowID.Split(new[] { '|' }, 2);
       if (parts.Length != 2)
-        throw CreateItemRowIDFormatException (rowID);
+        throw CreateItemRowIDFormatException(rowID);
 
       int rowIndex;
-      if (!int.TryParse (parts[0], NumberStyles.None, CultureInfo.InvariantCulture, out rowIndex))
-        throw CreateItemRowIDFormatException (rowID);
+      if (!int.TryParse(parts[0], NumberStyles.None, CultureInfo.InvariantCulture, out rowIndex))
+        throw CreateItemRowIDFormatException(rowID);
 
       var uniqueIdentifier = parts[1];
-      var tuple = Tuple.Create (rowIndex, uniqueIdentifier);
+      var tuple = Tuple.Create(rowIndex, uniqueIdentifier);
       return tuple;
     }
 
     private FormatException CreateItemRowIDFormatException (string rowID)
     {
-      return new FormatException (
-          string.Format ("RowID '{0}' could not be parsed. Expected format: '<rowIndex>|<unqiueIdentifier>'", rowID));
+      return new FormatException(
+          string.Format("RowID '{0}' could not be parsed. Expected format: '<rowIndex>|<unqiueIdentifier>'", rowID));
     }
 
     private static string EscapeUniqueIdentifier (string uniqueIdentifier)
     {
-      var escapedID = new StringBuilder (uniqueIdentifier);
+      var escapedID = new StringBuilder(uniqueIdentifier);
       for (int i = 0; i < escapedID.Length; i++)
       {
-        if (!char.IsLetterOrDigit (escapedID[i]))
+        if (!char.IsLetterOrDigit(escapedID[i]))
           escapedID[i] = '_';
       }
       return escapedID.ToString();

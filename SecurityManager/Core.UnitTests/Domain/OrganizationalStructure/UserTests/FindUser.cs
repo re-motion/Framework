@@ -29,37 +29,37 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     private DatabaseFixtures _dbFixtures;
     private IDomainObjectHandle<Tenant> _expectedTenantHandle;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       _dbFixtures = new DatabaseFixtures();
-      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());
+      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
       _expectedTenantHandle = tenant.GetHandle();
     }
 
     [Test]
     public void FindByUserName_ValidUser ()
     {
-      User foundUser = User.FindByUserName ("test.user");
+      User foundUser = User.FindByUserName("test.user");
 
-      Assert.That (foundUser.UserName, Is.EqualTo ("test.user"));
+      Assert.That(foundUser.UserName, Is.EqualTo("test.user"));
     }
 
     [Test]
     public void FindByUserName_NotExistingUser ()
     {
-      User foundUser = User.FindByUserName ("not.existing");
+      User foundUser = User.FindByUserName("not.existing");
 
-      Assert.That (foundUser, Is.Null);
+      Assert.That(foundUser, Is.Null);
     }
 
     [Test]
     public void Find_UsersByTenantID ()
     {
-      var users = User.FindByTenant (_expectedTenantHandle);
+      var users = User.FindByTenant(_expectedTenantHandle);
 
-      Assert.That (users.Count(), Is.EqualTo (6));
+      Assert.That(users.Count(), Is.EqualTo(6));
     }
   }
 }

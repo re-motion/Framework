@@ -18,8 +18,8 @@
 using System;
 using System.IO;
 using Microsoft.Win32;
-using Remotion.FunctionalProgramming;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
@@ -35,27 +35,32 @@ namespace Remotion.Development.UnitTesting.PEVerifyPathSources
         return "Windows SDK 6: n/a";
       else
       {
-        return string.Format (
+        return string.Format(
             "Windows SDK 6: Registry: HKEY_LOCAL_MACHINE\\{0}\\[CurrentVersion]\\{1}\\bin\\PEVerify.exe",
             WindowsSdkRegistryKey,
             WindowsSdkRegistryInstallationFolderValue);
       }
     }
 
-    protected override string GetPotentialPEVerifyPath (PEVerifyVersion version)
+    protected override string? GetPotentialPEVerifyPath (PEVerifyVersion version)
     {
       if (version != PEVerifyVersion.DotNet2)
         return null;
 
-      return Maybe
-          .ForValue (RegistryKey.OpenBaseKey (RegistryHive.LocalMachine, RegistryView.Registry32))
-          .Select (key => key.OpenSubKey (WindowsSdkRegistryKey, false))
-          .Select (key => key.GetValue (WindowsSdkRegistryVersionValue) as string)
-          .Select (windowsSdkVersion => Registry.LocalMachine.OpenSubKey (WindowsSdkRegistryKey + "\\" + windowsSdkVersion, false))
-          .Select (key => key.GetValue (WindowsSdkRegistryInstallationFolderValue) as string)
-          .Select (path => Path.Combine (path, "bin"))
-          .Select (path => Path.Combine (path, "PEVerify.exe"))
-          .ValueOrDefault();
+      var windowsSdkVersion = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+          .OpenSubKey(WindowsSdkRegistryKey, false)
+          ?.GetValue(WindowsSdkRegistryVersionValue) as string;
+
+      if (windowsSdkVersion == null)
+        return null;
+
+      var sdkPath = Registry.LocalMachine.OpenSubKey(WindowsSdkRegistryKey + "\\" + windowsSdkVersion, false)
+          ?.GetValue(WindowsSdkRegistryInstallationFolderValue) as string;
+
+      if (sdkPath == null)
+        return null;
+
+      return Path.Combine(sdkPath, "bin", "PEVerify.exe");
     }
   }
 }

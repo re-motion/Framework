@@ -25,25 +25,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void CreateSubTransactionInReadOnlyRootTransaction_IsForbidden ()
     {
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs (WriteableSubTransaction));
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs(WriteableSubTransaction));
 
-      CheckForbidden (() => ReadOnlyRootTransaction.CreateSubTransaction (), "SubTransactionCreating");
+      CheckForbidden(() => ReadOnlyRootTransaction.CreateSubTransaction(), "SubTransactionCreating");
 
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs (WriteableSubTransaction));
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs(WriteableSubTransaction));
     }
 
     [Test]
     public void CreateSubTransactionInReadOnlyMiddleTransaction_IsForbidden ()
     {
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs (WriteableSubTransaction));
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs(WriteableSubTransaction));
 
-      CheckForbidden (() => ReadOnlyMiddleTransaction.CreateSubTransaction (), "SubTransactionCreating");
+      CheckForbidden(() => ReadOnlyMiddleTransaction.CreateSubTransaction(), "SubTransactionCreating");
 
-      Assert.That (ReadOnlyRootTransaction.SubTransaction, Is.SameAs (ReadOnlyMiddleTransaction));
-      Assert.That (ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs (WriteableSubTransaction));
+      Assert.That(ReadOnlyRootTransaction.SubTransaction, Is.SameAs(ReadOnlyMiddleTransaction));
+      Assert.That(ReadOnlyMiddleTransaction.SubTransaction, Is.SameAs(WriteableSubTransaction));
     }
   }
 }

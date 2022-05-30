@@ -24,9 +24,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
   {
     public Order GetInvalid ()
     {
-      Order invalid = Order.NewObject ();
-      invalid.Delete ();
-      Assert.That (invalid.State, Is.EqualTo (StateType.Invalid));
+      Order invalid = Order.NewObject();
+      invalid.Delete();
+      Assert.That(invalid.State.IsInvalid, Is.True);
       return invalid;
     }
 
@@ -34,67 +34,67 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Location unidirectionalWithDeletedNew = DomainObjectIDs.Location3.GetObject<Location>();
       unidirectionalWithDeletedNew.Client = Client.NewObject();
-      unidirectionalWithDeletedNew.Client.Delete ();
+      unidirectionalWithDeletedNew.Client.Delete();
       return unidirectionalWithDeletedNew;
     }
 
     public Location GetUnidirectionalWithDeleted ()
     {
       Location unidirectionalWithDeleted = DomainObjectIDs.Location1.GetObject<Location>();
-      unidirectionalWithDeleted.Client.Delete ();
+      unidirectionalWithDeleted.Client.Delete();
       return unidirectionalWithDeleted;
     }
 
     public Order GetDeleted ()
     {
-      Order deleted = DomainObjectIDs.Order5.GetObject<Order> ();
-      FullyDeleteOrder (deleted);
+      Order deleted = DomainObjectIDs.Order5.GetObject<Order>();
+      FullyDeleteOrder(deleted);
       return deleted;
     }
 
     public ClassWithAllDataTypes GetNewChanged ()
     {
-      ClassWithAllDataTypes newChanged = ClassWithAllDataTypes.NewObject ();
+      ClassWithAllDataTypes newChanged = ClassWithAllDataTypes.NewObject();
       newChanged.Int32Property = 13;
       return newChanged;
     }
 
     public ClassWithAllDataTypes GetNewUnchanged ()
     {
-      return ClassWithAllDataTypes.NewObject ();
+      return ClassWithAllDataTypes.NewObject();
     }
 
     public Employee GetChangedThroughRelatedObjectVirtualSide ()
     {
-      Employee changedThroughRelatedObjectVirtualSide = DomainObjectIDs.Employee3.GetObject<Employee> ();
-      changedThroughRelatedObjectVirtualSide.Computer = DomainObjectIDs.Computer3.GetObject<Computer> ();
+      Employee changedThroughRelatedObjectVirtualSide = DomainObjectIDs.Employee3.GetObject<Employee>();
+      changedThroughRelatedObjectVirtualSide.Computer = DomainObjectIDs.Computer3.GetObject<Computer>();
       return changedThroughRelatedObjectVirtualSide;
     }
 
     public Computer GetChangedThroughRelatedObjectRealSide ()
     {
-      Computer changedThroughRelatedObjectRealSide = DomainObjectIDs.Computer1.GetObject<Computer> ();
-      changedThroughRelatedObjectRealSide.Employee = DomainObjectIDs.Employee1.GetObject<Employee> ();
+      Computer changedThroughRelatedObjectRealSide = DomainObjectIDs.Computer1.GetObject<Computer>();
+      changedThroughRelatedObjectRealSide.Employee = DomainObjectIDs.Employee1.GetObject<Employee>();
       return changedThroughRelatedObjectRealSide;
     }
 
     public Order GetChangedThroughRelatedObjects ()
     {
-      Order changedThroughRelatedObjects = DomainObjectIDs.Order4.GetObject<Order> ();
-      changedThroughRelatedObjects.OrderItems.Clear ();
+      Order changedThroughRelatedObjects = DomainObjectIDs.Order4.GetObject<Order>();
+      changedThroughRelatedObjects.OrderItems.Clear();
       return changedThroughRelatedObjects;
     }
 
     public Order GetChangedThroughPropertyValue ()
     {
-      Order changedThroughPropertyValue = DomainObjectIDs.Order3.GetObject<Order> ();
+      Order changedThroughPropertyValue = DomainObjectIDs.Order3.GetObject<Order>();
       changedThroughPropertyValue.OrderNumber = 74;
       return changedThroughPropertyValue;
     }
 
     public Order GetUnchanged ()
     {
-      return DomainObjectIDs.Order1.GetObject<Order> ();
+      return DomainObjectIDs.Order1.GetObject<Order>();
     }
 
     [Test]
@@ -106,43 +106,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Computer changedThroughRelatedObjectRealSide = GetChangedThroughRelatedObjectRealSide();
       Employee changedThroughRelatedObjectVirtualSide = GetChangedThroughRelatedObjectVirtualSide();
       ClassWithAllDataTypes newUnchanged = GetNewUnchanged();
-      ClassWithAllDataTypes newChanged = GetNewChanged ();
+      ClassWithAllDataTypes newChanged = GetNewChanged();
       Order deleted = GetDeleted();
-      Location unidirectionalWithDeleted = GetUnidirectionalWithDeleted ();
-      Location unidirectionalWithDeletedNew = GetUnidirectionalWithDeletedNew ();
+      Location unidirectionalWithDeleted = GetUnidirectionalWithDeleted();
+      Location unidirectionalWithDeletedNew = GetUnidirectionalWithDeletedNew();
       Order invalid = GetInvalid();
 
-      Assert.That (unchanged.State, Is.EqualTo (StateType.Unchanged));
+      Assert.That(unchanged.State.IsUnchanged, Is.True);
 
-      Assert.That (changedThroughPropertyValue.State, Is.EqualTo (StateType.Changed));
-      Assert.That (changedThroughPropertyValue.Properties[typeof (Order) + ".OrderNumber"].GetOriginalValue<int>(), Is.Not.EqualTo (changedThroughPropertyValue.OrderNumber));
+      Assert.That(changedThroughPropertyValue.State.IsChanged, Is.True);
+      Assert.That(
+          changedThroughPropertyValue.Properties[typeof(Order) + ".OrderNumber"].GetOriginalValue<int>(),
+          Is.Not.EqualTo(changedThroughPropertyValue.OrderNumber));
 
-      Assert.That (changedThroughRelatedObjects.State, Is.EqualTo (StateType.Changed));
-      Assert.That (changedThroughRelatedObjects.Properties[typeof (Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>> ().Count, Is.Not.EqualTo (changedThroughRelatedObjects.OrderItems.Count));
+      Assert.That(changedThroughRelatedObjects.State.IsChanged, Is.True);
+      Assert.That(
+          changedThroughRelatedObjects.Properties[typeof(Order) + ".OrderItems"].GetOriginalValue<ObjectList<OrderItem>>().Count,
+          Is.Not.EqualTo(changedThroughRelatedObjects.OrderItems.Count));
 
-      Assert.That (changedThroughRelatedObjectRealSide.State, Is.EqualTo (StateType.Changed));
-      Assert.That (changedThroughRelatedObjectRealSide.Properties[typeof (Computer) + ".Employee"].GetOriginalValue<Employee> (), Is.Not.EqualTo (changedThroughRelatedObjectRealSide.Employee));
+      Assert.That(changedThroughRelatedObjectRealSide.State.IsChanged, Is.True);
+      Assert.That(
+          changedThroughRelatedObjectRealSide.Properties[typeof(Computer) + ".Employee"].GetOriginalValue<Employee>(),
+          Is.Not.EqualTo(changedThroughRelatedObjectRealSide.Employee));
 
-      Assert.That (changedThroughRelatedObjectVirtualSide.State, Is.EqualTo (StateType.Changed));
-      Assert.That (changedThroughRelatedObjectVirtualSide.Properties[typeof (Employee) + ".Computer"].GetOriginalValue<Computer> (), Is.Not.EqualTo (changedThroughRelatedObjectVirtualSide.Computer));
+      Assert.That(changedThroughRelatedObjectVirtualSide.State.IsChanged, Is.True);
+      Assert.That(
+          changedThroughRelatedObjectVirtualSide.Properties[typeof(Employee) + ".Computer"].GetOriginalValue<Computer>(),
+          Is.Not.EqualTo(changedThroughRelatedObjectVirtualSide.Computer));
 
-      Assert.That (newUnchanged.State, Is.EqualTo (StateType.New));
-      Assert.That (newChanged.State, Is.EqualTo (StateType.New));
+      Assert.That(newUnchanged.State.IsNew, Is.True);
+      Assert.That(newChanged.State.IsNew, Is.True);
 
-      Assert.That (deleted.State, Is.EqualTo (StateType.Deleted));
+      Assert.That(deleted.State.IsDeleted, Is.True);
 
-      Assert.That (unidirectionalWithDeleted.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (unidirectionalWithDeletedNew.State, Is.EqualTo (StateType.Changed));
+      Assert.That(unidirectionalWithDeleted.State.IsUnchanged, Is.True);
+      Assert.That(unidirectionalWithDeletedNew.State.IsChanged, Is.True);
 
-      Assert.That (invalid.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(invalid.State.IsInvalid, Is.True);
     }
 
     protected void FullyDeleteOrder (Order order)
     {
       for (int i = order.OrderItems.Count - 1; i >= 0; --i)
-        order.OrderItems[i].Delete ();
-      order.OrderTicket.Delete ();
-      order.Delete ();
+        order.OrderItems[i].Delete();
+      order.OrderTicket.Delete();
+      order.Delete();
     }
   }
 }

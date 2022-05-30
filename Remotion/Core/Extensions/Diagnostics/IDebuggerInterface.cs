@@ -27,10 +27,10 @@ namespace Remotion.Diagnostics
   public interface IDebuggerInterface
   {
     bool IsAttached { get; }
-    string DefaultCategory { get; }
+    string? DefaultCategory { get; }
 
     void Break ();
-    void Launch();
+    void Launch ();
 
     void Log (int level, string category, string message);
     bool IsLogging ();

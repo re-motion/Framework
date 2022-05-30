@@ -22,6 +22,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
   [IgnoreForMappingConfiguration]
   public class ClassWithIgnoreForMappingConfigurationAttribute : DomainObject
   {
-     
+
   }
 }

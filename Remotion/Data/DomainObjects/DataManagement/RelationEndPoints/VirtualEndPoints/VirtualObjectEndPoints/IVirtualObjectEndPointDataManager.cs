@@ -23,12 +23,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// </summary>
   public interface IVirtualObjectEndPointDataManager : IVirtualEndPointDataManager
   {
-    DomainObject CurrentOppositeObject { get; set; }
-    DomainObject OriginalOppositeObject { get; }
+    DomainObject? CurrentOppositeObject { get; set; }
+    DomainObject? OriginalOppositeObject { get; }
 
-    IRealObjectEndPoint CurrentOppositeEndPoint { get; }
-    IRealObjectEndPoint OriginalOppositeEndPoint { get; }
-    DomainObject OriginalItemWithoutEndPoint { get; }
+    IRealObjectEndPoint? CurrentOppositeEndPoint { get; }
+    IRealObjectEndPoint? OriginalOppositeEndPoint { get; }
+    DomainObject? OriginalItemWithoutEndPoint { get; }
     void SetDataFromSubTransaction (IVirtualObjectEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider);
   }
 }

@@ -49,7 +49,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     private class OuterProductProcessorOneLineString : OuterProductProcessorBase
     {
       public OuterProductProcessorOneLineString (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
       }
 
@@ -57,13 +57,13 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       {
         if (ProcessingState.IsInnermostLoop)
         {
-          result.Append (ProcessingState.IsFirstLoopElement ? "" : ",");
-          result.Append (CollectionToSequenceString (ProcessingState.DimensionIndices));
+          result.Append(ProcessingState.IsFirstLoopElement ? "" : ",");
+          result.Append(CollectionToSequenceString(ProcessingState.DimensionIndices));
         }
         else
         {
-          result.Append (ProcessingState.IsFirstLoopElement ? "" : ","); // Seperator only if not first element
-          result.Append ("{");
+          result.Append(ProcessingState.IsFirstLoopElement ? "" : ","); // Seperator only if not first element
+          result.Append("{");
         }
         return true;
       }
@@ -71,7 +71,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       public override bool DoAfterLoop ()
       {
         if (!ProcessingState.IsInnermostLoop)
-          result.Append ("}");
+          result.Append("}");
         return true;
       }
     }
@@ -80,20 +80,20 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     private class OuterProductProcessorPrettyPrinter : OuterProductProcessorBase
     {
       public OuterProductProcessorPrettyPrinter (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
       }
 
       protected void AppendIndentedLine (string text)
       {
         result.AppendLine();
-        result.Append (' ', ProcessingState.DimensionIndex);
-        result.Append (text);
+        result.Append(' ', ProcessingState.DimensionIndex);
+        result.Append(text);
       }
 
       protected virtual void AppendInnermostLoop ()
       {
-        AppendIndentedLine (CollectionToSequenceString (ProcessingState.DimensionIndices));
+        AppendIndentedLine(CollectionToSequenceString(ProcessingState.DimensionIndices));
       }
 
       public override bool DoBeforeLoop ()
@@ -101,14 +101,14 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
         if (ProcessingState.IsInnermostLoop)
           AppendInnermostLoop();
         else
-          AppendIndentedLine ("{");
+          AppendIndentedLine("{");
         return true;
       }
 
       public override bool DoAfterLoop ()
       {
         if (!ProcessingState.IsInnermostLoop)
-          AppendIndentedLine ("}");
+          AppendIndentedLine("}");
         return true;
       }
     }
@@ -117,13 +117,13 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     private class OuterProductProcessorArrayPrettyPrinter : OuterProductProcessorPrettyPrinter
     {
       public OuterProductProcessorArrayPrettyPrinter (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
       }
 
       protected override void AppendInnermostLoop ()
       {
-        AppendIndentedLine (rectangularArray.GetValue (ProcessingState.DimensionIndices).ToString());
+        AppendIndentedLine(rectangularArray.GetValue(ProcessingState.DimensionIndices).ToString());
       }
     }
 
@@ -135,7 +135,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       public int NumberElementsToOutputOverall { get; set; }
 
       public OuterProductProcessorArrayPrinter (Array rectangularArray)
-          : base (rectangularArray)
+          : base(rectangularArray)
       {
         NumberElementsToOutputInnermost = -1;
         NumberElementsToOutputAllButInnermost = -1;
@@ -144,30 +144,30 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
 
       protected virtual void AppendInnermostLoop ()
       {
-        result.Append (rectangularArray.GetValue (ProcessingState.DimensionIndices).ToString());
+        result.Append(rectangularArray.GetValue(ProcessingState.DimensionIndices).ToString());
       }
 
       public override bool DoBeforeLoop ()
       {
         if (ProcessingState.IsInnermostLoop)
         {
-          result.Append (ProcessingState.IsFirstLoopElement ? "" : ",");
+          result.Append(ProcessingState.IsFirstLoopElement ? "" : ",");
           if (NumberElementsToOutputInnermost > 0 && ProcessingState.ElementIndex >= NumberElementsToOutputInnermost)
           {
-            result.Append ("...");
+            result.Append("...");
             return false;
           }
           AppendInnermostLoop();
         }
         else
         {
-          result.Append (ProcessingState.IsFirstLoopElement ? "" : ","); // Seperator only if not first element
+          result.Append(ProcessingState.IsFirstLoopElement ? "" : ","); // Seperator only if not first element
           if (NumberElementsToOutputAllButInnermost > 0 && ProcessingState.ElementIndex >= NumberElementsToOutputAllButInnermost)
           {
-            result.Append ("...");
+            result.Append("...");
             return false;
           }
-          result.Append ("{");
+          result.Append("{");
         }
         return true;
       }
@@ -175,10 +175,10 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       public override bool DoAfterLoop ()
       {
         if (!ProcessingState.IsInnermostLoop)
-          result.Append ("}");
+          result.Append("}");
         if (NumberElementsToOutputOverall > 0 && ProcessingState.NumberElementsProcessed >= NumberElementsToOutputOverall)
         {
-          result.Append (",...");
+          result.Append(",...");
           return false;
         }
         return true;
@@ -202,13 +202,13 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       {
         if (ProcessingState.IsInnermostLoop)
         {
-          Result.Append (ProcessingState.IsFirstLoopElement ? "" : ",");
-          Result.Append (RectangularArray.GetValue (ProcessingState.DimensionIndices).ToString());
+          Result.Append(ProcessingState.IsFirstLoopElement ? "" : ",");
+          Result.Append(RectangularArray.GetValue(ProcessingState.DimensionIndices).ToString());
         }
         else
         {
-          Result.Append (ProcessingState.IsFirstLoopElement ? "" : ",");
-          Result.Append ("{");
+          Result.Append(ProcessingState.IsFirstLoopElement ? "" : ",");
+          Result.Append("{");
         }
         return true;
       }
@@ -216,7 +216,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       public override bool DoAfterLoop ()
       {
         if (!ProcessingState.IsInnermostLoop)
-          Result.Append ("}");
+          Result.Append("}");
         return true;
       }
     }
@@ -234,7 +234,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
         if (ProcessingState.IsInnermostLoop)
         {
           //Log (CollectionToSequenceString (ProcessingState.DimensionIndices));
-          outerProductPermutations.Add (ProcessingState.GetDimensionIndicesCopy());
+          outerProductPermutations.Add(ProcessingState.GetDimensionIndicesCopy());
         }
         return true;
       }
@@ -248,25 +248,25 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     {
       var sb = new StringBuilder();
 
-      sb.Append (start);
+      sb.Append(start);
       bool insertSeperator = false; // no seperator before first element
       foreach (Object element in collection)
       {
         if (insertSeperator)
-          sb.Append (seperator);
+          sb.Append(seperator);
         else
           insertSeperator = true;
 
-        sb.Append (element.ToString());
+        sb.Append(element.ToString());
       }
-      sb.Append (end);
+      sb.Append(end);
       return sb.ToString();
     }
 
 
     private static string CollectionToSequenceString (IEnumerable collection)
     {
-      return CollectionToSequenceString (collection, "(", ",", ")");
+      return CollectionToSequenceString(collection, "(", ",", ")");
     }
 
 
@@ -277,8 +277,8 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void NumberElementsPerDimensionCtorTest ()
     {
       int[] arrayDimensions = new int[] { 5, 7, 11 };
-      var outerProduct = new OuterProductIndexGenerator (arrayDimensions);
-      Assert.That (outerProduct.Length, Is.EqualTo (5*7*11));
+      var outerProduct = new OuterProductIndexGenerator(arrayDimensions);
+      Assert.That(outerProduct.Length, Is.EqualTo(5*7*11));
     }
 
 
@@ -286,8 +286,8 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void ArrayCtorTest ()
     {
       String[,] rectangularArray = new string[,] { { "A1", "A2" }, { "B1", "B2" }, { "C1", "C2" } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      Assert.That (outerProduct.Length, Is.EqualTo (3*2));
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      Assert.That(outerProduct.Length, Is.EqualTo(3*2));
     }
 
 
@@ -295,33 +295,33 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void NestedForLoopsTest ()
     {
       StringBuilder sb = new StringBuilder();
-      sb.Append ("{");
+      sb.Append("{");
       for (int i0 = 0; i0 < 2; ++i0)
       {
-        sb.Append (i0 == 0 ? "" : ",");
-        sb.Append ("{");
+        sb.Append(i0 == 0 ? "" : ",");
+        sb.Append("{");
         for (int i1 = 0; i1 < 3; ++i1)
         {
-          sb.Append (i1 != 0 ? "," : "");
-          sb.Append ("(" + i0 + "," + i1 + ")");
+          sb.Append(i1 != 0 ? "," : "");
+          sb.Append("(" + i0 + "," + i1 + ")");
         }
-        sb.Append ("}");
+        sb.Append("}");
       }
-      sb.Append ("}");
+      sb.Append("}");
       string s = sb.ToString();
-      Assert.That (s, Is.EqualTo ("{{(0,0),(0,1),(0,2)},{(1,0),(1,1),(1,2)}}"));
+      Assert.That(s, Is.EqualTo("{{(0,0),(0,1),(0,2)},{(1,0),(1,1),(1,2)}}"));
     }
 
 
     [Test]
     public void VisitorNestedForTest ()
     {
-      String[,] rectangularArray = new string[,] { { null, null, null }, { null, null, null } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorOneLineString (rectangularArray);
-      outerProduct.ProcessOuterProduct (processor);
+      var rectangularArray = new string[,] { { null, null, null }, { null, null, null } };
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorOneLineString(rectangularArray);
+      outerProduct.ProcessOuterProduct(processor);
       string s = processor.GetResult();
-      Assert.That (s, Is.EqualTo ("{(0,0),(0,1),(0,2)},{(1,0),(1,1),(1,2)}"));
+      Assert.That(s, Is.EqualTo("{(0,0),(0,1),(0,2)},{(1,0),(1,1),(1,2)}"));
     }
 
 
@@ -329,11 +329,11 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void PermutationVisitorTest ()
     {
       var dimensionArray = new int[] { 2, 3, 2 };
-      var outerProduct = new OuterProductIndexGenerator (dimensionArray);
-      var processor = new OuterProductProcessorOneLineString (null);
-      outerProduct.ProcessOuterProduct (processor);
+      var outerProduct = new OuterProductIndexGenerator(dimensionArray);
+      var processor = new OuterProductProcessorOneLineString(null);
+      outerProduct.ProcessOuterProduct(processor);
       string s = processor.GetResult();
-      Assert.That (s, Is.EqualTo ("{{(0,0,0),(0,0,1)},{(0,1,0),(0,1,1)},{(0,2,0),(0,2,1)}},{{(1,0,0),(1,0,1)},{(1,1,0),(1,1,1)},{(1,2,0),(1,2,1)}}"));
+      Assert.That(s, Is.EqualTo("{{(0,0,0),(0,0,1)},{(0,1,0),(0,1,1)},{(0,2,0),(0,2,1)}},{{(1,0,0),(1,0,1)},{(1,1,0),(1,1,1)},{(1,2,0),(1,2,1)}}"));
     }
 
 
@@ -341,20 +341,20 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void VisitorNestedForTest2 ()
     {
       var rectangularArray = new string[,,] { { { null, null }, { null, null }, { null, null } }, { { null, null }, { null, null }, { null, null } } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorOneLineString (rectangularArray);
-      outerProduct.ProcessOuterProduct (processor);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorOneLineString(rectangularArray);
+      outerProduct.ProcessOuterProduct(processor);
       string s = processor.GetResult();
-      Assert.That (s, Is.EqualTo ("{{(0,0,0),(0,0,1)},{(0,1,0),(0,1,1)},{(0,2,0),(0,2,1)}},{{(1,0,0),(1,0,1)},{(1,1,0),(1,1,1)},{(1,2,0),(1,2,1)}}"));
+      Assert.That(s, Is.EqualTo("{{(0,0,0),(0,0,1)},{(0,1,0),(0,1,1)},{(0,2,0),(0,2,1)}},{{(1,0,0),(1,0,1)},{(1,1,0),(1,1,1)},{(1,2,0),(1,2,1)}}"));
     }
 
     [Test]
     public void VisitorNestedForOuterProductProcessorPrettyPrinterTest ()
     {
       var rectangularArray = new string[,,] { { { null, null }, { null, null }, { null, null } }, { { null, null }, { null, null }, { null, null } } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorPrettyPrinter (rectangularArray);
-      outerProduct.ProcessOuterProduct (processor);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorPrettyPrinter(rectangularArray);
+      outerProduct.ProcessOuterProduct(processor);
       string s = processor.GetResult();
       const string resultExpected =
           @"
@@ -386,7 +386,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
   (1,2,1)
  }
 }";
-      Assert.That (s, Is.EqualTo (resultExpected));
+      Assert.That(s, Is.EqualTo(resultExpected));
     }
 
 
@@ -394,9 +394,9 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void VisitorNestedForOuterProductProcessorArrayPrettyPrinterTest ()
     {
       var rectangularArray = new string[,,] { { { "A0", "A1" }, { "B0", "B1" }, { "C0", "C1" } }, { { "D0", "D1" }, { "E0", "E1" }, { "F0", "F1" } } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorArrayPrettyPrinter (rectangularArray);
-      outerProduct.ProcessOuterProduct (processor);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorArrayPrettyPrinter(rectangularArray);
+      outerProduct.ProcessOuterProduct(processor);
       string s = processor.GetResult();
       const string resultExpected =
           @"
@@ -428,7 +428,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
   F1
  }
 }";
-      Assert.That (s, Is.EqualTo (resultExpected));
+      Assert.That(s, Is.EqualTo(resultExpected));
     }
 
 
@@ -436,23 +436,23 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void RectangularArrayVisitorTest ()
     {
       String[,] rectangularArray = new string[,] { { "A1", "A2", "A3" }, { "B1", "B2", "B3" }, { "C1", "C2", "C3" } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorArrayPrinter (rectangularArray);
-      outerProduct.ProcessOuterProduct (processor);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorArrayPrinter(rectangularArray);
+      outerProduct.ProcessOuterProduct(processor);
       string result = processor.GetResult();
-      Assert.That (result, Is.EqualTo ("{A1,A2,A3},{B1,B2,B3},{C1,C2,C3}"));
+      Assert.That(result, Is.EqualTo("{A1,A2,A3},{B1,B2,B3},{C1,C2,C3}"));
     }
 
     [Test]
     public void RectangularArrayTerminatingVisitorTest ()
     {
       String[,] rectangularArray = new string[,] { { "A1", "A2", "A3" }, { "B1", "B2", "B3" }, { "C1", "C2", "C3" } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorArrayPrinter (rectangularArray);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorArrayPrinter(rectangularArray);
       processor.NumberElementsToOutputInnermost = 2;
-      outerProduct.ProcessOuterProduct (processor);
+      outerProduct.ProcessOuterProduct(processor);
       string result = processor.GetResult();
-      Assert.That (result, Is.EqualTo ("{A1,A2,...},{B1,B2,...},{C1,C2,...}"));
+      Assert.That(result, Is.EqualTo("{A1,A2,...},{B1,B2,...},{C1,C2,...}"));
     }
 
 
@@ -460,27 +460,27 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void RectangularArrayTerminatingVisitorTest2 ()
     {
       String[,] rectangularArray = new string[,] { { "A1", "A2", "A3" }, { "B1", "B2", "B3" }, { "C1", "C2", "C3" }, { "D1", "D2", "D3" } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorArrayPrinter (rectangularArray);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorArrayPrinter(rectangularArray);
       processor.NumberElementsToOutputInnermost = 2;
       processor.NumberElementsToOutputAllButInnermost = 3;
-      outerProduct.ProcessOuterProduct (processor);
+      outerProduct.ProcessOuterProduct(processor);
       string result = processor.GetResult();
-      Assert.That (result, Is.EqualTo ("{A1,A2,...},{B1,B2,...},{C1,C2,...},..."));
+      Assert.That(result, Is.EqualTo("{A1,A2,...},{B1,B2,...},{C1,C2,...},..."));
     }
 
     [Test]
     public void RectangularArrayTerminatingVisitorTest3 ()
     {
       String[,] rectangularArray = new string[,] { { "A1", "A2", "A3" }, { "B1", "B2", "B3" }, { "C1", "C2", "C3" }, { "D1", "D2", "D3" } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
-      var processor = new OuterProductProcessorArrayPrinter (rectangularArray);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
+      var processor = new OuterProductProcessorArrayPrinter(rectangularArray);
       processor.NumberElementsToOutputInnermost = 2;
       processor.NumberElementsToOutputAllButInnermost = 3;
       processor.NumberElementsToOutputOverall = 5;
-      outerProduct.ProcessOuterProduct (processor);
+      outerProduct.ProcessOuterProduct(processor);
       string result = processor.GetResult();
-      Assert.That (result, Is.EqualTo ("{A1,A2,...},{B1,B2,...},..."));
+      Assert.That(result, Is.EqualTo("{A1,A2,...},{B1,B2,...},..."));
     }
 
 
@@ -488,17 +488,17 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void ProcessSameOuterProductMultipleTimesTest ()
     {
       String[,] rectangularArray = new string[,] { { "A1", "A2", "A3" }, { "B1", "B2", "B3" }, { "C1", "C2", "C3" }, { "D1", "D2", "D3" } };
-      var outerProduct = new OuterProductIndexGenerator (rectangularArray);
+      var outerProduct = new OuterProductIndexGenerator(rectangularArray);
       OuterProductProcessorArrayPrinter processor = null;
       int i = 0;
       for (; i < 3; ++i)
       {
-        processor = new OuterProductProcessorArrayPrinter (rectangularArray);
-        outerProduct.ProcessOuterProduct (processor);
+        processor = new OuterProductProcessorArrayPrinter(rectangularArray);
+        outerProduct.ProcessOuterProduct(processor);
       }
-      Assert.That (i, Is.EqualTo (3));
+      Assert.That(i, Is.EqualTo(3));
       string result = processor.GetResult();
-      Assert.That (result, Is.EqualTo ("{A1,A2,A3},{B1,B2,B3},{C1,C2,C3},{D1,D2,D3}"));
+      Assert.That(result, Is.EqualTo("{A1,A2,A3},{B1,B2,B3},{C1,C2,C3},{D1,D2,D3}"));
     }
 
 
@@ -513,13 +513,13 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
       var arrays = new List<Array>() { rectangularArray1D, rectangularArray2D, rectangularArray3D };
       foreach (var array in arrays)
       {
-        var outerProduct = new OuterProductIndexGenerator (array);
-        var processor = new RectangularArrayToString (array);
-        outerProduct.ProcessOuterProduct (processor);
+        var outerProduct = new OuterProductIndexGenerator(array);
+        var processor = new RectangularArrayToString(array);
+        outerProduct.ProcessOuterProduct(processor);
         //System.Console.WriteLine (processor.Result.ToString());
 
         string result = processor.Result.ToString();
-        Assert.That (new List<String> { result }, Is.SubsetOf (resultStrings));
+        Assert.That(new List<String> { result }, Is.SubsetOf(resultStrings));
       }
     }
 
@@ -528,9 +528,9 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
     public void SamplePermutationVisitorTest ()
     {
       var dimensionArray = new int[] { 2, 3, 2 };
-      var outerProduct = new OuterProductIndexGenerator (dimensionArray);
+      var outerProduct = new OuterProductIndexGenerator(dimensionArray);
       var processor = new OuterProductPermutations();
-      outerProduct.ProcessOuterProduct (processor);
+      outerProduct.ProcessOuterProduct(processor);
       var result = processor.outerProductPermutations;
 
       var resultExpected = new int[][]
@@ -539,7 +539,7 @@ namespace Remotion.Extensions.UnitTests.Diagnostics
                                new int[] { 0, 2, 1 }, new int[] { 1, 0, 0 }, new int[] { 1, 0, 1 }, new int[] { 1, 1, 0 }, new int[] { 1, 1, 1 },
                                new int[] { 1, 2, 0 }, new int[] { 1, 2, 1 }
                            };
-      Assert.That (result.ToArray(), Is.EqualTo (resultExpected));
+      Assert.That(result.ToArray(), Is.EqualTo(resultExpected));
     }
   }
 }

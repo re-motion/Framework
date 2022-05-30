@@ -1,0 +1,21 @@
+<Project>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>0067;0649;0169</NoWarn>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <IsPackable>False</IsPackable>
+    <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+    <PackageReference Include="Moq" Version="4.16.1" PrivateAssets="all" />
+    <PackageReference Include="NUnit" Version="3.12.0" PrivateAssets="all" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+  </ItemGroup>
+
+</Project>

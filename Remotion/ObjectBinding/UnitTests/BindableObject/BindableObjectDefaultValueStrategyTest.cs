@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -30,20 +30,20 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void IsDefaultValue ()
     {
-      var businessObjectStub = MockRepository.GenerateStub<IBusinessObject>();
-      var propertyInformationStub = MockRepository.GenerateStub<IPropertyInformation> ();
-      propertyInformationStub.Stub (stub => stub.PropertyType).Return (typeof (bool));
-      propertyInformationStub.Stub (stub => stub.GetIndexParameters()).Return (new ParameterInfo[0]);
-      var property = CreateProperty (propertyInformationStub);
-      var strategy = (IDefaultValueStrategy) new BindableObjectDefaultValueStrategy ();
+      var businessObjectStub = new Mock<IBusinessObject>();
+      var propertyInformationStub = new Mock<IPropertyInformation>();
+      propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(bool));
+      propertyInformationStub.Setup(stub => stub.GetIndexParameters()).Returns(new ParameterInfo[0]);
+      var property = CreateProperty(propertyInformationStub.Object);
+      var strategy = (IDefaultValueStrategy)new BindableObjectDefaultValueStrategy();
 
-      Assert.That (strategy.IsDefaultValue (businessObjectStub, property), Is.False);
+      Assert.That(strategy.IsDefaultValue(businessObjectStub.Object, property), Is.False);
     }
 
     private BooleanProperty CreateProperty (IPropertyInformation propertyInformation)
     {
-      var businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory ();
-      return new BooleanProperty (GetPropertyParameters (propertyInformation, businessObjectProvider));
+      var businessObjectProvider = CreateBindableObjectProviderWithStubBusinessObjectServiceFactory();
+      return new BooleanProperty(GetPropertyParameters(propertyInformation, businessObjectProvider));
     }
   }
 }

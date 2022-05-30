@@ -19,7 +19,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
 using Remotion.Web.Utilities;
@@ -53,75 +55,71 @@ public class DatePickerPage : Page
   public const string CultureParameterName = "Culture";
   public const string UICultureParameterName = "UICulture";
 
-  protected HtmlHeadContents HtmlHeadContents;
-  protected Calendar Calendar;
+  protected HtmlHeadContents HtmlHeadContents = null!;
+  protected Calendar Calendar = null!;
   /// <summary> Preserves the target control's ID during post backs. </summary>
-  private HtmlInputHidden TargetIDField;
+  private HtmlInputHidden TargetIDField = null!;
   /// <summary> Preserves the frame's ID in the parent page during post backs. </summary>
-  private HtmlInputHidden DatePickerIDField;
+  private HtmlInputHidden DatePickerIDField = null!;
   /// <summary> Contains the date to be selected in the calendar. </summary>
-  private HtmlInputHidden DateValueField;
+  private HtmlInputHidden DateValueField = null!;
 
   protected override void OnPreInit (EventArgs e)
   {
-    base.OnPreInit (e);
+    base.OnPreInit(e);
 
     var cultureName = Request.QueryString[CultureParameterName];
-    if (!string.IsNullOrWhiteSpace (cultureName))
+    if (!string.IsNullOrWhiteSpace(cultureName))
       Culture = cultureName.Trim();
 
     var uiCultureName = Request.QueryString[UICultureParameterName];
-    if (!string.IsNullOrWhiteSpace (uiCultureName))
+    if (!string.IsNullOrWhiteSpace(uiCultureName))
       UICulture = uiCultureName.Trim();
   }
 
-  override protected void OnInit(EventArgs e)
-	{
+  override protected void OnInit (EventArgs e)
+  {
+    Assertion.DebugIsNotNull(Page, "Page must not be null.");
+
     if (Form == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'Form'.");
+      throw new HttpException(this.GetType().GetFullNameSafe() + " does not initialize field 'Form'.");
     if (HtmlHeadContents == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'HtmlHeadContents'.");
+      throw new HttpException(this.GetType().GetFullNameSafe() + " does not initialize field 'HtmlHeadContents'.");
     if (Calendar == null)
-      throw new HttpException (this.GetType().FullName + " does not initialize field 'Calendar'.");
+      throw new HttpException(this.GetType().GetFullNameSafe() + " does not initialize field 'Calendar'.");
 
     Calendar.SelectionChanged += new EventHandler(Calendar_SelectionChanged);
 
     TargetIDField = new HtmlInputHidden();
     TargetIDField.ID = "TargetIDField";
     TargetIDField.EnableViewState = false;
-    Form.Controls.Add (TargetIDField);
+    Form.Controls.Add(TargetIDField);
 
     DatePickerIDField = new HtmlInputHidden();
     DatePickerIDField.ID = "DatePickerIDField";
     DatePickerIDField.EnableViewState = false;
-    Form.Controls.Add (DatePickerIDField);
+    Form.Controls.Add(DatePickerIDField);
 
     DateValueField = new HtmlInputHidden();
     DateValueField.ID = "DateValueField";
     DateValueField.EnableViewState = false;
-    Form.Controls.Add (DateValueField);
+    Form.Controls.Add(DateValueField);
 
     //  Force the creation of the postback function
-    Page.ClientScript.GetPostBackEventReference (this, "");
+    Page.ClientScript.GetPostBackEventReference(this, "");
 
     base.OnInit(e);
 
-    if( !IsDesignMode )
-	    RegisterHtmlHeadContents(HtmlHeadAppender.Current);
+    RegisterHtmlHeadContents(HtmlHeadAppender.Current);
 	}
-
-  protected bool IsDesignMode
-  {
-    get { return ControlHelper.IsDesignMode (PageWrapper.CastOrCreate (this)); }
-  }
 
   private void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
   {
     var renderer = SafeServiceLocator.Current.GetInstance<IDatePickerPageRenderer>();
-    renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+    renderer.RegisterHtmlHeadContents(htmlHeadAppender);
   }
 
-  protected override void OnLoad(EventArgs e)
+  protected override void OnLoad (EventArgs e)
   {
     string dateValue;
     if (IsPostBack)
@@ -130,17 +128,17 @@ public class DatePickerPage : Page
     }
     else
     {
-      dateValue = Request.Params["DateValueField"];
-      TargetIDField.Value = Request.Params["TargetIDField"];
-      DatePickerIDField.Value = Request.Params["DatePickerIDField"];
+      dateValue = Request.Params["DateValueField"]!; // TODO RM-8118: not null assertion
+      TargetIDField.Value = Request.Params["TargetIDField"]!; // TODO RM-8118: not null assertion
+      DatePickerIDField.Value = Request.Params["DatePickerIDField"]!; // TODO RM-8118: not null assertion
     }
 
     //  Initalize the calendar
     try
     {
-      if (! string.IsNullOrEmpty (dateValue))
+      if (! string.IsNullOrEmpty(dateValue))
       {
-        Calendar.SelectedDate = DateTime.Parse (dateValue);
+        Calendar.SelectedDate = DateTime.Parse(dateValue);
         Calendar.VisibleDate = Calendar.SelectedDate;
       }
     }
@@ -150,15 +148,17 @@ public class DatePickerPage : Page
     }
     DateValueField.Value = string.Empty;
 
-    base.OnLoad (e);
+    base.OnLoad(e);
   }
 
-  private void Calendar_SelectionChanged(object sender, EventArgs e)
+  private void Calendar_SelectionChanged (object? sender, EventArgs e)
   {
+    Assertion.DebugIsNotNull(Page, "Page must not be null.");
+
     string key = "Calendar_SelectionChanged";
-    string script = "DatePickerFrame_Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString () + "');\r\n";
-    if (!Page.ClientScript.IsStartupScriptRegistered (key))
-      Page.ClientScript.RegisterStartupScript (typeof (DatePickerPage), key, script, true);
+    string script = "DatePickerFrame.Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "');\r\n";
+    if (!Page.ClientScript.IsStartupScriptRegistered(key))
+      Page.ClientScript.RegisterStartupScript(typeof(DatePickerPage), key, script, true);
   }
 }
 

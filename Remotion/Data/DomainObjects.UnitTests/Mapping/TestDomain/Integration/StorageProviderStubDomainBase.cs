@@ -29,27 +29,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     public DomainObject GetRelatedObject (string propertyName)
     {
-      return (DomainObject) Properties[propertyName].GetValueWithoutTypeCheck ();
+      return (DomainObject)Properties[propertyName].GetValueWithoutTypeCheck();
     }
 
     public DomainObjectCollection GetRelatedObjects (string propertyName)
     {
-      return (DomainObjectCollection) Properties[propertyName].GetValueWithoutTypeCheck ();
+      return (DomainObjectCollection)Properties[propertyName].GetValueWithoutTypeCheck();
     }
 
     public DomainObject GetOriginalRelatedObject (string propertyName)
     {
-      return (DomainObject) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
+      return (DomainObject)Properties[propertyName].GetOriginalValueWithoutTypeCheck();
     }
 
     public DomainObjectCollection GetOriginalRelatedObjects (string propertyName)
     {
-      return (DomainObjectCollection) Properties[propertyName].GetOriginalValueWithoutTypeCheck ();
+      return (DomainObjectCollection)Properties[propertyName].GetOriginalValueWithoutTypeCheck();
     }
 
     public void SetRelatedObject (string propertyName, DomainObject newRelatedObject)
     {
-      Properties[propertyName].SetValueWithoutTypeCheck (newRelatedObject);
+      Properties[propertyName].SetValueWithoutTypeCheck(newRelatedObject);
     }
   }
 }

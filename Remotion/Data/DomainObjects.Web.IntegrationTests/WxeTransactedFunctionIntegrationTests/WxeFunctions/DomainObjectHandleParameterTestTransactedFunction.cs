@@ -27,21 +27,21 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
         ITransactionMode transactionMode,
         Action<WxeContext, DomainObjectHandleParameterTestTransactedFunction> testDelegate,
         IDomainObjectHandle<SampleObject> inParameter)
-      : base (transactionMode, (ctx, f) => testDelegate (ctx, (DomainObjectHandleParameterTestTransactedFunction) f), inParameter)
+      : base(transactionMode, (ctx, f) => testDelegate(ctx, (DomainObjectHandleParameterTestTransactedFunction)f), inParameter)
     {
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
+    [WxeParameter(1, false, WxeParameterDirection.In)]
     public IDomainObjectHandle<SampleObject> InParameter
     {
-      get { return (IDomainObjectHandle<SampleObject>) Variables["InParameter"]; }
+      get { return (IDomainObjectHandle<SampleObject>)Variables["InParameter"]; }
       set { Variables["InParameter"] = value; }
     }
 
-    [WxeParameter (2, false, WxeParameterDirection.Out)]
+    [WxeParameter(2, false, WxeParameterDirection.Out)]
     public IDomainObjectHandle<SampleObject> OutParameter
     {
-      get { return (IDomainObjectHandle<SampleObject>) Variables["OutParameter"]; }
+      get { return (IDomainObjectHandle<SampleObject>)Variables["OutParameter"]; }
       set { Variables["OutParameter"] = value; }
     }
   }

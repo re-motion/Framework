@@ -32,9 +32,9 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     /// <inheritdoc />
     public override ListMenu CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
-      control.MenuItems.Add (CreateWebMenuItem ("A"));
-      control.MenuItems.Add (CreateWebMenuItem ("B"));
+      var control = base.CreateControl(options);
+      control.MenuItems.Add(CreateWebMenuItem("A"));
+      control.MenuItems.Add(CreateWebMenuItem("B"));
       return control;
     }
 
@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
              {
                  ItemID = "Item" + name,
                  Category = "CatA",
-                 Text = name
+                 Text = WebString.CreateFromText(name)
              };
     }
   }

@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.Resources;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.Resources
 {
@@ -27,35 +28,30 @@ namespace Remotion.Web.UnitTests.Core.Resources
     [Test]
     public void GetUrl_BuildsUrlUsingBuilder ()
     {
-      var resourceUrlBuilderStub = MockRepository.GenerateStub<IResourcePathBuilder>();
+      var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
 
-      var resourceUrl = new ResourceUrl (resourceUrlBuilderStub, typeof (ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
+      var resourceUrl = new ResourceUrl(resourceUrlBuilderStub.Object, typeof(ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
       resourceUrlBuilderStub
-          .Stub (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
-          .Return ("expectedUrl");
+          .Setup(_ => _.BuildAbsolutePath(typeof(ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
+          .Returns("expectedUrl");
 
-      Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl"));
+      Assert.That(resourceUrl.GetUrl(), Is.EqualTo("expectedUrl"));
     }
 
     [Test]
     public void GetUrl_DoesNotCacheUrls ()
     {
-      var resourceUrlBuilderStub = MockRepository.GenerateStub<IResourcePathBuilder>();
+      var resourceUrlBuilderStub = new Mock<IResourcePathBuilder>();
 
-      var resourceUrl = new ResourceUrl (resourceUrlBuilderStub, typeof (ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
+      var resourceUrl = new ResourceUrl(resourceUrlBuilderStub.Object, typeof(ResourceUrlTest), ResourceType.Html, "theRelativeUrl.js");
       int count = 0;
       resourceUrlBuilderStub
-          .Stub (_ => _.BuildAbsolutePath (typeof (ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
-          .Return (null)
-          .WhenCalled (
-              mi =>
-              {
-                mi.ReturnValue = "expectedUrl " + count;
-                count++;
-              });
+          .SetupSequence(_ => _.BuildAbsolutePath(typeof(ResourceUrlTest).Assembly, new[] { "Html", "theRelativeUrl.js" }))
+          .Returns("expectedUrl " + count++)
+          .Returns("expectedUrl " + count);
 
-      Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl 0"));
-      Assert.That (resourceUrl.GetUrl(), Is.EqualTo ("expectedUrl 1"));
+      Assert.That(resourceUrl.GetUrl(), Is.EqualTo("expectedUrl 0"));
+      Assert.That(resourceUrl.GetUrl(), Is.EqualTo("expectedUrl 1"));
     }
   }
 }

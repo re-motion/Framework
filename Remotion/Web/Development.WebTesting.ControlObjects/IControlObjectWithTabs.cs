@@ -46,7 +46,7 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Short for explicitly implemented <see cref="IFluentControlObjectWithTabs.WithItemID"/>.
     /// </summary>
-    UnspecifiedPageObject SwitchTo ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject SwitchTo ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 
   /// <summary>
@@ -57,26 +57,26 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Switches to the tab using the given <paramref name="itemID"/>.
     /// </summary>
-    UnspecifiedPageObject WithItemID ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithItemID ([NotNull] string itemID, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Switches to the tab using the given <paramref name="index"/>.
     /// </summary>
-    UnspecifiedPageObject WithIndex (int index, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithIndex (int index, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Switches to the tab using the given <paramref name="htmlID"/>.
     /// </summary>
-    UnspecifiedPageObject WithHtmlID ([NotNull] string htmlID, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithHtmlID ([NotNull] string htmlID, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Switches to the tab using the given <paramref name="displayText"/>.
     /// </summary>
-    UnspecifiedPageObject WithDisplayText ([NotNull] string displayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithDisplayText ([NotNull] string displayText, [CanBeNull] IWebTestActionOptions? actionOptions = null);
 
     /// <summary>
     /// Switches to the tab using the given <paramref name="containsDisplayText"/>.
     /// </summary>
-    UnspecifiedPageObject WithDisplayTextContains ([NotNull] string containsDisplayText, [CanBeNull] IWebTestActionOptions actionOptions = null);
+    UnspecifiedPageObject WithDisplayTextContains ([NotNull] string containsDisplayText, [CanBeNull] IWebTestActionOptions? actionOptions = null);
   }
 }

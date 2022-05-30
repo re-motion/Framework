@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Text;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.UI;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls.Hotkey;
 
@@ -26,105 +28,120 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Hotkey
   {
     private class TestableHotkeyFormatterBase : HotkeyFormatterBase
     {
-      protected override void AppendHotkeyBeginTag (StringBuilder stringBuilder, string hotkey)
+      protected override void AppendHotkeyBeginTag (HtmlTextWriter writer, char hotkey)
       {
-        stringBuilder.AppendFormat ("<x '{0}'>", hotkey);
+        writer.AddAttribute("key", hotkey.ToString());
+        writer.RenderBeginTag(HtmlTextWriterTag.Span);
       }
 
-      protected override void AppendHotkeyEndTag (StringBuilder stringBuilder)
+      protected override void AppendHotkeyEndTag (HtmlTextWriter writer)
       {
-        stringBuilder.AppendFormat ("</x>");
+        writer.RenderEndTag();
+      }
+    }
+
+    public class TestCaseValue
+    {
+      public string Input;
+      public string Output;
+      public char? Hotkey;
+    }
+
+    public static IEnumerable<TestCaseData> GetTestCaseValues (string testMethodName)
+    {
+      yield return Test(testName: "TextIsEmpty_ResultIsEmpty", input: "", output: "", hotkey: null);
+      yield return Test(testName: "TextWithoutHotkey_ResultIsText", input: "No Hotkey", output: "No Hotkey", hotkey: null);
+      yield return Test(testName: "TextWithHotkey_ResultHighlightsHotkey", input: "A &Hotkey", output: "A <span key=\"H\">H</span>otkey", hotkey: 'H');
+      yield return Test(testName: "TextWithHotkeyAtStart_ResultIsTextWithHighlightedHotkey", input: "&A Hotkey", output: "<span key=\"A\">A</span> Hotkey", hotkey: 'A');
+      yield return Test(testName: "TextWithHotkeyAtEnd_ResultIsTextWithHighlightedHotkey", input: "A Hotke&y", output: "A Hotke<span key=\"Y\">y</span>", hotkey: 'Y');
+      yield return Test(testName: "TextWithHotkeyMarkerBeforeWhitespace_ResultIgnoresHotkeyMarker", input: "No & Hotkey", output: "No &amp; Hotkey", hotkey: null);
+      yield return Test(testName: "TextWithEscapedHotkeyMarkerBeforeWhitespace_ResultIgnoresHotkeyMarker", input: "No && Hotkey", output: "No &amp; Hotkey", hotkey: null);
+      yield return Test(testName: "TextWithEscapedHotkeyMarkerAtEnd_ResultIgnoresHotkeyMarker", input: "No Hotkey&&", output: "No Hotkey&amp;", hotkey: null);
+      yield return Test(testName: "TextWithHotkeyMarkerBeforePunctuation_ResultIgnoresHotkeyMarker", input: "No &. Hotkey", output: "No &amp;. Hotkey", hotkey: null);
+      yield return Test(testName: "TextWithEscapedHotkeyMarkerBeforePunctuation_ResultIgnoresHotkeyMarker", input: "No &&. Hotkey", output: "No &amp;. Hotkey", hotkey: null);
+      yield return Test(testName: "TextWithHotkeyMarkerAsLastCharacter_ResultIgnoresHotkeyMarker", input: "No Hotkey&", output: "No Hotkey&amp;", hotkey: null);
+      yield return Test(testName: "TextWithMultipleHotkeyMarkers_ResultIgnoresHotkeyMarkers", input: "&No &Hotkey", output: "&amp;No &amp;Hotkey", hotkey: null);
+      yield return Test(testName: "TextWithEscapedHotkeyMarker_ResultIgnoresHotkeyMarker", input: "No &&Hotkey", output: "No &amp;Hotkey", hotkey: null);
+      yield return Test(testName: "TextWithRepeatedEscapedHotkeyMarker_ResultIgnoresHotkeyMarker", input: "No &&&&Hotkey", output: "No &amp;&amp;Hotkey", hotkey: null);
+      yield return Test(
+          testName: "TextWithEscapedHotkeyMarker_AndFollowedByHotkey_ResultHighlightsHotkey",
+          input: "A &&&Hotkey",
+          output: "A &amp;<span key=\"H\">H</span>otkey",
+          hotkey: 'H');
+      yield return Test(
+          testName: "TextWithHotkey_AndEscapedHotkeyMarkers_ResultHighlightsHotkey_IntegrationTest",
+          input: "&&Hotkey & &Integration &&Test&",
+          output: "&amp;Hotkey &amp; <span key=\"I\">I</span>ntegration &amp;Test&amp;",
+          hotkey: 'I');
+      yield return Test(
+          testName: "TextWithMultipleHotkeyMarkers_AndEscapedHotkeyMarkers_ResultIgnoresHotkeyMarkers_IntegrationTest",
+          input: "&Hotkey &&Integration &Test",
+          output: "&amp;Hotkey &amp;&amp;Integration &amp;Test",
+          hotkey: null);
+
+      TestCaseData Test (string input, string output, char? hotkey, string testName)
+      {
+        return new TestCaseData(new TestCaseValue() { Input = input, Output = output, Hotkey = hotkey }) { TestName = testMethodName + "_" + testName };
       }
     }
 
     [Test]
-    public void FormatHotkey_NoHotkey ()
+    [TestCaseSource(nameof(GetTestCaseValues), new object[] { nameof(GetAccessKey_PlainTextWebString) })]
+    public void GetAccessKey_PlainTextWebString (TestCaseValue testCaseValue)
     {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("text", null);
+      var webString = WebString.CreateFromText(testCaseValue.Input);
 
-      Assert.That (formatter.FormatHotkey (textWithHotkey), Is.Null);
+      var formatter = new TestableHotkeyFormatterBase();
+
+      var accessKey = formatter.GetAccessKey(webString);
+      Assert.That(accessKey, Is.EqualTo(testCaseValue.Hotkey));
     }
 
     [Test]
-    public void FormatHotkey ()
+    [TestCaseSource(nameof(GetTestCaseValues), new object[] { nameof(WriteTo_PlainTextWebString) })]
+    public void WriteTo_PlainTextWebString (TestCaseValue testCaseValue)
     {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("text", 'A');
+      var webString = WebString.CreateFromText(testCaseValue.Input);
 
-      Assert.That (formatter.FormatHotkey (textWithHotkey), Is.EqualTo ("A"));
+      var formatter = new TestableHotkeyFormatterBase();
+
+      var renderedString = ExecuteWithHtmlTextWriter(writer => formatter.WriteTo(writer, webString));
+      Assert.That(renderedString, Is.EqualTo(testCaseValue.Output));
     }
 
     [Test]
-    public void FormatHotkey_LowerCaseHotkey_MakesUpperCase ()
+    public void GetAccessKey_HtmlWebString_ReturnsNull ()
     {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("text", 'a');
+      var stringValue = "&Test";
+      var webString = WebString.CreateFromHtml(stringValue);
 
-      Assert.That (formatter.FormatHotkey (textWithHotkey), Is.EqualTo ("A"));
+      var formatter = new TestableHotkeyFormatterBase();
+
+      var accessKey = formatter.GetAccessKey(webString);
+      Assert.That(accessKey, Is.Null);
     }
 
     [Test]
-    public void FormatText_NoEncoding_NoHotkey ()
+    public void WriteTo_HtmlWebString_RendersOutputWithoutHotkeyHandling ()
     {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("f<b>o</b>o b&ar", null);
+      var stringValue = "&&Test&Test<i>Test</i>";
+      var webString = WebString.CreateFromHtml(stringValue);
 
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("f<b>o</b>o b&ar"));
+      var formatter = new TestableHotkeyFormatterBase();
+
+      var renderedString = ExecuteWithHtmlTextWriter(writer => formatter.WriteTo(writer, webString));
+      Assert.That(renderedString, Is.EqualTo(stringValue));
     }
 
-    [Test]
-    public void FormatText_WithHtmlEncoding_NoHotkey ()
+    private string ExecuteWithHtmlTextWriter (Action<HtmlTextWriter> action)
     {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("f<b>o</b>o b&ar", null);
+      using var stringWriter = new StringWriter();
+      using var htmlTextWriter = new HtmlTextWriter(stringWriter);
 
-      Assert.That (formatter.FormatText (textWithHotkey, true), Is.EqualTo ("f&lt;b&gt;o&lt;/b&gt;o b&amp;ar"));
-    }
+      action(htmlTextWriter);
+      htmlTextWriter.Flush();
 
-    [Test]
-    public void FormatText_NoEncoding_WithHotkey ()
-    {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("foo b&ar", 4);
-
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("foo <x 'b'>b</x>&ar"));
-    }
-
-    [Test]
-    public void FormatText_NoEncoding_WithHotkeyAtStart ()
-    {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("foo bar", 0);
-
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("<x 'f'>f</x>oo bar"));
-    }
-
-    [Test]
-    public void FormatText_NoEncoding_WithHotkeyAtEnd ()
-    {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("foo bar", 6);
-
-      Assert.That (formatter.FormatText (textWithHotkey, false), Is.EqualTo ("foo ba<x 'r'>r</x>"));
-    }
-
-    [Test]
-    public void FormatText_WithHtmlEncoding_WithHotkey ()
-    {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("f<b>o</b>o b&ar", 11);
-
-      Assert.That (formatter.FormatText (textWithHotkey, true), Is.EqualTo ("f&lt;b&gt;o&lt;/b&gt;o <x 'b'>b</x>&amp;ar"));
-    }
-
-    [Test]
-    public void FormatText_WithHtmlEncoding_WithEncodedHotkey ()
-    {
-      var formatter = new TestableHotkeyFormatterBase();
-      var textWithHotkey = new TextWithHotkey ("foo öar", 4);
-
-      Assert.That (formatter.FormatText (textWithHotkey, true), Is.EqualTo ("foo <x '&#246;'>&#246;</x>ar"));
+      return stringWriter.ToString();
     }
   }
 }

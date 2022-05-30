@@ -16,115 +16,118 @@
 // 
 using System;
 using System.Data;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.Development.UnitTests.Core.UnitTesting.Data.SqlClient
 {
   [TestFixture]
   public class DatabaseAgentTest
   {
-    private MockRepository _mockRepository;
-    private IDbCommand _commandMock;
-    private IDbConnection _connectionStub;
+    private Mock<IDbCommand> _commandMock;
+    private Mock<IDbConnection> _connectionStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository ();
+      _connectionStub = new Mock<IDbConnection>();
+      _commandMock = new Mock<IDbCommand>(MockBehavior.Strict);
 
-      _connectionStub = _mockRepository.Stub<IDbConnection> ();
-      _commandMock = _mockRepository.StrictMock<IDbCommand> ();
-
-      SetupResult.For (_connectionStub.CreateCommand ()).Return (_commandMock);
+      _connectionStub.Setup(_ => _.CreateCommand()).Returns(_commandMock.Object);
     }
 
     [Test]
     public void ExecuteScalarCommand ()
     {
-      SetupCommandExpectations ("my command", null, delegate { Expect.Call (_commandMock.ExecuteScalar ()).Return ("foo"); });
+      SetupCommandExpectations(
+          "my command",
+          null,
+          sequence => _commandMock.InSequence(sequence).Setup(_ => _.ExecuteScalar()).Returns("foo").Verifiable());
 
-      _mockRepository.ReplayAll();
+      TestableDatabaseAgent agent = new TestableDatabaseAgent(_connectionStub.Object);
+      object result = agent.ExecuteScalarCommand("my command");
+      Assert.That(result, Is.EqualTo("foo"));
 
-      TestableDatabaseAgent agent = new TestableDatabaseAgent (_connectionStub);
-      object result = agent.ExecuteScalarCommand ("my command");
-      Assert.That (result, Is.EqualTo ("foo"));
-
-      _mockRepository.VerifyAll();
+      _commandMock.Verify();
     }
 
     [Test]
     public void ExecuteCommand_ReturnsCount ()
     {
-      SetupCommandExpectations ("my command", null, delegate { Expect.Call (_commandMock.ExecuteNonQuery()).Return (15); });
+      SetupCommandExpectations(
+          "my command",
+          null,
+          sequence => _commandMock.InSequence(sequence).Setup(_ => _.ExecuteNonQuery()).Returns(15).Verifiable());
 
-      _mockRepository.ReplayAll ();
+      TestableDatabaseAgent agent = new TestableDatabaseAgent(_connectionStub.Object);
+      int result = agent.ExecuteCommand("my command");
+      Assert.That(result, Is.EqualTo(15));
 
-      TestableDatabaseAgent agent = new TestableDatabaseAgent (_connectionStub);
-      int result = agent.ExecuteCommand ("my command");
-      Assert.That (result, Is.EqualTo (15));
-
-      _mockRepository.VerifyAll ();
+      _commandMock.Verify();
     }
 
     [Test]
     public void ExecuteBatchString ()
     {
-      SetupCommandExpectations ("ABCDEFG", null, delegate { Expect.Call (_commandMock.ExecuteNonQuery ()).Return (5); });
-      
-      _mockRepository.ReplayAll ();
+      SetupCommandExpectations(
+          "ABCDEFG",
+          null,
+          sequence => _commandMock.InSequence(sequence).Setup(_ => _.ExecuteNonQuery()).Returns(5).Verifiable());
 
-      TestableDatabaseAgent agent = new TestableDatabaseAgent (_connectionStub);
-      int result = agent.ExecuteBatchString (_connectionStub, "ABCDEFG", null);
+      TestableDatabaseAgent agent = new TestableDatabaseAgent(_connectionStub.Object);
+      int result = agent.ExecuteBatchString(_connectionStub.Object, "ABCDEFG", null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.EqualTo (5));
+      _commandMock.Verify();
+      Assert.That(result, Is.EqualTo(5));
     }
 
     [Test]
     public void ExecuteBatchString_StringIsSplitted ()
     {
-      SetupCommandExpectations ("ABC", null, delegate { Expect.Call (_commandMock.ExecuteNonQuery ()).Return (10); });
-      SetupCommandExpectations ("GFE", null, delegate { Expect.Call (_commandMock.ExecuteNonQuery ()).Return (20); });
-      
-      _mockRepository.ReplayAll ();
+      SetupCommandExpectations(
+          "ABC",
+          null,
+          sequence => _commandMock.InSequence(sequence).Setup(_ => _.ExecuteNonQuery()).Returns(10).Verifiable());
+      SetupCommandExpectations(
+          "GFE",
+          null,
+          sequence => _commandMock.InSequence(sequence).Setup(_ => _.ExecuteNonQuery()).Returns(20).Verifiable());
 
-      TestableDatabaseAgent agent = new TestableDatabaseAgent (_connectionStub);
-      int result = agent.ExecuteBatchString (_connectionStub, "ABC\nGO\nGFE", null);
+      TestableDatabaseAgent agent = new TestableDatabaseAgent(_connectionStub.Object);
+      int result = agent.ExecuteBatchString(_connectionStub.Object, "ABC\nGO\nGFE", null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.EqualTo (30));
+      _commandMock.Verify();
+      Assert.That(result, Is.EqualTo(30));
     }
 
     [Test]
     public void ExecuteBatchString_EmptyLines ()
     {
-      SetupCommandExpectations ("ABC", null, delegate { Expect.Call (_commandMock.ExecuteNonQuery ()).Return (10); });
-      SetupCommandExpectations ("GFE", null, delegate { Expect.Call (_commandMock.ExecuteNonQuery ()).Return (20); });
+      SetupCommandExpectations(
+          "ABC",
+          null,
+          sequence => _commandMock.InSequence(sequence).Setup(_ => _.ExecuteNonQuery()).Returns(10).Verifiable());
+      SetupCommandExpectations(
+          "GFE",
+          null,
+          sequence => _commandMock.InSequence(sequence).Setup(_ => _.ExecuteNonQuery()).Returns(20).Verifiable());
 
-      _mockRepository.ReplayAll ();
+      TestableDatabaseAgent agent = new TestableDatabaseAgent(_connectionStub.Object);
+      int result = agent.ExecuteBatchString(_connectionStub.Object, "ABC\n\nGO\n\n\nGFE\n\n", null);
 
-      TestableDatabaseAgent agent = new TestableDatabaseAgent (_connectionStub);
-      int result = agent.ExecuteBatchString (_connectionStub, "ABC\n\nGO\n\n\nGFE\n\n", null);
-
-      _mockRepository.VerifyAll ();
-      Assert.That (result, Is.EqualTo (30));
+      _commandMock.Verify();
+      Assert.That(result, Is.EqualTo(30));
     }
 
-    private void SetupCommandExpectations (string commandText, IDbTransaction transaction, Action actualCommandExpectation)
+    private void SetupCommandExpectations (string commandText, IDbTransaction transaction, Action<MockSequence> actualCommandExpectation)
     {
-      using (_mockRepository.Ordered ())
-      {
-        using (_mockRepository.Unordered ())
-        {
-          _commandMock.CommandType = CommandType.Text;
-          _commandMock.CommandText = commandText;
-          _commandMock.Transaction = transaction;
-        }
+      _commandMock.SetupSet(_ => _.CommandType = CommandType.Text).Verifiable();
+      _commandMock.SetupSet(_ => _.CommandText = commandText).Verifiable();
+      _commandMock.SetupSet(_ => _.Transaction = transaction).Verifiable();
 
-        actualCommandExpectation ();
-        _commandMock.Dispose ();
-      }
+      var sequence = new MockSequence();
+      actualCommandExpectation(sequence);
+      _commandMock.InSequence(sequence).Setup(_ => _.Dispose()).Verifiable();
     }
   }
 }

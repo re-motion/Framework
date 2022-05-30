@@ -38,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
         IInvalidDomainObjectManager parentInvalidDomainObjectManager,
         IDisposable scope)
     {
-      ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
-      ArgumentUtility.CheckNotNull ("parentInvalidDomainObjectManager", parentInvalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("parentTransaction", parentTransaction);
+      ArgumentUtility.CheckNotNull("parentInvalidDomainObjectManager", parentInvalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       _parentTransaction = parentTransaction;
       _parentInvalidDomainObjectManager = parentInvalidDomainObjectManager;
@@ -53,38 +53,38 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
       if (!_disposed)
       {
         _disposed = true;
-        _scope.Dispose ();
+        _scope.Dispose();
       }
     }
 
     public void MarkNotInvalid (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      CheckDisposed ();
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      CheckDisposed();
 
-      _parentInvalidDomainObjectManager.MarkNotInvalid (objectID);
+      _parentInvalidDomainObjectManager.MarkNotInvalid(objectID);
     }
 
     public void RegisterDataContainer (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
-      CheckDisposed ();
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
+      CheckDisposed();
 
-      _parentTransaction.DataManager.RegisterDataContainer (dataContainer);
+      _parentTransaction.DataManager.RegisterDataContainer(dataContainer);
     }
 
     public void Discard (DataContainer dataContainer)
     {
-      ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+      ArgumentUtility.CheckNotNull("dataContainer", dataContainer);
       CheckDisposed();
 
-      _parentTransaction.DataManager.Discard (dataContainer);
+      _parentTransaction.DataManager.Discard(dataContainer);
     }
 
     private void CheckDisposed ()
     {
       if (_disposed)
-        throw new ObjectDisposedException (GetType ().ToString ());
+        throw new ObjectDisposedException(GetType().ToString());
     }
   }
 }

@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
 
     public MultiObjectLoadCommand (IEnumerable<Tuple<IDbCommandBuilder, IObjectReader<T>>> dbCommandBuildersAndReaders)
     {
-      ArgumentUtility.CheckNotNull ("dbCommandBuildersAndReaders", dbCommandBuildersAndReaders);
+      ArgumentUtility.CheckNotNull("dbCommandBuildersAndReaders", dbCommandBuildersAndReaders);
 
       _dbCommandBuildersAndReaders = dbCommandBuildersAndReaders.ToArray();
     }
@@ -43,24 +43,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
     {
       get { return _dbCommandBuildersAndReaders; }
     }
-    
+
     public IEnumerable<T> Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
-      return _dbCommandBuildersAndReaders.SelectMany (b => LoadDataContainersFromCommandBuilder (b, executionContext));
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      return _dbCommandBuildersAndReaders.SelectMany(b => LoadDataContainersFromCommandBuilder(b, executionContext));
     }
 
     private IEnumerable<T> LoadDataContainersFromCommandBuilder (
         Tuple<IDbCommandBuilder, IObjectReader<T>> commandBuilderTuple, IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("commandBuilderTuple", commandBuilderTuple);
+      ArgumentUtility.CheckNotNull("commandBuilderTuple", commandBuilderTuple);
 
-      using (var command = commandBuilderTuple.Item1.Create (executionContext))
+      using (var command = commandBuilderTuple.Item1.Create(executionContext))
       {
-        using (var reader = executionContext.ExecuteReader (command, CommandBehavior.SingleResult))
+        using (var reader = executionContext.ExecuteReader(command, CommandBehavior.SingleResult))
         {
           // Use yield return to keep reader and command open while reading items
-          foreach (var dataContainer in commandBuilderTuple.Item2.ReadSequence (reader))
+          foreach (var dataContainer in commandBuilderTuple.Item2.ReadSequence(reader))
             yield return dataContainer;
         }
       }

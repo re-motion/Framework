@@ -17,6 +17,7 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -26,37 +27,49 @@ namespace Remotion.ObjectBinding.Sample
     public EventHandler<BocListItemEventArgs> RowMenuItemClick;
     protected override string GetSelectionChangedHandlerScript ()
     {
-      var baseScript = base.GetSelectionChangedHandlerScript ();
+      var baseScript = base.GetSelectionChangedHandlerScript();
       var extensionScript = "if (window.console && window.console.log) console.log ('OnSelectionChanged: ' + bocList.id + ', isInitializing: ' + isInitializing);";
-      return string.Format ("function (bocList, isInitializing) {{ var base = {0}; base (bocList, isInitializing); {1}; }}", baseScript, extensionScript);
+      return string.Format("function (bocList, isInitializing) {{ var base = {0}; base (bocList, isInitializing); {1}; }}", baseScript, extensionScript);
     }
 
-    protected override WebMenuItem[] InitializeRowMenuItems(IBusinessObject businessObject, int listIndex)
+    protected override WebMenuItem[] InitializeRowMenuItems (IBusinessObject businessObject, int listIndex)
     {
-      WebMenuItem[] baseMenuItems = base.InitializeRowMenuItems (businessObject, listIndex);
+      WebMenuItem[] baseMenuItems = base.InitializeRowMenuItems(businessObject, listIndex);
 
-      WebMenuItem[] menuItems = new WebMenuItem[3];
+      WebMenuItem[] menuItems = new WebMenuItem[5];
       var menuItem0 = new WebMenuItem();
       menuItem0.ItemID = listIndex.ToString() + "_0";
-      menuItem0.Text = menuItem0.ItemID;
+      menuItem0.Text = WebString.CreateFromText(menuItem0.ItemID);
       menuItems[0] = menuItem0;
 
-      var menuItem1 = new TestBocMenuItem (businessObject);
+      var menuItem1 = new TestBocMenuItem(businessObject);
       menuItem1.ItemID = listIndex.ToString() + "_1";
-      menuItem1.Text = menuItem1.ItemID;
+      menuItem1.Text = WebString.CreateFromText(menuItem1.ItemID);
       menuItems[1] = menuItem1;
 
       var menuItem2 = new WebMenuItem();
       menuItem2.ItemID = listIndex.ToString() + "_2";
-      menuItem2.Text =  menuItem2.ItemID;
+      menuItem2.Text =  WebString.CreateFromText(menuItem2.ItemID);
       menuItems[2] = menuItem2;
 
-      return ArrayUtility.Combine (baseMenuItems, menuItems);
+      var menuItem3 = new WebMenuItem();
+      menuItem3.ItemID = "FilterByService";
+      menuItem3.Text = WebString.CreateFromText("Should be filtered");
+      menuItem3.IsVisible = true;
+      menuItems[3] = menuItem3;
+
+      var menuItem4 = new WebMenuItem();
+      menuItem4.ItemID = "DisabledByService";
+      menuItem4.Text = WebString.CreateFromText("Should be disabled");
+      menuItem4.IsDisabled = false;
+      menuItems[4] = menuItem4;
+
+      return ArrayUtility.Combine(baseMenuItems, menuItems);
     }
 
-    protected override void PreRenderRowMenuItems(WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
+    protected override void PreRenderRowMenuItems (WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
     {
-      base.PreRenderRowMenuItems (menuItems, businessObject,  listIndex);
+      base.PreRenderRowMenuItems(menuItems, businessObject,  listIndex);
       if (listIndex == 1)
         ((WebMenuItem)menuItems[2]).IsVisible = false;
       else if (listIndex == 2)
@@ -70,14 +83,14 @@ namespace Remotion.ObjectBinding.Sample
 
     protected override void OnRowMenuItemEventCommandClick (WebMenuItem menuItem, IBusinessObject businessObject, int listIndex)
     {
-      base.OnRowMenuItemEventCommandClick (menuItem, businessObject, listIndex);
+      base.OnRowMenuItemEventCommandClick(menuItem, businessObject, listIndex);
       if (RowMenuItemClick != null)
-        RowMenuItemClick (menuItem, new BocListItemEventArgs (listIndex, businessObject));
+        RowMenuItemClick(menuItem, new BocListItemEventArgs(listIndex, businessObject));
     }
 
     public new void SetPageIndex (int pageIndex)
     {
-      base.SetPageIndex (pageIndex);
+      base.SetPageIndex(pageIndex);
     }
   }
 
@@ -95,32 +108,32 @@ namespace Remotion.ObjectBinding.Sample
       get { return _businessObject; }
     }
 
-    protected override void OnClick()
+    protected override void OnClick ()
     {
-      base.OnClick ();
-      System.Diagnostics.Debug.WriteLine ("Clicked menu item '" + ItemID + "' for BusinessObject '" + _businessObject.ToString() + "'.");
+      base.OnClick();
+      System.Diagnostics.Debug.WriteLine("Clicked menu item '" + ItemID + "' for BusinessObject '" + _businessObject.ToString() + "'.");
       // handle the click
-      base.OwnerControl.LoadValue (true);
+      base.OwnerControl.LoadValue(true);
     }
 
-    protected override void PreRender()
+    protected override void PreRender ()
     {
-      base.PreRender ();
+      base.PreRender();
       // Set Text and Icon
     }
 
-    public override bool EvaluateEnabled()
+    public override bool EvaluateEnabled ()
     {
-      return base.EvaluateEnabled ();
+      return base.EvaluateEnabled();
       // if (base.EvaluateDisabled ())
       //   return true;
       // else
       //   do your own stuff
     }
 
-    public override bool EvaluateVisible()
+    public override bool EvaluateVisible ()
     {
-      return base.EvaluateVisible ();
+      return base.EvaluateVisible();
       // if (! base.EvaluateVisible ())
       //   return false;
       // else

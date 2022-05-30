@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Development.UnitTesting;
@@ -24,7 +25,6 @@ using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTests
 {
@@ -42,11 +42,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
       SecurityManagerPrincipal.Current = SecurityManagerPrincipal.Null;
       ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
 
-      _user = User.FindByUserName ("substituting.user");
+      _user = User.FindByUserName("substituting.user");
       _tenant = _user.Tenant;
       _substitution = _user.GetActiveSubstitutions().First();
 
-      _principal = CreateSecurityManagerPrincipal (_tenant, _user, null, _substitution);
+      _principal = CreateSecurityManagerPrincipal(_tenant, _user, null, _substitution);
     }
 
     public override void TearDown ()
@@ -60,44 +60,44 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SecurityManagerPrincipalTest
     {
       var substitutionProxy = _principal.Substitution;
 
-      Assert.That (substitutionProxy.ID, Is.EqualTo (_substitution.ID));
+      Assert.That(substitutionProxy.ID, Is.EqualTo(_substitution.ID));
     }
 
     [Test]
     public void UsesCache ()
     {
-      Assert.That (_principal.Substitution, Is.SameAs (_principal.Substitution));
+      Assert.That(_principal.Substitution, Is.SameAs(_principal.Substitution));
     }
 
     [Test]
     public void SerializesCache ()
     {
-      var deserialized = Serializer.SerializeAndDeserialize (Tuple.Create (_principal, _principal.Substitution));
+      var deserialized = Serializer.SerializeAndDeserialize(Tuple.Create(_principal, _principal.Substitution));
       SecurityManagerPrincipal deserialziedSecurityManagerPrincipal = deserialized.Item1;
       SubstitutionProxy deserialziedSubstitution = deserialized.Item2;
 
-      Assert.That (deserialziedSecurityManagerPrincipal.Substitution, Is.SameAs (deserialziedSubstitution));
+      Assert.That(deserialziedSecurityManagerPrincipal.Substitution, Is.SameAs(deserialziedSubstitution));
     }
 
     [Test]
     public void UsesSecurityFreeSection ()
     {
-      var securityProviderStub = MockRepository.GenerateStub<ISecurityProvider>();
-      securityProviderStub.Stub (stub => stub.IsNull).Return (false);
+      var securityProviderStub = new Mock<ISecurityProvider>();
+      securityProviderStub.Setup(stub => stub.IsNull).Returns(false);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => securityProviderStub);
+      serviceLocator.RegisterSingle(() => securityProviderStub);
       ISecurityManagerPrincipal refreshedInstance;
-      using (new ServiceLocatorScope (serviceLocator))
+      using (new ServiceLocatorScope(serviceLocator))
       {
         IncrementDomainRevision();
         refreshedInstance = _principal.GetRefreshedInstance();
-        Assert.That (refreshedInstance, Is.Not.SameAs (_principal));
+        Assert.That(refreshedInstance, Is.Not.SameAs(_principal));
       }
 
       var substitutionProxy = refreshedInstance.Substitution;
 
-      Assert.That (substitutionProxy.ID, Is.EqualTo (_substitution.ID));
+      Assert.That(substitutionProxy.ID, Is.EqualTo(_substitution.ID));
     }
   }
 }

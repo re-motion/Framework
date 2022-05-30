@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.Integration.NotSupportedDomainObjectTypes.GenericDomainObject
 {
   [DBTable]
-  [ClassID ("NotSupportedDomainObjectTypes_GenericDomainObject")]
+  [ClassID("NotSupportedDomainObjectTypes_GenericDomainObject")]
   public class GenericDomainObject<T> : DomainObject
   {
   }

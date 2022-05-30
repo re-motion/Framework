@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -26,56 +27,56 @@ public class CommandLineEnumArgument: CommandLineValueArgument
 {
   // fields
 
-  private Type _enumType;
+  private Type? _enumType;
   private bool _hasValue = false;
-  private Enum _value;
+  private Enum? _value;
   private bool _isCaseSensitive = false;
 
   // construction and disposal
 
-  public CommandLineEnumArgument (string name, bool isOptional, Type enumType)
-    : base (name, isOptional)
+  public CommandLineEnumArgument (string? name, bool isOptional, Type? enumType)
+    : base(name, isOptional)
   {
     EnumType = enumType;
   }
 
-  public CommandLineEnumArgument (bool isOptional, Type enumType)
-    : this (null, isOptional, enumType)
+  public CommandLineEnumArgument (bool isOptional, Type? enumType)
+    : this(null, isOptional, enumType)
   {
   }
 
   // properties and methods
 
-  public Type EnumType
+  public Type? EnumType
   {
     get { return _enumType; }
-    set 
-    { 
-      if (value != null && ! value.IsEnum) throw new ArgumentOutOfRangeException ("enumType", value, "Argument must be an enumeration type.");
-      _enumType = value; 
+    set
+    {
+      if (value != null && ! value.IsEnum) throw new ArgumentOutOfRangeException("enumType", value, "Argument must be an enumeration type.");
+      _enumType = value!;
     }
   }
 
   protected internal override void SetStringValue (string value)
   {
-    if (value == null) throw new ArgumentNullException ("value");
+    if (value == null) throw new ArgumentNullException("value");
     if (value.Length != 0)
     {
       bool foundExact = false;
       bool foundIncremental = false;
       bool found2ndIncremental = false;
-      foreach (FieldInfo enumValue in _enumType.GetFields (BindingFlags.Public | BindingFlags.Static))
+      foreach (FieldInfo enumValue in _enumType!.GetFields(BindingFlags.Public | BindingFlags.Static))
       {
         string enumName = enumValue.Name;
-        if (string.Compare (enumName, value, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
+        if (string.Compare(enumName, value, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
         {
           foundExact = true;
           _hasValue = true;
-          _value = (Enum) enumValue.GetValue (null);
+          _value = (Enum)enumValue.GetValue(null)!;
           break;
         }
-        else if (enumName.Length > value.Length 
-               && string.Compare (enumValue.Name, 0, value, 0, value.Length, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
+        else if (enumName.Length > value.Length
+               && string.Compare(enumValue.Name, 0, value, 0, value.Length, !_isCaseSensitive, CultureInfo.InvariantCulture) == 0)
         {
           if (foundIncremental)
           {
@@ -85,7 +86,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
           {
             foundIncremental = true;
             _hasValue = true;
-            _value = (Enum) enumValue.GetValue (null);
+            _value = (Enum)enumValue.GetValue(null)!;
           }
         }
       }
@@ -93,23 +94,23 @@ public class CommandLineEnumArgument: CommandLineValueArgument
       if (! foundExact && ! foundIncremental)
       {
         StringBuilder values = new StringBuilder();
-        FieldInfo[] enumValues = _enumType.GetFields (BindingFlags.Static | BindingFlags.Public);
+        FieldInfo[] enumValues = _enumType.GetFields(BindingFlags.Static | BindingFlags.Public);
         for (int i = 0; i < enumValues.Length; ++i)
         {
           if (i == enumValues.Length - 1)
-            values.Append (" or ");
+            values.Append(" or ");
           else if (i > 0)
-            values.Append (", ");
-          values.Append (enumValues[i].Name);
+            values.Append(", ");
+          values.Append(enumValues[i].Name);
         }
-        throw new InvalidCommandLineArgumentValueException (this, "Use one of the following values: " + values.ToString() + ".");
+        throw new InvalidCommandLineArgumentValueException(this, "Use one of the following values: " + values.ToString() + ".");
       }
       else if (found2ndIncremental)
       {
-        throw new InvalidCommandLineArgumentValueException (this, "Ambiguous value " + value + ".");
+        throw new InvalidCommandLineArgumentValueException(this, "Ambiguous value " + value + ".");
       }
     }
-    base.SetStringValue (value);
+    base.SetStringValue(value);
   }
 
   public bool IsCaseSensitive
@@ -122,28 +123,28 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   {
     if (! IsPositional)
     {
-      sb.Append (Parser.ArgumentDeclarationPrefix);
-      sb.Append (Name);
-      sb.Append (Parser.Separator);
+      sb.Append(Parser!.ArgumentDeclarationPrefix);
+      sb.Append(Name);
+      sb.Append(Parser.Separator);
     }
-    sb.Append (this.Placeholder);
-    sb.Append ("{");
+    sb.Append(this.Placeholder);
+    sb.Append("{");
     bool first = true;
-    foreach (FieldInfo enumValue in _enumType.GetFields (BindingFlags.Public | BindingFlags.Static))
+    foreach (FieldInfo enumValue in _enumType!.GetFields(BindingFlags.Public | BindingFlags.Static))
     {
       if (first)
         first = false;
-      else 
-        sb.Append ("|");
-      sb.Append (enumValue.Name);
+      else
+        sb.Append("|");
+      sb.Append(enumValue.Name);
     }
-    sb.Append ("}");
+    sb.Append("}");
   }
 
-  protected internal override void AttachParser(CommandLineParser parser)
+  protected internal override void AttachParser (CommandLineParser? parser)
   {
-    _isCaseSensitive = parser.IsCaseSensitive;
-    base.AttachParser (parser);
+    _isCaseSensitive = parser!.IsCaseSensitive;
+    base.AttachParser(parser);
   }
 
   public bool HasValue
@@ -151,23 +152,23 @@ public class CommandLineEnumArgument: CommandLineValueArgument
     get { return _hasValue; }
   }
 
-  public override object ValueObject
+  public override object? ValueObject
   {
-    get 
+    get
     {
       if (HasValue)
-        return Value; 
+        return Value;
       else
         return null;
     }
   }
 
-  public Enum Value
+  public Enum? Value
   {
-    get 
-    { 
-      if (!_hasValue) throw new InvalidOperationException ("Cannot read value if 'HasValue' is false.");
-      return _value; 
+    get
+    {
+      if (!_hasValue) throw new InvalidOperationException("Cannot read value if 'HasValue' is false.");
+      return _value;
     }
   }
 

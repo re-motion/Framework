@@ -28,9 +28,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     {
       var stringParameter = "stringParameter";
 
-      var actualValue = DomSelectorUtility.CreateMatchValueForXPath (stringParameter);
+      var actualValue = DomSelectorUtility.CreateMatchValueForXPath(stringParameter);
 
-      Assert.That (actualValue, Is.EqualTo ("'stringParameter'"));
+      Assert.That(actualValue, Is.EqualTo("'stringParameter'"));
     }
 
     [Test]
@@ -38,9 +38,9 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     {
       var stringParameter = "string\"Parameter";
 
-      var actualValue = DomSelectorUtility.CreateMatchValueForXPath (stringParameter);
+      var actualValue = DomSelectorUtility.CreateMatchValueForXPath(stringParameter);
 
-      Assert.That (actualValue, Is.EqualTo ("'string\"Parameter'"));
+      Assert.That(actualValue, Is.EqualTo("'string\"Parameter'"));
     }
 
     [Test]
@@ -48,19 +48,19 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     {
       var stringParameter = "string'Parameter";
 
-      var actualValue = DomSelectorUtility.CreateMatchValueForXPath (stringParameter);
+      var actualValue = DomSelectorUtility.CreateMatchValueForXPath(stringParameter);
 
-      Assert.That (actualValue, Is.EqualTo ("\"string'Parameter\""));
+      Assert.That(actualValue, Is.EqualTo("\"string'Parameter\""));
     }
-    
+
     [Test]
     public void CreateMatchValueForXPath_WithSingleQuoteAndDoubleQuote_ShouldReturnCorrectlyEnclosedParameter ()
     {
       var stringParameter = "string'Para\"meter";
 
-      var actualValue = DomSelectorUtility.CreateMatchValueForXPath (stringParameter);
+      var actualValue = DomSelectorUtility.CreateMatchValueForXPath(stringParameter);
 
-      Assert.That (actualValue, Is.EqualTo ("concat('string',\"'\",'Para\"meter')"));
+      Assert.That(actualValue, Is.EqualTo("concat('string',\"'\",'Para\"meter')"));
     }
 
     [Test]
@@ -68,20 +68,20 @@ namespace Remotion.Web.Development.WebTesting.UnitTests
     {
       var stringParameter = "stringParameter";
 
-      var actualValue = DomSelectorUtility.CreateMatchValueForCssSelector (stringParameter);
+      var actualValue = DomSelectorUtility.CreateMatchValueForCssSelector(stringParameter);
 
-      Assert.That (actualValue, Is.EqualTo ("'stringParameter'"));
+      Assert.That(actualValue, Is.EqualTo("'stringParameter'"));
     }
 
-    
+
     [Test]
     public void CreateMatchValueForCssSelector_WithSingleQuote_ShouldReturnCorrectlyEnclosedAndEscapedParameter ()
     {
       var stringParameter = "string'Parameter";
 
-      var actualValue = DomSelectorUtility.CreateMatchValueForCssSelector (stringParameter);
+      var actualValue = DomSelectorUtility.CreateMatchValueForCssSelector(stringParameter);
 
-      Assert.That (actualValue, Is.EqualTo ("'string\\'Parameter'"));
+      Assert.That(actualValue, Is.EqualTo("'string\\'Parameter'"));
     }
   }
 }

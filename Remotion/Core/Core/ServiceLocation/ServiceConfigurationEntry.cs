@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -38,8 +38,8 @@ namespace Remotion.ServiceLocation
     /// <returns>A <see cref="ServiceConfigurationEntry"/> containing the data from the <paramref name="attributes"/>.</returns>
     public static ServiceConfigurationEntry CreateFromAttributes (Type serviceType, IEnumerable<Tuple<Type, ImplementationForAttribute>> attributes)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("attributes", attributes);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("attributes", attributes);
 
       var attributesAndResolvedTypes =
           (from attribute in attributes
@@ -48,18 +48,18 @@ namespace Remotion.ServiceLocation
 
       var serviceImplementationInfos =
           attributesAndResolvedTypes
-              .ApplySideEffect (tuple => CheckImplementationType (serviceType, tuple.ResolvedType, s => new InvalidOperationException (s)))
-              .Select (tuple => new ServiceImplementationInfo (tuple.ResolvedType, tuple.Attribute.Lifetime, tuple.Attribute.RegistrationType));
+              .ApplySideEffect(tuple => CheckImplementationType(serviceType, tuple.ResolvedType, s => new InvalidOperationException(s)))
+              .Select(tuple => new ServiceImplementationInfo(tuple.ResolvedType, tuple.Attribute.Lifetime, tuple.Attribute.RegistrationType));
 
-      return new ServiceConfigurationEntry (serviceType, serviceImplementationInfos);
+      return new ServiceConfigurationEntry(serviceType, serviceImplementationInfos);
     }
 
     private static void CheckImplementationType (Type serviceType, Type implementationType, Func<string, Exception> exceptionFactory)
     {
-      if (!serviceType.IsAssignableFrom (implementationType))
+      if (!serviceType.IsAssignableFrom(implementationType))
       {
-        var message = string.Format ("The implementation type '{0}' does not implement the service type.", implementationType);
-        throw exceptionFactory (message);
+        var message = string.Format("The implementation type '{0}' does not implement the service type.", implementationType);
+        throw exceptionFactory(message);
       }
     }
 
@@ -72,7 +72,7 @@ namespace Remotion.ServiceLocation
     /// <param name="serviceType">The service type. This is a type for which instances are requested from a service locator.</param>
     /// <param name="implementationInfos">The <see cref="ServiceImplementationInfo"/> for the <paramref name="serviceType" />.</param>
     public ServiceConfigurationEntry (Type serviceType, params ServiceImplementationInfo[] implementationInfos)
-        : this (serviceType, (IEnumerable<ServiceImplementationInfo>) implementationInfos)
+        : this(serviceType, (IEnumerable<ServiceImplementationInfo>)implementationInfos)
     {
     }
 
@@ -83,14 +83,14 @@ namespace Remotion.ServiceLocation
     /// <param name="implementationInfos">The service implementation information.</param>
     public ServiceConfigurationEntry (Type serviceType, IEnumerable<ServiceImplementationInfo> implementationInfos)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
-      ArgumentUtility.CheckNotNull ("implementationInfos", implementationInfos);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("implementationInfos", implementationInfos);
 
       _serviceType = serviceType;
       var checkedImplementationInfos =
-          implementationInfos.ApplySideEffect (
-              info => CheckImplementationType (serviceType, info.ImplementationType, message => new ArgumentException (message, "implementationInfos")));
-      _implementationInfos = Array.AsReadOnly (checkedImplementationInfos.ToArray());
+          implementationInfos.ApplySideEffect(
+              info => CheckImplementationType(serviceType, info.ImplementationType, message => new ArgumentException(message, "implementationInfos")));
+      _implementationInfos = Array.AsReadOnly(checkedImplementationInfos.ToArray());
     }
 
     /// <summary>
@@ -118,9 +118,9 @@ namespace Remotion.ServiceLocation
     /// <inheritdoc />
     public override string ToString ()
     {
-      var implementationInfos = _implementationInfos.Select (i => i.ToString()).ToArray();
-      var joinedImplementationInfos = string.Join (", ", implementationInfos);
-      return string.Format ("{0} implementations: [{1}]", _serviceType, joinedImplementationInfos);
+      var implementationInfos = _implementationInfos.Select(i => i.ToString()).ToArray();
+      var joinedImplementationInfos = string.Join(", ", implementationInfos);
+      return string.Format("{0} implementations: [{1}]", _serviceType, joinedImplementationInfos);
     }
   }
 }

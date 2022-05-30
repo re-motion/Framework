@@ -27,17 +27,25 @@ namespace Remotion.Web.Development.WebTesting
   /// developer and provide a semantic interface instead. In contrast to <see cref="PageObject"/>s, control objects represent a specific
   /// ASP.NET (custom) control and not a whole page.
   /// </summary>
-  public abstract class ControlObject : WebTestObject<ControlObjectContext>
+  public abstract class ControlObject : WebTestObject<ControlObjectContext>, IControlObjectNotifier
   {
+    private event Action<WebTestAction, IWebTestActionOptions>? _actionExecuteEvent;
+
     protected ControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
+    }
+
+    /// <inheritdoc />
+    event Action<WebTestAction, IWebTestActionOptions> IControlObjectNotifier.ActionExecute
+    {
+      add { _actionExecuteEvent += value; }
+      remove { _actionExecuteEvent -= value; }
     }
 
     /// <summary>
     /// Returns the control's HTML ID.
     /// </summary>
-    /// <exception cref="MissingHtmlException">If the <see cref="Scope"/>'s root DOM element does not have an ID attribute.</exception>
     public string GetHtmlID ()
     {
       return Scope.Id;
@@ -48,7 +56,7 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public IControlHost Children
     {
-      get { return new ControlHost (Context); }
+      get { return new ControlHost(Context); }
     }
 
     /// <summary>
@@ -59,9 +67,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <param name="userDefinedWebTestActionOptions">User-defined <see cref="IWebTestActionOptions"/>.</param>
     protected IWebTestActionOptions MergeWithDefaultActionOptions (
         [NotNull] ElementScope scope,
-        [CanBeNull] IWebTestActionOptions userDefinedWebTestActionOptions)
+        [CanBeNull] IWebTestActionOptions? userDefinedWebTestActionOptions)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       if (userDefinedWebTestActionOptions == null) // prevent complicated null handling
         userDefinedWebTestActionOptions = new WebTestActionOptions();
@@ -69,7 +77,7 @@ namespace Remotion.Web.Development.WebTesting
       return new WebTestActionOptions
              {
                  CompletionDetectionStrategy =
-                     userDefinedWebTestActionOptions.CompletionDetectionStrategy ?? GetDefaultCompletionDetectionStrategy (scope),
+                     userDefinedWebTestActionOptions.CompletionDetectionStrategy ?? GetDefaultCompletionDetectionStrategy(scope),
                  ModalDialogHandler = userDefinedWebTestActionOptions.ModalDialogHandler
              };
     }
@@ -83,11 +91,36 @@ namespace Remotion.Web.Development.WebTesting
     protected abstract ICompletionDetectionStrategy GetDefaultCompletionDetectionStrategy ([NotNull] ElementScope scope);
 
     /// <summary>
+    /// Wraps the execute call of the passed <paramref name="action"/> to enable invocation of
+    /// <see cref="IControlObjectNotifier.ActionExecute"/>.
+    /// </summary>
+    protected void ExecuteAction ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
+    {
+      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentUtility.CheckNotNull("actionOptions", actionOptions);
+
+      OnActionExecute(action, actionOptions);
+
+      action.Execute(actionOptions);
+    }
+
+    /// <summary>
+    /// Invokes the <see cref="IControlObjectNotifier.ActionExecute"/>.
+    /// </summary>
+    protected void OnActionExecute ([NotNull] WebTestAction action, [NotNull] IWebTestActionOptions actionOptions)
+    {
+      ArgumentUtility.CheckNotNull("action", action);
+      ArgumentUtility.CheckNotNull("actionOptions", actionOptions);
+
+      _actionExecuteEvent?.Invoke(action, actionOptions);
+    }
+
+    /// <summary>
     /// Convenience method for creating a new <see cref="UnspecifiedPageObject"/>.
     /// </summary>
     protected UnspecifiedPageObject UnspecifiedPage ()
     {
-      return new UnspecifiedPageObject (Context);
+      return new UnspecifiedPageObject(Context);
     }
   }
 }

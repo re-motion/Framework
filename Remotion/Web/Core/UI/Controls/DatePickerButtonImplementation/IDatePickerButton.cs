@@ -25,13 +25,12 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation
   /// </summary>
   public interface IDatePickerButton : IStyledControl, IControlWithDiagnosticMetadata
   {
-    new IControl Parent { get; }
-    bool IsDesignMode { get; set; }
+    new IControl? Parent { get; }
     string AlternateText { get; set; }
     bool EnableClientScript { get; }
-    string TargetControlID { get; }
+    string? TargetControlID { get; }
     Style DatePickerButtonStyle { get; }
-    string ContainerControlID { get; }
+    string? ContainerControlID { get; }
     bool Enabled { get; }
   }
 }

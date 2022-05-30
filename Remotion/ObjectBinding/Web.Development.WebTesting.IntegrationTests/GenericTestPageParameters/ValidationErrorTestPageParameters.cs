@@ -26,79 +26,60 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Gen
   /// </summary>
   public class ValidationErrorTestPageParameters : GenericTestPageParameterBase
   {
-    private const int c_parameterCount = 6;
-
-    private string _validateButtonId;
-    private string _customValidatedControlHtmlId;
-    private string _multipleValidatorsControlHtmlId;
-    private string _controlNotInFormGridHtmlId;
-    private string _controlWithoutValidationHtmlId;
-    private string _readOnlyControlHtmlId;
-
-    public ValidationErrorTestPageParameters ()
-        : base (TestConstants.ValidationErrorTestsID, c_parameterCount)
-    {
-    }
+    private const int c_parameterCount = 7;
 
     /// <summary>
     /// Html id of validate button control
     /// </summary>
-    public string ValidateButtonId
-    {
-      get { return _validateButtonId; }
-    }
+    public string ValidateButtonId { get; private set; }
 
     /// <summary>
     /// Html id of a control with custom validator inside a form grid.
     /// </summary>
-    public string CustomValidatedControlHtmlId
-    {
-      get { return _customValidatedControlHtmlId; }
-    }
+    public string CustomValidatedControlHtmlId { get; private set; }
+
+    /// <summary>
+    /// Html id of a read-only control with custom validator inside a form grid.
+    /// </summary>
+    public string CustomValidatedReadOnlyControlHtmlId { get; private set; }
 
     /// <summary>
     /// Html id of a control with multiple validators inside a form grid.
     /// </summary>
-    public string MultipleValidatorsControlHtmlId
-    {
-      get { return _multipleValidatorsControlHtmlId; }
-    }
+    public string MultipleValidatorsControlHtmlId { get; private set; }
 
     /// <summary>
     /// HTML id of a control outside of a form grid.
     /// </summary>
-    public string ControlNotInFormGridHtmlId
-    {
-      get { return _controlNotInFormGridHtmlId; }
-    }
+    public string ControlNotInFormGridHtmlId { get; private set; }
 
     /// <summary>
     /// Html id of a control without validator inside a form grid.
     /// </summary>
-    public string ControlWithoutValidationHtmlId
-    {
-      get { return _controlWithoutValidationHtmlId; }
-    }
+    public string ControlWithoutValidationHtmlId { get; private set; }
 
     /// <summary>
-    /// Html id of a readonly control.
+    /// Html id of a read-only control.
     /// </summary>
-    public string ReadOnlyControlHtmlId
+    public string ReadOnlyControlHtmlId { get; private set; }
+
+    public ValidationErrorTestPageParameters ()
+        : base(TestConstants.ValidationErrorTestsID, c_parameterCount)
     {
-      get { return _readOnlyControlHtmlId; }
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
-      _validateButtonId = data[0];
-      _customValidatedControlHtmlId = data[1];
-      _multipleValidatorsControlHtmlId = data[2];
-      _controlNotInFormGridHtmlId = data[3];
-      _controlWithoutValidationHtmlId = data[4];
-      _readOnlyControlHtmlId = data[5];
+      ValidateButtonId = data.Arguments[0];
+      CustomValidatedControlHtmlId = data.Arguments[1];
+      CustomValidatedReadOnlyControlHtmlId = data.Arguments[2];
+      MultipleValidatorsControlHtmlId = data.Arguments[3];
+      ControlNotInFormGridHtmlId = data.Arguments[4];
+      ControlWithoutValidationHtmlId = data.Arguments[5];
+      ReadOnlyControlHtmlId = data.Arguments[6];
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
   {
     private readonly string _indexName;
     private readonly ReadOnlyCollection<SqlIndexedColumnDefinition> _columns;
-    private readonly ReadOnlyCollection<ColumnDefinition> _includedColumns;
+    private readonly ReadOnlyCollection<ColumnDefinition>? _includedColumns;
     private readonly bool? _isClustered;
     private readonly bool? _isUnique;
     private readonly bool? _ignoreDupKey;
@@ -39,7 +39,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
     public SqlIndexDefinition (
         string indexName,
         IEnumerable<SqlIndexedColumnDefinition> columns,
-        IEnumerable<ColumnDefinition> includedColumns = null,
+        IEnumerable<ColumnDefinition>? includedColumns = null,
         bool? isClustered = false,
         bool? isUnique = false,
         bool? ignoreDupKey = null,
@@ -52,16 +52,23 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
         bool? allowRowLocks = null,
         bool? allowPageLocks = null,
         int? maxDop = null)
-        : base (padIndex, fillFactor, sortInTempDb, statisticsNoReCompute, dropExisting, allowRowLocks, allowPageLocks, maxDop)
+        : base(padIndex, fillFactor, sortInTempDb, statisticsNoReCompute, dropExisting, allowRowLocks, allowPageLocks, maxDop)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("indexName", indexName);
-      ArgumentUtility.CheckNotNullOrEmpty ("columns", columns);
-      ArgumentUtility.CheckNotEmpty ("includedColumns", includedColumns);
+      ArgumentUtility.CheckNotNullOrEmpty("indexName", indexName);
+      ArgumentUtility.CheckNotNull("columns", columns);
+
+      var columnsReadOnlyCollection = columns.ToList().AsReadOnly();
+
+      ReadOnlyCollection<ColumnDefinition>? includedColumnsReadOnlyCollection = null;
+      if (includedColumns != null)
+        includedColumnsReadOnlyCollection = includedColumns.ToList().AsReadOnly();
+
+      ArgumentUtility.CheckNotEmpty("columns", columnsReadOnlyCollection);
+      ArgumentUtility.CheckNotEmpty("includedColumns", includedColumnsReadOnlyCollection);
 
       _indexName = indexName;
-      _columns = columns.ToList().AsReadOnly();
-      if (includedColumns != null)
-        _includedColumns = includedColumns.ToList().AsReadOnly();
+      _columns = columnsReadOnlyCollection;
+      _includedColumns = includedColumnsReadOnlyCollection;
       _isClustered = isClustered;
       _isUnique = isUnique;
       _ignoreDupKey = ignoreDupKey;
@@ -78,7 +85,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       get { return _columns; }
     }
 
-    public ReadOnlyCollection<ColumnDefinition> IncludedColumns
+    public ReadOnlyCollection<ColumnDefinition>? IncludedColumns
     {
       get { return _includedColumns; }
     }
@@ -105,9 +112,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
 
     protected override void Accept (ISqlIndexDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
 
-      visitor.VisitIndexDefinition (this);
+      visitor.VisitIndexDefinition(this);
     }
   }
 }

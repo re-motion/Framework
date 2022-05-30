@@ -21,14 +21,14 @@ using log4net.Config;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ServiceLocation;
-using Remotion.Validation.Globalization;
+using Remotion.Validation.Implementation;
 using Remotion.Validation.Merging;
 using LogManager = log4net.LogManager;
 
 namespace Remotion.Validation.IntegrationTests
 {
-  [SetUICulture ("")]
-  [SetCulture ("")]
+  [SetUICulture("")]
+  [SetCulture("")]
   public abstract class IntegrationTestBase
   {
     protected IValidatorBuilder ValidationBuilder;
@@ -39,12 +39,11 @@ namespace Remotion.Validation.IntegrationTests
     [SetUp]
     public virtual void SetUp ()
     {
-      var serviceLocator = DefaultServiceLocator.Create ();
-      serviceLocator.RegisterSingle<IErrorMessageGlobalizationService> (GetValidatorGlobalizationService);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      var serviceLocator = DefaultServiceLocator.Create();
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       MemoryAppender = new MemoryAppender();
-      BasicConfigurator.Configure (MemoryAppender);
+      BasicConfigurator.Configure(MemoryAppender);
 
       ValidationBuilder = serviceLocator.GetInstance<IValidatorBuilder>();
     }
@@ -55,20 +54,15 @@ namespace Remotion.Validation.IntegrationTests
       if (ShowLogOutput)
       {
         var logEvents = MemoryAppender.GetEvents().Reverse().ToArray();
-        Console.WriteLine (logEvents.Skip (1).First().RenderedMessage);
-        Console.WriteLine (logEvents.First().RenderedMessage);
+        Console.WriteLine(logEvents.Skip(1).First().RenderedMessage);
+        Console.WriteLine(logEvents.First().RenderedMessage);
       }
 
       MemoryAppender.Clear();
       LogManager.ResetConfiguration();
 
-      Assert.That (LogManager.GetLogger (typeof (DiagnosticOutputRuleMergeDecorator)).IsDebugEnabled, Is.False);
+      Assert.That(LogManager.GetLogger(typeof(DiagnosticOutputValidationRuleMergeDecorator)).IsDebugEnabled, Is.False);
       _serviceLocatorScope.Dispose();
-    }
-
-    protected virtual IErrorMessageGlobalizationService GetValidatorGlobalizationService ()
-    {
-      return new NullErrorMessageGlobalizationService();
     }
   }
 }

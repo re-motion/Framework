@@ -28,10 +28,10 @@ namespace Remotion.Web.Services
   public sealed class IconProxy
   {
     private readonly string _url;
-    private readonly string _alternateText;
-    private readonly string _toolTip;
-    private readonly string _height;
-    private readonly string _width;
+    private readonly string? _alternateText;
+    private readonly string? _toolTip;
+    private readonly string? _height;
+    private readonly string? _width;
 
     /// <summary>
     /// Creates an <see cref="IconProxy"/> from an <see cref="IconInfo"/>.
@@ -42,22 +42,22 @@ namespace Remotion.Web.Services
     /// <exception cref="ArgumentException">Thrown if the <see cref="IconInfo.Url"/> of the <paramref name="iconInfo"/> is not set.</exception>
     public static IconProxy Create (HttpContextBase httpContext, IconInfo iconInfo)
     {
-      ArgumentUtility.CheckNotNull ("httpContext", httpContext);
-      ArgumentUtility.CheckNotNull ("iconInfo", iconInfo);
+      ArgumentUtility.CheckNotNull("httpContext", httpContext);
+      ArgumentUtility.CheckNotNull("iconInfo", iconInfo);
 
-      if (string.IsNullOrEmpty (iconInfo.Url))
-        throw new ArgumentException ("IconProxy does not support IconInfo objects without an empty Url.", "iconInfo");
-      var absoluteUrl = UrlUtility.ResolveUrlCaseSensitive (httpContext, iconInfo.Url);
+      if (string.IsNullOrEmpty(iconInfo.Url))
+        throw new ArgumentException("IconProxy does not support IconInfo objects without an empty Url.", "iconInfo");
+      var absoluteUrl = UrlUtility.ResolveUrlCaseSensitive(httpContext, iconInfo.Url);
 
-      return new IconProxy (
+      return new IconProxy(
           absoluteUrl,
-          StringUtility.EmptyToNull (iconInfo.AlternateText),
-          StringUtility.EmptyToNull (iconInfo.ToolTip),
-          StringUtility.EmptyToNull (iconInfo.Height.ToString()),
-          StringUtility.EmptyToNull (iconInfo.Width.ToString()));
+          StringUtility.EmptyToNull(iconInfo.AlternateText),
+          StringUtility.EmptyToNull(iconInfo.ToolTip),
+          StringUtility.EmptyToNull(iconInfo.Height.ToString()),
+          StringUtility.EmptyToNull(iconInfo.Width.ToString()));
     }
 
-    private IconProxy (string url, string alternateText, string toolTip, string height, string width)
+    private IconProxy (string url, string? alternateText, string? toolTip, string? height, string? width)
     {
       _url = url;
       _alternateText = alternateText;
@@ -66,32 +66,34 @@ namespace Remotion.Web.Services
       _width = width;
     }
 
-    [Obsolete ("Default ctor for ASMX WSDL page.", true)]
+#nullable disable
+    [Obsolete("Default ctor for ASMX WSDL page.", true)]
     private IconProxy ()
     {
     }
+#nullable restore
 
     public string Url
     {
       get { return _url; }
     }
 
-    public string AlternateText
+    public string? AlternateText
     {
       get { return _alternateText; }
     }
 
-    public string ToolTip
+    public string? ToolTip
     {
       get { return _toolTip; }
     }
 
-    public string Height
+    public string? Height
     {
       get { return _height; }
     }
 
-    public string Width
+    public string? Width
     {
       get { return _width; }
     }

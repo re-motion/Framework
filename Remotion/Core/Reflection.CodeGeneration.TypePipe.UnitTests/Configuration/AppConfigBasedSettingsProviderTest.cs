@@ -33,79 +33,88 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
     {
       _section = new TypePipeConfigurationSection();
       _provider = new AppConfigBasedSettingsProvider();
-      PrivateInvoke.SetNonPublicField (_provider, "_section", _section);
+      PrivateInvoke.SetNonPublicField(_provider, "_section", _section);
     }
 
     [Test]
     public void ForceStrongNaming_False ()
     {
       var xmlFragment = "<typePipe/>";
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
-      Assert.That (_provider.ForceStrongNaming, Is.False);
+#pragma warning disable SYSLIB0017
+      Assert.That(_provider.ForceStrongNaming, Is.False);
     }
 
     [Test]
     public void ForceStrongNaming_True ()
     {
       var xmlFragment = "<typePipe><forceStrongNaming/></typePipe>";
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
-      Assert.That (_provider.ForceStrongNaming, Is.True);
-      Assert.That (_provider.KeyFilePath, Is.Empty);
+#pragma warning disable SYSLIB0017
+      Assert.That(_provider.ForceStrongNaming, Is.True);
+      Assert.That(_provider.KeyFilePath, Is.Empty);
+#pragma warning restore
     }
 
     [Test]
     public void KeyFilePath ()
     {
       var xmlFragment = @"<typePipe><forceStrongNaming keyFilePath=""C:\key.snk""/></typePipe>";
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
-      Assert.That (_provider.KeyFilePath, Is.EqualTo (@"C:\key.snk"));
+#pragma warning disable SYSLIB0017
+      Assert.That(_provider.KeyFilePath, Is.EqualTo(@"C:\key.snk"));
+#pragma warning restore
     }
 
     [Test]
     public void EnableComplexSerialization_False ()
     {
       var xmlFragment = "<typePipe/>";
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
-      Assert.That (_provider.EnableSerializationWithoutAssemblySaving, Is.False);
+      Assert.That(_provider.EnableSerializationWithoutAssemblySaving, Is.False);
     }
 
     [Test]
     public void EnableComplexSerialization_True ()
     {
       var xmlFragment = "<typePipe><enableSerializationWithoutAssemblySaving/></typePipe>";
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
-      Assert.That (_provider.EnableSerializationWithoutAssemblySaving, Is.True);
+      Assert.That(_provider.EnableSerializationWithoutAssemblySaving, Is.True);
     }
 
     [Test]
     public void GetSettings_Defaults ()
     {
       var xmlFragment = "<typePipe/>";
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
       var settings = _provider.GetSettings();
 
-      Assert.That (settings.ForceStrongNaming, Is.False);
-      Assert.That (settings.KeyFilePath, Is.Empty);
-      Assert.That (settings.EnableSerializationWithoutAssemblySaving, Is.False);
+#pragma warning disable SYSLIB0017
+      Assert.That(settings.ForceStrongNaming, Is.False);
+      Assert.That(settings.KeyFilePath, Is.Empty);
+#pragma warning restore
+      Assert.That(settings.EnableSerializationWithoutAssemblySaving, Is.False);
     }
 
     [Test]
     public void GetSettings_CustomValues ()
     {
       var xmlFragment = @"<typePipe><forceStrongNaming keyFilePath=""C:\key.snk""/><enableSerializationWithoutAssemblySaving/></typePipe>";
-      ConfigurationHelper.DeserializeSection (_section, xmlFragment);
+      ConfigurationHelper.DeserializeSection(_section, xmlFragment);
 
       var settings = _provider.GetSettings();
 
-      Assert.That (settings.ForceStrongNaming, Is.True);
-      Assert.That (settings.KeyFilePath, Is.EqualTo (@"C:\key.snk"));
-      Assert.That (settings.EnableSerializationWithoutAssemblySaving, Is.True);
+#pragma warning disable SYSLIB0017
+      Assert.That(settings.ForceStrongNaming, Is.True);
+      Assert.That(settings.KeyFilePath, Is.EqualTo(@"C:\key.snk"));
+#pragma warning restore
+      Assert.That(settings.EnableSerializationWithoutAssemblySaving, Is.True);
     }
   }
 }

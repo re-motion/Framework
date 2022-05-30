@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
 {
@@ -33,28 +34,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
     {
       base.SetUp();
 
-      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (OrderItem));
-      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Product");
-      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Position");
+      _orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(OrderItem));
+      _productPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Product");
+      _positionPropertyDefinition = _orderItemClassDefinition.GetMandatoryPropertyDefinition(typeof(OrderItem).FullName + ".Position");
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "A SortExpressionDefinition must contain at least one sorted property.\r\nParameter name: sortedProperties")]
     public void Initialization_Empty ()
     {
-      new SortExpressionDefinition (new SortedPropertySpecification[0]);
+      Assert.That(
+          () => new SortExpressionDefinition(new SortedPropertySpecification[0]),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("A SortExpressionDefinition must contain at least one sorted property.", "sortedProperties"));
     }
 
     [Test]
     public new void ToString ()
     {
       var sortExpressionDefinition =
-          new SortExpressionDefinition (
+          new SortExpressionDefinition(
               new[]
               {
-                  SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending (_productPropertyDefinition),
-                  SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending (_positionPropertyDefinition)
+                  SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(_productPropertyDefinition),
+                  SortExpressionDefinitionObjectMother.CreateSortedPropertyDescending(_positionPropertyDefinition)
               });
 
       var result = sortExpressionDefinition.ToString();
@@ -62,7 +64,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
       var expected =
           "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Product ASC, "
           + "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderItem.Position DESC";
-      Assert.That (result, Is.EqualTo (expected));
+      Assert.That(result, Is.EqualTo(expected));
     }
   }
 }

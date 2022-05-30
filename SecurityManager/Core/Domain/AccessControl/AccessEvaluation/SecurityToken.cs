@@ -31,15 +31,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
   {
     public static SecurityToken Create (
         [NotNull] Principal principal,
-        [CanBeNull] Tenant owningTenant,
-        [CanBeNull] Group owningGroup,
-        [CanBeNull] User owningUser,
+        [CanBeNull] Tenant? owningTenant,
+        [CanBeNull] Group? owningGroup,
+        [CanBeNull] User? owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNull("principal", principal);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
-      return new SecurityToken (
+      return new SecurityToken(
           principal,
           owningTenant.GetSafeHandle(),
           owningGroup.GetSafeHandle(),
@@ -48,20 +48,20 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     private readonly Principal _principal;
-    private readonly IDomainObjectHandle<Tenant> _owningTenant;
-    private readonly IDomainObjectHandle<Group> _owningGroup;
-    private readonly IDomainObjectHandle<User> _owningUser;
+    private readonly IDomainObjectHandle<Tenant>? _owningTenant;
+    private readonly IDomainObjectHandle<Group>? _owningGroup;
+    private readonly IDomainObjectHandle<User>? _owningUser;
     private readonly ReadOnlyCollection<IDomainObjectHandle<AbstractRoleDefinition>> _abstractRoles;
 
     public SecurityToken (
         [NotNull] Principal principal,
-        [CanBeNull] IDomainObjectHandle<Tenant> owningTenant,
-        [CanBeNull] IDomainObjectHandle<Group> owningGroup,
-        [CanBeNull] IDomainObjectHandle<User> owningUser,
+        [CanBeNull] IDomainObjectHandle<Tenant>? owningTenant,
+        [CanBeNull] IDomainObjectHandle<Group>? owningGroup,
+        [CanBeNull] IDomainObjectHandle<User>? owningUser,
         [NotNull] IEnumerable<IDomainObjectHandle<AbstractRoleDefinition>> abstractRoles)
     {
-      ArgumentUtility.CheckNotNull ("principal", principal);
-      ArgumentUtility.CheckNotNull ("abstractRoles", abstractRoles);
+      ArgumentUtility.CheckNotNull("principal", principal);
+      ArgumentUtility.CheckNotNull("abstractRoles", abstractRoles);
 
       _principal = principal;
       _owningTenant = owningTenant;
@@ -77,19 +77,19 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<Tenant> OwningTenant
+    public IDomainObjectHandle<Tenant>? OwningTenant
     {
       get { return _owningTenant; }
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<Group> OwningGroup
+    public IDomainObjectHandle<Group>? OwningGroup
     {
       get { return _owningGroup; }
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<User> OwningUser
+    public IDomainObjectHandle<User>? OwningUser
     {
       get { return _owningUser; }
     }

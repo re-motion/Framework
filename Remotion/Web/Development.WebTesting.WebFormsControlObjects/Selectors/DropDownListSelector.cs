@@ -36,21 +36,21 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public DropDownListControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_htmlDropDownListTag);
-      return CreateControlObject (context, scope);
+      var scope = context.Scope.FindCss(c_htmlDropDownListTag);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public DropDownListControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public DropDownListControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_htmlDropDownListTag);
+      var scope = context.Scope.FindCss(c_htmlDropDownListTag);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -58,21 +58,21 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public DropDownListControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_htmlDropDownListTag, Options.Single);
-      return CreateControlObject (context, scope);
+      var scope = context.Scope.FindCss(c_htmlDropDownListTag, Options.Single);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public DropDownListControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public DropDownListControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindCss (c_htmlDropDownListTag, Options.Single);
+      var scope = context.Scope.FindCss(c_htmlDropDownListTag, Options.Single);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -80,23 +80,23 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public DropDownListControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
-      return CreateControlObject (context, scope);
+      var xPathSelector = string.Format("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public DropDownListControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public DropDownListControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var xPathSelector = string.Format("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -104,10 +104,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var xPathSelector = string.Format ("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var xPathSelector = string.Format("(.//{0})[{1}]", c_htmlDropDownListTag, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       return scope.ExistsWorkaround();
     }
@@ -117,10 +117,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new DropDownListControlObject (newControlObjectContext);
+      return new DropDownListControlObject(newControlObjectContext);
     }
   }
 }

@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
     {
     }
 
-    [DBBidirectionalRelation ("ClientBoundBaseClasses")]
+    [DBBidirectionalRelation("ClientBoundBaseClasses")]
     [Mandatory]
     public abstract Client Client { get; set;}
   }

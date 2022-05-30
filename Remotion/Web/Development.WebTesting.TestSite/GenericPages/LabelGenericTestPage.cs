@@ -32,7 +32,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
     /// <inheritdoc />
     public override Label CreateControl (GenericTestOptions options)
     {
-      var control = base.CreateControl (options);
+      var control = base.CreateControl(options);
       control.Text = options.TextContent;
       return control;
     }

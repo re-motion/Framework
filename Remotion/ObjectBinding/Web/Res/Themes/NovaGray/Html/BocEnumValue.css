@@ -1,6 +1,7 @@
 /* Style applied to the BocEnumValue. */
 
-span.bocEnumValue
+span.bocEnumValue,
+div.bocEnumValue.readOnly
 {
   width: 15em;
   position: relative;
@@ -64,4 +65,14 @@ span.bocEnumValue select[size="1"]
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-bottom: 0.2em;
+}
+
+.bocEnumValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: 100%;
+  min-height: 1.5em;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: -0.2em;
 }

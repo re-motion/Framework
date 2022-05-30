@@ -19,6 +19,7 @@
 
 using System;
 
+#nullable enable
 namespace Remotion.Development.UnitTesting.PEVerifyPathSources
 {
   enum PEVerifyVersion

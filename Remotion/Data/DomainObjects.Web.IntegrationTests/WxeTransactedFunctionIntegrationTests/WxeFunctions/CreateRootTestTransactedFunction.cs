@@ -32,22 +32,22 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     // construction and disposing
 
     public CreateRootTestTransactedFunction (ClientTransactionScope previousClientTransactionScope)
-        : base (WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, previousClientTransactionScope)
+        : base(WxeTransactionMode<ClientTransactionFactory>.CreateRootWithAutoCommit, previousClientTransactionScope)
     {
     }
 
     // methods and properties
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public ClientTransactionScope PreviousClientTransactionScope
     {
-      get { return (ClientTransactionScope) Variables["PreviousClientTransactionScope"]; }
+      get { return (ClientTransactionScope)Variables["PreviousClientTransactionScope"]; }
       set { Variables["PreviousClientTransactionScope"] = value; }
     }
 
     private void Step1 ()
     {
-      Assert.That (ClientTransactionScope.ActiveScope, Is.Not.SameAs (PreviousClientTransactionScope));
+      Assert.That(ClientTransactionScope.ActiveScope, Is.Not.SameAs(PreviousClientTransactionScope));
     }
   }
 }

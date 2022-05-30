@@ -30,15 +30,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     public void GetLabelWithMutlipleLabels ()
     {
       var home = Start();
-      var label = home.Scope.FindIdEndingWith ("_DeceasedField_Normal_Label");
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
+      var label = home.Scope.FindIdEndingWith("_DeceasedField_Normal_Label");
+      var bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_Normal");
       var driver = Helper.MainBrowserSession.Driver;
 
       var secondLabelText = "secondLabelText";
 
       // Duplicate the label and add the information to the attributes of bocCheckBox
-      driver.ExecuteScript (
-          string.Format (
+      driver.ExecuteScript(
+          string.Format(
               @"
 var label = document.getElementById('{0}');
 var clonedLabel = label.cloneNode();
@@ -65,13 +65,13 @@ checkBox.setAttribute('{3}', checkBoxNameLabelIndex);",
 
       var labels = bocCheckBox.GetLabels();
 
-      Assert.That (labels.Count, Is.EqualTo (2));
-      Assert.That (labels.First().GetText(), Is.EqualTo ("Deceased"));
-      Assert.That (labels.Last().GetText(), Is.EqualTo (secondLabelText));
+      Assert.That(labels.Count, Is.EqualTo(2));
+      Assert.That(labels.First().GetText(), Is.EqualTo("Deceased"));
+      Assert.That(labels.Last().GetText(), Is.EqualTo(secondLabelText));
     }
     private WxePageObject Start ()
     {
-      return Start ("BocCheckBox");
+      return Start("BocCheckBox");
     }
   }
 }

@@ -1,0 +1,52 @@
+body
+{
+  overflow: auto;
+}
+
+body
+{
+  font: var(--remotion-themed-font-standard);
+}
+
+body
+{
+  font-size: var(--remotion-themed-font-size);
+}
+
+/*  The headings do not automatically scale with the body's font-size. Now they do. 
+    The font-size relation between headings and body is maintained with the used percentages. */
+h1
+{
+  font-size: 200%;
+}
+
+h2
+{
+  font-size: 150%;
+}
+
+h3
+{
+  font-size: 125%;
+}
+
+h4
+{
+  font-size: 100%;
+}
+
+h5
+{
+  font-size: 80%;
+}
+
+h6
+{
+  font-size: 60%;
+}
+
+img.Icon
+{
+  vertical-align: top;
+  border-style: none;
+}

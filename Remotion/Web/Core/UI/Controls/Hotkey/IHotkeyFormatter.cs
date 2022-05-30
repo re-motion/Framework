@@ -15,28 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Microsoft.Practices.ServiceLocation;
-using Remotion.ServiceLocation;
+using System.Web.UI;
+using CommonServiceLocator;
 
 namespace Remotion.Web.UI.Controls.Hotkey
 {
   /// <summary>
-  /// Defines the methods required for rendering a <see cref="TextWithHotkey"/>.
+  /// Defines the methods required for rendering a <see cref="WebString"/> with that contains an encoded hotkey.
   /// </summary>
   /// <remarks>
-  /// <para>Use <see cref="IServiceLocator"/> to retieve an instance of type <see cref="IHotkeyFormatter"/>.</para>
+  /// <para>Use <see cref="IServiceLocator"/> to retrieve an instance of type <see cref="IHotkeyFormatter"/>.</para>
   /// <para>The default implementation (<see cref="UnderscoreHotkeyFormatter"/>) underlines the hotkey.</para>
   /// </remarks>
- public interface IHotkeyFormatter
+  public interface IHotkeyFormatter
   {
-    /// <summary>
-    /// Formats the <see cref="TextWithHotkey.Hotkey"/>. This mainly includes transforming the hotkey to upper-case.
-    /// </summary>
-    string FormatHotkey (TextWithHotkey textWithHotkey);
-    
-    /// <summary>
-    /// Formats the <see cref="TextWithHotkey.Text"/> and offers optional HTML encoding.
-    /// </summary>
-    string FormatText (TextWithHotkey textWithHotkey, bool encode);
+    char? GetAccessKey (WebString value);
+    void WriteTo (HtmlTextWriter writer, WebString value);
   }
 }

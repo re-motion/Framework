@@ -19,10 +19,9 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Reflection;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Domain;
@@ -30,171 +29,143 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Compilation;
-using Remotion.Web.UI.Controls;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI
 {
-  [FileLevelControlBuilder (typeof (CodeProcessingUserControlBuilder))]
+  [FileLevelControlBuilder(typeof(CodeProcessingUserControlBuilder))]
   public partial class SecurityManagerUserContextControl : UserControl
   {
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.SecurityManager.Clients.Web.Globalization.UI.SecurityManagerUserContextControlResources")]
+    [MultiLingualResources("Remotion.SecurityManager.Clients.Web.Globalization.UI.SecurityManagerUserContextControlResources")]
     public enum ResourceIdentifier
     {
       CurrentUserLabelText,
       CurrentSubstitutionLabelText,
-      CurrentTenantLabelText,
-      CurrentSubstitutionCommandTooltip,
-      CurrentTenantCommandTooltip
+      CurrentTenantLabelText
     }
 
-    private static readonly string s_isTenantSelectionEnabledKey = typeof (SecurityManagerUserContextControl).FullName + "_IsTenantSelectionEnabled";
-    private static readonly string s_enableAbstractTenantsKey = typeof (SecurityManagerUserContextControl).FullName + "_EnableAbstractTenants";
-    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof (SecurityManagerUserContextControl).FullName + "_IsSubstitutionSelectionEnabled";
+    private static readonly string s_isTenantSelectionEnabledKey = typeof(SecurityManagerUserContextControl).GetFullNameChecked() + "_IsTenantSelectionEnabled";
+    private static readonly string s_enableAbstractTenantsKey = typeof(SecurityManagerUserContextControl).GetFullNameChecked() + "_EnableAbstractTenants";
+    private static readonly string s_isSubstitutionSelectionEnabledKey = typeof(SecurityManagerUserContextControl).GetFullNameChecked() + "_IsSubstitutionSelectionEnabled";
 
-    private bool _isCurrentTenantFieldReadOnly = true;
-    private bool _isCurrentSubstitutionFieldReadOnly = true;
 
-    [DefaultValue (true)]
+    [DefaultValue(true)]
     public bool EnableAbstractTenants
     {
-      get { return (bool?) ViewState[s_enableAbstractTenantsKey] ?? true; }
+      get { return (bool?)ViewState[s_enableAbstractTenantsKey] ?? true; }
       set { ViewState[s_enableAbstractTenantsKey] = value; }
     }
 
     protected SecurityManagerHttpApplication ApplicationInstance
     {
-      get { return (SecurityManagerHttpApplication) Context.ApplicationInstance; }
+      get { return (SecurityManagerHttpApplication)Context.ApplicationInstance; }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
         var tenants = GetPossibleTenants();
-        CurrentTenantField.SetBusinessObjectList (tenants);
+        CurrentTenantField.SetBusinessObjectList(tenants);
         var currentTenant = SecurityManagerPrincipal.Current.Tenant;
 
-        CurrentTenantField.LoadUnboundValue (currentTenant, false);
+        CurrentTenantField.LoadUnboundValue(currentTenant, false);
 
-        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && tenants[0].ID.Equals (currentTenant.ID);
+        bool isCurrentTenantTheOnlyTenantInTheCollection = tenants.Length == 1 && currentTenant != null && tenants[0].ID.Equals(currentTenant.ID);
         bool isCurrentTenantTheOnlyTenant = tenants.Length == 0 && currentTenant != null;
         bool hasExactlyOneTenant = isCurrentTenantTheOnlyTenantInTheCollection || isCurrentTenantTheOnlyTenant;
         IsTenantSelectionEnabled = !hasExactlyOneTenant;
 
         var substitutions = GetPossibleSubstitutions();
-        CurrentSubstitutionField.SetBusinessObjectList (substitutions);
+        CurrentSubstitutionField.SetBusinessObjectList(substitutions);
         var currentSubstitution = SecurityManagerPrincipal.Current.Substitution;
 
-        CurrentSubstitutionField.LoadUnboundValue (currentSubstitution, false);
+        CurrentSubstitutionField.LoadUnboundValue(currentSubstitution, false);
         IsSubstitutionSelectionEnabled = substitutions.Length > 0;
       }
-
-      if (!IsTenantSelectionEnabled)
-        CurrentTenantField.Command.Type = CommandType.None;
-
-      if (!IsSubstitutionSelectionEnabled)
-        CurrentSubstitutionField.Command.Type = CommandType.None;
     }
 
     private TenantProxy[] GetPossibleTenants ()
     {
-      return SecurityManagerPrincipal.Current.GetTenants (EnableAbstractTenants).OrderBy (t => t.DisplayName).ToArray();
+      return SecurityManagerPrincipal.Current.GetTenants(EnableAbstractTenants).OrderBy(t => t.DisplayName).ToArray();
     }
 
     private SubstitutionProxy[] GetPossibleSubstitutions ()
     {
-      return SecurityManagerPrincipal.Current.GetActiveSubstitutions().OrderBy (s => s.DisplayName).ToArray();
+      return SecurityManagerPrincipal.Current.GetActiveSubstitutions().OrderBy(s => s.DisplayName).ToArray();
     }
 
     protected void CurrentTenantField_SelectionChanged (object sender, EventArgs e)
     {
-      string tenantID = CurrentTenantField.BusinessObjectUniqueIdentifier;
-      Assertion.IsNotNull (tenantID);
+      string? tenantID = CurrentTenantField.BusinessObjectUniqueIdentifier;
+      Assertion.IsNotNull(tenantID);
       var possibleTenants = GetPossibleTenants();
-      CurrentTenantField.SetBusinessObjectList (possibleTenants);
-      if (!possibleTenants.Where (s=>s.UniqueIdentifier == tenantID).Any())
+      CurrentTenantField.SetBusinessObjectList(possibleTenants);
+      if (!possibleTenants.Where(s=>s.UniqueIdentifier == tenantID).Any())
       {
         CurrentTenantField.Value = null;
-        _isCurrentTenantFieldReadOnly = false;
         return;
       }
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
-      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create (
-          ObjectID.Parse (tenantID).GetHandle<Tenant> (),
-          oldSecurityManagerPrincipal.User.Handle,
-          oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.Handle : null);
-      ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
+      if (!oldSecurityManagerPrincipal.IsNull)
+      {
+        Assertion.IsNotNull(oldSecurityManagerPrincipal.User, "SecurityManagerPrincipal.User != null when SecurityManagerPrincipal.IsNull == false");
+        var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
+            ObjectID.Parse(tenantID).GetHandle<Tenant>(),
+            oldSecurityManagerPrincipal.User.Handle,
+            oldSecurityManagerPrincipal.Substitution != null ? oldSecurityManagerPrincipal.Substitution.Handle : null);
+        ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
+      }
 
-      _isCurrentTenantFieldReadOnly = true;
       CurrentTenantField.IsDirty = false;
     }
 
     protected void CurrentSubstitutionField_SelectionChanged (object sender, EventArgs e)
     {
-      string substitutionID = CurrentSubstitutionField.BusinessObjectUniqueIdentifier;
+      string? substitutionID = CurrentSubstitutionField.BusinessObjectUniqueIdentifier;
       var possibleSubstitutions = GetPossibleSubstitutions();
-      CurrentSubstitutionField.SetBusinessObjectList (possibleSubstitutions);
-      if (substitutionID != null && !possibleSubstitutions.Where (s=>s.UniqueIdentifier == substitutionID).Any())
+      CurrentSubstitutionField.SetBusinessObjectList(possibleSubstitutions);
+      if (substitutionID != null && !possibleSubstitutions.Where(s=>s.UniqueIdentifier == substitutionID).Any())
       {
         CurrentSubstitutionField.Value = null;
-        _isCurrentSubstitutionFieldReadOnly = false;
         return;
       }
 
       var oldSecurityManagerPrincipal = SecurityManagerPrincipal.Current;
-      var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create (
-          oldSecurityManagerPrincipal.Tenant.Handle,
-          oldSecurityManagerPrincipal.User.Handle,
-          substitutionID != null ? ObjectID.Parse (substitutionID).GetHandle<Substitution>() : null);
-      ApplicationInstance.SetCurrentPrincipal (newSecurityManagerPrincipal);
+      if (!oldSecurityManagerPrincipal.IsNull)
+      {
+        Assertion.IsNotNull(oldSecurityManagerPrincipal.Tenant, "SecurityManagerPrincipal.Tenant != null when SecurityManagerPrincipal.IsNull == false");
+        Assertion.IsNotNull(oldSecurityManagerPrincipal.User, "SecurityManagerPrincipal.User != null when SecurityManagerPrincipal.IsNull == false");
+        var newSecurityManagerPrincipal = ApplicationInstance.SecurityManagerPrincipalFactory.Create(
+            oldSecurityManagerPrincipal.Tenant.Handle,
+            oldSecurityManagerPrincipal.User.Handle,
+            substitutionID != null ? ObjectID.Parse(substitutionID).GetHandle<Substitution>() : null);
+        ApplicationInstance.SetCurrentPrincipal(newSecurityManagerPrincipal);
+      }
 
-      _isCurrentSubstitutionFieldReadOnly = true;
       CurrentSubstitutionField.IsDirty = false;
-    }
-
-    protected void CurrentTenantField_CommandClick (object sender, BocCommandClickEventArgs e)
-    {
-      _isCurrentTenantFieldReadOnly = false;
-      CurrentTenantField.SetBusinessObjectList (GetPossibleTenants());
-      CurrentTenantField.LoadUnboundValue (SecurityManagerPrincipal.Current.Tenant, false);
-    }
-
-    protected void CurrentSubstitutionField_CommandClick (object sender, BocCommandClickEventArgs e)
-    {
-      _isCurrentSubstitutionFieldReadOnly = false;
-      CurrentSubstitutionField.SetBusinessObjectList (GetPossibleSubstitutions());
-      CurrentSubstitutionField.LoadUnboundValue (SecurityManagerPrincipal.Current.Substitution, false);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
 
-      CurrentUserLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentUserLabelText);
-      CurrentSubstitutionLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentSubstitutionLabelText);
-      CurrentTenantLabel.Text = resourceManager.GetString (ResourceIdentifier.CurrentTenantLabelText);
-      CurrentSubstitutionField.Command.ToolTip = resourceManager.GetString (ResourceIdentifier.CurrentSubstitutionCommandTooltip);
-      CurrentTenantField.Command.ToolTip  = resourceManager.GetString (ResourceIdentifier.CurrentTenantCommandTooltip);
+      CurrentUserLabel.Text = resourceManager.GetText(ResourceIdentifier.CurrentUserLabelText);
+      CurrentSubstitutionLabel.Text = resourceManager.GetText(ResourceIdentifier.CurrentSubstitutionLabelText);
+      CurrentTenantLabel.Text = resourceManager.GetText(ResourceIdentifier.CurrentTenantLabelText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      if (_isCurrentTenantFieldReadOnly && !SecurityManagerPrincipal.Current.IsNull)
-        CurrentTenantField.ReadOnly = true;
-      else
-        CurrentTenantField.ReadOnly = false;
-
-      if (_isCurrentSubstitutionFieldReadOnly && !SecurityManagerPrincipal.Current.IsNull)
-        CurrentSubstitutionField.ReadOnly = true;
-      else
-        CurrentSubstitutionField.ReadOnly = false;
-      //For now: the subsitution is permanenty editable.
+      CurrentTenantField.ReadOnly = !IsTenantSelectionEnabled && !SecurityManagerPrincipal.Current.IsNull;
+      CurrentSubstitutionField.ReadOnly = !IsSubstitutionSelectionEnabled;
+      //For now: the substitution is permanently editable.
       CurrentSubstitutionField.ReadOnly = false;
 
-      CurrentUserField.LoadUnboundValue (SecurityManagerPrincipal.Current.User, false);
+      CurrentUserField.LoadUnboundValue(SecurityManagerPrincipal.Current.User, false);
 
       CurrentUserLabel.Visible = CurrentUserField.Visible;
       CurrentSubstitutionLabel.Visible = CurrentSubstitutionField.Visible;
@@ -205,14 +176,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI
     {
       Type type = this.GetType();
 
-      return GlobalizationService.GetResourceManager (type);
+      return GlobalizationService.GetResourceManager(type);
     }
 
     protected IResourceManager GetResourceManager (Type resourceEnumType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("resourceEnumType", resourceEnumType, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("resourceEnumType", resourceEnumType, typeof(Enum));
 
-      return ResourceManagerSet.Create (GlobalizationService.GetResourceManager (TypeAdapter.Create (resourceEnumType)), GetResourceManager());
+      return ResourceManagerSet.Create(GlobalizationService.GetResourceManager(TypeAdapter.Create(resourceEnumType)), GetResourceManager());
     }
 
     protected IServiceLocator ServiceLocator
@@ -220,20 +191,20 @@ namespace Remotion.SecurityManager.Clients.Web.UI
       get { return SafeServiceLocator.Current; }
     }
 
-    protected IGlobalizationService GlobalizationService 
+    protected IGlobalizationService GlobalizationService
     {
       get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
 
     private bool IsTenantSelectionEnabled
     {
-      get { return (bool?) ViewState[s_isTenantSelectionEnabledKey] ?? true; }
+      get { return (bool?)ViewState[s_isTenantSelectionEnabledKey] ?? true; }
       set { ViewState[s_isTenantSelectionEnabledKey] = value; }
     }
 
     private bool IsSubstitutionSelectionEnabled
     {
-      get { return (bool?) ViewState[s_isSubstitutionSelectionEnabledKey] ?? true; }
+      get { return (bool?)ViewState[s_isSubstitutionSelectionEnabledKey] ?? true; }
       set { ViewState[s_isSubstitutionSelectionEnabledKey] = value; }
     }
   }

@@ -26,7 +26,7 @@ namespace Remotion.SecurityManager.Domain
   /// <summary>
   /// Default implementation of the <see cref="ISecurityManagerPrincipalFactory"/> interface.
   /// </summary>
-  [ImplementationFor (typeof (ISecurityManagerPrincipalFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ISecurityManagerPrincipalFactory), Lifetime = LifetimeKind.Singleton)]
   public class SecurityManagerPrincipalFactory : ISecurityManagerPrincipalFactory
   {
     public SecurityManagerPrincipalFactory ()
@@ -36,12 +36,12 @@ namespace Remotion.SecurityManager.Domain
     public ISecurityManagerPrincipal Create (
         IDomainObjectHandle<Tenant> tenantHandle,
         IDomainObjectHandle<User> userHandle,
-        IDomainObjectHandle<Substitution> substitutionHandle)
+        IDomainObjectHandle<Substitution>? substitutionHandle)
     {
-      ArgumentUtility.CheckNotNull ("tenantHandle", tenantHandle);
-      ArgumentUtility.CheckNotNull ("userHandle", userHandle);
+      ArgumentUtility.CheckNotNull("tenantHandle", tenantHandle);
+      ArgumentUtility.CheckNotNull("userHandle", userHandle);
 
-      return new SecurityManagerPrincipal (tenantHandle, userHandle, null, substitutionHandle, null, null);
+      return new SecurityManagerPrincipal(tenantHandle, userHandle, null, substitutionHandle, null, null);
     }
   }
 }

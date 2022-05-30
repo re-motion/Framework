@@ -27,19 +27,19 @@ namespace Remotion.Globalization.Implementation
   /// Retrieves and caches <see cref="IResourceManager"/>s for types.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IGlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IGlobalizationService), Position = 0, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public sealed class GlobalizationService : IGlobalizationService
   {
     private readonly IResourceManagerResolver _resourceManagerResolver;
 
-    private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache = 
+    private readonly ConcurrentDictionary<ITypeInformation, IResourceManager> _resourceManagerCache =
         new ConcurrentDictionary<ITypeInformation, IResourceManager>();
 
     private readonly Func<ITypeInformation, IResourceManager> _getResourceManagerImplementationFunc;
 
     public GlobalizationService (IResourceManagerResolver resourceManagerResolver)
     {
-      ArgumentUtility.CheckNotNull ("resourceManagerResolver", resourceManagerResolver);
+      ArgumentUtility.CheckNotNull("resourceManagerResolver", resourceManagerResolver);
 
       _resourceManagerResolver = resourceManagerResolver;
 
@@ -49,9 +49,9 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager GetResourceManager (ITypeInformation typeInformation)
     {
-      ArgumentUtility.CheckNotNull ("typeInformation", typeInformation);
+      ArgumentUtility.CheckNotNull("typeInformation", typeInformation);
 
-      return _resourceManagerCache.GetOrAdd (typeInformation, _getResourceManagerImplementationFunc);
+      return _resourceManagerCache.GetOrAdd(typeInformation, _getResourceManagerImplementationFunc);
     }
 
     [NotNull]
@@ -61,7 +61,7 @@ namespace Remotion.Globalization.Implementation
       if (runtimeType == null)
         return NullResourceManager.Instance;
 
-      var result = _resourceManagerResolver.Resolve (runtimeType);
+      var result = _resourceManagerResolver.Resolve(runtimeType);
       return result.ResourceManager;
     }
   }

@@ -107,10 +107,4 @@
   <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantLabelText" xml:space="preserve">
     <value>Client actuel</value>
   </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentSubstitutionCommandTooltip" xml:space="preserve">
-    <value>Cliquez pour modifier la suppléance</value>
-  </data>
-  <data name="Remotion.SecurityManager.Clients.Web.UI.SecurityManagerUserContextControl.CurrentTenantCommandTooltip" xml:space="preserve">
-    <value>Cliquez pour modifier le client</value>
-  </data>
 </root>

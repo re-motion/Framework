@@ -26,8 +26,8 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public ConstantEnumerationValueFilter (Enum[] disabledValues)
     {
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("disabledValues", disabledValues);
-      ArgumentUtility.CheckItemsType ("disabledValues", disabledValues, disabledValues[0].GetType());
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("disabledValues", disabledValues);
+      ArgumentUtility.CheckItemsType("disabledValues", disabledValues, disabledValues[0].GetType());
 
       _disabledEnumValues = disabledValues;
     }
@@ -37,12 +37,12 @@ namespace Remotion.ObjectBinding.BindableObject
       get { return _disabledEnumValues; }
     }
 
-    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
+    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("property", property);
 
-      return !Array.Exists (_disabledEnumValues, disabledValue => disabledValue.Equals (value.Value));
+      return !Array.Exists(_disabledEnumValues, disabledValue => disabledValue.Equals(value.Value));
     }
   }
 }

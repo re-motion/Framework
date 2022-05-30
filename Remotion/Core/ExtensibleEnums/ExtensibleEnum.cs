@@ -17,6 +17,7 @@
 using System;
 using System.Reflection;
 using System.Threading;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.ExtensibleEnums
@@ -34,12 +35,12 @@ namespace Remotion.ExtensibleEnums
   /// </remarks>
   /// <threadsafety static="true" instance="true" />
   [Serializable]
-  public abstract class ExtensibleEnum<T> : IExtensibleEnum, IEquatable<T>
+  public abstract class ExtensibleEnum<T> : IExtensibleEnum, IEquatable<T?>
       where T: ExtensibleEnum<T>
   {
     private static readonly Lazy<ExtensibleEnumDefinition<T>> s_values =
-        new Lazy<ExtensibleEnumDefinition<T>> (
-            () => (ExtensibleEnumDefinition<T>) ExtensibleEnumUtility.GetDefinition (typeof (T)),
+        new Lazy<ExtensibleEnumDefinition<T>>(
+            () => (ExtensibleEnumDefinition<T>)ExtensibleEnumUtility.GetDefinition(typeof(T)),
             LazyThreadSafetyMode.ExecutionAndPublication);
 
     /// <summary>
@@ -59,9 +60,9 @@ namespace Remotion.ExtensibleEnums
     /// <param name="value2">The second value to be compared for equality.</param>
     /// <returns><see langword="true" /> if both <paramref name="value1"/> and <paramref name="value2"/> are <see langword="null" /> or if they both 
     /// have equal types and <see cref="ID"/> values. Otherwise, <see langword="false" />.</returns>
-    public static bool operator == (ExtensibleEnum<T> value1, ExtensibleEnum<T> value2)
+    public static bool operator == (ExtensibleEnum<T>? value1, ExtensibleEnum<T>? value2)
     {
-      return object.Equals (value1, value2);
+      return object.Equals(value1, value2);
     }
 
     /// <summary>
@@ -71,7 +72,7 @@ namespace Remotion.ExtensibleEnums
     /// <param name="value2">The second value to be compared for inequality.</param>
     /// <returns><see langword="true" /> if only one of <paramref name="value1"/> and <paramref name="value2"/> is <see langword="null" /> or if they 
     /// have different types or <see cref="ID"/> values. Otherwise, <see langword="false" />.</returns>
-    public static bool operator != (ExtensibleEnum<T> value1, ExtensibleEnum<T> value2)
+    public static bool operator != (ExtensibleEnum<T>? value1, ExtensibleEnum<T>? value2)
     {
       return !(value1 == value2);
     }
@@ -85,9 +86,9 @@ namespace Remotion.ExtensibleEnums
     /// of the value. This identifier is used for equality comparisons and hash code calculations. Can be <see langword="null" />.</param>
     /// <param name="valueName">The name of the value being created. This identifier is used for equality comparisons
     /// and hash code calculations.</param>
-    protected ExtensibleEnum (string declarationSpace, string valueName)
+    protected ExtensibleEnum (string? declarationSpace, string valueName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("valueName", valueName);
+      ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName);
 
       DeclarationSpace = declarationSpace;
       ValueName = valueName;
@@ -99,9 +100,9 @@ namespace Remotion.ExtensibleEnums
     /// <param name="id">The identifier of the value being created. This identifier is used for equality comparisons
     /// and hash code calculations.</param>
     protected ExtensibleEnum (string id)
-        : this (
-            (string) null, 
-            ArgumentUtility.CheckNotNullOrEmpty ("id", id))
+        : this(
+            (string?)null,
+            ArgumentUtility.CheckNotNullOrEmpty("id", id))
     {
     }
 
@@ -114,9 +115,9 @@ namespace Remotion.ExtensibleEnums
     /// <param name="valueName">The name of the value being created. This identifier is used for equality comparisons
     /// and hash code calculations.</param>
     protected ExtensibleEnum (Type declaringType, string valueName)
-        : this (
-            ArgumentUtility.CheckNotNull ("declaringType", declaringType).FullName, 
-            ArgumentUtility.CheckNotNullOrEmpty ("valueName", valueName))
+        : this(
+            ArgumentUtility.CheckNotNull("declaringType", declaringType).GetFullNameChecked(),
+            ArgumentUtility.CheckNotNullOrEmpty("valueName", valueName))
     {
     }
 
@@ -127,8 +128,8 @@ namespace Remotion.ExtensibleEnums
     /// to pass for this parameter. The method's full name is used as the identifier of the value being created. This identifier is used for 
     /// equality comparisons and hash code calculations.</param>
     protected ExtensibleEnum (MethodBase currentMethod)
-        : this (
-            ArgumentUtility.CheckNotNull ("currentMethod", currentMethod).DeclaringType,
+        : this(
+            ArgumentUtility.CheckNotNull("currentMethod", currentMethod).DeclaringType!,
             currentMethod.Name)
     {
     }
@@ -139,11 +140,11 @@ namespace Remotion.ExtensibleEnums
     /// value by its <see cref="ID"/>.
     /// </summary>
     /// <value>The ID of this value. Once an <see cref="ExtensibleEnum{T}"/> instance is constructed, this value is guaranteed to never change.</value>
-    public string ID 
+    public string ID
     {
-      get { return string.IsNullOrEmpty (DeclarationSpace) ? ValueName : DeclarationSpace + "." + ValueName; }
+      get { return string.IsNullOrEmpty(DeclarationSpace) ? ValueName : DeclarationSpace + "." + ValueName; }
     }
-    
+
     /// <summary>
     /// Gets a string identifying the declaration space of the identifier of the value being created. This can be a 
     /// namespace, a type name, or anything else that helps in uniquely identifying the enum value. It is used as a prefix to the <see cref="ID"/>
@@ -151,7 +152,7 @@ namespace Remotion.ExtensibleEnums
     /// </summary>
     /// <value>The declaration space of this value, or <see langword="null" /> if the value does not define a declaration space.
     /// Once an <see cref="ExtensibleEnum{T}"/> instance is constructed, this value is guaranteed to never change.</value>
-    public string DeclarationSpace { get; private set; }
+    public string? DeclarationSpace { get; private set; }
 
     /// <summary>
     /// Gets name of this value. This is a part of the <see cref="ID"/> of this extensible enum value.
@@ -165,7 +166,7 @@ namespace Remotion.ExtensibleEnums
     /// <returns>The <see cref="ExtensibleEnumInfo{T}"/> for this value.</returns>
     public ExtensibleEnumInfo<T> GetValueInfo ()
     {
-      return Values.GetValueInfoByID (ID);
+      return Values.GetValueInfoByID(ID);
     }
 
     /// <summary>
@@ -173,7 +174,7 @@ namespace Remotion.ExtensibleEnums
     /// </summary>
     public Type GetEnumType ()
     {
-      return typeof (T);
+      return typeof(T);
     }
 
     /// <summary>
@@ -185,9 +186,9 @@ namespace Remotion.ExtensibleEnums
     ///   <see langword="true" /> if the specified <typeparamref name="T"/> value is an extensible enum value of the same
     ///   type and with an equal <see cref="ID"/> as this instance; otherwise, <see langword="false" />.
     /// </returns>
-    public bool Equals (T obj)
+    public bool Equals (T? obj)
     {
-      return !ReferenceEquals (obj, null) && obj.GetType() == GetType() && obj.ID == ID;
+      return !ReferenceEquals(obj, null) && obj.GetType() == GetType() && obj.ID == ID;
     }
 
     /// <summary>
@@ -199,9 +200,9 @@ namespace Remotion.ExtensibleEnums
     ///   <see langword="true" /> if the specified <see cref="System.Object"/> is an extensible enum value of the same
     ///   type and with an equal <see cref="ID"/> as this instance; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return Equals (obj as T);
+      return Equals(obj as T);
     }
 
     /// <inheritdoc />
@@ -225,7 +226,7 @@ namespace Remotion.ExtensibleEnums
 
     IExtensibleEnumInfo IExtensibleEnum.GetValueInfo ()
     {
-      return GetValueInfo ();
+      return GetValueInfo();
     }
   }
 }

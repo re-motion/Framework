@@ -17,6 +17,7 @@
 using System;
 using System.Security.Principal;
 using System.Threading;
+using Moq;
 using NUnit.Framework;
 
 namespace Remotion.Security.UnitTests
@@ -35,26 +36,49 @@ namespace Remotion.Security.UnitTests
     [Test]
     public void GetUser ()
     {
-      Thread.CurrentPrincipal = new GenericPrincipal (new GenericIdentity ("user"), new string[0]);
+      Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("user"), new string[0]);
       var securityPrincipal = _principalProvider.GetPrincipal();
-      Assert.That (securityPrincipal.User, Is.EqualTo ("user"));
-      Assert.That (securityPrincipal.Roles, Is.Null);
-      Assert.That (securityPrincipal.SubstitutedUser, Is.Null);
-      Assert.That (securityPrincipal.SubstitutedRoles, Is.Null);
+      Assert.That(securityPrincipal.User, Is.EqualTo("user"));
+      Assert.That(securityPrincipal.Roles, Is.Null);
+      Assert.That(securityPrincipal.SubstitutedUser, Is.Null);
+      Assert.That(securityPrincipal.SubstitutedRoles, Is.Null);
     }
 
     [Test]
     public void GetUser_NotAuthenticated ()
     {
-      Thread.CurrentPrincipal = new GenericPrincipal (new GenericIdentity (string.Empty), new string[0]);
-      Assert.That (Thread.CurrentPrincipal.Identity.IsAuthenticated, Is.False);
-      Assert.That (_principalProvider.GetPrincipal().IsNull, Is.True);
+      Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(string.Empty), new string[0]);
+      Assert.That(Thread.CurrentPrincipal.Identity.IsAuthenticated, Is.False);
+      Assert.That(_principalProvider.GetPrincipal().IsNull, Is.True);
+    }
+
+    [Test]
+    public void GetPrincipal_WithCurrentPrincipalNull_ReturnsNullObject ()
+    {
+      Thread.CurrentPrincipal = null;
+#if NETFRAMEWORK
+      Assert.That(Thread.CurrentPrincipal, Is.Not.Null);
+#else
+      Assert.That(Thread.CurrentPrincipal, Is.Null);
+#endif
+      Assert.That(_principalProvider.GetPrincipal().IsNull, Is.True);
+    }
+
+    [Test]
+    public void GetPrincipal_WithCurrentPrincipalIdentityNull_ReturnsNullObject ()
+    {
+      var principalStub = new Mock<IPrincipal>();
+      Thread.CurrentPrincipal = principalStub.Object;
+
+      Assert.That(Thread.CurrentPrincipal, Is.Not.Null);
+      Assert.That(Thread.CurrentPrincipal.Identity, Is.Null);
+      Assert.That(_principalProvider.GetPrincipal().IsNull, Is.True);
     }
 
     [Test]
     public void GetIsNull ()
     {
-      Assert.That (_principalProvider.IsNull, Is.False);
+      Assert.That(_principalProvider.IsNull, Is.False);
     }
   }
 }

@@ -74,7 +74,7 @@ namespace Remotion.Utilities
     /// <returns>
     ///   A <see cref="TypeConverter"/> or <see langword="null"/> of no <see cref="TypeConverter"/> can be found.
     /// </returns>
-    TypeConverter GetTypeConverter (Type type);
+    TypeConverter? GetTypeConverter (Type type);
 
     /// <summary> 
     ///   Test whether the <see cref="TypeConversionProvider"/> object can convert an object of <see cref="Type"/> 
@@ -90,6 +90,7 @@ namespace Remotion.Utilities
     /// <returns> <see langword="true"/> if a conversion is possible. </returns>
     bool CanConvert (Type sourceType, Type destinationType);
 
+    //TODO RM-7432: remove "must not be null" from "value" parameter 
     /// <summary> Convertes the <paramref name="value"/> into the <paramref name="destinationType"/>. </summary>
     /// <param name="sourceType"> 
     ///   The source <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
@@ -99,7 +100,7 @@ namespace Remotion.Utilities
     /// </param>
     /// <param name="value"> The value to be converted. Must not be <see langword="null"/>. </param>
     /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
-    object Convert (Type sourceType, Type destinationType, object value);
+    object? Convert (Type sourceType, Type destinationType, object? value);
 
     /// <summary> Convertes the <paramref name="value"/> into the <paramref name="destinationType"/>. </summary>
     /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
@@ -112,6 +113,6 @@ namespace Remotion.Utilities
     /// </param>
     /// <param name="value"> The <see cref="Object"/> to be converted.</param>
     /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
-    object Convert (ITypeDescriptorContext context, CultureInfo culture, Type sourceType, Type destinationType, object value);
+    object? Convert (ITypeDescriptorContext? context, CultureInfo? culture, Type sourceType, Type destinationType, object? value);
   }
 }

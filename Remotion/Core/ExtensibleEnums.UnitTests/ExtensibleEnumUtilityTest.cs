@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.Reflection;
 
@@ -27,55 +28,57 @@ namespace Remotion.ExtensibleEnums.UnitTests
     [Test]
     public void IsExtensibleEnumType_True ()
     {
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (typeof (Color)), Is.True);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(typeof(Color)), Is.True);
     }
 
     [Test]
     public void IsExtensibleEnumType_False ()
     {
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (typeof (object)), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(typeof(object)), Is.False);
     }
 
     [Test]
     public void IsExtensibleEnumType_False_BaseType ()
     {
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (typeof (ExtensibleEnum<>)), Is.False);
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (typeof (ExtensibleEnum<Color>)), Is.False);
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (typeof (IExtensibleEnum)), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(typeof(ExtensibleEnum<>)), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(typeof(ExtensibleEnum<Color>)), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(typeof(IExtensibleEnum)), Is.False);
     }
 
     [Test]
     public void IsExtensibleEnumType_FromITypeInformation_True ()
     {
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (TypeAdapter.Create (typeof (Color))), Is.True);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(TypeAdapter.Create(typeof(Color))), Is.True);
     }
 
     [Test]
     public void IsExtensibleEnumType_FromITypeInformation_False ()
     {
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (TypeAdapter.Create (typeof (object))), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(TypeAdapter.Create(typeof(object))), Is.False);
     }
 
     [Test]
     public void IsExtensibleEnumType_FromITypeInformation_False_BaseType ()
     {
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (TypeAdapter.Create (typeof (ExtensibleEnum<>))), Is.False);
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (TypeAdapter.Create (typeof (ExtensibleEnum<Color>))), Is.False);
-      Assert.That (ExtensibleEnumUtility.IsExtensibleEnumType (TypeAdapter.Create (typeof (IExtensibleEnum))), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(TypeAdapter.Create(typeof(ExtensibleEnum<>))), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(TypeAdapter.Create(typeof(ExtensibleEnum<Color>))), Is.False);
+      Assert.That(ExtensibleEnumUtility.IsExtensibleEnumType(TypeAdapter.Create(typeof(IExtensibleEnum))), Is.False);
     }
 
     [Test]
     public void GetDefinition ()
     {
-      Assert.That (ExtensibleEnumUtility.GetDefinition (typeof (Color)), Is.SameAs (Color.Values));
+      Assert.That(ExtensibleEnumUtility.GetDefinition(typeof(Color)), Is.SameAs(Color.Values));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = 
-        "Type 'System.Object' is not an extensible enum type derived from ExtensibleEnum<T>.\r\nParameter name: extensibleEnumType")]
     public void GetDefinition_InvalidType ()
     {
-      ExtensibleEnumUtility.GetDefinition (typeof (object));
+      Assert.That(
+          () => ExtensibleEnumUtility.GetDefinition(typeof(object)),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Type 'System.Object' is not an extensible enum type derived from ExtensibleEnum<T>.", "extensibleEnumType"));
     }
   }
 }

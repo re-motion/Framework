@@ -34,15 +34,15 @@ namespace Remotion.UnitTests.Configuration
 
 
     public StubExtendedProvider (string name, NameValueCollection config)
-        : base (name, config)
+        : base(name, config)
     {
     }
-    
+
      // methods and properties
 
     public new string GetAndRemoveNonEmptyStringAttribute (NameValueCollection config, string attribute, string providerName, bool required)
     {
-     return base.GetAndRemoveNonEmptyStringAttribute (config, attribute, providerName, required);
+     return base.GetAndRemoveNonEmptyStringAttribute(config, attribute, providerName, required);
     }
   }
 }

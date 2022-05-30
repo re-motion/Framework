@@ -27,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building.RequiredMethodDefi
 
     public void Method1 (string s)
     {
-      throw new NotImplementedException ();
+      throw new NotImplementedException();
     }
 
     public void Method2 ()

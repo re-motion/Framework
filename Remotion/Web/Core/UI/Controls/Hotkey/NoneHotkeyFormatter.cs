@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Text;
+using System.Web.UI;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls.Hotkey
@@ -29,14 +29,14 @@ namespace Remotion.Web.UI.Controls.Hotkey
     {
     }
 
-    protected override void AppendHotkeyBeginTag (StringBuilder stringBuilder, string hotkey)
+    protected override void AppendHotkeyBeginTag (HtmlTextWriter writer, char hotkey)
     {
-      ArgumentUtility.CheckNotNull ("hotkey", hotkey);
+      ArgumentUtility.CheckNotNull("writer", writer);
     }
 
-    protected override void AppendHotkeyEndTag (StringBuilder stringBuilder)
+    protected override void AppendHotkeyEndTag (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("stringBuilder", stringBuilder);
+      ArgumentUtility.CheckNotNull("writer", writer);
     }
   }
 }

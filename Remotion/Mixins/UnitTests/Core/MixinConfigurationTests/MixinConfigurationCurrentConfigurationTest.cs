@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Context;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
@@ -26,7 +27,7 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
     [TearDown]
     public void TearDown ()
     {
-      MixinConfiguration.SetActiveConfiguration (null);
+      MixinConfiguration.SetActiveConfiguration(null);
     }
 
     [Test]
@@ -35,61 +36,73 @@ namespace Remotion.Mixins.UnitTests.Core.MixinConfigurationTests
       MixinConfiguration oldConfiguration = MixinConfiguration.ActiveConfiguration;
 
       var newConfiguration = new MixinConfiguration();
-      MixinConfiguration.SetActiveConfiguration (newConfiguration);
+      MixinConfiguration.SetActiveConfiguration(newConfiguration);
 
-      Assert.That (MixinConfiguration.ActiveConfiguration, Is.Not.SameAs (oldConfiguration));
-      Assert.That (MixinConfiguration.ActiveConfiguration, Is.SameAs (newConfiguration));
+      Assert.That(MixinConfiguration.ActiveConfiguration, Is.Not.SameAs(oldConfiguration));
+      Assert.That(MixinConfiguration.ActiveConfiguration, Is.SameAs(newConfiguration));
     }
 
     [Test]
-    public void ActiveConfigurationIsThreadSpecific()
+    public void ActiveConfigurationIsThreadSpecific ()
     {
-      var newConfiguration = new MixinConfiguration ();
-      MixinConfiguration.SetActiveConfiguration (newConfiguration);
+      var newConfiguration = new MixinConfiguration();
+      MixinConfiguration.SetActiveConfiguration(newConfiguration);
 
-      ThreadRunner.Run (() => Assert.That (MixinConfiguration.ActiveConfiguration, Is.Not.SameAs (newConfiguration)));
+      ThreadRunner.Run(() =>
+      {
+        using (SafeContext.Instance.OpenSafeContextBoundary())
+        {
+          Assert.That(MixinConfiguration.ActiveConfiguration, Is.Not.SameAs(newConfiguration));
+        }
+      });
     }
 
     [Test]
-    public void EnterScope()
+    public void EnterScope ()
     {
-      var configuration1 = new MixinConfiguration ();
-      var configuration2 = new MixinConfiguration ();
+      var configuration1 = new MixinConfiguration();
+      var configuration2 = new MixinConfiguration();
 
-      MixinConfiguration.SetActiveConfiguration (null);
-      Assert.That (MixinConfiguration.HasActiveConfiguration, Is.False);
+      MixinConfiguration.SetActiveConfiguration(null);
+      Assert.That(MixinConfiguration.HasActiveConfiguration, Is.False);
 
       using (configuration1.EnterScope())
       {
-        Assert.That (MixinConfiguration.ActiveConfiguration, Is.SameAs (configuration1));
+        Assert.That(MixinConfiguration.ActiveConfiguration, Is.SameAs(configuration1));
 
         using (configuration2.EnterScope())
         {
-          Assert.That (MixinConfiguration.ActiveConfiguration, Is.Not.SameAs (configuration1));
-          Assert.That (MixinConfiguration.ActiveConfiguration, Is.SameAs (configuration2));
+          Assert.That(MixinConfiguration.ActiveConfiguration, Is.Not.SameAs(configuration1));
+          Assert.That(MixinConfiguration.ActiveConfiguration, Is.SameAs(configuration2));
         }
 
-        Assert.That (MixinConfiguration.ActiveConfiguration, Is.Not.SameAs (configuration2));
-        Assert.That (MixinConfiguration.ActiveConfiguration, Is.SameAs (configuration1));
+        Assert.That(MixinConfiguration.ActiveConfiguration, Is.Not.SameAs(configuration2));
+        Assert.That(MixinConfiguration.ActiveConfiguration, Is.SameAs(configuration1));
       }
 
-      Assert.That (MixinConfiguration.HasActiveConfiguration, Is.False);
+      Assert.That(MixinConfiguration.HasActiveConfiguration, Is.False);
     }
 
     [Test]
     public void MasterConfigurationIsCopiedByNewThreads ()
     {
-      var oldMasterConfiguration = MixinConfiguration.GetMasterConfiguration ();
+      var oldMasterConfiguration = MixinConfiguration.GetMasterConfiguration();
       try
       {
-        var newMasterConfiguration = new MixinConfiguration ();
-        MixinConfiguration.SetMasterConfiguration (newMasterConfiguration);
+        var newMasterConfiguration = new MixinConfiguration();
+        MixinConfiguration.SetMasterConfiguration(newMasterConfiguration);
 
-        ThreadRunner.Run (() => Assert.That (MixinConfiguration.ActiveConfiguration, Is.SameAs (newMasterConfiguration)));
+        ThreadRunner.Run(() =>
+        {
+          using (SafeContext.Instance.OpenSafeContextBoundary())
+          {
+            Assert.That(MixinConfiguration.ActiveConfiguration, Is.SameAs(newMasterConfiguration));
+          }
+        });
       }
       finally
       {
-        MixinConfiguration.SetMasterConfiguration (oldMasterConfiguration);
+        MixinConfiguration.SetMasterConfiguration(oldMasterConfiguration);
       }
     }
   }

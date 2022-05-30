@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Mixins;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
 {
@@ -31,31 +31,31 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     public void Instantiate_WithDefaultValues ()
     {
       BindableDomainObjectProvider provider = new BindableDomainObjectProvider();
-      Assert.IsInstanceOf (typeof (BindableDomainObjectMetadataFactory), provider.MetadataFactory);
-      Assert.IsInstanceOf (typeof (BindableObjectServiceFactory), provider.ServiceFactory);
+      Assert.IsInstanceOf(typeof(BindableDomainObjectMetadataFactory), provider.MetadataFactory);
+      Assert.IsInstanceOf(typeof(BindableObjectServiceFactory), provider.ServiceFactory);
     }
 
     [Test]
     public void Instantiate_WithMixin ()
     {
-      using (MixinConfiguration.BuildNew ().ForClass (typeof (BindableDomainObjectMetadataFactory)).AddMixin<MixinStub> ().EnterScope ())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(BindableDomainObjectMetadataFactory)).AddMixin<MixinStub>().EnterScope())
       {
-        BindableDomainObjectProvider provider = new BindableDomainObjectProvider ();
-        Assert.That (provider.MetadataFactory, Is.InstanceOf (typeof (BindableDomainObjectMetadataFactory)));
-        Assert.That (provider.MetadataFactory, Is.InstanceOf (typeof (IMixinTarget)));
-        Assert.That (provider.ServiceFactory, Is.InstanceOf (typeof (BindableObjectServiceFactory)));
+        BindableDomainObjectProvider provider = new BindableDomainObjectProvider();
+        Assert.That(provider.MetadataFactory, Is.InstanceOf(typeof(BindableDomainObjectMetadataFactory)));
+        Assert.That(provider.MetadataFactory, Is.InstanceOf(typeof(IMixinTarget)));
+        Assert.That(provider.ServiceFactory, Is.InstanceOf(typeof(BindableObjectServiceFactory)));
       }
     }
 
     [Test]
     public void Instantiate_WithCustomValues ()
     {
-      IMetadataFactory metadataFactoryStub = MockRepository.GenerateStub<IMetadataFactory>();
-      IBusinessObjectServiceFactory serviceFactoryStub = MockRepository.GenerateStub<IBusinessObjectServiceFactory>();
-      BindableDomainObjectProvider provider = new BindableDomainObjectProvider (metadataFactoryStub, serviceFactoryStub);
+      var metadataFactoryStub = new Mock<IMetadataFactory>();
+      var serviceFactoryStub = new Mock<IBusinessObjectServiceFactory>();
+      BindableDomainObjectProvider provider = new BindableDomainObjectProvider(metadataFactoryStub.Object, serviceFactoryStub.Object);
 
-      Assert.That (provider.MetadataFactory, Is.SameAs (metadataFactoryStub));
-      Assert.That (provider.ServiceFactory, Is.SameAs (serviceFactoryStub));
+      Assert.That(provider.MetadataFactory, Is.SameAs(metadataFactoryStub.Object));
+      Assert.That(provider.ServiceFactory, Is.SameAs(serviceFactoryStub.Object));
     }
   }
 }

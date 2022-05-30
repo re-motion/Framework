@@ -48,16 +48,21 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     /// <returns></returns>
     public static AclProbe CreateAclProbe (User user, Role role, AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNull ("role", role);
-      ArgumentUtility.CheckNotNull ("ace", ace);
+      ArgumentUtility.CheckNotNull("user", user);
+      ArgumentUtility.CheckNotNull("role", role);
+      ArgumentUtility.CheckNotNull("ace", ace);
+      if (user.Tenant == null)
+        throw new ArgumentException("User must have a Tenant set.", "user");
+      if (role.Position == null)
+        throw new ArgumentException("User must have a Position set.", "role");
+      if (role.Group == null)
+        throw new ArgumentException("User must have a Group set.", "role");
 
-      var aclProbe = new AclProbe ();
-      var owningUser = CreateOwningUserEntry (aclProbe, user, ace);
-      var owningGroup = CreateOwningGroupEntry (aclProbe, role, ace);
-      var owningTenant = CreateOwningTenantEntry (aclProbe, user, ace);
-      var abstractRoles = CreateAbstractRolesEntry (aclProbe, ace);
-
+      AclExpansionAccessConditions accessConditions = new AclExpansionAccessConditions();
+      var owningUser = CreateOwningUserEntry(accessConditions, user, ace);
+      var owningGroup = CreateOwningGroupEntry(accessConditions, role, ace);
+      var owningTenant = CreateOwningTenantEntry(accessConditions, user, ace);
+      var abstractRoles = CreateAbstractRolesEntry(accessConditions, ace);
 
       // Create a new Principal which has only the one role we are currently probing for.
       // If we don't do that and set all the user's roles for the principal,
@@ -68,38 +73,38 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       // always have the access rights returned; this is just not the information we want to present in the 
       // ACL-expansion, where we distinguish which role gives rise to which access rights).
 
-      var principal = new Principal (
+      var principal = new Principal(
           user.Tenant.GetHandle(),
           user.GetSafeHandle(),
-          EnumerableUtility.Singleton (new PrincipalRole (role.Position.GetHandle(), role.Group.GetHandle())));
+          EnumerableUtility.Singleton(new PrincipalRole(role.Position.GetHandle(), role.Group.GetHandle())));
 
-      aclProbe._securityToken = SecurityToken.Create(principal, owningTenant, owningGroup, owningUser, abstractRoles);
+      var securityToken = SecurityToken.Create(principal, owningTenant, owningGroup, owningUser, abstractRoles);
 
-      return aclProbe;
+      return new AclProbe(securityToken, accessConditions);
     }
-     
-    private static IList<IDomainObjectHandle<AbstractRoleDefinition>> CreateAbstractRolesEntry (AclProbe aclProbe, AccessControlEntry ace)
+
+    private static IList<IDomainObjectHandle<AbstractRoleDefinition>> CreateAbstractRolesEntry (AclExpansionAccessConditions accessConditions, AccessControlEntry ace)
     {
-      var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>> ();
+      var abstractRoles = new List<IDomainObjectHandle<AbstractRoleDefinition>>();
       if (ace.SpecificAbstractRole != null)
       {
         var abstractRole = ace.SpecificAbstractRole;
-        abstractRoles.Add (abstractRole.GetHandle());
-        aclProbe.AccessConditions.AbstractRole = abstractRole;
+        abstractRoles.Add(abstractRole.GetHandle());
+        accessConditions.AbstractRole = abstractRole;
       }
       return abstractRoles;
     }
 
-    private static User CreateOwningUserEntry (AclProbe aclProbe, User user, AccessControlEntry ace)
+    private static User? CreateOwningUserEntry (AclExpansionAccessConditions accessConditions, User user, AccessControlEntry ace)
     {
-      User owningUser;
+      User? owningUser;
       switch (ace.UserCondition)
       {
         case UserCondition.Owner:
           // Undecideable constraint: For ACE to match the SecurityToken.OwningUser must be equal to the user's user.
           // Since this is undeciadeable, set the owning user so he will match, and record the constraint as an access condition.
           owningUser = user;
-          aclProbe.AccessConditions.IsOwningUserRequired = true;
+          accessConditions.IsOwningUserRequired = true;
           break;
         case UserCondition.SpecificUser:
           owningUser = null; // Decideable constraint => no condition. Either Principal matches or he does not.
@@ -111,15 +116,15 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningUser = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException (String.Format ("ace.UserSelection={0} is currently not supported by this method. Please extend method to handle the new UserSelection state.", ace.UserCondition));
+          throw new ArgumentException(String.Format("ace.UserSelection={0} is currently not supported by this method. Please extend method to handle the new UserSelection state.", ace.UserCondition));
       }
       return owningUser;
     }
 
 
-    private static Tenant CreateOwningTenantEntry (AclProbe aclProbe, User user, AccessControlEntry ace)
+    private static Tenant? CreateOwningTenantEntry (AclExpansionAccessConditions accessConditions, User user, AccessControlEntry ace)
     {
-      Tenant owningTenant;
+      Tenant? owningTenant;
       switch (ace.TenantCondition)
       {
         case TenantCondition.OwningTenant:
@@ -128,13 +133,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           // keeping in mind the TenantHierarchyCondition.
 
           // Owning tenant will be set to the user's tenant, which should never be empty. 
-          Assertion.IsNotNull (user.Tenant);
+          Assertion.IsNotNull(user.Tenant);
           // TenantHierarchyCondition should always contain the flag for "this tenant"; 
           // if this condition is violated, using owningTenant = user.Tenant will no longer work, since it will not match.
-          Assertion.IsTrue ((ace.TenantHierarchyCondition & TenantHierarchyCondition.This) != 0);
+          Assertion.IsTrue((ace.TenantHierarchyCondition & TenantHierarchyCondition.This) != 0);
           owningTenant = user.Tenant;
-          aclProbe.AccessConditions.OwningTenant = owningTenant;
-          aclProbe.AccessConditions.TenantHierarchyCondition = ace.TenantHierarchyCondition;
+          accessConditions.OwningTenant = owningTenant;
+          accessConditions.TenantHierarchyCondition = ace.TenantHierarchyCondition;
           break;
         case TenantCondition.SpecificTenant:
           owningTenant = null; // Decideable constraint => no condition. Either Principal.Tenant matches or he does not.
@@ -143,31 +148,31 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningTenant = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException (String.Format ("ace.TenantSelection={0} is currently not supported by this method. Please extend method to handle the new TenantSelection state.", ace.TenantCondition));
+          throw new ArgumentException(String.Format("ace.TenantSelection={0} is currently not supported by this method. Please extend method to handle the new TenantSelection state.", ace.TenantCondition));
       }
       return owningTenant;
     }
 
-    private static Group CreateOwningGroupEntry (AclProbe aclProbe, Role role, AccessControlEntry ace)
+    private static Group? CreateOwningGroupEntry (AclExpansionAccessConditions accessConditions, Role role, AccessControlEntry ace)
     {
-      Group owningGroup;
+      Group? owningGroup;
       switch (ace.GroupCondition)
       {
         case GroupCondition.OwningGroup:
           // Owning group will be set to the role group, which should never be empty.
-          Assertion.IsNotNull (role.Group);
+          Assertion.IsNotNull(role.Group);
           // GroupHierarchyCondition should always contain the flag for "this group";
           // if this condition is violated, using owningGroup = role.Group will no longer work, since it will not match.
-          Assertion.IsTrue ((ace.GroupHierarchyCondition & GroupHierarchyCondition.This) != 0); 
+          Assertion.IsTrue((ace.GroupHierarchyCondition & GroupHierarchyCondition.This) != 0);
           owningGroup = role.Group;
-          aclProbe.AccessConditions.OwningGroup = owningGroup;
-          aclProbe.AccessConditions.GroupHierarchyCondition = ace.GroupHierarchyCondition;
+          accessConditions.OwningGroup = owningGroup;
+          accessConditions.GroupHierarchyCondition = ace.GroupHierarchyCondition;
           break;
         case GroupCondition.BranchOfOwningGroup:
-          Assertion.IsNotNull (role.Group);
-          owningGroup = FindFirstGroupInThisAndParentHierarchyWhichHasGroupType (role.Group, ace.SpecificGroupType);
-          aclProbe.AccessConditions.OwningGroup = owningGroup;
-          aclProbe.AccessConditions.GroupHierarchyCondition = GroupHierarchyCondition.ThisAndChildren;
+          Assertion.IsNotNull(role.Group);
+          owningGroup = FindFirstGroupInThisAndParentHierarchyWhichHasGroupType(role.Group, ace.SpecificGroupType);
+          accessConditions.OwningGroup = owningGroup;
+          accessConditions.GroupHierarchyCondition = GroupHierarchyCondition.ThisAndChildren;
           break;
         case GroupCondition.SpecificGroup:
           owningGroup = null; // Decideable constraint => no condition. Either the Principal's groups contain the specifc group or not.
@@ -179,29 +184,35 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningGroup = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException (String.Format ("ace.GroupSelection={0} is currently not supported by this method. Please extend method to handle the new GroupSelection state.", ace.GroupCondition));
+          throw new ArgumentException(String.Format("ace.GroupSelection={0} is currently not supported by this method. Please extend method to handle the new GroupSelection state.", ace.GroupCondition));
       }
       return owningGroup;
     }
 
-    private static Group FindFirstGroupInThisAndParentHierarchyWhichHasGroupType (Group group, GroupType groupType)
+    private static Group? FindFirstGroupInThisAndParentHierarchyWhichHasGroupType (Group group, GroupType? groupType)
     {
-      var thisAndParents = new[] { group }.Concat (group.GetParents());
-      Group matchingGroup = thisAndParents.Where (g => g.GroupType == groupType).FirstOrDefault ();
+      var thisAndParents = new[] { group }.Concat(group.GetParents());
+      Group? matchingGroup = thisAndParents.Where(g => g.GroupType == groupType).FirstOrDefault();
       return matchingGroup;
     }
 
 
-
-    // The SecurityToken that will be used in the call to AccessControlList.GetAccessTypes .
+    /// <summary>
+    /// The SecurityToken that will be used in the call to AccessControlList.GetAccessTypes .
+    /// </summary>
     private SecurityToken _securityToken;
-    // The access conditions that must be satisfied for the _securityToken to match; i.e. the permissions returned by
-    // the call to AccessControlList.GetAccessTypes apply only if the access conditions are satisfied. 
-    private readonly AclExpansionAccessConditions _accessConditions = new AclExpansionAccessConditions();
 
-    // Create through factory only.
-    private AclProbe () {}
+    /// <summary>
+    /// The access conditions that must be satisfied for the _securityToken to match; i.e. the permissions returned by
+    /// the call to AccessControlList.GetAccessTypes apply only if the access conditions are satisfied.
+    /// </summary>
+    private readonly AclExpansionAccessConditions _accessConditions;
 
+    private AclProbe (SecurityToken securityToken, AclExpansionAccessConditions accessConditions)
+    {
+      _securityToken = securityToken;
+      _accessConditions = accessConditions;
+    }
 
     public SecurityToken SecurityToken
     {
@@ -212,7 +223,5 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
     {
       get { return _accessConditions; }
     }
-
-
   }
 }

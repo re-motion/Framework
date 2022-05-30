@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlSelection;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
@@ -24,7 +23,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Generi
 namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.TestCaseFactories
 {
   /// <summary>
-  /// Contains tests for <see cref="IFirstControlSelector{TControlObject}"/> that are executed via <see cref="RemotionTestCaseSourceAttribute"/>
+  /// Contains tests for <see cref="IFirstControlSelector{TControlObject}"/> that are executed via <see cref="TestCaseSourceAttribute"/>
   /// </summary>
   public class FirstControlSelectorTestCaseFactory<TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, FirstGenericTestPageParameter>
@@ -46,16 +45,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       var control = Selector.First();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    public void Get_Throws_WebTestException ()
     {
-      Assert.That (
+      Assert.That(
           () => Selector.First(),
-          Throws.InstanceOf<MissingHtmlException>());
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
@@ -63,8 +62,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
     {
       var control = Selector.FirstOrNull();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
@@ -74,16 +73,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Te
 
       var control = Selector.FirstOrNull();
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.HiddenElements)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.HiddenElements)]
     public void GetOrNull_Returns_Null ()
     {
       var control = Selector.FirstOrNull();
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
   }
 }

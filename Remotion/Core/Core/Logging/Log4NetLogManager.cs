@@ -21,6 +21,7 @@ using log4net.Config;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
@@ -29,10 +30,10 @@ namespace Remotion.Logging
   /// <summary>
   /// Implementation of <see cref="ILogManager"/> for <b>log4net</b>.
   /// </summary>
-  [ImplementationFor (typeof(ILogManager), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ILogManager), Lifetime = LifetimeKind.Singleton)]
   public class Log4NetLogManager : ILogManager
   {
-    private readonly WrapperMap _wrapperMap = new WrapperMap (logger => new Log4NetLog (logger));
+    private readonly WrapperMap _wrapperMap = new WrapperMap(logger => new Log4NetLog(logger));
 
     /// <summary>
     /// Creates a new instance of the <see cref="Log4NetLog"/> type.
@@ -41,9 +42,9 @@ namespace Remotion.Logging
     /// <returns>A <see cref="Log4NetLog"/> for the <paramref name="name"/> specified.</returns>
     public ILog GetLogger (string name)
     {
-      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNull("name", name);
 
-      return WrapLogger (LoggerManager.GetLogger (Assembly.GetCallingAssembly(), name));
+      return WrapLogger(LoggerManager.GetLogger(Assembly.GetCallingAssembly(), name));
     }
 
     /// <summary>
@@ -53,9 +54,9 @@ namespace Remotion.Logging
     /// <returns>A <see cref="Log4NetLog"/> for the fully qualified name of the <paramref name="type"/> specified.</returns>
     public ILog GetLogger (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return WrapLogger (LoggerManager.GetLogger (Assembly.GetCallingAssembly(), type));
+      return WrapLogger(LoggerManager.GetLogger(Assembly.GetCallingAssembly(), type));
     }
 
     /// <summary>
@@ -64,37 +65,37 @@ namespace Remotion.Logging
     public void Initialize ()
     {
       //TODO: Check if there is a sensible way for testing log4net startup.
-      XmlConfigurator.Configure ();
+      XmlConfigurator.Configure();
     }
 
     public void InitializeConsole ()
     {
-      var appender = CreateConsoleAppender ();
-      BasicConfigurator.Configure (appender);
+      var appender = CreateConsoleAppender();
+      BasicConfigurator.Configure(appender);
     }
 
     public void InitializeConsole (LogLevel defaultThreshold, params LogThreshold[] logThresholds)
     {
-      ArgumentUtility.CheckNotNull ("logThresholds", logThresholds);
+      ArgumentUtility.CheckNotNull("logThresholds", logThresholds);
 
       var appender = CreateConsoleAppender();
 
-      var repositoryAssembly = Assembly.GetCallingAssembly ();
-      var loggerRepository = log4net.LogManager.GetRepository (repositoryAssembly);
+      var repositoryAssembly = Assembly.GetCallingAssembly();
+      var loggerRepository = log4net.LogManager.GetRepository(repositoryAssembly);
       var hierarchy = loggerRepository as Hierarchy;
       if (hierarchy == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot set a default threshold for the logger repository of type '{1}' configured for assembly '{0}'. The repository does not derive "
-            + "from the '{2}' class.", 
-            repositoryAssembly.GetName().Name,
+            + "from the '{2}' class.",
+            repositoryAssembly.GetName().GetNameSafe(),
             loggerRepository.GetType(),
-            typeof (Hierarchy));
-        throw new InvalidOperationException (message);
+            typeof(Hierarchy));
+        throw new InvalidOperationException(message);
       }
 
-      hierarchy.Root.Level = Log4NetLog.Convert (defaultThreshold);
-      hierarchy.Root.AddAppender (appender);
+      hierarchy.Root.Level = Log4NetLog.Convert(defaultThreshold);
+      hierarchy.Root.AddAppender(appender);
       hierarchy.Configured = true;
 
       foreach (var logThreshold in logThresholds)
@@ -102,7 +103,7 @@ namespace Remotion.Logging
         var log4netLog = logThreshold.Logger as ILoggerWrapper;
         if (log4netLog == null)
         {
-          throw new ArgumentException (
+          throw new ArgumentException(
               "This LogManager only supports ILog implementations that also implement the log4net.Core.ILoggerWrapper interface.",
               "logThresholds");
         }
@@ -110,27 +111,27 @@ namespace Remotion.Logging
         var log4netLogger = log4netLog.Logger as Logger;
         if (log4netLogger == null)
         {
-          var message = string.Format (
+          var message = string.Format(
               "Log-specific thresholds can only be set for log4net loggers of type '{0}'. The specified logger '{1}' is of type '{2}'.",
-              typeof (Logger),
+              typeof(Logger),
               log4netLog.Logger.Name,
               log4netLog.Logger.GetType());
-          throw new ArgumentException (message, "logThresholds");
+          throw new ArgumentException(message, "logThresholds");
         }
 
-        log4netLogger.Level = Log4NetLog.Convert (logThreshold.Threshold);
+        log4netLogger.Level = Log4NetLog.Convert(logThreshold.Threshold);
       }
     }
 
     private ILog WrapLogger (ILogger logger)
     {
-      return (Log4NetLog) _wrapperMap.GetWrapper (logger);
+      return (Log4NetLog)_wrapperMap.GetWrapper(logger);
     }
 
     private ConsoleAppender CreateConsoleAppender ()
     {
-      var appender = new ConsoleAppender ();
-      appender.Layout = new PatternLayout ("%-5level: %message%newline");
+      var appender = new ConsoleAppender();
+      appender.Layout = new PatternLayout("%-5level: %message%newline");
       return appender;
     }
   }

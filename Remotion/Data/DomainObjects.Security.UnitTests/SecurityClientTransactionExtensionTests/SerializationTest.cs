@@ -26,10 +26,10 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     [Test]
     public void Serialization ()
     {
-      var extension = new SecurityClientTransactionExtension ();
-      var deserializedExtension = Serializer.SerializeAndDeserialize (extension);
+      var extension = new SecurityClientTransactionExtension();
+      var deserializedExtension = Serializer.SerializeAndDeserialize(extension);
 
-      Assert.That (deserializedExtension, Is.Not.SameAs (extension));
+      Assert.That(deserializedExtension, Is.Not.SameAs(extension));
     }
   }
 }

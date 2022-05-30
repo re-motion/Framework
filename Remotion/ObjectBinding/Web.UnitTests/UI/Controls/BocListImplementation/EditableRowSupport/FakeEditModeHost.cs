@@ -16,12 +16,14 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.EditableRowSupport
@@ -44,13 +46,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public bool AreCustomCellsValid { private get; set; }
     public IFocusableControl FocusedControl { get; set; }
 
-    public IList Value { get; set; }
+    public IReadOnlyList<IBusinessObject> Value { get; set; }
     public string ID { get; set; }
     public bool IsReadOnly { get; set; }
     public bool IsDirty { get; set; }
+    public bool? EnableOptionalValidators { get; set; }
     public EditableRowDataSourceFactory EditModeDataSourceFactory { get; set; }
     public EditableRowControlFactory EditModeControlFactory { get; set; }
-    public string ErrorMessage { get; set; }
+    public PlainTextString ErrorMessage { get; set; }
     public bool DisableEditModeValidationMessages { get; set; }
     public bool ShowEditModeValidationMarkers { get; set; }
     public bool ShowEditModeRequiredMarkers { get; set; }
@@ -62,9 +65,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       if (NotifyAddRows != null)
       {
-        var addedRows = NotifyAddRows (businessObjects);
-        foreach (var addedRow in addedRows.OrderBy (r=>r.Index))
-          RowIDProvider.AddRow (addedRow);
+        var addedRows = NotifyAddRows(businessObjects);
+        foreach (var addedRow in addedRows.OrderBy(r=>r.Index))
+          RowIDProvider.AddRow(addedRow);
         return addedRows;
       }
       return new BocListRow[0];
@@ -74,9 +77,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       if (NotifyRemoveRows != null)
       {
-        var removedRows = NotifyRemoveRows (bocListRows);
-        foreach (var removedRow in removedRows.OrderByDescending (r=>r.Index))
-          RowIDProvider.RemoveRow (removedRow);
+        var removedRows = NotifyRemoveRows(bocListRows);
+        foreach (var removedRow in removedRows.OrderByDescending(r=>r.Index))
+          RowIDProvider.RemoveRow(removedRow);
         return removedRows;
       }
       return new BocListRow[0];
@@ -85,7 +88,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void EndRowEditModeCleanUp (int value)
     {
       if (NotifyEndRowEditModeCleanUp != null)
-        NotifyEndRowEditModeCleanUp (value);
+        NotifyEndRowEditModeCleanUp(value);
     }
 
     public void EndListEditModeCleanUp ()
@@ -105,25 +108,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void OnEditableRowChangesSaving (int index, IBusinessObject businessObject, IBusinessObjectDataSource dataSource, IBusinessObjectBoundEditableWebControl[] controls)
     {
       if (NotifyOnEditableRowChangesSaving != null)
-        NotifyOnEditableRowChangesSaving (index, businessObject);
+        NotifyOnEditableRowChangesSaving(index, businessObject);
     }
 
     public void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
     {
       if (NotifyOnEditableRowChangesSaved != null)
-        NotifyOnEditableRowChangesSaved (index, businessObject);
+        NotifyOnEditableRowChangesSaved(index, businessObject);
     }
 
     public void OnEditableRowChangesCanceling (int index, IBusinessObject businessObject, IBusinessObjectDataSource dataSource, IBusinessObjectBoundEditableWebControl[] controls)
     {
       if (NotifyOnEditableRowChangesCanceling != null)
-        NotifyOnEditableRowChangesCanceling (index, businessObject);
+        NotifyOnEditableRowChangesCanceling(index, businessObject);
     }
 
     public void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
     {
       if (NotifyOnEditableRowChangesCanceled != null)
-        NotifyOnEditableRowChangesCanceled (index, businessObject);
+        NotifyOnEditableRowChangesCanceled(index, businessObject);
     }
 
     public Image GetRequiredMarker ()

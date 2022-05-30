@@ -24,23 +24,23 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Identifies the <see cref="IDomainObjectHandle{T}"/> interface as a handle to the security infrastructure.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Interface, AllowMultiple = false)]
+  [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
   public class DomainObjectHandleAttribute : Attribute, IHandleAttribute
   {
     public Type GetReferencedType (Type handleType)
     {
-      ArgumentUtility.CheckNotNull ("handleType", handleType);
-      if (!handleType.IsGenericType || handleType.GetGenericTypeDefinition() != typeof (IDomainObjectHandle<>))
-        throw new ArgumentException ("The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType");
+      ArgumentUtility.CheckNotNull("handleType", handleType);
+      if (!handleType.IsGenericType || handleType.GetGenericTypeDefinition() != typeof(IDomainObjectHandle<>))
+        throw new ArgumentException("The handleType parameter must be an instantiation of 'IDomainObjectHandle<T>'.", "handleType");
 
       return handleType.GetGenericArguments().Single();
     }
 
     public object GetReferencedInstance (object handleInstance)
     {
-      var typedHandleInstance = ArgumentUtility.CheckNotNullAndType<IDomainObjectHandle<DomainObject>> ("handleInstance", handleInstance);
+      var typedHandleInstance = ArgumentUtility.CheckNotNullAndType<IDomainObjectHandle<DomainObject>>("handleInstance", handleInstance);
 
-      return LifetimeService.GetObject (ClientTransactionScope.CurrentTransaction, typedHandleInstance.ObjectID, true);
+      return LifetimeService.GetObject(ClientTransactionScope.CurrentTransaction, typedHandleInstance.ObjectID, true);
     }
   }
 }

@@ -21,8 +21,8 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   public class ClassImplementingInterface : IInterfaceToImplement
   {
     public string ImplicitProperty { get; set; }
-    
-    string IInterfaceToImplement.ExplicitProperty { get; set; } 
+
+    string IInterfaceToImplement.ExplicitProperty { get; set; }
 
     public string ReadOnlyImplicitProperty
     {

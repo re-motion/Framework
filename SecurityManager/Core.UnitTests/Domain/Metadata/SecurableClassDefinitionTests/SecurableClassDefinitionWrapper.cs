@@ -38,10 +38,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
     public SecurableClassDefinitionWrapper (SecurableClassDefinition securableClassDefinition)
     {
-      ArgumentUtility.CheckNotNull ("securableClassDefinition", securableClassDefinition);
+      ArgumentUtility.CheckNotNull("securableClassDefinition", securableClassDefinition);
 
       _securableClassDefinition = securableClassDefinition;
-      _accessTypeReferencesPropertyInfo = _securableClassDefinition.GetPublicDomainObjectType().GetProperty (
+      _accessTypeReferencesPropertyInfo = _securableClassDefinition.GetPublicDomainObjectType().GetProperty(
           "AccessTypeReferences",
           BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
     }
@@ -55,7 +55,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
 
     public DomainObjectCollection AccessTypeReferences
     {
-      get { return (DomainObjectCollection) _accessTypeReferencesPropertyInfo.GetValue (_securableClassDefinition, new object[0]); }
+      get { return (DomainObjectCollection)_accessTypeReferencesPropertyInfo.GetValue(_securableClassDefinition, new object[0]); }
     }
   }
 }

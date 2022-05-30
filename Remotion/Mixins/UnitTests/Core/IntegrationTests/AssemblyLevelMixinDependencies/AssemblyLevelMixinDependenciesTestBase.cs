@@ -35,37 +35,37 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.AssemblyLevelMixinDepe
     [TearDown]
     public virtual void TearDown ()
     {
-      MixinConfiguration.SetActiveConfiguration (_previousConfiguration);
+      MixinConfiguration.SetActiveConfiguration(_previousConfiguration);
     }
 
 
     protected void PrepareMixinConfigurationWithAttributeDeclarations (params AdditionalMixinDependencyAttribute[] attributes)
     {
-      var assemblyWithDeclarations = CreateAssemblyWithAdditionalAttributeDeclarations (attributes);
+      var assemblyWithDeclarations = CreateAssemblyWithAdditionalAttributeDeclarations(attributes);
 
-      var builder = new DeclarativeConfigurationBuilder (null);
-      builder.AddAssembly (GetType().Assembly);
-      builder.AddAssembly (assemblyWithDeclarations);
+      var builder = new DeclarativeConfigurationBuilder(null);
+      builder.AddAssembly(GetType().Assembly);
+      builder.AddAssembly(assemblyWithDeclarations);
 
-      MixinConfiguration.SetActiveConfiguration (builder.BuildConfiguration());
+      MixinConfiguration.SetActiveConfiguration(builder.BuildConfiguration());
     }
 
     private Assembly CreateAssemblyWithAdditionalAttributeDeclarations (params AdditionalMixinDependencyAttribute[] attributes)
     {
-      var ctor = typeof (AdditionalMixinDependencyAttribute).GetConstructor (new[] { typeof (Type), typeof (Type), typeof (Type) });
-      Assert.That (ctor, Is.Not.Null, "AdditionalMixinDependencyAttribute ctor not found.");
+      var ctor = typeof(AdditionalMixinDependencyAttribute).GetConstructor(new[] { typeof(Type), typeof(Type), typeof(Type) });
+      Assert.That(ctor, Is.Not.Null, "AdditionalMixinDependencyAttribute ctor not found.");
 
       var assemblyName = "TestAssembly_" + GetType().Name;
-      var assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly (new AssemblyName (assemblyName), AssemblyBuilderAccess.Run);
+      var assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
       foreach (var attribute in attributes)
       {
-        var attributeBuilder = new CustomAttributeBuilder (ctor, new[] { attribute.TargetType, attribute.DependentMixin, attribute.Dependency });
-        assemblyBuilder.SetCustomAttribute (attributeBuilder);
+        var attributeBuilder = new CustomAttributeBuilder(ctor, new[] { attribute.TargetType, attribute.DependentMixin, attribute.Dependency });
+        assemblyBuilder.SetCustomAttribute(attributeBuilder);
       }
 
       // Required due to RM-5136
-      var moduleBuilder = assemblyBuilder.DefineDynamicModule (assemblyBuilder + ".dll");
-      moduleBuilder.DefineType ("Dummy", TypeAttributes.Public, typeof (object)).CreateType();
+      var moduleBuilder = assemblyBuilder.DefineDynamicModule(assemblyBuilder + ".dll");
+      moduleBuilder.DefineType("Dummy", TypeAttributes.Public, typeof(object)).CreateType();
 
       return assemblyBuilder;
     }

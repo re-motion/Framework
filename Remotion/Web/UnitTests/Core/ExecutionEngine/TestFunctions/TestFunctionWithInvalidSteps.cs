@@ -22,8 +22,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions
 {
   public class TestFunctionWithInvalidSteps: WxeFunction
   {
-    public TestFunctionWithInvalidSteps()
-      : base (new NoneTransactionMode ())
+    public TestFunctionWithInvalidSteps ()
+      : base(new NoneTransactionMode())
     {
     }
 

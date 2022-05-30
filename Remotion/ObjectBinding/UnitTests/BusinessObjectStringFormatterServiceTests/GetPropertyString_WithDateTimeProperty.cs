@@ -16,9 +16,9 @@
 // 
 using System;
 using System.Globalization;
+using Moq;
 using NUnit.Framework;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -26,95 +26,94 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
   public class GetPropertyString_WithDateTimeProperty
   {
     private BusinessObjectStringFormatterService _stringFormatterService;
-    private MockRepository _mockRepository;
-    private IBusinessObject _mockBusinessObject;
-    private IBusinessObjectDateTimeProperty _mockProperty;
+    private Mock<IBusinessObject> _mockBusinessObject;
+    private Mock<IBusinessObjectDateTimeProperty> _mockProperty;
 
     [SetUp]
     public void SetUp ()
     {
       _stringFormatterService = new BusinessObjectStringFormatterService();
-      _mockRepository = new MockRepository();
-      _mockBusinessObject = _mockRepository.StrictMock<IBusinessObject>();
-      _mockProperty = _mockRepository.StrictMock<IBusinessObjectDateTimeProperty>();
+      _mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
+      _mockProperty = new Mock<IBusinessObjectDateTimeProperty>(MockBehavior.Strict);
     }
 
     [Test]
     public void Scalar_WithValu_AndDateTimeProperty ()
     {
-      Expect.Call (_mockProperty.Type).Return (DateTimeType.DateTime);
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (new DateTime (2000, 4, 14, 3, 45, 10));
-      _mockRepository.ReplayAll();
+      _mockProperty.Setup(_ => _.Type).Returns(DateTimeType.DateTime).Verifiable();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(new DateTime(2000, 4, 14, 3, 45, 10)).Verifiable();
 
-      using (new CultureScope (new CultureInfo ("de-de"), new CultureInfo ("de-de")))
+      using (new CultureScope(new CultureInfo("de-de"), new CultureInfo("de-de")))
       {
-        string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+        string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-        _mockRepository.VerifyAll();
-        Assert.That (actual, Is.EqualTo ("14.04.2000 03:45"));
+        _mockBusinessObject.Verify();
+        _mockProperty.Verify();
+        Assert.That(actual, Is.EqualTo("14.04.2000 03:45"));
       }
     }
 
     [Test]
     public void Scalar_WithValu_AndDateProperty ()
     {
-      Expect.Call (_mockProperty.Type).Return (DateTimeType.Date);
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (new DateTime (2000, 6, 17, 1, 1, 1));
-      _mockRepository.ReplayAll();
+      _mockProperty.Setup(_ => _.Type).Returns(DateTimeType.Date).Verifiable();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(new DateTime(2000, 6, 17, 1, 1, 1)).Verifiable();
 
-      using (new CultureScope (new CultureInfo ("de-de"), new CultureInfo ("de-de")))
+      using (new CultureScope(new CultureInfo("de-de"), new CultureInfo("de-de")))
       {
-        string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+        string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-        _mockRepository.VerifyAll();
-        Assert.That (actual, Is.EqualTo ("17.06.2000"));
+        _mockBusinessObject.Verify();
+        _mockProperty.Verify();
+        Assert.That(actual, Is.EqualTo("17.06.2000"));
       }
     }
 
     [Test]
     public void Scalar_WithValu_AndDateProperty_AndExplicitFormatString ()
     {
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (new DateTime (2000, 6, 17, 1, 2, 3));
-      _mockRepository.ReplayAll();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(new DateTime(2000, 6, 17, 1, 2, 3)).Verifiable();
 
-      using (new CultureScope (new CultureInfo ("de-de"), new CultureInfo ("de-de")))
+      using (new CultureScope(new CultureInfo("de-de"), new CultureInfo("de-de")))
       {
-        string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "yyyy-dd-MM HH:mm:ss");
+        string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "yyyy-dd-MM HH:mm:ss");
 
-        _mockRepository.VerifyAll();
-        Assert.That (actual, Is.EqualTo ("2000-17-06 01:02:03"));
+        _mockBusinessObject.Verify();
+        _mockProperty.Verify();
+        Assert.That(actual, Is.EqualTo("2000-17-06 01:02:03"));
       }
     }
 
     [Test]
     public void Scalar_WithFormattableValue ()
     {
-      IFormattable mockValue = _mockRepository.StrictMock<IFormattable>();
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (mockValue);
-      Expect.Call (mockValue.ToString ("FormatString", null)).Return ("ExpectedStringValue");
-      _mockRepository.ReplayAll();
+      var mockValue = new Mock<IFormattable>(MockBehavior.Strict);
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(mockValue.Object).Verifiable();
+      mockValue.Setup(_ => _.ToString("FormatString", null)).Returns("ExpectedStringValue").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "FormatString");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "FormatString");
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.EqualTo ("ExpectedStringValue"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      mockValue.Verify();
+      Assert.That(actual, Is.EqualTo("ExpectedStringValue"));
     }
 
     [Test]
     public void Scalar_WithNull ()
     {
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (null);
-      _mockRepository.ReplayAll();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object)null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "FormatString");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "FormatString");
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.Empty);
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.Empty);
     }
   }
 }

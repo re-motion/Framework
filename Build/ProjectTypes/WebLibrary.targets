@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)..\NuSpec\Web.targets" CopyToOutputDirectory="Never">
+      <Pack>true</Pack>
+      <PackagePath>build\$(AssemblyName).targets</PackagePath>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\NuSpec\Install.ps1" CopyToOutputDirectory="Never">
+      <Pack>true</Pack>
+      <PackagePath>tools</PackagePath>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\NuSpec\Uninstall.ps1" CopyToOutputDirectory="Never">
+      <Pack>true</Pack>
+      <PackagePath>tools</PackagePath>
+    </Content>
+  </ItemGroup>
+</Project>

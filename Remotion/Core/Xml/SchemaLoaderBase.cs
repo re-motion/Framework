@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
+using Remotion.Reflection;
 
 namespace Remotion.Xml
 {
@@ -32,8 +33,8 @@ namespace Remotion.Xml
     /// <exception cref="ApplicationException"> Thrown if the schema file could not be loaded. </exception>
     public virtual XmlSchemaSet LoadSchemaSet ()
     {
-      XmlSchemaSet xmlSchemaSet = new XmlSchemaSet ();
-      xmlSchemaSet.Add (LoadSchema (SchemaFile));
+      XmlSchemaSet xmlSchemaSet = new XmlSchemaSet();
+      xmlSchemaSet.Add(LoadSchema(SchemaFile));
       return xmlSchemaSet;
     }
 
@@ -41,17 +42,17 @@ namespace Remotion.Xml
     /// <exception cref="ApplicationException"> Thrown if the schema file could not be loaded. </exception>
     protected XmlSchema LoadSchema (string schemaFileName)
     {
-      Type type = GetType ();
+      Type type = GetType();
       Assembly assembly = type.Assembly;
 
-      using (Stream schemaStream = assembly.GetManifestResourceStream (type, schemaFileName))
+      using (Stream? schemaStream = assembly.GetManifestResourceStream(type, schemaFileName))
       {
         if (schemaStream == null)
-          throw new ApplicationException (string.Format ("Error loading schema resource '{0}' from assembly '{1}'.", schemaFileName, assembly.FullName));
+          throw new ApplicationException(string.Format("Error loading schema resource '{0}' from assembly '{1}'.", schemaFileName, assembly.GetFullNameSafe()));
 
-        using (XmlReader xmlReader = XmlReader.Create (schemaStream))
+        using (XmlReader xmlReader = XmlReader.Create(schemaStream))
         {
-          return XmlSchema.Read (xmlReader, null);
+          return XmlSchema.Read(xmlReader, null)!;
         }
       }
     }

@@ -15,8 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation;
-using FluentValidation.Validators;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Implementation
 {
@@ -24,7 +23,7 @@ namespace Remotion.Validation.Implementation
   /// Defines an API for providing a string representation for an <see cref="IValidator"/>.
   /// </summary>
   /// <seealso cref="DefaultValidatorFormatter"/>
-  /// <seealso cref="FluentValidationValidatorFormatterDecorator"/>
+  /// <seealso cref="DiagnosticInformationValidatorFormatterDecorator"/>
   public interface IValidatorFormatter
   {
     string Format (IPropertyValidator validator, Func<Type, string> typeNameFormatter);

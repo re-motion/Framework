@@ -16,118 +16,121 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
   [TestFixture]
   public class SearchPathRootAssemblyFinderTest
   {
-    private IAssemblyLoader _loaderStub;
+    private Mock<IAssemblyLoader> _loaderStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _loaderStub = MockRepository.GenerateStub<IAssemblyLoader> ();
+      _loaderStub = new Mock<IAssemblyLoader>();
     }
 
     [Test]
     public void CreateCombinedFinder_HoldsBaseDirectory ()
     {
       var finder = CreateRootAssemblyFinder("relativeSearchPath", false);
-      var finderDirectories = GetDirectoriesForCombinedFinder (finder);
+      var finderDirectories = GetDirectoriesForCombinedFinder(finder);
 
-      Assert.That (finderDirectories, Has.Member("baseDirectory"));
+      Assert.That(finderDirectories, Has.Member("baseDirectory"));
     }
 
     [Test]
     public void CreateCombinedFinder_HoldsRelativeSearchPath ()
     {
-      var finder = CreateRootAssemblyFinder ("relativeSearchPath", false);
-      var finderDirectories = GetDirectoriesForCombinedFinder (finder);
+      var finder = CreateRootAssemblyFinder("relativeSearchPath", false);
+      var finderDirectories = GetDirectoriesForCombinedFinder(finder);
 
-      Assert.That (finderDirectories, Has.Member("relativeSearchPath"));
+      Assert.That(finderDirectories, Has.Member("relativeSearchPath"));
     }
 
     [Test]
     public void CreateCombinedFinder_HoldsRelativeSearchPath_Split ()
     {
-      var finder = CreateRootAssemblyFinder ("relativeSearchPath1;relativeSearchPath2", false);
-      var finderDirectories = GetDirectoriesForCombinedFinder (finder);
+      var finder = CreateRootAssemblyFinder("relativeSearchPath1;relativeSearchPath2", false);
+      var finderDirectories = GetDirectoriesForCombinedFinder(finder);
 
-      Assert.That (finderDirectories, Has.Member("relativeSearchPath1"));
-      Assert.That (finderDirectories, Has.Member("relativeSearchPath2"));
+      Assert.That(finderDirectories, Has.Member("relativeSearchPath1"));
+      Assert.That(finderDirectories, Has.Member("relativeSearchPath2"));
     }
 
     [Test]
     public void CreateCombinedFinder_Specifications ()
     {
-      var finder = CreateRootAssemblyFinder ("relativeSearchPath", false);
+      var finder = CreateRootAssemblyFinder("relativeSearchPath", false);
       var finderSpecs = CheckCombinedFinderAndGetSpecifications(finder);
 
-      Assert.That (finderSpecs, Is.EquivalentTo (new[] { 
-          new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences), 
-          new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) }));
+      Assert.That(finderSpecs, Is.EquivalentTo(new[] {
+#if NETFRAMEWORK
+          new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeFollowReferences),
+#endif
+          new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) }));
     }
 
     [Test]
     public void CreateCombinedFinder_SearchService ()
     {
-      var finder = CreateRootAssemblyFinder ("relativeSearchPath", false);
-      var finderService = GetSearchServiceForCombinedFinder (finder);
+      var finder = CreateRootAssemblyFinder("relativeSearchPath", false);
+      var finderService = GetSearchServiceForCombinedFinder(finder);
 
-      Assert.That (finderService, Is.InstanceOf (typeof (FileSystemSearchService)));
+      Assert.That(finderService, Is.InstanceOf(typeof(FileSystemSearchService)));
     }
 
     [Test]
     public void CreateCombinedFinder_ConsiderDynamicDirectory_False ()
     {
-      var finder = CreateRootAssemblyFinder ("relativeSearchPath", false);
-      var finderDirectories = GetDirectoriesForCombinedFinder (finder);
+      var finder = CreateRootAssemblyFinder("relativeSearchPath", false);
+      var finderDirectories = GetDirectoriesForCombinedFinder(finder);
 
-      Assert.That (finderDirectories, Has.No.Member ("dynamicDirectory"));
+      Assert.That(finderDirectories, Has.No.Member("dynamicDirectory"));
     }
 
     [Test]
     public void CreateCombinedFinder_ConsiderDynamicDirectory_True ()
     {
-      var finder = CreateRootAssemblyFinder ("relativeSearchPath", true);
-      var finderDirectories = GetDirectoriesForCombinedFinder (finder);
-      var finderSpecs = CheckCombinedFinderAndGetSpecifications (finder);
-      var finderService = GetSearchServiceForCombinedFinder (finder);
+      var finder = CreateRootAssemblyFinder("relativeSearchPath", true);
+      var finderDirectories = GetDirectoriesForCombinedFinder(finder);
+      var finderSpecs = CheckCombinedFinderAndGetSpecifications(finder);
+      var finderService = GetSearchServiceForCombinedFinder(finder);
 
-      Assert.That (finderDirectories, Has.Member("dynamicDirectory"));
-      Assert.That (finderSpecs, Is.EquivalentTo (new[] { 
-          new FilePatternSpecification ("*.exe", FilePatternSpecificationKind.IncludeFollowReferences), 
-          new FilePatternSpecification ("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) }));
-      Assert.That (finderService, Is.InstanceOf (typeof (FileSystemSearchService)));
+      Assert.That(finderDirectories, Has.Member("dynamicDirectory"));
+      Assert.That(finderSpecs, Is.EquivalentTo(new[] {
+#if NETFRAMEWORK
+          new FilePatternSpecification("*.exe", FilePatternSpecificationKind.IncludeFollowReferences),
+#endif
+          new FilePatternSpecification("*.dll", FilePatternSpecificationKind.IncludeFollowReferences) }));
+      Assert.That(finderService, Is.InstanceOf(typeof(FileSystemSearchService)));
     }
 
     [Test]
     public void FindRootAssemblies_UsesCombinedFinder ()
     {
-      var innerFinderStub = MockRepository.GenerateStub<IRootAssemblyFinder> ();
-      var rootAssembly = new RootAssembly (typeof (object).Assembly, true);
-      innerFinderStub.Stub (stub => stub.FindRootAssemblies ()).Return (new[] { rootAssembly });
-      innerFinderStub.Replay ();
+      var innerFinderStub = new Mock<IRootAssemblyFinder>();
+      var rootAssembly = new RootAssembly(typeof(object).Assembly, true);
+      innerFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(new[] { rootAssembly });
 
-      var finderMock = new MockRepository ().PartialMock<SearchPathRootAssemblyFinder> (
+      var finderMock = new Mock<SearchPathRootAssemblyFinder>(
           "baseDirectory",
           "relativeSearchPath",
           false,
           "dynamicDirectory",
-          _loaderStub);
-      finderMock.Expect (mock => mock.CreateCombinedFinder ()).Return (new CompositeRootAssemblyFinder (new[] { innerFinderStub }));
-      finderMock.Replay ();
+          _loaderStub.Object)
+          { CallBase = true };
+      finderMock.Setup(mock => mock.CreateCombinedFinder()).Returns(new CompositeRootAssemblyFinder(new[] { innerFinderStub.Object })).Verifiable();
 
-      var result = finderMock.FindRootAssemblies ();
-      Assert.That (result, Is.EqualTo (new[] { rootAssembly }));
+      var result = finderMock.Object.FindRootAssemblies();
+      Assert.That(result, Is.EqualTo(new[] { rootAssembly }));
 
-      finderMock.VerifyAllExpectations ();
+      finderMock.Verify();
     }
 
     [Test]
@@ -135,49 +138,49 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
     {
       var considerDynamicDirectory = BooleanObjectMother.GetRandomBoolean();
 
-      var finder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain (considerDynamicDirectory, _loaderStub);
+      var finder = SearchPathRootAssemblyFinder.CreateForCurrentAppDomain(considerDynamicDirectory, _loaderStub.Object);
 
-      Assert.That (finder.BaseDirectory, Is.EqualTo (AppDomain.CurrentDomain.BaseDirectory));
-      Assert.That (finder.RelativeSearchPath, Is.EqualTo (AppDomain.CurrentDomain.RelativeSearchPath));
-      Assert.That (finder.DynamicDirectory, Is.EqualTo (AppDomain.CurrentDomain.DynamicDirectory));
-      Assert.That (finder.AssemblyLoader, Is.SameAs (_loaderStub));
-      Assert.That (finder.ConsiderDynamicDirectory, Is.EqualTo (considerDynamicDirectory));
+      Assert.That(finder.BaseDirectory, Is.EqualTo(AppContext.BaseDirectory));
+      Assert.That(finder.RelativeSearchPath, Is.EqualTo(AppDomain.CurrentDomain.RelativeSearchPath));
+      Assert.That(finder.DynamicDirectory, Is.EqualTo(AppDomain.CurrentDomain.DynamicDirectory));
+      Assert.That(finder.AssemblyLoader, Is.SameAs(_loaderStub.Object));
+      Assert.That(finder.ConsiderDynamicDirectory, Is.EqualTo(considerDynamicDirectory));
     }
 
     private string[] GetDirectoriesForCombinedFinder (SearchPathRootAssemblyFinder finder)
     {
-      var combinedFinder = finder.CreateCombinedFinder ();
-      return combinedFinder.InnerFinders.Cast<FilePatternRootAssemblyFinder> ().Select (f => f.SearchPath).ToArray ();
+      var combinedFinder = finder.CreateCombinedFinder();
+      return combinedFinder.InnerFinders.Cast<FilePatternRootAssemblyFinder>().Select(f => f.SearchPath).ToArray();
     }
 
     private FilePatternSpecification[] CheckCombinedFinderAndGetSpecifications (SearchPathRootAssemblyFinder finder)
     {
-      var innerFinders = finder.CreateCombinedFinder ()
+      var innerFinders = finder.CreateCombinedFinder()
           .InnerFinders
-          .Cast<FilePatternRootAssemblyFinder> ();
+          .Cast<FilePatternRootAssemblyFinder>();
 
       foreach (var innerFinder in innerFinders)
-        Assert.That (innerFinder.AssemblyLoader, Is.SameAs (_loaderStub));
+        Assert.That(innerFinder.AssemblyLoader, Is.SameAs(_loaderStub.Object));
 
       return innerFinders
-          .SelectMany (inner => inner.Specifications)
-          .Distinct ()
-          .ToArray ();
+          .SelectMany(inner => inner.Specifications)
+          .Distinct()
+          .ToArray();
     }
 
     private IFileSearchService GetSearchServiceForCombinedFinder (SearchPathRootAssemblyFinder finder)
     {
-      return finder.CreateCombinedFinder ()
+      return finder.CreateCombinedFinder()
           .InnerFinders
-          .Cast<FilePatternRootAssemblyFinder> ()
-          .Select (inner => inner.FileSearchService)
-          .Distinct ()
+          .Cast<FilePatternRootAssemblyFinder>()
+          .Select(inner => inner.FileSearchService)
+          .Distinct()
           .Single();
     }
 
     private SearchPathRootAssemblyFinder CreateRootAssemblyFinder (string relativeSearchPath, bool considerDynamicDirectory)
     {
-      return new SearchPathRootAssemblyFinder ("baseDirectory", relativeSearchPath, considerDynamicDirectory, "dynamicDirectory", _loaderStub);
+      return new SearchPathRootAssemblyFinder("baseDirectory", relativeSearchPath, considerDynamicDirectory, "dynamicDirectory", _loaderStub.Object);
     }
   }
 }

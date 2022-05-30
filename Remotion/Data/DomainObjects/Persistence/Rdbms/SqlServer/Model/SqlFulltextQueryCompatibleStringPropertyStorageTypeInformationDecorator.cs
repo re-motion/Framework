@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
         IStorageTypeInformation innerStorageTypeInformation,
         int fulltextCompatibleMaxLength)
     {
-      ArgumentUtility.CheckNotNull ("innerStorageTypeInformation", innerStorageTypeInformation);
+      ArgumentUtility.CheckNotNull("innerStorageTypeInformation", innerStorageTypeInformation);
 
       _innerStorageTypeInformation = innerStorageTypeInformation;
       _fulltextCompatibleMaxLength = fulltextCompatibleMaxLength;
@@ -84,15 +84,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       get { return _innerStorageTypeInformation.DotNetType; }
     }
 
-    public IDbDataParameter CreateDataParameter (IDbCommand command, object value)
+    public IDbDataParameter CreateDataParameter (IDbCommand command, object? value)
     {
-      var dbDataParameter = _innerStorageTypeInformation.CreateDataParameter (command, value);
+      var dbDataParameter = _innerStorageTypeInformation.CreateDataParameter(command, value);
 
       var isNullValue = dbDataParameter.Value == null || dbDataParameter.Value == DBNull.Value;
       var isStringAndValueDoesNotExceedCompatibleMaxLength =
-          dbDataParameter.Value is string && ((string) dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
+          dbDataParameter.Value is string && ((string)dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
       var isCharArrayAndValueDoesNotExceedCompatibleMaxLength =
-          dbDataParameter.Value is char[] && ((char[]) dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
+          dbDataParameter.Value is char[] && ((char[])dbDataParameter.Value).Length <= _fulltextCompatibleMaxLength;
 
       if (isNullValue || isStringAndValueDoesNotExceedCompatibleMaxLength || isCharArrayAndValueDoesNotExceedCompatibleMaxLength)
         dbDataParameter.Size = _fulltextCompatibleMaxLength;
@@ -100,37 +100,37 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model
       return dbDataParameter;
     }
 
-    public object Read (IDataReader dataReader, int ordinal)
+    public object? Read (IDataReader dataReader, int ordinal)
     {
-      return _innerStorageTypeInformation.Read (dataReader, ordinal);
+      return _innerStorageTypeInformation.Read(dataReader, ordinal);
     }
 
-    public object ConvertToStorageType (object dotNetValue)
+    public object ConvertToStorageType (object? dotNetValue)
     {
-      return _innerStorageTypeInformation.ConvertToStorageType (dotNetValue);
+      return _innerStorageTypeInformation.ConvertToStorageType(dotNetValue);
     }
 
-    public object ConvertFromStorageType (object storageValue)
+    public object? ConvertFromStorageType (object? storageValue)
     {
-      return _innerStorageTypeInformation.ConvertFromStorageType (storageValue);
+      return _innerStorageTypeInformation.ConvertFromStorageType(storageValue);
     }
 
     public IStorageTypeInformation UnifyForEquivalentProperties (IEnumerable<IStorageTypeInformation> equivalentStorageTypes)
     {
-      ArgumentUtility.CheckNotNull ("equivalentStorageTypes", equivalentStorageTypes);
+      ArgumentUtility.CheckNotNull("equivalentStorageTypes", equivalentStorageTypes);
 
       var unwrappedStorageTypes = equivalentStorageTypes
-          .Select (
-              p => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty (
+          .Select(
+              p => StoragePropertyDefinitionUnificationUtility.CheckAndConvertEquivalentProperty(
                   this,
                   p,
                   "equivalentStorageTypes",
-                  info => Tuple.Create<string, object> ("fulltext compatible max-length", info.FulltextCompatibleMaxLength)
+                  info => Tuple.Create<string, object?>("fulltext compatible max-length", info.FulltextCompatibleMaxLength)
                   ))
-          .Select (p => p._innerStorageTypeInformation);
-      var unifiedInnerStorageType = _innerStorageTypeInformation.UnifyForEquivalentProperties (unwrappedStorageTypes);
+          .Select(p => p._innerStorageTypeInformation);
+      var unifiedInnerStorageType = _innerStorageTypeInformation.UnifyForEquivalentProperties(unwrappedStorageTypes);
 
-      return new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator (unifiedInnerStorageType, _fulltextCompatibleMaxLength);
+      return new SqlFulltextQueryCompatibleStringPropertyStorageTypeInformationDecorator(unifiedInnerStorageType, _fulltextCompatibleMaxLength);
     }
   }
 }

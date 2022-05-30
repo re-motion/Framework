@@ -20,7 +20,7 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
   internal sealed class NullMethodInformation : IMethodInformation
   {
     public string Name
@@ -80,7 +80,7 @@ namespace Remotion.Reflection
 
     public T GetFastInvoker<T> () where T : class
     {
-      return (T) (object) GetFastInvoker (typeof (T));
+      return (T)(object)GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)

@@ -41,7 +41,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IListMenuHost,
           IControlObjectWithRows<TRowControlObject>,
           IFluentControlObjectWithRows<TRowControlObject>,
-          ISupportsValidationErrors
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
       where TRowControlObject : ControlObject
       where TCellControlObject : ControlObject
   {
@@ -61,55 +62,51 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public int GetColumnIndexForItemID (string columnItemID)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
+        ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
 
-        return _bocList.GetColumnByItemID (columnItemID).Index;
+        return _bocList.GetColumnByItemID(columnItemID).Index;
       }
 
       public int GetColumnIndexForTitle (string columnTitle)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
+        ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
 
-        return _bocList.GetColumnByTitle (columnTitle).Index;
+        return _bocList.GetColumnByTitle(columnTitle).Index;
       }
 
       public int GetColumnIndexForTitleContains (string columnTitleContains)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
+        ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
 
-        return _bocList.GetColumnByTitleContains (columnTitleContains).Index;
+        return _bocList.GetColumnByTitleContains(columnTitleContains).Index;
+      }
+
+      public int GetColumnIndexForDomainPropertyPaths (string[] domainPropertyPaths)
+      {
+        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+
+        return _bocList.GetColumnByDomainPropertyPaths(domainPropertyPaths).Index;
       }
 
       public int GetZeroBasedAbsoluteRowIndexOfFirstRow ()
       {
-        return int.Parse (_bocList.GetRow (1).Scope.FindCss ("input[type='checkbox'], input[type='radio']").Id.Split ('_').Last());
+        return int.Parse(_bocList.GetRow(1).Scope.FindCss("input[type='checkbox'], input[type='radio']").Id.Split('_').Last());
       }
     }
 
     private readonly ILog _log;
     private readonly IBocListRowControlObjectHostAccessor _accessor;
     private readonly bool _hasFakeTableHead;
-    private readonly List<BocListColumnDefinition<TRowControlObject, TCellControlObject>> _columns;
 
     protected BocListControlObjectBase ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
-      _log = LogManager.GetLogger (GetType());
-      _accessor = new BocListRowControlObjectHostAccessor (this);
+      _log = LogManager.GetLogger(GetType());
+      _accessor = new BocListRowControlObjectHostAccessor(this);
 
       EnsureBocListHasBeenFullyInitialized();
 
-      _hasFakeTableHead = Scope.FindCss ("div.bocListTableContainer")[DiagnosticMetadataAttributesForObjectBinding.BocListHasFakeTableHead] != null;
-      _columns = RetryUntilTimeout.Run (
-          () => Scope.FindAllCss (_hasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th")
-              .Select (
-                  (s, i) =>
-                      new BocListColumnDefinition<TRowControlObject, TCellControlObject> (
-                          s[DiagnosticMetadataAttributes.ItemID],
-                          i + 1,
-                          s[DiagnosticMetadataAttributes.Content],
-                          ColumnHasDiagnosticMetadata (s)))
-              .ToList());
+      _hasFakeTableHead = Scope.FindCss("div.bocListTableContainer")[DiagnosticMetadataAttributesForObjectBinding.BocListHasFakeTableHead] != null;
     }
 
     /// <summary>
@@ -145,23 +142,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public int GetCurrentPage ()
     {
-      var navigatorDivScope = Scope.FindCss (".bocListNavigator");
+      var navigatorDivScope = Scope.FindCss(".bocListNavigator");
 
       if (!HasNavigator())
         return 1;
 
-      return int.Parse (navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber]);
+      return int.Parse(navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber]);
     }
 
     /// <inheritdoc/>
     public int GetNumberOfPages ()
     {
-      var navigatorDivScope = Scope.FindCss (".bocListNavigator");
+      var navigatorDivScope = Scope.FindCss(".bocListNavigator");
 
       if (!HasNavigator())
         return 1;
 
-      return int.Parse (navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages]);
+      return int.Parse(navigatorDivScope[DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages]);
     }
 
     /// <inheritdoc/>
@@ -171,14 +168,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var currentPageNumber = GetCurrentPage();
       if (currentPageNumber == oneBasedPageNumber)
-        throw new MissingHtmlException (string.Format ("List is already on page '{0}'.", currentPageNumber));
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "List is already on page '{0}'.", currentPageNumber);
 
       if (oneBasedPageNumber < 1 || oneBasedPageNumber > GetNumberOfPages())
-        throw CreateMissingHtmlExceptionForIndexOutOfRange (oneBasedPageNumber);
+        throw CreateWebTestExceptionForIndexOutOfRange(oneBasedPageNumber);
 
-      var currentPageTextInputScope = Scope.FindIdEndingWith ("Boc_CurrentPage_TextBox");
-      new FillWithAction (this, currentPageTextInputScope, Keys.Backspace + oneBasedPageNumber, FinishInput.WithTab).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+      var currentPageTextInputScope = Scope.FindIdEndingWith("Boc_CurrentPage_TextBox");
+      ExecuteAction(
+          new FillWithAction(this, currentPageTextInputScope, oneBasedPageNumber.ToString(), FinishInput.WithTab),
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -187,11 +185,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == 1)
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("first", "first");
+        throw CreateWebTestExceptionForUnableToNavigateToPage("first", "first");
 
-      var firstPageLinkScope = Scope.FindChild ("Navigation_First");
-      new ClickAction (this, firstPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+      var firstPageLinkScope = Scope.FindChild("Navigation_First");
+      ExecuteAction(
+          new ClickAction(this, firstPageLinkScope),
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -200,11 +199,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == 1)
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("previous", "first");
+        throw CreateWebTestExceptionForUnableToNavigateToPage("previous", "first");
 
-      var previousPageLinkScope = Scope.FindChild ("Navigation_Previous");
-      new ClickAction (this, previousPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+      var previousPageLinkScope = Scope.FindChild("Navigation_Previous");
+      ExecuteAction(
+          new ClickAction(this, previousPageLinkScope),
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -213,11 +213,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == GetNumberOfPages())
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("next", "last");
+        throw CreateWebTestExceptionForUnableToNavigateToPage("next", "last");
 
-      var nextPageLinkScope = Scope.FindChild ("Navigation_Next");
-      new ClickAction (this, nextPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+      var nextPageLinkScope = Scope.FindChild("Navigation_Next");
+      ExecuteAction(
+          new ClickAction(this, nextPageLinkScope),
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <inheritdoc/>
@@ -226,11 +227,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       EnsureNavigationPossible();
 
       if (GetCurrentPage() == GetNumberOfPages())
-        throw CreateMissingHtmlExceptionForUnableToNavigateToPage ("last", "last");
+        throw CreateWebTestExceptionForUnableToNavigateToPage("last", "last");
 
-      var lastPageLinkScope = Scope.FindChild ("Navigation_Last");
-      new ClickAction (this, lastPageLinkScope).Execute (
-          Opt.ContinueWhen (((IWebFormsPageObject) Context.PageObject).PostBackCompletionDetectionStrategy));
+      var lastPageLinkScope = Scope.FindChild("Navigation_Last");
+      ExecuteAction(
+          new ClickAction(this, lastPageLinkScope),
+          Opt.ContinueWhen(((IWebFormsPageObject)Context.PageObject).PostBackCompletionDetectionStrategy));
     }
 
     /// <summary>
@@ -239,7 +241,18 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public IReadOnlyList<BocListColumnDefinition<TRowControlObject, TCellControlObject>> GetColumnDefinitions ()
     {
-      return _columns;
+      return RetryUntilTimeout.Run(
+          () => Scope.FindAllCss(_hasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th")
+              .Select(
+                  (s, i) =>
+                      new BocListColumnDefinition<TRowControlObject, TCellControlObject>(
+                          s[DiagnosticMetadataAttributes.ItemID] ?? string.Empty,
+                          i + 1,
+                          s[DiagnosticMetadataAttributes.Content] ?? string.Empty,
+                          s[DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths] == "true",
+                          s[DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths]?.Split('\u001e') ?? Array.Empty<string>(),
+                          ColumnHasContentAttribute(s)))
+              .ToList());
     }
 
     /// <summary>
@@ -249,8 +262,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<TRowControlObject> GetDisplayedRows ()
     {
       var cssSelector = ".bocListTable .bocListTableBody .bocListDataRow";
-      return RetryUntilTimeout.Run (
-          () => Scope.FindAllCss (cssSelector).Select (rowScope => CreateRowControlObject (GetHtmlID(), rowScope, _accessor)).ToList());
+      return RetryUntilTimeout.Run(
+          () => Scope.FindAllCss(cssSelector).Select(rowScope => CreateRowControlObject(GetHtmlID(), rowScope, _accessor)).ToList());
     }
 
     /// <summary>
@@ -283,7 +296,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns></returns>
     public string GetEmptyMessage ()
     {
-      return Scope.FindCss (".bocListTable .bocListTableBody").Text.Trim();
+      return Scope.FindCss(".bocListTable .bocListTableBody").Text.Trim();
     }
 
     /// <summary>
@@ -291,7 +304,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public int GetNumberOfRows ()
     {
-      return RetryUntilTimeout.Run (() => Scope.FindAllCss (".bocListTable .bocListTableBody > tr.bocListDataRow").Count());
+      return RetryUntilTimeout.Run(() => Scope.FindAllCss(".bocListTable .bocListTableBody > tr.bocListDataRow").Count());
     }
 
     /// <summary>
@@ -300,7 +313,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void SelectAll ()
     {
       var scope = GetSelectAllCheckboxScope();
-      new CheckAction (this, scope).Execute (Opt.ContinueImmediately());
+      ExecuteAction(new CheckAction(this, scope), Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -309,13 +322,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public void DeselectAll ()
     {
       var scope = GetSelectAllCheckboxScope();
-      new UncheckAction (this, scope).Execute (Opt.ContinueImmediately());
+      ExecuteAction(new UncheckAction(this, scope), Opt.ContinueImmediately());
     }
 
     private ElementScope GetSelectAllCheckboxScope ()
     {
       var selectAllCheckboxID = GetHtmlID() + "_AllRowsSelector";
-      return Scope.FindCss (string.Format ("input[name='{0}']", selectAllCheckboxID));
+      return Scope.FindCss(string.Format("input[name='{0}']", selectAllCheckboxID));
     }
 
     /// <inheritdoc/>
@@ -327,55 +340,55 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public TRowControlObject GetRow (string itemID)
     {
-      return GetRow().WithItemID (itemID);
+      return GetRow().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public TRowControlObject GetRow (int oneBasedIndex)
     {
-      return GetRow().WithIndex (oneBasedIndex);
+      return GetRow().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
     TRowControlObject IFluentControlObjectWithRows<TRowControlObject>.WithItemID (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      var cssSelector = string.Format (
+      var cssSelector = string.Format(
           ".bocListTable .bocListTableBody .bocListDataRow[{0}={1}]",
           DiagnosticMetadataAttributes.ItemID,
-          DomSelectorUtility.CreateMatchValueForCssSelector (itemID));
-      return GetRowByCssSelector (cssSelector);
+          DomSelectorUtility.CreateMatchValueForCssSelector(itemID));
+      return GetRowByCssSelector(cssSelector);
     }
 
     /// <inheritdoc/>
     TRowControlObject IFluentControlObjectWithRows<TRowControlObject>.WithIndex (int oneBasedIndex)
     {
-      var cssSelector = string.Format (
+      var cssSelector = string.Format(
           ".bocListTable .bocListTableBody .bocListDataRow[{0}='{1}']",
           DiagnosticMetadataAttributesForObjectBinding.BocListRowIndex,
           oneBasedIndex);
-      return GetRowByCssSelector (cssSelector);
+      return GetRowByCssSelector(cssSelector);
     }
 
     private TRowControlObject GetRowByCssSelector (string cssSelector)
     {
-      var rowScope = Scope.FindCss (cssSelector);
-      return CreateRowControlObject (GetHtmlID(), rowScope, _accessor);
+      var rowScope = Scope.FindCss(cssSelector);
+      return CreateRowControlObject(GetHtmlID(), rowScope, _accessor);
     }
 
     /// <inheritdoc/>
     public DropDownMenuControlObject GetDropDownMenu ()
     {
-      var dropDownMenuScope = Scope.FindChild ("Boc_OptionsMenu");
-      return new DropDownMenuControlObject (Context.CloneForControl (dropDownMenuScope));
+      var dropDownMenuScope = Scope.FindChild("Boc_OptionsMenu");
+      return new DropDownMenuControlObject(Context.CloneForControl(dropDownMenuScope));
     }
 
     /// <inheritdoc/>
     public ListMenuControlObject GetListMenu ()
     {
-      var listMenuScope = Scope.FindChild ("Boc_ListMenu");
-      return new ListMenuControlObject (Context.CloneForControl (listMenuScope));
+      var listMenuScope = Scope.FindChild("Boc_ListMenu");
+      return new ListMenuControlObject(Context.CloneForControl(listMenuScope));
     }
 
     /// <summary>
@@ -383,9 +396,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByItemID ([NotNull] string columnItemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnItemID", columnItemID);
+      ArgumentUtility.CheckNotNullOrEmpty("columnItemID", columnItemID);
 
-      return _columns.Single (cd => cd.ItemID == columnItemID);
+      return GetColumnDefinitions().Single(cd => cd.ItemID == columnItemID);
     }
 
     /// <summary>
@@ -393,7 +406,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByIndex (int oneBasedIndex)
     {
-      return _columns.Single (cd => cd.Index == oneBasedIndex);
+      return GetColumnDefinitions().Single(cd => cd.Index == oneBasedIndex);
     }
 
     /// <summary>
@@ -401,9 +414,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByTitle ([NotNull] string columnTitle)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnTitle", columnTitle);
+      ArgumentUtility.CheckNotNullOrEmpty("columnTitle", columnTitle);
 
-      return _columns.Single (cd => cd.Title == columnTitle);
+      return GetColumnDefinitions().Single(cd => cd.Title == columnTitle);
     }
 
     /// <summary>
@@ -411,14 +424,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByTitleContains ([NotNull] string columnTitleContains)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnTitleContains", columnTitleContains);
+      ArgumentUtility.CheckNotNullOrEmpty("columnTitleContains", columnTitleContains);
 
-      return _columns.Where (cd => cd.Title != null).Single (cd => cd.Title.Contains (columnTitleContains));
+      return GetColumnDefinitions().Where(cd => cd.Title != null).Single(cd => cd.Title.Contains(columnTitleContains));
+    }
+
+    protected BocListColumnDefinition<TRowControlObject, TCellControlObject> GetColumnByDomainPropertyPaths ([NotNull] string[] domainPropertyPaths)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("domainPropertyPaths", domainPropertyPaths);
+
+      return GetColumnDefinitions()
+          .Where(column => column.HasDomainPropertyPaths)
+          .Single(column => column.DomainPropertyPaths.SequenceEqual(domainPropertyPaths));
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (Scope.FindCss (".bocListTableBlock > .bocListTableContainer"));
+      return GetValidationErrors(Scope.FindCss(".bocListTableBlock > .bocListTableContainer"));
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly(Scope.FindCss(".bocListTableBlock > .bocListTableContainer"));
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -426,48 +453,47 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       return Scope;
     }
 
-    private bool ColumnHasDiagnosticMetadata (ElementScope scope)
+    private bool ColumnHasContentAttribute (ElementScope scope)
     {
-      if (scope[DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasDiagnosticMetadata] == null)
+      if (scope[DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute] == null)
         return false;
 
-      return bool.Parse (scope[DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasDiagnosticMetadata]);
+      return bool.Parse(scope[DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute]);
     }
 
     private void EnsureBocListHasBeenFullyInitialized ()
     {
-      var bocListIsInitialized = RetryUntilTimeout.Run (() => Scope[DiagnosticMetadataAttributesForObjectBinding.BocListIsInitialized] == "true");
+      var bocListIsInitialized = RetryUntilTimeout.Run(() => Scope[DiagnosticMetadataAttributesForObjectBinding.BocListIsInitialized] == "true");
       if (!bocListIsInitialized)
-        _log.WarnFormat ("Client side initialization of BocList '{0}' never finished.", GetHtmlID());
+        _log.WarnFormat("Client side initialization of BocList '{0}' never finished.", GetHtmlID());
     }
 
     private void EnsureNavigationPossible ()
     {
       if (IsEditModeActive())
-        throw new MissingHtmlException ("Unable to change current page of the list. List is currently in edit mode.");
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List is currently in edit mode.");
 
       if (!HasNavigator())
-        throw new MissingHtmlException ("Unable to change current page of the list. List only has one page.");
+        throw AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change current page of the list. List only has one page.");
     }
 
-    private Exception CreateMissingHtmlExceptionForUnableToNavigateToPage (string pageWhichCantBeNavigatedTo, string currentPageAsString)
+    private WebTestException CreateWebTestExceptionForUnableToNavigateToPage (string pageWhichCantBeNavigatedTo, string currentPageAsString)
     {
-      return new MissingHtmlException (string.Format ("Unable to change page number to the {0} page, as the list is already on the {1} page.", pageWhichCantBeNavigatedTo, currentPageAsString));
+      return AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the {0} page, as the list is already on the {1} page.", pageWhichCantBeNavigatedTo, currentPageAsString);
     }
 
-    private Exception CreateMissingHtmlExceptionForIndexOutOfRange (int pageNumberToBeNavigated)
+    private WebTestException CreateWebTestExceptionForIndexOutOfRange (int pageNumberToBeNavigated)
     {
       if (GetNumberOfPages() == 1)
       {
-        return new MissingHtmlException (
-            string.Format ("Unable to navigate to page number '{0}'. The list only has one page.", pageNumberToBeNavigated));
+        return AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to navigate to page number '{0}'. The list only has one page.", pageNumberToBeNavigated);
       }
 
-      return new MissingHtmlException (
-              string.Format (
-                  "Unable to change page number to '{0}'. Page number must be between '1' and '{1}'.",
-                  pageNumberToBeNavigated,
-                  GetNumberOfPages()));
+      return AssertionExceptionUtility.CreateExpectationException(
+          Driver,
+          "Unable to change page number to '{0}'. Page number must be between '1' and '{1}'.",
+          pageNumberToBeNavigated,
+          GetNumberOfPages());
     }
   }
 }

@@ -15,10 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -32,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     private SimpleStoragePropertyDefinition _property1;
     private SimpleStoragePropertyDefinition _property2;
     private SimpleStoragePropertyDefinition _property3;
-    
+
     private TableDefinition _baseEntityDefinition;
     private FilterViewDefinition _filterViewDefinition;
     private IIndexDefinition[] _indexes;
@@ -41,22 +42,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [SetUp]
     public void SetUp ()
     {
-      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition ("SPID");
+      _storageProviderDefinition = new UnitTestStorageProviderStubDefinition("SPID");
 
       _timestampProperty = SimpleStoragePropertyDefinitionObjectMother.TimestampProperty;
       _objectIDProperty = ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty;
-      _property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column1");
-      _property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column2");
-      _property3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty ("Column3");
+      _property1 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column1");
+      _property2 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column2");
+      _property3 = SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Column3");
 
-      _synonyms = new[] { new EntityNameDefinition (null, "Test") };
+      _synonyms = new[] { new EntityNameDefinition(null, "Test") };
 
-      _baseEntityDefinition = TableDefinitionObjectMother.Create (_storageProviderDefinition);
+      _baseEntityDefinition = TableDefinitionObjectMother.Create(_storageProviderDefinition);
 
-      _indexes = new[] { MockRepository.GenerateStub<IIndexDefinition>() };
-      _filterViewDefinition = new FilterViewDefinition (
+      _indexes = new[] { new Mock<IIndexDefinition>().Object };
+      _filterViewDefinition = new FilterViewDefinition(
           _storageProviderDefinition,
-          new EntityNameDefinition ("Schema", "Test"),
+          new EntityNameDefinition("Schema", "Test"),
           _baseEntityDefinition,
           new[] { "ClassId1", "ClassId2" },
           _objectIDProperty,
@@ -69,25 +70,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [Test]
     public void Initialization ()
     {
-      Assert.That (_filterViewDefinition.StorageProviderDefinition, Is.SameAs (_storageProviderDefinition));
-      Assert.That (_filterViewDefinition.ViewName, Is.EqualTo (new EntityNameDefinition ("Schema", "Test")));
-      Assert.That (_filterViewDefinition.ClassIDs, Is.EqualTo (new[] { "ClassId1", "ClassId2" }));
-      Assert.That (_filterViewDefinition.BaseEntity, Is.SameAs (_baseEntityDefinition));
+      Assert.That(_filterViewDefinition.StorageProviderDefinition, Is.SameAs(_storageProviderDefinition));
+      Assert.That(_filterViewDefinition.ViewName, Is.EqualTo(new EntityNameDefinition("Schema", "Test")));
+      Assert.That(_filterViewDefinition.ClassIDs, Is.EqualTo(new[] { "ClassId1", "ClassId2" }));
+      Assert.That(_filterViewDefinition.BaseEntity, Is.SameAs(_baseEntityDefinition));
 
-      Assert.That (_filterViewDefinition.ObjectIDProperty, Is.SameAs (_objectIDProperty));
-      Assert.That (_filterViewDefinition.TimestampProperty, Is.SameAs (_timestampProperty));
-      Assert.That (_filterViewDefinition.DataProperties, Is.EqualTo (new[] { _property1, _property2, _property3 }));
+      Assert.That(_filterViewDefinition.ObjectIDProperty, Is.SameAs(_objectIDProperty));
+      Assert.That(_filterViewDefinition.TimestampProperty, Is.SameAs(_timestampProperty));
+      Assert.That(_filterViewDefinition.DataProperties, Is.EqualTo(new[] { _property1, _property2, _property3 }));
 
-      Assert.That (_filterViewDefinition.Indexes, Is.EqualTo (_indexes));
-      Assert.That (_filterViewDefinition.Synonyms, Is.EqualTo (_synonyms));
+      Assert.That(_filterViewDefinition.Indexes, Is.EqualTo(_indexes));
+      Assert.That(_filterViewDefinition.Synonyms, Is.EqualTo(_synonyms));
     }
 
     [Test]
     public void Initialization_WithBaseFilterViewEntity ()
     {
-      new FilterViewDefinition (
+      new FilterViewDefinition(
           _storageProviderDefinition,
-          new EntityNameDefinition (null, "Test"),
+          new EntityNameDefinition(null, "Test"),
           _filterViewDefinition,
           new[] { "x" },
           _objectIDProperty,
@@ -98,28 +99,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "The base entity must either be a TableDefinition or a FilterViewDefinition.\r\nParameter name: baseEntity")]
     public void Initialization_WithInvalidBaseEntity ()
     {
-      var unionViewDefinition = UnionViewDefinitionObjectMother.Create (_storageProviderDefinition);
-
-      new FilterViewDefinition (
+      var unionViewDefinition = UnionViewDefinitionObjectMother.Create(_storageProviderDefinition);
+      Assert.That(
+          () => new FilterViewDefinition(
           _storageProviderDefinition,
-          new EntityNameDefinition (null, "Test"),
+          new EntityNameDefinition(null, "Test"),
           unionViewDefinition,
           new[] { "x" },
           _objectIDProperty,
           _timestampProperty,
           new SimpleStoragePropertyDefinition[0],
           new IIndexDefinition[0],
-          new EntityNameDefinition[0]);
+          new EntityNameDefinition[0]),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo("The base entity must either be a TableDefinition or a FilterViewDefinition.", "baseEntity"));
     }
 
     [Test]
     public void Initialization_ViewNameNull ()
     {
-      var filterViewDefinition = new FilterViewDefinition (
+      var filterViewDefinition = new FilterViewDefinition(
           _storageProviderDefinition,
           null,
           _baseEntityDefinition,
@@ -129,7 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
           new SimpleStoragePropertyDefinition[0],
           new IIndexDefinition[0],
           new EntityNameDefinition[0]);
-      Assert.That (filterViewDefinition.ViewName, Is.Null);
+      Assert.That(filterViewDefinition.ViewName, Is.Null);
     }
 
     [Test]
@@ -137,15 +138,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       var table = _filterViewDefinition.GetBaseTable();
 
-      Assert.That (table, Is.SameAs (_baseEntityDefinition));
+      Assert.That(table, Is.SameAs(_baseEntityDefinition));
     }
 
     [Test]
     public void GetBaseTable_IndirectTable ()
     {
-      var derivedFilterViewDefinition = new FilterViewDefinition (
+      var derivedFilterViewDefinition = new FilterViewDefinition(
           _storageProviderDefinition,
-          new EntityNameDefinition (null, "Test"),
+          new EntityNameDefinition(null, "Test"),
           _filterViewDefinition,
           new[] { "x" },
           _objectIDProperty,
@@ -156,20 +157,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
       var table = derivedFilterViewDefinition.GetBaseTable();
 
-      Assert.That (table, Is.SameAs (_baseEntityDefinition));
+      Assert.That(table, Is.SameAs(_baseEntityDefinition));
     }
 
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<IRdbmsStorageEntityDefinitionVisitor>();
+      var visitorMock = new Mock<IRdbmsStorageEntityDefinitionVisitor>(MockBehavior.Strict);
 
-      visitorMock.Expect (mock => mock.VisitFilterViewDefinition (_filterViewDefinition));
-      visitorMock.Replay();
+      visitorMock.Setup(mock => mock.VisitFilterViewDefinition(_filterViewDefinition)).Verifiable();
 
-      _filterViewDefinition.Accept (visitorMock);
+      _filterViewDefinition.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
   }
 }

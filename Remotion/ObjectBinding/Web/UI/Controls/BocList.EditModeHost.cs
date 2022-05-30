@@ -15,11 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -35,12 +36,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         _bocList = bocList;
       }
 
-      public IList Value
+      public IReadOnlyList<IBusinessObject>? Value
       {
         get { return _bocList.Value; }
       }
 
-      public string ID
+      public string? ID
       {
         get { return _bocList.ID; }
       }
@@ -56,6 +57,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         set { _bocList.IsDirty = value; }
       }
 
+
+      public bool? EnableOptionalValidators
+      {
+        get { return _bocList.EnableOptionalValidators; }
+      }
+
       public EditableRowDataSourceFactory EditModeDataSourceFactory
       {
         get { return _bocList.EditModeDataSourceFactory; }
@@ -66,7 +73,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         get { return _bocList.EditModeControlFactory; }
       }
 
-      public string ErrorMessage
+      public PlainTextString ErrorMessage
       {
         get { return _bocList.ErrorMessage; }
       }
@@ -111,24 +118,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         return _bocList.GetValidationErrorMarker();
       }
 
-      public EditModeValidator GetEditModeValidator ()
+      public EditModeValidator? GetEditModeValidator ()
       {
         return _bocList.GetEditModeValidator();
       }
 
       public BocListRow[] AddRows (IBusinessObject[] businessObjects)
       {
-        return _bocList.AddRowsImplementation (businessObjects);
+        return _bocList.AddRowsImplementation(businessObjects);
       }
 
       public BocListRow[] RemoveRows (IBusinessObject[] businessObjects)
       {
-        return _bocList.RemoveRowsImplementation (businessObjects);
+        return _bocList.RemoveRowsImplementation(businessObjects);
       }
 
       public void EndRowEditModeCleanUp (int modifiedRowIndex)
       {
-        _bocList.EndRowEditModeCleanUp (modifiedRowIndex);
+        _bocList.EndRowEditModeCleanUp(modifiedRowIndex);
       }
 
       public void EndListEditModeCleanUp ()
@@ -147,12 +154,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           IBusinessObjectDataSource dataSource,
           IBusinessObjectBoundEditableWebControl[] controls)
       {
-        _bocList.OnEditableRowChangesSaving (index, businessObject, dataSource, controls);
+        _bocList.OnEditableRowChangesSaving(index, businessObject, dataSource, controls);
       }
 
       public void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
       {
-        _bocList.OnEditableRowChangesSaved (index, businessObject);
+        _bocList.OnEditableRowChangesSaved(index, businessObject);
       }
 
       public void OnEditableRowChangesCanceling (
@@ -161,17 +168,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           IBusinessObjectDataSource dataSource,
           IBusinessObjectBoundEditableWebControl[] controls)
       {
-        _bocList.OnEditableRowChangesCanceling (index, businessObject, dataSource, controls);
+        _bocList.OnEditableRowChangesCanceling(index, businessObject, dataSource, controls);
       }
 
       public void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
       {
-        _bocList.OnEditableRowChangesCanceled (index, businessObject);
+        _bocList.OnEditableRowChangesCanceled(index, businessObject);
       }
 
       public void SetFocus (IFocusableControl control)
       {
-        _bocList.SetFocusImplementation (control);
+        _bocList.SetFocusImplementation(control);
       }
     }
   }

@@ -16,12 +16,14 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes;
 using Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
@@ -35,7 +37,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       UserLabelText,
     }
 
-    private BocAutoCompleteReferenceValue _owningGroupField;
+    /// <remarks>Initialized during <see cref="OnInit"/>.</remarks>
+    private BocAutoCompleteReferenceValue _owningGroupField = default!;
 
     public override IBusinessObjectDataSourceControl DataSource
     {
@@ -44,10 +47,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected new EditUserFormFunction CurrentFunction
     {
-      get { return (EditUserFormFunction) base.CurrentFunction; }
+      get { return (EditUserFormFunction)base.CurrentFunction; }
     }
 
-    protected override FormGridManager GetFormGridManager()
+    protected override FormGridManager GetFormGridManager ()
     {
       return FormGridManager;
     }
@@ -57,33 +60,34 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
       get { return UserNameField; }
     }
 
+    [MemberNotNull(nameof(_owningGroupField))]
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
-      _owningGroupField = GetControl<BocAutoCompleteReferenceValue> ("OwningGroupField", "OwningGroup");
+      _owningGroupField = GetControl<BocAutoCompleteReferenceValue>("OwningGroupField", "OwningGroup");
 
-      if (string.IsNullOrEmpty (_owningGroupField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (_owningGroupField);
+      if (string.IsNullOrEmpty(_owningGroupField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(_owningGroupField);
 
       var bocListInlineEditingConfigurator = ServiceLocator.GetInstance<BocListInlineEditingConfigurator>();
 
       SubstitutedByList.EditModeControlFactory = ServiceLocator.GetInstance<UserSubstitedByListEditableRowControlFactory>();
-      bocListInlineEditingConfigurator.Configure (SubstitutedByList, Substitution.NewObject);
+      bocListInlineEditingConfigurator.Configure(SubstitutedByList, Substitution.NewObject);
 
       RolesList.EditModeControlFactory = ServiceLocator.GetInstance<UserRolesListEditableRowControlFactory>();
-      bocListInlineEditingConfigurator.Configure (RolesList, Role.NewObject);
+      bocListInlineEditingConfigurator.Configure(RolesList, Role.NewObject);
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
-        RolesList.SetSortingOrder (
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) RolesList.FixedColumns.Find ("Group"), SortingDirection.Ascending),
-            new BocListSortingOrderEntry ((IBocSortableColumnDefinition) RolesList.FixedColumns.Find ("Position"), SortingDirection.Ascending));
+        RolesList.SetSortingOrder(
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.FindMandatory("Group"), SortingDirection.Ascending),
+            new BocListSortingOrderEntry((IBocSortableColumnDefinition)RolesList.FixedColumns.FindMandatory("Position"), SortingDirection.Ascending));
       }
 
       if (RolesList.IsReadOnly)
@@ -92,11 +96,11 @@ namespace Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure
 
     protected override void OnPreRender (EventArgs e)
     {
-      UserLabel.Text = GetResourceManager (typeof (ResourceIdentifier)).GetString (ResourceIdentifier.UserLabelText);
+      UserLabel.Text = GetResourceManager(typeof(ResourceIdentifier)).GetText(ResourceIdentifier.UserLabelText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
-      _owningGroupField.Args = CurrentFunction.TenantHandle.AsArgument();
+      _owningGroupField.ControlServiceArguments = CurrentFunction.TenantHandle.AsArgument();
     }
   }
 }

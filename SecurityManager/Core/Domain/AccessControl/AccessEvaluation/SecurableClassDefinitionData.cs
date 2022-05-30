@@ -26,30 +26,30 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 {
   public class SecurableClassDefinitionData
   {
-    private readonly string _baseClass;
-    private readonly IDomainObjectHandle<StatelessAccessControlList> _statelessAccessControlList;
+    private readonly string? _baseClass;
+    private readonly IDomainObjectHandle<StatelessAccessControlList>? _statelessAccessControlList;
     private readonly IReadOnlyCollection<StatefulAccessControlListData> _statefulAccessControlLists;
 
     public SecurableClassDefinitionData (
-        [CanBeNull] string baseClass,
-        [CanBeNull] IDomainObjectHandle<StatelessAccessControlList> statelessAccessControlList,
+        [CanBeNull] string? baseClass,
+        [CanBeNull] IDomainObjectHandle<StatelessAccessControlList>? statelessAccessControlList,
         IEnumerable<StatefulAccessControlListData> statefulAccessControlLists)
     {
-      ArgumentUtility.CheckNotNull ("statefulAccessControlLists", statefulAccessControlLists);
+      ArgumentUtility.CheckNotNull("statefulAccessControlLists", statefulAccessControlLists);
 
       _baseClass = baseClass;
       _statelessAccessControlList = statelessAccessControlList;
-      _statefulAccessControlLists = Array.AsReadOnly (statefulAccessControlLists.ToArray());
+      _statefulAccessControlLists = Array.AsReadOnly(statefulAccessControlLists.ToArray());
     }
 
     [CanBeNull]
-    public string BaseClass
+    public string? BaseClass
     {
       get { return _baseClass; }
     }
 
     [CanBeNull]
-    public IDomainObjectHandle<StatelessAccessControlList> StatelessAccessControlList
+    public IDomainObjectHandle<StatelessAccessControlList>? StatelessAccessControlList
     {
       get { return _statelessAccessControlList; }
     }

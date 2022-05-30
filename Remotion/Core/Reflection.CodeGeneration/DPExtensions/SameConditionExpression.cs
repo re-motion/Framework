@@ -26,7 +26,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     private Expression _left;
     private Expression _right;
 
-    public SameConditionExpression(Expression left, Expression right)
+    public SameConditionExpression (Expression left, Expression right)
     {
       _left = left;
       _right = right;
@@ -44,8 +44,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      _left.Emit (member, gen);
-      _right.Emit (member, gen);
+      _left.Emit(member, gen);
+      _right.Emit(member, gen);
     }
   }
 }

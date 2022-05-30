@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -27,7 +28,7 @@ namespace Remotion.Globalization.Implementation
   /// Retrieves the human-readable localized representation of enumeration objects.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton, 
+  [ImplementationFor(typeof(IEnumerationGlobalizationService), Lifetime = LifetimeKind.Singleton,
       Position = Position, RegistrationType = RegistrationType.Multiple)]
   public sealed class ResourceManagerBasedEnumerationGlobalizationService : IEnumerationGlobalizationService
   {
@@ -40,26 +41,26 @@ namespace Remotion.Globalization.Implementation
         IGlobalizationService globalizationService,
         IMemberInformationNameResolver memberInformationNameResolver)
     {
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      ArgumentUtility.CheckNotNull ("memberInformationNameResolver", memberInformationNameResolver);
-      
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+      ArgumentUtility.CheckNotNull("memberInformationNameResolver", memberInformationNameResolver);
+
       _globalizationService = globalizationService;
       _memberInformationNameResolver = memberInformationNameResolver;
     }
 
-    public bool TryGetEnumerationValueDisplayName (Enum value, out string result)
+    public bool TryGetEnumerationValueDisplayName (Enum value, [MaybeNullWhen(false)] out string result)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      var resourceManager = _globalizationService.GetResourceManager (value.GetType());
-      return resourceManager.TryGetString (_memberInformationNameResolver.GetEnumName (value), out result);
+      var resourceManager = _globalizationService.GetResourceManager(value.GetType());
+      return resourceManager.TryGetString(_memberInformationNameResolver.GetEnumName(value), out result);
     }
 
     public IReadOnlyDictionary<CultureInfo, string> GetAvailableEnumDisplayNames (Enum value)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      var resourceManager = _globalizationService.GetResourceManager (value.GetType());
-      return resourceManager.GetAvailableStrings (_memberInformationNameResolver.GetEnumName (value));
+      ArgumentUtility.CheckNotNull("value", value);
+      var resourceManager = _globalizationService.GetResourceManager(value.GetType());
+      return resourceManager.GetAvailableStrings(_memberInformationNameResolver.GetEnumName(value));
     }
   }
 }

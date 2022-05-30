@@ -28,33 +28,33 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void BindableDomainObjectsHaveIdentity ()
     {
-      SampleBindableMixinDomainObject domainObject = SampleBindableMixinDomainObject.NewObject ();
-      Assert.That (domainObject is IBusinessObjectWithIdentity, Is.True);
+      SampleBindableMixinDomainObject domainObject = SampleBindableMixinDomainObject.NewObject();
+      Assert.That(domainObject is IBusinessObjectWithIdentity, Is.True);
     }
 
     [Test]
     public void BindableDomainObjectClassesHaveIdentity ()
     {
-      SampleBindableMixinDomainObject domainObject = SampleBindableMixinDomainObject.NewObject ();
-      Assert.That (((IBusinessObjectWithIdentity)domainObject).BusinessObjectClass is IBusinessObjectClassWithIdentity, Is.True);
+      SampleBindableMixinDomainObject domainObject = SampleBindableMixinDomainObject.NewObject();
+      Assert.That(((IBusinessObjectWithIdentity)domainObject).BusinessObjectClass is IBusinessObjectClassWithIdentity, Is.True);
     }
-    
+
     [Test]
     public void UniqueIdentifier ()
     {
-      SampleBindableMixinDomainObject domainObject = SampleBindableMixinDomainObject.NewObject ();
-      Assert.That (((IBusinessObjectWithIdentity) domainObject).UniqueIdentifier, Is.EqualTo (domainObject.ID.ToString ()));
+      SampleBindableMixinDomainObject domainObject = SampleBindableMixinDomainObject.NewObject();
+      Assert.That(((IBusinessObjectWithIdentity)domainObject).UniqueIdentifier, Is.EqualTo(domainObject.ID.ToString()));
     }
 
     [Test]
     public void GetFromUniqueIdentifier ()
     {
-      BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService (typeof (IGetObjectService), new BindableDomainObjectGetObjectService());
-      SampleBindableMixinDomainObject original = SampleBindableMixinDomainObject.NewObject ();
-      
-      var provider = BindableObjectProvider.GetProviderForBindableObjectType (typeof (SampleBindableMixinDomainObject));
-      var boClass = (BindableObjectClassWithIdentity) provider.GetBindableObjectClass (typeof (SampleBindableMixinDomainObject));
-      Assert.That (boClass.GetObject (original.ID.ToString ()), Is.SameAs (original));
+      BusinessObjectProvider.GetProvider<BindableDomainObjectProviderAttribute>().AddService(typeof(IGetObjectService), new BindableDomainObjectGetObjectService());
+      SampleBindableMixinDomainObject original = SampleBindableMixinDomainObject.NewObject();
+
+      var provider = BindableObjectProvider.GetProviderForBindableObjectType(typeof(SampleBindableMixinDomainObject));
+      var boClass = (BindableObjectClassWithIdentity)provider.GetBindableObjectClass(typeof(SampleBindableMixinDomainObject));
+      Assert.That(boClass.GetObject(original.ID.ToString()), Is.SameAs(original));
     }
   }
 }

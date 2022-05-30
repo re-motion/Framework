@@ -22,7 +22,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   {
     private bool _isNullable = true;
 
-    protected NullablePropertyAttribute()
+    protected NullablePropertyAttribute ()
     {
     }
 

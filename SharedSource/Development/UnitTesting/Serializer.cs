@@ -19,6 +19,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting
 {
@@ -26,25 +27,27 @@ namespace Remotion.Development.UnitTesting
   /// Provides quick serialization and deserialization functionality for unit tests.
   /// </summary>
   /// <remarks>The methods of this class use a <see cref="BinaryFormatter"/> for serialization.</remarks>
-  public static partial class Serializer
+  static partial class Serializer
   {
-    public static T SerializeAndDeserialize<T> (T t)
+    public static T SerializeAndDeserialize<T> (T t) where T : notnull
     {
       if (t == null)
-        throw new ArgumentNullException ("t");
+        throw new ArgumentNullException("t");
 
-      return (T) Serializer.Deserialize (Serializer.Serialize ((object) t));
+      return (T)Serializer.Deserialize(Serializer.Serialize((object)t));
     }
 
-    public static byte[] Serialize (object o)
+    public static byte[] Serialize (object? o)
     {
       if (o == null)
-        throw new ArgumentNullException ("o");
+        throw new ArgumentNullException("o");
 
-      using (MemoryStream stream = new MemoryStream ())
+      using (MemoryStream stream = new MemoryStream())
       {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        formatter.Serialize (stream, o);
+        BinaryFormatter formatter = new BinaryFormatter();
+#pragma warning disable SYSLIB0011
+        formatter.Serialize(stream, o);
+#pragma warning restore SYSLIB0011
         return stream.ToArray();
       }
     }
@@ -52,12 +55,14 @@ namespace Remotion.Development.UnitTesting
     public static object Deserialize (byte[] bytes)
     {
       if (bytes == null)
-        throw new ArgumentNullException ("bytes");
+        throw new ArgumentNullException("bytes");
 
-      using (MemoryStream stream = new MemoryStream (bytes))
+      using (MemoryStream stream = new MemoryStream(bytes))
       {
-        BinaryFormatter formatter = new BinaryFormatter ();
-        return formatter.Deserialize (stream);
+        BinaryFormatter formatter = new BinaryFormatter();
+#pragma warning disable SYSLIB0011
+        return formatter.Deserialize(stream);
+#pragma warning restore SYSLIB0011
       }
     }
   }

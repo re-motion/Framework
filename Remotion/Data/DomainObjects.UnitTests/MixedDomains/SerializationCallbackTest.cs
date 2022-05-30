@@ -19,7 +19,8 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Mixins.UnitTesting;
-using Remotion.Development.UnitTesting;
+using Remotion.Development.Moq.UnitTesting;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Mixins;
 using Remotion.TypePipe;
 
@@ -28,56 +29,75 @@ namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains
   [TestFixture]
   public class SerializationCallbackTest : ClientTransactionBaseTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp();
+
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+    }
+
     [Test]
     public void SerializationEvents_OnTarget ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
-          LifetimeService.NewObject (TestableClientTransaction, typeof (ClassWithSerializationCallbacks), ParamList.Empty);
+      var instance = (ClassWithSerializationCallbacks)LifetimeService.NewObject(
+          TestableClientTransaction,
+          typeof(ClassWithSerializationCallbacks),
+          ParamList.Empty);
 
-      Assert.That (((object) instance).GetType(), Is.Not.SameAs (typeof (ClassWithSerializationCallbacks)));
-      Assert.That (instance is IMixinTarget, Is.True);
+      Assert.That(((object)instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
+      Assert.That(instance is IMixinTarget, Is.True);
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter(), instance, ClassWithSerializationCallbacks.SetReceiver)
-          .Test_SerializationCallbacks();
+      var serializationCallbackTester =
+          new SerializationCallbackTester<ClassWithSerializationCallbacks>(instance, ClassWithSerializationCallbacks.SetReceiver);
+      serializationCallbackTester.Test_SerializationCallbacks();
     }
 
     [Test]
     public void DeserializationEvents_OnTarget ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
-          LifetimeService.NewObject (TestableClientTransaction, typeof (ClassWithSerializationCallbacks), ParamList.Empty);
+      var instance = (ClassWithSerializationCallbacks)LifetimeService.NewObject(
+          TestableClientTransaction,
+          typeof(ClassWithSerializationCallbacks),
+          ParamList.Empty);
 
-      Assert.That (((object) instance).GetType(), Is.Not.SameAs (typeof (ClassWithSerializationCallbacks)));
-      Assert.That (instance is IMixinTarget, Is.True);
+      Assert.That(((object)instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
+      Assert.That(instance is IMixinTarget, Is.True);
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, ClassWithSerializationCallbacks.SetReceiver)
-          .Test_DeserializationCallbacks();
+      var serializationCallbackTester =
+          new SerializationCallbackTester<ClassWithSerializationCallbacks>(instance, ClassWithSerializationCallbacks.SetReceiver);
+      serializationCallbackTester.Test_DeserializationCallbacks();
     }
 
     [Test]
     public void SerializationEvents_OnMixin ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
-          LifetimeService.NewObject (TestableClientTransaction, typeof (ClassWithSerializationCallbacks), ParamList.Empty);
+      var instance = (ClassWithSerializationCallbacks)LifetimeService.NewObject(
+          TestableClientTransaction,
+          typeof(ClassWithSerializationCallbacks),
+          ParamList.Empty);
 
-      Assert.That (((object) instance).GetType (), Is.Not.SameAs (typeof (ClassWithSerializationCallbacks)));
-      Assert.That (instance is IMixinTarget, Is.True);
+      Assert.That(((object)instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
+      Assert.That(instance is IMixinTarget, Is.True);
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, MixinWithSerializationCallbacks.SetStaticReceiver)
-          .Test_SerializationCallbacks ();
+      var serializationCallbackTester =
+          new SerializationCallbackTester<ClassWithSerializationCallbacks>(instance, MixinWithSerializationCallbacks.SetStaticReceiver);
+      serializationCallbackTester.Test_SerializationCallbacks();
     }
 
     [Test]
     public void DeserializationEvents_OnMixin ()
     {
-      var instance = (ClassWithSerializationCallbacks)
-          LifetimeService.NewObject (TestableClientTransaction, typeof (ClassWithSerializationCallbacks), ParamList.Empty);
+      var instance = (ClassWithSerializationCallbacks)LifetimeService.NewObject(
+          TestableClientTransaction,
+          typeof(ClassWithSerializationCallbacks),
+          ParamList.Empty);
 
-      Assert.That (((object) instance).GetType (), Is.Not.SameAs (typeof (ClassWithSerializationCallbacks)));
-      Assert.That (instance is IMixinTarget, Is.True);
+      Assert.That(((object)instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
+      Assert.That(instance is IMixinTarget, Is.True);
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, MixinWithSerializationCallbacks.SetStaticReceiver)
-          .Test_DeserializationCallbacks ();
+      var serializationCallbackTester =
+          new SerializationCallbackTester<ClassWithSerializationCallbacks>(instance, MixinWithSerializationCallbacks.SetStaticReceiver);
+      serializationCallbackTester.Test_DeserializationCallbacks();
     }
   }
 }

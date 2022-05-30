@@ -15,54 +15,52 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
 {
   [TestFixture]
   public class CachingAssemblyFinderDecoratorTest
   {
-    private IAssemblyFinder _innerFinder;
+    private Mock<IAssemblyFinder> _innerFinder;
     private CachingAssemblyFinderDecorator _decorator;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerFinder = MockRepository.GenerateStrictMock<IAssemblyFinder>();
-      _decorator = new CachingAssemblyFinderDecorator(_innerFinder);
+      _innerFinder = new Mock<IAssemblyFinder>(MockBehavior.Strict);
+      _decorator = new CachingAssemblyFinderDecorator(_innerFinder.Object);
     }
 
     [Test]
     public void FindAssemblies_FirstTime ()
     {
-      var assemblies = new[] { typeof (object).Assembly, GetType().Assembly };
-      _innerFinder.Expect (mock => mock.FindAssemblies()).Return (assemblies);
-      _innerFinder.Replay();
+      var assemblies = new[] { typeof(object).Assembly, GetType().Assembly };
+      _innerFinder.Setup(mock => mock.FindAssemblies()).Returns(assemblies).Verifiable();
 
       var result = _decorator.FindAssemblies();
 
-      _innerFinder.VerifyAllExpectations();
-      Assert.That (result, Is.EqualTo (assemblies));
+      _innerFinder.Verify();
+      Assert.That(result, Is.EqualTo(assemblies));
     }
 
     [Test]
     public void FindAssemblies_MultipleTimes ()
     {
-      var assemblies = new[] { typeof (object).Assembly, GetType ().Assembly };
+      var assemblies = new[] { typeof(object).Assembly, GetType().Assembly };
       _innerFinder
-          .Expect (mock => mock.FindAssemblies ())
-          .Return (assemblies)
-          .Repeat.Once();
-      _innerFinder.Replay ();
+          .Setup(mock => mock.FindAssemblies())
+          .Returns(assemblies)
+          .Verifiable();
 
-      var result1 = _decorator.FindAssemblies ();
-      var result2 = _decorator.FindAssemblies ();
+      var result1 = _decorator.FindAssemblies();
+      var result2 = _decorator.FindAssemblies();
 
-      _innerFinder.VerifyAllExpectations ();
-      Assert.That (result1, Is.EqualTo (assemblies));
-      Assert.That (result2, Is.EqualTo (result1));
+      _innerFinder.Verify(mock => mock.FindAssemblies(), Times.Once());
+      Assert.That(result1, Is.EqualTo(assemblies));
+      Assert.That(result2, Is.EqualTo(result1));
     }
   }
 }

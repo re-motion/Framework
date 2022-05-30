@@ -25,13 +25,13 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
   {
     private T _scalar;
     private T? _nullableScalar;
-    private readonly T _readOnlyScalar = default (T);
+    private readonly T _readOnlyScalar = default(T);
     private T _readOnlyNonPublicSetterScalar;
     private T _notVisibleScalar;
     private T _readOnlyAttributeScalar;
     private T[] _array;
     private T?[] _nullableArray;
-    private List<T> _list = new List<T> ();
+    private List<T> _list = new List<T>();
 
     public ClassWithValueType ()
     {
@@ -60,14 +60,14 @@ namespace Remotion.ObjectBinding.UnitTests.TestDomain
       protected set { _readOnlyNonPublicSetterScalar = value; }
     }
 
-    [ObjectBinding (Visible = false)]
+    [ObjectBinding(Visible = false)]
     public T NotVisibleScalar
     {
       get { return _notVisibleScalar; }
       set { _notVisibleScalar = value; }
     }
 
-    [ObjectBinding (ReadOnly = true)]
+    [ObjectBinding(ReadOnly = true)]
     public T ReadOnlyAttributeScalar
     {
       get { return _readOnlyAttributeScalar; }

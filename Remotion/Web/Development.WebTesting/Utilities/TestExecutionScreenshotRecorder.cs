@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
-using JetBrains.Annotations;
 using log4net;
 using OpenQA.Selenium;
 using Remotion.Utilities;
@@ -34,19 +34,19 @@ namespace Remotion.Web.Development.WebTesting.Utilities
   /// </summary>
   public class TestExecutionScreenshotRecorder
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (TestExecutionScreenshotRecorder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(TestExecutionScreenshotRecorder));
 
     private readonly string _outputDirectory;
 
     private bool _isCursorCaptured;
-    private CursorInformation _cursorInformation;
+    private CursorInformation? _cursorInformation;
 
-    public TestExecutionScreenshotRecorder ([NotNull] string outputDirectory)
+    public TestExecutionScreenshotRecorder ([JetBrains.Annotations.NotNull] string outputDirectory)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("outputDirectory", outputDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("outputDirectory", outputDirectory);
 
-      _outputDirectory = Path.GetFullPath (outputDirectory);
-      Directory.CreateDirectory (_outputDirectory);
+      _outputDirectory = Path.GetFullPath(outputDirectory);
+      Directory.CreateDirectory(_outputDirectory);
     }
 
     /// <summary>
@@ -79,33 +79,33 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="PathTooLongException">
     /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
     /// </exception>
-    public void TakeDesktopScreenshot ([NotNull] string testName)
+    public void TakeDesktopScreenshot ([JetBrains.Annotations.NotNull] string testName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
+      ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
 
-      var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, "Desktop", "png");
+      var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, "Desktop", "png");
 
       try
       {
         var screenshot = Screenshot.TakeDesktopScreenshot();
 
-        using (var graphics = Graphics.FromImage (screenshot.Image))
+        using (var graphics = Graphics.FromImage(screenshot.Image))
         {
           var transformMatrix = new Matrix();
-          transformMatrix.Translate (-screenshot.DesktopOffset.Width, -screenshot.DesktopOffset.Height);
+          transformMatrix.Translate(-screenshot.DesktopOffset.Width, -screenshot.DesktopOffset.Height);
 
           graphics.Transform = transformMatrix;
 
-          GetCursorInformation().Draw (graphics);
+          GetCursorInformation().Draw(graphics);
         }
 
-        screenshot.Image.Save (filePath, ImageFormat.Png);
+        screenshot.Image.Save(filePath, ImageFormat.Png);
 
-        s_log.InfoFormat ("Saved screenshot of desktop to '{0}'.", filePath);
+        s_log.InfoFormat("Saved screenshot of desktop to '{0}'.", filePath);
       }
       catch (Exception ex)
       {
-        s_log.Error (string.Format ("Could not save desktop screenshot to '{0}'.", filePath), ex);
+        s_log.Error(string.Format("Could not save desktop screenshot to '{0}'.", filePath), ex);
       }
     }
 
@@ -122,26 +122,26 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// If the resulting file path would be longer than 260 characters (despite shortening of the <paramref name="testName"/>).
     /// </exception>
     public void TakeBrowserScreenshot (
-        [NotNull] string testName,
-        [NotNull] IBrowserSession[] browserSessions,
-        [NotNull] IBrowserContentLocator locator)
+        [JetBrains.Annotations.NotNull] string testName,
+        [JetBrains.Annotations.NotNull] IBrowserSession[] browserSessions,
+        [JetBrains.Annotations.NotNull] IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("testName", testName);
-      ArgumentUtility.CheckNotNullOrItemsNull ("browserSessions", browserSessions);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNullOrEmpty("testName", testName);
+      ArgumentUtility.CheckNotNullOrItemsNull("browserSessions", browserSessions);
+      ArgumentUtility.CheckNotNull("locator", locator);
       if (browserSessions.Length == 0)
-        throw new ArgumentException ("At least one browser session must be specified.", "browserSessions");
+        throw new ArgumentException("At least one browser session must be specified.", "browserSessions");
 
       var sessionID = 0;
       foreach (var browserSession in browserSessions)
       {
         try
         {
-          SaveBrowserSessionScreenshot (testName, locator, browserSession, sessionID);
+          SaveBrowserSessionScreenshot(testName, locator, browserSession, sessionID);
         }
         catch (Exception ex)
         {
-          s_log.Error (string.Format ("Could not save screenshot of browser session window. (window: {0})", sessionID), ex);
+          s_log.Error(string.Format("Could not save screenshot of browser session window. (window: {0})", sessionID), ex);
         }
 
         sessionID++;
@@ -154,47 +154,47 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       if (driver == null)
         return;
 
-      var nativeDriver = (IWebDriver) driver.Native;
+      var nativeDriver = (IWebDriver)driver.Native;
       if (nativeDriver == null)
         return;
 
-      var baseSuffix = string.Concat ("Browser", sessionID);
+      var baseSuffix = string.Concat("Browser", sessionID);
 
       var windowID = 0;
       foreach (var windowHandle in nativeDriver.WindowHandles)
       {
-        var windowSuffix = string.Concat (baseSuffix, "-", windowID);
+        var windowSuffix = string.Concat(baseSuffix, "-", windowID);
 
         try
         {
-          nativeDriver.SwitchTo().Window (windowHandle);
+          nativeDriver.SwitchTo().Window(windowHandle);
 
-          var screenshot = Screenshot.TakeBrowserScreenshot (browserSession, locator);
-          var browserContentBounds = locator.GetBrowserContentBounds (nativeDriver);
+          var screenshot = Screenshot.TakeBrowserScreenshot(browserSession, locator);
+          var browserContentBounds = locator.GetBrowserContentBounds(nativeDriver);
 
-          using (var graphics = Graphics.FromImage (screenshot.Image))
+          using (var graphics = Graphics.FromImage(screenshot.Image))
           {
             var transformMatrix = new Matrix();
-            transformMatrix.Translate (-browserContentBounds.X, -browserContentBounds.Y);
+            transformMatrix.Translate(-browserContentBounds.X, -browserContentBounds.Y);
 
             graphics.Transform = transformMatrix;
 
-            GetCursorInformation().Draw (graphics);
+            GetCursorInformation().Draw(graphics);
           }
 
-          var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath (_outputDirectory, testName, windowSuffix, "png");
+          var filePath = ScreenshotRecorderPathUtility.GetFullScreenshotFilePath(_outputDirectory, testName, windowSuffix, "png");
 
-          screenshot.Image.Save (filePath, ImageFormat.Png);
+          screenshot.Image.Save(filePath, ImageFormat.Png);
         }
         catch (Exception ex)
         {
-          s_log.Error (string.Format ("Could not save screenshot of browser session window. (window: {0})", windowID), ex);
+          s_log.Error(string.Format("Could not save screenshot of browser session window. (window: {0})", windowID), ex);
         }
 
         windowID++;
       }
 
-      s_log.InfoFormat ("Saved screenshots for the browser session '{0}'.", GetWindowText (browserSession));
+      s_log.InfoFormat("Saved screenshots for the browser session '{0}'.", GetWindowText(browserSession));
     }
 
     private CursorInformation CaptureCursorInformationWithLog ()
@@ -205,7 +205,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
       }
       catch (Exception ex)
       {
-        s_log.ErrorFormat ("Could not capture CursorInformation. Exception: \n{0}", ex);
+        s_log.ErrorFormat("Could not capture CursorInformation. Exception: \n{0}", ex);
         return CursorInformation.Empty;
       }
     }
@@ -213,7 +213,7 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     private CursorInformation GetCursorInformation ()
     {
       if (_isCursorCaptured)
-        return _cursorInformation;
+        return _cursorInformation!;
       return CaptureCursorInformationWithLog();
     }
 

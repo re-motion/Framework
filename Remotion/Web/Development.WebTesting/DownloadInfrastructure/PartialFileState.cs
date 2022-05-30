@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
 
     public PartialFileState ([NotNull] string partialFile, DateTime partialFileLastWriteAccessUtc, long length)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("partialFile", partialFile);
+      ArgumentUtility.CheckNotNullOrEmpty("partialFile", partialFile);
 
       _partialFile = partialFile;
       _partialFileLastWriteAccessUtc = partialFileLastWriteAccessUtc;
@@ -43,7 +43,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       _partialFileLastWriteAccessUtc = lastWriteTimeUtc;
     }
 
-    public DateTime GetPartialFileLastWriteTimeUtc()
+    public DateTime GetPartialFileLastWriteTimeUtc ()
     {
       return _partialFileLastWriteAccessUtc;
     }
@@ -58,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.DownloadInfrastructure
       return _length;
     }
 
-    public string GetPartialFile()
+    public string GetPartialFile ()
     {
       return _partialFile;
     }

@@ -31,23 +31,23 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
     }
 
     protected FormFunction (ITransactionMode transactionMode, params object[] args)
-      : base (transactionMode, args)
+      : base(transactionMode, args)
     {
     }
 
-    protected FormFunction (ITransactionMode transactionMode, IDomainObjectHandle<T> currentObjectHandle)
-      : base (transactionMode, currentObjectHandle)
+    protected FormFunction (ITransactionMode transactionMode, IDomainObjectHandle<T>? currentObjectHandle)
+      : base(transactionMode, currentObjectHandle)
     {
     }
 
-    [WxeParameter (1, false, WxeParameterDirection.In)]
-    public IDomainObjectHandle<T> CurrentObjectHandle
+    [WxeParameter(1, false, WxeParameterDirection.In)]
+    public IDomainObjectHandle<T>? CurrentObjectHandle
     {
-      get { return (IDomainObjectHandle<T>) Variables["CurrentObjectHandle"]; }
+      get { return (IDomainObjectHandle<T>?)Variables["CurrentObjectHandle"]; }
       set { Variables["CurrentObjectHandle"] = value; }
     }
 
-    public T CurrentObject
+    public T? CurrentObject
     {
       get
       {
@@ -58,7 +58,7 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions
       }
       set
       {
-        CurrentObjectHandle = value.GetHandle();
+        CurrentObjectHandle = value.GetSafeHandle();
       }
     }
   }

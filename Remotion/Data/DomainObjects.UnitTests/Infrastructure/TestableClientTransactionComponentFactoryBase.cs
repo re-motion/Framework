@@ -28,6 +28,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
   public class TestableClientTransactionComponentFactoryBase : ClientTransactionComponentFactoryBase
   {
+    public TestableClientTransactionComponentFactoryBase ()
+    {
+    }
+
+    public IEnumerable<IClientTransactionListener> CallCreateListeners (ClientTransaction constructedTransaction)
+    {
+      return CreateListeners(constructedTransaction);
+    }
+
+    public IRelationEndPointProvider CallGetEndPointProvider (IDataManager dataManager)
+    {
+      return GetEndPointProvider(dataManager);
+    }
+
+    public ILazyLoader CallGetLazyLoader (IDataManager dataManager)
+    {
+      return GetLazyLoader(dataManager);
+    }
+
     public override ITransactionHierarchyManager CreateTransactionHierarchyManager (ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink)
     {
       throw new NotImplementedException();
@@ -57,31 +76,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         ClientTransaction constructedTransaction,
         IRelationEndPointProvider endPointProvider,
         ILazyLoader lazyLoader,
-        IClientTransactionEventSink eventSink)
+        IClientTransactionEventSink eventSink,
+        IDataContainerMapReadOnlyView dataContainerMap)
     {
       throw new NotImplementedException();
     }
 
-    protected override IObjectLoader CreateObjectLoader (ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink, IPersistenceStrategy persistenceStrategy, IInvalidDomainObjectManager invalidDomainObjectManager, IDataManager dataManager, ITransactionHierarchyManager hierarchyManager)
-    {
-      throw new NotImplementedException();
-    }
-
-    public IEnumerable<IClientTransactionListener> CallCreateListeners (ClientTransaction constructedTransaction)
-    {
-      return CreateListeners (constructedTransaction);
-    }
-
-    public IRelationEndPointManager CallCreateRelationEndPointManager (
-        ClientTransaction constructedTransaction,
-        IRelationEndPointProvider endPointProvider,
-        ILazyLoader lazyLoader,
-        IClientTransactionEventSink eventSink)
-    {
-      return CreateRelationEndPointManager (constructedTransaction, endPointProvider, lazyLoader, eventSink);
-    }
-
-    public IObjectLoader CallCreateObjectLoader (
+    protected override IObjectLoader CreateObjectLoader (
         ClientTransaction constructedTransaction,
         IClientTransactionEventSink eventSink,
         IPersistenceStrategy persistenceStrategy,
@@ -89,22 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         IDataManager dataManager,
         ITransactionHierarchyManager hierarchyManager)
     {
-      return CreateObjectLoader (constructedTransaction, eventSink, persistenceStrategy, invalidDomainObjectManager, dataManager, hierarchyManager);
-    }
-
-    public IDataContainerEventListener CallCreateDataContainerEventListener (IClientTransactionEventSink eventSink)
-    {
-      return CreateDataContainerEventListener (eventSink);
-    }
-
-    public IRelationEndPointProvider CallGetEndPointProvider (IDataManager dataManager)
-    {
-      return GetEndPointProvider (dataManager);
-    }
-
-    public ILazyLoader CallGetLazyLoader (IDataManager dataManager)
-    {
-      return GetLazyLoader (dataManager);
+      throw new NotImplementedException();
     }
   }
 }

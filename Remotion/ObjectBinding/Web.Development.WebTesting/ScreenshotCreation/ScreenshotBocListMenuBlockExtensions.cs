@@ -37,10 +37,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<DropDownMenuControlObject> GetDropDownMenu<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("listMenu", listMenu);
+      ArgumentUtility.CheckNotNull("listMenu", listMenu);
 
       return listMenu.Target.List.GetDropDownMenu().ForControlObjectScreenshot();
     }
@@ -51,10 +51,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     public static FluentScreenshotElement<ListMenuControlObject> GetListMenu<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("listMenu", listMenu);
+      ArgumentUtility.CheckNotNull("listMenu", listMenu);
 
       return listMenu.Target.List.GetListMenu().ForControlObjectScreenshot();
     }
@@ -62,21 +62,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <summary>
     /// Starts the fluent API for controlling the ViewsMenu in the menu-block.
     /// </summary>
-    /// <exception cref="MissingHtmlException">Can not find the view menu of the navigator.</exception>
+    /// <exception cref="WebTestException">Cannot find the view menu of the navigator.</exception>
     public static FluentScreenshotElement<ScreenshotBocListDropDown<TList, TRow, TCell>> GetViewsMenu<TList, TRow, TCell> (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotBocListMenuBlock<TList, TRow, TCell>> listMenu)
         where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-        where TRow : ControlObject, IControlObjectWithCells<TCell>
+        where TRow : ControlObject, IBocListRowControlObject<TCell>
         where TCell : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("listMenu", listMenu);
+      ArgumentUtility.CheckNotNull("listMenu", listMenu);
 
-      var result = listMenu.Target.List.Scope.FindChild ("Boc_AvailableViewsList", Options.NoWait);
+      var result = listMenu.Target.List.Scope.FindChild("Boc_AvailableViewsList", Options.NoWait);
       result.EnsureExistence();
 
       return
-          SelfResolvableFluentScreenshot.Create (
-              new ScreenshotBocListDropDown<TList, TRow, TCell> (listMenu.Target.FluentList, result.ForElementScopeScreenshot()));
+          SelfResolvableFluentScreenshot.Create(
+              new ScreenshotBocListDropDown<TList, TRow, TCell>(listMenu.Target.FluentList, result.ForElementScopeScreenshot()));
     }
   }
 }

@@ -27,36 +27,38 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
   /// </summary>
   public class BinaryImportStrategy : IImportStrategy
   {
-    public static readonly BinaryImportStrategy Instance = new BinaryImportStrategy ();
+    public static readonly BinaryImportStrategy Instance = new BinaryImportStrategy();
 
     public IEnumerable<TransportItem> Import (Stream inputStream)
     {
-      ArgumentUtility.CheckNotNull ("inputStream", inputStream);
+      ArgumentUtility.CheckNotNull("inputStream", inputStream);
 
-      var formatter = new BinaryFormatter ();
+      var formatter = new BinaryFormatter();
       try
       {
-        KeyValuePair<string, Dictionary<string, object>>[] deserializedData = PerformDeserialization (inputStream, formatter);
-        TransportItem[] transportedObjects = GetTransportItems (deserializedData);
+        KeyValuePair<string, Dictionary<string, object?>>[] deserializedData = PerformDeserialization(inputStream, formatter);
+        TransportItem[] transportedObjects = GetTransportItems(deserializedData);
         return transportedObjects;
       }
       catch (Exception ex)
       {
-        throw new TransportationException ("Invalid data specified: " + ex.Message, ex);
+        throw new TransportationException("Invalid data specified: " + ex.Message, ex);
       }
     }
 
-    protected virtual KeyValuePair<string, Dictionary<string, object>>[] PerformDeserialization (Stream stream, BinaryFormatter formatter)
+    protected virtual KeyValuePair<string, Dictionary<string, object?>>[] PerformDeserialization (Stream stream, BinaryFormatter formatter)
     {
-      ArgumentUtility.CheckNotNull ("stream", stream);
-      ArgumentUtility.CheckNotNull ("formatter", formatter);
+      ArgumentUtility.CheckNotNull("stream", stream);
+      ArgumentUtility.CheckNotNull("formatter", formatter);
 
-      return (KeyValuePair<string, Dictionary<string, object>>[]) formatter.Deserialize (stream);
+#pragma warning disable SYSLIB0011
+      return (KeyValuePair<string, Dictionary<string, object?>>[])formatter.Deserialize(stream);
+#pragma warning restore SYSLIB0011
     }
 
-    private TransportItem[] GetTransportItems (KeyValuePair<string, Dictionary<string, object>>[] deserializedData)
+    private TransportItem[] GetTransportItems (KeyValuePair<string, Dictionary<string, object?>>[] deserializedData)
     {
-      return Array.ConvertAll (deserializedData, pair => new TransportItem (ObjectID.Parse (pair.Key), pair.Value));
+      return Array.ConvertAll(deserializedData, pair => new TransportItem(ObjectID.Parse(pair.Key), pair.Value));
     }
   }
 }

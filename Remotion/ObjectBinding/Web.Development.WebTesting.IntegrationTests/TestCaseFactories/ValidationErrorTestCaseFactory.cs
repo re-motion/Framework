@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.GenericTestPageParameters;
@@ -35,66 +36,89 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
   public class ValidationErrorTestCaseFactory <TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, ValidationErrorTestPageParameters>
       where TControlSelector : IHtmlIDControlSelector<TControl>
-      where TControl : BocControlObject, ISupportsValidationErrors
+      where TControl : BocControlObject, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly
   {
     protected override string TestPrefix
     {
       get { return "Validation Errors"; }
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void GetValidationErrors_OneCustomValidator ()
     {
-      var control = Selector.GetByID (Parameter.CustomValidatedControlHtmlId);
+      var control = Selector.GetByID(Parameter.CustomValidatedControlHtmlId);
 
-      ClickValidationButton (control);
+      ClickValidationButton(control);
 
-      Assert.That (control.GetValidationErrors(), Is.EqualTo (new List<string> { "Always false." }));
+      Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string> { "Always false." }));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void GetValidationErrors_MultipleValidators ()
     {
-      var control = Selector.GetByID (Parameter.MultipleValidatorsControlHtmlId);
+      var control = Selector.GetByID(Parameter.MultipleValidatorsControlHtmlId);
 
-      ClickValidationButton (control);
+      ClickValidationButton(control);
 
-      Assert.That (control.GetValidationErrors(), Is.EqualTo (new List<string> { "Always false.", "Always false. The second." }));
+      Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string> { "Always false.", "Always false. The second." }));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void NotInFormGrid ()
     {
-      var control = Selector.GetByID (Parameter.ControlNotInFormGridHtmlId);
+      var control = Selector.GetByID(Parameter.ControlNotInFormGridHtmlId);
 
-      Assert.That (control.GetValidationErrors(), Is.EqualTo (new List<string>()));
+      Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string>()));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
     public void NoValidationErrors ()
     {
-      var control = Selector.GetByID (Parameter.ControlWithoutValidationHtmlId);
+      var control = Selector.GetByID(Parameter.ControlWithoutValidationHtmlId);
 
-      Assert.That (control.GetValidationErrors(), Is.EqualTo (new List<string>()));
+      Assert.That(control.GetValidationErrors(), Is.EqualTo(new List<string>()));
     }
 
-    [GenericPageTestMethod (PageType = GenericTestPageType.EnabledValidation, SearchTimeout = SearchTimeout.UseShortTimeout)]
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation, SearchTimeout = SearchTimeout.UseShortTimeout)]
     public void GetValidationErrorsForReadOnlyControl_Throws ()
     {
-      var control = Selector.GetByID (Parameter.ReadOnlyControlHtmlId);
+      var control = Selector.GetByID(Parameter.ReadOnlyControlHtmlId);
 
-      Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (
+      Assert.That(control.IsReadOnly(), Is.True);
+      Assert.That(
           () => control.GetValidationErrors(),
-          Throws.Exception.Message.EqualTo (
-              AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+          Throws.Exception.Message.EqualTo(
+              AssertionExceptionUtility.CreateControlReadOnlyException(control.Context.Browser.Driver).Message));
+    }
+
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
+    public void GetValidationErrorsForReadOnly_ReadOnlyControl ()
+    {
+      var control = Selector.GetByID(Parameter.CustomValidatedReadOnlyControlHtmlId);
+
+      ClickValidationButton(control);
+
+      Assert.That(control.IsReadOnly(), Is.True);
+      Assert.That(control.GetValidationErrorsForReadOnly(), Is.EqualTo(new List<string> { "Always false." }));
+    }
+
+    [GenericPageTestMethod(PageType = GenericTestPageType.EnabledValidation)]
+    public void GetValidationErrorsForReadOnly_EditableControl_Throws ()
+    {
+      var control = Selector.GetByID(Parameter.ControlWithoutValidationHtmlId);
+
+      Assert.That(control.IsReadOnly(), Is.False);
+      Assert.That(
+          () => control.GetValidationErrorsForReadOnly(),
+          Throws.Exception.Message.EqualTo(
+              AssertionExceptionUtility.CreateControlNotReadOnlyException(control.Context.Browser.Driver).Message));
     }
 
     private void ClickValidationButton (TControl control)
     {
-      var validateButtonScope = control.Context.RootScope.FindId (Parameter.ValidateButtonId);
-      var validateButton = new WebButtonControlObject (control.Context.CloneForControl (validateButtonScope));
-      validateButton.Click (Opt.ContinueWhen (Wxe.PostBackCompleted));
+      var validateButtonScope = control.Context.RootScope.FindId(Parameter.ValidateButtonId);
+      var validateButton = new WebButtonControlObject(control.Context.CloneForControl(validateButtonScope));
+      validateButton.Click(Opt.ContinueWhen(Wxe.PostBackCompleted));
     }
   }
 }

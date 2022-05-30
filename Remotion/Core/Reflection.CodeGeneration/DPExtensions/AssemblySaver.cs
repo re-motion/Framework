@@ -15,29 +15,35 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using Castle.DynamicProxy;
 
 namespace Remotion.Reflection.CodeGeneration.DPExtensions
 {
   public static class AssemblySaver
   {
+#if !FEATURE_ASSEMBLYBUILDER_SAVE
+    [Obsolete("The current platform does not support saving a generated assembly. (Version 3.0.0)")]
+#endif
     public static string[] SaveAssemblies (ModuleScope scope)
     {
-      List<string> paths = new List<string> ();
+#if FEATURE_ASSEMBLYBUILDER_SAVE
+      var paths = new System.Collections.Generic.List<string>();
 
       if (scope.StrongNamedModule != null)
       {
-        scope.SaveAssembly (true);
-        paths.Add (scope.StrongNamedModule.FullyQualifiedName);
+        scope.SaveAssembly(true);
+        paths.Add(scope.StrongNamedModule.FullyQualifiedName);
       }
 
       if (scope.WeakNamedModule != null)
       {
-        scope.SaveAssembly (false);
-        paths.Add (scope.WeakNamedModule.FullyQualifiedName);
+        scope.SaveAssembly(false);
+        paths.Add(scope.WeakNamedModule.FullyQualifiedName);
       }
-      return paths.ToArray ();
+      return paths.ToArray();
+#else
+      throw new PlatformNotSupportedException("The current platform does not support saving a generated assembly.");
+#endif
     }
   }
 }

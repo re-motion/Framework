@@ -31,15 +31,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
     {
       var result = from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber <= 5 select o.OrderNumber;
 
-      Assert.That (result, Is.EquivalentTo (new[] { 1, 2, 3, 4, 5 }));
+      Assert.That(result, Is.EquivalentTo(new[] { 1, 2, 3, 4, 5 }));
     }
 
     [Test]
     public void SequenceOfObjectIDs ()
     {
-      var result = (from o in QueryFactory.CreateLinqQuery<Order> () where o.OrderNumber < 3 select o.ID).ToArray ();
+      var result = (from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber < 3 select o.ID).ToArray();
 
-      Assert.That (result, Is.EquivalentTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
+      Assert.That(result, Is.EquivalentTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
     }
 
     [Test]
@@ -48,54 +48,54 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
       var result =
           (from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber < 3 select new ObjectID(o.ID.ClassID, o.ID.Value)).ToArray();
 
-      Assert.That (result, Is.EquivalentTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
+      Assert.That(result, Is.EquivalentTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order2 }));
     }
 
     [Test]
     public void SequenceOfForeignKeyIDs ()
     {
       var result =
-          (from o in QueryFactory.CreateLinqQuery<Order> ()
+          (from o in QueryFactory.CreateLinqQuery<Order>()
            where o.OrderNumber == 1
-           select o.Customer.ID).ToArray ();
+           select o.Customer.ID).ToArray();
 
-      Assert.That (result, Is.EquivalentTo (new[] { DomainObjectIDs.Customer1 }));
+      Assert.That(result, Is.EquivalentTo(new[] { DomainObjectIDs.Customer1 }));
     }
 
     [Test]
     public void ForeignKeyID_Null ()
     {
       var result =
-          (from o in QueryFactory.CreateLinqQuery<Computer> ()
+          (from o in QueryFactory.CreateLinqQuery<Computer>()
            where o.ID == DomainObjectIDs.Computer4
            select o.Employee.ID).Single();
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
 
     [Test]
     public void SequenceOfForeignKeyIDs_ConstructedInMemory ()
     {
       var result =
-          (from o in QueryFactory.CreateLinqQuery<Order> () 
-           where o.OrderNumber == 1 
-           select new ObjectID (o.Customer.ID.ClassID, o.Customer.ID.Value)).ToArray ();
+          (from o in QueryFactory.CreateLinqQuery<Order>()
+           where o.OrderNumber == 1
+           select new ObjectID(o.Customer.ID.ClassID, o.Customer.ID.Value)).ToArray();
 
-      Assert.That (result, Is.EquivalentTo (new[] { DomainObjectIDs.Customer1 }));
+      Assert.That(result, Is.EquivalentTo(new[] { DomainObjectIDs.Customer1 }));
     }
 
     [Test]
     public void SequenceOfForeignKeyIDs_NonPersistedClassID_ConstructedInMemory ()
     {
-      var endPointDefinition = GetNonVirtualEndPointDefinition (typeof (Computer), "Employee");
-      Assert.That (endPointDefinition.PropertyDefinition.StoragePropertyDefinition, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
+      var endPointDefinition = GetNonVirtualEndPointDefinition(typeof(Computer), "Employee");
+      Assert.That(endPointDefinition.PropertyDefinition.StoragePropertyDefinition, Is.TypeOf<ObjectIDWithoutClassIDStoragePropertyDefinition>());
 
       var result =
-          (from c in QueryFactory.CreateLinqQuery<Computer> ()
+          (from c in QueryFactory.CreateLinqQuery<Computer>()
            where c.ID == DomainObjectIDs.Computer1
-           select new ObjectID(c.Employee.ID.ClassID, c.Employee.ID.Value)).ToArray ();
+           select new ObjectID(c.Employee.ID.ClassID, c.Employee.ID.Value)).ToArray();
 
-      Assert.That (result, Is.EquivalentTo (new[] { DomainObjectIDs.Employee3 }));
+      Assert.That(result, Is.EquivalentTo(new[] { DomainObjectIDs.Employee3 }));
     }
 
     [Test]
@@ -105,32 +105,33 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                     where o.OrderNumber == 1
                     select new { o.OrderNumber, o.DeliveryDate, Property = new { o.OrderTicket.FileName, o.OrderItems.Count } }).ToArray();
 
-      var expectedObject = new { OrderNumber = 1, DeliveryDate = new DateTime (2005, 1, 1), Property = new { FileName = @"C:\order1.png", Count = 2 } };
-      Assert.That (result, Is.EqualTo (new[] { expectedObject}));
+      var expectedObject = new { OrderNumber = 1, DeliveryDate = new DateTime(2005, 1, 1), Property = new { FileName = @"C:\order1.png", Count = 2 } };
+      Assert.That(result, Is.EqualTo(new[] { expectedObject}));
     }
 
     [Test]
     public void ComplexProjection_WithSingleQuery ()
     {
-      var result = (from o in QueryFactory.CreateLinqQuery<Order> ()
+      var result = (from o in QueryFactory.CreateLinqQuery<Order>()
                     where o.OrderNumber == 1
-                    select new { o.OrderNumber, o.DeliveryDate, Property = new { o.OrderTicket.FileName, o.OrderItems.Count } }).Single ();
+                    select new { o.OrderNumber, o.DeliveryDate, Property = new { o.OrderTicket.FileName, o.OrderItems.Count } }).Single();
 
-      var expectedObject = new { OrderNumber = 1, DeliveryDate = new DateTime (2005, 1, 1), Property = new { FileName = @"C:\order1.png", Count = 2 } };
-      Assert.That (result, Is.EqualTo (expectedObject));
+      var expectedObject = new { OrderNumber = 1, DeliveryDate = new DateTime(2005, 1, 1), Property = new { FileName = @"C:\order1.png", Count = 2 } };
+      Assert.That(result, Is.EqualTo(expectedObject));
     }
 
     [Test]
-    [ExpectedException (typeof (NotSupportedException), ExpectedMessage = 
-      "This LINQ provider does not support queries with complex projections that include DomainObjects.\r\n"
-      + "Either change the query to return just a sequence of DomainObjects (e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select o') "
-      + "or change the complex projection to contain no DomainObjects "
-      + "(e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select new { o.OrderNumber, o.OrderDate }').")]
     public void ComplexProjection_ContainingDomainObject ()
     {
-      var result = (from o in QueryFactory.CreateLinqQuery<Order> () select new { o.OrderNumber, o });
-
-      result.ToArray();
+      var result = (from o in QueryFactory.CreateLinqQuery<Order>() select new { o.OrderNumber, o });
+      Assert.That(
+          () => result.ToArray(),
+          Throws.InstanceOf<NotSupportedException>()
+              .With.Message.EqualTo(
+                  "This LINQ provider does not support queries with complex projections that include DomainObjects.\r\n"
+                  + "Either change the query to return just a sequence of DomainObjects (e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select o') "
+                  + "or change the complex projection to contain no DomainObjects "
+                  + "(e.g., 'from o in QueryFactory.CreateLinqQuery<Order>() select new { o.OrderNumber, o.OrderDate }')."));
     }
 
     [Test]
@@ -140,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                     where c.ID == DomainObjectIDs.ClassWithAllDataTypes1
                     select c.BooleanProperty).ToArray();
 
-      Assert.That (result, Is.EqualTo (new[] { false }));
+      Assert.That(result, Is.EqualTo(new[] { false }));
     }
 
     [Test]
@@ -150,7 +151,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                     where c.ID == DomainObjectIDs.ClassWithAllDataTypes1
                     select c.NaBooleanProperty).ToArray();
 
-      Assert.That (result, Is.EqualTo (new[] { true }));
+      Assert.That(result, Is.EqualTo(new[] { true }));
     }
 
     [Test]
@@ -161,9 +162,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq.IntegrationTests
                     select new { c.BooleanProperty, c.NaBooleanProperty, c.NaBooleanWithNullValueProperty }).ToArray();
 
 
-      Assert.That (
+      Assert.That(
           result,
-          Is.EqualTo (new[] { new { BooleanProperty = false, NaBooleanProperty = (bool?) true, NaBooleanWithNullValueProperty = (bool?) null } }));
+          Is.EqualTo(new[] { new { BooleanProperty = false, NaBooleanProperty = (bool?)true, NaBooleanWithNullValueProperty = (bool?)null } }));
     }
   }
 }

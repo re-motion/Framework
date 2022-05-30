@@ -25,10 +25,10 @@ namespace Remotion.Data.DomainObjects.Tracing
   /// </summary>
   public sealed class NullPersistenceExtension : IPersistenceExtension
   {
-    public static readonly IPersistenceExtension Instance = new NullPersistenceExtension ();
+    public static readonly IPersistenceExtension Instance = new NullPersistenceExtension();
 
     private NullPersistenceExtension ()
-    {      
+    {
     }
 
     public bool IsNull
@@ -60,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Tracing
     {
     }
 
-    public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters)
+    public void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters)
     {
     }
 

@@ -37,8 +37,8 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
     {
       var instance = _serviceLocator.GetInstance<IHttpContextProvider>();
 
-      Assert.That (instance, Is.Not.Null);
-      Assert.That (instance, Is.TypeOf (typeof (HttpContextProvider)));
+      Assert.That(instance, Is.Not.Null);
+      Assert.That(instance, Is.TypeOf(typeof(HttpContextProvider)));
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Web.UnitTests.Core.Infrastructure
       var instance1 = _serviceLocator.GetInstance<IHttpContextProvider>();
       var instance2 = _serviceLocator.GetInstance<IHttpContextProvider>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

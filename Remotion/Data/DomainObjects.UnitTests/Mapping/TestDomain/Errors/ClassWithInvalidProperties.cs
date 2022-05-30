@@ -27,19 +27,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors
     [Mandatory]
     private int Int32Property
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     [StringProperty]
     private ClassWithInvalidProperties PropertyWithStringAttribute
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
 
     [BinaryProperty]
     private ClassWithInvalidProperties PropertyWithBinaryAttribute
     {
-      get { throw new NotImplementedException (); }
+      get { throw new NotImplementedException(); }
     }
   }
 }

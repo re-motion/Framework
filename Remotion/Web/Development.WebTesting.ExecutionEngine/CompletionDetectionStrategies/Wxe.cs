@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies
 {
@@ -23,25 +24,25 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public static class Wxe
   {
-    public static readonly WxePostBackCompletionDetectionStrategy PostBackCompleted = new WxePostBackCompletionDetectionStrategy (1);
-
-    public static readonly Func<PageObject, WxePostBackInCompletionDetectionStrategy> PostBackCompletedIn =
-        po => PostBackCompletedInContext (po.Context);
+    public static readonly WxePostBackCompletionDetectionStrategy PostBackCompleted = new WxePostBackCompletionDetectionStrategy(1);
 
     public static readonly Func<PageObjectContext, WxePostBackInCompletionDetectionStrategy> PostBackCompletedInContext =
-        ctx => new WxePostBackInCompletionDetectionStrategy (ctx, 1);
+        ctx => new WxePostBackInCompletionDetectionStrategy(ctx, 1);
+
+    public static readonly Func<PageObject, WxePostBackInCompletionDetectionStrategy> PostBackCompletedIn =
+        po => PostBackCompletedInContext(po.Context);
 
     public static readonly Func<PageObject, WxePostBackInCompletionDetectionStrategy> PostBackCompletedInParent =
-        po => PostBackCompletedInContext (po.Context.ParentContext);
+        po => PostBackCompletedInContext(Assertion.IsNotNull(po.Context.ParentContext, "The parent context must not be null."));
 
     public static readonly WxeResetCompletionDetectionStrategy Reset = new WxeResetCompletionDetectionStrategy();
 
-    public static readonly Func<PageObject, WxeResetInCompletionDetectionStrategy> ResetIn = po => ResetInContext (po.Context);
-
     public static readonly Func<PageObjectContext, WxeResetInCompletionDetectionStrategy> ResetInContext =
-        ctx => new WxeResetInCompletionDetectionStrategy (ctx);
+        ctx => new WxeResetInCompletionDetectionStrategy(ctx);
+
+    public static readonly Func<PageObject, WxeResetInCompletionDetectionStrategy> ResetIn = po => ResetInContext(po.Context);
 
     public static readonly Func<PageObject, WxeResetInCompletionDetectionStrategy> ResetInParent =
-        po => ResetInContext (po.Context.ParentContext);
+        po => ResetInContext(Assertion.IsNotNull(po.Context.ParentContext, "The parent context must not be null."));
   }
 }

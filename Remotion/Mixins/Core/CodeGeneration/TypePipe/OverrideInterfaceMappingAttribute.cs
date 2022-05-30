@@ -23,11 +23,11 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// Defines a mapping between an overridden mixin member and the member in the mixin's override interface. The attribute is applied to the members
   /// of the interface so that the mixin member can be determined when needed.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
   public class OverrideInterfaceMappingAttribute : MethodReferencingAttribute
   {
     public OverrideInterfaceMappingAttribute (Type declaringType, string methodName, string methodSignature)
-        : base (declaringType, methodName, methodSignature)
+        : base(declaringType, methodName, methodSignature)
     {
     }
   }

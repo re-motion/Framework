@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
@@ -23,14 +24,13 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Fact
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands.Factories
 {
   [TestFixture]
   public class TableDefinitionFinderTest : StandardMappingTest
   {
-    private IRdbmsPersistenceModelProvider _rdbmsPersistenceModelProviderStub;
+    private Mock<IRdbmsPersistenceModelProvider> _rdbmsPersistenceModelProviderStub;
     private TableDefinitionFinder _finder;
     private TableDefinition _tableDefinition;
 
@@ -38,68 +38,72 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       base.SetUp();
 
-      _rdbmsPersistenceModelProviderStub = MockRepository.GenerateStub<IRdbmsPersistenceModelProvider>();
-      _finder = new TableDefinitionFinder (_rdbmsPersistenceModelProviderStub);
+      _rdbmsPersistenceModelProviderStub = new Mock<IRdbmsPersistenceModelProvider>();
+      _finder = new TableDefinitionFinder(_rdbmsPersistenceModelProviderStub.Object);
 
-      _tableDefinition = TableDefinitionObjectMother.Create (TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "Table"));
+      _tableDefinition = TableDefinitionObjectMother.Create(TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"));
     }
 
     [Test]
     public void GetTableDefinition_TableDefinition ()
     {
-      var objectID = CreateObjectID (_tableDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Return (_tableDefinition);
+      var objectID = CreateObjectID(_tableDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Returns(_tableDefinition);
 
-      var result = _finder.GetTableDefinition (objectID);
+      var result = _finder.GetTableDefinition(objectID);
 
-      Assert.That (result, Is.SameAs (_tableDefinition));
+      Assert.That(result, Is.SameAs(_tableDefinition));
     }
 
     [Test]
     public void GetTableDefinition_FilterViewDefinition ()
     {
-      var filterViewDefinition = FilterViewDefinitionObjectMother.Create (
-          TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "FilterView"), _tableDefinition);
+      var filterViewDefinition = FilterViewDefinitionObjectMother.Create(
+          TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "FilterView"), _tableDefinition);
 
-      var objectID = CreateObjectID (filterViewDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Return (filterViewDefinition);
+      var objectID = CreateObjectID(filterViewDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Returns(filterViewDefinition);
 
-      var result = _finder.GetTableDefinition (objectID);
+      var result = _finder.GetTableDefinition(objectID);
 
-      Assert.That (result, Is.SameAs (_tableDefinition));
+      Assert.That(result, Is.SameAs(_tableDefinition));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An ObjectID's EntityDefinition cannot be a UnionViewDefinition.")]
     public void GetTableDefinition_UnionViewDefinition ()
     {
-      var unionViewDefinition = UnionViewDefinitionObjectMother.Create (
-          TestDomainStorageProviderDefinition, new EntityNameDefinition (null, "Table"), _tableDefinition);
+      var unionViewDefinition = UnionViewDefinitionObjectMother.Create(
+          TestDomainStorageProviderDefinition, new EntityNameDefinition(null, "Table"), _tableDefinition);
 
-      var objectID = CreateObjectID (unionViewDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Return (unionViewDefinition);
-
-      _finder.GetTableDefinition (objectID);
+      var objectID = CreateObjectID(unionViewDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Returns(unionViewDefinition);
+      Assert.That(
+          () => _finder.GetTableDefinition(objectID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "An ObjectID's EntityDefinition cannot be a UnionViewDefinition."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An ObjectID's EntityDefinition cannot be a EmptyViewDefinition.")]
-    public void GetTableDefinition_EmptyViewDefinition()
+    public void GetTableDefinition_EmptyViewDefinition ()
     {
-      var emptyViewDefinition = EmptyViewDefinitionObjectMother.Create (TestDomainStorageProviderDefinition);
+      var emptyViewDefinition = EmptyViewDefinitionObjectMother.Create(TestDomainStorageProviderDefinition);
 
-      var objectID = CreateObjectID (emptyViewDefinition);
-      _rdbmsPersistenceModelProviderStub.Stub (stub => stub.GetEntityDefinition (objectID.ClassDefinition)).Return (emptyViewDefinition);
-
-      _finder.GetTableDefinition (objectID);
+      var objectID = CreateObjectID(emptyViewDefinition);
+      _rdbmsPersistenceModelProviderStub.Setup(stub => stub.GetEntityDefinition(objectID.ClassDefinition)).Returns(emptyViewDefinition);
+      Assert.That(
+          () => _finder.GetTableDefinition(objectID),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "An ObjectID's EntityDefinition cannot be a EmptyViewDefinition."));
     }
 
     private ObjectID CreateObjectID (IStorageEntityDefinition entityDefinition)
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order), baseClass: null);
-      classDefinition.SetStorageEntity (entityDefinition);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order), baseClass: null);
+      classDefinition.SetStorageEntity(entityDefinition);
 
-      return new ObjectID(classDefinition, Guid.NewGuid ());
+      return new ObjectID(classDefinition, Guid.NewGuid());
     }
   }
 }

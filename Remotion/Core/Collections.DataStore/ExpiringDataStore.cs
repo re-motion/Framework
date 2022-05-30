@@ -16,8 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Collections.DataStore
@@ -26,6 +26,8 @@ namespace Remotion.Collections.DataStore
   /// The <see cref="ExpiringDataStore{TKey,TValue,TExpirationInfo,TScanInfo}"/> stores values that can be expire.
   /// </summary>
   public class ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> : IDataStore<TKey, TValue>
+      where TKey: notnull
+      where TValue: notnull
   {
     private readonly SimpleDataStore<TKey, Tuple<TValue, TExpirationInfo>> _innerDataStore;
     private readonly IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> _expirationPolicy;
@@ -33,13 +35,13 @@ namespace Remotion.Collections.DataStore
     private TScanInfo _nextScanInfo;
 
     public ExpiringDataStore (
-        [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> expirationPolicy,
-        [NotNull] IEqualityComparer<TKey> equalityComparer)
+        [JetBrains.Annotations.NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> expirationPolicy,
+        [JetBrains.Annotations.NotNull] IEqualityComparer<TKey> equalityComparer)
     {
-      ArgumentUtility.CheckNotNull ("expirationPolicy", expirationPolicy);
-      ArgumentUtility.CheckNotNull ("equalityComparer", equalityComparer);
+      ArgumentUtility.CheckNotNull("expirationPolicy", expirationPolicy);
+      ArgumentUtility.CheckNotNull("equalityComparer", equalityComparer);
 
-      _innerDataStore = new SimpleDataStore<TKey, Tuple<TValue, TExpirationInfo>> (equalityComparer);
+      _innerDataStore = new SimpleDataStore<TKey, Tuple<TValue, TExpirationInfo>>(equalityComparer);
       _expirationPolicy = expirationPolicy;
       _nextScanInfo = _expirationPolicy.GetNextScanInfo();
     }
@@ -56,26 +58,25 @@ namespace Remotion.Collections.DataStore
 
     public bool ContainsKey (TKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
-      TValue dummy;
-      return TryGetValue (key, out dummy);
+      return TryGetValue(key, out var dummy);
     }
 
     public void Add (TKey key, TValue value)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull("value", value);
 
       RemoveExpiredItems();
-      AddWithoutScanning (key, value);
+      AddWithoutScanning(key, value);
     }
 
     public bool Remove (TKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
       RemoveExpiredItems();
-      return RemoveWithoutScanning (key);
+      return RemoveWithoutScanning(key);
     }
 
     public void Clear ()
@@ -87,59 +88,56 @@ namespace Remotion.Collections.DataStore
     {
       get
       {
-        TValue result;
-        if (!TryGetValue (key, out result))
-          throw new KeyNotFoundException ("Key not found.");
-        return result; 
+        if (!TryGetValue(key, out var result))
+          throw new KeyNotFoundException("Key not found.");
+        return result;
       }
       set
       {
         RemoveExpiredItems();
-        _innerDataStore[key] = Tuple.Create(value, _expirationPolicy.GetExpirationInfo(value)); 
+        _innerDataStore[key] = Tuple.Create(value, _expirationPolicy.GetExpirationInfo(value));
       }
     }
 
+    [return: MaybeNull]
     public TValue GetValueOrDefault (TKey key)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
-      TValue value;
-      TryGetValue (key, out value);
+      TryGetValue(key, out var value);
       return value;
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull("key", key);
 
       RemoveExpiredItems();
 
-      Tuple<TValue, TExpirationInfo> valueResult;
-      if (_innerDataStore.TryGetValue (key, out valueResult))
+      if (_innerDataStore.TryGetValue(key, out var valueResult))
       {
-        if (!_expirationPolicy.IsExpired (valueResult.Item1, valueResult.Item2))
+        if (!_expirationPolicy.IsExpired(valueResult.Item1, valueResult.Item2))
         {
           value = valueResult.Item1;
           return true;
         }
 
-        RemoveWithoutScanning (key);
+        RemoveWithoutScanning(key);
       }
 
-      value = default (TValue);
+      value = default(TValue)!;
       return false;
     }
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.CheckNotNull ("key", key);
-      ArgumentUtility.CheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
 
-      TValue value;
-      if (!TryGetValue (key, out value))
+      if (!TryGetValue(key, out var value))
       {
-        value = valueFactory (key);
-        AddWithoutScanning (key, value);
+        value = valueFactory(key);
+        AddWithoutScanning(key, value);
       }
 
       return value;
@@ -147,27 +145,27 @@ namespace Remotion.Collections.DataStore
 
     private void AddWithoutScanning (TKey key, TValue value)
     {
-      _innerDataStore.Add (key, Tuple.Create(value, _expirationPolicy.GetExpirationInfo(value)));
+      _innerDataStore.Add(key, Tuple.Create(value, _expirationPolicy.GetExpirationInfo(value)));
     }
 
     private bool RemoveWithoutScanning (TKey key)
     {
-      return _innerDataStore.Remove (key);
+      return _innerDataStore.Remove(key);
     }
 
     private void RemoveExpiredItems ()
     {
-      if (_expirationPolicy.ShouldScanForExpiredItems (_nextScanInfo))
+      if (_expirationPolicy.ShouldScanForExpiredItems(_nextScanInfo))
       {
         var expiredKeys = (
-            from kvp in _innerDataStore 
-            where _expirationPolicy.IsExpired (kvp.Value.Item1, kvp.Value.Item2) 
+            from kvp in _innerDataStore
+            where _expirationPolicy.IsExpired(kvp.Value.Item1, kvp.Value.Item2)
             select kvp.Key).ToList();
-        
-        foreach (var key in expiredKeys)
-          RemoveWithoutScanning (key);
 
-        _nextScanInfo = _expirationPolicy.GetNextScanInfo ();
+        foreach (var key in expiredKeys)
+          RemoveWithoutScanning(key);
+
+        _nextScanInfo = _expirationPolicy.GetNextScanInfo();
       }
     }
   }

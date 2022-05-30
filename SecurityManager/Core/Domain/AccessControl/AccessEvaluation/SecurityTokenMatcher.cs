@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public SecurityTokenMatcher (AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("ace", ace);
+      ArgumentUtility.CheckNotNull("ace", ace);
 
       _ace = ace;
       _clientTransaction = ace.RootTransaction;
@@ -42,21 +42,21 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     public bool MatchesToken (SecurityToken token)
     {
-      ArgumentUtility.CheckNotNull ("token", token);
+      ArgumentUtility.CheckNotNull("token", token);
 
       if (token.Principal.IsNull)
         return false;
 
-      if (!MatchesTenantCondition (token))
+      if (!MatchesTenantCondition(token))
         return false;
 
-      if (!MatchesAbstractRole (token))
+      if (!MatchesAbstractRole(token))
         return false;
 
-      if (!MatchesUserCondition (token))
+      if (!MatchesUserCondition(token))
         return false;
 
-      if (!MatchesGroupCondition (token))
+      if (!MatchesGroupCondition(token))
         return false;
 
       return true;
@@ -70,17 +70,17 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           return true;
 
         case TenantCondition.OwningTenant:
-          return MatchPrincipalAgainstTenant (token.Principal, GetOwningTenant (token));
+          return MatchPrincipalAgainstTenant(token.Principal, GetOwningTenant(token));
 
         case TenantCondition.SpecificTenant:
-          return MatchPrincipalAgainstTenant (token.Principal, _ace.SpecificTenant);
+          return MatchPrincipalAgainstTenant(token.Principal, _ace.SpecificTenant);
 
         default:
-          throw CreateInvalidOperationException ("The value '{0}' is not a valid value for 'TenantCondition'.", _ace.TenantCondition);
+          throw CreateInvalidOperationException("The value '{0}' is not a valid value for 'TenantCondition'.", _ace.TenantCondition);
       }
     }
 
-    private bool MatchPrincipalAgainstTenant (Principal principal, Tenant referenceTenant)
+    private bool MatchPrincipalAgainstTenant (Principal principal, Tenant? referenceTenant)
     {
       if (referenceTenant == null)
         return false;
@@ -88,19 +88,19 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       switch (_ace.TenantHierarchyCondition)
       {
         case TenantHierarchyCondition.Undefined:
-          throw CreateInvalidOperationException ("The value 'Undefined' is not a valid value for matching the 'TenantHierarchyCondition'.");
+          throw CreateInvalidOperationException("The value 'Undefined' is not a valid value for matching the 'TenantHierarchyCondition'.");
 
         case TenantHierarchyCondition.This:
-          return referenceTenant.Equals (GetPrincipalTenant (principal));
+          return referenceTenant.Equals(GetPrincipalTenant(principal));
 
         case TenantHierarchyCondition.Parent:
-          throw CreateInvalidOperationException ("The value 'Parent' is not a valid value for matching the 'TenantHierarchyCondition'.");
+          throw CreateInvalidOperationException("The value 'Parent' is not a valid value for matching the 'TenantHierarchyCondition'.");
 
         case TenantHierarchyCondition.ThisAndParent:
-          return GetTenantAndParents(referenceTenant).Contains (GetPrincipalTenant (principal));
+          return GetTenantAndParents(referenceTenant).Contains(GetPrincipalTenant(principal));
 
         default:
-          throw CreateInvalidOperationException (
+          throw CreateInvalidOperationException(
               "The value '{0}' is not a valid value for 'TenantHierarchyCondition'.", _ace.TenantHierarchyCondition);
       }
     }
@@ -110,7 +110,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       if (_ace.SpecificAbstractRole == null)
         return true;
 
-      return GetAbstractRoles (token).Contains (_ace.SpecificAbstractRole);
+      return GetAbstractRoles(token).Contains(_ace.SpecificAbstractRole);
     }
 
     private bool MatchesUserCondition (SecurityToken token)
@@ -121,20 +121,26 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           return true;
 
         case UserCondition.Owner:
-          return MatchPrincipalAgainstUser (token.Principal, token.OwningUser);
+          return MatchPrincipalAgainstUser(token.Principal, token.OwningUser);
 
         case UserCondition.SpecificUser:
-          return MatchPrincipalAgainstUser (token.Principal, _ace.SpecificUser.GetHandle());
+        {
+          Assertion.IsNotNull(
+              _ace.SpecificUser,
+              "AccessControlEntry{{{0}}}.SpecificUser != null when AccessControlEntry.UserCondition == UserCondition.SpecificUser",
+              _ace.ID);
+          return MatchPrincipalAgainstUser(token.Principal, _ace.SpecificUser.GetHandle());
+        }
 
         case UserCondition.SpecificPosition:
-          return MatchPrincipalAgainstPosition (token.Principal);
+          return MatchPrincipalAgainstPosition(token.Principal);
 
         default:
-          throw CreateInvalidOperationException ("The value '{0}' is not a valid value for 'UserCondition'.", _ace.UserCondition);
+          throw CreateInvalidOperationException("The value '{0}' is not a valid value for 'UserCondition'.", _ace.UserCondition);
       }
     }
 
-    private bool MatchPrincipalAgainstUser (Principal principal, IDomainObjectHandle<User> referenceUser)
+    private bool MatchPrincipalAgainstUser (Principal principal, IDomainObjectHandle<User>? referenceUser)
     {
       // User is only compared using the DomainObjectHandle to prevent spamming the ClientTransaction with unnecessary User-objects
 
@@ -145,12 +151,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       if (principalUser == null)
         return false;
 
-      return referenceUser.ObjectID.Equals (principalUser.ObjectID);
+      return referenceUser.ObjectID.Equals(principalUser.ObjectID);
     }
 
     private bool MatchPrincipalAgainstPosition (Principal principal)
     {
-      return GetMatchingPrincipalRoles (principal).Any();
+      return GetMatchingPrincipalRoles(principal).Any();
     }
 
     private bool MatchesGroupCondition (SecurityToken token)
@@ -161,10 +167,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           return true;
 
         case GroupCondition.OwningGroup:
-          return MatchPrincipalAgainstGroup (token.Principal, GetOwningGroup (token), _ace.GroupHierarchyCondition);
+          return MatchPrincipalAgainstGroup(token.Principal, GetOwningGroup(token), _ace.GroupHierarchyCondition);
 
         case GroupCondition.SpecificGroup:
-          return MatchPrincipalAgainstGroup (token.Principal, _ace.SpecificGroup, _ace.GroupHierarchyCondition);
+          return MatchPrincipalAgainstGroup(token.Principal, _ace.SpecificGroup, _ace.GroupHierarchyCondition);
 
           // BranchOfOwningGroup matches the ACE if: The (security token) owning group or any of its parent-groups has the 
           // group type stored in the ACE - and - the principal is a member of any of the groups which come below the first
@@ -174,53 +180,58 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           // Starting with this group, it then traverses the group hierarchy downward and checks if any of the groups is a member
           // of the principal's groups; if yes, the ACE matches, otherwise it does not.
         case GroupCondition.BranchOfOwningGroup:
-          return MatchPrincipalAgainstGroup (token.Principal, FindBranchRoot (GetOwningGroup (token)), GroupHierarchyCondition.ThisAndChildren);
+          return MatchPrincipalAgainstGroup(token.Principal, FindBranchRoot(GetOwningGroup(token)), GroupHierarchyCondition.ThisAndChildren);
 
         case GroupCondition.AnyGroupWithSpecificGroupType:
-          return MatchPrincipalAgainstPosition (token.Principal);
+          return MatchPrincipalAgainstPosition(token.Principal);
 
         default:
-          throw CreateInvalidOperationException ("The value '{0}' is not a valid value for 'GroupCondition'.", _ace.GroupCondition);
+          throw CreateInvalidOperationException("The value '{0}' is not a valid value for 'GroupCondition'.", _ace.GroupCondition);
       }
     }
 
     // Starting at the passed group, returns the first group in the parent hierarchy of the passed group whose
     // GroupType is equal to the ACE specific GroupType.
-    private Group FindBranchRoot (Group referenceGroup)
+    private Group? FindBranchRoot (Group? referenceGroup)
     {
-      Assertion.IsTrue (_ace.GroupCondition == GroupCondition.BranchOfOwningGroup);
+      Assertion.IsTrue(_ace.GroupCondition == GroupCondition.BranchOfOwningGroup);
 
       if (referenceGroup == null)
         return null;
 
-      return GetGroupAndParents (referenceGroup).FirstOrDefault (g => _ace.SpecificGroupType.Equals (g.GroupType));
+      Assertion.IsNotNull(
+          _ace.SpecificGroupType,
+          "AccessControlEntry{{{0}}}.SpecificGroupType != null when AccessControlEntry.GroupCondition == GroupCondition.BranchOfOwningGroup",
+          _ace.ID);
+
+      return GetGroupAndParents(referenceGroup).FirstOrDefault(g => _ace.SpecificGroupType.Equals(g.GroupType));
     }
 
-    private bool MatchPrincipalAgainstGroup (Principal principal, Group referenceGroup, GroupHierarchyCondition groupHierarchyCondition)
+    private bool MatchPrincipalAgainstGroup (Principal principal, Group? referenceGroup, GroupHierarchyCondition groupHierarchyCondition)
     {
       if (referenceGroup == null)
         return false;
 
-      var principalRoles = GetMatchingPrincipalRoles (principal);
-      var principalGroups = principalRoles.Select (r => r.Group.GetObjectReference());
+      var principalRoles = GetMatchingPrincipalRoles(principal);
+      var principalGroups = principalRoles.Select(r => r.Group.GetObjectReference());
 
-      Func<bool> isPrincipalMatchingReferenceGroupOrParents = () => principalGroups.Intersect (GetGroupAndParents (referenceGroup)).Any();
+      Func<bool> isPrincipalMatchingReferenceGroupOrParents = () => principalGroups.Intersect(GetGroupAndParents(referenceGroup)).Any();
 
-      Func<bool> isPrincipalMatchingReferenceGroupOrChildren = () => principalGroups.SelectMany (GetGroupAndParents).Contains (referenceGroup);
+      Func<bool> isPrincipalMatchingReferenceGroupOrChildren = () => principalGroups.SelectMany(GetGroupAndParents).Contains(referenceGroup);
 
       switch (groupHierarchyCondition)
       {
         case GroupHierarchyCondition.Undefined:
-          throw CreateInvalidOperationException ("The value 'Undefined' is not a valid value for matching the 'GroupHierarchyCondition'.");
+          throw CreateInvalidOperationException("The value 'Undefined' is not a valid value for matching the 'GroupHierarchyCondition'.");
 
         case GroupHierarchyCondition.This:
-          return principalGroups.Contains (referenceGroup);
+          return principalGroups.Contains(referenceGroup);
 
         case GroupHierarchyCondition.Parent:
-          throw CreateInvalidOperationException ("The value 'Parent' is not a valid value for matching the 'GroupHierarchyCondition'.");
+          throw CreateInvalidOperationException("The value 'Parent' is not a valid value for matching the 'GroupHierarchyCondition'.");
 
         case GroupHierarchyCondition.Children:
-          throw CreateInvalidOperationException ("The value 'Children' is not a valid value for matching the 'GroupHierarchyCondition'.");
+          throw CreateInvalidOperationException("The value 'Children' is not a valid value for matching the 'GroupHierarchyCondition'.");
 
         case GroupHierarchyCondition.ThisAndParent:
           return isPrincipalMatchingReferenceGroupOrParents();
@@ -232,35 +243,65 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
           return isPrincipalMatchingReferenceGroupOrParents() || isPrincipalMatchingReferenceGroupOrChildren();
 
         default:
-          throw CreateInvalidOperationException ("The value '{0}' is not a valid value for 'GroupHierarchyCondition'.", groupHierarchyCondition);
+          throw CreateInvalidOperationException("The value '{0}' is not a valid value for 'GroupHierarchyCondition'.", groupHierarchyCondition);
       }
     }
 
     private IEnumerable<PrincipalRole> GetMatchingPrincipalRoles (Principal principal)
     {
-      var roles = (IEnumerable<PrincipalRole>) principal.Roles;
+      var roles = (IEnumerable<PrincipalRole>)principal.Roles;
       if (_ace.UserCondition == UserCondition.SpecificPosition)
-        roles = roles.Where (r => _ace.SpecificPosition.Equals (r.Position.GetObjectReference (_clientTransaction)));
+      {
+        Assertion.IsNotNull(
+            _ace.SpecificPosition,
+            "AccessControlEntry{{{0}}}.SpecificPosition != null when AccessControlEntry.UserCondition == UserCondition.SpecificPosition",
+            _ace.ID);
 
-      bool hasSpecificPositionAndGroupType =
-          _ace.UserCondition == UserCondition.SpecificPosition && _ace.GroupCondition == GroupCondition.BranchOfOwningGroup
-          || _ace.GroupCondition == GroupCondition.AnyGroupWithSpecificGroupType;
+        roles = roles.Where(r => _ace.SpecificPosition.Equals(r.Position.GetObjectReference(_clientTransaction)));
+      }
+
+      bool hasSpecificPositionAndGroupType;
+      if (_ace.UserCondition == UserCondition.SpecificPosition && _ace.GroupCondition == GroupCondition.BranchOfOwningGroup)
+      {
+        Assertion.IsNotNull(
+            _ace.SpecificGroupType,
+            "AccessControlEntry{{{0}}}.SpecificGroupType != null when AccessControlEntry.GroupCondition == GroupCondition.BranchOfOwningGroup",
+            _ace.ID);
+
+        hasSpecificPositionAndGroupType = true;
+      }
+      else if (_ace.GroupCondition == GroupCondition.AnyGroupWithSpecificGroupType)
+      {
+        Assertion.IsNotNull(
+            _ace.SpecificGroupType,
+            "AccessControlEntry{{{0}}}.SpecificGroupType != null when AccessControlEntry.GroupCondition == GroupCondition.AnyGroupWithSpecificGroupType",
+            _ace.ID);
+
+        hasSpecificPositionAndGroupType = true;
+      }
+      else
+      {
+        hasSpecificPositionAndGroupType = false;
+      }
 
       if (hasSpecificPositionAndGroupType)
-        roles = roles.Where (r => _ace.SpecificGroupType.Equals (r.Group.GetObject (_clientTransaction).GroupType));
+      {
+        Assertion.DebugIsNotNull(_ace.SpecificGroupType, "_ace.SpecificGroupType != null");
+        roles = roles.Where(r => _ace.SpecificGroupType.Equals(r.Group.GetObject(_clientTransaction).GroupType));
+      }
 
       return roles;
     }
 
-    private Tenant GetPrincipalTenant (Principal principal)
+    private Tenant? GetPrincipalTenant (Principal principal)
     {
       if (principal.Tenant == null)
         return null;
 
-      return principal.Tenant.GetObjectReference (_clientTransaction);
+      return principal.Tenant.GetObjectReference(_clientTransaction);
     }
 
-    private Tenant GetOwningTenant (SecurityToken token)
+    private Tenant? GetOwningTenant (SecurityToken token)
     {
       if (token.OwningTenant == null)
         return null;
@@ -268,7 +309,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
       return token.OwningTenant.GetObjectReference(_clientTransaction);
     }
 
-    private Group GetOwningGroup (SecurityToken token)
+    private Group? GetOwningGroup (SecurityToken token)
     {
       if (token.OwningGroup == null)
         return null;
@@ -278,22 +319,22 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private IEnumerable<AbstractRoleDefinition> GetAbstractRoles (SecurityToken token)
     {
-      return token.AbstractRoles.Select (abstractRole => abstractRole.GetObjectReference (_clientTransaction));
+      return token.AbstractRoles.Select(abstractRole => abstractRole.GetObjectReference(_clientTransaction));
     }
 
     private IEnumerable<Tenant> GetTenantAndParents (Tenant tenant)
     {
-      return EnumerableUtility.Singleton (tenant).Concat (tenant.GetParents());
+      return EnumerableUtility.Singleton(tenant).Concat(tenant.GetParents());
     }
 
     private IEnumerable<Group> GetGroupAndParents (Group @group)
     {
-      return EnumerableUtility.Singleton (@group).Concat (@group.GetParents());
+      return EnumerableUtility.Singleton(@group).Concat(@group.GetParents());
     }
 
     private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
     {
-      return new InvalidOperationException (string.Format (message, args));
+      return new InvalidOperationException(string.Format(message, args));
     }
   }
 }

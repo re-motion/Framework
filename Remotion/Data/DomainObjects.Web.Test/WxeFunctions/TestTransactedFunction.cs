@@ -32,22 +32,22 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
     // construction and disposing
 
     public TestTransactedFunction (ITransactionMode transactionMode, ObjectID objectWithAllDataTypes)
-        : base (transactionMode, objectWithAllDataTypes)
+        : base(transactionMode, objectWithAllDataTypes)
     {
     }
 
     // methods and properties
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public ObjectID ObjectWithAllDataTypes
     {
-      get { return (ObjectID) Variables["ObjectWithAllDataTypes"]; }
+      get { return (ObjectID)Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 
     private void Step1 ()
     {
-      ClassWithAllDataTypes objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<ClassWithAllDataTypes> ();
+      ClassWithAllDataTypes objectWithAllDataTypes = ObjectWithAllDataTypes.GetObject<ClassWithAllDataTypes>();
 
       objectWithAllDataTypes.Int32Property = 10;
     }

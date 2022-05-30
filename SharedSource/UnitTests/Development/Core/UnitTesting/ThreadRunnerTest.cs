@@ -17,172 +17,157 @@
 
 using System;
 using System.Threading;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.Development.Core.UnitTesting
 {
   [TestFixture]
   public class ThreadRunnerTest
   {
-    private MockRepository _mockRepository;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository ();
     }
 
     [Test]
     public void Run ()
     {
       bool threadRun = false;
-      ThreadRunner.Run (delegate { threadRun = true; });
+      ThreadRunner.Run(delegate { threadRun = true; });
 
-      Assert.That (threadRun, Is.True);
+      Assert.That(threadRun, Is.True);
     }
 
     [Test]
     public void Ctor_WithTimeout ()
     {
-      var threadRunner = new ThreadRunner (delegate { }, TimeSpan.FromSeconds (1.0));
-      Assert.That (threadRunner.Timeout, Is.EqualTo (TimeSpan.FromSeconds (1.0)));
+      var threadRunner = new ThreadRunner(delegate { }, TimeSpan.FromSeconds(1.0));
+      Assert.That(threadRunner.Timeout, Is.EqualTo(TimeSpan.FromSeconds(1.0)));
     }
 
     [Test]
     public void Ctor_WithoutTimeout_HasInfiniteTimeout ()
     {
-      var threadRunner = new ThreadRunner (delegate { });
-      Assert.That (threadRunner.Timeout.TotalMilliseconds, Is.EqualTo (Timeout.Infinite));
+      var threadRunner = new ThreadRunner(delegate { });
+      Assert.That(threadRunner.Timeout.TotalMilliseconds, Is.EqualTo(Timeout.Infinite));
     }
 
     [Test]
     public void Run_CallsJoin ()
     {
-      TimeSpan timeout = TimeSpan.FromSeconds (1.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> ((ThreadStart) delegate { }, timeout);
-      threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything)).Return (true);
+      TimeSpan timeout = TimeSpan.FromSeconds(1.0);
+      var threadRunnerMock = new Mock<ThreadRunner>((ThreadStart)delegate { }, timeout) { CallBase = true };
+      threadRunnerMock
+          .Protected()
+          .Setup<bool>("JoinThread", true, ItExpr.IsAny<Thread>())
+          .Returns(true)
+          .Verifiable();
 
-      threadRunnerMock.Replay ();
-      threadRunnerMock.Run();
-      threadRunnerMock.VerifyAllExpectations ();
+      threadRunnerMock.Object.Run();
+      threadRunnerMock.Verify();
     }
 
     [Test]
     public void Run_CallsJoin_WithRightThread ()
     {
-      using (var waitHandle = new ManualResetEvent (false))
+      using (var waitHandle = new ManualResetEvent(false))
       {
-        Thread threadRunnerThread = null;
-        var threadMethod = (ThreadStart) delegate { threadRunnerThread = Thread.CurrentThread; waitHandle.Set (); };
+        Thread? threadRunnerThread = null;
+        var threadMethod = (ThreadStart)delegate { threadRunnerThread = Thread.CurrentThread; waitHandle.Set(); };
 
         TimeSpan timeout = TimeSpan.MaxValue;
-        var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> (threadMethod, timeout);
+        var threadRunnerMock = new Mock<ThreadRunner>(threadMethod, timeout) { CallBase = true };
 
-        threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything)).
-            WhenCalled (
+        threadRunnerMock
+            .Protected()
+            .Setup<bool>("JoinThread", true, ItExpr.IsAny<Thread>())
+            .Returns(true)
+            .Callback(
             // when this expectation is reached, assert that the threadRunnerThread was passed to the method
-            invocation =>
+            (Thread thread) =>
             {
-              waitHandle.WaitOne ();
-              Assert.That (invocation.Arguments[0], Is.SameAs (threadRunnerThread));
-            }).Return (true);
+              waitHandle.WaitOne();
+              Assert.That(thread, Is.SameAs(threadRunnerThread));
+            })
+            .Verifiable();
 
-        threadRunnerMock.Replay();
-        threadRunnerMock.Run();
-        threadRunnerMock.VerifyAllExpectations();
+        threadRunnerMock.Object.Run();
+        threadRunnerMock.Verify();
       }
     }
 
     [Test]
-    public void Run_UsesJoinResult_ToIndicateTimedOut_False ()
+    public void Run_WithTimedOutThread_ThrowsTimeoutException ()
     {
-      TimeSpan timeout = TimeSpan.FromSeconds (1.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> ((ThreadStart) delegate { }, timeout);
-      threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything)).Return (true);
+      ManualResetEvent wait = new ManualResetEvent(false);
+      TimeSpan timeout = TimeSpan.FromMinutes(2.0);
+      var threadRunnerMock = new Mock<ThreadRunner>((ThreadStart)delegate { wait.Set(); }, timeout) { CallBase = true };
+      threadRunnerMock
+          .Protected()
+          .Setup<bool>("JoinThread", true, ItExpr.IsAny<Thread>())
+          .Returns(false)
+          .Callback((Thread thread) => { wait.WaitOne(); })
+          .Verifiable();
 
-      threadRunnerMock.Replay ();
-      Assert.That (threadRunnerMock.Run (), Is.False);
-      threadRunnerMock.VerifyAllExpectations ();
+      Assert.That(
+          () => threadRunnerMock.Object.Run(),
+          Throws.TypeOf<TimeoutException>()
+              .With.Message.EqualTo("The thread has not finished executing within the timeout (00:02:00) and was not cleaned up.")
+              .With.InnerException.Null);
+      threadRunnerMock.Verify();
     }
 
     [Test]
-    public void Run_UsesJoinResult_ToIndicateTimedOut_True ()
+    public void Run_WithExceptionOnTimedOutThread_ThrowsTimeoutException ()
     {
-      TimeSpan timeout = TimeSpan.FromSeconds (1.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> ((ThreadStart) delegate { }, timeout);
-      threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything)).Return (false);
+      ManualResetEvent wait = new ManualResetEvent(false);
+      var exception = new InvalidOperationException("xy");
+      TimeSpan timeout = TimeSpan.FromMinutes(1.0);
+      var threadRunnerMock = new Mock<ThreadRunner>(
+                             (ThreadStart)delegate
+                             {
+                               wait.Set();
+                               throw exception;
+                             },
+                             timeout) { CallBase = true };
+      threadRunnerMock
+          .Protected()
+          .Setup<bool>("JoinThread", true, ItExpr.IsAny<Thread>())
+          .Returns(false)
+          .Callback((Thread thread) =>
+              {
+                wait.WaitOne();
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+              });
 
-      threadRunnerMock.Replay ();
-      Assert.That (threadRunnerMock.Run (), Is.True);
-      threadRunnerMock.VerifyAllExpectations ();
-    }
-
-    [Test]
-    public void Run_WithTimedOutThread_CallsAbort ()
-    {
-      TimeSpan timeout = TimeSpan.FromSeconds (1.0);
-      var threadRunnerMock = _mockRepository.PartialMock<ThreadRunner> ((ThreadStart) delegate { }, timeout);
-      threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "JoinThread", Arg<Thread>.Is.Anything)).Return (false);
-      threadRunnerMock.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "AbortThread", Arg<Thread>.Is.Anything));
-
-      threadRunnerMock.Replay ();
-      threadRunnerMock.Run ();
-      threadRunnerMock.VerifyAllExpectations ();
-    }
-
-    [Test]
-    public void WithMillisecondsTimeout ()
-    {
-      ThreadRunner threadRunner = ThreadRunner.WithMillisecondsTimeout (delegate { }, 250);
-      Assert.That (threadRunner.Timeout, Is.EqualTo (TimeSpan.FromMilliseconds (250)));
-    }
-
-    [Test]
-    public void WithSecondsTimeout ()
-    {
-      ThreadRunner threadRunner = ThreadRunner.WithSecondsTimeout (delegate { }, 250);
-      Assert.That (threadRunner.Timeout, Is.EqualTo (TimeSpan.FromSeconds (250)));
+      Assert.That(
+          () => threadRunnerMock.Object.Run(),
+          Throws.TypeOf<TimeoutException>()
+              .With.Message.EqualTo("The thread has not finished executing within the timeout (00:01:00) and was not cleaned up.")
+              .With.InnerException.SameAs(exception));
+      threadRunnerMock.Verify();
     }
 
     [Test]
     public void WithTimeout ()
     {
-      ThreadRunner threadRunner = ThreadRunner.WithTimeout (delegate { }, TimeSpan.FromMinutes (250));
-      Assert.That (threadRunner.Timeout, Is.EqualTo (TimeSpan.FromMinutes (250)));
+      ThreadRunner threadRunner = new ThreadRunner(delegate { }, TimeSpan.FromMinutes(250));
+      Assert.That(threadRunner.Timeout, Is.EqualTo(TimeSpan.FromMinutes(250)));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "xy")]
     public void Run_WithException ()
     {
-      var exception = new InvalidOperationException ("xy");
-      ThreadRunner.Run (() => { throw exception; });
-    }
-
-    [Test]
-    public void RunWithTimeout ()
-    {
-      bool timedOut = ThreadRunner.WithTimeout (RunTimesOutEndlessLoop, TimeSpan.FromSeconds (0.1)).Run();
-      Assert.That (timedOut, Is.True);
-    }
-
-    [Test]
-    public void RunWithoutTimeout ()
-    {
-      bool timedOut = ThreadRunner.WithTimeout (RunTimesOutVeryFastFunction, TimeSpan.FromMilliseconds (int.MaxValue)).Run ();
-      Assert.That (timedOut, Is.False);
-    }
-
-    private static void RunTimesOutEndlessLoop ()
-    {
-      while (true) { }
-    }
-
-    private static void RunTimesOutVeryFastFunction ()
-    {
+      var exception = new InvalidOperationException("xy");
+      Assert.That(
+          () => ThreadRunner.Run(() => { throw exception; }),
+          Throws.InvalidOperationException.With.SameAs(exception));
     }
   }
 }

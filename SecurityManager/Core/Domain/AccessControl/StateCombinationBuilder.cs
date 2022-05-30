@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public StateCombinationBuilder (SecurableClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       _classDefinition = classDefinition;
     }
@@ -50,20 +50,20 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
       var allStatesByProperty = from property in _classDefinition.StateProperties
                                 select from state in property.DefinedStates.DefaultIfEmpty()
-                                       select new PropertyStateTuple (property, state);
+                                       select new PropertyStateTuple(property, state);
 
-      var aggregatedStates = allStatesByProperty.Aggregate (seed, CreateOuterProduct);
+      var aggregatedStates = allStatesByProperty.Aggregate(seed, CreateOuterProduct);
 
-      return aggregatedStates.Select (innerList => innerList.ToArray()).ToArray();
+      return aggregatedStates.Select(innerList => innerList.ToArray()).ToArray();
     }
 
     private IEnumerable<IEnumerable<PropertyStateTuple>> CreateOuterProduct (
         IEnumerable<IEnumerable<PropertyStateTuple>> previous,
         IEnumerable<PropertyStateTuple> current)
     {
-      return from p in previous.DefaultIfEmpty (new PropertyStateTuple[0])
+      return from p in previous.DefaultIfEmpty(new PropertyStateTuple[0])
              from c in current
-             select p.Concat (c);
+             select p.Concat(c);
     }
   }
 }

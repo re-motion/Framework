@@ -18,7 +18,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain;
-using Remotion.Validation;
+using Remotion.Validation.Results;
 
 namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
 {
@@ -38,35 +38,37 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
         var customer = Customer.NewObject();
-        customer.Email = "InvalidMail";
-        ((ICustomerIntroduced) customer).Address = Address.NewObject();
-        ((ICustomerIntroduced) customer).Title = "Chef1";
+        ((ICustomerIntroduced)customer).Address = Address.NewObject();
+        ((ICustomerIntroduced)customer).Title = "Chef1";
 
-        var validator = ValidationBuilder.BuildValidator<Customer>();
+        var validator = ValidationProvider.GetValidator(typeof(Customer));
 
-        var result1 = validator.Validate (customer);
-        Assert.That (result1.IsValid, Is.False);
-        Assert.That (
-            result1.Errors.Select (e => e.ErrorMessage),
-            Is.EquivalentTo (new[] { "'LocalizedTitle' should not be equal to 'Chef1'.", "'LocalizedMail' is not a valid email address." }));
+        var result1 = validator.Validate(customer);
+        Assert.That(result1.IsValid, Is.False);
+        Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+        Assert.That(
+            result1.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
+            Is.EquivalentTo(new[] { "Title: The value must not be equal to 'Chef1'." }));
       }
     }
 
     [Test]
     public void BuildOrderValidator_ValidationFailuresAreLocalizedThroughDomainObjectResource ()
     {
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var order = Order.NewObject ();
+        var order = Order.NewObject();
         order.Number = "er";
+        order.OrderItems.Add(OrderItem.NewObject());
 
-        var validator = ValidationBuilder.BuildValidator<Order> ();
+        var validator = ValidationProvider.GetValidator(typeof(Order));
 
-        var result1 = validator.Validate (order);
-        Assert.That (result1.IsValid, Is.False);
-        Assert.That (
-            result1.Errors.Select (e => e.ErrorMessage),
-            Is.EquivalentTo (new[] { "'LocalizedNumber' must be between 3 and 8 characters. You entered 2 characters." }));
+        var result1 = validator.Validate(order);
+        Assert.That(result1.IsValid, Is.False);
+        Assert.That(result1.Errors, Is.All.InstanceOf<PropertyValidationFailure>());
+        Assert.That(
+            result1.Errors.OfType<PropertyValidationFailure>().Select(e => $"{e.ValidatedProperty.Name}: {e.ErrorMessage}"),
+            Is.EquivalentTo(new[] { "Number: The value must have between 3 and 8 characters." }));
       }
     }
   }

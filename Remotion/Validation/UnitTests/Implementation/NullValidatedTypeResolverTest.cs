@@ -29,9 +29,9 @@ namespace Remotion.Validation.UnitTests.Implementation
     {
       var resolver = new NullValidatedTypeResolver();
 
-      var result = resolver.GetValidatedType (typeof (PersonValidationCollector1));
+      var result = resolver.GetValidatedType(typeof(PersonValidationRuleCollector1));
 
-      Assert.That (result, Is.Null);
+      Assert.That(result, Is.Null);
     }
   }
 }

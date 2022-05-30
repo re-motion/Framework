@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Reflection;
-
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
@@ -35,33 +35,33 @@ namespace Remotion.Utilities
     public static bool IsNullableType (Type type)
     {
       if (type == null)
-        throw new ArgumentNullException ("type");
+        throw new ArgumentNullException("type");
 
-      return IsNullableType_NoArgumentCheck (type);
+      return IsNullableType_NoArgumentCheck(type);
     }
 
     internal static bool IsNullableType_NoArgumentCheck (Type expectedType)
     {
-      return !expectedType.GetTypeInfo().IsValueType || Nullable.GetUnderlyingType (expectedType) != null;
+      return !expectedType.GetTypeInfo().IsValueType || Nullable.GetUnderlyingType(expectedType) != null;
     }
 
     public static Type GetNullableType (Type type)
     {
       if (type == null)
-        throw new ArgumentNullException ("type");
+        throw new ArgumentNullException("type");
 
-      if (IsNullableType (type))
+      if (IsNullableType(type))
         return type;
       else
-        return typeof (Nullable<>).MakeGenericType (type);
+        return typeof(Nullable<>).MakeGenericType(type);
     }
 
     public static Type GetBasicType (Type type)
     {
       if (type == null)
-        throw new ArgumentNullException ("type");
+        throw new ArgumentNullException("type");
 
-      return Nullable.GetUnderlyingType (type) ?? type;
+      return Nullable.GetUnderlyingType(type) ?? type;
     }
   }
 }

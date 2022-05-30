@@ -25,16 +25,16 @@ public delegate void WebTreeNodeEventHandler (object sender, WebTreeNodeEventArg
 /// <summary> Provides data for event raised by a <see cref="WebTreeNode"/>. </summary>
 public class WebTreeNodeEventArgs: EventArgs
 {
-  private WebTreeNode _node;
+  private WebTreeNode? _node;
 
   /// <summary> Initializes an instance. </summary>
-  public WebTreeNodeEventArgs (WebTreeNode node)
+  public WebTreeNodeEventArgs (WebTreeNode? node)
   {
     _node = node;
   }
 
   /// <summary> The <see cref="WebTreeNode"/> that was clicked. </summary>
-  public WebTreeNode Node
+  public WebTreeNode? Node
   {
     get { return _node; }
   }
@@ -49,8 +49,8 @@ public class WebTreeNodeClickEventArgs: WebTreeNodeEventArgs
   private string[] _path;
 
   /// <summary> Initializes an instance. </summary>
-  public WebTreeNodeClickEventArgs (WebTreeNode node, string[] path)
-    : base (node)
+  public WebTreeNodeClickEventArgs (WebTreeNode? node, string[] path)
+    : base(node)
   {
     _path = path;
   }

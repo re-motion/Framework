@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
 {
-  [AttributeUsage (AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
   public class SampleAttribute : Attribute, ISampleAttribute
   {
     public string Value { get; set; }

@@ -37,16 +37,23 @@ namespace Remotion.UnitTests.Context
     {
       var instance = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-      Assert.That (instance, Is.InstanceOf(typeof (CallContextStorageProvider)));
+#if NETFRAMEWORK
+      Assert.That(instance, Is.InstanceOf(typeof(CallContextStorageProvider)));
+#else
+// Ignore the obsolete warnings for AsyncLocalStorageProvider
+#pragma warning disable 618
+      Assert.That(instance, Is.InstanceOf(typeof(AsyncLocalStorageProvider)));
+#pragma warning restore 618
+#endif
     }
 
     [Test]
     public void GetInstance_Twice_ReturnsSameInstance ()
     {
-      var isntance1 = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
+      var instance1 = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
       var instance2 = _serviceLocator.GetInstance<ISafeContextStorageProvider>();
 
-      Assert.That (isntance1, Is.Not.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

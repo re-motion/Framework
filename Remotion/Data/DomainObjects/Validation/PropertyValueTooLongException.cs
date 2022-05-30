@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -25,41 +26,43 @@ namespace Remotion.Data.DomainObjects.Validation
   [Serializable]
   public class PropertyValueTooLongException : DomainObjectValidationException
   {
-    private readonly DomainObject _domainObject;
+    private readonly DomainObject? _domainObject;
     private readonly string _propertyName;
     private readonly int _maxLength;
 
-    public PropertyValueTooLongException (DomainObject domainObject, string propertyName, int maxLength, string message)
-        : this (domainObject, propertyName, maxLength, message, null)
+    public PropertyValueTooLongException (DomainObject? domainObject, string propertyName, int maxLength, string message)
+        : this(domainObject, propertyName, maxLength, message, null)
     {
     }
 
-    public PropertyValueTooLongException (DomainObject domainObject, string propertyName, int maxLength, string message, Exception inner)
-        : base (message, inner)
+    public PropertyValueTooLongException (DomainObject? domainObject, string propertyName, int maxLength, string message, Exception? inner)
+        : base(message, inner)
     {
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+
       _domainObject = domainObject;
       _propertyName = propertyName;
       _maxLength = maxLength;
     }
 
     protected PropertyValueTooLongException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _domainObject = (DomainObject) info.GetValue ("_domainObject", typeof (DomainObject));
-      _propertyName = info.GetString ("_propertyName");
-      _maxLength = info.GetInt32 ("_maxLength");
+      _domainObject = (DomainObject?)info.GetValue("_domainObject", typeof(DomainObject));
+      _propertyName = info.GetString("_propertyName")!;
+      _maxLength = info.GetInt32("_maxLength");
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("_domainObject", _domainObject);
-      info.AddValue ("_propertyName", _propertyName);
-      info.AddValue ("_maxLength", _maxLength);
+      info.AddValue("_domainObject", _domainObject);
+      info.AddValue("_propertyName", _propertyName);
+      info.AddValue("_maxLength", _maxLength);
     }
 
-    public DomainObject DomainObject
+    public DomainObject? DomainObject
     {
       get { return _domainObject; }
     }

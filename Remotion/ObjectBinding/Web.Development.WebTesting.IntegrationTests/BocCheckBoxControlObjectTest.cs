@@ -21,6 +21,8 @@ using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -33,25 +35,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocCheckBoxControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocCheckBoxSelector, BocCheckBoxControlObject> testAction)
     {
-      testAction (Helper, e => e.CheckBoxes(), "checkBox");
+      testAction(Helper, e => e.CheckBoxes(), "checkBox");
     }
 
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocCheckBoxSelector, BocCheckBoxControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocCheckBoxSelector, BocCheckBoxControlObject> testAction)
     {
-      testAction (Helper, e => e.CheckBoxes(), "checkBox");
+      testAction(Helper, e => e.CheckBoxes(), "checkBox");
     }
 
     [Test]
@@ -59,10 +61,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.CheckBoxes().GetByLocalID ("DeceasedField_Disabled");
+      var control = home.CheckBoxes().GetByLocalID("DeceasedField_Disabled");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.SetTo (false), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
+          () => control.SetTo(false),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SetTo").Message));
     }
 
     [Test]
@@ -70,10 +74,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.CheckBoxes().GetByLocalID ("DeceasedField_ReadOnly");
+      var control = home.CheckBoxes().GetByLocalID("DeceasedField_ReadOnly");
 
-      Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.SetTo (false), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
+      Assert.That(control.IsReadOnly(), Is.True);
+      Assert.That(() => control.SetTo(false), Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 
     [Test]
@@ -81,17 +85,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
-      Assert.That (bocCheckBox.GetState(), Is.EqualTo (false));
+      var bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_Normal");
+      Assert.That(bocCheckBox.GetState(), Is.EqualTo(false));
 
-      bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_ReadOnly");
-      Assert.That (bocCheckBox.GetState(), Is.EqualTo (false));
+      bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_ReadOnly");
+      Assert.That(bocCheckBox.GetState(), Is.EqualTo(false));
 
-      bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_Disabled");
-      Assert.That (bocCheckBox.GetState(), Is.EqualTo (false));
+      bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_Disabled");
+      Assert.That(bocCheckBox.GetState(), Is.EqualTo(false));
 
-      bocCheckBox = home.CheckBoxes().GetByLocalID ("DeceasedField_NoAutoPostBack");
-      Assert.That (bocCheckBox.GetState(), Is.EqualTo (false));
+      bocCheckBox = home.CheckBoxes().GetByLocalID("DeceasedField_NoAutoPostBack");
+      Assert.That(bocCheckBox.GetState(), Is.EqualTo(false));
     }
 
     [Test]
@@ -99,26 +103,43 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var normalBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_Normal");
-      var noAutoPostBackBocBooleanValue = home.CheckBoxes().GetByLocalID ("DeceasedField_NoAutoPostBack");
+      {
+        var normalBocBooleanValue = home.CheckBoxes().GetByLocalID("DeceasedField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(normalBocBooleanValue);
+        normalBocBooleanValue.SetTo(true);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("NormalCurrentValueLabel").Text, Is.EqualTo("True"));
+      }
 
-      normalBocBooleanValue.SetTo (true);
-      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("True"));
+      {
+        var noAutoPostBackBocBooleanValue = home.CheckBoxes().GetByLocalID("DeceasedField_NoAutoPostBack");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(noAutoPostBackBocBooleanValue);
+        noAutoPostBackBocBooleanValue.SetTo(true);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo("False"));
+      }
 
-      noAutoPostBackBocBooleanValue.SetTo (true);
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("False"));
+      {
+        var normalBocBooleanValue = home.CheckBoxes().GetByLocalID("DeceasedField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(normalBocBooleanValue);
+        normalBocBooleanValue.SetTo(true, Opt.ContinueImmediately()); // same value, does not trigger post back
+        Assert.That(completionDetection.GetAndReset(), Is.Null);
+        Assert.That(home.Scope.FindIdEndingWith("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo("False"));
+      }
 
-      normalBocBooleanValue.SetTo (true, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("False"));
-
-      normalBocBooleanValue.SetTo (false);
-      Assert.That (home.Scope.FindIdEndingWith ("NormalCurrentValueLabel").Text, Is.EqualTo ("False"));
-      Assert.That (home.Scope.FindIdEndingWith ("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo ("True"));
+      {
+        var normalBocBooleanValue = home.CheckBoxes().GetByLocalID("DeceasedField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(normalBocBooleanValue);
+        normalBocBooleanValue.SetTo(false);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("NormalCurrentValueLabel").Text, Is.EqualTo("False"));
+        Assert.That(home.Scope.FindIdEndingWith("NoAutoPostBackCurrentValueLabel").Text, Is.EqualTo("True"));
+      }
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocCheckBox");
+      return Start("BocCheckBox");
     }
   }
 }

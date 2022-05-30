@@ -23,7 +23,7 @@ namespace Remotion.Mixins.Validation.Rules
   {
     public override void Install (ValidatingVisitor visitor)
     {
-      visitor.RequiredNextCallTypeRules.Add (new DelegateValidationRule<RequiredNextCallTypeDefinition> (RequiredNextCallTypeMustBePublic));
+      visitor.RequiredNextCallTypeRules.Add(new DelegateValidationRule<RequiredNextCallTypeDefinition>(RequiredNextCallTypeMustBePublic));
     }
 
     // Now throws ConfigurationException when violated
@@ -32,10 +32,10 @@ namespace Remotion.Mixins.Validation.Rules
     //  SingleMust (args.Definition.Type.IsInterface, args.Log, args.Self);
     //}
 
-    [DelegateRuleDescription (Message = "A type used as the TNext type parameter of a mixin does not have public visibility.")]
+    [DelegateRuleDescription(Message = "A type used as the TNext type parameter of a mixin does not have public visibility.")]
     private void RequiredNextCallTypeMustBePublic (DelegateValidationRule<RequiredNextCallTypeDefinition>.Args args)
     {
-      SingleMust (args.Definition.Type.IsVisible, args.Log, args.Self);
+      SingleMust(args.Definition.Type.IsVisible, args.Log, args.Self);
     }
 
   }

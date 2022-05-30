@@ -31,15 +31,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _rootTransaction = ClientTransaction.CreateRootTransaction();
-      _order1LoadedInRootTransaction = DomainObjectIDs.Order1.GetObject<Order> (_rootTransaction);
+      _order1LoadedInRootTransaction = DomainObjectIDs.Order1.GetObject<Order>(_rootTransaction);
     }
 
     public override void TearDown ()
     {
-      base.TearDown ();
+      base.TearDown();
 
       // Cleanup scopes left open by some test.
       while (ClientTransactionScope.ActiveScope != null)
@@ -51,69 +51,69 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     [Test]
     public void OpeningScopeForLeafTransaction_AffectsCurrentTransaction ()
     {
-      using (_rootTransaction.CreateSubTransaction ().EnterNonDiscardingScope ())
+      using (_rootTransaction.CreateSubTransaction().EnterNonDiscardingScope())
       {
-        Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction.LeafTransaction));
-        ClientTransaction.Current.Discard ();
+        Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction.LeafTransaction));
+        ClientTransaction.Current.Discard();
       }
 
-      using (_rootTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (_rootTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction.LeafTransaction));
+        Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction.LeafTransaction));
       }
 
-      using (_rootTransaction.CreateSubTransaction ().EnterScope (AutoRollbackBehavior.Rollback))
+      using (_rootTransaction.CreateSubTransaction().EnterScope(AutoRollbackBehavior.Rollback))
       {
-        Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction.LeafTransaction));
+        Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction.LeafTransaction));
       }
     }
 
     [Test]
     public void Scope_AffectsNewObject ()
     {
-      Assert.That (
+      Assert.That(
           () => Order.NewObject(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
 
-      var leafTransaction = _rootTransaction.CreateSubTransaction ();
-      using (leafTransaction.EnterDiscardingScope ())
+      var leafTransaction = _rootTransaction.CreateSubTransaction();
+      using (leafTransaction.EnterDiscardingScope())
       {
-        var instance = Order.NewObject ();
-        Assert.That (instance.RootTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (instance.DefaultTransactionContext.ClientTransaction, Is.SameAs (leafTransaction));
+        var instance = Order.NewObject();
+        Assert.That(instance.RootTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(instance.DefaultTransactionContext.ClientTransaction, Is.SameAs(leafTransaction));
       }
     }
 
     [Test]
     public void Scope_AffectsGetObject ()
     {
-      Assert.That (
-          () => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+      Assert.That(
+          () => DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>(),
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
 
-      var clientTransaction = _rootTransaction.CreateSubTransaction ();
-      using (clientTransaction.EnterNonDiscardingScope ())
+      var clientTransaction = _rootTransaction.CreateSubTransaction();
+      using (clientTransaction.EnterNonDiscardingScope())
       {
-        var instance = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
-        Assert.That (instance.RootTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (instance.DefaultTransactionContext.ClientTransaction, Is.SameAs (clientTransaction));
+        var instance = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
+        Assert.That(instance.RootTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(instance.DefaultTransactionContext.ClientTransaction, Is.SameAs(clientTransaction));
       }
     }
 
     [Test]
     public void Scope_AffectsQuery ()
     {
-      var query = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes> () select cwadt;
-      Assert.That (
+      var query = from cwadt in QueryFactory.CreateLinqQuery<ClassWithAllDataTypes>() select cwadt;
+      Assert.That(
           () => query.ToArray(),
-          Throws.InvalidOperationException.With.Message.EqualTo ("No ClientTransaction has been associated with the current thread."));
+          Throws.InvalidOperationException.With.Message.EqualTo("No ClientTransaction has been associated with the current thread."));
 
-      var clientTransaction = _rootTransaction.CreateSubTransaction ();
-      using (clientTransaction.EnterNonDiscardingScope ())
+      var clientTransaction = _rootTransaction.CreateSubTransaction();
+      using (clientTransaction.EnterNonDiscardingScope())
       {
-        var result = query.ToArray ().First ();
-        Assert.That (result.RootTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (result.DefaultTransactionContext.ClientTransaction, Is.SameAs (clientTransaction));
+        var result = query.ToArray().First();
+        Assert.That(result.RootTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(result.DefaultTransactionContext.ClientTransaction, Is.SameAs(clientTransaction));
       }
     }
 
@@ -122,27 +122,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       _order1LoadedInRootTransaction.OrderNumber = 2;
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        Assert.That (ClientTransaction.Current, Is.Not.SameAs (_rootTransaction));
+        Assert.That(ClientTransaction.Current, Is.Not.SameAs(_rootTransaction));
 
-        Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo(2));
+        Assert.That(_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
 
-      using (ClientTransaction.CreateRootTransaction ().EnterNonDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo(2));
+        Assert.That(_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
 
-      using (ClientTransaction.CreateRootTransaction ().EnterScope (AutoRollbackBehavior.Rollback))
+      using (ClientTransaction.CreateRootTransaction().EnterScope(AutoRollbackBehavior.Rollback))
       {
-        Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (2));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo(2));
+        Assert.That(_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
     }
 
@@ -151,112 +151,112 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
     {
       var subTransaction = _rootTransaction.CreateSubTransaction();
 
-      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (subTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(subTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
 
-      Assert.That (_order1LoadedInRootTransaction.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_order1LoadedInRootTransaction.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
 
-      Assert.That (() => _order1LoadedInRootTransaction.OrderNumber = 2, Throws.TypeOf<ClientTransactionReadOnlyException> ());
+      Assert.That(() => _order1LoadedInRootTransaction.OrderNumber = 2, Throws.TypeOf<ClientTransactionReadOnlyException>());
 
       using (subTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
-        Assert.That (subTransaction.ActiveTransaction, Is.SameAs (subTransaction));
+        Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(subTransaction));
+        Assert.That(subTransaction.ActiveTransaction, Is.SameAs(subTransaction));
 
-        Assert.That (_order1LoadedInRootTransaction.RootTransaction, Is.SameAs (_rootTransaction));
-        Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (subTransaction));
+        Assert.That(_order1LoadedInRootTransaction.RootTransaction, Is.SameAs(_rootTransaction));
+        Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(subTransaction));
 
-        Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That(_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo(1));
+        Assert.That(_order1LoadedInRootTransaction.State.IsUnchanged, Is.True);
 
         _order1LoadedInRootTransaction.OrderNumber = 3;
 
-        Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (3));
-        Assert.That (_order1LoadedInRootTransaction.State, Is.EqualTo (StateType.Changed));
+        Assert.That(_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo(3));
+        Assert.That(_order1LoadedInRootTransaction.State.IsChanged, Is.True);
       }
 
-      Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo (1));
+      Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_order1LoadedInRootTransaction.OrderNumber, Is.EqualTo(1));
     }
 
     [Test]
     public void Scope_NestedForDifferentTransactionsInTheHierarchy ()
     {
-      var middleTransaction = _rootTransaction.CreateSubTransaction ();
-      var subTransaction = middleTransaction.CreateSubTransaction ();
+      var middleTransaction = _rootTransaction.CreateSubTransaction();
+      var subTransaction = middleTransaction.CreateSubTransaction();
 
-      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
 
       using (middleTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (middleTransaction));
-        Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (middleTransaction));
+        Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(middleTransaction));
+        Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(middleTransaction));
 
         using (subTransaction.EnterNonDiscardingScope())
         {
-          Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
-          Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (subTransaction));
+          Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(subTransaction));
+          Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(subTransaction));
 
-          using (_rootTransaction.EnterNonDiscardingScope())  
+          using (_rootTransaction.EnterNonDiscardingScope())
           {
-            Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
-            Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
+            Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
+            Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
           }
 
-          Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
-          Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (subTransaction));
+          Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(subTransaction));
+          Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(subTransaction));
         }
 
-        Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (middleTransaction));
-        Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (middleTransaction));
+        Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(middleTransaction));
+        Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(middleTransaction));
       }
 
-      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(_order1LoadedInRootTransaction.DefaultTransactionContext.ClientTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void CreatingSubTransaction_WithinScope_DoesNotInfluenceActiveTransaction ()
     {
-      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
 
       using (_rootTransaction.EnterNonDiscardingScope())
       {
-        Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
-        Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_rootTransaction));
+        Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+        Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
 
-        _rootTransaction.CreateSubTransaction ();
+        _rootTransaction.CreateSubTransaction();
 
-        Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
-        Assert.That (ClientTransaction.Current.ActiveTransaction, Is.SameAs (_rootTransaction));
+        Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+        Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
       }
 
-      Assert.That (ClientTransaction.Current, Is.Null);
-      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(ClientTransaction.Current, Is.Null);
+      Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void LeaveOuterScope_WithoutLeavingInnerScope_MakeActiveFlags_Throws ()
     {
       var rootScope = _rootTransaction.EnterNonDiscardingScope();
-        Assert.That (ClientTransaction.Current, Is.SameAs (_rootTransaction));
-        Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (_rootTransaction));
+        Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+        Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(_rootTransaction));
 
-      var subTransaction = _rootTransaction.CreateSubTransaction ();
+      var subTransaction = _rootTransaction.CreateSubTransaction();
       subTransaction.EnterNonDiscardingScope();
 
-      Assert.That (ClientTransaction.Current, Is.SameAs (subTransaction));
-      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
+      Assert.That(ClientTransaction.Current, Is.SameAs(subTransaction));
+      Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(subTransaction));
 
-      Assert.That (
+      Assert.That(
           () => rootScope.Leave(),
           Throws.TypeOf<InvalidOperationException>()
-                .With.Message.EqualTo ("This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one."));
+                .With.Message.EqualTo("This ClientTransactionScope is not the active scope. Leave the active scope before leaving this one."));
 
-      Assert.That (ClientTransaction.Current, Is.SameAs (subTransaction));
-      Assert.That (_rootTransaction.ActiveTransaction, Is.SameAs (subTransaction));
+      Assert.That(ClientTransaction.Current, Is.SameAs(subTransaction));
+      Assert.That(_rootTransaction.ActiveTransaction, Is.SameAs(subTransaction));
     }
   }
 }

@@ -28,26 +28,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Configuration
   public class FakeDomainObjectsConfigurationTest
   {
     [Test]
-    public void Initialize()
+    public void Initialize ()
     {
-      StorageConfiguration storage = new StorageConfiguration ();
-      MappingLoaderConfiguration mappingLoader = new MappingLoaderConfiguration ();
-      QueryConfiguration query = new QueryConfiguration ();
-      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration (mappingLoader, storage, query);
+      StorageConfiguration storage = new StorageConfiguration();
+      MappingLoaderConfiguration mappingLoader = new MappingLoaderConfiguration();
+      QueryConfiguration query = new QueryConfiguration();
+      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration(mappingLoader, storage, query);
 
-      Assert.That (configuration.MappingLoader, Is.SameAs (mappingLoader));
-      Assert.That (configuration.Storage, Is.SameAs (storage));
-      Assert.That (configuration.Query, Is.SameAs (query));
+      Assert.That(configuration.MappingLoader, Is.SameAs(mappingLoader));
+      Assert.That(configuration.Storage, Is.SameAs(storage));
+      Assert.That(configuration.Query, Is.SameAs(query));
     }
 
     [Test]
-    public void InitializeWithDefaults()
+    public void InitializeWithDefaults ()
     {
-      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration ();
+      IDomainObjectsConfiguration configuration = new FakeDomainObjectsConfiguration();
 
-      Assert.That (configuration.MappingLoader, Is.TypeOf<MappingLoaderConfiguration>());
-      Assert.That (configuration.Storage,  Is.TypeOf<StorageConfiguration>());
-      Assert.That (configuration.Query, Is.TypeOf<QueryConfiguration>());
+      Assert.That(configuration.MappingLoader, Is.TypeOf<MappingLoaderConfiguration>());
+      Assert.That(configuration.Storage,  Is.TypeOf<StorageConfiguration>());
+      Assert.That(configuration.Query, Is.TypeOf<QueryConfiguration>());
     }
   }
 }

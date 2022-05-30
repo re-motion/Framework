@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection;
 using Remotion.ObjectBinding.Web.Development.WebTesting.FluentControlSelection;
@@ -26,7 +25,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories
 {
   /// <summary>
-  /// Contains tests for <see cref="IDisplayNameControlSelector{TControlObject}"/> that are executed via <see cref="RemotionTestCaseSourceAttribute"/>
+  /// Contains tests for <see cref="IDisplayNameControlSelector{TControlObject}"/> that are executed via <see cref="TestCaseSourceAttribute"/>
   /// </summary>
   public class DisplayNameControlSelectorTestCaseFactory<TControlSelector, TControl>
       : ControlSelectorTestCaseFactoryBase<TControlSelector, TControl, DisplayNameGenericTestPageParameter>
@@ -46,51 +45,51 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.Tes
     [GenericPageTestMethod]
     public void Get_Returns_NotNull ()
     {
-      var control = Selector.GetByDisplayName (Parameter.VisibleDisplayName);
+      var control = Selector.GetByDisplayName(Parameter.VisibleDisplayName);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
-    [GenericPageTestMethod (SearchTimeout = SearchTimeout.UseShortTimeout)]
-    public void Get_Throws_MissingHtmlException ()
+    [GenericPageTestMethod(SearchTimeout = SearchTimeout.UseShortTimeout)]
+    public void Get_Throws_WebTestException ()
     {
-      Assert.That (
-          (TestDelegate) (() => Selector.GetByDisplayName (Parameter.HiddenDisplayName)),
-          Throws.InstanceOf<MissingHtmlException>());
+      Assert.That(
+          (TestDelegate)(() => Selector.GetByDisplayName(Parameter.HiddenDisplayName)),
+          Throws.InstanceOf<WebTestException>());
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_NotNull ()
     {
-      var control = Selector.GetByDisplayNameOrNull (Parameter.VisibleDisplayName);
+      var control = Selector.GetByDisplayNameOrNull(Parameter.VisibleDisplayName);
 
-      Assert.That (control, Is.Not.Null);
-      Assert.That (control.Scope.Id, Is.EqualTo (Parameter.FoundControlID));
+      Assert.That(control, Is.Not.Null);
+      Assert.That(control.Scope.Id, Is.EqualTo(Parameter.FoundControlID));
     }
 
     [GenericPageTestMethod]
     public void GetOrNull_Returns_Null ()
     {
-      var control = Selector.GetByDisplayNameOrNull (Parameter.HiddenDisplayName);
+      var control = Selector.GetByDisplayNameOrNull(Parameter.HiddenDisplayName);
 
-      Assert.That (control, Is.Null);
+      Assert.That(control, Is.Null);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_True ()
     {
-      var controlVisible = Selector.ExistsByDisplayName (Parameter.VisibleDisplayName);
+      var controlVisible = Selector.ExistsByDisplayName(Parameter.VisibleDisplayName);
 
-      Assert.That (controlVisible, Is.True);
+      Assert.That(controlVisible, Is.True);
     }
 
     [GenericPageTestMethod]
     public void Exists_Returns_False ()
     {
-      var controlVisible = Selector.ExistsByDisplayName (Parameter.HiddenDisplayName);
+      var controlVisible = Selector.ExistsByDisplayName(Parameter.HiddenDisplayName);
 
-      Assert.That (controlVisible, Is.False);
+      Assert.That(controlVisible, Is.False);
     }
   }
 }

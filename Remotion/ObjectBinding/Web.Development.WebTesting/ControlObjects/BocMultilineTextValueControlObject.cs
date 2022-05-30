@@ -30,17 +30,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Control object representing the <see cref="T:Remotion.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/>.
   /// </summary>
   public class BocMultilineTextValueControlObject
-      : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors
+      : BocControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsValidationErrors, ISupportsValidationErrorsForReadOnly, IControlObjectWithText
   {
     public BocMultilineTextValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
-      var valueScope = Scope.FindChild ("Value");
+      var valueScope = Scope.FindChild("Value");
 
       if (IsReadOnly())
         return valueScope.Text; // do not trim
@@ -49,49 +49,49 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return FillWith (text, FinishInput.WithTab, actionOptions);
+      return FillWith(text, FinishInput.WithTab, actionOptions);
     }
 
     /// <summary>
     /// Calls <see cref="FillWith(string,IWebTestActionOptions)"/> by joining the given lines with new line characters.
     /// </summary>
-    public UnspecifiedPageObject FillWith ([NotNull] string[] lines, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith ([NotNull] string[] lines, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("lines", lines);
+      ArgumentUtility.CheckNotNull("lines", lines);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return FillWith (string.Join (Environment.NewLine, lines), actionOptions);
+      return FillWith(string.Join(Environment.NewLine, lines), actionOptions);
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
-      ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
-      new FillWithAction (this, Scope.FindChild ("Value"), text, finishInputWith).Execute (actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(actionOptions, finishInputWith);
+      ExecuteAction(new FillWithAction(this, Scope.FindChild("Value"), text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -102,17 +102,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public UnspecifiedPageObject FillWith (
         [NotNull] string[] lines,
         FinishInputWithAction finishInputWith,
-        IWebTestActionOptions actionOptions = null)
+        IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("lines", lines);
+      ArgumentUtility.CheckNotNull("lines", lines);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return FillWith (string.Join (Environment.NewLine, lines), finishInputWith, actionOptions);
+      return FillWith(string.Join(Environment.NewLine, lines), finishInputWith, actionOptions);
     }
 
     /// <summary>
@@ -120,12 +120,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
-      return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+      return new[] { string.Format("{0}_Value", GetHtmlID()) };
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (GetValueScope());
+      return GetValidationErrors(GetValueScope());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly(GetValueScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -135,11 +140,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetValueScope ()
     {
-      return Scope.FindChild ("Value");
+      return Scope.FindChild("Value");
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (
-        IWebTestActionOptions userDefinedActionOptions,
+        IWebTestActionOptions? userDefinedActionOptions,
         FinishInputWithAction finishInputWith)
     {
       if (finishInputWith == FinishInput.Promptly)
@@ -148,7 +153,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         userDefinedActionOptions.CompletionDetectionStrategy = Continue.Immediately;
       }
 
-      return MergeWithDefaultActionOptions (Scope, userDefinedActionOptions);
+      return MergeWithDefaultActionOptions(Scope, userDefinedActionOptions);
     }
   }
 }

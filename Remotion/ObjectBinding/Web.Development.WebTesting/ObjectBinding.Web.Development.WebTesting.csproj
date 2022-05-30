@@ -1,206 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{78086B10-9951-4680-A060-2395E1990F8A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.ObjectBinding.Web.Development.WebTesting</RootNamespace>
+    <ProjectType>Library</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Web Testing Framework Control Objects for ObjectBinding</AssemblyTitle>
+    <Description>Provides an abstraction layer when implementing web tests for applications based on re-motion business object web controls.</Description>
     <AssemblyName>Remotion.ObjectBinding.Web.Development.WebTesting</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Remotion.ObjectBinding.Web.Development.WebTesting.xml</DocumentationFile>
-    <NoWarn>1591;0419</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>bin\Release\Remotion.ObjectBinding.Web.Development.WebTesting.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591;0419</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Coypu">
-      <HintPath>..\..\..\packages\Coypu.2.9.1\lib\net40\Coypu.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="WebDriver, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Selenium.WebDriver.2.48.0\lib\net40\WebDriver.dll</HintPath>
-    </Reference>
-    <Reference Include="WebDriver.Support, Version=2.48.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Selenium.Support.2.48.0\lib\net40\WebDriver.Support.dll</HintPath>
-    </Reference>
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\ArgumentUtility.cs" Link="SharedSource\Utilities\ArgumentUtility.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\Assertion.cs" Link="SharedSource\Utilities\Assertion.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\Utilities\NullableTypeUtility.cs" Link="SharedSource\Utilities\NullableTypeUtility.cs" />
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="App_Packages\Remotion.Utilities.ArgumentUtility.Sources.1.25.23.0\ArgumentUtility.cs" />
-    <Compile Include="App_Packages\Remotion.Utilities.Assertion.Sources.1.15.23.0\Assertion.cs" />
-    <Compile Include="App_Packages\Remotion.Utilities.NullableTypeUtility.Sources.1.15.23.0\NullableTypeUtility.cs" />
-    <Compile Include="ControlObjects\BocControlObjectExtensionMethods.cs" />
-    <Compile Include="ControlObjects\BocDateTimeValueControlObject.cs" />
-    <Compile Include="ControlObjects\BocEnumValueControlObject.cs" />
-    <Compile Include="ControlObjects\BocCheckBoxControlObject.cs" />
-    <Compile Include="ControlObjects\BocListAsGridCellControlObject.cs" />
-    <Compile Include="ControlObjects\BocListAsGridControlObject.cs" />
-    <Compile Include="ControlObjects\BocListAsGridRowControlObject.cs" />
-    <Compile Include="ControlObjects\BocListCellFunctionality.cs" />
-    <Compile Include="ControlObjects\BocListColumnDefinition.cs" />
-    <Compile Include="ControlObjects\BocListControlObjectBase.cs" />
-    <Compile Include="ControlObjects\BocListRowFunctionality.cs" />
-    <Compile Include="ControlObjects\BocReferenceValueControlObject.cs" />
-    <Compile Include="ControlObjects\BocListCellControlObject.cs" />
-    <Compile Include="ControlObjects\BocListEditableCellControlObject.cs" />
-    <Compile Include="ControlObjects\BocListEditableRowControlObject.cs" />
-    <Compile Include="ControlObjects\BocListRowControlObject.cs" />
-    <Compile Include="ControlObjects\BocBooleanValueControlObject.cs" />
-    <Compile Include="ControlObjects\BocMultilineTextValueControlObject.cs" />
-    <Compile Include="ControlObjects\BocTreeViewControlObject.cs" />
-    <Compile Include="ControlObjects\BocTextValueControlObject.cs" />
-    <Compile Include="ControlObjects\BocAutoCompleteReferenceValueControlObject.cs" />
-    <Compile Include="ControlObjects\BocListControlObject.cs" />
-    <Compile Include="ControlObjects\BocTreeViewNodeControlObject.cs" />
-    <Compile Include="ControlObjects\IBocListRowControlObjectHostAccessor.cs" />
-    <Compile Include="ControlObjects\SearchServiceResultItem.cs" />
-    <Compile Include="ControlObjects\Selectors\BocDateTimeValueSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocEnumValueSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocCheckBoxSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocListAsGridSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocReferenceValueSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocBooleanValueSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocMultilineTextValueSelector .cs" />
-    <Compile Include="ControlObjects\Selectors\BocTreeViewSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocTextValueSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocListSelector.cs" />
-    <Compile Include="ControlObjects\Selectors\BocAutoCompleteReferenceValueSelector.cs" />
-    <Compile Include="ControlObjects\BocControlObject.cs" />
-    <Compile Include="ControlObjects\Selectors\BocControlSelectorBase.cs" />
-    <Compile Include="ControlObjects\WebServiceExceutionException.cs" />
-    <Compile Include="ControlSelection\IDisplayNameControlSelector.cs" />
-    <Compile Include="ControlSelection\IDomainPropertyControlSelector.cs" />
-    <Compile Include="ControlSelection\DisplayNameControlSelectionCommand.cs" />
-    <Compile Include="FluentControlSelection\DisplayNameControlSelectionCommandBuilder.cs" />
-    <Compile Include="ControlSelection\DomainPropertyControlSelectionCommand.cs" />
-    <Compile Include="FluentControlSelection\FluentControlSelectorExtensionsForObjectBinding.cs" />
-    <Compile Include="FluentControlSelection\DomainPropertyControlSelectionCommandBuilder.cs" />
-    <Compile Include="ScreenshotCreation\BocAutoCompleteReferenceValue\ScreenshotBocAutoCompleteReferenceValueSelectList.cs" />
-    <Compile Include="ScreenshotCreation\BocAutoCompleteReferenceValue\ScreenshotBocAutoCompleteReferenceValueSelectListSelector.cs" />
-    <Compile Include="ScreenshotCreation\BocAutoCompleteReferenceValue\ScreenshotBocAutoCompleteReferenceValueInformationPopup.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentColumnCellSelector.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentColumnSelector.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentHeaderCellSelector.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentRowCellSelector.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListFluentRowSelector.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocAutoCompleteReferenceValueSelectListExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocAutoCompleteReferenceValueExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocAutoCompleteReferenceValueInformationPopupExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValuePickerExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValueExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocDateTimeValuePicker.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocListHeaderRowExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocListMenuBlockExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocListDropDownExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocListNavigationExtensions.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocListTableContainerExtensions.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocList.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListCell.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListColumn.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocListExtensions.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListDropDown.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListHeaderRow.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListMenuBlock.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListNavigator.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListRow.cs" />
-    <Compile Include="ScreenshotCreation\BocList\ScreenshotBocListTableContainer.cs" />
-    <Compile Include="ScreenshotCreation\ObjectBindingExtensionsInWebTesting.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenshotCreation\ScreenshotBocTreeViewNodeControlObject.cs" />
-    <Compile Include="ScreenshotCreation\WebTreeViewNodeControlObjectExtension.cs" />
+    <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj" />
+    <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
+    <ProjectReference Include="..\..\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj" />
+    <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj" />
+    <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Web\Contracts.DiagnosticMetadata\Web.Contracts.DiagnosticMetadata.csproj">
-      <Project>{B119DB72-9073-401B-8EC9-C8885A2D4800}</Project>
-      <Name>Web.Contracts.DiagnosticMetadata</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj">
-      <Project>{712e5631-9bc0-44de-bf20-fb3bfecad9b2}</Project>
-      <Name>Web.Development.WebTesting.ControlObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj">
-      <Project>{D2835D55-18C5-427B-A574-3D348A2C1DCC}</Project>
-      <Name>Web.Development.WebTesting.WebFormsControlObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Web\Development.WebTesting\Web.Development.WebTesting.csproj">
-      <Project>{5B5EC73A-B796-4D2D-A781-E889EE9EC4DF}</Project>
-      <Name>Web.Development.WebTesting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Web.Contracts.DiagnosticMetadata\ObjectBinding.Web.Contracts.DiagnosticMetadata.csproj">
-      <Project>{AD7D0683-130E-4064-8EB7-D9981DCB22BC}</Project>
-      <Name>ObjectBinding.Web.Contracts.DiagnosticMetadata</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\Build\NuSpec\TemplateShared.nuspec">
-      <Link>TemplateShared.nuspec</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="App_Packages\Remotion.Utilities.ArgumentUtility.Sources.1.25.23.0\SharedSource Apache-2.0.licenseheader" />
-    <None Include="App_Packages\Remotion.Utilities.Assertion.Sources.1.15.23.0\SharedSource Apache-2.0.licenseheader" />
-    <None Include="App_Packages\Remotion.Utilities.NullableTypeUtility.Sources.1.15.23.0\SharedSource Apache-2.0.licenseheader" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FacetManifest.xml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

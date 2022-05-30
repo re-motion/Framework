@@ -27,19 +27,19 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static StatelessAccessControlList NewObject ()
     {
-      return NewObject<StatelessAccessControlList> ();
+      return NewObject<StatelessAccessControlList>();
     }
 
     protected StatelessAccessControlList ()
     {
     }
 
-    [DBBidirectionalRelation ("StatelessAccessControlList", ContainsForeignKey = true)]
-    [DBColumn ("StatelessAcl_ClassID")]
+    [DBBidirectionalRelation("StatelessAccessControlList", ContainsForeignKey = true)]
+    [DBColumn("StatelessAcl_ClassID")]
     [Mandatory]
-    protected abstract SecurableClassDefinition MyClass { get; }
+    protected abstract SecurableClassDefinition? MyClass { get; }
 
-    public override SecurableClassDefinition Class
+    public override SecurableClassDefinition? Class
     {
       get { return MyClass; }
     }

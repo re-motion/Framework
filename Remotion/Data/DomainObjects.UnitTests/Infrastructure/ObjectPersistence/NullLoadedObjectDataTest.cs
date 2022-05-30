@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -35,33 +35,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     [Test]
     public void ObjectID ()
     {
-      Assert.That (_loadedObjectData.ObjectID, Is.Null);
+      Assert.That(_loadedObjectData.ObjectID, Is.Null);
     }
 
     [Test]
     public void GetDomainObjectReference ()
     {
-      var reference = _loadedObjectData.GetDomainObjectReference ();
+      var reference = _loadedObjectData.GetDomainObjectReference();
 
-      Assert.That (reference, Is.Null);
+      Assert.That(reference, Is.Null);
     }
 
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
-      visitorMock.Expect (mock => mock.VisitNullLoadedObject (_loadedObjectData));
-      visitorMock.Replay ();
+      var visitorMock = new Mock<ILoadedObjectVisitor>(MockBehavior.Strict);
+      visitorMock.Setup(mock => mock.VisitNullLoadedObject(_loadedObjectData)).Verifiable();
 
-      _loadedObjectData.Accept (visitorMock);
+      _loadedObjectData.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations ();
+      visitorMock.Verify();
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _loadedObjectData).IsNull, Is.True);
+      Assert.That(((INullObject)_loadedObjectData).IsNull, Is.True);
     }
   }
 }

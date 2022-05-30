@@ -28,12 +28,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   {
     private readonly string _uniqueIdentifier;
     private readonly string _displayName;
-    private readonly string _iconUrl;
+    private readonly string? _iconUrl;
 
-    public SearchServiceResultItem ([NotNull] string uniqueIdentifier, [NotNull] string displayName, [CanBeNull] string iconUrl)
+    public SearchServiceResultItem ([NotNull] string uniqueIdentifier, [NotNull] string displayName, [CanBeNull] string? iconUrl)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
-      ArgumentUtility.CheckNotNullOrEmpty ("displayName", displayName);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("displayName", displayName);
 
       _uniqueIdentifier = uniqueIdentifier;
       _displayName = displayName;
@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     [CanBeNull]
-    public string IconUrl
+    public string? IconUrl
     {
       get { return _iconUrl; }
     }

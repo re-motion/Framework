@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Remotion.Logging;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Context.FluentBuilders
@@ -29,12 +30,12 @@ namespace Remotion.Mixins.Context.FluentBuilders
   /// </summary>
   public class MixinConfigurationBuilder
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (MixinConfigurationBuilder));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(MixinConfigurationBuilder));
 
-    private readonly MixinConfiguration _parentConfiguration;
+    private readonly MixinConfiguration? _parentConfiguration;
     private readonly Dictionary<Type, ClassContextBuilder> _classContextBuilders = new Dictionary<Type, ClassContextBuilder>();
 
-    public MixinConfigurationBuilder (MixinConfiguration parentConfiguration)
+    public MixinConfigurationBuilder (MixinConfiguration? parentConfiguration)
     {
       _parentConfiguration = parentConfiguration;
     }
@@ -43,7 +44,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// Gets the parent configuration used as a base for the newly built mixin configuration.
     /// </summary>
     /// <value>The parent configuration.</value>
-    public virtual MixinConfiguration ParentConfiguration
+    public virtual MixinConfiguration? ParentConfiguration
     {
       get { return _parentConfiguration; }
     }
@@ -64,11 +65,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A fluent interface object for configuring the given <paramref name="targetType"/>.</returns>
     public virtual ClassContextBuilder ForClass (Type targetType)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      if (!_classContextBuilders.ContainsKey (targetType))
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      if (!_classContextBuilders.ContainsKey(targetType))
       {
-        var builder = new ClassContextBuilder (this, targetType);
-        _classContextBuilders.Add (targetType, builder);
+        var builder = new ClassContextBuilder(this, targetType);
+        _classContextBuilders.Add(targetType, builder);
       }
       return _classContextBuilders[targetType];
     }
@@ -80,7 +81,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A fluent interface object for configuring the given <typeparamref name="TTargetType"/>.</returns>
     public virtual ClassContextBuilder ForClass<TTargetType> ()
     {
-      return ForClass (typeof (TTargetType));
+      return ForClass(typeof(TTargetType));
     }
 
     /// <summary>
@@ -104,19 +105,19 @@ namespace Remotion.Mixins.Context.FluentBuilders
         IEnumerable<Type> suppressedMixins,
         MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull ("suppressedMixins", suppressedMixins);
-      ArgumentUtility.CheckNotNull ("origin", origin);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
+      ArgumentUtility.CheckNotNull("suppressedMixins", suppressedMixins);
+      ArgumentUtility.CheckNotNull("origin", origin);
 
-      MixinContextBuilder mixinContextBuilder = AddMixinToClass (targetType, mixinType, origin);
+      MixinContextBuilder mixinContextBuilder = AddMixinToClass(targetType, mixinType, origin);
 
       mixinContextBuilder
-          .OfKind (mixinKind)
-          .WithDependencies (explicitDependencies.ToArray())
-          .WithIntroducedMemberVisibility (introducedMemberVisibility)
-          .ReplaceMixins (suppressedMixins.ToArray());
+          .OfKind(mixinKind)
+          .WithDependencies(explicitDependencies.ToArray())
+          .WithIntroducedMemberVisibility(introducedMemberVisibility)
+          .ReplaceMixins(suppressedMixins.ToArray());
 
       return this;
     }
@@ -133,7 +134,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <param name="introducedMemberVisibility">The default visibility to be used for introduced members.</param>
     /// <param name="explicitDependencies">The explicit dependencies of the mixin in the context of the target type.</param>
     /// <param name="suppressedMixins">The mixins suppressed by this mixin in the context of the target type.</param>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinConfigurationBuilder AddMixinToClass (
         MixinKind mixinKind,
         Type targetType,
@@ -142,33 +143,33 @@ namespace Remotion.Mixins.Context.FluentBuilders
         IEnumerable<Type> explicitDependencies,
         IEnumerable<Type> suppressedMixins)
     {
-      ArgumentUtility.CheckNotNull ("targetType", targetType);
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull ("suppressedMixins", suppressedMixins);
+      ArgumentUtility.CheckNotNull("targetType", targetType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
+      ArgumentUtility.CheckNotNull("suppressedMixins", suppressedMixins);
 
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddMixinToClass (mixinKind, targetType, mixinType, introducedMemberVisibility, explicitDependencies, suppressedMixins, origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddMixinToClass(mixinKind, targetType, mixinType, introducedMemberVisibility, explicitDependencies, suppressedMixins, origin);
     }
 
     private MixinContextBuilder AddMixinToClass (Type targetType, Type mixinType, MixinContextOrigin origin)
     {
-      MixinContextBuilder mixinContextBuilder;
+      MixinContextBuilder? mixinContextBuilder;
       try
       {
-        mixinContextBuilder = ForClass (targetType).AddMixin (mixinType, origin);
+        mixinContextBuilder = ForClass(targetType).AddMixin(mixinType, origin);
       }
       catch (ArgumentException ex)
       {
         Type typeForMessage = mixinType;
         if (typeForMessage.IsGenericType)
-          typeForMessage = typeForMessage.GetGenericTypeDefinition ();
-        Assertion.IsNotNull (typeForMessage);
-        string message = string.Format (
+          typeForMessage = typeForMessage.GetGenericTypeDefinition();
+        Assertion.IsNotNull(typeForMessage);
+        string message = string.Format(
             "Two instances of mixin {0} are configured for target type {1}.",
-            typeForMessage.FullName,
-            targetType.FullName);
-        throw new ConfigurationException (message, ex);
+            typeForMessage.GetFullNameSafe(),
+            targetType.GetFullNameSafe());
+        throw new ConfigurationException(message, ex);
       }
       return mixinContextBuilder;
     }
@@ -179,20 +180,20 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A new <see cref="MixinConfiguration"/> instance incorporating all the data acquired so far.</returns>
     public virtual MixinConfiguration BuildConfiguration ()
     {
-      using (StopwatchScope.CreateScope (s_log, LogLevel.Info, "Time needed to build mixin configuration from fluent builders: {elapsed}."))
+      using (StopwatchScope.CreateScope(s_log, LogLevel.Info, "Time needed to build mixin configuration from fluent builders: {elapsed}."))
       {
         var parentContexts = ParentConfiguration != null ? ParentConfiguration.ClassContexts : new ClassContextCollection();
-        s_log.DebugFormat ("Building a mixin configuration with {0} parent class contexts from fluent builders...", parentContexts.Count);
+        s_log.DebugFormat("Building a mixin configuration with {0} parent class contexts from fluent builders...", parentContexts.Count);
 
-        var builder = new InheritanceResolvingClassContextBuilder (ClassContextBuilders, parentContexts, DefaultMixinInheritancePolicy.Instance);
+        var builder = new InheritanceResolvingClassContextBuilder(ClassContextBuilders, parentContexts, DefaultMixinInheritancePolicy.Instance);
 
         var allContexts = builder.BuildAllAndCombineWithParentContexts();
-        var classContextCollection = new ClassContextCollection (allContexts);
-        return new MixinConfiguration (classContextCollection)
-            .LogAndReturnValue (
-                s_log, 
-                LogLevel.Info, 
-                conf => string.Format ("Built mixin configuration from fluent builders with {0} class contexts.", conf.ClassContexts.Count));
+        var classContextCollection = new ClassContextCollection(allContexts);
+        return new MixinConfiguration(classContextCollection)
+            .LogAndReturnValue(
+                s_log,
+                LogLevel.Info,
+                conf => string.Format("Built mixin configuration from fluent builders with {0} class contexts.", conf.ClassContexts.Count));
       }
     }
 

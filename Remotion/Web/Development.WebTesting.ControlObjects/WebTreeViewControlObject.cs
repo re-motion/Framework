@@ -25,74 +25,63 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   /// </summary>
   public class WebTreeViewControlObject
       : WebFormsControlObjectWithDiagnosticMetadata,
-          IControlObjectWithNodes<WebTreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>
+          IControlObjectWithNodes<WebTreeViewNodeControlObject>
   {
     private readonly WebTreeViewNodeControlObject _metaRootNode;
 
     public WebTreeViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
-      _metaRootNode = new WebTreeViewNodeControlObject (context);
+      _metaRootNode = new WebTreeViewNodeControlObject(context);
     }
 
     /// <summary>
-    /// Returns the tree's root node.
+    /// Returns the tree's first root node.
     /// </summary>
+    [Obsolete("This method is equivalent to .GetNode().WithIndex (1), which should be used instead. (Version 3.0.0-alpha.14)", false)]
     public WebTreeViewNodeControlObject GetRootNode ()
     {
-      return _metaRootNode.GetNode().WithIndex (1);
+      return _metaRootNode.GetNode().WithIndex(1);
     }
 
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return _metaRootNode.GetNode();
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNode().WithItemID (itemID);
+      return GetNode().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public WebTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-
-      return GetNode().WithIndex (oneBasedIndex);
+      return GetNode().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithItemID (string itemID)
+    public IFluentControlObjectWithNodes<WebTreeViewNodeControlObject> GetNodeInHierarchy ()
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      return _metaRootNode.GetNode (itemID);
+      return _metaRootNode.GetNodeInHierarchy();
     }
 
     /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
+    public WebTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      return _metaRootNode.GetNode().WithIndex (oneBasedIndex);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithDisplayText (string displayText)
+    public WebTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      return _metaRootNode.GetNode().WithDisplayText (displayText);
-    }
-
-    /// <inheritdoc/>
-    WebTreeViewNodeControlObject IFluentControlObjectWithNodes<WebTreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      return _metaRootNode.GetNode().WithDisplayTextContains (containsDisplayText);
+      return GetNodeInHierarchy().WithIndex(oneBasedIndex);
     }
   }
 }

@@ -18,7 +18,8 @@ ul.treeViewTopLevelNodeChildren
 /* Applied to the node's children area. */
 ul.treeViewNodeChildren
 {
-  background-image: url(../Image/TreeViewI.gif);
+  background-image: url(../Image/sprite.svg#TreeViewI);
+  background-size: 19px 22px;
   background-repeat: repeat-y;
   margin: 0;
   padding: 0;
@@ -57,523 +58,19 @@ span.treeViewNode
   box-sizing: border-box;
 }
 
-/* We want the tree node to span the entire line to better handle clicking and styling of the selected line.
-  Since it is not possible to use a nesting-count in CSS, we need to do an explicit nesting for a reasonable depth (50 levels). 
-  Once the maximum depth is reached, the formatting and behavior will revert to nesting via parent padding. */
+ul.treeViewRoot.whitespaceNoWrap span.treeViewNode
+{
+  white-space: nowrap;
+}
+
 ul.treeViewRoot span.treeViewNode
 {
-  padding-left: calc(19px * 0);
-}
-
-ul.treeViewRoot ul span.treeViewNode
-{
-  padding-left: calc(19px * 1);
-}
-
-ul.treeViewRoot ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 2);
-}
-
-ul.treeViewRoot ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 3);
-}
-
-ul.treeViewRoot ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 4);
-}
-
-ul.treeViewRoot ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 5);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 6);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 7);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 8);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 9);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 10);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 11);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 12);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 13);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 14);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 15);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 16);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 17);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 18);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 19);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 20);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 21);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 22);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 23);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 24);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 25);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 26);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 27);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 28);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 29);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 30);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 31);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 32);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 33);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 34);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 35);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 36);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 37);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 38);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 39);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 40);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 41);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 42);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 43);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 44);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 45);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 46);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 47);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 48);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 49);
+  padding-left: calc(19px * var(--nesting-depth));
 }
 
 ul.treeViewRoot ul.treeViewTopLevelNodeChildren span.treeViewNode
 {
-  padding-left: calc(19px * 0);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul span.treeViewNode
-{
-  padding-left: calc(19px * 1);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 2);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 3);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 4);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 5);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 6);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 7);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 8);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 9);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 10);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 11);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 12);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 13);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 14);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 15);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 16);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 17);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 18);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 19);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 20);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 21);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 22);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 23);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 24);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 25);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 26);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 27);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 28);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 29);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 30);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 31);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 32);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 33);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 34);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 35);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 36);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 37);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 38);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 39);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 40);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 41);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 42);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 43);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 44);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul span.treeViewNode
-{
-  padding-left: calc(19px * 45);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 46);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 47);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul span.treeViewNode
-{
-  padding-left: calc(19px * 48);
-}
-
-/* Restart nested layout at level 50 */
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul
-{
-  padding-left: calc(19px * 50);
-}
-
-ul.treeViewRoot ul.treeViewTopLevelNodeChildren ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul
-{
-  padding-left: calc(19px * 49);
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul
-{
-  padding-left: 19px;
-}
-
-ul.treeViewRoot ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul  ul ul ul ul ul span.treeViewNode
-{
-  padding-left: 0;
+  padding-left: calc(19px * (var(--nesting-depth) - 1));
 }
 
 /* Applied to the node's expander. */
@@ -590,6 +87,14 @@ span.treeViewNode > a img
   vertical-align: bottom;
 }
 
+span.treeViewNode > a img.Icon
+{
+  height: 20px;
+  width: 20px;
+  margin-right: -1px;
+  margin-bottom: 2px;
+}
+
 /* Applied to the node's head. */
 span.treeViewNodeHead
 {
@@ -603,17 +108,11 @@ span.treeViewNodeHeadSelected
 span.treeViewNodeHead,
 span.treeViewNodeHeadSelected
 {
-  display: block;
+  display: inline-block;
   height: 1.7em;
 }
 
 /* Nodes with an expander icon */
-span.treeViewNode > a + span.treeViewNodeHead,
-span.treeViewNode > a + span.treeViewNodeHeadSelected
-{
-  margin-left: 19px;
-}
-
 span.treeViewNodeHead a,
 span.treeViewNodeHeadSelected a
 {
@@ -682,4 +181,27 @@ span.treeViewNodeHeadSelected span
 span.treeViewNode ul
 {
   right: auto;
+}
+
+span.treeViewNodeBadge
+{
+  vertical-align: calc(-0.4em - 1px);
+  padding: 1em;
+  /* Synchronized with focus/hover */
+  padding-top: 3px;
+  padding-bottom: 3px;
+  user-select: none;
+}
+
+/* Shared in other CSS files */
+.screenReaderText
+{
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }

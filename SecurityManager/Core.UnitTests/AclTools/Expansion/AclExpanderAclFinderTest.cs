@@ -34,7 +34,7 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
         var aclExpanderAclFinder = new AclExpanderAclFinder();
         var acls = aclExpanderAclFinder.FindAccessControlLists().ToList();
 
-        Assert.That (new[] { Acl, Acl2 }, Is.SubsetOf (acls));
+        Assert.That(new[] { Acl, Acl2 }, Is.SubsetOf(acls));
       }
     }
   }

@@ -23,7 +23,7 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.Web
 {
   /// <summary> Utility methods for URL resolving. </summary>
-  [Obsolete ("Use IResourceUrlFactory instead. (Version 1.13.198)", true)]
+  [Obsolete("Use IResourceUrlFactory instead. (Version 1.13.198)", true)]
   public static class ResourceUrlResolver
   {
     /// <summary>
@@ -49,10 +49,10 @@ namespace Remotion.Web
     /// </param>
     /// <param name="resourceType"> The resource type (image, static html, etc.) Must not be <see langword="null"/>. </param>
     /// <param name="relativeUrl"> The resource file name. Must not be <see langword="null"/> or empty.</param>
-    [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
-    public static string GetResourceUrl ([CanBeNull] IControl control, Type definingType, ResourceType resourceType, string relativeUrl)
+    [Obsolete("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
+    public static string GetResourceUrl ([CanBeNull] IControl? control, Type definingType, ResourceType resourceType, string relativeUrl)
     {
-      throw new NotSupportedException ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
+      throw new NotSupportedException("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
     }
 
     /// <summary> Returns the root folder for all resources belonging to the <paramref name="assembly"/>. </summary>
@@ -62,10 +62,10 @@ namespace Remotion.Web
     ///   The folder where the resources are expected to be for the <paramref name="assembly"/>. 
     ///   Always ends on a slash.
     /// </returns>
-    [Obsolete ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
+    [Obsolete("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)", true)]
     public static string GetAssemblyRoot (bool isDesignMode, Assembly assembly)
     {
-      throw new NotSupportedException ("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
+      throw new NotSupportedException("Use IResourceUrlFactory.CreateResourceUrl(...) instead. (Version 1.13.197)");
     }
   }
 }

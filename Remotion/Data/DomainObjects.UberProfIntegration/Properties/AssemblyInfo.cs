@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion UberProf Integration Library")]
-[assembly: AssemblyDescription ("Register the factories in this library with your IoC container to integrate the UberProf profiling APIs.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

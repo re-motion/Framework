@@ -24,16 +24,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
     Premium = 1
   }
 
-  [ClassID ("TI_Customer")]
+  [ClassID("TI_Customer")]
   [Instantiable]
   public abstract class TICustomer: TIPerson
   {
     public new static TICustomer NewObject ()
     {
-      return NewObject<TICustomer> ();
+      return NewObject<TICustomer>();
     }
 
-    protected TICustomer()
+    protected TICustomer ()
     {
     }
 
@@ -41,10 +41,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 
     public abstract DateTime CustomerSince { get; set; }
 
-    [DBBidirectionalRelation ("Customers")]
+    [DBBidirectionalRelation("Customers")]
     public abstract TIRegion Region { get; set; }
 
-    [DBBidirectionalRelation ("Customer")]
+    [DBBidirectionalRelation("Customer")]
     public abstract ObjectList<TIOrder> Orders { get; }
   }
 }

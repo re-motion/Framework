@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
 {
   [DBTable]
   [DBStorageGroup]
-  [ClassID ("Bidirectional_RelationPropertyTypeNotInMapping_InvalidRelationClass2")]
+  [ClassID("Bidirectional_RelationPropertyTypeNotInMapping_InvalidRelationClass2")]
   public class InvalidRelationClass2 : ClassNotInMapping
   {
   }

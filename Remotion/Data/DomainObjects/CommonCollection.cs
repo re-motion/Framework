@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects
 /// Base class for all collections of Remotion.Data.DomainObjects.
 /// </summary>
 [Serializable]
-[DebuggerDisplay ("Collection: {GetType().Name} - Count: {Count}")]
+[DebuggerDisplay("Collection: {GetType().Name} - Count: {Count}")]
 public class CommonCollection : ICollection
 {
   // types
@@ -38,7 +38,7 @@ public class CommonCollection : ICollection
 
     public CollectionEnumerator (CommonCollection collection)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
+      ArgumentUtility.CheckNotNull("collection", collection);
       _collection = collection;
       _collectionVersion = _collection._version;
       _index = -1;
@@ -48,18 +48,18 @@ public class CommonCollection : ICollection
 
     public void Reset ()
     {
-      CheckVersion ();
+      CheckVersion();
       _index = -1;
     }
 
     public object Current
     {
-      get { return _collection.BaseGetObject (_index); }
+      get { return _collection.BaseGetObject(_index); }
     }
 
     public bool MoveNext ()
     {
-      CheckVersion ();
+      CheckVersion();
       _index++;
       return (_index < _collection.Count);
     }
@@ -68,9 +68,9 @@ public class CommonCollection : ICollection
 
     #region IDisposable Members
 
-    public void Dispose()
+    public void Dispose ()
     {
-      _collection = null;
+      _collection = null!;
     }
 
     #endregion
@@ -78,7 +78,7 @@ public class CommonCollection : ICollection
     private void CheckVersion ()
     {
       if (!_collection.IsReadOnly && _collectionVersion != _collection._version)
-        throw new InvalidOperationException ("Collection was modified during enumeration.");
+        throw new InvalidOperationException("Collection was modified during enumeration.");
     }
   }
 
@@ -98,8 +98,8 @@ public class CommonCollection : ICollection
   /// </summary>
   protected CommonCollection ()
   {
-    _collectionData = new Hashtable ();
-    _collectionKeys = new ArrayList ();
+    _collectionData = new Hashtable();
+    _collectionKeys = new ArrayList();
   }
 
   // methods and properties
@@ -120,7 +120,7 @@ public class CommonCollection : ICollection
   /// <returns>An <see cref="System.Collections.IEnumerator"/> for the entire <see cref="CommonCollection"/>.</returns>
   public virtual IEnumerator GetEnumerator ()
   {
-    return new CollectionEnumerator (this);
+    return new CollectionEnumerator(this);
   }
 
   #endregion
@@ -157,14 +157,14 @@ public class CommonCollection : ICollection
   /// </exception>
   public virtual void CopyTo (Array array, int index)
   {
-    ArgumentUtility.CheckNotNull ("array", array);
-    if (index < 0) throw new ArgumentOutOfRangeException ("index", index, "Index must be greater than or equal to zero.");
-    if (array.Rank != 1) throw new ArgumentException ("CopyTo can only operate on one-dimensional arrays.", "array");
-    if (Count > 0 && index >= array.Length) throw new ArgumentException ("Index cannot be equal to or greater than the length of the array.", "index");
-    if ((array.Length - index) < Count) throw new ArgumentException ("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
+    ArgumentUtility.CheckNotNull("array", array);
+    if (index < 0) throw new ArgumentOutOfRangeException("index", index, "Index must be greater than or equal to zero.");
+    if (array.Rank != 1) throw new ArgumentException("CopyTo can only operate on one-dimensional arrays.", "array");
+    if (Count > 0 && index >= array.Length) throw new ArgumentException("Index cannot be equal to or greater than the length of the array.", "index");
+    if ((array.Length - index) < Count) throw new ArgumentException("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
 
     for (int i = 0; i < Count; i++)
-      array.SetValue (this.BaseGetObject (i), index + i);
+      array.SetValue(this.BaseGetObject(i), index + i);
   }
 
   /// <summary>
@@ -189,7 +189,11 @@ public class CommonCollection : ICollection
   /// </exception>
   protected object BaseGetObject (int index)
   {
-    return _collectionData[_collectionKeys[index]];
+    var collectionKey = _collectionKeys[index];
+    Assertion.DebugIsNotNull(collectionKey, "{0} must not contain null entries.", nameof(_collectionKeys));
+    var value = _collectionData[collectionKey];
+    Assertion.DebugIsNotNull(value, "{0} is out-of-sync with {1} or contains a null entry for index {2}.", nameof(_collectionData), nameof(_collectionKeys), index);
+    return value;
   }
 
   /// <summary>
@@ -198,9 +202,9 @@ public class CommonCollection : ICollection
   /// <param name="key">The key of the object to return. Must not be <see langword="null"/>.</param>
   /// <returns>The object with the given key, if the object is found; otherwise, <see langword="null"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
-  protected object BaseGetObject (object key)
+  protected object? BaseGetObject (object key)
   {
-    ArgumentUtility.CheckNotNull ("key", key);
+    ArgumentUtility.CheckNotNull("key", key);
 
     return _collectionData[key];
   }
@@ -213,9 +217,9 @@ public class CommonCollection : ICollection
   /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
   protected bool BaseContainsKey (object key)
   {
-    ArgumentUtility.CheckNotNull ("key", key);
+    ArgumentUtility.CheckNotNull("key", key);
 
-    return _collectionData.ContainsKey (key);
+    return _collectionData.ContainsKey(key);
   }
 
   /// <summary>
@@ -229,13 +233,13 @@ public class CommonCollection : ICollection
   /// <see cref="object.Equals(object,object)"/> is used for the comparison.</remarks>
   protected bool BaseContains (object key, object value)
   {
-    ArgumentUtility.CheckNotNull ("key", key);
+    ArgumentUtility.CheckNotNull("key", key);
 
-    if (!BaseContainsKey (key))
+    if (!BaseContainsKey(key))
       return false;
 
-    object objectInCollection = BaseGetObject (key);
-    return object.Equals (objectInCollection, value);    
+    object? objectInCollection = BaseGetObject(key);
+    return object.Equals(objectInCollection, value);
   }
 
   /// <summary>
@@ -251,12 +255,12 @@ public class CommonCollection : ICollection
   /// </exception>
   protected int BaseAdd (object key, object value)
   {
-    ArgumentUtility.CheckNotNull ("key", key);
-    ArgumentUtility.CheckNotNull ("value", value);
-    if (_isReadOnly) throw new NotSupportedException ("Cannot add an item to a read-only collection.");
+    ArgumentUtility.CheckNotNull("key", key);
+    ArgumentUtility.CheckNotNull("value", value);
+    if (_isReadOnly) throw new NotSupportedException("Cannot add an item to a read-only collection.");
 
-    _collectionData.Add (key, value);
-    _collectionKeys.Add (key);
+    _collectionData.Add(key, value);
+    _collectionKeys.Add(key);
     _version++;
 
     return _collectionKeys.Count - 1;
@@ -270,11 +274,11 @@ public class CommonCollection : ICollection
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void BaseRemove (object key)
   {
-    ArgumentUtility.CheckNotNull ("key", key);
-    if (_isReadOnly) throw new NotSupportedException ("Cannot remove an item from a read-only collection.");
+    ArgumentUtility.CheckNotNull("key", key);
+    if (_isReadOnly) throw new NotSupportedException("Cannot remove an item from a read-only collection.");
 
-    _collectionData.Remove (key);
-    _collectionKeys.Remove (key);
+    _collectionData.Remove(key);
+    _collectionKeys.Remove(key);
     _version++;
   }
 
@@ -284,10 +288,10 @@ public class CommonCollection : ICollection
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void BaseClear ()
   {
-    if (_isReadOnly) throw new NotSupportedException ("Cannot clear a read-only collection.");
+    if (_isReadOnly) throw new NotSupportedException("Cannot clear a read-only collection.");
 
-    _collectionData.Clear ();
-    _collectionKeys.Clear ();
+    _collectionData.Clear();
+    _collectionKeys.Clear();
     _version++;
   }
 
@@ -298,7 +302,7 @@ public class CommonCollection : ICollection
   /// <returns>The zero-based index of the item with the given <paramref name="key"/>, if found; otherwise, -1.</returns>
   protected int BaseIndexOfKey (object key)
   {
-    return _collectionKeys.IndexOf (key);
+    return _collectionKeys.IndexOf(key);
   }
 
   /// <summary>
@@ -316,11 +320,11 @@ public class CommonCollection : ICollection
   /// <exception cref="System.ArgumentException">An item with the same <paramref name="key"/> already exists in the collection.</exception>
   protected void BaseInsert (int index, object key, object value)
   {
-    if (_isReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
-    CheckIndexForInsert ("index", index);
+    if (_isReadOnly) throw new NotSupportedException("Cannot insert an item into a read-only collection.");
+    CheckIndexForInsert("index", index);
 
-    _collectionData.Add (key, value);
-    _collectionKeys.Insert (index, key);
+    _collectionData.Add(key, value);
+    _collectionKeys.Insert(index, key);
     _version++;
   }
 
@@ -337,9 +341,9 @@ public class CommonCollection : ICollection
   {
     if (index < 0 || index > Count)
     {
-      throw new ArgumentOutOfRangeException (
-          argumentName, 
-          index, 
+      throw new ArgumentOutOfRangeException(
+          argumentName,
+          index,
           "Index is out of range. Must be non-negative and less than or equal to the size of the collection.");
     }
   }
@@ -357,9 +361,9 @@ public class CommonCollection : ICollection
   {
     if (index < 0 || index >= Count)
     {
-      throw new ArgumentOutOfRangeException (
-          argumentName, 
-          index, 
+      throw new ArgumentOutOfRangeException(
+          argumentName,
+          index,
           "Index is out of range. Must be non-negative and less than the size of the collection.");
     }
   }

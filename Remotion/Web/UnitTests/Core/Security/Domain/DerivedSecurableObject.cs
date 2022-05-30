@@ -38,13 +38,13 @@ namespace Remotion.Web.UnitTests.Core.Security.Domain
     // construction and disposing
 
     public DerivedSecurableObject (IObjectSecurityStrategy securityStrategy)
-      : base (securityStrategy)
+      : base(securityStrategy)
     {
     }
 
     // methods and properties
 
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public void ShowSpecial ()
     {
     }

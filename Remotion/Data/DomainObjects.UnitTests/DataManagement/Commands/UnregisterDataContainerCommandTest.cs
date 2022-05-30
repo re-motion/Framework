@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
@@ -35,17 +35,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       base.SetUp();
 
-      _map = new DataContainerMap (MockRepository.GenerateStub<IClientTransactionEventSink>());
-      _dataContainer1 = DataContainer.CreateNew (DomainObjectIDs.Order1);
-      _map.Register (_dataContainer1);
+      _map = new DataContainerMap(new Mock<IClientTransactionEventSink>().Object);
+      _dataContainer1 = DataContainer.CreateNew(DomainObjectIDs.Order1);
+      _map.Register(_dataContainer1);
 
-      _command = new UnregisterDataContainerCommand (DomainObjectIDs.Order1, _map);
+      _command = new UnregisterDataContainerCommand(DomainObjectIDs.Order1, _map);
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_command.GetAllExceptions(), Is.Empty);
+      Assert.That(_command.GetAllExceptions(), Is.Empty);
     }
 
     [Test]
@@ -57,11 +57,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Perform ()
     {
-      Assert.That (_map[DomainObjectIDs.Order1], Is.Not.Null);
+      Assert.That(_map[DomainObjectIDs.Order1], Is.Not.Null);
 
       _command.Perform();
 
-      Assert.That (_map[DomainObjectIDs.Order1], Is.Null);
+      Assert.That(_map[DomainObjectIDs.Order1], Is.Null);
     }
 
     [Test]
@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       var result = _command.ExpandToAllRelatedObjects();
 
-      Assert.That (result.GetNestedCommands(), Is.EqualTo (new[] { _command }));
+      Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }
   }
 }

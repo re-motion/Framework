@@ -16,59 +16,56 @@
 // 
 using System;
 using System.Data;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands
 {
   [TestFixture]
   public class ScalarValueLoadCommandTest
   {
-    private IDbCommandBuilder _dbCommandBuilderMock;
-    private IDbCommand _dbCommandMock;
+    private Mock<IDbCommandBuilder> _dbCommandBuilderMock;
+    private Mock<IDbCommand> _dbCommandMock;
     private ScalarValueLoadCommand _command;
     private object _fakeResult;
-    private IRdbmsProviderCommandExecutionContext _commandExecutionContextMock;
+    private Mock<IRdbmsProviderCommandExecutionContext> _commandExecutionContextMock;
 
     [SetUp]
     public void SetUp ()
     {
       _fakeResult = new object();
-     
-      _commandExecutionContextMock = MockRepository.GenerateStrictMock<IRdbmsProviderCommandExecutionContext>();
-      _dbCommandMock = MockRepository.GenerateStrictMock<IDbCommand>();
-      _dbCommandBuilderMock = MockRepository.GenerateStrictMock<IDbCommandBuilder>();
 
-      _command = new ScalarValueLoadCommand (_dbCommandBuilderMock);
+      _commandExecutionContextMock = new Mock<IRdbmsProviderCommandExecutionContext>(MockBehavior.Strict);
+      _dbCommandMock = new Mock<IDbCommand>(MockBehavior.Strict);
+      _dbCommandBuilderMock = new Mock<IDbCommandBuilder>(MockBehavior.Strict);
+
+      _command = new ScalarValueLoadCommand(_dbCommandBuilderMock.Object);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_command.DbCommandBuilder, Is.SameAs (_dbCommandBuilderMock));
+      Assert.That(_command.DbCommandBuilder, Is.SameAs(_dbCommandBuilderMock.Object));
     }
 
     [Test]
     public void Execute ()
     {
-      _commandExecutionContextMock.Expect (mock => mock.ExecuteScalar (_dbCommandMock)).Return (_fakeResult);
-      _commandExecutionContextMock.Replay();
+      _commandExecutionContextMock.Setup(mock => mock.ExecuteScalar(_dbCommandMock.Object)).Returns(_fakeResult).Verifiable();
 
-      _dbCommandBuilderMock.Expect (mock => mock.Create (_commandExecutionContextMock)).Return (_dbCommandMock);
-      _dbCommandBuilderMock.Replay();
+      _dbCommandBuilderMock.Setup(mock => mock.Create(_commandExecutionContextMock.Object)).Returns(_dbCommandMock.Object).Verifiable();
 
-      _dbCommandMock.Expect (mock => mock.Dispose());
-      _dbCommandMock.Replay();
-      
-      var result = _command.Execute(_commandExecutionContextMock);
+      _dbCommandMock.Setup(mock => mock.Dispose()).Verifiable();
 
-      _commandExecutionContextMock.VerifyAllExpectations();
-      _dbCommandBuilderMock.VerifyAllExpectations();
-      _dbCommandMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (_fakeResult));
+      var result = _command.Execute(_commandExecutionContextMock.Object);
+
+      _commandExecutionContextMock.Verify();
+      _dbCommandBuilderMock.Verify();
+      _dbCommandMock.Verify();
+      Assert.That(result, Is.SameAs(_fakeResult));
     }
   }
 }

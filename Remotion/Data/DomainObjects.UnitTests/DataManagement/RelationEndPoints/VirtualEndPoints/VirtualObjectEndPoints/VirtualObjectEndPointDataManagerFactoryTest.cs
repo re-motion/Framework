@@ -29,17 +29,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      _factory = new VirtualObjectEndPointDataManagerFactory ();
-      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
+      base.SetUp();
+      _factory = new VirtualObjectEndPointDataManagerFactory();
+      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
     }
 
     [Test]
     public void Create ()
     {
-      var result = _factory.CreateEndPointDataManager (_endPointID);
+      var result = _factory.CreateEndPointDataManager(_endPointID);
 
-      Assert.That (result, Is.TypeOf (typeof (VirtualObjectEndPointDataManager)));
-      Assert.That (((VirtualObjectEndPointDataManager) result).EndPointID, Is.SameAs (_endPointID));
+      Assert.That(result, Is.TypeOf(typeof(VirtualObjectEndPointDataManager)));
+      Assert.That(((VirtualObjectEndPointDataManager)result).EndPointID, Is.SameAs(_endPointID));
     }
   }
 }

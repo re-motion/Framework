@@ -15,10 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
@@ -43,9 +45,9 @@ namespace Remotion.Data.DomainObjects
     /// <param name="id1">The <see cref="ObjectID"/> object that is to the left of the equality operator.</param>
     /// <param name="id2">The <see cref="ObjectID"/> object that is to the right of the equality operator.</param>
     /// <returns></returns>
-    public static bool operator == (ObjectID id1, ObjectID id2)
+    public static bool operator == (ObjectID? id1, ObjectID? id2)
     {
-      return Equals (id1, id2);
+      return Equals(id1, id2);
     }
 
     /// <summary>
@@ -54,9 +56,9 @@ namespace Remotion.Data.DomainObjects
     /// <param name="id1">The <see cref="ObjectID"/> object that is to the left of the inequality operator.</param>
     /// <param name="id2">The <see cref="ObjectID"/> object that is to the right of the inequality operator.</param>
     /// <returns></returns>
-    public static bool operator != (ObjectID id1, ObjectID id2)
+    public static bool operator != (ObjectID? id1, ObjectID? id2)
     {
-      return !Equals (id1, id2);
+      return !Equals(id1, id2);
     }
 
     /// <summary>
@@ -65,14 +67,14 @@ namespace Remotion.Data.DomainObjects
     /// <param name="id1">The first <see cref="ObjectID"/> to compare.</param>
     /// <param name="id2">The second <see cref="ObjectID"/> to compare.</param>
     /// <returns><see langword="true"/> if the both <see cref="ObjectID"/>s are equal; otherwise, <see langword="false"/>.</returns>
-    public static bool Equals (ObjectID id1, ObjectID id2)
+    public static bool Equals (ObjectID? id1, ObjectID? id2)
     {
-      if (ReferenceEquals (id1, id2))
+      if (ReferenceEquals(id1, id2))
         return true;
-      if (ReferenceEquals (id1, null))
+      if (ReferenceEquals(id1, null))
         return false;
 
-      return id1.Equals (id2);
+      return id1.Equals(id2);
     }
 
     /// <summary>
@@ -90,8 +92,8 @@ namespace Remotion.Data.DomainObjects
     /// </remarks>
     public static ObjectID Parse (string objectIDString)
     {
-      ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
-      return ObjectIDStringSerializer.Instance.Parse (objectIDString);
+      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      return ObjectIDStringSerializer.Instance.Parse(objectIDString);
     }
 
     /// <summary>
@@ -109,17 +111,17 @@ namespace Remotion.Data.DomainObjects
     /// If you expect <paramref name="objectIDString"/> to always hold a valid <see cref="ObjectID"/> string, use <see cref="Parse"/> instead. Use
     /// this method only if an invalid string constitutes a supported use case.
     /// </remarks>
-    public static bool TryParse (string objectIDString, out ObjectID result)
+    public static bool TryParse (string objectIDString, [MaybeNullWhen(false)] out ObjectID result)
     {
-      ArgumentUtility.CheckNotNull ("objectIDString", objectIDString);
-      return ObjectIDStringSerializer.Instance.TryParse (objectIDString, out result);
+      ArgumentUtility.CheckNotNull("objectIDString", objectIDString);
+      return ObjectIDStringSerializer.Instance.TryParse(objectIDString, out result);
     }
 
     private readonly object _value;
     private readonly ClassDefinition _classDefinition;
     private int _cachedHashCode;
-    private string _cachedSerializedValue;
-    
+    private string? _cachedSerializedValue;
+
     /// <summary>
     /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
     /// </summary>
@@ -140,7 +142,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
     public ObjectID (string classID, object value)
-      : this (MappingConfiguration.Current.GetClassDefinition (ArgumentUtility.CheckNotNullOrEmpty ("classID", classID)), value)
+      : this(MappingConfiguration.Current.GetClassDefinition(ArgumentUtility.CheckNotNullOrEmpty("classID", classID)), value)
     {
     }
 
@@ -163,7 +165,7 @@ namespace Remotion.Data.DomainObjects
     /// </exception>
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
     public ObjectID (Type classType, object value)
-      : this (MappingConfiguration.Current.GetTypeDefinition (ArgumentUtility.CheckNotNull ("classType", classType)), value)
+      : this(MappingConfiguration.Current.GetTypeDefinition(ArgumentUtility.CheckNotNull("classType", classType)), value)
     {
     }
 
@@ -187,22 +189,21 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
     public ObjectID (ClassDefinition classDefinition, object value)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("value", value);
 
       if (classDefinition.IsAbstract)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "classDefinition",
             "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.",
-            classDefinition.ClassType.AssemblyQualifiedName,
+            classDefinition.ClassType.GetAssemblyQualifiedNameSafe(),
             classDefinition.ID);
       }
 
-      CheckValue ("value", value);
+      CheckValue("value", value);
 
-      Assertion.IsNotNull (classDefinition.StorageEntityDefinition, "Entity definition must be initialized before an ObjectID can be created.");
-      classDefinition.StorageEntityDefinition.StorageProviderDefinition.CheckIdentityType (value.GetType ());
+      classDefinition.StorageEntityDefinition.StorageProviderDefinition.CheckIdentityType(value.GetType());
 
       _classDefinition = classDefinition;
       _value = value;
@@ -253,12 +254,12 @@ namespace Remotion.Data.DomainObjects
     {
       try
       {
-        return ClassDefinition.HandleCreator (this).Cast<T>();
+        return ClassDefinition.HandleCreator(this).Cast<T>();
       }
       catch (InvalidCastException ex)
       {
-        var message = string.Format ("The ObjectID '{0}' cannot be represented as an 'IDomainObjectHandle<{1}>'.", this, typeof (T));
-        throw new ArgumentException (message, "T", ex);
+        var message = string.Format("The ObjectID '{0}' cannot be represented as an 'IDomainObjectHandle<{1}>'.", this, typeof(T));
+        throw new ArgumentException(message, "T", ex);
       }
     }
 
@@ -273,7 +274,7 @@ namespace Remotion.Data.DomainObjects
       // Note: The following code might result in initializing identical values on multiple threads. This is a non-issue.
 
       if (_cachedSerializedValue == null)
-        _cachedSerializedValue = ObjectIDStringSerializer.Instance.Serialize (this);
+        _cachedSerializedValue = ObjectIDStringSerializer.Instance.Serialize(this);
 
       return _cachedSerializedValue;
     }
@@ -285,7 +286,7 @@ namespace Remotion.Data.DomainObjects
     public override int GetHashCode ()
     {
       // Use lazy initialization because of deserialization.
-      
+
       // Note: The following code is not completely thread-safe - the hash code might be calculated twice on different threads. 
       // However, we can assume that an int assignment is atomic (and the XOR operation is fully performed before the assignment takes place), 
       // so no half-calculated values should become visible.
@@ -295,8 +296,8 @@ namespace Remotion.Data.DomainObjects
 
       // ReSharper disable NonReadonlyFieldInGetHashCode
       if (_cachedHashCode == 0)
-        _cachedHashCode = _classDefinition.GetHashCode () ^ _value.GetHashCode ();
-      
+        _cachedHashCode = _classDefinition.GetHashCode() ^ _value.GetHashCode();
+
       return _cachedHashCode;
       // ReSharper restore NonReadonlyFieldInGetHashCode
     }
@@ -317,24 +318,25 @@ namespace Remotion.Data.DomainObjects
     /// If two <see cref="ObjectID"/> instances are compared that have different <see cref="Value"/> types, their <see cref="ClassID"/>s are compared
     /// instead.
     /// </remarks>
-    public int CompareTo (object obj)
+    public int CompareTo (object? obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      if (obj == null)
+        return 1;
 
       var other = obj as ObjectID;
       if (other == null)
-        throw new ArgumentException ("The argument must be of type ObjectID.", "obj");
+        throw new ArgumentException("The argument must be of type ObjectID.", "obj");
 
       var leftValue = Value;
       var rightValue = other.Value;
 
-      if (rightValue.GetType () != leftValue.GetType ())
+      if (rightValue.GetType() != leftValue.GetType())
       {
         leftValue = ClassID;
         rightValue = other.ClassID;
       }
 
-      return ((IComparable) leftValue).CompareTo (rightValue);
+      return ((IComparable)leftValue).CompareTo(rightValue);
     }
 
     /// <summary>
@@ -343,17 +345,17 @@ namespace Remotion.Data.DomainObjects
     /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <see cref="ObjectID"/>. </param>
     /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <see cref="ObjectID"/>; otherwise, 
     /// <see langword="false"/>.</returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
       if (GetType() != obj.GetType())
         return false;
 
-      var other = (ObjectID) obj;
-      if (!Equals (ClassID, other.ClassID))
+      var other = (ObjectID)obj;
+      if (!Equals(ClassID, other.ClassID))
         return false;
-      if (!Equals (Value, other.Value))
+      if (!Equals(Value, other.Value))
         return false;
 
       return true;
@@ -363,30 +365,30 @@ namespace Remotion.Data.DomainObjects
     {
       Type valueType = value.GetType();
 
-      if (valueType != typeof (Guid) && valueType != typeof (int) && valueType != typeof (string))
-        throw CreateArgumentException (argumentName, "Remotion.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
+      if (valueType != typeof(Guid) && valueType != typeof(int) && valueType != typeof(string))
+        throw CreateArgumentException(argumentName, "Remotion.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
 
-      if (valueType == typeof (string))
-        ArgumentUtility.CheckNotEmpty (argumentName, (string) value);
+      if (valueType == typeof(string))
+        ArgumentUtility.CheckNotEmpty(argumentName, (string)value);
 
-      if (valueType == typeof (Guid))
+      if (valueType == typeof(Guid))
         ArgumentUtility.CheckNotEmpty(argumentName, (Guid)value);
     }
 
     private ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
     {
-      return new ArgumentException (string.Format (message, args), argumentName);
+      return new ArgumentException(string.Format(message, args), argumentName);
     }
 
     #region Serialization
 
     private ObjectID (SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      var value = info.GetValue ("Value", typeof (object));
-      var classID = info.GetString ("ClassID");
-      var classDefinition = MappingConfiguration.Current.GetClassDefinition (classID);
+      var value = info.GetValue("Value", typeof(object))!;
+      var classID = info.GetString("ClassID")!;
+      var classDefinition = MappingConfiguration.Current.GetClassDefinition(classID);
 
       _value = value;
       _classDefinition = classDefinition;
@@ -394,10 +396,10 @@ namespace Remotion.Data.DomainObjects
 
     void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      info.AddValue ("Value", _value);
-      info.AddValue ("ClassID", _classDefinition.ID);
+      info.AddValue("Value", _value);
+      info.AddValue("ClassID", _classDefinition.ID);
     }
 
     #endregion

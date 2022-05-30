@@ -1,122 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F9D890F8-EB08-4D58-BDFA-6C6540F15795}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.SecurityManager.Clients.Web.Test.SetupDB</RootNamespace>
+    <ProjectType>Executable</ProjectType>
+    <ProductType>SecurityManager</ProductType>
+  </PropertyGroup>
+  <Import Project="..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>SecurityManager.Domain.Data.SetupDB</AssemblyTitle>
     <AssemblyName>Remotion.SecurityManager.Clients.Web.Test.SetupDB</AssemblyName>
-    <FileUpgradeFlags></FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\remotion.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DBUtility.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetupDB.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\SecurityManager AGPL.licenseheader">
-      <Link>SecurityManager AGPL.licenseheader</Link>
-    </None>
-    <None Include="SecurityManagerTearDownDB.sql" />
-    <None Include="SecurityManagerTearDownDBSpecialTables.sql" />
-    <None Include="App.config" />
-    <None Include="CreateDB.sql" />
-    <None Include="TearDownDB.sql" />
-    <Content Include="ACE-Add.sql" />
-    <Content Include="SecurityManagerSetupConstraints.sql" />
-    <None Include="..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="SecurityManagerSetupDBSpecialTables.sql" />
-    <None Include="SecurityManagerSetupDB.sql" />
-    <None Include="SetupDB.sql" />
-    <None Include="TestData\AccessControlEntry.csv" />
-    <None Include="TestData\AccessControlList.csv" />
-    <None Include="TestData\AccessTypeReference.csv" />
-    <None Include="TestData\Tenant.csv" />
-    <None Include="TestData\Culture.csv" />
-    <None Include="TestData\EnumValueDefinition.csv" />
-    <None Include="TestData\File.csv" />
-    <None Include="TestData\FileItem.csv" />
-    <None Include="TestData\Group.csv" />
-    <None Include="TestData\GroupType.csv" />
-    <None Include="TestData\GroupTypePosition.csv" />
-    <None Include="TestData\LocalizedName.csv" />
-    <None Include="TestData\Permission.csv" />
-    <None Include="TestData\Position.csv" />
-    <None Include="TestData\Role.csv" />
-    <None Include="TestData\SecurableClassDefinition.csv" />
-    <None Include="TestData\StateCombination.csv" />
-    <None Include="TestData\StatePropertyDefinition.csv" />
-    <None Include="TestData\StatePropertyReference.csv" />
-    <None Include="TestData\StateUsage.csv" />
-    <None Include="TestData\User.csv" />
-    <None Include="TestData\_TestData.xls" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!--<ItemGroup>
-    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql">
-    </DatabaseFiles>
-  </ItemGroup>-->
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-    <Delete Files="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
-    <Copy SourceFiles="@(DatabaseFiles->'%(Fullpath)')" DestinationFiles="@(DatabaseFiles->'$(MSBuildProjectDirectory)\%(FileName)%(Extension)')" />
-  </Target>
-  -->
+  <Import Project="..\..\Build\Shared.build.targets" />
 </Project>

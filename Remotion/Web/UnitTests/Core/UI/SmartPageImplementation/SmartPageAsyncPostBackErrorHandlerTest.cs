@@ -18,11 +18,11 @@ using System;
 using System.Collections;
 using System.Web;
 using System.Web.UI;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.UI;
 using Remotion.Web.UI.SmartPageImplementation;
 using Remotion.Web.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
 {
@@ -32,47 +32,57 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
     [Test]
     public void HandleError_IsCustomErrorEnabledFalse_SetsAspNetDetailedErrorMessage ()
     {
-      var contextStub = MockRepository.GenerateStub<HttpContextBase>();
-      contextStub.Stub (_ => _.Items).Return (new Hashtable());
-      contextStub.Stub (_ => _.IsCustomErrorEnabled).Return (false);
+      var contextStub = new Mock<HttpContextBase>();
+      contextStub.Setup(_ => _.Items).Returns(new Hashtable());
+      contextStub.Setup(_ => _.IsCustomErrorEnabled).Returns(false);
 
-      var handler = new SmartPageAsyncPostBackErrorHandler (contextStub);
+      var handler = new SmartPageAsyncPostBackErrorHandler(contextStub.Object);
 
-      Assert.That (() => handler.HandleError (new ApplicationException ("The error")), Throws.TypeOf<AsyncUnhandledException>());
+      Assert.That(() => handler.HandleError(new ApplicationException("The error")), Throws.TypeOf<AsyncUnhandledException>());
 
-      var message = contextStub.Items[ControlHelper.AsyncPostBackErrorMessageKey];
-      Assert.That (message, Is.StringStarting (@"
+      var message = contextStub.Object.Items[ControlHelper.AsyncPostBackErrorMessageKey];
+      Assert.That(message, Does.StartWith(@"
 
             <span><H1>"));
-      Assert.That (message, Is.StringContaining ("[ApplicationException: The error]"));
-      Assert.That (message, Is.StringEnding (@"<br>
+      Assert.That(message, Does.Contain("[ApplicationException: The error]"));
 
-    "));
+      //The first value is the error page on a system without .Net 4.8 installed.
+      //The second value is the error page on a system with .Net 4.8 installed.
+      Assert.That(message, Does.EndWith(@"<br>
+
+    ").Or.EndsWith(@"<br>
+
+            </font>
+
+    ")
+    );
     }
 
     [Test]
     public void HandleError_IsCustomErrorEnabledTrue_SetsNonSensitiveErrorMessage ()
     {
-      var contextStub = MockRepository.GenerateStub<HttpContextBase>();
-      contextStub.Stub (_ => _.Items).Return (new Hashtable());
-      contextStub.Stub (_ => _.IsCustomErrorEnabled).Return (true);
+      var contextStub = new Mock<HttpContextBase>();
+      contextStub.Setup(_ => _.Items).Returns(new Hashtable());
+      contextStub.Setup(_ => _.IsCustomErrorEnabled).Returns(true);
 
-      var requstStub = MockRepository.GenerateStub<HttpRequestBase>();
-      requstStub.Stub (_ => _.ApplicationPath).Return ("Application/Path");
-      contextStub.Stub (_ => _.Request).Return (requstStub);
+      var requstStub = new Mock<HttpRequestBase>();
+      requstStub.Setup(_ => _.ApplicationPath).Returns("Application/Path");
+      contextStub.Setup(_ => _.Request).Returns(requstStub.Object);
 
-      var handler = new SmartPageAsyncPostBackErrorHandler (contextStub);
+      var handler = new SmartPageAsyncPostBackErrorHandler(contextStub.Object);
       var exceptionMessage = "The error";
 
-      Assert.That (() => handler.HandleError (new ApplicationException (exceptionMessage)), Throws.TypeOf<AsyncUnhandledException>());
+      Assert.That(() => handler.HandleError(new ApplicationException(exceptionMessage)), Throws.TypeOf<AsyncUnhandledException>());
 
-      var message = contextStub.Items[ControlHelper.AsyncPostBackErrorMessageKey];
-      Assert.That (message, Is.StringStarting (@"
+      var message = contextStub.Object.Items[ControlHelper.AsyncPostBackErrorMessageKey];
+      Assert.That(message, Does.StartWith(@"
 
             <span><h1>"));
-      Assert.That (message, Is.Not.StringContaining (exceptionMessage));
-      Assert.That (message, Is.StringContaining ("Application/Path"));
-      Assert.That (message, Is.StringEnding (@"<br/>
+      Assert.That(message, Does.Not.Contains(exceptionMessage));
+      Assert.That(message, Does.Contain("Application/Path"));
+      Assert.That(message, Does.EndWith(@"<br/>
+
+            </div>
 
     "));
     }
@@ -80,32 +90,32 @@ namespace Remotion.Web.UnitTests.Core.UI.SmartPageImplementation
     [Test]
     public void HandleError_SetsAsyncErrorInformation ()
     {
-      var contextStub = MockRepository.GenerateStub<HttpContextBase>();
-      contextStub.Stub (_ => _.Items).Return (new Hashtable());
+      var contextStub = new Mock<HttpContextBase>();
+      contextStub.Setup(_ => _.Items).Returns(new Hashtable());
 
-      var handler = new SmartPageAsyncPostBackErrorHandler (contextStub);
+      var handler = new SmartPageAsyncPostBackErrorHandler(contextStub.Object);
 
-      Assert.That (() => handler.HandleError (new ApplicationException ("The error")), Throws.TypeOf<AsyncUnhandledException>());
+      Assert.That(() => handler.HandleError(new ApplicationException("The error")), Throws.TypeOf<AsyncUnhandledException>());
 
-      Assert.That (contextStub.Items[ControlHelper.AsyncPostBackErrorKey], Is.True);
-      Assert.That (contextStub.Items[ControlHelper.AsyncPostBackErrorHttpCodeKey], Is.EqualTo (500));
-      Assert.That (contextStub.Items[ControlHelper.AsyncPostBackErrorMessageKey], Is.Not.Empty);
+      Assert.That(contextStub.Object.Items[ControlHelper.AsyncPostBackErrorKey], Is.True);
+      Assert.That(contextStub.Object.Items[ControlHelper.AsyncPostBackErrorHttpCodeKey], Is.EqualTo(500));
+      Assert.That(contextStub.Object.Items[ControlHelper.AsyncPostBackErrorMessageKey], Is.Not.Empty);
     }
 
     [Test]
     public void HandleError_IntegrationTest ()
     {
-      var expectedException = new ApplicationException ("Test exception");
+      var expectedException = new ApplicationException("Test exception");
 
       var page = new FakePageForAsyncPostBack();
       page.Load += delegate { throw expectedException; };
 
-      page.ScriptManager.AsyncPostBackError += (sender, e) => { ((ScriptManager) sender).AsyncPostBackErrorMessage = e.Exception.Message; };
+      page.ScriptManager.AsyncPostBackError += (sender, e) => { ((ScriptManager)sender).AsyncPostBackErrorMessage = e.Exception.Message; };
 
-      Assert.That (() => page.ProcessRequest (), Throws.TypeOf<HttpUnhandledException>().With.InnerException.SameAs (expectedException));
-      Assert.That (page.Context.Items[ControlHelper.AsyncPostBackErrorKey], Is.True);
-      Assert.That (page.Context.Items[ControlHelper.AsyncPostBackErrorHttpCodeKey], Is.EqualTo (500));
-      Assert.That (page.Context.Items[ControlHelper.AsyncPostBackErrorMessageKey], Is.EqualTo (expectedException.Message));
+      Assert.That(() => page.ProcessRequest(), Throws.TypeOf<HttpUnhandledException>().With.InnerException.SameAs(expectedException));
+      Assert.That(page.Context.Items[ControlHelper.AsyncPostBackErrorKey], Is.True);
+      Assert.That(page.Context.Items[ControlHelper.AsyncPostBackErrorHttpCodeKey], Is.EqualTo(500));
+      Assert.That(page.Context.Items[ControlHelper.AsyncPostBackErrorMessageKey], Is.EqualTo(expectedException.Message));
     }
   }
 }

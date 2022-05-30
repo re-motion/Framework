@@ -52,6 +52,8 @@
 // SOFTWARE.
 // 
 
+#nullable disable
+
 using System;
 
 #pragma warning disable 1591
@@ -69,7 +71,7 @@ namespace JetBrains.Annotations
   /// This attribute is intended to mark publicly available API
   /// which should not be removed and so is treated as used.
   /// </summary>
-  [MeansImplicitUse (ImplicitUseTargetFlags.WithMembers)]
+  [MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
   sealed partial class PublicAPIAttribute : Attribute
   {
     public PublicAPIAttribute ()
@@ -85,3 +87,5 @@ namespace JetBrains.Annotations
     public string Comment { get; private set; }
   }
 }
+
+#nullable restore

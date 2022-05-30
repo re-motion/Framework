@@ -19,7 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.EnablingClassIDsInAllForeignKeys.TestDomain;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests.EnablingClassIDsInAllForeignKeys
@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   public class ClassIDsInAllForeignKeysBehaviorTest : CustomStorageObjectFactoryTestBase
   {
     public ClassIDsInAllForeignKeysBehaviorTest ()
-        : base (CreateEmptyTestDataFileName)
+        : base(CreateEmptyTestDataFileName)
     {
     }
 
@@ -40,40 +40,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void EndPointWithoutInheritanceHierarchy_HasClassIDColumn ()
     {
-      var endPointWithoutInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition (
+      var endPointWithoutInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition(
           MappingConfiguration,
           (ClassWithRelations obj) => obj.RelationWithoutInheritanceHierarchy);
 
-      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithoutInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
-      Assert.That (storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition>());
+      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition)endPointWithoutInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
+      Assert.That(storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition>());
       var columnDefinitions = storagePropertyDefinition.GetColumns().ToArray();
-      Assert.That (columnDefinitions, Has.Length.EqualTo (2));
-      Assert.That (columnDefinitions.Any (cd => cd.Name.EndsWith ("ClassID")), Is.True);
+      Assert.That(columnDefinitions, Has.Length.EqualTo(2));
+      Assert.That(columnDefinitions.Any(cd => cd.Name.EndsWith("ClassID")), Is.True);
     }
 
     [Test]
     public void EndPointWithInheritanceHierarchy_HasClassIDColumn ()
     {
-      var endPointWithInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition (
+      var endPointWithInheritanceHierarchy = ReleationEndPointTestHelper.GetRelationEndPointDefinition(
           MappingConfiguration,
           (ClassWithRelations obj) => obj.RelationWithInheritanceHierarchy);
 
-      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition) endPointWithInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
-      Assert.That (storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition> ());
-      var columnDefinitions = storagePropertyDefinition.GetColumns ().ToArray ();
-      Assert.That (columnDefinitions, Has.Length.EqualTo (2));
-      Assert.That (columnDefinitions.Any (cd => cd.Name.EndsWith ("ClassID")), Is.True);
+      var storagePropertyDefinition = (IRdbmsStoragePropertyDefinition)endPointWithInheritanceHierarchy.PropertyDefinition.StoragePropertyDefinition;
+      Assert.That(storagePropertyDefinition, Is.TypeOf<ObjectIDStoragePropertyDefinition>());
+      var columnDefinitions = storagePropertyDefinition.GetColumns().ToArray();
+      Assert.That(columnDefinitions, Has.Length.EqualTo(2));
+      Assert.That(columnDefinitions.Any(cd => cd.Name.EndsWith("ClassID")), Is.True);
     }
 
     [Test]
     public void SchemaGeneration ()
     {
-      var scriptGenerator = new ScriptGenerator (
-          pd => pd.Factory.CreateSchemaScriptBuilder (pd), 
-          new RdbmsStorageEntityDefinitionProvider(), 
+      var scriptGenerator = new ScriptGenerator(
+          pd => pd.Factory.CreateSchemaScriptBuilder(pd),
+          new RdbmsStorageEntityDefinitionProvider(),
           new ScriptToStringConverter());
 
-      var script = scriptGenerator.GetScripts (MappingConfiguration.GetTypeDefinitions()).Single();
+      var script = scriptGenerator.GetScripts(MappingConfiguration.GetTypeDefinitions()).Single();
 
       const string expectedSetUpScriptFragment =
           @"CREATE TABLE [dbo].[ClassWithRelations]
@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
   [RelationWithoutInheritanceHierarchyIDClassID] varchar (100) NULL,
   [RelationWithInheritanceHierarchyID] uniqueidentifier NULL,
   [RelationWithInheritanceHierarchyIDClassID] varchar (100) NULL,";
-      Assert.That (script.SetUpScript, Is.StringContaining (expectedSetUpScriptFragment));
+      Assert.That(script.SetUpScript, Does.Contain(expectedSetUpScriptFragment));
     }
   }
 }

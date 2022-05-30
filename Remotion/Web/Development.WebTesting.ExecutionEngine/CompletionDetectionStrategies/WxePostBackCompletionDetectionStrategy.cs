@@ -25,35 +25,38 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxePostBackCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WxePostBackCompletionDetectionStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxePostBackCompletionDetectionStrategy));
     private readonly int _expectedWxePostBackSequenceNumberIncrease;
+    private readonly TimeSpan? _timeout;
 
-    public WxePostBackCompletionDetectionStrategy (int expectedWxePostBackSequenceNumberIncrease)
+    public WxePostBackCompletionDetectionStrategy (int expectedWxePostBackSequenceNumberIncrease, TimeSpan? timeout = null)
     {
       _expectedWxePostBackSequenceNumberIncrease = expectedWxePostBackSequenceNumberIncrease;
+      _timeout = timeout;
     }
 
     /// <inheritdoc/>
-    public object PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber (context);
+      return WxeCompletionDetectionHelpers.GetWxePostBackSequenceNumber(context);
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object state)
+    public void WaitForCompletion (PageObjectContext context, object? state)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("state", state);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("state", state!);
 
-      var oldWxePostBackSequenceNumber = (int) state;
+      var oldWxePostBackSequenceNumber = (int)state;
 
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(
           s_log,
           context,
           oldWxePostBackSequenceNumber,
-          _expectedWxePostBackSequenceNumberIncrease);
+          _expectedWxePostBackSequenceNumberIncrease,
+          _timeout);
     }
   }
 }

@@ -19,7 +19,9 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Reflection;
 using Remotion.Utilities;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -29,9 +31,18 @@ namespace Remotion.ObjectBinding.Sample
     private class ToolTipBasedHelpInfo : HelpInfo
     {
       public ToolTipBasedHelpInfo (string toolTip)
-          : base("#", null, toolTip,  "return false;")
+          : base("#", null, toolTip, "return false;")
       {
       }
+    }
+
+    private readonly IResourceUrlFactory _resourceUrlFactory;
+
+    public ReflectionBusinessObjectWebUIService (IResourceUrlFactory resourceUrlFactory)
+    {
+      ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
+
+      _resourceUrlFactory = resourceUrlFactory;
     }
 
     public IconInfo GetIcon (IBusinessObject obj)
@@ -42,8 +53,10 @@ namespace Remotion.ObjectBinding.Sample
       }
       else
       {
-        string url = "~/Images/" + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName + ".gif";
-        return new IconInfo (url, Unit.Pixel (16), Unit.Pixel (16));
+        var targetType = ((BindableObjectClass)obj.BusinessObjectClass).TargetType;
+        var fileName = targetType.GetFullNameChecked() + ".gif";
+        string url = _resourceUrlFactory.CreateResourceUrl(targetType, ResourceType.Image, fileName).GetUrl();
+        return new IconInfo(url, Unit.Pixel(16), Unit.Pixel(16));
       }
     }
 
@@ -52,7 +65,7 @@ namespace Remotion.ObjectBinding.Sample
       if (obj == null)
         return "No ToolTip";
       else
-        return "ToolTip: " + ((BindableObjectClass) obj.BusinessObjectClass).TargetType.FullName;
+        return "ToolTip: " + ((BindableObjectClass)obj.BusinessObjectClass).TargetType.GetFullNameChecked();
     }
 
     public HelpInfo GetHelpInfo (
@@ -61,15 +74,16 @@ namespace Remotion.ObjectBinding.Sample
         IBusinessObjectProperty businessObjectProperty,
         IBusinessObject businessObject)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
-      ArgumentUtility.CheckNotNull ("businessObjectClass", businessObjectClass);
+      ArgumentUtility.CheckNotNull("control", control);
+      ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
 
-      return new ToolTipBasedHelpInfo (string.Format (
-              "{0}\r\n{1}\r\n{2}\r\n{3}",
-              control.ID,
-              businessObjectClass.Identifier,
-              (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"),
-              (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity) businessObject).DisplayName : "obj")));
+      return new ToolTipBasedHelpInfo("Help for " + (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"));
+      //return new ToolTipBasedHelpInfo (string.Format (
+      //        "{0}\r\n{1}\r\n{2}\r\n{3}",
+      //        control.ID,
+      //        businessObjectClass.Identifier,
+      //        (businessObjectProperty != null ? businessObjectProperty.Identifier : "prop"),
+      //        (businessObject is IBusinessObjectWithIdentity ? ((IBusinessObjectWithIdentity) businessObject).DisplayName : "obj")));
     }
   }
 }

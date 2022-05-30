@@ -30,22 +30,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation
   {
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
-             select Validate (propertyDefinition);
+             select Validate(propertyDefinition);
     }
 
     private MappingValidationResult Validate (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       if (propertyDefinition.StorageClass == StorageClass.Persistent)
       {
-        var unsupportedStoragePropertyDefinition = propertyDefinition.StoragePropertyDefinition as UnsupportedStoragePropertyDefinition;
+        var unsupportedStoragePropertyDefinition = propertyDefinition.HasStoragePropertyDefinitionBeenSet
+            ? propertyDefinition.StoragePropertyDefinition as UnsupportedStoragePropertyDefinition
+            : null;
         if (unsupportedStoragePropertyDefinition != null)
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (
+          return MappingValidationResult.CreateInvalidResultForProperty(
               propertyDefinition.PropertyInfo,
               "The property type '{0}' is not supported by this storage provider. {1}",
               propertyDefinition.PropertyType.Name,

@@ -36,7 +36,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     ///   Gets an instance of the <see cref="HelpInfo"/> type, which contains all information needed for rendering a help-link.
     /// </summary>
-    HelpInfo HelpInfo { get; }
+    HelpInfo? HelpInfo { get; }
 
     /// <summary>
     ///   Creates an appropriate validator for this control.
@@ -75,7 +75,7 @@ namespace Remotion.Web.UI.Controls
     //  bool UseInputControlCSS { get; }
 
     /// <summary> Gets the text to be written into the label for this control. </summary>
-    string DisplayName { get; }
+    WebString DisplayName { get; }
 
     /// <summary>Regsiteres stylesheet and script files with the <see cref="HtmlHeadAppender"/>.</summary>
     void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);

@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocListRow<TList, TRow, TCell> : ISelfResolvable
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
@@ -63,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
 
     public ScreenshotBocListFluentRowCellSelector<TList, TRow, TCell> GetCellSelector ()
     {
-      return new ScreenshotBocListFluentRowCellSelector<TList, TRow, TCell> (_fluentList, _fluentRow);
+      return new ScreenshotBocListFluentRowCellSelector<TList, TRow, TCell>(_fluentList, _fluentRow);
     }
 
     /// <inheritdoc />
@@ -75,9 +75,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return _fluentRow.ResolveDesktopCoordinates (locator);
+      return _fluentRow.ResolveDesktopCoordinates(locator);
     }
   }
 }

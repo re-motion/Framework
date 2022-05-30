@@ -35,13 +35,13 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [SetUp]
     public void SetUp ()
     {
-      _securityAdapter = new WebSecurityAdapter ();
+      _securityAdapter = new WebSecurityAdapter();
 
-      _testHelper = new WebPermissionProviderTestHelper ();
+      _testHelper = new WebPermissionProviderTestHelper();
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
-      serviceLocator.RegisterMultiple<IWxeSecurityAdapter> (() => _testHelper.WxeSecurityAdapter);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterMultiple<IWxeSecurityAdapter>(() => _testHelper.WxeSecurityAdapter);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
     [TearDown]
@@ -53,28 +53,26 @@ namespace Remotion.Web.UnitTests.Core.Security.UI.WebSecurityAdapterTests
     [Test]
     public void HasAccessGranted ()
     {
-      _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), true);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectHasStatelessAccessForWxeFunction(typeof(TestFunctionWithThisObject), true);
 
-      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess(null, new EventHandler(TestEventHandler));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccessDenied ()
     {
-      _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), false);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectHasStatelessAccessForWxeFunction(typeof(TestFunctionWithThisObject), false);
 
-      bool hasAccess = _securityAdapter.HasAccess (null, new EventHandler (TestEventHandler));
+      bool hasAccess = _securityAdapter.HasAccess(null, new EventHandler(TestEventHandler));
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.False);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.False);
     }
 
-    [DemandTargetWxeFunctionPermission (typeof (TestFunctionWithThisObject))]
+    [DemandTargetWxeFunctionPermission(typeof(TestFunctionWithThisObject))]
     private void TestEventHandler (object sender, EventArgs args)
     {
     }

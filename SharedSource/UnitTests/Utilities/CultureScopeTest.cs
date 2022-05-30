@@ -20,6 +20,7 @@ using System.Threading;
 using NUnit.Framework;
 using Remotion.Utilities;
 
+#nullable enable
 namespace Remotion.UnitTests.Utilities
 {
   [TestFixture]
@@ -29,17 +30,17 @@ namespace Remotion.UnitTests.Utilities
     public void CultureScopeByNameTest ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (new CultureScope ("de-AT", "uz-Cyrl-UZ"))
+      using (new CultureScope("de-AT", "uz-Cyrl-UZ"))
       {
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
-        using (new CultureScope ("en-GB", "fr-MC"))
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
+        using (new CultureScope("en-GB", "fr-MC"))
         {
-          Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("en-GB"));
-          Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("fr-MC"));
+          Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("en-GB"));
+          Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("fr-MC"));
         }
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
       }
     }
 
@@ -47,17 +48,17 @@ namespace Remotion.UnitTests.Utilities
     public void CultureScopeByCultureInfoTest ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (new CultureScope ("de-AT", "uz-Cyrl-UZ"))
+      using (new CultureScope("de-AT", "uz-Cyrl-UZ"))
       {
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
-        using (new CultureScope (new CultureInfo ("en-GB", false), new CultureInfo ("fr-MC", false)))
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
+        using (new CultureScope(new CultureInfo("en-GB", false), new CultureInfo("fr-MC", false)))
         {
-          Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("en-GB"));
-          Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("fr-MC"));
+          Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("en-GB"));
+          Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("fr-MC"));
         }
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
       }
     }
 
@@ -65,17 +66,17 @@ namespace Remotion.UnitTests.Utilities
     public void CreateCultureScopeWithEmptyNames ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (new CultureScope ("de-AT", "uz-Cyrl-UZ"))
+      using (new CultureScope("de-AT", "uz-Cyrl-UZ"))
       {
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
-        using (new CultureScope ("", ""))
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
+        using (new CultureScope("", ""))
         {
-          Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo (""));
-          Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo (""));
+          Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo(""));
+          Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo(""));
         }
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
       }
     }
 
@@ -83,17 +84,17 @@ namespace Remotion.UnitTests.Utilities
     public void CreateCultureScopeWithNullForCultureName_DoesNotChangeCulture ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (new CultureScope ("de-AT", "uz-Cyrl-UZ"))
+      using (new CultureScope("de-AT", "uz-Cyrl-UZ"))
       {
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
-        using (new CultureScope (null, "fr-MC"))
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
+        using (new CultureScope(null, "fr-MC"))
         {
-          Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-          Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("fr-MC"));
+          Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+          Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("fr-MC"));
         }
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
       }
     }
 
@@ -101,17 +102,17 @@ namespace Remotion.UnitTests.Utilities
     public void CreateCultureScopeWithNullForUICultureName_DoesNotChangeUICulture ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (new CultureScope ("de-AT", "uz-Cyrl-UZ"))
+      using (new CultureScope("de-AT", "uz-Cyrl-UZ"))
       {
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
-        using (new CultureScope ("en-GB", null))
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
+        using (new CultureScope("en-GB", null))
         {
-          Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("en-GB"));
-          Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+          Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("en-GB"));
+          Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
         }
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
       }
     }
 
@@ -119,17 +120,17 @@ namespace Remotion.UnitTests.Utilities
     public void CreateCultureScopeWithNullForCultureInfo_DoesNotChangeCulture ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (new CultureScope ("de-AT", "uz-Cyrl-UZ"))
+      using (new CultureScope("de-AT", "uz-Cyrl-UZ"))
       {
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
-        using (new CultureScope (null, new CultureInfo ("fr-MC", false)))
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
+        using (new CultureScope(null, new CultureInfo("fr-MC", false)))
         {
-          Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-          Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("fr-MC"));
+          Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+          Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("fr-MC"));
         }
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
       }
     }
 
@@ -137,17 +138,17 @@ namespace Remotion.UnitTests.Utilities
     public void CreateCultureScopeWithNullForUICultureInfo_DoesNotChangeUICulture ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (new CultureScope ("de-AT", "uz-Cyrl-UZ"))
+      using (new CultureScope("de-AT", "uz-Cyrl-UZ"))
       {
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
-        using (new CultureScope (new CultureInfo ("en-GB", false), null))
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
+        using (new CultureScope(new CultureInfo("en-GB", false), null))
         {
-          Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("en-GB"));
-          Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+          Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("en-GB"));
+          Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
         }
-        Assert.That (currentThread.CurrentCulture.Name, Is.EqualTo ("de-AT"));
-        Assert.That (currentThread.CurrentUICulture.Name, Is.EqualTo ("uz-Cyrl-UZ"));
+        Assert.That(currentThread.CurrentCulture.Name, Is.EqualTo("de-AT"));
+        Assert.That(currentThread.CurrentUICulture.Name, Is.EqualTo("uz-Cyrl-UZ"));
       }
     }
 
@@ -155,12 +156,12 @@ namespace Remotion.UnitTests.Utilities
     public void CreateInvariantCultureScopeTest ()
     {
       Thread currentThread = Thread.CurrentThread;
-      using (CultureScope.CreateInvariantCultureScope ())
+      using (CultureScope.CreateInvariantCultureScope())
       {
-        Assert.That (currentThread.CurrentCulture, Is.EqualTo (CultureInfo.InvariantCulture));
-        Assert.That (currentThread.CurrentUICulture, Is.EqualTo (CultureInfo.InvariantCulture));
-      }    
-    
+        Assert.That(currentThread.CurrentCulture, Is.EqualTo(CultureInfo.InvariantCulture));
+        Assert.That(currentThread.CurrentUICulture, Is.EqualTo(CultureInfo.InvariantCulture));
+      }
+
     }
   }
 }

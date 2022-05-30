@@ -25,8 +25,13 @@ span.bocTextValue .content
 {
   position: absolute;
   left: 0;
-  right: 0.5em;
+  right: 6px;
   width: auto;
+}
+
+.mozilla span.bocTextValue .content
+{
+  right: 8px;
 }
 
 .bocTextValue.readOnly .content
@@ -34,22 +39,32 @@ span.bocTextValue .content
   position: static;
 }
 
-.bocTextValue.readOnly .content span
+.bocTextValue.readOnly .content span[tabindex]
 {
   /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
   display: inline-block;
 }
 
-.bocTextValue.readOnly .content span:first-child
+.bocTextValue.readOnly .content span[tabindex]:first-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-top: 0.2em;
 }
 
-.bocTextValue.readOnly .content span:last-child
+.bocTextValue.readOnly .content span[tabindex]:last-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-bottom: 0.2em;
+}
+
+.bocTextValue.readOnly .content span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: calc(100% - 2px);
+  min-height: 1.5em;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: -0.2em;
 }
 
 span.bocTextValue input
@@ -68,4 +83,10 @@ span.bocTextValue input
 {
   height: 1.2em;
   line-height: 1em;
+}
+
+.blink span.bocTextValue input
+{
+  padding-left: 1px;
+  padding-right: 1px;
 }

@@ -18,11 +18,11 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualResources (NamedResources.One)]
-  [MultiLingualResources (NamedResources.Two)]
-  [MultiLingualResources (NamedResources.Three)]
+  [MultiLingualResources(NamedResources.One)]
+  [MultiLingualResources(NamedResources.Two)]
+  [MultiLingualResources(NamedResources.Three)]
   public class ClassWithMultiLingualResourcesAttributes
   {
-    
+
   }
 }

@@ -28,10 +28,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
   /// Control object for <see cref="T:System.Web.UI.WebControls.TextBox"/> and all its derivatives (none in re-motion).
   /// </summary>
   public class TextBoxControlObject
-      : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState
+      : WebFormsControlObject, IFillableControlObject, IControlObjectWithFormElements, ISupportsDisabledState, IControlObjectWithText
   {
     public TextBoxControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -43,43 +43,43 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
       return !string.IsNullOrEmpty(Scope["readonly"]);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
       return Scope.Value; // do not trim
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      return FillWith (text, FinishInput.WithTab, actionOptions);
+      return FillWith(text, FinishInput.WithTab, actionOptions);
     }
 
     /// <inheritdoc/>
     /// <remarks>
     /// The default <see cref="ICompletionDetectionStrategy"/> for <see cref="TextBoxControlObject"/> does expect a WXE auto postback!
     /// </remarks>
-    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject FillWith (string text, FinishInputWithAction finishInputWith, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
-      ArgumentUtility.CheckNotNull ("finishInputWith", finishInputWith);
+      ArgumentUtility.CheckNotNull("text", text);
+      ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      var actualActionOptions = MergeWithDefaultActionOptions (actionOptions, finishInputWith);
-      new FillWithAction (this, Scope, text, finishInputWith).Execute (actualActionOptions);
+      var actualActionOptions = MergeWithDefaultActionOptions(actionOptions, finishInputWith);
+      ExecuteAction(new FillWithAction(this, Scope, text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 
@@ -96,7 +96,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
     }
 
     private IWebTestActionOptions MergeWithDefaultActionOptions (
-        IWebTestActionOptions userDefinedActionOptions,
+        IWebTestActionOptions? userDefinedActionOptions,
         FinishInputWithAction finishInputWith)
     {
       if (finishInputWith == FinishInput.Promptly)
@@ -105,7 +105,7 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects
         userDefinedActionOptions.CompletionDetectionStrategy = Continue.Immediately;
       }
 
-      return MergeWithDefaultActionOptions (Scope, userDefinedActionOptions);
+      return MergeWithDefaultActionOptions(Scope, userDefinedActionOptions);
     }
   }
 }

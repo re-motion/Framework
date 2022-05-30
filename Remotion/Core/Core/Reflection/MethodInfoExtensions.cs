@@ -32,10 +32,19 @@ namespace Remotion.Reflection
     /// </summary>
     /// <param name="methodInfo">The method whose type should be returned. Must not be <see langword="null" />.</param>
     /// <returns>The <see cref="Type"/> where the method was declared for the first time.</returns>
+    /// <exception cref="InvalidOperationException">No declaring type could be found.</exception>
     public static Type GetOriginalDeclaringType (this MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
-      return methodInfo.GetBaseDefinition ().DeclaringType;
+      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+
+      var declaringType = methodInfo.GetBaseDefinition().DeclaringType;
+      if (declaringType == null)
+      {
+        throw new InvalidOperationException(
+            $"Method '{methodInfo.Name}' does not have a declaring type. This could be due to the method being a global module method or a dynamic method.");
+      }
+
+      return declaringType;
     }
 
     /// <summary>
@@ -44,19 +53,19 @@ namespace Remotion.Reflection
     /// <returns>
     /// Returns the <see cref="PropertyInfo"/> of the declared property, or <see langword="null" /> if no corresponding property was found.
     /// </returns>
-    public static PropertyInfo FindDeclaringProperty (this MethodInfo methodInfo)
+    public static PropertyInfo? FindDeclaringProperty (this MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
+      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
 
       // Note: We scan the hierarchy ourselves because private (eg., explicit) property implementations in base types are ignored by GetProperties
       // We use AreEqualMethodsWithoutReflectedType because our algorithm manually iterates over the base type hierarchy, so the accesor's
       // ReflectedType will be the declaring type, whereas _methodInfo might have a different ReflectedType.
       // AreEqualMethodsWithoutReflectedType can't deal with closed generic methods, but property accessors aren't generic anyway.
 
-      return (from t in methodInfo.DeclaringType.CreateSequence (t => t.BaseType)
-        from pi in t.GetProperties (BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly)
-        from accessor in pi.GetAccessors (true)
-        where MemberInfoEqualityComparer<MethodInfo>.Instance.Equals (methodInfo, accessor)
+      return (from t in methodInfo.DeclaringType.CreateSequence(t => t.BaseType)
+        from pi in t.GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly)
+        from accessor in pi.GetAccessors(true)
+        where MemberInfoEqualityComparer<MethodInfo>.Instance.Equals(methodInfo, accessor)
         select pi).FirstOrDefault();
     }
   }

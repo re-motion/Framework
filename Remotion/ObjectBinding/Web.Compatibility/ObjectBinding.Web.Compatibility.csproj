@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>WebLibrary</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion ObjectBinding Web Controls (compatibility extension) Library</AssemblyTitle>
+    <Description>Contains infrastructure for backwards-compatibility of 2-way databinding with business objects.</Description>
+    <AssemblyName>Remotion.ObjectBinding.Web.Compatibility</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Globalization\Core\Globalization.Core.csproj" />
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

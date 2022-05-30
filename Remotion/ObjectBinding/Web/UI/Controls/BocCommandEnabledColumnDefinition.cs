@@ -29,7 +29,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected BocCommandEnabledColumnDefinition ()
     {
-      _command = new SingleControlItemCollection (new BocListItemCommand(), new[] { typeof (BocListItemCommand) });
+      _command = new SingleControlItemCollection(new BocListItemCommand(), new[] { typeof(BocListItemCommand) });
     }
 
     protected override void OnOwnerControlChanged ()
@@ -40,13 +40,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Gets or sets the <see cref="BocListItemCommand"/> rendered in this column. </summary>
     /// <value> A <see cref="BocListItemCommand"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Behavior")]
-    [Description ("The command rendered in this column.")]
-    [NotifyParentProperty (true)]
-    public BocListItemCommand Command
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Category("Behavior")]
+    [Description("The command rendered in this column.")]
+    [NotifyParentProperty(true)]
+    public BocListItemCommand? Command
     {
-      get { return (BocListItemCommand) _command.ControlItem; }
+      get { return (BocListItemCommand?)_command.ControlItem; }
       set { _command.ControlItem = value; }
     }
 
@@ -70,13 +70,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (BocListItemCommand) Activator.CreateInstance (Command.GetType());
+        Command = (BocListItemCommand)Activator.CreateInstance(Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Browsable(false)]
     public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }

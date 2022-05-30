@@ -49,19 +49,19 @@ namespace Remotion.Logging
         case TraceEventType.Critical:
           return LogLevel.Fatal;
         default:
-          throw new ArgumentException (string.Format ("LogLevel does not support value {0}.", eventType), "logLevel");
+          throw new ArgumentException(string.Format("LogLevel does not support value {0}.", eventType), "logLevel");
       }
     }
 
     // member fields
-    private Log4NetLogManager _logManager = new Log4NetLogManager ();
+    private Log4NetLogManager _logManager = new Log4NetLogManager();
 
     // construction and disposing
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Log4NetTraceListener"/> class. 
     /// </summary>
-    public Log4NetTraceListener()
+    public Log4NetTraceListener ()
     {
     }
 
@@ -69,7 +69,7 @@ namespace Remotion.Logging
     /// Initializes a new instance of the <see cref="Log4NetTraceListener"/> class using the specified name. 
     /// </summary>
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Constructor/param[@name="name"]' />
-    public Log4NetTraceListener (string name) : base (name)
+    public Log4NetTraceListener (string name) : base(name)
     {
     }
 
@@ -90,12 +90,12 @@ namespace Remotion.Logging
     /// <remarks>
     /// <see cref="Write(string)"/> does not use <see cref="TraceFilter"/>, even though the inherited overloads
     /// use it; this follows the behavior of the standard <see cref="TraceListener"/> implementations like 
-    /// <see cref="EventLogTraceListener"/> and <see cref="TextWriterTraceListener"/>; 
+    /// <see cref="T:System.Diagnostics.EventLogTraceListener"/> and <see cref="TextWriterTraceListener"/>; 
     /// this behavior is not explicitely documented for the classes of System.Diagnostics.
     /// </remarks>
-    public override void Write (string message)
+    public override void Write (string? message)
     {
-      _logManager.GetLogger (string.Empty).Log (LogLevel.Debug, 0, message);
+      _logManager.GetLogger(string.Empty).Log(LogLevel.Debug, 0, message);
     }
 
     /// <overloads>Writes a message to the <b>log4net</b> log. </overloads>
@@ -106,9 +106,9 @@ namespace Remotion.Logging
     /// <remarks>
     /// <see cref="WriteLine"/> has identical behavior to <see cref="Write(String)"/>.
     /// </remarks>
-    public override void WriteLine (string message)
+    public override void WriteLine (string? message)
     {
-      Write (message);
+      Write(message);
     }
 
     /// <overloads>Writes trace and event information to the <b>log4net</b> log.</overloads>
@@ -118,9 +118,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' 
     ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
-    public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id)
+    public override void TraceEvent (TraceEventCache? eventCache, string source, TraceEventType eventType, int id)
     {
-      TraceEvent (eventCache, source, eventType, id, string.Empty, new object[0]);
+      TraceEvent(eventCache, source, eventType, id, string.Empty, new object[0]);
     }
 
     /// <summary>
@@ -129,9 +129,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' 
     ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id" or @name="message"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
-    public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
+    public override void TraceEvent (TraceEventCache? eventCache, string source, TraceEventType eventType, int id, string? message)
     {
-      TraceEvent (eventCache, source, eventType, id, message, new object[0]);
+      TraceEvent(eventCache, source, eventType, id, message, new object[0]);
     }
 
     /// <summary>
@@ -142,14 +142,14 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceEvent/param[@name="format" or @name="args"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
     public override void TraceEvent (
-        TraceEventCache eventCache, 
-        string source, 
-        TraceEventType eventType, int id, 
-        string format, 
-        params Object[] args)
+        TraceEventCache? eventCache,
+        string source,
+        TraceEventType eventType, int id,
+        string? format,
+        params Object?[]? args)
     {
       if (ShouldTrace(eventCache, source, eventType, id, format, args, null, null))
-        _logManager.GetLogger (source).LogFormat (Convert (eventType), id, format, args);
+        _logManager.GetLogger(source).LogFormat(Convert(eventType), id, format, args);
     }
 
 
@@ -161,9 +161,9 @@ namespace Remotion.Logging
     ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceData_Object/param[@name="data"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
-    public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, Object data)
+    public override void TraceData (TraceEventCache? eventCache, string source, TraceEventType eventType, int id, Object? data)
     {
-      TraceData (eventCache, source, eventType, id, new object[] { data } );
+      TraceData(eventCache, source, eventType, id, new object?[] { data } );
     }
 
     /// <summary>
@@ -173,17 +173,17 @@ namespace Remotion.Logging
     ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="eventType" or @name="id"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceData_Array/param[@name="data"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
-    public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, params Object[] data)
+    public override void TraceData (TraceEventCache? eventCache, string source, TraceEventType eventType, int id, params Object?[]? data)
     {
-      if (ShouldTrace (eventCache, source, eventType, id, null, null, null, data)) 
+      if (ShouldTrace(eventCache, source, eventType, id, null, null, null, data))
       {
         string message = string.Empty;
         if (data != null)
         {
-          message = string.Join (", ", data);
+          message = string.Join(", ", data);
         }
 
-        _logManager.GetLogger (source).Log (Convert (eventType), id, message);
+        _logManager.GetLogger(source).Log(Convert(eventType), id, message);
       }
     }
 
@@ -206,24 +206,25 @@ namespace Remotion.Logging
     ///     path='Log4NetTraceListener/Trace/param[@name="eventCache" or @name="source" or @name="id" or @name="message"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/TraceTransfer/param[@name="relatedActivityId"]' />
     /// <include file='..\doc\include\Logging\Log4NetTraceListener.xml' path='Log4NetTraceListener/Trace/remarks' />
-    public override void TraceTransfer (TraceEventCache eventCache, string source, int id, string message, Guid relatedActivityId) 
+    public override void TraceTransfer (TraceEventCache? eventCache, string source, int id, string? message, Guid relatedActivityId)
     {
-      TraceEvent (eventCache, source, TraceEventType.Information, id,
-          message + ", relatedActivityId=" + relatedActivityId, new object[0]); 
-    } 
+      // TODO RM-7805: Add a fallback value for message.
+      TraceEvent(eventCache, source, TraceEventType.Information, id,
+          message + ", relatedActivityId=" + relatedActivityId, new object[0]);
+    }
 
 
     private bool ShouldTrace (
-        TraceEventCache cache,
+        TraceEventCache? cache,
         string source,
         TraceEventType eventType,
         int id,
-        string formatOrMessage,
-        object[] args,
-        object data1,
-        object[] data)
+        string? formatOrMessage,
+        object?[]? args,
+        object? data1,
+        object?[]? data)
     {
-      return ((Filter == null) || Filter.ShouldTrace (cache, source, eventType, id, formatOrMessage, args, data1, data));
+      return ((Filter == null) || Filter.ShouldTrace(cache, source, eventType, id, formatOrMessage, args, data1, data));
     }
   }
 }

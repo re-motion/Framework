@@ -17,7 +17,7 @@
 // 
 using System;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -38,48 +38,55 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   /// <see cref="GroupRolesListEditableRowControlFactory"/> as key.
   /// </remarks>
 
-  [ImplementationFor (typeof (GroupRolesListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(GroupRolesListEditableRowControlFactory), Lifetime = LifetimeKind.Singleton)]
   public class GroupRolesListEditableRowControlFactory : EditableRowAutoCompleteControlFactory
   {
     public GroupRolesListEditableRowControlFactory ()
     {
     }
 
-    protected override IBusinessObjectBoundEditableWebControl CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
+    protected override IBusinessObjectBoundEditableWebControl? CreateFromPropertyPath (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       if (propertyPath.Identifier == "Position")
-        return CreateControlForPosition (propertyPath);
+        return CreateControlForPosition(propertyPath);
       else
-        return base.CreateFromPropertyPath (propertyPath);
+        return base.CreateFromPropertyPath(propertyPath);
     }
 
     protected virtual BocReferenceValue CreateBocReferenceValue (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
       return new BocReferenceValue();
     }
 
     private IBusinessObjectBoundEditableWebControl CreateControlForPosition (IBusinessObjectPropertyPath propertyPath)
     {
-      ArgumentUtility.CheckNotNull ("propertyPath", propertyPath);
+      ArgumentUtility.CheckNotNull("propertyPath", propertyPath);
 
-      var control = CreateBocReferenceValue (propertyPath);
+      var control = CreateBocReferenceValue(propertyPath);
       control.PreRender += HandlePositionPreRender;
       control.EnableSelectStatement = false;
       return control;
     }
 
-    private void HandlePositionPreRender (object sender, EventArgs e)
+    private void HandlePositionPreRender (object? sender, EventArgs e)
     {
-      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue> ("sender", sender);
+      var positionReferenceValue = ArgumentUtility.CheckNotNullAndType<BocReferenceValue>("sender", sender!);
 
-      var group = ((Role) positionReferenceValue.DataSource.BusinessObject).Group;
-      var positions = positionReferenceValue.Property.SearchAvailableObjects (null, new RolePropertiesSearchArguments (group.GetHandle()));
-      positionReferenceValue.SetBusinessObjectList (positions);
-      if (!positions.Contains (positionReferenceValue.Value))
+      Assertion.IsNotNull(positionReferenceValue.DataSource, "BocReferenceValue{{{0}}}.DataSource != null", positionReferenceValue.ID);
+      Assertion.IsNotNull(positionReferenceValue.DataSource.BusinessObject, "BocReferenceValue{{{0}}}.DataSource.BusinessObject != null", positionReferenceValue.ID);
+      Assertion.IsNotNull(positionReferenceValue.Property, "BocReferenceValue{{{0}}}.Property != null", positionReferenceValue.ID);
+
+      var role = (Role)positionReferenceValue.DataSource.BusinessObject;
+      var group = role.Group;
+      Assertion.IsNotNull(group, "Role{{{0}}}.Group != null", role.ID);
+
+      var positions = positionReferenceValue.Property.SearchAvailableObjects(null, new RolePropertiesSearchArguments(group.GetHandle()));
+      positionReferenceValue.SetBusinessObjectList(positions);
+      if (!positions.Contains(positionReferenceValue.Value))
         positionReferenceValue.Value = null;
     }
   }

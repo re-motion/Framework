@@ -33,15 +33,15 @@ public sealed class MonospaceTextFormat
   /// <param name="sb">The StringBuilder object the text is written to.</param>
   /// <param name="lineWidth">The line width of the output.</param>
   /// <param name="text">The text that is to be formatted.</param>
-  public static void AppendWrappedText (StringBuilder sb, int lineWidth, string text)
+  public static void AppendWrappedText (StringBuilder sb, int lineWidth, string? text)
   {
     string line;
     while (text != null)
     {
-      SplitTextOnSeparator (text, out line, out text, lineWidth, new char[] {' '});
-      sb.Append (line);
+      SplitTextOnSeparator(text, out line, out text, lineWidth, new char[] {' '});
+      sb.Append(line);
       if (text != null)
-        sb.Append ('\n');
+        sb.Append('\n');
     }
   }
 
@@ -53,18 +53,18 @@ public sealed class MonospaceTextFormat
   /// that preceed each following line.</param>
   /// <param name="lineWidth">The line width of the output.</param>
   /// <param name="text">The text that is to be formatted.</param>
-  public static void AppendIndentedText (StringBuilder sb, int indent, int lineWidth, string text)
+  public static void AppendIndentedText (StringBuilder sb, int indent, int lineWidth, string? text)
   {
     string line;
     while (text != null)
     {
-      SplitTextOnSeparator (text, out line, out text, lineWidth - indent, new char[] {' '});
-      sb.Append (line);
+      SplitTextOnSeparator(text, out line, out text, lineWidth - indent, new char[] {' '});
+      sb.Append(line);
       if (text != null)
       {
-        sb.Append ('\n');
+        sb.Append('\n');
         for (int i = 0; i < indent; ++i)
-          sb.Append (' ');
+          sb.Append(' ');
       }
     }
   }
@@ -77,10 +77,10 @@ public sealed class MonospaceTextFormat
   /// <param name="afterSplit">Returns the part of the string after the split, or a null reference if the complete string was returned in <c>beforeSplit</c>.</param>
   /// <param name="splitAt">Specifies the position to split at. No more than <c>splitAt</c> characters will be returned in <c>beforeSplit</c>.</param>
   /// <param name="separators">Valid separator characters.</param>
-  public static void SplitTextOnSeparator (string text, out string beforeSplit, out string afterSplit, int splitAt, char[] separators)
+  public static void SplitTextOnSeparator (string text, out string beforeSplit, out string? afterSplit, int splitAt, char[] separators)
   {
-    if (text == null) throw new ArgumentNullException ("text");
-    if (splitAt < 0) throw new ArgumentOutOfRangeException ("splitAt", splitAt, "Argument must not be less than zero.");
+    if (text == null) throw new ArgumentNullException("text");
+    if (splitAt < 0) throw new ArgumentOutOfRangeException("splitAt", splitAt, "Argument must not be less than zero.");
 
     if (text.Length <= splitAt)
     {
@@ -89,16 +89,16 @@ public sealed class MonospaceTextFormat
     }
     else
     {
-      int pos = text.LastIndexOfAny (separators, splitAt);
+      int pos = text.LastIndexOfAny(separators, splitAt);
       if (pos >= 0)
       {
-        beforeSplit = text.Substring (0, pos);
-        afterSplit = text.Substring (pos + 1);
+        beforeSplit = text.Substring(0, pos);
+        afterSplit = text.Substring(pos + 1);
       }
       else
       {
-        beforeSplit = text.Substring (0, splitAt);
-        afterSplit = text.Substring (splitAt);
+        beforeSplit = text.Substring(0, splitAt);
+        afterSplit = text.Substring(splitAt);
       }
       if (afterSplit.Length == 0)
         afterSplit = null;

@@ -17,10 +17,12 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
 
@@ -29,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   /// <summary> A column definition containing no data, only the <see cref="BocListItemCommand"/>. </summary>
   public class BocCommandColumnDefinition : BocCommandEnabledColumnDefinition
   {
-    private string _text = string.Empty;
+    private WebString _text = WebString.Empty;
     private IconInfo _icon = new IconInfo();
 
     public BocCommandColumnDefinition ()
@@ -38,8 +40,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator serviceLocator)
     {
-      ArgumentUtility.CheckNotNull ("serviceLocator", serviceLocator);
-      
+      ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
+
       return serviceLocator.GetInstance<IBocCommandColumnRenderer>();
     }
 
@@ -47,53 +49,52 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns> Returns <see cref="Text"/>, followed by the the class name of the instance.  </returns>
     public override string ToString ()
     {
-      string displayName = ItemID;
-      if (string.IsNullOrEmpty (displayName))
-        displayName = ColumnTitle;
-      if (string.IsNullOrEmpty (displayName))
-        displayName = Text;
-      if (string.IsNullOrEmpty (displayName))
+      string? displayName = ItemID;
+      if (string.IsNullOrEmpty(displayName))
+        displayName = ColumnTitle.ToString();
+      if (string.IsNullOrEmpty(displayName))
+        displayName = Text.ToString();
+      if (string.IsNullOrEmpty(displayName))
         return DisplayedTypeName;
       else
-        return string.Format ("{0}: {1}", displayName, DisplayedTypeName);
+        return string.Format("{0}: {1}", displayName, DisplayedTypeName);
     }
 
     /// <summary> Gets or sets the text representing the command in the rendered page. </summary>
-    /// <value> A <see cref="string"/> representing the command. </value>
-    /// <remarks> The value will not be HTML encoded. </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Appearance")]
-    [Description ("The text representing the command in the rendered page. The value will not be HTML encoded.")]
-    [DefaultValue ("")]
-    [NotifyParentProperty (true)]
-    public string Text
+    /// <value>A <see cref="WebString"/> representing the command.</value>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Appearance")]
+    [Description("The text representing the command in the rendered page.")]
+    [DefaultValue(typeof(WebString), "")]
+    [NotifyParentProperty(true)]
+    public WebString Text
     {
       get { return _text; }
-      set { _text = value ?? string.Empty; }
+      set { _text = value; }
     }
 
     /// <summary> 
     ///   Gets or sets the image representing the  command in the rendered page. Must not be <see langword="null"/>. 
     /// </summary>
     /// <value> An <see cref="IconInfo"/> representing the command. </value>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Category ("Appearance")]
-    [Description ("The image representing the command in the rendered page.")]
-    [NotifyParentProperty (true)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Category("Appearance")]
+    [Description("The image representing the command in the rendered page.")]
+    [NotifyParentProperty(true)]
     public IconInfo Icon
     {
       get { return _icon; }
       set
       {
-        ArgumentUtility.CheckNotNull ("Icon", value);
+        ArgumentUtility.CheckNotNull("Icon", value);
         _icon = value;
       }
     }
 
     private bool ShouldSerializeIcon ()
     {
-      return IconInfo.ShouldSerialize (_icon);
+      return IconInfo.ShouldSerialize(_icon);
     }
 
     private void ResetIcon ()
@@ -109,16 +110,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      base.LoadResources (resourceManager, globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
 
-      string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-      if (!string.IsNullOrEmpty (key))
-        Text = resourceManager.GetString (key);
+      base.LoadResources(resourceManager, globalizationService);
 
-      Icon.LoadResources (resourceManager);
+      string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
+      if (!string.IsNullOrEmpty(key))
+        Text = resourceManager.GetWebString(key, Text.Type);
+
+      Icon.LoadResources(resourceManager);
     }
   }
 }

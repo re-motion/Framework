@@ -26,7 +26,7 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   public class CustomAttributeExpression : Expression
   {
     private static readonly MethodInfo s_getCustomAttributesMethod =
-        typeof (ICustomAttributeProvider).GetMethod ("GetCustomAttributes", new Type[] { typeof (Type), typeof (bool) }, null);
+        typeof(ICustomAttributeProvider).GetMethod("GetCustomAttributes", new Type[] { typeof(Type), typeof(bool) }, null)!;
 
     private readonly TypeReference _attributeOwner;
     private readonly Type _attributeType;
@@ -36,30 +36,30 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public CustomAttributeExpression (TypeReference attributeOwner, Type attributeType, int index, bool inherited)
     {
-      ArgumentUtility.CheckNotNull ("attributeOwner", attributeOwner);
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull("attributeOwner", attributeOwner);
+      ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
-      ArgumentUtility.CheckTypeIsAssignableFrom ("attributeOwner", attributeOwner.Type, typeof (ICustomAttributeProvider));
+      ArgumentUtility.CheckTypeIsAssignableFrom("attributeOwner", attributeOwner.Type, typeof(ICustomAttributeProvider));
 
       _attributeOwner = attributeOwner;
       _attributeType = attributeType;
       _index = index;
       _inherited = inherited;
 
-      Expression getAttributesExpression = new ConvertExpression (
-          _attributeType.MakeArrayType (),
-          new VirtualMethodInvocationExpression (
+      Expression getAttributesExpression = new ConvertExpression(
+          _attributeType.MakeArrayType(),
+          new VirtualMethodInvocationExpression(
               _attributeOwner,
               s_getCustomAttributesMethod,
-              new TypeTokenExpression (_attributeType),
-              new ConstReference (_inherited).ToExpression ()));
+              new TypeTokenExpression(_attributeType),
+              new ConstReference(_inherited).ToExpression()));
       _getAttributeExpression =
-          new LoadCalculatedArrayElementExpression (getAttributesExpression, new ConstReference (_index).ToExpression (), _attributeType);
+          new LoadCalculatedArrayElementExpression(getAttributesExpression, new ConstReference(_index).ToExpression(), _attributeType);
     }
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      _getAttributeExpression.Emit (member, gen);
+      _getAttributeExpression.Emit(member, gen);
     }
   }
 }

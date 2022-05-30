@@ -16,7 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -30,61 +30,63 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
   public abstract class BaseListControl<T> : BaseControl
       where T : BaseSecurityManagerObject, ISupportsGetObject
   {
-    protected abstract IList GetValues ();
+    protected abstract IReadOnlyList<T> GetValues ();
 
-    protected abstract FormFunction<T> CreateEditFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<T> editedObject);
+    protected abstract FormFunction<T> CreateEditFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<T>? editedObject);
 
     protected new BaseListTransactedFunction CurrentFunction
     {
-      get { return (BaseListTransactedFunction) base.CurrentFunction; }
+      get { return (BaseListTransactedFunction)base.CurrentFunction; }
     }
 
     protected void HandleEditItemClick (BocList sender, BocListItemCommandClickEventArgs e)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("sender", sender);
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       if (!Page.IsReturningPostBack)
       {
-        var editUserFormFunction = CreateEditFunction (WxeTransactionMode.CreateRootWithAutoCommit, ((T) e.BusinessObject).GetHandle());
-        Page.ExecuteFunction (editUserFormFunction, WxeCallArguments.Default);
+        var editUserFormFunction = CreateEditFunction(WxeTransactionMode.CreateRootWithAutoCommit, ((T)e.BusinessObject).GetHandle());
+        Page.ExecuteFunction(editUserFormFunction, WxeCallArguments.Default);
       }
       else
       {
-        if (!((FormFunction<T>) Page.ReturningFunction).HasUserCancelled)
+        if (!((FormFunction<T>)Page.ReturningFunction).HasUserCancelled)
         {
           CurrentFunction.Reset();
-          sender.LoadUnboundValue (GetValues(), false);
+          sender.LoadUnboundValue(GetValues(), false);
         }
       }
     }
 
     protected void HandleNewButtonClick (BocList sender)
     {
-      ArgumentUtility.CheckNotNull ("sender", sender);
+      ArgumentUtility.CheckNotNull("sender", sender);
+      Assertion.IsNotNull(Page, "Page != null when processing page life cycle events.");
 
       if (!Page.IsReturningPostBack)
       {
-        var editUserFormFunction = CreateEditFunction (WxeTransactionMode.CreateRootWithAutoCommit, null);
-        Page.ExecuteFunction (editUserFormFunction, WxeCallArguments.Default);
+        var editUserFormFunction = CreateEditFunction(WxeTransactionMode.CreateRootWithAutoCommit, null);
+        Page.ExecuteFunction(editUserFormFunction, WxeCallArguments.Default);
       }
       else
       {
-        if (!((FormFunction<T>) Page.ReturningFunction).HasUserCancelled)
+        if (!((FormFunction<T>)Page.ReturningFunction).HasUserCancelled)
         {
           CurrentFunction.Reset();
-          sender.LoadUnboundValue (GetValues(), false);
+          sender.LoadUnboundValue(GetValues(), false);
         }
       }
     }
 
     protected void ResetListOnTenantChange (BocList list)
     {
-      ArgumentUtility.CheckNotNull ("list", list);
+      ArgumentUtility.CheckNotNull("list", list);
 
       if (HasTenantChanged)
       {
         CurrentFunction.Reset();
-        list.LoadUnboundValue (GetValues(), false);
+        list.LoadUnboundValue(GetValues(), false);
       }
     }
   }

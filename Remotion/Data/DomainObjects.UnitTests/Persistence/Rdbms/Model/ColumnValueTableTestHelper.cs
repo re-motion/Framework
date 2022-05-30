@@ -26,25 +26,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
   {
     public static void CheckTable (ColumnValueTable expectedTable, ColumnValueTable actualTable)
     {
-      Assert.That (actualTable.Columns, Is.EqualTo (expectedTable.Columns));
+      Assert.That(actualTable.Columns, Is.EqualTo(expectedTable.Columns));
       var actualRows = actualTable.Rows.ToArray();
       var expectedRows = expectedTable.Rows.ToArray();
-      Assert.That (actualRows.Length, Is.EqualTo (expectedRows.Length));
+      Assert.That(actualRows.Length, Is.EqualTo(expectedRows.Length));
       for (int i = 0; i < expectedRows.Length; ++i)
-        Assert.That (actualRows[i].Values, Is.EqualTo (expectedRows[i].Values));
+        Assert.That(actualRows[i].Values, Is.EqualTo(expectedRows[i].Values));
     }
 
     public static bool AreEqual (ColumnValueTable t1, ColumnValueTable t2)
     {
-      if (!t1.Columns.SequenceEqual (t2.Columns))
+      if (!t1.Columns.SequenceEqual(t2.Columns))
         return false;
 
-      var rows1 = t2.Rows.ToArray ();
-      var rows2 = t1.Rows.ToArray ();
+      var rows1 = t2.Rows.ToArray();
+      var rows2 = t1.Rows.ToArray();
       if (rows1.Length != rows2.Length)
         return false;
 
-      return rows2.Zip (rows1).All (t => t.Item1.Values.SequenceEqual (t.Item2.Values));
+      return rows2.Zip(rows1).All(t => t.Item1.Values.SequenceEqual(t.Item2.Values));
     }
   }
 }

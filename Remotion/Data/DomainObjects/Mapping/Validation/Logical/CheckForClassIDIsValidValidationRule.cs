@@ -26,7 +26,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
   public class CheckForClassIDIsValidValidationRule : IClassDefinitionValidationRule
   {
     private const string ClassIDPattern = @"^(?:\p{L}|_)(?:\p{L}|_|\p{N})*$";
-    private static readonly Regex s_validClassID = new Regex (ClassIDPattern, RegexOptions.Compiled);
+    private static readonly Regex s_validClassID = new Regex(ClassIDPattern, RegexOptions.Compiled);
 
     public CheckForClassIDIsValidValidationRule ()
     {
@@ -34,11 +34,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Logical
 
     public MappingValidationResult Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      if (!s_validClassID.IsMatch (classDefinition.ID))
+      if (!s_validClassID.IsMatch(classDefinition.ID))
       {
-        return MappingValidationResult.CreateInvalidResultForType (
+        return MappingValidationResult.CreateInvalidResultForType(
             classDefinition.ClassType,
             "The Class-ID '{0}' is not valid. Valid Class-IDs must start with a letter or underscore and containing only letters, digits, and underscores.",
             classDefinition.ID);

@@ -62,6 +62,6 @@ namespace Remotion.Web.UI.Controls
     /// </returns>
     /// <param name="content">A string that contains a user control. 
     /// </param>
-    Control ParseControl (string content);
+    Control? ParseControl (string content);
   }
 }

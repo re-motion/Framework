@@ -37,22 +37,22 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public DeleteCommand (ClientTransaction clientTransaction, DomainObject deletedObject, IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("deletedObject", deletedObject);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("deletedObject", deletedObject);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
 
       _clientTransaction = clientTransaction;
       _deletedObject = deletedObject;
       _transactionEventSink = transactionEventSink;
 
-      _dataContainer = _clientTransaction.DataManager.GetDataContainerWithLazyLoad (_deletedObject.ID, throwOnNotFound: true);
-      Assertion.IsFalse (_dataContainer.State == StateType.Deleted);
-      Assertion.IsFalse (_dataContainer.State == StateType.Invalid);
+      _dataContainer = _clientTransaction.DataManager.GetDataContainerWithLazyLoad(_deletedObject.ID, throwOnNotFound: true)!;
+      Assertion.IsFalse(_dataContainer.State.IsDeleted);
+      Assertion.IsFalse(_dataContainer.State.IsDiscarded);
 
       _endPoints = (from endPointID in _dataContainer.AssociatedRelationEndPointIDs
-                    let endPoint = _clientTransaction.DataManager.GetRelationEndPointWithLazyLoad (endPointID)
+                    let endPoint = _clientTransaction.DataManager.GetRelationEndPointWithLazyLoad(endPointID)
                     select endPoint).ToArray();
-      _endPointDeleteCommands = new CompositeCommand (_endPoints.Select (endPoint => endPoint.CreateDeleteCommand()));
+      _endPointDeleteCommands = new CompositeCommand(_endPoints.Select(endPoint => endPoint.CreateDeleteCommand()));
     }
 
     public ClientTransaction ClientTransaction
@@ -72,29 +72,29 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public IEnumerable<Exception> GetAllExceptions ()
     {
-      return Enumerable.Empty<Exception> ();
+      return Enumerable.Empty<Exception>();
     }
 
     public void Begin ()
     {
-      _transactionEventSink.RaiseObjectDeletingEvent (_deletedObject);
-      _endPointDeleteCommands.Begin ();
+      _transactionEventSink.RaiseObjectDeletingEvent(_deletedObject);
+      _endPointDeleteCommands.Begin();
     }
 
     public void Perform ()
     {
-      _endPointDeleteCommands.Perform ();
+      _endPointDeleteCommands.Perform();
 
-      if (_dataContainer.State == StateType.New)
-        _clientTransaction.DataManager.Discard (_dataContainer);
+      if (_dataContainer.State.IsNew)
+        _clientTransaction.DataManager.Discard(_dataContainer);
       else
         _dataContainer.Delete();
     }
 
     public void End ()
     {
-      _endPointDeleteCommands.End ();
-      _transactionEventSink.RaiseObjectDeletedEvent (_deletedObject);
+      _endPointDeleteCommands.End();
+      _transactionEventSink.RaiseObjectDeletedEvent(_deletedObject);
     }
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
@@ -102,10 +102,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       var commands =
           from endPoint in _endPoints
           from oppositeEndPointID in endPoint.GetOppositeRelationEndPointIDs()
-          let oppositeEndPoint = _clientTransaction.DataManager.GetRelationEndPointWithLazyLoad (oppositeEndPointID)
-          select oppositeEndPoint.CreateRemoveCommand (_deletedObject);
+          let oppositeEndPoint = _clientTransaction.DataManager.GetRelationEndPointWithLazyLoad(oppositeEndPointID)
+          select oppositeEndPoint.CreateRemoveCommand(_deletedObject);
 
-      return new ExpandedCommand (this).CombineWith (commands);
+      return new ExpandedCommand(this).CombineWith(commands);
     }
   }
 }

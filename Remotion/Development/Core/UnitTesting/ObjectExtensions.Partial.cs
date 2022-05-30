@@ -20,6 +20,6 @@ namespace Remotion.Development.UnitTesting
 {
   public partial class ObjectExtensions
   {
-     
+
   }
 }

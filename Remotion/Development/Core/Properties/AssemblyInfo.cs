@@ -18,10 +18,8 @@ using System;
 using System.Reflection;
 using System.Security;
 
-[assembly: AssemblyTitle ("re-motion Development Support Library")]
-[assembly: AssemblyDescription ("Library for unit testing, building, and other development-time activities.")]
 [assembly: AssemblyCulture("")]
-[assembly: CLSCompliant (true)]
+[assembly: CLSCompliant(true)]
 [assembly: AllowPartiallyTrustedCallers] // required for sandboxing
 
 [assembly: SecurityRules(SecurityRuleSet.Level1)]

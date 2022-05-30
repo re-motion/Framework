@@ -17,19 +17,20 @@
 using System;
 using System.Globalization;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   [TestFixture]
-  [SetUICulture ("en-US")]
+  [SetUICulture("en-US")]
   public class BocListNavigationBlockRendererTest : BocListRendererTestBase
   {
     private BocListCssClassDefinition _bocListCssClassDefinition;
@@ -43,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
-      List.Stub (mock => mock.HasNavigator).Return (true);
+      List.Setup(mock => mock.HasNavigator).Returns(true);
     }
 
     [Test]
@@ -52,37 +53,37 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 0;
       var totalPageCount = 1;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup(mock => mock.CurrentPageIndex).Returns(currentPageIndex);
+      List.Setup(mock => mock.PageCount).Returns(totalPageCount);
 
-      var renderer = new BocListNavigationBlockRenderer (
+      var renderer = new BocListNavigationBlockRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "class", _bocListCssClassDefinition.Navigator);
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Navigator);
 
-      var manualInput = Html.GetAssertedChildElement (div, "span", 0);
-      Html.AssertTextNode (manualInput, string.Format ("{0} 1 {1} 1", c_pageLabelText, c_totalPageCountText), 0);
+      var manualInput = Html.GetAssertedChildElement(div, "span", 0);
+      Html.AssertTextNode(manualInput, string.Format("{0} 1 {1} 1", c_pageLabelText, c_totalPageCountText), 0);
 
-      var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertInactiveIcon (firstIcon, "First");
+      var firstIcon = Html.GetAssertedChildElement(div, "a", 1);
+      AssertInactiveIcon(firstIcon, "First");
 
-      var previousIcon = Html.GetAssertedChildElement (div, "a", 2);
-      AssertInactiveIcon (previousIcon, "Previous");
+      var previousIcon = Html.GetAssertedChildElement(div, "a", 2);
+      AssertInactiveIcon(previousIcon, "Previous");
 
-      var nextIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertInactiveIcon (nextIcon, "Next");
+      var nextIcon = Html.GetAssertedChildElement(div, "a", 3);
+      AssertInactiveIcon(nextIcon, "Next");
 
-      var lastIcon = Html.GetAssertedChildElement (div, "a", 4);
-      AssertInactiveIcon (lastIcon, "Last");
+      var lastIcon = Html.GetAssertedChildElement(div, "a", 4);
+      AssertInactiveIcon(lastIcon, "Last");
 
-      Html.AssertChildElementCount (div, 5);
+      Html.AssertChildElementCount(div, 5);
     }
 
     [Test]
@@ -91,38 +92,38 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 0;
       var totalPageCount = 2;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup(mock => mock.CurrentPageIndex).Returns(currentPageIndex);
+      List.Setup(mock => mock.PageCount).Returns(totalPageCount);
 
-      var renderer = new BocListNavigationBlockRenderer (
+      var renderer = new BocListNavigationBlockRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "class", _bocListCssClassDefinition.Navigator);
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Navigator);
 
-      var manualInput = Html.GetAssertedChildElement (div, "span", 0);
-      AssertManualInputArea (manualInput, currentPageIndex, totalPageCount);
+      var manualInput = Html.GetAssertedChildElement(div, "span", 0);
+      AssertManualInputArea(manualInput, currentPageIndex, totalPageCount);
 
-      var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertInactiveIcon (firstIcon, "First");
+      var firstIcon = Html.GetAssertedChildElement(div, "a", 1);
+      AssertInactiveIcon(firstIcon, "First");
 
-      var previousIcon = Html.GetAssertedChildElement (div, "a", 2);
-      AssertInactiveIcon (previousIcon, "Previous");
+      var previousIcon = Html.GetAssertedChildElement(div, "a", 2);
+      AssertInactiveIcon(previousIcon, "Previous");
 
-      var nextIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertActiveIcon (nextIcon, "Next", 1);
+      var nextIcon = Html.GetAssertedChildElement(div, "a", 3);
+      AssertActiveIcon(nextIcon, "Next", 1);
 
-      var lastIcon = Html.GetAssertedChildElement (div, "a", 4);
-      AssertActiveIcon (lastIcon, "Last", 1);
+      var lastIcon = Html.GetAssertedChildElement(div, "a", 4);
+      AssertActiveIcon(lastIcon, "Last", 1);
 
-      var pageIndexField = Html.GetAssertedChildElement (div, "input", 5);
-      AssertPageIndexHiddenField (pageIndexField, currentPageIndex);
+      var pageIndexField = Html.GetAssertedChildElement(div, "input", 5);
+      AssertPageIndexHiddenField(pageIndexField, currentPageIndex);
     }
 
     [Test]
@@ -131,38 +132,38 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 1;
       var totalPageCount = 2;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup(mock => mock.CurrentPageIndex).Returns(currentPageIndex);
+      List.Setup(mock => mock.PageCount).Returns(totalPageCount);
 
-      var renderer = new BocListNavigationBlockRenderer (
+      var renderer = new BocListNavigationBlockRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "class", _bocListCssClassDefinition.Navigator);
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Navigator);
 
-      var manualInput = Html.GetAssertedChildElement (div, "span", 0);
-      AssertManualInputArea (manualInput, currentPageIndex, totalPageCount);
+      var manualInput = Html.GetAssertedChildElement(div, "span", 0);
+      AssertManualInputArea(manualInput, currentPageIndex, totalPageCount);
 
-      var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertActiveIcon (firstIcon, "First", 0);
+      var firstIcon = Html.GetAssertedChildElement(div, "a", 1);
+      AssertActiveIcon(firstIcon, "First", 0);
 
-      var previousIcon = Html.GetAssertedChildElement (div, "a", 2);
-      AssertActiveIcon (previousIcon, "Previous", 0);
+      var previousIcon = Html.GetAssertedChildElement(div, "a", 2);
+      AssertActiveIcon(previousIcon, "Previous", 0);
 
-      var nextIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertInactiveIcon (nextIcon, "Next");
+      var nextIcon = Html.GetAssertedChildElement(div, "a", 3);
+      AssertInactiveIcon(nextIcon, "Next");
 
-      var lastIcon = Html.GetAssertedChildElement (div, "a", 4);
-      AssertInactiveIcon (lastIcon, "Last");
+      var lastIcon = Html.GetAssertedChildElement(div, "a", 4);
+      AssertInactiveIcon(lastIcon, "Last");
 
-      var pageIndexField = Html.GetAssertedChildElement (div, "input", 5);
-      AssertPageIndexHiddenField (pageIndexField, currentPageIndex);
+      var pageIndexField = Html.GetAssertedChildElement(div, "input", 5);
+      AssertPageIndexHiddenField(pageIndexField, currentPageIndex);
     }
 
     [Test]
@@ -171,38 +172,38 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 3;
       var totalPageCount = 7;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup(mock => mock.CurrentPageIndex).Returns(currentPageIndex);
+      List.Setup(mock => mock.PageCount).Returns(totalPageCount);
 
-      var renderer = new BocListNavigationBlockRenderer (
+      var renderer = new BocListNavigationBlockRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, "class", _bocListCssClassDefinition.Navigator);
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Navigator);
 
-      var manualInput = Html.GetAssertedChildElement (div, "span", 0);
-      AssertManualInputArea (manualInput, currentPageIndex, totalPageCount);
+      var manualInput = Html.GetAssertedChildElement(div, "span", 0);
+      AssertManualInputArea(manualInput, currentPageIndex, totalPageCount);
 
-      var firstIcon = Html.GetAssertedChildElement (div, "a", 1);
-      AssertActiveIcon (firstIcon, "First", 0);
+      var firstIcon = Html.GetAssertedChildElement(div, "a", 1);
+      AssertActiveIcon(firstIcon, "First", 0);
 
-      var previousIcon = Html.GetAssertedChildElement (div, "a", 2);
-      AssertActiveIcon (previousIcon, "Previous", 2);
+      var previousIcon = Html.GetAssertedChildElement(div, "a", 2);
+      AssertActiveIcon(previousIcon, "Previous", 2);
 
-      var nextIcon = Html.GetAssertedChildElement (div, "a", 3);
-      AssertActiveIcon (nextIcon, "Next", 4);
+      var nextIcon = Html.GetAssertedChildElement(div, "a", 3);
+      AssertActiveIcon(nextIcon, "Next", 4);
 
-      var lastIcon = Html.GetAssertedChildElement (div, "a", 4);
-      AssertActiveIcon (lastIcon, "Last", 6);
+      var lastIcon = Html.GetAssertedChildElement(div, "a", 4);
+      AssertActiveIcon(lastIcon, "Last", 6);
 
-      var pageIndexField = Html.GetAssertedChildElement (div, "input", 5);
-      AssertPageIndexHiddenField (pageIndexField, currentPageIndex);
+      var pageIndexField = Html.GetAssertedChildElement(div, "input", 5);
+      AssertPageIndexHiddenField(pageIndexField, currentPageIndex);
     }
 
     [Test]
@@ -211,76 +212,86 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var currentPageIndex = 3;
       var totalPageCount = 7;
 
-      List.Stub (mock => mock.CurrentPageIndex).Return (currentPageIndex);
-      List.Stub (mock => mock.PageCount).Return (totalPageCount);
+      List.Setup(mock => mock.CurrentPageIndex).Returns(currentPageIndex);
+      List.Setup(mock => mock.PageCount).Returns(totalPageCount);
 
-      var renderer = new BocListNavigationBlockRenderer (
+      var renderer = new BocListNavigationBlockRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext (HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages, totalPageCount.ToString());
-      Html.AssertAttribute (div, DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber, (currentPageIndex + 1).ToString());
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListNumberOfPages, totalPageCount.ToString());
+      Html.AssertAttribute(div, DiagnosticMetadataAttributesForObjectBinding.BocListCurrentPageNumber, (currentPageIndex + 1).ToString());
     }
 
     private void AssertManualInputArea (XmlNode manualInputArea, int currentPageIndex, int totalPageCount)
     {
-      var inputID = List.GetCurrentPageControlName().Replace ('$', '_') + "_TextBox";
+      var inputID = List.Object.GetCurrentPageControlName().Replace('$', '_') + "_TextBox";
 
-      var pageInputLabel = Html.GetAssertedChildElement (manualInputArea, "label", 0);
-      Html.AssertTextNode (pageInputLabel, c_pageLabelText, 0);
-      Html.AssertAttribute (pageInputLabel, "for", inputID);
+      var pageInputLabel = Html.GetAssertedChildElement(manualInputArea, "label", 0);
+      Html.AssertTextNode(pageInputLabel, c_pageLabelText, 0);
+      Html.AssertAttribute(pageInputLabel, "for", inputID);
 
-      var pageNumberField = Html.GetAssertedChildElement (manualInputArea, "input", 1);
-      Html.AssertAttribute (pageNumberField, "value", (currentPageIndex + 1).ToString (CultureInfo.InvariantCulture));
-      Html.AssertAttribute (pageNumberField, "id", inputID);
-      Html.AssertNoAttribute (pageNumberField, "name");
-      Html.AssertAttribute (pageNumberField, "type", "text");
-      Html.AssertAttribute (
+      var pageNumberField = Html.GetAssertedChildElement(manualInputArea, "input", 1);
+      Html.AssertAttribute(pageNumberField, "value", (currentPageIndex + 1).ToString(CultureInfo.InvariantCulture));
+      Html.AssertAttribute(pageNumberField, "id", inputID);
+      Html.AssertNoAttribute(pageNumberField, "name");
+      Html.AssertAttribute(pageNumberField, "type", "text");
+      Html.AssertAttribute(
           pageNumberField,
           "maxlength",
-          totalPageCount.ToString (CultureInfo.InvariantCulture).Length.ToString (CultureInfo.InvariantCulture));
-      Html.AssertAttribute (
+          totalPageCount.ToString(CultureInfo.InvariantCulture).Length.ToString(CultureInfo.InvariantCulture));
+      Html.AssertAttribute(
           pageNumberField,
           "size",
-          totalPageCount.ToString (CultureInfo.InvariantCulture).Length.ToString (CultureInfo.InvariantCulture));
+          totalPageCount.ToString(CultureInfo.InvariantCulture).Length.ToString(CultureInfo.InvariantCulture));
+      Html.AssertStyleAttribute(
+          pageNumberField,
+          "--size",
+          totalPageCount.ToString(CultureInfo.InvariantCulture).Length.ToString(CultureInfo.InvariantCulture));
 
-      Html.AssertTextNode (manualInputArea, c_totalPageCountText + " " + totalPageCount, 2);
+      Html.AssertTextNode(manualInputArea, c_totalPageCountText + " " + totalPageCount, 2);
     }
 
     private void AssertPageIndexHiddenField (XmlNode pageIndexField, int currentPageIndex)
     {
-      var inputID = List.GetCurrentPageControlName().Replace ('$', '_');
+      var inputID = List.Object.GetCurrentPageControlName().Replace('$', '_');
 
-      Html.AssertAttribute (pageIndexField, "value", (currentPageIndex).ToString (CultureInfo.InvariantCulture));
-      Html.AssertAttribute (pageIndexField, "id", inputID);
-      Html.AssertAttribute (pageIndexField, "name", List.GetCurrentPageControlName());
-      Html.AssertAttribute (pageIndexField, "type", "hidden");
+      Html.AssertAttribute(pageIndexField, "value", (currentPageIndex).ToString(CultureInfo.InvariantCulture));
+      Html.AssertAttribute(pageIndexField, "id", inputID);
+      Html.AssertAttribute(pageIndexField, "name", List.Object.GetCurrentPageControlName());
+      Html.AssertAttribute(pageIndexField, "type", "hidden");
     }
 
     private void AssertActiveIcon (XmlNode link, string command, int pageIndex)
     {
-      Html.AssertAttribute (link, "id", List.ClientID + "_Navigation_" + command);
-      Html.AssertAttribute (link, "onclick", string.Format ("$('#CurrentPageControl_UniqueID').val({0}).trigger('change');return false;", pageIndex));
-      Html.AssertAttribute (link, "href", "#");
+      Html.AssertAttribute(link, "id", List.Object.ClientID + "_Navigation_" + command);
+      Html.AssertAttribute(link, "onclick", string.Format("let element = document.getElementById('CurrentPageControl_UniqueID');element.value = {0};element.dispatchEvent(new Event('change'));return false;", pageIndex));
+      Html.AssertAttribute(link, "href", "#");
 
-      var icon = Html.GetAssertedChildElement (link, "img", 0);
-      Html.AssertAttribute (icon, "src", string.Format ("/Move{0}.gif", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
+      var icon = Html.GetAssertedChildElement(link, "img", 0);
+      Html.AssertAttribute(icon, "src", string.Format("/sprite.svg#Move{0}", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
     }
 
     private void AssertInactiveIcon (XmlNode link, string command)
     {
-      Html.AssertAttribute (link, "id", List.ClientID + "_Navigation_" + command);
-      Html.AssertNoAttribute (link, "onclick");
-      Html.AssertNoAttribute (link, "href");
+      Html.AssertAttribute(link, "id", List.Object.ClientID + "_Navigation_" + command);
+      Html.AssertNoAttribute(link, "onclick");
+      Html.AssertNoAttribute(link, "href");
 
-      var icon = Html.GetAssertedChildElement (link, "img", 0);
-      Html.AssertAttribute (icon, "src", string.Format ("/Move{0}Inactive.gif", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
+      var icon = Html.GetAssertedChildElement(link, "img", 0);
+      Html.AssertAttribute(icon, "src", string.Format("/sprite.svg#Move{0}Inactive", command), HtmlHelperBase.AttributeValueCompareMode.Contains);
+    }
+
+    private BocListRenderingContext CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      return new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }

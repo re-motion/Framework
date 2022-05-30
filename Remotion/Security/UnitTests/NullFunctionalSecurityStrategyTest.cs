@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests
 {
@@ -29,19 +29,19 @@ namespace Remotion.Security.UnitTests
     {
       var strategy = new NullFunctionalSecurityStrategy();
 
-      var result = strategy.HasAccess (
-          typeof (SecurableObject),
-          MockRepository.GenerateStub<ISecurityProvider>(),
-          MockRepository.GenerateStub<ISecurityPrincipal>(),
-          new[] { AccessType.Get (GeneralAccessTypes.Read) });
+      var result = strategy.HasAccess(
+          typeof(SecurableObject),
+          new Mock<ISecurityProvider>().Object,
+          new Mock<ISecurityPrincipal>().Object,
+          new[] { AccessType.Get(GeneralAccessTypes.Read) });
 
-      Assert.That (result, Is.True);
+      Assert.That(result, Is.True);
     }
 
     [Test]
     public void IsNull_ReturnsTrue ()
     {
-      Assert.That (((IFunctionalSecurityStrategy) new NullFunctionalSecurityStrategy()).IsNull, Is.True);
+      Assert.That(((IFunctionalSecurityStrategy)new NullFunctionalSecurityStrategy()).IsNull, Is.True);
     }
   }
 }

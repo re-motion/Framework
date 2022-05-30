@@ -20,15 +20,32 @@
     <ContentTemplate>
       <h3>WebButton1</h3>
       <remotion:WebButton ID="MyWebButton1Sync" Text="SyncButton" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <remotion:WebButton ID="MyWebButtonPrimary1Sync" Text="SyncButton" ButtonType="Primary" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <remotion:WebButton ID="MyWebButtonSupplemental1Sync" Text="SyncButton" ButtonType="Supplemental" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
       <h3>WebButton2</h3>
       <remotion:WebButton ID="MyWebButton2Async" Text="AsyncButton" CommandName="Async" runat="server" />
+      <remotion:WebButton ID="MyWebButtonPrimary2Async" Text="AsyncButton" ButtonType="Primary" CommandName="Async" runat="server" />
+      <remotion:WebButton ID="MyWebButtonSupplemental2Async" Text="AsyncButton" ButtonType="Supplemental" CommandName="Async" runat="server" />
       <div id="scope">
         <h3>WebButton3</h3>
         <%-- ReSharper disable once Html.PathError --%>
         <remotion:WebButton ID="MyWebButton3Href" Text="HrefButton" PostBackUrl="WebButtonTest.wxe" runat="server" />
+        <remotion:WebButton ID="MyWebButtonPrimary3Href" Text="HrefButton" ButtonType="Primary" PostBackUrl="WebButtonTest.wxe" runat="server" />
+        <remotion:WebButton ID="MyWebButtonSupplemental3Href" Text="HrefButton" ButtonType="Supplemental" PostBackUrl="WebButtonTest.wxe" runat="server" />
       </div>
       <h3>Disabled WebButton</h3>
       <remotion:WebButton ID="MyDisabledWebButton" Text="DisabledWebButton" CommandName="Disabled" Enabled="False" runat="server"/>
+      <remotion:WebButton ID="MyDisabledWebButtonPrimary" Text="DisabledWebButton" ButtonType="Primary" CommandName="Disabled" Enabled="False" runat="server"/>
+      <remotion:WebButton ID="MyDisabledWebButtonSupplemental" Text="DisabledWebButton" ButtonType="Supplemental" CommandName="Disabled" Enabled="False" runat="server"/>
+      <h3>WebButton with icon</h3>
+      <remotion:WebButton ID="MyWebButtonWithIcon" Text="This text should wrap correctly because it is too long to fit" Width="100px" Icon-Url="Images/SampleIcon.gif" CommandName="Disabled" runat="server"/>
+      <h3>WebButton UseLegacyButton="True"</h3>
+      <remotion:WebButton ID="MyWebButtonWithUseLegacyButton" Text="LegacyButton" CommandName="Sync" RequiresSynchronousPostBack="true" UseLegacyButton="True" runat="server" />
+      <h3>WebButton with Access Keys</h3>
+      <remotion:WebButton ID="MyWebButtonWithAccessKey" Text="Button with access key" AccessKey="A" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <remotion:WebButton ID="MyWebButtonWithImplicitAccessKey" Text="Button with implicit access &key" CommandName="Sync" RequiresSynchronousPostBack="true" runat="server" />
+      <h3>WebButton with Umlauts</h3>
+      <remotion:WebButton ID="MyWebButtonWithUmlauts" Text="(html)UmlautÖ" runat="server" />
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

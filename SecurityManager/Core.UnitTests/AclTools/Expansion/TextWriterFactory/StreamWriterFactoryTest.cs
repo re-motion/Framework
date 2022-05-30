@@ -17,9 +17,9 @@
 // 
 using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.SecurityManager.AclTools.Expansion.TextWriterFactory;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactory
 {
@@ -29,57 +29,59 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
     [Test]
     public void NewTextWriterArgumentTest ()
     {
-      var streamWriterFactory = new StreamWriterFactory ();
-      string directory = Path.Combine (Path.GetTempPath (), "StreamWriterFactoryTest_DirectoryTest");
+      var streamWriterFactory = new StreamWriterFactory();
+      string directory = Path.Combine(Path.GetTempPath(), "StreamWriterFactoryTest_DirectoryTest");
       const string extension = "xyz";
       const string fileName = "someFile";
-      using (StreamWriter streamWriter = (StreamWriter) streamWriterFactory.CreateTextWriter (directory, fileName, extension))
+      using (StreamWriter streamWriter = (StreamWriter)streamWriterFactory.CreateTextWriter(directory, fileName, extension))
       {
-        var fileStream = (FileStream) streamWriter.BaseStream;
-        string filePathExpected = Path.Combine (directory, fileName + "." + extension);
-        Assert.That (fileStream.Name, Is.EqualTo (filePathExpected));
+        var fileStream = (FileStream)streamWriter.BaseStream;
+        string filePathExpected = Path.Combine(directory, fileName + "." + extension);
+        Assert.That(fileStream.Name, Is.EqualTo(filePathExpected));
       }
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\"")]
     public void NewTextWriterWithNullDirectoryThrowsTest ()
     {
-      var streamWriterFactory = new StreamWriterFactory ();
+      var streamWriterFactory = new StreamWriterFactory();
       streamWriterFactory.Directory = null;
-      streamWriterFactory.CreateTextWriter ("whatever");
+      Assert.That(
+          () => streamWriterFactory.CreateTextWriter("whatever"),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "Directory must not be null. Set using \"Directory\"-property before calling \"CreateTextWriter\""));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = @"TextWriter with name ""abc"" already exists.")]
     public void NewTextWriterNameAlreadyExistsTest ()
     {
       const string textWriterName = "abc";
-      var streamWriterFactory = new StreamWriterFactory ();
+      var streamWriterFactory = new StreamWriterFactory();
       streamWriterFactory.Directory = "xyz";
-      streamWriterFactory.CreateTextWriter (textWriterName);
-      streamWriterFactory.CreateTextWriter (textWriterName);
+      streamWriterFactory.CreateTextWriter(textWriterName);
+      Assert.That(
+          () => streamWriterFactory.CreateTextWriter(textWriterName),
+          Throws.ArgumentException
+              .With.Message.EqualTo(@"TextWriter with name ""abc"" already exists."));
     }
 
 
     [Test]
     public void NewTextWriterOnlyNameArgumentTest ()
     {
-      var mocks = new MockRepository();
-      var streamWriterFactoryMock = mocks.PartialMock<StreamWriterFactory> ();
+      var streamWriterFactoryMock = new Mock<StreamWriterFactory>() { CallBase = true };
       const string directory = "the\\dir\\ect\\ory";
-      streamWriterFactoryMock.Directory = directory;
+      streamWriterFactoryMock.Object.Directory = directory;
       const string extension = "xyz";
-      streamWriterFactoryMock.Extension = extension;
+      streamWriterFactoryMock.Object.Extension = extension;
       const string fileName = "someFile";
 
-      streamWriterFactoryMock.Expect (x => x.CreateTextWriter (directory, fileName, extension)).Return(TextWriter.Null);
-      
-      streamWriterFactoryMock.Replay();
+      streamWriterFactoryMock.Setup(x => x.CreateTextWriter(directory, fileName, extension)).Returns(TextWriter.Null).Verifiable();
 
-      streamWriterFactoryMock.CreateTextWriter (fileName);
+      streamWriterFactoryMock.Object.CreateTextWriter(fileName);
 
-      streamWriterFactoryMock.VerifyAllExpectations ();
+      streamWriterFactoryMock.Verify();
     }
   }
 }

@@ -34,102 +34,102 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _invalidObject = Order.NewObject ();
-      _invalidObject.Delete ();
+      _invalidObject = Order.NewObject();
+      _invalidObject.Delete();
 
-      Assert.That (_invalidObject.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(_invalidObject.State.IsInvalid, Is.True);
 
-      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
+      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
 
       _endPoint = new TestableRelationEndPoint(TestableClientTransaction, _endPointID);
-      _endPointWithNullObject = new TestableRelationEndPoint (TestableClientTransaction, RelationEndPointID.Create(null, _endPointID.Definition));
-      _endPointWithInvalidObject = new TestableRelationEndPoint (TestableClientTransaction, RelationEndPointID.Create(_invalidObject.ID, _endPointID.Definition));
+      _endPointWithNullObject = new TestableRelationEndPoint(TestableClientTransaction, RelationEndPointID.Create(null, _endPointID.Definition));
+      _endPointWithInvalidObject = new TestableRelationEndPoint(TestableClientTransaction, RelationEndPointID.Create(_invalidObject.ID, _endPointID.Definition));
     }
 
     [Test]
     public void RelationDefinition ()
     {
-      Assert.That (_endPoint.RelationDefinition, Is.SameAs (_endPointID.Definition.RelationDefinition));
+      Assert.That(_endPoint.RelationDefinition, Is.SameAs(_endPointID.Definition.RelationDefinition));
     }
 
     [Test]
     public void IsVirtual ()
     {
-      Assert.That (_endPoint.IsVirtual, Is.True);
+      Assert.That(_endPoint.IsVirtual, Is.True);
     }
 
     [Test]
     public void ID ()
     {
-      Assert.That (_endPoint.ID, Is.SameAs (_endPointID));
+      Assert.That(_endPoint.ID, Is.SameAs(_endPointID));
     }
 
     [Test]
     public void GetDomainObject ()
     {
-      var domainObject = _endPoint.GetDomainObject ();
+      var domainObject = _endPoint.GetDomainObject();
 
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (domainObject, Is.SameAs (DomainObjectIDs.Order1.GetObject<Order> ()));
+      Assert.That(domainObject.State.IsUnchanged, Is.True);
+      Assert.That(domainObject, Is.SameAs(DomainObjectIDs.Order1.GetObject<Order>()));
     }
 
     [Test]
     public void GetDomainObject_Null ()
     {
-      var domainObject = _endPointWithNullObject.GetDomainObject ();
+      var domainObject = _endPointWithNullObject.GetDomainObject();
 
-      Assert.That (domainObject, Is.Null);
+      Assert.That(domainObject, Is.Null);
     }
 
     [Test]
     public void GetDomainObject_Deleted ()
     {
-      var order1 = _endPoint.ObjectID.GetObject<Order> ();
-      order1.Delete ();
+      var order1 = _endPoint.ObjectID.GetObject<Order>();
+      order1.Delete();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Deleted));
+      Assert.That(order1.State.IsDeleted, Is.True);
 
-      var domainObject = _endPoint.GetDomainObject ();
+      var domainObject = _endPoint.GetDomainObject();
 
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Deleted));
-      Assert.That (domainObject, Is.SameAs (order1));
+      Assert.That(domainObject.State.IsDeleted, Is.True);
+      Assert.That(domainObject, Is.SameAs(order1));
     }
 
     [Test]
     public void GetDomainObject_Invalid ()
     {
-      var domainObject = _endPointWithInvalidObject.GetDomainObject ();
+      var domainObject = _endPointWithInvalidObject.GetDomainObject();
 
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (domainObject, Is.SameAs (_invalidObject));
+      Assert.That(domainObject.State.IsInvalid, Is.True);
+      Assert.That(domainObject, Is.SameAs(_invalidObject));
     }
 
     [Test]
     public void GetDomainObjectReference ()
     {
-      var domainObject = _endPoint.GetDomainObjectReference ();
+      var domainObject = _endPoint.GetDomainObjectReference();
 
-      Assert.That (domainObject.State, Is.EqualTo (StateType.NotLoadedYet));
-      Assert.That (domainObject, Is.SameAs (LifetimeService.GetObjectReference (TestableClientTransaction, DomainObjectIDs.Order1)));
+      Assert.That(domainObject.State.IsNotLoadedYet, Is.True);
+      Assert.That(domainObject, Is.SameAs(LifetimeService.GetObjectReference(TestableClientTransaction, DomainObjectIDs.Order1)));
     }
 
     [Test]
     public void GetDomainObjectReference_Null ()
     {
-      var domainObject = _endPointWithNullObject.GetDomainObjectReference ();
+      var domainObject = _endPointWithNullObject.GetDomainObjectReference();
 
-      Assert.That (domainObject, Is.Null);
+      Assert.That(domainObject, Is.Null);
     }
 
     [Test]
     public void GetDomainObjectReference_Invalid ()
     {
-      var domainObject = _endPointWithInvalidObject.GetDomainObjectReference ();
+      var domainObject = _endPointWithInvalidObject.GetDomainObjectReference();
 
-      Assert.That (domainObject.State, Is.EqualTo (StateType.Invalid));
-      Assert.That (domainObject, Is.SameAs (_invalidObject));
+      Assert.That(domainObject.State.IsInvalid, Is.True);
+      Assert.That(domainObject, Is.SameAs(_invalidObject));
     }
 
   }

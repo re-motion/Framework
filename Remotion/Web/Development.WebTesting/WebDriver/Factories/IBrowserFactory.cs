@@ -31,6 +31,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories
     /// </summary>
     /// <returns>A new <see cref="IBrowserSession"/>.</returns>
     [NotNull]
-    IBrowserSession CreateBrowser ([NotNull] ITestInfrastructureConfiguration testInfrastructureConfiguration);
+    IBrowserSession CreateBrowser ([NotNull] DriverConfiguration driverConfiguration);
   }
 }

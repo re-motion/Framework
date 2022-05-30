@@ -30,40 +30,40 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void StorageProvidersCanBeMixed ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (StorageProvider)).Clear().AddMixins (typeof (StorageProviderWithFixedGuidMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
-        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
-        StorageProvider provider = new StorageProviderManager (NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
-        Assert.That (Mixin.Get<StorageProviderWithFixedGuidMixin> (provider), Is.Not.Null);
+        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        Assert.That(Mixin.Get<StorageProviderWithFixedGuidMixin>(provider), Is.Not.Null);
       }
     }
 
     [Test]
     public void MixinsCanOverrideStorageProviderMethods ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (StorageProvider)).Clear().AddMixins (typeof (StorageProviderWithFixedGuidMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
-        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
-        StorageProvider provider = new StorageProviderManager (NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
-        ObjectID id1 = provider.CreateNewObjectID (orderDefinition);
-        ObjectID id2 = provider.CreateNewObjectID (orderDefinition);
-        Assert.That (id2, Is.EqualTo (id1));
+        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
+        ObjectID id1 = provider.CreateNewObjectID(orderDefinition);
+        ObjectID id2 = provider.CreateNewObjectID(orderDefinition);
+        Assert.That(id2, Is.EqualTo(id1));
       }
     }
 
     [Test]
     public void MixinsCanIntroduceStorageProviderInterfaces ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass (typeof (StorageProvider)).Clear().AddMixins (typeof (StorageProviderWithFixedGuidMixin)).EnterScope())
+      using (MixinConfiguration.BuildFromActive().ForClass(typeof(StorageProvider)).Clear().AddMixins(typeof(StorageProviderWithFixedGuidMixin)).EnterScope())
       {
-        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
-        StorageProvider provider = new StorageProviderManager (NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
-        
-        Guid fixedGuid = Guid.NewGuid ();
-        ((IStorageProviderWithFixedGuid) provider).FixedGuid = fixedGuid;
+        ClassDefinition orderDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+        StorageProvider provider = new StorageProviderManager(NullPersistenceExtension.Instance)[orderDefinition.StorageEntityDefinition.StorageProviderDefinition.Name];
 
-        ObjectID id = provider.CreateNewObjectID (orderDefinition);
-        Assert.That (id.Value, Is.EqualTo (fixedGuid));
+        Guid fixedGuid = Guid.NewGuid();
+        ((IStorageProviderWithFixedGuid)provider).FixedGuid = fixedGuid;
+
+        ObjectID id = provider.CreateNewObjectID(orderDefinition);
+        Assert.That(id.Value, Is.EqualTo(fixedGuid));
       }
     }
   }

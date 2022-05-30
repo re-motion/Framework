@@ -35,23 +35,23 @@ namespace Remotion.Web.UnitTests.Core
   {
     private ServiceLocatorScope _serviceLocatorScope;
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       XmlNodeExtensions.Helper = new HtmlHelper();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IInfrastructureResourceUrlFactory> (() => new FakeInfrastructureResourceUrlFactory());
-      serviceLocator.RegisterSingle<IScriptUtility> (() => new FakeScriptUtility());
-      serviceLocator.RegisterSingle<IResourceUrlFactory> (() => new FakeResourceUrlFactory());
+      serviceLocator.RegisterSingle<IInfrastructureResourceUrlFactory>(() => new FakeInfrastructureResourceUrlFactory());
+      serviceLocator.RegisterSingle<IScriptUtility>(() => new FakeScriptUtility());
+      serviceLocator.RegisterSingle<IResourceUrlFactory>(() => new FakeResourceUrlFactory());
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
 
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
     }
 
-    [TearDown]
-    public void TearDown ()
+    [OneTimeTearDown]
+    public void OneTimeTearDown ()
     {
       _serviceLocatorScope.Dispose();
     }

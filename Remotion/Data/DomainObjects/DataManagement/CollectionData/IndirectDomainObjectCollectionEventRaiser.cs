@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
   /// <summary>
   /// Implements the <see cref="IDomainObjectCollectionEventRaiser"/> interface by delegating to another implementation of 
   /// <see cref="IDomainObjectCollectionEventRaiser"/>. This is useful when the event raiser needs to be changed after e.g. the 
-  /// <see cref="EventRaisingCollectionDataDecorator"/> has been created.
+  /// <see cref="EventRaisingDomainObjectCollectionDataDecorator"/> has been created.
   /// </summary>
   [Serializable]
   public class IndirectDomainObjectCollectionEventRaiser : IDomainObjectCollectionEventRaiser
@@ -35,26 +35,26 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
       EventRaiser = eventRaiser;
     }
 
-    public IDomainObjectCollectionEventRaiser EventRaiser { get; set; }
+    public IDomainObjectCollectionEventRaiser? EventRaiser { get; set; }
 
     public void BeginAdd (int index, DomainObject domainObject)
     {
-      GetAndCheckEventRaiser().BeginAdd (index, domainObject);
+      GetAndCheckEventRaiser().BeginAdd(index, domainObject);
     }
 
     public void EndAdd (int index, DomainObject domainObject)
     {
-      GetAndCheckEventRaiser().EndAdd (index, domainObject);
+      GetAndCheckEventRaiser().EndAdd(index, domainObject);
     }
 
     public void BeginRemove (int index, DomainObject domainObject)
     {
-      GetAndCheckEventRaiser().BeginRemove (index, domainObject);
+      GetAndCheckEventRaiser().BeginRemove(index, domainObject);
     }
 
     public void EndRemove (int index, DomainObject domainObject)
     {
-      GetAndCheckEventRaiser().EndRemove (index, domainObject);
+      GetAndCheckEventRaiser().EndRemove(index, domainObject);
     }
 
     public void BeginDelete ()
@@ -69,14 +69,14 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
 
     public void WithinReplaceData ()
     {
-      GetAndCheckEventRaiser ().WithinReplaceData();
+      GetAndCheckEventRaiser().WithinReplaceData();
     }
 
-    private IDomainObjectCollectionEventRaiser GetAndCheckEventRaiser()
+    private IDomainObjectCollectionEventRaiser GetAndCheckEventRaiser ()
     {
       if (EventRaiser == null)
       {
-        throw new InvalidOperationException ("The actual EventRaiser must be set before IndirectDomainObjectCollectionEventRaiser can be used.");
+        throw new InvalidOperationException("The actual EventRaiser must be set before IndirectDomainObjectCollectionEventRaiser can be used.");
       }
       return EventRaiser;
     }

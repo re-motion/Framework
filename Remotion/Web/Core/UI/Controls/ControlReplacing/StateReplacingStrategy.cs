@@ -33,13 +33,13 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
     public StateReplacingStrategy (string serializedState)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("serializedState", serializedState);
+      ArgumentUtility.CheckNotNullOrEmpty("serializedState", serializedState);
 
-      var formatter = new LosFormatter ();
-      var state = (Pair) formatter.Deserialize (serializedState);
+      var formatter = new LosFormatter();
+      var state = (Pair)formatter.Deserialize(serializedState);
 
-      _controlState = (IDictionary) state.First;
-      _viewState = state.Second;
+      _controlState = (IDictionary)state.First!; // TODO RM-8118: not null assertion
+      _viewState = state.Second!; // TODO RM-8118: not null assertion
     }
 
     public IDictionary ControlState
@@ -54,18 +54,18 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
 
     public void LoadControlState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull ("replacer", replacer);
-      ArgumentUtility.CheckNotNull ("memberCaller", memberCaller);
+      ArgumentUtility.CheckNotNull("replacer", replacer);
+      ArgumentUtility.CheckNotNull("memberCaller", memberCaller);
 
-      memberCaller.SetChildControlState (replacer, _controlState);
+      memberCaller.SetChildControlState(replacer, _controlState);
     }
 
     public void LoadViewState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull ("replacer", replacer);
-      ArgumentUtility.CheckNotNull ("memberCaller", memberCaller);
+      ArgumentUtility.CheckNotNull("replacer", replacer);
+      ArgumentUtility.CheckNotNull("memberCaller", memberCaller);
 
-      memberCaller.LoadViewStateRecursive (replacer, _viewState);
+      memberCaller.LoadViewStateRecursive(replacer, _viewState);
     }
   }
 }

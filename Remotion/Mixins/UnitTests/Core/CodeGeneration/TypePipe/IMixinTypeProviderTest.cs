@@ -38,7 +38,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
     {
       var instance = _serviceLocator.GetInstance<IMixinTypeProvider>();
 
-      Assert.That (instance, Is.TypeOf<MixinTypeGeneratorFacade>());
+      Assert.That(instance, Is.TypeOf<MixinTypeGeneratorFacade>());
     }
 
     [Test]
@@ -47,7 +47,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TypePipe
       var instance1 = _serviceLocator.GetInstance<IMixinTypeProvider>();
       var instance2 = _serviceLocator.GetInstance<IMixinTypeProvider>();
 
-      Assert.That (instance1, Is.SameAs (instance2));
+      Assert.That(instance1, Is.SameAs(instance2));
     }
   }
 }

@@ -124,10 +124,10 @@
     <value>Ansicht</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
-    <value>In der gerade bearbeiteten Zeile sind Fehler aufgetreten.</value>
+    <value>In der aktuellen Zeile sind Fehler aufgetreten.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
-    <value>Eingabe erforderlich in der gerade bearbeiteten Zeile</value>
+    <value>Eingabe erforderlich in der aktuellen Zeile</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage" xml:space="preserve">
     <value>Keine Daten vorhanden.</value>
@@ -163,6 +163,6 @@
     <value>In zumindest einer Zeile ist ein Fehler aufgetreten.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
-    <value>Ungültige Eingabe in der gerade bearbeiteten Zeile</value>
+    <value>Ungültige Eingabe in der aktuellen Zeile</value>
   </data>
 </root>

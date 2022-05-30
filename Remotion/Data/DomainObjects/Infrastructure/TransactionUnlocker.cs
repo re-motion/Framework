@@ -18,5 +18,5 @@ using System;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
-  
+
 }

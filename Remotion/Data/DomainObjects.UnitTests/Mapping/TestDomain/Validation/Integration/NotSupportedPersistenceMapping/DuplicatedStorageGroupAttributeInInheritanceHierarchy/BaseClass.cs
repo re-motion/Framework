@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
 {
   [DBTable]
   [DBStorageGroup]
-  [ClassID ("DuplicatedStorageGroupAttributeInInheritanceHierarchy_BaseClass")]
+  [ClassID("DuplicatedStorageGroupAttributeInInheritanceHierarchy_BaseClass")]
   public class BaseClass : DomainObject
   {
   }

@@ -27,10 +27,10 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     [Test]
     public void Initialize ()
     {
-      WxeDemandCreatePermissionAttribute attribute = new WxeDemandCreatePermissionAttribute (typeof (SecurableObject));
+      WxeDemandCreatePermissionAttribute attribute = new WxeDemandCreatePermissionAttribute(typeof(SecurableObject));
 
-      Assert.That (attribute.MethodType, Is.EqualTo (MethodType.Constructor));
-      Assert.That (attribute.SecurableClass, Is.SameAs (typeof (SecurableObject)));
+      Assert.That(attribute.MethodType, Is.EqualTo(MethodType.Constructor));
+      Assert.That(attribute.SecurableClass, Is.SameAs(typeof(SecurableObject)));
     }
   }
 }

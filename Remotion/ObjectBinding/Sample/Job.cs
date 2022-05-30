@@ -19,14 +19,14 @@ using System.Xml.Serialization;
 
 namespace Remotion.ObjectBinding.Sample
 {
-  [XmlRoot ("Job")]
+  [XmlRoot("Job")]
   [XmlType]
   [Serializable]
   public class Job : BindableXmlObject
   {
     public static Job GetObject (Guid id)
     {
-      return GetObject<Job> (id);
+      return GetObject<Job>(id);
     }
 
     public static Job CreateObject ()
@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Sample
 
     public static Job CreateObject (Guid id)
     {
-      return CreateObject<Job> (id);
+      return CreateObject<Job>(id);
     }
 
     private string _title;
@@ -54,7 +54,7 @@ namespace Remotion.ObjectBinding.Sample
       set { _title = value; }
     }
 
-    [XmlAttribute (DataType="date")]
+    [XmlAttribute(DataType="date")]
     [DateProperty]
     public DateTime StartDate
     {
@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Sample
       set { _startDate = value; }
     }
 
-    [XmlAttribute (DataType="date")]
+    [XmlAttribute(DataType="date")]
     [DateProperty]
     public DateTime EndDate
     {

@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
   {
     public static SerializedObjectIDStoragePropertyDefinition Create (string columnName)
     {
-      return new SerializedObjectIDStoragePropertyDefinition (SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty (columnName));
+      return new SerializedObjectIDStoragePropertyDefinition(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty(columnName));
     }
   }
 }

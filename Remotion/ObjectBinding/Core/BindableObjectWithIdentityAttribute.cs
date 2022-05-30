@@ -26,11 +26,11 @@ namespace Remotion.ObjectBinding
   /// </summary>
   /// <remarks>This attribute adds the <see cref="BindableObjectWithIdentityMixin"/> to its target class. 
   /// Use <see cref="ObjectFactory"/> to instantiate the target class.</remarks>
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
   public sealed class BindableObjectWithIdentityAttribute : UsesAttribute
   {
     public BindableObjectWithIdentityAttribute ()
-        : base (typeof (BindableObjectWithIdentityMixin))
+        : base(typeof(BindableObjectWithIdentityMixin))
     {
     }
   }

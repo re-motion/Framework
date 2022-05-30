@@ -37,42 +37,42 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new SubstitutionPropertiesSearchService();
-      IBusinessObjectClass substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Substitution));
-      _substitutedRoleProperty = (IBusinessObjectReferenceProperty) substitutionClass.GetPropertyDefinition ("SubstitutedRole");
-      Assert.That (_substitutedRoleProperty, Is.Not.Null);
+      IBusinessObjectClass substitutionClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Substitution));
+      _substitutedRoleProperty = (IBusinessObjectReferenceProperty)substitutionClass.GetPropertyDefinition("SubstitutedRole");
+      Assert.That(_substitutedRoleProperty, Is.Not.Null);
 
-      _user = User.FindByUserName ("group0/user1");
-      Assert.That (_user, Is.Not.Null);
+      _user = User.FindByUserName("group0/user1");
+      Assert.That(_user, Is.Not.Null);
     }
 
     [Test]
     public void SupportsProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_substitutedRoleProperty), Is.True);
+      Assert.That(_searchService.SupportsProperty(_substitutedRoleProperty), Is.True);
     }
 
     [Test]
     public void Search ()
     {
       DomainObjectCollection expectedRoles = _user.Roles;
-      Assert.That (expectedRoles, Is.Not.Empty);
+      Assert.That(expectedRoles, Is.Not.Empty);
       Substitution substitution = Substitution.NewObject();
       substitution.SubstitutedUser = _user;
 
-      IBusinessObject[] actualRoles = _searchService.Search (substitution, _substitutedRoleProperty, new DefaultSearchArguments (null));
+      IBusinessObject[] actualRoles = _searchService.Search(substitution, _substitutedRoleProperty, new DefaultSearchArguments(null));
 
-      Assert.That (actualRoles, Is.EquivalentTo (expectedRoles));
+      Assert.That(actualRoles, Is.EquivalentTo(expectedRoles));
     }
 
     [Test]
     public void Search_WithSubstitutionHasNoSubstitutedUser ()
     {
-      Substitution substitution = Substitution.NewObject ();
+      Substitution substitution = Substitution.NewObject();
       substitution.SubstitutingUser = _user;
 
-      IBusinessObject[] actualRoles = _searchService.Search (substitution, _substitutedRoleProperty, new DefaultSearchArguments (null));
+      IBusinessObject[] actualRoles = _searchService.Search(substitution, _substitutedRoleProperty, new DefaultSearchArguments(null));
 
-      Assert.That (actualRoles, Is.Empty);
+      Assert.That(actualRoles, Is.Empty);
     }
   }
 }

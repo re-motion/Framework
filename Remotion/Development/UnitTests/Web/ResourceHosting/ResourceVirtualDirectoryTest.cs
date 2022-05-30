@@ -31,29 +31,43 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [SetUp]
     public void SetUp ()
     {
-      _testDirectory = Path.Combine (Path.GetTempPath(), Guid.NewGuid().ToString());
-      Directory.CreateDirectory (_testDirectory);
+      _testDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+      Directory.CreateDirectory(_testDirectory);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      Directory.Delete (_testDirectory, true);
+      Directory.Delete(_testDirectory, true);
+    }
+
+    [Test]
+    public void Initialize_WithVirtualDirectoryWithTrailingSlash_DoesNotChangeVirtualDirectory ()
+    {
+      var resourceVirtualDirectory = new ResourceVirtualDirectory("~/res/test/", new DirectoryInfo(_testDirectory));
+      Assert.That(resourceVirtualDirectory.AppRelativeVirtualPath, Is.EqualTo("~/res/test/"));
+    }
+
+    [Test]
+    public void Initialize_WithVirtualDirectoryWithoutTrailingSlash_AddsTrailingSlashToVirtualDirectory ()
+    {
+      var resourceVirtualDirectory = new ResourceVirtualDirectory("~/res/test", new DirectoryInfo(_testDirectory));
+      Assert.That(resourceVirtualDirectory.AppRelativeVirtualPath, Is.EqualTo("~/res/test/"));
     }
 
     [Test]
     public void Directories ()
     {
-      var expectedDirectory1 = Directory.CreateDirectory (Path.Combine (_testDirectory, "subDirectory1"));
-      var expectedDirectory2 = Directory.CreateDirectory (Path.Combine (_testDirectory, "subDirectory2"));
+      var expectedDirectory1 = Directory.CreateDirectory(Path.Combine(_testDirectory, "subDirectory1"));
+      var expectedDirectory2 = Directory.CreateDirectory(Path.Combine(_testDirectory, "subDirectory2"));
 
-      var resourceVirtualDirectory = new ResourceVirtualDirectory ("~/res/test/", new DirectoryInfo (_testDirectory));
+      var resourceVirtualDirectory = new ResourceVirtualDirectory("~/res/test/", new DirectoryInfo(_testDirectory));
 
       var actual = resourceVirtualDirectory.Directories.Cast<ResourceVirtualDirectory>();
 
-      Assert.That (
-          actual.Select (d => d.PhysicalPath),
-          Is.EquivalentTo (
+      Assert.That(
+          actual.Select(d => d.PhysicalPath),
+          Is.EquivalentTo(
               new[]
               {
                   expectedDirectory1.FullName,
@@ -64,18 +78,18 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void Files ()
     {
-      var expectedFile1 = Path.Combine (_testDirectory, "expetedFile1.txt");
-      var expectedFile2 = Path.Combine (_testDirectory, "expetedFile2.txt");
-      File.WriteAllText (expectedFile1, "hello");
-      File.WriteAllText (expectedFile2, "hello");
+      var expectedFile1 = Path.Combine(_testDirectory, "expetedFile1.txt");
+      var expectedFile2 = Path.Combine(_testDirectory, "expetedFile2.txt");
+      File.WriteAllText(expectedFile1, "hello");
+      File.WriteAllText(expectedFile2, "hello");
 
-      var resourceVirtualDirectory = new ResourceVirtualDirectory ("~/res/test/", new DirectoryInfo (_testDirectory));
+      var resourceVirtualDirectory = new ResourceVirtualDirectory("~/res/test/", new DirectoryInfo(_testDirectory));
 
       var actual = resourceVirtualDirectory.Files.Cast<ResourceVirtualFile>();
 
-      Assert.That (
-          actual.Select (d => d.PhysicalPath),
-          Is.EquivalentTo (
+      Assert.That(
+          actual.Select(d => d.PhysicalPath),
+          Is.EquivalentTo(
               new[]
               {
                   expectedFile1,
@@ -86,17 +100,27 @@ namespace Remotion.Development.UnitTests.Web.ResourceHosting
     [Test]
     public void Children ()
     {
-      var expectedDirectory1 = Directory.CreateDirectory (Path.Combine (_testDirectory, "subDirectory1"));
-      var expectedFile1 = Path.Combine (_testDirectory, "expetedFile1.txt");
-      File.WriteAllText (expectedFile1, "hello");
-      
-      var resourceVirtualDirectory = new ResourceVirtualDirectory ("~/res/test/", new DirectoryInfo (_testDirectory));
+      var expectedDirectory1 = Directory.CreateDirectory(Path.Combine(_testDirectory, "subDirectory1"));
+      var expectedFile1 = Path.Combine(_testDirectory, "expetedFile1.txt");
+      File.WriteAllText(expectedFile1, "hello");
+
+      var resourceVirtualDirectory = new ResourceVirtualDirectory("~/res/test/", new DirectoryInfo(_testDirectory));
 
       var actual = resourceVirtualDirectory.Children.Cast<VirtualFileBase>().ToArray();
-      Assert.That (actual.Count(), Is.EqualTo (2));
+      Assert.That(actual.Count(), Is.EqualTo(2));
 
-      Assert.That (actual.OfType<ResourceVirtualFile>().Single().PhysicalPath, Is.EqualTo (expectedFile1));
-      Assert.That (actual.OfType<ResourceVirtualDirectory>().Single().PhysicalPath, Is.EqualTo (expectedDirectory1.FullName));
+      Assert.That(actual.OfType<ResourceVirtualFile>().Single().PhysicalPath, Is.EqualTo(expectedFile1));
+      Assert.That(actual.OfType<ResourceVirtualDirectory>().Single().PhysicalPath, Is.EqualTo(expectedDirectory1.FullName));
+    }
+
+    [Test]
+    public void Name_WithRootDirectory_ReturnsNotNull ()
+    {
+      var resourceVirtualDirectory = new ResourceVirtualDirectory("/", new DirectoryInfo("/"));
+
+      var name = resourceVirtualDirectory.Name;
+
+      Assert.That(name, Is.EqualTo(""));
     }
   }
 }

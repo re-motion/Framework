@@ -16,10 +16,11 @@
 // 
 #pragma warning disable 618
 using System;
+using System.Linq.Expressions;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.RhinoMocks.UnitTesting.Threading;
+using Remotion.Development.Moq.UnitTesting.Threading;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Collections.DataStore.UnitTests
 {
@@ -33,79 +34,95 @@ namespace Remotion.Collections.DataStore.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var innerDataStoreMock = MockRepository.GenerateStrictMock<IDataStore<string, int>>();
+      var innerDataStoreMock = new Mock<IDataStore<string, int>>(MockBehavior.Strict);
 
-      _decorator = new LockingDataStoreDecorator<string, int> (innerDataStoreMock);
+      _decorator = new LockingDataStoreDecorator<string, int>(innerDataStoreMock.Object);
 
-      var lockObject = PrivateInvoke.GetNonPublicField (_decorator, "_lock");
-      _helper = new LockingDecoratorTestHelper<IDataStore<string, int>> (_decorator, lockObject, innerDataStoreMock);
+      var lockObject = PrivateInvoke.GetNonPublicField(_decorator, "_lock");
+      _helper = new LockingDecoratorTestHelper<IDataStore<string, int>>(_decorator, lockObject, innerDataStoreMock);
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _decorator).IsNull, Is.False);
+      Assert.That(((INullObject)_decorator).IsNull, Is.False);
     }
 
     [Test]
     public void ContainsKey ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.ContainsKey ("a"), true);
+      _helper.ExpectSynchronizedDelegation(store => store.ContainsKey("a"), true);
     }
 
     [Test]
     public void Add ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.Add ("a", 1));
+      _helper.ExpectSynchronizedDelegation(store => store.Add("a", 1));
     }
 
     [Test]
     public void Remove ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.Remove ("b"), true);
+      _helper.ExpectSynchronizedDelegation(store => store.Remove("b"), true);
     }
 
     [Test]
     public void Clear ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.Clear());
+      _helper.ExpectSynchronizedDelegation(store => store.Clear());
     }
 
     [Test]
     public void Get_Value ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store["c"], 47);
+      _helper.ExpectSynchronizedDelegation(store => store["c"], 47);
     }
 
     [Test]
     public void Set_Value ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store["c"] = 17);
+      var indexer = typeof(IDataStore<string, int>).GetProperty("Item");
+      var parameter = Expression.Parameter(typeof(IDataStore<string, int>), "store");
+      var expression = (Expression<Action<IDataStore<string, int>>>)Expression.Lambda(
+          typeof(Action<IDataStore<string, int>>),
+          Expression.Assign(
+              Expression.MakeIndex(
+                  parameter,
+                  indexer,
+                  new[] { Expression.Constant("c") }),
+              Expression.Constant(17)),
+          parameter);
+      _helper.ExpectSynchronizedDelegation(expression);
     }
 
     [Test]
     public void GetValueOrDefault ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.GetValueOrDefault ("hugo"), 7);
+      _helper.ExpectSynchronizedDelegation(store => store.GetValueOrDefault("hugo"), 7);
     }
 
     [Test]
     public void TryGetValue ()
     {
       int value;
-      _helper.ExpectSynchronizedDelegation (store => store.TryGetValue ("hugo", out value), true);
+      _helper.ExpectSynchronizedDelegation(store => store.TryGetValue("hugo", out value), true);
     }
 
     [Test]
     public void GetOrCreateValue ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.GetOrCreateValue ("hugo", delegate { return 3; }), 17);
+      Func<string, int> valueFactory = _ => 3;
+      _helper.ExpectSynchronizedDelegation(
+          store => store.GetOrCreateValue("hugo", It.Is<Func<string, int>>(_ => _ == valueFactory)),
+          store => store.GetOrCreateValue("hugo", valueFactory),
+          17,
+          _ => { });
     }
 
     [Test]
     public void Serializable ()
     {
-      Serializer.SerializeAndDeserialize (new LockingDataStoreDecorator<string, int> (new SimpleDataStore<string, int>()));
+      Serializer.SerializeAndDeserialize(new LockingDataStoreDecorator<string, int>(new SimpleDataStore<string, int>()));
     }
 
     [Test]
@@ -113,21 +130,21 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 13;
 
-      var store = new LockingDataStoreDecorator<string, int?> (new SimpleDataStore<string, int?>());
+      var store = new LockingDataStoreDecorator<string, int?>(new SimpleDataStore<string, int?>());
 
-      var actualValue = store.GetOrCreateValue (
+      var actualValue = store.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => store.TryGetValue (key, out _),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+            Assert.That(
+                () => store.TryGetValue(key, out _),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
             return expected;
           });
 
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
     }
 
     [Test]
@@ -135,25 +152,25 @@ namespace Remotion.Collections.DataStore.UnitTests
     {
       int expected = 13;
 
-      var store = new LockingDataStoreDecorator<string, int?> (new SimpleDataStore<string, int?>());
+      var store = new LockingDataStoreDecorator<string, int?>(new SimpleDataStore<string, int?>());
 
-      var actualValue = store.GetOrCreateValue (
+      var actualValue = store.GetOrCreateValue(
               "key1",
               delegate (string key)
               {
-                Assert.That (
-                    () => store.GetOrCreateValue (key, nestedKey => 13),
-                    Throws.InvalidOperationException.With.Message.StringStarting (
+                Assert.That(
+                    () => store.GetOrCreateValue(key, nestedKey => 13),
+                    Throws.InvalidOperationException.With.Message.StartsWith(
                         "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
                 return expected;
           });
 
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
       int? actualValue2;
-      Assert.That (store.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.EqualTo (expected));
+      Assert.That(store.TryGetValue("key1", out actualValue2), Is.True);
+      Assert.That(actualValue2, Is.EqualTo(expected));
     }
   }
 }

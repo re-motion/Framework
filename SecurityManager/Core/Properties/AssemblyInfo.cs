@@ -20,9 +20,7 @@ using System.Reflection;
 using System.Resources;
 using Remotion.Globalization;
 
-[assembly: AssemblyTitle ("re-motion Security Manager Core Components")]
-[assembly: AssemblyDescription ("Component for managing an application's security requirements via access control lists.")]
-[assembly: AssemblyCulture ("")]
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
+[assembly: CLSCompliant(true)]

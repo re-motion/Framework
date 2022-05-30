@@ -44,52 +44,52 @@ namespace Remotion.Security.UnitTests.XmlAsserter
             </classes>
           </t:securityMetadata>";
 
-      _document = new XmlDocument ();
-      _document.LoadXml (xml);
+      _document = new XmlDocument();
+      _document.LoadXml(xml);
 
-      _converter = new NodeStackToXPathConverter ();
+      _converter = new NodeStackToXPathConverter();
       _converter.IncludeNamespaces = false;
     }
 
     [Test]
     public void RootNodeExpression ()
     {
-      Stack<XmlNode> nodeStack = new Stack<XmlNode> ();
-      nodeStack.Push (_document.ChildNodes[0]);
+      Stack<XmlNode> nodeStack = new Stack<XmlNode>();
+      nodeStack.Push(_document.ChildNodes[0]);
 
-      Assert.That (_converter.GetXPathExpression (nodeStack), Is.EqualTo ("/securityMetadata"));
+      Assert.That(_converter.GetXPathExpression(nodeStack), Is.EqualTo("/securityMetadata"));
     }
 
     [Test]
     public void ChildNodeExpression ()
     {
-      Stack<XmlNode> nodeStack = new Stack<XmlNode> ();
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0]);
+      Stack<XmlNode> nodeStack = new Stack<XmlNode>();
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0]);
 
-      Assert.That (_converter.GetXPathExpression (nodeStack), Is.EqualTo ("/securityMetadata/classes"));
+      Assert.That(_converter.GetXPathExpression(nodeStack), Is.EqualTo("/securityMetadata/classes"));
     }
 
     [Test]
     public void ChildNodeWithAttributeExpression ()
     {
-      Stack<XmlNode> nodeStack = new Stack<XmlNode> ();
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[0].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0]);
+      Stack<XmlNode> nodeStack = new Stack<XmlNode>();
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[0].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0]);
 
-      Assert.That (_converter.GetXPathExpression (nodeStack), Is.EqualTo ("/securityMetadata/classes/class[@id=\"Class1\"]"));
+      Assert.That(_converter.GetXPathExpression(nodeStack), Is.EqualTo("/securityMetadata/classes/class[@id=\"Class1\"]"));
     }
 
     [Test]
     public void ChildNodeWithMultipleAttributesExpression ()
     {
-      Stack<XmlNode> nodeStack = new Stack<XmlNode> ();
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[0].ChildNodes[1]);
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0]);
+      Stack<XmlNode> nodeStack = new Stack<XmlNode>();
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[0].ChildNodes[1]);
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0]);
 
-      Assert.That (_converter.GetXPathExpression (nodeStack), Is.EqualTo ("/securityMetadata/classes/class[@id=\"7823-qwer-124\" and @name=\"Class2\"]"));
+      Assert.That(_converter.GetXPathExpression(nodeStack), Is.EqualTo("/securityMetadata/classes/class[@id=\"7823-qwer-124\" and @name=\"Class2\"]"));
     }
 
     [Test]
@@ -97,11 +97,11 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       _converter.IncludeNamespaces = true;
 
-      Stack<XmlNode> nodeStack = new Stack<XmlNode> ();
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0]);
+      Stack<XmlNode> nodeStack = new Stack<XmlNode>();
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0]);
 
-      Assert.That (_converter.GetXPathExpression (nodeStack), Is.EqualTo ("/t:securityMetadata/t:classes"));
+      Assert.That(_converter.GetXPathExpression(nodeStack), Is.EqualTo("/t:securityMetadata/t:classes"));
     }
 
     [Test]
@@ -109,14 +109,14 @@ namespace Remotion.Security.UnitTests.XmlAsserter
     {
       _converter.IncludeNamespaces = true;
 
-      Stack<XmlNode> nodeStack = new Stack<XmlNode> ();
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[1].ChildNodes[0].ChildNodes[0].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[1].ChildNodes[0].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[1].ChildNodes[0]);
-      nodeStack.Push (_document.ChildNodes[0].ChildNodes[1]);
-      nodeStack.Push (_document.ChildNodes[0]);
+      Stack<XmlNode> nodeStack = new Stack<XmlNode>();
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[1].ChildNodes[0].ChildNodes[0].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[1].ChildNodes[0].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[1].ChildNodes[0]);
+      nodeStack.Push(_document.ChildNodes[0].ChildNodes[1]);
+      nodeStack.Push(_document.ChildNodes[0]);
 
-      Assert.That (_converter.GetXPathExpression (nodeStack), Is.EqualTo ("/t:securityMetadata/default:classes/default:class[@id=\"Class1\"]/default:entity"));
+      Assert.That(_converter.GetXPathExpression(nodeStack), Is.EqualTo("/t:securityMetadata/default:classes/default:class[@id=\"Class1\"]/default:entity"));
     }
   }
 }

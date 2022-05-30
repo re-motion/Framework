@@ -36,15 +36,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     public ForeignKeyConstraintScriptBuilder (
         IForeignKeyConstraintScriptElementFactory foreignKeyConstraintElementFactory, ICommentScriptElementFactory commentFactory)
     {
-      ArgumentUtility.CheckNotNull ("foreignKeyConstraintElementFactory", foreignKeyConstraintElementFactory);
-      ArgumentUtility.CheckNotNull ("commentFactory", commentFactory);
+      ArgumentUtility.CheckNotNull("foreignKeyConstraintElementFactory", foreignKeyConstraintElementFactory);
+      ArgumentUtility.CheckNotNull("commentFactory", commentFactory);
 
       _foreignKeyConstraintElementFactory = foreignKeyConstraintElementFactory;
       _commentFactory = commentFactory;
       _createScriptElements = new ScriptElementCollection();
-      _createScriptElements.AddElement (_commentFactory.GetCommentElement ("Create foreign key constraints for tables that were created above"));
+      _createScriptElements.AddElement(_commentFactory.GetCommentElement("Create foreign key constraints for tables that were created above"));
       _dropScriptElements = new ScriptElementCollection();
-      _dropScriptElements.AddElement (_commentFactory.GetCommentElement("Drop foreign keys of all tables"));
+      _dropScriptElements.AddElement(_commentFactory.GetCommentElement("Drop foreign keys of all tables"));
     }
 
     public IForeignKeyConstraintScriptElementFactory ForeignKeyConstraintElementFactory
@@ -54,11 +54,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
 
-      InlineRdbmsStorageEntityDefinitionVisitor.Visit (
+      InlineRdbmsStorageEntityDefinitionVisitor.Visit(
           entityDefinition,
-          (table, continuation) => AddTableDefinition (table),
+          (table, continuation) => AddTableDefinition(table),
           (filterView, continuation) => { },
           (unionView, contination) => { },
           (emptyView, continuation) => { });
@@ -78,13 +78,13 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
     {
       var foreignKeyConstraints = tableDefinition.Constraints.OfType<ForeignKeyConstraintDefinition>();
       foreach (var foreignKeyConstraint in foreignKeyConstraints)
-        AddForeignKeyConstraintDefinition (foreignKeyConstraint, tableDefinition.TableName);
+        AddForeignKeyConstraintDefinition(foreignKeyConstraint, tableDefinition.TableName);
     }
 
     private void AddForeignKeyConstraintDefinition (ForeignKeyConstraintDefinition foreignKeyConstraint, EntityNameDefinition tableName)
     {
-      _createScriptElements.AddElement (_foreignKeyConstraintElementFactory.GetCreateElement (foreignKeyConstraint, tableName));
-      _dropScriptElements.AddElement (_foreignKeyConstraintElementFactory.GetDropElement (foreignKeyConstraint, tableName));
+      _createScriptElements.AddElement(_foreignKeyConstraintElementFactory.GetCreateElement(foreignKeyConstraint, tableName));
+      _dropScriptElements.AddElement(_foreignKeyConstraintElementFactory.GetDropElement(foreignKeyConstraint, tableName));
     }
   }
 }

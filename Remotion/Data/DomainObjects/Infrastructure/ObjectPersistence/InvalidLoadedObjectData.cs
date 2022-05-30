@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public InvalidLoadedObjectData (DomainObject invalidObjectReference)
     {
-      ArgumentUtility.CheckNotNull ("invalidObjectReference", invalidObjectReference);
+      ArgumentUtility.CheckNotNull("invalidObjectReference", invalidObjectReference);
 
       _invalidObjectReference = invalidObjectReference;
     }
@@ -50,8 +50,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitInvalidLoadedObject (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.VisitInvalidLoadedObject(this);
     }
 
     bool INullObject.IsNull

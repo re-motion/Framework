@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_command.GetAllExceptions(), Is.Empty);
+      Assert.That(_command.GetAllExceptions(), Is.Empty);
     }
   }
 }

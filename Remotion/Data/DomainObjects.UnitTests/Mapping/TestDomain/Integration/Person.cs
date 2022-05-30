@@ -24,14 +24,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
   [Instantiable]
   public abstract class Person : TestDomainBase
   {
-    protected Person()
+    protected Person ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("ContactPerson")]
+    [DBBidirectionalRelation("ContactPerson")]
     public abstract Partner AssociatedPartnerCompany { get; set; }
+
+    [DBBidirectionalRelation("Reviewer")]
+    public abstract IObjectList<ProductReview> Reviews { get; set; }
   }
 }

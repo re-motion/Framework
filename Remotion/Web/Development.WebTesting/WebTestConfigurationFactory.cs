@@ -18,12 +18,15 @@ using System;
 using Coypu.Drivers;
 using JetBrains.Annotations;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.HostingStrategies.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration;
 using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome;
-using Remotion.Web.Development.WebTesting.WebDriver.Configuration.InternetExplorer;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Firefox;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -39,32 +42,61 @@ namespace Remotion.Web.Development.WebTesting
   public class WebTestConfigurationFactory
   {
     /// <summary>
-    /// Represents the latest version of Chrome verified to be compatible with Selenium WebDriver.
-    /// Higher Chrome versions are not guaranteed to work with the currently dependent ChromeDriver. 
-    /// In order to achieve a stable testing environment a standalone Chrome with a matching version should be used.
+    /// Represents the latest tested version of Chrome, compatible with the framework.
+    /// In order to achieve a stable testing environment, a standalone Chrome browser with a matching ChromeDriver version should be used.
     /// </summary>
-    protected const string LatestTestedChromeVersion = "66";
-    
+    protected const string LatestTestedChromeVersion = "98";
+
+    /// <summary>
+    /// Represents the latest version of Edge verified to be compatible with the framework.
+    /// In order to achieve a stable testing environment, a standalone Edge browser with a matching MSEdgeDriver version should be used.
+    /// </summary>
+    protected const string LatestTestedEdgeVersion = "98";
+
+    /// <summary>
+    /// Represents the latest version of Firefox verified to be compatible with Selenium WebDriver.
+    /// In order to achieve a stable testing environment a standalone Firefox with a matching GeckoDriver version should be used.
+    /// </summary>
+    protected const string LatestTestedFirefoxVersion = "96";
+
     /// <summary>
     /// Creates a new <see cref="IBrowserConfiguration"/> from app.config.
     /// </summary>
     /// <remarks>
-    /// In order to customize how the respective WebDriver for Chrome/Internet Explorer/other browsers is instantiated, 
-    /// override the <see cref="CreateChromeConfiguration"/>, <see cref="CreateInternetExplorerConfiguration"/>,
+    /// In order to customize how the respective WebDriver for Chrome/other browsers is instantiated,
+    /// override the <see cref="CreateChromeConfiguration"/>,
     /// and <see cref="CreateCustomBrowserConfiguration"/> methods.
     /// </remarks>
     public IBrowserConfiguration CreateBrowserConfiguration ()
     {
       var configSettings = WebTestConfigurationSection.Current;
-      var configuredBrowser = Browser.Parse (configSettings.BrowserName);
+
+      var configuredBrowser = Browser.Parse(configSettings.BrowserName);
 
       if (configuredBrowser == Browser.Chrome)
-        return CreateChromeConfiguration (configSettings);
+        return CreateChromeConfiguration(configSettings);
 
-      if (configuredBrowser == Browser.InternetExplorer)
-        return CreateInternetExplorerConfiguration (configSettings);
+      if (configuredBrowser == Browser.Edge)
+        return CreateEdgeConfiguration(configSettings);
 
-      return CreateCustomBrowserConfiguration (configSettings);
+      if (configuredBrowser == Browser.Firefox)
+        return CreateFirefoxConfiguration(configSettings);
+
+      return CreateCustomBrowserConfiguration(configSettings);
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="DriverConfiguration"/> from app.config.
+    /// </summary>
+    public DriverConfiguration CreateDriverConfiguration ()
+    {
+      var configSettings = WebTestConfigurationSection.Current;
+
+      return new DriverConfiguration(
+          configSettings.CommandTimeout,
+          configSettings.SearchTimeout,
+          configSettings.RetryInterval,
+          configSettings.AsyncJavaScriptTimeout);
     }
 
     /// <summary>
@@ -73,9 +105,9 @@ namespace Remotion.Web.Development.WebTesting
     public ITestInfrastructureConfiguration CreateTestInfrastructureConfiguration ()
     {
       var configSettings = WebTestConfigurationSection.Current;
-      
+
       //Not extensible as it is used in user code and test infrastructure utilities 
-      return new TestInfrastructureConfiguration (configSettings);
+      return new TestInfrastructureConfiguration(configSettings);
     }
 
     /// <summary>
@@ -86,33 +118,19 @@ namespace Remotion.Web.Development.WebTesting
     {
       var configSettings = WebTestConfigurationSection.Current;
 
-      return CreateHostingConfiguration (configSettings);
+      return CreateHostingConfiguration(configSettings);
     }
 
     /// <summary>
-    /// Responsible for handling Browsers other than Chrome and Internet Explorer.
+    /// Responsible for handling Browsers other than Chrome, Edge, and Firefox.
     /// Note that the <see cref="WebTestConfigurationFactory"/> itself does not provide support for other browsers so this implementation throws an not supported exception.
     /// </summary>
     /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
     protected virtual IBrowserConfiguration CreateCustomBrowserConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
 
-      throw new NotSupportedException (string.Format ("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
-    }
-
-    /// <summary>
-    /// Responsible for creating an Internet Explorer specific configuration object.
-    /// </summary>
-    /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
-    /// <remarks>
-    /// Override this method to customize the configuration settings.
-    /// </remarks>
-    protected virtual IInternetExplorerConfiguration CreateInternetExplorerConfiguration ([NotNull] WebTestConfigurationSection configSettings)
-    {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
-      
-      return new InternetExplorerConfiguration (configSettings);
+      throw new NotSupportedException(string.Format("Browser '{0}' is not supported by the '{1}'.", configSettings.BrowserName, GetType().Name));
     }
 
     /// <summary>
@@ -125,11 +143,33 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IChromeConfiguration CreateChromeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
-      
-      return new ChromeConfiguration (configSettings, new AdvancedChromeOptions());
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+
+      return new ChromeConfiguration(configSettings);
     }
-    
+
+    /// <summary>
+    /// Responsible for creating an Edge specific configuration object.
+    /// </summary>
+    /// <param name="configSettings">Receives app.config settings when called in <see cref="CreateBrowserConfiguration"/></param>
+    /// <remarks>
+    /// Override this method to customize the configuration settings, e.g. the location of the msedge.exe and the user directory 
+    /// via <see cref="EdgeExecutable"/> or custom <see cref="EdgeOptions"/> by extending <see cref="EdgeConfiguration"/> itself.
+    /// </remarks>
+    protected virtual IEdgeConfiguration CreateEdgeConfiguration ([NotNull] WebTestConfigurationSection configSettings)
+    {
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+
+      return new EdgeConfiguration(configSettings);
+    }
+
+    protected virtual IFirefoxConfiguration CreateFirefoxConfiguration (WebTestConfigurationSection configSettings)
+    {
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+
+      return new FirefoxConfiguration(configSettings);
+    }
+
     /// <summary>
     /// Responsible for creating a configuration object for the hosting infrastructure.
     /// </summary>
@@ -139,9 +179,26 @@ namespace Remotion.Web.Development.WebTesting
     /// </remarks>
     protected virtual IHostingConfiguration CreateHostingConfiguration ([NotNull] WebTestConfigurationSection configSettings)
     {
-      ArgumentUtility.CheckNotNull ("configSettings", configSettings);
-      
-      return new HostingConfiguration (configSettings);
+      ArgumentUtility.CheckNotNull("configSettings", configSettings);
+
+      var testSiteLayoutConfiguration = CreateTestSiteLayoutConfiguration();
+
+      return new HostingConfiguration(configSettings, testSiteLayoutConfiguration);
+    }
+
+    /// <summary>
+    /// Creates an instance of <see cref="AccessibilityConfiguration"/> with default values.
+    /// </summary>
+    public virtual IAccessibilityConfiguration CreateAccessibilityConfiguration ()
+    {
+      return new AccessibilityConfiguration();
+    }
+
+    private ITestSiteLayoutConfiguration CreateTestSiteLayoutConfiguration ()
+    {
+      var configSettings = WebTestConfigurationSection.Current;
+
+      return new TestSiteLayoutConfiguration(configSettings);
     }
   }
 }

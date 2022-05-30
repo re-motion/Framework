@@ -52,6 +52,8 @@
 // SOFTWARE.
 // 
 
+#nullable disable
+
 using System;
 
 #pragma warning disable 1591
@@ -103,7 +105,7 @@ namespace JetBrains.Annotations
   /// <item><c>SetProperty(ref myField, value, "Property")</c></item>
   /// </list>
   /// </example>
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   sealed partial class NotifyPropertyChangedInvocatorAttribute : Attribute
   {
     public NotifyPropertyChangedInvocatorAttribute ()
@@ -119,3 +121,5 @@ namespace JetBrains.Annotations
     public string ParameterName { get; private set; }
   }
 }
+
+#nullable restore

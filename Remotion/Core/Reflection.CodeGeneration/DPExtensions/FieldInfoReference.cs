@@ -25,8 +25,8 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
   {
     private readonly FieldInfo _field;
 
-    public FieldInfoReference (Reference owner, FieldInfo field)
-        : base (owner, field.FieldType)
+    public FieldInfoReference (Reference? owner, FieldInfo field)
+        : base(owner, field.FieldType)
     {
       _field = field;
     }
@@ -34,25 +34,25 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
     public override void LoadAddressOfReference (ILGenerator gen)
     {
       if (IsStaticField)
-        gen.Emit (OpCodes.Ldsflda, _field);
+        gen.Emit(OpCodes.Ldsflda, _field);
       else
-        gen.Emit (OpCodes.Ldflda, _field);
+        gen.Emit(OpCodes.Ldflda, _field);
     }
 
     public override void LoadReference (ILGenerator gen)
     {
       if (IsStaticField)
-        gen.Emit (OpCodes.Ldsfld, _field);
+        gen.Emit(OpCodes.Ldsfld, _field);
       else
-        gen.Emit (OpCodes.Ldfld, _field);
+        gen.Emit(OpCodes.Ldfld, _field);
     }
 
     public override void StoreReference (ILGenerator gen)
     {
       if (IsStaticField)
-        gen.Emit (OpCodes.Stsfld, _field);
+        gen.Emit(OpCodes.Stsfld, _field);
       else
-        gen.Emit (OpCodes.Stfld, _field);
+        gen.Emit(OpCodes.Stfld, _field);
     }
 
     private bool IsStaticField

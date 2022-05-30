@@ -51,11 +51,11 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     private readonly IRevisionProvider<TRevisionKey, TRevisionValue> _revisionProvider;
     private readonly object _syncRoot = new object();
-    private TData _cachedData;
+    private TData? _cachedData;
 
     protected RepositoryBase (IRevisionProvider<TRevisionKey, TRevisionValue> revisionProvider)
     {
-      ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
+      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
 
       _revisionProvider = revisionProvider;
     }
@@ -64,24 +64,24 @@ namespace Remotion.SecurityManager.Domain.AccessControl.AccessEvaluation
 
     protected TData GetCachedData (TRevisionKey revisionKey, Revision revision = Revision.Stale)
     {
-      ArgumentUtility.CheckNotNull ("revisionKey", revisionKey);
+      ArgumentUtility.CheckNotNull("revisionKey", revisionKey);
 
       if (revision == Revision.Invalidate)
-        _revisionProvider.InvalidateRevision (revisionKey);
+        _revisionProvider.InvalidateRevision(revisionKey);
 
-      var currentRevision = _revisionProvider.GetRevision (revisionKey);
+      var currentRevision = _revisionProvider.GetRevision(revisionKey);
 
       // Volatile access at this point is not actually required, but only added for completeness.
       // If the cached data happens to be stale, the revision-check would indicate staleness 
       // and the subsequent the synchronized access would then force the use of the current value for the second check.
-      var localData = Volatile.Read (ref _cachedData);
+      var localData = Volatile.Read(ref _cachedData);
 
-      if (localData == null || !localData.Revision.IsCurrent (currentRevision))
+      if (localData == null || !localData.Revision.IsCurrent(currentRevision))
       {
         lock (_syncRoot)
         {
-          if (_cachedData == null || !_cachedData.Revision.IsCurrent (currentRevision))
-            _cachedData = LoadData (currentRevision);
+          if (_cachedData == null || !_cachedData.Revision.IsCurrent(currentRevision))
+            _cachedData = LoadData(currentRevision);
           localData = _cachedData;
         }
       }

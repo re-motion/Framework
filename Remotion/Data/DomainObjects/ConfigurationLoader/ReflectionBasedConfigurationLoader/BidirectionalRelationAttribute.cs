@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -26,7 +27,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   public class BidirectionalRelationAttribute: Attribute, IMappingAttribute
   {
     private readonly string _oppositeProperty;
-    private string _sortExpression;
+    private string? _sortExpression;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BidirectionalRelationAttribute"/> class with the name of the oppsite property.
@@ -34,7 +35,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     /// <param name="oppositeProperty">The name of the opposite property. Must not be <see langword="null" /> or empty.</param>
     public BidirectionalRelationAttribute (string oppositeProperty)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("oppositeProperty", oppositeProperty);
+      ArgumentUtility.CheckNotNullOrEmpty("oppositeProperty", oppositeProperty);
 
       _oppositeProperty = oppositeProperty;
     }
@@ -65,15 +66,16 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     /// (Customer) of the related class (Person).
     /// </para>
     /// </example>
-    public string SortExpression
+    [DisallowNull]
+    public string? SortExpression
     {
       get { return _sortExpression; }
       set
       {
-        ArgumentUtility.CheckNotNull ("value", value);
-        value = value.Trim ();
-        ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-        _sortExpression = StringUtility.EmptyToNull (value);
+        ArgumentUtility.CheckNotNull("value", value);
+        value = value.Trim();
+        ArgumentUtility.CheckNotNullOrEmpty("value", value);
+        _sortExpression = StringUtility.EmptyToNull(value);
       }
     }
 

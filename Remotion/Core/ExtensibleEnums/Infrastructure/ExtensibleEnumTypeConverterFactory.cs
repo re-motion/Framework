@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -24,7 +24,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// <summary>
   /// Creates an <see cref="ExtensibleEnumConverter"/> if the requested type is an extensible enum.
   /// </summary>
-  [ImplementationFor (typeof (ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(ITypeConverterFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class ExtensibleEnumTypeConverterFactory : ITypeConverterFactory
   {
     public const int Position = EnumTypeConverterFactory.Position + 1;
@@ -33,12 +33,12 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     {
     }
 
-    public TypeConverter CreateTypeConverterOrDefault (Type type)
+    public TypeConverter? CreateTypeConverterOrDefault (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if (ExtensibleEnumUtility.IsExtensibleEnumType (type))
-        return new ExtensibleEnumConverter (type);
+      if (ExtensibleEnumUtility.IsExtensibleEnumType(type))
+        return new ExtensibleEnumConverter(type);
       return null;
     }
   }

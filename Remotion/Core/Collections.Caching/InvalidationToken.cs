@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -49,7 +49,7 @@ namespace Remotion.Collections.Caching
         _value = value;
 
 #if DEBUG
-        _tokenReference = new WeakReference<InvalidationToken> (token);
+        _tokenReference = new WeakReference<InvalidationToken>(token);
 #endif
       }
 
@@ -59,7 +59,7 @@ namespace Remotion.Collections.Caching
       }
 
 #if DEBUG
-      public InvalidationToken Token
+      public InvalidationToken? Token
       {
         get
         {
@@ -69,8 +69,7 @@ namespace Remotion.Collections.Caching
           // Taking a lock on the _tokenReference is OK in this instance given that the_tokenReference is competely under control of the current type.
           lock (_tokenReference)
           {
-            InvalidationToken token;
-            _tokenReference.TryGetTarget (out token);
+            _tokenReference.TryGetTarget(out var token);
             return token;
           }
         }
@@ -101,7 +100,7 @@ namespace Remotion.Collections.Caching
 
     public Revision GetCurrent ()
     {
-      return new Revision (GetCurrentRevisionValue(), this);
+      return new Revision(GetCurrentRevisionValue(), this);
     }
 
     public bool IsCurrent (Revision revision)
@@ -111,12 +110,12 @@ namespace Remotion.Collections.Caching
       var cacheInvalidationTokenFromRevision = revision.Token;
       if (cacheInvalidationTokenFromRevision == null)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "The Revision used for the comparision was either created via the default constructor or the associated CacheInvalidationToken has already been garbage collected.",
             "revision");
       }
-      if (!ReferenceEquals (this, cacheInvalidationTokenFromRevision))
-        throw new ArgumentException ("The Revision used for the comparision was not created by the current CacheInvalidationToken.", "revision");
+      if (!ReferenceEquals(this, cacheInvalidationTokenFromRevision))
+        throw new ArgumentException("The Revision used for the comparision was not created by the current CacheInvalidationToken.", "revision");
 #endif
 
       return GetCurrentRevisionValue() == revision.Value;

@@ -23,7 +23,7 @@ namespace Remotion.ObjectBinding.BindableObject
   /// </summary>
   public sealed class NullEnumerationValueFilter : IEnumerationValueFilter
   {
-    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject businessObject, IBusinessObjectEnumerationProperty property)
+    public bool IsEnabled (IEnumerationValueInfo value, IBusinessObject? businessObject, IBusinessObjectEnumerationProperty property)
     {
       return true;
     }

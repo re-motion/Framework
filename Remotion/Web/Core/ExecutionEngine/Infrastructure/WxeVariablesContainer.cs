@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
@@ -41,49 +42,49 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      if (!typeof (WxeFunction).IsAssignableFrom (type))
-        throw new ArgumentException ("Type " + type.FullName + " is not derived from WxeFunction.", "type");
+      ArgumentUtility.CheckNotNull("type", type);
+      if (!typeof(WxeFunction).IsAssignableFrom(type))
+        throw new ArgumentException("Type " + type.GetFullNameSafe() + " is not derived from WxeFunction.", "type");
 
-      return s_parameterDeclarations.GetOrAdd (type, s_getParameterDeclarationsUncheckedFunc);
+      return s_parameterDeclarations.GetOrAdd(type, s_getParameterDeclarationsUncheckedFunc);
     }
 
     private static WxeParameterDeclaration[] GetParameterDeclarationsUnchecked (Type type)
     {
       var result = type
-          .CreateSequence (t => t.BaseType)
+          .CreateSequence(t => t.BaseType)
           .Reverse()
-          .SelectMany (
-              (t, i) => t.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
-                  .Select (property => new { Property = property, Attribute = WxeParameterAttribute.GetAttribute (property) })
-                  .Where (_ => _.Attribute != null)
-                  .Select (
+          .SelectMany(
+              (t, i) => t.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+                  .Select(property => new { Property = property, Attribute = WxeParameterAttribute.GetAttribute(property) })
+                  .Where(_ => _.Attribute != null)
+                  .Select(
                       _ => new
                            {
                                Type = t,
                                TypeIndex = i,
-                               ParameterIndex = _.Attribute.Index,
+                               ParameterIndex = _.Attribute!.Index,
                                Property = _.Property,
                                ParameterDeclaration =
-                                   new WxeParameterDeclaration (_.Property.Name, _.Attribute.Required, _.Attribute.Direction, _.Property.PropertyType)
+                                   new WxeParameterDeclaration(_.Property.Name, _.Attribute.Required ?? false, _.Attribute.Direction, _.Property.PropertyType)
                            }))
-          .OrderBy (_ => _.TypeIndex)
-          .ThenBy (_ => _.ParameterIndex)
+          .OrderBy(_ => _.TypeIndex)
+          .ThenBy(_ => _.ParameterIndex)
           .ToList();
 
-      var duplicateIndices = result.GroupBy (_ => new { _.TypeIndex, _.ParameterIndex }).Where (_ => _.Count() > 1).ToList();
+      var duplicateIndices = result.GroupBy(_ => new { _.TypeIndex, _.ParameterIndex }).Where(_ => _.Count() > 1).ToList();
       if (duplicateIndices.Any())
       {
         var firstDuplicateIndex = duplicateIndices.First().ToArray();
-        throw new WxeException (
-            string.Format (
+        throw new WxeException(
+            string.Format(
                 "'{0}' declares WxeParameters '{1}' and '{2}' with the same index. The index of a WxeParameter must be unique within a type.",
                 firstDuplicateIndex[0].Type,
                 firstDuplicateIndex[0].Property.Name,
                 firstDuplicateIndex[1].Property.Name));
       }
 
-      return result.Select (_ => _.ParameterDeclaration).ToArray();
+      return result.Select(_ => _.ParameterDeclaration).ToArray();
     }
 
     /// <summary>
@@ -125,13 +126,13 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </example>
     public static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterDeclarations", parameterDeclarations);
-      ArgumentUtility.CheckNotNull ("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
 
-      StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList (actualParameters, ',');
+      StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList(actualParameters, ',');
 
       if (parsedItems.Length > parameterDeclarations.Length)
-        throw new ApplicationException ("Number of actual parameters exceeds number of declared parameters.");
+        throw new ApplicationException("Number of actual parameters exceeds number of declared parameters.");
 
       ArrayList arguments = new ArrayList();
       for (int i = 0; i < parsedItems.Length; ++i)
@@ -143,34 +144,34 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
         {
           if (item.IsQuoted)
           {
-            if (paramDecl.Type == typeof (string)) // string constant
-              arguments.Add (item.Value);
+            if (paramDecl.Type == typeof(string)) // string constant
+              arguments.Add(item.Value);
             else // parse constant
-              arguments.Add (s_typeConversionProvider.Convert (null, culture, typeof (string), paramDecl.Type, item.Value));
+              arguments.Add(s_typeConversionProvider.Convert(null, culture, typeof(string), paramDecl.Type, item.Value));
           }
           else
           {
-            if (string.CompareOrdinal (item.Value, "true") == 0) // true
-              arguments.Add (true);
-            else if (string.CompareOrdinal (item.Value, "false") == 0) // false
-              arguments.Add (false);
-            else if (item.Value.Length > 0 && char.IsDigit (item.Value[0])) // starts with digit -> parse constant
-              arguments.Add (s_typeConversionProvider.Convert (null, culture, typeof (string), paramDecl.Type, item.Value));
+            if (string.CompareOrdinal(item.Value, "true") == 0) // true
+              arguments.Add(true);
+            else if (string.CompareOrdinal(item.Value, "false") == 0) // false
+              arguments.Add(false);
+            else if (item.Value.Length > 0 && char.IsDigit(item.Value[0])) // starts with digit -> parse constant
+              arguments.Add(s_typeConversionProvider.Convert(null, culture, typeof(string), paramDecl.Type, item.Value));
             else // variable name
-              arguments.Add (new WxeVariableReference (item.Value));
+              arguments.Add(new WxeVariableReference(item.Value));
           }
         }
         catch (ArgumentException e)
         {
-          throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
+          throw new ApplicationException("Parameter " + paramDecl.Name + ": " + e.Message, e);
         }
         catch (ParseException e)
         {
-          throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
+          throw new ApplicationException("Parameter " + paramDecl.Name + ": " + e.Message, e);
         }
       }
 
-      return arguments.ToArray();
+      return arguments.ToArray()!; // TODO RM-8118: Use generic collection
     }
 
     /// <summary>
@@ -189,20 +190,20 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </returns>
     public static NameValueCollection SerializeParametersForQueryString (WxeParameterDeclaration[] parameterDeclarations, object[] parameterValues)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterDeclarations", parameterDeclarations);
-      ArgumentUtility.CheckNotNull ("parameterValues", parameterValues);
+      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNull("parameterValues", parameterValues);
 
       NameValueCollection serializedParameters = new NameValueCollection();
 
       for (int i = 0; i < parameterDeclarations.Length; i++)
       {
         WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
-        object parameterValue = null;
+        object? parameterValue = null;
         if (i < parameterValues.Length)
           parameterValue = parameterValues[i];
-        string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, null);
+        string? serializedValue = parameterDeclaration.Converter.ConvertToString(parameterValue, null);
         if (serializedValue != null)
-          serializedParameters.Add (parameterDeclaration.Name, serializedValue);
+          serializedParameters.Add(parameterDeclaration.Name, serializedValue);
       }
       return serializedParameters;
     }
@@ -210,20 +211,20 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private readonly WxeFunction _function;
     private readonly WxeParameterDeclaration[] _parameterDeclarations;
     private readonly NameObjectCollection _variables;
-    private object[] _actualParameters;
+    private object?[] _actualParameters;
     private bool _parametersInitialized;
     private static readonly Func<Type, WxeParameterDeclaration[]> s_getParameterDeclarationsUncheckedFunc = GetParameterDeclarationsUnchecked;
 
-    public WxeVariablesContainer (WxeFunction function, object[] actualParameters)
-        : this (ArgumentUtility.CheckNotNull ("function", function), actualParameters, GetParameterDeclarations (function.GetType()))
+    public WxeVariablesContainer (WxeFunction function, object?[] actualParameters)
+        : this(ArgumentUtility.CheckNotNull("function", function), actualParameters, GetParameterDeclarations(function.GetType()))
     {
     }
 
-    public WxeVariablesContainer (WxeFunction function, object[] actualParameters, WxeParameterDeclaration[] parameterDeclarations)
+    public WxeVariablesContainer (WxeFunction function, object?[] actualParameters, WxeParameterDeclaration[] parameterDeclarations)
     {
-      ArgumentUtility.CheckNotNull ("function", function);
-      ArgumentUtility.CheckNotNull ("actualParameters", actualParameters);
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNull("function", function);
+      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNullOrItemsNull("parameterDeclarations", parameterDeclarations);
 
       _function = function;
       _variables = new NameObjectCollection();
@@ -236,7 +237,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       get { return _variables; }
     }
 
-    public object[] ActualParameters
+    public object?[] ActualParameters
     {
       get { return _actualParameters; }
     }
@@ -252,27 +253,27 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     /// </param>
     public void InitializeParameters (NameValueCollection parameters)
     {
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
       CheckParametersNotInitialized();
 
       for (int i = 0; i < _parameterDeclarations.Length; ++i)
       {
         WxeParameterDeclaration paramDeclaration = _parameterDeclarations[i];
-        string strval = parameters[paramDeclaration.Name];
+        string? strval = parameters[paramDeclaration.Name];
         if (strval != null)
         {
           try
           {
-            _variables[paramDeclaration.Name] = 
-                s_typeConversionProvider.Convert (null, CultureInfo.InvariantCulture, typeof (string), paramDeclaration.Type, strval);
+            _variables[paramDeclaration.Name] =
+                s_typeConversionProvider.Convert(null, CultureInfo.InvariantCulture, typeof(string), paramDeclaration.Type, strval);
           }
           catch (Exception e)
           {
-            throw new ApplicationException ("Parameter " + paramDeclaration.Name + ": " + e.Message, e);
+            throw new ApplicationException("Parameter " + paramDeclaration.Name + ": " + e.Message, e);
           }
         }
         else if (paramDeclaration.Required)
-          throw new ApplicationException ("Parameter '" + paramDeclaration.Name + "' is missing.");
+          throw new ApplicationException("Parameter '" + paramDeclaration.Name + "' is missing.");
       }
 
       _parametersInitialized = true; // since parameterString may not contain variable references, initialization is done right away
@@ -280,7 +281,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     public void InitializeParameters (string parameterString, bool delayInitialization)
     {
-      InitializeParameters (parameterString, null, delayInitialization);
+      InitializeParameters(parameterString, null, delayInitialization);
     }
 
     /// <summary> Initializes the <see cref="WxeFunction"/> with the supplied parameters. </summary>
@@ -297,48 +298,48 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     ///   Thrown if the <see cref="WxeFunction"/>'s parameters have already been initialized, either because 
     ///   execution has started or <b>InitializeParameters</b> has been called before.
     /// </exception>
-    public void InitializeParameters (string parameterString, NameObjectCollection additionalParameters)
+    public void InitializeParameters (string parameterString, NameObjectCollection? additionalParameters)
     {
-      InitializeParameters (parameterString, additionalParameters, false);
+      InitializeParameters(parameterString, additionalParameters, false);
     }
 
-    private void InitializeParameters (string parameterString, NameObjectCollection additionalParameters, bool delayInitialization)
+    private void InitializeParameters (string parameterString, NameObjectCollection? additionalParameters, bool delayInitialization)
     {
       CheckParametersNotInitialized();
 
-      _actualParameters = ParseActualParameters (ParameterDeclarations, parameterString, CultureInfo.InvariantCulture);
+      _actualParameters = ParseActualParameters(ParameterDeclarations, parameterString, CultureInfo.InvariantCulture);
 
       if (!delayInitialization)
-        EnsureParametersInitialized (additionalParameters);
+        EnsureParametersInitialized(additionalParameters);
     }
 
     /// <summary> Pass actualParameters to Variables. </summary>
-    public void EnsureParametersInitialized (NameObjectCollection additionalParameters)
+    public void EnsureParametersInitialized (NameObjectCollection? additionalParameters)
     {
       if (_parametersInitialized)
         return;
 
-      NameObjectCollection callerVariables = (_function.ParentStep != null) ? _function.ParentStep.Variables : null;
-      callerVariables = NameObjectCollection.Merge (callerVariables, additionalParameters);
+      NameObjectCollection? callerVariables = (_function.ParentStep != null) ? _function.ParentStep.Variables : null;
+      callerVariables = NameObjectCollection.Merge(callerVariables, additionalParameters);
 
       if (_actualParameters.Length > _parameterDeclarations.Length)
       {
-        throw new ApplicationException (
-            string.Format ("{0} parameters provided but only {1} were expected.", _actualParameters.Length, _parameterDeclarations.Length));
+        throw new ApplicationException(
+            string.Format("{0} parameters provided but only {1} were expected.", _actualParameters.Length, _parameterDeclarations.Length));
       }
 
       for (int i = 0; i < _parameterDeclarations.Length; ++i)
       {
         if (i < _actualParameters.Length && _actualParameters[i] != null)
         {
-          WxeVariableReference varRef = _actualParameters[i] as WxeVariableReference;
+          WxeVariableReference? varRef = _actualParameters[i] as WxeVariableReference;
           if (callerVariables != null && varRef != null)
-            _parameterDeclarations[i].CopyToCallee (varRef.Name, callerVariables, _variables);
+            _parameterDeclarations[i].CopyToCallee(varRef.Name, callerVariables, _variables);
           else
-            _parameterDeclarations[i].CopyToCallee (_actualParameters[i], _variables);
+            _parameterDeclarations[i].CopyToCallee(_actualParameters[i], _variables);
         }
         else if (_parameterDeclarations[i].Required)
-          throw new ApplicationException ("Parameter '" + _parameterDeclarations[i].Name + "' is missing.");
+          throw new ApplicationException("Parameter '" + _parameterDeclarations[i].Name + "' is missing.");
       }
 
       _parametersInitialized = true;
@@ -346,15 +347,15 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
 
     internal void ReturnParametersToCaller ()
     {
-      NameObjectCollection callerVariables = _function.ParentStep.Variables;
+      NameObjectCollection callerVariables = _function.ParentStep!.Variables!; // TODO RM-8118: not null assertion
 
       for (int i = 0; i < _parameterDeclarations.Length; ++i)
       {
         if (i < _actualParameters.Length)
         {
-          WxeVariableReference varRef = _actualParameters[i] as WxeVariableReference;
+          WxeVariableReference? varRef = _actualParameters[i] as WxeVariableReference;
           if (varRef != null)
-            _parameterDeclarations[i].CopyToCaller (varRef.Name, _variables, callerVariables);
+            _parameterDeclarations[i].CopyToCaller(varRef.Name, _variables, callerVariables);
         }
       }
     }
@@ -362,14 +363,14 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
     private void CheckParametersNotInitialized ()
     {
       if (_parametersInitialized)
-        throw new InvalidOperationException ("Parameters are already initialized.");
+        throw new InvalidOperationException("Parameters are already initialized.");
     }
 
     public NameValueCollection SerializeParametersForQueryString ()
     {
       NameValueCollection serializedParameters = new NameValueCollection();
       WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
-      NameObjectCollection callerVariables = null;
+      NameObjectCollection? callerVariables = null;
       if (_function.ParentStep != null)
         callerVariables = _function.ParentStep.Variables;
 
@@ -377,7 +378,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
       for (int i = 0; i < parameterDeclarations.Length; i++)
       {
         WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
-        object parameterValue = null;
+        object? parameterValue = null;
         if (hasActualParameters)
         {
           if (i < _actualParameters.Length)
@@ -385,9 +386,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
         }
         else
           parameterValue = _variables[parameterDeclaration.Name];
-        string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, callerVariables);
+        string? serializedValue = parameterDeclaration.Converter.ConvertToString(parameterValue, callerVariables);
         if (serializedValue != null)
-          serializedParameters.Add (parameterDeclaration.Name, serializedValue);
+          serializedParameters.Add(parameterDeclaration.Name, serializedValue);
       }
       return serializedParameters;
     }

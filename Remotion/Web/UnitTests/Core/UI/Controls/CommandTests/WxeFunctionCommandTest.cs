@@ -33,86 +33,81 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
     public virtual void SetUp ()
     {
       _testHelper = new CommandTestHelper();
-      HttpContextHelper.SetCurrent (_testHelper.HttpContext);
+      HttpContextHelper.SetCurrent(_testHelper.HttpContext);
     }
 
     [Test]
     public void HasAccess_WithoutSeucrityProvider ()
     {
       Command command = _testHelper.CreateWxeFunctionCommand();
-      _testHelper.ReplayAll();
 
-      bool hasAccess = command.HasAccess (null);
+      bool hasAccess = command.HasAccess(null);
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_WithAccessGranted ()
     {
-      Command command = _testHelper.CreateWxeFunctionCommand (_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
-      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess (typeof (TestFunction), true);
-      _testHelper.ReplayAll();
+      Command command = _testHelper.CreateWxeFunctionCommand(_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
+      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess(typeof(TestFunction), true);
 
-      bool hasAccess = command.HasAccess (null);
+      bool hasAccess = command.HasAccess(null);
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.True);
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void HasAccess_WithAccessDenied ()
     {
-      Command command = _testHelper.CreateWxeFunctionCommand (_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
-      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess (typeof (TestFunction), false);
-      _testHelper.ReplayAll();
+      Command command = _testHelper.CreateWxeFunctionCommand(_testHelper.WebSecurityAdapter, _testHelper.WxeSecurityAdapter);
+      _testHelper.ExpectWxeSecurityProviderHasStatelessAccess(typeof(TestFunction), false);
 
-      bool hasAccess = command.HasAccess (null);
+      bool hasAccess = command.HasAccess(null);
 
       _testHelper.VerifyAll();
-      Assert.That (hasAccess, Is.False);
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void Render_WithAccessGranted ()
     {
-      Command command = _testHelper.CreateWxeFunctionCommandAsPartialMock();
+      var command = _testHelper.CreateWxeFunctionCommandAsPartialMock();
       string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick + "return false;";
-      _testHelper.ExpectOnceOnHasAccess (command, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectOnceOnHasAccess(command, true);
 
-      command.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.Object.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll();
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
-      Assert.AreEqual ("#", _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Missing Href");
+      Assert.AreEqual("#", _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Href], "Wrong Href");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
-      Assert.AreEqual (expectedOnClick, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Missing OnClick");
+      Assert.AreEqual(expectedOnClick, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Onclick], "Wrong OnClick");
 
-      Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
-      Assert.AreEqual (_testHelper.ToolTip, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Missing Title");
+      Assert.AreEqual(_testHelper.ToolTip, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
 
-      Assert.IsNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Has Target");
+      Assert.IsNull(_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Has Target");
     }
 
     [Test]
     public void Render_WithAccessDenied ()
     {
-      Command command = _testHelper.CreateWxeFunctionCommandAsPartialMock();
-      _testHelper.ExpectOnceOnHasAccess (command, false);
-      _testHelper.ReplayAll();
+      var command = _testHelper.CreateWxeFunctionCommandAsPartialMock();
+      _testHelper.ExpectOnceOnHasAccess(command, false);
 
-      command.RenderBegin (_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
+      command.Object.RenderBegin(_testHelper.HtmlWriter, RenderingFeatures.Default, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll();
-      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
-      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
-      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
+      Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
     }
   }
 }

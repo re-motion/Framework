@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>JavascriptLibrary</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Web Client Scripts</AssemblyTitle>
+    <Description>Client Scripts for re-motion's web applications controls.</Description>
+    <AssemblyName>Remotion.Web.ClientScript</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

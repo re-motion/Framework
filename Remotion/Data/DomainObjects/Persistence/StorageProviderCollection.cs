@@ -34,16 +34,16 @@ public class StorageProviderCollection : CommonCollection, IDisposable
   }
 
   // standard constructor for collections
-  public StorageProviderCollection (StorageProviderCollection collection, bool makeCollectionReadOnly)  
+  public StorageProviderCollection (StorageProviderCollection collection, bool makeCollectionReadOnly)
   {
-    ArgumentUtility.CheckNotNull ("collection", collection);
+    ArgumentUtility.CheckNotNull("collection", collection);
 
     foreach (StorageProvider provider in collection)
     {
-      Add (provider);
+      Add(provider);
     }
 
-    this.SetIsReadOnly (makeCollectionReadOnly);
+    this.SetIsReadOnly(makeCollectionReadOnly);
   }
 
   #region IDisposable Members
@@ -51,10 +51,10 @@ public class StorageProviderCollection : CommonCollection, IDisposable
   public virtual void Dispose ()
   {
     for (int i = Count - 1; i>= 0; i--)
-      this[i].Dispose ();      
+      this[i].Dispose();
 
-    BaseClear ();
-    GC.SuppressFinalize (this);
+    BaseClear();
+    GC.SuppressFinalize(this);
   }
 
   #endregion
@@ -65,36 +65,36 @@ public class StorageProviderCollection : CommonCollection, IDisposable
 
   public bool Contains (StorageProvider provider)
   {
-    ArgumentUtility.CheckNotNull ("provider", provider);
+    ArgumentUtility.CheckNotNull("provider", provider);
 
-    return BaseContains (provider.StorageProviderDefinition.Name, provider);
+    return BaseContains(provider.StorageProviderDefinition.Name, provider);
   }
 
   public bool Contains (string storageProviderID)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-    return BaseContainsKey (storageProviderID);
+    ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
+    return BaseContainsKey(storageProviderID);
   }
 
-  public StorageProvider this [int index]  
+  public StorageProvider this [int index]
   {
-    get { return (StorageProvider) BaseGetObject (index); }
+    get { return (StorageProvider)BaseGetObject(index); }
   }
 
-  public StorageProvider this [string storageProviderID]  
+  public StorageProvider? this [string storageProviderID]
   {
-    get 
+    get
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-      return (StorageProvider) BaseGetObject (storageProviderID); 
+      ArgumentUtility.CheckNotNullOrEmpty("storageProviderID", storageProviderID);
+      return (StorageProvider?)BaseGetObject(storageProviderID);
     }
   }
 
   public int Add (StorageProvider value)
   {
-    ArgumentUtility.CheckNotNull ("value", value);
-    
-    return BaseAdd (value.StorageProviderDefinition.Name, value);
+    ArgumentUtility.CheckNotNull("value", value);
+
+    return BaseAdd(value.StorageProviderDefinition.Name, value);
   }
 
   #endregion

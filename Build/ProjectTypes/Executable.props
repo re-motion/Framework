@@ -1,0 +1,9 @@
+<Project>
+
+  <Import Project="$(MSBuildThisFileDirectory)Library.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+</Project>

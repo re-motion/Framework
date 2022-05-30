@@ -33,8 +33,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     public ValueStoragePropertyDefinitionFactory (
         IStorageTypeInformationProvider storageTypeInformationProvider, IStorageNameProvider storageNameProvider)
     {
-      ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
-      ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
 
       _storageTypeInformationProvider = storageTypeInformationProvider;
       _storageNameProvider = storageNameProvider;
@@ -52,61 +52,61 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       IStorageTypeInformation storageType;
       try
       {
-        storageType = _storageTypeInformationProvider.GetStorageType (propertyDefinition, MustBeNullable (propertyDefinition));
+        storageType = _storageTypeInformationProvider.GetStorageType(propertyDefinition, MustBeNullable(propertyDefinition));
       }
       catch (NotSupportedException ex)
       {
-        var message = string.Format (
+        var message = string.Format(
             "There was an error when retrieving storage type for property '{0}' (declaring class: '{1}'): {2}",
             propertyDefinition.PropertyName,
             propertyDefinition.ClassDefinition.ID,
             ex.Message);
-        return new UnsupportedStoragePropertyDefinition (propertyDefinition.PropertyType, message, ex);
+        return new UnsupportedStoragePropertyDefinition(propertyDefinition.PropertyType, message, ex);
       }
-      var columnName = _storageNameProvider.GetColumnName (propertyDefinition);
-      return CreateStoragePropertyDefinition (columnName, storageType, propertyDefinition.PropertyType);
+      var columnName = _storageNameProvider.GetColumnName(propertyDefinition);
+      return CreateStoragePropertyDefinition(columnName, storageType, propertyDefinition.PropertyType);
     }
 
-    public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object value, string columnName)
+    public IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (object? value, string columnName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
+      ArgumentUtility.CheckNotNullOrEmpty("columnName", columnName);
 
-      var propertyType = value != null ? value.GetType () : typeof (object);
+      var propertyType = value != null ? value.GetType() : typeof(object);
       IStorageTypeInformation storageType;
       try
       {
-        storageType = _storageTypeInformationProvider.GetStorageType (value);
+        storageType = _storageTypeInformationProvider.GetStorageType(value);
       }
       catch (NotSupportedException ex)
       {
-        var message = string.Format (
+        var message = string.Format(
             "There was an error when retrieving storage type for value of type '{0}': {1}",
-            value != null ? value.GetType ().Name : "<null>",
+            value != null ? value.GetType().Name : "<null>",
             ex.Message);
-        return new UnsupportedStoragePropertyDefinition (propertyType, message, ex);
+        return new UnsupportedStoragePropertyDefinition(propertyType, message, ex);
       }
 
-      return CreateStoragePropertyDefinition (columnName, storageType, propertyType);
+      return CreateStoragePropertyDefinition(columnName, storageType, propertyType);
     }
 
     protected virtual bool MustBeNullable (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
       // CreateSequence can deal with null source objects
-      var baseClasses = propertyDefinition.ClassDefinition.BaseClass.CreateSequence (cd => cd.BaseClass);
-      return baseClasses.Any (cd => _storageNameProvider.GetTableName (cd) != null);
+      var baseClasses = propertyDefinition.ClassDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
+      return baseClasses.Any(cd => _storageNameProvider.GetTableName(cd) != null);
     }
 
     private IRdbmsStoragePropertyDefinition CreateStoragePropertyDefinition (string columnName, IStorageTypeInformation storageType, Type propertyType)
     {
-      var columnDefinition = new ColumnDefinition (columnName, storageType, false);
-      return new SimpleStoragePropertyDefinition (propertyType, columnDefinition);
+      var columnDefinition = new ColumnDefinition(columnName, storageType, false);
+      return new SimpleStoragePropertyDefinition(propertyType, columnDefinition);
     }
   }
 }

@@ -33,7 +33,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public DisplayNameConstraint (string value)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty("value", value);
       _value = value;
     }
 
@@ -44,50 +44,50 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
 
     public IQueryable<Tenant> ApplyTo (IQueryable<Tenant> tenants)
     {
-      ArgumentUtility.CheckNotNull ("tenants", tenants);
+      ArgumentUtility.CheckNotNull("tenants", tenants);
 
       if (HasConstraint())
-        return tenants.Where (t => t.Name.Contains (Value));
+        return tenants.Where(t => t.Name.Contains(Value));
 
       return tenants;
     }
 
     public IQueryable<Group> ApplyTo (IQueryable<Group> groups)
     {
-      ArgumentUtility.CheckNotNull ("groups", groups);
+      ArgumentUtility.CheckNotNull("groups", groups);
 
       if (HasConstraint())
-        return groups.Where (g => g.Name.Contains (Value) || g.ShortName.Contains (Value));
+        return groups.Where(g => g.Name.Contains(Value) || (g.ShortName != null && g.ShortName.Contains(Value)));
 
       return groups;
     }
 
     public IQueryable<User> ApplyTo (IQueryable<User> users)
     {
-      ArgumentUtility.CheckNotNull ("users", users);
+      ArgumentUtility.CheckNotNull("users", users);
 
       if (HasConstraint())
-        return users.Where (u => u.LastName.Contains (Value) || u.FirstName.Contains (Value));
+        return users.Where(u => u.LastName.Contains(Value) || (u.FirstName != null && u.FirstName.Contains(Value)));
 
       return users;
     }
 
     public IQueryable<Position> ApplyTo (IQueryable<Position> positions)
     {
-      ArgumentUtility.CheckNotNull ("positions", positions);
+      ArgumentUtility.CheckNotNull("positions", positions);
 
       if (HasConstraint())
-        return positions.Where (t => t.Name.Contains (Value));
+        return positions.Where(t => t.Name.Contains(Value));
 
       return positions;
     }
 
     public IQueryable<GroupType> ApplyTo (IQueryable<GroupType> groupTypes)
     {
-      ArgumentUtility.CheckNotNull ("groupTypes", groupTypes);
+      ArgumentUtility.CheckNotNull("groupTypes", groupTypes);
 
       if (HasConstraint())
-        return groupTypes.Where (t => t.Name.Contains (Value));
+        return groupTypes.Where(t => t.Name.Contains(Value));
 
       return groupTypes;
     }
@@ -95,17 +95,17 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure
     public IEnumerable<T> ApplyTo<T> (IEnumerable<T> metadataObject)
         where T: MetadataObject
     {
-      ArgumentUtility.CheckNotNull ("metadataObject", metadataObject);
+      ArgumentUtility.CheckNotNull("metadataObject", metadataObject);
 
       if (HasConstraint())
-        return metadataObject.Where (t => t.DisplayName.IndexOf (Value, StringComparison.CurrentCultureIgnoreCase) != -1);
+        return metadataObject.Where(t => t.DisplayName.IndexOf(Value, StringComparison.CurrentCultureIgnoreCase) != -1);
 
       return metadataObject;
     }
 
     private bool HasConstraint ()
     {
-      return !String.IsNullOrEmpty (Value);
+      return !String.IsNullOrEmpty(Value);
     }
   }
 }

@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
 {
@@ -33,50 +33,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Queries
     public void LinqQuery_CallsFilterQueryResult ()
     {
       var extensionKey = "LinqQuery_CallsFilterQueryResult_Key";
-      var extensionMock = MockRepository.GenerateMock<IClientTransactionExtension>();
-      extensionMock.Stub (stub => stub.Key).Return (extensionKey);
+      var extensionMock = new Mock<IClientTransactionExtension>();
+      extensionMock.Setup(stub => stub.Key).Returns(extensionKey);
       extensionMock
-          .Expect (mock => mock.FilterQueryResult (Arg.Is (TestableClientTransaction), Arg<QueryResult<DomainObject>>.Is.Anything))
-          .Return (TestQueryFactory.CreateTestQueryResult<DomainObject>());
+          .Setup(mock => mock.FilterQueryResult(TestableClientTransaction, It.IsAny<QueryResult<DomainObject>>()))
+          .Returns(TestQueryFactory.CreateTestQueryResult<DomainObject>())
+          .Verifiable();
 
-      TestableClientTransaction.Extensions.Add (extensionMock);
+      TestableClientTransaction.Extensions.Add(extensionMock.Object);
       try
       {
         var query = from o in QueryFactory.CreateLinqQuery<Order>() where o.Customer.ID == DomainObjectIDs.Customer1 select o;
         query.ToArray();
 
-        extensionMock.VerifyAllExpectations();
+        extensionMock.Verify();
       }
       finally
       {
-        TestableClientTransaction.Extensions.Remove (extensionKey);
+        TestableClientTransaction.Extensions.Remove(extensionKey);
       }
     }
 
     [Test]
     public void LinqCustomQuery_CallsFilterCustomQueryResult ()
     {
-      var listenerMock = MockRepository.GenerateMock<IClientTransactionListener>();
+      var listenerMock = new Mock<IClientTransactionListener>();
       listenerMock
-          .Expect (
-              mock => mock.FilterCustomQueryResult (
-                  Arg.Is (TestableClientTransaction),
-                  Arg<IQuery>.Is.Anything,
-                  Arg<IEnumerable<int>>.List.Equal (new[] { 1, 2, 3, 4, 5 })))
-          .Return (new[] { 1, 2, 3 });
+          .Setup(
+              mock => mock.FilterCustomQueryResult(
+                  TestableClientTransaction,
+                  It.IsAny<IQuery>(),
+                  new[] { 1, 2, 3, 4, 5 }))
+          .Returns(new[] { 1, 2, 3 })
+          .Verifiable();
 
-      TestableClientTransaction.AddListener (listenerMock);
+      TestableClientTransaction.AddListener(listenerMock.Object);
       try
       {
         var query = from o in QueryFactory.CreateLinqQuery<Order>() where o.OrderNumber <= 5 orderby o.OrderNumber select o.OrderNumber;
         var result = query.ToArray();
 
-        listenerMock.VerifyAllExpectations ();
-        Assert.That (result, Is.EqualTo (new[] { 1, 2, 3 }));
+        listenerMock.Verify();
+        Assert.That(result, Is.EqualTo(new[] { 1, 2, 3 }));
       }
       finally
       {
-        TestableClientTransaction.RemoveListener (listenerMock);
+        TestableClientTransaction.RemoveListener(listenerMock.Object);
       }
     }
   }

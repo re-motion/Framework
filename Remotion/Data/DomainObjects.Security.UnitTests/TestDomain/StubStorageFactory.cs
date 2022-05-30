@@ -26,7 +26,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGeneration;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Linq.SqlBackend.SqlPreparation;
 using Remotion.Utilities;
@@ -37,17 +37,17 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
   {
     public StorageProvider CreateStorageProvider (StorageProviderDefinition storageProviderDefinition, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new StubStorageProvider (storageProviderDefinition, persistenceExtension);
+      return new StubStorageProvider(storageProviderDefinition, persistenceExtension);
     }
 
     public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
-      return new SqlStorageObjectFactory ().CreatePersistenceModelLoader (storageProviderDefinition, storageProviderDefinitionFinder);
+      return new SqlStorageObjectFactory().CreatePersistenceModelLoader(storageProviderDefinition, storageProviderDefinitionFinder);
     }
 
     public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
     {
       throw new NotImplementedException();
     }
-    
+
     public IEnumSerializer CreateEnumSerializer ()
     {
       throw new NotImplementedException();
@@ -111,7 +111,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
     public IScriptBuilder CreateTableBuilder (RdbmsProviderDefinition storageProviderDefinition)
     {
-      return new TableScriptBuilder (new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
+      return new TableScriptBuilder(new SqlTableScriptElementFactory(), new SqlCommentScriptElementFactory());
     }
 
     public IScriptBuilder CreateViewBuilder (RdbmsProviderDefinition storageProviderDefinition)

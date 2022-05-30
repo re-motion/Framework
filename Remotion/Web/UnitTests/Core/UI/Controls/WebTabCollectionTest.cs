@@ -27,507 +27,509 @@ public class WebTabCollectionTest: WebControlTest
   private WebTabStrip _tabStrip;
   private WebTab _tab0;
   private WebTab _tab1;
-  private WebTab _tab2;  
+  private WebTab _tab2;
   private WebTab _tab3;
   private WebTab _tabNew;
 
-  public WebTabCollectionTest()
+  public WebTabCollectionTest ()
   {
   }
-  
-  protected override void SetUpPage()
+
+  protected override void SetUpPage ()
   {
     base.SetUpPage();
     _tabStrip = new WebTabStrip();
-    _tab0 = new WebTab ("Tab0", "Tab 0");
-    _tab1 = new WebTab ("Tab1", "Tab 1");
-    _tab2 = new WebTab ("Tab2", "Tab 2");
-    _tab3 = new WebTab ("Tab3", "Tab 3");
-    _tabNew = new WebTab ("Tab5", "Tab 5");
+    _tab0 = new WebTab("Tab0", "Tab 0");
+    _tab1 = new WebTab("Tab1", "Tab 1");
+    _tab2 = new WebTab("Tab2", "Tab 2");
+    _tab3 = new WebTab("Tab3", "Tab 3");
+    _tabNew = new WebTab("Tab5", "Tab 5");
   }
 
   [Test]
-  public void AddTabs()
+  public void AddTabs ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
     _tab1.IsSelected = true;
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab3);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
-    Assert.That (_tabStrip.SelectedTab, Is.Not.Null);
-    Assert.That (_tabStrip.SelectedTab, Is.SameAs (_tab1));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null);
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1));
   }
 
   [Test]
-  public void InsertFirstTab()
+  public void InsertFirstTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab2.IsSelected = true;
 
-    _tabStrip.Tabs.Insert (0, _tabNew);
+    _tabStrip.Tabs.Insert(0, _tabNew);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (5));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(5));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void InsertMiddleTab()
+  public void InsertMiddleTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab2.IsSelected = true;
 
-    _tabStrip.Tabs.Insert (2, _tabNew);
+    _tabStrip.Tabs.Insert(2, _tabNew);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (5));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[2], "Wrong tab at position 2.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(5));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[2], "Wrong tab at position 2.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void InsertLastTab()
+  public void InsertLastTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab2.IsSelected = true;
 
-    _tabStrip.Tabs.Insert (4, _tabNew);
+    _tabStrip.Tabs.Insert(4, _tabNew);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (5));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[4], "Wrong tab at position 4.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(5));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[4], "Wrong tab at position 4.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void ReplaceFirstTab()
+  public void ReplaceFirstTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab2.IsSelected = true;
 
     _tabStrip.Tabs[0] = _tabNew;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void ReplaceMiddleTab()
+  public void ReplaceMiddleTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab3.IsSelected = true;
 
     _tabStrip.Tabs[1] = _tabNew;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[1], "Wrong tab at position 1.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab3, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[1], "Wrong tab at position 1.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab3, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void ReplaceLastTab()
+  public void ReplaceLastTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab0.IsSelected = true;
 
     _tabStrip.Tabs[3] = _tabNew;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[3], "Wrong tab at position 3.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab0, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[3], "Wrong tab at position 3.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab0, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void ReplaceFirstTabWithTabBeingSelected()
+  public void ReplaceFirstTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab0.IsSelected = true;
 
     _tabStrip.Tabs[0] = _tabNew;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void ReplaceMiddleTabWithTabBeingSelected()
+  public void ReplaceMiddleTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab1.IsSelected = true;
 
     _tabStrip.Tabs[1] = _tabNew;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[1], "Wrong tab at position 1.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[1], "Wrong tab at position 1.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void ReplaceLastTabWithTabBeingSelected()
+  public void ReplaceLastTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab3.IsSelected = true;
 
     _tabStrip.Tabs[3] = _tabNew;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[3], "Wrong tab at position 3.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[3], "Wrong tab at position 3.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void ReplaceOnlyTab()
+  public void ReplaceOnlyTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add(_tab0);
     _tab0.IsSelected = true;
 
     _tabStrip.Tabs[0] = _tabNew;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (1));
-    Assert.AreSame (_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
-    Assert.IsNull (_tabStrip.SelectedTab, "Tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(1));
+    Assert.AreSame(_tabNew, _tabStrip.Tabs[0], "Wrong tab at position 0.");
+    Assert.IsNull(_tabStrip.SelectedTab, "Tab selected.");
   }
 
   [Test]
-  public void RemoveFirstTab()
+  public void RemoveFirstTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab2.IsSelected = true;
 
-    _tabStrip.Tabs.RemoveAt (0);
+    _tabStrip.Tabs.RemoveAt(0);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (3));
-    Assert.AreSame (_tab1, _tabStrip.Tabs[0], "Wrong tab at position 0.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
+    Assert.AreSame(_tab1, _tabStrip.Tabs[0], "Wrong tab at position 0.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void RemoveMiddleTab()
+  public void RemoveMiddleTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab3.IsSelected = true;
 
-    _tabStrip.Tabs.RemoveAt (1);
+    _tabStrip.Tabs.RemoveAt(1);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (3));
-    Assert.AreSame (_tab2, _tabStrip.Tabs[1], "Wrong tab at position 1.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab3, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
+    Assert.AreSame(_tab2, _tabStrip.Tabs[1], "Wrong tab at position 1.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab3, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void RemoveLastTab()
+  public void RemoveLastTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab0.IsSelected = true;
 
-    _tabStrip.Tabs.RemoveAt (3);
+    _tabStrip.Tabs.RemoveAt(3);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (3));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
 
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab0, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab0, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void RemoveFirstTabWithTabBeingSelected()
+  public void RemoveFirstTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab0.IsSelected = true;
 
-    _tabStrip.Tabs.RemoveAt (0);
+    _tabStrip.Tabs.RemoveAt(0);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (3));
-    Assert.AreSame (_tab1, _tabStrip.Tabs[0], "Wrong tab at position 0.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
+    Assert.AreSame(_tab1, _tabStrip.Tabs[0], "Wrong tab at position 0.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void RemoveMiddleTabWithTabBeingSelected()
+  public void RemoveMiddleTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab1.IsSelected = true;
 
-    _tabStrip.Tabs.RemoveAt (1);
+    _tabStrip.Tabs.RemoveAt(1);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (3));
-    Assert.AreSame (_tab2, _tabStrip.Tabs[1], "Wrong tab at position 1.");
-    
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
+    Assert.AreSame(_tab2, _tabStrip.Tabs[1], "Wrong tab at position 1.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void RemoveLastTabWithTabBeingSelected()
+  public void RemoveLastTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab3.IsSelected = true;
 
-    _tabStrip.Tabs.RemoveAt (3);
+    _tabStrip.Tabs.RemoveAt(3);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (3));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(3));
 
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void RemoveOnlyTab()
+  public void RemoveOnlyTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add(_tab0);
     _tab0.IsSelected = true;
 
-    _tabStrip.Tabs.RemoveAt (0);
+    _tabStrip.Tabs.RemoveAt(0);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (0));
-    Assert.IsNull (_tabStrip.SelectedTab, "Tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(0));
+    Assert.IsNull(_tabStrip.SelectedTab, "Tab selected.");
   }
 
   [Test]
-  public void ClearTabs()
+  public void ClearTabs ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab2.IsSelected = true;
 
     _tabStrip.Tabs.Clear();
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (0));
-    Assert.IsNull (_tabStrip.SelectedTab, "Tab selected.");
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(0));
+    Assert.IsNull(_tabStrip.SelectedTab, "Tab selected.");
   }
 
   [Test]
-  public void AddFirstTabAsInvisibleTab()
+  public void AddFirstTabAsInvisibleTab ()
   {
     _tab0.IsVisible = false;
-    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add(_tab0);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (1));
-    Assert.That (_tabStrip.SelectedTab, Is.Null);
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(1));
+    Assert.That(_tabStrip.SelectedTab, Is.Null);
   }
 
   [Test]
-  public void AddSecondTabAfterInvisibleTab()
+  public void AddSecondTabAfterInvisibleTab ()
   {
     _tab0.IsVisible = false;
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (2));
-    Assert.That (_tabStrip.SelectedTab, Is.Not.Null);
-    Assert.That (_tabStrip.SelectedTab, Is.SameAs (_tab1));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(2));
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null);
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1));
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidOperationException))]
-  public void SelectInvisibleTab()
+  public void SelectInvisibleTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
     _tab1.IsVisible = false;
-    _tab1.IsSelected = true;
+    Assert.That(
+        () => _tab1.IsSelected = true,
+        Throws.InvalidOperationException);
   }
 
   [Test]
-  public void HideFirstTabWithTabBeingSelected()
+  public void HideFirstTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab0.IsSelected = true;
 
     _tab0.IsVisible = false;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void HideMiddleTabWithTabBeingSelected()
+  public void HideMiddleTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab1.IsSelected = true;
 
     _tab1.IsVisible = false;
-        
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void HideLastTabWithTabBeingSelected()
+  public void HideLastTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab3.IsSelected = true;
 
     _tab3.IsVisible = false;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void AddFirstTabAsDisabledTab()
+  public void AddFirstTabAsDisabledTab ()
   {
     _tab0.IsDisabled = true;
-    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add(_tab0);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (1));
-    Assert.That (_tabStrip.SelectedTab, Is.Null);
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(1));
+    Assert.That(_tabStrip.SelectedTab, Is.Null);
   }
 
   [Test]
-  public void AddSecondTabAfterDisabledTab()
+  public void AddSecondTabAfterDisabledTab ()
   {
     _tab0.IsDisabled = true;
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (2));
-    Assert.That (_tabStrip.SelectedTab, Is.Not.Null);
-    Assert.That (_tabStrip.SelectedTab, Is.SameAs (_tab1));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(2));
+    Assert.That(_tabStrip.SelectedTab, Is.Not.Null);
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1));
   }
 
   [Test]
-  [ExpectedException (typeof (InvalidOperationException))]
-  public void SelectDisabledTab()
+  public void SelectDisabledTab ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
     _tab1.IsDisabled = true;
-    _tab1.IsSelected = true;
+    Assert.That(
+        () => _tab1.IsSelected = true,
+        Throws.InvalidOperationException);
   }
 
   [Test]
-  public void DisableFirstTabWithTabBeingSelected()
+  public void DisableFirstTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab0.IsSelected = true;
 
     _tab0.IsDisabled = true;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void DisableMiddleTabWithTabBeingSelected()
+  public void DisableMiddleTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab1.IsSelected = true;
 
     _tab1.IsDisabled = true;
-        
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
   [Test]
-  public void DisableLastTabWithTabBeingSelected()
+  public void DisableLastTabWithTabBeingSelected ()
   {
-    _tabStrip.Tabs.Add (_tab0);
-    _tabStrip.Tabs.Add (_tab1);
-    _tabStrip.Tabs.Add (_tab2);
-    _tabStrip.Tabs.Add (_tab3);
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
     _tab3.IsSelected = true;
 
     _tab3.IsDisabled = true;
 
-    Assert.That (_tabStrip.Tabs.Count, Is.EqualTo (4));
+    Assert.That(_tabStrip.Tabs.Count, Is.EqualTo(4));
 
-    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
-    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+    Assert.IsNotNull(_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame(_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 }
 }

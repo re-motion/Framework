@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
@@ -36,33 +37,33 @@ namespace Remotion.Data.DomainObjects.Security
   [Serializable]
   public class SecurityClientTransactionExtension : ClientTransactionExtensionBase
   {
-    private static readonly IReadOnlyList<AccessType> s_findAccessType = ImmutableSingleton.Create(AccessType.Get (GeneralAccessTypes.Find));
-    private static readonly IReadOnlyList<AccessType> s_deleteAccessType = ImmutableSingleton.Create(AccessType.Get (GeneralAccessTypes.Delete));
+    private static readonly IReadOnlyList<AccessType> s_findAccessType = ImmutableSingleton.Create(AccessType.Get(GeneralAccessTypes.Find));
+    private static readonly IReadOnlyList<AccessType> s_deleteAccessType = ImmutableSingleton.Create(AccessType.Get(GeneralAccessTypes.Delete));
     private static readonly NullMethodInformation s_nullMethodInformation = new NullMethodInformation();
 
     public static string DefaultKey
     {
-      get { return typeof (SecurityClientTransactionExtension).FullName; }
+      get { return typeof(SecurityClientTransactionExtension).GetFullNameChecked(); }
     }
 
     [NonSerialized]
-    private SecurityClient _securityClient;
+    private SecurityClient? _securityClient;
 
 
     public SecurityClientTransactionExtension ()
-        : this (DefaultKey)
+        : this(DefaultKey)
     {
     }
 
     protected SecurityClientTransactionExtension (string key)
-      : base (key)
+      : base(key)
     {
     }
 
     public override QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("queryResult", queryResult);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("queryResult", queryResult);
 
       if (clientTransaction.ParentTransaction != null)
         return queryResult; // filtering already done in parent transaction
@@ -70,10 +71,10 @@ namespace Remotion.Data.DomainObjects.Security
       if (SecurityFreeSection.IsActive)
         return queryResult;
 
-      var queryResultList = new List<T> (queryResult.AsEnumerable ());
-      var securityClient = GetSecurityClient ();
+      var queryResultList = new List<T?>(queryResult.AsEnumerable());
+      var securityClient = GetSecurityClient();
 
-      using (EnterScopeOnDemand (clientTransaction))
+      using (EnterScopeOnDemand(clientTransaction))
       {
         for (int i = queryResultList.Count - 1; i >= 0; i--)
         {
@@ -81,65 +82,65 @@ namespace Remotion.Data.DomainObjects.Security
           if (securableObject == null)
             continue;
 
-          var hasAccess = securityClient.HasAccess (securableObject, s_findAccessType);
+          var hasAccess = securityClient.HasAccess(securableObject, s_findAccessType);
           if (!hasAccess)
-            queryResultList.RemoveAt (i);
+            queryResultList.RemoveAt(i);
         }
       }
 
       if (queryResultList.Count != queryResult.Count)
-        return new QueryResult<T> (queryResult.Query, queryResultList.ToArray ());
+        return new QueryResult<T>(queryResult.Query, queryResultList.ToArray());
       else
         return queryResult;
     }
 
     public override void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      if (!(typeof (ISecurableObject).IsAssignableFrom (type)))
+      if (!(typeof(ISecurableObject).IsAssignableFrom(type)))
         return;
 
       if (SecurityFreeSection.IsActive)
         return;
 
-      var securityClient = GetSecurityClient ();
-      using (EnterScopeOnDemand (clientTransaction))
+      var securityClient = GetSecurityClient();
+      using (EnterScopeOnDemand(clientTransaction))
       {
-        securityClient.CheckConstructorAccess (type);
+        securityClient.CheckConstructorAccess(type);
       }
     }
 
     public override void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       if (SecurityFreeSection.IsActive)
         return;
 
-      if (domainObject.TransactionContext[clientTransaction].State == StateType.New)
+      if (domainObject.TransactionContext[clientTransaction].State.IsNew)
         return;
 
       var securableObject = domainObject as ISecurableObject;
       if (securableObject == null)
         return;
 
-      var securityClient = GetSecurityClient ();
-      using (EnterScopeOnDemand (clientTransaction))
+      var securityClient = GetSecurityClient();
+      using (EnterScopeOnDemand(clientTransaction))
       {
-        securityClient.CheckAccess (securableObject, s_deleteAccessType);
+        securityClient.CheckAccess(securableObject, s_deleteAccessType);
       }
     }
 
     public override void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      PropertyReading (clientTransaction, domainObject, propertyDefinition.PropertyInfo);
+      PropertyReading(clientTransaction, domainObject, propertyDefinition.PropertyInfo);
     }
 
     public override void RelationReading (
@@ -148,11 +149,14 @@ namespace Remotion.Data.DomainObjects.Security
         IRelationEndPointDefinition relationEndPointDefinition,
         ValueAccess valueAccess)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
-      PropertyReading (clientTransaction, domainObject, relationEndPointDefinition.PropertyInfo);
+      if (relationEndPointDefinition.IsAnonymous)
+        return;
+
+      PropertyReading(clientTransaction, domainObject, relationEndPointDefinition.PropertyInfo);
     }
 
     private void PropertyReading (ClientTransaction clientTransaction, DomainObject domainObject, IPropertyInformation propertyInfo)
@@ -165,42 +169,45 @@ namespace Remotion.Data.DomainObjects.Security
         return;
 
       var securityClient = GetSecurityClient();
-      var methodInformation = propertyInfo.GetGetMethod (true) ?? s_nullMethodInformation;
-      using (EnterScopeOnDemand (clientTransaction))
+      var methodInformation = propertyInfo.GetGetMethod(true) ?? s_nullMethodInformation;
+      using (EnterScopeOnDemand(clientTransaction))
       {
-        securityClient.CheckPropertyReadAccess (securableObject, methodInformation);
+        securityClient.CheckPropertyReadAccess(securableObject, methodInformation);
       }
     }
 
-    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
 
-      PropertyChanging (clientTransaction, domainObject, propertyDefinition.PropertyInfo);
+      PropertyChanging(clientTransaction, domainObject, propertyDefinition.PropertyInfo);
     }
 
     public override void RelationChanging (
         ClientTransaction clientTransaction,
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject)
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
-      PropertyChanging (clientTransaction, domainObject, relationEndPointDefinition.PropertyInfo);
+      if (relationEndPointDefinition.IsAnonymous)
+        return;
+
+      PropertyChanging(clientTransaction, domainObject, relationEndPointDefinition.PropertyInfo);
     }
 
     public override void SubTransactionInitialize (ClientTransaction parentClientTransaction, ClientTransaction subTransaction)
     {
-      ArgumentUtility.CheckNotNull ("parentClientTransaction", parentClientTransaction);
-      ArgumentUtility.CheckNotNull ("subTransaction", subTransaction);
+      ArgumentUtility.CheckNotNull("parentClientTransaction", parentClientTransaction);
+      ArgumentUtility.CheckNotNull("subTransaction", subTransaction);
 
-      TryInstall (subTransaction);
+      TryInstall(subTransaction);
     }
 
     private void PropertyChanging (ClientTransaction clientTransaction, DomainObject domainObject, IPropertyInformation propertyInfo)
@@ -212,22 +219,23 @@ namespace Remotion.Data.DomainObjects.Security
       if (securableObject == null)
         return;
 
-      var securityClient = GetSecurityClient ();
-      var methodInformation = propertyInfo.GetSetMethod (true) ?? s_nullMethodInformation;
-      using (EnterScopeOnDemand (clientTransaction))
+      var securityClient = GetSecurityClient();
+      var methodInformation = propertyInfo.GetSetMethod(true) ?? s_nullMethodInformation;
+      using (EnterScopeOnDemand(clientTransaction))
       {
-        securityClient.CheckPropertyWriteAccess (securableObject, methodInformation);
+        securityClient.CheckPropertyWriteAccess(securableObject, methodInformation);
       }
     }
 
+    [MemberNotNull(nameof(_securityClient))]
     private SecurityClient GetSecurityClient ()
     {
       if (_securityClient == null)
-        _securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+        _securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
       return _securityClient;
     }
 
-    private IDisposable EnterScopeOnDemand (ClientTransaction clientTransaction)
+    private IDisposable? EnterScopeOnDemand (ClientTransaction clientTransaction)
     {
       if (clientTransaction.ActiveTransaction != clientTransaction)
         return clientTransaction.EnterNonDiscardingScope();

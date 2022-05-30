@@ -21,11 +21,19 @@ namespace Remotion.Web
 {
   public class ResourceTheme
   {
-    [ImplementationFor (typeof (ResourceTheme), Lifetime = LifetimeKind.Singleton)]
     public class NovaGray : ResourceTheme
     {
       public NovaGray ()
-        : base ("NovaGray")
+        : base("NovaGray")
+      {
+      }
+    }
+
+    [ImplementationFor(typeof(ResourceTheme), Lifetime = LifetimeKind.Singleton)]
+    public class NovaViso : ResourceTheme
+    {
+      public NovaViso ()
+          : base("NovaViso")
       {
       }
     }

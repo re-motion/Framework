@@ -28,26 +28,26 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   public class PreparingRedirectToSubFunctionState : ExecutionStateBase<PreparingRedirectToSubFunctionStateParameters>
   {
     public PreparingRedirectToSubFunctionState (IExecutionStateContext executionStateContext, PreparingRedirectToSubFunctionStateParameters parameters)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
       if (!Parameters.PermaUrlOptions.UsePermaUrl)
       {
-        throw new ArgumentException (
-            string.Format ("The '{0}' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.", GetType().Name), "parameters");
+        throw new ArgumentException(
+            string.Format("The '{0}' type only supports WxePermaUrlOptions with the UsePermaUrl-flag set to true.", GetType().Name), "parameters");
       }
     }
 
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      string destinationUrl = GetDestinationPermanentUrl (context);
-      string resumeUrl = context.GetResumeUrl (false);
+      string destinationUrl = GetDestinationPermanentUrl(context);
+      string resumeUrl = context.GetResumeUrl(false);
 
-      ExecutionStateContext.SetExecutionState (
-          new RedirectingToSubFunctionState (
+      ExecutionStateContext.SetExecutionState(
+          new RedirectingToSubFunctionState(
               ExecutionStateContext,
-              new RedirectingToSubFunctionStateParameters (Parameters.SubFunction, Parameters.PostBackCollection, destinationUrl, resumeUrl)));
+              new RedirectingToSubFunctionStateParameters(Parameters.SubFunction, Parameters.PostBackCollection, destinationUrl, resumeUrl)));
     }
 
     private string GetDestinationPermanentUrl (WxeContext context)
@@ -58,9 +58,9 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
       else
         urlParameters = Parameters.PermaUrlOptions.UrlParameters.Clone();
 
-      urlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
+      urlParameters.Set(WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
 
-      return context.GetPermanentUrl (Parameters.SubFunction.GetType(), urlParameters, Parameters.PermaUrlOptions.UseParentPermaUrl);
+      return context.GetPermanentUrl(Parameters.SubFunction.GetType(), urlParameters, Parameters.PermaUrlOptions.UseParentPermaUrl);
     }
   }
 }

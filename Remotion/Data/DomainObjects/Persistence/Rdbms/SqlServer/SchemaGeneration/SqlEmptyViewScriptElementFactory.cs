@@ -29,30 +29,30 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected override string GetSelectStatements (EmptyViewDefinition emptyViewDefinition)
     {
-      ArgumentUtility.CheckNotNull ("emptyViewDefinition", emptyViewDefinition);
+      ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
 
-      return string.Format (
+      return string.Format(
             "  SELECT {0}\r\n"
           + "    WHERE 1 = 0",
-            GetNullColumnList (emptyViewDefinition.GetAllColumns()));
+            GetNullColumnList(emptyViewDefinition.GetAllColumns()));
     }
 
     protected override bool UseCheckOption (EmptyViewDefinition emptyViewDefinition)
     {
-      ArgumentUtility.CheckNotNull ("emptyViewDefinition", emptyViewDefinition);
+      ArgumentUtility.CheckNotNull("emptyViewDefinition", emptyViewDefinition);
       return false;
     }
 
     protected override bool UseSchemaBinding (EmptyViewDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
       return false;
     }
 
     private string GetNullColumnList (IEnumerable<ColumnDefinition> columns)
     {
-      ArgumentUtility.CheckNotNull ("columns", columns);
-      return String.Join ((string) ", ", (IEnumerable<string>) columns.Select (cd => "CONVERT(" + cd.StorageTypeInfo.StorageTypeName + ",NULL) AS ["+ cd.Name + "]"));
+      ArgumentUtility.CheckNotNull("columns", columns);
+      return String.Join((string)", ", (IEnumerable<string>)columns.Select(cd => "CONVERT(" + cd.StorageTypeInfo.StorageTypeName + ",NULL) AS ["+ cd.Name + "]"));
     }
   }
 }

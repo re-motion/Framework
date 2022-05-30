@@ -27,178 +27,210 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     [Test]
     public void RollbackPropertyChange ()
     {
-      Customer customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
+      Customer customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       customer.Name = "Arthur Dent";
 
-      Assert.That (customer.State, Is.EqualTo (StateType.Changed));
+      Assert.That(customer.State.IsChanged, Is.True);
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (customer.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (customer.Name, Is.EqualTo ("Kunde 1"));
+      Assert.That(customer.State.IsUnchanged, Is.True);
+      Assert.That(customer.Name, Is.EqualTo("Kunde 1"));
     }
 
     [Test]
     public void RollbackOneToOneRelationChange ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
       OrderTicket oldOrderTicket = order.OrderTicket;
-      OrderTicket newOrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ();
+      OrderTicket newOrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket>();
       Order oldOrderOfNewOrderTicket = newOrderTicket.Order;
 
       order.OrderTicket = newOrderTicket;
       oldOrderOfNewOrderTicket.OrderTicket = oldOrderTicket;
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (order.OrderTicket, Is.SameAs (oldOrderTicket));
-      Assert.That (oldOrderTicket.Order, Is.SameAs (order));
-      Assert.That (oldOrderOfNewOrderTicket.OrderTicket, Is.SameAs (newOrderTicket));
-      Assert.That (newOrderTicket.Order, Is.SameAs (oldOrderOfNewOrderTicket));
+      Assert.That(order.OrderTicket, Is.SameAs(oldOrderTicket));
+      Assert.That(oldOrderTicket.Order, Is.SameAs(order));
+      Assert.That(oldOrderOfNewOrderTicket.OrderTicket, Is.SameAs(newOrderTicket));
+      Assert.That(newOrderTicket.Order, Is.SameAs(oldOrderOfNewOrderTicket));
     }
 
     [Test]
     public void RollbackOneToManyRelationChange ()
     {
-      Customer customer1 = DomainObjectIDs.Customer1.GetObject<Customer> ();
-      Customer customer2 = DomainObjectIDs.Customer2.GetObject<Customer> ();
+      Customer customer1 = DomainObjectIDs.Customer1.GetObject<Customer>();
+      Customer customer2 = DomainObjectIDs.Customer2.GetObject<Customer>();
 
       Order order = customer1.Orders[DomainObjectIDs.Order1];
 
       order.Customer = customer2;
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (customer1.Orders[order.ID], Is.Not.Null);
-      Assert.That (customer2.Orders[order.ID], Is.Null);
-      Assert.That (order.Customer, Is.SameAs (customer1));
+      Assert.That(customer1.Orders[order.ID], Is.Not.Null);
+      Assert.That(customer2.Orders[order.ID], Is.Null);
+      Assert.That(order.Customer, Is.SameAs(customer1));
 
-      Assert.That (customer1.Orders.Count, Is.EqualTo (2));
-      Assert.That (customer2.Orders.Count, Is.EqualTo (0));
+      Assert.That(customer1.Orders.Count, Is.EqualTo(2));
+      Assert.That(customer2.Orders.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void RollbackDeletion ()
     {
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
-      computer.Delete ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
+      computer.Delete();
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Computer computerAfterRollback = DomainObjectIDs.Computer4.GetObject<Computer> ();
-      Assert.That (computerAfterRollback, Is.SameAs (computer));
-      Assert.That (computer.State, Is.EqualTo (StateType.Unchanged));
+      Computer computerAfterRollback = DomainObjectIDs.Computer4.GetObject<Computer>();
+      Assert.That(computerAfterRollback, Is.SameAs(computer));
+      Assert.That(computer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void RollbackDeletionAndPropertyChange ()
     {
-      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer> ();
+      Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
       computer.SerialNumber = "1111111111111";
 
-      Assert.That (computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>(), Is.EqualTo ("63457-kol-34"));
-      Assert.That (computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>(), Is.EqualTo ("1111111111111"));
+      Assert.That(computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>(), Is.EqualTo("63457-kol-34"));
+      Assert.That(computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>(), Is.EqualTo("1111111111111"));
 
-      computer.Delete ();
-      TestableClientTransaction.Rollback ();
+      computer.Delete();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>(), Is.EqualTo ("63457-kol-34"));
-      Assert.That (computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>(), Is.EqualTo ("63457-kol-34"));
-      Assert.That (computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].HasChanged, Is.False);
+      Assert.That(computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetOriginalValue<string>(), Is.EqualTo("63457-kol-34"));
+      Assert.That(computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].GetValue<string>(), Is.EqualTo("63457-kol-34"));
+      Assert.That(computer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"].HasChanged, Is.False);
     }
 
     [Test]
-    public void RollbackDeletionWithRelationChange ()
+    public void RollbackDeletionWithRelationChange_ForDomainObject ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
 
       OrderTicket oldOrderTicket = order.OrderTicket;
-      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjects ("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
       Customer oldCustomer = order.Customer;
       Official oldOfficial = order.Official;
 
-      order.Delete ();
+      order.Delete();
 
-      Assert.That (order.OrderTicket, Is.Null);
-      Assert.That (order.OrderItems.Count, Is.EqualTo (0));
-      Assert.That (order.Customer, Is.Null);
-      Assert.That (order.Official, Is.Null);
+      Assert.That(order.OrderTicket, Is.Null);
+      Assert.That(order.Customer, Is.Null);
+      Assert.That(order.Official, Is.Null);
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (order.OrderTicket, Is.SameAs (oldOrderTicket));
-      Assert.That (order.OrderItems.Count, Is.EqualTo (oldOrderItems.Count));
-      Assert.That (order.OrderItems[DomainObjectIDs.OrderItem1], Is.SameAs (oldOrderItems[DomainObjectIDs.OrderItem1]));
-      Assert.That (order.OrderItems[DomainObjectIDs.OrderItem2], Is.SameAs (oldOrderItems[DomainObjectIDs.OrderItem2]));
-      Assert.That (order.Customer, Is.SameAs (oldCustomer));
-      Assert.That (order.Official, Is.SameAs (oldOfficial));
+      Assert.That(order.OrderTicket, Is.SameAs(oldOrderTicket));
+      Assert.That(order.Customer, Is.SameAs(oldCustomer));
+      Assert.That(order.Official, Is.SameAs(oldOfficial));
     }
 
     [Test]
-    [ExpectedException (typeof (ObjectInvalidException))]
+    public void RollbackDeletionWithRelationChange_ForDomainObjectCollection ()
+    {
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
+
+      DomainObjectCollection oldOrderItems = order.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
+
+      order.Delete();
+
+      Assert.That(order.OrderItems.Count, Is.EqualTo(0));
+
+      TestableClientTransaction.Rollback();
+
+      Assert.That(order.OrderItems.Count, Is.EqualTo(oldOrderItems.Count));
+      Assert.That(order.OrderItems[DomainObjectIDs.OrderItem1], Is.SameAs(oldOrderItems[DomainObjectIDs.OrderItem1]));
+      Assert.That(order.OrderItems[DomainObjectIDs.OrderItem2], Is.SameAs(oldOrderItems[DomainObjectIDs.OrderItem2]));
+    }
+
+    [Test]
+
+    public void RollbackDeletionWithRelationChange_ForVirtualCollection ()
+    {
+      Product product = DomainObjectIDs.Product1.GetObject<Product>();
+
+      var oldProductReviews = product.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
+
+      product.Delete();
+
+      Assert.That(product.Reviews.Count, Is.EqualTo(0));
+
+      TestableClientTransaction.Rollback();
+
+      Assert.That(product.Reviews.Count, Is.EqualTo(oldProductReviews.Count));
+      Assert.That(product.Reviews, Is.EqualTo(oldProductReviews));
+    }
+
+    [Test]
     public void RollbackForNewObject ()
     {
-      Order newOrder = Order.NewObject ();
+      Order newOrder = Order.NewObject();
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      int number = newOrder.OrderNumber;
+      Assert.That(
+          () => newOrder.OrderNumber,
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
     public void RollbackForNewObjectWithRelations ()
     {
-      Order newOrder = Order.NewObject ();
+      Order newOrder = Order.NewObject();
       ObjectID newOrderID = newOrder.ID;
 
-      Order order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      OrderTicket orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
-      Customer customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
+      Order order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      OrderTicket orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
+      Customer customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       OrderItem orderItem1 = DomainObjectIDs.OrderItem1.GetObject<OrderItem>();
 
       newOrder.OrderTicket = orderTicket1;
-      customer.Orders.Add (newOrder);
+      customer.Orders.Add(newOrder);
       orderItem1.Order = newOrder;
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (order1.State, Is.EqualTo (StateType.Unchanged));
-      Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
-      Assert.That (customer.Orders.Contains (newOrderID), Is.False);
-      Assert.That (orderItem1.Order, Is.SameAs (order1));
+      Assert.That(order1.State.IsUnchanged, Is.True);
+      Assert.That(order1.OrderTicket, Is.SameAs(orderTicket1));
+      Assert.That(customer.Orders.Contains(newOrderID), Is.False);
+      Assert.That(orderItem1.Order, Is.SameAs(order1));
     }
 
     [Test]
     public void SetOneToManyRelationForNewObjectAfterRollback ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
-      OrderItem orderItem = OrderItem.NewObject (order);
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
+      OrderItem orderItem = OrderItem.NewObject(order);
       ObjectID orderItemID = orderItem.ID;
 
-      Assert.That (orderItem.Order, Is.SameAs (order));
-      Assert.That (order.OrderItems.Contains (orderItemID), Is.True);
+      Assert.That(orderItem.Order, Is.SameAs(order));
+      Assert.That(order.OrderItems.Contains(orderItemID), Is.True);
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (order.OrderItems.Contains (orderItemID), Is.False);
+      Assert.That(order.OrderItems.Contains(orderItemID), Is.False);
 
-      orderItem = OrderItem.NewObject (order);
+      orderItem = OrderItem.NewObject(order);
 
-      Assert.That (orderItem.Order, Is.SameAs (order));
-      Assert.That (order.OrderItems.ContainsObject (orderItem), Is.True);
+      Assert.That(orderItem.Order, Is.SameAs(order));
+      Assert.That(order.OrderItems.ContainsObject(orderItem), Is.True);
     }
 
     [Test]
     public void DomainObjectCollectionIsSameAfterRollback ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
       DomainObjectCollection orderItems = order.OrderItems;
-      OrderItem orderItem = OrderItem.NewObject (order);
+      OrderItem orderItem = OrderItem.NewObject(order);
 
-      TestableClientTransaction.Rollback ();
+      TestableClientTransaction.Rollback();
 
-      Assert.That (order.OrderItems, Is.SameAs (orderItems));
-      Assert.That (order.OrderItems.IsReadOnly, Is.False);
+      Assert.That(order.OrderItems, Is.SameAs(orderItems));
+      Assert.That(order.OrderItems.IsReadOnly, Is.False);
     }
   }
 }

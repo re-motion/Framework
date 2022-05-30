@@ -26,106 +26,106 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void RollbackResetsPropertyValuesToThoseOfParentTransaction ()
     {
-      Order loadedOrder = DomainObjectIDs.Order1.GetObject<Order> ();
-      Order newOrder = Order.NewObject ();
+      Order loadedOrder = DomainObjectIDs.Order1.GetObject<Order>();
+      Order newOrder = Order.NewObject();
 
       loadedOrder.OrderNumber = 5;
       newOrder.OrderNumber = 7;
 
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         loadedOrder.OrderNumber = 13;
         newOrder.OrderNumber = 47;
 
-        ClientTransactionScope.CurrentTransaction.Rollback ();
+        ClientTransactionScope.CurrentTransaction.Rollback();
 
-        Assert.That (loadedOrder.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (newOrder.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That(loadedOrder.State.IsUnchanged, Is.True);
+        Assert.That(newOrder.State.IsUnchanged, Is.True);
 
-        Assert.That (loadedOrder.OrderNumber, Is.EqualTo (5));
-        Assert.That (newOrder.OrderNumber, Is.EqualTo (7));
+        Assert.That(loadedOrder.OrderNumber, Is.EqualTo(5));
+        Assert.That(newOrder.OrderNumber, Is.EqualTo(7));
       }
 
-      Assert.That (loadedOrder.OrderNumber, Is.EqualTo (5));
-      Assert.That (newOrder.OrderNumber, Is.EqualTo (7));
+      Assert.That(loadedOrder.OrderNumber, Is.EqualTo(5));
+      Assert.That(newOrder.OrderNumber, Is.EqualTo(7));
     }
 
     [Test]
     public void RollbackResetsRelatedObjectsToThoseOfParentTransaction ()
     {
-      Order newOrder = Order.NewObject ();
-      OrderItem orderItem = OrderItem.NewObject ();
-      newOrder.OrderItems.Add (orderItem);
+      Order newOrder = Order.NewObject();
+      OrderItem orderItem = OrderItem.NewObject();
+      newOrder.OrderItems.Add(orderItem);
 
-      Assert.That (newOrder.OrderItems.Count, Is.EqualTo (1));
-      Assert.That (newOrder.OrderItems.ContainsObject (orderItem), Is.True);
+      Assert.That(newOrder.OrderItems.Count, Is.EqualTo(1));
+      Assert.That(newOrder.OrderItems.ContainsObject(orderItem), Is.True);
 
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        newOrder.OrderItems.Clear ();
-        newOrder.OrderItems.Add (OrderItem.NewObject ());
-        newOrder.OrderItems.Add (OrderItem.NewObject ());
+        newOrder.OrderItems.Clear();
+        newOrder.OrderItems.Add(OrderItem.NewObject());
+        newOrder.OrderItems.Add(OrderItem.NewObject());
 
-        Assert.That (newOrder.OrderItems.Count, Is.EqualTo (2));
-        Assert.That (newOrder.OrderItems.ContainsObject (orderItem), Is.False);
+        Assert.That(newOrder.OrderItems.Count, Is.EqualTo(2));
+        Assert.That(newOrder.OrderItems.ContainsObject(orderItem), Is.False);
 
-        ClientTransactionScope.CurrentTransaction.Rollback ();
+        ClientTransactionScope.CurrentTransaction.Rollback();
 
-        Assert.That (newOrder.State, Is.EqualTo (StateType.Unchanged));
+        Assert.That(newOrder.State.IsUnchanged, Is.True);
 
-        Assert.That (newOrder.OrderItems.Count, Is.EqualTo (1));
-        Assert.That (newOrder.OrderItems.ContainsObject (orderItem), Is.True);
+        Assert.That(newOrder.OrderItems.Count, Is.EqualTo(1));
+        Assert.That(newOrder.OrderItems.ContainsObject(orderItem), Is.True);
       }
 
-      Assert.That (newOrder.OrderItems.Count, Is.EqualTo (1));
-      Assert.That (newOrder.OrderItems.ContainsObject (orderItem), Is.True);
+      Assert.That(newOrder.OrderItems.Count, Is.EqualTo(1));
+      Assert.That(newOrder.OrderItems.ContainsObject(orderItem), Is.True);
     }
 
     [Test]
     public void RollbackResetsRelatedObjectToThatOfParentTransaction ()
     {
-      Computer computer = DomainObjectIDs.Computer1.GetObject<Computer> ();
+      Computer computer = DomainObjectIDs.Computer1.GetObject<Computer>();
       Employee employee = computer.Employee;
-      Location location = Location.NewObject ();
-      Client client = Client.NewObject ();
+      Location location = Location.NewObject();
+      Client client = Client.NewObject();
       location.Client = client;
 
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        computer.Employee = Employee.NewObject ();
+        computer.Employee = Employee.NewObject();
         location.Client = null;
-        Assert.That (employee.Computer, Is.Null);
+        Assert.That(employee.Computer, Is.Null);
 
-        ClientTransactionScope.CurrentTransaction.Rollback ();
+        ClientTransactionScope.CurrentTransaction.Rollback();
 
-        Assert.That (computer.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (employee.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (location.State, Is.EqualTo (StateType.Unchanged));
-        Assert.That (client.State, Is.EqualTo (StateType.NotLoadedYet));
+        Assert.That(computer.State.IsUnchanged, Is.True);
+        Assert.That(employee.State.IsUnchanged, Is.True);
+        Assert.That(location.State.IsUnchanged, Is.True);
+        Assert.That(client.State.IsNotLoadedYet, Is.True);
 
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (location.Client, Is.SameAs (client));
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(location.Client, Is.SameAs(client));
       }
 
-      Assert.That (computer.Employee, Is.SameAs (employee));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (location.Client, Is.SameAs (client));
+      Assert.That(computer.Employee, Is.SameAs(employee));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(location.Client, Is.SameAs(client));
     }
 
     [Test]
     public void SubCommitDoesNotRollbackParent ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
       order.OrderNumber = 5;
-      using (TestableClientTransaction.CreateSubTransaction ().EnterDiscardingScope ())
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         order.OrderNumber = 3;
-        ClientTransactionScope.CurrentTransaction.Rollback ();
+        ClientTransactionScope.CurrentTransaction.Rollback();
       }
-      Assert.That (order.OrderNumber, Is.EqualTo (5));
-      TestableClientTransaction.Rollback ();
-      Assert.That (order.OrderNumber, Is.EqualTo (1));
+      Assert.That(order.OrderNumber, Is.EqualTo(5));
+      TestableClientTransaction.Rollback();
+      Assert.That(order.OrderNumber, Is.EqualTo(1));
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocListHeaderRow<TList, TRow, TCell> : ISelfResolvable
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
@@ -41,8 +41,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
 
       _fluentList = fluentList;
       _fluentElement = fluentElement;
@@ -70,7 +70,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
 
     public ScreenshotBocListFluentHeaderCellSelector<TList, TRow, TCell> GetCellSelector ()
     {
-      return new ScreenshotBocListFluentHeaderCellSelector<TList, TRow, TCell> (_fluentList, _fluentElement);
+      return new ScreenshotBocListFluentHeaderCellSelector<TList, TRow, TCell>(_fluentList, _fluentElement);
     }
 
     /// <inheritdoc />
@@ -82,9 +82,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return _fluentElement.ResolveDesktopCoordinates (locator);
+      return _fluentElement.ResolveDesktopCoordinates(locator);
     }
   }
 }

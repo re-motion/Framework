@@ -24,6 +24,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
   /// Resolves <see cref="IFluentScreenshotElement{T}"/>s for screenshot annotations.
   /// </summary>
   public class FluentResolver<T> : IScreenshotElementResolver<IFluentScreenshotElement<T>>
+      where T : notnull
   {
     /// <summary>
     /// Singleton instance of <see cref="FluentResolver{T}"/>.
@@ -37,7 +38,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveBrowserCoordinates (IFluentScreenshotElement<T> target)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
+      ArgumentUtility.CheckNotNull("target", target);
 
       return target.ResolveBrowserCoordinates();
     }
@@ -45,10 +46,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Resolvers
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IFluentScreenshotElement<T> target, IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return target.ResolveDesktopCoordinates (locator);
+      return target.ResolveDesktopCoordinates(locator);
     }
   }
 }

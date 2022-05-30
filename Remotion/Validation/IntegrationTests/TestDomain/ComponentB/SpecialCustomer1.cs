@@ -15,20 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
 using Remotion.Globalization;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentB
 {
-  [MultiLingualResources ("Remotion.Validation.IntegrationTests.TestDomain.Resources.SpecialCustomer")]
+  [MultiLingualResources("Remotion.Validation.IntegrationTests.TestDomain.Resources.SpecialCustomer")]
   public class SpecialCustomer1 : Customer
   {
     public override string LastName { get; set; }
 
-    [Length (0, 10)]
-    [RemoveValidator (typeof (LengthValidator))]
+    [LengthValidation(0, 10)]
+    [RemoveValidator(typeof(LengthValidator))]
     public override string UserName { get; set; }
   }
 }

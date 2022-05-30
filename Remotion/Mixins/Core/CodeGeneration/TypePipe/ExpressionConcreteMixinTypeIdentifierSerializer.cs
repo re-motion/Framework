@@ -32,13 +32,13 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   public class ExpressionConcreteMixinTypeIdentifierSerializer : ConcreteMixinTypeIdentifierSerializerBase
   {
     private static readonly ConstructorInfo s_constructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new ConcreteMixinTypeIdentifier (null, null, null));
+        MemberInfoFromExpressionUtility.GetConstructor(() => new ConcreteMixinTypeIdentifier(null!, null!, null!));
 
     private static readonly ConstructorInfo s_hashSetConstructor =
-        MemberInfoFromExpressionUtility.GetConstructor (() => new HashSet<MethodInfo> (new MethodInfo[0]));
+        MemberInfoFromExpressionUtility.GetConstructor(() => new HashSet<MethodInfo>(new MethodInfo[0]));
 
     private static readonly MethodInfo s_resolveMethodMethod =
-        MemberInfoFromExpressionUtility.GetMethod (() => MethodResolver.ResolveMethod (null, null, null));
+        MemberInfoFromExpressionUtility.GetMethod(() => MethodResolver.ResolveMethod(null!, null!, null!));
 
     public Expression CreateExpression ()
     {
@@ -57,20 +57,20 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
       //      Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overriders)),
       //      Expression.New (s_hashSetConstructor, Expression.ArrayConstant (Overridden)));
 
-      return Expression.New (
+      return Expression.New(
           s_constructor,
-          Expression.Constant (MixinType),
-          Expression.New (s_hashSetConstructor, Expression.NewArrayInit (typeof (MethodInfo), Overriders.Select (GetResolveMethodExpression))),
-          Expression.New (s_hashSetConstructor, Expression.NewArrayInit (typeof (MethodInfo), Overridden.Select (GetResolveMethodExpression))));
+          Expression.Constant(MixinType),
+          Expression.New(s_hashSetConstructor, Expression.NewArrayInit(typeof(MethodInfo), Overriders!.Select(GetResolveMethodExpression))), // TODO RM-7691 Change serializer properties to non-nullable return values
+          Expression.New(s_hashSetConstructor, Expression.NewArrayInit(typeof(MethodInfo), Overridden!.Select(GetResolveMethodExpression)))); // TODO RM-7691 Change serializer properties to non-nullable return values
     }
 
     private Expression GetResolveMethodExpression (MethodInfo methodInfo)
     {
-      return Expression.Call (
+      return Expression.Call(
           s_resolveMethodMethod,
-          Expression.Constant (methodInfo.DeclaringType),
-          Expression.Constant (methodInfo.Name),
-          Expression.Constant (methodInfo.ToString ()));
+          Expression.Constant(methodInfo.DeclaringType),
+          Expression.Constant(methodInfo.Name),
+          Expression.Constant(methodInfo.ToString()));
     }
   }
 }

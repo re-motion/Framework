@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
+using Remotion.Reflection;
 using Remotion.TypePipe.Dlr.Ast;
 using Remotion.Utilities;
 
@@ -28,36 +29,36 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class CodeGenerationMixinContextOriginSerializer : IMixinContextOriginSerializer
   {
-    private static readonly ConstructorInfo s_constructor = 
-        typeof (MixinContextOrigin).GetConstructor (new[] {typeof (string), typeof (Assembly), typeof (string)});
-    private static readonly MethodInfo s_assemblyLoadMethod = typeof (Assembly).GetMethod ("Load", new[] { typeof (string) });
-    
+    private static readonly ConstructorInfo s_constructor =
+        typeof(MixinContextOrigin).GetConstructor(new[] {typeof(string), typeof(Assembly), typeof(string)})!;
+    private static readonly MethodInfo s_assemblyLoadMethod = typeof(Assembly).GetMethod("Load", new[] { typeof(string) })!;
+
     private readonly Expression[] _constructorArguments = new Expression[3];
 
     public Expression GetConstructorInvocationExpression ()
     {
-      Assertion.IsNotNull (s_constructor);
-      return Expression.New (s_constructor, _constructorArguments);
+      Assertion.IsNotNull(s_constructor);
+      return Expression.New(s_constructor, _constructorArguments);
     }
 
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("kind", kind);
+      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
 
-      _constructorArguments[0] = Expression.Constant (kind);
+      _constructorArguments[0] = Expression.Constant(kind);
     }
 
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
 
-      Assertion.IsNotNull (s_assemblyLoadMethod);
-      _constructorArguments[1] = Expression.Call (null, s_assemblyLoadMethod, new[] { Expression.Constant (assembly.FullName) });
+      Assertion.IsNotNull(s_assemblyLoadMethod);
+      _constructorArguments[1] = Expression.Call(null, s_assemblyLoadMethod, new[] { Expression.Constant(assembly.GetFullNameChecked()) });
     }
 
     public void AddLocation (string location)
     {
-      _constructorArguments[2] = Expression.Constant (location);
+      _constructorArguments[2] = Expression.Constant(location);
     }
   }
 }

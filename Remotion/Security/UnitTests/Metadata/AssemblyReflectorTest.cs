@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
@@ -34,10 +34,9 @@ namespace Remotion.Security.UnitTests.Metadata
 
     // member fields
 
-    private MockRepository _mocks;
-    private IClassReflector _classReflectorMock;
-    private IAbstractRoleReflector _abstractRoleReflectorMock;
-    private IAccessTypeReflector _accessTypeReflectorMock;
+    private Mock<IClassReflector> _classReflectorMock;
+    private Mock<IAbstractRoleReflector> _abstractRoleReflectorMock;
+    private Mock<IAccessTypeReflector> _accessTypeReflectorMock;
     private AssemblyReflector _assemblyReflector;
     private MetadataCache _cache;
 
@@ -52,45 +51,48 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _accessTypeReflectorMock = _mocks.StrictMock<IAccessTypeReflector> ();
-      _classReflectorMock = _mocks.StrictMock<IClassReflector> ();
-      _abstractRoleReflectorMock = _mocks.StrictMock<IAbstractRoleReflector> ();
-      _assemblyReflector = new AssemblyReflector (_accessTypeReflectorMock, _classReflectorMock, _abstractRoleReflectorMock);
-      _cache = new MetadataCache ();
+      _accessTypeReflectorMock = new Mock<IAccessTypeReflector>(MockBehavior.Strict);
+      _classReflectorMock = new Mock<IClassReflector>(MockBehavior.Strict);
+      _abstractRoleReflectorMock = new Mock<IAbstractRoleReflector>(MockBehavior.Strict);
+      _assemblyReflector = new AssemblyReflector(_accessTypeReflectorMock.Object, _classReflectorMock.Object, _abstractRoleReflectorMock.Object);
+      _cache = new MetadataCache();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (_assemblyReflector.ClassReflector, Is.SameAs (_classReflectorMock));
-      Assert.That (_assemblyReflector.AccessTypeReflector, Is.SameAs (_accessTypeReflectorMock));
-      Assert.That (_assemblyReflector.AbstractRoleReflector, Is.SameAs (_abstractRoleReflectorMock));
+      Assert.That(_assemblyReflector.ClassReflector, Is.SameAs(_classReflectorMock.Object));
+      Assert.That(_assemblyReflector.AccessTypeReflector, Is.SameAs(_accessTypeReflectorMock.Object));
+      Assert.That(_assemblyReflector.AbstractRoleReflector, Is.SameAs(_abstractRoleReflectorMock.Object));
     }
 
     [Test]
     public void GetMetadata ()
     {
-      Assembly securityAssembly = typeof (IAccessTypeReflector).Assembly;
-      Assembly assembly = typeof (File).Assembly;
+      Assembly securityAssembly = typeof(IAccessTypeReflector).Assembly;
+      Assembly assembly = typeof(File).Assembly;
 
-      Expect
-          .Call (_accessTypeReflectorMock.GetAccessTypesFromAssembly(securityAssembly, _cache))
-          .Return (new List<EnumValueInfo> (new EnumValueInfo[] {AccessTypes.Read, AccessTypes.Write}));
-      Expect
-        .Call (_accessTypeReflectorMock.GetAccessTypesFromAssembly (assembly, _cache))
-        .Return (new List<EnumValueInfo> (new EnumValueInfo[] { AccessTypes.Journalize, AccessTypes.Archive }));
-      Expect.Call (_abstractRoleReflectorMock.GetAbstractRoles (securityAssembly, _cache)).Return (new List<EnumValueInfo> ());
-      Expect
-          .Call (_abstractRoleReflectorMock.GetAbstractRoles (assembly, _cache))
-          .Return (new List<EnumValueInfo> (new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator }));
-      Expect.Call (_classReflectorMock.GetMetadata (typeof (File), _cache)).Return (new SecurableClassInfo());
-      Expect.Call (_classReflectorMock.GetMetadata (typeof (PaperFile), _cache)).Return (new SecurableClassInfo ());
-      _mocks.ReplayAll ();
+      _accessTypeReflectorMock
+          .Setup(_ => _.GetAccessTypesFromAssembly(securityAssembly, _cache))
+          .Returns(new List<EnumValueInfo>(new EnumValueInfo[] {AccessTypes.Read, AccessTypes.Write}))
+          .Verifiable();
+      _accessTypeReflectorMock
+        .Setup(_ => _.GetAccessTypesFromAssembly(assembly, _cache))
+        .Returns(new List<EnumValueInfo>(new EnumValueInfo[] { AccessTypes.Journalize, AccessTypes.Archive }))
+        .Verifiable();
+      _abstractRoleReflectorMock.Setup(_ => _.GetAbstractRoles(securityAssembly, _cache)).Returns(new List<EnumValueInfo>()).Verifiable();
+      _abstractRoleReflectorMock
+          .Setup(_ => _.GetAbstractRoles(assembly, _cache))
+          .Returns(new List<EnumValueInfo>(new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator }))
+          .Verifiable();
+      _classReflectorMock.Setup(_ => _.GetMetadata(typeof(File), _cache)).Returns(new SecurableClassInfo()).Verifiable();
+      _classReflectorMock.Setup(_ => _.GetMetadata(typeof(PaperFile), _cache)).Returns(new SecurableClassInfo()).Verifiable();
 
-      _assemblyReflector.GetMetadata (assembly, _cache);
+      _assemblyReflector.GetMetadata(assembly, _cache);
 
-      _mocks.VerifyAll ();
+      _accessTypeReflectorMock.Verify();
+      _classReflectorMock.Verify();
+      _abstractRoleReflectorMock.Verify();
     }
   }
 }

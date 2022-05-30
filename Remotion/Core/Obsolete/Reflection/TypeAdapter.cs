@@ -20,8 +20,8 @@ using System.Reflection;
 
 namespace Remotion.Reflection
 {
-  [Obsolete ("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
-  [TypeConverter (typeof (TypeAdapterConverter))]
+  [Obsolete("Dummy declaration for DependDB. Moved to Remotion.Reflection.dll", true)]
+  [TypeConverter(typeof(TypeAdapterConverter))]
   internal sealed class TypeAdapter : ITypeInformation
   {
     public static TypeAdapter Create (Type type)

@@ -20,6 +20,6 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.DependencySorting.TestDomai
 {
   public class MixinWithAdditionalDependency // add additional dependency via imperative config
   {
-    
+
   }
 }

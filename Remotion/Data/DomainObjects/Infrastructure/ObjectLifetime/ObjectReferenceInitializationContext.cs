@@ -29,19 +29,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     private readonly ClientTransaction _rootTransaction;
     private readonly IEnlistedDomainObjectManager _enlistedDomainObjectManager;
 
-    private DomainObject _registeredObject;
+    private DomainObject? _registeredObject;
 
     public ObjectReferenceInitializationContext (
         ObjectID objectID,
         ClientTransaction rootTransaction,
         IEnlistedDomainObjectManager enlistedDomainObjectManager)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      ArgumentUtility.CheckNotNull ("rootTransaction", rootTransaction);
-      ArgumentUtility.CheckNotNull ("enlistedDomainObjectManager", enlistedDomainObjectManager);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull("rootTransaction", rootTransaction);
+      ArgumentUtility.CheckNotNull("enlistedDomainObjectManager", enlistedDomainObjectManager);
 
       if (rootTransaction != rootTransaction.RootTransaction)
-        throw new ArgumentException ("The rootTransaction parameter must be passed a root transaction.", "rootTransaction");
+        throw new ArgumentException("The rootTransaction parameter must be passed a root transaction.", "rootTransaction");
 
       _objectID = objectID;
       _rootTransaction = rootTransaction;
@@ -63,22 +63,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
       get { return _enlistedDomainObjectManager; }
     }
 
-    public DomainObject RegisteredObject
+    public DomainObject? RegisteredObject
     {
       get { return _registeredObject; }
     }
 
     public virtual void RegisterObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       if (domainObject.ID != _objectID)
-        throw new ArgumentException (string.Format ("The given DomainObject must have ID '{0}'.", _objectID), "domainObject");
+        throw new ArgumentException(string.Format("The given DomainObject must have ID '{0}'.", _objectID), "domainObject");
 
       if (_registeredObject != null)
-        throw new InvalidOperationException ("Only one object can be registered using this context.");
+        throw new InvalidOperationException("Only one object can be registered using this context.");
 
-      _enlistedDomainObjectManager.EnlistDomainObject (domainObject);
+      _enlistedDomainObjectManager.EnlistDomainObject(domainObject);
       _registeredObject = domainObject;
     }
   }

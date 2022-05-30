@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Validation.Attributes;
@@ -24,7 +25,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements <see cref="IValidatedTypeResolver"/> and resolves the validated Type via the <see cref="ApplyWithClassAttribute"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidatedTypeResolver), Position = 1, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(IValidatedTypeResolver), Position = 1, RegistrationType = RegistrationType.Decorator)]
   public class ClassTypeAwareValidatedTypeResolverDecorator : IValidatedTypeResolver
   {
     private readonly IValidatedTypeResolver _resolver;
@@ -32,9 +33,9 @@ namespace Remotion.Validation.Implementation
 
     public ClassTypeAwareValidatedTypeResolverDecorator (IValidatedTypeResolver resolver)
     {
-      ArgumentUtility.CheckNotNull ("resolver", resolver);
+      ArgumentUtility.CheckNotNull("resolver", resolver);
 
-      _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator (new NullValidatedTypeResolver());
+      _genericResolver = new GenericTypeAwareValidatedTypeResolverDecorator(new NullValidatedTypeResolver());
       _resolver = resolver;
     }
 
@@ -43,32 +44,32 @@ namespace Remotion.Validation.Implementation
       get { return _resolver; }
     }
 
-    public Type GetValidatedType (Type collectorType)
+    public Type? GetValidatedType (Type collectorType)
     {
-      ArgumentUtility.CheckNotNull ("collectorType", collectorType);
+      ArgumentUtility.CheckNotNull("collectorType", collectorType);
 
-      var attribute = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute> (collectorType, false);
+      var attribute = AttributeUtility.GetCustomAttribute<ApplyWithClassAttribute>(collectorType, false);
       if (attribute == null)
-        return _resolver.GetValidatedType (collectorType);
+        return _resolver.GetValidatedType(collectorType);
 
       var validatedType = attribute.ClassType;
-      var validatedTypefromGeneric = _genericResolver.GetValidatedType (collectorType);
+      var validatedTypefromGeneric = _genericResolver.GetValidatedType(collectorType);
       if (validatedTypefromGeneric != null)
-        CheckValidatedTypeAssignableFromDefinedType (collectorType, validatedTypefromGeneric, validatedType);
+        CheckValidatedTypeAssignableFromDefinedType(collectorType, validatedTypefromGeneric, validatedType);
       return validatedType;
     }
 
     private void CheckValidatedTypeAssignableFromDefinedType (Type collectorType, Type validatedType, Type classOrMixinType)
     {
-      if (!validatedType.IsAssignableFrom (classOrMixinType))
+      if (!validatedType.IsAssignableFrom(classOrMixinType))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Invalid '{0}'-definition for collector '{1}': type '{2}' is not assignable from '{3}'.",
-                typeof (ApplyWithClassAttribute).Name,
-                collectorType.FullName,
-                validatedType.FullName,
-                classOrMixinType.FullName));
+                typeof(ApplyWithClassAttribute).Name,
+                collectorType.GetFullNameSafe(),
+                validatedType.GetFullNameSafe(),
+                classOrMixinType.GetFullNameSafe()));
       }
     }
   }

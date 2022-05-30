@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Validation
   /// Implementation of the <see cref="IClientTransactionExtensionFactory"/> interface. 
   /// Registers the <see cref="CommitValidationClientTransactionExtension"/> for root <see cref="ClientTransaction"/>s.
   /// </summary>
-  [ImplementationFor (typeof(IClientTransactionExtensionFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IClientTransactionExtensionFactory), Position = Position, Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class CommitValidationClientTransactionExtensionFactory : IClientTransactionExtensionFactory
   {
     private readonly IPersistableDataValidator _persistableDataValidator;
@@ -33,17 +33,17 @@ namespace Remotion.Data.DomainObjects.Validation
 
     public CommitValidationClientTransactionExtensionFactory (IPersistableDataValidator persistableDataValidator)
     {
-      ArgumentUtility.CheckNotNull ("persistableDataValidator", persistableDataValidator);
-      
+      ArgumentUtility.CheckNotNull("persistableDataValidator", persistableDataValidator);
+
       _persistableDataValidator = persistableDataValidator;
     }
 
     public IEnumerable<IClientTransactionExtension> CreateClientTransactionExtensions (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       if (clientTransaction.RootTransaction == clientTransaction)
-        yield return new CommitValidationClientTransactionExtension (_persistableDataValidator);
+        yield return new CommitValidationClientTransactionExtension(_persistableDataValidator);
     }
   }
 }

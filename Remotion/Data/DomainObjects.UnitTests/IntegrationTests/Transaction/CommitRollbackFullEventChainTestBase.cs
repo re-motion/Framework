@@ -18,96 +18,57 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.RhinoMocks.UnitTesting;
 using Remotion.FunctionalProgramming;
-using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
   public class CommitRollbackFullEventChainTestBase : StandardMappingTest
   {
-    protected struct AllMethodOptions
-    {
-      private readonly IMethodOptions<RhinoMocksExtensions.VoidType> _extensionOptions;
-      private readonly IMethodOptions<RhinoMocksExtensions.VoidType> _transactionOptions;
-      private readonly IMethodOptions<RhinoMocksExtensions.VoidType>[] _domainObjectOptions;
-
-      public AllMethodOptions (
-          IMethodOptions<RhinoMocksExtensions.VoidType> extensionOptions,
-          IMethodOptions<RhinoMocksExtensions.VoidType> transactionOptions,
-          IMethodOptions<RhinoMocksExtensions.VoidType>[] domainObjectOptions)
-      {
-        _extensionOptions = extensionOptions;
-        _transactionOptions = transactionOptions;
-        _domainObjectOptions = domainObjectOptions;
-      }
-
-      public IMethodOptions<RhinoMocksExtensions.VoidType> ExtensionOptions
-      {
-        get { return _extensionOptions; }
-      }
-
-      public IMethodOptions<RhinoMocksExtensions.VoidType> TransactionOptions
-      {
-        get { return _transactionOptions; }
-      }
-
-      public IMethodOptions<RhinoMocksExtensions.VoidType>[] DomainObjectOptions
-      {
-        get { return _domainObjectOptions; }
-      }
-    }
-
     private ClientTransaction _transaction;
-    
+
     private DomainObject _unchangedObject;
     private DomainObject _changedObject;
     private DomainObject _newObject;
     private DomainObject _deletedObject;
-    
-    private MockRepository _mockRepository;
-    
-    private IClientTransactionListener _listenerMock;
-    private IClientTransactionExtension _extensionMock;
-    private ClientTransactionMockEventReceiver _transactionMockEventReceiver;
-    private DomainObjectMockEventReceiver _changedObjectEventReceiverMock;
-    private DomainObjectMockEventReceiver _newObjectEventReceiverMock;
-    private DomainObjectMockEventReceiver _deletedObjectEventReceiverMock;
-    private DomainObjectMockEventReceiver _unchangedObjectEventReceiverMock;
+
+    private Mock<IClientTransactionListener> _listenerMock;
+    private Mock<ClientTransactionExtensionBase> _extensionMock;
+    private Mock<IClientTransactionMockEventReceiver> _transactionMockEventReceiver;
+    private Mock<IDomainObjectMockEventReceiver> _changedObjectEventReceiverMock;
+    private Mock<IDomainObjectMockEventReceiver> _newObjectEventReceiverMock;
+    private Mock<IDomainObjectMockEventReceiver> _deletedObjectEventReceiverMock;
+    private Mock<IDomainObjectMockEventReceiver> _unchangedObjectEventReceiverMock;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _transaction = ClientTransaction.CreateRootTransaction().CreateSubTransaction();
 
-      _unchangedObject = GetUnchangedObject ();
-      _changedObject = GetChangedObject ();
-      _newObject = GetNewObject ();
-      _deletedObject = GetDeletedObject ();
-
-      _mockRepository = new MockRepository ();
+      _unchangedObject = GetUnchangedObject();
+      _changedObject = GetChangedObject();
+      _newObject = GetNewObject();
+      _deletedObject = GetDeletedObject();
 
       // Listener is a dynamic mock so that we don't have to expect all the internal events of committing
-      _listenerMock = _mockRepository.DynamicMock<IClientTransactionListener> ();
-      _extensionMock = _mockRepository.StrictMock<ClientTransactionExtensionBase> ("test");
-      _transactionMockEventReceiver = _mockRepository.StrictMock<ClientTransactionMockEventReceiver> (_transaction);
+      _listenerMock = new Mock<IClientTransactionListener>();
+      _extensionMock = new Mock<ClientTransactionExtensionBase>(MockBehavior.Strict, "test");
+      _transactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _transaction);
 
-      _changedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_changedObject);
-      _newObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_newObject);
-      _deletedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_deletedObject);
-      _unchangedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver (_unchangedObject);
+      _changedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver(_changedObject);
+      _newObjectEventReceiverMock = CreateDomainObjectMockEventReceiver(_newObject);
+      _deletedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver(_deletedObject);
+      _unchangedObjectEventReceiverMock = CreateDomainObjectMockEventReceiver(_unchangedObject);
 
-      ClientTransactionTestHelper.AddListener (_transaction, _listenerMock);
-      _transaction.Extensions.Add (_extensionMock);
+      ClientTransactionTestHelper.AddListener(_transaction, _listenerMock.Object);
+      _transaction.Extensions.Add(_extensionMock.Object);
     }
 
     public ClientTransaction Transaction
@@ -135,205 +96,270 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       get { return _deletedObject; }
     }
 
-    public MockRepository MockRepository
-    {
-      get { return _mockRepository; }
-    }
-
-    public IClientTransactionListener ListenerMock
+    public Mock<IClientTransactionListener> ListenerMock
     {
       get { return _listenerMock; }
     }
 
-    public IClientTransactionExtension ExtensionMock
+    public Mock<ClientTransactionExtensionBase> ExtensionMock
     {
       get { return _extensionMock; }
     }
 
-    public ClientTransactionMockEventReceiver TransactionMockEventReceiver
+    public Mock<IClientTransactionMockEventReceiver> TransactionMockEventReceiver
     {
       get { return _transactionMockEventReceiver; }
     }
 
-    public DomainObjectMockEventReceiver ChangedObjectEventReceiverMock
+    public Mock<IDomainObjectMockEventReceiver> ChangedObjectEventReceiverMock
     {
       get { return _changedObjectEventReceiverMock; }
     }
 
-    public DomainObjectMockEventReceiver NewObjectEventReceiverMock
+    public Mock<IDomainObjectMockEventReceiver> NewObjectEventReceiverMock
     {
       get { return _newObjectEventReceiverMock; }
     }
 
-    public DomainObjectMockEventReceiver DeletedObjectEventReceiverMock
+    public Mock<IDomainObjectMockEventReceiver> DeletedObjectEventReceiverMock
     {
       get { return _deletedObjectEventReceiverMock; }
     }
 
-    public DomainObjectMockEventReceiver UnchangedObjectEventReceiverMock
+    public Mock<IDomainObjectMockEventReceiver> UnchangedObjectEventReceiverMock
     {
       get { return _unchangedObjectEventReceiverMock; }
     }
 
-    protected void ExpectCommittingEvents (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
+    protected void VerifyAll ()
     {
-      var methodOptions = ExpectCommittingEventsWithCustomOptions (domainObjectsAndMocks);
-
-      methodOptions.TransactionOptions.WithCurrentTransaction (_transaction);
-      
-      foreach (var domainObjectOption in methodOptions.DomainObjectOptions)
-        domainObjectOption.WithCurrentTransaction (_transaction);
+      ListenerMock.Verify();
+      ExtensionMock.Verify();
+      ChangedObjectEventReceiverMock.Verify();
+      NewObjectEventReceiverMock.Verify();
+      UnchangedObjectEventReceiverMock.Verify();
+      DeletedObjectEventReceiverMock.Verify();
     }
 
-    protected AllMethodOptions ExpectCommittingEventsWithCustomOptions (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
+    protected void ExpectCommittingEvents (
+        MockSequence sequence,
+        (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
+        Action<IInvocation> extensionCallback = null,
+        Action<IInvocation> transactionCallback = null)
     {
-      using (_mockRepository.Ordered ())
-      {
-        var domainObjects = domainObjectsAndMocks.Select (t => t.Item1).ToArray ();
-        ListenerMock
-            .Expect (mock => mock.TransactionCommitting (Arg.Is (_transaction), ArgIsDomainObjectSet (domainObjects), Arg<CommittingEventRegistrar>.Is.TypeOf));
-        var extensionOptions = ExtensionMock
-            .Expect (mock => mock.Committing (Arg.Is (_transaction), ArgIsDomainObjectSet (domainObjects), Arg<CommittingEventRegistrar>.Is.TypeOf));
-        var transactionOptions = TransactionMockEventReceiver.Expect (mock => mock.Committing (domainObjects));
+      var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
 
-        IMethodOptions<RhinoMocksExtensions.VoidType>[] domainObjectOptions;
-        using (_mockRepository.Unordered ())
-        {
-          domainObjectOptions = domainObjectsAndMocks.Select (t => t.Item2.Expect (mock => mock.Committing ())).ToArray();
-        }
-        return new AllMethodOptions(extensionOptions, transactionOptions, domainObjectOptions);
+      ListenerMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.TransactionCommitting(
+                  _transaction,
+                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
+                  It.IsNotNull<CommittingEventRegistrar>()))
+          .Verifiable();
+
+      ExtensionMock
+          .InSequence(sequence)
+          .Setup(
+              mock => mock.Committing(
+                  _transaction,
+                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
+                  It.IsNotNull<CommittingEventRegistrar>()))
+          .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
+          .Verifiable();
+
+      TransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupCommitting(_transaction, domainObjects)
+          .Callback(
+              (IInvocation invocation) =>
+              {
+                Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                transactionCallback?.Invoke(invocation);
+              })
+          .Verifiable();
+
+
+      foreach (var (_, mock, callback) in domainObjectsAndMocks)
+      {
+        mock
+            .Setup(_ => _.Committing(It.IsAny<object>(), It.IsAny<DomainObjectCommittingEventArgs>()))
+            .Callback(
+                (IInvocation invocation) =>
+                {
+                  Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                  callback?.Invoke(invocation);
+                })
+            .Verifiable();
       }
     }
 
-    protected void ExpectCommittedEvents (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
+    protected void ExpectCommittedEvents (
+        MockSequence sequence,
+        (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
+        Action<IInvocation> extensionCallback = null,
+        Action<IInvocation> transactionCallback = null)
     {
-      var methodOptions = ExpectCommittedEventsWithCustomOptions (domainObjectsAndMocks);
+      foreach (var (_, mock, callback) in domainObjectsAndMocks)
+      {
+        mock
+            .Setup(_ => _.Committed(It.IsAny<object>(), It.IsAny<EventArgs>()))
+            .Callback(
+                (IInvocation invocation) =>
+                {
+                  Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                  callback?.Invoke(invocation);
+                })
+            .Verifiable();
+      }
 
-      methodOptions.TransactionOptions.WithCurrentTransaction (_transaction);
+      var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
+      TransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupCommitted(_transaction, domainObjects)
+          .Callback(
+              (IInvocation invocation) =>
+              {
+                Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                transactionCallback?.Invoke(invocation);
+              })
+          .Verifiable();
 
-      foreach (var domainObjectOption in methodOptions.DomainObjectOptions)
-        domainObjectOption.WithCurrentTransaction (_transaction);
+      ExtensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.Committed(_transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
+          .Verifiable();
+
+      ListenerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionCommitted(_transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Verifiable();
     }
 
-    protected AllMethodOptions ExpectCommittedEventsWithCustomOptions (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
+    protected void ExpectCommitValidateEvents (MockSequence sequence, DomainObject[] domainObjects)
     {
-      using (_mockRepository.Ordered ())
+      ListenerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionCommitValidate(_transaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(domainObjects))))
+          .Callback((ClientTransaction _, IReadOnlyList<PersistableData> _) => Assert.That(_transaction.HasChanged(), Is.True, "CommitValidate: last event before actual commit."))
+          .Verifiable();
+
+      ExtensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.CommitValidate(_transaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(domainObjects))))
+          .Verifiable();
+    }
+
+    protected void ExpectRollingBackEvents (
+        MockSequence sequence,
+        (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
+        Action<IInvocation> extensionCallback = null,
+        Action<IInvocation> transactionCallback = null)
+    {
+      var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
+      ListenerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionRollingBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Verifiable();
+
+      ExtensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RollingBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
+          .Verifiable();
+
+      TransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRollingBack(Transaction, domainObjects)
+          .Callback(
+              (IInvocation invocation) =>
+              {
+                Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                transactionCallback?.Invoke(invocation);
+              })
+          .Verifiable();
+
+      foreach (var (_, mock, callback) in domainObjectsAndMocks)
       {
-        var domainObjectOptions = new List<IMethodOptions<RhinoMocksExtensions.VoidType>> (domainObjectsAndMocks.Length);
-        using (_mockRepository.Unordered ())
-        {
-            domainObjectOptions.AddRange (domainObjectsAndMocks.Select (t => t.Item2.Expect (mock => mock.Committed ())));
-        }
-
-        var domainObjects = domainObjectsAndMocks.Select (t => t.Item1).ToArray();
-
-        var transactionOptions = TransactionMockEventReceiver.Expect (mock => mock.Committed (domainObjects));
-        var extensionOptions = ExtensionMock.Expect (mock => mock.Committed (Arg.Is (_transaction), ArgIsDomainObjectSet (domainObjects)));
-        ListenerMock.Expect (mock => mock.TransactionCommitted (Arg.Is (_transaction), ArgIsDomainObjectSet (domainObjects)));
-
-        return new AllMethodOptions (extensionOptions, transactionOptions, domainObjectOptions.ToArray());
+        mock
+            .Setup(_ => _.RollingBack(It.IsAny<object>(), It.IsAny<EventArgs>()))
+            .Callback(
+                (IInvocation invocation) =>
+                {
+                  Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                  callback?.Invoke(invocation);
+                })
+            .Verifiable();
       }
     }
 
-    protected void ExpectCommitValidateEvents (params DomainObject[] domainObjects)
+    protected void ExpectRolledBackEvents (
+        MockSequence sequence,
+        (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
+        Action<IInvocation> extensionCallback = null,
+        Action<IInvocation> transactionCallback = null)
     {
-      using (_mockRepository.Ordered ())
+      foreach (var (_, mock, callback) in domainObjectsAndMocks)
       {
-        ListenerMock
-            .Expect (mock => mock.TransactionCommitValidate (Arg.Is (_transaction), ArgIsPersistableDataSet (domainObjects)))
-            .WhenCalled (mi => Assert.That (_transaction.HasChanged(), Is.True, "CommitValidate: last event before actual commit."));
-        ExtensionMock
-            .Expect (mock => mock.CommitValidate (Arg.Is (_transaction), ArgIsPersistableDataSet (domainObjects)));
+        mock
+            .Setup(_ => _.RolledBack(It.IsAny<object>(), It.IsAny<EventArgs>()))
+            .Callback(
+                (IInvocation invocation) =>
+                {
+                  Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                  callback?.Invoke(invocation);
+                })
+            .Verifiable();
       }
-    }
 
-    protected void ExpectRollingBackEvents (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
-    {
-      var methodOptions = ExpectRollingBackEventsWithCustomOptions (domainObjectsAndMocks);
+      var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
 
-      methodOptions.TransactionOptions.WithCurrentTransaction (_transaction);
-      foreach (var domainObjectOption in methodOptions.DomainObjectOptions)
-        domainObjectOption.WithCurrentTransaction (_transaction);
-    }
+      TransactionMockEventReceiver
+          .InSequence(sequence)
+          .SetupRolledBack(Transaction, domainObjects)
+          .Callback(
+              (IInvocation invocation) =>
+              {
+                Assert.That(ClientTransaction.Current, Is.SameAs(Transaction));
+                transactionCallback?.Invoke(invocation);
+              })
+          .Verifiable();
 
-    protected AllMethodOptions ExpectRollingBackEventsWithCustomOptions (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
-    {
-      using (MockRepository.Ordered ())
-      {
-        var domainObjects = domainObjectsAndMocks.Select (t => t.Item1).ToArray ();
-        _listenerMock
-            .Expect (mock => mock.TransactionRollingBack (Arg.Is (Transaction), ArgIsDomainObjectSet (domainObjects)));
-        var extensionOptions = _extensionMock
-            .Expect (mock => mock.RollingBack (Arg.Is (Transaction), ArgIsDomainObjectSet (domainObjects)));
-        var transactionOptions = TransactionMockEventReceiver
-            .Expect (mock => mock.RollingBack (domainObjects))
-            .WithCurrentTransaction (Transaction);
+      ExtensionMock
+          .InSequence(sequence)
+          .Setup(mock => mock.RolledBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
+          .Verifiable();
 
-        IMethodOptions<RhinoMocksExtensions.VoidType>[] domainObjectOptions;
-        using (_mockRepository.Unordered ())
-        {
-          domainObjectOptions = domainObjectsAndMocks.Select (t => t.Item2.Expect (mock => mock.RollingBack ())).ToArray ();
-        }
-        return new AllMethodOptions (extensionOptions, transactionOptions, domainObjectOptions);
-      }
-    }
-
-    protected void ExpectRolledBackEvents (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
-    {
-      var methodOptions = ExpectRolledBackEventsWithCustomOptions (domainObjectsAndMocks);
-
-      methodOptions.TransactionOptions.WithCurrentTransaction (_transaction);
-
-      foreach (var domainObjectOption in methodOptions.DomainObjectOptions)
-        domainObjectOption.WithCurrentTransaction (_transaction);
-    }
-
-    protected AllMethodOptions ExpectRolledBackEventsWithCustomOptions (params Tuple<DomainObject, DomainObjectMockEventReceiver>[] domainObjectsAndMocks)
-    {
-      using (MockRepository.Ordered ())
-      {
-        IMethodOptions<RhinoMocksExtensions.VoidType>[] domainObjectOptions;
-        using (_mockRepository.Unordered ())
-        {
-          domainObjectOptions = domainObjectsAndMocks.Select (t => t.Item2.Expect (mock => mock.RolledBack ())).ToArray ();
-        }
-
-        var domainObjects = domainObjectsAndMocks.Select (t => t.Item1).ToArray ();
-
-        var transactionOptions = TransactionMockEventReceiver
-            .Expect (mock => mock.RolledBack (domainObjects))
-            .WithCurrentTransaction (Transaction);
-        var extensionOptions = _extensionMock
-            .Expect (mock => mock.RolledBack (Arg.Is (Transaction), ArgIsDomainObjectSet (domainObjects)));
-        _listenerMock
-            .Expect (mock => mock.TransactionRolledBack (Arg.Is (Transaction), ArgIsDomainObjectSet (domainObjects)));
-
-        return new AllMethodOptions (extensionOptions, transactionOptions, domainObjectOptions);
-      }
+      ListenerMock
+          .InSequence(sequence)
+          .Setup(mock => mock.TransactionRolledBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
+          .Verifiable();
     }
 
     private DomainObject GetDeletedObject ()
     {
-      return _transaction.ExecuteInScope (
+      return _transaction.ExecuteInScope(
           () =>
           {
-            var instance = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
-            instance.Delete ();
+            var instance = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
+            instance.Delete();
             return instance;
           });
     }
 
     private DomainObject GetNewObject ()
     {
-      return _transaction.ExecuteInScope (() => ClassWithAllDataTypes.NewObject ());
+      return _transaction.ExecuteInScope(() => ClassWithAllDataTypes.NewObject());
     }
 
     private DomainObject GetChangedObject ()
     {
-      return _transaction.ExecuteInScope (
+      return _transaction.ExecuteInScope(
           () =>
           {
-            var instance = DomainObjectIDs.Order1.GetObject<Order> ();
+            var instance = DomainObjectIDs.Order1.GetObject<Order>();
             instance.RegisterForCommit();
             return instance;
           });
@@ -341,32 +367,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     private DomainObject GetUnchangedObject ()
     {
-      return _transaction.ExecuteInScope (() => DomainObjectIDs.Customer1.GetObject<Customer> ());
+      return _transaction.ExecuteInScope(() => DomainObjectIDs.Customer1.GetObject<Customer>());
     }
 
-    protected ReadOnlyCollection<DomainObject> ArgIsDomainObjectSet (params DomainObject[] domainObjects)
+    private Mock<IDomainObjectMockEventReceiver> CreateDomainObjectMockEventReceiver (DomainObject changedObject)
     {
-      return Arg<ReadOnlyCollection<DomainObject>>.List.Equivalent (domainObjects);
-    }
-
-    private ReadOnlyCollection<PersistableData> ArgIsPersistableDataSet (params DomainObject[] domainObjecs)
-    {
-      return Arg<ReadOnlyCollection<PersistableData>>.Matches (c => c.Select (d => d.DomainObject).SetEquals (domainObjecs));
-    }
-
-    private DomainObjectMockEventReceiver CreateDomainObjectMockEventReceiver (DomainObject changedObject)
-    {
-      return _mockRepository.StrictMock<DomainObjectMockEventReceiver> (changedObject);
-    }
-
-    protected void RegisterForCommitWithDisabledListener (DomainObject domainObject)
-    {
-      // WORKAROUND: Remove listener before calling RegisterForCommit to avoid the event triggering mocked methods.
-      // (Yes, the listener is a dynamic mock, but due to a bug in Rhino.Mocks, triggering an unexpected mocked method method will destroy the
-      // MockRepository's replay state...)
-      ClientTransactionTestHelper.RemoveListener (Transaction, ListenerMock);
-      Transaction.ExecuteInScope (domainObject.RegisterForCommit);
-      ClientTransactionTestHelper.AddListener (Transaction, ListenerMock);
+      return DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, changedObject);
     }
   }
 }

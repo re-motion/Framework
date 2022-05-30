@@ -17,7 +17,7 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.SortExpressions;
-using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
 {
@@ -25,39 +25,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions
   {
     public static SortedPropertySpecification CreateSortedPropertyAscending (PropertyDefinition propertyDefinition)
     {
-      return new SortedPropertySpecification (propertyDefinition, SortOrder.Ascending);
+      return new SortedPropertySpecification(propertyDefinition, SortOrder.Ascending);
     }
 
     public static SortedPropertySpecification CreateSortedPropertyDescending (PropertyDefinition propertyDefinition)
     {
-      return new SortedPropertySpecification (propertyDefinition, SortOrder.Descending);
-    }
-
-    public static SortExpressionDefinition CreateOrderItemSortExpressionPositionAscProductDesc ()
-    {
-      var orderItemClassDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (OrderItem));
-      var positionPropertyDefinition = orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Position");
-      var productPropertyDefinition = orderItemClassDefinition.GetMandatoryPropertyDefinition (typeof (OrderItem).FullName + ".Product");
-
-      return new SortExpressionDefinition (
-          new[]
-          {
-              CreateSortedPropertyAscending (positionPropertyDefinition), 
-              CreateSortedPropertyDescending (productPropertyDefinition)
-          });
-    }
-
-    public static SortExpressionDefinition ParseSortExpression (ClassDefinition classDefinition, string sortExpressionString)
-    {
-      if (sortExpressionString == null)
-        return null;
-
-      return new SortExpressionParser (classDefinition).Parse (sortExpressionString);
-    }
-
-    public static SortExpressionDefinition ParseSortExpression (Type domainObjectType, string sortExpressionString)
-    {
-      return ParseSortExpression (MappingConfiguration.Current.GetTypeDefinition (domainObjectType), sortExpressionString);
+      return new SortedPropertySpecification(propertyDefinition, SortOrder.Descending);
     }
   }
 }

@@ -16,21 +16,34 @@
 // 
 using System;
 using System.Collections.Generic;
+using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.Infrastructure.Serialization
 {
   public class FlattenedSerializationWriter<T>
   {
-    private readonly List<T> _data = new List<T> ();
-    
+    private readonly List<T> _data = new List<T>();
+
     public T[] GetData ()
     {
-      return _data.ToArray ();
+      return _data.ToArray();
     }
 
     public void AddSimpleValue (T value)
     {
-      _data.Add (value);
+#if DEBUG
+      if (value is Type)
+          // ReSharper disable once PossibleMistakenCallToGetType.2
+        throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", typeof(Type).GetType().GetFullNameSafe()), "value");
+
+      if (value is Delegate)
+        throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", typeof(Delegate).GetFullNameSafe()), "value");
+
+      if (value is not null && !value.GetType().IsSerializable)
+        throw new ArgumentException(string.Format("Cannot serialize values of type '{0}'.", value.GetType().GetFullNameSafe()), "value");
+#endif
+
+      _data.Add(value);
     }
   }
 }

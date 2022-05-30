@@ -41,11 +41,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IStorageNameProvider storageNameProvider,
         StorageProviderDefinition storageProviderDefinition)
     {
-      ArgumentUtility.CheckNotNull ("infrastructureStoragePropertyDefinitionProvider", infrastructureStoragePropertyDefinitionProvider);
-      ArgumentUtility.CheckNotNull ("foreignKeyConstraintDefinitionFactory", foreignKeyConstraintDefinitionFactory);
-      ArgumentUtility.CheckNotNull ("storagePropertyDefinitionResolver", storagePropertyDefinitionResolver);
-      ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("infrastructureStoragePropertyDefinitionProvider", infrastructureStoragePropertyDefinitionProvider);
+      ArgumentUtility.CheckNotNull("foreignKeyConstraintDefinitionFactory", foreignKeyConstraintDefinitionFactory);
+      ArgumentUtility.CheckNotNull("storagePropertyDefinitionResolver", storagePropertyDefinitionResolver);
+      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
       _infrastructureStoragePropertyDefinitionProvider = infrastructureStoragePropertyDefinitionProvider;
       _foreignKeyConstraintDefinitionFactory = foreignKeyConstraintDefinitionFactory;
@@ -81,87 +81,87 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public virtual IRdbmsStorageEntityDefinition CreateTableDefinition (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var tableName = _storageNameProvider.GetTableName (classDefinition);
+      var tableName = _storageNameProvider.GetTableName(classDefinition);
       if (tableName == null)
-        throw new MappingException (string.Format ("Class '{0}' has no table name defined.", classDefinition.ID));
+        throw new MappingException(string.Format("Class '{0}' has no table name defined.", classDefinition.ID));
 
-      var objectIDProperty = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition ();
-      var timestampProperty = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition ();
-      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy (classDefinition).ToList();
-      var allProperties = new[] { objectIDProperty, timestampProperty }.Concat (dataProperties).ToList().AsReadOnly();
+      var objectIDProperty = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
+      var timestampProperty = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
+      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(classDefinition).ToList();
+      var allProperties = new[] { objectIDProperty, timestampProperty }.Concat(dataProperties).ToList().AsReadOnly();
 
-      var primaryKeyConstraints = CreatePrimaryKeyConstraints (classDefinition, allProperties);
-      var foreignKeyConstraints = CreateForeignKeyConstraintsForTableDefinition (classDefinition, allProperties);
+      var primaryKeyConstraints = CreatePrimaryKeyConstraints(classDefinition, allProperties);
+      var foreignKeyConstraints = CreateForeignKeyConstraintsForTableDefinition(classDefinition, allProperties);
 
-      return new TableDefinition (
+      return new TableDefinition(
           _storageProviderDefinition,
           tableName,
-          _storageNameProvider.GetViewName (classDefinition),
+          _storageNameProvider.GetViewName(classDefinition),
           objectIDProperty,
           timestampProperty,
           dataProperties,
-          primaryKeyConstraints.Concat (foreignKeyConstraints),
-          CreateIndexesForTableDefinition (classDefinition, allProperties),
-          CreateSynonymsForTableDefinition (classDefinition));
+          primaryKeyConstraints.Concat(foreignKeyConstraints),
+          CreateIndexesForTableDefinition(classDefinition, allProperties),
+          CreateSynonymsForTableDefinition(classDefinition));
     }
 
     public virtual IRdbmsStorageEntityDefinition CreateFilterViewDefinition (
         ClassDefinition classDefinition,
         IRdbmsStorageEntityDefinition baseEntity)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("baseEntity", baseEntity);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("baseEntity", baseEntity);
 
       var objectIDProperty = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
       var timestampProperty = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
-      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy (classDefinition).ToList();
-      var allProperties = new[] { objectIDProperty, timestampProperty }.Concat (dataProperties).ToList().AsReadOnly();
+      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(classDefinition).ToList();
+      var allProperties = new[] { objectIDProperty, timestampProperty }.Concat(dataProperties).ToList().AsReadOnly();
 
-      return new FilterViewDefinition (
+      return new FilterViewDefinition(
           _storageProviderDefinition,
-          _storageNameProvider.GetViewName (classDefinition),
+          _storageNameProvider.GetViewName(classDefinition),
           baseEntity,
-          GetClassIDsForBranch (classDefinition),
+          GetClassIDsForBranch(classDefinition),
           objectIDProperty,
           timestampProperty,
           dataProperties,
-          CreateIndexesForFilterViewDefinition (classDefinition, baseEntity, allProperties),
-          CreateSynonymsForFilterViewDefinition (classDefinition, baseEntity));
+          CreateIndexesForFilterViewDefinition(classDefinition, baseEntity, allProperties),
+          CreateSynonymsForFilterViewDefinition(classDefinition, baseEntity));
     }
 
     public virtual IRdbmsStorageEntityDefinition CreateUnionViewDefinition (
         ClassDefinition classDefinition,
         IEnumerable<IRdbmsStorageEntityDefinition> unionedEntities)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("unionedEntities", unionedEntities);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("unionedEntities", unionedEntities);
 
       var objectIDProperty = _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition();
       var timestampProperty = _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition();
-      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy (classDefinition).ToList();
-      var allProperties = new[] { objectIDProperty, timestampProperty }.Concat (dataProperties).ToList().AsReadOnly();
+      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(classDefinition).ToList();
+      var allProperties = new[] { objectIDProperty, timestampProperty }.Concat(dataProperties).ToList().AsReadOnly();
 
       var unionedEntitiesList = unionedEntities.ToList().AsReadOnly();
 
-      return new UnionViewDefinition (
+      return new UnionViewDefinition(
           _storageProviderDefinition,
-          _storageNameProvider.GetViewName (classDefinition),
+          _storageNameProvider.GetViewName(classDefinition),
           unionedEntitiesList,
           objectIDProperty,
           timestampProperty,
           dataProperties,
-          CreateIndexesForUnionViewDefinition (classDefinition, unionedEntitiesList, allProperties),
-          CreateSynonymsForUnionViewDefinition (classDefinition, unionedEntitiesList));
+          CreateIndexesForUnionViewDefinition(classDefinition, unionedEntitiesList, allProperties),
+          CreateSynonymsForUnionViewDefinition(classDefinition, unionedEntitiesList));
     }
 
     public IRdbmsStorageEntityDefinition CreateEmptyViewDefinition (ClassDefinition classDefinition)
     {
-      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy (classDefinition);
-      return new EmptyViewDefinition (
+      var dataProperties = _storagePropertyDefinitionResolver.GetStoragePropertiesForHierarchy(classDefinition);
+      return new EmptyViewDefinition(
           _storageProviderDefinition,
-          _storageNameProvider.GetViewName (classDefinition),
+          _storageNameProvider.GetViewName(classDefinition),
           _infrastructureStoragePropertyDefinitionProvider.GetObjectIDStoragePropertyDefinition(),
           _infrastructureStoragePropertyDefinitionProvider.GetTimestampStoragePropertyDefinition(),
           dataProperties,
@@ -170,15 +170,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     protected IEnumerable<string> GetClassIDsForBranch (ClassDefinition classDefinition)
     {
-      return new[] { classDefinition }.Concat (classDefinition.GetAllDerivedClasses()).Select (cd => cd.ID);
+      return new[] { classDefinition }.Concat(classDefinition.GetAllDerivedClasses()).Select(cd => cd.ID);
     }
 
     private IEnumerable<ITableConstraintDefinition> CreatePrimaryKeyConstraints (
        ClassDefinition classDefinition,
        IReadOnlyList<IRdbmsStoragePropertyDefinition> allProperties)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("allProperties", allProperties);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("allProperties", allProperties);
 
       var primaryKeyColumns =
           (from p in allProperties
@@ -187,18 +187,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
             select c).ToList().AsReadOnly();
 
       if (primaryKeyColumns.Any())
-        yield return CreatePrimaryKeyConstraint (classDefinition, primaryKeyColumns);
+        yield return CreatePrimaryKeyConstraint(classDefinition, primaryKeyColumns);
     }
 
     protected virtual PrimaryKeyConstraintDefinition CreatePrimaryKeyConstraint (
         ClassDefinition classDefinition,
         IReadOnlyList<ColumnDefinition> primaryKeyColumns)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty ("primaryKeyColumns", primaryKeyColumns);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty("primaryKeyColumns", primaryKeyColumns);
 
-      return new PrimaryKeyConstraintDefinition (
-          _storageNameProvider.GetPrimaryKeyConstraintName (classDefinition),
+      return new PrimaryKeyConstraintDefinition(
+          _storageNameProvider.GetPrimaryKeyConstraintName(classDefinition),
           true,
           primaryKeyColumns);
     }
@@ -207,18 +207,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         ClassDefinition classDefinition,
         IReadOnlyCollection<IRdbmsStoragePropertyDefinition> allProperties)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("allProperties", allProperties);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("allProperties", allProperties);
 
-      return _foreignKeyConstraintDefinitionFactory.CreateForeignKeyConstraints (classDefinition);
+      return _foreignKeyConstraintDefinitionFactory.CreateForeignKeyConstraints(classDefinition);
     }
 
     protected virtual IEnumerable<IIndexDefinition> CreateIndexesForTableDefinition (
         ClassDefinition classDefinition,
         IReadOnlyList<IRdbmsStoragePropertyDefinition> allProperties)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("allProperties", allProperties);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("allProperties", allProperties);
 
       return Enumerable.Empty<IIndexDefinition>();
     }
@@ -228,9 +228,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IRdbmsStorageEntityDefinition baseEntity,
         IReadOnlyList<IRdbmsStoragePropertyDefinition> allProperties)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("baseEntity", baseEntity);
-      ArgumentUtility.CheckNotNull ("allProperties", allProperties);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("baseEntity", baseEntity);
+      ArgumentUtility.CheckNotNull("allProperties", allProperties);
 
       return Enumerable.Empty<IIndexDefinition>();
     }
@@ -240,9 +240,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IReadOnlyList<IRdbmsStorageEntityDefinition> unionedEntitiesList,
         IReadOnlyList<IRdbmsStoragePropertyDefinition> allProperties)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("unionedEntitiesList", unionedEntitiesList);
-      ArgumentUtility.CheckNotNull ("allProperties", allProperties);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("unionedEntitiesList", unionedEntitiesList);
+      ArgumentUtility.CheckNotNull("allProperties", allProperties);
 
       return Enumerable.Empty<IIndexDefinition>();
     }
@@ -250,7 +250,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     protected virtual IEnumerable<EntityNameDefinition> CreateSynonymsForTableDefinition (
         ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return Enumerable.Empty<EntityNameDefinition>();
     }
@@ -259,8 +259,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         ClassDefinition classDefinition,
         IRdbmsStorageEntityDefinition baseEntity)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("baseEntity", baseEntity);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("baseEntity", baseEntity);
 
       return Enumerable.Empty<EntityNameDefinition>();
     }
@@ -269,8 +269,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         ClassDefinition classDefinition,
         IReadOnlyList<IRdbmsStorageEntityDefinition> unionedEntitiesList)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("unionedEntitiesList", unionedEntitiesList);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("unionedEntitiesList", unionedEntitiesList);
 
       return Enumerable.Empty<EntityNameDefinition>();
     }

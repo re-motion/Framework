@@ -16,6 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding.BindableObject;
 
 namespace Remotion.ObjectBinding.UnitTests
@@ -26,7 +27,7 @@ namespace Remotion.ObjectBinding.UnitTests
     private class StubBusinessObjectProviderAttribute : BusinessObjectProviderAttribute
     {
       public StubBusinessObjectProviderAttribute (Type businessObjectProviderType)
-          : base (businessObjectProviderType)
+          : base(businessObjectProviderType)
       {
       }
     }
@@ -34,18 +35,20 @@ namespace Remotion.ObjectBinding.UnitTests
     [Test]
     public void Initialize_WithValidType ()
     {
-      BusinessObjectProviderAttribute attribute = new StubBusinessObjectProviderAttribute (typeof (BindableObjectProvider));
+      BusinessObjectProviderAttribute attribute = new StubBusinessObjectProviderAttribute(typeof(BindableObjectProvider));
 
-      Assert.That (attribute.BusinessObjectProviderType, Is.EqualTo (typeof (BindableObjectProvider)));
+      Assert.That(attribute.BusinessObjectProviderType, Is.EqualTo(typeof(BindableObjectProvider)));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'businessObjectProviderType' is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'."
-        + "\r\nParameter name: businessObjectProviderType")]
     public void Initialize_WithInvalidType ()
     {
-      new StubBusinessObjectProviderAttribute (typeof (object));
+      Assert.That(
+          () => new StubBusinessObjectProviderAttribute(typeof(object)),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'businessObjectProviderType' is a 'System.Object', which cannot be assigned to type 'Remotion.ObjectBinding.IBusinessObjectProvider'.",
+                  "businessObjectProviderType"));
     }
   }
 }

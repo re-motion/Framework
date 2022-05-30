@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -28,24 +28,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   {
     private ClassDefinitionForUnresolvedRelationPropertyType _classDefinition;
     private Type _classType;
-    private IPropertyInformation _relationProperty;
+    private Mock<IPropertyInformation> _relationProperty;
 
     [SetUp]
     public void SetUp ()
     {
-      _classType = typeof (ClassNotInMapping);
-      _relationProperty = MockRepository.GenerateStub<IPropertyInformation>();
-      _classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType ("Test", _classType, _relationProperty);
+      _classType = typeof(ClassNotInMapping);
+      _relationProperty = new Mock<IPropertyInformation>();
+      _classDefinition = new ClassDefinitionForUnresolvedRelationPropertyType("Test", _classType, _relationProperty.Object);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_classDefinition.ClassType, Is.SameAs (_classType));
-      Assert.That (_classDefinition.BaseClass, Is.Null);
-      Assert.That (_classDefinition.IsClassTypeResolved, Is.False);
-      Assert.That (_classDefinition.IsAbstract, Is.False);
-      Assert.That (_classDefinition.RelationProperty, Is.SameAs (_relationProperty));
+      Assert.That(_classDefinition.ClassType, Is.SameAs(_classType));
+      Assert.That(_classDefinition.BaseClass, Is.Null);
+      Assert.That(_classDefinition.IsClassTypeResolved, Is.False);
+      Assert.That(_classDefinition.IsAbstract, Is.False);
+      Assert.That(_classDefinition.RelationProperty, Is.SameAs(_relationProperty.Object));
     }
   }
 }

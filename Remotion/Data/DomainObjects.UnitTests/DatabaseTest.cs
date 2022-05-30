@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Transactions;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.Database;
 using Remotion.Development.UnitTesting.Data.SqlClient;
@@ -27,6 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public const string DefaultStorageProviderID = "DefaultStorageProvider";
     public const string c_testDomainProviderID = "TestDomain";
+    public const string c_nonPersistentTestDomainProviderID = "NonPersistentTestDomain";
     public const string c_unitTestStorageProviderStubID = "UnitTestStorageProviderStub";
 
     public const string SchemaGenerationFirstStorageProviderID = "SchemaGenerationFirstStorageProvider";
@@ -41,12 +43,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     private readonly DatabaseAgent _databaseAgent;
     private readonly string _createTestDataFileName;
-    private bool _isDatabaseModifyable;
+    private TransactionScope _transactionScope;
 
     protected DatabaseTest (DatabaseAgent databaseAgent, string createTestDataFileName)
     {
-      ArgumentUtility.CheckNotNull ("databaseAgent", databaseAgent);
-      ArgumentUtility.CheckNotNullOrEmpty ("createTestDataFileName", createTestDataFileName);
+      ArgumentUtility.CheckNotNull("databaseAgent", databaseAgent);
+      ArgumentUtility.CheckNotNullOrEmpty("createTestDataFileName", createTestDataFileName);
 
       _databaseAgent = databaseAgent;
       _createTestDataFileName = createTestDataFileName;
@@ -55,30 +57,23 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [SetUp]
     public virtual void SetUp ()
     {
+      _transactionScope = new TransactionScope();
     }
 
     [TearDown]
     public virtual void TearDown ()
     {
-      if (_isDatabaseModifyable)
-      {
-        _databaseAgent.ExecuteBatchFile (_createTestDataFileName, true, DatabaseConfiguration.GetReplacementDictionary());
-      }
+      _transactionScope.Dispose();
     }
 
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp ()
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp ()
     {
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public virtual void TestFixtureTearDown ()
     {
-      if (_isDatabaseModifyable)
-      {
-        _databaseAgent.SetDatabaseReadOnly (DatabaseName);
-        _isDatabaseModifyable = false;
-      }
     }
 
     protected DatabaseAgent DatabaseAgent
@@ -89,47 +84,38 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
     public static string TestDomainConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=DBPrefix_TestDomain;Data Source=.; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_TestDomain; Max Pool Size=1;"); }
     }
 
     public static string MasterConnectionString
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=master;Data Source=.; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=master; Max Pool Size=1;"); }
     }
 
     public static string SchemaGenerationConnectionString1
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=DBPrefix_SchemaGenerationTestDomain1;Data Source=.; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain1; Max Pool Size=1;"); }
     }
 
     public static string SchemaGenerationConnectionString2
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=DBPrefix_SchemaGenerationTestDomain2;Data Source=.; Max Pool Size=1;"); }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain2; Max Pool Size=1;"); }
     }
 
     public static string SchemaGenerationConnectionString3
     {
-      get { return DatabaseConfiguration.UpdateConnectionString ("Integrated Security=SSPI;Initial Catalog=DBPrefix_SchemaGenerationTestDomain3;Data Source=.; Max Pool Size=1;"); }
-    }
-
-    protected void SetDatabaseModifyable ()
-    {
-      if (!_isDatabaseModifyable)
-      {
-        _isDatabaseModifyable = true;
-        _databaseAgent.SetDatabaseReadWrite (DatabaseName);
-      }
+      get { return DatabaseConfiguration.UpdateConnectionString("Initial Catalog=DBPrefix_SchemaGenerationTestDomain3; Max Pool Size=1;"); }
     }
 
     protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)
     {
       IDbCommand command = connection.CreateCommand();
-      command.CommandText = string.Format ("SELECT * FROM [{0}] where ID = @id", table);
+      command.CommandText = string.Format("SELECT * FROM [{0}] where ID = @id", table);
 
       IDbDataParameter parameter = command.CreateParameter();
       parameter.ParameterName = "@id";
       parameter.Value = id;
-      command.Parameters.Add (parameter);
+      command.Parameters.Add(parameter);
 
       return command;
     }

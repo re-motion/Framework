@@ -40,21 +40,21 @@
 
 1.7.81
 ======
-- Global.asax für Clients.Web:
-  Weitere Services müssen imm ApplicationStart registriert werden:
+- Global.asax fÃ¼r Clients.Web:
+  Weitere Services mÃ¼ssen imm ApplicationStart registriert werden:
   * BindableObjectProvider.Current.AddService (typeof (GroupPropertiesSearchService), new GroupPropertiesSearchService());
   * BindableObjectProvider.Current.AddService (typeof (RolePropertiesSearchService), new RolePropertiesSearchService());
   * BindableObjectProvider.Current.AddService (typeof (UserPropertiesSearchService), new UserPropertiesSearchService ());
 
 1.7.64
 ======
-- Bugfix: User.OwningGorup wurde für nicht übersetzt.
-- Web-Applikation: Die Applikation hat stets die Request-Sprache des Browsers für die CurrentCulture genommen. Diese Logik ist nun entfernt.
+- Bugfix: User.OwningGorup wurde fÃ¼r nicht Ã¼bersetzt.
+- Web-Applikation: Die Applikation hat stets die Request-Sprache des Browsers fÃ¼r die CurrentCulture genommen. Diese Logik ist nun entfernt.
 
 1.7.42
 ======
 - Konfiguration Clients.Web
-  Zusätzlicher Eintrag in der Compilation-Section:
+  ZusÃ¤tzlicher Eintrag in der Compilation-Section:
   <system.web>
     <compilation defaultLanguage="c#" debug="true">
       <expressionBuilders>

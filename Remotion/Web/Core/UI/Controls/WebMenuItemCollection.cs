@@ -16,16 +16,12 @@
 // 
 using System;
 using System.Collections;
-using System.ComponentModel;
-using System.Drawing.Design;
 using Remotion.Collections;
 using Remotion.Utilities;
-using Remotion.Web.UI.Design;
 
 namespace Remotion.Web.UI.Controls
 {
   /// <summary> A collection of <see cref="WebMenuItem"/> objects. </summary>
-  [Editor (typeof (WebMenuItemCollectionEditor), typeof (UITypeEditor))]
   public class WebMenuItemCollection : ControlItemCollection
   {
     /// <summary> Sorts the <paramref name="menuItems"/> by their categories." </summary>
@@ -34,7 +30,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <paramref name="menuItems"/>, sorted by their categories. </returns>
     public static WebMenuItem[] GroupMenuItems (WebMenuItem[] menuItems, bool generateSeparators)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("menuItems", menuItems);
+      ArgumentUtility.CheckNotNullOrItemsNull("menuItems", menuItems);
 
       //  <string category, ArrayList menuItems>
       NameObjectCollection groupedMenuItems = new NameObjectCollection();
@@ -46,55 +42,55 @@ namespace Remotion.Web.UI.Controls
 
         string category = menuItem.Category ?? string.Empty;
         ArrayList menuItemsForCategory;
-        if (groupedMenuItems.Contains (category))
-          menuItemsForCategory = (ArrayList) groupedMenuItems[category];
+        if (groupedMenuItems.Contains(category))
+          menuItemsForCategory = (ArrayList)groupedMenuItems[category]!;
         else
         {
           menuItemsForCategory = new ArrayList();
-          groupedMenuItems.Add (category, menuItemsForCategory);
-          categories.Add (category);
+          groupedMenuItems.Add(category, menuItemsForCategory);
+          categories.Add(category);
         }
-        menuItemsForCategory.Add (menuItem);
+        menuItemsForCategory.Add(menuItem);
       }
 
       ArrayList arrayList = new ArrayList();
       bool isFirst = true;
       for (int i = 0; i < categories.Count; i++)
       {
-        string category = (string) categories[i];
+        string category = (string)categories[i]!;
         if (generateSeparators)
         {
           if (isFirst)
             isFirst = false;
           else
-            arrayList.Add (WebMenuItem.GetSeparator());
+            arrayList.Add(WebMenuItem.GetSeparator());
         }
-        arrayList.AddRange ((ArrayList) groupedMenuItems[category]);
+        arrayList.AddRange((ArrayList)groupedMenuItems[category]!);
       }
-      return (WebMenuItem[]) arrayList.ToArray (typeof (WebMenuItem));
+      return (WebMenuItem[])arrayList.ToArray(typeof(WebMenuItem));
     }
 
     /// <summary> Initializes a new instance. </summary>
-    public WebMenuItemCollection (IControl ownerControl, Type[] supportedTypes)
-        : base (ownerControl, supportedTypes)
+    public WebMenuItemCollection (IControl? ownerControl, Type[] supportedTypes)
+        : base(ownerControl, supportedTypes)
     {
     }
 
     /// <summary> Initializes a new instance. </summary>
-    public WebMenuItemCollection (IControl ownerControl)
-        : this (ownerControl, new[] { typeof (WebMenuItem) })
+    public WebMenuItemCollection (IControl? ownerControl)
+        : this(ownerControl, new[] { typeof(WebMenuItem) })
     {
     }
 
     public new WebMenuItem[] ToArray ()
     {
-      return (WebMenuItem[]) InnerList.ToArray (typeof (WebMenuItem));
+      return (WebMenuItem[])InnerList.ToArray(typeof(WebMenuItem));
     }
 
     //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
     protected internal new WebMenuItem this [int index]
     {
-      get { return (WebMenuItem) List[index]; }
+      get { return (WebMenuItem)List[index]!; }
       set { List[index] = value; }
     }
 
@@ -103,7 +99,7 @@ namespace Remotion.Web.UI.Controls
     /// <returns> The <see cref="WebMenuItem"/> objects, sorted by their categories. </returns>
     public WebMenuItem[] GroupMenuItems (bool generateSeparators)
     {
-      return GroupMenuItems (ToArray(), generateSeparators);
+      return GroupMenuItems(ToArray(), generateSeparators);
     }
   }
 }

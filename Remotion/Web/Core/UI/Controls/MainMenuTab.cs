@@ -17,40 +17,41 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
   public class MainMenuTab : MenuTab
   {
     private readonly SubMenuTabCollection _subMenuTabs;
-    private MenuTab _activeTab;
+    private MenuTab? _activeTab;
 
-    public MainMenuTab (string itemID, string text, IconInfo icon)
-        : base (itemID, text, icon)
+    public MainMenuTab (string itemID, string text, IconInfo? icon)
+        : base(itemID, text, icon)
     {
-      _subMenuTabs = new SubMenuTabCollection (OwnerControl);
-      _subMenuTabs.SetParent (this);
+      _subMenuTabs = new SubMenuTabCollection(OwnerControl);
+      _subMenuTabs.SetParent(this);
     }
 
     public MainMenuTab (string itemID, string text)
-        : this (itemID, text, null)
+        : this(itemID, text, null)
     {
     }
 
     /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
     /// <exclude/>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public MainMenuTab ()
     {
-      _subMenuTabs = new SubMenuTabCollection (OwnerControl);
-      _subMenuTabs.SetParent (this);
+      _subMenuTabs = new SubMenuTabCollection(OwnerControl);
+      _subMenuTabs.SetParent(this);
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [ListBindable (false)]
-    [Category ("Behavior")]
-    [Description ("")]
-    [DefaultValue ((string) null)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [ListBindable(false)]
+    [Category("Behavior")]
+    [Description("")]
+    [DefaultValue((string?)null)]
     public SubMenuTabCollection SubMenuTabs
     {
       get { return _subMenuTabs; }
@@ -65,7 +66,7 @@ namespace Remotion.Web.UI.Controls
     protected override void OnSelectionChanged ()
     {
       base.OnSelectionChanged();
-      TabbedMenu.RefreshSubMenuTabStrip();
+      TabbedMenu!.RefreshSubMenuTabStrip(); // TODO RM-8118: not null assertion
     }
 
     protected override MenuTab GetActiveTab ()
@@ -74,6 +75,9 @@ namespace Remotion.Web.UI.Controls
         return _activeTab;
 
       _activeTab = this;
+
+      Assertion.IsNotNull(Command, "Command must not be null.");
+
       if (Command.Type == CommandType.None)
       {
         foreach (SubMenuTab subMenuTab in _subMenuTabs)

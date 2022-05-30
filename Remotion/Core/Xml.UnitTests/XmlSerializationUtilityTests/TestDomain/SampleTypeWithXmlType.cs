@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 
 namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain
 {
-  [XmlType (Namespace = "http://type-namespace")]
+  [XmlType(Namespace = "http://type-namespace")]
   public class SampleTypeWithXmlType
   {
   }

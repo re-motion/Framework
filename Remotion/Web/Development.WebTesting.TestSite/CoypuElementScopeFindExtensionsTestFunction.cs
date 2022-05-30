@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class CoypuElementScopeFindExtensionsTestFunction : WxeFunction
   {
     public CoypuElementScopeFindExtensionsTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("CoypuElementScopeFindExtensionsTest.aspx");
+    private WxeStep Step1 = new WxePageStep("CoypuElementScopeFindExtensionsTest.aspx");
   }
 }

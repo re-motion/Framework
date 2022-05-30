@@ -28,105 +28,105 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     public void IsEnabled_WithLevelAll ()
     {
       Logger.Repository.Threshold = Level.All;
-      Assert.That (Log.IsDebugEnabled(), Is.True);
+      Assert.That(Log.IsDebugEnabled(), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelDebug ()
     {
-      SetLoggingThreshold (Level.Debug);
-      Assert.That (Log.IsDebugEnabled(), Is.True);
+      SetLoggingThreshold(Level.Debug);
+      Assert.That(Log.IsDebugEnabled(), Is.True);
     }
 
     [Test]
     public void IsEnabled_WithLevelWarn ()
     {
-      SetLoggingThreshold (Level.Warn);
-      Assert.That (Log.IsDebugEnabled(), Is.False);
+      SetLoggingThreshold(Level.Warn);
+      Assert.That(Log.IsDebugEnabled(), Is.False);
     }
 
     [Test]
     public void Logger_Log ()
     {
-      SetLoggingThreshold (Level.Debug);
-      Logger.Log (GetType (), Level.Debug, "The message.", null);
+      SetLoggingThreshold(Level.Debug);
+      Logger.Log(GetType(), Level.Debug, "The message.", null);
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
-      Assert.That (events[0].Level, Is.EqualTo (Level.Debug));
-      Assert.That (events[0].MessageObject, Is.EqualTo ("The message."));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
+      Assert.That(events[0].Level, Is.EqualTo(Level.Debug));
+      Assert.That(events[0].MessageObject, Is.EqualTo("The message."));
     }
 
     [Test]
     public void Test_WithMessageEventIDAndException ()
     {
-      Exception exception = new Exception ();
-      SetLoggingThreshold (Level.Debug);
+      Exception exception = new Exception();
+      SetLoggingThreshold(Level.Debug);
 
-      Log.Debug (2, (object) "The message.", exception);
+      Log.Debug(2, (object)"The message.", exception);
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject, Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo (2));
-      Assert.That (loggingEvent.ExceptionObject, Is.SameAs (exception));
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(2));
+      Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
     public void Test_WithMessageAndEventID ()
     {
-      SetLoggingThreshold (Level.Debug);
+      SetLoggingThreshold(Level.Debug);
 
-      Log.Debug (1, (object) "The message.");
+      Log.Debug(1, (object)"The message.");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject, Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo (1));
-      Assert.That (loggingEvent.ExceptionObject, Is.Null);
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(1));
+      Assert.That(loggingEvent.ExceptionObject, Is.Null);
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
     public void Test_WithMessageAndException ()
     {
-      Exception exception = new Exception ();
-      SetLoggingThreshold (Level.Debug);
+      Exception exception = new Exception();
+      SetLoggingThreshold(Level.Debug);
 
-      Log.Debug ((object) "The message.", exception);
+      Log.Debug((object)"The message.", exception);
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject, Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.ExceptionObject, Is.SameAs (exception));
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
+      Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
     public void Test_WithMessage ()
     {
-      SetLoggingThreshold (Level.Debug);
+      SetLoggingThreshold(Level.Debug);
 
-      Log.Debug ((object) "The message.");
+      Log.Debug((object)"The message.");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject, Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.ExceptionObject, Is.Null);
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject, Is.EqualTo("The message."));
+      Assert.That(loggingEvent.ExceptionObject, Is.Null);
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
@@ -134,81 +134,81 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.Debug (1, (object) "The message.");
+      Log.Debug(1, (object)"The message.");
 
-      Assert.That (GetLoggingEvents (), Is.Empty);
+      Assert.That(GetLoggingEvents(), Is.Empty);
     }
 
     [Test]
     public void Test_FormatWithMessageAndEventIDAndException ()
     {
-      Exception exception = new Exception ();
-      SetLoggingThreshold (Level.Debug);
+      Exception exception = new Exception();
+      SetLoggingThreshold(Level.Debug);
 
-      Log.DebugFormat (1, exception, "{0} {1}", "The", "message.");
+      Log.DebugFormat(1, exception, "{0} {1}", "The", "message.");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo (1));
-      Assert.That (loggingEvent.ExceptionObject, Is.SameAs (exception));
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(1));
+      Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
     public void Test_FormatWithMessageAndEventID ()
     {
-      SetLoggingThreshold (Level.Debug);
+      SetLoggingThreshold(Level.Debug);
 
-      Log.DebugFormat (1, "{0} {1}", "The", "message.");
+      Log.DebugFormat(1, "{0} {1}", "The", "message.");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.Properties["EventID"], Is.EqualTo (1));
-      Assert.That (loggingEvent.ExceptionObject, Is.Null);
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
+      Assert.That(loggingEvent.Properties["EventID"], Is.EqualTo(1));
+      Assert.That(loggingEvent.ExceptionObject, Is.Null);
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
     public void Test_FormatWithMessageAndException ()
     {
-      Exception exception = new Exception ();
-      SetLoggingThreshold (Level.Debug);
+      Exception exception = new Exception();
+      SetLoggingThreshold(Level.Debug);
 
-      Log.DebugFormat (exception, "{0} {1}", "The", "message.");
+      Log.DebugFormat(exception, "{0} {1}", "The", "message.");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.ExceptionObject, Is.SameAs (exception));
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
+      Assert.That(loggingEvent.ExceptionObject, Is.SameAs(exception));
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
     public void Test_FormatWithMessage ()
     {
-      SetLoggingThreshold (Level.Debug);
+      SetLoggingThreshold(Level.Debug);
 
-      Log.DebugFormat (1, "{0} {1}", "The", "message.");
+      Log.DebugFormat(1, "{0} {1}", "The", "message.");
 
-      LoggingEvent[] events = GetLoggingEvents ();
-      Assert.That (events.Length, Is.EqualTo (1));
+      LoggingEvent[] events = GetLoggingEvents();
+      Assert.That(events.Length, Is.EqualTo(1));
       LoggingEvent loggingEvent = events[0];
-      Assert.That (loggingEvent.Level, Is.EqualTo (Level.Debug));
-      Assert.That (loggingEvent.MessageObject.ToString (), Is.EqualTo ("The message."));
-      Assert.That (loggingEvent.ExceptionObject, Is.Null);
-      Assert.That (loggingEvent.Repository, Is.SameAs (Logger.Repository));
-      Assert.That (loggingEvent.LoggerName, Is.EqualTo (Logger.Name));
+      Assert.That(loggingEvent.Level, Is.EqualTo(Level.Debug));
+      Assert.That(loggingEvent.MessageObject.ToString(), Is.EqualTo("The message."));
+      Assert.That(loggingEvent.ExceptionObject, Is.Null);
+      Assert.That(loggingEvent.Repository, Is.SameAs(Logger.Repository));
+      Assert.That(loggingEvent.LoggerName, Is.EqualTo(Logger.Name));
     }
 
     [Test]
@@ -216,9 +216,9 @@ namespace Remotion.UnitTests.Logging.LogExtensionsTests
     {
       Logger.Repository.Threshold = Level.Off;
 
-      Log.DebugFormat (1, "{0} {1}", "The", "message.");
+      Log.DebugFormat(1, "{0} {1}", "The", "message.");
 
-      Assert.That (GetLoggingEvents (), Is.Empty);
+      Assert.That(GetLoggingEvents(), Is.Empty);
     }
   }
 }

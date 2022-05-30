@@ -30,10 +30,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new TreeViewControlObject (newControlObjectContext);
+      return new TreeViewControlObject(newControlObjectContext);
     }
   }
 }

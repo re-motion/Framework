@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -30,17 +29,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   {
     private Exception CreateException ()
     {
-      return new InvalidOperationException ("The transaction can no longer be used because it has been discarded.");
+      return new InvalidOperationException("The transaction can no longer be used because it has been discarded.");
     }
 
     public void TransactionInitialize (ClientTransaction clientTransaction)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
     public void TransactionDiscard (ClientTransaction clientTransaction)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
     public void SubTransactionCreating (ClientTransaction clientTransaction)
@@ -50,7 +49,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void SubTransactionInitialize (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
     public void SubTransactionCreated (ClientTransaction clientTransaction, ClientTransaction subTransaction)
@@ -63,29 +62,29 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
       throw CreateException();
     }
 
-    public void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
-    {
-      throw CreateException ();
-    }
-
-    public void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       throw CreateException();
     }
 
-    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
-    public void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      throw CreateException ();
+      throw CreateException();
+    }
+
+    public void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
+    {
+      throw CreateException();
     }
 
     public void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
@@ -103,17 +102,17 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       throw CreateException();
     }
 
-    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject? domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       throw CreateException();
     }
 
-    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       throw CreateException();
     }
@@ -123,24 +122,24 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
     public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
@@ -150,30 +149,30 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public IEnumerable<T> FilterCustomQueryResult<T> (ClientTransaction clientTransaction, IQuery query, IEnumerable<T> results)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
-    public void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       throw CreateException();
     }
 
-    public void TransactionCommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
-    {
-      throw CreateException ();
-    }
-
-    public void TransactionCommitted (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionCommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
       throw CreateException();
     }
 
-    public void TransactionRollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       throw CreateException();
     }
 
-    public void TransactionRolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
+    {
+      throw CreateException();
+    }
+
+    public void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       throw CreateException();
     }
@@ -200,7 +199,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
     public void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container)
@@ -213,14 +212,14 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    public void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
     public void VirtualRelationEndPointStateUpdated (ClientTransaction clientTransaction, RelationEndPointID endPointID, bool? newEndPointChangeState)
     {
-      throw CreateException ();
+      throw CreateException();
     }
 
     bool INullObject.IsNull

@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins
@@ -38,10 +39,10 @@ namespace Remotion.Mixins
     /// This method cannot be used with mixins that have been configured as open generic type definitions. Use the <see cref="Get(Type, object)">
     /// non-generic</see> variant instead.
     /// </remarks>
-    public static TMixin Get<TMixin> (object mixinTarget) where TMixin : class
+    public static TMixin? Get<TMixin> (object mixinTarget) where TMixin : class
     {
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
-      return (TMixin) Get (typeof (TMixin), mixinTarget);
+      ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
+      return (TMixin?)Get(typeof(TMixin), mixinTarget);
     }
 
     /// <summary>
@@ -57,34 +58,34 @@ namespace Remotion.Mixins
     /// This method can also be used with mixins that have been configured as open generic type definitions. Use the open generic type definition
     /// to retrieve them, but be prepared to get an instance of a specialized (closed) generic type back.
     /// </remarks>
-    public static object Get (Type mixinType, object mixinTarget)
+    public static object? Get (Type mixinType, object mixinTarget)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("mixinTarget", mixinTarget);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinTarget", mixinTarget);
 
       var castMixinTarget = mixinTarget as IMixinTarget;
       if (castMixinTarget != null)
       {
-        return FindMixin (castMixinTarget, mixinType);
+        return FindMixin(castMixinTarget, mixinType);
       }
       return null;
     }
 
-    private static object FindMixin (IMixinTarget mixinTarget, Type mixinType)
+    private static object? FindMixin (IMixinTarget mixinTarget, Type mixinType)
     {
-      object mixin = null;
+      object? mixin = null;
       foreach (var potentialMixin in mixinTarget.Mixins)
       {
-        if (IsTypeMatch (potentialMixin.GetType (), mixinType))
+        if (IsTypeMatch(potentialMixin.GetType(), mixinType))
         {
           if (mixin != null)
           {
-            string message = string.Format (
+            string message = string.Format(
                 "Both mixins '{0}' and '{1}' match the given type '{2}'.",
-                mixin.GetType ().FullName,
-                potentialMixin.GetType ().FullName,
+                mixin.GetType().GetFullNameSafe(),
+                potentialMixin.GetType().GetFullNameSafe(),
                 mixinType.Name);
-            throw new AmbiguousMatchException (message);
+            throw new AmbiguousMatchException(message);
           }
 
           mixin = potentialMixin;
@@ -96,10 +97,10 @@ namespace Remotion.Mixins
 
     private static bool IsTypeMatch (Type potentialMixinType, Type searchedMixinType)
     {
-      return searchedMixinType.IsAssignableFrom (potentialMixinType)
+      return searchedMixinType.IsAssignableFrom(potentialMixinType)
           || (searchedMixinType.IsGenericTypeDefinition
               && potentialMixinType.IsGenericType
-              && potentialMixinType.GetGenericTypeDefinition () == searchedMixinType);
+              && potentialMixinType.GetGenericTypeDefinition() == searchedMixinType);
     }
   }
 
@@ -160,7 +161,7 @@ namespace Remotion.Mixins
       where TNext: class
   {
     [NonSerialized]
-    private TNext _next;
+    private TNext? _next;
 
     /// <summary>
     /// Provides a way to call the next or base implementation from member overrides.
@@ -192,19 +193,19 @@ namespace Remotion.Mixins
       get
       {
         if (_next == null)
-          throw new InvalidOperationException ("Mixin has not been initialized yet.");
+          throw new InvalidOperationException("Mixin has not been initialized yet.");
         return _next;
       }
     }
 
-    void IInitializableMixin.Initialize (object target, object next, bool deserialization)
+    void IInitializableMixin.Initialize (object target, object? next, bool deserialization)
     {
-      _target = (TTarget) target;
-      _next = (TNext) next;
+      _target = (TTarget)target;
+      _next = (TNext?)next;
       if (deserialization)
-        OnDeserialized ();
+        OnDeserialized();
       else
-        OnInitialized ();
+        OnInitialized();
     }
   }
 
@@ -254,8 +255,9 @@ namespace Remotion.Mixins
   public class Mixin<TTarget> : IInitializableMixin
       where TTarget: class
   {
+    // TODO RM-7688 Should be private
     [NonSerialized]
-    internal TTarget _target;
+    internal TTarget? _target;
 
     /// <summary>
     /// Gets a reference to the concrete mixed object.
@@ -278,7 +280,7 @@ namespace Remotion.Mixins
       get
       {
         if (_target == null)
-          throw new InvalidOperationException ("Mixin has not been initialized yet.");
+          throw new InvalidOperationException("Mixin has not been initialized yet.");
         return _target;
       }
     }
@@ -286,7 +288,7 @@ namespace Remotion.Mixins
     /// <summary>
     /// Called when the mixin has been initialized and its properties can be safely accessed.
     /// </summary>
-    protected virtual void OnInitialized()
+    protected virtual void OnInitialized ()
     {
       // nothing
     }
@@ -299,9 +301,9 @@ namespace Remotion.Mixins
       // nothing
     }
 
-    void IInitializableMixin.Initialize (object target, object next, bool deserialization)
+    void IInitializableMixin.Initialize (object target, object? next, bool deserialization)
     {
-      _target = (TTarget) target;
+      _target = (TTarget)target;
       if (deserialization)
         OnDeserialized();
       else

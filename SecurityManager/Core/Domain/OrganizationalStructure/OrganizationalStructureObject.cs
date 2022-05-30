@@ -26,28 +26,28 @@ using Remotion.Security;
 
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
-  [PermanentGuid ("8DBA42FE-ECD9-4b10-8F79-48E7A1119414")]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.OrganizationalStructureObject")]
+  [PermanentGuid("8DBA42FE-ECD9-4b10-8F79-48E7A1119414")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.OrganizationalStructureObject")]
   [Serializable]
   public abstract class OrganizationalStructureObject : BaseSecurityManagerObject, ISecurableObject, IDomainObjectSecurityContextFactory
   {
-    private IObjectSecurityStrategy _securityStrategy;
+    private IObjectSecurityStrategy? _securityStrategy;
 
     protected OrganizationalStructureObject ()
     {
     }
 
-    protected virtual string GetOwningTenant ()
+    protected virtual string? GetOwningTenant ()
     {
       return null;
     }
 
-    protected virtual string GetOwner ()
+    protected virtual string? GetOwner ()
     {
       return null;
     }
 
-    protected virtual string GetOwningGroup ()
+    protected virtual string? GetOwningGroup ()
     {
       return null;
     }
@@ -72,17 +72,17 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     bool IDomainObjectSecurityContextFactory.IsInvalid
     {
-      get { return State == StateType.Invalid; }
+      get { return State.IsInvalid; }
     }
 
     bool IDomainObjectSecurityContextFactory.IsNew
     {
-      get { return State == StateType.New; }
+      get { return State.IsNew; }
     }
 
     bool IDomainObjectSecurityContextFactory.IsDeleted
     {
-      get { return State == StateType.Deleted; }
+      get { return State.IsDeleted; }
     }
 
     IObjectSecurityStrategy ISecurableObject.GetSecurityStrategy ()
@@ -95,8 +95,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected virtual IObjectSecurityStrategy CreateSecurityStrategy ()
     {
-      return new DomainObjectSecurityStrategyDecorator (
-          ObjectSecurityStrategy.Create (this, InvalidationToken.Create()),
+      return new DomainObjectSecurityStrategyDecorator(
+          ObjectSecurityStrategy.Create(this, InvalidationToken.Create()),
           this,
           RequiredSecurityForStates.None);
     }

@@ -121,6 +121,6 @@
     <value>&lt;p&gt;Vous êtes sur le point de quitter la page.&lt;/p&gt;&lt;p&gt;Vous ne pouvez plus envoyer aucune saisie au serveur.&lt;/p&gt;</value>
   </data>
   <data name="Remotion.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage" xml:space="preserve">
-    <value>Impossible de naviguer avec les boutons Suivant et Précédent.</value>
+    <value>Ne dupliquez pas ou ne rechargez pas les onglets et n'utilisez pas les boutons «Suivant» et «Précédent».</value>
   </data>
 </root>

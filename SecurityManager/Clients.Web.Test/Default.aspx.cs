@@ -37,12 +37,12 @@ namespace Remotion.SecurityManager.Clients.Web.Test
 
     protected SecurityManagerHttpApplication ApplicationInstance
     {
-      get { return (SecurityManagerHttpApplication) Context.ApplicationInstance; }
+      get { return (SecurityManagerHttpApplication)Context.ApplicationInstance; }
     }
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       _clientTransaction = ClientTransaction.CreateRootTransaction();
       _clientTransaction.EnterDiscardingScope();
@@ -53,8 +53,8 @@ namespace Remotion.SecurityManager.Clients.Web.Test
           var users = (from u in QueryFactory.CreateLinqQuery<SecurityManagerUser>() orderby u.UserName select u).ToArray();
           var user = SecurityManagerPrincipal.Current.User;
 
-          UsersField.SetBusinessObjectList (users);
-          UsersField.LoadUnboundValue (user, false);
+          UsersField.SetBusinessObjectList(users);
+          UsersField.LoadUnboundValue(user, false);
         }
       }
     }
@@ -62,12 +62,12 @@ namespace Remotion.SecurityManager.Clients.Web.Test
     protected override void OnPreRender (EventArgs e)
     {
       _clientTransaction.EnterDiscardingScope();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     protected override void OnUnload (EventArgs e)
     {
-      base.OnUnload (e);
+      base.OnUnload(e);
       ClientTransactionScope.ResetActiveScope();
     }
 
@@ -75,29 +75,29 @@ namespace Remotion.SecurityManager.Clients.Web.Test
     {
       ISecurityProvider provider = SafeServiceLocator.Current.GetInstance<ISecurityProvider>();
       SecurityContext context =
-          SecurityContext.Create (
-              typeof (File),
+          SecurityContext.Create(
+              typeof(File),
               "1A",
               "{00000004-1000-0000-0000-000000000007}",
               string.Empty,
               new Dictionary<string, Enum>(),
               new Enum[] { DomainAbstractRoles.Creator });
-      ISecurityPrincipal user = new SecurityPrincipal ("1A", null, null, null);
-      AccessType[] accessTypes = provider.GetAccess (context, user);
+      ISecurityPrincipal user = new SecurityPrincipal("1A", null, null, null);
+      AccessType[] accessTypes = provider.GetAccess(context, user);
     }
 
     protected void UsersField_SelectionChanged (object sender, EventArgs e)
     {
-      var user = (SecurityManagerUser) UsersField.Value;
+      var user = (SecurityManagerUser)UsersField.Value;
       if (user == null)
       {
-        ApplicationInstance.SetCurrentPrincipal (SecurityManagerPrincipal.Null);
+        ApplicationInstance.SetCurrentPrincipal(SecurityManagerPrincipal.Null);
       }
       else
       {
         var securityManagerPrincipal =
-            ApplicationInstance.SecurityManagerPrincipalFactory.Create (user.Tenant.GetHandle(), user.GetHandle(), null);
-        ApplicationInstance.SetCurrentPrincipal (securityManagerPrincipal);
+            ApplicationInstance.SecurityManagerPrincipalFactory.Create(user.Tenant.GetHandle(), user.GetHandle(), null);
+        ApplicationInstance.SetCurrentPrincipal(securityManagerPrincipal);
       }
     }
   }

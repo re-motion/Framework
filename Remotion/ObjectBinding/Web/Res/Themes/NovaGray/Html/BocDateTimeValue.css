@@ -35,6 +35,11 @@ span.bocDateValue.disabled
 {
 }
 
+.mozilla span.bocDateInputWrapper
+{
+  right: 2px;
+}
+
 span.bocDateInputWrapper
 {
   position: absolute;
@@ -55,16 +60,34 @@ span.bocDateTimeValue span.bocDate12HoursWithSeconds
   right: 9.0em;
 }
 
+.mozilla span.bocDateTimeValue span.bocDate24HoursWithSeconds,
+.mozilla span.bocDateTimeValue span.bocDate12HoursWithSeconds
+{
+  right: calc(9.0em + 2px);
+}
+
 span.bocDateTimeValue span.bocDate24Hours,
 span.bocDateTimeValue span.bocDate12Hours
 {
   right: 7.4em;
 }
 
+.mozilla span.bocDateTimeValue span.bocDate24Hours,
+.mozilla span.bocDateTimeValue span.bocDate12Hours
+{
+  right: calc(7.4em + 4px);
+}
+
 span.bocDateValue span.bocDate24Hours,
 span.bocDateValue span.bocDate12Hours
 {
   right: 2.2em;
+}
+
+.mozilla span.bocDateValue span.bocDate24Hours,
+.mozilla span.bocDateValue span.bocDate12Hours
+{
+  right: calc(2.2em + 2px);
 }
 
 span.bocDateInputWrapper input
@@ -108,6 +131,26 @@ span.bocDateValue.readOnly span[tabindex]:last-child
   /*padding-bottom: 0.2em;*/
 }
 
+span.bocDateTimeValue.readOnly span[tabindex]:empty,
+span.bocDateValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  min-height: 1.5em;
+  vertical-align: -0.2em;
+}
+
+span.bocDateTimeValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: calc(50% - 2px);
+}
+
+span.bocDateValue.readOnly span[tabindex]:empty
+{
+  /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
+  width: 100%;
+}
+
 a.bocPicker24HoursWithSeconds,
 a.bocPicker12HoursWithSeconds,
 a.bocPicker24Hours,
@@ -123,10 +166,22 @@ span.bocDateTimeValue a.bocPicker12HoursWithSeconds
   right: 6.7em;
 }
 
+.mozilla span.bocDateTimeValue a.bocPicker24HoursWithSeconds,
+.mozilla span.bocDateTimeValue a.bocPicker12HoursWithSeconds
+{
+  right: calc(6.7em + 2px);
+}
+
 span.bocDateTimeValue a.bocPicker24Hours,
 span.bocDateTimeValue a.bocPicker12Hours
 {
   right: 5.2em;
+}
+
+.mozilla span.bocDateTimeValue a.bocPicker24Hours,
+.mozilla span.bocDateTimeValue a.bocPicker12Hours
+{
+  right: calc(5.2em + 2px);
 }
 
 span.bocDateValue a.bocPicker24Hours,
@@ -140,6 +195,9 @@ span.bocDateValue a img
 {
   border: 0;
   text-decoration: none;
+  height: 20px;
+  width: 20px;
+  margin-bottom: -5px;
 }
 
 span.bocDateTimeValue.disabled a,
@@ -161,4 +219,11 @@ span.bocTimeInputWrapper input
 {
   height: 1.2em;
   line-height: 1em;
+}
+
+.blink span.bocDateInputWrapper input,
+.blink span.bocTimeInputWrapper input
+{
+  padding-left: 1px;
+  padding-right: 1px;
 }

@@ -22,16 +22,16 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   /// <summary>
   /// Validates that a foreign key is not defined for a virtual relation end point.
   /// </summary>
-  public class 
+  public class
     ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule : IRelationDefinitionValidatorRule
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
       if (relationEndPointDefinition.IsAnonymous)
         return MappingValidationResult.CreateValidResult();
@@ -50,13 +50,15 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
       if (propertyInfo == null)
         return MappingValidationResult.CreateValidResult();
 
-      var relationAttribute = propertyInfo.GetCustomAttribute<DBBidirectionalRelationAttribute> (true);
-      if (relationAttribute != null && relationAttribute.ContainsForeignKey && ReflectionUtility.IsObjectList (propertyInfo.PropertyType))
+      var relationAttribute = propertyInfo.GetCustomAttribute<DBBidirectionalRelationAttribute>(true);
+      if (relationAttribute != null
+          && relationAttribute.ContainsForeignKey
+          && (ReflectionUtility.IsObjectList(propertyInfo.PropertyType) || ReflectionUtility.IsIObjectList(propertyInfo.PropertyType)))
       {
-        return MappingValidationResult.CreateInvalidResultForProperty (
+        return MappingValidationResult.CreateInvalidResultForProperty(
             propertyInfo,
             "Only relation end points with a property type of '{0}' can contain the foreign key.",
-            typeof (DomainObject).Name);
+            typeof(DomainObject).Name);
       }
 
       return MappingValidationResult.CreateValidResult();

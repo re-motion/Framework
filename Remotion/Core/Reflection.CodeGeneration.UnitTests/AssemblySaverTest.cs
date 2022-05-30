@@ -26,38 +26,52 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
   [TestFixture]
   public class AssemblySaverTest
   {
+    [SetUp]
+    public void SetUp ()
+    {
+#if !FEATURE_ASSEMBLYBUILDER_SAVE
+      Assert.Ignore(".NET does not support assembly persistence.");
+#endif
+    }
+
     [Test]
     public void SaveAssemblyNoGeneratedTypes ()
     {
-      ModuleScope scope = new ModuleScope (true);
-      string[] paths = AssemblySaver.SaveAssemblies (scope);
-      Assert.That (paths.Length, Is.EqualTo (0));
+      ModuleScope scope = new ModuleScope(true);
+#pragma warning disable 618
+      string[] paths = AssemblySaver.SaveAssemblies(scope);
+#pragma warning restore 618
+      Assert.That(paths.Length, Is.EqualTo(0));
     }
 
     [Test]
     public void SaveAssemblySigned ()
     {
-      ModuleScope scope = new ModuleScope (true);
-      CustomClassEmitter emitter = new CustomClassEmitter (scope, "SignedType", typeof (object));
-      emitter.BuildType ();
-      string[] paths = AssemblySaver.SaveAssemblies (scope);
-      Assert.That (paths.Length, Is.EqualTo (1));
-      Assert.That (paths[0], Is.EqualTo (Path.Combine (Environment.CurrentDirectory, scope.StrongNamedModuleName)));
-      File.Delete (paths[0]);
-      File.Delete (paths[0].Replace (".dll", ".pdb"));
+      ModuleScope scope = new ModuleScope(true);
+      CustomClassEmitter emitter = new CustomClassEmitter(scope, "SignedType", typeof(object));
+      emitter.BuildType();
+#pragma warning disable 618
+      string[] paths = AssemblySaver.SaveAssemblies(scope);
+#pragma warning restore 618
+      Assert.That(paths.Length, Is.EqualTo(1));
+      Assert.That(paths[0], Is.EqualTo(Path.Combine(Environment.CurrentDirectory, scope.StrongNamedModuleName)));
+      File.Delete(paths[0]);
+      File.Delete(paths[0].Replace(".dll", ".pdb"));
     }
 
     [Test]
     public void SaveAssemblyUnsigned ()
     {
-      ModuleScope scope = new ModuleScope (true);
-      CustomClassEmitter emitter = new CustomClassEmitter (scope, "UnsignedType", typeof (object), Type.EmptyTypes, TypeAttributes.Public, true);
-      emitter.BuildType ();
-      string[] paths = AssemblySaver.SaveAssemblies (scope);
-      Assert.That (paths.Length, Is.EqualTo (1));
-      Assert.That (paths[0], Is.EqualTo (Path.Combine (Environment.CurrentDirectory, scope.WeakNamedModuleName)));
-      File.Delete (paths[0]);
-      File.Delete (paths[0].Replace (".dll", ".pdb"));
+      ModuleScope scope = new ModuleScope(true);
+      CustomClassEmitter emitter = new CustomClassEmitter(scope, "UnsignedType", typeof(object), Type.EmptyTypes, TypeAttributes.Public, true);
+      emitter.BuildType();
+#pragma warning disable 618
+      string[] paths = AssemblySaver.SaveAssemblies(scope);
+#pragma warning restore 618
+      Assert.That(paths.Length, Is.EqualTo(1));
+      Assert.That(paths[0], Is.EqualTo(Path.Combine(Environment.CurrentDirectory, scope.WeakNamedModuleName)));
+      File.Delete(paths[0]);
+      File.Delete(paths[0].Replace(".dll", ".pdb"));
     }
   }
 }

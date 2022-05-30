@@ -15,16 +15,18 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
 {
   /// <summary>
   /// Provides an API for classes creating <see cref="IRelationEndPoint"/> instances.
   /// </summary>
-  public interface IRelationEndPointFactory
+  public interface IRelationEndPointFactory : IFlattenedSerializable
   {
     IRealObjectEndPoint CreateRealObjectEndPoint (RelationEndPointID endPointID, DataContainer dataContainer);
     IVirtualObjectEndPoint CreateVirtualObjectEndPoint (RelationEndPointID endPointID);
-    ICollectionEndPoint CreateCollectionEndPoint (RelationEndPointID endPointID);
+    IVirtualCollectionEndPoint CreateVirtualCollectionEndPoint (RelationEndPointID endPointID);
+    IDomainObjectCollectionEndPoint CreateDomainObjectCollectionEndPoint (RelationEndPointID endPointID);
   }
 }

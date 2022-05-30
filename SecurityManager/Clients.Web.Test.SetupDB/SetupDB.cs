@@ -28,8 +28,8 @@ public class SetupDB
   [STAThread]
   public static void Main (string[] args)
   {
-    SetupDB setup = new SetupDB ();
-    setup.PerformSetup (args);
+    SetupDB setup = new SetupDB();
+    setup.PerformSetup(args);
   }
 
   private bool _setupDatabase = false;
@@ -43,12 +43,12 @@ public class SetupDB
     {
       try
       {
-        ParseArguments (args);
+        ParseArguments(args);
       }
       catch (ApplicationException e)
       {
-        Console.Error.WriteLine ("Syntax error: {0}", e.Message);
-        Console.Error.WriteLine (
+        Console.Error.WriteLine("Syntax error: {0}", e.Message);
+        Console.Error.WriteLine(
           "Usage: SetupDB [/dbn:<databaseName>] [/s] [/l:t]"
           + "\nArguments:"
           + "\n /dbn   ... the database name to use (if not specified, the settings in app.config are used)"
@@ -65,8 +65,8 @@ public class SetupDB
 
       string databaseFilesPath = ConfigurationManager.AppSettings["DatabaseFilesPath"];
 
-      if (!Directory.Exists (databaseFilesPath))
-        Directory.CreateDirectory (databaseFilesPath);
+      if (!Directory.Exists(databaseFilesPath))
+        Directory.CreateDirectory(databaseFilesPath);
 
 
       string databaseSetupFilesPath = ConfigurationManager.AppSettings["DatabaseSetupFilesPath"];
@@ -84,8 +84,8 @@ public class SetupDB
           {
             connection.Open();
 
-            Console.WriteLine ("Ensure DB exists...");
-            DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "CreateDB.sql"), connection, _databaseName, databaseFilesPath);  
+            Console.WriteLine("Ensure DB exists...");
+            DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "CreateDB.sql"), connection, _databaseName, databaseFilesPath);
           }
         }
         catch (SqlException)
@@ -93,24 +93,24 @@ public class SetupDB
         }
       }
 
-      using (SqlConnection connection = new SqlConnection (connectionString))
+      using (SqlConnection connection = new SqlConnection(connectionString))
       {
         connection.Open();
 
         if (_setupDatabase)
         {
-          Console.WriteLine ("SetupDB...");
-          DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "TearDownDB.sql"), connection, _databaseName, databaseFilesPath);
-          DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "SecurityManagerSetupDB.sql"), connection, _databaseName, databaseFilesPath);
-          DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "SecurityManagerSetupConstraints.sql"), connection, _databaseName, databaseFilesPath);
-          DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "SecurityManagerSetupDBSpecialTables.sql"), connection, _databaseName, databaseFilesPath);
-          DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "SetupDB.sql"), connection, _databaseName, databaseFilesPath);
+          Console.WriteLine("SetupDB...");
+          DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "TearDownDB.sql"), connection, _databaseName, databaseFilesPath);
+          DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "SecurityManagerSetupDB.sql"), connection, _databaseName, databaseFilesPath);
+          DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "SecurityManagerSetupConstraints.sql"), connection, _databaseName, databaseFilesPath);
+          DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "SecurityManagerSetupDBSpecialTables.sql"), connection, _databaseName, databaseFilesPath);
+          DBUtility.ExecuteSqlFile(Path.Combine(databaseSetupFilesPath, "SetupDB.sql"), connection, _databaseName, databaseFilesPath);
         }
 
         if (_loadDataAction == LoadDataAction.Test)
         {
-          Console.WriteLine ("Load Data...");
-          DBUtility.LoadAllCsvFiles (ConfigurationManager.AppSettings["TestDataFilesPath"], true, connection);
+          Console.WriteLine("Load Data...");
+          DBUtility.LoadAllCsvFiles(ConfigurationManager.AppSettings["TestDataFilesPath"], true, connection);
         }
 
         if (_setupDatabase)
@@ -127,9 +127,9 @@ public class SetupDB
     }
     catch (Exception e)
     {
-      Console.WriteLine (e.Message);
+      Console.WriteLine(e.Message);
 
-      Console.WriteLine ("Press enter to continue.");
+      Console.WriteLine("Press enter to continue.");
       Console.ReadLine();
     }
   }
@@ -139,30 +139,30 @@ public class SetupDB
     Hashtable arguments = new Hashtable();
     foreach (string arg in args)
     {
-      if (arg.IndexOfAny (new char [] {'/', '-'}) != 0)
-        throw new ApplicationException ("Arguments must start with / or -");
+      if (arg.IndexOfAny(new char [] {'/', '-'}) != 0)
+        throw new ApplicationException("Arguments must start with / or -");
 
       string argname, argvalue;
-      int pos = arg.IndexOf (':');
+      int pos = arg.IndexOf(':');
       if (pos >= 0)
       {
-        argname = arg.Substring (1, pos-1).ToLower();
-        argvalue = arg.Substring (pos+1);
+        argname = arg.Substring(1, pos-1).ToLower();
+        argvalue = arg.Substring(pos+1);
       }
       else
       {
-        argname = arg.Substring (1).ToLower();
+        argname = arg.Substring(1).ToLower();
         argvalue = string.Empty;
       }
 
       if (argname != "s" && argname != "l" && argname != "dbn")
-        throw new ApplicationException ("Unknown argument name " + argname);
+        throw new ApplicationException("Unknown argument name " + argname);
 
-      arguments.Add (argname.ToLower(), argvalue);
+      arguments.Add(argname.ToLower(), argvalue);
     }
-    
+
     if (arguments["s"] == null && arguments["l"] == null)
-      throw new ApplicationException ("At least one of the following arguments must be specified: /s, /l.");
+      throw new ApplicationException("At least one of the following arguments must be specified: /s, /l.");
 
     if (arguments["s"] != null)
     {
@@ -173,19 +173,19 @@ public class SetupDB
     {
       switch (arguments["l"].ToString().ToLower())
       {
-        case "t": 
+        case "t":
           _loadDataAction = LoadDataAction.Test;
           break;
         default:
-          throw new ApplicationException ("invalid argument parameter \"" + arguments["l"].ToString() + "\" for parameter /l");
+          throw new ApplicationException("invalid argument parameter \"" + arguments["l"].ToString() + "\" for parameter /l");
       }
     }
 
     if (arguments["dbn"] != null)
-      _databaseName = arguments["dbn"].ToString ();
+      _databaseName = arguments["dbn"].ToString();
   }
 
-	private SetupDB()
+	private SetupDB ()
 	{
 	}
 }

@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Remotion.Utilities
 {
@@ -25,24 +26,24 @@ namespace Remotion.Utilities
   /// </summary>
   public static class ArrayUtility
   {
-    public static bool Contains (Array array, object value)
+    public static bool Contains (Array array, object? value)
     {
-      return Array.IndexOf (array, value) >= 0;
+      return Array.IndexOf(array, value) >= 0;
     }
 
-    public static bool IsNullOrEmpty (Array array)
+    public static bool IsNullOrEmpty ([NotNullWhen(false)] Array? array)
     {
       return (array == null) || (array.Length == 0);
     }
 
-    public static bool IsNullOrEmpty (ICollection collection)
+    public static bool IsNullOrEmpty ([NotNullWhen(false)] ICollection? collection)
     {
       return (collection == null) || (collection.Count == 0);
     }
 
     public static T[] Combine<T> (params T[][] arrays)
     {
-      ArgumentUtility.CheckNotNull ("arrays", arrays);
+      ArgumentUtility.CheckNotNull("arrays", arrays);
       if (arrays.Length == 0)
         return new T[0];
 
@@ -54,7 +55,7 @@ namespace Remotion.Utilities
       int start = 0;
       for (int i = 0; i < arrays.Length; ++i)
       {
-        arrays[i].CopyTo (result, start);
+        arrays[i].CopyTo(result, start);
         start += arrays[i].Length;
       }
       return result;
@@ -62,7 +63,7 @@ namespace Remotion.Utilities
 
     public static T[] Combine<T> (T[] array, T item)
     {
-      ArgumentUtility.CheckNotNull ("array", array);
+      ArgumentUtility.CheckNotNull("array", array);
       T[] result = new T[array.Length + 1];
       for (int i = 0; i < array.Length; ++i)
         result[i] = array[i];
@@ -72,7 +73,7 @@ namespace Remotion.Utilities
 
     public static T[] Combine<T> (T item, T[] array)
     {
-      ArgumentUtility.CheckNotNull ("array", array);
+      ArgumentUtility.CheckNotNull("array", array);
       T[] result = new T[array.Length + 1];
       result[0] = item;
       for (int i = 0; i < array.Length; ++i)
@@ -80,14 +81,15 @@ namespace Remotion.Utilities
       return result;
     }
 
-    public static TResult[] Convert<TSource, TResult> (ICollection<TSource> collection)
+    [return: NotNullIfNotNull("collection")]
+    public static TResult[]? Convert<TSource, TResult> (ICollection<TSource>? collection)
         where TResult: TSource
     {
       if (collection == null)
         return null;
 
-      TResult[] result = (TResult[]) Array.CreateInstance (typeof (TResult), collection.Count);
-      collection.CopyTo ((TSource[]) (Array) result, 0);
+      TResult[] result = (TResult[])Array.CreateInstance(typeof(TResult), collection.Count);
+      collection.CopyTo((TSource[])(Array)result, 0);
       return result;
     }
 
@@ -98,33 +100,34 @@ namespace Remotion.Utilities
       int[] lowerBounds = new int[rank];
       for (int dimension = 0; dimension < rank; ++dimension)
       {
-        lengths[dimension] = array.GetLength (dimension);
-        lowerBounds[dimension] = array.GetLowerBound (dimension);
+        lengths[dimension] = array.GetLength(dimension);
+        lowerBounds[dimension] = array.GetLowerBound(dimension);
       }
 
-      Array result = Array.CreateInstance (elementType, lengths, lowerBounds);
-      array.CopyTo (result, 0);
+      Array result = Array.CreateInstance(elementType, lengths, lowerBounds);
+      array.CopyTo(result, 0);
       return result;
     }
 
     public static Array Convert (ICollection collection, Type elementType)
     {
-      ArgumentUtility.CheckNotNull ("collection", collection);
-      ArgumentUtility.CheckNotNull ("elementType", elementType);
+      ArgumentUtility.CheckNotNull("collection", collection);
+      ArgumentUtility.CheckNotNull("elementType", elementType);
 
-      Array result = Array.CreateInstance (elementType, collection.Count);
-      collection.CopyTo (result, 0);
+      Array result = Array.CreateInstance(elementType, collection.Count);
+      collection.CopyTo(result, 0);
       return result;
     }
 
-    public static T[] Convert<T> (ICollection<T> collection)
+    [return: NotNullIfNotNull("collection")]
+    public static T[]? Convert<T> (ICollection<T> collection)
     {
-      return Convert<T, T> (collection);
+      return Convert<T, T>(collection);
     }
 
     public static T[] Insert<T> (T[] original, int index, T value)
     {
-      ArgumentUtility.CheckNotNull ("original", original);
+      ArgumentUtility.CheckNotNull("original", original);
       T[] result = new T[original.Length + 1];
 
       for (int i = 0; i < index; ++i)
@@ -140,9 +143,9 @@ namespace Remotion.Utilities
 
     public static T[] Skip<T> (T[] array, int num)
     {
-      ArgumentUtility.CheckNotNull ("array", array);
+      ArgumentUtility.CheckNotNull("array", array);
       if (num > array.Length)
-        throw new ArgumentOutOfRangeException ("num", "Number of items to skip greater than array size.");
+        throw new ArgumentOutOfRangeException("num", "Number of items to skip greater than array size.");
       T[] result = new T[array.Length - num];
       for (int i = num; i < array.Length; ++i)
         result[i - num] = array[i];

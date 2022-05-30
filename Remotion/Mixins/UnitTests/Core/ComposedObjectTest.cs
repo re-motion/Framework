@@ -28,33 +28,37 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Ctor ()
     {
-      var instance = ObjectFactory.Create<ClassDerivedFromComposedObject> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassDerivedFromComposedObject>(ParamList.Empty);
 
-      Assert.That (instance, Is.InstanceOf (typeof (ClassDerivedFromComposedObject)));
-      Assert.That (instance, Is.InstanceOf (typeof (ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
-      Assert.That (Mixin.Get<ClassDerivedFromComposedObject.Mixin1> (instance), Is.Not.Null);
+      Assert.That(instance, Is.InstanceOf(typeof(ClassDerivedFromComposedObject)));
+      Assert.That(instance, Is.InstanceOf(typeof(ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
+      Assert.That(Mixin.Get<ClassDerivedFromComposedObject.Mixin1>(instance), Is.Not.Null);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Type 'Remotion.Mixins.UnitTests.Core.TestDomain.ClassDerivedFromComposedObject' is not associated with the composed interface "
-        + "'IClassDerivedFromComposedObject'. You should instantiate the class via the ObjectFactory class or the NewObject method. If you manually "
-        + "created a mixin configuration, don't forget to add the composed interface.")]
     public void Ctor_ChecksObjectFactoryCreateUsed ()
     {
-      Dev.Null = new ClassDerivedFromComposedObject();
+      Assert.That(
+          () => new ClassDerivedFromComposedObject(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "Type 'Remotion.Mixins.UnitTests.Core.TestDomain.ClassDerivedFromComposedObject' is not associated with the composed interface "
+                  + "'IClassDerivedFromComposedObject'. You should instantiate the class via the ObjectFactory class or the NewObject method. If you manually "
+                  + "created a mixin configuration, don't forget to add the composed interface."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = 
-        "Type 'Remotion.Mixins.UnitTests.Core.TestDomain.ClassDerivedFromComposedObject' is not associated with the composed interface "
-        + "'IClassDerivedFromComposedObject'. You should instantiate the class via the ObjectFactory class or the NewObject method. If you manually "
-        + "created a mixin configuration, don't forget to add the composed interface.")]
     public void Ctor_ChecksComposedInterfaceAvailable ()
     {
-      using (MixinConfiguration.BuildNew ().EnterScope ())
+      using (MixinConfiguration.BuildNew().EnterScope())
       {
-        ObjectFactory.Create<ClassDerivedFromComposedObject> (ParamList.Empty);
+        Assert.That(
+            () => ObjectFactory.Create<ClassDerivedFromComposedObject>(ParamList.Empty),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo(
+                    "Type 'Remotion.Mixins.UnitTests.Core.TestDomain.ClassDerivedFromComposedObject' is not associated with the composed interface "
+                    + "'IClassDerivedFromComposedObject'. You should instantiate the class via the ObjectFactory class or the NewObject method. If you manually "
+                    + "created a mixin configuration, don't forget to add the composed interface."));
       }
     }
 
@@ -63,19 +67,19 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       ClassDerivedFromComposedObject.IClassDerivedFromComposedObject instance = ClassDerivedFromComposedObject.NewObject();
 
-      Assert.That (instance, Is.InstanceOf (typeof (ClassDerivedFromComposedObject)));
-      Assert.That (Mixin.Get<ClassDerivedFromComposedObject.Mixin1> (instance), Is.Not.Null);
+      Assert.That(instance, Is.InstanceOf(typeof(ClassDerivedFromComposedObject)));
+      Assert.That(Mixin.Get<ClassDerivedFromComposedObject.Mixin1>(instance), Is.Not.Null);
     }
 
     [Test]
     public void This ()
     {
-      var instance = ObjectFactory.Create<ClassDerivedFromComposedObject> (ParamList.Empty);
+      var instance = ObjectFactory.Create<ClassDerivedFromComposedObject>(ParamList.Empty);
 
       var result = instance.This;
 
-      Assert.That (result, Is.SameAs (instance));
-      Assert.That (result, Is.InstanceOf (typeof (ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
+      Assert.That(result, Is.SameAs(instance));
+      Assert.That(result, Is.InstanceOf(typeof(ClassDerivedFromComposedObject.IClassDerivedFromComposedObject)));
     }
 
     [Test]
@@ -83,9 +87,9 @@ namespace Remotion.Mixins.UnitTests.Core
     {
       var instance = ClassDerivedFromComposedObject.NewObject();
 
-      Assert.That (instance.MT(), Is.EqualTo ("ClassDerivedFromComposedObject.MT"));
-      Assert.That (instance.M1(), Is.EqualTo ("Mixin1.M1"));
-      Assert.That (instance.M2(), Is.EqualTo ("Mixin2.M2"));
+      Assert.That(instance.MT(), Is.EqualTo("ClassDerivedFromComposedObject.MT"));
+      Assert.That(instance.M1(), Is.EqualTo("Mixin1.M1"));
+      Assert.That(instance.M2(), Is.EqualTo("Mixin2.M2"));
     }
 
   }

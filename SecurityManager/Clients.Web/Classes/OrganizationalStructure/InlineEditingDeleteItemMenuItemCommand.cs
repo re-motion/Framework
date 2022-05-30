@@ -18,6 +18,7 @@
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Domain;
+using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
@@ -36,12 +37,13 @@ namespace Remotion.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
     public override void OnClick (BocMenuItem menuItem)
     {
-      base.OnClick (menuItem);
+      base.OnClick(menuItem);
 
-      var bocList = (BocList) OwnerControl;
+      Assertion.IsNotNull(OwnerControl, "OwnerControl != null when processing page lifecycle events.");
+      var bocList = (BocList)OwnerControl;
       foreach (TBusinessObject businessObject in bocList.GetSelectedBusinessObjects())
       {
-        bocList.RemoveRow (businessObject);
+        bocList.RemoveRow(businessObject);
         businessObject.Delete();
       }
       bocList.ClearSelectedRows();

@@ -51,6 +51,14 @@
             </remotion:DropDownMenu>
           </td>
           <td>
+            <%-- DropDownMenu with hidden title tests --%>
+            <remotion:DropDownMenu ID="MyDropDownMenuWithHiddenTitle" Mode="DropDownMenu" TitleText="Hidden Title" ShowTitle="False" style="width: 0;" runat="server">
+              <MenuItems>
+                <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="  " Icon-Url="~/Images/SampleIcon.gif" />
+              </MenuItems>
+            </remotion:DropDownMenu>
+          </td>
+          <td>
             <%-- ListMenu tests --%>
             <remotion:ListMenu ID="MyListMenu" LineBreaks="BetweenGroups" runat="server">
               <MenuItems>

@@ -46,16 +46,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void RaiseNewObjectCreatingEvent (Type type);
 
     // User event
-    void RaiseObjectsLoadingEvent (ReadOnlyCollection<ObjectID> objectIDs);
+    void RaiseObjectsLoadingEvent (IReadOnlyList<ObjectID> objectIDs);
     // User event
-    void RaiseObjectsLoadedEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseObjectsLoadedEvent (IReadOnlyList<DomainObject> domainObjects);
     // Infrastructure event
-    void RaiseObjectsNotFoundEvent (ReadOnlyCollection<ObjectID> objectIDs);
+    void RaiseObjectsNotFoundEvent (IReadOnlyList<ObjectID> objectIDs);
 
     // User event
-    void RaiseObjectsUnloadingEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects);
+    void RaiseObjectsUnloadingEvent (IReadOnlyList<DomainObject> unloadedDomainObjects);
     // User event
-    void RaiseObjectsUnloadedEvent (ReadOnlyCollection<DomainObject> unloadedDomainObjects);
+    void RaiseObjectsUnloadedEvent (IReadOnlyList<DomainObject> unloadedDomainObjects);
 
     // User event
     void RaiseObjectDeletingEvent (DomainObject domainObject);
@@ -65,31 +65,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     // User event
     void RaisePropertyValueReadingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess);
     // User event
-    void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess);
+    void RaisePropertyValueReadEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess);
     // User event
-    void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void RaisePropertyValueChangingEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
     // User event
-    void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue);
+    void RaisePropertyValueChangedEvent (DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue);
 
     // User event
     void RaiseRelationReadingEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
     // User event
-    void RaiseRelationReadEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess);
+    void RaiseRelationReadEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess);
     // User event
-    void RaiseRelationReadEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess);
+    void RaiseRelationReadEvent (DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess);
     // User event
     void RaiseRelationChangingEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
     // User event
     void RaiseRelationChangedEvent (
         DomainObject domainObject,
         IRelationEndPointDefinition relationEndPointDefinition,
-        DomainObject oldRelatedObject,
-        DomainObject newRelatedObject);
-    
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject);
+
     // User event
     QueryResult<T> RaiseFilterQueryResultEvent<T> (QueryResult<T> queryResult) where T : DomainObject;
     // Infrastructure event, may become user event if needed
@@ -97,16 +97,16 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     // User event
     void RaiseTransactionCommittingEvent (
-        ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
+        IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar);
     // User event
-    void RaiseTransactionCommitValidateEvent (ReadOnlyCollection<PersistableData> committedData);
+    void RaiseTransactionCommitValidateEvent (IReadOnlyList<PersistableData> committedData);
     // User event
-    void RaiseTransactionCommittedEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseTransactionCommittedEvent (IReadOnlyList<DomainObject> domainObjects);
 
     // User event
-    void RaiseTransactionRollingBackEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseTransactionRollingBackEvent (IReadOnlyList<DomainObject> domainObjects);
     // User event
-    void RaiseTransactionRolledBackEvent (ReadOnlyCollection<DomainObject> domainObjects);
+    void RaiseTransactionRolledBackEvent (IReadOnlyList<DomainObject> domainObjects);
 
     // Infrastructure event
     void RaiseRelationEndPointMapRegisteringEvent (IRelationEndPoint endPoint);
@@ -126,7 +126,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     void RaiseDataContainerMapUnregisteringEvent (DataContainer container);
 
     // Infrastructure event
-    void RaiseDataContainerStateUpdatedEvent (DataContainer container, StateType newDataContainerState);
+    void RaiseDataContainerStateUpdatedEvent (DataContainer container, DataContainerState newDataContainerState);
     // Infrastructure event
     void RaiseVirtualRelationEndPointStateUpdatedEvent (RelationEndPointID endPointID, bool? newEndPointChangeState);
   }

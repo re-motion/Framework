@@ -30,7 +30,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="ShortName" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="ShortName" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="ShortName">
       </remotion:BocTextValue>
     </td>
@@ -38,7 +38,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject"
+      <remotion:BocTextValue ID="NameField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true"
         PropertyIdentifier="Name">
       </remotion:BocTextValue>
     </td>
@@ -46,20 +46,14 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocAutoCompleteReferenceValue ID="GroupTypeField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="GroupType">
-      <PersistedCommand>
-        <remotion:BocCommand />
-      </PersistedCommand>
-    </remotion:BocAutoCompleteReferenceValue>
+      <remotion:BocAutoCompleteReferenceValue ID="GroupTypeField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="GroupType">
+      </remotion:BocAutoCompleteReferenceValue>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <remotion:BocAutoCompleteReferenceValue ID="ParentField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Parent">
-        <PersistedCommand>
-          <remotion:BocCommand />
-        </PersistedCommand>
+      <remotion:BocAutoCompleteReferenceValue ID="ParentField" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Parent">
       </remotion:BocAutoCompleteReferenceValue>
       <asp:CustomValidator ID="ParentValidator" runat="server" OnServerValidate="ParentValidator_ServerValidate" ControlToValidate="ParentField" Text="###" />
     </td>
@@ -67,7 +61,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocList ID="ChildrenList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Children" ReadOnly="True" Selection="Disabled" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
+      <remotion:BocList ID="ChildrenList" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Children" ReadOnly="True" Selection="Disabled" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
           <remotion:BocSimpleColumnDefinition ItemID="DisplayName" PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
@@ -81,7 +75,7 @@
   <tr>
     <td></td>
     <td>
-      <remotion:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
+      <remotion:BocList ID="RolesList" runat="server" DataSourceControl="CurrentObject" EnableOptionalValidators="true" PropertyIdentifier="Roles" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
           <remotion:BocSimpleColumnDefinition ItemID="User" PropertyPathIdentifier="User">
             <PersistedCommand>

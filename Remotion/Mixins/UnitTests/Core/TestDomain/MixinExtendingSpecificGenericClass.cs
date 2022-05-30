@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends(typeof (GenericClassExtendedByMixin<int>))]
+  [Extends(typeof(GenericClassExtendedByMixin<int>))]
   public class MixinExtendingSpecificGenericClass
   {
   }

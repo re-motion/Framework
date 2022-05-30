@@ -27,37 +27,40 @@ namespace Remotion.Reflection
     private static readonly ConcurrentDictionary<Tuple<Type, string>, Delegate> s_instanceMethodCache = new ConcurrentDictionary<Tuple<Type, string>, Delegate>();
 
     public MethodLookupInfo (string name, BindingFlags bindingFlags, Binder binder, CallingConventions callingConvention, ParameterModifier[] parameterModifiers)
-        : base (name, bindingFlags, binder, callingConvention, parameterModifiers)
+        : base(name, bindingFlags, binder, callingConvention, parameterModifiers)
     {
     }
 
     public MethodLookupInfo (string name, BindingFlags bindingFlags)
-        : base (name, bindingFlags)
+        : base(name, bindingFlags)
     {
     }
 
     public MethodLookupInfo (string name)
-        : base (name)
+        : base(name)
     {
     }
 
     public Delegate GetInstanceMethodDelegate (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
-      return s_instanceMethodCache.GetOrAdd (
-            new Tuple<Type, string> (delegateType, MemberName),
+      return s_instanceMethodCache.GetOrAdd(
+            new Tuple<Type, string>(delegateType, MemberName),
             key =>
             {
               var delegateTypeFromKey = key.Item1;
-              Type[] parameterTypes = GetSignature (delegateTypeFromKey).Item1;
+              Type[] parameterTypes = GetSignature(delegateTypeFromKey).Item1;
               if (parameterTypes.Length == 0)
-                throw new InvalidOperationException ("Method call delegate must have at least one argument for the current instance ('this' in C# or 'Me' in Visual Basic).");
+                throw new InvalidOperationException("Method call delegate must have at least one argument for the current instance ('this' in C# or 'Me' in Visual Basic).");
               Type definingType = parameterTypes[0];
-              parameterTypes = ArrayUtility.Skip (parameterTypes, 1);
-              MethodInfo method = definingType.GetMethod (MemberName, BindingFlags, Binder, CallingConvention, parameterTypes, ParameterModifiers);
+              parameterTypes = ArrayUtility.Skip(parameterTypes, 1);
+              MethodInfo? method = definingType.GetMethod(MemberName, BindingFlags, Binder, CallingConvention, parameterTypes, ParameterModifiers);
+              if (method == null)
+                throw new InvalidOperationException($"No method named '{MemberName}' could be found on '{definingType.GetFullNameSafe()}'.");
+
               // TODO: verify return type
-              return Delegate.CreateDelegate (delegateTypeFromKey, method);
+              return Delegate.CreateDelegate(delegateTypeFromKey, method);
             });
     }
   }

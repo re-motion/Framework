@@ -26,12 +26,12 @@
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="HrefCommandTab" Text="HrefCommandTabTitle">
         <PersistedCommand>
-          <remotion:NavigationCommand Type="Href" HrefCommand-Href="TabbedMenuTest.wxe"/>
+          <remotion:NavigationCommand Type="Href" HrefCommand-Href="TabbedMenuTest.wxe" AccessKey="A"/>
         </PersistedCommand>
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="WxeFunctionCommandTab" Text="WxeFunctionCommandTabTitle">
         <PersistedCommand>
-          <remotion:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="TabbedMenuTest"/>
+          <remotion:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="TabbedMenuTest" AccessKey="B"/>
         </PersistedCommand>
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="NoneCommandTab" Text="NoneCommandTabTitle">
@@ -46,7 +46,7 @@
               <remotion:NavigationCommand Type="Event"/>
             </PersistedCommand>
           </remotion:SubMenuTab>
-          <remotion:SubMenuTab ItemID="SubMenuTab2" Text="SubMenuTab2Title">
+          <remotion:SubMenuTab ItemID="SubMenuTab2" Text="SubMenuTab2Title" IsDisabled="True">
             <PersistedCommand>
               <remotion:NavigationCommand Type="Event"/>
             </PersistedCommand>
@@ -55,6 +55,11 @@
         </SubMenuTabs>
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="DisabledCommandTab" Text="DisabledCommandTabTitle" IsDisabled="True">
+        <PersistedCommand>
+          <remotion:NavigationCommand Type="None"/>
+        </PersistedCommand>
+      </remotion:MainMenuTab>
+      <remotion:MainMenuTab ItemID="VeryLongTab" Text="This is a very long text and should break if there is not enough space. But this text has to be reaaaaaaaaly long because it must be longer that the whole line of menu to break." Icon-Url="~/Images/SampleIcon.gif" IsDisabled="True">
         <PersistedCommand>
           <remotion:NavigationCommand Type="None"/>
         </PersistedCommand>

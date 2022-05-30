@@ -23,33 +23,33 @@ namespace Remotion.Mixins.Definitions
   public class MethodDefinition : MemberDefinitionBase
   {
     private readonly UniqueDefinitionCollection<Type, MethodDefinition> _overrides =
-        new UniqueDefinitionCollection<Type, MethodDefinition> (m => m.DeclaringClass.Type);
+        new UniqueDefinitionCollection<Type, MethodDefinition>(m => m.DeclaringClass.Type);
 
-    private MethodDefinition _base;
+    private MethodDefinition? _base;
 
     public MethodDefinition (MethodInfo memberInfo, ClassDefinitionBase declaringClass)
-        : base (memberInfo, declaringClass)
+        : base(memberInfo, declaringClass)
     {
     }
 
     public MethodInfo MethodInfo
     {
-      get { return (MethodInfo) MemberInfo; }
+      get { return (MethodInfo)MemberInfo; }
     }
 
-    public override MemberDefinitionBase BaseAsMember
+    public override MemberDefinitionBase? BaseAsMember
     {
       get { return _base; }
       protected internal set
       {
         if (value == null || value is MethodDefinition)
-          _base = (MethodDefinition) value;
+          _base = (MethodDefinition?)value;
         else
-          throw new ArgumentException ("Base must be MethodDefinition or null.", "value");
+          throw new ArgumentException("Base must be MethodDefinition or null.", "value");
       }
     }
 
-    public MethodDefinition Base
+    public MethodDefinition? Base
     {
       get { return _base; }
       protected internal set { BaseAsMember = value; }
@@ -65,29 +65,29 @@ namespace Remotion.Mixins.Definitions
       get { return _overrides; }
     }
 
-    protected override IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper()
+    protected override IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper ()
     {
       return new CovariantDefinitionCollectionWrapper<Type, MethodDefinition, MemberDefinitionBase>(_overrides);
     }
 
     internal override void AddOverride (MemberDefinitionBase member)
     {
-      ArgumentUtility.CheckNotNull ("member", member);
+      ArgumentUtility.CheckNotNull("member", member);
 
       var method = member as MethodDefinition;
       if (method == null)
       {
-        string message = string.Format ("Member {0} cannot override method {1} - it is not a method.", member.FullName, FullName);
-        throw new ArgumentException (message);
+        string message = string.Format("Member {0} cannot override method {1} - it is not a method.", member.FullName, FullName);
+        throw new ArgumentException(message);
       }
 
-      _overrides.Add (method);
+      _overrides.Add(method);
     }
 
     protected override void ChildSpecificAccept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
   }
 }

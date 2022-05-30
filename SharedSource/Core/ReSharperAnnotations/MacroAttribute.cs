@@ -52,6 +52,8 @@
 // SOFTWARE.
 // 
 
+#nullable disable
+
 using System;
 
 #pragma warning disable 1591
@@ -93,7 +95,7 @@ namespace JetBrains.Annotations
   /// }
   /// </code>
   /// </example>
-  [AttributeUsage (AttributeTargets.Parameter | AttributeTargets.Method, AllowMultiple = true)]
+  [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Method, AllowMultiple = true)]
   sealed partial class MacroAttribute : Attribute
   {
     /// <summary>
@@ -121,3 +123,5 @@ namespace JetBrains.Annotations
     public string Target { get; set; }
   }
 }
+
+#nullable restore

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
@@ -27,18 +28,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
   /// </summary>
   public interface IBocReferenceValueBase : IBusinessObjectBoundEditableWebControl, IBocRenderableControl, IControlWithResourceManager
   {
-    bool? HasValueEmbeddedInsideOptionsMenu { get; }
     bool HasOptionsMenu { get; }
+    bool ReserveOptionsMenuWidth { get; }
     DropDownMenu OptionsMenu { get; }
     Unit OptionsMenuWidth { get; }
-    BocCommand Command { get; }
+
     bool IsIconEnabled ();
-    new IBusinessObjectReferenceProperty Property { get; }
-    new IBusinessObjectWithIdentity Value { get; }
-    bool IsCommandEnabled ();
-    IconInfo GetIcon ();
-    string IconServicePath { get; }
-    string GetLabelText ();
+    new IBusinessObjectReferenceProperty? Property { get; }
+    new IBusinessObjectWithIdentity? Value { get; }
+
+    IconInfo? GetIcon ();
+
+    string? GetLabelText ();
 
     /// <summary>
     ///   Gets the style that you want to apply to the text box (edit mode) 
@@ -57,11 +58,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     Style LabelStyle { get; }
 
     string NullValueString { get; }
-    string BusinessObjectUniqueIdentifier { get; }
+    string? BusinessObjectUniqueIdentifier { get; }
 
     /// <summary>
     /// Gets the list of validation errors for this control.
     /// </summary>
-    IEnumerable<string> GetValidationErrors ();
+    IEnumerable<PlainTextString> GetValidationErrors ();
+
+    string? ControlServicePath { get; }
   }
 }

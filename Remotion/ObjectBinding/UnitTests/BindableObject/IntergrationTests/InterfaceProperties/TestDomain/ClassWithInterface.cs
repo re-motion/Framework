@@ -53,7 +53,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.IntergrationTests.Inte
     {
       get { return _explicitPropertyWithGetter; }
     }
-    
+
     public void SetExplicitPropertyWithGetter (string value)
     {
       _explicitPropertyWithGetter = value;

@@ -30,31 +30,31 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
     private readonly WxeReturnOptions _returnOptions;
 
     public PreparingRedirectToSubFunctionState (IExecutionStateContext executionStateContext, PreparingRedirectToSubFunctionStateParameters parameters, WxeReturnOptions returnOptions)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
-      ArgumentUtility.CheckNotNull ("returnOptions", returnOptions);
-      
+      ArgumentUtility.CheckNotNull("returnOptions", returnOptions);
+
       _returnOptions = returnOptions;
     }
 
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      string functionToken = context.GetFunctionTokenForExternalFunction (Parameters.SubFunction, _returnOptions.IsReturning);
-      string destinationUrl = context.GetDestinationUrlForExternalFunction (Parameters.SubFunction, functionToken, Parameters.PermaUrlOptions);
+      string functionToken = context.GetFunctionTokenForExternalFunction(Parameters.SubFunction, _returnOptions.IsReturning);
+      string destinationUrl = context.GetDestinationUrlForExternalFunction(Parameters.SubFunction, functionToken, Parameters.PermaUrlOptions);
 
       if (_returnOptions.IsReturning)
       {
         NameValueCollection callerUrlParameters = _returnOptions.CallerUrlParameters.Clone();
-        callerUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
-        Parameters.SubFunction.ReturnUrl = context.GetPermanentUrl (ExecutionStateContext.CurrentFunction.GetType (), callerUrlParameters);
+        callerUrlParameters.Set(WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
+        Parameters.SubFunction.ReturnUrl = context.GetPermanentUrl(ExecutionStateContext.CurrentFunction.GetType(), callerUrlParameters); // TODO RM-8118: not null assertion
       }
 
-      ExecutionStateContext.SetExecutionState (
-          new RedirectingToSubFunctionState (
+      ExecutionStateContext.SetExecutionState(
+          new RedirectingToSubFunctionState(
               ExecutionStateContext,
-              new RedirectingToSubFunctionStateParameters (Parameters.SubFunction, Parameters.PostBackCollection, destinationUrl)));
+              new RedirectingToSubFunctionStateParameters(Parameters.SubFunction, Parameters.PostBackCollection, destinationUrl)));
     }
 
     public WxeReturnOptions ReturnOptions

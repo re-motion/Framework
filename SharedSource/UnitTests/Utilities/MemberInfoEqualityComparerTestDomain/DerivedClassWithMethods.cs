@@ -19,13 +19,14 @@
 
 using System;
 
+#nullable enable
 namespace Remotion.UnitTests.Utilities.MemberInfoEqualityComparerTestDomain
 {
   public class DerivedClassWithMethods : ClassWithMethods
   {
     public override void OverriddenMethod ()
     {
-      base.OverriddenMethod ();
+      base.OverriddenMethod();
     }
   }
 }

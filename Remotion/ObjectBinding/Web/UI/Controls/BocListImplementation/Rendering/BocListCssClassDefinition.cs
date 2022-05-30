@@ -17,13 +17,14 @@
 using System;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
   /// <summary>
   /// Contains all the CSS class definitions needed throughout <see cref="BocList"/> rendering.
   /// </summary>
-  [ImplementationFor (typeof(BocListCssClassDefinition), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(BocListCssClassDefinition), Lifetime = LifetimeKind.Singleton)]
   public class BocListCssClassDefinition
   {
     /// <summary> Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> itself. </summary>
@@ -43,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     public virtual string ReadOnly
     {
-      get { return "readOnly"; }
+      get { return CssClassDefinition.ReadOnly; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when it is displayed disabled. </summary>
@@ -53,7 +54,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </remarks>
     public virtual string Disabled
     {
-      get { return "disabled"; }
+      get { return CssClassDefinition.Disabled; }
+    }
+
+    /// <summary>
+    /// Gets the CSS-Class applied to the <see cref="IBocRenderableControl"/> when itself and child elements
+    /// that are standard browser controls (e.g. input elements) should be styled in the current theme.
+    /// </summary>
+    /// <remarks> 
+    ///   <para> Class: <c>remotion-themed</c>. </para>
+    ///   <para> Applied in addition to the regular CSS-Class.</para>
+    /// </remarks>
+    public virtual string Themed
+    {
+      get { return CssClassDefinition.Themed; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s <c>table</c> tag. </summary>
@@ -104,7 +118,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       get { return "odd"; }
     }
-    
+
     /// <summary> Gets the CSS-Class additionally applied to the <see cref="BocList"/>'s even data rows. </summary>
     /// <remarks> Class: <c>even</c> </remarks>
     public string DataRowEven
@@ -169,6 +183,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additional columns. </summary>
+    /// <remarks> Class: <c>bocListAvailableViewsList</c> </remarks>
+    public virtual string AvailableViewsList
+    {
+      get { return "bocListAvailableViewsList"; }
+    }
+
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s dropdown list of additional columns. </summary>
     /// <remarks> Class: <c>bocListAvailableViewsListDropDownList</c> </remarks>
     public virtual string AvailableViewsListDropDownList
     {
@@ -180,6 +201,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public virtual string AvailableViewsListLabel
     {
       get { return "bocListAvailableViewsListLabel"; }
+    }
+
+    public string ListMenuContainer
+    {
+      get { return "bocListListMenuContainer"; }
     }
 
     public string TableBlock
@@ -217,13 +243,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListCommandText"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to elements only visible to screen readers. </summary>
+    /// <remarks> Class: <c>screenReaderText</c> </remarks>
+    public string CssClassScreenReaderText
+    {
+      get { return "screenReaderText"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s table block. </summary>
     /// <param name="hasMenuBlock"><see langword="true" /> if the list has a menu block, otherwise <see langword="false" />.</param>
     /// <param name="hasNavigator"><see langword="true" /> if the list has a navigation block, otherwise <see langword="false" />.</param>
     public string GetTableBlock (bool hasMenuBlock, bool hasNavigator)
     {
       string cssClass = TableBlock;
-      
+
       if (hasMenuBlock)
         cssClass = cssClass + " " + HasMenuBlock;
 

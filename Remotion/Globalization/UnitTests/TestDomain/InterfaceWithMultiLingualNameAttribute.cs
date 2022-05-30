@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Globalization.UnitTests.TestDomain
 {
-  [MultiLingualName ("The Invariant Interface Name", "")]
-  [MultiLingualName ("The en-US Interface Name", "en-US")]
+  [MultiLingualName("The Invariant Interface Name", "")]
+  [MultiLingualName("The en-US Interface Name", "en-US")]
   public interface InterfaceWithMultiLingualNameAttribute
   {
   }

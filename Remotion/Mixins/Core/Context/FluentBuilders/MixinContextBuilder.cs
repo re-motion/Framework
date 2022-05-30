@@ -33,16 +33,16 @@ namespace Remotion.Mixins.Context.FluentBuilders
     private readonly Type _mixinType;
     private readonly MixinContextOrigin _origin;
 
-    private readonly HashSet<Type> _dependencies = new HashSet<Type> ();
+    private readonly HashSet<Type> _dependencies = new HashSet<Type>();
 
     private MixinKind _mixinKind;
     private MemberVisibility _introducedMemberVisiblity;
 
     public MixinContextBuilder (ClassContextBuilder parent, Type mixinType, MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull ("parent", parent);
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("origin", origin);
+      ArgumentUtility.CheckNotNull("parent", parent);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("origin", origin);
 
       _parent = parent;
       _mixinType = mixinType;
@@ -127,13 +127,13 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependency (Type requiredMixin)
     {
-      ArgumentUtility.CheckNotNull ("requiredMixin", requiredMixin);
-      if (_dependencies.Contains (requiredMixin))
+      ArgumentUtility.CheckNotNull("requiredMixin", requiredMixin);
+      if (_dependencies.Contains(requiredMixin))
       {
-        string message = string.Format ("The mixin {0} already has a dependency on type {1}.", MixinType.FullName, requiredMixin.FullName);
-        throw new ArgumentException (message, "requiredMixin");
+        string message = string.Format("The mixin {0} already has a dependency on type {1}.", MixinType.GetFullNameSafe(), requiredMixin.GetFullNameSafe());
+        throw new ArgumentException(message, "requiredMixin");
       }
-      _dependencies.Add (requiredMixin);
+      _dependencies.Add(requiredMixin);
       return this;
     }
 
@@ -146,7 +146,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependency<TRequiredMixin> ()
     {
-      return WithDependency (typeof (TRequiredMixin));
+      return WithDependency(typeof(TRequiredMixin));
     }
 
     /// <summary>
@@ -159,9 +159,9 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependencies (params Type[] requiredMixins)
     {
-      ArgumentUtility.CheckNotNull ("requiredMixins", requiredMixins);
+      ArgumentUtility.CheckNotNull("requiredMixins", requiredMixins);
       foreach (Type requiredMixin in requiredMixins)
-        WithDependency (requiredMixin);
+        WithDependency(requiredMixin);
       return this;
     }
 
@@ -176,7 +176,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependencies<TMixin1, TMixin2> ()
     {
-      return WithDependencies (typeof (TMixin1), typeof (TMixin2));
+      return WithDependencies(typeof(TMixin1), typeof(TMixin2));
     }
 
     /// <summary>
@@ -191,7 +191,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder WithDependencies<TMixin1, TMixin2, TMixin3> ()
     {
-      return WithDependencies (typeof (TMixin1), typeof (TMixin2), typeof (TMixin3));
+      return WithDependencies(typeof(TMixin1), typeof(TMixin2), typeof(TMixin3));
     }
 
     /// <summary>
@@ -213,16 +213,16 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder ReplaceMixin (Type replacedMixinType)
     {
-      ArgumentUtility.CheckNotNull ("replacedMixinType", replacedMixinType);
-      Assertion.IsNotNull (_mixinType);
+      ArgumentUtility.CheckNotNull("replacedMixinType", replacedMixinType);
+      Assertion.IsNotNull(_mixinType);
 
-      if (replacedMixinType == _mixinType || (_mixinType.IsGenericType && replacedMixinType == _mixinType.GetGenericTypeDefinition ()))
+      if (replacedMixinType == _mixinType || (_mixinType.IsGenericType && replacedMixinType == _mixinType.GetGenericTypeDefinition()))
       {
-        string message = string.Format ("Mixin type '{0}' applied to target class '{1}' suppresses itself.", _mixinType, _parent.TargetType);
-        throw new InvalidOperationException (message);
+        string message = string.Format("Mixin type '{0}' applied to target class '{1}' suppresses itself.", _mixinType, _parent.TargetType);
+        throw new InvalidOperationException(message);
       }
 
-      _parent.SuppressMixin (new MixinTreeReplacementSuppressionRule (MixinType, replacedMixinType));
+      _parent.SuppressMixin(new MixinTreeReplacementSuppressionRule(MixinType, replacedMixinType));
       return this;
     }
 
@@ -234,7 +234,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public MixinContextBuilder ReplaceMixin<TReplacedMixinType> ()
     {
-      return ReplaceMixin (typeof (TReplacedMixinType));
+      return ReplaceMixin(typeof(TReplacedMixinType));
     }
 
     /// <summary>
@@ -245,10 +245,10 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder ReplaceMixins (params Type[] replacedMixinTypes)
     {
-      ArgumentUtility.CheckNotNull ("replacedMixinTypes", replacedMixinTypes);
+      ArgumentUtility.CheckNotNull("replacedMixinTypes", replacedMixinTypes);
       foreach (var replacedMixinType in replacedMixinTypes)
       {
-        ReplaceMixin (replacedMixinType);
+        ReplaceMixin(replacedMixinType);
       }
       return this;
     }
@@ -260,9 +260,9 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TReplacedMixinType1">The first mixin type, base type, or generic type definition denoting mixin types to be replaced.</typeparam>
     /// <typeparam name="TReplacedMixinType2">The second mixin type, base type, or generic type definition denoting mixin types to be replaced.</typeparam>
     /// <returns>This object for further configuration of the mixin.</returns>
-    public MixinContextBuilder ReplaceMixins<TReplacedMixinType1, TReplacedMixinType2>  ()
+    public MixinContextBuilder ReplaceMixins<TReplacedMixinType1, TReplacedMixinType2> ()
     {
-      return ReplaceMixins (typeof (TReplacedMixinType1), typeof (TReplacedMixinType2));
+      return ReplaceMixins(typeof(TReplacedMixinType1), typeof(TReplacedMixinType2));
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object for further configuration of the mixin.</returns>
     public MixinContextBuilder ReplaceMixins<TReplacedMixinType1, TReplacedMixinType2, TReplacedMixinType3> ()
     {
-      return ReplaceMixins (typeof (TReplacedMixinType1), typeof (TReplacedMixinType2), typeof (TReplacedMixinType3));
+      return ReplaceMixins(typeof(TReplacedMixinType1), typeof(TReplacedMixinType2), typeof(TReplacedMixinType3));
     }
 
     /// <summary>
@@ -284,7 +284,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A <see cref="MixinContext"/> holding all mixin configuration data collected so far.</returns>
     public virtual MixinContext BuildMixinContext ()
     {
-      return new MixinContext (_mixinKind, _mixinType, _introducedMemberVisiblity, _dependencies, _origin);
+      return new MixinContext(_mixinKind, _mixinType, _introducedMemberVisiblity, _dependencies, _origin);
     }
 
     #region Parent members
@@ -308,7 +308,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder AddMixin (Type mixinType, MixinContextOrigin origin)
     {
-      return _parent.AddMixin (mixinType, origin);
+      return _parent.AddMixin(mixinType, origin);
     }
 
     /// <summary>
@@ -317,11 +317,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinType">The mixin type to collect.</param>
     /// <returns>A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder AddMixin (Type mixinType)
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddMixin (mixinType, origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddMixin(mixinType, origin);
     }
 
     /// <summary>
@@ -332,8 +332,8 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.</returns>
     public virtual MixinContextBuilder AddMixin<TMixin> (MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull ("origin", origin);
-      return _parent.AddMixin<TMixin> (origin);
+      ArgumentUtility.CheckNotNull("origin", origin);
+      return _parent.AddMixin<TMixin>(origin);
     }
 
     /// <summary>
@@ -342,11 +342,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
     /// <returns>A <see cref="MixinContextBuilder"/> object for further configuration of the mixin.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder AddMixin<TMixin> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddMixin<TMixin> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddMixin<TMixin>(origin);
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins (MixinContextOrigin origin, params Type[] mixinTypes)
     {
-      return _parent.AddMixins (origin, mixinTypes);
+      return _parent.AddMixins(origin, mixinTypes);
     }
 
     /// <summary>
@@ -366,11 +366,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddMixins (params Type[] mixinTypes)
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddMixins (origin, mixinTypes);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddMixins(origin, mixinTypes);
     }
 
     /// <summary>
@@ -382,7 +382,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
-      return _parent.AddMixins<TMixin1, TMixin2> (origin);
+      return _parent.AddMixins<TMixin1, TMixin2>(origin);
     }
 
     /// <summary>
@@ -392,11 +392,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddMixins<TMixin1, TMixin2> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddMixins<TMixin1, TMixin2> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddMixins<TMixin1, TMixin2>(origin);
     }
 
     /// <summary>
@@ -409,7 +409,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
-      return _parent.AddMixins<TMixin1, TMixin2, TMixin3> (origin);
+      return _parent.AddMixins<TMixin1, TMixin2, TMixin3>(origin);
     }
 
     /// <summary>
@@ -420,11 +420,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddMixins<TMixin1, TMixin2, TMixin3> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddMixins<TMixin1, TMixin2, TMixin3> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddMixins<TMixin1, TMixin2, TMixin3>(origin);
     }
 
     /// <summary>
@@ -436,7 +436,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins (MixinContextOrigin origin, params Type[] mixinTypes)
     {
-      return _parent.AddOrderedMixins (origin, mixinTypes);
+      return _parent.AddOrderedMixins(origin, mixinTypes);
     }
 
     /// <summary>
@@ -445,11 +445,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect with dependencies.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddOrderedMixins (params Type[] mixinTypes)
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddOrderedMixins (origin, mixinTypes);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddOrderedMixins(origin, mixinTypes);
     }
 
     /// <summary>
@@ -462,7 +462,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
-      return _parent.AddOrderedMixins<TMixin1, TMixin2> (origin);
+      return _parent.AddOrderedMixins<TMixin1, TMixin2>(origin);
     }
 
     /// <summary>
@@ -472,11 +472,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect with dependencies.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect with dependencies.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddOrderedMixins<TMixin1, TMixin2> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddOrderedMixins<TMixin1, TMixin2>(origin);
     }
 
     /// <summary>
@@ -490,7 +490,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
-      return _parent.AddOrderedMixins<TMixin1, TMixin2, TMixin3> (origin);
+      return _parent.AddOrderedMixins<TMixin1, TMixin2, TMixin3>(origin);
     }
     /// <summary>
     /// Collects the given types as mixins for the <see cref="ClassContextBuilder.TargetType"/> and adds dependencies between the mixins to ensure a proper base call
@@ -500,11 +500,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin2">The second mixin type to collect with dependencies.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect with dependencies.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder AddOrderedMixins<TMixin1, TMixin2, TMixin3> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return AddOrderedMixins<TMixin1, TMixin2, TMixin3> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return AddOrderedMixins<TMixin1, TMixin2, TMixin3>(origin);
     }
 
     /// <summary>
@@ -517,7 +517,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual MixinContextBuilder EnsureMixin (Type mixinType, MixinContextOrigin origin)
     {
-      return _parent.EnsureMixin (mixinType, origin);
+      return _parent.EnsureMixin(mixinType, origin);
     }
 
     /// <summary>
@@ -528,11 +528,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinType">The mixin type to collect.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder EnsureMixin (Type mixinType)
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return EnsureMixin (mixinType, origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return EnsureMixin(mixinType, origin);
     }
 
     /// <summary>
@@ -545,7 +545,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual MixinContextBuilder EnsureMixin<TMixin> (MixinContextOrigin origin)
     {
-      return _parent.EnsureMixin<TMixin> (origin);
+      return _parent.EnsureMixin<TMixin>(origin);
     }
 
     /// <summary>
@@ -556,11 +556,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <typeparam name="TMixin">The mixin type to collect.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public MixinContextBuilder EnsureMixin<TMixin> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return EnsureMixin<TMixin> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return EnsureMixin<TMixin>(origin);
     }
 
     /// <summary>
@@ -573,7 +573,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins (MixinContextOrigin origin, params Type[] mixinTypes)
     {
-      return _parent.EnsureMixins (origin, mixinTypes);
+      return _parent.EnsureMixins(origin, mixinTypes);
     }
 
     /// <summary>
@@ -584,11 +584,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     /// <param name="mixinTypes">The mixin types to collect.</param>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder EnsureMixins (params Type[] mixinTypes)
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return EnsureMixins (origin, mixinTypes);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return EnsureMixins(origin, mixinTypes);
     }
 
     /// <summary>
@@ -602,7 +602,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2> (MixinContextOrigin origin)
     {
-      return _parent.EnsureMixins<TMixin1, TMixin2> (origin);
+      return _parent.EnsureMixins<TMixin1, TMixin2>(origin);
     }
 
     /// <summary>
@@ -614,11 +614,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin1">The first mixin type to collect.</typeparam>
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder EnsureMixins<TMixin1, TMixin2> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return EnsureMixins<TMixin1, TMixin2> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return EnsureMixins<TMixin1, TMixin2>(origin);
     }
 
     /// <summary>
@@ -633,7 +633,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder EnsureMixins<TMixin1, TMixin2, TMixin3> (MixinContextOrigin origin)
     {
-      return _parent.EnsureMixins<TMixin1, TMixin2, TMixin3> (origin);
+      return _parent.EnsureMixins<TMixin1, TMixin2, TMixin3>(origin);
     }
 
     /// <summary>
@@ -646,11 +646,11 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <typeparam name="TMixin2">The second mixin type to collect.</typeparam>
     /// <typeparam name="TMixin3">The third mixin type to collect.</typeparam>
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
-    [MethodImpl (MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public ClassContextBuilder EnsureMixins<TMixin1, TMixin2, TMixin3> ()
     {
-      var origin = MixinContextOrigin.CreateForStackFrame (new StackFrame (1));
-      return EnsureMixins<TMixin1, TMixin2, TMixin3> (origin);
+      var origin = MixinContextOrigin.CreateForStackFrame(new StackFrame(1));
+      return EnsureMixins<TMixin1, TMixin2, TMixin3>(origin);
     }
 
     /// <summary>
@@ -661,7 +661,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterface (Type interfaceType)
     {
-      return _parent.AddComposedInterface (interfaceType);
+      return _parent.AddComposedInterface(interfaceType);
     }
 
     /// <summary>
@@ -672,7 +672,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterface<TInterface> ()
     {
-      return _parent.AddComposedInterface<TInterface> ();
+      return _parent.AddComposedInterface<TInterface>();
     }
 
     /// <summary>
@@ -683,7 +683,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterfaces (params Type[] interfaceTypes)
     {
-      return _parent.AddComposedInterfaces (interfaceTypes);
+      return _parent.AddComposedInterfaces(interfaceTypes);
     }
 
     /// <summary>
@@ -695,7 +695,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterfaces<TInterface1, TInterface2> ()
     {
-      return _parent.AddComposedInterfaces<TInterface1, TInterface2> ();
+      return _parent.AddComposedInterfaces<TInterface1, TInterface2>();
     }
 
     /// <summary>
@@ -708,7 +708,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddComposedInterfaces<TInterface1, TInterface2, TInterface3> ()
     {
-      return _parent.AddComposedInterfaces<TInterface1, TInterface2, TInterface3> ();
+      return _parent.AddComposedInterfaces<TInterface1, TInterface2, TInterface3>();
     }
 
     /// <summary>
@@ -719,7 +719,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixin (IMixinSuppressionRule rule)
     {
-      return _parent.SuppressMixin (rule);
+      return _parent.SuppressMixin(rule);
     }
 
     /// <summary>
@@ -732,7 +732,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixin (Type mixinType)
     {
-      return _parent.SuppressMixin (mixinType);
+      return _parent.SuppressMixin(mixinType);
     }
 
     /// <summary>
@@ -756,7 +756,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder SuppressMixins (params Type[] mixinTypes)
     {
-      return _parent.SuppressMixins (mixinTypes);
+      return _parent.SuppressMixins(mixinTypes);
     }
 
     /// <summary>
@@ -796,7 +796,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>This object's <see cref="ClassContextBuilder"/> for further configuration of the <see cref="ClassContextBuilder.TargetType"/>.</returns>
     public virtual ClassContextBuilder AddMixinDependency (Type dependentMixin, Type requiredMixin)
     {
-      return _parent.AddMixinDependency (dependentMixin, requiredMixin);
+      return _parent.AddMixinDependency(dependentMixin, requiredMixin);
     }
 
     /// <summary>
@@ -819,7 +819,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A <see cref="ClassContext"/> for the <see cref="ClassContextBuilder.TargetType"/> holding all mixin configuration data collected so far.</returns>
     public virtual ClassContext BuildClassContext (IEnumerable<ClassContext> inheritedContexts)
     {
-      return _parent.BuildClassContext (inheritedContexts);
+      return _parent.BuildClassContext(inheritedContexts);
     }
 
     /// <summary>
@@ -827,7 +827,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// </summary>
     public virtual ClassContext BuildClassContext ()
     {
-      return _parent.BuildClassContext ();
+      return _parent.BuildClassContext();
     }
 
     /// <summary>
@@ -837,7 +837,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A fluent interface object for configuring the given <paramref name="targetType"/>.</returns>
     public virtual ClassContextBuilder ForClass (Type targetType)
     {
-      return _parent.ForClass (targetType);
+      return _parent.ForClass(targetType);
     }
 
     /// <summary>
@@ -847,7 +847,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A fluent interface object for configuring the given <typeparamref name="TTargetType"/>.</returns>
     public virtual ClassContextBuilder ForClass<TTargetType> ()
     {
-      return _parent.ForClass<TTargetType> ();
+      return _parent.ForClass<TTargetType>();
     }
 
     /// <summary>
@@ -856,7 +856,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>A new <see cref="MixinConfiguration"/> instance incorporating all the data acquired so far.</returns>
     public virtual MixinConfiguration BuildConfiguration ()
     {
-      return _parent.BuildConfiguration ();
+      return _parent.BuildConfiguration();
     }
 
     /// <summary>
@@ -867,7 +867,7 @@ namespace Remotion.Mixins.Context.FluentBuilders
     /// <returns>An <see cref="IDisposable"/> object for restoring the original configuration.</returns>
     public virtual IDisposable EnterScope ()
     {
-      return _parent.EnterScope ();
+      return _parent.EnterScope();
     }
     #endregion
   }

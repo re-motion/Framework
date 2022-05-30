@@ -37,70 +37,89 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void SetUp ()
     {
       _validationRule = new PropertyTypeIsSupportedByStorageProviderValidationRule();
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins (typeof (DerivedValidationDomainObjectClass));
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinitionWithMixins(typeof(DerivedValidationDomainObjectClass));
     }
 
     [Test]
     public void PropertyWithStorageClassNone ()
     {
-      var propertyDefinition = new PropertyDefinition (
+      var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty ("PropertyWithStorageClassNone")),
-          "PropertyWithStorageClassNone", 
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassNone")),
+          "PropertyWithStorageClassNone",
           false,
           true,
           20,
           StorageClass.None);
       propertyDefinition.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("PropertyWithStorageClassNone"));
-      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[]{propertyDefinition}, true));
+      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate (_classDefinition);
+      var validationResult = _validationRule.Validate(_classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
+    public void PropertyWithStorageClassPersistent_StoragePropertyIsNotSet ()
+    {
+      var propertyDefinition = new PropertyDefinition(
+          _classDefinition,
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
+          "PropertyWithTypeObjectWithStorageClassPersistent",
+          false,
+          true,
+          null,
+          StorageClass.Persistent);
+      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _classDefinition.SetReadOnly();
+
+      var validationResult = _validationRule.Validate(_classDefinition);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void PropertyWithStorageClassPersistent_SupportedType ()
     {
-      var propertyDefinition = new PropertyDefinition (
+      var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty ("PropertyWithStorageClassPersistent")),
-          "PropertyWithStorageClassPersistent", 
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithStorageClassPersistent")),
+          "PropertyWithStorageClassPersistent",
           false,
           true,
           20,
           StorageClass.Persistent);
       propertyDefinition.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("PropertyWithStorageClassPersistent"));
-      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly ();
+      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _classDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate (_classDefinition);
+      var validationResult = _validationRule.Validate(_classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void PropertyWithStorageClassPersistent_UnsupportedType ()
     {
-      var propertyDefinition = new PropertyDefinition (
+      var propertyDefinition = new PropertyDefinition(
           _classDefinition,
-          PropertyInfoAdapter.Create(typeof (DerivedValidationDomainObjectClass).GetProperty ("PropertyWithTypeObjectWithStorageClassPersistent")),
-          "PropertyWithTypeObjectWithStorageClassPersistent", 
+          PropertyInfoAdapter.Create(typeof(DerivedValidationDomainObjectClass).GetProperty("PropertyWithTypeObjectWithStorageClassPersistent")),
+          "PropertyWithTypeObjectWithStorageClassPersistent",
           false,
           true,
           null,
           StorageClass.Persistent);
-      propertyDefinition.SetStorageProperty(new UnsupportedStoragePropertyDefinition (typeof (int), "Message", null));
-      _classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection (new[]{propertyDefinition}, true));
-      _classDefinition.SetReadOnly ();
+      propertyDefinition.SetStorageProperty(new UnsupportedStoragePropertyDefinition(typeof(int), "Message", null));
+      _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
+      _classDefinition.SetReadOnly();
 
-      var validationResult = _validationRule.Validate (_classDefinition);
+      var validationResult = _validationRule.Validate(_classDefinition);
 
       var expectedMessage = "The property type 'Object' is not supported by this storage provider. Message\r\n\r\n"
         +"Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass\r\n"
         +"Property: PropertyWithTypeObjectWithStorageClassPersistent";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }
 }

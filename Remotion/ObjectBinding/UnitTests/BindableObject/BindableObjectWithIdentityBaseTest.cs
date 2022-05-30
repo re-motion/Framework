@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BindableObject
 {
@@ -27,111 +27,106 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
   public class BindableObjectWithIdentityBaseTest
   {
     private ClassDerivedFromBindableObjectWithIdentityBase _instance;
-    private IBindableObjectWithIdentityBaseImplementation _implementationMock;
-    private IBusinessObjectProperty _propertyFake;
-    private IBusinessObjectClass _businessObjectClassFake;
+    private Mock<IBindableObjectWithIdentityBaseImplementation> _implementationMock;
+    private Mock<IBusinessObjectProperty> _propertyFake;
+    private Mock<IBusinessObjectClass> _businessObjectClassFake;
 
     [SetUp]
-    public void SetUp()
+    public void SetUp ()
     {
-      _implementationMock = MockRepository.GenerateMock<IBindableObjectWithIdentityBaseImplementation> ();
-      _instance = new ClassDerivedFromBindableObjectWithIdentityBase (_implementationMock);
+      _implementationMock = new Mock<IBindableObjectWithIdentityBaseImplementation>();
+      _instance = new ClassDerivedFromBindableObjectWithIdentityBase(_implementationMock.Object);
 
-      _propertyFake = MockRepository.GenerateMock<IBusinessObjectProperty> ();
-      _businessObjectClassFake = MockRepository.GenerateMock<IBusinessObjectClass> ();
+      _propertyFake = new Mock<IBusinessObjectProperty>();
+      _businessObjectClassFake = new Mock<IBusinessObjectClass>();
     }
 
     [Test]
-    public void BindableObjectProviderAttribute()
+    public void BindableObjectProviderAttribute ()
     {
-      Assert.That (typeof (BindableObjectWithIdentityBase).IsDefined (typeof (BindableObjectWithIdentityProviderAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectWithIdentityBase).IsDefined(typeof(BindableObjectWithIdentityProviderAttribute), false), Is.True);
     }
 
     [Test]
     public void BindableObjectBaseClassAttribute ()
     {
-      Assert.That (typeof (BindableObjectWithIdentityBase).IsDefined (typeof (BindableObjectBaseClassAttribute), false), Is.True);
+      Assert.That(typeof(BindableObjectWithIdentityBase).IsDefined(typeof(BindableObjectBaseClassAttribute), false), Is.True);
     }
 
     [Test]
     public void CreateImplementation ()
     {
-      var instance = new ClassDerivedFromBindableObjectWithIdentityBase ();
-      Assert.That (PrivateInvoke.GetNonPublicField (instance, "_implementation"), Is.InstanceOf (typeof (BindableObjectWithIdentityBaseImplementation)));
+      var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
+      Assert.That(PrivateInvoke.GetNonPublicField(instance, "_implementation"), Is.InstanceOf(typeof(BindableObjectWithIdentityBaseImplementation)));
     }
 
     [Test]
     public void Implementation_IsInitialized ()
     {
       var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
-      var mixin = (BindableObjectWithIdentityBaseImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (mixin.BusinessObjectClass, Is.Not.Null);
+      var mixin = (BindableObjectWithIdentityBaseImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
     }
 
     [Test]
     public void Serialization ()
     {
-      var instance = new ClassDerivedFromBindableObjectWithIdentityBase ();
-      instance = Serializer.SerializeAndDeserialize (instance);
-      var mixin = (BindableObjectWithIdentityBaseImplementation) PrivateInvoke.GetNonPublicField (instance, "_implementation");
-      Assert.That (mixin.BusinessObjectClass, Is.Not.Null);
+      var instance = new ClassDerivedFromBindableObjectWithIdentityBase();
+      instance = Serializer.SerializeAndDeserialize(instance);
+      var mixin = (BindableObjectWithIdentityBaseImplementation)PrivateInvoke.GetNonPublicField(instance, "_implementation");
+      Assert.That(mixin.BusinessObjectClass, Is.Not.Null);
     }
 
     [Test]
-    public void GetProperty()
+    public void GetProperty ()
     {
-      _implementationMock.Expect (mock => mock.GetProperty (_propertyFake)).Return (12);
-      _implementationMock.Replay ();
+      _implementationMock.Setup(mock => mock.GetProperty(_propertyFake.Object)).Returns(12).Verifiable();
 
-      Assert.That (_instance.GetProperty (_propertyFake), Is.EqualTo (12));
-      _implementationMock.VerifyAllExpectations ();
+      Assert.That(_instance.GetProperty(_propertyFake.Object), Is.EqualTo(12));
+      _implementationMock.Verify();
     }
 
     [Test]
     public void SetProperty ()
     {
-      _implementationMock.Expect (mock => mock.SetProperty (_propertyFake, 174));
-      _implementationMock.Replay ();
+      _implementationMock.Setup(mock => mock.SetProperty(_propertyFake.Object, 174)).Verifiable();
 
-      _instance.SetProperty (_propertyFake, 174);
-      _implementationMock.VerifyAllExpectations ();
+      _instance.SetProperty(_propertyFake.Object, 174);
+      _implementationMock.Verify();
     }
 
     [Test]
-    public void GetPropertyString()
+    public void GetPropertyString ()
     {
-      _implementationMock.Expect (mock => mock.GetPropertyString (_propertyFake, "gj")).Return ("yay");
-      _implementationMock.Replay ();
+      _implementationMock.Setup(mock => mock.GetPropertyString(_propertyFake.Object, "gj")).Returns("yay").Verifiable();
 
-      Assert.That (_instance.GetPropertyString (_propertyFake, "gj"), Is.EqualTo ("yay"));
-      _implementationMock.VerifyAllExpectations (); 
+      Assert.That(_instance.GetPropertyString(_propertyFake.Object, "gj"), Is.EqualTo("yay"));
+      _implementationMock.Verify();
     }
 
     [Test]
-    public void DisplayName()
+    public void DisplayName ()
     {
-      _implementationMock.Expect (mock => mock.BaseDisplayName).Return ("Philips");
-      _implementationMock.Replay ();
+      _implementationMock.Setup(mock => mock.BaseDisplayName).Returns("Philips").Verifiable();
 
-      Assert.That (_instance.DisplayName, Is.EqualTo ("Philips"));
-      _implementationMock.VerifyAllExpectations (); 
+      Assert.That(_instance.DisplayName, Is.EqualTo("Philips"));
+      _implementationMock.Verify();
     }
 
     [Test]
     public void BusinessObjectClass ()
     {
-      _implementationMock.Expect (mock => mock.BusinessObjectClass).Return (_businessObjectClassFake);
-      _implementationMock.Replay ();
+      _implementationMock.Setup(mock => mock.BusinessObjectClass).Returns(_businessObjectClassFake.Object).Verifiable();
 
-      Assert.That (_instance.BusinessObjectClass, Is.SameAs (_businessObjectClassFake));
-      _implementationMock.VerifyAllExpectations ();
+      Assert.That(_instance.BusinessObjectClass, Is.SameAs(_businessObjectClassFake.Object));
+      _implementationMock.Verify();
     }
 
     [Test]
     public void UniqueIdentifier ()
     {
       _instance.SetUniqueIdentifier("uniqueID");
-      Assert.That (_instance.UniqueIdentifier, Is.EqualTo ("uniqueID"));
+      Assert.That(_instance.UniqueIdentifier, Is.EqualTo("uniqueID"));
     }
   }
 }

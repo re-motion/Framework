@@ -26,27 +26,33 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxeResetCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WxeResetCompletionDetectionStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeResetCompletionDetectionStrategy));
+    private readonly TimeSpan? _timeout;
 
-    /// <inheritdoc/>
-    public object PrepareWaitForCompletion (PageObjectContext context)
+    public WxeResetCompletionDetectionStrategy (TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-
-      return WxeCompletionDetectionHelpers.GetWxeFunctionToken (context);
+      _timeout = timeout;
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object state)
+    public object? PrepareWaitForCompletion (PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("state", state);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var oldWxeFunctionToken = (string) state;
-      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken (s_log, context, oldWxeFunctionToken);
+      return WxeCompletionDetectionHelpers.GetWxeFunctionToken(context);
+    }
+
+    /// <inheritdoc/>
+    public void WaitForCompletion (PageObjectContext context, object? state)
+    {
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("state", state!);
+
+      var oldWxeFunctionToken = (string)state;
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_log, context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (s_log, context, expectedWxePostBackSequenceNumber);
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_log, context, expectedWxePostBackSequenceNumber, _timeout);
     }
   }
 }

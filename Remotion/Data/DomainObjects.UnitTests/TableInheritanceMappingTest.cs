@@ -27,13 +27,13 @@ namespace Remotion.Data.DomainObjects.UnitTests
 {
   public abstract class TableInheritanceMappingTest : DatabaseTest
   {
-    public const string CreateTestDataFileName = "DataDomainObjects_CreateTableInheritanceTestData.sql";
+    public const string CreateTestDataFileName = "Database\\DataDomainObjects_CreateTableInheritanceTestData.sql";
     public const string TableInheritanceTestDomainProviderID = "TableInheritanceTestDomain";
 
     private ClientTransactionScope _transactionScope;
 
-    protected TableInheritanceMappingTest()
-      : base (new DatabaseAgent (TestDomainConnectionString), CreateTestDataFileName)
+    protected TableInheritanceMappingTest ()
+      : base(new DatabaseAgent(TestDomainConnectionString), CreateTestDataFileName)
     {
     }
 
@@ -41,37 +41,37 @@ namespace Remotion.Data.DomainObjects.UnitTests
     {
       get
       {
-        return (RdbmsProviderDefinition) DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[TableInheritanceTestDomainProviderID];
+        return (RdbmsProviderDefinition)DomainObjectsConfiguration.Current.Storage.StorageProviderDefinitions[TableInheritanceTestDomainProviderID];
       }
     }
 
 
-    public override void TestFixtureSetUp()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
-      DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
-      MappingConfiguration.SetCurrent (StandardConfiguration.Instance.GetMappingConfiguration());
-      ConfigurationWrapper.SetCurrent (null);
+      base.OneTimeSetUp();
+      DomainObjectsConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
+      MappingConfiguration.SetCurrent(StandardConfiguration.Instance.GetMappingConfiguration());
+      ConfigurationWrapper.SetCurrent(null);
     }
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
-      DomainObjectsConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration ());
-      MappingConfiguration.SetCurrent (TableInheritanceConfiguration.Instance.GetMappingConfiguration ());
-      ConfigurationWrapper.SetCurrent (null);
+      DomainObjectsConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetDomainObjectsConfiguration());
+      MappingConfiguration.SetCurrent(TableInheritanceConfiguration.Instance.GetMappingConfiguration());
+      ConfigurationWrapper.SetCurrent(null);
       _transactionScope = ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
     }
 
     public override void TearDown ()
     {
-      _transactionScope.Leave ();
-      base.TearDown ();
+      _transactionScope.Leave();
+      base.TearDown();
     }
 
     protected TableInheritanceDomainObjectIDs DomainObjectIDs
     {
-      get { return TableInheritanceConfiguration.Instance.GetDomainObjectIDs (); }
+      get { return TableInheritanceConfiguration.Instance.GetDomainObjectIDs(); }
     }
 
     protected IMappingConfiguration Configuration
@@ -82,22 +82,22 @@ namespace Remotion.Data.DomainObjects.UnitTests
     protected PropertyDefinition GetPropertyDefinition (Type declaringType, string shortPropertyName)
     {
       var propertyDefinition = Configuration
-          .GetTypeDefinition (declaringType)
+          .GetTypeDefinition(declaringType)
           .PropertyAccessorDataCache
-          .GetMandatoryPropertyAccessorData (declaringType, shortPropertyName)
+          .GetMandatoryPropertyAccessorData(declaringType, shortPropertyName)
           .PropertyDefinition;
-      Assertion.IsNotNull (propertyDefinition, "Property '{0}.{1}' is not a mapped property.", declaringType, shortPropertyName);
+      Assertion.IsNotNull(propertyDefinition, "Property '{0}.{1}' is not a mapped property.", declaringType, shortPropertyName);
       return propertyDefinition;
     }
 
     protected IRelationEndPointDefinition GetEndPointDefinition (Type declaringType, string shortPropertyName)
     {
       var endPointDefinition = Configuration
-          .GetTypeDefinition (declaringType)
+          .GetTypeDefinition(declaringType)
           .PropertyAccessorDataCache
-          .GetMandatoryPropertyAccessorData (declaringType, shortPropertyName)
+          .GetMandatoryPropertyAccessorData(declaringType, shortPropertyName)
           .RelationEndPointDefinition;
-      Assertion.IsNotNull (endPointDefinition, "Property '{0}.{1}' is not a relation end-point.", declaringType, shortPropertyName);
+      Assertion.IsNotNull(endPointDefinition, "Property '{0}.{1}' is not a relation end-point.", declaringType, shortPropertyName);
       return endPointDefinition;
     }
   }

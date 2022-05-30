@@ -16,54 +16,48 @@
 // 
 using System;
 using System.Reflection;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
 {
   [TestFixture]
   public class DeclarativeConfigurationAnalyzerTest
   {
-    private MockRepository _mockRepository;
 
-    private IMixinDeclarationAnalyzer<Type> _typeAnalyzerMock;
-    private IMixinDeclarationAnalyzer<Assembly> _assemblyAnalyzerMock;
+    private Mock<IMixinDeclarationAnalyzer<Type>> _typeAnalyzerMock;
+    private Mock<IMixinDeclarationAnalyzer<Assembly>> _assemblyAnalyzerMock;
 
-    private MixinConfigurationBuilder _fakeConfigurationBuilder;
+    private Mock<MixinConfigurationBuilder> _fakeConfigurationBuilder;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository();
+      _typeAnalyzerMock = new Mock<IMixinDeclarationAnalyzer<Type>>(MockBehavior.Strict);
+      _assemblyAnalyzerMock = new Mock<IMixinDeclarationAnalyzer<Assembly>>(MockBehavior.Strict);
 
-      _typeAnalyzerMock = _mockRepository.StrictMock<IMixinDeclarationAnalyzer<Type>> ();
-      _assemblyAnalyzerMock = _mockRepository.StrictMock<IMixinDeclarationAnalyzer<Assembly>> ();
-
-      _fakeConfigurationBuilder = _mockRepository.Stub<MixinConfigurationBuilder> ((MixinConfiguration) null);
+      _fakeConfigurationBuilder = new Mock<MixinConfigurationBuilder>((MixinConfiguration)null);
     }
 
     [Test]
     public void Analyze ()
     {
-      var types = new[] { typeof (object), typeof (string), typeof (DeclarativeConfigurationAnalyzerTest) };
+      var types = new[] { typeof(object), typeof(string), typeof(DeclarativeConfigurationAnalyzerTest) };
 
-      using (_mockRepository.Ordered ())
-      {
-        _typeAnalyzerMock.Expect (mock => mock.Analyze (typeof (object), _fakeConfigurationBuilder));
-        _assemblyAnalyzerMock.Expect (mock => mock.Analyze (typeof (object).Assembly, _fakeConfigurationBuilder));
-        _typeAnalyzerMock.Expect (mock => mock.Analyze (typeof (string), _fakeConfigurationBuilder));
-        _typeAnalyzerMock.Expect (mock => mock.Analyze (typeof (DeclarativeConfigurationAnalyzerTest), _fakeConfigurationBuilder));
-        _assemblyAnalyzerMock.Expect (mock => mock.Analyze (typeof (DeclarativeConfigurationAnalyzerTest).Assembly, _fakeConfigurationBuilder));
-      }
+      var sequence = new MockSequence();
+      _typeAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(object), _fakeConfigurationBuilder.Object)).Verifiable();
+      _assemblyAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(object).Assembly, _fakeConfigurationBuilder.Object)).Verifiable();
+      _typeAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(string), _fakeConfigurationBuilder.Object)).Verifiable();
+      _typeAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest), _fakeConfigurationBuilder.Object)).Verifiable();
+      _assemblyAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest).Assembly, _fakeConfigurationBuilder.Object)).Verifiable();
 
-      _mockRepository.ReplayAll();
+      var analyzer = new DeclarativeConfigurationAnalyzer(new[] { _typeAnalyzerMock.Object }, new[] {_assemblyAnalyzerMock.Object });
+      analyzer.Analyze(types, _fakeConfigurationBuilder.Object);
 
-      var analyzer = new DeclarativeConfigurationAnalyzer (new[] { _typeAnalyzerMock }, new[] {_assemblyAnalyzerMock });
-      analyzer.Analyze (types, _fakeConfigurationBuilder);
-
-      _mockRepository.VerifyAll();
+      _typeAnalyzerMock.Verify();
+      _assemblyAnalyzerMock.Verify();
     }
   }
 }

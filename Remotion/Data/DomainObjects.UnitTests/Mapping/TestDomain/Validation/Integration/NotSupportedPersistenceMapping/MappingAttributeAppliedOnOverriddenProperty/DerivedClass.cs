@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.In
     MappingAttributeAppliedOnOverriddenProperty
 {
   [DBTable]
-  [ClassID ("MappingAttributeAppliedOnOverriddenProperty_DerivedClass")]
+  [ClassID("MappingAttributeAppliedOnOverriddenProperty_DerivedClass")]
   public class DerivedClass : BaseClass
   {
     [StorageClassNone]

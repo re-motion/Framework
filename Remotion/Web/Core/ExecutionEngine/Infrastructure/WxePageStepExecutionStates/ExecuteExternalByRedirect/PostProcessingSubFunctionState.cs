@@ -28,31 +28,31 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure.WxePageStepExecutionStates
   public class PostProcessingSubFunctionState : ExecutionStateBase<ExecutionStateParameters>
   {
     public PostProcessingSubFunctionState (IExecutionStateContext executionStateContext, ExecutionStateParameters parameters)
-        : base (executionStateContext, parameters)
+        : base(executionStateContext, parameters)
     {
     }
 
     //TODO: CleanUp duplication with other PostProcessSubFunction-implemenations
     public override void ExecuteSubFunction (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      bool isPostRequest = string.Equals (context.HttpContext.Request.HttpMethod, "POST", StringComparison.OrdinalIgnoreCase);
+      bool isPostRequest = string.Equals(context.HttpContext.Request.HttpMethod, "POST", StringComparison.OrdinalIgnoreCase);
       if (isPostRequest)
       {
         //  Provide the executed sub-function to the executing page and use original postback data
-        ExecutionStateContext.SetReturnState (Parameters.SubFunction, false, null);
+        ExecutionStateContext.SetReturnState(Parameters.SubFunction, false, null);
       }
       else
       {
         // Correct the PostBack-Sequence number
-        Parameters.PostBackCollection[WxePageInfo.PostBackSequenceNumberID] = context.PostBackID.ToString ();
+        Parameters.PostBackCollection[WxePageInfo.PostBackSequenceNumberID] = context.PostBackID.ToString();
 
         //  Provide the executed sub-function and the backed up postback data to the executing page
-        ExecutionStateContext.SetReturnState (Parameters.SubFunction, true, Parameters.PostBackCollection);
+        ExecutionStateContext.SetReturnState(Parameters.SubFunction, true, Parameters.PostBackCollection);
       }
 
-      ExecutionStateContext.SetExecutionState (NullExecutionState.Null);
+      ExecutionStateContext.SetExecutionState(NullExecutionState.Null);
     }
   }
 }

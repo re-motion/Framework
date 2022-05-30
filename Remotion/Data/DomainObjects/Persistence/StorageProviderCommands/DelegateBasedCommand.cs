@@ -30,10 +30,10 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
     /// to pass all generic arguments to <see cref="DelegateBasedCommand{TIn,TOut,TExecutionContext}"/>'s constructor by hand.
     /// </summary>
     public static DelegateBasedCommand<TIn, TOut, TExecutionContext> Create<TIn, TOut, TExecutionContext> (
-        IStorageProviderCommand<TIn, TExecutionContext> command, 
+        IStorageProviderCommand<TIn, TExecutionContext> command,
         Func<TIn, TOut> operation)
     {
-      return new DelegateBasedCommand<TIn, TOut, TExecutionContext> (command, operation);
+      return new DelegateBasedCommand<TIn, TOut, TExecutionContext>(command, operation);
     }
   }
 
@@ -48,8 +48,8 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 
     public DelegateBasedCommand (IStorageProviderCommand<TIn, TExecutionContext> command, Func<TIn, TOut> operation)
     {
-      ArgumentUtility.CheckNotNull ("command", command);
-      ArgumentUtility.CheckNotNull ("operation", operation);
+      ArgumentUtility.CheckNotNull("command", command);
+      ArgumentUtility.CheckNotNull("operation", operation);
 
       _command = command;
       _operation = operation;
@@ -67,8 +67,8 @@ namespace Remotion.Data.DomainObjects.Persistence.StorageProviderCommands
 
     public TOut Execute (TExecutionContext executionContext)
     {
-      var executionResult = _command.Execute (executionContext);
-      return _operation (executionResult);
+      var executionResult = _command.Execute(executionContext);
+      return _operation(executionResult);
     }
   }
 }

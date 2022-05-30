@@ -24,10 +24,7 @@ using System.Reflection;
 //
 using Remotion.ObjectBinding.Security;
 
-[assembly: AssemblyTitle("Performance Tests for Remotion DomainObjects Library")]
-[assembly: AssemblyDescription("Performance Tests for Remotion DomainObjects Library")]
-[assembly: AssemblyCulture("")]		
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 
 [assembly: EnsureSecuritySupportForObjectBinding]
-

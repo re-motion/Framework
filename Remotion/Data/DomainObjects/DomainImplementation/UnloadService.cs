@@ -52,14 +52,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadVirtualEndPoint (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      CheckVirtualEndPointID (endPointID);
+      CheckVirtualEndPointID(endPointID);
 
-      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadVirtualEndPointsCommand (endPointID);
-      var executor = new TransactionHierarchyCommandExecutor (commandFactory);
-      executor.ExecuteCommandForTransactionHierarchy (clientTransaction);
+      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadVirtualEndPointsCommand(endPointID);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     /// <summary>
@@ -89,14 +89,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static bool TryUnloadVirtualEndPoint (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      CheckVirtualEndPointID (endPointID);
+      CheckVirtualEndPointID(endPointID);
 
-      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadVirtualEndPointsCommand (endPointID);
-      var executor = new TransactionHierarchyCommandExecutor (commandFactory);
-      return executor.TryExecuteCommandForTransactionHierarchy (clientTransaction);
+      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadVirtualEndPointsCommand(endPointID);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      return executor.TryExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     /// <summary>
@@ -125,12 +125,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadData (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadCommand (objectID);
-      var executor = new TransactionHierarchyCommandExecutor (commandFactory);
-      executor.ExecuteCommandForTransactionHierarchy (clientTransaction);
+      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadCommand(objectID);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     /// <summary>
@@ -163,12 +163,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static bool TryUnloadData (ClientTransaction clientTransaction, ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadCommand (objectID);
-      var executor = new TransactionHierarchyCommandExecutor (commandFactory);
-      return executor.TryExecuteCommandForTransactionHierarchy (clientTransaction);
+      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadCommand(objectID);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      return executor.TryExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     /// <summary>
@@ -192,14 +192,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadVirtualEndPointAndItemData (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      CheckVirtualEndPointID (endPointID);
+      CheckVirtualEndPointID(endPointID);
 
       Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => CreateUnloadVirtualEndPointAndItemDataCommand(tx, endPointID);
-      var executor = new TransactionHierarchyCommandExecutor (commandFactory);
-      executor.ExecuteCommandForTransactionHierarchy (clientTransaction);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     /// <summary>
@@ -230,14 +230,14 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static bool TryUnloadVirtualEndPointAndItemData (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
-      CheckVirtualEndPointID (endPointID);
+      CheckVirtualEndPointID(endPointID);
 
-      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => CreateUnloadVirtualEndPointAndItemDataCommand (tx, endPointID);
-      var executor = new TransactionHierarchyCommandExecutor (commandFactory);
-      return executor.TryExecuteCommandForTransactionHierarchy (clientTransaction);
+      Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => CreateUnloadVirtualEndPointAndItemDataCommand(tx, endPointID);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      return executor.TryExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     /// <summary>
@@ -259,10 +259,12 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// the operation won't raise any Rollback-related events. 
     /// </para>
     /// <para>
-    /// When the operation completes, the state of previously <see cref="StateType.Changed"/>, <see cref="StateType.Deleted"/>, and 
-    /// <see cref="StateType.Unchanged"/> objects becomes <see cref="StateType.NotLoadedYet"/>. The state of <see cref="StateType.New"/> objects
-    /// becomes <see cref="StateType.Invalid"/> (this state is propagated over within the whole transaction hierarchy).
-    /// The state of <see cref="StateType.Invalid"/> and <see cref="StateType.NotLoadedYet"/> objects stays the same.
+    /// When the operation completes, the objects that have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/>,
+    /// <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/>, or <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag set,
+    /// are updated to have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag set instead. Objects that have the
+    ///<see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNew"/> flag set, are changed to have the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/> flag
+    /// set (this state is propagated over within the whole transaction hierarchy). Objects with the <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsInvalid"/>
+    /// or and <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNotLoadedYet"/> flag set, remain the same.
     /// </para>
     /// <para>
     /// When the operation completes, all virtual relation end-points will no longer be complete, and they will be reloaded on access. All changes,
@@ -271,49 +273,49 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
     /// </remarks>
     public static void UnloadAll (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       Func<ClientTransaction, IDataManagementCommand> commandFactory = tx => tx.DataManager.CreateUnloadAllCommand();
-      var executor = new TransactionHierarchyCommandExecutor (commandFactory);
-      executor.ExecuteCommandForTransactionHierarchy (clientTransaction);
+      var executor = new TransactionHierarchyCommandExecutor(commandFactory);
+      executor.ExecuteCommandForTransactionHierarchy(clientTransaction);
     }
 
     private static void CheckVirtualEndPointID (RelationEndPointID endPointID)
     {
       if (!endPointID.Definition.IsVirtual)
       {
-        var message = string.Format ("The given end point ID '{0}' does not denote a virtual end-point.", endPointID);
-        throw new ArgumentException (message, "endPointID");
+        var message = string.Format("The given end point ID '{0}' does not denote a virtual end-point.", endPointID);
+        throw new ArgumentException(message, "endPointID");
       }
 
       if (endPointID.Definition.IsAnonymous)
       {
-        var message = string.Format ("The given end point ID '{0}' denotes an anonymous end-point, which cannot be unloaded.", endPointID);
-        throw new ArgumentException (message, "endPointID");
+        var message = string.Format("The given end point ID '{0}' denotes an anonymous end-point, which cannot be unloaded.", endPointID);
+        throw new ArgumentException(message, "endPointID");
       }
     }
 
     private static IDataManagementCommand CreateUnloadVirtualEndPointAndItemDataCommand (ClientTransaction tx, RelationEndPointID endPointID)
     {
-      CheckVirtualEndPointID (endPointID);
-      var endPoint = (IVirtualEndPoint) tx.DataManager.GetRelationEndPointWithoutLoading (endPointID);
+      CheckVirtualEndPointID(endPointID);
+      var endPoint = (IVirtualEndPoint?)tx.DataManager.GetRelationEndPointWithoutLoading(endPointID);
 
       if (endPoint == null || !endPoint.IsDataComplete)
-        return new NopCommand ();
+        return new NopCommand();
 
-      var unloadEndPointCommand = tx.DataManager.CreateUnloadVirtualEndPointsCommand (endPointID);
+      var unloadEndPointCommand = tx.DataManager.CreateUnloadVirtualEndPointsCommand(endPointID);
 
       ObjectID[] unloadedObjectIDs;
       if (endPoint.Definition.Cardinality == CardinalityType.Many)
-        unloadedObjectIDs = ((ICollectionEndPoint) endPoint).Collection.Cast<DomainObject> ().Select (obj => obj.ID).ToArray ();
+        unloadedObjectIDs = ((ICollectionEndPoint<ICollectionEndPointData>)endPoint).GetData().Select(data => data.ID).ToArray();
       else
       {
-        var oppositeObjectID = ((IVirtualObjectEndPoint) endPoint).OppositeObjectID;
+        var oppositeObjectID = ((IVirtualObjectEndPoint)endPoint).OppositeObjectID;
         unloadedObjectIDs = oppositeObjectID != null ? new[] { oppositeObjectID } : new ObjectID[0];
       }
-      var unloadDataCommand = tx.DataManager.CreateUnloadCommand (unloadedObjectIDs);
+      var unloadDataCommand = tx.DataManager.CreateUnloadCommand(unloadedObjectIDs);
 
-      return new CompositeCommand (unloadEndPointCommand, unloadDataCommand);
+      return new CompositeCommand(unloadEndPointCommand, unloadDataCommand);
     }
   }
 }

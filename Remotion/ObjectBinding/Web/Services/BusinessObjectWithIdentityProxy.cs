@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Utilities;
 
@@ -26,12 +27,12 @@ namespace Remotion.ObjectBinding.Web.Services
   /// </summary>
   /// <remarks>
   /// This type offers setable properties and a default constructor to comply with the .NET 2.0 web service implementation.
-  /// Returning a not fully initialized objects will result in unexpected behavior by the <see cref="ISearchAvailableObjectWebService"/>.
+  /// Returning a not fully initialized objects will result in unexpected behavior by the <see cref="IBocAutoCompleteReferenceValueWebService"/>.
   /// </remarks>
   public sealed class BusinessObjectWithIdentityProxy
   {
-    private string _uniqueIdentifier;
-    private string _displayName;
+    private string? _uniqueIdentifier;
+    private string? _displayName;
     private string _iconUrl = "";
 
     public BusinessObjectWithIdentityProxy ()
@@ -40,28 +41,30 @@ namespace Remotion.ObjectBinding.Web.Services
 
     public BusinessObjectWithIdentityProxy (IBusinessObjectWithIdentity obj)
     {
-      ArgumentUtility.CheckNotNull ("obj", obj);
+      ArgumentUtility.CheckNotNull("obj", obj);
 
       _uniqueIdentifier = obj.UniqueIdentifier;
       _displayName = obj.GetAccessibleDisplayName();
     }
 
-    public string UniqueIdentifier
+    [DisallowNull]
+    public string? UniqueIdentifier
     {
       get { return _uniqueIdentifier; }
-      set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
+      set { _uniqueIdentifier = ArgumentUtility.CheckNotNullOrEmpty("value", value); }
     }
 
-    public string DisplayName
+    [DisallowNull]
+    public string? DisplayName
     {
       get { return _displayName; }
-      set { _displayName = ArgumentUtility.CheckNotNullOrEmpty ("value", value); }
+      set { _displayName = ArgumentUtility.CheckNotNullOrEmpty("value", value); }
     }
 
     public string IconUrl
     {
       get { return _iconUrl; }
-      set { _iconUrl = value ?? string.Empty; }
+      set { _iconUrl = ArgumentUtility.CheckNotNull("value", value); }
     }
   }
 }

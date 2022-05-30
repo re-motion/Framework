@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
@@ -29,7 +30,6 @@ using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -42,135 +42,137 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     public new void SetUp ()
     {
       base.SetUp();
-      _mappingReflector = MappingReflectorObjectMother.CreateMappingReflector (TestMappingConfiguration.GetTypeDiscoveryService ());
+      _mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(TestMappingConfiguration.GetTypeDiscoveryService());
     }
 
     [Test]
     public void CreateDomainObjectCreator ()
     {
-      var registryStub = MockRepository.GenerateStub<IPipelineRegistry> ();
+      var registryStub = new Mock<IPipelineRegistry>();
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IPipelineRegistry> (() => registryStub);
-      using (new ServiceLocatorScope (serviceLocator))
+      serviceLocator.RegisterSingle<IPipelineRegistry>(() => registryStub.Object);
+      using (new ServiceLocatorScope(serviceLocator))
       {
         var creator = MappingReflector.CreateDomainObjectCreator();
-        Assert.That (creator.PipelineRegistry, Is.SameAs (registryStub));
+        Assert.That(creator.PipelineRegistry, Is.SameAs(registryStub.Object));
       }
     }
 
     [Test]
     public void Initialization_DefaultTypeDiscoveryService ()
     {
-      var reflector = new MappingReflector ();
+      var reflector = new MappingReflector();
 
-      Assert.That (reflector.TypeDiscoveryService, Is.SameAs (ContextAwareTypeUtility.GetTypeDiscoveryService ()));
+      Assert.That(reflector.TypeDiscoveryService, Is.SameAs(ContextAwareTypeUtility.GetTypeDiscoveryService()));
     }
 
     [Test]
     public void Initialization_MappingObjectFactory_InstanceCreator ()
     {
-      var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition (typeof (Order), null).InstanceCreator;
-      Assert.That (defaultCreator, Is.TypeOf<DomainObjectCreator>());
+      var defaultCreator = new MappingReflector().MappingObjectFactory.CreateClassDefinition(typeof(Order), null).InstanceCreator;
+      Assert.That(defaultCreator, Is.TypeOf<DomainObjectCreator>());
    }
 
     [Test]
     public void GetResolveTypes ()
     {
-      Assert.That (_mappingReflector.ResolveTypes, Is.True);
+      Assert.That(_mappingReflector.ResolveTypes, Is.True);
     }
 
     [Test]
     public void GetRelationDefinitions ()
     {
-      var actualClassDefinitions = _mappingReflector.GetClassDefinitions ().ToDictionary (cd => cd.ClassType);
-      var actualRelationDefinitions = _mappingReflector.GetRelationDefinitions (actualClassDefinitions).ToDictionary (rd => rd.ID);
+      var actualClassDefinitions = _mappingReflector.GetClassDefinitions().ToDictionary(cd => cd.ClassType);
+      var actualRelationDefinitions = _mappingReflector.GetRelationDefinitions(actualClassDefinitions).ToDictionary(rd => rd.ID);
 
       var relationDefinitionChecker = new RelationDefinitionChecker();
-      relationDefinitionChecker.Check (FakeMappingConfiguration.Current.RelationDefinitions.Values, actualRelationDefinitions, true);
+      relationDefinitionChecker.Check(FakeMappingConfiguration.Current.RelationDefinitions.Values, actualRelationDefinitions, true);
     }
 
     [Test]
     public void Get_WithDuplicateAssembly ()
     {
       var assembly = GetType().Assembly;
-      var expectedMappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService (assembly));
-      var expectedClassDefinitions = expectedMappingReflector.GetClassDefinitions().ToDictionary (cd=>cd.ClassType);
-      var expectedRelationDefinitions = expectedMappingReflector.GetRelationDefinitions (expectedClassDefinitions);
+      var expectedMappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService(assembly));
+      var expectedClassDefinitions = expectedMappingReflector.GetClassDefinitions().ToDictionary(cd=>cd.ClassType);
+      var expectedRelationDefinitions = expectedMappingReflector.GetRelationDefinitions(expectedClassDefinitions);
 
-      var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector (BaseConfiguration.GetTypeDiscoveryService (assembly, assembly));
-      var actualClassDefinitions = mappingReflector.GetClassDefinitions ().ToDictionary (cd => cd.ClassType);
+      var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService(assembly, assembly));
+      var actualClassDefinitions = mappingReflector.GetClassDefinitions().ToDictionary(cd => cd.ClassType);
 
-      var classDefinitionChecker = new ClassDefinitionChecker ();
-      classDefinitionChecker.Check (expectedClassDefinitions.Values, actualClassDefinitions, false, false);
+      var classDefinitionChecker = new ClassDefinitionChecker();
+      classDefinitionChecker.Check(expectedClassDefinitions.Values, actualClassDefinitions, false, false);
 
-      var actualRelationDefinitions = mappingReflector.GetRelationDefinitions (actualClassDefinitions).ToDictionary (rd => rd.ID);
+      var actualRelationDefinitions = mappingReflector.GetRelationDefinitions(actualClassDefinitions).ToDictionary(rd => rd.ID);
       var relationDefinitionChecker = new RelationDefinitionChecker();
-      relationDefinitionChecker.Check (expectedRelationDefinitions, actualRelationDefinitions, false);
+      relationDefinitionChecker.Check(expectedRelationDefinitions, actualRelationDefinitions, false);
     }
 
     [Test]
-    public void GetClassDefinitions()
+    public void GetClassDefinitions ()
     {
-      var assembly = GetType ().Assembly;
-      var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector (BaseConfiguration.GetTypeDiscoveryService (assembly, assembly));
+      var assembly = GetType().Assembly;
+      var mappingReflector = MappingReflectorObjectMother.CreateMappingReflector(BaseConfiguration.GetTypeDiscoveryService(assembly, assembly));
       var classDefinitions = mappingReflector.GetClassDefinitions();
 
-      Assert.That (classDefinitions, Is.Not.Empty);
+      Assert.That(classDefinitions, Is.Not.Empty);
     }
 
     [Test]
     public void CreateClassDefinitionValidator ()
     {
-      var validator = (ClassDefinitionValidator) _mappingReflector.CreateClassDefinitionValidator();
+      var validator = (ClassDefinitionValidator)_mappingReflector.CreateClassDefinitionValidator();
 
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (7));
-      Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule)));
-      Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (DomainObjectTypeIsNotGenericValidationRule)));
-      Assert.That (validator.ValidationRules[2], Is.TypeOf (typeof (InheritanceHierarchyFollowsClassHierarchyValidationRule)));
-      Assert.That (validator.ValidationRules[3], Is.TypeOf (typeof (StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule)));
-      Assert.That (validator.ValidationRules[4], Is.TypeOf (typeof (ClassDefinitionTypeIsSubclassOfDomainObjectValidationRule)));
-      Assert.That (validator.ValidationRules[5], Is.TypeOf (typeof (StorageGroupTypesAreSameWithinInheritanceTreeRule)));
-      Assert.That (validator.ValidationRules[6], Is.TypeOf (typeof (CheckForClassIDIsValidValidationRule)));
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(7));
+      Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(DomainObjectTypeDoesNotHaveLegacyInfrastructureConstructorValidationRule)));
+      Assert.That(validator.ValidationRules[1], Is.TypeOf(typeof(DomainObjectTypeIsNotGenericValidationRule)));
+      Assert.That(validator.ValidationRules[2], Is.TypeOf(typeof(InheritanceHierarchyFollowsClassHierarchyValidationRule)));
+      Assert.That(validator.ValidationRules[3], Is.TypeOf(typeof(StorageGroupAttributeIsOnlyDefinedOncePerInheritanceHierarchyValidationRule)));
+      Assert.That(validator.ValidationRules[4], Is.TypeOf(typeof(ClassDefinitionTypeIsSubclassOfDomainObjectValidationRule)));
+      Assert.That(validator.ValidationRules[5], Is.TypeOf(typeof(StorageGroupTypesAreSameWithinInheritanceTreeRule)));
+      Assert.That(validator.ValidationRules[6], Is.TypeOf(typeof(CheckForClassIDIsValidValidationRule)));
     }
 
     [Test]
     public void CreatePropertyDefinitionValidator ()
     {
-      var validator = (PropertyDefinitionValidator) _mappingReflector.CreatePropertyDefinitionValidator();
+      var validator = (PropertyDefinitionValidator)_mappingReflector.CreatePropertyDefinitionValidator();
 
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (4));
-      Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule)));
-      Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (MappingAttributesAreSupportedForPropertyTypeValidationRule)));
-      Assert.That (validator.ValidationRules[2], Is.TypeOf (typeof (StorageClassIsSupportedValidationRule)));
-      Assert.That (validator.ValidationRules[3], Is.TypeOf (typeof (PropertyTypeIsSupportedValidationRule)));
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(6));
+      Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(MappingAttributesAreOnlyAppliedOnOriginalPropertyDeclarationsValidationRule)));
+      Assert.That(validator.ValidationRules[1], Is.TypeOf(typeof(MappingAttributesAreSupportedForPropertyTypeValidationRule)));
+      Assert.That(validator.ValidationRules[2], Is.TypeOf(typeof(StorageClassIsSupportedValidationRule)));
+      Assert.That(validator.ValidationRules[3], Is.TypeOf(typeof(PropertyTypeIsSupportedValidationRule)));
+      Assert.That(validator.ValidationRules[4], Is.TypeOf(typeof(MandatoryNetEnumTypeHasValuesDefinedValidationRule)));
+      Assert.That(validator.ValidationRules[5], Is.TypeOf(typeof(MandatoryExtensibleEnumTypeHasValuesDefinedValidationRule)));
     }
 
     [Test]
     public void CreateRelationDefinitionValidator ()
     {
-      var validator = (RelationDefinitionValidator) _mappingReflector.CreateRelationDefinitionValidator();
+      var validator = (RelationDefinitionValidator)_mappingReflector.CreateRelationDefinitionValidator();
 
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (10));
-      Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (RdbmsRelationEndPointCombinationIsSupportedValidationRule)));
-      Assert.That (validator.ValidationRules[1], Is.TypeOf (typeof (SortExpressionIsSupportedForCardianlityOfRelationPropertyValidationRule)));
-      Assert.That (validator.ValidationRules[2], Is.TypeOf (typeof (VirtualRelationEndPointCardinalityMatchesPropertyTypeValidationRule)));
-      Assert.That (validator.ValidationRules[3], Is.TypeOf (typeof (VirtualRelationEndPointPropertyTypeIsSupportedValidationRule)));
-      Assert.That (validator.ValidationRules[4], Is.TypeOf (typeof (ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule)));
-      Assert.That (validator.ValidationRules[5], Is.TypeOf (typeof (RelationEndPointPropertyTypeIsSupportedValidationRule)));
-      Assert.That (validator.ValidationRules[6], Is.TypeOf (typeof (RelationEndPointNamesAreConsistentValidationRule)));
-      Assert.That (validator.ValidationRules[7], Is.TypeOf (typeof (RelationEndPointTypesAreConsistentValidationRule)));
-      Assert.That (validator.ValidationRules[8], Is.TypeOf (typeof (CheckForInvalidRelationEndPointsValidationRule)));
-      Assert.That (validator.ValidationRules[9], Is.TypeOf (typeof (CheckForTypeNotFoundClassDefinitionValidationRule)));
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(10));
+      Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(RdbmsRelationEndPointCombinationIsSupportedValidationRule)));
+      Assert.That(validator.ValidationRules[1], Is.TypeOf(typeof(SortExpressionIsSupportedForCardinalityOfRelationPropertyValidationRule)));
+      Assert.That(validator.ValidationRules[2], Is.TypeOf(typeof(VirtualRelationEndPointCardinalityMatchesPropertyTypeValidationRule)));
+      Assert.That(validator.ValidationRules[3], Is.TypeOf(typeof(VirtualRelationEndPointPropertyTypeIsSupportedValidationRule)));
+      Assert.That(validator.ValidationRules[4], Is.TypeOf(typeof(ForeignKeyIsSupportedForCardinalityOfRelationPropertyValidationRule)));
+      Assert.That(validator.ValidationRules[5], Is.TypeOf(typeof(RelationEndPointPropertyTypeIsSupportedValidationRule)));
+      Assert.That(validator.ValidationRules[6], Is.TypeOf(typeof(RelationEndPointNamesAreConsistentValidationRule)));
+      Assert.That(validator.ValidationRules[7], Is.TypeOf(typeof(RelationEndPointTypesAreConsistentValidationRule)));
+      Assert.That(validator.ValidationRules[8], Is.TypeOf(typeof(CheckForInvalidRelationEndPointsValidationRule)));
+      Assert.That(validator.ValidationRules[9], Is.TypeOf(typeof(CheckForTypeNotFoundClassDefinitionValidationRule)));
     }
 
     [Test]
     public void CreateSortExpressionValidator ()
     {
-      var validator = (SortExpressionValidator) _mappingReflector.CreateSortExpressionValidator();
+      var validator = (SortExpressionValidator)_mappingReflector.CreateSortExpressionValidator();
 
-      Assert.That (validator.ValidationRules.Count, Is.EqualTo (1));
-      Assert.That (validator.ValidationRules[0], Is.TypeOf (typeof (SortExpressionIsValidValidationRule)));
+      Assert.That(validator.ValidationRules.Count, Is.EqualTo(1));
+      Assert.That(validator.ValidationRules[0], Is.TypeOf(typeof(SortExpressionIsValidValidationRule)));
     }
 
   }

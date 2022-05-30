@@ -20,6 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -31,52 +32,56 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
     public override void SetUp ()
     {
-      base.SetUp ();
-      _relationEndPointManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager (TestableClientTransaction.DataManager);
+      base.SetUp();
+      _relationEndPointManager = (RelationEndPointManager)DataManagerTestHelper.GetRelationEndPointManager(TestableClientTransaction.DataManager);
+
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
     }
 
     [Test]
-    [ExpectedException (typeof (SerializationException), ExpectedMessage = 
-        "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RelationEndPointManager' in Assembly "
-        + ".* is not marked as serializable.", MatchType = MessageMatch.Regex)]
     public void RelationEndPointManagerIsNotSerializable ()
     {
-      Serializer.SerializeAndDeserialize (_relationEndPointManager);
+      Assert.That(
+          () => Serializer.SerializeAndDeserialize(_relationEndPointManager),
+          Throws.InstanceOf<SerializationException>()
+              .With.Message.Matches(
+                  "Type 'Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.RelationEndPointManager' in Assembly "
+                  + ".* is not marked as serializable."));
     }
 
     [Test]
     public void RelationEndPointManagerIsFlattenedSerializable ()
     {
-      RelationEndPointManager deserializedManager = FlattenedSerializer.SerializeAndDeserialize (_relationEndPointManager);
-      Assert.That (deserializedManager, Is.Not.Null);
-      Assert.That (deserializedManager, Is.Not.SameAs (_relationEndPointManager));
+      RelationEndPointManager deserializedManager = FlattenedSerializer.SerializeAndDeserialize(_relationEndPointManager);
+      Assert.That(deserializedManager, Is.Not.Null);
+      Assert.That(deserializedManager, Is.Not.SameAs(_relationEndPointManager));
     }
 
     [Test]
     public void RelationEndPointManager_Content ()
     {
-      DomainObjectIDs.Order1.GetObject<Order> ().OrderItems.EnsureDataComplete();
-      Assert.That (_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo (7));
+      DomainObjectIDs.Order1.GetObject<Order>().OrderItems.EnsureDataComplete();
+      Assert.That(_relationEndPointManager.RelationEndPoints.Count, Is.EqualTo(7));
 
-      var deserializedManager = (RelationEndPointManager) DataManagerTestHelper.GetRelationEndPointManager (
-          Serializer.SerializeAndDeserialize (TestableClientTransaction.DataManager));
+      var deserializedManager = (RelationEndPointManager)DataManagerTestHelper.GetRelationEndPointManager(
+          Serializer.SerializeAndDeserialize(TestableClientTransaction.DataManager));
 
-      Assert.That (deserializedManager.ClientTransaction, Is.Not.Null);
-      Assert.That (deserializedManager.ClientTransaction, Is.InstanceOf (typeof (TestableClientTransaction)));
-      Assert.That (deserializedManager.ClientTransaction, Is.Not.SameAs (TestableClientTransaction));
-      Assert.That (deserializedManager.LazyLoader, Is.Not.Null);
-      Assert.That (deserializedManager.LazyLoader, Is.TypeOf (_relationEndPointManager.LazyLoader.GetType()));
-      Assert.That (deserializedManager.EndPointFactory, Is.Not.Null);
-      Assert.That (deserializedManager.EndPointFactory, Is.TypeOf (_relationEndPointManager.EndPointFactory.GetType()));
-      Assert.That (deserializedManager.RegistrationAgent, Is.TypeOf (_relationEndPointManager.RegistrationAgent.GetType ()));
-      Assert.That (deserializedManager.DataContainerEndPointsRegistrationAgent, Is.Not.Null);
+      Assert.That(deserializedManager.ClientTransaction, Is.Not.Null);
+      Assert.That(deserializedManager.ClientTransaction, Is.InstanceOf(typeof(TestableClientTransaction)));
+      Assert.That(deserializedManager.ClientTransaction, Is.Not.SameAs(TestableClientTransaction));
+      Assert.That(deserializedManager.LazyLoader, Is.Not.Null);
+      Assert.That(deserializedManager.LazyLoader, Is.TypeOf(_relationEndPointManager.LazyLoader.GetType()));
+      Assert.That(deserializedManager.EndPointFactory, Is.Not.Null);
+      Assert.That(deserializedManager.EndPointFactory, Is.TypeOf(_relationEndPointManager.EndPointFactory.GetType()));
+      Assert.That(deserializedManager.RegistrationAgent, Is.TypeOf(_relationEndPointManager.RegistrationAgent.GetType()));
+      Assert.That(deserializedManager.DataContainerEndPointsRegistrationAgent, Is.Not.Null);
 
-      Assert.That (deserializedManager.RelationEndPoints.Count, Is.EqualTo (7));
+      Assert.That(deserializedManager.RelationEndPoints.Count, Is.EqualTo(7));
 
-      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName (typeof (Order), "OrderItems"));
-      var endPoint = (ICollectionEndPoint) deserializedManager.GetRelationEndPointWithoutLoading (endPointID);
+      var endPointID = RelationEndPointID.Create(DomainObjectIDs.Order1, ReflectionMappingHelper.GetPropertyName(typeof(Order), "OrderItems"));
+      var endPoint = (ICollectionEndPoint<ICollectionEndPointData>)deserializedManager.GetRelationEndPointWithoutLoading(endPointID);
 
-      Assert.That (endPoint.ClientTransaction, Is.SameAs (deserializedManager.ClientTransaction));
+      Assert.That(endPoint.ClientTransaction, Is.SameAs(deserializedManager.ClientTransaction));
     }
   }
 }

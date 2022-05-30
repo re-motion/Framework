@@ -33,10 +33,10 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<ScreenshotWebTreeViewNodeControlObject> ForScreenshot (
         [NotNull] this WebTreeViewNodeControlObject webTreeViewNode)
     {
-      ArgumentUtility.CheckNotNull ("webTreeViewNode", webTreeViewNode);
+      ArgumentUtility.CheckNotNull("webTreeViewNode", webTreeViewNode);
 
-      return SelfResolvableFluentScreenshot.Create (
-          new ScreenshotWebTreeViewNodeControlObject (
+      return SelfResolvableFluentScreenshot.Create(
+          new ScreenshotWebTreeViewNodeControlObject(
               webTreeViewNode.ForControlObjectScreenshot(),
               webTreeViewNode.Scope.ForElementScopeScreenshot()));
     }
@@ -47,7 +47,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetLabel (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
     {
-      var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss ("span > span", Options.NoWait);
+      ArgumentUtility.CheckNotNull("fluentWebTreeViewNode", fluentWebTreeViewNode);
+
+      var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss("span > span", Options.NoWait);
       result.EnsureExistence();
 
       return result.ForElementScopeScreenshot();
@@ -59,7 +61,9 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects.ScreenshotCreation
     public static FluentScreenshotElement<ElementScope> GetChildren (
         [NotNull] this IFluentScreenshotElementWithCovariance<ScreenshotWebTreeViewNodeControlObject> fluentWebTreeViewNode)
     {
-      var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss ("ul", Options.NoWait);
+      ArgumentUtility.CheckNotNull("fluentWebTreeViewNode", fluentWebTreeViewNode);
+
+      var result = fluentWebTreeViewNode.Target.WebTreeViewNode.Scope.FindCss("ul", Options.NoWait);
       result.EnsureExistence();
 
       return result.ForElementScopeScreenshot();

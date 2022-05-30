@@ -32,7 +32,7 @@ namespace Remotion.Mixins
     /// </summary>
     /// <param name="message">The exception message.</param>
     public ConfigurationException (string message)
-        : base (message)
+        : base(message)
     {
     }
 
@@ -42,7 +42,7 @@ namespace Remotion.Mixins
     /// <param name="message">The exception message.</param>
     /// <param name="innerException">The inner exception.</param>
     public ConfigurationException (string message, Exception innerException)
-        : base (message, innerException)
+        : base(message, innerException)
     {
     }
 
@@ -53,7 +53,7 @@ namespace Remotion.Mixins
     /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual information about the source or destination.</param>
     /// <exception cref="T:System.ArgumentNullException">The info parameter is null. </exception>
     protected ConfigurationException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

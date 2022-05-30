@@ -19,10 +19,10 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -30,9 +30,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// <summary>
   /// Responsible for rendering table cells of <see cref="BocCustomColumnDefinition"/> columns.
   /// </summary>
-  [ImplementationFor (typeof (IBocCustomColumnRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IBocCustomColumnRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCustomColumnRenderer : BocColumnRendererBase<BocCustomColumnDefinition>, IBocCustomColumnRenderer
   {
+    private readonly IRenderingFeatures _renderingFeatures;
+
     /// <summary>
     /// Contructs a renderer bound to a <see cref="Remotion.ObjectBinding.Web.UI.Controls.BocList"/> to render, 
     /// an <see cref="HtmlTextWriter"/> to render to, and a <see cref="BocCustomColumnDefinition"/> column for which to render cells.
@@ -45,8 +47,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
         BocListCssClassDefinition cssClasses)
-        : base (resourceUrlFactory, renderingFeatures, cssClasses)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses)
     {
+      ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
+
+      _renderingFeatures = renderingFeatures;
     }
 
     /// <summary>
@@ -68,52 +73,80 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         int rowIndex,
         bool showIcon)
     {
-      ArgumentUtility.CheckNotNull ("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       int originalRowIndex = dataRowRenderEventArgs.ListIndex;
       IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
       bool isEditedRow = renderingContext.Control.EditModeController.IsRowEditModeActive &&
-                         renderingContext.Control.EditModeController.GetEditableRow (originalRowIndex) != null;
+                         renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex) != null;
 
       if (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
           || (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && isEditedRow))
-        RenderCustomCellInnerControls (renderingContext, originalRowIndex, rowIndex);
+        RenderCustomCellInnerControls(renderingContext, originalRowIndex, rowIndex);
       else
-        RenderCustomCellDirectly (renderingContext, businessObject, originalRowIndex);
+        RenderCustomCellDirectly(renderingContext, businessObject, originalRowIndex);
+    }
+
+    /// <summary>
+    /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCustomColumnDefinition"/>.
+    /// </summary>
+    protected override void RenderTitleCell (
+        BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext,
+        SortingDirection sortingDirection,
+        int orderIndex)
+    {
+      if (_renderingFeatures.EnableDiagnosticMetadata)
+      {
+        var boundPropertyPath = renderingContext.ColumnDefinition.PropertyPathIdentifier;
+
+        if (!string.IsNullOrEmpty(boundPropertyPath))
+        {
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "true");
+          renderingContext.Writer.AddAttribute(
+              DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths,
+              boundPropertyPath);
+        }
+        else
+        {
+          renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths, "false");
+        }
+      }
+
+      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
     }
 
     private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex, int rowIndex)
     {
       BocListCustomColumnTuple[] customColumnTuples = renderingContext.Control.CustomColumns[renderingContext.ColumnDefinition];
-      BocListCustomColumnTuple customColumnTuple;
+      BocListCustomColumnTuple? customColumnTuple;
       if (customColumnTuples.Length > rowIndex && customColumnTuples[rowIndex].Item2 == originalRowIndex)
         customColumnTuple = customColumnTuples[rowIndex];
       else
-        customColumnTuple = customColumnTuples.FirstOrDefault (t => t.Item2 == originalRowIndex);
+        customColumnTuple = customColumnTuples.FirstOrDefault(t => t.Item2 == originalRowIndex);
 
       if (customColumnTuple == null)
       {
-        renderingContext.Writer.Write (c_whiteSpace);
+        renderingContext.Writer.Write(c_whiteSpace);
         return;
       }
 
-      RenderClickWrapperBeginTag (renderingContext);
+      RenderClickWrapperBeginTag(renderingContext);
 
       Control control = customColumnTuple.Item3;
       if (control != null)
       {
-        ApplyStyleDefaults (control);
-        control.RenderControl (renderingContext.Writer);
+        ApplyStyleDefaults(control);
+        control.RenderControl(renderingContext.Writer);
       }
 
-      RenderClickWrapperEndTag (renderingContext);
+      RenderClickWrapperEndTag(renderingContext);
     }
 
     private void RenderClickWrapperBeginTag (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext)
     {
       string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
     }
 
     private void RenderClickWrapperEndTag (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext)
@@ -124,27 +157,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void ApplyStyleDefaults (Control control)
     {
       bool isControlWidthEmpty;
-      CssStyleCollection controlStyle = GetControlStyle (control, out isControlWidthEmpty);
+      CssStyleCollection? controlStyle = GetControlStyle(control, out isControlWidthEmpty);
       if (controlStyle == null)
         return;
 
-      if (string.IsNullOrEmpty (controlStyle["width"]) && isControlWidthEmpty)
+      if (string.IsNullOrEmpty(controlStyle["width"]) && isControlWidthEmpty)
         controlStyle["width"] = "100%";
-      if (string.IsNullOrEmpty (controlStyle["vertical-align"]))
+      if (string.IsNullOrEmpty(controlStyle["vertical-align"]))
         controlStyle["vertical-align"] = "middle";
     }
 
-    private CssStyleCollection GetControlStyle (Control control, out bool isControlWidthEmpty)
+    private CssStyleCollection? GetControlStyle (Control control, out bool isControlWidthEmpty)
     {
-      CssStyleCollection controlStyle = null;
+      CssStyleCollection? controlStyle = null;
       isControlWidthEmpty = true;
       if (control is WebControl)
       {
-        controlStyle = ((WebControl) control).Style;
-        isControlWidthEmpty = ((WebControl) control).Width.IsEmpty;
+        controlStyle = ((WebControl)control).Style;
+        isControlWidthEmpty = ((WebControl)control).Width.IsEmpty;
       }
       else if (control is HtmlControl)
-        controlStyle = ((HtmlControl) control).Style;
+        controlStyle = ((HtmlControl)control).Style;
       return controlStyle;
     }
 
@@ -152,14 +185,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, IBusinessObject businessObject, int originalRowIndex)
     {
       string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
-      BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments (
+      BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments(
           renderingContext.Control,
           businessObject,
           renderingContext.ColumnDefinition,
           renderingContext.ColumnIndex,
           originalRowIndex,
           onClick);
-      renderingContext.ColumnDefinition.CustomCell.RenderInternal (renderingContext.Writer, arguments);
+      renderingContext.ColumnDefinition.CustomCell.RenderInternal(renderingContext.Writer, arguments);
     }
   }
 }

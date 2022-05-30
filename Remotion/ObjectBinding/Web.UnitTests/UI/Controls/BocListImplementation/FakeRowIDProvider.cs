@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 
@@ -40,25 +41,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       return row.Index.ToString();
     }
 
-    public BocListRow GetRowFromItemRowID (IList rows, string rowID)
+    public BocListRow GetRowFromItemRowID (IReadOnlyList<IBusinessObject> rows, string rowID)
     {
-      var rowIndex = int.Parse (rowID);
+      var rowIndex = int.Parse(rowID);
       if (rowIndex >= rows.Count)
         return null;
-      var obj = (IBusinessObject) rows[rowIndex];
-      return new BocListRow (rowIndex, obj);
+      var obj = rows[rowIndex];
+      return new BocListRow(rowIndex, obj);
     }
 
     public void AddRow (BocListRow row)
     {
       if (NotifyAddRow != null)
-        NotifyAddRow (row);
+        NotifyAddRow(row);
     }
 
     public void RemoveRow (BocListRow row)
     {
       if (NotifyRemoveRow != null)
-        NotifyRemoveRow (row);
+        NotifyRemoveRow(row);
     }
   }
 }

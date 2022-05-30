@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.StorageProviderCommands;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderCommands
 {
@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
   public class SingleDataContainerAssociateWithIDCommandTest : StandardMappingTest
   {
     private ObjectID _expectedID;
-    private IStorageProviderCommand<DataContainer, object> _innerCommandMock;
+    private Mock<IStorageProviderCommand<DataContainer, object>> _innerCommandMock;
 
     private SingleDataContainerAssociateWithIDCommand<object> _associateCommand;
 
@@ -36,12 +36,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _expectedID = DomainObjectIDs.Order1;
-      _innerCommandMock = MockRepository.GenerateStrictMock<IStorageProviderCommand<DataContainer, object>>();
+      _innerCommandMock = new Mock<IStorageProviderCommand<DataContainer, object>>(MockBehavior.Strict);
 
-      _associateCommand = new SingleDataContainerAssociateWithIDCommand<object> (_expectedID, _innerCommandMock);
+      _associateCommand = new SingleDataContainerAssociateWithIDCommand<object>(_expectedID, _innerCommandMock.Object);
 
       _fakeContext = "context";
     }
@@ -49,39 +49,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.StorageProviderComma
     [Test]
     public void Execute_MatchingDataContainer ()
     {
-      var dataContainer = DataContainerObjectMother.Create (_expectedID);
-      _innerCommandMock.Expect (mock => mock.Execute (_fakeContext)).Return (dataContainer);
+      var dataContainer = DataContainerObjectMother.Create(_expectedID);
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeContext)).Returns(dataContainer).Verifiable();
 
-      var result = _associateCommand.Execute (_fakeContext);
+      var result = _associateCommand.Execute(_fakeContext);
 
-      _innerCommandMock.VerifyAllExpectations();
-      Assert.That (result.ObjectID, Is.EqualTo (_expectedID));
-      Assert.That (result.LocatedObject, Is.SameAs (dataContainer));
+      _innerCommandMock.Verify();
+      Assert.That(result.ObjectID, Is.EqualTo(_expectedID));
+      Assert.That(result.LocatedObject, Is.SameAs(dataContainer));
     }
 
     [Test]
     public void Execute_NonMatchingDataContainer ()
     {
-      var dataContainer = DataContainerObjectMother.Create (DomainObjectIDs.Order3);
-      _innerCommandMock.Expect (mock => mock.Execute (_fakeContext)).Return (dataContainer);
+      var dataContainer = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeContext)).Returns(dataContainer).Verifiable();
 
-      Assert.That (
-          () => _associateCommand.Execute (_fakeContext),
-          Throws.TypeOf<PersistenceException> ().With.Message.EqualTo (
+      Assert.That(
+          () => _associateCommand.Execute(_fakeContext),
+          Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
             "The ObjectID of the loaded DataContainer 'Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid' and the expected ObjectID "
             + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' differ."));
     }
-    
+
     [Test]
     public void Execute_Null ()
     {
-      _innerCommandMock.Expect (mock => mock.Execute (_fakeContext)).Return (null);
+      _innerCommandMock.Setup(mock => mock.Execute(_fakeContext)).Returns((DataContainer)null).Verifiable();
 
-      var result = _associateCommand.Execute (_fakeContext);
+      var result = _associateCommand.Execute(_fakeContext);
 
-      _innerCommandMock.VerifyAllExpectations ();
-      Assert.That (result.ObjectID, Is.EqualTo (_expectedID));
-      Assert.That (result.LocatedObject, Is.Null);
+      _innerCommandMock.Verify();
+      Assert.That(result.ObjectID, Is.EqualTo(_expectedID));
+      Assert.That(result.LocatedObject, Is.Null);
     }
   }
 }

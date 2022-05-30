@@ -17,6 +17,7 @@
 
 using System;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.ObjectMothers
 {
@@ -25,7 +26,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
   /// </summary>
   static partial class BooleanObjectMother
   {
-    private static readonly Random s_random = new Random ();
+    private static readonly Random s_random = new Random();
 
     /// <summary>
     /// Gets a random <see cref="bool"/> value. This is used by unit tests when they need code to work with arbitrary boolean values. Rather than
@@ -35,7 +36,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
     /// <returns>A random <see cref="bool"/> value.</returns>
     public static bool GetRandomBoolean ()
     {
-      return s_random.Next (2) == 1;
+      return s_random.Next(2) == 1;
     }
   }
 }

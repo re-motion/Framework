@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IObjectReaderFactory objectReaderFactory,
         ITableDefinitionFinder tableDefinitionFinder)
     {
-      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-      ArgumentUtility.CheckNotNull ("dbCommandBuilderFactory", dbCommandBuilderFactory);
-      ArgumentUtility.CheckNotNull ("objectReaderFactory", objectReaderFactory);
-      ArgumentUtility.CheckNotNull ("tableDefinitionFinder", tableDefinitionFinder);
+      ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull("dbCommandBuilderFactory", dbCommandBuilderFactory);
+      ArgumentUtility.CheckNotNull("objectReaderFactory", objectReaderFactory);
+      ArgumentUtility.CheckNotNull("tableDefinitionFinder", tableDefinitionFinder);
 
       _storageProviderDefinition = storageProviderDefinition;
       _dbCommandBuilderFactory = dbCommandBuilderFactory;
@@ -76,63 +76,66 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public virtual IStorageProviderCommand<ObjectLookupResult<DataContainer>, IRdbmsProviderCommandExecutionContext> CreateForSingleIDLookup (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      var tableDefinition = _tableDefinitionFinder.GetTableDefinition (objectID);
+      var tableDefinition = _tableDefinitionFinder.GetTableDefinition(objectID);
       var selectedColumns = tableDefinition.GetAllColumns().ToArray();
-      var dataContainerReader = _objectReaderFactory.CreateDataContainerReader (tableDefinition, selectedColumns);
-      var comparedColumns = tableDefinition.ObjectIDProperty.SplitValueForComparison (objectID);
-      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect (tableDefinition, selectedColumns, comparedColumns, new OrderedColumn[0]);
+      var dataContainerReader = _objectReaderFactory.CreateDataContainerReader(tableDefinition, selectedColumns);
+      var comparedColumns = tableDefinition.ObjectIDProperty.SplitValueForComparison(objectID);
+      var dbCommandBuilder = _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, comparedColumns, Array.Empty<OrderedColumn>());
 
-      var loadCommand = new SingleObjectLoadCommand<DataContainer> (dbCommandBuilder, dataContainerReader);
-      return new SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext> (objectID, loadCommand);
+      var loadCommand = new SingleObjectLoadCommand<DataContainer?>(dbCommandBuilder, dataContainerReader);
+      return new SingleDataContainerAssociateWithIDCommand<IRdbmsProviderCommandExecutionContext>(objectID, loadCommand);
     }
 
     public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<DataContainer>>, IRdbmsProviderCommandExecutionContext> CreateForSortedMultiIDLookup (
         IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
-      var objectIDList = objectIDs.ToList();
+      var objectIDList = objectIDs as IReadOnlyCollection<ObjectID> ?? objectIDs.ToList();
       var dbCommandBuildersAndReaders =
           from id in objectIDList
-          let tableDefinition = _tableDefinitionFinder.GetTableDefinition (id)
+          let tableDefinition = _tableDefinitionFinder.GetTableDefinition(id)
           group id by tableDefinition
           into idsByTable
           let selectedColumns = idsByTable.Key.GetAllColumns().ToArray()
-          let dataContainerReader = _objectReaderFactory.CreateDataContainerReader (idsByTable.Key, selectedColumns)
-          let dbCommandBuilder = CreateIDLookupDbCommandBuilder (idsByTable.Key, selectedColumns, idsByTable)
-          select Tuple.Create (dbCommandBuilder, dataContainerReader);
+          let dataContainerReader = _objectReaderFactory.CreateDataContainerReader(idsByTable.Key, selectedColumns)
+          let dbCommandBuilder = CreateIDLookupDbCommandBuilder(idsByTable.Key, selectedColumns, idsByTable)
+          select Tuple.Create(dbCommandBuilder, dataContainerReader);
 
-      var loadCommand = new MultiObjectLoadCommand<DataContainer> (dbCommandBuildersAndReaders);
-      return new MultiDataContainerAssociateWithIDsCommand (objectIDList, loadCommand);
+      var loadCommand = new MultiObjectLoadCommand<DataContainer?>(dbCommandBuildersAndReaders);
+      return new MultiDataContainerAssociateWithIDsCommand(objectIDList, loadCommand);
     }
 
     public virtual IStorageProviderCommand<IEnumerable<ObjectLookupResult<object>>, IRdbmsProviderCommandExecutionContext> CreateForMultiTimestampLookup (
         IEnumerable<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       var dbCommandBuildersAndReaders =
           from id in objectIDs
-          let tableDefinition = _tableDefinitionFinder.GetTableDefinition (id)
+          let tableDefinition = _tableDefinitionFinder.GetTableDefinition(id)
           group id by tableDefinition
           into idsByTable
-          let selectedColumns = idsByTable.Key.ObjectIDProperty.GetColumns().Concat (idsByTable.Key.TimestampProperty.GetColumns()).ToArray()
-          let timestampReader = _objectReaderFactory.CreateTimestampReader (idsByTable.Key, selectedColumns)
-          let dbCommandBuilder = CreateIDLookupDbCommandBuilder (idsByTable.Key, selectedColumns, idsByTable)
-          select Tuple.Create (dbCommandBuilder, timestampReader);
+          let selectedColumns = idsByTable.Key.ObjectIDProperty.GetColumns().Concat(idsByTable.Key.TimestampProperty.GetColumns()).ToArray()
+          let timestampReader = _objectReaderFactory.CreateTimestampReader(idsByTable.Key, selectedColumns)
+          let dbCommandBuilder = CreateIDLookupDbCommandBuilder(idsByTable.Key, selectedColumns, idsByTable)
+          select Tuple.Create(dbCommandBuilder, timestampReader);
 
-      var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>> (dbCommandBuildersAndReaders);
-      return DelegateBasedCommand.Create (
+      var loadCommand = new MultiObjectLoadCommand<Tuple<ObjectID, object>?>(dbCommandBuildersAndReaders);
+      return DelegateBasedCommand.Create(
           loadCommand,
-          lookupResults => lookupResults.Select (
+          lookupResults => lookupResults.Select(
               result =>
               {
-                Assertion.IsNotNull (
+                Assertion.IsNotNull<Tuple<ObjectID, object>?>(
+                    result,
+                    "Because no OUTER JOIN query is involved in retrieving the result, the DataContainer can never be null.");
+                Assertion.IsNotNull<ObjectID>(
                     result.Item1,
                     "Because we included IDColumn into the projection and used it for the lookup, every row in the result set certainly has an ID.");
-                return new ObjectLookupResult<object> (result.Item1, result.Item2);
+                return new ObjectLookupResult<object>(result.Item1, result.Item2);
               }));
     }
 
@@ -141,21 +144,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
         IEnumerable<ColumnDefinition> selectedColumns,
         IEnumerable<ObjectID> objectIDs)
     {
-      var checkedCastObjectIDs = objectIDs.Select (id =>
+      var checkedCastObjectIDs = objectIDs.Select(id =>
       {
         if (id.StorageProviderDefinition != _storageProviderDefinition)
-          throw new NotSupportedException ("Multi-ID lookups can only be performed for ObjectIDs from this storage provider.");
-        return (object) id;
+          throw new NotSupportedException("Multi-ID lookups can only be performed for ObjectIDs from this storage provider.");
+        return (object)id;
       }).ToList();
 
       if (checkedCastObjectIDs.Count == 1)
       {
-        var columnValues = tableDefinition.ObjectIDProperty.SplitValueForComparison (checkedCastObjectIDs[0]);
-        return _dbCommandBuilderFactory.CreateForSelect (tableDefinition, selectedColumns, columnValues, Enumerable.Empty<OrderedColumn>());
+        var columnValues = tableDefinition.ObjectIDProperty.SplitValueForComparison(checkedCastObjectIDs[0]);
+        return _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, columnValues, Enumerable.Empty<OrderedColumn>());
       }
 
-      var comparedColumnValueTable = tableDefinition.ObjectIDProperty.SplitValuesForComparison (checkedCastObjectIDs);
-      return _dbCommandBuilderFactory.CreateForSelect (tableDefinition, selectedColumns, comparedColumnValueTable, Enumerable.Empty<OrderedColumn> ());
+      var comparedColumnValueTable = tableDefinition.ObjectIDProperty.SplitValuesForComparison(checkedCastObjectIDs);
+      return _dbCommandBuilderFactory.CreateForSelect(tableDefinition, selectedColumns, comparedColumnValueTable, Enumerable.Empty<OrderedColumn>());
     }
   }
 }

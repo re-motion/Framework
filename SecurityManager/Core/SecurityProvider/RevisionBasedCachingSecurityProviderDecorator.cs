@@ -29,7 +29,7 @@ namespace Remotion.SecurityManager.SecurityProvider
   /// <summary>
   /// 2nd-level cache
   /// </summary>
-  [ImplementationFor (typeof (ISecurityProvider), Position = Position, RegistrationType = RegistrationType.Decorator)]
+  [ImplementationFor(typeof(ISecurityProvider), Position = Position, RegistrationType = RegistrationType.Decorator)]
   public class RevisionBasedCachingSecurityProviderDecorator : ISecurityProvider
   {
     //TODO RM-5521: test
@@ -39,19 +39,19 @@ namespace Remotion.SecurityManager.SecurityProvider
     private readonly ISecurityProvider _innerSecurityProvider;
     private readonly IUserRevisionProvider _userRevisionProvider;
     private readonly SecurityContextCache _securityContextCache;
-    private Func<ISecurityPrincipal, AccessTypeCache> _securityContextCacheValueFactory;
+    private Func<ISecurityPrincipal, AccessTypeCache>? _securityContextCacheValueFactory;
 
     public RevisionBasedCachingSecurityProviderDecorator (
         ISecurityProvider innerSecurityProvider,
         IDomainRevisionProvider revisionProvider,
         IUserRevisionProvider userRevisionProvider)
     {
-      ArgumentUtility.CheckNotNull ("innerSecurityProvider", innerSecurityProvider);
-      ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
-      ArgumentUtility.CheckNotNull ("userRevisionProvider", userRevisionProvider);
+      ArgumentUtility.CheckNotNull("innerSecurityProvider", innerSecurityProvider);
+      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
+      ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
 
       _innerSecurityProvider = innerSecurityProvider;
-      _securityContextCache = new SecurityContextCache (revisionProvider);
+      _securityContextCache = new SecurityContextCache(revisionProvider);
       _userRevisionProvider = userRevisionProvider;
     }
 
@@ -67,20 +67,32 @@ namespace Remotion.SecurityManager.SecurityProvider
 
     public AccessType[] GetAccess (ISecurityContext context, ISecurityPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("principal", principal);
+
+      if (principal.IsNull)
+        return _innerSecurityProvider.GetAccess(context, principal);
+
+      Assertion.IsNotNull(principal.User, "SecurityPrincipal.User must not be null unless SecurityPrincipal is defined as a null object.");
 
       // Optimized for memory allocations
       if (_securityContextCacheValueFactory == null)
-        _securityContextCacheValueFactory = key => new AccessTypeCache (_userRevisionProvider, key.User);
+      {
+        _securityContextCacheValueFactory = key =>
+        {
+          Assertion.DebugAssert(key.IsNull == false, "key.IsNull == false");
+          Assertion.DebugIsNotNull(key.User, "key.User != null when key.IsNull == false");
+          return new AccessTypeCache(_userRevisionProvider, key.User);
+        };
+      }
 
-      var accessTypeCache = _securityContextCache.Items.GetOrCreateValue (principal, _securityContextCacheValueFactory);
+      var accessTypeCache = _securityContextCache.Items.GetOrCreateValue(principal, _securityContextCacheValueFactory);
 
-      if (accessTypeCache.Items.TryGetValue (context, out var result))
+      if (accessTypeCache.Items.TryGetValue(context, out var result))
         return result;
 
       // Split to prevent closure being created during the TryGetValue-operation
-      return GetOrCreateAccessTypesFromCache (accessTypeCache.Items, context, principal);
+      return GetOrCreateAccessTypesFromCache(accessTypeCache.Items, context, principal);
     }
 
     private AccessType[] GetOrCreateAccessTypesFromCache (
@@ -88,7 +100,7 @@ namespace Remotion.SecurityManager.SecurityProvider
         ISecurityContext context,
         ISecurityPrincipal principal)
     {
-      return accessTypeCache.GetOrCreateValue (context, key => _innerSecurityProvider.GetAccess (key, principal));
+      return accessTypeCache.GetOrCreateValue(context, key => _innerSecurityProvider.GetAccess(key, principal));
     }
   }
 }

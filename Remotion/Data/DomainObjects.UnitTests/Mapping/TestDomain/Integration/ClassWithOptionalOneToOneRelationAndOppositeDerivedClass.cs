@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 {
-  [DBTable ("TableWithOptionalOneToOneRelationAndOppositeDerivedClass")]
+  [DBTable("TableWithOptionalOneToOneRelationAndOppositeDerivedClass")]
   [TestDomain]
   [Instantiable]
   public abstract class ClassWithOptionalOneToOneRelationAndOppositeDerivedClass : TestDomainBase

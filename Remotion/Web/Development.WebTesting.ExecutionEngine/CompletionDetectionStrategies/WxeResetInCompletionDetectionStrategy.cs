@@ -27,35 +27,37 @@ namespace Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectio
   /// </summary>
   public class WxeResetInCompletionDetectionStrategy : ICompletionDetectionStrategy
   {
-    private static readonly ILog s_log = LogManager.GetLogger (typeof (WxeResetInCompletionDetectionStrategy));
+    private static readonly ILog s_log = LogManager.GetLogger(typeof(WxeResetInCompletionDetectionStrategy));
     private readonly PageObjectContext _context;
+    private readonly TimeSpan? _timeout;
 
-    public WxeResetInCompletionDetectionStrategy ([NotNull] PageObjectContext context)
+    public WxeResetInCompletionDetectionStrategy ([NotNull] PageObjectContext context, TimeSpan? timeout = null)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
       _context = context;
+      _timeout = timeout;
     }
 
     /// <inheritdoc/>
-    public object PrepareWaitForCompletion (PageObjectContext context)
+    public object? PrepareWaitForCompletion (PageObjectContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return WxeCompletionDetectionHelpers.GetWxeFunctionToken (_context);
+      return WxeCompletionDetectionHelpers.GetWxeFunctionToken(_context);
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object state)
+    public void WaitForCompletion (PageObjectContext context, object? state)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("state", state);
+      ArgumentUtility.CheckNotNull("context", context);
+      ArgumentUtility.CheckNotNull("state", state!);
 
-      var oldWxeFunctionToken = (string) state;
-      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken (s_log, _context, oldWxeFunctionToken);
+      var oldWxeFunctionToken = (string)state;
+      WxeCompletionDetectionHelpers.WaitForNewWxeFunctionToken(s_log, _context, oldWxeFunctionToken, _timeout);
 
       const int expectedWxePostBackSequenceNumber = 2;
-      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber (s_log, _context, expectedWxePostBackSequenceNumber);
+      WxeCompletionDetectionHelpers.WaitForExpectedWxePostBackSequenceNumber(s_log, _context, expectedWxePostBackSequenceNumber, _timeout);
     }
   }
 }

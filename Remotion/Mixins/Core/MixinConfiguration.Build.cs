@@ -38,7 +38,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static MixinConfigurationBuilder BuildNew ()
     {
-      return new MixinConfigurationBuilder (null);
+      return new MixinConfigurationBuilder(null);
     }
 
     /// <summary>
@@ -62,8 +62,8 @@ namespace Remotion.Mixins
     /// </remarks>
     public static MixinConfigurationBuilder BuildFrom (MixinConfiguration parentConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("parentConfiguration", parentConfiguration);
-      return new MixinConfigurationBuilder (parentConfiguration);
+      ArgumentUtility.CheckNotNull("parentConfiguration", parentConfiguration);
+      return new MixinConfigurationBuilder(parentConfiguration);
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ namespace Remotion.Mixins
     /// </remarks>
     public static MixinConfigurationBuilder BuildFromActive ()
     {
-      return new MixinConfigurationBuilder (ActiveConfiguration);
+      return new MixinConfigurationBuilder(ActiveConfiguration);
     }
   }
 }

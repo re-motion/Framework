@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
@@ -24,11 +25,11 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
   {
     public MappingValidationResult Validate (RelationDefinition relationDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+      ArgumentUtility.CheckNotNull("relationDefinition", relationDefinition);
 
       foreach (var endPointDefinition in relationDefinition.EndPointDefinitions)
       {
-        var validationResult = Validate (endPointDefinition);
+        var validationResult = Validate(endPointDefinition);
         if (!validationResult.IsValid)
           return validationResult;
       }
@@ -38,19 +39,18 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IRelationEndPointDefinition relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
 
-      var relationEndPointAsReflectionBasedVirtualRelationEndPoint = relationEndPointDefinition as VirtualRelationEndPointDefinition;
-      if (relationEndPointAsReflectionBasedVirtualRelationEndPoint != null)
+      if (!relationEndPointDefinition.IsAnonymous
+          && relationEndPointDefinition.PropertyInfo != null)
       {
-        var propertyInfo = relationEndPointAsReflectionBasedVirtualRelationEndPoint.PropertyInfo;
-        var hasRelationAttribute = propertyInfo.IsDefined<BidirectionalRelationAttribute> (true);
-        if (!hasRelationAttribute && !ReflectionUtility.IsDomainObject (propertyInfo.PropertyType))
+        var hasRelationAttribute = relationEndPointDefinition.PropertyInfo.IsDefined<BidirectionalRelationAttribute>(true);
+        if (!hasRelationAttribute && !ReflectionUtility.IsDomainObject(relationEndPointDefinition.PropertyInfo.PropertyType))
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (
-              relationEndPointAsReflectionBasedVirtualRelationEndPoint.PropertyInfo,
+          return MappingValidationResult.CreateInvalidResultForProperty(
+              relationEndPointDefinition.PropertyInfo,
               "The property type of an uni-directional relation property must be assignable to '{0}'.",
-              typeof (DomainObject).Name);
+              typeof(DomainObject).Name);
         }
       }
 

@@ -42,17 +42,17 @@ namespace Remotion.Mixins.Definitions.Building
     /// requirements to be analyzed.</param>
     public RequirementsAnalyzer (MixinGenericArgumentFinder genericArgumentFinder)
     {
-      ArgumentUtility.CheckNotNull ("genericArgumentFinder", genericArgumentFinder);
+      ArgumentUtility.CheckNotNull("genericArgumentFinder", genericArgumentFinder);
       _genericArgumentFinder = genericArgumentFinder;
     }
 
     public Type[] GetRequirements (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
-      var genericArgument = _genericArgumentFinder.FindGenericArgument (mixinType);
+      var genericArgument = _genericArgumentFinder.FindGenericArgument(mixinType);
       if (genericArgument != null)
-        return GetRequirementsForType (genericArgument).Distinct().ToArray();
+        return GetRequirementsForType(genericArgument).Distinct().ToArray();
       else
         return Type.EmptyTypes;
     }
@@ -61,18 +61,18 @@ namespace Remotion.Mixins.Definitions.Building
     // The real types are directly taken as required interfaces; the type parameters have constraints which are taken as required interfaces
     private IEnumerable<Type> GetRequirementsForType (Type mixinBaseGenericArgument)
     {
-      ArgumentUtility.CheckNotNull ("mixinBaseGenericArgument", mixinBaseGenericArgument);
+      ArgumentUtility.CheckNotNull("mixinBaseGenericArgument", mixinBaseGenericArgument);
 
       if (mixinBaseGenericArgument.IsGenericParameter)
       {
-        return from constraint in mixinBaseGenericArgument.GetGenericParameterConstraints ()
-               from requirement in GetRequirementsForType (constraint)
+        return from constraint in mixinBaseGenericArgument.GetGenericParameterConstraints()
+               from requirement in GetRequirementsForType(constraint)
                select requirement;
       }
       else
       {
         if (mixinBaseGenericArgument.IsInterface) // if this is an interface, add all inherited interfaces as requirements as well
-          return new[] { mixinBaseGenericArgument }.Concat (mixinBaseGenericArgument.GetInterfaces());
+          return new[] { mixinBaseGenericArgument }.Concat(mixinBaseGenericArgument.GetInterfaces());
         else
           return new[] { mixinBaseGenericArgument };
       }

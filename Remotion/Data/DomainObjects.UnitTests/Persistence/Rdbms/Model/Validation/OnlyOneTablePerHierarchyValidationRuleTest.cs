@@ -38,78 +38,86 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model.Validati
     public void SetUp ()
     {
       _validationRule = new OnlyOneTablePerHierarchyValidationRule();
-      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition ("DefaultStorageProvider");
-      _tableDefinition = TableDefinitionObjectMother.Create (storageProviderDefinition);
-      _unionViewDefinition = UnionViewDefinitionObjectMother.Create (storageProviderDefinition);
+      var storageProviderDefinition = new UnitTestStorageProviderStubDefinition("DefaultStorageProvider");
+      _tableDefinition = TableDefinitionObjectMother.Create(storageProviderDefinition);
+      _unionViewDefinition = UnionViewDefinitionObjectMother.Create(storageProviderDefinition);
 
-      _baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (BaseValidationDomainObjectClass));
-      _classDefinitionWithBaseClass = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass), baseClass: _baseClassDefinition);
+      _baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseValidationDomainObjectClass));
+      _classDefinitionWithBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass), baseClass: _baseClassDefinition);
     }
 
     [Test]
     public void HasNoBaseClassAndHasNoTableDefinition ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass));
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass));
 
-      classDefinition.SetStorageEntity (_unionViewDefinition);
+      classDefinition.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (classDefinition);
+      var validationResult = _validationRule.Validate(classDefinition);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void HasBaseClassAndHasNoTableDefinition ()
     {
-      _classDefinitionWithBaseClass.SetStorageEntity (_unionViewDefinition);
+      _classDefinitionWithBaseClass.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_classDefinitionWithBaseClass);
+      var validationResult = _validationRule.Validate(_classDefinitionWithBaseClass);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void HasBaseClassAndHasTableDefinition_BaseClassHasNoTableDefinition ()
     {
-      _classDefinitionWithBaseClass.SetStorageEntity (_tableDefinition);
-      _baseClassDefinition.SetStorageEntity (_unionViewDefinition);
+      _classDefinitionWithBaseClass.SetStorageEntity(_tableDefinition);
+      _baseClassDefinition.SetStorageEntity(_unionViewDefinition);
 
-      var validationResult = _validationRule.Validate (_classDefinitionWithBaseClass);
+      var validationResult = _validationRule.Validate(_classDefinitionWithBaseClass);
 
-      AssertMappingValidationResult (validationResult, true, null);
+      AssertMappingValidationResult(validationResult, true, null);
+    }
+
+    [Test]
+    public void HasBaseClassAndHasTableDefinition_StorageEntityDefinitionIsNotSet ()
+    {
+      var validationResult = _validationRule.Validate(_classDefinitionWithBaseClass);
+
+      AssertMappingValidationResult(validationResult, true, null);
     }
 
     [Test]
     public void HasBaseClassAndHasTableDefinition_BaseClassHasTableDefinition ()
     {
-      _classDefinitionWithBaseClass.SetStorageEntity (_tableDefinition);
-      _baseClassDefinition.SetStorageEntity (_tableDefinition);
+      _classDefinitionWithBaseClass.SetStorageEntity(_tableDefinition);
+      _baseClassDefinition.SetStorageEntity(_tableDefinition);
 
-      var validationResult = _validationRule.Validate (_classDefinitionWithBaseClass);
+      var validationResult = _validationRule.Validate(_classDefinitionWithBaseClass);
 
       var expectedMessage =
           "Class 'DerivedValidationDomainObjectClass' must not define a table when its base class 'BaseValidationDomainObjectClass' also defines one.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
 
     [Test]
     public void HasBaseClassesAndHasTableDefinition_BaseOfBaseClassHasTableDefinition ()
     {
-      var baseOfBaseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (BaseOfBaseValidationDomainObjectClass));
-      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (BaseValidationDomainObjectClass), baseClass: baseOfBaseClassDefinition);
-      var classDefinitionWithBaseClass = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (DerivedValidationDomainObjectClass), baseClass: baseClassDefinition);
+      var baseOfBaseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseOfBaseValidationDomainObjectClass));
+      var baseClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(BaseValidationDomainObjectClass), baseClass: baseOfBaseClassDefinition);
+      var classDefinitionWithBaseClass = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(DerivedValidationDomainObjectClass), baseClass: baseClassDefinition);
 
-      classDefinitionWithBaseClass.SetStorageEntity (_tableDefinition);
-      baseClassDefinition.SetStorageEntity (_unionViewDefinition);
-      baseOfBaseClassDefinition.SetStorageEntity (_tableDefinition);
+      classDefinitionWithBaseClass.SetStorageEntity(_tableDefinition);
+      baseClassDefinition.SetStorageEntity(_unionViewDefinition);
+      baseOfBaseClassDefinition.SetStorageEntity(_tableDefinition);
 
-      var validationResult = _validationRule.Validate (classDefinitionWithBaseClass);
+      var validationResult = _validationRule.Validate(classDefinitionWithBaseClass);
 
       var expectedMessage =
           "Class 'DerivedValidationDomainObjectClass' must not define a table when its base class 'BaseOfBaseValidationDomainObjectClass' also defines one.\r\n\r\n"
           + "Declaring type: Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation.DerivedValidationDomainObjectClass";
-      AssertMappingValidationResult (validationResult, false, expectedMessage);
+      AssertMappingValidationResult(validationResult, false, expectedMessage);
     }
   }
 }

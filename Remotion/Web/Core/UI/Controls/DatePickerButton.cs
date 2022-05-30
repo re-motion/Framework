@@ -37,8 +37,6 @@ namespace Remotion.Web.UI.Controls
       _datePickerButtonStyle = new Style();
     }
 
-    public bool IsDesignMode { get; set; }
-
     public bool EnableClientScript { get; set; }
 
     public string AlternateText { get; set; }
@@ -48,53 +46,52 @@ namespace Remotion.Web.UI.Controls
       get { return _datePickerButtonStyle; }
     }
 
-    public string ContainerControlID { get; set; }
+    public string? ContainerControlID { get; set; }
 
-    public string TargetControlID { get; set; }
+    public string? TargetControlID { get; set; }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      if (!IsDesignMode)
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
+      base.OnInit(e);
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
-    
+
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
-    IControl IDatePickerButton.Parent
+    IControl? IDatePickerButton.Parent
     {
-      get { return (IControl) Parent; }
+      get { return (IControl?)Parent; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected virtual IDatePickerButtonRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<IDatePickerButtonRenderer>();
     }
 
     protected virtual DatePickerButtonRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new DatePickerButtonRenderingContext (Page.Context, writer, this);
+      return new DatePickerButtonRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertions
     }
 
     string IControlWithDiagnosticMetadata.ControlType

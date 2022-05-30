@@ -15,8 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -24,84 +24,84 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
   public class GetPropertyString_WithReferenceProperty
   {
     private BusinessObjectStringFormatterService _stringFormatterService;
-    private IBusinessObject _businessObjectStub;
-    private IBusinessObjectReferenceProperty _propertyStub;
+    private Mock<IBusinessObject> _businessObjectStub;
+    private Mock<IBusinessObjectReferenceProperty> _propertyStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _stringFormatterService = new BusinessObjectStringFormatterService ();
-      _businessObjectStub = MockRepository.GenerateStub<IBusinessObject> ();
-      _propertyStub = MockRepository.GenerateStub<IBusinessObjectReferenceProperty> ();
+      _stringFormatterService = new BusinessObjectStringFormatterService();
+      _businessObjectStub = new Mock<IBusinessObject>();
+      _propertyStub = new Mock<IBusinessObjectReferenceProperty>();
     }
 
     [Test]
     public void Scalar_WithBusinessObjectValue ()
     {
-      var valueStub = MockRepository.GenerateStub<IBusinessObject>();
+      var valueStub = new Mock<IBusinessObject>();
       // Cannot stub ToString()
       // valueStub.Stub (_=>_.ToString()).Return ("ExpectedStringValue");
-      _businessObjectStub.Stub (_=>_.GetProperty (_propertyStub)).Return (valueStub);
+      _businessObjectStub.Setup(_=>_.GetProperty(_propertyStub.Object)).Returns(valueStub.Object);
 
-      string actual = _stringFormatterService.GetPropertyString (_businessObjectStub, _propertyStub, null);
+      string actual = _stringFormatterService.GetPropertyString(_businessObjectStub.Object, _propertyStub.Object, null);
 
-      Assert.That (actual, Is.EqualTo (valueStub.ToString()));
+      Assert.That(actual, Is.EqualTo(valueStub.Object.ToString()));
     }
 
     [Test]
     public void Scalar_WithBusinessObjectWithIdentityValue ()
     {
-      var classStub = MockRepository.GenerateStub<IBusinessObjectClassWithIdentity>();
+      var classStub = new Mock<IBusinessObjectClassWithIdentity>();
 
-      var displayNamePropertyStub = MockRepository.GenerateStub<IBusinessObjectStringProperty>();
-      classStub.Stub (_ => _.GetPropertyDefinition ("DisplayName")).Return (displayNamePropertyStub);
+      var displayNamePropertyStub = new Mock<IBusinessObjectStringProperty>();
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns(displayNamePropertyStub.Object);
 
-      var valueStub = MockRepository.GenerateStub<IBusinessObjectWithIdentity> ();
-      _businessObjectStub.Stub (_=>_.GetProperty (_propertyStub)).Return (valueStub);
-      valueStub.Stub (_ => _.GetProperty (displayNamePropertyStub)).Return ("ExpectedStringValue");
-      displayNamePropertyStub.Stub (_ => _.IsAccessible (valueStub)).Return (true);
+      var valueStub = new Mock<IBusinessObjectWithIdentity>();
+      _businessObjectStub.Setup(_=>_.GetProperty(_propertyStub.Object)).Returns(valueStub.Object);
+      valueStub.Setup(_ => _.GetProperty(displayNamePropertyStub.Object)).Returns("ExpectedStringValue");
+      displayNamePropertyStub.Setup(_ => _.IsAccessible(valueStub.Object)).Returns(true);
 
-      valueStub.Stub (_ => _.BusinessObjectClass).Return (classStub);
+      valueStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
       //var providerStub=MockRepository.GenerateStub<IBusinessObjectProvider>();
       //providerStub.Stub (_ => _.GetService(typeof ()))
       //classStub.Stub (_ => _.BusinessObjectProvider).Return (providerStub);
 
-      string actual = _stringFormatterService.GetPropertyString (_businessObjectStub, _propertyStub, null);
+      string actual = _stringFormatterService.GetPropertyString(_businessObjectStub.Object, _propertyStub.Object, null);
 
-      Assert.That (actual, Is.EqualTo ("ExpectedStringValue"));
+      Assert.That(actual, Is.EqualTo("ExpectedStringValue"));
     }
 
     [Test]
     public void Scalar_WithBusinessObjectWithIdentityValue_WithAccessDenied ()
     {
-      var classStub = MockRepository.GenerateStub<IBusinessObjectClassWithIdentity>();
+      var classStub = new Mock<IBusinessObjectClassWithIdentity>();
 
-      var displayNamePropertyStub = MockRepository.GenerateStub<IBusinessObjectStringProperty>();
-      classStub.Stub (_ => _.GetPropertyDefinition ("DisplayName")).Return (displayNamePropertyStub);
+      var displayNamePropertyStub = new Mock<IBusinessObjectStringProperty>();
+      classStub.Setup(_ => _.GetPropertyDefinition("DisplayName")).Returns(displayNamePropertyStub.Object);
 
-      var valueStub = MockRepository.GenerateStub<IBusinessObjectWithIdentity> ();
-      _businessObjectStub.Stub (_=>_.GetProperty (_propertyStub)).Return (valueStub);
-      valueStub.Stub (_ => _.GetProperty (displayNamePropertyStub)).Return ("ExpectedStringValue");
-      displayNamePropertyStub.Stub (_ => _.IsAccessible (valueStub)).Return (false);
+      var valueStub = new Mock<IBusinessObjectWithIdentity>();
+      _businessObjectStub.Setup(_=>_.GetProperty(_propertyStub.Object)).Returns(valueStub.Object);
+      valueStub.Setup(_ => _.GetProperty(displayNamePropertyStub.Object)).Returns("ExpectedStringValue");
+      displayNamePropertyStub.Setup(_ => _.IsAccessible(valueStub.Object)).Returns(false);
 
-      valueStub.Stub (_ => _.BusinessObjectClass).Return (classStub);
-      var providerStub = MockRepository.GenerateStub<IBusinessObjectProvider>();
-      providerStub.Stub (_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Return ("X");
-      displayNamePropertyStub.Stub (_ => _.BusinessObjectProvider).Return (providerStub);
+      valueStub.Setup(_ => _.BusinessObjectClass).Returns(classStub.Object);
+      var providerStub = new Mock<IBusinessObjectProvider>();
+      providerStub.Setup(_ => _.GetNotAccessiblePropertyStringPlaceHolder()).Returns("X");
+      displayNamePropertyStub.Setup(_ => _.BusinessObjectProvider).Returns(providerStub.Object);
 
-      string actual = _stringFormatterService.GetPropertyString (_businessObjectStub, _propertyStub, null);
+      string actual = _stringFormatterService.GetPropertyString(_businessObjectStub.Object, _propertyStub.Object, null);
 
-      Assert.That (actual, Is.EqualTo ("X"));
+      Assert.That(actual, Is.EqualTo("X"));
     }
 
     [Test]
     public void Scalar_WithNull ()
     {
-      _businessObjectStub.Stub (_=>_.GetProperty (_propertyStub)).Return (null);
+      _businessObjectStub.Setup(_=>_.GetProperty(_propertyStub.Object)).Returns((object)null);
 
-      string actual = _stringFormatterService.GetPropertyString (_businessObjectStub, _propertyStub, null);
+      string actual = _stringFormatterService.GetPropertyString(_businessObjectStub.Object, _propertyStub.Object, null);
 
-      Assert.That (actual, Is.Empty);
+      Assert.That(actual, Is.Empty);
     }
   }
 }

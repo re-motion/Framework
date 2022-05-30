@@ -30,15 +30,15 @@ namespace Remotion.UnitTests.Utilities
       string testFileName = "FileUtilityTest_WriteEmbeddedStringResourceToFileTest.txt";
       try
       {
-        FileUtility.WriteEmbeddedStringResourceToFile (GetType(), "TestData.WriteEmbeddedStringResourceToFileTestData.txt", testFileName);
-        Assert.That (File.Exists (testFileName));
-        string result = File.ReadAllText (testFileName);
-        Assert.That (result, Is.EqualTo ("Hat der alte Hexenmeister sich doch einmal fortbegeben und nun sollen seine Geister..."));
+        FileUtility.WriteEmbeddedStringResourceToFile(GetType(), "TestData.WriteEmbeddedStringResourceToFileTestData.txt", testFileName);
+        Assert.That(File.Exists(testFileName));
+        string result = File.ReadAllText(testFileName);
+        Assert.That(result, Is.EqualTo("Hat der alte Hexenmeister sich doch einmal fortbegeben und nun sollen seine Geister..."));
       }
       finally
       {
-        if (File.Exists (testFileName))
-          File.Delete (testFileName);
+        if (File.Exists(testFileName))
+          File.Delete(testFileName);
       }
     }
   }

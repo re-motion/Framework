@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Extends (typeof (BaseType3))]
+  [Extends(typeof(BaseType3))]
   [Serializable]
   public class BT3Mixin3<[BindToTargetType] TTarget, [BindToConstraints] TNext> : Mixin<TTarget, TNext>
     where TTarget : class, IBaseType33

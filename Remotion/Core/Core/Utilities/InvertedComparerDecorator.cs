@@ -31,13 +31,13 @@ namespace Remotion.Utilities
 
     public InvertedComparerDecorator (IComparer<T> comparer)
     {
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
       _comparer = comparer;
     }
 
-    public int Compare (T x, T y)
+    public int Compare (T? x, T? y)
     {
-      return _comparer.Compare (y, x);
+      return _comparer.Compare(y, x);
     }
   }
 }

@@ -17,51 +17,51 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.ObjectBinding;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure
 {
   [TestFixture]
   public class SecurityManagerSearchServiceBaseTest : SearchServiceTestBase
   {
-    private IBusinessObjectReferenceProperty _property;
+    private Mock<IBusinessObjectReferenceProperty> _property;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _property = MockRepository.GenerateStub<IBusinessObjectReferenceProperty>();
+      _property = new Mock<IBusinessObjectReferenceProperty>();
     }
 
     [Test]
     public void Search_WithResultSizeConstraint ()
     {
-      var searchService = new TestableSecurityManagerSearchServiceBase (QueryFactory.CreateLinqQuery<User>());
-      var actual = searchService.Search (null, _property, CreateSecurityManagerSearchArguments (3));
+      var searchService = new TestableSecurityManagerSearchServiceBase(QueryFactory.CreateLinqQuery<User>());
+      var actual = searchService.Search(null, _property.Object, CreateSecurityManagerSearchArguments(3));
 
-      Assert.That (actual.Length, Is.EqualTo (3));
+      Assert.That(actual.Length, Is.EqualTo(3));
     }
 
     [Test]
     public void Search_WithResultSizeConstrant_AndWhereConstraint ()
     {
-      var searchService = new TestableSecurityManagerSearchServiceBase (QueryFactory.CreateLinqQuery<User>().Where (u=>u.LastName.Contains ("user")));
-      var actual = searchService.Search (null, _property, CreateSecurityManagerSearchArguments (1)).ToArray();
+      var searchService = new TestableSecurityManagerSearchServiceBase(QueryFactory.CreateLinqQuery<User>().Where(u=>u.LastName.Contains("user")));
+      var actual = searchService.Search(null, _property.Object, CreateSecurityManagerSearchArguments(1)).ToArray();
 
-      Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (((User) actual[0]).LastName, Is.StringContaining ("user"));
+      Assert.That(actual.Length, Is.EqualTo(1));
+      Assert.That(((User)actual[0]).LastName, Does.Contain("user"));
     }
 
     private SecurityManagerSearchArguments CreateSecurityManagerSearchArguments (int? resultSize)
     {
-      return new SecurityManagerSearchArguments (
+      return new SecurityManagerSearchArguments(
           null,
-          resultSize.HasValue ? new ResultSizeConstraint (resultSize.Value) : null,
+          resultSize.HasValue ? new ResultSizeConstraint(resultSize.Value) : null,
           null);
     }
   }

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using Remotion.Collections;
 using Remotion.Mixins.Definitions;
+using Remotion.Reflection;
 
 namespace Remotion.Mixins.Validation.Rules
 {
@@ -25,32 +26,32 @@ namespace Remotion.Mixins.Validation.Rules
       where TMemberIntroductionDefinition : class, IMemberIntroductionDefinition
   {
     // ReSharper disable once StaticMemberInGenericType
-    private static Func<object, object> s_contextStoreValueFactory;
+    private static Func<object, object>? s_contextStoreValueFactory;
 
     public IEnumerable<TMemberIntroductionDefinition> GetCachedPublicIntroductionsByName (IDictionary<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {
-      Tuple<string, TargetClassDefinition> cacheKey = Tuple.Create (
-          typeof (ContextStoreMemberIntroductionLookupUtility<TMemberIntroductionDefinition>).FullName + ".GetCachedPublicIntroductionsByName",
+      Tuple<string, TargetClassDefinition> cacheKey = Tuple.Create(
+          typeof(ContextStoreMemberIntroductionLookupUtility<TMemberIntroductionDefinition>).GetFullNameChecked() + ".GetCachedPublicIntroductionsByName",
           targetClass);
 
       // Optimized for memory allocations
       if (s_contextStoreValueFactory == null)
-        s_contextStoreValueFactory = key => GetUncachedIntroductions (((Tuple<string, TargetClassDefinition>) key).Item2);
+        s_contextStoreValueFactory = key => GetUncachedIntroductions(((Tuple<string, TargetClassDefinition>)key).Item2);
 
-      var introductionDefinitions = (MultiDictionary<string, TMemberIntroductionDefinition>) contextStore.GetOrCreateValue (cacheKey, s_contextStoreValueFactory);
+      var introductionDefinitions = (MultiDictionary<string, TMemberIntroductionDefinition>)contextStore.GetOrCreateValue(cacheKey, s_contextStoreValueFactory);
       return introductionDefinitions[name];
     }
 
     private MultiDictionary<string, TMemberIntroductionDefinition> GetUncachedIntroductions (TargetClassDefinition targetClass)
     {
-      MultiDictionary<string, TMemberIntroductionDefinition> introductionDefinitions = new MultiDictionary<string, TMemberIntroductionDefinition> ();
+      MultiDictionary<string, TMemberIntroductionDefinition> introductionDefinitions = new MultiDictionary<string, TMemberIntroductionDefinition>();
       foreach (InterfaceIntroductionDefinition interfaceIntroduction in targetClass.ReceivedInterfaces)
       {
         foreach (IMemberIntroductionDefinition memberIntroduction in interfaceIntroduction.GetIntroducedMembers())
         {
-          TMemberIntroductionDefinition castMemberIntroduction = memberIntroduction as TMemberIntroductionDefinition;
+          TMemberIntroductionDefinition? castMemberIntroduction = memberIntroduction as TMemberIntroductionDefinition;
           if (castMemberIntroduction != null && castMemberIntroduction.Visibility == MemberVisibility.Public)
-            introductionDefinitions.Add (castMemberIntroduction.Name, castMemberIntroduction);
+            introductionDefinitions.Add(castMemberIntroduction.Name, castMemberIntroduction);
         }
       }
       return introductionDefinitions;

@@ -30,16 +30,16 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
   {
     protected readonly string DefaultSchema = "dbo";
     private readonly string BatchDelimiter = "GO";
-    
+
     protected BatchDelimiterStatement CreateBatchDelimiterStatement ()
     {
-      return new BatchDelimiterStatement (BatchDelimiter);
+      return new BatchDelimiterStatement(BatchDelimiter);
     }
 
-    protected string GetColumnList (IEnumerable<ColumnDefinition> columns)
+    protected string GetColumnList (IEnumerable<ColumnDefinition?> columns)
     {
-      ArgumentUtility.CheckNotNull ("columns", columns);
-      return String.Join ((string) ", ", (IEnumerable<string>) columns.Select (cd => cd != null ? ("["+ cd.Name + "]") : "NULL"));
+      ArgumentUtility.CheckNotNull("columns", columns);
+      return String.Join((string)", ", (IEnumerable<string>)columns.Select(cd => cd != null ? ("["+ cd.Name + "]") : "NULL"));
     }
   }
 }

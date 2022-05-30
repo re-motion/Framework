@@ -35,35 +35,38 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.BindableObjectMixinTes
     {
       base.SetUp();
 
-      _bindableObject = ObjectFactory.Create<SimpleBusinessObjectClass> (ParamList.Empty);
-      _bindableObjectMixin = Mixin.Get<BindableObjectMixin> (_bindableObject);
+      _bindableObject = ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty);
+      _bindableObjectMixin = Mixin.Get<BindableObjectMixin>(_bindableObject);
       _businessObject = _bindableObjectMixin;
     }
 
     [Test]
     public void WithBusinessObjectProperty ()
     {
-      _businessObject.SetProperty (_businessObject.BusinessObjectClass.GetPropertyDefinition ("String"), "A String");
+      _businessObject.SetProperty(_businessObject.BusinessObjectClass.GetPropertyDefinition("String"), "A String");
 
-      Assert.That (_bindableObject.String, Is.EqualTo ("A String"));
+      Assert.That(_bindableObject.String, Is.EqualTo("A String"));
     }
 
     [Test]
     public void WithPropertyIdentifier ()
     {
-      _businessObject.SetProperty ("String", "A String");
+      _businessObject.SetProperty("String", "A String");
 
-      Assert.That (_bindableObject.String, Is.EqualTo ("A String"));
+      Assert.That(_bindableObject.String, Is.EqualTo("A String"));
     }
 
     [Test]
-    [ExpectedException (typeof (KeyNotFoundException), ExpectedMessage = "The property 'StringWithoutSetter' was not found on business object class "
-        + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'.")]
-    [Ignore ("TODO: discuss desired behavior")]
+    [Ignore("TODO: discuss desired behavior")]
     public void WithoutSetter ()
     {
-      IBusinessObject businessObject = Mixin.Get<BindableObjectMixin> (ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty));
-      businessObject.SetProperty ("StringWithoutSetter", null);
+      IBusinessObject businessObject = Mixin.Get<BindableObjectMixin>(ObjectFactory.Create<SimpleBusinessObjectClass>(ParamList.Empty));
+      Assert.That(
+          () => businessObject.SetProperty("StringWithoutSetter", null),
+          Throws.InstanceOf<KeyNotFoundException>()
+              .With.Message.EqualTo(
+                  "The property 'StringWithoutSetter' was not found on business object class "
+                  + "'Remotion.ObjectBinding.UnitTests.TestDomain.SimpleBusinessObjectClass, Remotion.ObjectBinding.UnitTests'."));
     }
   }
 }

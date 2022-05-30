@@ -31,7 +31,7 @@ public class WxeTestPageFunction : WxeFunction
   // construction and disposing
 
   public WxeTestPageFunction ()
-    :base (WxeTransactionMode.CreateRoot)
+    :base(WxeTransactionMode.CreateRoot)
   {
   }
 
@@ -39,10 +39,10 @@ public class WxeTestPageFunction : WxeFunction
 
   public ClientTransaction CurrentClientTransaction
   {
-    get { return (ClientTransaction) Variables["CurrentClientTransaction"]; }
+    get { return (ClientTransaction)Variables["CurrentClientTransaction"]; }
     set { Variables["CurrentClientTransaction"] = value;}
   }
 
-  private WxePageStep Step1 = new WxePageStep ("WxeTestPage.aspx");
+  private WxePageStep Step1 = new WxePageStep("WxeTestPage.aspx");
 }
 }

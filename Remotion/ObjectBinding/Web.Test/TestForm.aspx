@@ -14,7 +14,6 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-
 <%@ Page Language="c#" CodeBehind="TestForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestForm" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -25,80 +24,76 @@
   <script type="text/javascript">
     function DoAspNetAjaxCall()
     {
-      $("#Result").text("");
+      document.getElementById("Result").textContent = "";
 
-      var intValueAsString = $("#IntField").val();
+      var intValueAsString = document.getElementById("IntField").value;
       intValueAsString = intValueAsString == '' ? 0 : intValueAsString;
       var params = {
-        stringValue: $("#StringField").val(),
+        stringValue: document.getElementById("StringField").value,
         intValue: parseInt(intValueAsString)
       };
       executingRequest = Sys.Net.WebServiceProxy.invoke("TestService.asmx", "DoStuff", false, params,
                                           function (result, context, methodName)
                                           {
                                             executingRequest = null;
-                                            $("#Result").text(result);
+                                            document.getElementById("Result").textContent = result;
                                           },
                                           function (err, context, methodName)
                                           {
                                             executingRequest = null;
-                                            $("#Result").text(err.get_message());
+                                            document.getElementById("Result").textContent = err.get_message();
                                           });
 
     }
-    function DoJQueryAjaxCall()
+    function DoXmlHttpRequestCall()
     {
-      $("#Result").text("");
+      document.getElementById("Result").textContent = "";
 
-      var intValueAsString = $("#IntField").val();
+      var intValueAsString = document.getElementById("IntField").value;
       intValueAsString = intValueAsString == '' ? 0 : intValueAsString;
       var params = {
-        stringValue: $("#StringField").val(),
+        stringValue: document.getElementById("StringField").value,
         intValue: parseInt(intValueAsString)
       };
-      $.ajax({
-        type: "POST",
-        data: "{ stringValue: '" + params.stringValue + "', intValue: " + params.intValue + "}",
-        dataType: "json",
-        url: "TestService.asmx/DoStuff",
-        contentType: "application/json; charset=utf-8",
-        async: false,
-        success: function (result)
-        {
-          $("#Result").text(result.d);
-        },
-        error: function (err)
-        {
-          $("#Result").text(err.responseText);
-        }
-      });
-    }
 
-    $(document).ready(function ()
-    {
-      $("#StringField").bind("keydown", function (event)
-      {
-        // re-motion: block event bubbling
-        event.stopPropagation();
-        if (event.keyCode == 9) // TAB
-        {
-          DoJQueryAjaxCall();
-        } 
-      });
-    });
-    
+      var request = new XMLHttpRequest();
+      request.open('POST', "TestService.asmx/DoStuff", false);
+      request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+      var failedHandler = function() { 
+        document.getElementById("Result").textContent = request.responseText;
+      }
+      request.onload = function() {
+        if (request.status >= 200 && request.status <= 299)
+          document.getElementById("Result").textContent = JSON.parse(request.response).d;
+        else
+          failedHandler();
+      };
+      request.onerror = failedHandler;
+      request.send("{ stringValue: '" + params.stringValue + "', intValue: " + params.intValue + "}");
+    }
   </script>
 </head>
 <body>
   <form id="form1" runat="server">
   <asp:ScriptManager ID="ScriptManager" runat="server" EnablePartialRendering="true"
     AsyncPostBackTimeout="3600" />
-  <input id="StringField" type="text" />
-  <input id="IntField" type="text" />
+  <input id="StringField" type="text" placeholder="String to be mirrored | throw"/>
+  <input id="IntField" type="text" placeholder="Number" />
   <input type="button" value="ASP.NET Ajax" onclick="DoAspNetAjaxCall()" />
-  <input type="button" value="jQuery Ajax" onclick="DoJQueryAjaxCall()" />
+  <input type="button" value="XMLHttpRequest Ajax" onclick="DoXmlHttpRequestCall()" />
   <div id="Result">
   </div>
   </form>
+  <script type="text/javascript">
+    document.getElementById("StringField").addEventListener("keydown", function (event)
+    {
+      // re-motion: block event bubbling
+      event.stopPropagation();
+      if (event.keyCode == 9) // TAB
+      {
+        DoXmlHttpRequestCall();
+      } 
+    });
+  </script>
 </body>
 </html>

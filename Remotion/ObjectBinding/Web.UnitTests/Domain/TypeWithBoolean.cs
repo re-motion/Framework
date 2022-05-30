@@ -25,7 +25,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.Domain
   {
     public static TypeWithBoolean Create ()
     {
-      return ObjectFactory.Create<TypeWithBoolean> (true, ParamList.Empty);
+      return ObjectFactory.Create<TypeWithBoolean>(true, ParamList.Empty);
     }
 
     private bool _booleanValue;

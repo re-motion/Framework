@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public static class CurrentPropertyManager
   {
     [ThreadStatic]
-    private static Stack<string> _currentPropertyNames;
+    private static Stack<string>? _currentPropertyNames;
 
     private static Stack<string> CurrentPropertyNames
     {
@@ -42,14 +42,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <summary>
     /// Returns the property name last put on this thread's stack, or null if the stack is empty.
     /// </summary>
-    public static string CurrentPropertyName
+    public static string? CurrentPropertyName
     {
       get
       {
-        if (CurrentPropertyNames.Count == 0)
+        var currentPropertyNames = CurrentPropertyNames;
+        if (currentPropertyNames.Count == 0)
           return null;
         else
-          return _currentPropertyNames.Peek();
+          return currentPropertyNames.Peek();
       }
     }
 
@@ -62,10 +63,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <exception cref="InvalidOperationException">There is no current property or it hasn't been properly initialized.</exception>
     public static string GetAndCheckCurrentPropertyName ()
     {
-      string propertyName = CurrentPropertyName;
+      string? propertyName = CurrentPropertyName;
       if (propertyName == null)
       {
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "There is no current property or it hasn't been properly initialized. Is the surrounding property virtual?");
       }
       else
@@ -89,9 +90,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// </exception>
     public static void PreparePropertyAccess (string propertyName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
 
-      CurrentPropertyNames.Push (propertyName);
+      CurrentPropertyNames.Push(propertyName);
     }
 
     /// <summary>
@@ -105,9 +106,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     /// <see cref="PreparePropertyAccess"/> and <see cref="PropertyAccessFinished"/>.</exception>
     public static void PropertyAccessFinished ()
     {
-      if (CurrentPropertyNames.Count == 0)
-        throw new InvalidOperationException ("There is no property to finish.");
-      CurrentPropertyNames.Pop();
+      var currentPropertyNames = CurrentPropertyNames;
+      if (currentPropertyNames.Count == 0)
+        throw new InvalidOperationException("There is no property to finish.");
+      currentPropertyNames.Pop();
     }
   }
 }

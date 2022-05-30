@@ -15,12 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Extensions.UnitTests.Utilities.Singleton.TestDomain;
 using Remotion.Utilities.Singleton;
-using Rhino.Mocks;
 
 namespace Remotion.Extensions.UnitTests.Utilities.Singleton
 {
@@ -32,28 +32,28 @@ namespace Remotion.Extensions.UnitTests.Utilities.Singleton
     [SetUp]
     public void SetUp ()
     {
-      _creator = new ServiceLocatorInstanceCreator<IInterfaceWithConcreteImplementation> ();
+      _creator = new ServiceLocatorInstanceCreator<IInterfaceWithConcreteImplementation>();
     }
 
     [Test]
     public void CreateInstance_WithRegisteredServiceLocator ()
     {
-      var serviceLocatorStub = MockRepository.GenerateStub<IServiceLocator>();
+      var serviceLocatorStub = new Mock<IServiceLocator>();
       var fakeInstance = new SecondaryImplementationOfInterface();
-      serviceLocatorStub.Stub (stub => stub.GetInstance<IInterfaceWithConcreteImplementation> ()).Return (fakeInstance);
+      serviceLocatorStub.Setup(stub => stub.GetInstance<IInterfaceWithConcreteImplementation>()).Returns(fakeInstance);
 
-      using (new ServiceLocatorScope (serviceLocatorStub))
+      using (new ServiceLocatorScope(serviceLocatorStub.Object))
       {
         var instance = _creator.CreateInstance();
-        Assert.That (instance, Is.SameAs (fakeInstance));
+        Assert.That(instance, Is.SameAs(fakeInstance));
       }
     }
 
     [Test]
     public void CreateInstance_WithoutRegisteredServiceLocator_WithAttribute ()
     {
-      var result = _creator.CreateInstance ();
-      Assert.That (result, Is.TypeOf<ConcreteImplementationOfInterface>());
+      var result = _creator.CreateInstance();
+      Assert.That(result, Is.TypeOf<ConcreteImplementationOfInterface>());
     }
   }
 }

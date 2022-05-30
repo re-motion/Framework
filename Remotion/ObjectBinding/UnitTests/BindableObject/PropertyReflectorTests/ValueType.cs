@@ -35,8 +35,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
       base.SetUp();
 
       _businessObjectProvider = new BindableObjectProvider();
-      _bindableObjectClass = new BindableObjectClass (
-          typeof (ClassWithReferenceType<SimpleReferenceType>),
+      _bindableObjectClass = new BindableObjectClass(
+          typeof(ClassWithReferenceType<SimpleReferenceType>),
           _businessObjectProvider,
           SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
           new PropertyBase[0]);
@@ -45,157 +45,165 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithScalar ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "Scalar");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "Scalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(SimpleValueType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
-      Assert.That (businessObjectProperty.IsList, Is.False);
-      Assert.That (businessObjectProperty.IsRequired, Is.True);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(PropertyBase)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Scalar"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(SimpleValueType)));
+      Assert.That(businessObjectProperty.IsList, Is.False);
+      Assert.That(businessObjectProperty.IsNullable, Is.False);
+      Assert.That(businessObjectProperty.IsRequired, Is.True);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithNullableScalar ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "NullableScalar");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "NullableScalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(SimpleValueType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("NullableScalar"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType?)));
-      Assert.That (businessObjectProperty.IsList, Is.False);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(PropertyBase)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("NullableScalar"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(SimpleValueType?)));
+      Assert.That(businessObjectProperty.IsList, Is.False);
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithUndefinedEnum ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithUndefinedEnumValue), "Scalar");
-      PropertyReflector propertyReflector = PropertyReflector.Create (IPropertyInformation, _businessObjectProvider);
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithUndefinedEnumValue), "Scalar");
+      PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (EnumWithUndefinedValue)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(EnumWithUndefinedValue)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (EnumerationProperty)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Scalar"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (EnumWithUndefinedValue)));
-      Assert.That (businessObjectProperty.IsList, Is.False);
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(EnumerationProperty)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Scalar"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(EnumWithUndefinedValue)));
+      Assert.That(businessObjectProperty.IsList, Is.False);
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyScalar ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyScalar");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "ReadOnlyScalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(SimpleValueType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyScalar"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
-      Assert.That (businessObjectProperty.IsList, Is.False);
-      Assert.That (businessObjectProperty.IsRequired, Is.True);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(PropertyBase)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ReadOnlyScalar"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(SimpleValueType)));
+      Assert.That(businessObjectProperty.IsList, Is.False);
+      Assert.That(businessObjectProperty.IsNullable, Is.False);
+      Assert.That(businessObjectProperty.IsRequired, Is.True);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.True);
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyNonPublicSetterScalar ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyNonPublicSetterScalar");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "ReadOnlyNonPublicSetterScalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(SimpleValueType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyNonPublicSetterScalar"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
-      Assert.That (businessObjectProperty.IsList, Is.False);
-      Assert.That (businessObjectProperty.IsRequired, Is.True);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(PropertyBase)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ReadOnlyNonPublicSetterScalar"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(SimpleValueType)));
+      Assert.That(businessObjectProperty.IsList, Is.False);
+      Assert.That(businessObjectProperty.IsNullable, Is.False);
+      Assert.That(businessObjectProperty.IsRequired, Is.True);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.True);
     }
 
     [Test]
     public void GetMetadata_WithReadOnlyAttributeScalar ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "ReadOnlyAttributeScalar");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "ReadOnlyAttributeScalar");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(SimpleValueType)));
 
-      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata ();
+      IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("ReadOnlyAttributeScalar"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType)));
-      Assert.That (businessObjectProperty.IsList, Is.False);
-      Assert.That (businessObjectProperty.IsRequired, Is.True);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.True);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(PropertyBase)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("ReadOnlyAttributeScalar"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(SimpleValueType)));
+      Assert.That(businessObjectProperty.IsList, Is.False);
+      Assert.That(businessObjectProperty.IsNullable, Is.False);
+      Assert.That(businessObjectProperty.IsRequired, Is.True);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.True);
     }
 
     [Test]
     public void GetMetadata_WithArray ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "Array");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "Array");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(SimpleValueType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("Array"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType[])));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleValueType)));
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(PropertyBase)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("Array"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(SimpleValueType[])));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof(SimpleValueType)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
 
     [Test]
     public void GetMetadata_WithNullableArray ()
     {
-      IPropertyInformation IPropertyInformation = GetPropertyInfo (typeof (ClassWithValueType<SimpleValueType>), "NullableArray");
+      IPropertyInformation IPropertyInformation = GetPropertyInfo(typeof(ClassWithValueType<SimpleValueType>), "NullableArray");
       PropertyReflector propertyReflector = PropertyReflector.Create(IPropertyInformation, _businessObjectProvider);
 
-      Assert.That (GetUnderlyingType (propertyReflector), Is.SameAs (typeof (SimpleValueType)));
+      Assert.That(GetUnderlyingType(propertyReflector), Is.SameAs(typeof(SimpleValueType)));
 
       IBusinessObjectProperty businessObjectProperty = propertyReflector.GetMetadata();
 
-      Assert.That (businessObjectProperty, Is.InstanceOf (typeof (PropertyBase)));
-      Assert.That (((PropertyBase) businessObjectProperty).PropertyInfo, Is.SameAs (IPropertyInformation));
-      Assert.That (businessObjectProperty.Identifier, Is.EqualTo ("NullableArray"));
-      Assert.That (businessObjectProperty.PropertyType, Is.SameAs (typeof (SimpleValueType?[])));
-      Assert.That (businessObjectProperty.IsList, Is.True);
-      Assert.That (businessObjectProperty.ListInfo, Is.Not.Null);
-      Assert.That (businessObjectProperty.ListInfo.ItemType, Is.SameAs (typeof (SimpleValueType?)));
-      Assert.That (businessObjectProperty.IsRequired, Is.False);
-      Assert.That (businessObjectProperty.IsReadOnly (null), Is.False);
+      Assert.That(businessObjectProperty, Is.InstanceOf(typeof(PropertyBase)));
+      Assert.That(((PropertyBase)businessObjectProperty).PropertyInfo, Is.SameAs(IPropertyInformation));
+      Assert.That(businessObjectProperty.Identifier, Is.EqualTo("NullableArray"));
+      Assert.That(businessObjectProperty.PropertyType, Is.SameAs(typeof(SimpleValueType?[])));
+      Assert.That(businessObjectProperty.IsList, Is.True);
+      Assert.That(businessObjectProperty.ListInfo, Is.Not.Null);
+      Assert.That(businessObjectProperty.ListInfo.ItemType, Is.SameAs(typeof(SimpleValueType?)));
+      Assert.That(businessObjectProperty.IsNullable, Is.True);
+      Assert.That(businessObjectProperty.IsRequired, Is.False);
+      Assert.That(businessObjectProperty.IsReadOnly(null), Is.False);
     }
   }
 }

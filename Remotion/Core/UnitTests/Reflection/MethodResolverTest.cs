@@ -27,56 +27,62 @@ namespace Remotion.UnitTests.Reflection
     [Test]
     public void ResolveMethod_InstanceMethod ()
     {
-      var method = MethodResolver.ResolveMethod (typeof (MethodResolverTest), "ResolveMethod_InstanceMethod", "Void ResolveMethod_InstanceMethod()");
+      var method = MethodResolver.ResolveMethod(typeof(MethodResolverTest), "ResolveMethod_InstanceMethod", "Void ResolveMethod_InstanceMethod()");
 
-      Assert.That (method, Is.EqualTo (MethodInfo.GetCurrentMethod()));
+      Assert.That(method, Is.EqualTo(MethodInfo.GetCurrentMethod()));
     }
 
     [Test]
     public void ResolveMethod_StaticMethod ()
     {
-      var method = MethodResolver.ResolveMethod (typeof (object), "ReferenceEquals", "Boolean ReferenceEquals(System.Object, System.Object)");
+      var method = MethodResolver.ResolveMethod(typeof(object), "ReferenceEquals", "Boolean ReferenceEquals(System.Object, System.Object)");
 
-      Assert.That (method, Is.EqualTo (typeof (object).GetMethod ("ReferenceEquals")));
+      Assert.That(method, Is.EqualTo(typeof(object).GetMethod("ReferenceEquals")));
     }
 
     [Test]
     public void ResolveMethod_MethodWithOverloads ()
     {
-      var method = MethodResolver.ResolveMethod (typeof (Console), "WriteLine", "Void WriteLine(System.String)");
+      var method = MethodResolver.ResolveMethod(typeof(Console), "WriteLine", "Void WriteLine(System.String)");
 
-      Assert.That (method, Is.EqualTo (typeof (Console).GetMethod ("WriteLine", new[] { typeof (string) })));
+      Assert.That(method, Is.EqualTo(typeof(Console).GetMethod("WriteLine", new[] { typeof(string) })));
     }
 
     [Test]
     public void ResolveMethod_ProtectedMethod ()
     {
-      var method = MethodResolver.ResolveMethod (typeof (object), "Finalize", "Void Finalize()");
+      var method = MethodResolver.ResolveMethod(typeof(object), "Finalize", "Void Finalize()");
 
-      Assert.That (method, Is.EqualTo (typeof (object).GetMethod ("Finalize", BindingFlags.NonPublic | BindingFlags.Instance)));
+      Assert.That(method, Is.EqualTo(typeof(object).GetMethod("Finalize", BindingFlags.NonPublic | BindingFlags.Instance)));
     }
 
     [Test]
     public void ResolveMethod_BaseMethodWithSameName ()
     {
-      var method = MethodResolver.ResolveMethod (typeof (DateTime), "ToString", "System.String ToString()");
+      var method = MethodResolver.ResolveMethod(typeof(DateTime), "ToString", "System.String ToString()");
 
-      Assert.That (method, Is.EqualTo (typeof (DateTime).GetMethod ("ToString", Type.EmptyTypes)));
-      Assert.That (method, Is.Not.EqualTo (typeof (object).GetMethod ("ToString")));
+      Assert.That(method, Is.EqualTo(typeof(DateTime).GetMethod("ToString", Type.EmptyTypes)));
+      Assert.That(method, Is.Not.EqualTo(typeof(object).GetMethod("ToString")));
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The method 'Void Foo()' could not be found on type 'System.Object'.")]
     public void ResolveMethod_NonMatchingName ()
     {
-      MethodResolver.ResolveMethod (typeof (object), "Foo", "Void Foo()");
+      Assert.That(
+          () => MethodResolver.ResolveMethod(typeof(object), "Foo", "Void Foo()"),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo(
+                  "The method 'Void Foo()' could not be found on type 'System.Object'."));
     }
 
     [Test]
-    [ExpectedException (typeof (MissingMethodException), ExpectedMessage = "The method 'Void Foo()' could not be found on type 'System.Console'.")]
     public void ResolveMethod_NonMatchingSignature ()
     {
-      MethodResolver.ResolveMethod (typeof (Console), "WriteLine", "Void Foo()");
+      Assert.That(
+          () => MethodResolver.ResolveMethod(typeof(Console), "WriteLine", "Void Foo()"),
+          Throws.InstanceOf<MissingMethodException>()
+              .With.Message.EqualTo(
+                  "The method 'Void Foo()' could not be found on type 'System.Console'."));
     }
   }
 }

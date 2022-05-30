@@ -39,7 +39,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefinit
     {
       DomainObjectCollection result = AbstractRoleDefinition.FindAll();
 
-      Assert.That (result.Count, Is.EqualTo (0));
+      Assert.That(result.Count, Is.EqualTo(0));
     }
   }
 }

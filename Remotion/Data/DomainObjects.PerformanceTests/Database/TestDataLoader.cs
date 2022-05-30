@@ -40,43 +40,43 @@ public class TestDataLoader : IDisposable
 
   public TestDataLoader (string connectionString)
   {
-    _connection = new SqlConnection (connectionString);
-    _connection.Open ();
+    _connection = new SqlConnection(connectionString);
+    _connection.Open();
   }
 
   // methods and properties
 
   public void Load ()
   {
-    using (_transaction = _connection.BeginTransaction ())
+    using (_transaction = _connection.BeginTransaction())
     {
-      ExecuteSqlFile (c_testDomainFilename);
+      ExecuteSqlFile(c_testDomainFilename);
 
-      _transaction.Commit ();  
+      _transaction.Commit();
     }
   }
 
   private void ExecuteSqlFile (string sqlFile)
   {
-    using (SqlCommand command = new SqlCommand (ReadFile (sqlFile), _connection, _transaction))
+    using (SqlCommand command = new SqlCommand(ReadFile(sqlFile), _connection, _transaction))
     {
-      command.ExecuteNonQuery ();
+      command.ExecuteNonQuery();
     }
   }
 
   private string ReadFile (string file)
   {
-    using (StreamReader reader = new StreamReader (file, Encoding.Default))
+    using (StreamReader reader = new StreamReader(file, Encoding.UTF8))
     {
-      return reader.ReadToEnd ();
+      return reader.ReadToEnd();
     }
   }
 
   #region IDisposable Members
 
-  public void Dispose()
+  public void Dispose ()
   {
-    Dispose (true);
+    Dispose(true);
     GC.SuppressFinalize(this);
   }
 
@@ -88,13 +88,13 @@ public class TestDataLoader : IDisposable
     {
       if (_connection != null)
       {
-        _connection.Close ();
+        _connection.Close();
         _connection = null;
       }
 
       if (_transaction != null)
       {
-        _transaction.Dispose ();
+        _transaction.Dispose();
         _transaction = null;
       }
 

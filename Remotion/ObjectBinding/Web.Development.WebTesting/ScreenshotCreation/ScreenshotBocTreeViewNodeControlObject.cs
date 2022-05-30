@@ -36,8 +36,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
         [NotNull] IFluentScreenshotElementWithCovariance<BocTreeViewNodeControlObject> fluentBocTreeViewNode,
         [NotNull] IFluentScreenshotElement<ElementScope> fluentElement)
     {
-      ArgumentUtility.CheckNotNull ("fluentBocTreeViewNode", fluentBocTreeViewNode);
-      ArgumentUtility.CheckNotNull ("fluentElement", fluentElement);
+      ArgumentUtility.CheckNotNull("fluentBocTreeViewNode", fluentBocTreeViewNode);
+      ArgumentUtility.CheckNotNull("fluentElement", fluentElement);
 
       _fluentBocTreeViewNode = fluentBocTreeViewNode;
       _fluentElement = fluentElement;
@@ -67,9 +67,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return _fluentElement.ResolveDesktopCoordinates (locator);
+      return _fluentElement.ResolveDesktopCoordinates(locator);
     }
   }
 }

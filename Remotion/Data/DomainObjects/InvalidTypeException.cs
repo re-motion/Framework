@@ -38,40 +38,32 @@ public class InvalidTypeException : DomainObjectException
 
   // construction and disposing
 
-  public InvalidTypeException (string message) : base (message) 
+  protected InvalidTypeException (SerializationInfo info, StreamingContext context) : base(info, context)
   {
-  }
-  
-  public InvalidTypeException (string message, Exception inner) : base (message, inner) 
-  {
-  }
-
-  protected InvalidTypeException (SerializationInfo info, StreamingContext context) : base (info, context) 
-  {
-    _propertyName = info.GetString ("PropertyName");
-    _expectedType = (Type) info.GetValue ("ExpectedType", typeof (Type));
-    _actualType = (Type) info.GetValue ("ActualType", typeof (Type));
+    _propertyName = info.GetString("PropertyName")!;
+    _expectedType = (Type)info.GetValue("ExpectedType", typeof(Type))!;
+    _actualType = (Type)info.GetValue("ActualType", typeof(Type))!;
   }
 
-  public InvalidTypeException (string propertyName, Type expectedType, Type actualType) : this (
-      string.Format (
-          "Actual type '{0}' of property '{1}' does not match expected type '{2}'.", 
-          actualType, propertyName, expectedType), 
+  public InvalidTypeException (string propertyName, Type expectedType, Type actualType) : this(
+      string.Format(
+          "Actual type '{0}' of property '{1}' does not match expected type '{2}'.",
+          actualType, propertyName, expectedType),
       propertyName,
       expectedType,
       actualType)
   {
   }
 
-  public InvalidTypeException (string message, string propertyName, Type exptectedType, Type actualType) 
-      : base (message) 
+  public InvalidTypeException (string message, string propertyName, Type expectedType, Type actualType, Exception? innerException = null)
+      : base(message, innerException)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    ArgumentUtility.CheckNotNull ("expectedType", exptectedType);
-    ArgumentUtility.CheckNotNull ("actualType", actualType);
+    ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+    ArgumentUtility.CheckNotNull("expectedType", expectedType);
+    ArgumentUtility.CheckNotNull("actualType", actualType);
 
     _propertyName = propertyName;
-    _expectedType = exptectedType;
+    _expectedType = expectedType;
     _actualType = actualType;
   }
 
@@ -108,11 +100,11 @@ public class InvalidTypeException : DomainObjectException
   /// <param name="context">The contextual information about the source or destination.</param>
   public override void GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    base.GetObjectData (info, context);
+    base.GetObjectData(info, context);
 
-    info.AddValue ("PropertyName", _propertyName);
-    info.AddValue ("ExpectedType", _expectedType);
-    info.AddValue ("ActualType", _actualType);
+    info.AddValue("PropertyName", _propertyName);
+    info.AddValue("ExpectedType", _expectedType);
+    info.AddValue("ActualType", _actualType);
   }
 }
 }

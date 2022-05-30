@@ -37,17 +37,6 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     string ScreenshotDirectory { [CanBeNull] get; }
 
     /// <summary>
-    /// Specifies how long the Coypu engine should maximally search for a web element or try to interact with a web element before it fails.
-    /// </summary>
-    TimeSpan SearchTimeout { get; }
-
-    /// <summary>
-    /// Whenever the element to be interacted with is not ready, visible or otherwise not present, the Coypu engine automatically retries the action
-    /// after the given <see cref="RetryInterval"/> until the <see cref="SearchTimeout"/> has been reached.
-    /// </summary>
-    TimeSpan RetryInterval { get; }
-
-    /// <summary>
     /// Some Selenium web driver implementations may become confused when searching for windows if there are other browser windows present. Typically
     /// you want to turn this auto-close option on when running web tests, on developer machines, however, this may unexpectedly close important
     /// browser windows, which is why the default value is set to <see langword="false" />.

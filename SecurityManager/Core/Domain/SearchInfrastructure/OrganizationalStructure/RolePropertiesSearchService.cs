@@ -21,6 +21,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.Utilities;
@@ -42,27 +43,27 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
   {
     public bool SupportsProperty (IBusinessObjectReferenceProperty property)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
+      ArgumentUtility.CheckNotNull("property", property);
 
       return property.Identifier == "Position";
     }
 
     public IBusinessObject[] Search (
-        IBusinessObject referencingObject,
+        IBusinessObject? referencingObject,
         IBusinessObjectReferenceProperty property,
-        ISearchAvailableObjectsArguments searchArguments)
+        ISearchAvailableObjectsArguments? searchArguments)
     {
-      ArgumentUtility.CheckNotNull ("property", property);
-      var rolePropertiesSearchArguments = ArgumentUtility.CheckType<RolePropertiesSearchArguments> ("searchArguments", searchArguments);
+      ArgumentUtility.CheckNotNull("property", property);
+      var rolePropertiesSearchArguments = ArgumentUtility.CheckType<RolePropertiesSearchArguments>("searchArguments", searchArguments);
 
-      if (!SupportsProperty (property))
+      if (!SupportsProperty(property))
       {
-        throw new ArgumentException (
-            string.Format ("The property '{0}' is not supported by the '{1}' type.", property.Identifier, GetType().FullName));
+        throw new ArgumentException(
+            string.Format("The property '{0}' is not supported by the '{1}' type.", property.Identifier, GetType().GetFullNameSafe()));
       }
 
-      var positions = GetPositions (rolePropertiesSearchArguments);
-      var filteredPositions = FilterByAccess (positions, SecurityManagerAccessTypes.AssignRole);
+      var positions = GetPositions(rolePropertiesSearchArguments);
+      var filteredPositions = FilterByAccess(positions, SecurityManagerAccessTypes.AssignRole);
       return filteredPositions.ToArray();
     }
 
@@ -70,16 +71,16 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
     {
       var positions = Position.FindAll();
 
-      var groupType = GetGroupType (defaultSearchArguments);
+      var groupType = GetGroupType(defaultSearchArguments);
       if (groupType == null)
         return positions;
 
-      return positions.Where (p => p.GroupTypes.Any (gtp => gtp.GroupType == groupType));
+      return positions.Where(p => p.GroupTypes.Any(gtp => gtp.GroupType == groupType));
     }
 
-    private GroupType GetGroupType (RolePropertiesSearchArguments searchArguments)
+    private GroupType? GetGroupType (RolePropertiesSearchArguments? searchArguments)
     {
-      if (searchArguments == null || searchArguments.GroupHandle == null)
+      if (searchArguments == null)
         return null;
 
       using (SecurityFreeSection.Activate())
@@ -92,9 +93,9 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
     private IEnumerable<T> FilterByAccess<T> (IEnumerable<T> securableObjects, params Enum[] requiredAccessTypeEnums) where T: ISecurableObject
     {
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
-      AccessType[] requiredAccessTypes = Array.ConvertAll (requiredAccessTypeEnums, AccessType.Get);
+      AccessType[] requiredAccessTypes = Array.ConvertAll(requiredAccessTypeEnums, AccessType.Get);
 
-      return securableObjects.Where (o => securityClient.HasAccess (o, requiredAccessTypes));
+      return securableObjects.Where(o => securityClient.HasAccess(o, requiredAccessTypes));
     }
   }
 }

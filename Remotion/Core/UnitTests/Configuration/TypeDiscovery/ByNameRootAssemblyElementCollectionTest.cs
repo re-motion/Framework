@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Development.UnitTesting.Configuration;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Configuration.TypeDiscovery
 {
@@ -35,30 +35,30 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
     [Test]
     public void Deserialization ()
     {
-      var collection = DeserializeFromXmlFragment (_xmlFragment);
+      var collection = DeserializeFromXmlFragment(_xmlFragment);
 
       ByNameRootAssemblyElement[] result = collection.ToArray();
-      Assert.That (result.Length, Is.EqualTo (2));
-      Assert.That (result[0].Name, Is.EqualTo ("mscorlib"));
-      Assert.That (result[1].Name, Is.EqualTo ("System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"));
+      Assert.That(result.Length, Is.EqualTo(2));
+      Assert.That(result[0].Name, Is.EqualTo("mscorlib"));
+      Assert.That(result[1].Name, Is.EqualTo("System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"));
     }
 
     [Test]
     public void IncludeReferencedAssemblies_FalseByDefault ()
     {
-      var collection = DeserializeFromXmlFragment (_xmlFragment);
+      var collection = DeserializeFromXmlFragment(_xmlFragment);
 
-      ByNameRootAssemblyElement[] result = collection.ToArray ();
-      Assert.That (result[0].IncludeReferencedAssemblies, Is.False);
+      ByNameRootAssemblyElement[] result = collection.ToArray();
+      Assert.That(result[0].IncludeReferencedAssemblies, Is.False);
     }
 
     [Test]
     public void IncludeReferencedAssemblies_TrueIfSpecified ()
     {
-      var collection = DeserializeFromXmlFragment (_xmlFragment);
+      var collection = DeserializeFromXmlFragment(_xmlFragment);
 
-      ByNameRootAssemblyElement[] result = collection.ToArray ();
-      Assert.That (result[1].IncludeReferencedAssemblies, Is.True);
+      ByNameRootAssemblyElement[] result = collection.ToArray();
+      Assert.That(result[1].IncludeReferencedAssemblies, Is.True);
     }
 
     [Test]
@@ -68,13 +68,13 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var element2 = new ByNameRootAssemblyElement { Name = "y" };
       var element3 = new ByNameRootAssemblyElement { Name = "z" };
 
-      var collection = new ByNameRootAssemblyElementCollection ();
-      collection.Add (element1);
-      collection.Add (element2);
-      collection.Add (element3);
+      var collection = new ByNameRootAssemblyElementCollection();
+      collection.Add(element1);
+      collection.Add(element2);
+      collection.Add(element3);
 
-      ByNameRootAssemblyElement[] result = collection.ToArray ();
-      Assert.That (result, Is.EqualTo (new[] { element1, element2, element3 }));
+      ByNameRootAssemblyElement[] result = collection.ToArray();
+      Assert.That(result, Is.EqualTo(new[] { element1, element2, element3 }));
     }
 
     [Test]
@@ -84,14 +84,14 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var element2 = new ByNameRootAssemblyElement { Name = "y" };
       var element3 = new ByNameRootAssemblyElement { Name = "z" };
 
-      var collection = new ByNameRootAssemblyElementCollection ();
-      collection.Add (element1);
-      collection.Add (element2);
-      collection.Add (element3);
-      collection.RemoveAt (1);
+      var collection = new ByNameRootAssemblyElementCollection();
+      collection.Add(element1);
+      collection.Add(element2);
+      collection.Add(element3);
+      collection.RemoveAt(1);
 
-      ByNameRootAssemblyElement[] result = collection.ToArray ();
-      Assert.That (result, Is.EquivalentTo (new[] { element1, element3 }));
+      ByNameRootAssemblyElement[] result = collection.ToArray();
+      Assert.That(result, Is.EquivalentTo(new[] { element1, element3 }));
     }
 
     [Test]
@@ -101,38 +101,38 @@ namespace Remotion.UnitTests.Configuration.TypeDiscovery
       var element2 = new ByNameRootAssemblyElement { Name = "y" };
       var element3 = new ByNameRootAssemblyElement { Name = "z" };
 
-      var collection = new ByNameRootAssemblyElementCollection ();
-      collection.Add (element1);
-      collection.Add (element2);
-      collection.Add (element3);
-      collection.Clear ();
+      var collection = new ByNameRootAssemblyElementCollection();
+      collection.Add(element1);
+      collection.Add(element2);
+      collection.Add(element3);
+      collection.Clear();
 
-      ByNameRootAssemblyElement[] result = collection.ToArray ();
-      Assert.That (result, Is.Empty);
+      ByNameRootAssemblyElement[] result = collection.ToArray();
+      Assert.That(result, Is.Empty);
     }
 
     [Test]
     public void CreateRootAssemblyFinder ()
     {
-      var collection = DeserializeFromXmlFragment (_xmlFragment);
-      var loaderStub = MockRepository.GenerateStub<IAssemblyLoader>();
+      var collection = DeserializeFromXmlFragment(_xmlFragment);
+      var loaderStub = new Mock<IAssemblyLoader>();
 
-      var finder = collection.CreateRootAssemblyFinder (loaderStub);
+      var finder = collection.CreateRootAssemblyFinder(loaderStub.Object);
 
       var specs = finder.Specifications.ToArray();
-      Assert.That (specs[0].AssemblyName.ToString (), Is.EqualTo ("mscorlib"));
-      Assert.That (specs[0].FollowReferences, Is.False);
+      Assert.That(specs[0].AssemblyName.ToString(), Is.EqualTo("mscorlib"));
+      Assert.That(specs[0].FollowReferences, Is.False);
 
-      Assert.That (specs[1].AssemblyName.ToString (), Is.EqualTo ("System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"));
-      Assert.That (specs[1].FollowReferences, Is.True);
+      Assert.That(specs[1].AssemblyName.ToString(), Is.EqualTo("System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"));
+      Assert.That(specs[1].FollowReferences, Is.True);
 
-      Assert.That (finder.AssemblyLoader, Is.SameAs (loaderStub));
+      Assert.That(finder.AssemblyLoader, Is.SameAs(loaderStub.Object));
     }
 
     private ByNameRootAssemblyElementCollection DeserializeFromXmlFragment (string xmlFragment)
     {
-      var collection = new ByNameRootAssemblyElementCollection ();
-      ConfigurationHelper.DeserializeElement (collection, xmlFragment);
+      var collection = new ByNameRootAssemblyElementCollection();
+      ConfigurationHelper.DeserializeElement(collection, xmlFragment);
 
       return collection;
     }

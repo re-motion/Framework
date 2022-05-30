@@ -21,7 +21,7 @@ namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
   public interface IPerson
   {
-    [NotNull]
+    [NotNullValidation]
     string FirstName { get; set; }
 
     string LastName { get; set; }

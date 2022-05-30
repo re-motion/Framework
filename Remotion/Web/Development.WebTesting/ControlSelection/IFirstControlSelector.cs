@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
 using JetBrains.Annotations;
 
 namespace Remotion.Web.Development.WebTesting.ControlSelection
@@ -32,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// Selects the first control within the given <paramref name="context"/> matching the type <typeparamref name="TControlObject"/>.
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control.</returns>
-    /// <exception cref="MissingHtmlException">If no matching control can be found.</exception>
+    /// <exception cref="WebTestException">If no matching control can be found.</exception>
     [NotNull]
     TControlObject SelectFirst ([NotNull] ControlSelectionContext context);
 
@@ -41,6 +40,6 @@ namespace Remotion.Web.Development.WebTesting.ControlSelection
     /// </summary>
     /// <returns>The <see cref="ControlObject"/> for the selected control, or <see langword="null"/> if no control could be found.</returns>
     [CanBeNull]
-    TControlObject SelectFirstOrNull ([NotNull] ControlSelectionContext context);
+    TControlObject? SelectFirstOrNull ([NotNull] ControlSelectionContext context);
   }
 }

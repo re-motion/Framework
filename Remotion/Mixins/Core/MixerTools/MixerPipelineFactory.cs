@@ -35,7 +35,7 @@ namespace Remotion.Mixins.MixerTools
 
     public MixerPipelineFactory (string assemblyName, int degreeOfParallelism)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("assemblyName", assemblyName);
+      ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
 
       _assemblyName = assemblyName;
       _degreeOfParallelism = degreeOfParallelism;
@@ -51,25 +51,25 @@ namespace Remotion.Mixins.MixerTools
       get { return _degreeOfParallelism; }
     }
 
-    public IPipeline CreatePipeline (string assemblyOutputDirectory)
+    public IPipeline CreatePipeline (string? assemblyOutputDirectory)
     {
       var remotionPipelineFactory = new RemotionPipelineFactory();
       var defaultPipeline = SafeServiceLocator.Current.GetInstance<IPipelineRegistry>().DefaultPipeline;
       var participants = defaultPipeline.Participants.ToArray();
 
-      var participantTypeNames = participants.Select (p => p.GetType().Name).ToArray();
-      s_log.InfoFormat (
+      var participantTypeNames = participants.Select(p => p.GetType().Name).ToArray();
+      s_log.InfoFormat(
           "Using pipeline '{0}' with the following participants: {1}.",
           defaultPipeline.ParticipantConfigurationID,
-          string.Join (", ", participantTypeNames));
-      Assertion.DebugAssert (participants.OfType<MixinParticipant>().Any(), "Mixin participant must be present.");
+          string.Join(", ", participantTypeNames));
+      Assertion.DebugAssert(participants.OfType<MixinParticipant>().Any(), "Mixin participant must be present.");
 
-      var pipelineSettings = PipelineSettings.From (defaultPipeline.Settings)
-          .SetAssemblyDirectory (assemblyOutputDirectory)
-          .SetAssemblyNamePattern (_assemblyName)
-          .SetDegreeOfParallelism (_degreeOfParallelism);
+      var pipelineSettings = PipelineSettings.From(defaultPipeline.Settings)
+          .SetAssemblyDirectory(assemblyOutputDirectory)
+          .SetAssemblyNamePattern(_assemblyName)
+          .SetDegreeOfParallelism(_degreeOfParallelism);
 
-      var pipeline = remotionPipelineFactory.Create (
+      var pipeline = remotionPipelineFactory.Create(
           defaultPipeline.ParticipantConfigurationID,
           pipelineSettings.Build(),
           participants);
@@ -77,10 +77,10 @@ namespace Remotion.Mixins.MixerTools
       return pipeline;
     }
 
-    public string[] GetModulePaths (string assemblyOutputDirectory)
+    public string[] GetModulePaths (string? assemblyOutputDirectory)
     {
       var workingDirectory = assemblyOutputDirectory ?? Environment.CurrentDirectory;
-      return Directory.GetFiles (workingDirectory, AssemblyName.Replace (PipelineSettings.CounterPattern, "*") + ".dll");
+      return Directory.GetFiles(workingDirectory, AssemblyName.Replace(PipelineSettings.CounterPattern, "*") + ".dll");
     }
   }
 }

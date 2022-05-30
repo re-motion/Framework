@@ -26,26 +26,26 @@ namespace Remotion.Utilities
   /// <typeparam name="T">The type of the objects to be compared.</typeparam>
   public class DelegateBasedEqualityComparer<T> : IEqualityComparer<T>
   {
-    private readonly Func<T, T, bool> _comparison;
+    private readonly Func<T?, T?, bool> _comparison;
     private readonly Func<T, int> _hash;
-    
-    public DelegateBasedEqualityComparer (Func<T, T, bool> comparison, Func<T, int> hash)
+
+    public DelegateBasedEqualityComparer (Func<T?, T?, bool> comparison, Func<T, int> hash)
     {
-      ArgumentUtility.CheckNotNull ("comparison", comparison);
-      ArgumentUtility.CheckNotNull ("hash", hash);
+      ArgumentUtility.CheckNotNull("comparison", comparison);
+      ArgumentUtility.CheckNotNull("hash", hash);
 
       _comparison = comparison;
       _hash = hash;
     }
 
-    public bool Equals (T x, T y)
+    public bool Equals (T? x, T? y)
     {
-      return _comparison (x, y);
+      return _comparison(x, y);
     }
 
     public int GetHashCode (T obj)
     {
-      return _hash (obj);
+      return _hash(obj);
     }
   }
 }

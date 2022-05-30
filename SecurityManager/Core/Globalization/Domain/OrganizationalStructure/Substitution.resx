@@ -127,7 +127,7 @@
     <value>Valid to</value>
   </data>
   <data name="property:IsEnabled" xml:space="preserve">
-    <value>Is available</value>
+    <value>Available</value>
   </data>
   <data name="property:SubstitutedRole" xml:space="preserve">
     <value>Role</value>

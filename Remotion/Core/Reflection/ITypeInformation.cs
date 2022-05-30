@@ -33,7 +33,7 @@ namespace Remotion.Reflection
     /// or <see langword="null"/> if the current instance represents a generic type parameter, an array type, pointer type, 
     /// or byref type based on a type parameter, or a generic type that is not a generic type definition but contains unresolved type parameters.
     /// </returns>
-    [CanBeNull]string FullName { get; }
+    [CanBeNull]string? FullName { get; }
 
     /// <summary>
     /// Gets the namespace of the type.
@@ -41,7 +41,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// The namespace of the type, or <see langword="null"/> if the current instance represents a generic parameter.
     /// </returns>
-    [CanBeNull]string Namespace { get; }
+    [CanBeNull]string? Namespace { get; }
 
     /// <summary>
     /// Gets the assembly-qualified name of the type, which includes the name of the assembly from which the type was loaded.
@@ -49,7 +49,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// The assembly-qualified name of the type, which includes the name of the assembly from which the type was loaded, or <see langword="null"/> if the current instance represents a generic type parameter.
     /// </returns>
-    [CanBeNull]string AssemblyQualifiedName { get; }
+    [CanBeNull]string? AssemblyQualifiedName { get; }
 
     /// <summary>
     /// Gets the <see cref="System.Reflection.Assembly"/> in which the type is declared. For generic types, gets the <see cref="System.Reflection.Assembly"/> in which the generic type is defined.
@@ -57,7 +57,7 @@ namespace Remotion.Reflection
     /// <returns>
     /// An <see cref="System.Reflection.Assembly"/> instance that describes the assembly containing the current type. For generic types, the instance describes the assembly that contains the generic type definition, not the assembly that creates and uses a particular constructed type.
     /// </returns>
-    [CanBeNull]Assembly Assembly { get; }
+    [CanBeNull]Assembly? Assembly { get; }
 
         /// <summary>
     /// Gets the type that declares the current nested type or generic type parameter.
@@ -67,7 +67,7 @@ namespace Remotion.Reflection
     /// if the current type is a type parameter of a generic type; or the type that declares the generic method, 
     /// if the current type is a type parameter of a generic method; otherwise, <see langword="null"/>.
     /// </returns>
-    [CanBeNull]new ITypeInformation DeclaringType { get; }
+    [CanBeNull]new ITypeInformation? DeclaringType { get; }
 
     /// <summary>
     /// Gets a value indicating whether the type is a class; that is, not a value type or interface.
@@ -249,7 +249,7 @@ namespace Remotion.Reflection
     /// or <see langword="null"/> if the current type is not an array or a pointer, or is not passed by reference, 
     /// or represents a generic type or a type parameter in the definition of a generic type or generic method.
     /// </returns>
-    [CanBeNull]ITypeInformation GetElementType ();
+    [CanBeNull]ITypeInformation? GetElementType ();
 
     /// <summary>
     /// Gets a value indicating whether the current type is a generic type.
@@ -337,7 +337,7 @@ namespace Remotion.Reflection
     /// The <see cref="ITypeInformation"/> from which the current type directly inherits, 
     /// or <see langword="null" /> if the current Type represents the <see cref="Object"/> class or an interface.
     /// </returns>
-    [CanBeNull]ITypeInformation BaseType { get; }
+    [CanBeNull]ITypeInformation? BaseType { get; }
 
     /// <summary>
     /// Determines whether the specified object <paramref name="o"/> is an instance of the current type.
@@ -349,7 +349,7 @@ namespace Remotion.Reflection
     /// (that is, <see cref="ContainsGenericParameters"/> returns <see langword="true"/>).
     /// </returns>
     /// <param name="o">The object to compare with the current <see cref="ITypeInformation"/>. </param>
-    bool IsInstanceOfType ([CanBeNull]object o);
+    bool IsInstanceOfType ([CanBeNull]object? o);
 
     /// <summary>
     /// Determines whether the class represented by the current type derives from the class represented by <paramref name="c"/>.

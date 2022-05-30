@@ -29,24 +29,24 @@ namespace Remotion.Mixins.Validation
   [Serializable]
   public class ValidationException : Exception
   {
-    private readonly SerializableValidationLogData _serializableValidationLogData;
+    private readonly SerializableValidationLogData? _serializableValidationLogData;
 
-    public SerializableValidationLogData ValidationLogData
+    public SerializableValidationLogData? ValidationLogData
     {
       get { return _serializableValidationLogData; }
     }
 
     private static string BuildExceptionString (ValidationLogData data)
     {
-      ArgumentUtility.CheckNotNull ("data", data);
+      ArgumentUtility.CheckNotNull("data", data);
 
-      var sb = new StringBuilder ("Some parts of the mixin configuration could not be validated.");
+      var sb = new StringBuilder("Some parts of the mixin configuration could not be validated.");
       foreach (ValidationResult item in data.GetResults())
       {
         if (item.TotalRulesExecuted != item.Successes.Count)
         {
           sb.AppendLine();
-          sb.AppendFormat (
+          sb.AppendFormat(
               "{0} '{1}', {2} rules executed",
               item.ValidatedDefinition.GetType().Name,
               item.ValidatedDefinition.FullName,
@@ -56,13 +56,13 @@ namespace Remotion.Mixins.Validation
           string contextString = item.GetDefinitionContextPath();
           if (contextString.Length > 0)
           {
-            sb.AppendFormat ("Context: " + contextString);
+            sb.AppendFormat("Context: " + contextString);
             sb.AppendLine();
           }
 
-          AppendResults (sb, "unexpected exceptions", item.Exceptions);
-          AppendResults (sb, "warnings", item.Warnings);
-          AppendResults (sb, "failures", item.Failures);
+          AppendResults(sb, "unexpected exceptions", item.Exceptions);
+          AppendResults(sb, "warnings", item.Warnings);
+          AppendResults(sb, "failures", item.Failures);
         }
       }
       return sb.ToString();
@@ -73,10 +73,10 @@ namespace Remotion.Mixins.Validation
     {
       if (resultList.Count > 0)
       {
-        sb.AppendFormat ("  {0} - {1}", title, resultList.Count);
+        sb.AppendFormat("  {0} - {1}", title, resultList.Count);
         sb.AppendLine();
         foreach (T resultItem in resultList)
-          sb.AppendFormat ("    {0} ({1})", resultItem.Message, resultItem.RuleName);
+          sb.AppendFormat("    {0} ({1})", resultItem.Message, resultItem.RuleName);
         sb.AppendLine();
       }
     }
@@ -87,7 +87,7 @@ namespace Remotion.Mixins.Validation
     /// <param name="validationLogData">The validation log data.</param>
     /// <exception cref="ArgumentNullException">The log is empty.</exception>
     public ValidationException (ValidationLogData validationLogData)
-        : base (BuildExceptionString (validationLogData))
+        : base(BuildExceptionString(validationLogData))
     {
       _serializableValidationLogData = validationLogData.MakeSerializable();
     }
@@ -99,16 +99,16 @@ namespace Remotion.Mixins.Validation
     /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"></see> that contains contextual information about the source or destination.</param>
     /// <exception cref="T:System.ArgumentNullException">The info parameter is null. </exception>
     protected ValidationException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
       _serializableValidationLogData =
-          (SerializableValidationLogData) info.GetValue ("SerializableValidationLogData", typeof (SerializableValidationLogData));
+          (SerializableValidationLogData?)info.GetValue("SerializableValidationLogData", typeof(SerializableValidationLogData));
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
-      info.AddValue ("SerializableValidationLogData", _serializableValidationLogData);
+      base.GetObjectData(info, context);
+      info.AddValue("SerializableValidationLogData", _serializableValidationLogData);
     }
   }
 }

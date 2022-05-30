@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public abstract class BocControlObject : WebFormsControlObjectWithDiagnosticMetadata
   {
     protected BocControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
 
@@ -44,7 +44,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public bool IsReadOnly ()
     {
-      return Scope[DiagnosticMetadataAttributes.IsReadOnly] == "true";
+      return Scope.GetAttribute(DiagnosticMetadataAttributes.IsReadOnly) == "true";
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public bool IsDisabled ()
     {
-      return Scope[DiagnosticMetadataAttributes.IsDisabled] == "true";
+      return Scope.GetAttribute(DiagnosticMetadataAttributes.IsDisabled) == "true";
     }
 
     /// <summary>
@@ -61,47 +61,66 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <exception cref="MissingHtmlException">Thrown if the validation errors cannot be found due to faulty markup or missing validator.</exception>
     protected IReadOnlyList<string> GetValidationErrors ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       if (IsReadOnly())
-        throw AssertionExceptionUtility.CreateControlReadOnlyException();
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
-      if (IsValid (scope))
+      return GetValidationErrorsInner(scope);
+    }
+
+    /// <summary>
+    /// Returns the validation errors for the read-only <param name="scope" />.
+    /// </summary>
+    /// <exception cref="MissingHtmlException">Thrown if the validation errors cannot be found due to faulty markup or missing validator.</exception>
+    protected IReadOnlyList<string> GetValidationErrorsForReadOnly ([NotNull] ElementScope scope)
+    {
+      ArgumentUtility.CheckNotNull("scope", scope);
+
+      if (!IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlNotReadOnlyException(Driver);
+
+      return GetValidationErrorsInner(scope);
+    }
+
+    private IReadOnlyList<string> GetValidationErrorsInner (ElementScope scope)
+    {
+      if (IsValid(scope))
         return new List<string>();
 
-      ElementScope validationErrorsScope;
       string describedBy;
 
       try
       {
-        describedBy = scope["aria-describedby"];
+        describedBy = scope.GetAttribute("aria-describedby");
       }
-      catch (MissingHtmlException exception)
+      catch (MissingHtmlException)
       {
-        throw new MissingHtmlException (
-            "Could not find validation error field. This could be due to wrong markup or a missing validators.",
-            exception);
+        throw CreateMissingValidationErrorFieldException();
       }
 
-      var validationErrorIDs = describedBy.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+      var validationErrorIDs = describedBy.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-      try
-      {
-        var validationErrorIndex = int.Parse (scope[DiagnosticMetadataAttributes.ValidationErrorIDIndex]);
-
-        validationErrorsScope = Scope.FindId (validationErrorIDs[validationErrorIndex]);
-      }
-      catch (MissingHtmlException exception)
-      {
-        throw new MissingHtmlException (
-            "Could not find validation error field. This could be due to wrong markup or a missing validators.",
-            exception);
-      }
+      var validationErrorIndex = int.Parse(scope.GetAttribute(DiagnosticMetadataAttributes.ValidationErrorIDIndex));
+      var validationErrorsScope = Scope.FindId(validationErrorIDs[validationErrorIndex]);
 
       // re-motion renders the delimiter as <br />, but the browser (and Selenium) show it as <br>
       const string validationErrorDelimiter = "<br>";
 
-      return validationErrorsScope.InnerHTML.Split (new[] { validationErrorDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+      try
+      {
+        return validationErrorsScope.InnerHTML.Split(new[] { validationErrorDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+      }
+      catch (MissingHtmlException)
+      {
+        throw CreateMissingValidationErrorFieldException();
+      }
+    }
+
+    private MissingHtmlException CreateMissingValidationErrorFieldException ()
+    {
+      return new MissingHtmlException(
+          $"Could not find validation error field of the control object with the ID '{GetHtmlID()}'. This could be due to wrong markup or a missing validator.");
     }
 
     private static bool IsValid (ElementScope scope)
@@ -118,23 +137,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       var labelledBy = scope["aria-labelledby"];
 
-      if (string.IsNullOrEmpty (labelledBy))
+      if (string.IsNullOrEmpty(labelledBy))
         return new List<LabelControlObject>();
 
-      var labelID = labelledBy.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+      var labelID = labelledBy.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
       var nameLabelIndex = scope[DiagnosticMetadataAttributes.LabelIDIndex];
 
-      if (string.IsNullOrEmpty (nameLabelIndex))
+      if (string.IsNullOrEmpty(nameLabelIndex))
         return new List<LabelControlObject>();
 
-      var nameLabelIndexes = nameLabelIndex.Split (new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+      var nameLabelIndexes = nameLabelIndex.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
       var labels = new List<LabelControlObject>();
       foreach (var index in nameLabelIndexes)
       {
-        var indexAsInt = Int32.Parse (index);
-        labels.Add (new LabelControlObject (Context.CloneForControl (Context.RootScope.FindId (labelID[indexAsInt]))));
+        var indexAsInt = Int32.Parse(index);
+        labels.Add(new LabelControlObject(Context.CloneForControl(Context.RootScope.FindId(labelID[indexAsInt]))));
       }
 
       return labels;

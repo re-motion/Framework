@@ -19,18 +19,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Linq;
 using System.Web.UI;
-using System.Web.UI.Design;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.Globalization;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation;
-using Remotion.ObjectBinding.Web.UI.Design;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
+using Remotion.Web;
+using Remotion.Web.Globalization;
+using Remotion.Web.Services;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
@@ -40,20 +43,36 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> This control can be used to display or select references as the value of a property using an auto-completing text box. </summary>
   /// <include file='..\..\doc\include\UI\Controls\BocAutoCompleteReferenceValue.xml' path='BocAutoCompleteReferenceValue/Class/*' />
-  [ValidationProperty ("ValidationValue")]
-  [DefaultEvent ("SelectionChanged")]
-  [ToolboxItemFilter ("System.Web.UI")]
-  [Designer (typeof (BocDesigner))]
+  [ValidationProperty("ValidationValue")]
+  [DefaultEvent("SelectionChanged")]
+  [ToolboxItemFilter("System.Web.UI")]
   public class BocAutoCompleteReferenceValue
       :
-          BocReferenceValueBase,
+          BocReferenceValueBase<IBocAutoCompleteReferenceValueWebService>,
           IBocAutoCompleteReferenceValue,
           IFocusableControl
   {
-    // constants
+    #region Obsolete
 
-    /// <summary> The text displayed when control is displayed in desinger, is read-only, and has no contents. </summary>
-    private const string c_designModeEmptyLabelContents = "##";
+    [Obsolete("Use ControlServicePath instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public string SearchServicePath
+    {
+      get { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException("Use ControlServicePath instead. (Version 1.21.3)"); }
+    }
+
+    [Obsolete("Use ControlServiceArguments instead. (Version 1.21.3)", true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public string Args
+    {
+      get { throw new NotSupportedException("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+      set { throw new NotSupportedException("Use ControlServiceArguments instead. (Version 1.21.3)"); }
+    }
+
+    #endregion
+
+    // constants
 
     private const string c_textBoxIDPostfix = "_TextValue";
     private const string c_hiddenFieldIDPostfix = "_KeyValue";
@@ -67,7 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   See the documentation of <b>GetString</b> for further details.
     /// </remarks>
     [ResourceIdentifiers]
-    [MultiLingualResources ("Remotion.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValue")]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocAutoCompleteReferenceValue")]
     public enum ResourceIdentifier
     {
       /// <summary> Label displayed in the OptionsMenu. </summary>
@@ -90,33 +109,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The object returned by <see cref="BocReferenceValue"/>. 
     ///   Does not require <see cref="System.Runtime.Serialization.ISerializable"/>. 
     /// </summary>
-    private IBusinessObjectWithIdentity _value;
+    private IBusinessObjectWithIdentity? _value;
 
-    private string _displayName;
+    private string? _displayName;
     private bool _isDisplayNameRefreshed;
 
-    private string _invalidItemErrorMessage;
+    private PlainTextString _invalidItemErrorMessage;
 
-    private string _searchServicePath = string.Empty;
-    private string _args;
-    private string _validSearchStringRegex;
-    private string _validSearchStringForDropDownRegex;
-    private string _searchStringForDropDownDoesNotMatchRegexMessage;
+    private string? _validSearchStringRegex;
+    private string? _validSearchStringForDropDownRegex;
+    private string? _searchStringForDropDownDoesNotMatchRegexMessage;
     private bool _ignoreSearchStringForDropDownUponValidInput;
     private int _completionSetCount = 10;
     private int _dropDownDisplayDelay = 1000;
     private int _dropDownRefreshDelay = 2000;
     private int _selectionUpdateDelay = 200;
-    private SearchAvailableObjectWebServiceContext _searchServiceContextFromPreviousLifeCycle;
+    private BusinessObjectWebServiceContext _businessObjectWebServiceContextFromPreviousLifeCycle;
 
-    private string _nullItemErrorMessage;
-    private ReadOnlyCollection<BaseValidator> _validators;
+    private PlainTextString _nullItemErrorMessage;
+    private ReadOnlyCollection<BaseValidator>? _validators;
     // construction and disposing
 
     public BocAutoCompleteReferenceValue ()
+        : this(SafeServiceLocator.Current.GetInstance<IWebServiceFactory>())
+    {
+    }
+
+    protected BocAutoCompleteReferenceValue ([NotNull] IWebServiceFactory webServiceFactory)
+        : base(webServiceFactory)
     {
       _textBoxStyle = new SingleRowTextBoxStyle();
-      _searchServiceContextFromPreviousLifeCycle = SearchAvailableObjectWebServiceContext.Create (null, null, null);
+      _businessObjectWebServiceContextFromPreviousLifeCycle = BusinessObjectWebServiceContext.Create(null, null, null);
     }
 
     // methods and properties
@@ -126,28 +149,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if the value is not set but the control is required.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
-    public string NullItemErrorMessage
+    [Description("Validation message displayed if the value is not set but the control is required.")]
+    [Category("Validator")]
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString NullItemErrorMessage
     {
       get { return _nullItemErrorMessage; }
       set
       {
         _nullItemErrorMessage = value;
 
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (_nullItemErrorMessage);
+        UpdateValidatorErrorMessages<RequiredFieldValidator>(_nullItemErrorMessage);
       }
     }
 
     public override void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
-      base.RegisterHtmlHeadContents (htmlHeadAppender);
+      base.RegisterHtmlHeadContents(htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender);
     }
 
     protected override string ValueContainingControlID
@@ -157,12 +180,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected override bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      var isDataChanged = base.LoadPostData (postDataKey, postCollection);
+      var isDataChanged = base.LoadPostData(postDataKey, postCollection);
 
-      string newValue = PageUtility.GetPostBackCollectionItem (Page, GetTextValueName());
+      string? newValue = PageUtility.GetPostBackCollectionItem(Page!, GetTextValueName());
       if (newValue != null)
       {
-        if (InternalDisplayName == null && !string.IsNullOrEmpty (newValue))
+        if (InternalDisplayName == null && !string.IsNullOrEmpty(newValue))
           isDataChanged = true;
         else if (InternalDisplayName != null && newValue != InternalDisplayName)
           isDataChanged = true;
@@ -171,16 +194,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       var searchAvailableObjectWebService = GetSearchAvailableObjectService();
       if (isDataChanged)
       {
-        InternalDisplayName = StringUtility.EmptyToNull (newValue);
+        InternalDisplayName = StringUtility.EmptyToNull(newValue);
 
         if (InternalDisplayName != null && InternalValue == null)
         {
-          var result = searchAvailableObjectWebService.SearchExact (
+          var result = searchAvailableObjectWebService.SearchExact(
               InternalDisplayName,
-              _searchServiceContextFromPreviousLifeCycle.BusinessObjectClass,
-              _searchServiceContextFromPreviousLifeCycle.BusinessObjectProperty,
-              _searchServiceContextFromPreviousLifeCycle.BusinessObjectIdentifier,
-              _searchServiceContextFromPreviousLifeCycle.Args);
+              _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectClass,
+              _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectProperty,
+              _businessObjectWebServiceContextFromPreviousLifeCycle.BusinessObjectIdentifier,
+              _businessObjectWebServiceContextFromPreviousLifeCycle.Arguments);
 
           if (result != null)
           {
@@ -206,45 +229,47 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected virtual void EvaluateWaiConformity ()
     {
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
       EnsureChildControls();
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       EnsureDisplayNameRefreshed();
 
       GetSearchAvailableObjectService();
     }
 
-    private ISearchAvailableObjectWebService GetSearchAvailableObjectService ()
+    private IBocAutoCompleteReferenceValueWebService GetSearchAvailableObjectService ()
     {
-      if (IsDesignMode)
-        return null;
+      if (string.IsNullOrEmpty(ControlServicePath))
+        throw new InvalidOperationException(string.Format("BocAutoCompleteReferenceValue '{0}' does not have a ControlServicePath set.", ID));
 
-      if (string.IsNullOrEmpty (SearchServicePath))
-        throw new InvalidOperationException (string.Format ("BocAutoCompleteReferenceValue '{0}' does not have a SearchServicePath set.", ID));
+      var virtualServicePath = VirtualPathUtility.GetVirtualPath(this, ControlServicePath);
+      return WebServiceFactory.CreateJsonService<IBocAutoCompleteReferenceValueWebService>(virtualServicePath);
+    }
 
-      var virtualServicePath = VirtualPathUtility.GetVirtualPath (this, SearchServicePath);
-      return WebServiceFactory.CreateJsonService<ISearchAvailableObjectWebService> (virtualServicePath);
+    protected override IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ()
+    {
+      return new BocAutoCompleteReferenceValueConstraintVisitor(this);
     }
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       EvaluateWaiConformity();
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext (writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
-    [Obsolete ("For DependDB only.", true)]
+    [Obsolete("For DependDB only.", true)]
     private new BaseValidator[] CreateValidators ()
     {
-      throw new NotImplementedException ("For DependDB only.");
+      throw new NotImplementedException("For DependDB only.");
     }
 
     /// <summary>
@@ -263,7 +288,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     protected override IEnumerable<BaseValidator> CreateValidators (bool isReadOnly)
     {
       var validatorFactory = ServiceLocator.GetInstance<IBocAutoCompleteReferenceValueValidatorFactory>();
-      _validators = validatorFactory.CreateValidators (this, isReadOnly).ToList ().AsReadOnly ();
+      _validators = validatorFactory.CreateValidators(this, isReadOnly).ToList().AsReadOnly();
 
       OverrideValidatorErrorMessages();
 
@@ -272,18 +297,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private void OverrideValidatorErrorMessages ()
     {
-      if (!string.IsNullOrEmpty (InvalidItemErrorMessage))
-        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator> (InvalidItemErrorMessage);
+      if (!InvalidItemErrorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator>(InvalidItemErrorMessage);
 
-      if (!string.IsNullOrEmpty (NullItemErrorMessage))
-        UpdateValidtaorErrorMessages<RequiredFieldValidator> (NullItemErrorMessage);
+      if (!NullItemErrorMessage.IsEmpty)
+        UpdateValidatorErrorMessages<RequiredFieldValidator>(NullItemErrorMessage);
     }
 
-    private void UpdateValidtaorErrorMessages<T> (string errorMessage) where T : BaseValidator
+    private void UpdateValidatorErrorMessages<T> (PlainTextString errorMessage) where T : BaseValidator
     {
       var validator = _validators.GetValidator<T>();
       if (validator != null)
-        validator.ErrorMessage = errorMessage;
+        validator.ErrorMessage = errorMessage.GetValue();
     }
 
     protected virtual IBocAutoCompleteReferenceValueRenderer CreateRenderer ()
@@ -293,39 +318,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     protected virtual BocAutoCompleteReferenceValueRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new BocAutoCompleteReferenceValueRenderingContext (
+      Assertion.IsNotNull(Context, "Context must not be null.");
+
+      return new BocAutoCompleteReferenceValueRenderingContext(
           Context,
           writer,
           this,
-          CreateSearchAvailableObjectWebServiceContext(),
-          CreateIconWebServiceContext());
+          CreateBusinessObjectWebServiceContext());
     }
 
-    private SearchAvailableObjectWebServiceContext CreateSearchAvailableObjectWebServiceContext ()
+    protected override void LoadControlState (object? savedState)
     {
-      return SearchAvailableObjectWebServiceContext.Create (DataSource, Property, Args);
-    }
+      object?[] values = (object?[])savedState!;
 
-    protected override void LoadControlState (object savedState)
-    {
-      object[] values = (object[]) savedState;
-
-      base.LoadControlState (values[0]);
-      InternalValue = (string) values[1];
-      _displayName = (string) values[2];
-      _searchServiceContextFromPreviousLifeCycle = (SearchAvailableObjectWebServiceContext) values[3];
+      base.LoadControlState(values[0]);
+      InternalValue = (string?)values[1];
+      _displayName = (string?)values[2];
+      _businessObjectWebServiceContextFromPreviousLifeCycle = (BusinessObjectWebServiceContext)values[3]!;
     }
 
     protected override object SaveControlState ()
     {
-      object[] values = new object[4];
+      object?[] values = new object?[4];
 
       values[0] = base.SaveControlState();
       values[1] = InternalValue;
       values[2] = _displayName;
-      values[3] = CreateSearchAvailableObjectWebServiceContext();
+      values[3] = CreateBusinessObjectWebServiceContext();
 
       return values;
     }
@@ -344,28 +365,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (DataSource == null)
         return;
 
-      IBusinessObjectWithIdentity value = null;
+      IBusinessObjectWithIdentity? value = null;
 
       if (DataSource.BusinessObject != null)
-        value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+        value = (IBusinessObjectWithIdentity?)DataSource.BusinessObject.GetProperty(Property);
 
-      LoadValueInternal (value, false);
+      LoadValueInternal(value, false);
     }
 
     /// <summary> Populates the <see cref="BocReferenceValueBase.Value"/> with the unbound <paramref name="value"/>. </summary>
     /// <include file='..\..\doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
-    public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
+    public void LoadUnboundValue (IBusinessObjectWithIdentity? value, bool interim)
     {
-      LoadValueInternal (value, interim);
+      LoadValueInternal(value, interim);
     }
 
     /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
-    protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
+    protected virtual void LoadValueInternal (IBusinessObjectWithIdentity? value, bool interim)
     {
       if (interim)
         return;
 
-      SetValue (value);
+      SetValue(value);
       IsDirty = false;
     }
 
@@ -394,32 +415,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Returns the <see cref="IResourceManager"/> used to access the resources for this control. </summary>
     protected override IResourceManager GetResourceManager ()
     {
-      return GetResourceManager (typeof (ResourceIdentifier));
+      return GetResourceManager(typeof(ResourceIdentifier));
     }
 
     protected override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      base.LoadResources (resourceManager, globalizationService);
+      base.LoadResources(resourceManager, globalizationService);
 
-      var key = ResourceManagerUtility.GetGlobalResourceKey (NullItemErrorMessage);
-      if (!string.IsNullOrEmpty (key))
-        NullItemErrorMessage = resourceManager.GetString (key);
+      var key = ResourceManagerUtility.GetGlobalResourceKey(NullItemErrorMessage.GetValue());
+      if (!string.IsNullOrEmpty(key))
+        NullItemErrorMessage = resourceManager.GetText(key);
     }
 
-    protected override string GetLabelText ()
+    protected override string? GetLabelText ()
     {
-      if (IsDesignMode)
-      {
-        return c_designModeEmptyLabelContents;
-        //  Too long, can't resize in designer to less than the content's width
-        //  _label.Text = "[ " + this.GetType().Name + " \"" + this.ID + "\" ]";
-      }
-
       EnsureDisplayNameRefreshed();
       return InternalDisplayName;
     }
 
-    protected override sealed IBusinessObjectWithIdentity GetValue ()
+    protected override sealed IBusinessObjectWithIdentity? GetValue ()
     {
       if (InternalValue == null)
         _value = null;
@@ -428,19 +442,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var businessObjectClass = GetBusinessObjectClass();
         if (businessObjectClass != null)
-          _value = businessObjectClass.GetObject (InternalValue);
+          _value = businessObjectClass.GetObject(InternalValue);
       }
       return _value;
     }
 
-    protected override sealed void SetValue (IBusinessObjectWithIdentity value)
+    protected override sealed void SetValue (IBusinessObjectWithIdentity? value)
     {
       _value = value;
 
       if (value != null)
       {
         InternalValue = value.UniqueIdentifier;
-        InternalDisplayName = GetDisplayName (value);
+        InternalDisplayName = GetDisplayName(value);
       }
       else
       {
@@ -465,7 +479,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
     public override string[] GetTrackedClientIDs ()
     {
-      return IsReadOnly ? new string[0] : new[] { GetTextValueName() };
+      return IsReadOnly ? new string[0] : new[] { GetKeyValueName() };
     }
 
     /// <summary> The <see cref="BocReferenceValue"/> supports only scalar properties. </summary>
@@ -481,20 +495,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Returns the <see cref="Control.ClientID"/> of the <see cref="DropDownList"/> if the control is in edit mode, 
     ///   otherwise <see langword="null"/>. 
     /// </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public string FocusID
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    public string? FocusID
     {
       get { return IsReadOnly ? null : GetTextValueName(); }
     }
 
     /// <summary> Gets the style that you want to apply to the <see cref="TextBox"/> (edit mode) only. </summary>
     /// <remarks> These style settings override the styles defined in <see cref="BocReferenceValueBase.CommonStyle"/>. </remarks>
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the TextBox (edit mode) only.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the TextBox (edit mode) only.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public SingleRowTextBoxStyle TextBoxStyle
     {
       get { return _textBoxStyle; }
@@ -505,90 +519,72 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
     ///   In case of the default value, the text is read from the resources for this control.
     /// </value>
-    [Description ("Validation message displayed if the entered text does not identify an item.")]
-    [Category ("Validator")]
-    [DefaultValue ("")]
-    public string InvalidItemErrorMessage
+    [Description("Validation message displayed if the entered text does not identify an item.")]
+    [Category("Validator")]
+    [DefaultValue(typeof(PlainTextString), "")]
+    public PlainTextString InvalidItemErrorMessage
     {
       get { return _invalidItemErrorMessage; }
       set
       {
         _invalidItemErrorMessage = value;
-        UpdateValidtaorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator>(_invalidItemErrorMessage);
+        UpdateValidatorErrorMessages<BocAutoCompleteReferenceValueInvalidDisplayNameValidator>(_invalidItemErrorMessage);
       }
     }
 
-    [Editor (typeof (UrlEditor), typeof (UITypeEditor))]
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    public string SearchServicePath
-    {
-      get { return _searchServicePath; }
-      set { _searchServicePath = value ?? string.Empty; }
-    }
-
-    [Category ("AutoComplete")]
-    [DefaultValue (10)]
+    [Category("AutoComplete")]
+    [DefaultValue(10)]
     public int CompletionSetCount
     {
       get { return _completionSetCount; }
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The CompletionSetCount must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The CompletionSetCount must be greater than or equal to 0.");
         _completionSetCount = value;
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue (1000)]
-    [Description ("Time in milliseconds before the drop down is shown for the first time.")]
+    [Category("AutoComplete")]
+    [DefaultValue(1000)]
+    [Description("Time in milliseconds before the drop down is shown for the first time.")]
     public int DropDownDisplayDelay
     {
       get { return _dropDownDisplayDelay; }
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The DropDownDisplayDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The DropDownDisplayDelay must be greater than or equal to 0.");
         _dropDownDisplayDelay = value;
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue (2000)]
-    [Description ("Time in milliseconds before the contents of the drop down is refreshed.")]
+    [Category("AutoComplete")]
+    [DefaultValue(2000)]
+    [Description("Time in milliseconds before the contents of the drop down is refreshed.")]
     public int DropDownRefreshDelay
     {
       get { return _dropDownRefreshDelay; }
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The DropDownRefreshDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The DropDownRefreshDelay must be greater than or equal to 0.");
         _dropDownRefreshDelay = value;
       }
     }
 
-    [Category ("AutoComplete")]
-    [DefaultValue (200)]
-    [Description ("Time in milliseconds before the user's input is used to select the best match in the drop down list.")]
+    [Category("AutoComplete")]
+    [DefaultValue(200)]
+    [Description("Time in milliseconds before the user's input is used to select the best match in the drop down list.")]
     public int SelectionUpdateDelay
     {
       get { return _selectionUpdateDelay; }
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException ("value", "The SelectionUpdateDelay must be greater than or equal to 0.");
+          throw new ArgumentOutOfRangeException("value", "The SelectionUpdateDelay must be greater than or equal to 0.");
         _selectionUpdateDelay = value;
       }
-    }
-
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description ("Additional arguments passed to the search web service.")]
-    public string Args
-    {
-      get { return _args; }
-      set { _args = StringUtility.EmptyToNull (value); }
     }
 
     /// <summary>
@@ -596,17 +592,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// </summary>
     /// <remarks>
     /// <para>If the expression is <see langword="null" /> or empty, the <see cref="BocAutoCompleteReferenceValue"/> defaults to matching all input. </para>
-    /// <para>The expression does not constrain the search for an exact match via <see cref="ISearchAvailableObjectWebService.SearchExact"/>.</para>
+    /// <para>The expression does not constrain the search for an exact match via <see cref="IBocAutoCompleteReferenceValueWebService.SearchExact"/>.</para>
     /// </remarks>
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description ("A Javascript regular expression the user input must match in order for the search to performed upon input. "
+    [Category("AutoComplete")]
+    [DefaultValue("")]
+    [Description("A Javascript regular expression the user input must match in order for the search to performed upon input. "
                   + "If the expression is empty, the control defaults to matching all input. "
                   + "Note: The expression does not constrain the search for an exact match.")]
-    public string ValidSearchStringRegex
+    public string? ValidSearchStringRegex
     {
       get { return _validSearchStringRegex; }
-      set { _validSearchStringRegex = StringUtility.EmptyToNull (value); }
+      set { _validSearchStringRegex = StringUtility.EmptyToNull(value); }
     }
 
     /// <summary>
@@ -621,36 +617,36 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   If the <see cref="ValidSearchStringRegex"/> is also <see langword="null" /> or empty, the <see cref="BocAutoCompleteReferenceValue"/> 
     ///   always opens the drop-down list when clicking the button or using the keyboard to open the drop-down list. </para>
     /// </remarks>
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description (
+    [Category("AutoComplete")]
+    [DefaultValue("")]
+    [Description(
         "A Javascript regular expression the user input must match in order for the search to performed when manually opening the drop-down-list. "
         + "If the expression is empty, the ValidSearchStringRegex is used. "
         + "If the fallback is also empty the control defaults to always openng the drop-down list.")]
-    public string ValidSearchStringForDropDownRegex
+    public string? ValidSearchStringForDropDownRegex
     {
       get { return _validSearchStringForDropDownRegex; }
-      set { _validSearchStringForDropDownRegex = StringUtility.EmptyToNull (value); }
+      set { _validSearchStringForDropDownRegex = StringUtility.EmptyToNull(value); }
     }
 
     /// <summary>
     /// The message displayed when the user input does not match the required format when manually opening the drop-down-list.
     /// </summary>
-    [Category ("AutoComplete")]
-    [DefaultValue ("")]
-    [Description ("The message displayed when the user input does not match the required format when manually opening the drop-down-list.")]
-    public string SearchStringForDropDownDoesNotMatchRegexMessage
+    [Category("AutoComplete")]
+    [DefaultValue("")]
+    [Description("The message displayed when the user input does not match the required format when manually opening the drop-down-list.")]
+    public string? SearchStringForDropDownDoesNotMatchRegexMessage
     {
       get { return _searchStringForDropDownDoesNotMatchRegexMessage; }
-      set { _searchStringForDropDownDoesNotMatchRegexMessage = StringUtility.EmptyToNull (value); }
+      set { _searchStringForDropDownDoesNotMatchRegexMessage = StringUtility.EmptyToNull(value); }
     }
 
     /// <summary>
     /// If the flag is set and the current input represents a valid value, manually opening the drop-down-list will use an empty search string when retrieving the list of values.
     /// </summary>
-    [Category ("AutoComplete")]
-    [DefaultValue (false)]
-    [Description (
+    [Category("AutoComplete")]
+    [DefaultValue(false)]
+    [Description(
         "If the flag is set and the current input represents a valid value, manually opening the drop-down-list will use an empty search string when retrieving the list of values."
         )]
     public bool IgnoreSearchStringForDropDownUponValidInput
@@ -659,7 +655,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       set { _ignoreSearchStringForDropDownUponValidInput = value; }
     }
 
-    public override string ValidationValue
+    public override string? ValidationValue
     {
       get
       {
@@ -667,7 +663,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return null;
 
         EnsureDisplayNameRefreshed();
-        return string.Format ("{0}\n{1}", InternalValue, InternalDisplayName);
+        return string.Format("{0}\n{1}", InternalValue, InternalDisplayName);
       }
     }
 
@@ -691,14 +687,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return ClientID + c_hiddenFieldIDPostfix;
     }
 
-    protected override sealed string GetNullItemErrorMessage ()
+    protected override sealed WebString GetOptionsMenuTitle ()
     {
-      return GetResourceManager().GetString (ResourceIdentifier.NullItemErrorMessage);
-    }
-
-    protected override sealed string GetOptionsMenuTitle ()
-    {
-      return GetResourceManager().GetString (ResourceIdentifier.OptionsTitle);
+      return GetResourceManager().GetText(ResourceIdentifier.OptionsTitle);
     }
 
     protected override sealed string GetSelectionCountScript ()
@@ -706,7 +697,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return "function() { return BocAutoCompleteReferenceValue.GetSelectionCount ('" + GetKeyValueName() + "', '" + c_nullIdentifier + "'); }";
     }
 
-    private string InternalDisplayName
+    private string? InternalDisplayName
     {
       get { return _displayName; }
       set
@@ -722,7 +713,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var value = GetValue();
         if (value != null)
-          InternalDisplayName = GetDisplayName (value);
+          InternalDisplayName = GetDisplayName(value);
       }
     }
 

@@ -27,7 +27,7 @@ namespace Remotion.Globalization.Implementation
   /// </summary>
   /// <seealso cref="MultiLingualResourcesAttribute"/>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (IResourceManagerFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IResourceManagerFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundResourceManagerFactory : IResourceManagerFactory
   {    private readonly IReadOnlyList<IResourceManagerFactory> _resourceManagerFactories;
 
@@ -37,7 +37,7 @@ namespace Remotion.Globalization.Implementation
     /// <param name="resourceManagerFactories"> The <see cref="IGlobalizationService"/>s, starting with the least specific.</param>
     public CompoundResourceManagerFactory (IEnumerable<IResourceManagerFactory> resourceManagerFactories)
     {
-      ArgumentUtility.CheckNotNull ("resourceManagerFactories", resourceManagerFactories);
+      ArgumentUtility.CheckNotNull("resourceManagerFactories", resourceManagerFactories);
 
       _resourceManagerFactories = resourceManagerFactories.ToList().AsReadOnly();
     }
@@ -49,9 +49,9 @@ namespace Remotion.Globalization.Implementation
 
     public IResourceManager CreateResourceManager (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return new ResourceManagerSet (_resourceManagerFactories.Select (f => f.CreateResourceManager (type)));
+      return new ResourceManagerSet(_resourceManagerFactories.Select(f => f.CreateResourceManager(type)));
     }
   }
 }

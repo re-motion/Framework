@@ -39,87 +39,87 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     [SetUp]
     public void SetUp ()
     {
-      _filter = new OverriddenMemberFilter ();
-      _overriddenMethod = typeof (DerivedWithNewVirtualMembers).GetMethod ("Method");
-      _overridingMethod1 = typeof (DerivedDerivedWithOverrides).GetMethod ("Method");
-      _overridingMethod2 = typeof (DerivedDerivedDerivedWithOverrides).GetMethod ("Method");
-      _overriddenProperty = typeof (DerivedWithNewVirtualMembers).GetProperty ("Property");
-      _overridingPropertyWithGetAndSet = typeof (DerivedDerivedWithOverrides).GetProperty ("Property");
-      _overridingPropertyWithGetOnly = typeof (DerivedDerivedWithGetOnlyOverride).GetProperty ("Property");
-      _overridingPropertyWithSetOnly = typeof (DerivedDerivedDerivedWithSetOnlyOverride).GetProperty ("Property");
-      _overridingPropertyWithGetAndSetAfterSingleOverrides = typeof (DerivedDerivedDerivedDerivedWithGetSetOverride).GetProperty ("Property");
+      _filter = new OverriddenMemberFilter();
+      _overriddenMethod = typeof(DerivedWithNewVirtualMembers).GetMethod("Method");
+      _overridingMethod1 = typeof(DerivedDerivedWithOverrides).GetMethod("Method");
+      _overridingMethod2 = typeof(DerivedDerivedDerivedWithOverrides).GetMethod("Method");
+      _overriddenProperty = typeof(DerivedWithNewVirtualMembers).GetProperty("Property");
+      _overridingPropertyWithGetAndSet = typeof(DerivedDerivedWithOverrides).GetProperty("Property");
+      _overridingPropertyWithGetOnly = typeof(DerivedDerivedWithGetOnlyOverride).GetProperty("Property");
+      _overridingPropertyWithSetOnly = typeof(DerivedDerivedDerivedWithSetOnlyOverride).GetProperty("Property");
+      _overridingPropertyWithGetAndSetAfterSingleOverrides = typeof(DerivedDerivedDerivedDerivedWithGetSetOverride).GetProperty("Property");
     }
 
     [Test]
     public void RemoveOverriddenMembers_NonOverriddenMembers ()
     {
       var members = new MemberInfo[] { _overriddenMethod, _overriddenProperty };
-      var result = _filter.RemoveOverriddenMembers (members);
+      var result = _filter.RemoveOverriddenMembers(members);
 
-      Assert.That (result, Is.EquivalentTo (members));
+      Assert.That(result, Is.EquivalentTo(members));
     }
 
     [Test]
     public void RemoveOverriddenMembers_OverriddenMembers ()
     {
       var members = new[] { _overriddenMethod, _overridingMethod1 };
-      var result = _filter.RemoveOverriddenMembers (members);
+      var result = _filter.RemoveOverriddenMembers(members);
 
-      Assert.That (result, Is.EquivalentTo (new[] { _overridingMethod1 }));
+      Assert.That(result, Is.EquivalentTo(new[] { _overridingMethod1 }));
     }
 
     [Test]
     public void RemoveOverriddenMembers_TwoOverridingMembers ()
     {
       var members = new[] { _overriddenMethod, _overridingMethod1, _overridingMethod2 };
-      var result = _filter.RemoveOverriddenMembers (members);
+      var result = _filter.RemoveOverriddenMembers(members);
 
-      Assert.That (result, Is.EquivalentTo (new[] { _overridingMethod2 }));
+      Assert.That(result, Is.EquivalentTo(new[] { _overridingMethod2 }));
     }
 
     [Test]
     public void RemoveOverriddenMembers_AllAccessorsOverridden ()
     {
       var members = new[] { _overriddenProperty, _overridingPropertyWithGetAndSet };
-      var result = _filter.RemoveOverriddenMembers (members);
+      var result = _filter.RemoveOverriddenMembers(members);
 
-      Assert.That (result, Is.EquivalentTo (new[] { _overridingPropertyWithGetAndSet }));
+      Assert.That(result, Is.EquivalentTo(new[] { _overridingPropertyWithGetAndSet }));
     }
 
     [Test]
     public void RemoveOverriddenMembers_OnlyOneAccessorOverridden ()
     {
       var members = new[] { _overriddenProperty, _overridingPropertyWithGetOnly };
-      var result = _filter.RemoveOverriddenMembers (members);
+      var result = _filter.RemoveOverriddenMembers(members);
 
-      Assert.That (result, Is.EquivalentTo (new[] { _overriddenProperty, _overridingPropertyWithGetOnly }));
+      Assert.That(result, Is.EquivalentTo(new[] { _overriddenProperty, _overridingPropertyWithGetOnly }));
     }
 
     [Test]
     public void RemoveOverriddenMembers_OnlyOneAccessorOverridden_InTwoClasses ()
     {
       var members = new[] { _overriddenProperty, _overridingPropertyWithGetOnly, _overridingPropertyWithSetOnly };
-      var result = _filter.RemoveOverriddenMembers (members);
+      var result = _filter.RemoveOverriddenMembers(members);
 
-      Assert.That (result, Is.EquivalentTo (new[] { _overridingPropertyWithGetOnly, _overridingPropertyWithSetOnly }));
+      Assert.That(result, Is.EquivalentTo(new[] { _overridingPropertyWithGetOnly, _overridingPropertyWithSetOnly }));
     }
 
     [Test]
     public void RemoveOverriddenMembers_AllAccessorsOverridden_AfterOnlyOneAccessorOverridden ()
     {
       var members = new[] { _overriddenProperty, _overridingPropertyWithGetOnly, _overridingPropertyWithSetOnly, _overridingPropertyWithGetAndSetAfterSingleOverrides };
-      var result = _filter.RemoveOverriddenMembers (members);
+      var result = _filter.RemoveOverriddenMembers(members);
 
-      Assert.That (result, Is.EquivalentTo (new[] { _overridingPropertyWithGetAndSetAfterSingleOverrides }));
+      Assert.That(result, Is.EquivalentTo(new[] { _overridingPropertyWithGetAndSetAfterSingleOverrides }));
     }
 
     [Test]
     public void RemoveOverriddenMembers_AllAccessorsOverridden_AfterOnlyOneAccessorOverridden_OrderAgnostic ()
     {
       var members = new[] { _overriddenProperty, _overridingPropertyWithGetOnly, _overridingPropertyWithSetOnly, _overridingPropertyWithGetAndSetAfterSingleOverrides };
-      var result = _filter.RemoveOverriddenMembers (members.Reverse());
+      var result = _filter.RemoveOverriddenMembers(members.Reverse());
 
-      Assert.That (result, Is.EquivalentTo (new[] { _overridingPropertyWithGetAndSetAfterSingleOverrides }));
+      Assert.That(result, Is.EquivalentTo(new[] { _overridingPropertyWithGetAndSetAfterSingleOverrides }));
     }
   }
 }

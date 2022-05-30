@@ -15,107 +15,109 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Tools.Console;
-using Rhino.Mocks;
 
 namespace Remotion.Tools.UnitTests
 {
   [TestFixture]
   public class ConsoleUtilityTest
   {
-    private IConsoleManager _consoleStub;
+    private Mock<IConsoleManager> _consoleStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _consoleStub = new MockRepository().Stub<IConsoleManager>();
-      _consoleStub.ForegroundColor = ConsoleColor.Gray;
-      _consoleStub.BackgroundColor = ConsoleColor.Black;
+      _consoleStub = new Mock<IConsoleManager>();
+      _consoleStub.SetupProperty(_ => _.ForegroundColor);
+      _consoleStub.Object.ForegroundColor = ConsoleColor.Gray;
+      _consoleStub.SetupProperty(_ => _.BackgroundColor);
+      _consoleStub.Object.BackgroundColor = ConsoleColor.Black;
     }
 
     [Test]
     public void EnterColorScope_NullForegroundColor ()
     {
-      Assert.That (_consoleStub.ForegroundColor, Is.EqualTo (ConsoleColor.Gray));
-      using (new ConsoleUtility.ColorScope (_consoleStub, null, ConsoleColor.Gray))
+      Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Gray));
+      using (new ConsoleUtility.ColorScope(_consoleStub.Object, null, ConsoleColor.Gray))
       {
-        Assert.That (_consoleStub.ForegroundColor, Is.EqualTo (ConsoleColor.Gray));
-        _consoleStub.ForegroundColor = ConsoleColor.Yellow;
+        Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Gray));
+        _consoleStub.Object.ForegroundColor = ConsoleColor.Yellow;
       }
-      Assert.That (_consoleStub.ForegroundColor, Is.EqualTo (ConsoleColor.Yellow));
+      Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Yellow));
     }
 
     [Test]
     public void EnterColorScope_ForegroundColor_SetsColor ()
     {
-      Assert.That (_consoleStub.ForegroundColor, Is.EqualTo (ConsoleColor.Gray));
-      using (new ConsoleUtility.ColorScope (_consoleStub, ConsoleColor.Green, ConsoleColor.Gray))
+      Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Gray));
+      using (new ConsoleUtility.ColorScope(_consoleStub.Object, ConsoleColor.Green, ConsoleColor.Gray))
       {
-        Assert.That (_consoleStub.ForegroundColor, Is.EqualTo (ConsoleColor.Green));
+        Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Green));
       }
     }
 
     [Test]
     public void EnterColorScope_ForegroundColor_RestoresColor ()
     {
-      _consoleStub.ForegroundColor = ConsoleColor.Magenta;
-      using (new ConsoleUtility.ColorScope (_consoleStub, ConsoleColor.Blue, ConsoleColor.Gray))
+      _consoleStub.Object.ForegroundColor = ConsoleColor.Magenta;
+      using (new ConsoleUtility.ColorScope(_consoleStub.Object, ConsoleColor.Blue, ConsoleColor.Gray))
       {
-        Assert.That (_consoleStub.ForegroundColor, Is.EqualTo (ConsoleColor.Blue));
+        Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Blue));
       }
-      Assert.That (_consoleStub.ForegroundColor, Is.EqualTo (ConsoleColor.Magenta));
+      Assert.That(_consoleStub.Object.ForegroundColor, Is.EqualTo(ConsoleColor.Magenta));
     }
 
     [Test]
     public void EnterColorScope_NullBackgroundColor ()
     {
-      Assert.That (_consoleStub.BackgroundColor, Is.EqualTo (ConsoleColor.Black));
-      using (new ConsoleUtility.ColorScope (_consoleStub, ConsoleColor.Green, null))
+      Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Black));
+      using (new ConsoleUtility.ColorScope(_consoleStub.Object, ConsoleColor.Green, null))
       {
-        Assert.That (_consoleStub.BackgroundColor, Is.EqualTo (ConsoleColor.Black));
-        _consoleStub.BackgroundColor = ConsoleColor.Green;
+        Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Black));
+        _consoleStub.Object.BackgroundColor = ConsoleColor.Green;
       }
-      Assert.That (_consoleStub.BackgroundColor, Is.EqualTo (ConsoleColor.Green));
+      Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Green));
     }
 
     [Test]
     public void EnterColorScope_BackgroundColor_SetsColor ()
     {
-      Assert.That (_consoleStub.BackgroundColor, Is.EqualTo (ConsoleColor.Black));
-      using (new ConsoleUtility.ColorScope (_consoleStub, ConsoleColor.Gray, ConsoleColor.Green))
+      Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Black));
+      using (new ConsoleUtility.ColorScope(_consoleStub.Object, ConsoleColor.Gray, ConsoleColor.Green))
       {
-        Assert.That (_consoleStub.BackgroundColor, Is.EqualTo (ConsoleColor.Green));
+        Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Green));
       }
     }
 
     [Test]
     public void EnterColorScope_BackgroundColor_RestoresColor ()
     {
-      _consoleStub.BackgroundColor = ConsoleColor.Magenta;
-      using (new ConsoleUtility.ColorScope (_consoleStub, ConsoleColor.Gray, ConsoleColor.Blue))
+      _consoleStub.Object.BackgroundColor = ConsoleColor.Magenta;
+      using (new ConsoleUtility.ColorScope(_consoleStub.Object, ConsoleColor.Gray, ConsoleColor.Blue))
       {
-        Assert.That (_consoleStub.BackgroundColor, Is.EqualTo (ConsoleColor.Blue));
+        Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Blue));
       }
-      Assert.That (_consoleStub.BackgroundColor, Is.EqualTo (ConsoleColor.Magenta));
+      Assert.That(_consoleStub.Object.BackgroundColor, Is.EqualTo(ConsoleColor.Magenta));
     }
 
     [Test]
     public void EnterColorScope_DisposeTwiceIgnored ()
     {
-      _consoleStub.ForegroundColor = ConsoleColor.White;
-      _consoleStub.BackgroundColor = ConsoleColor.Red;
-      IDisposable scope = new ConsoleUtility.ColorScope (_consoleStub, ConsoleColor.Green, ConsoleColor.Magenta);
-      Assert.AreEqual (ConsoleColor.Green, _consoleStub.ForegroundColor, "color was set");
-      Assert.AreEqual (ConsoleColor.Magenta, _consoleStub.BackgroundColor, "color was set");
+      _consoleStub.Object.ForegroundColor = ConsoleColor.White;
+      _consoleStub.Object.BackgroundColor = ConsoleColor.Red;
+      IDisposable scope = new ConsoleUtility.ColorScope(_consoleStub.Object, ConsoleColor.Green, ConsoleColor.Magenta);
+      Assert.AreEqual(ConsoleColor.Green, _consoleStub.Object.ForegroundColor, "color was set");
+      Assert.AreEqual(ConsoleColor.Magenta, _consoleStub.Object.BackgroundColor, "color was set");
       scope.Dispose();
-      Assert.AreEqual (ConsoleColor.White, _consoleStub.ForegroundColor, "color was restored");
-      Assert.AreEqual (ConsoleColor.Red, _consoleStub.BackgroundColor, "color was restored");
-      _consoleStub.ForegroundColor = ConsoleColor.Yellow;
-      _consoleStub.BackgroundColor = ConsoleColor.DarkYellow;
-      scope.Dispose ();
-      Assert.AreEqual (ConsoleColor.Yellow, _consoleStub.ForegroundColor, "second dispose ignored");
-      Assert.AreEqual (ConsoleColor.DarkYellow, _consoleStub.BackgroundColor, "second dispose ignored");
+      Assert.AreEqual(ConsoleColor.White, _consoleStub.Object.ForegroundColor, "color was restored");
+      Assert.AreEqual(ConsoleColor.Red, _consoleStub.Object.BackgroundColor, "color was restored");
+      _consoleStub.Object.ForegroundColor = ConsoleColor.Yellow;
+      _consoleStub.Object.BackgroundColor = ConsoleColor.DarkYellow;
+      scope.Dispose();
+      Assert.AreEqual(ConsoleColor.Yellow, _consoleStub.Object.ForegroundColor, "second dispose ignored");
+      Assert.AreEqual(ConsoleColor.DarkYellow, _consoleStub.Object.BackgroundColor, "second dispose ignored");
     }
   }
 }

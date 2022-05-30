@@ -28,25 +28,25 @@ namespace Remotion.SecurityManager.Domain.Metadata
   {
     public static StatePropertyReference NewObject ()
     {
-      return NewObject<StatePropertyReference> ();
+      return NewObject<StatePropertyReference>();
     }
 
     protected StatePropertyReference ()
     {
     }
 
-    [DBBidirectionalRelation ("StatePropertyReferences")]
-    [DBColumn ("SecurableClassID")]
+    [DBBidirectionalRelation("StatePropertyReferences")]
+    [DBColumn("SecurableClassID")]
     [Mandatory]
     public abstract SecurableClassDefinition Class { get; }
 
-    [DBBidirectionalRelation ("StatePropertyReferences")]
+    [DBBidirectionalRelation("StatePropertyReferences")]
     [Mandatory]
     public abstract StatePropertyDefinition StateProperty { get; set; }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();

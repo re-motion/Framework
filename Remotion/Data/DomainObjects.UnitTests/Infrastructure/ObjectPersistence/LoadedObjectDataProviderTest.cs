@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
@@ -22,109 +23,106 @@ using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Data.UnitTests.UnitTesting;
+using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
   [TestFixture]
   public class LoadedObjectDataProviderTest : StandardMappingTest
   {
-    private ILoadedDataContainerProvider _loadedDataContainerProviderMock;
-    private IInvalidDomainObjectManager _invalidDomainObjectManagerMock;
+    private Mock<ILoadedDataContainerProvider> _loadedDataContainerProviderMock;
+    private Mock<IInvalidDomainObjectManager> _invalidDomainObjectManagerMock;
 
     private LoadedObjectDataProvider _dataProvider;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _loadedDataContainerProviderMock = MockRepository.GenerateStrictMock<ILoadedDataContainerProvider> ();
-      _invalidDomainObjectManagerMock = MockRepository.GenerateStrictMock<IInvalidDomainObjectManager>();
-      _dataProvider = new LoadedObjectDataProvider (_loadedDataContainerProviderMock, _invalidDomainObjectManagerMock);
+      _loadedDataContainerProviderMock = new Mock<ILoadedDataContainerProvider>(MockBehavior.Strict);
+      _invalidDomainObjectManagerMock = new Mock<IInvalidDomainObjectManager>(MockBehavior.Strict);
+      _dataProvider = new LoadedObjectDataProvider(_loadedDataContainerProviderMock.Object, _invalidDomainObjectManagerMock.Object);
     }
 
     [Test]
     public void GetLoadedObject_Known ()
     {
-      var dataContainer = DataContainer.CreateForExisting (DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
-      dataContainer.SetDomainObject (DomainObjectMother.CreateFakeObject<Order> (dataContainer.ID));
-      DataContainerTestHelper.SetClientTransaction (dataContainer, ClientTransaction.CreateRootTransaction());
+      var dataContainer = DataContainer.CreateForExisting(DomainObjectIDs.Order1, null, pd => pd.DefaultValue);
+      dataContainer.SetDomainObject(DomainObjectMother.CreateFakeObject<Order>(dataContainer.ID));
+      DataContainerTestHelper.SetClientTransaction(dataContainer, ClientTransaction.CreateRootTransaction());
 
       _invalidDomainObjectManagerMock
-          .Stub (mock => mock.IsInvalid (DomainObjectIDs.Order1))
-          .Return (false);
-      _invalidDomainObjectManagerMock.Replay ();
+          .Setup(mock => mock.IsInvalid(DomainObjectIDs.Order1))
+          .Returns(false);
 
       _loadedDataContainerProviderMock
-          .Expect (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order1))
-          .Return (dataContainer);
-      _loadedDataContainerProviderMock.Replay ();
+          .Setup(mock => mock.GetDataContainerWithoutLoading(DomainObjectIDs.Order1))
+          .Returns(dataContainer)
+          .Verifiable();
 
-      var loadedObject = _dataProvider.GetLoadedObject (DomainObjectIDs.Order1);
+      var loadedObject = _dataProvider.GetLoadedObject(DomainObjectIDs.Order1);
 
-      _loadedDataContainerProviderMock.VerifyAllExpectations();
-      Assert.That (
-          loadedObject, 
-          Is.TypeOf<AlreadyExistingLoadedObjectData> ()
-            .With.Property ((AlreadyExistingLoadedObjectData obj) => obj.ExistingDataContainer).SameAs (dataContainer));
+      _loadedDataContainerProviderMock.Verify();
+      Assert.That(
+          loadedObject,
+          Is.TypeOf<AlreadyExistingLoadedObjectData>()
+            .With.Property((AlreadyExistingLoadedObjectData obj) => obj.ExistingDataContainer).SameAs(dataContainer));
     }
 
     [Test]
     public void GetLoadedObject_Unknown ()
     {
       _invalidDomainObjectManagerMock
-        .Stub (mock => mock.IsInvalid (DomainObjectIDs.Order1))
-        .Return (false);
-      _invalidDomainObjectManagerMock.Replay ();
+          .Setup(mock => mock.IsInvalid(DomainObjectIDs.Order1))
+          .Returns(false);
 
       _loadedDataContainerProviderMock
-          .Expect (mock => mock.GetDataContainerWithoutLoading (DomainObjectIDs.Order1))
-          .Return (null);
-      _loadedDataContainerProviderMock.Replay ();
+          .Setup(mock => mock.GetDataContainerWithoutLoading(DomainObjectIDs.Order1))
+          .Returns((DataContainer)null)
+          .Verifiable();
 
-      var loadedObject = _dataProvider.GetLoadedObject (DomainObjectIDs.Order1);
+      var loadedObject = _dataProvider.GetLoadedObject(DomainObjectIDs.Order1);
 
-      _loadedDataContainerProviderMock.VerifyAllExpectations ();
-      Assert.That (loadedObject, Is.Null);
+      _loadedDataContainerProviderMock.Verify();
+      Assert.That(loadedObject, Is.Null);
     }
 
     [Test]
     public void GetLoadedObject_Invalid ()
     {
-      var invalidObjectReference = DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1);
+      var invalidObjectReference = DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1);
 
       _invalidDomainObjectManagerMock
-          .Expect (mock => mock.IsInvalid (DomainObjectIDs.Order1))
-          .Return (true);
+          .Setup(mock => mock.IsInvalid(DomainObjectIDs.Order1))
+          .Returns(true)
+          .Verifiable();
       _invalidDomainObjectManagerMock
-          .Expect (mock => mock.GetInvalidObjectReference (DomainObjectIDs.Order1))
-          .Return (invalidObjectReference);
-      _invalidDomainObjectManagerMock.Replay();
-      _loadedDataContainerProviderMock.Replay();
+          .Setup(mock => mock.GetInvalidObjectReference(DomainObjectIDs.Order1))
+          .Returns(invalidObjectReference)
+          .Verifiable();
 
-      var loadedObject = _dataProvider.GetLoadedObject (DomainObjectIDs.Order1);
+      var loadedObject = _dataProvider.GetLoadedObject(DomainObjectIDs.Order1);
 
-      _loadedDataContainerProviderMock.AssertWasNotCalled (mock => mock.GetDataContainerWithoutLoading (Arg<ObjectID>.Is.Anything));
-      _invalidDomainObjectManagerMock.VerifyAllExpectations();
+      _loadedDataContainerProviderMock.Verify(mock => mock.GetDataContainerWithoutLoading(It.IsAny<ObjectID>()), Times.Never());
+      _invalidDomainObjectManagerMock.Verify();
 
-      Assert.That (
-          loadedObject, 
-          Is.TypeOf<InvalidLoadedObjectData>().With.Property ((InvalidLoadedObjectData obj) => obj.InvalidObjectReference).SameAs (invalidObjectReference));
+      Assert.That(
+          loadedObject,
+          Is.TypeOf<InvalidLoadedObjectData>().With.Property((InvalidLoadedObjectData obj) => obj.InvalidObjectReference).SameAs(invalidObjectReference));
     }
 
     [Test]
     public void Serializable ()
     {
-      var provider = new LoadedObjectDataProvider (
+      var provider = new LoadedObjectDataProvider(
         new SerializableLoadedDataContainerProviderFake(),
         new SerializableInvalidDomainObjectManagerFake());
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (provider);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(provider);
 
-      Assert.That (deserializedInstance.LoadedDataContainerProvider, Is.Not.Null);
-      Assert.That (deserializedInstance.InvalidDomainObjectManager, Is.Not.Null);
+      Assert.That(deserializedInstance.LoadedDataContainerProvider, Is.Not.Null);
+      Assert.That(deserializedInstance.InvalidDomainObjectManager, Is.Not.Null);
     }
   }
 }

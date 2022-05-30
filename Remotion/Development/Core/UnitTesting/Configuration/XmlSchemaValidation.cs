@@ -31,24 +31,24 @@ namespace Remotion.Development.UnitTesting.Configuration
   {
     public static void Validate (string xmlFragment, string xsdContent)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
-      ArgumentUtility.CheckNotNullOrEmpty ("xsdContent", xsdContent);
+      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
+      ArgumentUtility.CheckNotNullOrEmpty("xsdContent", xsdContent);
 
-      var validationErrors = GetValidationErrors (xmlFragment, xsdContent);
+      var validationErrors = GetValidationErrors(xmlFragment, xsdContent);
       if (validationErrors.Count > 0)
       {
-        var errors = string.Join ("\r\n", validationErrors.Select (e => e.Message));
-        var message = string.Format ("Validation of the xml fragment did not succeed for schema '{0}'.\r\n{1}", xsdContent, errors);
-        throw new XmlSchemaValidationException (message);
+        var errors = string.Join("\r\n", validationErrors.Select(e => e.Message));
+        var message = string.Format("Validation of the xml fragment did not succeed for schema '{0}'.\r\n{1}", xsdContent, errors);
+        throw new XmlSchemaValidationException(message);
       }
     }
 
     public static bool IsValid (string xmlFragment, string xsdPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("xmlFragment", xmlFragment);
-      ArgumentUtility.CheckNotNullOrEmpty ("xsdPath", xsdPath);
+      ArgumentUtility.CheckNotNullOrEmpty("xmlFragment", xmlFragment);
+      ArgumentUtility.CheckNotNullOrEmpty("xsdPath", xsdPath);
 
-      return GetValidationErrors (xmlFragment, xsdPath).Count == 0;
+      return GetValidationErrors(xmlFragment, xsdPath).Count == 0;
     }
 
     private static List<ValidationEventArgs> GetValidationErrors (string xmlFragment, string xsdContent)
@@ -59,23 +59,23 @@ namespace Remotion.Development.UnitTesting.Configuration
                                   XmlSchemaValidationFlags.ReportValidationWarnings;
 
       var validationErrors = new List<ValidationEventArgs>();
-      settings.ValidationEventHandler += (sender, args) => validationErrors.Add (args);
+      settings.ValidationEventHandler += (sender, args) => validationErrors.Add(args);
 
       XmlSchema xmlSchema;
-      using (var reader = new StringReader (xsdContent))
+      using (var reader = new StringReader(xsdContent))
       {
-        xmlSchema = XmlSchema.Read (
+        xmlSchema = XmlSchema.Read(
             reader,
             (sender, args) =>
             {
-              var message = string.Format ("Schema is invalid: {0}", args.Message);
-              throw new XmlSchemaException (message, args.Exception);
-            });
+              var message = string.Format("Schema is invalid: {0}", args.Message);
+              throw new XmlSchemaException(message, args.Exception);
+            })!;
       }
-      settings.Schemas.Add (xmlSchema);
+      settings.Schemas.Add(xmlSchema);
 
-      var xmlReader = XmlReader.Create (new StringReader (xmlFragment), settings);
-      ReadToEnd (xmlReader);
+      var xmlReader = XmlReader.Create(new StringReader(xmlFragment), settings);
+      ReadToEnd(xmlReader);
 
       return validationErrors;
     }

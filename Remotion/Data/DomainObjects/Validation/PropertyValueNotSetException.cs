@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Runtime.Serialization;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Validation
 {
@@ -26,37 +27,39 @@ namespace Remotion.Data.DomainObjects.Validation
   [Serializable]
   public class PropertyValueNotSetException : DomainObjectValidationException
   {
-    private readonly DomainObject _domainObject;
+    private readonly DomainObject? _domainObject;
     private readonly string _propertyName;
 
-    public PropertyValueNotSetException (DomainObject domainObject, string propertyName, string message)
-        : this (domainObject, propertyName, message, null)
+    public PropertyValueNotSetException (DomainObject? domainObject, string propertyName, string message)
+        : this(domainObject, propertyName, message, null)
     {
     }
 
-    public PropertyValueNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner)
-        : base (message, inner)
+    public PropertyValueNotSetException (DomainObject? domainObject, string propertyName, string message, Exception? inner)
+        : base(message, inner)
     {
+      ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
+
       _domainObject = domainObject;
       _propertyName = propertyName;
     }
 
     protected PropertyValueNotSetException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
-      _domainObject = (DomainObject) info.GetValue ("_domainObject", typeof (DomainObject));
-      _propertyName = info.GetString ("_propertyName");
+      _domainObject = (DomainObject?)info.GetValue("_domainObject", typeof(DomainObject));
+      _propertyName = info.GetString("_propertyName")!;
     }
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("_domainObject", _domainObject);
-      info.AddValue ("_propertyName", _propertyName);
+      info.AddValue("_domainObject", _domainObject);
+      info.AddValue("_propertyName", _propertyName);
     }
 
-    public DomainObject DomainObject
+    public DomainObject? DomainObject
     {
       get { return _domainObject; }
     }

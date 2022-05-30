@@ -31,8 +31,8 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     // construction and disposing
 
-    public EditObjectFunction()
-      : base (WxeTransactionMode.CreateRootWithAutoCommit)
+    public EditObjectFunction ()
+      : base(WxeTransactionMode.CreateRootWithAutoCommit)
     {
       ReturnUrl = "default.aspx";
     }
@@ -41,15 +41,15 @@ namespace Remotion.Data.DomainObjects.Web.Test.WxeFunctions
 
     public ClassWithAllDataTypes ObjectWithAllDataTypes
     {
-      get { return (ClassWithAllDataTypes) Variables["ObjectWithAllDataTypes"]; }
+      get { return (ClassWithAllDataTypes)Variables["ObjectWithAllDataTypes"]; }
       set { Variables["ObjectWithAllDataTypes"] = value; }
     }
 
-    private void Step1()
+    private void Step1 ()
     {
-      ObjectWithAllDataTypes = DomainObjectIDs.ObjectWithAllDataTypes1.GetObject<ClassWithAllDataTypes> ();
+      ObjectWithAllDataTypes = DomainObjectIDs.ObjectWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
     }
 
-    private WxePageStep Step2 = new WxePageStep ("EditObject.aspx");
+    private WxePageStep Step2 = new WxePageStep("EditObject.aspx");
   }
 }

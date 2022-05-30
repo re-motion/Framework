@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 {
@@ -32,30 +32,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     [SetUp]
     public void SetUp ()
     {
-      _column1 = ColumnDefinitionObjectMother.CreateColumn ("COL1");
-      _column2 = ColumnDefinitionObjectMother.CreateColumn ("COL2");
-      _constraint = new PrimaryKeyConstraintDefinition ("Test", true, new[] {  _column1, _column2 });
+      _column1 = ColumnDefinitionObjectMother.CreateColumn("COL1");
+      _column2 = ColumnDefinitionObjectMother.CreateColumn("COL2");
+      _constraint = new PrimaryKeyConstraintDefinition("Test", true, new[] {  _column1, _column2 });
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_constraint.ConstraintName, Is.EqualTo ("Test"));
-      Assert.That (_constraint.IsClustered, Is.True);
-      Assert.That (_constraint.Columns, Is.EqualTo (new[] { _column1, _column2 }));
+      Assert.That(_constraint.ConstraintName, Is.EqualTo("Test"));
+      Assert.That(_constraint.IsClustered, Is.True);
+      Assert.That(_constraint.Columns, Is.EqualTo(new[] { _column1, _column2 }));
     }
 
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ITableConstraintDefinitionVisitor> ();
+      var visitorMock = new Mock<ITableConstraintDefinitionVisitor>(MockBehavior.Strict);
 
-      visitorMock.Expect (mock => mock.VisitPrimaryKeyConstraintDefinition (_constraint));
-      visitorMock.Replay ();
+      visitorMock.Setup(mock => mock.VisitPrimaryKeyConstraintDefinition(_constraint)).Verifiable();
 
-      _constraint.Accept (visitorMock);
+      _constraint.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations ();
+      visitorMock.Verify();
     }
   }
 }

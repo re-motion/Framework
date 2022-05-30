@@ -29,15 +29,30 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
     RelationEndPointID ID { get; }
     ClientTransaction ClientTransaction { get; }
 
-    ObjectID ObjectID { get; }
+    /// <remarks>
+    /// Not <see langword="null" /> for <see cref="IRealObjectEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on all implementations.
+    /// <para>- or -</para>
+    /// <see langword="null" /> for <see cref="IRelationEndPoint"/> cannot be easily determined based on usages. <see cref="ObjectID"/> is only used in error messages.
+    /// </remarks>
+    ObjectID? ObjectID { get; }
     IRelationEndPointDefinition Definition { get; }
     RelationDefinition RelationDefinition { get; }
 
     bool HasChanged { get; }
     bool HasBeenTouched { get; }
 
-    DomainObject GetDomainObject ();
-    DomainObject GetDomainObjectReference ();
+    /// <remarks>
+    /// Not <see langword="null" /> for <see cref="IRealObjectEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on all implementations.
+    /// <para>- or -</para>
+    /// Not <see langword="null" /> for <see cref="IRelationEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on analysis of all of all usages.
+    /// </remarks>
+    DomainObject? GetDomainObject ();
+    /// <remarks>
+    /// Not <see langword="null" /> for <see cref="IRealObjectEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on all implementations.
+    /// <para>- or -</para>
+    /// Not <see langword="null" /> for <see cref="IRelationEndPoint"/> when <see cref="INullObject.IsNull"/> is <see langword="false" /> based on analysis of all of all usages.
+    /// </remarks>
+    DomainObject? GetDomainObjectReference ();
 
     bool IsDataComplete { get; }
     void EnsureDataComplete ();

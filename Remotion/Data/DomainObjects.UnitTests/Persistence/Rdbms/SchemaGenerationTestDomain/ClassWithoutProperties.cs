@@ -19,7 +19,7 @@ using System;
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain
 {
   [Instantiable]
-  [DBTable ("TableWithoutProperties")]
+  [DBTable("TableWithoutProperties")]
   [FirstStorageGroup]
   public abstract class ClassWithoutProperties : DomainObject
   {

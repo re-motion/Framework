@@ -35,7 +35,7 @@ namespace Remotion.Mixins
   /// referencing the other side of the relationship.
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
+  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
   public class MixAttribute : MixinRelationshipAttribute, IMixinConfigurationAttribute<Assembly>
   {
     private readonly Type _targetType;
@@ -48,8 +48,8 @@ namespace Remotion.Mixins
     /// <param name="mixinType">The mixin type to be mixed with the target type.</param>
     public MixAttribute (Type targetType, Type mixinType)
     {
-      _targetType = ArgumentUtility.CheckNotNull ("targetType", targetType);
-      _mixinType = ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      _targetType = ArgumentUtility.CheckNotNull("targetType", targetType);
+      _mixinType = ArgumentUtility.CheckNotNull("mixinType", mixinType);
     }
 
     /// <summary>
@@ -78,22 +78,22 @@ namespace Remotion.Mixins
       get { return _mixinType; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      MixAttribute other = obj as MixAttribute;
-      return !object.ReferenceEquals (other, null)
+      MixAttribute? other = obj as MixAttribute;
+      return !object.ReferenceEquals(other, null)
           && TargetType == other.TargetType
           && MixinType == other.MixinType
           && MixinKind == other.MixinKind
-          && base.Equals (other);
+          && base.Equals(other);
     }
 
     public override int GetHashCode ()
     {
       return TargetType.GetHashCode()
           ^ MixinType.GetHashCode()
-          ^ MixinKind.GetHashCode() 
-          ^ base.GetHashCode ();
+          ^ MixinKind.GetHashCode()
+          ^ base.GetHashCode();
     }
 
     public bool IgnoresDuplicates
@@ -103,11 +103,11 @@ namespace Remotion.Mixins
 
     public void Apply (MixinConfigurationBuilder configurationBuilder, Assembly attributeTarget)
     {
-      ArgumentUtility.CheckNotNull ("configurationBuilder", configurationBuilder);
-      ArgumentUtility.CheckNotNull ("attributeTarget", attributeTarget);
+      ArgumentUtility.CheckNotNull("configurationBuilder", configurationBuilder);
+      ArgumentUtility.CheckNotNull("attributeTarget", attributeTarget);
 
-      var origin = MixinContextOrigin.CreateForCustomAttribute (this, attributeTarget);
-      Apply (configurationBuilder, MixinKind, TargetType, MixinType, origin);
+      var origin = MixinContextOrigin.CreateForCustomAttribute(this, attributeTarget);
+      Apply(configurationBuilder, MixinKind, TargetType, MixinType, origin);
     }
   }
 }

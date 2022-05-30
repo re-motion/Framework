@@ -16,7 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
@@ -47,17 +50,18 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <see cref="ClientTransaction"/> and its <see cref="DomainObject"/> must <see cref="SetDomainObject">be set</see> before it can be used.
     /// </summary>
     /// <remarks>
-    /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.New"/>. All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created.
+    /// The new <see cref="DataContainer"/> has the <see cref="DataContainerState.IsNew"/> flag set for <see cref="State"/>.
+    /// All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created.
     /// </remarks>
     /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
     /// <returns>The new <see cref="DataContainer"/>.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     public static DataContainer CreateNew (ObjectID id)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
-      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary (pd => pd, pd => new PropertyValue (pd, pd.DefaultValue));
-      return new DataContainer (id, DataContainerStateType.New, null, propertyValues);
+      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary(pd => pd, pd => new PropertyValue(pd, pd.DefaultValue));
+      return new DataContainer(id, DataContainerStateType.New, null, propertyValues);
     }
 
     /// <summary>
@@ -68,8 +72,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// and <see cref="SetDomainObject"/> must be called before it can be used.
     /// </summary>
     /// <remarks>
-    /// The new <see cref="DataContainer"/> has a <see cref="State"/> of <see cref="StateType.Unchanged"/>. All <see cref="PropertyValue"/>s for the 
-    /// class specified by <see cref="ObjectID.ClassID"/> are created.
+    /// The new <see cref="DataContainer"/> has the <see cref="DataContainerState.IsUnchanged"/> flag set for <see cref="State"/>.
+    /// All <see cref="PropertyValue"/>s for the  class specified by <see cref="ObjectID.ClassID"/> are created.
     /// </remarks>
     /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
     /// <param name="timestamp">The timestamp value of the existing object in the data source.</param>
@@ -77,24 +81,24 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <returns>The new <see cref="DataContainer"/>.</returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
     /// <exception cref="Mapping.MappingException">ClassDefinition of <paramref name="id"/> does not exist in mapping.</exception>
-    public static DataContainer CreateForExisting (ObjectID id, object timestamp, Func<PropertyDefinition, object> valueLookup)
+    public static DataContainer CreateForExisting (ObjectID id, object? timestamp, Func<PropertyDefinition, object?> valueLookup)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
+      ArgumentUtility.CheckNotNull("id", id);
 
-      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary (pd => pd, pd => new PropertyValue (pd, valueLookup (pd)));
-      return new DataContainer (id, DataContainerStateType.Existing, timestamp, propertyValues);
+      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
+      return new DataContainer(id, DataContainerStateType.Existing, timestamp, propertyValues);
     }
 
     private readonly ObjectID _id;
     private readonly Dictionary<PropertyDefinition, PropertyValue> _propertyValues;
 
-    private ClientTransaction _clientTransaction;
-    private IDataContainerEventListener _eventListener;
-    private DomainObject _domainObject;
+    private ClientTransaction? _clientTransaction;
+    private IDataContainerEventListener? _eventListener;
+    private DomainObject? _domainObject;
 
-    private RelationEndPointID[] _associatedRelationEndPointIDs;
+    private RelationEndPointID[]? _associatedRelationEndPointIDs;
 
-    private object _timestamp;
+    private object? _timestamp;
     private DataContainerStateType _state;
     private bool _isDiscarded;
     private bool _hasBeenMarkedChanged;
@@ -102,10 +106,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     // construction and disposing
 
-    private DataContainer (ObjectID id, DataContainerStateType state, object timestamp, Dictionary<PropertyDefinition, PropertyValue> propertyValues)
+    private DataContainer (ObjectID id, DataContainerStateType state, object? timestamp, Dictionary<PropertyDefinition, PropertyValue> propertyValues)
     {
-      ArgumentUtility.CheckNotNull ("id", id);
-      ArgumentUtility.CheckNotNull ("propertyValues", propertyValues);
+      ArgumentUtility.CheckNotNull("id", id);
+      ArgumentUtility.CheckNotNull("propertyValues", propertyValues);
 
       _id = id;
       _timestamp = timestamp;
@@ -119,36 +123,36 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return _hasBeenMarkedChanged; }
     }
 
-    public object GetValue (PropertyDefinition propertyDefinition, ValueAccess valueAccess = ValueAccess.Current)
+    public object? GetValue (PropertyDefinition propertyDefinition, ValueAccess valueAccess = ValueAccess.Current)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      CheckNotDiscarded ();
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      CheckNotDiscarded();
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
-      
-      RaisePropertyValueReadingNotification (propertyDefinition, valueAccess);
-      object value = GetValueWithoutEvents (propertyValue, valueAccess);
-     RaisePropertyValueReadNotification (propertyDefinition, value, valueAccess);
-      
+      var propertyValue = GetPropertyValue(propertyDefinition);
+
+      RaisePropertyValueReadingNotification(propertyDefinition, valueAccess);
+      object? value = GetValueWithoutEvents(propertyValue, valueAccess);
+     RaisePropertyValueReadNotification(propertyDefinition, value, valueAccess);
+
       return value;
     }
 
-    public void SetValue (PropertyDefinition propertyDefinition, object value)
+    public void SetValue (PropertyDefinition propertyDefinition, object? value)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
       CheckNotDiscarded();
 
       if (_state == DataContainerStateType.Deleted)
-        throw new ObjectDeletedException (_id);
+        throw new ObjectDeletedException(_id);
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
-      if (!PropertyValue.AreValuesDifferent (propertyValue.Value, value))
+      var propertyValue = GetPropertyValue(propertyDefinition);
+      if (!PropertyValue.AreValuesDifferent(propertyValue.Value, value))
       {
         propertyValue.Touch();
         return;
       }
-      
-      RaisePropertyValueChangingNotification (propertyDefinition, propertyValue.Value, value);
+
+      RaisePropertyValueChangingNotification(propertyDefinition, propertyValue.Value, value);
 
       var oldValue = propertyValue.Value;
       propertyValue.Value = value;
@@ -164,20 +168,20 @@ namespace Remotion.Data.DomainObjects.DataManagement
       else
         _hasBeenChanged = null;
 
-      RaiseStateUpdatedNotification (State);
+      RaiseStateUpdatedNotification();
       RaisePropertyValueChangedNotification(propertyDefinition, oldValue, value);
     }
 
-    public object GetValueWithoutEvents (PropertyDefinition propertyDefinition, ValueAccess valueAccess = ValueAccess.Current)
+    public object? GetValueWithoutEvents (PropertyDefinition propertyDefinition, ValueAccess valueAccess = ValueAccess.Current)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      CheckNotDiscarded ();
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      CheckNotDiscarded();
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
+      var propertyValue = GetPropertyValue(propertyDefinition);
       return GetValueWithoutEvents(propertyValue, valueAccess);
     }
 
-    private object GetValueWithoutEvents (PropertyValue propertyValue, ValueAccess valueAccess)
+    private object? GetValueWithoutEvents (PropertyValue propertyValue, ValueAccess valueAccess)
     {
       if (valueAccess == ValueAccess.Current)
         return propertyValue.Value;
@@ -187,49 +191,49 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void TouchValue (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      CheckNotDiscarded ();
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      CheckNotDiscarded();
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
+      var propertyValue = GetPropertyValue(propertyDefinition);
       propertyValue.Touch();
     }
 
     public bool HasValueBeenTouched (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      CheckNotDiscarded ();
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      CheckNotDiscarded();
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
+      var propertyValue = GetPropertyValue(propertyDefinition);
       return propertyValue.HasBeenTouched;
     }
 
     public bool HasValueChanged (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      CheckNotDiscarded ();
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      CheckNotDiscarded();
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
+      var propertyValue = GetPropertyValue(propertyDefinition);
       return propertyValue.HasChanged;
     }
 
     public void CommitValue (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      CheckNotDiscarded ();
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      CheckNotDiscarded();
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
+      var propertyValue = GetPropertyValue(propertyDefinition);
       propertyValue.CommitState();
-      
+
       // Invalidate state rather than recalculating it - CommitValue might be called multiple times.
       _hasBeenChanged = null;
     }
 
     public void RollbackValue (PropertyDefinition propertyDefinition)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      CheckNotDiscarded ();
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      CheckNotDiscarded();
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
+      var propertyValue = GetPropertyValue(propertyDefinition);
       propertyValue.RollbackState();
 
       // Invalidate state rather than recalculating it - RollbackValue might be called multiple times.
@@ -238,16 +242,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetValueDataFromSubTransaction (PropertyDefinition propertyDefinition, DataContainer sourceContainer)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      ArgumentUtility.CheckNotNull ("sourceContainer", sourceContainer);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("sourceContainer", sourceContainer);
 
       CheckNotDiscarded();
-      sourceContainer.CheckNotDiscarded ();
-      CheckSourceForSetDataFromSubTransaction (sourceContainer);
+      sourceContainer.CheckNotDiscarded();
+      CheckSourceForSetDataFromSubTransaction(sourceContainer);
 
-      var propertyValue = GetPropertyValue (propertyDefinition);
-      var sourcePropertyValue = sourceContainer.GetPropertyValue (propertyDefinition);
-      propertyValue.SetDataFromSubTransaction (sourcePropertyValue);
+      var propertyValue = GetPropertyValue(propertyDefinition);
+      var sourcePropertyValue = sourceContainer.GetPropertyValue(propertyDefinition);
+      propertyValue.SetDataFromSubTransaction(sourcePropertyValue);
 
       // Invalidate state rather than recalculating it - SetValueDataFromSubTransaction might be called multiple times.
       _hasBeenChanged = null;
@@ -265,7 +269,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
         CheckNotDiscarded();
 
         if (_clientTransaction == null)
-          throw new InvalidOperationException ("DataContainer has not been registered with a transaction.");
+          throw new InvalidOperationException("DataContainer has not been registered with a transaction.");
 
         return _clientTransaction;
       }
@@ -279,7 +283,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </value>
     public bool IsRegistered
     {
-      get 
+      get
       {
         return _clientTransaction != null;
       }
@@ -291,7 +295,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </summary>
     /// <value>The <see cref="IDataContainerEventListener"/> registered for this <see cref="DataContainer"/>, or <see langword="null" /> if no
     /// <see cref="IDataContainerEventListener"/> has been registered.</value>
-    public IDataContainerEventListener EventListener
+    public IDataContainerEventListener? EventListener
     {
       get { return _eventListener; }
     }
@@ -305,7 +309,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get
       {
         if (!HasDomainObject)
-          throw new InvalidOperationException ("This DataContainer has not been associated with a DomainObject yet.");
+          throw new InvalidOperationException("This DataContainer has not been associated with a DomainObject yet.");
 
         return _domainObject;
       }
@@ -317,6 +321,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <value>
     /// 	<see langword="true"/> if this instance has a <see cref="DomainObjects.DomainObject"/>; otherwise, <see langword="false"/>.
     /// </value>
+    [MemberNotNullWhen(true, nameof(_domainObject))]
     public bool HasDomainObject
     {
       get { return _domainObject != null; }
@@ -364,36 +369,36 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <summary>
     /// Gets the state of the <see cref="DataContainer"/>.
     /// </summary>
-    public StateType State
+    public DataContainerState State
     {
       get
       {
         if (_isDiscarded)
-          return StateType.Invalid;
-        
+          return new DataContainerState.Builder().SetDiscarded().Value;
+
         switch (_state)
         {
           case DataContainerStateType.New:
-            return StateType.New;
+            return new DataContainerState.Builder().SetNew().Value;
           case DataContainerStateType.Deleted:
-            return StateType.Deleted;
+            return new DataContainerState.Builder().SetDeleted().Value;
           default:
-            Assertion.IsTrue (_state == DataContainerStateType.Existing);
+            Assertion.IsTrue(_state == DataContainerStateType.Existing);
 
             if (!_hasBeenChanged.HasValue)
               _hasBeenChanged = CalculatePropertyValueChangeState();
 
             if (_hasBeenMarkedChanged || _hasBeenChanged.Value)
-              return StateType.Changed;
+              return new DataContainerState.Builder().SetChanged().Value;
             else
-              return StateType.Unchanged;
+              return new DataContainerState.Builder().SetUnchanged().Value;
         }
       }
     }
 
     /// <summary>
-    /// Marks an existing <see cref="DataContainer"/> as changed. <see cref="State"/> will return <see cref="StateType.Changed"/> after this method
-    /// has been called.
+    /// Marks an existing <see cref="DataContainer"/> as changed.
+    /// <see cref="State"/> will have the <see cref="DataContainerState.IsChanged"/> flag set after this method has been called.
     /// </summary>
     /// <exception cref="InvalidOperationException">This <see cref="DataContainer"/> is not in state <see cref="DataContainerStateType.Existing"/>.
     /// New or deleted objects cannot be marked as changed.</exception>
@@ -403,11 +408,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       CheckNotDiscarded();
       if (_state != DataContainerStateType.Existing)
-        throw new InvalidOperationException ("Only existing DataContainers can be marked as changed.");
+        throw new InvalidOperationException("Only existing DataContainers can be marked as changed.");
 
       _hasBeenMarkedChanged = true;
 
-      RaiseStateUpdatedNotification (StateType.Changed);
+      RaiseStateUpdatedNotification();
     }
 
     /// <summary>
@@ -415,7 +420,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </summary>
     /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="DataContainer"/> has been discarded. 
     /// See <see cref="ObjectInvalidException"/> for further information.</exception>
-    public object Timestamp
+    public object? Timestamp
     {
       get
       {
@@ -430,6 +435,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <remarks>
     /// For more information why and when a <see cref="DataContainer"/> is discarded see <see cref="ObjectInvalidException"/>.
     /// </remarks>
+    [Obsolete("Use State.IsDiscarded instead. (Version: 1.21.8)", false)]
     public bool IsDiscarded
     {
       get { return _isDiscarded; }
@@ -440,66 +446,73 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get
       {
         if (_associatedRelationEndPointIDs == null)
-          _associatedRelationEndPointIDs = RelationEndPointID.GetAllRelationEndPointIDs (ID).ToArray();
+          _associatedRelationEndPointIDs = RelationEndPointID.GetAllRelationEndPointIDs(ID).ToArray();
 
         return _associatedRelationEndPointIDs;
       }
     }
 
-    public void SetTimestamp (object timestamp)
+    public void SetTimestamp (object? timestamp)
     {
       _timestamp = timestamp;
     }
 
     public void CommitState ()
     {
-      CheckNotDiscarded ();
+      CheckNotDiscarded();
 
       if (_state == DataContainerStateType.Deleted)
-        throw new InvalidOperationException ("Deleted data containers cannot be committed, they have to be discarded.");
-      
+        throw new InvalidOperationException("Deleted data containers cannot be committed, they have to be discarded.");
+
       foreach (PropertyValue propertyValue in _propertyValues.Values)
-        propertyValue.CommitState ();
+        propertyValue.CommitState();
 
       _hasBeenMarkedChanged = false;
       _hasBeenChanged = false;
       _state = DataContainerStateType.Existing;
-      RaiseStateUpdatedNotification (StateType.Unchanged);
+      RaiseStateUpdatedNotification();
     }
 
     public void RollbackState ()
     {
-      CheckNotDiscarded ();
+      CheckNotDiscarded();
 
       if (_state == DataContainerStateType.New)
-        throw new InvalidOperationException ("New data containers cannot be rolled back, they have to be discarded.");
+        throw new InvalidOperationException("New data containers cannot be rolled back, they have to be discarded.");
 
       foreach (PropertyValue propertyValue in _propertyValues.Values)
-        propertyValue.RollbackState ();
+        propertyValue.RollbackState();
 
       _hasBeenMarkedChanged = false;
       _hasBeenChanged = false;
       _state = DataContainerStateType.Existing;
-      RaiseStateUpdatedNotification (StateType.Unchanged);
+      RaiseStateUpdatedNotification();
     }
 
     public void Delete ()
     {
-      CheckNotDiscarded ();
+      CheckNotDiscarded();
 
       if (_state == DataContainerStateType.New)
-        throw new InvalidOperationException ("New data containers cannot be deleted, they have to be discarded.");
+        throw new InvalidOperationException("New data containers cannot be deleted, they have to be discarded.");
 
       _state = DataContainerStateType.Deleted;
-      RaiseStateUpdatedNotification (StateType.Deleted);
+      RaiseStateUpdatedNotification();
     }
 
+    /// <summary>Discards the <see cref="DataContainer"/>.</summary>
+    /// <remarks>
+    /// The <see cref="Discard"/> method may only be called by infrastructure operations such as <see cref="DataManager"/>.<see cref="DataManager.Discard"/>
+    /// or <see cref="UnloadAllCommand"/>. Otherwise, the <see cref="DataContainer"/> will not be properly removed from the <see cref="DataManager"/>,
+    /// resulting in runtime errors, e.g. when accessing <see cref="DomainObject"/>.<see cref="DomainObjects.DomainObject.State"/>.
+    /// </remarks>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public void Discard ()
     {
-      CheckNotDiscarded ();
+      CheckNotDiscarded();
 
       _isDiscarded = true;
-      RaiseStateUpdatedNotification (StateType.Invalid);
+      RaiseStateUpdatedNotification();
 
       _clientTransaction = null;
       _eventListener = null;
@@ -507,40 +520,40 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetPropertyDataFromSubTransaction (DataContainer source)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
-      CheckNotDiscarded ();
-      source.CheckNotDiscarded ();
+      CheckNotDiscarded();
+      source.CheckNotDiscarded();
       CheckSourceForSetDataFromSubTransaction(source);
 
       foreach (var kvp in _propertyValues)
       {
-        var sourcePropertyValue = source.GetPropertyValue (kvp.Key);
-        kvp.Value.SetDataFromSubTransaction (sourcePropertyValue);
+        var sourcePropertyValue = source.GetPropertyValue(kvp.Key);
+        kvp.Value.SetDataFromSubTransaction(sourcePropertyValue);
       }
 
       _hasBeenChanged = null;
-      RaiseStateUpdatedNotification (State);
+      RaiseStateUpdatedNotification();
     }
 
     public void SetDomainObject (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       if (domainObject.ID != null && domainObject.ID != _id)
-        throw new ArgumentException ("The given DomainObject has another ID than this DataContainer.", "domainObject");
+        throw new ArgumentException("The given DomainObject has another ID than this DataContainer.", "domainObject");
       if (_domainObject != null && _domainObject != domainObject)
-        throw new InvalidOperationException ("This DataContainer has already been associated with a DomainObject.");
+        throw new InvalidOperationException("This DataContainer has already been associated with a DomainObject.");
 
       _domainObject = domainObject;
     }
 
     public void SetEventListener (IDataContainerEventListener listener)
     {
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
       if (_eventListener != null)
-        throw new InvalidOperationException ("Only one event listener can be registered for a DataContainer.");
+        throw new InvalidOperationException("Only one event listener can be registered for a DataContainer.");
       _eventListener = listener;
     }
 
@@ -553,26 +566,26 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <see cref="SetDomainObject"/> method.</returns>
     public DataContainer Clone (ObjectID id)
     {
-      CheckNotDiscarded ();
+      CheckNotDiscarded();
 
-      var clonePropertyValues = _propertyValues.ToDictionary (kvp => kvp.Key, kvp => new PropertyValue (kvp.Key, kvp.Value.Value));
+      var clonePropertyValues = _propertyValues.ToDictionary(kvp => kvp.Key, kvp => new PropertyValue(kvp.Key, kvp.Value.Value));
 
-      var clone = new DataContainer (id, _state, _timestamp, clonePropertyValues);
+      var clone = new DataContainer(id, _state, _timestamp, clonePropertyValues);
 
       clone._hasBeenMarkedChanged = _hasBeenMarkedChanged;
       clone._hasBeenChanged = _hasBeenChanged;
 
-      Assertion.IsNull (clone._clientTransaction);
-      Assertion.IsNull (clone._domainObject);
+      Assertion.IsNull(clone._clientTransaction);
+      Assertion.IsNull(clone._domainObject);
       return clone;
     }
 
     internal void SetClientTransaction (ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
 
       if (_clientTransaction != null)
-        throw new InvalidOperationException ("This DataContainer has already been registered with a ClientTransaction.");
+        throw new InvalidOperationException("This DataContainer has already been registered with a ClientTransaction.");
 
       _clientTransaction = clientTransaction;
     }
@@ -585,62 +598,60 @@ namespace Remotion.Data.DomainObjects.DataManagement
       }
       catch (KeyNotFoundException ex)
       {
-        var message = string.Format ("Property '{0}' does not exist.", propertyDefinition.PropertyName);
-        throw new ArgumentException (message, "propertyDefinition", ex);
+        var message = string.Format("Property '{0}' does not exist.", propertyDefinition.PropertyName);
+        throw new ArgumentException(message, "propertyDefinition", ex);
       }
     }
 
     private void CheckNotDiscarded ()
     {
       if (_isDiscarded)
-        throw new ObjectInvalidException (_id);
+        throw new ObjectInvalidException(_id);
     }
 
     private bool CalculatePropertyValueChangeState ()
     {
-      return _propertyValues.Values.Any (pv => pv.HasChanged);
+      return _propertyValues.Values.Any(pv => pv.HasChanged);
     }
 
     private void RaisePropertyValueReadingNotification (PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       if (_eventListener != null)
-        _eventListener.PropertyValueReading (this, propertyDefinition, valueAccess);
+        _eventListener.PropertyValueReading(this, propertyDefinition, valueAccess);
     }
 
-    private void RaisePropertyValueReadNotification (PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    private void RaisePropertyValueReadNotification (PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       if (_eventListener != null)
-        _eventListener.PropertyValueRead (this, propertyDefinition, value, valueAccess);
+        _eventListener.PropertyValueRead(this, propertyDefinition, value, valueAccess);
     }
 
-    private void RaisePropertyValueChangingNotification (PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    private void RaisePropertyValueChangingNotification (PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       if (_eventListener != null)
-        _eventListener.PropertyValueChanging (this, propertyDefinition, oldValue, newValue);
+        _eventListener.PropertyValueChanging(this, propertyDefinition, oldValue, newValue);
     }
 
-    private void RaisePropertyValueChangedNotification (PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    private void RaisePropertyValueChangedNotification (PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       if (_eventListener != null)
-        _eventListener.PropertyValueChanged (this, propertyDefinition, oldValue, newValue);
+        _eventListener.PropertyValueChanged(this, propertyDefinition, oldValue, newValue);
     }
 
-    private void RaiseStateUpdatedNotification (StateType state)
+    private void RaiseStateUpdatedNotification ()
     {
-      Assertion.DebugAssert (State == state);
-
       if (_eventListener != null)
-        _eventListener.StateUpdated (this, state);
+        _eventListener.StateUpdated(this, State);
     }
 
     private void CheckSourceForSetDataFromSubTransaction (DataContainer source)
     {
       if (source.ClassDefinition != ClassDefinition)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot set this data container's property values from '{0}'; the data containers do not have the same class definition.",
             source.ID);
-        throw new ArgumentException (message, "source");
+        throw new ArgumentException(message, "source");
       }
     }
 
@@ -649,55 +660,55 @@ namespace Remotion.Data.DomainObjects.DataManagement
     // ReSharper disable UnusedMember.Local
     private DataContainer (FlattenedDeserializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      _id = info.GetValueForHandle<ObjectID> ();
-      _timestamp = info.GetValue<object>();
-      _isDiscarded = info.GetBoolValue ();
+      _id = info.GetValueForHandle<ObjectID>();
+      _timestamp = info.GetNullableValue<object>();
+      _isDiscarded = info.GetBoolValue();
 
       _propertyValues = new Dictionary<PropertyDefinition, PropertyValue>();
 
       if (!_isDiscarded)
       {
-        for (int i = 0; i < ClassDefinition.GetPropertyDefinitions ().Count (); ++i)
+        for (int i = 0; i < ClassDefinition.GetPropertyDefinitions().Count(); ++i)
         {
           var propertyName = info.GetValueForHandle<string>();
-          var propertyDefinition = ClassDefinition.GetPropertyDefinition (propertyName);
-          var propertyValue = new PropertyValue (propertyDefinition, propertyDefinition.DefaultValue);
-          propertyValue.DeserializeFromFlatStructure (info);
-          _propertyValues.Add (propertyDefinition, propertyValue);
+          var propertyDefinition = ClassDefinition.GetMandatoryPropertyDefinition(propertyName);
+          var propertyValue = new PropertyValue(propertyDefinition, propertyDefinition.DefaultValue);
+          propertyValue.DeserializeFromFlatStructure(info);
+          _propertyValues.Add(propertyDefinition, propertyValue);
         }
       }
 
-      _clientTransaction = info.GetValueForHandle<ClientTransaction> ();
-      _eventListener = info.GetValueForHandle<IDataContainerEventListener> ();
-      _state = (DataContainerStateType) info.GetIntValue ();
-      _domainObject = info.GetValueForHandle<DomainObject> ();
-      _hasBeenMarkedChanged = info.GetBoolValue ();
-      _hasBeenChanged = info.GetValue<bool?>();
+      _clientTransaction = info.GetNullableValueForHandle<ClientTransaction>();
+      _eventListener = info.GetNullableValueForHandle<IDataContainerEventListener>();
+      _state = (DataContainerStateType)info.GetIntValue();
+      _domainObject = info.GetNullableValueForHandle<DomainObject>();
+      _hasBeenMarkedChanged = info.GetBoolValue();
+      _hasBeenChanged = info.GetNullableValue<bool?>();
     }
     // ReSharper restore UnusedMember.Local
 
     void IFlattenedSerializable.SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddHandle (_id);
-      info.AddValue (_timestamp);
-      info.AddBoolValue (_isDiscarded);
+      info.AddHandle(_id);
+      info.AddValue(_timestamp);
+      info.AddBoolValue(_isDiscarded);
       if (!_isDiscarded)
       {
         foreach (var kvp in _propertyValues)
         {
-          info.AddHandle (kvp.Key.PropertyName);
-          kvp.Value.SerializeIntoFlatStructure (info);
+          info.AddHandle(kvp.Key.PropertyName);
+          kvp.Value.SerializeIntoFlatStructure(info);
         }
       }
 
-      info.AddHandle (_clientTransaction);
-      info.AddHandle (_eventListener);
-      info.AddIntValue ((int) _state);
-      info.AddHandle (_domainObject);
+      info.AddHandle(_clientTransaction);
+      info.AddHandle(_eventListener);
+      info.AddIntValue((int)_state);
+      info.AddHandle(_domainObject);
       info.AddBoolValue(_hasBeenMarkedChanged);
-      info.AddValue (_hasBeenChanged);
+      info.AddValue(_hasBeenChanged);
     }
 
     #endregion Serialization

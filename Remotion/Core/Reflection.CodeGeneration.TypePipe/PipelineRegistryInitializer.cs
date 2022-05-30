@@ -40,7 +40,7 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe
       //       or the operation is idem-potent within the PipelineRegistryInitializer. Race-conditions between this method and 3rd-party code
       //       that does not support SafeServiceLocator cannot be handled from within the infrastructure code.
       if (!PipelineRegistry.HasInstanceProvider)
-        PipelineRegistry.SetInstanceProvider (() => SafeServiceLocator.Current.GetInstance<IPipelineRegistry>());
+        PipelineRegistry.SetInstanceProvider(() => SafeServiceLocator.Current.GetInstance<IPipelineRegistry>());
     }
   }
 }

@@ -18,11 +18,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Remotion.FunctionalProgramming;
+using JetBrains.Annotations;
 using Remotion.Utilities;
 
 namespace Remotion.Reflection
@@ -30,45 +31,56 @@ namespace Remotion.Reflection
   /// <summary>
   /// Implements the <see cref="IMethodInformation"/> to wrap a <see cref="MethodInfo"/> instance.
   /// </summary>
-  [TypeConverter (typeof (MethodInfoAdapterConverter))]
+  [TypeConverter(typeof(MethodInfoAdapterConverter))]
   public sealed class MethodInfoAdapter : IMethodInformation
   {
     private static readonly ConcurrentDictionary<MethodInfo, MethodInfoAdapter> s_dataStore =
-        new ConcurrentDictionary<MethodInfo, MethodInfoAdapter> (MemberInfoEqualityComparer<MethodInfo>.Instance);
+        new ConcurrentDictionary<MethodInfo, MethodInfoAdapter>(MemberInfoEqualityComparer<MethodInfo>.Instance);
 
     ///<remarks>Optimized for memory allocations</remarks>
-    private static readonly Func<MethodInfo, MethodInfoAdapter> s_ctorFunc = mi => new MethodInfoAdapter (mi); 
+    private static readonly Func<MethodInfo, MethodInfoAdapter> s_ctorFunc = mi => new MethodInfoAdapter(mi);
 
     public static MethodInfoAdapter Create (MethodInfo methodInfo)
     {
-      ArgumentUtility.CheckNotNull ("methodInfo", methodInfo);
-      return s_dataStore.GetOrAdd (methodInfo, s_ctorFunc);
+      ArgumentUtility.CheckNotNull("methodInfo", methodInfo);
+      return s_dataStore.GetOrAdd(methodInfo, s_ctorFunc);
+    }
+
+    [ContractAnnotation("null => null; notnull => notnull")]
+    [return: NotNullIfNotNull("methodInfo")]
+    public static MethodInfoAdapter? CreateOrNull (MethodInfo? methodInfo)
+    {
+      if (methodInfo == null)
+        return null;
+
+      return s_dataStore.GetOrAdd(methodInfo, s_ctorFunc);
     }
 
     private readonly MethodInfo _methodInfo;
-    private readonly Lazy<ITypeInformation> _cachedDeclaringType;
+    private readonly Lazy<ITypeInformation?> _cachedDeclaringType;
     private readonly Lazy<ITypeInformation> _cachedOriginalDeclaringType;
 
-    private readonly Lazy<IPropertyInformation> _declaringProperty;
+    private readonly Lazy<IPropertyInformation?> _declaringProperty;
     private readonly Lazy<IReadOnlyCollection<IMethodInformation>> _interfaceDeclarations;
 
     private MethodInfoAdapter (MethodInfo methodInfo)
     {
       _methodInfo = methodInfo;
 
-      _cachedDeclaringType = new Lazy<ITypeInformation> (
-          () => Maybe.ForValue (_methodInfo.DeclaringType).Select (TypeAdapter.Create).ValueOrDefault(),
+      // TODO RM-7777: Check if Create or CreateOrNull should be used in the following instantiations.
+      _cachedDeclaringType = new Lazy<ITypeInformation?>(
+          () => TypeAdapter.CreateOrNull(_methodInfo.DeclaringType),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _cachedOriginalDeclaringType = new Lazy<ITypeInformation> (
-          () => TypeAdapter.Create (_methodInfo.GetOriginalDeclaringType()),
+      _cachedOriginalDeclaringType = new Lazy<ITypeInformation>(
+          () => TypeAdapter.Create(_methodInfo.GetOriginalDeclaringType()),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _declaringProperty = new Lazy<IPropertyInformation> (
-          () => Maybe.ForValue ( _methodInfo.FindDeclaringProperty()).Select (PropertyInfoAdapter.Create).ValueOrDefault(),
+      _declaringProperty = new Lazy<IPropertyInformation?>(
+          () => PropertyInfoAdapter.CreateOrNull(_methodInfo.FindDeclaringProperty()),
           LazyThreadSafetyMode.ExecutionAndPublication);
 
-      _interfaceDeclarations = new Lazy<IReadOnlyCollection<IMethodInformation>> (
+      _interfaceDeclarations = new Lazy<IReadOnlyCollection<IMethodInformation>>(
           FindInterfaceDeclarationsImplementation,
           LazyThreadSafetyMode.ExecutionAndPublication);
     }
@@ -88,7 +100,7 @@ namespace Remotion.Reflection
       get { return _methodInfo.Name; }
     }
 
-    public ITypeInformation DeclaringType
+    public ITypeInformation? DeclaringType
     {
       get { return _cachedDeclaringType.Value; }
     }
@@ -98,40 +110,42 @@ namespace Remotion.Reflection
       return _cachedOriginalDeclaringType.Value;
     }
 
-    public T GetCustomAttribute<T> (bool inherited) where T: class
+    public T? GetCustomAttribute<T> (bool inherited) where T: class
     {
-      return AttributeUtility.GetCustomAttribute<T> (_methodInfo, inherited);
+      return AttributeUtility.GetCustomAttribute<T>(_methodInfo, inherited);
     }
 
     public T[] GetCustomAttributes<T> (bool inherited) where T: class
     {
-      return AttributeUtility.GetCustomAttributes<T> (_methodInfo, inherited);
+      return AttributeUtility.GetCustomAttributes<T>(_methodInfo, inherited);
     }
 
-    public object Invoke (object instance, object[] parameters)
+    public object? Invoke (object? instance, object?[]? parameters)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      //TODO RM-7432: Remove null check, parameter should be nullable
+      ArgumentUtility.CheckNotNull("instance", instance!);
 
-      return _methodInfo.Invoke (instance, parameters);
+      return _methodInfo.Invoke(instance, parameters);
     }
 
-    public IMethodInformation FindInterfaceImplementation (Type implementationType)
+    public IMethodInformation? FindInterfaceImplementation (Type implementationType)
     {
-      ArgumentUtility.CheckNotNull ("implementationType", implementationType);
+      ArgumentUtility.CheckNotNull("implementationType", implementationType);
 
-      if (!_methodInfo.DeclaringType.IsInterface)
-        throw new InvalidOperationException ("This method is not an interface method.");
+      // TODO RM-7801: _methodInfo.DeclaringType being null should be handled.
+      if (!_methodInfo.DeclaringType!.IsInterface)
+        throw new InvalidOperationException("This method is not an interface method.");
 
       if (implementationType.IsInterface)
-        throw new ArgumentException ("The implementationType parameter must not be an interface.", "implementationType");
+        throw new ArgumentException("The implementationType parameter must not be an interface.", "implementationType");
 
-      if (!_methodInfo.DeclaringType.IsAssignableFrom (implementationType))
+      if (!_methodInfo.DeclaringType.IsAssignableFrom(implementationType))
         return null;
 
-      var interfaceMap = implementationType.GetInterfaceMap (_methodInfo.DeclaringType);
+      var interfaceMap = implementationType.GetInterfaceMap(_methodInfo.DeclaringType);
       var methodIndex = interfaceMap.InterfaceMethods
-          .Select ((m, i) => new { InterfaceMethod = m, Index = i })
-          .First (tuple => tuple.InterfaceMethod.Equals (_methodInfo)) // actually Single, but we can stop at the first matching method
+          .Select((m, i) => new { InterfaceMethod = m, Index = i })
+          .First(tuple => tuple.InterfaceMethod.Equals(_methodInfo)) // actually Single, but we can stop at the first matching method
           .Index;
       return Create(interfaceMap.TargetMethods[methodIndex]);
     }
@@ -143,29 +157,30 @@ namespace Remotion.Reflection
 
     private IReadOnlyCollection<IMethodInformation> FindInterfaceDeclarationsImplementation ()
     {
-      if (_methodInfo.DeclaringType.IsInterface)
-        throw new InvalidOperationException ("This method is itself an interface member, so it cannot have an interface declaration.");
+      // TODO RM-7801: _methodInfo.DeclaringType being null should be handled.
+      if (_methodInfo.DeclaringType!.IsInterface)
+        throw new InvalidOperationException("This method is itself an interface member, so it cannot have an interface declaration.");
 
       return (from interfaceType in _methodInfo.DeclaringType.GetInterfaces()
-        let map = _methodInfo.DeclaringType.GetInterfaceMap (interfaceType)
-        from index in Enumerable.Range (0, map.TargetMethods.Length)
-        where MemberInfoEqualityComparer<MethodInfo>.Instance.Equals (map.TargetMethods[index], _methodInfo)
-        select (IMethodInformation) Create (map.InterfaceMethods[index])).ToArray();
+        let map = _methodInfo.DeclaringType.GetInterfaceMap(interfaceType)
+        from index in Enumerable.Range(0, map.TargetMethods.Length)
+        where MemberInfoEqualityComparer<MethodInfo>.Instance.Equals(map.TargetMethods[index], _methodInfo)
+        select (IMethodInformation)Create(map.InterfaceMethods[index])).ToArray();
     }
 
     public T GetFastInvoker<T> () where T: class
     {
-      return (T) (object) GetFastInvoker (typeof (T));
+      return (T)(object)GetFastInvoker(typeof(T));
     }
 
     public Delegate GetFastInvoker (Type delegateType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("delegateType", delegateType, typeof (Delegate));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("delegateType", delegateType, typeof(Delegate));
 
-      return DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate (_methodInfo, delegateType);
+      return DynamicMethodBasedMethodCallerFactory.CreateMethodCallerDelegate(_methodInfo, delegateType);
     }
 
-    public IPropertyInformation FindDeclaringProperty ()
+    public IPropertyInformation? FindDeclaringProperty ()
     {
       return _declaringProperty.Value;
     }
@@ -177,27 +192,27 @@ namespace Remotion.Reflection
 
     public IMethodInformation GetOriginalDeclaration ()
     {
-      return Create (_methodInfo.GetBaseDefinition());
+      return Create(_methodInfo.GetBaseDefinition());
     }
 
     public bool IsDefined<T> (bool inherited) where T: class
     {
-      return AttributeUtility.IsDefined<T> (_methodInfo, inherited);
+      return AttributeUtility.IsDefined<T>(_methodInfo, inherited);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return ReferenceEquals (this, obj);
+      return ReferenceEquals(this, obj);
     }
 
     public override int GetHashCode ()
     {
-      return RuntimeHelpers.GetHashCode (this);
+      return RuntimeHelpers.GetHashCode(this);
     }
 
-    public override string ToString ()
+    public override string? ToString ()
     {
-      return _methodInfo.ToString ();
+      return _methodInfo.ToString();
     }
 
     bool INullObject.IsNull

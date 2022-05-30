@@ -37,21 +37,21 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject SelectFirst (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_htmlTextBoxTag, "type", "text");
-      return CreateControlObject (context, scope);
+      var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public TextBoxControlObject SelectFirstOrNull (ControlSelectionContext context)
+    public TextBoxControlObject? SelectFirstOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_htmlTextBoxTag, "type", "text");
+      var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -59,48 +59,48 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public TextBoxControlObject SelectSingle (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_htmlTextBoxTag, "type", "text");
+      var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
       scope.EnsureSingle();
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public TextBoxControlObject SelectSingleOrNull (ControlSelectionContext context)
+    public TextBoxControlObject? SelectSingleOrNull (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var scope = context.Scope.FindTagWithAttribute (c_htmlTextBoxTag, "type", "text");
+      var scope = context.Scope.FindTagWithAttribute(c_htmlTextBoxTag, "type", "text");
 
       if (!scope.ExistsWithEnsureSingleWorkaround())
         return null;
 
-      return CreateControlObject (context, scope);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
     public TextBoxControlObject SelectPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "text");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
-      return CreateControlObject (context, scope);
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "text");
+      var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
+      return CreateControlObject(context, scope);
     }
 
     /// <inheritdoc/>
-    public TextBoxControlObject SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
+    public TextBoxControlObject? SelectOptionalPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "text");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "text");
+      var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       if (scope.ExistsWorkaround())
-        return CreateControlObject (context, scope);
+        return CreateControlObject(context, scope);
 
       return null;
     }
@@ -108,11 +108,11 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
     /// <inheritdoc/>
     public bool ExistsPerIndex (ControlSelectionContext context, int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath ("type", "text");
-      var xPathSelector = string.Format ("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
-      var scope = context.Scope.FindXPath (xPathSelector);
+      var hasAttributeCheck = DomSelectorUtility.CreateHasAttributeCheckForXPath("type", "text");
+      var xPathSelector = string.Format("(.//{0}{1})[{2}]", c_htmlTextBoxTag, hasAttributeCheck, oneBasedIndex);
+      var scope = context.Scope.FindXPath(xPathSelector);
 
       return scope.ExistsWorkaround();
     }
@@ -122,10 +122,10 @@ namespace Remotion.Web.Development.WebTesting.WebFormsControlObjects.Selectors
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new TextBoxControlObject (newControlObjectContext);
+      return new TextBoxControlObject(newControlObjectContext);
     }
   }
 }

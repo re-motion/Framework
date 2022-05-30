@@ -15,12 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Data.DomainObjects.Mapping.SortExpressions;
+using Remotion.Data.DomainObjects.UnitTests.Mapping.SortExpressions;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflectorTests
 {
@@ -34,79 +36,158 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.RelationEndPointReflecto
     {
       base.SetUp();
 
-      _classType = typeof (ClassWithVirtualRelationEndPoints);
-      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: _classType);
+      _classType = typeof(ClassWithVirtualRelationEndPoints);
+      _classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: _classType);
     }
 
     [Test]
     public void GetMetadata_BidirectionalOneToOne ()
     {
       DomainModelConstraintProviderStub
-        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToOne")))
-        .Return (true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation>(pi => pi.Name == "BaseBidirectionalOneToOne")))
+          .Returns(true);
 
-      var propertyInfo = PropertyInfoAdapter.Create (_classType.GetProperty ("BaseBidirectionalOneToOne"));
-      var relationEndPointReflector = CreateRelationEndPointReflector (propertyInfo);
+      var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BaseBidirectionalOneToOne"));
+      var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf (typeof (VirtualRelationEndPointDefinition), actual);
-      VirtualRelationEndPointDefinition relationEndPointDefinition = (VirtualRelationEndPointDefinition) actual;
-      Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
-      Assert.That (relationEndPointDefinition.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToOne"));
-      Assert.That (relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (ClassWithRealRelationEndPoints)));
-      Assert.That (relationEndPointDefinition.Cardinality, Is.EqualTo (CardinalityType.One));
-      Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
+      Assert.IsInstanceOf(typeof(VirtualObjectRelationEndPointDefinition), actual);
+      VirtualObjectRelationEndPointDefinition relationEndPointDefinition = (VirtualObjectRelationEndPointDefinition)actual;
+      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(
+          relationEndPointDefinition.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToOne"));
+      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ClassWithRealRelationEndPoints)));
+      Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.One));
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
     }
 
     [Test]
-    public void GetMetadata_BidirectionalOneToMany ()
+    public void GetMetadata_BidirectionalOneToManyForDomainObjectCollection ()
     {
       DomainModelConstraintProviderStub
-        .Stub (stub => stub.IsNullable (Arg<IPropertyInformation>.Matches (pi => pi.Name == "BaseBidirectionalOneToMany")))
-        .Return (true);
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation>(pi => pi.Name == "BaseBidirectionalOneToManyForDomainObjectCollection")))
+          .Returns(true);
+      SortExpressionDefinitionProviderStub
+          .Setup(stub => stub.GetSortExpression(It.IsAny<IPropertyInformation>(), It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Throws(new InvalidOperationException("GetSortExpression() should not be called during GetMetadata()"));
 
-      var propertyInfo = PropertyInfoAdapter.Create (_classType.GetProperty ("BaseBidirectionalOneToMany"));
-      var relationEndPointReflector = CreateRelationEndPointReflector (propertyInfo);
+      var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BaseBidirectionalOneToManyForDomainObjectCollection"));
+      var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
       IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
 
-      Assert.IsInstanceOf (typeof (VirtualRelationEndPointDefinition), actual);
-      VirtualRelationEndPointDefinition relationEndPointDefinition = (VirtualRelationEndPointDefinition) actual;
-      Assert.That (relationEndPointDefinition.ClassDefinition, Is.SameAs (_classDefinition));
-      Assert.That (relationEndPointDefinition.PropertyName, Is.EqualTo ("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToMany"));
-      Assert.That (relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs (typeof (ObjectList<ClassWithRealRelationEndPoints>)));
-      Assert.That (relationEndPointDefinition.Cardinality, Is.EqualTo (CardinalityType.Many));
-      Assert.That (relationEndPointDefinition.RelationDefinition, Is.Null);
-      Assert.That (relationEndPointDefinition.SortExpressionText, Is.EqualTo ("NoAttribute"));
+      Assert.IsInstanceOf(typeof(DomainObjectCollectionRelationEndPointDefinition), actual);
+      DomainObjectCollectionRelationEndPointDefinition relationEndPointDefinition = (DomainObjectCollectionRelationEndPointDefinition)actual;
+      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(
+          relationEndPointDefinition.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToManyForDomainObjectCollection"));
+      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(ObjectList<ClassWithRealRelationEndPoints>)));
+      Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
+
+      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
+      var oppositeEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      oppositeEndPointDefinition.Setup(stub => stub.ClassDefinition).Returns(oppositeClassDefinition);
+      var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition.Object);
+      relationEndPointDefinition.SetRelationDefinition(relationDefinition);
+      var oppositePropertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
+          oppositeClassDefinition,
+          oppositeClassDefinition.ClassType,
+          "NoAttributeForDomainObjectCollection");
+      var sortExpressionDefinition = new SortExpressionDefinition(new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(oppositePropertyDefinition) });
+      SortExpressionDefinitionProviderStub.Reset();
+      SortExpressionDefinitionProviderStub
+          .Setup(stub => stub.GetSortExpression(relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForDomainObjectCollection"))
+          .Returns(sortExpressionDefinition);
+
+      Assert.That(relationEndPointDefinition.GetSortExpression(), Is.SameAs(sortExpressionDefinition));
+    }
+
+    [Test]
+    public void GetMetadata_BidirectionalOneToManyForVirtualCollection ()
+    {
+      DomainModelConstraintProviderStub
+          .Setup(stub => stub.IsNullable(It.Is<IPropertyInformation>(pi => pi.Name == "BaseBidirectionalOneToManyForVirtualCollection")))
+          .Returns(true);
+      SortExpressionDefinitionProviderStub
+          .Setup(stub => stub.GetSortExpression(It.IsAny<IPropertyInformation>(), It.IsAny<ClassDefinition>(), It.IsAny<string>()))
+          .Throws(new InvalidOperationException("GetSortExpression() should not be called during GetMetadata()"));
+
+      var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BaseBidirectionalOneToManyForVirtualCollection"));
+      var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
+
+      IRelationEndPointDefinition actual = relationEndPointReflector.GetMetadata();
+
+      Assert.IsInstanceOf(typeof(VirtualCollectionRelationEndPointDefinition), actual);
+      VirtualCollectionRelationEndPointDefinition relationEndPointDefinition = (VirtualCollectionRelationEndPointDefinition)actual;
+      Assert.That(relationEndPointDefinition.ClassDefinition, Is.SameAs(_classDefinition));
+      Assert.That(
+          relationEndPointDefinition.PropertyName,
+          Is.EqualTo(
+              "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithOneSideRelationPropertiesNotInMapping.BaseBidirectionalOneToManyForVirtualCollection"));
+      Assert.That(relationEndPointDefinition.PropertyInfo.PropertyType, Is.SameAs(typeof(IObjectList<ClassWithRealRelationEndPoints>)));
+      Assert.That(relationEndPointDefinition.Cardinality, Is.EqualTo(CardinalityType.Many));
+      Assert.That(relationEndPointDefinition.HasRelationDefinitionBeenSet, Is.False);
+
+      var oppositeClassDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(ClassWithRealRelationEndPoints));
+      var oppositeEndPointDefinition = new Mock<IRelationEndPointDefinition>();
+      oppositeEndPointDefinition.Setup(stub => stub.ClassDefinition).Returns(oppositeClassDefinition);
+      var relationDefinition = new RelationDefinition("relation", relationEndPointDefinition, oppositeEndPointDefinition.Object);
+      relationEndPointDefinition.SetRelationDefinition(relationDefinition);
+      var oppositePropertyDefinition = PropertyDefinitionObjectMother.CreateForRealPropertyInfo(
+          oppositeClassDefinition,
+          oppositeClassDefinition.ClassType,
+          "NoAttributeForVirtualCollection");
+      var sortExpressionDefinition = new SortExpressionDefinition(new[] { SortExpressionDefinitionObjectMother.CreateSortedPropertyAscending(oppositePropertyDefinition) });
+      SortExpressionDefinitionProviderStub.Reset();
+      SortExpressionDefinitionProviderStub
+          .Setup(stub => stub.GetSortExpression(relationEndPointDefinition.PropertyInfo, oppositeClassDefinition, "NoAttributeForVirtualCollection"))
+          .Returns(sortExpressionDefinition);
+
+      Assert.That(relationEndPointDefinition.GetSortExpression(), Is.SameAs(sortExpressionDefinition));
     }
 
     [Test]
     public void IsVirtualEndRelationEndpoint_BidirectionalOneToOne ()
     {
-      var propertyInfo = PropertyInfoAdapter.Create (_classType.GetProperty ("BaseBidirectionalOneToOne"));
-      var relationEndPointReflector = CreateRelationEndPointReflector (propertyInfo);
+      var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BaseBidirectionalOneToOne"));
+      var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.True);
+      Assert.That(relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.True);
     }
 
     [Test]
-    public void IsVirtualEndRelationEndpoint_BidirectionalOneToMany ()
+    public void IsVirtualEndRelationEndpoint_BidirectionalOneToManyForDomainObjectCollection ()
     {
-      var propertyInfo = PropertyInfoAdapter.Create (_classType.GetProperty ("BaseBidirectionalOneToMany"));
-      var relationEndPointReflector = CreateRelationEndPointReflector (propertyInfo);
+      var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BaseBidirectionalOneToManyForDomainObjectCollection"));
+      var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
 
-      Assert.That (relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.True);
+      Assert.That(relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.True);
+    }
+
+    [Test]
+    public void IsVirtualEndRelationEndpoint_BidirectionalOneToManyForVirtualCollection ()
+    {
+      var propertyInfo = PropertyInfoAdapter.Create(_classType.GetProperty("BaseBidirectionalOneToManyForVirtualCollection"));
+      var relationEndPointReflector = CreateRelationEndPointReflector(propertyInfo);
+
+      Assert.That(relationEndPointReflector.IsVirtualEndRelationEndpoint(), Is.True);
     }
 
     private RdbmsRelationEndPointReflector CreateRelationEndPointReflector (PropertyInfoAdapter propertyInfo)
     {
-      return new RdbmsRelationEndPointReflector (
+      return new RdbmsRelationEndPointReflector(
           _classDefinition,
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub);
+          DomainModelConstraintProviderStub.Object,
+          SortExpressionDefinitionProviderStub.Object);
     }
   }
 }

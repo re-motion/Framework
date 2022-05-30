@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
 using Remotion.Security.UnitTests.SampleDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.SecurityClientTests
 {
@@ -27,146 +27,138 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
   {
     private SecurityClientTestHelper _testHelper;
     private SecurityClient _securityClient;
-    private IMethodInformation _methodInformation;
+    private Mock<IMethodInformation> _methodInformation;
 
     [SetUp]
     public void SetUp ()
     {
-      _testHelper = new SecurityClientTestHelper ();
-      _securityClient = _testHelper.CreateSecurityClient ();
-      _methodInformation = MockRepository.GenerateMock<IMethodInformation> ();
+      _testHelper = new SecurityClientTestHelper();
+      _securityClient = _testHelper.CreateSecurityClient();
+      _methodInformation = new Mock<IMethodInformation>();
     }
 
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.Second);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.Second, true);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.Second);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.Second, true);
 
-      bool hasAccess = _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      Assert.That (hasAccess, Is.True);
-      _testHelper.VerifyAll ();
+      Assert.That(hasAccess, Is.True);
+      _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_AccessDenied ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.Second);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (TestAccessTypes.Second, false);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.Second);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(TestAccessTypes.Second, false);
 
-      bool hasAccess = _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.False);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.First);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.First);
 
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+        hasAccess = _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessGranted_WithDefaultAccessType ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessTypes.Edit, true);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(GeneralAccessTypes.Edit, true);
 
-      bool hasAccess = _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
     [Test]
     public void Test_AccessDenied_WithDefaultAccessType ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess (GeneralAccessTypes.Edit, false);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(GeneralAccessTypes.Edit, false);
 
-      bool hasAccess = _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+      bool hasAccess = _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.False);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.False);
     }
 
     [Test]
     public void Test_AccessGranted_WithDefaultAccessTypeAndWithinSecurityFreeSection ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object);
 
       bool hasAccess;
       using (SecurityFreeSection.Activate())
       {
-        hasAccess = _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+        hasAccess = _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object);
       }
 
-      _testHelper.VerifyAll ();
-      Assert.That (hasAccess, Is.True);
+      _testHelper.VerifyAll();
+      Assert.That(hasAccess, Is.True);
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The securableObject did not return an IObjectSecurityStrategy.")]
     public void Test_WithSecurityStrategyIsNull ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, TestAccessTypes.First);
-      _testHelper.ReplayAll ();
-
-      _securityClient.HasPropertyWriteAccess (new SecurableObject (null), _methodInformation);
-
-      _testHelper.VerifyAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, TestAccessTypes.First);
+      Assert.That(
+          () => _securityClient.HasPropertyWriteAccess(new SecurableObject(null), _methodInformation.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("The securableObject did not return an IObjectSecurityStrategy."));
+      _testHelper.VerifyAll();
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNull_ShouldThrowInvalidOperationException ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, null);
-      _testHelper.ReplayAll ();
-
-      _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, null);
+      Assert.That(
+          () => _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
     }
 
 #if !DEBUG
-    [Ignore ("Skipped unless DEBUG build")]
+    [Ignore("Skipped unless DEBUG build")]
 #endif
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null.")]
     public void Test_WithPermissionProviderReturnedNullAndWithinSecurityFreeSection_ShouldThrowInvalidOperationException ()
     {
-      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions (_methodInformation, null);
-      _testHelper.ReplayAll ();
+      _testHelper.ExpectPermissionReflectorGetRequiredMethodPermissions(_methodInformation.Object, null);
 
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.HasPropertyWriteAccess (_testHelper.SecurableObject, _methodInformation);
+        Assert.That(
+            () => _securityClient.HasPropertyWriteAccess(_testHelper.SecurableObject, _methodInformation.Object),
+            Throws.InvalidOperationException
+                .With.Message.EqualTo("IPermissionProvider.GetRequiredMethodPermissions evaluated and returned null."));
       }
 
-      _testHelper.VerifyAll ();
+      _testHelper.VerifyAll();
     }
   }
 }

@@ -31,15 +31,15 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins
   {
     protected override void OnTargetReferenceInitializing ()
     {
-      base.OnTargetReferenceInitializing ();
+      base.OnTargetReferenceInitializing();
       MunicipalityID = 12;
     }
-    
+
     public virtual int MunicipalityID { get; set; }
 
     public virtual string GetDescriptionForMayors ()
     {
-      return string.Format ("MunicipalSettlement: {0} ({1}), {2}", Target.Title, Target.SettlementKind, MunicipalityID);
+      return string.Format("MunicipalSettlement: {0} ({1}), {2}", Target.Title, Target.SettlementKind, MunicipalityID);
     }
   }
 }

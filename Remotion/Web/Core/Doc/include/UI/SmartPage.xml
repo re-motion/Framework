@@ -54,10 +54,13 @@
         dirty state of a control not supporting <see cref="IEditableControl"/>. In this case you must pass the
         control's client-side ID. You also have to keep track of the control's server-side dirty state on your own.
       </para><para>
-        <see cref="EvaluateDirtyState"/> should be used to determine whether any of the tracked controls is dirty.
+        <see cref="GetDirtyStates"/> should be used to determine whether any of the tracked controls are dirty.
         The <see cref="SmartPage"/> also includes the value of its own <see cref="IsDirty"/> flag in the result of
-        <see cref="EvaluateDirtyState"/>. If the page itself is dirty, the dirty state of the registered controls
-        is irrelevant.
+        <see cref="GetDirtyStates"/>. If the page itself is dirty, the dirty state of the registered controls
+        is irrelevant. <see cref="GetDirtyStates"/> can be extended to introduce additional conditions for dirty state,
+        e.g. to indicate that the session contains unsaved changes.
+      </para><para>
+        <see cref="SmartPageExtensions.EvaluateDirtyState"/> should be used to determine whether the page has unsaved changes.
       </para>
       
       <h4 class="dtH4">Abort Confirmation Dialog (specified in <see cref="ISmartPage"/>)</h4>
@@ -66,7 +69,7 @@
         application by setting <see cref="AbortMessage"/>.        
       </para><para>
         <see cref="IsAbortConfirmationEnabled"/> is designed to determine whether to show the abort confirmation 
-        dialog in general and <see cref="IsDirtyStateTrackingEnabled"/> determines whether to limit the dialog
+        dialog in general and <see cref="HasUnconditionalAbortConfirmation"/> determines whether to limit the dialog
         to dirty pages. The <see cref="SmartPage"/> uses the <see cref="ShowAbortConfirmation"/> property to define
         the value of these flags.
       </para>

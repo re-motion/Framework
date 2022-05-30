@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocEnumValueSelector : BocControlSelectorBase<BocEnumValueControlObject>
   {
     public BocEnumValueSelector ()
-        : base ("BocEnumValue")
+        : base("BocEnumValue")
     {
     }
 
@@ -36,10 +36,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new BocEnumValueControlObject (newControlObjectContext);
+      return new BocEnumValueControlObject(newControlObjectContext);
     }
   }
 }

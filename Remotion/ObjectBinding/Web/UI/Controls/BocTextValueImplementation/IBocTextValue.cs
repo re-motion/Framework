@@ -35,16 +35,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     /// <exception cref="FormatException"> 
     ///   The value of the <see cref="IBocTextValueBase.Text"/> property cannot be converted to the specified <see cref="ValueType"/>.
     /// </exception>
-    [Description ("Gets or sets the current value.")]
-    [Browsable (false)]
-    new object Value { get; set; }
+    [Description("Gets or sets the current value.")]
+    [Browsable(false)]
+    new object? Value { get; set; }
 
     /// <summary>
     ///   Gets a flag describing whether it is save (i.e. accessing <see cref="Value"/> does not throw a 
     ///   <see cref="FormatException"/> or <see cref="OverflowException"/>) to read the contents of <see cref="Value"/>.
     /// </summary>
     /// <remarks> Valid values include <see langword="null"/>. </remarks>
-    [Browsable (false)]
+    [Browsable(false)]
     bool IsValidValue { get; }
 
     /// <summary> Gets or sets the <see cref="BocTextValueType"/> assigned from an external source. </summary>
@@ -52,17 +52,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ///   The externally set <see cref="BocTextValueType"/>. The default value is 
     ///   <see cref="BocTextValueType.Undefined"/>. 
     /// </value>
-    [Description ("Gets or sets a fixed value type.")]
-    [Category ("Data")]
-    [DefaultValue (BocTextValueType.Undefined)]
+    [Description("Gets or sets a fixed value type.")]
+    [Category("Data")]
+    [DefaultValue(BocTextValueType.Undefined)]
     BocTextValueType ValueType { get; set; }
 
     /// <summary>
     ///   Gets the controls fixed <see cref="ValueType"/> or, if <see cref="BocTextValueType.Undefined"/>, 
     ///   the <see cref="BusinessObjectBoundWebControl.Property"/>'s value type.
     /// </summary>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
     BocTextValueType ActualValueType { get; }
 
     /// <summary> Gets or sets the format string used to create the string value.  </summary>
@@ -74,11 +74,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation
     ///   <see cref="IFormattable"/> is used to format the value using this string. The default is "d" for date-only
     ///   values and "g" for date/time values (use "G" to display seconds too). 
     /// </remarks>
-    [Description (
+    [Description(
         "Gets or sets the format string used to create the string value. Format must be parsable by the value's type if the control is in edit mode.")
     ]
-    [Category ("Style")]
-    [DefaultValue ("")]
-    string Format { get; set; }
+    [Category("Style")]
+    [DefaultValue("")]
+    string? Format { get; set; }
   }
 }

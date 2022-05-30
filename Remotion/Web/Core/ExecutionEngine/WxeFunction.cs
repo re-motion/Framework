@@ -21,6 +21,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using Remotion.Collections;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -35,66 +36,68 @@ namespace Remotion.Web.ExecutionEngine
   {
     public static bool HasAccess (Type functionType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("functionType", functionType, typeof (WxeFunction));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("functionType", functionType, typeof(WxeFunction));
 
-      var wxeSecurityAdapter = GetWxeSecurityAdapter ();
+      var wxeSecurityAdapter = GetWxeSecurityAdapter();
       if (wxeSecurityAdapter == null)
         return true;
 
-      return wxeSecurityAdapter.HasStatelessAccess (functionType);
+      return wxeSecurityAdapter.HasStatelessAccess(functionType);
     }
 
     private IWxeFunctionExecutionListener _executionListener = NullExecutionListener.Null;
-    private TransactionStrategyBase _transactionStrategy;
+    private TransactionStrategyBase? _transactionStrategy;
     private ITransactionMode _transactionMode;
     private readonly WxeVariablesContainer _variablesContainer;
-    private readonly WxeExceptionHandler _exceptionHandler = new WxeExceptionHandler ();
-    private string _functionToken;
-    private string _returnUrl;
-    private string _executionCompletedScript;
+    private readonly WxeExceptionHandler _exceptionHandler = new WxeExceptionHandler();
+    private string? _functionToken;
+    private string? _returnUrl;
+    private string? _executionCompletedScript;
+    private bool _isDirtyStateEnabled = true;
+    private bool _isDirty;
 
-    protected WxeFunction (ITransactionMode transactionMode, params object[] actualParameters)
+    protected WxeFunction (ITransactionMode transactionMode, params object?[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
-      ArgumentUtility.CheckNotNull ("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
 
       _transactionMode = transactionMode;
-      _variablesContainer = new WxeVariablesContainer (this, actualParameters);
+      _variablesContainer = new WxeVariablesContainer(this, actualParameters);
     }
 
-    protected WxeFunction (ITransactionMode transactionMode, WxeParameterDeclaration[] parameterDeclarations, object[] actualParameters)
+    protected WxeFunction (ITransactionMode transactionMode, WxeParameterDeclaration[] parameterDeclarations, object?[] actualParameters)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
-      ArgumentUtility.CheckNotNull ("parameterDeclarations", parameterDeclarations);
-      ArgumentUtility.CheckNotNull ("actualParameters", actualParameters);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("parameterDeclarations", parameterDeclarations);
+      ArgumentUtility.CheckNotNull("actualParameters", actualParameters);
 
       _transactionMode = transactionMode;
-      _variablesContainer = new WxeVariablesContainer (this, actualParameters, parameterDeclarations);
+      _variablesContainer = new WxeVariablesContainer(this, actualParameters, parameterDeclarations);
     }
 
     public override void Execute (WxeContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      Assertion.IsNotNull (_executionListener);
+      ArgumentUtility.CheckNotNull("context", context);
+      Assertion.IsNotNull(_executionListener);
 
       if (!IsExecutionStarted)
       {
-        _variablesContainer.EnsureParametersInitialized (null);
+        _variablesContainer.EnsureParametersInitialized(null);
         var wxeSecurityAdapter = GetWxeSecurityAdapter();
-        _executionListener = new SecurityExecutionListener (this, _executionListener, wxeSecurityAdapter);
+        _executionListener = new SecurityExecutionListener(this, _executionListener, wxeSecurityAdapter);
 
-        _transactionStrategy = _transactionMode.CreateTransactionStrategy (this, context);
-        Assertion.IsNotNull (_transactionStrategy);
+        _transactionStrategy = _transactionMode.CreateTransactionStrategy(this, context);
+        Assertion.IsNotNull(_transactionStrategy);
 
-        _executionListener = _transactionStrategy.CreateExecutionListener (_executionListener);
-        Assertion.IsNotNull (_executionListener);
+        _executionListener = _transactionStrategy.CreateExecutionListener(_executionListener);
+        Assertion.IsNotNull(_executionListener);
       }
 
       try
       {
-        _executionListener.OnExecutionPlay (context);
-        base.Execute (context);
-        _executionListener.OnExecutionStop (context);
+        _executionListener.OnExecutionPlay(context);
+        base.Execute(context);
+        _executionListener.OnExecutionStop(context);
       }
       catch (WxeFatalExecutionException)
       {
@@ -103,31 +106,31 @@ namespace Remotion.Web.ExecutionEngine
       }
       catch (ThreadAbortException)
       {
-        _executionListener.OnExecutionPause (context);
+        _executionListener.OnExecutionPause(context);
         throw;
       }
       catch (Exception stepException)
       {
         try
         {
-          _executionListener.OnExecutionFail (context, stepException);
+          _executionListener.OnExecutionFail(context, stepException);
         }
         catch (Exception listenerException)
         {
-          throw new WxeFatalExecutionException (stepException, listenerException);
+          throw new WxeFatalExecutionException(stepException, listenerException);
         }
 
-        var unwrappedException = WxeHttpExceptionPreservingException.GetUnwrappedException (stepException) ?? stepException;
-        if (!_exceptionHandler.Catch (unwrappedException))
+        var unwrappedException = WxeHttpExceptionPreservingException.GetUnwrappedException(stepException) ?? stepException;
+        if (!_exceptionHandler.Catch(unwrappedException))
         {
-          throw new WxeUnhandledException (
-              string.Format ("An exception ocured while executing WxeFunction '{0}'.", GetType().FullName),
+          throw new WxeUnhandledException(
+              string.Format("An exception ocured while executing WxeFunction '{0}'.", GetType().GetFullNameSafe()),
               stepException);
         }
       }
 
       if (_exceptionHandler.Exception == null && ParentStep != null)
-        _variablesContainer.ReturnParametersToCaller ();
+        _variablesContainer.ReturnParametersToCaller();
     }
 
     public ITransactionStrategy Transaction
@@ -147,10 +150,10 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetTransactionMode (ITransactionMode transactionMode)
     {
-      ArgumentUtility.CheckNotNull ("transactionMode", transactionMode);
+      ArgumentUtility.CheckNotNull("transactionMode", transactionMode);
 
       if (_transactionStrategy != null)
-        throw new InvalidOperationException ("The TransactionMode cannot be set after the TransactionStrategy has been initialized.");
+        throw new InvalidOperationException("The TransactionMode cannot be set after the TransactionStrategy has been initialized.");
 
       _transactionMode = transactionMode;
     }
@@ -162,22 +165,22 @@ namespace Remotion.Web.ExecutionEngine
 
     protected void SetExecutionListener (IWxeFunctionExecutionListener executionListener)
     {
-      ArgumentUtility.CheckNotNull ("executionListener", executionListener);
+      ArgumentUtility.CheckNotNull("executionListener", executionListener);
 
       if (_transactionStrategy != null)
-        throw new InvalidOperationException ("The ExecutionListener cannot be set after the TransactionStrategy has been initialized.");
+        throw new InvalidOperationException("The ExecutionListener cannot be set after the TransactionStrategy has been initialized.");
 
       _executionListener = executionListener;
     }
 
-    object[] IWxeFunctionExecutionContext.GetInParameters ()
+    object?[] IWxeFunctionExecutionContext.GetInParameters ()
     {
-      return _variablesContainer.ParameterDeclarations.Where (p => p.IsIn).Select (p => p.GetValue (_variablesContainer.Variables)).ToArray();
+      return _variablesContainer.ParameterDeclarations.Where(p => p.IsIn).Select(p => p.GetValue(_variablesContainer.Variables)).ToArray();
     }
 
-    object[] IWxeFunctionExecutionContext.GetOutParameters ()
+    object?[] IWxeFunctionExecutionContext.GetOutParameters ()
     {
-      return _variablesContainer.ParameterDeclarations.Where (p => p.IsOut).Select (p => p.GetValue (_variablesContainer.Variables)).ToArray ();
+      return _variablesContainer.ParameterDeclarations.Where(p => p.IsOut).Select(p => p.GetValue(_variablesContainer.Variables)).ToArray();
     }
 
     object[] IWxeFunctionExecutionContext.GetVariables ()
@@ -192,14 +195,14 @@ namespace Remotion.Web.ExecutionEngine
     /// If an <see cref="ExecutionCompletedScript"/> is set on the same <see cref="WxeFunction"/>, the <see cref="ReturnUrl"/> will not be used.
     /// </remarks>
     [CanBeNull]
-    public string ReturnUrl
+    public string? ReturnUrl
     {
       get { return _returnUrl; }
       set
       {
-        if (value != null && value.StartsWith ("javascript:", StringComparison.OrdinalIgnoreCase))
+        if (value != null && value.StartsWith("javascript:", StringComparison.OrdinalIgnoreCase))
         {
-          throw new ArgumentException (
+          throw new ArgumentException(
               "The ReturnUrl cannot be a javascript-URL. Use the WxeFunction.SetExecutionCompletedScript(script) method instead.",
               "value");
         }
@@ -209,7 +212,7 @@ namespace Remotion.Web.ExecutionEngine
     }
 
     [CanBeNull]
-    public string ExecutionCompletedScript
+    public string? ExecutionCompletedScript
     {
       get { return _executionCompletedScript; }
     }
@@ -220,10 +223,71 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks>The <paramref name="script"/> will supersede any <see cref="ReturnUrl"/> set on the same <see cref="WxeFunction"/>.</remarks>
     public void SetExecutionCompletedScript ([NotNull] string script)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("script", script);
+      ArgumentUtility.CheckNotNullOrEmpty("script", script);
 
       _returnUrl = null;
       _executionCompletedScript = script;
+    }
+
+    /// <summary> Gets or sets a flag describing whether the <see cref="WxeFunction"/> is dirty. </summary>
+    /// <value> <see langword="true"/> if aborting the <see cref="WxeFunction"/> would result in the loss of unsaved changes. Defaults to <see langword="false"/>.  </value>
+    public bool IsDirty
+    {
+      get { return _isDirty; }
+      set { _isDirty = value; }
+    }
+
+    /// <summary>
+    /// Evaluates the current dirty state for this <see cref="WxeFunction"/>.
+    /// </summary>
+    /// <remarks>
+    /// The evaluation includes the <see cref="IsDirty"/> flag, the information for the currently executing <see cref="WxeStep"/>,
+    /// the <see cref="Transaction"/>'s dirty state, and the aggregated dirty state of previously executed steps.
+    /// </remarks>
+    /// <returns><see langword="true" /> if the <see cref="WxeFunction"/> represents unsaved changes.</returns>
+    public override bool EvaluateDirtyState ()
+    {
+      if (IsDirtyStateEnabled)
+      {
+        if (_isDirty)
+          return true;
+
+        if (TransactionStrategy.EvaluateDirtyState())
+          return true;
+      }
+
+      return base.EvaluateDirtyState();
+    }
+
+    /// <summary> Gets the flag that determines whether to include this <see cref="WxeFunction"/>'s dirty state during a call to <see cref="EvaluateDirtyState"/>. </summary>
+    /// <value>
+    /// <see langword="true" /> unless <see cref="DisableDirtyState"/> has been invoked on this <see cref="WxeFunction"/>.
+    /// </value>
+    public sealed override bool IsDirtyStateEnabled
+    {
+      get { return _isDirtyStateEnabled; }
+    }
+
+    /// <summary>
+    /// Disables dirty state handling for this <see cref="WxeFunction"/>
+    /// </summary>
+    /// <remarks>
+    /// <see cref="DisableDirtyState"/> will disable the dirty state handling for this <see cref="WxeFunction"/>, all instances of <see cref="WxeStep"/> that belong to this
+    /// <see cref="WxeFunction"/> as well as the dirty state handling for any <see cref="WxePage"/> that is executed by this <see cref="WxeFunction"/>'s <see cref="WxePageStep"/>.
+    /// The dirty state handling of a <see cref="WxeFunction"/> executed as a sub-function within a <see cref="WxePage"/> or as a nested step of the this <see cref="WxeFunction"/>
+    /// will not be affected, making the <see cref="WxeFunction"/> a boundary for the configuration of dirty state handling.
+    /// <note type="warning">
+    /// Because <see cref="DisableDirtyState"/> disables dirty state handling for this <see cref="WxeFunction"/>, the dirty state of any returning sub-function will also be
+    /// discarded. This means a <see cref="WxeFunction"/> stack can only remain dirty, while a sub-function with enabled dirty state handling is executing.
+    /// </note>
+    /// </remarks>
+    /// <exception cref="InvalidOperationException">Thrown when <see cref="DisableDirtyState"/> is invoked after the execution of this <see cref="WxeFunction"/> has been started.</exception>
+    public void DisableDirtyState ()
+    {
+      if (IsExecutionStarted)
+        throw new InvalidOperationException("Cannot configure dirty state handling after the execution has started.");
+
+      _isDirtyStateEnabled = false;
     }
 
     public override NameObjectCollection Variables
@@ -247,46 +311,46 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (_functionToken != null)
           return _functionToken;
-        WxeFunction rootFunction = RootFunction;
+        WxeFunction? rootFunction = RootFunction;
         if (rootFunction != null && rootFunction != this)
           return rootFunction.FunctionToken;
-        throw new InvalidOperationException (
+        throw new InvalidOperationException(
             "The WxeFunction does not have a RootFunction, i.e. the top-most WxeFunction does not have a FunctionToken.");
       }
     }
 
     internal void SetFunctionToken (string functionToken)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
+      ArgumentUtility.CheckNotNullOrEmpty("functionToken", functionToken);
       _functionToken = functionToken;
     }
 
     public override string ToString ()
     {
-      StringBuilder sb = new StringBuilder ();
-      sb.Append ("WxeFunction: ");
-      sb.Append (GetType ().Name);
-      sb.Append (" (");
+      StringBuilder sb = new StringBuilder();
+      sb.Append("WxeFunction: ");
+      sb.Append(GetType().Name);
+      sb.Append(" (");
       for (int i = 0; i < _variablesContainer.ActualParameters.Length; ++i)
       {
         if (i > 0)
-          sb.Append (", ");
-        object value = _variablesContainer.ActualParameters[i];
+          sb.Append(", ");
+        object? value = _variablesContainer.ActualParameters[i];
         if (value is WxeVariableReference)
-          sb.Append ("@" + ((WxeVariableReference) value).Name);
+          sb.Append("@" + ((WxeVariableReference)value).Name);
         else if (value is string)
-          sb.AppendFormat ("\"{0}\"", value);
+          sb.AppendFormat("\"{0}\"", value);
         else
-          sb.Append (value);
+          sb.Append(value);
       }
-      sb.Append (")");
-      return sb.ToString ();
+      sb.Append(")");
+      return sb.ToString();
     }
 
-    internal static IWxeSecurityAdapter GetWxeSecurityAdapter ()
+    internal static IWxeSecurityAdapter? GetWxeSecurityAdapter ()
     {
       return SafeServiceLocator.Current.GetAllInstances<IWxeSecurityAdapter>()
-          .SingleOrDefault (() => new InvalidOperationException ("Only a single IWxeSecurityAdapter can be registered."));
+          .SingleOrDefault(() => new InvalidOperationException("Only a single IWxeSecurityAdapter can be registered."));
     }
   }
 }

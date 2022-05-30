@@ -24,69 +24,74 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   [TestFixture]
   public class RelationEndPointDefinitionTest : MappingReflectionTestBase
   {
-    private VirtualRelationEndPointDefinition _customerEndPoint;
+    private DomainObjectCollectionRelationEndPointDefinition _customerEndPoint;
     private RelationEndPointDefinition _orderEndPoint;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       RelationDefinition customerToOrder = FakeMappingConfiguration.Current.RelationDefinitions[
         "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order:Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain."
         + "Integration.Order.Customer->Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain."
         + "Integration.Customer.Orders"];
 
-      _customerEndPoint = (VirtualRelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
+      _customerEndPoint = (DomainObjectCollectionRelationEndPointDefinition)customerToOrder.GetEndPointDefinition(
           "Customer", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Customer.Orders");
 
-      _orderEndPoint = (RelationEndPointDefinition) customerToOrder.GetEndPointDefinition (
+      _orderEndPoint = (RelationEndPointDefinition)customerToOrder.GetEndPointDefinition(
           "Order", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Order.Customer");
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), ExpectedMessage =
-        "Relation definition error: Property 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name' of class 'Company' is of type "
-        + "'System.String', but non-virtual properties must be of type 'Remotion.Data.DomainObjects.ObjectID'.")]
     public void Initialization_PropertyOfWrongType ()
     {
-      var companyDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (Company)];
+      var companyDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(Company)];
       var propertyDefinition = companyDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name"];
-
-      new RelationEndPointDefinition (propertyDefinition, false);
+      Assert.That(
+          () => new RelationEndPointDefinition(propertyDefinition, false),
+          Throws.InstanceOf<MappingException>()
+              .With.Message.EqualTo(
+                  "Relation definition error: Property 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Company.Name' of class 'Company' is of type "
+                  + "'System.String', but non-virtual properties must be of type 'Remotion.Data.DomainObjects.ObjectID'."));
     }
 
     [Test]
     public void Initialize ()
     {
-      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition (classType: typeof (Order));
-      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID (classDefinition);
-      classDefinition.SetPropertyDefinitions (new PropertyDefinitionCollection { propertyDefinition });
-      var endPoint = new RelationEndPointDefinition (propertyDefinition, true);
+      var classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: typeof(Order));
+      var propertyDefinition = PropertyDefinitionObjectMother.CreateForFakePropertyInfo_ObjectID(classDefinition);
+      classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection { propertyDefinition });
+      var endPoint = new RelationEndPointDefinition(propertyDefinition, true);
 
-      Assert.That (endPoint.PropertyInfo, Is.SameAs (propertyDefinition.PropertyInfo));
+      Assert.That(endPoint.PropertyInfo, Is.SameAs(propertyDefinition.PropertyInfo));
     }
 
     [Test]
     public void IsAnonymous ()
     {
-      Assert.That (_orderEndPoint.IsAnonymous, Is.False);
+      Assert.That(_orderEndPoint.IsAnonymous, Is.False);
     }
 
     [Test]
-    public void RelationDefinitionNull ()
+    public void RelationDefinition_NotSet ()
     {
-      var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof (OrderTicket)];
+      var classDefinition = FakeMappingConfiguration.Current.TypeDefinitions[typeof(OrderTicket)];
       var propertyDefinition = classDefinition["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.OrderTicket.Order"];
 
-      var definition = new RelationEndPointDefinition (propertyDefinition, true);
+      var definition = new RelationEndPointDefinition(propertyDefinition, true);
 
-      Assert.That (definition.RelationDefinition, Is.Null);
+      Assert.That(definition.HasRelationDefinitionBeenSet, Is.False);
+      Assert.That(
+          () => definition.RelationDefinition,
+          Throws.InvalidOperationException.With.Message.EqualTo("RelationDefinition has not been set for this relation end point."));
     }
 
     [Test]
-    public void RelationDefinitionNotNull ()
+    public void RelationDefinition_NotNull ()
     {
-      Assert.That (_orderEndPoint.RelationDefinition, Is.Not.Null);
+      Assert.That(_orderEndPoint.HasRelationDefinitionBeenSet, Is.True);
+      Assert.That(_orderEndPoint.RelationDefinition, Is.Not.Null);
     }
   }
 }

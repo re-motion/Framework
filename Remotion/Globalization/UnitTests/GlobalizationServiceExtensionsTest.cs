@@ -15,35 +15,36 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.UnitTests
 {
   [TestFixture]
   public class GlobalizationServiceExtensionsTest
   {
-    private IGlobalizationService _globalizationServiceMock;
+    private Mock<IGlobalizationService> _globalizationServiceMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _globalizationServiceMock = MockRepository.GenerateStrictMock<IGlobalizationService>();
+      _globalizationServiceMock = new Mock<IGlobalizationService>(MockBehavior.Strict);
     }
 
     [Test]
     public void GetResourceManager ()
     {
-      var fakeResult = MockRepository.GenerateStub<IResourceManager>();
+      var fakeResult = new Mock<IResourceManager>();
       _globalizationServiceMock
-          .Expect (mock => mock.GetResourceManager (Arg<ITypeInformation>.Matches (ti => ((TypeAdapter) ti).Type == typeof (string))))
-          .Return (fakeResult);
+          .Setup(mock => mock.GetResourceManager(It.Is<ITypeInformation>(ti => ((TypeAdapter)ti).Type == typeof(string))))
+          .Returns(fakeResult.Object)
+          .Verifiable();
 
-      var result = _globalizationServiceMock.GetResourceManager (typeof (string));
+      var result = _globalizationServiceMock.Object.GetResourceManager(typeof(string));
 
-      _globalizationServiceMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (fakeResult));
+      _globalizationServiceMock.Verify();
+      Assert.That(result, Is.SameAs(fakeResult.Object));
     }
   }
 }

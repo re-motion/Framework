@@ -19,6 +19,7 @@ using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.ControlObjects.Selectors;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -32,21 +33,21 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class CommandControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<CommandSelector, CommandControlObject>))]
     public void GenericTests (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
-      testAction (Helper, e => e.Commands(), "command");
+      testAction(Helper, e => e.Commands(), "command");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<CommandSelector, CommandControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<CommandSelector, CommandControlObject> testAction)
     {
-      testAction (Helper, e => e.Commands(), "command");
+      testAction(Helper, e => e.Commands(), "command");
     }
 
     [Test]
@@ -54,10 +55,12 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var control = home.Commands().GetByLocalID ("TestCommand3");
+      var control = home.Commands().GetByLocalID("TestCommand3");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.Click(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
+          () => control.Click(),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateCommandDisabledException(Driver, "Click").Message));
     }
 
     [Test]
@@ -65,18 +68,26 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var command1 = home.Commands().GetByLocalID ("Command1");
-      home = command1.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.EqualTo ("Command1ItemID"));
+      {
+        var command1 = home.Commands().GetByLocalID("Command1");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(command1);
+        home = command1.Click().Expect<WxePageObject>();
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("Command1ItemID"));
+      }
 
-      var command2 = home.Commands().GetByLocalID ("Command2");
-      home = command2.Click().Expect<WxePageObject>();
-      Assert.That (home.Scope.FindId ("TestOutputLabel").Text, Is.Empty);
+      {
+        var command2 = home.Commands().GetByLocalID("Command2");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(command2);
+        home = command2.Click().Expect<WxePageObject>();
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxeResetCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.Empty);
+      }
     }
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("CommandTest.wxe");
+      return Start<WxePageObject>("CommandTest.wxe");
     }
   }
 }

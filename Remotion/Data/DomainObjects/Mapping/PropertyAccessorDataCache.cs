@@ -36,91 +36,90 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     private readonly ClassDefinition _classDefinition;
     private readonly Lazy<IReadOnlyDictionary<string, PropertyAccessorData>> _cachedAccessorData;
-    private readonly ConcurrentDictionary<IPropertyInformation, PropertyAccessorData> _cachedAccessorDataByMember;
-    private readonly Func<IPropertyInformation, PropertyAccessorData> _resolvePropertyAccessorDataWithoutCacheFunc;
+    private readonly ConcurrentDictionary<IPropertyInformation, PropertyAccessorData?> _cachedAccessorDataByMember;
+    private readonly Func<IPropertyInformation, PropertyAccessorData?> _resolvePropertyAccessorDataWithoutCacheFunc;
 
     public PropertyAccessorDataCache (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       _classDefinition = classDefinition;
-      _cachedAccessorData = new Lazy<IReadOnlyDictionary<string, PropertyAccessorData>> (
+      _cachedAccessorData = new Lazy<IReadOnlyDictionary<string, PropertyAccessorData>>(
           BuildAccessorDataDictionary,
           LazyThreadSafetyMode.ExecutionAndPublication);
-      _cachedAccessorDataByMember = new ConcurrentDictionary<IPropertyInformation, PropertyAccessorData>();
+      _cachedAccessorDataByMember = new ConcurrentDictionary<IPropertyInformation, PropertyAccessorData?>();
 
       // Optimized for memory allocations
       _resolvePropertyAccessorDataWithoutCacheFunc = ResolvePropertyAccessorDataWithoutCache;
     }
 
     [CanBeNull]
-    public PropertyAccessorData GetPropertyAccessorData ([NotNull] string propertyIdentifier)
+    public PropertyAccessorData? GetPropertyAccessorData ([NotNull] string propertyIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
-      PropertyAccessorData result;
-      _cachedAccessorData.Value.TryGetValue (propertyIdentifier, out result);
+      _cachedAccessorData.Value.TryGetValue(propertyIdentifier, out var result);
       return result;
     }
 
     [CanBeNull]
-    public PropertyAccessorData GetPropertyAccessorData ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
+    public PropertyAccessorData? GetPropertyAccessorData ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
-      ArgumentUtility.CheckNotNullOrEmpty ("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
+      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
-      string propertyIdentifier = GetIdentifierFromTypeAndShortName (domainObjectType, shortPropertyName);
-      return GetPropertyAccessorData (propertyIdentifier);
+      string propertyIdentifier = GetIdentifierFromTypeAndShortName(domainObjectType, shortPropertyName);
+      return GetPropertyAccessorData(propertyIdentifier);
     }
 
     [CanBeNull]
-    public PropertyAccessorData ResolvePropertyAccessorData<TDomainObject, TResult> (
-        [NotNull] Expression<Func<TDomainObject, TResult>> propertyAccessExpression) 
+    public PropertyAccessorData? ResolvePropertyAccessorData<TDomainObject, TResult> (
+        [NotNull] Expression<Func<TDomainObject, TResult>> propertyAccessExpression)
         where TDomainObject : IDomainObject
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessExpression", propertyAccessExpression);
+      ArgumentUtility.CheckNotNull("propertyAccessExpression", propertyAccessExpression);
 
       PropertyInfo propertyInfo;
       try
       {
-        propertyInfo = MemberInfoFromExpressionUtility.GetProperty (propertyAccessExpression);
+        propertyInfo = MemberInfoFromExpressionUtility.GetProperty(propertyAccessExpression);
       }
       catch (ArgumentException ex)
       {
-        throw new ArgumentException ("The expression must identify a property.", "propertyAccessExpression", ex);
+        throw new ArgumentException("The expression must identify a property.", "propertyAccessExpression", ex);
       }
 
-      return ResolvePropertyAccessorData (PropertyInfoAdapter.Create (propertyInfo));
+      return ResolvePropertyAccessorData(PropertyInfoAdapter.Create(propertyInfo));
     }
 
     [CanBeNull]
-    public PropertyAccessorData ResolvePropertyAccessorData ([NotNull] IPropertyInformation propertyInformation)
+    public PropertyAccessorData? ResolvePropertyAccessorData ([NotNull] IPropertyInformation propertyInformation)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
 
-      return _cachedAccessorDataByMember.GetOrAdd (propertyInformation, _resolvePropertyAccessorDataWithoutCacheFunc);
+      return _cachedAccessorDataByMember.GetOrAdd(propertyInformation, _resolvePropertyAccessorDataWithoutCacheFunc);
     }
 
     [CanBeNull]
-    private PropertyAccessorData ResolvePropertyAccessorDataWithoutCache ([NotNull] IPropertyInformation propertyInformation)
+    private PropertyAccessorData? ResolvePropertyAccessorDataWithoutCache ([NotNull] IPropertyInformation propertyInformation)
     {
-      return ReflectionBasedPropertyResolver.ResolveDefinition (propertyInformation, _classDefinition, GetPropertyAccessorData);
+      return ReflectionBasedPropertyResolver.ResolveDefinition(propertyInformation, _classDefinition, GetPropertyAccessorData);
     }
 
     [NotNull]
     public PropertyAccessorData GetMandatoryPropertyAccessorData ([NotNull] string propertyName)
     {
       // GetPropertyAccessorData already performs the null check
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("propertyName", propertyName);
 
-      var data = GetPropertyAccessorData (propertyName);
+      var data = GetPropertyAccessorData(propertyName);
       if (data == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The domain object type '{0}' does not have a mapping property named '{1}'.",
             _classDefinition.ClassType,
             propertyName);
-        throw new MappingException (message);
+        throw new MappingException(message);
       }
       return data;
     }
@@ -128,11 +127,11 @@ namespace Remotion.Data.DomainObjects.Mapping
     [NotNull]
     public PropertyAccessorData GetMandatoryPropertyAccessorData ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull ("domainObjectType", domainObjectType);
-      ArgumentUtility.CheckNotNullOrEmpty ("shortPropertyName", shortPropertyName);
+      ArgumentUtility.CheckNotNull("domainObjectType", domainObjectType);
+      ArgumentUtility.CheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
-      var propertyName = GetIdentifierFromTypeAndShortName (domainObjectType, shortPropertyName);
-      return GetMandatoryPropertyAccessorData (propertyName);
+      var propertyName = GetIdentifierFromTypeAndShortName(domainObjectType, shortPropertyName);
+      return GetMandatoryPropertyAccessorData(propertyName);
     }
 
     [NotNull]
@@ -141,34 +140,34 @@ namespace Remotion.Data.DomainObjects.Mapping
         where TDomainObject : IDomainObject
     {
       //ResolvePropertyAccessorData already performs the null check
-      ArgumentUtility.DebugCheckNotNull ("propertyAccessExpression", propertyAccessExpression);
+      ArgumentUtility.DebugCheckNotNull("propertyAccessExpression", propertyAccessExpression);
 
-      var data = ResolvePropertyAccessorData (propertyAccessExpression);
+      var data = ResolvePropertyAccessorData(propertyAccessExpression);
       if (data == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The domain object type '{0}' does not have a mapping property identified by expression '{1}'.",
             _classDefinition.ClassType,
             propertyAccessExpression);
-        throw new MappingException (message);
+        throw new MappingException(message);
       }
 
       return data;
     }
 
     [CanBeNull]
-    public PropertyAccessorData FindPropertyAccessorData ([NotNull] Type typeToStartSearch, [NotNull] string shortPropertyName)
+    public PropertyAccessorData? FindPropertyAccessorData ([NotNull] Type typeToStartSearch, [NotNull] string shortPropertyName)
     {
-      ArgumentUtility.CheckNotNull ("typeToStartSearch", typeToStartSearch);
+      ArgumentUtility.CheckNotNull("typeToStartSearch", typeToStartSearch);
       // The first loop already checks the shortPropertyName argument.
-      ArgumentUtility.DebugCheckNotNullOrEmpty ("shortPropertyName", shortPropertyName);
+      ArgumentUtility.DebugCheckNotNullOrEmpty("shortPropertyName", shortPropertyName);
 
-      Type currentType = typeToStartSearch;
-      PropertyAccessorData propertyAccessorData = null;
-      while (currentType != null && (propertyAccessorData = GetPropertyAccessorData (currentType, shortPropertyName)) == null)
+      Type? currentType = typeToStartSearch;
+      PropertyAccessorData? propertyAccessorData = null;
+      while (currentType != null && (propertyAccessorData = GetPropertyAccessorData(currentType, shortPropertyName)) == null)
       {
         if (currentType.IsGenericType && !currentType.IsGenericTypeDefinition)
-          currentType = currentType.GetGenericTypeDefinition ();
+          currentType = currentType.GetGenericTypeDefinition();
         else
           currentType = currentType.BaseType;
       }
@@ -178,24 +177,24 @@ namespace Remotion.Data.DomainObjects.Mapping
     [NotNull]
     private string GetIdentifierFromTypeAndShortName ([NotNull] Type domainObjectType, [NotNull] string shortPropertyName)
     {
-      return domainObjectType.FullName + "." + shortPropertyName;
+      return domainObjectType.GetFullNameChecked() + "." + shortPropertyName;
     }
 
     private Dictionary<string, PropertyAccessorData> BuildAccessorDataDictionary ()
     {
-      var propertyDefinitions = _classDefinition.GetPropertyDefinitions ();
-      var relationEndPointDefinitions = _classDefinition.GetRelationEndPointDefinitions ();
+      var propertyDefinitions = _classDefinition.GetPropertyDefinitions();
+      var relationEndPointDefinitions = _classDefinition.GetRelationEndPointDefinitions();
 
       var propertyDefinitionNames = from PropertyDefinition pd in propertyDefinitions
                                     select pd.PropertyName;
       var virtualRelationEndPointNames =
           from IRelationEndPointDefinition repd in relationEndPointDefinitions
           where repd.IsVirtual
-          select repd.PropertyName;
+          select (string)repd.PropertyName!;
 
-      var allPropertyNames = propertyDefinitionNames.Concat (virtualRelationEndPointNames);
-      var allPropertyAccessorData = allPropertyNames.Select (name => new PropertyAccessorData (_classDefinition, name));
-      return allPropertyAccessorData.ToDictionary (data => data.PropertyIdentifier);
+      var allPropertyNames = propertyDefinitionNames.Concat(virtualRelationEndPointNames);
+      var allPropertyAccessorData = allPropertyNames.Select(name => new PropertyAccessorData(_classDefinition, name));
+      return allPropertyAccessorData.ToDictionary(data => data.PropertyIdentifier);
     }
   }
 }

@@ -19,6 +19,7 @@ using System;
 using System.IO;
 using Remotion.Utilities;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.IO
 {
@@ -27,7 +28,9 @@ namespace Remotion.Development.UnitTesting.IO
   /// </summary>
   partial class TempFile : IDisposable
   {
-    private string _fileName;
+    // TODO RM-7765: check if the instance is disposed before accessing _fileName.
+
+    private string? _fileName;
 
     public TempFile ()
     {
@@ -36,9 +39,9 @@ namespace Remotion.Development.UnitTesting.IO
 
     public void Dispose ()
     {
-      if (_fileName != null && File.Exists (_fileName))
+      if (_fileName != null && File.Exists(_fileName))
       {
-        File.Delete (_fileName);
+        File.Delete(_fileName);
         _fileName = null;
       }
     }
@@ -48,23 +51,23 @@ namespace Remotion.Development.UnitTesting.IO
       get
       {
         if (_fileName == null)
-          throw new InvalidOperationException ("Object disposed.");
+          throw new InvalidOperationException("Object disposed.");
         return _fileName;
       }
     }
 
     public void WriteStream (Stream stream)
     {
-      ArgumentUtility.CheckNotNull ("stream", stream);
+      ArgumentUtility.CheckNotNull("stream", stream);
 
-      using (StreamReader streamReader = new StreamReader (stream))
+      using (StreamReader streamReader = new StreamReader(stream))
       {
-        using (StreamWriter streamWriter = new StreamWriter (_fileName))
+        using (StreamWriter streamWriter = new StreamWriter(_fileName!))
         {
           while (!streamReader.EndOfStream)
           {
             char[] buffer = new char[100];
-            streamWriter.Write (buffer, 0, streamReader.Read (buffer, 0, buffer.Length));
+            streamWriter.Write(buffer, 0, streamReader.Read(buffer, 0, buffer.Length));
           }
         }
       }
@@ -72,23 +75,23 @@ namespace Remotion.Development.UnitTesting.IO
 
     public void WriteAllBytes (byte[] bytes)
     {
-      ArgumentUtility.CheckNotNull ("bytes", bytes);
+      ArgumentUtility.CheckNotNull("bytes", bytes);
 
-      File.WriteAllBytes (_fileName, bytes);
+      File.WriteAllBytes(_fileName!, bytes);
     }
 
     public void WriteAllText (string text)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      ArgumentUtility.CheckNotNull("text", text);
 
-      File.WriteAllText (_fileName, text);
+      File.WriteAllText(_fileName!, text);
     }
 
     public long Length
     {
       get
       {
-        var fileInfo = new FileInfo (_fileName);
+        var fileInfo = new FileInfo(_fileName!);
         return fileInfo.Length;
       }
     }

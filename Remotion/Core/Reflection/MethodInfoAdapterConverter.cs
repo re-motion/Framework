@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 using Remotion.Utilities;
@@ -37,10 +38,10 @@ namespace Remotion.Reflection
     /// <returns>
     /// <see langword="true" /> if this converter can perform the conversion; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
-      return sourceType == typeof (MethodInfo);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+      return sourceType == typeof(MethodInfo);
     }
 
     /// <summary>
@@ -53,10 +54,10 @@ namespace Remotion.Reflection
     /// <returns>
     /// <see langword="true" /> if this converter can perform the conversion; otherwise, <see langword="false" />.
     /// </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
-      return destinationType == typeof (MethodInfo);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType!);
+      return destinationType == typeof(MethodInfo);
     }
 
     /// <summary>
@@ -72,7 +73,8 @@ namespace Remotion.Reflection
     /// <exception cref="System.NotSupportedException">
     /// The conversion cannot be performed.
     /// </exception>
-    public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+    [return: NotNullIfNotNull("value")]
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       if (value == null)
         return null;
@@ -80,8 +82,8 @@ namespace Remotion.Reflection
       var methodInfo = value as MethodInfo;
       if (methodInfo == null)
       {
-        var message = string.Format ("Cannot convert value from type '{0}' to type '{1}'.", value.GetType (), typeof (MethodInfoAdapter));
-        throw new NotSupportedException (message);
+        var message = string.Format("Cannot convert value from type '{0}' to type '{1}'.", value.GetType(), typeof(MethodInfoAdapter));
+        throw new NotSupportedException(message);
       }
 
       return MethodInfoAdapter.Create(methodInfo);
@@ -106,17 +108,18 @@ namespace Remotion.Reflection
     /// <exception cref="T:System.NotSupportedException">
     /// The conversion cannot be performed.
     /// </exception>
-    public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    [return: NotNullIfNotNull("value")]
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
-      if (destinationType != typeof (MethodInfo))
+      if (destinationType != typeof(MethodInfo))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values to type '{0}'. This converter only supports converting to type '{1}'.",
             destinationType,
-            typeof (MethodInfo));
-        throw new NotSupportedException (message);
+            typeof(MethodInfo));
+        throw new NotSupportedException(message);
       }
 
       if (value == null)
@@ -125,12 +128,12 @@ namespace Remotion.Reflection
       var methodInfoAdapter = value as MethodInfoAdapter;
       if (methodInfoAdapter == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot convert values of type '{0}' to type '{1}'. This converter only supports values of type '{2}'.",
-            value.GetType (),
+            value.GetType(),
             destinationType,
-            typeof (MethodInfoAdapter));
-        throw new NotSupportedException (message);
+            typeof(MethodInfoAdapter));
+        throw new NotSupportedException(message);
       }
 
       return methodInfoAdapter.MethodInfo;

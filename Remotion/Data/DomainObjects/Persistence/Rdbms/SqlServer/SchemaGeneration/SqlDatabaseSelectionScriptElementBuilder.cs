@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public SqlDatabaseSelectionScriptElementBuilder (IScriptBuilder innerScriptBuilder, string connectionString)
     {
-      ArgumentUtility.CheckNotNull ("innerScriptBuilder", innerScriptBuilder);
-      ArgumentUtility.CheckNotNull ("connectionString", connectionString);
+      ArgumentUtility.CheckNotNull("innerScriptBuilder", innerScriptBuilder);
+      ArgumentUtility.CheckNotNull("connectionString", connectionString);
 
       _innerScriptBuilder = innerScriptBuilder;
       _connectionString = connectionString;
@@ -48,24 +48,24 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
 
     public void AddEntityDefinition (IRdbmsStorageEntityDefinition entityDefinition)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinition", entityDefinition);
+      ArgumentUtility.CheckNotNull("entityDefinition", entityDefinition);
 
-      _innerScriptBuilder.AddEntityDefinition (entityDefinition);
+      _innerScriptBuilder.AddEntityDefinition(entityDefinition);
     }
 
     public IScriptElement GetCreateScript ()
     {
-      var createScriptElements = new ScriptElementCollection ();
-      createScriptElements.AddElement (new ScriptStatement ("USE " + GetDatabaseName()));
-      createScriptElements.AddElement (_innerScriptBuilder.GetCreateScript());
+      var createScriptElements = new ScriptElementCollection();
+      createScriptElements.AddElement(new ScriptStatement("USE " + GetDatabaseName()));
+      createScriptElements.AddElement(_innerScriptBuilder.GetCreateScript());
       return createScriptElements;
     }
 
     public IScriptElement GetDropScript ()
     {
-      var dropScriptElements = new ScriptElementCollection ();
-      dropScriptElements.AddElement (new ScriptStatement ("USE " + GetDatabaseName ()));
-      dropScriptElements.AddElement (_innerScriptBuilder.GetDropScript());
+      var dropScriptElements = new ScriptElementCollection();
+      dropScriptElements.AddElement(new ScriptStatement("USE " + GetDatabaseName()));
+      dropScriptElements.AddElement(_innerScriptBuilder.GetDropScript());
       return dropScriptElements;
     }
 
@@ -74,18 +74,18 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.SchemaGenerati
       SqlConnectionStringBuilder connectionStringBuilder;
       try
       {
-        connectionStringBuilder = new SqlConnectionStringBuilder (_connectionString);
+        connectionStringBuilder = new SqlConnectionStringBuilder(_connectionString);
       }
       catch (ArgumentException ex)
       {
-         throw new InvalidOperationException (string.Format("Format of connection string '{0}' is invalid.", _connectionString), ex);
+         throw new InvalidOperationException(string.Format("Format of connection string '{0}' is invalid.", _connectionString), ex);
       }
 
       var initialCatalog = connectionStringBuilder.InitialCatalog;
-      if (string.IsNullOrEmpty (initialCatalog))
+      if (string.IsNullOrEmpty(initialCatalog))
       {
-        throw new InvalidOperationException (
-            string.Format ("No database name could be found in the given connection string '{0}'.", _connectionString));
+        throw new InvalidOperationException(
+            string.Format("No database name could be found in the given connection string '{0}'.", _connectionString));
       }
 
       return initialCatalog;

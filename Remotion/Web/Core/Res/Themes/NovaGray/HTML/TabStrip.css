@@ -30,6 +30,7 @@
 {
   border: solid 1px #AAAAAA;
   background-image: url(../Image/ButtonBackground.gif);
+  background-size: 1px 20px;
   background-color: #E6E5E7;
   color: Black;
   text-decoration: none;
@@ -50,6 +51,7 @@
   color: Black;
   border: solid 1px #7CB2E6;
   background-image: url(../Image/ButtonBackgroundHover.gif);
+  background-size: 1px 20px;
   background-color: #E5F0FC;
 }
 
@@ -77,6 +79,7 @@
   color: Black;
   border: solid 1px #569CE0;
   background-image: url(../Image/ButtonBackgroundActive.gif);
+  background-size: 1px 20px;
   background-color: #C5E0FC;
 }
 
@@ -137,6 +140,11 @@ body.msie *.tabStripTabSelected a::before
 *.tabStripTabsPane *.anchorBody > img
 {
   vertical-align: middle;
+}
+
+*.tabStripTabsPane *.anchorBody > img + span
+{
+  margin-left: 0.3em;
 }
 
 *.tabStripTabsPane *.anchorBody > span

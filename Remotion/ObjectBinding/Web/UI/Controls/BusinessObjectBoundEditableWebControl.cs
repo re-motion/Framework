@@ -20,6 +20,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
+using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
@@ -35,21 +38,25 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   {
     private bool? _required;
     private bool? _readOnly;
-    private HashSet<BaseValidator> _validators;
+    private bool? _enableOptionalValidators;
+    private HashSet<BaseValidator>? _validators;
     private bool _isDirty;
     private bool _hasBeenRenderedInPreviousLifecycle;
     private bool _isRenderedInCurrentLifecycle;
 
+    [NotNull]
+    protected abstract IBusinessObjectConstraintVisitor CreateBusinessObjectConstraintVisitor ();
+
     /// <summary>
-    /// Overrides the base method to call <see cref="ISmartPage.RegisterControlForClientSideDirtyStateTracking"/>
+    /// Overrides the base method to call <see cref="ISmartPage.RegisterControlForDirtyStateTracking"/>
     /// after base initialization.
     /// </summary>
     /// <param name="e">ignored</param>
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       if (Page is ISmartPage)
-        ((ISmartPage) Page).RegisterControlForDirtyStateTracking (this);
+        ((ISmartPage)Page).RegisterControlForDirtyStateTracking(this);
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
@@ -57,9 +64,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Set this property to <see langword="null"/> in order to use the default value 
     ///   (see <see cref="IsRequired"/>).
     /// </remarks>
-    [Description ("Explicitly specifies whether the control is required.")]
-    [Category ("Data")]
-    [DefaultValue (typeof (bool?), "")]
+    [Description("Explicitly specifies whether the control is required.")]
+    [Category("Data")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? Required
     {
       get { return _required; }
@@ -72,9 +79,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   (see <see cref="IsReadOnly"/>). Note that if the data source is in read-only mode, the
     ///   control is read-only too, even if this property is set to <see langword="false" />.
     /// </remarks>
-    [Description ("Explicitly specifies whether the control should be displayed in read-only mode.")]
-    [Category ("Data")]
-    [DefaultValue (typeof (bool?), "")]
+    [Description("Explicitly specifies whether the control should be displayed in read-only mode.")]
+    [Category("Data")]
+    [DefaultValue(typeof(bool?), "")]
     public bool? ReadOnly
     {
       get { return _readOnly; }
@@ -101,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Thrown if the <see cref="IsDirty"/> flag is set to <see langword="true"/> and the control is bound to a read-only
     ///   <see cref="BusinessObjectBoundWebControl.Property"/>.
     /// </exception>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual bool IsDirty
     {
       get { return _isDirty; }
@@ -109,8 +116,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (value && DataSource != null && Property != null && IsReadOnlyInDomainModel)
         {
-          throw new InvalidOperationException (
-              string.Format (
+          throw new InvalidOperationException(
+              string.Format(
                   "The {0} '{1}' could not be marked as dirty because the bound property '{2}' is read only.",
                   GetType().Name,
                   ID,
@@ -184,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     </item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual bool IsReadOnly
     {
       get
@@ -197,7 +204,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
           return false;
         if (DataSource.Mode == DataSourceMode.Read) // Bound Control && Reader DataSource
           return true;
-        if (!IsDesignMode && DataSource.BusinessObject == null) // Bound Control but no BusinessObject
+        if (DataSource.BusinessObject == null) // Bound Control but no BusinessObject
           return true;
         if (_readOnly == false) // Bound Control && ReadOnly==false
           return false;
@@ -208,10 +215,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary>
     ///   Gets a flag that determines whether the control is to be treated as a required value.
     /// </summary>
-    /// <remarks>
-    ///     The value of this property is used to decide whether <see cref="CreateValidators"/> should 
-    ///     include a <see cref="RequiredFieldValidator"/> for this control.
-    /// </remarks>
     /// <value>
     ///   The following rules are used to determine the value of this property:
     ///   <list type="bullet">
@@ -227,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///     <item>Otherwise, <see langword="false"/> is returned.</item>
     ///   </list>
     /// </value>
-    [Browsable (false)]
+    [Browsable(false)]
     public virtual bool IsRequired
     {
       get
@@ -242,11 +245,50 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <summary> Gets or sets a flag that specifies whether the control's validation goes beyond the .NET data type requirements. </summary>
+    /// <remarks> Set this property to <see langword="null"/> in order to use the default value (see <see cref="AreOptionalValidatorsEnabled"/>). </remarks>
+    [Description("Explicitly specifies whether the control automatically validates more than .NET data type requirements.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(bool?), "")]
+    public bool? EnableOptionalValidators
+    {
+      get { return _enableOptionalValidators; }
+      set { _enableOptionalValidators = value; }
+    }
+
+    /// <summary>
+    ///   Gets a flag that determines whether the control should validate more than .NET data type requirements.
+    /// </summary>
+    /// <value>
+    ///   The following rules are used to determine the value of this property:
+    ///   <list type="bullet">
+    ///     <item>
+    ///       If the <see cref="EnableOptionalValidators"/> property is not <see langword="null"/>, 
+    ///       the value of <see cref="EnableOptionalValidators"/> is returned.
+    ///     </item>
+    ///     <item>
+    /// 
+    ///     </item>
+    ///     <item>Otherwise, <see langword="false"/> is returned.</item>
+    ///   </list>
+    /// </value>
+    [Browsable(false)]
+    public bool AreOptionalValidatorsEnabled
+    {
+      get
+      {
+        if (EnableOptionalValidators.HasValue)
+          return EnableOptionalValidators.Value;
+
+        return ValidatorConfiguration.AreOptionalValidatorsEnabled(this);
+      }
+    }
+
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
     /// <remarks> Override <see cref="CreateValidators(bool)"/> to define the validators for this control.</remarks>
     public IEnumerable<BaseValidator> CreateValidators ()
     {
-      return CreateValidators (IsReadOnly);
+      return CreateValidators(IsReadOnly);
     }
 
     /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
@@ -270,7 +312,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_validators == null)
         _validators = new HashSet<BaseValidator>();
 
-      _validators.Add (validator);
+      _validators.Add(validator);
     }
 
     /// <summary>
@@ -281,7 +323,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_validators == null)
         return Enumerable.Empty<IValidator>();
 
-      return _validators.Select (v => v);
+      return _validators.Select(v => v);
     }
 
     /// <summary>
@@ -314,8 +356,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <param name="e">ignored</param>
     protected override void OnPreRender (EventArgs e)
     {
-      base.OnPreRender (e);
+      base.OnPreRender(e);
+      ApplyConstraints();
       _isRenderedInCurrentLifecycle = true;
+    }
+
+    private void ApplyConstraints ()
+    {
+      if (DataSource == null)
+        return;
+
+      if (Property == null)
+        return;
+
+      var visitor = CreateBusinessObjectConstraintVisitor();
+      var constraints = Property.GetConstraints(DataSource.BusinessObject);
+      foreach (var constraint in constraints)
+        constraint.Accept(visitor);
     }
 
     /// <summary>
@@ -328,7 +385,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get
       {
-        IWxePage wxePage = Page as IWxePage;
+        IWxePage? wxePage = Page as IWxePage;
         if (wxePage != null)
           return _hasBeenRenderedInPreviousLifecycle || wxePage.IsOutOfSequencePostBack;
 
@@ -341,12 +398,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// has been rendered in the previous lifecycle in addition to the state loaded by <see cref="BusinessObjectBoundWebControl.LoadControlState"/>.
     /// </summary>
     /// <param name="savedState">The object saved by <see cref="SaveControlState"/>.</param>
-    protected override void LoadControlState (object savedState)
+    protected override void LoadControlState (object? savedState)
     {
-      object[] values = (object[]) savedState;
-      base.LoadControlState (values[0]);
-      _isDirty = (bool) values[1];
-      _hasBeenRenderedInPreviousLifecycle = (bool) values[2];
+      object?[] values = (object?[])savedState!;
+      base.LoadControlState(values[0]);
+      _isDirty = (bool)values[1]!;
+      _hasBeenRenderedInPreviousLifecycle = (bool)values[2]!;
     }
 
     /// <summary>
@@ -356,7 +413,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An object containing the state required to be loaded in the next lifecycle.</returns>
     protected override object SaveControlState ()
     {
-      object[] values = new object[3];
+      object?[] values = new object?[3];
       values[0] = base.SaveControlState();
       values[1] = _isDirty;
       values[2] = _isRenderedInCurrentLifecycle;
@@ -390,8 +447,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (IsReadOnlyInDomainModel) // also check when setting IsDirty
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The value of the {0} '{1}' could not be saved into the domain model because the property '{2}' is read only.",
                 GetType().Name,
                 ID,
@@ -400,7 +457,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var requiresWriteBack = !Property.IsList || Property.ListInfo.RequiresWriteBack;
       if (requiresWriteBack)
-        DataSource.BusinessObject.SetProperty (Property, Value);
+        DataSource.BusinessObject.SetProperty(Property, Value);
 
       return true;
     }
@@ -411,11 +468,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         var dataSource = DataSource;
         var property = Property;
-        Assertion.IsNotNull (dataSource, "DataSource is null.");
-        Assertion.IsNotNull (property, "Property is null.");
+        Assertion.IsNotNull(dataSource, "DataSource is null.");
+        Assertion.IsNotNull(property, "Property is null.");
 
-        return property.IsReadOnly (dataSource.BusinessObject);
+        return property.IsReadOnly(dataSource.BusinessObject);
       }
+    }
+
+    protected IBusinessObjectBoundEditableWebControlValidatorConfiguration ValidatorConfiguration
+    {
+      get { return ServiceLocator.GetInstance<IBusinessObjectBoundEditableWebControlValidatorConfiguration>(); }
     }
   }
 }

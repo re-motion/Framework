@@ -27,42 +27,44 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   /// </summary>
   public static class AccessControlExtensions
   {
-    [LinqPropertyRedirection(typeof (StatefulAccessControlList), "MyClass")]
+    [LinqPropertyRedirection(typeof(StatefulAccessControlList), "MyClass")]
     public static SecurableClassDefinition GetClassForQuery (this StatefulAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull ("acl", acl);
+      ArgumentUtility.CheckNotNull("acl", acl);
 
+      Assertion.IsNotNull(acl.Class, "AccessControlList{{{0}}}.Class must not be null when used in a query.", acl.ID);
       return acl.Class;
     }
 
-    [LinqPropertyRedirection(typeof (StatelessAccessControlList), "MyClass")]
+    [LinqPropertyRedirection(typeof(StatelessAccessControlList), "MyClass")]
     public static SecurableClassDefinition GetClassForQuery (this StatelessAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull ("acl", acl);
+      ArgumentUtility.CheckNotNull("acl", acl);
 
+      Assertion.IsNotNull(acl.Class, "AccessControlList{{{0}}}.Class must not be null when used in a query.", acl.ID);
       return acl.Class;
     }
 
-    [LinqPropertyRedirection(typeof (StatefulAccessControlList), "StateCombinationsInternal")]
+    [LinqPropertyRedirection(typeof(StatefulAccessControlList), "StateCombinationsInternal")]
     public static ObjectList<StateCombination> GetStateCombinationsForQuery (this StatefulAccessControlList acl)
     {
-      ArgumentUtility.CheckNotNull ("acl", acl);
+      ArgumentUtility.CheckNotNull("acl", acl);
 
-      return new ObjectList<StateCombination> (acl.StateCombinations);
+      return new ObjectList<StateCombination>(acl.StateCombinations);
     }
 
-    [LinqPropertyRedirection(typeof (StateCombination), "StateUsages")]
+    [LinqPropertyRedirection(typeof(StateCombination), "StateUsages")]
     public static ObjectList<StateUsage> GetStateUsagesForQuery (this StateCombination stateCombination)
     {
-      throw new NotSupportedException ("GetStateUsages() is only supported for building LiNQ query expressions.");
+      throw new NotSupportedException("GetStateUsages() is only supported for building LiNQ query expressions.");
     }
 
-    [LinqPropertyRedirection(typeof (AccessControlEntry), "PermissionsInternal")]
+    [LinqPropertyRedirection(typeof(AccessControlEntry), "PermissionsInternal")]
     public static ObjectList<Permission> GetPermissionsForQuery (this AccessControlEntry ace)
     {
-      ArgumentUtility.CheckNotNull ("ace", ace);
+      ArgumentUtility.CheckNotNull("ace", ace);
 
-      return new ObjectList<Permission> (ace.GetPermissions());
+      return new ObjectList<Permission>(ace.GetPermissions());
     }
   }
 }

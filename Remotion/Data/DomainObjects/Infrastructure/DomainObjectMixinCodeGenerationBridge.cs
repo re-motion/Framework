@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -37,16 +38,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       {
         try
         {
-          _realObject = Activator.CreateInstance (
+          Assertion.DebugAssert(
+              NullableTypeUtility.IsNullableType(concreteDeserializedType) == false,
+              "NullableTypeUtility.IsNullableType (concreteDeserializedType) == false with concreteDeserializedType '{0}'.",
+              concreteDeserializedType);
+
+          _realObject = Activator.CreateInstance(
               concreteDeserializedType,
               BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
               null,
               new object[] { info, context },
-              null);
+              null)!;
         }
         catch (MissingMethodException ex)
         {
-          throw new MissingMethodException ("No deserialization constructor was found on type " + concreteDeserializedType.FullName + ".", ex);
+          throw new MissingMethodException("No deserialization constructor was found on type " + concreteDeserializedType.GetFullNameSafe() + ".", ex);
         }
       }
 
@@ -58,20 +64,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public static void OnDomainObjectReferenceInitializing (DomainObject instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      NotifyDomainObjectMixins (instance, mixin => mixin.OnDomainObjectReferenceInitializing());
+      ArgumentUtility.CheckNotNull("instance", instance);
+      NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectReferenceInitializing());
     }
 
     public static void OnDomainObjectCreated (DomainObject instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      NotifyDomainObjectMixins (instance, mixin => mixin.OnDomainObjectCreated());
+      ArgumentUtility.CheckNotNull("instance", instance);
+      NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectCreated());
     }
 
     public static void OnDomainObjectLoaded (DomainObject instance, LoadMode loadMode)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
-      NotifyDomainObjectMixins (instance, mixin => mixin.OnDomainObjectLoaded (loadMode));
+      ArgumentUtility.CheckNotNull("instance", instance);
+      NotifyDomainObjectMixins(instance, mixin => mixin.OnDomainObjectLoaded(loadMode));
     }
 
     private static void NotifyDomainObjectMixins (DomainObject instance, Action<IDomainObjectMixin> notifier)
@@ -83,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         {
           var mixinAsDomainObjectMixin = mixin as IDomainObjectMixin;
           if (mixinAsDomainObjectMixin != null)
-            notifier (mixinAsDomainObjectMixin);
+            notifier(mixinAsDomainObjectMixin);
         }
       }
     }

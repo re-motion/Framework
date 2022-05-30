@@ -27,26 +27,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
   {
     public static UnionViewDefinition Create (StorageProviderDefinition storageProviderDefinition)
     {
-      return Create (storageProviderDefinition, new EntityNameDefinition ("TestSchema", "TestUnion"));
+      return Create(storageProviderDefinition, new EntityNameDefinition("TestSchema", "TestUnion"));
     }
 
     public static UnionViewDefinition Create (
     StorageProviderDefinition storageProviderDefinition, EntityNameDefinition viewName)
     {
-      return Create (storageProviderDefinition, viewName, TableDefinitionObjectMother.Create (storageProviderDefinition));
+      return Create(storageProviderDefinition, viewName, TableDefinitionObjectMother.Create(storageProviderDefinition));
     }
 
     public static UnionViewDefinition Create (
         StorageProviderDefinition storageProviderDefinition, EntityNameDefinition viewName, params IRdbmsStorageEntityDefinition[] unionedEntities)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("unionedEntities", unionedEntities);
+      ArgumentUtility.CheckNotNullOrEmpty("unionedEntities", unionedEntities);
 
-      return Create (
-          storageProviderDefinition, 
-          viewName, 
-          unionedEntities, 
-          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty, 
-          SimpleStoragePropertyDefinitionObjectMother.TimestampProperty, 
+      return Create(
+          storageProviderDefinition,
+          viewName,
+          unionedEntities,
+          ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
+          SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new IRdbmsStoragePropertyDefinition[0]);
     }
 
@@ -58,7 +58,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
         SimpleStoragePropertyDefinition timestampProperty,
         params IRdbmsStoragePropertyDefinition[] dataProperties)
     {
-      return new UnionViewDefinition (
+      return new UnionViewDefinition(
           storageProviderDefinition,
           viewName,
           unionedEntities,
@@ -71,10 +71,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
     public static UnionViewDefinition CreateWithIndexes (StorageProviderDefinition storageProviderDefinition, IEnumerable<IIndexDefinition> indexDefinitions)
     {
-      return new UnionViewDefinition (
+      return new UnionViewDefinition(
           storageProviderDefinition,
-          new EntityNameDefinition ("TestSchema", "TestUnionView"),
-          new[] { TableDefinitionObjectMother.Create (storageProviderDefinition) },
+          new EntityNameDefinition("TestSchema", "TestUnionView"),
+          new[] { TableDefinitionObjectMother.Create(storageProviderDefinition) },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new IRdbmsStoragePropertyDefinition[0],
@@ -84,10 +84,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
 
     public static UnionViewDefinition CreateWithSynonyms (StorageProviderDefinition storageProviderDefinition, IEnumerable<EntityNameDefinition> synonyms)
     {
-      return new UnionViewDefinition (
+      return new UnionViewDefinition(
           storageProviderDefinition,
-          new EntityNameDefinition ("TestSchema", "TestUnionView"),
-          new[] { TableDefinitionObjectMother.Create (storageProviderDefinition) },
+          new EntityNameDefinition("TestSchema", "TestUnionView"),
+          new[] { TableDefinitionObjectMother.Create(storageProviderDefinition) },
           ObjectIDStoragePropertyDefinitionObjectMother.ObjectIDProperty,
           SimpleStoragePropertyDefinitionObjectMother.TimestampProperty,
           new IRdbmsStoragePropertyDefinition[0],

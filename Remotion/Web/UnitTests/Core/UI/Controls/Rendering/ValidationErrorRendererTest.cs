@@ -37,179 +37,209 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.Rendering
     [Test]
     public void SetValidationErrorReferenceOnControl ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      validationErrorRenderer.SetValidationErrorsReferenceOnControl (labelControl, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.SetValidationErrorsReferenceOnControl(
+          labelControl,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (2));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(2));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
     }
 
     [Test]
     public void SetValidationErrorReferenceOnControl_WithNoValidationErrors ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      validationErrorRenderer.SetValidationErrorsReferenceOnControl (labelControl, "ValidationErrorID", new string[0]);
+      validationErrorRenderer.SetValidationErrorsReferenceOnControl(
+          labelControl,
+          "ValidationErrorID",
+          new PlainTextString[0]);
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (0));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void SetValidationErrorReferenceOnControl_WithDescribedByAlreadySet ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
       labelControl.Attributes["aria-describedby"] = "DescribedByValue";
 
-      validationErrorRenderer.SetValidationErrorsReferenceOnControl (labelControl, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.SetValidationErrorsReferenceOnControl(
+          labelControl,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (2));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("DescribedByValue ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(2));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("DescribedByValue ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
     }
 
     [Test]
     public void SetValidationErrorReferenceOnControl_WithDiagnosticMetadata ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new WithDiagnosticMetadataRenderingFeatures());
       var labelControl = new Label();
 
-      validationErrorRenderer.SetValidationErrorsReferenceOnControl (labelControl, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.SetValidationErrorsReferenceOnControl(
+          labelControl,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (3));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
-      Assert.That (labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo ("0"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(3));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
+      Assert.That(labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo("0"));
     }
 
     [Test]
     public void SetValidationErrorReferenceOnControl_WithDiagnosticMetadata_AndMultipleDescribeBys ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new WithDiagnosticMetadataRenderingFeatures());
       var labelControl = new Label();
 
       labelControl.Attributes["aria-describedby"] = "DescribedByValue1 DescribedByValue2";
 
 
-      validationErrorRenderer.SetValidationErrorsReferenceOnControl (labelControl, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.SetValidationErrorsReferenceOnControl(
+          labelControl,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (3));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("DescribedByValue1 DescribedByValue2 ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
-      Assert.That (labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo ("2"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(3));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("DescribedByValue1 DescribedByValue2 ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
+      Assert.That(labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo("2"));
     }
 
     [Test]
     public void AddValidationErrorReference ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      validationErrorRenderer.AddValidationErrorsReference (labelControl.Attributes, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.AddValidationErrorsReference(
+          labelControl.Attributes,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (2));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(2));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
     }
 
     [Test]
     public void AddValidationErrorReference_WithNoValidationErrors ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
-      validationErrorRenderer.AddValidationErrorsReference (labelControl.Attributes, "ValidationErrorID", new string[0]);
+      validationErrorRenderer.AddValidationErrorsReference(
+          labelControl.Attributes,
+          "ValidationErrorID",
+          new PlainTextString[0]);
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (0));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(0));
     }
 
     [Test]
     public void AddValidationErrorReference_WithDescribedByAlreadySet ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
       var labelControl = new Label();
 
       labelControl.Attributes["aria-describedby"] = "DescribedByValue";
 
-      validationErrorRenderer.AddValidationErrorsReference (labelControl.Attributes, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.AddValidationErrorsReference(
+          labelControl.Attributes,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (2));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("DescribedByValue ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(2));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("DescribedByValue ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
     }
 
     [Test]
     public void AddValidationErrorReference_WithDiagnosticMetadata ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new WithDiagnosticMetadataRenderingFeatures());
       var labelControl = new Label();
 
-      validationErrorRenderer.AddValidationErrorsReference (labelControl.Attributes, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.AddValidationErrorsReference(
+          labelControl.Attributes,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (3));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
-      Assert.That (labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo ("0"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(3));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
+      Assert.That(labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo("0"));
     }
 
     [Test]
     public void AddValidationErrorReference_WithDiagnosticMetadata_AndMultipleDescribeBys ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new WithDiagnosticMetadataRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new WithDiagnosticMetadataRenderingFeatures());
       var labelControl = new Label();
 
       labelControl.Attributes["aria-describedby"] = "DescribedByValue1 DescribedByValue2";
 
 
-      validationErrorRenderer.AddValidationErrorsReference (labelControl.Attributes, "ValidationErrorID", new[] { "ValidationError1"});
+      validationErrorRenderer.AddValidationErrorsReference(
+          labelControl.Attributes,
+          "ValidationErrorID",
+          new[] { PlainTextString.CreateFromText("ValidationError1") });
 
-      Assert.That (labelControl.Attributes.Count, Is.EqualTo (3));
-      Assert.That (labelControl.Attributes["aria-describedby"], Is.EqualTo ("DescribedByValue1 DescribedByValue2 ValidationErrorID"));
-      Assert.That (labelControl.Attributes["aria-invalid"], Is.EqualTo ("true"));
-      Assert.That (labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo ("2"));
+      Assert.That(labelControl.Attributes.Count, Is.EqualTo(3));
+      Assert.That(labelControl.Attributes["aria-describedby"], Is.EqualTo("DescribedByValue1 DescribedByValue2 ValidationErrorID"));
+      Assert.That(labelControl.Attributes["aria-invalid"], Is.EqualTo("true"));
+      Assert.That(labelControl.Attributes[DiagnosticMetadataAttributes.ValidationErrorIDIndex], Is.EqualTo("2"));
     }
 
     [Test]
     public void RenderValidationError ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
 
-      validationErrorRenderer.RenderValidationErrors (
+      validationErrorRenderer.RenderValidationErrors(
           _html.Writer,
           "ValidationErrorID",
-          new[] { "ValidationError1", "ValidationError2" });
+          new[] { PlainTextString.CreateFromText("Validation\r\nError1"), PlainTextString.CreateFromText("Validation\r\nError2") });
 
       var document = _html.GetResultDocument();
-      var span = _html.GetAssertedChildElement (document, "span", 0);
+      var span = _html.GetAssertedChildElement(document, "span", 0);
 
-      
-      _html.AssertAttribute (span, "id", "ValidationErrorID");
-      _html.AssertAttribute (span, "hidden", "hidden");
-      Assert.That (span.InnerXml, Is.EqualTo ("ValidationError1<br />ValidationError2<br />"));
+
+      _html.AssertAttribute(span, "id", "ValidationErrorID");
+      _html.AssertAttribute(span, "hidden", "hidden");
+      Assert.That(span.InnerXml, Is.EqualTo("Validation<br />Error1<br />Validation<br />Error2<br />"));
     }
 
     [Test]
     public void RenderValidationError_NoValidationErrors ()
     {
-      var validationErrorRenderer = new ValidationErrorRenderer (new DefaultRenderingFeatures());
+      var validationErrorRenderer = new ValidationErrorRenderer(new DefaultRenderingFeatures());
 
-      validationErrorRenderer.RenderValidationErrors (
+      validationErrorRenderer.RenderValidationErrors(
           _html.Writer,
           "ValidationErrorID",
-          new string[0]);
+          new PlainTextString[0]);
 
       // We cannot assert that no element got rendered, because _html.GetResultDocument() would throw an exception.
       // Therefore we render a single span and assert that only that span exists.
-      _html.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      _html.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
       _html.Writer.RenderEndTag();
 
       var document = _html.GetDocumentText();
-      Assert.That (document, Is.EqualTo ("<span></span>"));
+      Assert.That(document, Is.EqualTo("<span></span>"));
     }
 
   }

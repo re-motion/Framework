@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _rootTransaction = ClientTransaction.CreateRootTransaction();
     }
@@ -35,9 +35,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void NewObject_InRootTransaction_AssociatesThatRootTransaction ()
     {
-      var order = _rootTransaction.ExecuteInScope (() => Order.NewObject());
+      var order = _rootTransaction.ExecuteInScope(() => Order.NewObject());
 
-      Assert.That (order.RootTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(order.RootTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
@@ -45,38 +45,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     {
       var subTransaction = _rootTransaction.CreateSubTransaction();
 
-      var order = subTransaction.ExecuteInScope (() => Order.NewObject ());
+      var order = subTransaction.ExecuteInScope(() => Order.NewObject());
 
-      Assert.That (order.RootTransaction, Is.SameAs (_rootTransaction));
-      Assert.That (order.TransactionContext[_rootTransaction].State, Is.EqualTo (StateType.Invalid));
+      Assert.That(order.RootTransaction, Is.SameAs(_rootTransaction));
+      Assert.That(order.TransactionContext[_rootTransaction].State.IsInvalid, Is.True);
     }
 
     [Test]
     public void GetObjectReference_InRootTransaction_AssociatesThatRootTransaction ()
     {
-      var order = DomainObjectIDs.Order1.GetObjectReference<Order> (_rootTransaction);
+      var order = DomainObjectIDs.Order1.GetObjectReference<Order>(_rootTransaction);
 
-      Assert.That (order.RootTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(order.RootTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void GetObjectReference_InSubTransaction_AssociatesRootTransaction ()
     {
-      var subTransaction = _rootTransaction.CreateSubTransaction ();
+      var subTransaction = _rootTransaction.CreateSubTransaction();
 
-      var order = DomainObjectIDs.Order1.GetObjectReference<Order> (subTransaction);
+      var order = DomainObjectIDs.Order1.GetObjectReference<Order>(subTransaction);
 
-      Assert.That (order.RootTransaction, Is.SameAs (_rootTransaction));
+      Assert.That(order.RootTransaction, Is.SameAs(_rootTransaction));
     }
 
     [Test]
     public void AssociatedRootTransaction_InTheContextOfSubtransactions_StaysTheSame ()
     {
-      var order = _rootTransaction.ExecuteInScope (() => Order.NewObject ());
+      var order = _rootTransaction.ExecuteInScope(() => Order.NewObject());
 
       using (_rootTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (order.RootTransaction, Is.SameAs (_rootTransaction));
+        Assert.That(order.RootTransaction, Is.SameAs(_rootTransaction));
       }
     }
   }

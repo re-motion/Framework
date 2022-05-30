@@ -26,7 +26,7 @@ namespace Remotion.Security.Metadata
   /// <summary>
   /// Implements the <see cref="IPermissionProvider"/> for a reflection-based security declaration.
   /// </summary>
-  [ImplementationFor (typeof (IPermissionProvider), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPermissionProvider), Lifetime = LifetimeKind.Singleton)]
   public class PermissionReflector : IPermissionProvider
   {
     private static readonly Enum[] s_emptyPermissions = new Enum[0];
@@ -37,13 +37,13 @@ namespace Remotion.Security.Metadata
 
     public IReadOnlyList<Enum> GetRequiredMethodPermissions (Type type, IMethodInformation methodInformation)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNull ("methodInformation", methodInformation);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNull("methodInformation", methodInformation);
 
       if (methodInformation.IsNull)
         return s_emptyPermissions;
 
-      var permissionAttribute = methodInformation.GetCustomAttribute<DemandPermissionAttribute> (true);
+      var permissionAttribute = methodInformation.GetCustomAttribute<DemandPermissionAttribute>(true);
       if (permissionAttribute == null)
         return s_emptyPermissions;
 

@@ -17,6 +17,7 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Globalization.Implementation;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
@@ -46,16 +47,15 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      string result;
-      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result))
+      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
 
       if (ResourceLogger.IsEnabled)
       {
-        ResourceLogger.LogResourceEntryNotFound ("Enum value: '{0}' (Type: '{1}')", value, value.GetType().FullName);
+        ResourceLogger.LogResourceEntryNotFound("Enum value: '{0}' (Type: '{1}')", value, value.GetType().GetFullNameSafe());
       }
 
       return value.ToString();
@@ -75,15 +75,14 @@ namespace Remotion.Globalization
     ///   or <see langword="null" /> if no resource could be found.
     /// </returns>
     [CanBeNull]
-    public static string GetEnumerationValueDisplayNameOrDefault (
+    public static string? GetEnumerationValueDisplayNameOrDefault (
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      string result;
-      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result))
+      if (enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result))
         return result;
 
       return null;
@@ -103,11 +102,10 @@ namespace Remotion.Globalization
         [NotNull] this IEnumerationGlobalizationService enumerationGlobalizationService,
         [NotNull] Enum value)
     {
-      ArgumentUtility.CheckNotNull ("enumerationGlobalizationService", enumerationGlobalizationService);
-      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull("enumerationGlobalizationService", enumerationGlobalizationService);
+      ArgumentUtility.CheckNotNull("value", value);
 
-      string result;
-      return enumerationGlobalizationService.TryGetEnumerationValueDisplayName (value, out result);
+      return enumerationGlobalizationService.TryGetEnumerationValueDisplayName(value, out var result);
     }
   }
 }

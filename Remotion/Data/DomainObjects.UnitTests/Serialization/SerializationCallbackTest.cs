@@ -18,7 +18,8 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
+using Remotion.Development.Moq.UnitTesting;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Serialization
@@ -26,28 +27,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
   [TestFixture]
   public class SerializationCallbackTest : ClientTransactionBaseTest
   {
+    public override void SetUp ()
+    {
+      base.SetUp();
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+    }
+
     [Test]
     public void SerializationEvents ()
     {
       var instance =
-          (ClassWithSerializationCallbacks) LifetimeService.NewObject (TestableClientTransaction, typeof (ClassWithSerializationCallbacks), ParamList.Empty);
+          (ClassWithSerializationCallbacks)LifetimeService.NewObject(
+              TestableClientTransaction,
+              typeof(ClassWithSerializationCallbacks),
+              ParamList.Empty);
 
-      Assert.That (((object)instance).GetType (), Is.Not.SameAs (typeof (ClassWithSerializationCallbacks)));
+      Assert.That(((object)instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, ClassWithSerializationCallbacks.SetReceiver)
-          .Test_SerializationCallbacks ();
+      var serializationCallbackTester =
+          new SerializationCallbackTester<ClassWithSerializationCallbacks>(instance, ClassWithSerializationCallbacks.SetReceiver);
+      serializationCallbackTester.Test_SerializationCallbacks();
     }
 
     [Test]
     public void DeserializationEvents ()
     {
-      var instance = (ClassWithSerializationCallbacks) 
-          LifetimeService.NewObject (TestableClientTransaction, typeof (ClassWithSerializationCallbacks), ParamList.Empty);
+      var instance = (ClassWithSerializationCallbacks)LifetimeService.NewObject(
+          TestableClientTransaction,
+          typeof(ClassWithSerializationCallbacks),
+          ParamList.Empty);
 
-      Assert.That (((object) instance).GetType (), Is.Not.SameAs (typeof (ClassWithSerializationCallbacks)));
+      Assert.That(((object)instance).GetType(), Is.Not.SameAs(typeof(ClassWithSerializationCallbacks)));
 
-      new SerializationCallbackTester<ClassWithSerializationCallbacks> (new RhinoMocksRepositoryAdapter (), instance, ClassWithSerializationCallbacks.SetReceiver)
-          .Test_DeserializationCallbacks ();
+      var serializationCallbackTester =
+          new SerializationCallbackTester<ClassWithSerializationCallbacks>(instance, ClassWithSerializationCallbacks.SetReceiver);
+      serializationCallbackTester.Test_DeserializationCallbacks();
     }
   }
 }

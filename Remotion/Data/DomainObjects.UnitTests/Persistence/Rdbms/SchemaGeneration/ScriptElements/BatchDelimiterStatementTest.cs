@@ -31,52 +31,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
     public void SetUp ()
     {
       _batchDelimiterStatement = new BatchDelimiterStatement("GO");
-      _script = new List<ScriptStatement> ();
+      _script = new List<ScriptStatement>();
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_batchDelimiterStatement.Delimiter, Is.EqualTo ("GO"));
+      Assert.That(_batchDelimiterStatement.Delimiter, Is.EqualTo("GO"));
     }
 
     [Test]
     public void AppendToScript_EmptyScript ()
     {
-      _batchDelimiterStatement.AppendToScript (_script);
+      _batchDelimiterStatement.AppendToScript(_script);
 
-      Assert.That (_script, Is.Empty);
+      Assert.That(_script, Is.Empty);
     }
 
     [Test]
     public void AppendToScript_NonEmptyScript ()
     {
-      var statement1 = new ScriptStatement ("1");
-      var statement2 = new ScriptStatement ("2");
-      _script.Add (statement1);
-      _script.Add (statement2);
+      var statement1 = new ScriptStatement("1");
+      var statement2 = new ScriptStatement("2");
+      _script.Add(statement1);
+      _script.Add(statement2);
 
-      _batchDelimiterStatement.AppendToScript (_script);
+      _batchDelimiterStatement.AppendToScript(_script);
 
-      Assert.That (_script.Count, Is.EqualTo (3));
-      Assert.That (_script[0], Is.SameAs(statement1));
-      Assert.That (_script[1], Is.EqualTo (statement2));
-      Assert.That (_script[2].Statement, Is.EqualTo ("GO"));
+      Assert.That(_script.Count, Is.EqualTo(3));
+      Assert.That(_script[0], Is.SameAs(statement1));
+      Assert.That(_script[1], Is.EqualTo(statement2));
+      Assert.That(_script[2].Statement, Is.EqualTo("GO"));
     }
 
     [Test]
     public void AppendToScript_NonEmptyScript_LastStatementIsBatchStatement ()
     {
-      var statement1 = new ScriptStatement ("1");
-      var statement2 = new ScriptStatement ("GO");
-      _script.Add (statement1);
-      _script.Add (statement2);
+      var statement1 = new ScriptStatement("1");
+      var statement2 = new ScriptStatement("GO");
+      _script.Add(statement1);
+      _script.Add(statement2);
 
-      _batchDelimiterStatement.AppendToScript (_script);
+      _batchDelimiterStatement.AppendToScript(_script);
 
-      Assert.That (_script.Count, Is.EqualTo (2));
-      Assert.That (_script[0], Is.SameAs (statement1));
-      Assert.That (_script[1], Is.EqualTo (statement2));
+      Assert.That(_script.Count, Is.EqualTo(2));
+      Assert.That(_script[0], Is.SameAs(statement1));
+      Assert.That(_script[1], Is.EqualTo(statement2));
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      _classEmitter = new CustomClassEmitter (Scope, UniqueName, typeof (object), new Type[0], TypeAttributes.Class | TypeAttributes.Public, true);
+      _classEmitter = new CustomClassEmitter(Scope, UniqueName, typeof(object), new Type[0], TypeAttributes.Class | TypeAttributes.Public, true);
     }
 
     public override void TearDown ()
@@ -44,64 +44,64 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
     protected Type BuildType ()
     {
-      return _classEmitter.BuildType ();
+      return _classEmitter.BuildType();
     }
 
     protected object BuildInstance ()
     {
-      return Activator.CreateInstance (_classEmitter.BuildType());
+      return Activator.CreateInstance(_classEmitter.BuildType());
     }
 
     protected object BuildInstanceAndInvokeMethod (IMethodEmitter method, params object[] arguments)
     {
       object instance = BuildInstance();
-      return InvokeMethod (instance, method, arguments);
+      return InvokeMethod(instance, method, arguments);
     }
 
     protected object BuildInstanceAndInvokeMethod (IMethodEmitter method, Type[] typeArguments, params object[] arguments)
     {
-      object instance = BuildInstance ();
-      return InvokeMethod (instance, method, typeArguments, arguments);
+      object instance = BuildInstance();
+      return InvokeMethod(instance, method, typeArguments, arguments);
     }
 
     protected object BuildTypeAndInvokeMethod (IMethodEmitter method, params object[] arguments)
     {
       Type builtType = _classEmitter.BuildType();
-      return InvokeMethod (builtType, method, arguments);
+      return InvokeMethod(builtType, method, arguments);
     }
 
     protected object InvokeMethod (object instance, IMethodEmitter method, params object[] arguments)
     {
-      var methodInfo = GetMethod (instance, method);
-      return methodInfo.Invoke (instance, arguments);
+      var methodInfo = GetMethod(instance, method);
+      return methodInfo.Invoke(instance, arguments);
     }
 
     protected object InvokeMethod (object instance, IMethodEmitter method, Type[] typeArguments, params object[] arguments)
     {
-      var methodInfo = GetMethod (instance, method).MakeGenericMethod (typeArguments);
-      return methodInfo.Invoke (instance, arguments);
+      var methodInfo = GetMethod(instance, method).MakeGenericMethod(typeArguments);
+      return methodInfo.Invoke(instance, arguments);
     }
 
     private object InvokeMethod (Type type, IMethodEmitter method, params object[] arguments)
     {
-      var methodInfo = GetMethod (type, method);
-      return methodInfo.Invoke (null, arguments);
+      var methodInfo = GetMethod(type, method);
+      return methodInfo.Invoke(null, arguments);
     }
 
     private MethodInfo GetMethod (Type builtType, IMethodEmitter method)
     {
-      return builtType.GetMethod (method.Name);
+      return builtType.GetMethod(method.Name);
     }
 
     protected MethodInfo GetMethod (object instance, IMethodEmitter method)
     {
-      return GetMethod (instance.GetType(), method);
+      return GetMethod(instance.GetType(), method);
     }
 
     protected MethodInfo BuildTypeAndGetMethod (IMethodEmitter method)
     {
       Type builtType = _classEmitter.BuildType();
-      return GetMethod (builtType, method);
+      return GetMethod(builtType, method);
     }
   }
 }

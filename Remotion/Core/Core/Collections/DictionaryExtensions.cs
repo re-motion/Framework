@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Collections
@@ -27,86 +28,109 @@ namespace Remotion.Collections
   /// </summary>
   public static class DictionaryExtensions
   {
+    [return: MaybeNull]
     public static TValue GetValueOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key)
+        where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
 
-      return GetValueOrDefault (dictionary, key, default (TValue));
+      return GetValueOrDefault(dictionary, key, default(TValue)!);
     }
 
+#if NETFRAMEWORK
+    [return: MaybeNull]
     public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
+        where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
 
-      return GetValueOrDefault (dictionary, key, default (TValue));
+      return GetValueOrDefault(dictionary, key, default(TValue)!);
     }
+#endif
 
+    [return: MaybeNull]
     public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key)
+        where TKey : notnull
     {
-      return ((IDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key);
+      return ((IDictionary<TKey, TValue>)dictionary).GetValueOrDefault(key);
     }
 
+    [return: MaybeNull]
     public static TValue GetValueOrDefault<TKey, TValue> (this ReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
+        where TKey : notnull
     {
-      return ((IReadOnlyDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key);
+      return ((IReadOnlyDictionary<TKey, TValue>)dictionary).GetValueOrDefault(key);
     }
 
-    public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
+    public static TValue GetValueOrDefault<TKey, TValue> (this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
+        where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
       // Default value may be null.
 
-      TValue value;
-      if (dictionary.TryGetValue (key, out value))
+      TValue? value;
+      if (dictionary.TryGetValue(key, out value))
         return value;
       else
         return defaultValue;
     }
 
-    public static TValue GetValueOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
+    public static TValue GetValueOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
+        where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
       // Default value may be null.
 
-      TValue value;
-      if (dictionary.TryGetValue (key, out value))
+      TValue? value;
+      if (dictionary.TryGetValue(key, out value))
         return value;
       else
         return defaultValue;
     }
 
-    public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
+    public static TValue GetValueOrDefault<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
+        where TKey : notnull
     {
-      return ((IDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key, defaultValue);
+      return ((IDictionary<TKey, TValue>)dictionary).GetValueOrDefault<TKey, TValue>(key, defaultValue);
     }
 
-    public static TValue GetValueOrDefault<TKey, TValue> (this ReadOnlyDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+    [return: MaybeNull, NotNullIfNotNull("defaultValue")]
+    public static TValue GetValueOrDefault<TKey, TValue> (this ReadOnlyDictionary<TKey, TValue> dictionary, TKey key, [AllowNull] TValue defaultValue)
+        where TKey : notnull
     {
-      return ((IReadOnlyDictionary<TKey, TValue>) dictionary).GetValueOrDefault (key, defaultValue);
+      return ((IReadOnlyDictionary<TKey, TValue>)dictionary).GetValueOrDefault<TKey, TValue>(key, defaultValue);
     }
 
     public static TValue GetOrCreateValue<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
+        where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("dictionary", dictionary);
+      ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
 
-      if (dictionary.TryGetValue (key, out var value))
+      if (dictionary.TryGetValue(key, out var value))
         return value;
 
-      var newValue = valueFactory (key);
-      dictionary.Add (key, newValue);
+      var newValue = valueFactory(key);
+      dictionary.Add(key, newValue);
       return newValue;
     }
 
     public static ReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue> (this IDictionary<TKey, TValue> dict)
+        where TKey : notnull
     {
-      ArgumentUtility.CheckNotNull ("dict", dict);
+      ArgumentUtility.CheckNotNull("dict", dict);
 
-      return new ReadOnlyDictionary<TKey, TValue> (dict);
+      if (dict is ReadOnlyDictionary<TKey, TValue> readOnlyDict)
+        return readOnlyDict;
+
+      return new ReadOnlyDictionary<TKey, TValue>(dict);
     }
   }
 }

@@ -31,14 +31,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration
 
     protected OrderTicket (Order order)
     {
-      ArgumentUtility.CheckNotNull ("order", order);
+      ArgumentUtility.CheckNotNull("order", order);
       Order = order;
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    [StringProperty(IsNullable = false, MaximumLength = 255)]
     public abstract string FileName { get; set; }
 
-    [DBBidirectionalRelation ("OrderTicket", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("OrderTicket", ContainsForeignKey = true)]
     [Mandatory]
     public abstract Order Order { get; set; }
 

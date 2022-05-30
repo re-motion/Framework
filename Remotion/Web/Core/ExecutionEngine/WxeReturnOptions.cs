@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -29,33 +30,34 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public sealed class WxeReturnOptions : INullObject
   {
-    public static readonly WxeReturnOptions Null = new WxeReturnOptions (false, null);
+    public static readonly WxeReturnOptions Null = new WxeReturnOptions(false, null);
 
     private readonly bool _isReturning;
-    private readonly NameValueCollection _callerUrlParameters;
+    private readonly NameValueCollection? _callerUrlParameters;
 
     public WxeReturnOptions ()
-      : this (true, new NameValueCollection())
+      : this(true, new NameValueCollection())
     {
     }
 
     public WxeReturnOptions (NameValueCollection callerUrlParameters)
-      : this (true, ArgumentUtility.CheckNotNull ("callerUrlParameters", callerUrlParameters))
-    {      
+      : this(true, ArgumentUtility.CheckNotNull("callerUrlParameters", callerUrlParameters))
+    {
     }
 
-    private WxeReturnOptions (bool isReturning, NameValueCollection callerUrlParameters)
+    private WxeReturnOptions (bool isReturning, NameValueCollection? callerUrlParameters)
     {
       _isReturning = isReturning;
       _callerUrlParameters = callerUrlParameters;
     }
 
+    [MemberNotNullWhen(true, nameof(CallerUrlParameters))]
     public bool IsReturning
     {
       get { return _isReturning; }
     }
 
-    public NameValueCollection CallerUrlParameters
+    public NameValueCollection? CallerUrlParameters
     {
       get { return _callerUrlParameters; }
     }

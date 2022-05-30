@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Security.UnitTests.Metadata
 {
@@ -33,8 +34,7 @@ namespace Remotion.Security.UnitTests.Metadata
 
     // member fields
 
-    private MockRepository _mocks;
-    private IEnumerationReflector _enumeratedTypeReflectorMock;
+    private Mock<IEnumerationReflector> _enumeratedTypeReflectorMock;
     private StatePropertyReflector _statePropertyReflector;
     private MetadataCache _cache;
 
@@ -49,70 +49,74 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new MockRepository ();
-      _enumeratedTypeReflectorMock = _mocks.StrictMock<IEnumerationReflector> ();
-      _statePropertyReflector = new StatePropertyReflector (_enumeratedTypeReflectorMock);
-      _cache = new MetadataCache ();
+      _enumeratedTypeReflectorMock = new Mock<IEnumerationReflector>(MockBehavior.Strict);
+      _statePropertyReflector = new StatePropertyReflector(_enumeratedTypeReflectorMock.Object);
+      _cache = new MetadataCache();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf (typeof (IStatePropertyReflector), _statePropertyReflector);
-      Assert.That (_statePropertyReflector.EnumerationTypeReflector, Is.SameAs (_enumeratedTypeReflectorMock));
+      Assert.IsInstanceOf(typeof(IStatePropertyReflector), _statePropertyReflector);
+      Assert.That(_statePropertyReflector.EnumerationTypeReflector, Is.SameAs(_enumeratedTypeReflectorMock.Object));
     }
 
     [Test]
     public void GetMetadata ()
     {
-      Dictionary<Enum, EnumValueInfo> values = new Dictionary<Enum, EnumValueInfo> ();
-      values.Add (Confidentiality.Normal, PropertyStates.ConfidentialityNormal);
-      values.Add (Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
-      values.Add (Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
+      Dictionary<Enum, EnumValueInfo> values = new Dictionary<Enum, EnumValueInfo>();
+      values.Add(Confidentiality.Normal, PropertyStates.ConfidentialityNormal);
+      values.Add(Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
+      values.Add(Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
 
-      Expect.Call (_enumeratedTypeReflectorMock.GetValues (typeof (Confidentiality), _cache)).Return (values);
-      _mocks.ReplayAll ();
+      _enumeratedTypeReflectorMock.Setup(_ => _.GetValues(typeof(Confidentiality), _cache)).Returns(values).Verifiable();
 
-      StatePropertyInfo info = _statePropertyReflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
+      StatePropertyInfo info = _statePropertyReflector.GetMetadata(typeof(PaperFile).GetProperty("Confidentiality"), _cache);
 
-      _mocks.VerifyAll ();
+      _enumeratedTypeReflectorMock.Verify();
 
-      Assert.That (info, Is.Not.Null);
-      Assert.That (info.Name, Is.EqualTo ("Confidentiality"));
-      Assert.That (info.ID, Is.EqualTo ("00000000-0000-0000-0001-000000000001"));
+      Assert.That(info, Is.Not.Null);
+      Assert.That(info.Name, Is.EqualTo("Confidentiality"));
+      Assert.That(info.ID, Is.EqualTo("00000000-0000-0000-0001-000000000001"));
 
-      Assert.That (info.Values, Is.Not.Null);
-      Assert.That (info.Values.Count, Is.EqualTo (3));
-      Assert.That (info.Values, Has.Member (PropertyStates.ConfidentialityNormal));
-      Assert.That (info.Values, Has.Member (PropertyStates.ConfidentialityPrivate));
-      Assert.That (info.Values, Has.Member (PropertyStates.ConfidentialityConfidential));
+      Assert.That(info.Values, Is.Not.Null);
+      Assert.That(info.Values.Count, Is.EqualTo(3));
+      Assert.That(info.Values, Has.Member(PropertyStates.ConfidentialityNormal));
+      Assert.That(info.Values, Has.Member(PropertyStates.ConfidentialityPrivate));
+      Assert.That(info.Values, Has.Member(PropertyStates.ConfidentialityConfidential));
     }
 
     [Test]
     public void GetMetadataFromCache ()
     {
-      StatePropertyReflector reflector = new StatePropertyReflector ();
-      reflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
-      reflector.GetMetadata (typeof (File).GetProperty ("Confidentiality"), _cache);
+      StatePropertyReflector reflector = new StatePropertyReflector();
+      reflector.GetMetadata(typeof(PaperFile).GetProperty("Confidentiality"), _cache);
+      reflector.GetMetadata(typeof(File).GetProperty("Confidentiality"), _cache);
 
-      StatePropertyInfo paperFileConfidentialityInfo = _cache.GetStatePropertyInfo (typeof (PaperFile).GetProperty ("Confidentiality"));
-      Assert.That (paperFileConfidentialityInfo, Is.Not.Null);
-      Assert.That (paperFileConfidentialityInfo.Name, Is.EqualTo ("Confidentiality"));
-      Assert.That (_cache.GetStatePropertyInfo (typeof (File).GetProperty ("Confidentiality")), Is.SameAs (paperFileConfidentialityInfo));
+      StatePropertyInfo paperFileConfidentialityInfo = _cache.GetStatePropertyInfo(typeof(PaperFile).GetProperty("Confidentiality"));
+      Assert.That(paperFileConfidentialityInfo, Is.Not.Null);
+      Assert.That(paperFileConfidentialityInfo.Name, Is.EqualTo("Confidentiality"));
+      Assert.That(_cache.GetStatePropertyInfo(typeof(File).GetProperty("Confidentiality")), Is.SameAs(paperFileConfidentialityInfo));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'ID' in type 'Remotion.Security.UnitTests.TestDomain.File' is not an enumerated type.\r\nParameter name: property")]
     public void GetMetadataWithInvalidType ()
     {
-      new StatePropertyReflector().GetMetadata (typeof (PaperFile).GetProperty ("ID"), _cache);
+      Assert.That(
+          () => new StatePropertyReflector().GetMetadata(typeof(PaperFile).GetProperty("ID"), _cache),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The type of the property 'ID' in type 'Remotion.Security.UnitTests.TestDomain.File' is not an enumerated type.", "property"));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.\r\nParameter name: property")]
     public void GetMetadataWithInvalidEnum ()
     {
-      new StatePropertyReflector ().GetMetadata (typeof (PaperFile).GetProperty ("SimpleEnum"), _cache);
+      Assert.That(
+          () => new StatePropertyReflector().GetMetadata(typeof(PaperFile).GetProperty("SimpleEnum"), _cache),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The type of the property 'SimpleEnum' in type 'Remotion.Security.UnitTests.TestDomain.File' does not have the Remotion.Security.SecurityStateAttribute applied.", "property"));
     }
   }
 }

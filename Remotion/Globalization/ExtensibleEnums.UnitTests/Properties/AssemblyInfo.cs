@@ -25,8 +25,7 @@ using Remotion.Globalization;
 // associated with an assembly.
 //
 
-[assembly: AssemblyTitle ("Remotion Extensible Enums Library Unit Tests")]
-[assembly: AssemblyCulture ("")]
-[assembly: NeutralResourcesLanguage ("")]
-[assembly: AvailableResourcesLanguages ("")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: NeutralResourcesLanguage("")]
+[assembly: AvailableResourcesLanguages("")]
+[assembly: CLSCompliant(true)]

@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins
@@ -25,38 +26,38 @@ namespace Remotion.Mixins
   /// When applied to a mixin, specifies a class whose custom attributes should be added to the mixin's target class. This is useful when a mixin
   /// should add certain attributes without itself exposing those attributes.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true, Inherited = true)]
   public class CopyCustomAttributesAttribute : Attribute
   {
     private readonly Type _attributeSourceType;
-    private readonly string _attributeSourceMemberName;
-    
+    private readonly string? _attributeSourceMemberName;
+
     private Type[] _copiedAttributeTypes;
 
     // For CLS compatibility...
     public CopyCustomAttributesAttribute (Type attributeSourceType)
-      : this (attributeSourceType, Type.EmptyTypes)
+      : this(attributeSourceType, Type.EmptyTypes)
     {
     }
 
     // For CLS compatibility...
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName)
-      : this (attributeSourceType, attributeSourceMemberName, Type.EmptyTypes)
+      : this(attributeSourceType, attributeSourceMemberName, Type.EmptyTypes)
     {
     }
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentUtility.CheckNotNull ("attributeSourceType", attributeSourceType);
+      _attributeSourceType = ArgumentUtility.CheckNotNull("attributeSourceType", attributeSourceType);
       _attributeSourceMemberName = null;
-      _copiedAttributeTypes = ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
+      _copiedAttributeTypes = ArgumentUtility.CheckNotNull("copiedAttributeTypes", copiedAttributeTypes);
     }
 
     public CopyCustomAttributesAttribute (Type attributeSourceType, string attributeSourceMemberName, params Type[] copiedAttributeTypes)
     {
-      _attributeSourceType = ArgumentUtility.CheckNotNull ("attributeSourceType", attributeSourceType);
-      _attributeSourceMemberName = ArgumentUtility.CheckNotNull ("attributeSourceMemberName", attributeSourceMemberName);
-      _copiedAttributeTypes = ArgumentUtility.CheckNotNull ("copiedAttributeTypes", copiedAttributeTypes);
+      _attributeSourceType = ArgumentUtility.CheckNotNull("attributeSourceType", attributeSourceType);
+      _attributeSourceMemberName = ArgumentUtility.CheckNotNull("attributeSourceMemberName", attributeSourceMemberName);
+      _copiedAttributeTypes = ArgumentUtility.CheckNotNull("copiedAttributeTypes", copiedAttributeTypes);
     }
 
     public Type AttributeSourceType
@@ -64,7 +65,7 @@ namespace Remotion.Mixins
       get { return _attributeSourceType; }
     }
 
-    public string AttributeSourceMemberName
+    public string? AttributeSourceMemberName
     {
       get { return _attributeSourceMemberName; }
     }
@@ -73,7 +74,7 @@ namespace Remotion.Mixins
     {
       get
       {
-        return AttributeSourceMemberName != null ? AttributeSourceType.FullName + "." + AttributeSourceMemberName : AttributeSourceType.FullName;
+        return AttributeSourceMemberName != null ? AttributeSourceType.GetFullNameChecked() + "." + AttributeSourceMemberName : AttributeSourceType.GetFullNameChecked();
       }
     }
 
@@ -83,14 +84,14 @@ namespace Remotion.Mixins
       set { _copiedAttributeTypes = value; }
     }
 
-    public MemberInfo GetAttributeSource (MemberTypes memberType)
+    public MemberInfo? GetAttributeSource (MemberTypes memberType)
     {
       if (AttributeSourceMemberName == null)
         return AttributeSourceType;
       else
       {
         MemberInfo[] members =
-            AttributeSourceType.GetMember (AttributeSourceMemberName, memberType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            AttributeSourceType.GetMember(AttributeSourceMemberName, memberType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
         if (members.Length == 0)
           return null;
@@ -98,19 +99,19 @@ namespace Remotion.Mixins
           return members[0];
         else
         {
-          throw new AmbiguousMatchException (
-              string.Format (
+          throw new AmbiguousMatchException(
+              string.Format(
                   "The source member string {0} matches several members on type {1}.",
                   AttributeSourceMemberName,
-                  AttributeSourceType.FullName));
+                  AttributeSourceType.GetFullNameSafe()));
         }
       }
     }
 
     public bool IsCopiedAttributeType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      return CopiedAttributeTypes.Length == 0 || ((IList) CopiedAttributeTypes).Contains (type);
+      ArgumentUtility.CheckNotNull("type", type);
+      return CopiedAttributeTypes.Length == 0 || ((IList)CopiedAttributeTypes).Contains(type);
     }
   }
 }

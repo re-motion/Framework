@@ -29,6 +29,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   {
     private readonly ClassDefinition _classDefinition;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
     public PropertyFinder (
         Type type,
@@ -38,23 +39,27 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
-        : base (type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
+        : base(type, includeBaseProperties, includeMixinProperties, nameResolver, persistentMixinFinder, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
 
       _classDefinition = classDefinition;
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
     }
 
     protected override bool FindPropertiesFilter (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      if (!base.FindPropertiesFilter (propertyInfo))
+      if (!base.FindPropertiesFilter(propertyInfo))
         return false;
 
-      if (IsVirtualRelationEndPoint (propertyInfo))
+      if (IsVirtualRelationEndPoint(propertyInfo))
         return false;
 
       return true;
@@ -68,7 +73,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPersistentMixinFinder persistentMixinFinder,
         IPropertyMetadataProvider propertyMetadataProvider)
     {
-      return new PropertyFinder (
+      return new PropertyFinder(
           type,
           _classDefinition,
           includeBaseProperties,
@@ -76,19 +81,21 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
           nameResolver,
           persistentMixinFinder,
           propertyMetadataProvider,
-          _domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
     }
 
     private bool IsVirtualRelationEndPoint (IPropertyInformation propertyInfo)
     {
-      if (!ReflectionUtility.IsRelationType (propertyInfo.PropertyType))
+      if (!ReflectionUtility.IsRelationType(propertyInfo.PropertyType))
         return false;
-      var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (
+      var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
           _classDefinition,
           propertyInfo,
           NameResolver,
           PropertyMetadataProvider,
-          _domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
       return relationEndPointReflector.IsVirtualEndRelationEndpoint();
     }
   }

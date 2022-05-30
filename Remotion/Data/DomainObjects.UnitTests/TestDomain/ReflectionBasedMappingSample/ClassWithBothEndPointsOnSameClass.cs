@@ -23,14 +23,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
   [Instantiable]
   public abstract class ClassWithBothEndPointsOnSameClass: DomainObject
   {
-    protected ClassWithBothEndPointsOnSameClass()
+    protected ClassWithBothEndPointsOnSameClass ()
     {
     }
 
-    [DBBidirectionalRelation ("Children")]
+    [DBBidirectionalRelation("Children")]
     public abstract ClassWithBothEndPointsOnSameClass Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<ClassWithBothEndPointsOnSameClass> Children { get; }
   }
 }

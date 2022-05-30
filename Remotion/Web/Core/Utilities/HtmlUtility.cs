@@ -19,44 +19,68 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using JetBrains.Annotations;
-using Remotion.Utilities;
+using Remotion.Obsolete;
 
 namespace Remotion.Web.Utilities
 {
   public class HtmlUtility
   {
+    [Obsolete("HtmlUtility.Format(string, params string[]) is obsolete. (Version 3.0.0)")]
     public static string Format (string htmlFormatString, params object[] nonHtmlParameters)
     {
       string[] htmlParameters = new string[nonHtmlParameters.Length];
       for (int i = 0; i < nonHtmlParameters.Length; ++i)
-        htmlParameters[i] = HtmlEncode (nonHtmlParameters[i].ToString());
-      return string.Format (htmlFormatString, (object[]) htmlParameters);
+        htmlParameters[i] = WebString.CreateFromText(nonHtmlParameters[i].ToString()).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
+      return string.Format(htmlFormatString, (object[])htmlParameters);
     }
 
+#if !NETFRAMEWORK
+    [Obsolete(
+        "HtmlUtility.HtmlEncode(string) is obsolete. Use WebString.CreateFromText(string).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks) instead. (Version 3.0.0)",
+        DiagnosticId = ObsoleteDiagnosticIDs.HtmlUtility)]
+#endif
     public static string HtmlEncode (string nonHtmlString)
     {
-      string html = HttpUtility.HtmlEncode (nonHtmlString);
-      if (html != null)
-      {
-        html = html.Replace ("\r\n", "<br />");
-        html = html.Replace ("\n", "<br />");
-        html = html.Replace ("\r", "<br />");
-      }
-      return html;
+      return WebString.CreateFromText(nonHtmlString).ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
     }
 
+    [Obsolete("HtmlUtility.HtmlEncode(string, HtmlTextWriter) is obsolete. Use WebString.CreateFromText(string).WriteTo(HtmlTextWriter) instead. (Version 3.0.0)")]
     public static void HtmlEncode (string nonHtmlString, HtmlTextWriter writer)
     {
-      writer.Write (HtmlEncode (nonHtmlString));
+      WebString.CreateFromText(nonHtmlString).WriteTo(writer);
     }
 
-    private static readonly Regex s_stripHtmlTagsRegex = new Regex ("<.*?>", RegexOptions.Compiled);
+    private static readonly Regex s_replaceLineBreaks = new Regex("<br\\s*/>", RegexOptions.Compiled);
+    private static readonly Regex s_stripHtmlTagsRegex = new Regex("<.*?>", RegexOptions.Compiled);
 
+    [Obsolete("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)", true)]
     public static string StripHtmlTags ([NotNull] string text)
     {
-      ArgumentUtility.CheckNotNull ("text", text);
+      throw new NotSupportedException("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)");
+    }
 
-      return s_stripHtmlTagsRegex.Replace (text, string.Empty);
+    [Obsolete("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)", true)]
+    public static string StripHtmlTags (WebString text)
+    {
+      throw new NotSupportedException("Use HtmlUtility.ExtractPlainText instead. (Version 3.0.0)");
+    }
+
+    /// <summary>
+    /// Creates an approximation of <c>innerText</c> for an HTML element. Use this method when creating diagnostic metadata from a <see cref="WebString"/>.
+    /// </summary>
+    public static PlainTextString ExtractPlainText (WebString webString)
+    {
+      if (webString.Type == WebStringType.Encoded)
+      {
+        var valueWithoutHtmlLineBreaks = s_replaceLineBreaks.Replace(webString.GetValue(), "\n");
+        var valueWithoutHtmlTags = s_stripHtmlTagsRegex.Replace(valueWithoutHtmlLineBreaks, string.Empty);
+        var htmlDecodedValue = HttpUtility.HtmlDecode(valueWithoutHtmlTags);
+        return PlainTextString.CreateFromText(htmlDecodedValue);
+      }
+      else
+      {
+        return webString.ToPlainTextString();
+      }
     }
 
     private HtmlUtility ()

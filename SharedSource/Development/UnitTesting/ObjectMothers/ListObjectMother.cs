@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Development.UnitTesting.ObjectMothers
 {
@@ -33,7 +34,7 @@ namespace Remotion.Development.UnitTesting.ObjectMothers
   {
     public static System.Collections.Generic.List<T> New<T> (params T[] values)
     {
-      var container = new System.Collections.Generic.List<T> (values);
+      var container = new System.Collections.Generic.List<T>(values);
       return container;
     }
   }

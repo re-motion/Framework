@@ -20,6 +20,7 @@ using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Validation;
 using Remotion.Data.DomainObjects.Persistence.Model;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent.Validation;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Validation;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
@@ -42,10 +43,10 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         IStorageNameProvider storageNameProvider,
         IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull ("entityDefinitionFactory", entityDefinitionFactory);
-      ArgumentUtility.CheckNotNull ("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
-      ArgumentUtility.CheckNotNull ("storageNameProvider", storageNameProvider);
-      ArgumentUtility.CheckNotNull ("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
+      ArgumentUtility.CheckNotNull("entityDefinitionFactory", entityDefinitionFactory);
+      ArgumentUtility.CheckNotNull("dataStoragePropertyDefinitionFactory", dataStoragePropertyDefinitionFactory);
+      ArgumentUtility.CheckNotNull("storageNameProvider", storageNameProvider);
+      ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
 
       _entityDefinitionFactory = entityDefinitionFactory;
       _dataStoragePropertyDefinitionFactory = dataStoragePropertyDefinitionFactory;
@@ -75,121 +76,124 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IPersistenceMappingValidator CreatePersistenceMappingValidator (ClassDefinition classDefinition)
     {
-      return new PersistenceMappingValidator (
+      return new PersistenceMappingValidator(
           new OnlyOneTablePerHierarchyValidationRule(),
           new TableNamesAreDistinctWithinConcreteTableInheritanceHierarchyValidationRule(),
           new ClassAboveTableIsAbstractValidationRule(),
           new ColumnNamesAreUniqueWithinInheritanceTreeValidationRule(_rdbmsPersistenceModelProvider),
-          new PropertyTypeIsSupportedByStorageProviderValidationRule());
+          new PropertyTypeIsSupportedByStorageProviderValidationRule(),
+          new RelationPropertyStorageClassMatchesReferencedClassDefinitionStorageClassValidationRule());
     }
 
     public void ApplyPersistenceModelToHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       ClassDefinition[] derivedClasses = classDefinition.GetAllDerivedClasses();
-      var allClassDefinitions = new[] { classDefinition }.Concat (derivedClasses);
+      var allClassDefinitions = new[] { classDefinition }.Concat(derivedClasses);
 
       // ReSharper disable PossibleMultipleEnumeration - multiple enumeration is okay here.
-      EnsureAllStoragePropertiesCreated (allClassDefinitions);
-      EnsureAllStorageEntitiesCreated (allClassDefinitions);
+      EnsureAllStoragePropertiesCreated(allClassDefinitions);
+      EnsureAllStorageEntitiesCreated(allClassDefinitions);
       // ReSharper restore PossibleMultipleEnumeration
     }
 
     private void EnsureAllStorageEntitiesCreated (IEnumerable<ClassDefinition> classDefinitions)
     {
       foreach (var classDefinition in classDefinitions)
-        EnsureStorageEntitiesCreated (classDefinition);
+        EnsureStorageEntitiesCreated(classDefinition);
     }
 
     private void EnsureStorageEntitiesCreated (ClassDefinition classDefinition)
     {
-      if (classDefinition.StorageEntityDefinition == null)
+      if (!classDefinition.HasStorageEntityDefinitionBeenSet)
       {
-        var storageEntity = CreateEntityDefinition (classDefinition);
-        classDefinition.SetStorageEntity (storageEntity);
+        var storageEntity = CreateEntityDefinition(classDefinition);
+        classDefinition.SetStorageEntity(storageEntity);
       }
       else if (!(classDefinition.StorageEntityDefinition is IRdbmsStorageEntityDefinition))
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "The storage entity definition of class '{0}' does not implement interface '{1}'.",
                 classDefinition.ID,
-                typeof (IRdbmsStorageEntityDefinition).Name));
+                typeof(IRdbmsStorageEntityDefinition).Name));
       }
 
-      Assertion.IsNotNull (classDefinition.StorageEntityDefinition);
+      Assertion.DebugIsNotNull(classDefinition.StorageEntityDefinition, "classDefinition.StorageEntityDefinition != null");
     }
 
     private void EnsureAllStoragePropertiesCreated (IEnumerable<ClassDefinition> classDefinitions)
     {
       foreach (var classDefinition in classDefinitions)
-        EnsureStoragePropertiesCreated (classDefinition);
+        EnsureStoragePropertiesCreated(classDefinition);
     }
 
     private void EnsureStoragePropertiesCreated (ClassDefinition classDefinition)
     {
-      foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where (pd => pd.StorageClass == StorageClass.Persistent))
+      foreach (var propertyDefinition in classDefinition.MyPropertyDefinitions.Where(pd => pd.StorageClass == StorageClass.Persistent))
       {
-        if (propertyDefinition.StoragePropertyDefinition == null)
+        if (!propertyDefinition.HasStoragePropertyDefinitionBeenSet)
         {
-          var storagePropertyDefinition = _dataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition (propertyDefinition);
-          propertyDefinition.SetStorageProperty (storagePropertyDefinition);
+          var storagePropertyDefinition = _dataStoragePropertyDefinitionFactory.CreateStoragePropertyDefinition(propertyDefinition);
+          propertyDefinition.SetStorageProperty(storagePropertyDefinition);
         }
         else if (!(propertyDefinition.StoragePropertyDefinition is IRdbmsStoragePropertyDefinition))
         {
-          throw new InvalidOperationException (
-            string.Format (
+          throw new InvalidOperationException(
+            string.Format(
                 "The property definition '{0}' of class '{1}' does not implement interface '{2}'.",
                 propertyDefinition.PropertyName,
                 classDefinition.ID,
-                typeof (IRdbmsStoragePropertyDefinition).Name));
+                typeof(IRdbmsStoragePropertyDefinition).Name));
         }
-        
-        Assertion.IsNotNull (propertyDefinition.StoragePropertyDefinition);
+
+        Assertion.DebugIsNotNull(propertyDefinition.StoragePropertyDefinition, "propertyDefinition.StoragePropertyDefinition != null");
       }
     }
 
     private IStorageEntityDefinition CreateEntityDefinition (ClassDefinition classDefinition)
     {
-      if (_storageNameProvider.GetTableName (classDefinition) != null)
-        return _entityDefinitionFactory.CreateTableDefinition (classDefinition);
+      if (_storageNameProvider.GetTableName(classDefinition) != null)
+        return _entityDefinitionFactory.CreateTableDefinition(classDefinition);
 
-      var baseClasses = classDefinition.BaseClass.CreateSequence (cd => cd.BaseClass);
-      if (baseClasses.Any (cd => _storageNameProvider.GetTableName (cd) != null))
-        return CreateEntityDefinitionForClassBelowTable (classDefinition);
+      var baseClasses = classDefinition.BaseClass.CreateSequence(cd => cd.BaseClass);
+      if (baseClasses.Any(cd => _storageNameProvider.GetTableName(cd) != null))
+        return CreateEntityDefinitionForClassBelowTable(classDefinition);
       else
-        return CreateEntityDefinitionForClassAboveTable (classDefinition);
+        return CreateEntityDefinitionForClassAboveTable(classDefinition);
     }
 
     private IStorageEntityDefinition CreateEntityDefinitionForClassBelowTable (ClassDefinition classDefinition)
     {
+      Assertion.DebugIsNotNull(classDefinition.BaseClass, "classDefinition.BaseClass != null");
+
       // The following call is potentially recursive (GetEntityDefinition -> EnsureStorageEntitiesCreated -> CreateEntityDefinitionForClassBelowTable), but this is
       // guaranteed to terminate because we know at this point that there is a class in the classDefinition's base hierarchy that will get a 
       // TableDefinition
-      var baseStorageEntityDefinition = GetEntityDefinition (classDefinition.BaseClass);
+      var baseStorageEntityDefinition = GetEntityDefinition(classDefinition.BaseClass);
 
-      return _entityDefinitionFactory.CreateFilterViewDefinition (classDefinition, baseStorageEntityDefinition);
+      return _entityDefinitionFactory.CreateFilterViewDefinition(classDefinition, baseStorageEntityDefinition);
     }
 
     private IStorageEntityDefinition CreateEntityDefinitionForClassAboveTable (ClassDefinition classDefinition)
     {
       var derivedStorageEntityDefinitions =
           (from ClassDefinition derivedClass in classDefinition.DerivedClasses
-           let entityDefinition = GetEntityDefinition (derivedClass)
+           let entityDefinition = GetEntityDefinition(derivedClass)
            where !(entityDefinition is EmptyViewDefinition)
            select entityDefinition).ToList();
 
       if (!derivedStorageEntityDefinitions.Any())
-        return _entityDefinitionFactory.CreateEmptyViewDefinition (classDefinition);
+        return _entityDefinitionFactory.CreateEmptyViewDefinition(classDefinition);
       else
 
-      return _entityDefinitionFactory.CreateUnionViewDefinition (classDefinition, derivedStorageEntityDefinitions);
+      return _entityDefinitionFactory.CreateUnionViewDefinition(classDefinition, derivedStorageEntityDefinitions);
     }
 
     private IRdbmsStorageEntityDefinition GetEntityDefinition (ClassDefinition classDefinition)
     {
-      EnsureStorageEntitiesCreated (classDefinition);
+      EnsureStorageEntitiesCreated(classDefinition);
 
       return _rdbmsPersistenceModelProvider.GetEntityDefinition(classDefinition);
     }

@@ -17,12 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
+using Moq;
 using NUnit.Framework;
 using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation;
 using Remotion.Web.UI.Controls.HtmlHeadContentsImplementation.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation.Rendering
 {
@@ -34,28 +34,28 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.HtmlHeadContentsImplementation
     {
       var htmlHeadElements = new List<HtmlHeadElement>
                              {
-                                 new StubStyleSheetElement ("stylesheet-1"),
-                                 new JavaScriptInclude (new StaticResourceUrl ("javscript-1")),
-                                 new TitleTag ("title"),
-                                 new StubHtmlHeadElement ("head-1"),
-                                 new StubStyleSheetElement ("stylesheet-2"),
-                                 new JavaScriptInclude (new StaticResourceUrl ("javscript-2")),
-                                 new StubHtmlHeadElement ("head-2"),
+                                 new StubStyleSheetElement("stylesheet-1"),
+                                 new JavaScriptInclude(new StaticResourceUrl("javscript-1")),
+                                 new TitleTag(PlainTextString.CreateFromText("title")),
+                                 new StubHtmlHeadElement("head-1"),
+                                 new StubStyleSheetElement("stylesheet-2"),
+                                 new JavaScriptInclude(new StaticResourceUrl("javscript-2")),
+                                 new StubHtmlHeadElement("head-2"),
                              };
       var renderer = new HtmlHeadContentsRenderer();
       var htmlHelper = new HtmlHelper();
 
-      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext (
-          MockRepository.GenerateStub<HttpContextBase>(),
+      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext(
+          new Mock<HttpContextBase>().Object,
           htmlHelper.Writer,
-          MockRepository.GenerateStub<IHtmlHeadContents>(),
+          new Mock<IHtmlHeadContents>().Object,
           htmlHeadElements);
 
-      renderer.Render (htmlHeadContentsRenderingContext);
+      renderer.Render(htmlHeadContentsRenderingContext);
 
       var content = htmlHelper.GetDocumentText();
 
-      Assert.That (content, Is.EqualTo (@"<title>
+      Assert.That(content, Is.EqualTo(@"<title>
 	title
 </title>
 <script src=""javscript-1"" type=""text/javascript""></script>
@@ -72,23 +72,23 @@ head-2
     {
       var htmlHeadElements = new List<HtmlHeadElement>
                              {
-                                 new TitleTag ("title-1"),
-                                 new TitleTag ("title-2"),
+                                 new TitleTag(PlainTextString.CreateFromText("title-1")),
+                                 new TitleTag(PlainTextString.CreateFromText("title-2")),
                              };
       var renderer = new HtmlHeadContentsRenderer();
       var htmlHelper = new HtmlHelper();
 
-      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext (
-          MockRepository.GenerateStub<HttpContextBase>(),
+      var htmlHeadContentsRenderingContext = new HtmlHeadContentsRenderingContext(
+          new Mock<HttpContextBase>().Object,
           htmlHelper.Writer,
-          MockRepository.GenerateStub<IHtmlHeadContents>(),
+          new Mock<IHtmlHeadContents>().Object,
           htmlHeadElements);
 
-      renderer.Render (htmlHeadContentsRenderingContext);
+      renderer.Render(htmlHeadContentsRenderingContext);
 
       var content = htmlHelper.GetDocumentText();
 
-      Assert.That (content, Is.EqualTo (@"<title>
+      Assert.That(content, Is.EqualTo(@"<title>
 	title-1
 </title>
 "));

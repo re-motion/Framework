@@ -19,6 +19,7 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
@@ -27,12 +28,12 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplementation.Rendering
 {
@@ -46,11 +47,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_clientID = "MyCheckBox";
     private const string c_valueName = "MyCheckBox_Value";
     private const string c_labelID = "Label";
-    private const string c_validationErrors = "ValidationError";
 
-    private readonly string _startUpScriptKey = typeof (BocCheckBox).FullName + "_Startup";
+    private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
 
-    private IBocCheckBox _checkbox;
+    private readonly string _startUpScriptKey = typeof(BocCheckBox).FullName + "_Startup";
+
+    private Mock<IBocCheckBox> _checkbox;
     private string _startupScript;
     private BocCheckBoxRenderer _renderer;
 
@@ -58,313 +60,351 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     public void SetUp ()
     {
       Initialize();
-      _checkbox = MockRepository.GenerateMock<IBocCheckBox>();
+      _checkbox = new Mock<IBocCheckBox>();
 
-      _checkbox.Stub (mock => mock.ClientID).Return (c_clientID);
-      _checkbox.Stub (mock => mock.ControlType).Return ("BocCheckBox");
-      _checkbox.Stub (mock => mock.GetValueName()).Return (c_valueName);
-      _checkbox.Stub (mock => mock.GetLabelIDs()).Return (EnumerableUtility.Singleton (c_labelID));
-      _checkbox.Stub (mock => mock.GetValidationErrors()).Return (EnumerableUtility.Singleton (c_validationErrors));
-      
-      var clientScriptManagerMock = MockRepository.GenerateMock<IClientScriptManager>();
-      _startupScript = string.Format (
-          "BocCheckBox_InitializeGlobals ('{0}', '{1}');",
-          _checkbox.DefaultTrueDescription,
-          _checkbox.DefaultFalseDescription);
-      clientScriptManagerMock.Expect (mock => mock.RegisterStartupScriptBlock (_checkbox, typeof (BocCheckBoxRenderer), _startUpScriptKey, _startupScript));
-      clientScriptManagerMock.Stub (mock => mock.IsStartupScriptRegistered (Arg<Type>.Is.NotNull, Arg<string>.Is.NotNull)).Return (false);
-      clientScriptManagerMock.Stub (mock => mock.GetPostBackEventReference (_checkbox, string.Empty)).Return (c_postbackEventReference);
+      _checkbox.Setup(mock => mock.ClientID).Returns(c_clientID);
+      _checkbox.Setup(mock => mock.ControlType).Returns("BocCheckBox");
+      _checkbox.Setup(mock => mock.GetValueName()).Returns(c_valueName);
+      _checkbox.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton(c_labelID));
+      _checkbox.Setup(mock => mock.GetValidationErrors()).Returns(EnumerableUtility.Singleton(s_validationErrors));
 
-      var pageStub = MockRepository.GenerateStub<IPage>();
-      pageStub.Stub (stub => stub.ClientScript).Return (clientScriptManagerMock);
+      var clientScriptManagerMock = new Mock<IClientScriptManager>();
+      _startupScript = string.Format(
+          "BocCheckBox.InitializeGlobals ('{0}', '{1}');",
+          _checkbox.Object.DefaultTrueDescription,
+          _checkbox.Object.DefaultFalseDescription);
+      clientScriptManagerMock.Setup(mock => mock.RegisterStartupScriptBlock(_checkbox.Object, typeof(BocCheckBoxRenderer), _startUpScriptKey, _startupScript)).Verifiable();
+      clientScriptManagerMock.Setup(mock => mock.IsStartupScriptRegistered(It.IsNotNull<Type>(), It.IsNotNull<string>())).Returns(false);
+      clientScriptManagerMock.Setup(mock => mock.GetPostBackEventReference(_checkbox.Object, string.Empty)).Returns(c_postbackEventReference);
 
-      _checkbox.Stub (mock => mock.Value).PropertyBehavior();
-      _checkbox.Stub (mock => mock.IsDesignMode).Return (false);
-      _checkbox.Stub (mock => mock.IsDescriptionEnabled).Return (true);
+      var pageStub = new Mock<IPage>();
+      pageStub.Setup(stub => stub.ClientScript).Returns(clientScriptManagerMock.Object);
 
-      _checkbox.Stub (mock => mock.Page).Return (pageStub);
-      _checkbox.Stub (mock => mock.TrueDescription).Return (c_trueDescription);
-      _checkbox.Stub (mock => mock.FalseDescription).Return (c_falseDescription);
+      _checkbox.SetupProperty(_ => _.Value);
+      _checkbox.Setup(mock => mock.IsDescriptionEnabled).Returns(true);
 
-      _checkbox.Stub (mock => mock.CssClass).PropertyBehavior();
+      _checkbox.Setup(mock => mock.Page).Returns(pageStub.Object);
+      _checkbox.Setup(mock => mock.TrueDescription).Returns(PlainTextString.CreateFromText(c_trueDescription));
+      _checkbox.Setup(mock => mock.FalseDescription).Returns(PlainTextString.CreateFromText(c_falseDescription));
+
+      _checkbox.SetupProperty(_ => _.CssClass);
 
       StateBag stateBag = new StateBag();
-      _checkbox.Stub (mock => mock.Attributes).Return (new AttributeCollection (stateBag));
-      _checkbox.Stub (mock => mock.Style).Return (_checkbox.Attributes.CssStyle);
-      _checkbox.Stub (mock => mock.LabelStyle).Return (new Style (stateBag));
-      _checkbox.Stub (mock => mock.ControlStyle).Return (new Style (stateBag));
+      _checkbox.Setup(mock => mock.Attributes).Returns(new AttributeCollection(stateBag));
+      _checkbox.Setup(mock => mock.Style).Returns(_checkbox.Object.Attributes.CssStyle);
+      _checkbox.Setup(mock => mock.LabelStyle).Returns(new Style(stateBag));
+      _checkbox.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
     }
 
     [Test]
     public void RenderTrue ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalse ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueReadOnly ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.Stub (mock => mock.IsReadOnly).Return (true);
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Setup(mock => mock.IsRequired).Returns(true);
+      _checkbox.Setup(mock => mock.IsReadOnly).Returns(true);
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseReadOnly ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.Stub (mock => mock.IsReadOnly).Return (true);
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Setup(mock => mock.IsRequired).Returns(true);
+      _checkbox.Setup(mock => mock.IsReadOnly).Returns(true);
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueDisabled ()
     {
-      CheckRender (true, _checkbox.TrueDescription);
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseDisabled ()
     {
-      CheckRender (false, _checkbox.FalseDescription);
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueWithCssClass ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.CssClass = c_cssClass;
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Object.CssClass = c_cssClass;
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseWithCssClass ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.CssClass = c_cssClass;
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Object.CssClass = c_cssClass;
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueReadOnlyWithCssClass ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.CssClass = c_cssClass;
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Setup(mock => mock.IsRequired).Returns(true);
+      _checkbox.Object.CssClass = c_cssClass;
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseReadOnlyWithCssClass ()
     {
-      _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.CssClass = c_cssClass;
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Setup(mock => mock.IsRequired).Returns(true);
+      _checkbox.Object.CssClass = c_cssClass;
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueDisabledWithCssClass ()
     {
-      _checkbox.CssClass = c_cssClass;
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Object.CssClass = c_cssClass;
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseDisabledWithCssClass ()
     {
-      _checkbox.CssClass = c_cssClass;
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Object.CssClass = c_cssClass;
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueWithCssClassInStandardProperties ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.Attributes["class"] = c_cssClass;
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Object.Attributes["class"] = c_cssClass;
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseWithCssClassInStandardProperties ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.Attributes["class"] = c_cssClass;
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Object.Attributes["class"] = c_cssClass;
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueReadOnlyWithCssClassInStandardProperties ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.Attributes["class"] = c_cssClass;
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Setup(mock => mock.IsRequired).Returns(true);
+      _checkbox.Object.Attributes["class"] = c_cssClass;
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseReadOnlyWithCssClassInStandardProperties ()
     {
-      _checkbox.Stub (mock => mock.Enabled).Return (true);
-      _checkbox.Stub (mock => mock.IsRequired).Return (true);
-      _checkbox.Attributes["class"] = c_cssClass;
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Setup(mock => mock.Enabled).Returns(true);
+      _checkbox.Setup(mock => mock.IsRequired).Returns(true);
+      _checkbox.Object.Attributes["class"] = c_cssClass;
+      CheckRender(false, _checkbox.Object.FalseDescription);
     }
 
     [Test]
     public void RenderTrueDisabledWithCssClassInStandardProperties ()
     {
-      _checkbox.Attributes["class"] = c_cssClass;
-      CheckRender (true, _checkbox.TrueDescription);
+      _checkbox.Object.Attributes["class"] = c_cssClass;
+      CheckRender(true, _checkbox.Object.TrueDescription);
     }
 
     [Test]
     public void RenderFalseDisabledWithCssClassInStandardProperties ()
     {
-      _checkbox.Attributes["class"] = c_cssClass;
-      CheckRender (false, _checkbox.FalseDescription);
+      _checkbox.Object.Attributes["class"] = c_cssClass;
+      CheckRender(false, _checkbox.Object.FalseDescription);
+    }
+
+    [Test]
+    public void RenderDefaultTrueDescriptionWebString ()
+    {
+      _checkbox.Object.Value = true;
+      _checkbox.Setup(_ => _.DefaultTrueDescription).Returns(WebString.CreateFromText("Multiline\nDefaultTrue"));
+      _checkbox.Setup(_ => _.TrueDescription).Returns(PlainTextString.Empty);
+
+      var document = Render();
+
+      var description = document.GetAssertedElementByID(c_clientID  + "_Description");
+      Assert.That(description.InnerXml, Is.EqualTo("Multiline<br />DefaultTrue"));
+    }
+
+    [Test]
+    public void RenderDefaultFalseDescriptionWebString ()
+    {
+      _checkbox.Object.Value = false;
+      _checkbox.Setup(_ => _.DefaultFalseDescription).Returns(WebString.CreateFromText("Multiline\nDefaultFalse"));
+      _checkbox.Setup(_ => _.FalseDescription).Returns(PlainTextString.Empty);
+
+      var document = Render();
+
+      var description = document.GetAssertedElementByID(c_clientID  + "_Description");
+      Assert.That(description.InnerXml, Is.EqualTo("Multiline<br />DefaultFalse"));
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
-      _checkbox.Stub (mock => mock.IsAutoPostBackEnabled).Return(true);
-      _checkbox.Value = true;
+      _checkbox.Setup(mock => mock.IsAutoPostBackEnabled).Returns(true);
+      _checkbox.Object.Value = true;
 
       var resourceUrlFactory = new FakeResourceUrlFactory();
-      _renderer = new BocCheckBoxRenderer (
+      _renderer = new BocCheckBoxRenderer(
           resourceUrlFactory,
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      _renderer.Render (new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox));
-      
+      _renderer.Render(new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox.Object));
+
       var document = Html.GetResultDocument();
-      var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
-      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.ControlType, "BocCheckBox");
-      Html.AssertAttribute (outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
+      var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
+      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.ControlType, "BocCheckBox");
+      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
     }
 
-    private void CheckRender (bool value, string spanText)
+    private void CheckRender (bool value, PlainTextString spanText)
     {
-      _checkbox.Value = value;
+      _checkbox.Object.Value = value;
 
-      _renderer = new BocCheckBoxRenderer (
+      var document = Render();
+
+      var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
+      CheckCssClass(outerSpan);
+
+      if (_checkbox.Object.IsReadOnly)
+      {
+        var valueSpan = outerSpan.GetAssertedChildElement("span", 0);
+        valueSpan.AssertAttributeValueEquals("id", c_valueName);
+        valueSpan.AssertAttributeValueEquals("data-value", value.ToString());
+        valueSpan.AssertAttributeValueEquals("tabindex", "0");
+        valueSpan.AssertAttributeValueEquals("role", "checkbox");
+        valueSpan.AssertAttributeValueEquals("aria-readonly", "true");
+        Html.AssertAttribute(valueSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+        Html.AssertAttribute(valueSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+        Html.AssertAttribute(valueSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+        Html.AssertAttribute(valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+
+        CheckImage(value, valueSpan, spanText);
+        CheckOuterSpan(outerSpan);
+
+        AssertValidationErrors(outerSpan);
+      }
+      else
+      {
+        CheckInput(value, outerSpan);
+        CheckOuterSpan(outerSpan);
+
+        AssertValidationErrors(outerSpan);
+      }
+
+      if (_checkbox.Object.IsDescriptionEnabled)
+      {
+        var label = Html.GetAssertedChildElement(outerSpan, "span", 2);
+        Html.AssertAttribute(label, "id", c_clientID + "_Description");
+        Html.AssertAttribute(label, "class", "description");
+        Html.AssertTextNode(label, spanText.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
+      }
+      else
+      {
+        Html.AssertChildElementCount(outerSpan, 2);
+      }
+    }
+
+    private XmlDocument Render ()
+    {
+      _renderer = new BocCheckBoxRenderer(
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
           new StubLabelReferenceRenderer(),
           new StubValidationErrorRenderer());
-      _renderer.Render (new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox));
+      _renderer.Render(new BocCheckBoxRenderingContext(HttpContext, Html.Writer, _checkbox.Object));
 
-      var document = Html.GetResultDocument();
-
-      var outerSpan = Html.GetAssertedChildElement (document, "span", 0);
-      CheckCssClass (outerSpan);
-
-      if (_checkbox.IsReadOnly)
-      {
-        var valueSpan = outerSpan.GetAssertedChildElement ("span", 0);
-        valueSpan.AssertAttributeValueEquals ("id", c_valueName);
-        valueSpan.AssertAttributeValueEquals ("data-value", value.ToString());
-        valueSpan.AssertAttributeValueEquals ("tabindex", "0");
-        valueSpan.AssertAttributeValueEquals ("role", "checkbox");
-        valueSpan.AssertAttributeValueEquals ("aria-readonly", "true");
-        Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-        Html.AssertAttribute (valueSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-        Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-        Html.AssertAttribute (valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-
-        CheckImage (value, valueSpan, spanText);
-
-        AssertValidationErrors (outerSpan);
-      }
-      else
-      {
-        CheckInput (value, outerSpan);
-
-        AssertValidationErrors (outerSpan);
-      }
-
-      if (_checkbox.IsDescriptionEnabled)
-      {
-        var label = Html.GetAssertedChildElement (outerSpan, "span", 1);
-        Html.AssertAttribute (label, "id", c_clientID + "_Description");
-        Html.AssertTextNode (label, spanText, 0);
-      }
-      else
-      {
-        Html.AssertChildElementCount (outerSpan, 1);
-      }
+      return Html.GetResultDocument();
     }
 
     private void AssertValidationErrors (XmlNode node)
     {
-      var validationErrorsSpan = node.GetAssertedChildElement ("fake", 2);
+      var validationErrorsSpan = node.GetAssertedChildElement("fake", 3);
 
-      Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      
+      Html.AssertAttribute(validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+
     }
 
     private void CheckInput (bool value, XmlNode outerSpan)
     {
-      var checkbox = Html.GetAssertedChildElement (outerSpan, "input", 0);
-      Html.AssertAttribute (checkbox, "type", "checkbox");
-      Html.AssertAttribute (checkbox, "id", c_valueName);
-      Html.AssertAttribute (checkbox, "name", c_valueName);
+      var checkbox = Html.GetAssertedChildElement(outerSpan, "input", 0);
+      Html.AssertAttribute(checkbox, "type", "checkbox");
+      Html.AssertAttribute(checkbox, "id", c_valueName);
+      Html.AssertAttribute(checkbox, "name", c_valueName);
       if (value)
-        Html.AssertAttribute (checkbox, "checked", "checked");
+        Html.AssertAttribute(checkbox, "checked", "checked");
       else
-        Html.AssertNoAttribute (checkbox, "checked");
+        Html.AssertNoAttribute(checkbox, "checked");
 
-      if (_checkbox.Enabled)
-        Html.AssertNoAttribute (checkbox, "disabled");
+      if (_checkbox.Object.Enabled)
+        Html.AssertNoAttribute(checkbox, "disabled");
       else
-        Html.AssertAttribute (checkbox, "disabled", "disabled");
+        Html.AssertAttribute(checkbox, "disabled", "disabled");
 
-      Html.AssertAttribute (checkbox, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute (checkbox, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(checkbox, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(checkbox, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
-      if (_checkbox.IsDescriptionEnabled)
-        Html.AssertAttribute (checkbox, "aria-describedby", c_clientID + "_Description");
+      if (_checkbox.Object.IsDescriptionEnabled)
+        Html.AssertAttribute(checkbox, "aria-describedby", c_clientID + "_Description");
 
-      Html.AssertAttribute (checkbox, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute (checkbox, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      Html.AssertAttribute(checkbox, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(checkbox, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
-    private void CheckImage (bool value, XmlNode outerSpan, string altText)
+    private void CheckImage (bool value, XmlNode outerSpan, PlainTextString altText)
     {
-      var image = Html.GetAssertedChildElement (outerSpan, "img", 0);
-      Html.AssertNoAttribute (image, "id");
-      Html.AssertAttribute (image, "src", string.Format ("/CheckBox{0}.gif", value), HtmlHelper.AttributeValueCompareMode.Contains);
-      Html.AssertAttribute (image, "alt", altText);
+      var image = Html.GetAssertedChildElement(outerSpan, "img", 0);
+      Html.AssertNoAttribute(image, "id");
+      Html.AssertAttribute(image, "src", string.Format("/sprite.svg#CheckBox{0}", value), HtmlHelper.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute(image, "alt", altText);
+    }
+
+    private void CheckOuterSpan (XmlNode outerSpan)
+    {
+      outerSpan.GetAssertedChildElement("span", 1);
     }
 
     private void CheckCssClass (XmlNode outerSpan)
     {
-      string cssClass = _checkbox.CssClass;
-      if (string.IsNullOrEmpty (cssClass))
-        cssClass = _checkbox.Attributes["class"];
-      if (string.IsNullOrEmpty (cssClass))
-        cssClass = _renderer.GetCssClassBase(_checkbox);
+      string cssClass = _checkbox.Object.CssClass;
+      if (string.IsNullOrEmpty(cssClass))
+        cssClass = _checkbox.Object.Attributes["class"];
+      if (string.IsNullOrEmpty(cssClass))
+        cssClass = _renderer.GetCssClassBase(_checkbox.Object);
 
-      Html.AssertAttribute (outerSpan, "id", "MyCheckBox");
-      Html.AssertAttribute (outerSpan, "class", cssClass, HtmlHelper.AttributeValueCompareMode.Contains);
-      if (_checkbox.IsReadOnly)
-        Html.AssertAttribute (outerSpan, "class", _renderer.CssClassReadOnly, HtmlHelper.AttributeValueCompareMode.Contains);
-      if (!_checkbox.Enabled)
-        Html.AssertAttribute (outerSpan, "class", _renderer.CssClassDisabled, HtmlHelper.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute(outerSpan, "id", "MyCheckBox");
+      Html.AssertAttribute(outerSpan, "class", cssClass, HtmlHelper.AttributeValueCompareMode.Contains);
+      if (_checkbox.Object.IsReadOnly)
+        Html.AssertAttribute(outerSpan, "class", _renderer.CssClassReadOnly, HtmlHelper.AttributeValueCompareMode.Contains);
+      if (!_checkbox.Object.Enabled)
+        Html.AssertAttribute(outerSpan, "class", _renderer.CssClassDisabled, HtmlHelper.AttributeValueCompareMode.Contains);
     }
   }
 }

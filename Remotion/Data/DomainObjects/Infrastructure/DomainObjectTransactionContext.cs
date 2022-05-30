@@ -29,11 +29,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     private readonly DomainObject _domainObject;
     private readonly ClientTransaction _associatedTransaction;
 
+    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
     public DomainObjectTransactionContext (DomainObject domainObject, ClientTransaction associatedTransaction)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull ("associatedTransaction", associatedTransaction);
-      DomainObjectCheckUtility.CheckIfRightTransaction (domainObject, associatedTransaction);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("associatedTransaction", associatedTransaction);
+      DomainObjectCheckUtility.CheckIfRightTransaction(domainObject, associatedTransaction);
 
       _domainObject = domainObject;
       _associatedTransaction = associatedTransaction;
@@ -49,28 +50,23 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       get { return _associatedTransaction; }
     }
 
-    public StateType State
+    public DomainObjectState State
     {
-      get { return ClientTransaction.DataManager.GetState (DomainObject.ID); }
+      get { return ClientTransaction.DataManager.GetState(DomainObject.ID); }
     }
 
-    public bool IsInvalid
+    public object? Timestamp
     {
-      get { return ClientTransaction.IsInvalid (DomainObject.ID); }
-    }
-
-    public object Timestamp
-    {
-      get { return ClientTransaction.DataManager.GetDataContainerWithLazyLoad (DomainObject.ID, throwOnNotFound: true).Timestamp; }
+      get { return ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true)!.Timestamp; }
     }
 
     public void RegisterForCommit ()
     {
-      var dataContainer = ClientTransaction.DataManager.GetDataContainerWithLazyLoad (DomainObject.ID, throwOnNotFound: true);
-      if (dataContainer.State == StateType.Deleted)
+      var dataContainer = ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true)!;
+      if (dataContainer.State.IsDeleted)
         return;
 
-      if (dataContainer.State == StateType.New)
+      if (dataContainer.State.IsNew)
         return;
 
       dataContainer.MarkAsChanged();
@@ -78,18 +74,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void EnsureDataAvailable ()
     {
-      ClientTransaction.EnsureDataAvailable (DomainObject.ID);
+      ClientTransaction.EnsureDataAvailable(DomainObject.ID);
 
-      DataContainer dataContainer;
-      Assertion.DebugAssert (
-          (dataContainer = ClientTransaction.DataManager.DataContainers[DomainObject.ID]) != null 
+      DataContainer? dataContainer;
+      Assertion.DebugAssert(
+          (dataContainer = ClientTransaction.DataManager.DataContainers[DomainObject.ID]) != null
           && dataContainer.DomainObject == DomainObject,
           "Guaranteed because CheckIfRightTransaction ensures that DomainObject is enlisted.");
     }
 
     public bool TryEnsureDataAvailable ()
     {
-      return ClientTransaction.TryEnsureDataAvailable (DomainObject.ID);
+      return ClientTransaction.TryEnsureDataAvailable(DomainObject.ID);
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
     {
     }
 
-    [DBBidirectionalRelation ("AssociatedPartnerCompany", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("AssociatedPartnerCompany", ContainsForeignKey = true)]
     [Mandatory]
     public abstract Person ContactPerson { get; set; }
   }

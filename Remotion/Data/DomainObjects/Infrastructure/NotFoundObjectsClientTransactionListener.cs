@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -27,19 +27,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class NotFoundObjectsClientTransactionListener : ClientTransactionListenerBase
   {
-    public override void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public override void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("objectIDs", objectIDs);
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("objectIDs", objectIDs);
 
       foreach (var objectID in objectIDs)
       {
-        var objectReference = clientTransaction.GetObjectReference (objectID);
+        var objectReference = clientTransaction.GetObjectReference(objectID);
         for (var tx = clientTransaction; tx != null; tx = tx.SubTransaction)
         {
           using (tx.HierarchyManager.UnlockIfRequired())
           {
-            tx.DataManager.MarkInvalid (objectReference);
+            tx.DataManager.MarkInvalid(objectReference);
           }
         }
       }

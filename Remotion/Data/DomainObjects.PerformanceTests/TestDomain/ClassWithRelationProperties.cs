@@ -38,47 +38,47 @@ namespace Remotion.Data.DomainObjects.PerformanceTests.TestDomain
 
     [DBBidirectionalRelation("Virtual1", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real1 { get; set; }
-    [DBBidirectionalRelation ("Virtual2", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual2", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real2 { get; set; }
-    [DBBidirectionalRelation ("Virtual3", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual3", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real3 { get; set; }
-    [DBBidirectionalRelation ("Virtual4", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual4", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real4 { get; set; }
-    [DBBidirectionalRelation ("Virtual5", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual5", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real5 { get; set; }
-    [DBBidirectionalRelation ("Virtual6", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual6", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real6 { get; set; }
-    [DBBidirectionalRelation ("Virtual7", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual7", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real7 { get; set; }
-    [DBBidirectionalRelation ("Virtual8", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual8", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real8 { get; set; }
-    [DBBidirectionalRelation ("Virtual9", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual9", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real9 { get; set; }
-    [DBBidirectionalRelation ("Virtual10", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("Virtual10", ContainsForeignKey = true)]
     public abstract OppositeClassWithVirtualRelationProperties Real10 { get; set; }
 
-    [DBBidirectionalRelation ("Real1")]
+    [DBBidirectionalRelation("Real1")]
     public abstract OppositeClassWithRealRelationProperties Virtual1 { get; set; }
-    [DBBidirectionalRelation ("Real2")]
+    [DBBidirectionalRelation("Real2")]
     public abstract OppositeClassWithRealRelationProperties Virtual2 { get; set; }
-    [DBBidirectionalRelation ("Real3")]
+    [DBBidirectionalRelation("Real3")]
     public abstract OppositeClassWithRealRelationProperties Virtual3 { get; set; }
-    [DBBidirectionalRelation ("Real4")]
+    [DBBidirectionalRelation("Real4")]
     public abstract OppositeClassWithRealRelationProperties Virtual4 { get; set; }
-    [DBBidirectionalRelation ("Real5")]
+    [DBBidirectionalRelation("Real5")]
     public abstract OppositeClassWithRealRelationProperties Virtual5 { get; set; }
-    [DBBidirectionalRelation ("Real6")]
+    [DBBidirectionalRelation("Real6")]
     public abstract OppositeClassWithRealRelationProperties Virtual6 { get; set; }
-    [DBBidirectionalRelation ("Real7")]
+    [DBBidirectionalRelation("Real7")]
     public abstract OppositeClassWithRealRelationProperties Virtual7 { get; set; }
-    [DBBidirectionalRelation ("Real8")]
+    [DBBidirectionalRelation("Real8")]
     public abstract OppositeClassWithRealRelationProperties Virtual8 { get; set; }
-    [DBBidirectionalRelation ("Real9")]
+    [DBBidirectionalRelation("Real9")]
     public abstract OppositeClassWithRealRelationProperties Virtual9 { get; set; }
-    [DBBidirectionalRelation ("Real10")]
+    [DBBidirectionalRelation("Real10")]
     public abstract OppositeClassWithRealRelationProperties Virtual10 { get; set; }
 
-    [DBBidirectionalRelation ("EndOfCollection")]
+    [DBBidirectionalRelation("EndOfCollection")]
     public abstract ObjectList<OppositeClassWithCollectionRelationProperties> Collection { get; }
   }
 }

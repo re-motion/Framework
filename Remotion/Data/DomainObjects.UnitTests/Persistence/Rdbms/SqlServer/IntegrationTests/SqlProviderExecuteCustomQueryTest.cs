@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+ï»¿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -31,7 +31,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       base.SetUp();
 
-      _query = QueryFactory.CreateCustomQuery (
+      _query = QueryFactory.CreateCustomQuery(
           "CustomQuery",
           TestDomainStorageProviderDefinition,
           "SELECT String, Int16, Boolean, Enum, ExtensibleEnum FROM [TableWithAllDataTypes]",
@@ -41,44 +41,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void ExecuteCustomQuery_RawValues ()
     {
-      var result = Provider.ExecuteCustomQuery (_query);
+      var result = Provider.ExecuteCustomQuery(_query);
 
       var rawValues =
           result
-            .Select (qrr => new[] { qrr.GetRawValue (0), qrr.GetRawValue (1), qrr.GetRawValue (2), qrr.GetRawValue (3), qrr.GetRawValue (4) })
-            .ToArray ();
+            .Select(qrr => new[] { qrr.GetRawValue(0), qrr.GetRawValue(1), qrr.GetRawValue(2), qrr.GetRawValue(3), qrr.GetRawValue(4) })
+            .ToArray();
       var expected =
           new object[]
           {
-              new object[] { "üäöfedcba", -32767, true, 0, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Blue" },
-              new object[] { "abcdeföäü", 32767, false, 1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red" }
+              new object[] { "Ã¼Ã¤Ã¶fedcba", -32767, true, 0, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Blue" },
+              new object[] { "abcdefÃ¶Ã¤Ã¼", 32767, false, 1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red" }
           };
 
-      Assert.That (rawValues, Is.EquivalentTo (expected));
+      Assert.That(rawValues, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void ExecuteCustomQuery_ConvertedValues ()
     {
-      var result = Provider.ExecuteCustomQuery (_query);
+      var result = Provider.ExecuteCustomQuery(_query);
 
-      var convertedValues = result.Select (
+      var convertedValues = result.Select(
           qrr =>
-          new object[]
-          {
-              qrr.GetConvertedValue<string> (0), 
-              qrr.GetConvertedValue<Int16> (1), 
-              qrr.GetConvertedValue<bool> (2),
-              qrr.GetConvertedValue<ClassWithAllDataTypes.EnumType> (3), 
-              qrr.GetConvertedValue<Color> (4)
-          }).ToArray();
+              new object[]
+              {
+                  qrr.GetConvertedValue<string>(0),
+                  qrr.GetConvertedValue<Int16>(1),
+                  qrr.GetConvertedValue<bool>(2),
+                  qrr.GetConvertedValue<ClassWithAllDataTypes.EnumType>(3),
+                  qrr.GetConvertedValue<Color>(4)
+              }).ToArray();
 
       var expected =
           new[]
           {
               new object[]
               {
-                  "üäöfedcba",
+                  "Ã¼Ã¤Ã¶fedcba",
                   -32767,
                   true,
                   ClassWithAllDataTypes.EnumType.Value0,
@@ -86,7 +86,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
               },
               new object[]
               {
-                  "abcdeföäü",
+                  "abcdefÃ¶Ã¤Ã¼",
                   32767,
                   false,
                   ClassWithAllDataTypes.EnumType.Value1,
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
               },
           };
 
-      Assert.That (convertedValues, Is.EquivalentTo (expected));
+      Assert.That(convertedValues, Is.EquivalentTo(expected));
     }
   }
 }

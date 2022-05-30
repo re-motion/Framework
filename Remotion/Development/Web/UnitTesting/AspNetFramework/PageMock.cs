@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Development.UnitTesting;
 using Remotion.Utilities;
@@ -30,68 +31,69 @@ namespace Remotion.Development.Web.UnitTesting.AspNetFramework
 
     // member fields
 
-    private PageStatePersister _pageStatePersister;
+    private PageStatePersister? _pageStatePersister;
 
     // construction and disposing
 
     public PageMock ()
     {
-      PrivateInvoke.SetNonPublicField (this, "_clientSupportsJavaScriptChecked", true);
-      PrivateInvoke.SetNonPublicField (this, "_clientSupportsJavaScript", true);
+      PrivateInvoke.SetNonPublicField(this, "_clientSupportsJavaScriptChecked", true);
+      PrivateInvoke.SetNonPublicField(this, "_clientSupportsJavaScript", true);
       base.EnableEventValidation = false;
     }
 
     // methods and properties
 
-    public NameValueCollection RequestValueCollection
+    public NameValueCollection? RequestValueCollection
     {
-      get { return (NameValueCollection) PrivateInvoke.GetNonPublicField (this,"_requestValueCollection"); }
+      get { return (NameValueCollection?)PrivateInvoke.GetNonPublicField(this,"_requestValueCollection"); }
     }
 
     public void SetRequestValueCollection (NameValueCollection requestValueCollection)
     {
-      ArgumentUtility.CheckNotNull ("requestValueCollection", requestValueCollection);
+      ArgumentUtility.CheckNotNull("requestValueCollection", requestValueCollection);
 
-      PrivateInvoke.SetNonPublicField (this, "_requestValueCollection", requestValueCollection);
+      PrivateInvoke.SetNonPublicField(this, "_requestValueCollection", requestValueCollection);
     }
 
     protected override PageStatePersister PageStatePersister
     {
-      get { return GetPageStatePersister (); }
+      get { return GetPageStatePersister(); }
     }
 
     public PageStatePersister GetPageStatePersister ()
     {
-      EnsurePageStatePersister ();
+      EnsurePageStatePersister();
       return _pageStatePersister;
     }
 
     protected override void SavePageStateToPersistenceMedium (object state)
     {
-      base.SavePageStateToPersistenceMedium (state);
+      base.SavePageStateToPersistenceMedium(state);
     }
 
     public void SetPageStatePersister (PageStatePersister pageStatePersister)
     {
-      ArgumentUtility.CheckNotNull ("pageStatePersister", pageStatePersister);
+      ArgumentUtility.CheckNotNull("pageStatePersister", pageStatePersister);
 
       _pageStatePersister = pageStatePersister;
     }
 
+    [MemberNotNull(nameof(_pageStatePersister))]
     private void EnsurePageStatePersister ()
     {
       if (_pageStatePersister == null)
-        _pageStatePersister = new HiddenFieldPageStatePersister (this);
+        _pageStatePersister = new HiddenFieldPageStatePersister(this);
     }
 
     public void LoadAllState ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (this, typeof (Page), "LoadAllState", new object[0]);
+      PrivateInvoke.InvokeNonPublicMethod(this, typeof(Page), "LoadAllState", new object[0]);
     }
 
     public void SaveAllState ()
     {
-      PrivateInvoke.InvokeNonPublicMethod (this, typeof (Page), "SaveAllState", new object[0]);
+      PrivateInvoke.InvokeNonPublicMethod(this, typeof(Page), "SaveAllState", new object[0]);
     }
 
     public override void VerifyRenderingInServerForm (Control control)

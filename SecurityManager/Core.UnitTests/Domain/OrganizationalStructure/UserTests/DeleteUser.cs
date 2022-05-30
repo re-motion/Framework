@@ -29,62 +29,62 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     [Test]
     public void CascadeToAccessControlEntry ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      using (testHelper.Transaction.EnterNonDiscardingScope ())
+      DatabaseFixtures dbFixtures = new DatabaseFixtures();
+      AccessControlTestHelper testHelper = new AccessControlTestHelper();
+      using (testHelper.Transaction.EnterNonDiscardingScope())
       {
-        dbFixtures.CreateEmptyDomain ();
-        var tenant = testHelper.CreateTenant ("TestTenant");
-        var owningGroup = testHelper.CreateGroup ("group", null, tenant);
-        var user = testHelper.CreateUser ("user", null, "user", null, owningGroup, tenant);
-        var ace = testHelper.CreateAceWithSpecificUser (user);
-        ClientTransaction.Current.Commit ();
+        dbFixtures.CreateEmptyDomain();
+        var tenant = testHelper.CreateTenant("TestTenant");
+        var owningGroup = testHelper.CreateGroup("group", null, tenant);
+        var user = testHelper.CreateUser("user", null, "user", null, owningGroup, tenant);
+        var ace = testHelper.CreateAceWithSpecificUser(user);
+        ClientTransaction.Current.Commit();
 
-        user.Delete ();
+        user.Delete();
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (ace.State, Is.EqualTo (StateType.Invalid));
+        Assert.That(ace.State.IsInvalid, Is.True);
       }
     }
 
     [Test]
     public void CascadeToRole ()
     {
-      Tenant tenant = TestHelper.CreateTenant ("TestTenant", "UID: testTenant");
-      Group userGroup = TestHelper.CreateGroup ("UserGroup", Guid.NewGuid().ToString(), null, tenant);
-      Group roleGroup = TestHelper.CreateGroup ("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
-      User user = TestHelper.CreateUser ("user", "Firstname", "Lastname", "Title", userGroup, tenant);
-      Position position = TestHelper.CreatePosition ("Position");
-      Role role = TestHelper.CreateRole (user, roleGroup, position);
+      Tenant tenant = TestHelper.CreateTenant("TestTenant", "UID: testTenant");
+      Group userGroup = TestHelper.CreateGroup("UserGroup", Guid.NewGuid().ToString(), null, tenant);
+      Group roleGroup = TestHelper.CreateGroup("RoleGroup", Guid.NewGuid().ToString(), null, tenant);
+      User user = TestHelper.CreateUser("user", "Firstname", "Lastname", "Title", userGroup, tenant);
+      Position position = TestHelper.CreatePosition("Position");
+      Role role = TestHelper.CreateRole(user, roleGroup, position);
 
       user.Delete();
 
-      Assert.That (role.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(role.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void CascadeToSubstitution_FromSubstitutingUser ()
     {
-      User substitutingUser = TestHelper.CreateUser ("user", null, "Lastname", null, null, null);
+      User substitutingUser = TestHelper.CreateUser("user", null, "Lastname", null, null, null);
       Substitution substitution = Substitution.NewObject();
       substitution.SubstitutingUser = substitutingUser;
 
       substitutingUser.Delete();
 
-      Assert.That (substitution.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(substitution.State.IsInvalid, Is.True);
     }
 
     [Test]
     public void CascadeToSubstitution_FromSubstitutedUser ()
     {
-      User substitutedUser = TestHelper.CreateUser ("user", null, "Lastname", null, null, null);
+      User substitutedUser = TestHelper.CreateUser("user", null, "Lastname", null, null, null);
       Substitution substitution = Substitution.NewObject();
       substitution.SubstitutedUser = substitutedUser;
 
       substitutedUser.Delete();
 
-      Assert.That (substitution.State, Is.EqualTo (StateType.Invalid));
+      Assert.That(substitution.State.IsInvalid, Is.True);
     }
   }
 }

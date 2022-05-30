@@ -18,9 +18,10 @@ using System;
 using System.IO;
 using System.Linq;
 using log4net.Core;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Logging;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Logging
 {
@@ -36,82 +37,82 @@ namespace Remotion.UnitTests.Logging
     {
       _originalConsoleOut = Console.Out;
       _fakeConsoleOut = new StringWriter();
-      Console.SetOut (_fakeConsoleOut);
+      Console.SetOut(_fakeConsoleOut);
 
-      _logManager = new Log4NetLogManager ();
+      _logManager = new Log4NetLogManager();
     }
 
     [TearDown]
     public void TearDown ()
     {
       log4net.LogManager.ResetConfiguration();
-      Console.SetOut (_originalConsoleOut);
+      Console.SetOut(_originalConsoleOut);
     }
 
     [Test]
     public void GetLogger_WithNameAsString ()
     {
-      var log = _logManager.GetLogger ("The Name");
+      var log = _logManager.GetLogger("The Name");
 
-      Assert.IsInstanceOf (typeof (Log4NetLog), log);
-      var log4NetLog = (Log4NetLog) log;
-      Assert.That (log4NetLog.Logger.Name, Is.EqualTo ("The Name"));
+      Assert.IsInstanceOf(typeof(Log4NetLog), log);
+      var log4NetLog = (Log4NetLog)log;
+      Assert.That(log4NetLog.Logger.Name, Is.EqualTo("The Name"));
     }
 
     [Test]
     public void GetLogger_WithNameAsString_ReturnsSameLoggerTwice ()
     {
-      var log = _logManager.GetLogger ("The Name");
+      var log = _logManager.GetLogger("The Name");
 
-      Assert.That (_logManager.GetLogger ("The Name"), Is.SameAs (log));
+      Assert.That(_logManager.GetLogger("The Name"), Is.SameAs(log));
     }
 
     [Test]
     public void GetLogger_WithNameFromType ()
     {
-      var log = _logManager.GetLogger (typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
 
-      Assert.IsInstanceOf (typeof (Log4NetLog), log);
-     
-      var log4NetLog = (Log4NetLog) log;
-      Assert.That (log4NetLog.Logger.Name, Is.EqualTo ("Remotion.UnitTests.Logging.SampleType"));
+      Assert.IsInstanceOf(typeof(Log4NetLog), log);
+
+      var log4NetLog = (Log4NetLog)log;
+      Assert.That(log4NetLog.Logger.Name, Is.EqualTo("Remotion.UnitTests.Logging.SampleType"));
     }
 
     [Test]
     public void GetLogger_WithNameFromType_ReturnsSameLoggerTwice ()
     {
-      var log = _logManager.GetLogger (typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
 
-      Assert.That (_logManager.GetLogger (typeof (SampleType)), Is.SameAs (log));
+      Assert.That(_logManager.GetLogger(typeof(SampleType)), Is.SameAs(log));
     }
 
     [Test]
     public void InitializeConsole_CausesLogsToBeWrittenToConsole ()
     {
-      var log = _logManager.GetLogger (typeof (SampleType));
+      var log = _logManager.GetLogger(typeof(SampleType));
 
-      log.Log (LogLevel.Debug, "Test before InitializeConsole");
-      CheckConsoleOutput ();
+      log.Log(LogLevel.Debug, "Test before InitializeConsole");
+      CheckConsoleOutput();
 
       _logManager.InitializeConsole();
 
-      log.Log (LogLevel.Debug, "Test after InitializeConsole");
-      CheckConsoleOutput ("DEBUG: Test after InitializeConsole");
+      log.Log(LogLevel.Debug, "Test after InitializeConsole");
+      CheckConsoleOutput("DEBUG: Test after InitializeConsole");
     }
 
     [Test]
     public void InitializeConsole_LogsAllLogLevels ()
     {
-      _logManager.InitializeConsole ();
+      _logManager.InitializeConsole();
 
-      var log = _logManager.GetLogger (typeof (SampleType));
-      log.Log (LogLevel.Debug, "Test Debug");
-      log.Log (LogLevel.Info, "Test Info");
-      log.Log (LogLevel.Warn, "Test Warn");
-      log.Log (LogLevel.Error, "Test Error");
-      log.Log (LogLevel.Fatal, "Test Fatal");
+      var log = _logManager.GetLogger(typeof(SampleType));
+      log.Log(LogLevel.Debug, "Test Debug");
+      log.Log(LogLevel.Info, "Test Info");
+      log.Log(LogLevel.Warn, "Test Warn");
+      log.Log(LogLevel.Error, "Test Error");
+      log.Log(LogLevel.Fatal, "Test Fatal");
 
-      CheckConsoleOutput (
+      CheckConsoleOutput(
           "DEBUG: Test Debug",
           "INFO : Test Info",
           "WARN : Test Warn",
@@ -122,16 +123,16 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void InitializeConsole_WithThreshold_SetsDefaultThreshold ()
     {
-      _logManager.InitializeConsole (LogLevel.Warn);
-      
-      var log = _logManager.GetLogger (typeof (SampleType));
-      log.Log (LogLevel.Debug, "Test Debug");
-      log.Log (LogLevel.Info, "Test Info");
-      log.Log (LogLevel.Warn, "Test Warn");
-      log.Log (LogLevel.Error, "Test Error");
-      log.Log (LogLevel.Fatal, "Test Fatal");
+      _logManager.InitializeConsole(LogLevel.Warn);
 
-      CheckConsoleOutput (
+      var log = _logManager.GetLogger(typeof(SampleType));
+      log.Log(LogLevel.Debug, "Test Debug");
+      log.Log(LogLevel.Info, "Test Info");
+      log.Log(LogLevel.Warn, "Test Warn");
+      log.Log(LogLevel.Error, "Test Error");
+      log.Log(LogLevel.Fatal, "Test Fatal");
+
+      CheckConsoleOutput(
           "WARN : Test Warn",
           "ERROR: Test Error",
           "FATAL: Test Fatal");
@@ -140,24 +141,24 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void InitializeConsole_WithSpecificThresholds_SetsDefaultThreshold_AndSpecificThresholds ()
     {
-      var log1 = _logManager.GetLogger (typeof (SampleType));
-      var log2 = _logManager.GetLogger ("other");
+      var log1 = _logManager.GetLogger(typeof(SampleType));
+      var log2 = _logManager.GetLogger("other");
 
-      _logManager.InitializeConsole (LogLevel.Warn, new LogThreshold (log2, LogLevel.Info));
+      _logManager.InitializeConsole(LogLevel.Warn, new LogThreshold(log2, LogLevel.Info));
 
-      log1.Log (LogLevel.Debug, "1: Test Debug");
-      log1.Log (LogLevel.Info, "1: Test Info");
-      log1.Log (LogLevel.Warn, "1: Test Warn");
-      log1.Log (LogLevel.Error, "1: Test Error");
-      log1.Log (LogLevel.Fatal, "1: Test Fatal");
+      log1.Log(LogLevel.Debug, "1: Test Debug");
+      log1.Log(LogLevel.Info, "1: Test Info");
+      log1.Log(LogLevel.Warn, "1: Test Warn");
+      log1.Log(LogLevel.Error, "1: Test Error");
+      log1.Log(LogLevel.Fatal, "1: Test Fatal");
 
-      log2.Log (LogLevel.Debug, "2: Test Debug");
-      log2.Log (LogLevel.Info, "2: Test Info");
-      log2.Log (LogLevel.Warn, "2: Test Warn");
-      log2.Log (LogLevel.Error, "2: Test Error");
-      log2.Log (LogLevel.Fatal, "2: Test Fatal");
+      log2.Log(LogLevel.Debug, "2: Test Debug");
+      log2.Log(LogLevel.Info, "2: Test Info");
+      log2.Log(LogLevel.Warn, "2: Test Warn");
+      log2.Log(LogLevel.Error, "2: Test Error");
+      log2.Log(LogLevel.Fatal, "2: Test Fatal");
 
-      CheckConsoleOutput (
+      CheckConsoleOutput(
           "WARN : 1: Test Warn",
           "ERROR: 1: Test Error",
           "FATAL: 1: Test Fatal",
@@ -170,32 +171,31 @@ namespace Remotion.UnitTests.Logging
     [Test]
     public void InitializeConsole_WithSpecificThresholds_InvalidLoggerType ()
     {
-      var logger = MockRepository.GenerateStub<ILog>();
-      Assert.That (
-          () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (logger, LogLevel.Error)),
-          Throws.ArgumentException.With.Message.EqualTo (
-              "This LogManager only supports ILog implementations that also implement the log4net.Core.ILoggerWrapper interface.\r\nParameter name: logThresholds"));
+      var logger = new Mock<ILog>();
+      Assert.That(
+          () => _logManager.InitializeConsole(LogLevel.Debug, new LogThreshold(logger.Object, LogLevel.Error)),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
+              "This LogManager only supports ILog implementations that also implement the log4net.Core.ILoggerWrapper interface.", "logThresholds"));
     }
 
     [Test]
     public void InitializeConsole_WithSpecificThresholds_InvalidLog4NetLoggerType ()
     {
-      var logger = MockRepository.GenerateStub<ILogger> ();
-      logger.Stub (stub => stub.Repository).Return (LoggerManager.GetRepository (GetType ().Assembly));
-      logger.Stub (stub => stub.Name).Return ("Foo");
-      Assert.That (
-          () => _logManager.InitializeConsole (LogLevel.Debug, new LogThreshold (new Log4NetLog (logger), LogLevel.Error)),
-          Throws.ArgumentException.With.Message.Matches (
+      var logger = new Mock<ILogger>();
+      logger.Setup(stub => stub.Repository).Returns(LoggerManager.GetRepository(GetType().Assembly));
+      logger.Setup(stub => stub.Name).Returns("Foo");
+      Assert.That(
+          () => _logManager.InitializeConsole(LogLevel.Debug, new LogThreshold(new Log4NetLog(logger.Object), LogLevel.Error)),
+          Throws.ArgumentException.With.Message.Matches(
               @"Log-specific thresholds can only be set for log4net loggers of type 'log4net\.Repository\.Hierarchy\.Logger'\. "
-              + @"The specified logger 'Foo' is of type 'ILoggerProxy.*'\."
-              + "\r\nParameter name: logThresholds"));
+              + @"The specified logger 'Foo' is of type 'Castle\.Proxies\.ILoggerProxy.*'\."));
 
     }
 
     private void CheckConsoleOutput (params string[] expectedLines)
     {
-      var fullString = string.Concat (expectedLines.Select (line => line + Environment.NewLine).ToArray());
-      Assert.That (_fakeConsoleOut.ToString (), Is.EqualTo (fullString));
+      var fullString = string.Concat(expectedLines.Select(line => line + Environment.NewLine).ToArray());
+      Assert.That(_fakeConsoleOut.ToString(), Is.EqualTo(fullString));
     }
 
   }

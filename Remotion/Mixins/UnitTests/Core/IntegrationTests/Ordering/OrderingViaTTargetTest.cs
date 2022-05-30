@@ -25,10 +25,10 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     [Test]
     public void TargetDependency_DoesntProvideOrdering ()
     {
-      CheckOrderingException (
-          () => BuildMixedInstance<C> (typeof (MixinA), typeof (MixinB)), 
-          typeof (C), 
-          Tuple.Create (new[] { typeof (MixinA), typeof (MixinB) }, "Method1"));
+      CheckOrderingException(
+          () => BuildMixedInstance<C>(typeof(MixinA), typeof(MixinB)),
+          typeof(C),
+          Tuple.Create(new[] { typeof(MixinA), typeof(MixinB) }, "Method1"));
     }
 
     public class C
@@ -46,13 +46,13 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Ordering
     public class MixinA : Mixin<object, IC>, IMixinA
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinA.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinA.Method1 - " + Next.Method1(); }
     }
 
     public class MixinB : Mixin<IMixinA, IC>
     {
       [OverrideTarget]
-      public string Method1 () { return "MixinB_WithInterfaceDependency.Method1 - " + Next.Method1 (); }
+      public string Method1 () { return "MixinB_WithInterfaceDependency.Method1 - " + Next.Method1(); }
     }
   }
 }

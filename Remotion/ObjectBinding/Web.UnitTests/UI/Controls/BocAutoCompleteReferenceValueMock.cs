@@ -16,12 +16,14 @@
 // 
 using System;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.Services;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
   public class BocAutoCompleteReferenceValueMock : BocAutoCompleteReferenceValue
   {
-    public BocAutoCompleteReferenceValueMock ()
+    public BocAutoCompleteReferenceValueMock (IWebServiceFactory webServiceFactory)
+        : base(webServiceFactory)
     {
     }
 
@@ -37,7 +39,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
     public new void LoadControlState (object state)
     {
-      base.LoadControlState (state);
+      base.LoadControlState(state);
     }
   }
 }

@@ -30,35 +30,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     private string ReplaceKnownXmlNamespaceDeclarations (string xml)
     {
       return xml
-          .Replace (@"xmlns:xsd=""http://www.w3.org/2001/XMLSchema""", "XmlnsDeclaration")
-          .Replace (@"xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""", "XmlnsDeclaration");
+          .Replace(@"xmlns:xsd=""http://www.w3.org/2001/XMLSchema""", "XmlnsDeclaration")
+          .Replace(@"xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""", "XmlnsDeclaration");
     }
 
     [Test]
     public void Export_SerializesData ()
     {
-      DataContainer container1 = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
-      DataContainer container2 = DomainObjectIDs.Order3.GetObject<Order> ().InternalDataContainer;
+      DataContainer container1 = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
+      DataContainer container2 = DomainObjectIDs.Order3.GetObject<Order>().InternalDataContainer;
 
-      TransportItem item1 = TransportItem.PackageDataContainer (container1);
-      TransportItem item2 = TransportItem.PackageDataContainer (container2);
+      TransportItem item1 = TransportItem.PackageDataContainer(container1);
+      TransportItem item2 = TransportItem.PackageDataContainer(container2);
 
       var items = new[] { item1, item2 };
-      using (var stream = new MemoryStream ())
+      using (var stream = new MemoryStream())
       {
-        XmlExportStrategy.Instance.Export (stream, items);
-        var actualString = ReplaceKnownXmlNamespaceDeclarations (Encoding.UTF8.GetString (stream.ToArray()));
+        XmlExportStrategy.Instance.Export(stream, items);
+        var actualString = ReplaceKnownXmlNamespaceDeclarations(Encoding.UTF8.GetString(stream.ToArray()));
 
-        Assert.That (actualString, Is.EqualTo (ReplaceKnownXmlNamespaceDeclarations (XmlSerializationStrings.XmlForOrder1Order2)));
+        Assert.That(actualString, Is.EqualTo(ReplaceKnownXmlNamespaceDeclarations(XmlSerializationStrings.XmlForOrder1Order2)));
       }
     }
 
     public static byte[] Export (params TransportItem[] transportItems)
     {
-      using (var stream = new MemoryStream ())
+      using (var stream = new MemoryStream())
       {
-        XmlExportStrategy.Instance.Export (stream, transportItems);
-        return stream.ToArray ();
+        XmlExportStrategy.Instance.Export(stream, transportItems);
+        return stream.ToArray();
       }
     }
   }

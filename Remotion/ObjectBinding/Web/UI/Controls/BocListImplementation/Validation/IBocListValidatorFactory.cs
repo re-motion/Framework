@@ -25,6 +25,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validatio
   /// <seealso cref="T:Remotion.ObjectBinding.Web.Validation.UI.Controls.Factories.Decorators.FilteringBocListValidatorFactoryDecorator"/>
   public interface IBocListValidatorFactory : IBocValidatorFactory<IBocList>
   {
-     
+
   }
 }

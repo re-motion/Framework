@@ -16,10 +16,49 @@
 // 
 using System;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
 {
   public partial class WebTreeViewTest : SmartPage
   {
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit(e);
+
+      var node = new WebTreeNode(
+          "Item1",
+          WebString.CreateFromText("This is the beginning of very long text that should be placed correctly beside the icon"),
+          "~/Images/SampleIcon.gif");
+      MyWebTreeView2.Nodes.Add(node);
+
+      var webTreeNodeNoBadge = new WebTreeNode("Node1", WebString.CreateFromText("No badge"));
+      MyWebTreeView3.Nodes.Add(webTreeNodeNoBadge);
+
+      var webTreeNodeBadgeNoDescription = new WebTreeNode("Node2", WebString.CreateFromText("Badge with value"));
+      webTreeNodeBadgeNoDescription.Badge = new Badge(WebString.CreateFromText("1"), PlainTextString.Empty);
+      MyWebTreeView3.Nodes.Add(webTreeNodeBadgeNoDescription);
+
+      var webTreeNodeBadge = new WebTreeNode("Node3", WebString.CreateFromText("Badge with value and description"));
+      webTreeNodeBadge.Badge = new Badge(WebString.CreateFromText("2"), PlainTextString.CreateFromText("2 description"));
+      MyWebTreeView3.Nodes.Add(webTreeNodeBadge);
+
+      var treeViewNodes = new IControlItem[]
+                          {
+                              new WebTreeNode("Node1", WebString.CreateFromText("1")) { Category = "first category" },
+                              new WebTreeNode("Node2", WebString.CreateFromText("2")) { Category = "second category" },
+                              new WebTreeNode("Node3", WebString.CreateFromText("3")) { Category = "third category" },
+                              new WebTreeNode("Node4", WebString.CreateFromText("4")) { Category = "second category" },
+                              new WebTreeNode("Node5", WebString.CreateFromText("5")) { Category = "third category" },
+                              new WebTreeNode("Node6", WebString.CreateFromText("6")) { Category = "third category" },
+                              new WebTreeNode("Node7", WebString.CreateFromText("7")) { Category = "first category" }
+                          };
+
+      MyOrderedWebTreeView.Nodes.AddRange(treeViewNodes);
+      MyUnorderedWebTreeView.Nodes.AddRange(treeViewNodes);
+      MyWebTreeViewWithCategories.Nodes.Add(new WebTreeNode("Node1", WebString.CreateFromText("1")) { Category = "a category" });
+      MyWebTreeViewWithoutCategories.Nodes.Add(new WebTreeNode("Node1", WebString.CreateFromText("1")));
+      MyWebTreeViewWithUmlauts.Nodes.Add(new WebTreeNode("Node1", WebString.CreateFromHtml("UmlautÖ")));
+    }
   }
 }

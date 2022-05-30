@@ -35,10 +35,10 @@ namespace Remotion.Mixins
   /// </para>
   /// </remarks>
   [MeansImplicitUse]
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = true)]
   public class OverrideMixinAttribute : Attribute, IOverrideAttribute
   {
-    private readonly Type _mixinType;
+    private readonly Type? _mixinType;
 
     /// <summary>
     /// Indicates that this member overrides a virtual or abstract member of one of the mixins combined with the class. The overridden member
@@ -56,15 +56,15 @@ namespace Remotion.Mixins
     /// open type (with unbound generic parameters) even if the configuration contains a closed type (with bound parameters).</param>
     public OverrideMixinAttribute (Type mixinType)
     {
-      _mixinType = ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      _mixinType = ArgumentUtility.CheckNotNull("mixinType", mixinType);
     }
 
-    public Type MixinType
+    public Type? MixinType
     {
       get { return _mixinType; }
     }
 
-    Type IOverrideAttribute.OverriddenType
+    Type? IOverrideAttribute.OverriddenType
     {
       get { return MixinType; }
     }

@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>
     /// 	<see langword="true" /> if result set contains duplicates; otherwise, <see langword="false" />.
     /// </returns>
-    [Obsolete ("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
+    [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
     bool ContainsDuplicates ();
 
     /// <summary>
@@ -68,12 +68,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// Returns the query result set as an enumerable object. Might contain duplicates or <see langword="null"/> values.
     /// </summary>
     /// <returns>An instance of <see cref="IEnumerable{T}"/> containing the <see cref="DomainObject"/> instances yielded by the query.</returns>
-    IEnumerable<DomainObject> AsEnumerable ();
+    IEnumerable<DomainObject?> AsEnumerable ();
     /// <summary>
     /// Returns the query result set as an array. Might contain duplicates or <see langword="null"/> values.
     /// </summary>
     /// <returns>An array containing the <see cref="DomainObject"/> instances yielded by the query.</returns>
-    DomainObject[] ToArray ();
+    DomainObject?[] ToArray ();
     /// <summary>
     /// Returns the query result set as an <see cref="ObjectList{T}"/>. If the result set contains duplicates or <see langword="null"/> values, this
     /// method throws an exception.

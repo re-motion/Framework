@@ -24,7 +24,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
   {
     public static void SetClientTransaction (DataContainer dataContainer, ClientTransaction clientTransaction)
     {
-      PrivateInvoke.InvokeNonPublicMethod (dataContainer, "SetClientTransaction", clientTransaction);
+      PrivateInvoke.InvokeNonPublicMethod(dataContainer, "SetClientTransaction", clientTransaction);
     }
   }
 }

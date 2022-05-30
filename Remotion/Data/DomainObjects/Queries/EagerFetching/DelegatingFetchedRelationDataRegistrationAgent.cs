@@ -34,13 +34,13 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
     private readonly IFetchedRelationDataRegistrationAgent _collectionDataRegistrationAgent;
 
     public DelegatingFetchedRelationDataRegistrationAgent (
-        IFetchedRelationDataRegistrationAgent realObjectDataRegistrationAgent, 
-        IFetchedRelationDataRegistrationAgent virtualObjectDataRegistrationAgent, 
+        IFetchedRelationDataRegistrationAgent realObjectDataRegistrationAgent,
+        IFetchedRelationDataRegistrationAgent virtualObjectDataRegistrationAgent,
         IFetchedRelationDataRegistrationAgent collectionDataRegistrationAgent)
     {
-      ArgumentUtility.CheckNotNull ("realObjectDataRegistrationAgent", realObjectDataRegistrationAgent);
-      ArgumentUtility.CheckNotNull ("virtualObjectDataRegistrationAgent", virtualObjectDataRegistrationAgent);
-      ArgumentUtility.CheckNotNull ("collectionDataRegistrationAgent", collectionDataRegistrationAgent);
+      ArgumentUtility.CheckNotNull("realObjectDataRegistrationAgent", realObjectDataRegistrationAgent);
+      ArgumentUtility.CheckNotNull("virtualObjectDataRegistrationAgent", virtualObjectDataRegistrationAgent);
+      ArgumentUtility.CheckNotNull("collectionDataRegistrationAgent", collectionDataRegistrationAgent);
 
       _realObjectDataRegistrationAgent = realObjectDataRegistrationAgent;
       _virtualObjectDataRegistrationAgent = virtualObjectDataRegistrationAgent;
@@ -64,17 +64,17 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public void GroupAndRegisterRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, ICollection<ILoadedObjectData> originatingObjects, ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNullOrEmpty ("originatingObjects", originatingObjects);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNullOrEmpty("originatingObjects", originatingObjects);
 
-      var specificAgent = GetSpecificAgent (relationEndPointDefinition);
-      specificAgent.GroupAndRegisterRelatedObjects (relationEndPointDefinition, originatingObjects, relatedObjects);
+      var specificAgent = GetSpecificAgent(relationEndPointDefinition);
+      specificAgent.GroupAndRegisterRelatedObjects(relationEndPointDefinition, originatingObjects, relatedObjects);
     }
 
     private IFetchedRelationDataRegistrationAgent GetSpecificAgent (IRelationEndPointDefinition relationEndPointDefinition)
     {
       if (relationEndPointDefinition.IsAnonymous)
-        throw new InvalidOperationException ("Anonymous relation end-points cannot have data registered.");
+        throw new InvalidOperationException("Anonymous relation end-points cannot have data registered.");
 
       if (relationEndPointDefinition.Cardinality == CardinalityType.Many)
         return _collectionDataRegistrationAgent;

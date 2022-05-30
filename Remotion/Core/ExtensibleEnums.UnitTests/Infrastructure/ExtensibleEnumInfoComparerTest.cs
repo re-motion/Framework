@@ -31,38 +31,38 @@ namespace Remotion.ExtensibleEnums.UnitTests.Infrastructure
     [SetUp]
     public void SetUp ()
     {
-      _fakeMethod = typeof (ColorExtensions).GetMethod ("Red");
+      _fakeMethod = typeof(ColorExtensions).GetMethod("Red");
       _comparer = ExtensibleEnumInfoComparer<ExtensibleEnumInfo<Planet>>.Instance;
     }
 
     [Test]
     public void Compare_PositionalKeys ()
     {
-      var x = new ExtensibleEnumInfo<Planet> (new Planet ("x"), _fakeMethod, 2.0);
-      var y = new ExtensibleEnumInfo<Planet> (new Planet ("y"), _fakeMethod, 1.0);
+      var x = new ExtensibleEnumInfo<Planet>(new Planet("x"), _fakeMethod, 2.0);
+      var y = new ExtensibleEnumInfo<Planet>(new Planet("y"), _fakeMethod, 1.0);
 
-      Assert.That (_comparer.Compare (x, y), Is.EqualTo (1));
-      Assert.That (_comparer.Compare (y, x), Is.EqualTo (-1));
+      Assert.That(_comparer.Compare(x, y), Is.EqualTo(1));
+      Assert.That(_comparer.Compare(y, x), Is.EqualTo(-1));
     }
 
     [Test]
     public void Compare_EqualPositionalKeys_Alphabetic ()
     {
-      var x = new ExtensibleEnumInfo<Planet> (new Planet ("x"), _fakeMethod, 1.0);
-      var y = new ExtensibleEnumInfo<Planet> (new Planet ("y"), _fakeMethod, 1.0);
+      var x = new ExtensibleEnumInfo<Planet>(new Planet("x"), _fakeMethod, 1.0);
+      var y = new ExtensibleEnumInfo<Planet>(new Planet("y"), _fakeMethod, 1.0);
 
-      Assert.That (_comparer.Compare (x, y), Is.EqualTo (-1));
-      Assert.That (_comparer.Compare (y, x), Is.EqualTo (1));
+      Assert.That(_comparer.Compare(x, y), Is.EqualTo(-1));
+      Assert.That(_comparer.Compare(y, x), Is.EqualTo(1));
     }
 
     [Test]
     public void Compare_EqualPositionalKeys_EqualID ()
     {
-      var x = new ExtensibleEnumInfo<Planet> (new Planet ("x"), _fakeMethod, 1.0);
-      var y = new ExtensibleEnumInfo<Planet> (new Planet ("x"), _fakeMethod, 1.0);
+      var x = new ExtensibleEnumInfo<Planet>(new Planet("x"), _fakeMethod, 1.0);
+      var y = new ExtensibleEnumInfo<Planet>(new Planet("x"), _fakeMethod, 1.0);
 
-      Assert.That (_comparer.Compare (x, y), Is.EqualTo (0));
-      Assert.That (_comparer.Compare (y, x), Is.EqualTo (0));
+      Assert.That(_comparer.Compare(x, y), Is.EqualTo(0));
+      Assert.That(_comparer.Compare(y, x), Is.EqualTo(0));
     }
   }
 }

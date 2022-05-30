@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Web.Hosting;
 using Remotion.Utilities;
@@ -26,17 +27,18 @@ namespace Remotion.Development.Web.ResourceHosting
   /// </summary>
   public class ResourceVirtualFile : VirtualFile
   {
-    private readonly FileInfo _physicalFile;
+    private readonly FileInfo? _physicalFile;
 
-    public ResourceVirtualFile (string virtualPath, FileInfo physicalFile)
-        : base (virtualPath)
+    public ResourceVirtualFile (string virtualPath, FileInfo? physicalFile)
+        : base(virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
-      
+      // TODO RM-8063: The constructor of ResourceVirtualFile should not accept null FileInfo arguments
+      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
+
       _physicalFile = physicalFile;
     }
 
-    public string PhysicalPath
+    public string? PhysicalPath
     {
       get
       {
@@ -46,14 +48,21 @@ namespace Remotion.Development.Web.ResourceHosting
       }
     }
 
+    [MemberNotNullWhen(true, nameof(_physicalFile))]
+    [MemberNotNullWhen(true, nameof(PhysicalPath))]
     public bool Exists
     {
       get { return _physicalFile != null && _physicalFile.Exists; }
     }
 
+    public override string Name
+    {
+      get { return base.Name!; }
+    }
+
     public override Stream Open ()
     {
-      return _physicalFile.OpenRead();
+      return Assertion.IsNotNull(_physicalFile, "'_physicalFile' must not be null to be able to open a Stream.").OpenRead();
     }
   }
 }

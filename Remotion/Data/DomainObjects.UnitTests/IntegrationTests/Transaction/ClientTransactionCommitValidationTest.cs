@@ -17,8 +17,8 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Data.DomainObjects.Validation;
-using Remotion.Data.UnitTests.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -28,55 +28,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void CommitWithOptionalOneToOneRelationNotSet ()
     {
-      SetDatabaseModifyable();
-
-      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee> ();
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       employee.Computer = null;
 
-      Assert.That (() => TestableClientTransaction.Commit(), Throws.Nothing);
+      Assert.That(() => TestableClientTransaction.Commit(), Throws.Nothing);
     }
 
     [Test]
     public void CommitWithOptionalOneToManyRelationNotSet ()
     {
-      SetDatabaseModifyable();
-
-      var customer = DomainObjectIDs.Customer1.GetObject<Customer> ();
+      var customer = DomainObjectIDs.Customer1.GetObject<Customer>();
       foreach (var order in customer.Orders.ToArray())
       {
-        order.Customer = DomainObjectIDs.Customer2.GetObject<Customer> ();
+        order.Customer = DomainObjectIDs.Customer2.GetObject<Customer>();
       }
 
-      Assert.That (customer.Orders, Is.Empty);
-      Assert.That (() => TestableClientTransaction.Commit(), Throws.Nothing);
+      Assert.That(customer.Orders, Is.Empty);
+      Assert.That(() => TestableClientTransaction.Commit(), Throws.Nothing);
     }
-    
+
     [Test]
     public void CommitWithMandatoryOneToOneRelationNotSet ()
     {
-      Order order = DomainObjectIDs.Order1.GetObject<Order> ();
-      OrderTicket newOrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket> ();
+      Order order = DomainObjectIDs.Order1.GetObject<Order>();
+      OrderTicket newOrderTicket = DomainObjectIDs.OrderTicket2.GetObject<OrderTicket>();
 
       order.OrderTicket = newOrderTicket;
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo (
-              "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object"
-              + " 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be null."));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo(
+                "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object"
+                + " 'OrderTicket|058ef259-f9cd-4cb1-85e5-5c05119ab596|System.Guid' cannot be null."));
+      }
     }
 
     [Test]
     public void CommitWithMandatoryOneToManyRelationNotSet ()
     {
-      IndustrialSector industrialSector = DomainObjectIDs.IndustrialSector2.GetObject<IndustrialSector> ();
+      IndustrialSector industrialSector = DomainObjectIDs.IndustrialSector2.GetObject<IndustrialSector>();
       industrialSector.Companies.Clear();
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo (
-              "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object"
-              + " 'IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items."));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo(
+                "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object"
+                + " 'IndustrialSector|8565a077-ea01-4b5d-beaa-293dc484bddc|System.Guid' contains no items."));
+      }
     }
 
     [Test]
@@ -84,15 +86,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       OrderTicket newOrderTicket = OrderTicket.NewObject();
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo (
-              string.Format (
-                  "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object '{0}' cannot be null.",
-                  newOrderTicket.ID))
-              .And.Property<MandatoryRelationNotSetException> (ex => ex.PropertyName).EqualTo (
-                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")
-              .And.Property<MandatoryRelationNotSetException> (ex => ex.DomainObject).SameAs (newOrderTicket));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo(
+                    string.Format(
+                        "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order' of domain object '{0}' cannot be null.",
+                        newOrderTicket.ID))
+                .And.Property<MandatoryRelationNotSetException>(ex => ex.PropertyName).EqualTo(
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order")
+                .And.Property<MandatoryRelationNotSetException>(ex => ex.DomainObject).SameAs(newOrderTicket));
+      }
     }
 
     [Test]
@@ -100,27 +105,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       IndustrialSector newIndustrialSector = IndustrialSector.NewObject();
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo (
-              string.Format (
-                  "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object '{0}' contains no items.",
-                  newIndustrialSector.ID))
-              .And.Property<MandatoryRelationNotSetException> (ex => ex.PropertyName).EqualTo (
-                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies")
-              .And.Property<MandatoryRelationNotSetException> (ex => ex.DomainObject).SameAs (newIndustrialSector));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<MandatoryRelationNotSetException>().With.Message.EqualTo(
+                    string.Format(
+                        "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies' of domain object '{0}' contains no items.",
+                        newIndustrialSector.ID))
+                .And.Property<MandatoryRelationNotSetException>(ex => ex.PropertyName).EqualTo(
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.IndustrialSector.Companies")
+                .And.Property<MandatoryRelationNotSetException>(ex => ex.DomainObject).SameAs(newIndustrialSector));
+      }
     }
 
     [Test]
     public void CommitWithValidProperties ()
     {
-      SetDatabaseModifyable();
-
       var newObject = CreateClassWithAllDataTypes();
       newObject.StringWithNullValueProperty = null;
       newObject.NullableBinaryProperty = null;
 
-      Assert.That (() => TestableClientTransaction.Commit(), Throws.Nothing);
+      Assert.That(() => TestableClientTransaction.Commit(), Throws.Nothing);
     }
 
     [Test]
@@ -129,15 +135,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var newObject = CreateClassWithAllDataTypes();
       newObject.StringProperty = null;
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<PropertyValueNotSetException>().With.Message.EqualTo (
-              string.Format (
-                  "Not-nullable property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty' of domain object '{0}' cannot be null.",
-                  newObject.ID))
-              .And.Property<PropertyValueNotSetException> (ex => ex.PropertyName).EqualTo (
-                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty")
-              .And.Property<PropertyValueNotSetException> (ex => ex.DomainObject).SameAs (newObject));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<PropertyValueNotSetException>().With.Message.EqualTo(
+                    string.Format(
+                        "Not-nullable property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty' of domain object '{0}' cannot be null.",
+                        newObject.ID))
+                .And.Property<PropertyValueNotSetException>(ex => ex.PropertyName).EqualTo(
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty")
+                .And.Property<PropertyValueNotSetException>(ex => ex.DomainObject).SameAs(newObject));
+      }
     }
 
     [Test]
@@ -146,32 +155,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var newObject = CreateClassWithAllDataTypes();
       newObject.BinaryProperty = null;
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<PropertyValueNotSetException>().With.Message.EqualTo (
-              string.Format (
-                  "Not-nullable property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty' of domain object '{0}' cannot be null.",
-                  newObject.ID))
-              .And.Property<PropertyValueNotSetException> (ex => ex.PropertyName).EqualTo (
-                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty")
-              .And.Property<PropertyValueNotSetException> (ex => ex.DomainObject).SameAs (newObject));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<PropertyValueNotSetException>().With.Message.EqualTo(
+                    string.Format(
+                        "Not-nullable property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty' of domain object '{0}' cannot be null.",
+                        newObject.ID))
+                .And.Property<PropertyValueNotSetException>(ex => ex.PropertyName).EqualTo(
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.BinaryProperty")
+                .And.Property<PropertyValueNotSetException>(ex => ex.DomainObject).SameAs(newObject));
+      }
     }
 
     [Test]
     public void ExceptionForStringPropertyExceedingMaxLength ()
     {
       var newObject = CreateClassWithAllDataTypes();
-      newObject.StringProperty = new string ('x', 101);
+      newObject.StringProperty = new string('x', 101);
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<PropertyValueTooLongException>().With.Message.EqualTo (
-              string.Format (
-                  "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty' of domain object '{0}' is too long. Maximum number of characters: 100.",
-                  newObject.ID))
-              .And.Property<PropertyValueTooLongException> (ex => ex.PropertyName).EqualTo (
-                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty")
-              .And.Property<PropertyValueTooLongException> (ex => ex.DomainObject).SameAs (newObject));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<PropertyValueTooLongException>().With.Message.EqualTo(
+                    string.Format(
+                        "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty' of domain object '{0}' is too long. Maximum number of characters: 100.",
+                        newObject.ID))
+                .And.Property<PropertyValueTooLongException>(ex => ex.PropertyName).EqualTo(
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.StringProperty")
+                .And.Property<PropertyValueTooLongException>(ex => ex.DomainObject).SameAs(newObject));
+      }
     }
 
     [Test]
@@ -180,15 +195,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var newObject = CreateClassWithAllDataTypes();
       newObject.TransactionOnlyBinaryProperty = new byte[1000001];
 
-      Assert.That (
-          () => TestableClientTransaction.Commit(),
-          Throws.TypeOf<PropertyValueTooLongException>().With.Message.EqualTo (
-              string.Format (
-                  "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty' of domain object '{0}' is too large. Maximum size: 1000000.",
-                  newObject.ID))
-              .And.Property<PropertyValueTooLongException> (ex => ex.PropertyName).EqualTo (
-                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty")
-              .And.Property<PropertyValueTooLongException> (ex => ex.DomainObject).SameAs (newObject));
+      using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
+      {
+        Assert.That(
+            () => TestableClientTransaction.Commit(),
+            Throws.TypeOf<PropertyValueTooLongException>().With.Message.EqualTo(
+                    string.Format(
+                        "Value for property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty' of domain object '{0}' is too large. Maximum size: 1000000.",
+                        newObject.ID))
+                .And.Property<PropertyValueTooLongException>(ex => ex.PropertyName).EqualTo(
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.ClassWithAllDataTypes.TransactionOnlyBinaryProperty")
+                .And.Property<PropertyValueTooLongException>(ex => ex.DomainObject).SameAs(newObject));
+      }
     }
 
     private ClassWithAllDataTypes CreateClassWithAllDataTypes ()

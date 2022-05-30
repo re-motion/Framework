@@ -63,12 +63,13 @@ using System;
 // ReSharper disable InconsistentNaming
 // ReSharper disable once CheckNamespace
 
+#nullable disable
 namespace JetBrains.Annotations
 {
   /// <summary>
   /// Indicates that the return value of method invocation must be used.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Method)]
+  [AttributeUsage(AttributeTargets.Method)]
   sealed partial class MustUseReturnValueAttribute : Attribute
   {
     public MustUseReturnValueAttribute ()
@@ -80,7 +81,6 @@ namespace JetBrains.Annotations
       Justification = justification;
     }
 
-    [CanBeNull]
     public string Justification { get; private set; }
   }
 }

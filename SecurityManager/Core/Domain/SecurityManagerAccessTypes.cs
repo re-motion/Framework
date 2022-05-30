@@ -22,13 +22,13 @@ using Remotion.Security;
 namespace Remotion.SecurityManager.Domain
 {
   [AccessType]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.SecurityManagerAccessTypes")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.SecurityManagerAccessTypes")]
   public enum SecurityManagerAccessTypes
   {
-    [PermanentGuid ("0348BE71-CFAF-4184-A3BF-C621B2611A29")]
+    [PermanentGuid("0348BE71-CFAF-4184-A3BF-C621B2611A29")]
     AssignRole = 0,
 
-    [PermanentGuid ("4564E3BD-7E1D-4afc-9715-9C698B46A037")]
+    [PermanentGuid("4564E3BD-7E1D-4afc-9715-9C698B46A037")]
     AssignSubstitute = 1,
   }
 }

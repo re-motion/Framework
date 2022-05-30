@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion Web Integration Tests</AssemblyTitle>
+    <AssemblyName>Remotion.Web.IntegrationTests</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <SignAssembly>False</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Development.WebTesting.ControlObjects\Web.Development.WebTesting.ControlObjects.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.ExecutionEngine\Web.Development.WebTesting.ExecutionEngine.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.IntegrationTests.Infrastructure\Web.Development.WebTesting.IntegrationTests.Infrastructure.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.IntegrationTests\Web.Development.WebTesting.IntegrationTests.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.WebFormsControlObjects\Web.Development.WebTesting.WebFormsControlObjects.csproj" />
+    <ProjectReference Include="..\Development.WebTesting\Web.Development.WebTesting.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

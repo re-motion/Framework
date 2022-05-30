@@ -16,6 +16,7 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Collections;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;
@@ -23,10 +24,10 @@ using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.AclTools.Expansion
 {
-  public class AclExpansionAccessConditions  
+  public class AclExpansionAccessConditions
   {
     private static readonly CompoundValueEqualityComparer<AclExpansionAccessConditions> _equalityComparer =
-      new CompoundValueEqualityComparer<AclExpansionAccessConditions> (a => new object[] {
+      new CompoundValueEqualityComparer<AclExpansionAccessConditions>(a => new object?[] {
           a.AbstractRole, a.OwningGroup, a.OwningTenant, a.GroupHierarchyCondition, a.TenantHierarchyCondition, a.IsOwningUserRequired
       }
     );
@@ -39,18 +40,20 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public bool IsOwningUserRequired { get; set; }
 
+    [MemberNotNullWhen(true, nameof(AbstractRole))]
     public bool IsAbstractRoleRequired
     {
       get { return AbstractRole != null; }
     }
-    
-    public AbstractRoleDefinition AbstractRole { get; set; }
+
+    public AbstractRoleDefinition? AbstractRole { get; set; }
 
 
     // Owning Group
-    public Group OwningGroup { get; set; }
+    public Group? OwningGroup { get; set; }
     public GroupHierarchyCondition GroupHierarchyCondition { get; set; }
 
+    [MemberNotNullWhen(true, nameof(OwningGroup))]
     public bool HasOwningGroupCondition
     {
       get { return OwningGroup != null; }
@@ -58,23 +61,24 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
 
     // Owning Tenant
-    public Tenant OwningTenant { get; set; }
+    public Tenant? OwningTenant { get; set; }
     public TenantHierarchyCondition TenantHierarchyCondition { get; set; }
-    
-    public bool HasOwningTenantCondition 
+
+    [MemberNotNullWhen(true, nameof(OwningTenant))]
+    public bool HasOwningTenantCondition
     {
       get { return OwningTenant != null; }
     }
 
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return EqualityComparer.Equals (this, obj);
+      return EqualityComparer.Equals(this, obj);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityComparer.GetHashCode (this);
+      return EqualityComparer.GetHashCode(this);
     }
   }
 }

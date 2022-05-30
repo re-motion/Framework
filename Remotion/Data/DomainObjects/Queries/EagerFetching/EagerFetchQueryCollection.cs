@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
   [Serializable]
   public class EagerFetchQueryCollection : IEnumerable<KeyValuePair<IRelationEndPointDefinition, IQuery>>
   {
-    private readonly Dictionary<IRelationEndPointDefinition, IQuery> _fetchQueries = new Dictionary<IRelationEndPointDefinition, IQuery> ();
+    private readonly Dictionary<IRelationEndPointDefinition, IQuery> _fetchQueries = new Dictionary<IRelationEndPointDefinition, IQuery>();
 
     public int Count
     {
@@ -38,7 +38,7 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public IEnumerator<KeyValuePair<IRelationEndPointDefinition, IQuery>> GetEnumerator ()
     {
-      return _fetchQueries.GetEnumerator ();
+      return _fetchQueries.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
@@ -48,16 +48,16 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
 
     public void Add (IRelationEndPointDefinition relationEndPointDefinition, IQuery fetchQuery)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      ArgumentUtility.CheckNotNull ("fetchQuery", fetchQuery);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("fetchQuery", fetchQuery);
 
-      if (_fetchQueries.ContainsKey (relationEndPointDefinition))
+      if (_fetchQueries.ContainsKey(relationEndPointDefinition))
       {
-        var message = string.Format ("There is already an eager fetch query for relation end point '{0}'.", relationEndPointDefinition.PropertyName);
-        throw new InvalidOperationException (message);
+        var message = string.Format("There is already an eager fetch query for relation end point '{0}'.", relationEndPointDefinition.PropertyName);
+        throw new InvalidOperationException(message);
       }
 
-      _fetchQueries.Add (relationEndPointDefinition, fetchQuery);
+      _fetchQueries.Add(relationEndPointDefinition, fetchQuery);
     }
   }
 }

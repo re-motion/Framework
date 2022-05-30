@@ -17,21 +17,22 @@
 
 using System;
 
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.UnitTests.FunctionalProgramming.TestDomain
 {
   internal class Element
   {
     private readonly int _value;
-    private Element _parent;
+    private Element? _parent;
 
-    public Element (int value, Element parent)
+    public Element (int value, Element? parent)
     {
       _value = value;
       _parent = parent;
     }
 
-    public Element Parent
+    public Element? Parent
     {
       get { return _parent; }
     }

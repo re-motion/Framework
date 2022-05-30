@@ -69,7 +69,7 @@ namespace Remotion.Data.DomainObjects.Tracing
     /// <param name="queryID">An ID unique to this specific database query.</param>
     /// <param name="commandText">The command-text of the query.</param>
     /// <param name="parameters">The parameters of the query.</param>
-    void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object> parameters);
+    void QueryExecuting (Guid connectionID, Guid queryID, string commandText, IDictionary<string, object?> parameters);
 
     /// <summary>
     /// Invoking this method signals the return of the executing database query.

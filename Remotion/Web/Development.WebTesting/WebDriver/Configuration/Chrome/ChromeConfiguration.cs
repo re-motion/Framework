@@ -15,15 +15,20 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Threading;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Configuration;
 using Remotion.Web.Development.WebTesting.DownloadInfrastructure;
-using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Chrome;
+using Remotion.Web.Development.WebTesting.DownloadInfrastructure.Default;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.Annotations;
 using Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators;
+using Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chromium;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories;
 using Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome;
 
@@ -35,148 +40,107 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
   public class ChromeConfiguration : BrowserConfigurationBase, IChromeConfiguration
   {
     private const string c_userDataFolderPrefix = "userdata";
+    private const string c_partialFileDownloadExtension = ".crdownload";
 
-    private readonly IBrowserContentLocator _locator = new ChromeBrowserContentLocator();
+    private static readonly Lazy<ChromeExecutable> s_chromeExecutable =
+        new Lazy<ChromeExecutable>(() => new ChromeBinariesProvider().GetInstalledExecutable(), LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private readonly string _binaryPath;
-    private readonly string _userDirectoryRoot;
-    private readonly IDownloadHelper _downloadHelper;
-    private readonly string _downloadDirectory;
-    private readonly bool _disableInfoBars;
-    private readonly bool _deleteUserDirectoryRoot;
+    private static readonly Lazy<FieldInfo> s_knownCapabilityNamesField = new Lazy<FieldInfo>(
+        () =>
+        {
+          var knownCapabilityNamesField = typeof(DriverOptions).GetField("knownCapabilityNames", BindingFlags.Instance | BindingFlags.NonPublic);
+          Assertion.IsNotNull(knownCapabilityNamesField, "Selenium has changed, please update s_knownCapabilityNamesField field.");
+          return knownCapabilityNamesField;
+        },
+        LazyThreadSafetyMode.ExecutionAndPublication);
+
+    public override string BrowserExecutableName { get; } = "chrome";
+    public override string WebDriverExecutableName { get; } = "chromedriver";
+    public override IBrowserContentLocator Locator { get; } = new ChromeBrowserContentLocator();
+    public override ScreenshotTooltipStyle TooltipStyle { get; } = ScreenshotTooltipStyle.Chrome;
+    public override IDownloadHelper DownloadHelper { get; }
+
+    public string BrowserBinaryPath { get; }
+    public string DriverBinaryPath { get; }
+    public string UserDirectoryRoot { get; }
+    public string DownloadDirectory { get; }
+    public ChromiumDisableSecurityWarningsBehavior DisableSecurityWarningsBehavior { get; }
+
+    public ChromeConfiguration (
+        [NotNull] WebTestConfigurationSection webTestConfigurationSection)
+        : this(webTestConfigurationSection, s_chromeExecutable.Value)
+    {
+    }
 
     public ChromeConfiguration (
         [NotNull] WebTestConfigurationSection webTestConfigurationSection,
-        [NotNull] AdvancedChromeOptions advancedChromeOptions)
-        : base (webTestConfigurationSection)
+        [NotNull] ChromeExecutable chromeExecutable)
+        : base(webTestConfigurationSection)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      ArgumentUtility.CheckNotNull ("advancedChromeOptions", advancedChromeOptions);
+      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("chromeExecutable", chromeExecutable);
 
-      _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
+      BrowserBinaryPath = chromeExecutable.BrowserBinaryPath;
+      DriverBinaryPath = chromeExecutable.DriverBinaryPath;
+      UserDirectoryRoot = chromeExecutable.UserDirectory;
 
-      var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
+      DownloadDirectory = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-      _downloadHelper = new ChromeDownloadHelper (
-          _downloadDirectory,
+      var downloadStartedGracePeriod = TimeSpan.FromMinutes(1);
+
+      DownloadHelper = new DefaultDownloadHelper(
+          DownloadDirectory,
+          c_partialFileDownloadExtension,
           webTestConfigurationSection.DownloadStartedTimeout,
           webTestConfigurationSection.DownloadUpdatedTimeout,
           downloadStartedGracePeriod,
           webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
 
-      _disableInfoBars = advancedChromeOptions.DisableInfoBars;
+      DisableSecurityWarningsBehavior = webTestConfigurationSection.Chrome.DisableSecurityWarningsBehavior;
     }
 
-    public ChromeConfiguration (
-        [NotNull] WebTestConfigurationSection webTestConfigurationSection,
-        [NotNull] ChromeExecutable chromeExecutable,
-        [NotNull] AdvancedChromeOptions advancedChromeOptions)
-        : base (webTestConfigurationSection)
-    {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
-      ArgumentUtility.CheckNotNull ("chromeExecutable", chromeExecutable);
-      ArgumentUtility.CheckNotNull ("advancedChromeOptions", advancedChromeOptions);
-
-      _binaryPath = chromeExecutable.BinaryPath;
-      _userDirectoryRoot = chromeExecutable.UserDirectory;
-
-      _deleteUserDirectoryRoot = advancedChromeOptions.DeleteUserDirectoryRoot;
-      _disableInfoBars = advancedChromeOptions.DisableInfoBars;
-
-      _downloadDirectory = Path.Combine (Path.GetTempPath(), Path.GetRandomFileName());
-
-      var downloadStartedGracePeriod = TimeSpan.FromMinutes (1);
-
-      _downloadHelper = new ChromeDownloadHelper (
-          _downloadDirectory,
-          webTestConfigurationSection.DownloadStartedTimeout,
-          webTestConfigurationSection.DownloadUpdatedTimeout,
-          downloadStartedGracePeriod,
-          webTestConfigurationSection.CleanUpUnmatchedDownloadedFiles);
-    }
-
-    public override string BrowserExecutableName
-    {
-      get { return "chrome"; }
-    }
-
-    public override string WebDriverExecutableName
-    {
-      get { return "chromedriver"; }
-    }
-
-    public override IBrowserFactory BrowserFactory
-    {
-      get { return new ChromeBrowserFactory (this); }
-    }
-
-    public override IDownloadHelper DownloadHelper
-    {
-      get { return _downloadHelper; }
-    }
-
-    public override IBrowserContentLocator Locator
-    {
-      get { return _locator; }
-    }
-
-    public override ScreenshotTooltipStyle TooltipStyle
-    {
-      get { return ScreenshotTooltipStyle.Chrome; }
-    }
-
-    public string BinaryPath
-    {
-      get { return _binaryPath; }
-    }
-
-    public string UserDirectoryRoot
-    {
-      get { return _userDirectoryRoot; }
-    }
-
-    public bool EnableUserDirectoryRootCleanup
-    {
-      get { return _deleteUserDirectoryRoot; }
-    }
+    public override IBrowserFactory BrowserFactory => new ChromeBrowserFactory(this);
 
     public virtual ExtendedChromeOptions CreateChromeOptions ()
     {
-      var chromeOptions = new ExtendedChromeOptions();
-
-      if (!string.IsNullOrEmpty (_binaryPath))
-        chromeOptions.BinaryLocation = _binaryPath;
-
       var userDirectory = CreateUnusedUserDirectoryPath();
-      chromeOptions.UserDirectory = userDirectory;
+      var chromeOptions = new ExtendedChromeOptions
+                          {
+                              BinaryLocation = BrowserBinaryPath,
+                              UserDirectory = userDirectory
+                          };
 
-      if (!string.IsNullOrEmpty (userDirectory))
-        chromeOptions.AddArgument (string.Format ("user-data-dir={0}", userDirectory));
+      DisableSpecCompliance(chromeOptions);
 
-      if (_disableInfoBars)
-        chromeOptions.AddArgument ("disable-infobars");
+      chromeOptions.AddArgument($"user-data-dir={userDirectory}");
 
-      chromeOptions.AddArgument ("no-first-run");
+      chromeOptions.AddArgument("no-first-run");
+      chromeOptions.AddArgument("disable-features=ChromeWhatsNewUI");
+      chromeOptions.AddArgument("force-device-scale-factor=1");
 
-      chromeOptions.AddUserProfilePreference ("safebrowsing.enabled", true);
-      chromeOptions.AddUserProfilePreference ("download.default_directory", _downloadDirectory);
+      chromeOptions.AddUserProfilePreference("safebrowsing.enabled", true);
+      chromeOptions.AddUserProfilePreference("download.default_directory", DownloadDirectory);
 
       return chromeOptions;
     }
 
-    [CanBeNull]
+    private void DisableSpecCompliance (ExtendedChromeOptions chromeOptions)
+    {
+      var knownCapabilityNames = (Dictionary<string, string>)s_knownCapabilityNamesField.Value.GetValue(chromeOptions)!;
+      knownCapabilityNames.Remove("w3c");
+
+      chromeOptions.AddAdditionalCapability("w3c", false);
+    }
+
     private string CreateUnusedUserDirectoryPath ()
     {
-      if (_userDirectoryRoot == null)
-        return null;
-
       string userDirectory;
       var userDirectoryID = 0;
       do
       {
-        userDirectory = Path.Combine (_userDirectoryRoot, string.Join (c_userDataFolderPrefix, userDirectoryID));
+        userDirectory = Path.Combine(UserDirectoryRoot, string.Join(c_userDataFolderPrefix, userDirectoryID));
         userDirectoryID++;
-      } while (Directory.Exists (userDirectory));
+      } while (Directory.Exists(userDirectory));
 
       return userDirectory;
     }

@@ -23,7 +23,7 @@ namespace Remotion.UnitTests.ServiceLocation.TestDomain
   {
   }
 
-  [ImplementationFor (typeof(ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes), Position = 2)]
+  [ImplementationFor(typeof(ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes), Position = 2)]
   public class TestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypesExisting
     : ITestConcreteImplementationAttributeWithUnresolvableAndResolvableImplementationTypes
   {

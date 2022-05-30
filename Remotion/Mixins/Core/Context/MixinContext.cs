@@ -34,12 +34,12 @@ namespace Remotion.Mixins.Context
   {
     public static MixinContext Deserialize (IMixinContextDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull ("deserializer", deserializer);
-      return new MixinContext (
-          deserializer.GetMixinKind (),
-          deserializer.GetMixinType (),
-          deserializer.GetIntroducedMemberVisibility (),
-          deserializer.GetExplicitDependencies (),
+      ArgumentUtility.CheckNotNull("deserializer", deserializer);
+      return new MixinContext(
+          deserializer.GetMixinKind(),
+          deserializer.GetMixinType(),
+          deserializer.GetIntroducedMemberVisibility(),
+          deserializer.GetExplicitDependencies(),
           deserializer.GetOrigin()
         );
     }
@@ -47,8 +47,7 @@ namespace Remotion.Mixins.Context
     private readonly Type _mixinType;
     private readonly MixinKind _mixinKind;
     private readonly MemberVisibility _introducedMemberVisibility;
-    // Must use ReadOnlyCollectionDecorator to have access to Contains-method.
-    private readonly ReadOnlyCollectionDecorator<Type> _explicitDependencies;
+    private readonly ReadOnlySetWrapper<Type> _explicitDependencies;
     private readonly MixinContextOrigin _origin;
 
     private readonly int _cachedHashCode;
@@ -71,20 +70,20 @@ namespace Remotion.Mixins.Context
         IEnumerable<Type> explicitDependencies,
         MixinContextOrigin origin)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
-      ArgumentUtility.CheckNotNull ("origin", origin);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
+      ArgumentUtility.CheckNotNull("origin", origin);
 
       _mixinType = mixinType;
       _mixinKind = mixinKind;
       _introducedMemberVisibility = introducedMemberVisibility;
-      _explicitDependencies = new HashSet<Type> (explicitDependencies).AsReadOnly();
+      _explicitDependencies = new ReadOnlySetWrapper<Type>(new HashSet<Type>(explicitDependencies));
       _origin = origin;
 
-      _cachedHashCode = EqualityUtility.GetRotatedHashCode (
+      _cachedHashCode = EqualityUtility.GetRotatedHashCode(
           _mixinKind,
           _mixinType,
-          EqualityUtility.GetXorHashCode (ExplicitDependencies),
+          EqualityUtility.GetXorHashCode(ExplicitDependencies),
           IntroducedMemberVisibility);
     }
 
@@ -96,16 +95,16 @@ namespace Remotion.Mixins.Context
     /// True if the specified <see cref="T:System.Object"></see> is a <see cref="MixinContext"/> for the same mixin type with equal explicit
     /// dependencies; otherwise, false.
     /// </returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      if (object.ReferenceEquals (this, obj))
+      if (object.ReferenceEquals(this, obj))
         return true;
 
       var other = obj as MixinContext;
       if (other == null)
         return false;
 
-      if (other._mixinKind != _mixinKind 
+      if (other._mixinKind != _mixinKind
         || other._mixinType != _mixinType
         || other._introducedMemberVisibility != _introducedMemberVisibility
         || other._explicitDependencies.Count != _explicitDependencies.Count)
@@ -115,7 +114,7 @@ namespace Remotion.Mixins.Context
       // ReSharper disable LoopCanBeConvertedToQuery
       foreach (var explicitDependency in _explicitDependencies)
       {
-        if (!other._explicitDependencies.Contains (explicitDependency))
+        if (!other._explicitDependencies.Contains(explicitDependency))
           return false;
       }
       // ReSharper restore LoopCanBeConvertedToQuery
@@ -189,31 +188,31 @@ namespace Remotion.Mixins.Context
     /// <returns>An equivalent <see cref="MixinContext"/> that contains the given <paramref name="explicitDependencies"/>.</returns>
     public MixinContext ApplyAdditionalExplicitDependencies (IEnumerable<Type> explicitDependencies)
     {
-      ArgumentUtility.CheckNotNull ("explicitDependencies", explicitDependencies);
-      
-      var newDependencies = _explicitDependencies.Concat (explicitDependencies);
-      return new MixinContext (_mixinKind, _mixinType, _introducedMemberVisibility, newDependencies, _origin);
+      ArgumentUtility.CheckNotNull("explicitDependencies", explicitDependencies);
+
+      var newDependencies = _explicitDependencies.Concat(explicitDependencies);
+      return new MixinContext(_mixinKind, _mixinType, _introducedMemberVisibility, newDependencies, _origin);
     }
 
     public void Serialize (IMixinContextSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull ("serializer", serializer);
+      ArgumentUtility.CheckNotNull("serializer", serializer);
 
-      serializer.AddMixinType (_mixinType);
-      serializer.AddMixinKind (_mixinKind);
-      serializer.AddIntroducedMemberVisibility (_introducedMemberVisibility);
-      serializer.AddExplicitDependencies (_explicitDependencies);
-      serializer.AddOrigin (_origin);
+      serializer.AddMixinType(_mixinType);
+      serializer.AddMixinKind(_mixinKind);
+      serializer.AddIntroducedMemberVisibility(_introducedMemberVisibility);
+      serializer.AddExplicitDependencies(_explicitDependencies);
+      serializer.AddOrigin(_origin);
     }
 
     public override string ToString ()
     {
-      return string.Format (
+      return string.Format(
           "MixinContext: '{0}' ({1},{2},Dependencies=({3}))",
           MixinType,
           MixinKind,
           IntroducedMemberVisibility,
-          string.Join (",", ExplicitDependencies.Select (t => t.Name)));
+          string.Join(",", ExplicitDependencies.Select(t => t.Name)));
     }
   }
 }

@@ -30,62 +30,62 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     [Test]
     public void Serialize_CreatesColumnElement ()
     {
-      var propertyDefinition = GetPropertyDefinition ((ClassWithAllDataTypes _) => _.Int32Property);
+      var propertyDefinition = GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property);
       var classDefinition = propertyDefinition.ClassDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize (propertyDefinition, GetRdbmsPersistenceModelProvider (classDefinition)).ToArray();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).ToArray();
 
-      Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0].Name.LocalName, Is.EqualTo ("column"));
+      Assert.That(actual.Length, Is.EqualTo(1));
+      Assert.That(actual[0].Name.LocalName, Is.EqualTo("column"));
     }
 
     [Test]
     public void Serialize_AddsNameAttribute ()
     {
-      var propertyDefinition = GetPropertyDefinition ((ClassWithAllDataTypes _) => _.Int32Property);
+      var propertyDefinition = GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property);
       var classDefinition = propertyDefinition.ClassDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize (propertyDefinition, GetRdbmsPersistenceModelProvider (classDefinition)).Single();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).Single();
 
-      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("name"));
-      Assert.That (actual.Attribute ("name").Value, Is.EqualTo ("Int32"));
+      Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("name"));
+      Assert.That(actual.Attribute("name").Value, Is.EqualTo("Int32"));
     }
 
     [Test]
     public void Serialize_AddsTypeAttribute ()
     {
-      var propertyDefinition = GetPropertyDefinition ((ClassWithAllDataTypes _) => _.Int32Property);
+      var propertyDefinition = GetPropertyDefinition((ClassWithAllDataTypes _) => _.Int32Property);
       var classDefinition = propertyDefinition.ClassDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize (propertyDefinition, GetRdbmsPersistenceModelProvider (classDefinition)).Single();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).Single();
 
-      Assert.That (actual.Attributes().Select (a => a.Name.LocalName), Contains.Item ("dbType"));
-      Assert.That (actual.Attribute ("dbType").Value, Is.EqualTo ("Int32"));
+      Assert.That(actual.Attributes().Select(a => a.Name.LocalName), Contains.Item("dbType"));
+      Assert.That(actual.Attribute("dbType").Value, Is.EqualTo("Int32"));
     }
 
     [Test]
     public void Serialize_RelationProperty ()
     {
-      var propertyDefinition = GetPropertyDefinition ((Ceo _) => _.Company);
+      var propertyDefinition = GetPropertyDefinition((Ceo _) => _.Company);
       var classDefinition = propertyDefinition.ClassDefinition;
 
       var columnSerializer = new ColumnSerializer();
-      var actual = columnSerializer.Serialize (propertyDefinition, GetRdbmsPersistenceModelProvider (classDefinition)).ToArray();
+      var actual = columnSerializer.Serialize(propertyDefinition, GetRdbmsPersistenceModelProvider(classDefinition)).ToArray();
 
-      Assert.That (actual.Length, Is.EqualTo (2));
-      Assert.That (actual[0].Attribute ("name").Value, Is.EqualTo ("CompanyID"));
-      Assert.That (actual[0].Attribute ("dbType").Value, Is.EqualTo ("Guid"));
-      Assert.That (actual[1].Attribute ("name").Value, Is.EqualTo ("CompanyIDClassID"));
-      Assert.That (actual[1].Attribute ("dbType").Value, Is.EqualTo ("AnsiString"));
+      Assert.That(actual.Length, Is.EqualTo(2));
+      Assert.That(actual[0].Attribute("name").Value, Is.EqualTo("CompanyID"));
+      Assert.That(actual[0].Attribute("dbType").Value, Is.EqualTo("Guid"));
+      Assert.That(actual[1].Attribute("name").Value, Is.EqualTo("CompanyIDClassID"));
+      Assert.That(actual[1].Attribute("dbType").Value, Is.EqualTo("AnsiString"));
     }
 
     private IRdbmsPersistenceModelProvider GetRdbmsPersistenceModelProvider (ClassDefinition classDefinition)
     {
-      var storageProviderDefinition = (RdbmsProviderDefinition) classDefinition.StorageEntityDefinition.StorageProviderDefinition;
-      var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider (storageProviderDefinition);
+      var storageProviderDefinition = (RdbmsProviderDefinition)classDefinition.StorageEntityDefinition.StorageProviderDefinition;
+      var persistenceModelProvider = storageProviderDefinition.Factory.CreateRdbmsPersistenceModelProvider(storageProviderDefinition);
       return persistenceModelProvider;
     }
   }

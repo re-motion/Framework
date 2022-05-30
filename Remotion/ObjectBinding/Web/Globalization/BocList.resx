@@ -124,13 +124,13 @@
     <value>View</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage" xml:space="preserve">
-    <value>Errors have been found in the row currently being edited.</value>
+    <value>Errors found in current row.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle" xml:space="preserve">
-    <value>Input required in the row currently being edited</value>
+    <value>Input required in current row</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage" xml:space="preserve">
-    <value>No data available.</value>
+    <value>No data.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SortAscendingAlternateText" xml:space="preserve">
     <value>Sorted ascending</value>
@@ -160,9 +160,9 @@
     <value>Options</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage" xml:space="preserve">
-    <value>Errors have been found in at least one row.</value>
+    <value>Error found in at least one row.</value>
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
-    <value>Invalid input in the row currently being edited</value>
+    <value>Invalid input in current row</value>
   </data>
 </root>

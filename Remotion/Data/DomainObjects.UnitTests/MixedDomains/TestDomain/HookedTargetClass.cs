@@ -20,14 +20,14 @@ using Remotion.Mixins;
 
 namespace Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain
 {
-  [Uses (typeof (HookedDomainObjectMixin))]
+  [Uses(typeof(HookedDomainObjectMixin))]
   [DBTable]
   [TestDomain]
   public class HookedTargetClass : DomainObject, ISupportsGetObject
   {
     public static HookedTargetClass NewObject ()
     {
-      return NewObject<HookedTargetClass> ();
+      return NewObject<HookedTargetClass>();
     }
 
     public virtual int Property { get; set; }

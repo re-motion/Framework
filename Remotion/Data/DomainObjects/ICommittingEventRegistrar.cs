@@ -28,9 +28,12 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Causes the whole committing event chain to be executed one additional time for the given <paramref name="domainObjects"/>.
     /// </summary>
-    /// <param name="domainObjects">The <see cref="DomainObject"/> instances for which the event chain should be reexecuted. Each object must be part 
-    /// of the commit set, i.e., its state must be <see cref="StateType.New"/>, <see cref="StateType.Changed"/>, or <see cref="StateType.Deleted"/>.
-    /// Call <see cref="DomainObjectExtensions.RegisterForCommit"/> to add an <see cref="StateType.Unchanged"/> object to the commit set.</param>
+    /// <param name="domainObjects">
+    /// The <see cref="DomainObject"/> instances for which the event chain should be re-executed. Each object must be part of the commit set, i.e.,
+    /// it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsNew"/>, <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsChanged"/>,
+    /// or <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsDeleted"/> flags must be set. Call <see cref="DomainObjectExtensions.RegisterForCommit"/>
+    /// to add an object that has it's <see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> flag set to the commit set.
+    /// </param>
     /// <exception cref="ArgumentException">One of the given objects is not part of the commit set.</exception>
     /// <remarks>
     /// <para>
@@ -51,7 +54,7 @@ namespace Remotion.Data.DomainObjects
     /// If any event handler adds an object c to the commit set (e.g., by changing or creating it), the whole chain starts again, but only for c.
     /// </para>
     /// <para>
-    /// If a handler changes one of the objects already in the commit set (i.e., a or b), the chain just proceeds and is not reexecuted. This means 
+    /// If a handler changes one of the objects already in the commit set (i.e., a or b), the chain just proceeds and is not re-executed. This means 
     /// that it is possible that the state of an object changes after the committing event handlers for it have executed. The purpose of 
     /// <see cref="RegisterForAdditionalCommittingEvents"/> is to force the chain to run again for a given set of objects, allowing the handlers to 
     /// operate on a more recent state than before.

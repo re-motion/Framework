@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.Utilities;
 
@@ -32,7 +33,7 @@ namespace Remotion.Web.Security.ExecutionEngine
   //[WxeDemandObjectPermission (AccessTypes.Edit, ParameterName = "obj")]
   //[WxeDemandClassPermission (AccessTypes.Search, typeof (Akt))]
 
-  [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
   public abstract class WxeDemandTargetPermissionAttribute : Attribute
   {
     // types
@@ -42,9 +43,9 @@ namespace Remotion.Web.Security.ExecutionEngine
     // member fields
 
     private MethodType _methodType;
-    private Type _securableClass;
-    private string _parameterName;
-    private string _methodName;
+    private Type? _securableClass;
+    private string? _parameterName;
+    private string? _methodName;
 
     // construction and disposing
 
@@ -60,7 +61,7 @@ namespace Remotion.Web.Security.ExecutionEngine
       get { return _methodType; }
     }
 
-    public Type SecurableClass
+    public Type? SecurableClass
     {
       get
       {
@@ -68,18 +69,18 @@ namespace Remotion.Web.Security.ExecutionEngine
       }
       protected set
       {
-        ArgumentUtility.CheckTypeIsAssignableFrom ("SecurableClass", value, typeof (ISecurableObject));
+        ArgumentUtility.CheckTypeIsAssignableFrom("SecurableClass", value, typeof(ISecurableObject));
         _securableClass = value;
       }
     }
 
-    public string ParameterName
+    public string? ParameterName
     {
       get { return _parameterName; }
       protected set { _parameterName = value; }
     }
 
-    public string MethodName
+    public string? MethodName
     {
       get { return _methodName; }
       protected set { _methodName = value; }
@@ -87,32 +88,32 @@ namespace Remotion.Web.Security.ExecutionEngine
 
     protected void CheckDeclaringTypeOfMethodNameEnum (Enum methodNameEnum)
     {
-      ArgumentUtility.CheckNotNull ("methodNameEnum", methodNameEnum);
+      ArgumentUtility.CheckNotNull("methodNameEnum", methodNameEnum);
 
-      Type enumType = methodNameEnum.GetType ();
+      Type enumType = methodNameEnum.GetType();
 
       if (enumType.DeclaringType == null)
-        throw new ArgumentException (string.Format ("Enumerated type '{0}' is not declared as a nested type.", enumType.FullName), "methodNameEnum");
+        throw new ArgumentException(string.Format("Enumerated type '{0}' is not declared as a nested type.", enumType.GetFullNameSafe()), "methodNameEnum");
 
-      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
+      if (!typeof(ISecurableObject).IsAssignableFrom(enumType.DeclaringType))
       {
-        throw new ArgumentException (string.Format (
+        throw new ArgumentException(string.Format(
                 "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
-                enumType.FullName,
-                typeof (ISecurableObject).FullName),
+                enumType.GetFullNameSafe(),
+                typeof(ISecurableObject).GetFullNameSafe()),
             "methodNameEnum");
       }
     }
 
     protected void CheckDeclaringTypeOfMethodNameEnum (Enum enumValue, Type securableClass)
     {
-      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+      CheckDeclaringTypeOfMethodNameEnum(enumValue);
 
-      Type enumType = enumValue.GetType ();
-      if (!enumType.DeclaringType.IsAssignableFrom (securableClass))
+      Type enumType = enumValue.GetType();
+      if (!enumType.DeclaringType!.IsAssignableFrom(securableClass))
       {
-        throw new ArgumentException (
-            string.Format ("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
+        throw new ArgumentException(
+            string.Format("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
             "securableClass");
       }
     }

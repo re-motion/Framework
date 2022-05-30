@@ -17,7 +17,7 @@
 // 
 using System;
 using System.Web.UI;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Data.DomainObjects;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -38,7 +38,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     // static members and constants
 
-    private static readonly string s_currentTenantHandleKey = typeof (BaseControl).FullName + "_CurrentTenantID";
+    private static readonly string s_currentTenantHandleKey = typeof(BaseControl).GetFullNameChecked() + "_CurrentTenantID";
 
     // member fields
 
@@ -48,25 +48,29 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     // methods and properties
 
-    public new BasePage Page
+    public new BasePage? Page
     {
-      get { return (BasePage) base.Page; }
-      set { base.Page = value; }
+      get { return (BasePage?)base.Page; }
     }
 
     protected BaseTransactedFunction CurrentFunction
     {
-      get { return Page.CurrentFunction; }
+      get
+      {
+        Assertion.IsNotNull(Page, "Page != null.");
+
+        return Page.CurrentFunction;
+      }
     }
 
-    public virtual IFocusableControl InitialFocusControl
+    public virtual IFocusableControl? InitialFocusControl
     {
       get { return null; }
     }
 
-    protected IDomainObjectHandle<Tenant> CurrentTenantHandle
+    protected IDomainObjectHandle<Tenant>? CurrentTenantHandle
     {
-      get { return (IDomainObjectHandle<Tenant>) ViewState[s_currentTenantHandleKey]; }
+      get { return (IDomainObjectHandle<Tenant>?)ViewState[s_currentTenantHandleKey]; }
       set { ViewState[s_currentTenantHandleKey] = value; }
     }
 
@@ -77,7 +81,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected override void OnLoad (EventArgs e)
     {
-      base.OnLoad (e);
+      base.OnLoad(e);
 
       if (!IsPostBack)
       {
@@ -87,15 +91,15 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     protected override void OnPreRender (EventArgs e)
     {
-      if (!CurrentFunction.TenantHandle.Equals (CurrentTenantHandle))
+      if (!CurrentFunction.TenantHandle.Equals(CurrentTenantHandle))
       {
         CurrentTenantHandle = CurrentFunction.TenantHandle;
         _hasTenantChanged = true;
       }
 
-      ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+      ResourceDispatcher.Dispatch(this, ResourceManagerUtility.GetResourceManager(this));
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     IResourceManager IObjectWithResources.GetResourceManager ()
@@ -107,14 +111,14 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
     {
       Type type = this.GetType();
 
-      return GlobalizationService.GetResourceManager (type);
+      return GlobalizationService.GetResourceManager(type);
     }
 
     protected IResourceManager GetResourceManager (Type resourceEnumType)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("resourceEnumType", resourceEnumType, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom("resourceEnumType", resourceEnumType, typeof(Enum));
 
-      return ResourceManagerSet.Create (GlobalizationService.GetResourceManager (TypeAdapter.Create (resourceEnumType)), GetResourceManager());
+      return ResourceManagerSet.Create(GlobalizationService.GetResourceManager(TypeAdapter.Create(resourceEnumType)), GetResourceManager());
     }
 
     protected IServiceLocator ServiceLocator
@@ -127,7 +131,7 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       get { return ServiceLocator.GetInstance<IResourceUrlFactory>(); }
     }
 
-    protected IGlobalizationService GlobalizationService 
+    protected IGlobalizationService GlobalizationService
     {
       get { return SafeServiceLocator.Current.GetInstance<IGlobalizationService>(); }
     }
@@ -135,33 +139,33 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
     protected TControl GetControl<TControl> (string controlID, string propertyIdentifier)
         where TControl : Control, IBusinessObjectBoundWebControl, IFocusableControl
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("controlID", controlID);
-      ArgumentUtility.CheckNotNullOrEmpty ("propertyIdentifier", propertyIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("controlID", controlID);
+      ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
 
-      var control = FindControl (controlID);
-      
+      var control = FindControl(controlID);
+
       if (control == null)
       {
-        throw new InvalidOperationException (string.Format ("No control with the ID '{0}' found on {1}.", controlID, GetType().Name));
+        throw new InvalidOperationException(string.Format("No control with the ID '{0}' found on {1}.", controlID, GetType().Name));
       }
 
       if (!(control is TControl))
       {
-        throw new InvalidOperationException (
-            string.Format ("Control '{0}' on {2} must be of type '{1}'.", controlID, typeof (TControl).FullName, GetType().Name));
+        throw new InvalidOperationException(
+            string.Format("Control '{0}' on {2} must be of type '{1}'.", controlID, typeof(TControl).GetFullNameSafe(), GetType().Name));
       }
 
       if (!(control is IFocusableControl))
       {
-        throw new InvalidOperationException (
-            string.Format ("Control '{0}' on {2} must implement the '{1}' interface.", controlID, typeof (IFocusableControl).FullName, GetType().Name));
+        throw new InvalidOperationException(
+            string.Format("Control '{0}' on {2} must implement the '{1}' interface.", controlID, typeof(IFocusableControl).GetFullNameSafe(), GetType().Name));
       }
 
-      var boundEditableWebControl = (TControl) control;
+      var boundEditableWebControl = (TControl)control;
       if (boundEditableWebControl.Property == null || boundEditableWebControl.Property.Identifier != propertyIdentifier)
       {
-        throw new InvalidOperationException (
-            string.Format ("Control '{0}' on {2} is not bound to property '{1}'.", controlID, propertyIdentifier, GetType().Name));
+        throw new InvalidOperationException(
+            string.Format("Control '{0}' on {2} is not bound to property '{1}'.", controlID, propertyIdentifier, GetType().Name));
       }
 
       return boundEditableWebControl;

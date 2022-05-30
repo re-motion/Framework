@@ -16,19 +16,22 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using JetBrains.Annotations;
 using Remotion.Globalization;
-using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
+using Remotion.Mixins;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering
@@ -48,10 +51,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         IRenderingFeatures renderingFeatures,
         ILabelReferenceRenderer labelReferenceRenderer,
         IValidationErrorRenderer validationErrorRenderer)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
-      ArgumentUtility.CheckNotNull ("labelReferenceRenderer", labelReferenceRenderer);
-      ArgumentUtility.CheckNotNull ("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
 
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
@@ -67,179 +70,134 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return _validationErrorRenderer; }
     }
 
-    protected abstract void RenderEditModeValueWithSeparateOptionsMenu (BocRenderingContext<TControl> renderingContext);
-    protected abstract void RenderEditModeValueWithIntegratedOptionsMenu (BocRenderingContext<TControl> renderingContext);
+    protected abstract void RenderEditModeValue (BocRenderingContext<TControl> renderingContext);
 
     protected virtual void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptKey = typeof (BocReferenceValueRendererBase<>).FullName + "_Script";
-      htmlHeadAppender.RegisterJavaScriptInclude (
+      string scriptKey = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_Script";
+      htmlHeadAppender.RegisterJavaScriptInclude(
           scriptKey,
-          ResourceUrlFactory.CreateResourceUrl (typeof (BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
+          ResourceUrlFactory.CreateResourceUrl(typeof(BocReferenceValueRendererBase<>), ResourceType.Html, "BocReferenceValueBase.js"));
     }
 
+    [Obsolete("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
     protected void Render (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      throw new NotSupportedException("Use Render (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
+    }
 
-      AddAttributesToRender (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    protected void Render (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
+    {
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      RenderContents (renderingContext);
+      const string widthCssProperty = "--width";
+      var width = Unit.Empty;
+      if (!renderingContext.Control.Width.IsEmpty)
+        width = renderingContext.Control.Width;
+      else if (renderingContext.Control.Style[HtmlTextWriterStyle.Width] != null)
+        width = Unit.Parse(renderingContext.Control.Style[HtmlTextWriterStyle.Width]!);
+      if (!width.IsEmpty)
+        renderingContext.Control.Style[widthCssProperty] = width.Type == UnitType.Percentage ? "100%" : width.ToString();
+
+      AddAttributesToRender(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
+      RenderContents(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
 
-      RegisterInitializationScript (renderingContext);
+      RegisterInitializationScript(renderingContext);
 
-      if (!string.IsNullOrEmpty (renderingContext.Control.IconServicePath))
+      if (!string.IsNullOrEmpty(renderingContext.Control.ControlServicePath))
       {
-        CheckScriptManager (
+        CheckScriptManager(
             renderingContext.Control,
-            "{0} '{1}' requires that the page contains a ScriptManager because the IconServicePath is set.",
+            "{0} '{1}' requires that the page contains a ScriptManager because the ControlServicePath is set.",
             renderingContext.Control.GetType().Name,
             renderingContext.Control.ID);
       }
+
+      if (!width.IsEmpty)
+        renderingContext.Control.Style[widthCssProperty] = null;
     }
 
     private void RegisterInitializationScript (BocRenderingContext<TControl> renderingContext)
     {
-      string key = typeof (BocReferenceValueRendererBase<>).FullName + "_InitializeGlobals";
+      string key = typeof(BocReferenceValueRendererBase<>).GetFullNameChecked() + "_InitializeGlobals";
 
-      if (renderingContext.Control.Page.ClientScript.IsClientScriptBlockRegistered (typeof (BocReferenceValueRendererBase<>), key))
+      if (renderingContext.Control.Page!.ClientScript.IsClientScriptBlockRegistered(typeof(BocReferenceValueRendererBase<>), key))
         return;
 
-      var nullIcon = IconInfo.CreateSpacer (ResourceUrlFactory);
+      var nullIcon = IconInfo.CreateSpacer(ResourceUrlFactory);
 
-      var script = new StringBuilder (1000);
-      script.Append ("BocReferenceValueBase.InitializeGlobals(");
-      script.AppendFormat ("'{0}'", nullIcon.Url);
-      script.Append (");");
+      var script = new StringBuilder(1000);
+      script.Append("BocReferenceValueBase.InitializeGlobals(");
+      script.AppendFormat("'{0}'", nullIcon.Url);
+      script.Append(");");
 
-      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
-          renderingContext.Control, typeof (BocReferenceValueRendererBase<>), key, script.ToString());
+      renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
+          renderingContext.Control, typeof(BocReferenceValueRendererBase<>), key, script.ToString());
     }
 
-    protected string GetIconServicePath (RenderingContext<TControl> renderingContext)
+    protected string? GetControlServicePath (RenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      if (!renderingContext.Control.IsIconEnabled())
+      var controlControlServicePath = renderingContext.Control.ControlServicePath;
+
+      if (string.IsNullOrEmpty(controlControlServicePath))
         return null;
-
-      var iconServicePath = renderingContext.Control.IconServicePath;
-
-      if (string.IsNullOrEmpty (iconServicePath))
-        return null;
-      return renderingContext.Control.ResolveClientUrl (iconServicePath);
+      return renderingContext.Control.ResolveClientUrl(controlControlServicePath);
     }
 
-    protected string GetIconContextAsJson (BusinessObjectIconWebServiceContext iconServiceContext)
+    protected string GetIconContextAsJson (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      if (iconServiceContext == null)
-        return null;
+      var jsonBuilder = new StringBuilder(1000);
+      // See also BocReferenceValueBase.GetBusinessObjectClass
+      var businessObjectClass = renderingContext.Control.Property?.ReferenceClass?.Identifier
+                                ?? renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass;
 
-      var jsonBuilder = new StringBuilder (1000);
-
-      jsonBuilder.Append ("{ ");
-      jsonBuilder.Append ("businessObjectClass : ");
-      AppendStringValueOrNullToScript (jsonBuilder, iconServiceContext.BusinessObjectClass);
-      jsonBuilder.Append (", ");
-      jsonBuilder.Append ("arguments : ");
-      AppendStringValueOrNullToScript (jsonBuilder, iconServiceContext.Arguments);
-      jsonBuilder.Append (" }");
+      jsonBuilder.Append("{ ");
+      jsonBuilder.Append("businessObjectClass : ");
+      AppendStringValueOrNullToScript(jsonBuilder, businessObjectClass);
+      jsonBuilder.Append(", ");
+      jsonBuilder.Append("arguments : ");
+      AppendStringValueOrNullToScript(jsonBuilder, renderingContext.BusinessObjectWebServiceContext.Arguments);
+      jsonBuilder.Append(" }");
 
       return jsonBuilder.ToString();
     }
 
-    protected string GetCommandInfoAsJson (BocRenderingContext<TControl> renderingContext)
+    [Obsolete("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)", false)]
+    protected void RenderContents (BocRenderingContext<TControl> renderingContext)
     {
-      var command = renderingContext.Control.Command;
-      if (command == null)
-        return null;
-
-      if (command.Show == CommandShow.ReadOnly)
-        return null;
-
-      var postBackEvent = GetPostBackEvent (renderingContext);
-      var commandInfo = command.GetCommandInfo (postBackEvent, new[] { "-0-" }, "", null, new NameValueCollection(), true);
-
-      var jsonBuilder = new StringBuilder (1000);
-
-      jsonBuilder.Append ("{ ");
-
-      jsonBuilder.Append ("href : ");
-      string href;
-      if (commandInfo.Href != null)
-        href = commandInfo.Href.Replace ("-0-", "{0}");
-      else
-        href = null;
-      AppendStringValueOrNullToScript (jsonBuilder, href);
-
-      jsonBuilder.Append (", ");
-
-      jsonBuilder.Append ("target : ");
-      string target = commandInfo.Target;
-      AppendStringValueOrNullToScript (jsonBuilder, target);
-
-      jsonBuilder.Append (", ");
-
-      jsonBuilder.Append ("onClick : ");
-      string onClick = commandInfo.OnClick;
-      AppendStringValueOrNullToScript (jsonBuilder, onClick);
-
-      jsonBuilder.Append (", ");
-
-      jsonBuilder.Append ("title : ");
-      string title = commandInfo.Title;
-      AppendStringValueOrNullToScript (jsonBuilder, title);
-
-      jsonBuilder.Append (" }");
-
-      return jsonBuilder.ToString();
+      throw new NotSupportedException("Use RenderContents (BocReferenceValueBaseRenderingContext<>) instead. (Version 1.21.3)");
     }
 
-    protected virtual void RenderContents (BocRenderingContext<TControl> renderingContext)
+    protected virtual void RenderContents (BocReferenceValueBaseRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      if (IsEmbedInOptionsMenu (renderingContext))
-        RenderContentsWithIntegratedOptionsMenu (renderingContext);
-      else
-        RenderContentsWithSeparateOptionsMenu (renderingContext);
-    }
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassContent);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-    private void RenderContentsWithIntegratedOptionsMenu (BocRenderingContext<TControl> renderingContext)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      renderingContext.Control.OptionsMenu.SetRenderHeadTitleMethodDelegate (writer => RenderOptionsMenuTitle (renderingContext));
-      renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);
-      renderingContext.Control.OptionsMenu.SetRenderHeadTitleMethodDelegate (null);
-    }
-
-    private void RenderContentsWithSeparateOptionsMenu (BocRenderingContext<TControl> renderingContext)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
-
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassContent);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-      string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
+      RenderIcon(renderingContext);
 
       if (renderingContext.Control.IsReadOnly)
-        RenderReadOnlyValue (renderingContext, postBackEvent, string.Empty, objectID);
+      {
+        RenderReadOnlyValue(renderingContext);
+      }
       else
       {
-        RenderSeparateIcon (renderingContext, postBackEvent, string.Empty, objectID);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetInnerContentID(renderingContext));
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, GetCssClassInnerContent(renderingContext));
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-        RenderEditModeValueWithSeparateOptionsMenu (renderingContext);
+        RenderEditModeValue(renderingContext);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -247,11 +205,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       bool hasOptionsMenu = renderingContext.Control.HasOptionsMenu;
       if (hasOptionsMenu)
       {
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassOptionsMenu);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassOptionsMenu);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
+        if (!string.IsNullOrEmpty(renderingContext.Control.ControlServicePath))
+        {
+          var stringValueParametersDictionary = new Dictionary<string, string?>();
+          stringValueParametersDictionary.Add("controlID", renderingContext.Control.ID);
+          stringValueParametersDictionary.Add(
+              "controlType",
+              TypeUtility.GetPartialAssemblyQualifiedName(MixinTypeUtility.GetUnderlyingTargetType(renderingContext.Control.GetType())));
+          stringValueParametersDictionary.Add("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
+          stringValueParametersDictionary.Add("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
+          stringValueParametersDictionary.Add("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
+          stringValueParametersDictionary.Add("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
+
+          renderingContext.Control.OptionsMenu.SetLoadMenuItemStatus(
+              renderingContext.Control.ControlServicePath,
+              nameof(IBocReferenceValueWebService.GetMenuItemStatusForOptionsMenu),
+              stringValueParametersDictionary);
+        }
 
         renderingContext.Control.OptionsMenu.Width = renderingContext.Control.OptionsMenuWidth;
-        renderingContext.Control.OptionsMenu.RenderControl (renderingContext.Writer);
+        renderingContext.Control.OptionsMenu.RenderControl(renderingContext.Writer);
 
         renderingContext.Writer.RenderEndTag();
       }
@@ -259,142 +235,64 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       renderingContext.Writer.RenderEndTag();
     }
 
-    public void RenderOptionsMenuTitle (BocRenderingContext<TControl> renderingContext)
+    private void RenderIcon (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      var icon = GetIcon(renderingContext);
 
-      string postBackEvent = GetPostBackEvent (renderingContext);
-      string objectID = renderingContext.Control.BusinessObjectUniqueIdentifier ?? string.Empty;
+      if (icon == null && renderingContext.Control.IsReadOnly)
+        return;
 
-      if (renderingContext.Control.IsReadOnly)
-        RenderReadOnlyValue (renderingContext, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
-      else
-      {
-        RenderSeparateIcon (renderingContext, postBackEvent, DropDownMenu.OnHeadTitleClickScript, objectID);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      if (icon == null)
+        icon = IconInfo.CreateSpacer(ResourceUrlFactory);
 
-        RenderEditModeValueWithIntegratedOptionsMenu (renderingContext);
-
-        renderingContext.Writer.RenderEndTag();
-      }
-    }
-
-    private string GetPostBackEvent (BocRenderingContext<TControl> renderingContext)
-    {
-      if (renderingContext.Control.IsDesignMode)
-        return "";
-
-      string argument = BocReferenceValueBase.CommandArgumentName;
-      return renderingContext.Control.Page.ClientScript.GetPostBackEventReference (renderingContext.Control, argument) + ";";
-    }
-
-    private void RenderSeparateIcon (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
-    {
-      IconInfo icon = null;
-      var isIconEnabled = renderingContext.Control.IsIconEnabled();
-      if (isIconEnabled)
-        icon = GetIcon (renderingContext);
-
-      var anchorClass = CssClassCommand;
-      if (icon != null)
-        anchorClass += " " + CssClassHasIcon;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
-
-      var isCommandEnabled = isIconEnabled && IsCommandEnabled (renderingContext);
-
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
-
-      var command = GetCommand (renderingContext, isCommandEnabled);
-      command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
-
-      if (isIconEnabled)
-        icon = icon ?? IconInfo.CreateSpacer (ResourceUrlFactory);
-
-      if (icon != null)
-      {
-        if (!string.IsNullOrEmpty (command.ToolTip))
-          icon.ToolTip = renderingContext.Control.Command.ToolTip;
-        icon.Render (renderingContext.Writer, renderingContext.Control);
-      }
-
-      renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
-    }
-
-    private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext, string postBackEvent, string onClick, string objectID)
-    {
-      var validationErrors = GetValidationErrorsToRender (renderingContext).ToArray();
-      var validationErrorsID = GetValidationErrorsID (renderingContext);
-
-      Label label = GetLabel (renderingContext);
-      IconInfo icon = null;
-      var isIconEnabled = renderingContext.Control.IsIconEnabled();
-      if (isIconEnabled)
-        icon = GetIcon (renderingContext);
-
-      var isCommandEnabled = IsCommandEnabled (renderingContext);
-
-      var anchorClass = CssClassCommand;
-      if (icon != null)
-        anchorClass += " " + CssClassHasIcon;
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, anchorClass);
-
-      if (!isCommandEnabled)
-      {
-        renderingContext.Writer.AddAttribute ("tabindex", "0");
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
-      }
-
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference (renderingContext.Writer, labelIDs);
-      
-      var attributeCollection = new AttributeCollection (new StateBag());
-      ValidationErrorRenderer.AddValidationErrorsReference (attributeCollection, validationErrorsID, validationErrors);
-      attributeCollection.AddAttributes (renderingContext.Writer);
-
-      var command = GetCommand (renderingContext, isCommandEnabled);
-      command.RenderBegin (renderingContext.Writer, RenderingFeatures, postBackEvent, onClick, objectID, null);
-
-      if (icon != null)
-        icon.Render (renderingContext.Writer, renderingContext.Control);
-
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, GetCssClassInnerContent (renderingContext));
-
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-      label.RenderControl (renderingContext.Writer);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassIcon);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      icon.Render(renderingContext.Writer, renderingContext.Control);
       renderingContext.Writer.RenderEndTag();
-      renderingContext.Control.Command.RenderEnd (renderingContext.Writer);
-
-      ValidationErrorRenderer.RenderValidationErrors (renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
-    private bool IsCommandEnabled (BocRenderingContext<TControl> renderingContext)
+    private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext)
     {
-      return renderingContext.Control.BusinessObjectUniqueIdentifier != null && renderingContext.Control.IsCommandEnabled();
+      var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
+      var validationErrorsID = GetValidationErrorsID(renderingContext);
+
+      Label label = GetLabel(renderingContext);
+
+      renderingContext.Writer.AddAttribute("tabindex", "0");
+      // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox (at least in browse-mode),
+      // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+
+      var labelIDs = renderingContext.Control.GetLabelIDs();
+      LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs.ToArray(), new[] { label.ClientID });
+
+      var attributeCollection = new AttributeCollection(new StateBag());
+      ValidationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);
+      attributeCollection.AddAttributes(renderingContext.Writer);
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetInnerContentID(renderingContext));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, GetCssClassInnerContent(renderingContext));
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
+      label.RenderControl(renderingContext.Writer);
+
+      renderingContext.Writer.RenderEndTag();
+
+      ValidationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
-    private BocCommand GetCommand (BocRenderingContext<TControl> renderingContext, bool isCommandEnabled)
+    [CanBeNull]
+    private IconInfo? GetIcon (BocRenderingContext<TControl> renderingContext)
     {
-      var command = isCommandEnabled
-                        ? renderingContext.Control.Command
-                        : new BocCommand (CommandType.None) { OwnerControl = renderingContext.Control };
-      command.ItemID = "Command";
-      return command;
-    }
+      if (!renderingContext.Control.IsIconEnabled())
+        return null;
 
-    private IconInfo GetIcon (BocRenderingContext<TControl> renderingContext)
-    {
-      var iconInfo = renderingContext.Control.GetIcon();
+      var icon = renderingContext.Control.GetIcon();
+      if (icon == null)
+        return null;
 
-      if (iconInfo != null && renderingContext.Control.IsCommandEnabled())
-      {
-        if (string.IsNullOrEmpty (iconInfo.AlternateText))
-          iconInfo.AlternateText = renderingContext.Control.GetLabelText();
-      }
-
-      return iconInfo;
+      return icon;
     }
 
     private Label GetLabel (BocRenderingContext<TControl> renderingContext)
@@ -407,44 +305,54 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
                       Height = Unit.Empty,
                       Width = Unit.Empty
                   };
-      label.ApplyStyle (renderingContext.Control.CommonStyle);
-      label.ApplyStyle (renderingContext.Control.LabelStyle);
-      label.Text = HttpUtility.HtmlEncode (renderingContext.Control.GetLabelText());
-      label.Attributes.Add ("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
+      label.ApplyStyle(renderingContext.Control.CommonStyle);
+      label.ApplyStyle(renderingContext.Control.LabelStyle);
+      label.Text = PlainTextString.CreateFromText(renderingContext.Control.GetLabelText()).ToString(WebStringEncoding.Html);
+      label.Attributes.Add("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
       return label;
     }
 
-    private bool IsEmbedInOptionsMenu (BocRenderingContext<TControl> renderingContext)
+    protected IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
     {
-      return renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == true && renderingContext.Control.HasOptionsMenu
-             || renderingContext.Control.HasValueEmbeddedInsideOptionsMenu == null && renderingContext.Control.IsReadOnly
-             && renderingContext.Control.HasOptionsMenu;
-    }
-
-    protected IEnumerable<string> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)
-    {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       return renderingContext.Control.GetValidationErrors();
     }
 
     protected string GetValidationErrorsID (BocRenderingContext<TControl> renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
       return renderingContext.Control.ClientID + "_ValidationErrors";
     }
 
+    private string GetInnerContentID (BocRenderingContext<TControl> renderingContext)
+    {
+      return renderingContext.Control.ClientID + "_Content";
+    }
+
+    protected override string GetAdditionalCssClass (TControl control)
+    {
+      ArgumentUtility.CheckNotNull("control", control);
+
+      var additionalCssClass = base.GetAdditionalCssClass(control);
+      if (control.HasOptionsMenu && control.ReserveOptionsMenuWidth)
+        additionalCssClass += " " + CssClassReserveOptionsMenuWidth;
+
+      return additionalCssClass;
+    }
+
     private string GetCssClassInnerContent (BocRenderingContext<TControl> renderingContext)
     {
-      string cssClass = CssClassInnerContent;
+      string cssClass = CssClassInnerContent + " " + CssClassThemed;
+
+      if (GetIcon(renderingContext) != null)
+        cssClass += " " + CssClassHasIcon;
 
       if (!renderingContext.Control.HasOptionsMenu)
         cssClass += " " + CssClassWithoutOptionsMenu;
-      else if (IsEmbedInOptionsMenu (renderingContext))
-        cssClass += " " + CssClassEmbeddedOptionsMenu;
       else
-        cssClass += " " + CssClassSeparateOptionsMenu;
+        cssClass += " " + CssClassHasOptionsMenu;
 
       return cssClass;
     }
@@ -454,19 +362,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return "body"; }
     }
 
-    private string CssClassInnerContent
+    protected string CssClassInnerContent
     {
       get { return "content"; }
     }
 
-    private string CssClassSeparateOptionsMenu
+    private string CssClassHasOptionsMenu
     {
-      get { return "separateOptionsMenu"; }
-    }
-
-    private string CssClassEmbeddedOptionsMenu
-    {
-      get { return "embeddedOptionsMenu"; }
+      get { return "hasOptionsMenu"; }
     }
 
     private string CssClassWithoutOptionsMenu
@@ -479,14 +382,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       get { return "optionsMenu"; }
     }
 
-    protected string CssClassCommand
+    private string CssClassReserveOptionsMenuWidth
     {
-      get { return "command"; }
+      get { return "reserveOptionsMenuWidth"; }
     }
 
     private string CssClassHasIcon
     {
       get { return "hasIcon"; }
+    }
+
+    protected string CssClassIcon
+    {
+      get { return "icon"; }
     }
   }
 }

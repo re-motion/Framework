@@ -52,13 +52,13 @@ namespace Remotion.ObjectBinding
     ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
     ///   </note>
     /// </remarks>
-    IBusinessObject[] SearchAvailableObjects (IBusinessObject referencingObject, ISearchAvailableObjectsArguments searchArguments);
+    IBusinessObject[] SearchAvailableObjects (IBusinessObject? referencingObject, ISearchAvailableObjectsArguments? searchArguments);
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="CreateDefaultValue"/> and <see cref="IsDefaultValue"/> may be called
     ///   to implicitly create a new <see cref="IBusinessObject"/> instance for editing in case the object reference is <see langword="null" />.
     /// </summary>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
     bool SupportsDefaultValue { get; }
 
     /// <summary>
@@ -75,7 +75,7 @@ namespace Remotion.ObjectBinding
     ///   e.g. a <b>value object</b>. The reference to the value object can be <see langword="null"/> until one of its values
     ///   is set in the user interface.
     /// </remarks>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
     IBusinessObject CreateDefaultValue (IBusinessObject referencingObject);
 
     /// <summary>
@@ -108,13 +108,13 @@ namespace Remotion.ObjectBinding
     ///     any relevant information after the data had been written back.
     ///   </para>
     /// </remarks>
-    [Obsolete ("The default value feature is not supported. (Version 1.13.142)")]
-    bool IsDefaultValue (IBusinessObject referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties);
+    [Obsolete("The default value feature is not supported. (Version 1.13.142)")]
+    bool IsDefaultValue (IBusinessObject? referencingObject, IBusinessObject value, IBusinessObjectProperty[] emptyProperties);
 
     /// <summary>
     ///   Gets a flag indicating if <see cref="Delete"/> may be called to automatically delete the current value of this object reference.
     /// </summary>
-    [Obsolete ("The delete-object feature is not supported. (Version 1.13.142)")]
+    [Obsolete("The delete-object feature is not supported. (Version 1.13.142)")]
     bool SupportsDelete { get; }
 
     /// <summary>
@@ -129,7 +129,7 @@ namespace Remotion.ObjectBinding
     /// <exception cref="NotSupportedException"> 
     ///   Thrown if this method is called although <see cref="SupportsDefaultValue"/> evaluated <see langword="false"/>. 
     /// </exception>
-    [Obsolete ("The delete-object feature is not supported. (Version 1.13.142)")]
-    void Delete (IBusinessObject referencingObject, IBusinessObject value);
+    [Obsolete("The delete-object feature is not supported. (Version 1.13.142)")]
+    void Delete (IBusinessObject? referencingObject, IBusinessObject value);
   }
 }

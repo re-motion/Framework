@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   {
     public static DomainObjectWithoutAnnotatedProperties NewObject ()
     {
-      return NewObject<DomainObjectWithoutAnnotatedProperties> ();
+      return NewObject<DomainObjectWithoutAnnotatedProperties>();
     }
 
     public virtual string Name { get; set; }

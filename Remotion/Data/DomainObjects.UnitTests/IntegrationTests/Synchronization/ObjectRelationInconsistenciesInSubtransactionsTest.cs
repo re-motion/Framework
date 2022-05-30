@@ -33,31 +33,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
-        order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+        orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
+        order1 = DomainObjectIDs.Order1.GetObject<Order>();
 
-        Assert.That (orderTicket1.Order, Is.SameAs (order1));
-        Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
+        Assert.That(orderTicket1.Order, Is.SameAs(order1));
+        Assert.That(order1.OrderTicket, Is.SameAs(orderTicket1));
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
-        CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
 
-        Assert.That (orderTicket1.Order, Is.SameAs (order1));
-        Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
+        Assert.That(orderTicket1.Order, Is.SameAs(order1));
+        Assert.That(order1.OrderTicket, Is.SameAs(orderTicket1));
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
-        CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
 
         // these do nothing
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (orderTicket1, oi => oi.Order));
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (orderTicket1.Order, o => o.OrderTicket));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(orderTicket1, oi => oi.Order));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(orderTicket1.Order, o => o.OrderTicket));
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
-        CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
       }
 
-      CheckSyncState (orderTicket1, oi => oi.Order, true);
-      CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+      CheckSyncState(orderTicket1, oi => oi.Order, true);
+      CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
     }
 
     [Test]
@@ -68,32 +68,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+        order1 = DomainObjectIDs.Order1.GetObject<Order>();
         order1.OrderTicket.EnsureDataAvailable();
-        orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
+        orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
 
-        Assert.That (orderTicket1.Order, Is.SameAs (order1));
-        Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
+        Assert.That(orderTicket1.Order, Is.SameAs(order1));
+        Assert.That(order1.OrderTicket, Is.SameAs(orderTicket1));
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
-        CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
 
-        Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
-        Assert.That (orderTicket1.Order, Is.SameAs (order1));
+        Assert.That(order1.OrderTicket, Is.SameAs(orderTicket1));
+        Assert.That(orderTicket1.Order, Is.SameAs(order1));
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
-        CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
 
         // these do nothing
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (orderTicket1, oi => oi.Order));
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (orderTicket1.Order, o => o.OrderTicket));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(orderTicket1, oi => oi.Order));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(orderTicket1.Order, o => o.OrderTicket));
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
-        CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
       }
 
-      CheckSyncState (orderTicket1, oi => oi.Order, true);
-      CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+      CheckSyncState(orderTicket1, oi => oi.Order, true);
+      CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
     }
 
     [Test]
@@ -103,28 +103,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee;
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull (out computer, out employee);
+        PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull(out computer, out employee);
 
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (computer.Employee, Is.Null);
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(computer.Employee, Is.Null);
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
 
-        Assert.That (employee.Computer, Is.Null);
-        Assert.That (computer.Employee, Is.Null);
+        Assert.That(employee.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.Null);
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
 
-      Assert.That (employee.Computer, Is.Null);
-      Assert.That (computer.Employee, Is.Null);
+      Assert.That(employee.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.Null);
     }
 
     [Test]
@@ -136,34 +136,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out computer, out employee, out employee2);
+        PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse(out computer, out employee, out employee2);
 
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.SameAs (computer));
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.SameAs(computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(employee2, e => e.Computer, true);
 
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee2.Computer, Is.SameAs (computer));
-        Assert.That (employee.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee2.Computer, Is.SameAs(computer));
+        Assert.That(employee.Computer, Is.Null);
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee2.Computer, Is.SameAs (computer));
-      Assert.That (employee.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee2.Computer, Is.SameAs(computer));
+      Assert.That(employee.Computer, Is.Null);
     }
 
     [Test]
@@ -173,46 +173,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee2;
       Computer computer;
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        PrepareInconsistentState_OneOne_ObjectNotReturned_ThatLocallyPointsToHere (out computer, out employee, out employee2);
+        PrepareInconsistentState_OneOne_ObjectNotReturned_ThatLocallyPointsToHere(out computer, out employee, out employee2);
 
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.Null);
 
-        CheckSyncState (computer, c => c.Employee, false);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, false);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (computer, c => c.Employee));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(computer, c => c.Employee));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
 
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.SameAs (computer));
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.SameAs(computer));
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(employee2, e => e.Computer, true);
 
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.Null);
-        Assert.That (employee2.Computer, Is.SameAs (computer));
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.Null);
+        Assert.That(employee2.Computer, Is.SameAs(computer));
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.Null);
-      Assert.That (employee2.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.Null);
+      Assert.That(employee2.Computer, Is.SameAs(computer));
     }
 
     [Test]
@@ -221,30 +221,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee;
       Computer computer;
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNull (out employee, out computer);
+        PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNull(out employee, out computer);
 
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.Null);
 
-        CheckSyncState (computer, c => c.Employee, false);
-        CheckSyncState (employee, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, false);
+        CheckSyncState(employee, e => e.Computer, true);
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (computer, c => c.Employee));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(computer, c => c.Employee));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
 
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (computer.Employee, Is.SameAs (employee));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(computer.Employee, Is.SameAs(employee));
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
 
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (computer.Employee, Is.SameAs (employee));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(computer.Employee, Is.SameAs(employee));
     }
 
     [Test]
@@ -254,21 +254,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Computer computer2;
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull (out employee, out computer, out computer2);
+        PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull(out employee, out computer, out computer2);
 
         // computer.Employee and employee.Computer match, but computer2.Employee doesn't
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (computer2.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.SameAs (computer));
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(computer2.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.SameAs(computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (computer2, c => c.Employee, false);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(computer2, c => c.Employee, false);
 
-        CheckActionThrows<InvalidOperationException> (() =>
-            BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (computer2, c => c.Employee)),
+        CheckActionThrows<InvalidOperationException>(() =>
+            BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(computer2, c => c.Employee)),
             "The object end-point '{0}/Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.Employee' "
             + "cannot be synchronized with the virtual object end-point "
             + "'{2}/Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer' because "
@@ -281,68 +281,68 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
             employee.ID);
 
         // By unloading the employee.Computer -> computer relation, we can now synchronize computer2.Employee -> employee with employee.Computer
-        UnloadService.UnloadVirtualEndPoint (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
+        UnloadService.UnloadVirtualEndPoint(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (computer2, c => c.Employee));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(computer2, c => c.Employee));
 
-        CheckSyncState (computer, c => c.Employee, false);
-        CheckSyncState (computer2, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, false);
+        CheckSyncState(computer2, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
 
-        Assert.That (employee.Computer, Is.SameAs (computer2));
-        Assert.That (computer2.Employee, Is.SameAs (employee));
-        Assert.That (computer.Employee, Is.SameAs (employee));
+        Assert.That(employee.Computer, Is.SameAs(computer2));
+        Assert.That(computer2.Employee, Is.SameAs(employee));
+        Assert.That(computer.Employee, Is.SameAs(employee));
       }
 
-      CheckSyncState (computer, c => c.Employee, false);
-      CheckSyncState (computer2, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, false);
+      CheckSyncState(computer2, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
 
-      Assert.That (employee.Computer, Is.SameAs (computer2));
-      Assert.That (computer2.Employee, Is.SameAs (employee));
-      Assert.That (computer.Employee, Is.SameAs (employee));
+      Assert.That(employee.Computer, Is.SameAs(computer2));
+      Assert.That(computer2.Employee, Is.SameAs(employee));
+      Assert.That(computer.Employee, Is.SameAs(employee));
     }
 
     [Test]
     public void ConsistentState_GuaranteedInSubTransaction_OneOne ()
     {
-      var orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ();
-      var order1 = DomainObjectIDs.Order1.GetObject<Order> ();
+      var orderTicket1 = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
+      var order1 = DomainObjectIDs.Order1.GetObject<Order>();
 
-      Assert.That (orderTicket1.Order, Is.SameAs (order1));
-      Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
+      Assert.That(orderTicket1.Order, Is.SameAs(order1));
+      Assert.That(order1.OrderTicket, Is.SameAs(orderTicket1));
 
-      CheckSyncState (orderTicket1, oi => oi.Order, true);
-      CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+      CheckSyncState(orderTicket1, oi => oi.Order, true);
+      CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (orderTicket1.Order, Is.SameAs (order1));
-        Assert.That (order1.OrderTicket, Is.SameAs (orderTicket1));
+        Assert.That(orderTicket1.Order, Is.SameAs(order1));
+        Assert.That(order1.OrderTicket, Is.SameAs(orderTicket1));
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
-        CheckSyncState (orderTicket1.Order, o => o.OrderTicket, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1.Order, o => o.OrderTicket, true);
       }
 
       order1.OrderTicket = null;
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (orderTicket1.Order, Is.Null);
-        Assert.That (order1.OrderTicket, Is.Null);
+        Assert.That(orderTicket1.Order, Is.Null);
+        Assert.That(order1.OrderTicket, Is.Null);
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
       }
-      ClientTransaction.Current.Rollback ();
+      ClientTransaction.Current.Rollback();
 
       orderTicket1.Order = null;
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (orderTicket1.Order, Is.Null);
-        Assert.That (order1.OrderTicket, Is.Null);
+        Assert.That(orderTicket1.Order, Is.Null);
+        Assert.That(order1.OrderTicket, Is.Null);
 
-        CheckSyncState (orderTicket1, oi => oi.Order, true);
+        CheckSyncState(orderTicket1, oi => oi.Order, true);
       }
     }
 
@@ -352,21 +352,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Employee employee;
 
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull (out computer, out employee);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull(out computer, out employee);
 
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (computer.Employee, Is.Null);
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(computer.Employee, Is.Null);
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (computer.Employee, Is.Null);
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(computer.Employee, Is.Null);
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
       }
     }
 
@@ -377,25 +377,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee;
       Employee employee2;
 
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(computer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.SameAs (computer));
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.SameAs(computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
     }
 
@@ -406,25 +406,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee2;
       Computer computer;
 
-      PrepareInconsistentState_OneOne_ObjectNotReturned_ThatLocallyPointsToHere (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectNotReturned_ThatLocallyPointsToHere(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.Null);
 
-      CheckSyncState (computer, c => c.Employee, false);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, false);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.Null);
 
-        CheckSyncState (computer, c => c.Employee, false);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, false);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
     }
 
@@ -434,21 +434,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee;
       Computer computer;
 
-      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNull (out employee, out computer);
+      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNull(out employee, out computer);
 
-      Assert.That (computer.Employee, Is.SameAs (employee));
-      Assert.That (employee.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.SameAs(employee));
+      Assert.That(employee.Computer, Is.Null);
 
-      CheckSyncState (computer, c => c.Employee, false);
-      CheckSyncState (employee, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, false);
+      CheckSyncState(employee, e => e.Computer, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.Null);
 
-        CheckSyncState (computer, c => c.Employee, false);
-        CheckSyncState (employee, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, false);
+        CheckSyncState(employee, e => e.Computer, true);
       }
     }
 
@@ -459,26 +459,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Computer computer2;
 
-      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull (out employee, out computer, out computer2);
+      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull(out employee, out computer, out computer2);
 
       // computer.Employee and employee.Computer match, but computer2.Employee doesn't
-      Assert.That (computer.Employee, Is.SameAs (employee));
-      Assert.That (computer2.Employee, Is.SameAs (employee));
-      Assert.That (employee.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee));
+      Assert.That(computer2.Employee, Is.SameAs(employee));
+      Assert.That(employee.Computer, Is.SameAs(computer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (computer2, c => c.Employee, false);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(computer2, c => c.Employee, false);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (computer2.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.SameAs (computer));
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(computer2.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.SameAs(computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (computer2, c => c.Employee, false);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(computer2, c => c.Employee, false);
       }
     }
 
@@ -488,37 +488,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Employee employee;
 
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull (out computer, out employee);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsToNull(out computer, out employee);
 
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (computer.Employee, Is.Null);
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(computer.Employee, Is.Null);
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
 
       Employee newEmployee;
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (computer.Employee, Is.Null);
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(computer.Employee, Is.Null);
 
         newEmployee = Employee.NewObject();
         computer.Employee = newEmployee;
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (computer.Employee, Is.SameAs (newEmployee));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(computer.Employee, Is.SameAs(newEmployee));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
       }
 
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (computer.Employee, Is.SameAs (newEmployee));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(computer.Employee, Is.SameAs(newEmployee));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
     }
 
     [Test]
@@ -528,23 +528,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee;
       Employee employee2;
 
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(computer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
       Employee newEmployee;
       Computer newComputer;
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.SameAs (computer));
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.SameAs(computer));
 
         newEmployee = Employee.NewObject();
         computer.Employee = newEmployee;
@@ -554,22 +554,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (computer.Employee, Is.SameAs (newEmployee));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.SameAs (newComputer));
+        Assert.That(computer.Employee, Is.SameAs(newEmployee));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.SameAs(newComputer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
 
-      Assert.That (computer.Employee, Is.SameAs (newEmployee));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (newComputer));
+      Assert.That(computer.Employee, Is.SameAs(newEmployee));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(newComputer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
     }
 
     [Test]
@@ -579,45 +579,45 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee2;
       Computer computer;
 
-      PrepareInconsistentState_OneOne_ObjectNotReturned_ThatLocallyPointsToHere (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectNotReturned_ThatLocallyPointsToHere(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.Null);
 
-      CheckSyncState (computer, c => c.Employee, false);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, false);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
       Computer newComputer;
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.Null);
 
         newComputer = Computer.NewObject();
         employee2.Computer = newComputer;
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (computer.Employee, Is.SameAs (employee2));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (employee2.Computer, Is.SameAs (newComputer));
+        Assert.That(computer.Employee, Is.SameAs(employee2));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(employee2.Computer, Is.SameAs(newComputer));
 
-        CheckSyncState (computer, c => c.Employee, false);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, false);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (newComputer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(newComputer));
 
-      CheckSyncState (computer, c => c.Employee, false);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, false);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
     }
 
     [Test]
@@ -626,37 +626,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Employee employee;
       Computer computer;
 
-      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNull (out employee, out computer);
+      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNull(out employee, out computer);
 
-      Assert.That (computer.Employee, Is.SameAs (employee));
-      Assert.That (employee.Computer, Is.Null);
+      Assert.That(computer.Employee, Is.SameAs(employee));
+      Assert.That(employee.Computer, Is.Null);
 
-      CheckSyncState (computer, c => c.Employee, false);
-      CheckSyncState (employee, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, false);
+      CheckSyncState(employee, e => e.Computer, true);
 
       Computer newComputer;
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.Null);
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.Null);
 
         newComputer = Computer.NewObject();
         employee.Computer = newComputer;
 
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
 
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.SameAs (newComputer));
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.SameAs(newComputer));
 
-        CheckSyncState (computer, c => c.Employee, false);
-        CheckSyncState (employee, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, false);
+        CheckSyncState(employee, e => e.Computer, true);
       }
 
-      Assert.That (computer.Employee, Is.SameAs (employee));
-      Assert.That (employee.Computer, Is.SameAs (newComputer));
+      Assert.That(computer.Employee, Is.SameAs(employee));
+      Assert.That(employee.Computer, Is.SameAs(newComputer));
 
-      CheckSyncState (computer, c => c.Employee, false);
-      CheckSyncState (employee, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, false);
+      CheckSyncState(employee, e => e.Computer, true);
     }
 
     [Test]
@@ -666,51 +666,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Computer computer2;
 
-      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull (out employee, out computer, out computer2);
+      PrepareInconsistentState_InconsistentForeignKeyLoaded_VirtualSideAlreadyNonNull(out employee, out computer, out computer2);
 
       // computer.Employee and employee.Computer match, but computer2.Employee doesn't
-      Assert.That (computer.Employee, Is.SameAs (employee));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (computer2.Employee, Is.SameAs (employee));
+      Assert.That(computer.Employee, Is.SameAs(employee));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(computer2.Employee, Is.SameAs(employee));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (computer2, c => c.Employee, false);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(computer2, c => c.Employee, false);
 
       Employee newEmployee;
       Computer newComputer;
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
         // computer.Employee and employee.Computer match, but computer2.Employee doesn't
-        Assert.That (computer.Employee, Is.SameAs (employee));
-        Assert.That (employee.Computer, Is.SameAs (computer));
-        Assert.That (computer2.Employee, Is.SameAs (employee));
+        Assert.That(computer.Employee, Is.SameAs(employee));
+        Assert.That(employee.Computer, Is.SameAs(computer));
+        Assert.That(computer2.Employee, Is.SameAs(employee));
 
-        newEmployee = Employee.NewObject ();
+        newEmployee = Employee.NewObject();
         computer.Employee = newEmployee;
 
-        newComputer = Computer.NewObject ();
+        newComputer = Computer.NewObject();
         employee.Computer = newComputer;
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (computer.Employee, Is.SameAs (newEmployee));
-        Assert.That (employee.Computer, Is.SameAs (newComputer));
-        Assert.That (computer2.Employee, Is.SameAs (employee));
+        Assert.That(computer.Employee, Is.SameAs(newEmployee));
+        Assert.That(employee.Computer, Is.SameAs(newComputer));
+        Assert.That(computer2.Employee, Is.SameAs(employee));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (computer2, c => c.Employee, false);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(computer2, c => c.Employee, false);
       }
 
-      Assert.That (computer.Employee, Is.SameAs (newEmployee));
-      Assert.That (employee.Computer, Is.SameAs (newComputer));
-      Assert.That (computer2.Employee, Is.SameAs (employee));
+      Assert.That(computer.Employee, Is.SameAs(newEmployee));
+      Assert.That(employee.Computer, Is.SameAs(newComputer));
+      Assert.That(computer2.Employee, Is.SameAs(employee));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (computer2, c => c.Employee, false);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(computer2, c => c.Employee, false);
     }
 
     [Test]
@@ -719,28 +719,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Employee employee;
       Employee employee2;
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(computer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(employee2, e => e.Computer, true);
     }
 
     [Test]
@@ -749,28 +749,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Employee employee;
       Employee employee2;
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(computer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(employee2, e => e.Computer, true);
     }
 
     [Test]
@@ -779,32 +779,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Employee employee;
       Employee employee2;
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(computer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (computer, c => c.Employee));
-        TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (employee, e => e.Computer));
-        TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (employee2, e => e.Computer));
+        TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(computer, c => c.Employee));
+        TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(employee, e => e.Computer));
+        TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(employee2, e => e.Computer));
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current.ParentTransaction, RelationEndPointID.Resolve (employee, e => e.Computer));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current.ParentTransaction, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(employee2, e => e.Computer, true);
     }
 
     [Test]
@@ -813,36 +813,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       Computer computer;
       Employee employee;
       Employee employee2;
-      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse (out computer, out employee, out employee2);
+      PrepareInconsistentState_OneOne_ObjectReturned_ThatLocallyPointsSomewhereElse(out computer, out employee, out employee2);
 
-      Assert.That (computer.Employee, Is.SameAs (employee2));
-      Assert.That (employee.Computer, Is.SameAs (computer));
-      Assert.That (employee2.Computer, Is.SameAs (computer));
+      Assert.That(computer.Employee, Is.SameAs(employee2));
+      Assert.That(employee.Computer, Is.SameAs(computer));
+      Assert.That(employee2.Computer, Is.SameAs(computer));
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, false);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, false);
+      CheckSyncState(employee2, e => e.Computer, true);
 
-      using (ClientTransaction.Current.CreateSubTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
-        TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (computer, c => c.Employee));
-        TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (employee, e => e.Computer));
-        TestableClientTransaction.EnsureDataComplete (RelationEndPointID.Resolve (employee2, e => e.Computer));
+        TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(computer, c => c.Employee));
+        TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(employee, e => e.Computer));
+        TestableClientTransaction.EnsureDataComplete(RelationEndPointID.Resolve(employee2, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, false);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, false);
+        CheckSyncState(employee2, e => e.Computer, true);
 
-        BidirectionalRelationSyncService.Synchronize (ClientTransaction.Current, RelationEndPointID.Resolve (employee, e => e.Computer));
+        BidirectionalRelationSyncService.Synchronize(ClientTransaction.Current, RelationEndPointID.Resolve(employee, e => e.Computer));
 
-        CheckSyncState (computer, c => c.Employee, true);
-        CheckSyncState (employee, e => e.Computer, true);
-        CheckSyncState (employee2, e => e.Computer, true);
+        CheckSyncState(computer, c => c.Employee, true);
+        CheckSyncState(employee, e => e.Computer, true);
+        CheckSyncState(employee2, e => e.Computer, true);
       }
 
-      CheckSyncState (computer, c => c.Employee, true);
-      CheckSyncState (employee, e => e.Computer, true);
-      CheckSyncState (employee2, e => e.Computer, true);
+      CheckSyncState(computer, c => c.Employee, true);
+      CheckSyncState(employee, e => e.Computer, true);
+      CheckSyncState(employee2, e => e.Computer, true);
     }
   }
 }

@@ -25,7 +25,7 @@ namespace Remotion.ExtensibleEnums.Infrastructure
   /// Caches <see cref="ExtensibleEnumDefinition{T}"/> instances for non-generic, reflective access.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof(ExtensibleEnumDefinitionCache), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(ExtensibleEnumDefinitionCache), Lifetime = LifetimeKind.Singleton)]
   public sealed class ExtensibleEnumDefinitionCache
   {
     private readonly ConcurrentDictionary<Type, IExtensibleEnumDefinition> _cache = new ConcurrentDictionary<Type, IExtensibleEnumDefinition>();
@@ -34,8 +34,8 @@ namespace Remotion.ExtensibleEnums.Infrastructure
 
     public ExtensibleEnumDefinitionCache (IExtensibleEnumValueDiscoveryService valueDiscoveryService)
     {
-      ArgumentUtility.CheckNotNull ("valueDiscoveryService", valueDiscoveryService);
-      
+      ArgumentUtility.CheckNotNull("valueDiscoveryService", valueDiscoveryService);
+
       _valueDiscoveryService = valueDiscoveryService;
 
       // Optimized for memory allocations
@@ -63,9 +63,9 @@ namespace Remotion.ExtensibleEnums.Infrastructure
     /// <see cref="ExtensibleEnumInfo{T}"/>.</exception>
     public IExtensibleEnumDefinition GetDefinition (Type extensibleEnumType)
     {
-      ArgumentUtility.CheckNotNull ("extensibleEnumType", extensibleEnumType);
+      ArgumentUtility.CheckNotNull("extensibleEnumType", extensibleEnumType);
 
-      return _cache.GetOrAdd (extensibleEnumType, _createDefinitionFunc);
+      return _cache.GetOrAdd(extensibleEnumType, _createDefinitionFunc);
     }
 
     private IExtensibleEnumDefinition CreateDefinition (Type extensibleEnumType)
@@ -73,14 +73,14 @@ namespace Remotion.ExtensibleEnums.Infrastructure
       Type definitionType;
       try
       {
-        definitionType = typeof (ExtensibleEnumDefinition<>).MakeGenericType (extensibleEnumType);
+        definitionType = typeof(ExtensibleEnumDefinition<>).MakeGenericType(extensibleEnumType);
       }
       catch (ArgumentException ex) // constraint violation
       {
-        var message = string.Format ("Type '{0}' is not an extensible enum type derived from ExtensibleEnum<T>.", extensibleEnumType);
-        throw new ArgumentException (message, "extensibleEnumType", ex);
+        var message = string.Format("Type '{0}' is not an extensible enum type derived from ExtensibleEnum<T>.", extensibleEnumType);
+        throw new ArgumentException(message, "extensibleEnumType", ex);
       }
-      return (IExtensibleEnumDefinition) Activator.CreateInstance (definitionType, new[] { ValueDiscoveryService });
+      return (IExtensibleEnumDefinition)Activator.CreateInstance(definitionType, new[] { ValueDiscoveryService })!;
     }
   }
 }

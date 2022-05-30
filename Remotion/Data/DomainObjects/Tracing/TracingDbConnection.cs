@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Tracing
@@ -30,9 +31,10 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public void ChangeDatabase (string databaseName)
     {
-      _connection.ChangeDatabase (databaseName);
+      _connection.ChangeDatabase(databaseName);
     }
 
+    [AllowNull]
     public string ConnectionString
     {
       get { return _connection.ConnectionString; }
@@ -61,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     IDbTransaction IDbConnection.BeginTransaction (IsolationLevel isolationLevel)
     {
-      return BeginTransaction (isolationLevel);
+      return BeginTransaction(isolationLevel);
     }
 
     IDbCommand IDbConnection.CreateCommand ()
@@ -78,8 +80,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbConnection (IDbConnection connection, IPersistenceExtension persistenceExtension)
     {
-      ArgumentUtility.CheckNotNull ("connection", connection);
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("connection", connection);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
 
       _connection = connection;
       _persistenceExtension = persistenceExtension;
@@ -104,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Tracing
     public void Open ()
     {
       _connection.Open();
-      PersistenceExtension.ConnectionOpened (_connectionID);
+      PersistenceExtension.ConnectionOpened(_connectionID);
     }
 
     public void Close ()
@@ -124,37 +126,37 @@ namespace Remotion.Data.DomainObjects.Tracing
     public TracingDbTransaction BeginTransaction ()
     {
       var transaction = _connection.BeginTransaction();
-      PersistenceExtension.TransactionBegan (_connectionID, transaction.IsolationLevel);
-      return CreateTracingTransaction (transaction);
+      PersistenceExtension.TransactionBegan(_connectionID, transaction.IsolationLevel);
+      return CreateTracingTransaction(transaction);
     }
 
     public TracingDbTransaction BeginTransaction (IsolationLevel isolationLevel)
     {
-      var transaction = _connection.BeginTransaction (isolationLevel);
-      PersistenceExtension.TransactionBegan (_connectionID, isolationLevel);
-      return CreateTracingTransaction (transaction);
+      var transaction = _connection.BeginTransaction(isolationLevel);
+      PersistenceExtension.TransactionBegan(_connectionID, isolationLevel);
+      return CreateTracingTransaction(transaction);
     }
 
     public TracingDbCommand CreateCommand ()
     {
-      return CreateTracingCommand (_connection.CreateCommand());
+      return CreateTracingCommand(_connection.CreateCommand());
     }
 
     private TracingDbTransaction CreateTracingTransaction (IDbTransaction transaction)
     {
-      return new TracingDbTransaction (transaction, _persistenceExtension, _connectionID);
+      return new TracingDbTransaction(transaction, _persistenceExtension, _connectionID);
     }
 
     private TracingDbCommand CreateTracingCommand (IDbCommand command)
     {
-      return new TracingDbCommand (command, _persistenceExtension, _connectionID);
+      return new TracingDbCommand(command, _persistenceExtension, _connectionID);
     }
 
     private void TraceConnectionClosed ()
     {
       if (!_isConnectionClosed)
       {
-        PersistenceExtension.ConnectionClosed (_connectionID);
+        PersistenceExtension.ConnectionClosed(_connectionID);
         _isConnectionClosed = true;
       }
     }

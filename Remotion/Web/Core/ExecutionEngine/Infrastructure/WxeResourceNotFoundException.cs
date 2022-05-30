@@ -30,12 +30,12 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   public sealed class WxeResourceNotFoundException : HttpException
   {
     public WxeResourceNotFoundException (string message, HttpException innerException)
-        : base (500, message, innerException)
+        : base(500, message, innerException)
     {
     }
 
     private WxeResourceNotFoundException (SerializationInfo info, StreamingContext context)
-        : base (info, context)
+        : base(info, context)
     {
     }
   }

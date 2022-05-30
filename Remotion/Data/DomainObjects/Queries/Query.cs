@@ -51,8 +51,8 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </exception>
     public Query (QueryDefinition definition, QueryParameterCollection parameters)
     {
-      ArgumentUtility.CheckNotNull ("definition", definition);
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("definition", definition);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
       _definition = definition;
       _parameters = parameters;
@@ -87,7 +87,7 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <summary>
     /// Gets the <see cref="Configuration.QueryDefinition.CollectionType"/> of the associated <see cref="Configuration.QueryDefinition"/>.
     /// </summary>
-    public Type CollectionType
+    public Type? CollectionType
     {
       get { return _definition.CollectionType; }
     }
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.Queries
 
     public override string ToString ()
     {
-      return string.Format ("Query '{0}': {1}", ID, Statement);
+      return string.Format("Query '{0}': {1}", ID, Statement);
     }
   }
 }

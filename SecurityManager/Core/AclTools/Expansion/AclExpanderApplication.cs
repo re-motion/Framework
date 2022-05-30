@@ -26,58 +26,62 @@ using Remotion.Tools.Console.ConsoleApplication;
 using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.AclTools.Expansion
-{ 
+{
   public class AclExpanderApplication : IApplicationRunner<AclExpanderApplicationSettings>
   {
     public const string CssFileName = "AclExpansion";
 
-    private AclExpanderApplicationSettings _settings;
+    private AclExpanderApplicationSettings? _settings;
 
     private readonly ITextWriterFactory _textWriterFactory;
 
 
     public AclExpanderApplication ()
-        : this (new StreamWriterFactory())
+        : this(new StreamWriterFactory())
     {
     }
 
     public AclExpanderApplication (ITextWriterFactory textWriterFactory)
     {
-      ArgumentUtility.CheckNotNull ("textWriterFactory", textWriterFactory);
+      ArgumentUtility.CheckNotNull("textWriterFactory", textWriterFactory);
       _textWriterFactory = textWriterFactory;
     }
 
 
     public AclExpanderApplicationSettings Settings
     {
-      get { return _settings; }
+      get
+      {
+        Assertion.IsNotNull(_settings, "Settings have not been initialized via Init(...) method.");
+        return _settings;
+      }
     }
 
     public virtual void Run (AclExpanderApplicationSettings settings, TextWriter errorWriter, TextWriter logWriter)
     {
-      ArgumentUtility.CheckNotNull ("settings", settings);
-      ArgumentUtility.CheckNotNull ("errorWriter", errorWriter);
-      ArgumentUtility.CheckNotNull ("logWriter", logWriter);
-      
-      Init (settings);
+      ArgumentUtility.CheckNotNull("settings", settings);
+      ArgumentUtility.CheckNotNull("errorWriter", errorWriter);
+      ArgumentUtility.CheckNotNull("logWriter", logWriter);
 
-      string cultureName = GetCultureName();
+      Init(settings);
 
-      using (new CultureScope (cultureName))
+      string? cultureName = GetCultureName();
+
+      using (new CultureScope(cultureName))
       {
         using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
         {
-          List<AclExpansionEntry> aclExpansion = GetAclExpansion ();
+          List<AclExpansionEntry> aclExpansion = GetAclExpansion();
 
-          WriteAclExpansionAsHtmlToStreamWriter (aclExpansion);
+          WriteAclExpansionAsHtmlToStreamWriter(aclExpansion);
         }
       }
     }
 
-    public string GetCultureName ()
+    public string? GetCultureName ()
     {
-      string cultureName = Settings.CultureName;
-      if (String.IsNullOrEmpty (cultureName)) 
+      string? cultureName = Settings.CultureName;
+      if (String.IsNullOrEmpty(cultureName))
       {
         cultureName = null; // Passing null to CultureScope-ctor below means "keep current culture".
       }
@@ -86,20 +90,20 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     public void Init (AclExpanderApplicationSettings settings)
     {
-      ArgumentUtility.CheckNotNull ("settings", settings);
+      ArgumentUtility.CheckNotNull("settings", settings);
       _settings = settings;
     }
 
     public virtual void WriteAclExpansionAsHtmlToStreamWriter (List<AclExpansionEntry> aclExpansion)
     {
-      ArgumentUtility.CheckNotNull ("aclExpansion", aclExpansion);
+      ArgumentUtility.CheckNotNull("aclExpansion", aclExpansion);
       if (Settings.UseMultipleFileOutput)
       {
-        WriteAclExpansionAsMultiFileHtml (aclExpansion);
+        WriteAclExpansionAsMultiFileHtml(aclExpansion);
       }
       else
       {
-        WriteAclExpansionAsSingleFileHtml (aclExpansion);
+        WriteAclExpansionAsSingleFileHtml(aclExpansion);
       }
     }
 
@@ -108,9 +112,9 @@ namespace Remotion.SecurityManager.AclTools.Expansion
       _textWriterFactory.Extension = "html";
       string directoryUsed = Settings.Directory;
       _textWriterFactory.Directory = directoryUsed;
-      using (var textWriter = _textWriterFactory.CreateTextWriter ("AclExpansion_" + StringUtility.GetFileNameTimestampNow ()))
+      using (var textWriter = _textWriterFactory.CreateTextWriter("AclExpansion_" + StringUtility.GetFileNameTimestampNow()))
       {
-        var aclExpansionHtmlWriter = new AclExpansionHtmlWriter (textWriter, true, CreateAclExpansionHtmlWriterSettings ());
+        var aclExpansionHtmlWriter = new AclExpansionHtmlWriter(textWriter, true, CreateAclExpansionHtmlWriterSettings());
         aclExpansionHtmlWriter.WriteAclExpansion(aclExpansion);
       }
       WriteCssFile();
@@ -118,24 +122,25 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 
     private void WriteAclExpansionAsMultiFileHtml (List<AclExpansionEntry> aclExpansion)
     {
-      string directoryUsed = Path.Combine (Settings.Directory, "AclExpansion_" + StringUtility.GetFileNameTimestampNow ());
+      string directoryUsed = Path.Combine(Settings.Directory, "AclExpansion_" + StringUtility.GetFileNameTimestampNow());
       _textWriterFactory.Directory = directoryUsed;
       _textWriterFactory.Extension = "html";
 
-      var multiFileHtmlWriter = new AclExpansionMultiFileHtmlWriter (_textWriterFactory, true);
+      var multiFileHtmlWriter = new AclExpansionMultiFileHtmlWriter(_textWriterFactory, true);
       multiFileHtmlWriter.DetailHtmlWriterSettings = CreateAclExpansionHtmlWriterSettings();
-      multiFileHtmlWriter.WriteAclExpansion (aclExpansion);
+      multiFileHtmlWriter.WriteAclExpansion(aclExpansion);
 
       WriteCssFile();
     }
 
     private void WriteCssFile ()
     {
-      using (var cssTextWriter = _textWriterFactory.CreateTextWriter (_textWriterFactory.Directory,CssFileName,"css"))
+      Assertion.DebugIsNotNull(_textWriterFactory.Directory, "_textWriterFactory.Directory != null");
+      using (var cssTextWriter = _textWriterFactory.CreateTextWriter(_textWriterFactory.Directory, CssFileName,"css"))
       {
-        string resource = GetEmbeddedStringResource ("AclExpansion.css");
-        Assertion.IsNotNull (resource);
-        cssTextWriter.Write (resource);
+        string resource = GetEmbeddedStringResource("AclExpansion.css");
+        Assertion.IsNotNull(resource);
+        cssTextWriter.Write(resource);
       }
     }
 
@@ -144,7 +149,7 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     {
       Type type = GetType();
       Assembly assembly = type.Assembly;
-      using (StreamReader reader = new StreamReader (assembly.GetManifestResourceStream (type, name)))
+      using (StreamReader reader = new StreamReader(Assertion.IsNotNull(assembly.GetManifestResourceStream(type, name), "assembly.GetManifestResourceStream(type, name) != null")))
       {
         return reader.ReadToEnd();
       }
@@ -164,8 +169,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     public virtual List<AclExpansionEntry> GetAclExpansion ()
     {
       var aclExpander =
-          new AclExpander (
-              new AclExpanderUserFinder (Settings.UserFirstName, Settings.UserLastName, Settings.UserName), new AclExpanderAclFinder()
+          new AclExpander(
+              new AclExpanderUserFinder(Settings.UserFirstName, Settings.UserLastName, Settings.UserName), new AclExpanderAclFinder()
               );
 
       return aclExpander.GetAclExpansionEntryListSortedAndDistinct();

@@ -18,15 +18,15 @@ using System;
 
 namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance
 {
-  [ClassID ("TI_ClassWithUnidirectionalRelation")]
-  [DBTable ("TableInheritance_TableWithUnidirectionalRelation")]
+  [ClassID("TI_ClassWithUnidirectionalRelation")]
+  [DBTable("TableInheritance_TableWithUnidirectionalRelation")]
   [Instantiable]
   [TableInheritanceTestDomain]
   public abstract class TIClassWithUnidirectionalRelation : DomainObject, ISupportsGetObject
   {
     public static TIClassWithUnidirectionalRelation NewObject ()
     {
-      return NewObject<TIClassWithUnidirectionalRelation> ();
+      return NewObject<TIClassWithUnidirectionalRelation>();
     }
 
     protected TIClassWithUnidirectionalRelation ()

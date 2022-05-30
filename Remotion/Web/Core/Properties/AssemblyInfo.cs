@@ -20,12 +20,14 @@ using System.Resources;
 using System.Web.UI;
 using Remotion.Globalization;
 
-[assembly: TagPrefix ("Remotion.Web.UI.Controls", "remotion")]
+[assembly: TagPrefix("Remotion.Web.UI.Controls", "remotion")]
 
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
 
-[assembly: AssemblyTitle("remotion Web Controls")]
-[assembly: AssemblyDescription ("Common controls for web applications.")]
 [assembly: AssemblyCulture("")]
+#if NETFRAMEWORK
 [assembly: CLSCompliant(true)]
+#else
+[assembly: CLSCompliant(false)]
+#endif

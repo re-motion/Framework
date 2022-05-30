@@ -17,229 +17,224 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
   [TestFixture]
   public class RelationEndPointMapTest : StandardMappingTest
   {
-    private IClientTransactionEventSink _transactionEventSinkWithMock;
+    private Mock<IClientTransactionEventSink> _transactionEventSinkWithMock;
     private RelationEndPointMap _map;
 
     private RelationEndPointID _endPointID1;
     private RelationEndPointID _endPointID2;
 
-    private IRelationEndPoint _endPointMock1;
-    private IRelationEndPoint _endPointMock2;
+    private Mock<IRelationEndPoint> _endPointMock1;
+    private Mock<IRelationEndPoint> _endPointMock2;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _transactionEventSinkWithMock = MockRepository.GenerateStrictMock<IClientTransactionEventSink>();
-      _map = new RelationEndPointMap (_transactionEventSinkWithMock);
+      _transactionEventSinkWithMock = new Mock<IClientTransactionEventSink>(MockBehavior.Strict);
+      _map = new RelationEndPointMap(_transactionEventSinkWithMock.Object);
 
-      _endPointID1 = RelationEndPointID.Create (DomainObjectIDs.Order1, typeof (Order), "Customer");
-      _endPointID2 = RelationEndPointID.Create (DomainObjectIDs.Order3, typeof (Order), "Customer");
+      _endPointID1 = RelationEndPointID.Create(DomainObjectIDs.Order1, typeof(Order), "Customer");
+      _endPointID2 = RelationEndPointID.Create(DomainObjectIDs.Order3, typeof(Order), "Customer");
 
-      _endPointMock1 = MockRepository.GenerateStrictMock<IRelationEndPoint> ();
-      _endPointMock1.Stub (stub => stub.ID).Return (_endPointID1);
-      _endPointMock2 = MockRepository.GenerateStrictMock<IRelationEndPoint> ();
-      _endPointMock2.Stub (stub => stub.ID).Return (_endPointID2);
+      _endPointMock1 = new Mock<IRelationEndPoint>(MockBehavior.Strict);
+      _endPointMock1.Setup(stub => stub.ID).Returns(_endPointID1);
+      _endPointMock2 = new Mock<IRelationEndPoint>(MockBehavior.Strict);
+      _endPointMock2.Setup(stub => stub.ID).Returns(_endPointID2);
     }
 
     [Test]
     public void Item ()
     {
       StubEvents();
-      Assert.That (_map[_endPointID1], Is.Null);
+      Assert.That(_map[_endPointID1], Is.Null);
 
-      _map.AddEndPoint (_endPointMock1);
+      _map.AddEndPoint(_endPointMock1.Object);
 
-      Assert.That (_map[_endPointID1], Is.SameAs (_endPointMock1));
+      Assert.That(_map[_endPointID1], Is.SameAs(_endPointMock1.Object));
     }
 
     [Test]
     public void Count ()
     {
-      StubEvents ();
-      Assert.That (_map.Count, Is.EqualTo (0));
+      StubEvents();
+      Assert.That(_map.Count, Is.EqualTo(0));
 
-      _map.AddEndPoint (_endPointMock1);
+      _map.AddEndPoint(_endPointMock1.Object);
 
-      Assert.That (_map.Count, Is.EqualTo (1));
+      Assert.That(_map.Count, Is.EqualTo(1));
 
-      _map.AddEndPoint (_endPointMock2);
+      _map.AddEndPoint(_endPointMock2.Object);
 
-      Assert.That (_map.Count, Is.EqualTo (2));
+      Assert.That(_map.Count, Is.EqualTo(2));
     }
 
     [Test]
     public void GetEnumerator ()
     {
-      StubEvents ();
+      StubEvents();
 
-      _map.AddEndPoint (_endPointMock1);
-      _map.AddEndPoint (_endPointMock2);
+      _map.AddEndPoint(_endPointMock1.Object);
+      _map.AddEndPoint(_endPointMock2.Object);
 
       var items = new List<IRelationEndPoint>();
 
-      using (var enumerator = _map.GetEnumerator ())
+      using (var enumerator = _map.GetEnumerator())
       {
-        Assert.That (enumerator.MoveNext (), Is.True);
-        items.Add (enumerator.Current);
-        Assert.That (enumerator.MoveNext (), Is.True);
-        items.Add (enumerator.Current);
-        Assert.That (enumerator.MoveNext (), Is.False);
+        Assert.That(enumerator.MoveNext(), Is.True);
+        items.Add(enumerator.Current);
+        Assert.That(enumerator.MoveNext(), Is.True);
+        items.Add(enumerator.Current);
+        Assert.That(enumerator.MoveNext(), Is.False);
       }
 
-      Assert.That (items, Is.EquivalentTo (new[] { _endPointMock1, _endPointMock2 }));
+      Assert.That(items, Is.EquivalentTo(new[] { _endPointMock1.Object, _endPointMock2.Object }));
     }
 
     [Test]
     public void GetEnumerator_NonGeneric ()
     {
-      StubEvents ();
+      StubEvents();
 
-      _map.AddEndPoint (_endPointMock1);
-      _map.AddEndPoint (_endPointMock2);
+      _map.AddEndPoint(_endPointMock1.Object);
+      _map.AddEndPoint(_endPointMock2.Object);
 
-      var items = new List<IRelationEndPoint> ();
+      var items = new List<IRelationEndPoint>();
 
-      var enumerator = ((IEnumerable) _map).GetEnumerator();
-      Assert.That (enumerator.MoveNext (), Is.True);
-      items.Add ((IRelationEndPoint) enumerator.Current);
-      Assert.That (enumerator.MoveNext (), Is.True);
-      items.Add ((IRelationEndPoint) enumerator.Current);
-      Assert.That (enumerator.MoveNext (), Is.False);
+      var enumerator = ((IEnumerable)_map).GetEnumerator();
+      Assert.That(enumerator.MoveNext(), Is.True);
+      items.Add((IRelationEndPoint)enumerator.Current);
+      Assert.That(enumerator.MoveNext(), Is.True);
+      items.Add((IRelationEndPoint)enumerator.Current);
+      Assert.That(enumerator.MoveNext(), Is.False);
 
-      Assert.That (items, Is.EquivalentTo (new[] { _endPointMock1, _endPointMock2 }));
+      Assert.That(items, Is.EquivalentTo(new[] { _endPointMock1.Object, _endPointMock2.Object }));
     }
 
     [Test]
     public void CommitAllEndPoints ()
     {
-      StubEvents ();
-      
-      _map.AddEndPoint (_endPointMock1);
-      _map.AddEndPoint (_endPointMock2);
+      StubEvents();
 
-      _endPointMock1.Expect (mock => mock.Commit ());
-      _endPointMock2.Expect (mock => mock.Commit ());
-      _endPointMock1.Replay ();
-      _endPointMock2.Replay ();
+      _map.AddEndPoint(_endPointMock1.Object);
+      _map.AddEndPoint(_endPointMock2.Object);
+
+      _endPointMock1.Setup(mock => mock.Commit()).Verifiable();
+      _endPointMock2.Setup(mock => mock.Commit()).Verifiable();
 
       _map.CommitAllEndPoints();
 
-      _endPointMock1.VerifyAllExpectations();
-      _endPointMock2.VerifyAllExpectations ();
+      _endPointMock1.Verify();
+      _endPointMock2.Verify();
     }
 
     [Test]
     public void RollbackAllEndPoints ()
     {
-      StubEvents ();
+      StubEvents();
 
-      _map.AddEndPoint (_endPointMock1);
-      _map.AddEndPoint (_endPointMock2);
+      _map.AddEndPoint(_endPointMock1.Object);
+      _map.AddEndPoint(_endPointMock2.Object);
 
-      _endPointMock1.Expect (mock => mock.Rollback ());
-      _endPointMock2.Expect (mock => mock.Rollback ());
-      _endPointMock1.Replay ();
-      _endPointMock2.Replay ();
+      _endPointMock1.Setup(mock => mock.Rollback()).Verifiable();
+      _endPointMock2.Setup(mock => mock.Rollback()).Verifiable();
 
-      _map.RollbackAllEndPoints ();
+      _map.RollbackAllEndPoints();
 
-      _endPointMock1.VerifyAllExpectations ();
-      _endPointMock2.VerifyAllExpectations ();
+      _endPointMock1.Verify();
+      _endPointMock2.Verify();
     }
 
     [Test]
     public void AddEndPoint ()
     {
-      _transactionEventSinkWithMock.Expect (l => l.RaiseRelationEndPointMapRegisteringEvent ( _endPointMock1));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Setup(l => l.RaiseRelationEndPointMapRegisteringEvent(_endPointMock1.Object)).Verifiable();
 
-      _map.AddEndPoint (_endPointMock1);
+      _map.AddEndPoint(_endPointMock1.Object);
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
-      Assert.That (_map[_endPointID1], Is.SameAs (_endPointMock1));
+      _transactionEventSinkWithMock.Verify();
+      Assert.That(_map[_endPointID1], Is.SameAs(_endPointMock1.Object));
     }
 
     [Test]
     public void AddEndPoint_KeyAlreadyExists ()
     {
       // Note: We'll get an event even when an exception is thrown. This is more an optimization than a feature.
-      _transactionEventSinkWithMock.Stub (l => l.RaiseRelationEndPointMapRegisteringEvent ( Arg<IRelationEndPoint>.Is.Anything))
-          .Repeat.Twice();
+      _transactionEventSinkWithMock
+.Setup(l => l.RaiseRelationEndPointMapRegisteringEvent(It.IsAny<IRelationEndPoint>()));
 
-      _map.AddEndPoint (_endPointMock1);
+      _map.AddEndPoint(_endPointMock1.Object);
 
-      var secondEndPointStub = MockRepository.GenerateStub<IRelationEndPoint>();
-      secondEndPointStub.Stub (stub => stub.ID).Return (_endPointID1);
+      var secondEndPointStub = new Mock<IRelationEndPoint>();
+      secondEndPointStub.Setup(stub => stub.ID).Returns(_endPointID1);
 
-      Assert.That (() => _map.AddEndPoint (secondEndPointStub), Throws.InvalidOperationException.With.Message.EqualTo (
+      Assert.That(() => _map.AddEndPoint(secondEndPointStub.Object), Throws.InvalidOperationException.With.Message.EqualTo(
           "A relation end-point with ID "
           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' "
           + "has already been registered."));
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
+      _transactionEventSinkWithMock.Verify(l => l.RaiseRelationEndPointMapRegisteringEvent(It.IsAny<IRelationEndPoint>()), Times.Exactly(2));
     }
 
     [Test]
     public void RemoveEndPoint ()
     {
-      StubEvents ();
+      StubEvents();
 
-      _map.AddEndPoint (_endPointMock1);
-      Assert.That (_map[_endPointID1], Is.Not.Null);
+      _map.AddEndPoint(_endPointMock1.Object);
+      Assert.That(_map[_endPointID1], Is.Not.Null);
 
-      _transactionEventSinkWithMock.BackToRecord();
-      _transactionEventSinkWithMock.Expect (l => l.RaiseRelationEndPointMapUnregisteringEvent ( _endPointID1));
-      _transactionEventSinkWithMock.Replay();
+      _transactionEventSinkWithMock.Reset();
+      _transactionEventSinkWithMock.Setup(l => l.RaiseRelationEndPointMapUnregisteringEvent(_endPointID1)).Verifiable();
 
-      _map.RemoveEndPoint (_endPointID1);
+      _map.RemoveEndPoint(_endPointID1);
 
-      _transactionEventSinkWithMock.VerifyAllExpectations();
-      Assert.That (_map[_endPointID1], Is.Null);
+      _transactionEventSinkWithMock.Verify();
+      Assert.That(_map[_endPointID1], Is.Null);
     }
 
     [Test]
     public void RemoveEndPoint_KeyNotExists ()
     {
       // Note: We'll get an event even when an exception is thrown. This is more an optimization than a feature.
-      _transactionEventSinkWithMock.Stub (l => l.RaiseRelationEndPointMapUnregisteringEvent ( _endPointID1));
+      _transactionEventSinkWithMock.Setup(l => l.RaiseRelationEndPointMapUnregisteringEvent(_endPointID1));
 
-      Assert.That (() => _map.RemoveEndPoint (_endPointID1), Throws.ArgumentException.With.Message.EqualTo (
+      Assert.That(() => _map.RemoveEndPoint(_endPointID1), Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
           "End point 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid/Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.Customer' is not "
-          + "part of this map.\r\nParameter name: endPointID"));
+          + "part of this map.", "endPointID"));
     }
 
     [Test]
     public void FlattenedSerialization ()
     {
-      var map = new RelationEndPointMap (new SerializableClientTransactionEventSinkFake());
+      var map = new RelationEndPointMap(new SerializableClientTransactionEventSinkFake());
 
-      var serializableEndPoint = new SerializableRealObjectEndPointFake (_endPointID1, null);
-      map.AddEndPoint (serializableEndPoint);
+      var serializableEndPoint = new SerializableRealObjectEndPointFake(_endPointID1, null);
+      map.AddEndPoint(serializableEndPoint);
 
-      var deserializedMap = FlattenedSerializer.SerializeAndDeserialize (map);
+      var deserializedMap = FlattenedSerializer.SerializeAndDeserialize(map);
 
-      Assert.That (deserializedMap[_endPointID1], Is.Not.Null);
-      Assert.That (deserializedMap.TransactionEventSink, Is.Not.Null);
+      Assert.That(deserializedMap[_endPointID1], Is.Not.Null);
+      Assert.That(deserializedMap.TransactionEventSink, Is.Not.Null);
     }
 
     private void StubEvents ()
     {
-      _transactionEventSinkWithMock.Stub (l => l.RaiseRelationEndPointMapRegisteringEvent ( Arg<IRelationEndPoint>.Is.Anything)).Repeat.Any();
-      _transactionEventSinkWithMock.Stub (l => l.RaiseRelationEndPointMapUnregisteringEvent ( Arg<RelationEndPointID>.Is.Anything)).Repeat.Any();
+      _transactionEventSinkWithMock.Setup(l => l.RaiseRelationEndPointMapRegisteringEvent(It.IsAny<IRelationEndPoint>()));
+      _transactionEventSinkWithMock.Setup(l => l.RaiseRelationEndPointMapUnregisteringEvent(It.IsAny<RelationEndPointID>()));
     }
   }
 }

@@ -20,11 +20,9 @@ using System.Resources;
 using Remotion.Globalization;
 using Remotion.Globalization.Mixins;
 
-[assembly: NeutralResourcesLanguage ("en")]
-[assembly: AvailableResourcesLanguages ("", "de", "fr", "it")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
 
-[assembly: AssemblyTitle("re-motion BusinessObjects")]
-[assembly: AssemblyDescription("Generic interfaces and classes for business objects and data binding.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 [assembly: EnsureGlobalizationSupportForMixins]

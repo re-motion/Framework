@@ -24,22 +24,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   {
     public BocColumnRenderingContext (
         BocColumnRenderingContext renderingContext)
-        : base (
+        : base(
             renderingContext.HttpContext,
             renderingContext.Writer,
             renderingContext.Control,
+            renderingContext.BusinessObjectWebServiceContext,
             renderingContext.ColumnDefinition,
             renderingContext.ColumnIndex,
             renderingContext.VisibleColumnIndex)
     {
       if (!(renderingContext.ColumnDefinition is TBocColumnDefinition))
-        throw ArgumentUtility.CreateArgumentTypeException (
-            "renderingContext.ColumnDefinition", renderingContext.ColumnDefinition.GetType(), typeof (TBocColumnDefinition));
+        throw ArgumentUtility.CreateArgumentTypeException(
+            "renderingContext.ColumnDefinition", renderingContext.ColumnDefinition.GetType(), typeof(TBocColumnDefinition));
     }
-    
+
     public new TBocColumnDefinition ColumnDefinition
     {
-      get { return (TBocColumnDefinition) base.ColumnDefinition; }
+      get { return (TBocColumnDefinition)base.ColumnDefinition; }
     }
   }
 }

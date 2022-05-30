@@ -21,11 +21,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   [Instantiable]
   public abstract class SpecialOfficial : Official
   {
-    protected SpecialOfficial()
+    protected SpecialOfficial ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 255)]
+    [StringProperty(IsNullable = false, MaximumLength = 255)]
     public abstract string Speciality { get; set;}
   }
 }

@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
+using Moq;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -24,185 +25,183 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
   public class GetPropertyString_WithList
   {
     private BusinessObjectStringFormatterService _stringFormatterService;
-    private MockRepository _mockRepository;
-    private IBusinessObject _mockBusinessObject;
-    private IBusinessObjectNumericProperty _mockProperty;
-    private IFormattable[] _mockValues;
+    private Mock<IBusinessObject> _mockBusinessObject;
+    private Mock<IBusinessObjectNumericProperty> _mockProperty;
+    private Mock<IFormattable>[]_mockValues;
 
     [SetUp]
     public void SetUp ()
     {
       _stringFormatterService = new BusinessObjectStringFormatterService();
-      _mockRepository = new MockRepository();
-      _mockBusinessObject = _mockRepository.StrictMock<IBusinessObject>();
-      _mockProperty = _mockRepository.StrictMock<IBusinessObjectNumericProperty>();
-      _mockValues = new IFormattable[]
+      _mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
+      _mockProperty = new Mock<IBusinessObjectNumericProperty>(MockBehavior.Strict);
+      _mockValues = new Mock<IFormattable>[]
           {
-              _mockRepository.StrictMock<IFormattable>(),
-              _mockRepository.StrictMock<IFormattable>(),
-              _mockRepository.StrictMock<IFormattable>()
+              new Mock<IFormattable>(MockBehavior.Strict),
+              new Mock<IFormattable>(MockBehavior.Strict),
+              new Mock<IFormattable>(MockBehavior.Strict)
           };
     }
 
     [Test]
     public void List_WithoutLineCount ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString (null, null)).Return ("First");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString(null, null)).Returns("First").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.EqualTo ("First ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First ... [3]"));
     }
 
     [Test]
     public void List_WithoutLineCountHavingFormatString ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString ("TheFormatString", null)).Return ("First");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString("TheFormatString", null)).Returns("First").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "TheFormatString");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "TheFormatString");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First ... [3]"));
     }
 
     [Test]
     public void List_WithLineCountBelowListLength ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString (null, null)).Return ("First");
-      Expect.Call (_mockValues[1].ToString (null, null)).Return ("Second");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString(null, null)).Returns("First").Verifiable();
+      _mockValues[1].Setup(_ => _.ToString(null, null)).Returns("Second").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=2");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=2");
 
-      _mockRepository.VerifyAll();
-      Assert.That (actual, Is.EqualTo ("First\r\nSecond ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
     }
 
     [Test]
     public void List_WithLineCountAboveListLength ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString (null, null)).Return ("First");
-      Expect.Call (_mockValues[1].ToString (null, null)).Return ("Second");
-      Expect.Call (_mockValues[2].ToString (null, null)).Return ("Third");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString(null, null)).Returns("First").Verifiable();
+      _mockValues[1].Setup(_ => _.ToString(null, null)).Returns("Second").Verifiable();
+      _mockValues[2].Setup(_ => _.ToString(null, null)).Returns("Third").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=4");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=4");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First\r\nSecond\r\nThird"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First\r\nSecond\r\nThird"));
     }
 
     [Test]
     public void List_WithLineCountAll ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString (null, null)).Return ("First");
-      Expect.Call (_mockValues[1].ToString (null, null)).Return ("Second");
-      Expect.Call (_mockValues[2].ToString (null, null)).Return ("Third");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString(null, null)).Returns("First").Verifiable();
+      _mockValues[1].Setup(_ => _.ToString(null, null)).Returns("Second").Verifiable();
+      _mockValues[2].Setup(_ => _.ToString(null, null)).Returns("Third").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=all");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=all");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First\r\nSecond\r\nThird"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First\r\nSecond\r\nThird"));
     }
 
     [Test]
     public void List_WithInvalidLineCountHavingNonInteger ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString (null, null)).Return ("First");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString(null, null)).Returns("First").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=X");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=X");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First ... [3]"));
     }
 
     [Test]
     public void List_WithInvalidLineCountHavingMissingNumber ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString (null, null)).Return ("First");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString(null, null)).Returns("First").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First ... [3]"));
     }
 
     [Test]
     public void List_WithLineCountAndFormatString ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString ("TheFormatString", null)).Return ("First");
-      Expect.Call (_mockValues[1].ToString ("TheFormatString", null)).Return ("Second");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString("TheFormatString", null)).Returns("First").Verifiable();
+      _mockValues[1].Setup(_ => _.ToString("TheFormatString", null)).Returns("Second").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=2|TheFormatString");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=2|TheFormatString");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First\r\nSecond ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
     }
 
     [Test]
     public void List_WithLineCountAndOnlySeparator ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString (string.Empty, null)).Return ("First");
-      Expect.Call (_mockValues[1].ToString (string.Empty, null)).Return ("Second");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString(string.Empty, null)).Returns("First").Verifiable();
+      _mockValues[1].Setup(_ => _.ToString(string.Empty, null)).Returns("Second").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=2|");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=2|");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First\r\nSecond ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
     }
 
     [Test]
     public void List_WithLineCountAndFormatStringWithMultipleSeparatorCharacters ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (_mockValues);
-      Expect.Call (_mockValues[0].ToString ("|The|FormatString", null)).Return ("First");
-      Expect.Call (_mockValues[1].ToString ("|The|FormatString", null)).Return ("Second");
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(_mockValues.Select(_ => _.Object).ToArray()).Verifiable();
+      _mockValues[0].Setup(_ => _.ToString("|The|FormatString", null)).Returns("First").Verifiable();
+      _mockValues[1].Setup(_ => _.ToString("|The|FormatString", null)).Returns("Second").Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, "lines=2||The|FormatString");
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, "lines=2||The|FormatString");
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("First\r\nSecond ... [3]"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("First\r\nSecond ... [3]"));
     }
 
     [Test]
     public void List_WithNull ()
     {
-      Expect.Call (_mockProperty.IsList).Return (true);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (null);
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(true).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object)null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.Empty);
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.Empty);
     }
   }
 }

@@ -18,8 +18,6 @@ using System;
 using System.Reflection;
 using Remotion.Validation.Mixins;
 
-[assembly: AssemblyTitle ("re-motion Validation Support for DomainObjects")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Validation and Remotion.Data.DomainObjects assemblies.")]
-[assembly: AssemblyCulture ("")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]
 [assembly: EnsureValidationSupportForMixins]

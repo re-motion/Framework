@@ -31,71 +31,71 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     public SortExpressionParser (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       _classDefinition = classDefinition;
     }
 
-    public SortExpressionDefinition Parse (string sortExpression)
+    public SortExpressionDefinition? Parse (string sortExpression)
     {
-      ArgumentUtility.CheckNotNull ("sortExpression", sortExpression);
+      ArgumentUtility.CheckNotNull("sortExpression", sortExpression);
 
       try
       {
-        var sortedProperties = (from s in sortExpression.Split (',')
+        var sortedProperties = (from s in sortExpression.Split(',')
                                 let specs = s.Trim()
-                                where !string.IsNullOrEmpty (specs)
-                                select ParseSortedPropertySpecification (specs)).ToList();
+                                where !string.IsNullOrEmpty(specs)
+                                select ParseSortedPropertySpecification(specs)).ToList();
         if (sortedProperties.Count == 0)
           return null;
         else
-          return new SortExpressionDefinition (sortedProperties);
+          return new SortExpressionDefinition(sortedProperties);
       }
       catch (MappingException ex)
       {
-        var message = string.Format ("SortExpression '{0}' cannot be parsed: {1}", sortExpression, ex.Message);
-        throw new MappingException (message);
+        var message = string.Format("SortExpression '{0}' cannot be parsed: {1}", sortExpression, ex.Message);
+        throw new MappingException(message);
       }
 
     }
 
     private SortedPropertySpecification ParseSortedPropertySpecification (string sortedPropertySpecification)
     {
-      var splitSpecification = SplitSortedPropertySpecification (sortedPropertySpecification);
+      var splitSpecification = SplitSortedPropertySpecification(sortedPropertySpecification);
 
-      var propertyDefinition = ParsePropertyName (splitSpecification.Item1);
-      var sortOrder = ParseOrderSpecification (splitSpecification.Item2);
+      var propertyDefinition = ParsePropertyName(splitSpecification.Item1);
+      var sortOrder = ParseOrderSpecification(splitSpecification.Item2);
 
-      return new SortedPropertySpecification (propertyDefinition, sortOrder);
+      return new SortedPropertySpecification(propertyDefinition, sortOrder);
     }
 
-    private Tuple<string, string> SplitSortedPropertySpecification (string sortedPropertySpecification)
+    private Tuple<string, string?> SplitSortedPropertySpecification (string sortedPropertySpecification)
     {
-      var parts = sortedPropertySpecification.Split (' ').Where (s => !string.IsNullOrEmpty (s)).ToArray();
+      var parts = sortedPropertySpecification.Split(' ').Where(s => !string.IsNullOrEmpty(s)).ToArray();
 
       if (parts.Length > 2)
       {
-        var message = string.Format ("Expected one or two parts (a property name and an optional identifier), found {0} parts instead.", parts.Length);
-        throw new MappingException (message);
+        var message = string.Format("Expected 1 or 2 parts (a property name and an optional identifier), found {0} parts instead.", parts.Length);
+        throw new MappingException(message);
       }
 
-      return Tuple.Create (parts[0], parts.Length > 1 ? parts[1] : null);
+      return Tuple.Create(parts[0], parts.Length > 1 ? parts[1] : null);
     }
 
-    private SortOrder ParseOrderSpecification (string orderSpecification)
+    private SortOrder ParseOrderSpecification (string? orderSpecification)
     {
       if (orderSpecification == null)
         return SortOrder.Ascending;
 
-      switch (orderSpecification.ToLower ())
+      switch (orderSpecification.ToLower())
       {
         case "asc":
           return SortOrder.Ascending;
         case "desc":
           return SortOrder.Descending;
         default:
-          var message = string.Format ("'{0}' is not a valid sort order. Expected 'asc' or 'desc'.", orderSpecification);
-          throw new MappingException (message);
+          var message = string.Format("'{0}' is not a valid sort order. Expected 'asc' or 'desc'.", orderSpecification);
+          throw new MappingException(message);
       }
     }
 
@@ -104,32 +104,32 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
       // Try as full name first, only if that doesn't match, assume it must be a short name
       // If that still doesn't produce a match, search all derived classes for a full name match. Derived classes are not searched for short names.
       var propertyAccessorData =
-          _classDefinition.PropertyAccessorDataCache.GetPropertyAccessorData (fullOrShortPropertyName)
-          ?? _classDefinition.PropertyAccessorDataCache.FindPropertyAccessorData (_classDefinition.ClassType, fullOrShortPropertyName)
-          ?? GetAllDerivedClassDefinitions (_classDefinition)
-              .Select (cd => cd.PropertyAccessorDataCache.GetPropertyAccessorData (fullOrShortPropertyName))
-              .FirstOrDefault (data => data != null);
+          _classDefinition.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName)
+          ?? _classDefinition.PropertyAccessorDataCache.FindPropertyAccessorData(_classDefinition.ClassType, fullOrShortPropertyName)
+          ?? GetAllDerivedClassDefinitions(_classDefinition)
+              .Select(cd => cd.PropertyAccessorDataCache.GetPropertyAccessorData(fullOrShortPropertyName))
+              .FirstOrDefault(data => data != null);
 
       if (propertyAccessorData == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "'{0}' is not a valid mapped property name. Expected the .NET property name of a property declared by the '{1}' class or its base classes. "
             + "Alternatively, to resolve ambiguities or to use a property declared by a mixin or a derived class of '{1}', the full unique re-store "
             + "property identifier can be specified.",
             fullOrShortPropertyName,
             _classDefinition.ClassType.Name);
-        throw new MappingException (message);
+        throw new MappingException(message);
       }
 
       if (propertyAccessorData.PropertyDefinition == null)
       {
-        Assertion.IsNotNull (propertyAccessorData.RelationEndPointDefinition);
+        Assertion.IsNotNull(propertyAccessorData.RelationEndPointDefinition);
 
-        var message = string.Format (
+        var message = string.Format(
             "The property '{0}' is a virtual relation end point. SortExpressions can only contain relation end points if the object to be sorted "
             + "contains the foreign key.",
             propertyAccessorData.PropertyIdentifier);
-        throw new MappingException (message);
+        throw new MappingException(message);
       }
 
       return propertyAccessorData.PropertyDefinition;
@@ -137,8 +137,8 @@ namespace Remotion.Data.DomainObjects.Mapping.SortExpressions
 
     private IEnumerable<ClassDefinition> GetAllDerivedClassDefinitions (ClassDefinition baseClassDefinition)
     {
-      var directlyDerived = baseClassDefinition.DerivedClasses.Cast<ClassDefinition> ();
-      return directlyDerived.Concat (directlyDerived.SelectMany (cd => GetAllDerivedClassDefinitions (cd)));
+      var directlyDerived = baseClassDefinition.DerivedClasses.Cast<ClassDefinition>();
+      return directlyDerived.Concat(directlyDerived.SelectMany(cd => GetAllDerivedClassDefinitions(cd)));
     }
   }
 }

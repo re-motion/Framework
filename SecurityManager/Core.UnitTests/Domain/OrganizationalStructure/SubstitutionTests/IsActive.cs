@@ -16,8 +16,8 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Threading;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.SubstitutionTests
@@ -37,8 +37,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     [Test]
     public void EvaluatesFalse_BeforeCommit ()
     {
-      Assert.That (_substitution.State, Is.Not.EqualTo (StateType.Unchanged));
-      Assert.That (_substitution.IsActive, Is.False);
+      Assert.That(_substitution.State.IsUnchanged, Is.False);
+      Assert.That(_substitution.IsActive, Is.False);
     }
 
     [Test]
@@ -46,79 +46,95 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Subs
     {
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.True);
+      Assert.That(_substitution.IsActive, Is.True);
     }
 
     [Test]
-    public void WithIsEnabledFalse_WithoutTimeSpan()
+    public void WithIsEnabledFalse_WithoutTimeSpan ()
     {
       _substitution.IsEnabled = false;
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.False);
+      Assert.That(_substitution.IsActive, Is.False);
     }
 
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithBeginDateLessThanCurrentDate ()
     {
-      _substitution.BeginDate = DateTime.Today.AddDays (-2);
+      _substitution.BeginDate = DateTime.Today.AddDays(-2);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.True);
+      Assert.That(_substitution.IsActive, Is.True);
     }
 
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithBeginDateSameAsCurrentDate ()
     {
+      // Guard midnight
+      if (DateTime.Now.AddSeconds(10).Date != DateTime.Now.Date)
+        Thread.Sleep(TimeSpan.FromSeconds(10));
+
       _substitution.BeginDate = DateTime.Today;
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.True);
+      Assert.That(_substitution.IsActive, Is.True);
     }
 
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithBeginDateSameAsCurrentDateButGreaterTime ()
     {
-      _substitution.BeginDate = DateTime.Now.AddMinutes (1);
+      // Guard midnight
+      if (DateTime.Now.AddMinutes(1).Date != DateTime.Now.Date)
+        Thread.Sleep(TimeSpan.FromMinutes(2));
+
+      _substitution.BeginDate = DateTime.Now.AddMinutes(1);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.True);
+      Assert.That(_substitution.IsActive, Is.True);
     }
 
     [Test]
-    public void EvaluatesFalse_WithIsEnabledTrue_WithBeginDateGreaterThanCurrentDate()
+    public void EvaluatesFalse_WithIsEnabledTrue_WithBeginDateGreaterThanCurrentDate ()
     {
-      _substitution.BeginDate = DateTime.Today.AddDays (+2);
+      _substitution.BeginDate = DateTime.Today.AddDays(+2);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.False);
+      Assert.That(_substitution.IsActive, Is.False);
     }
 
     [Test]
     public void EvaluatesTrue_WithIsEnabledTrue_WithEndDateSameAsCurrentDate ()
     {
+      // Guard midnight
+      if (DateTime.Now.AddSeconds(10).Date != DateTime.Now.Date)
+        Thread.Sleep(TimeSpan.FromSeconds(10));
+
       _substitution.EndDate = DateTime.Today;
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.True);
+      Assert.That(_substitution.IsActive, Is.True);
     }
 
     [Test]
-    public void EvaluatesTrue_WithIsEnabledTrue_WithEndDateSameAsCurrentDateButLessTime()
+    public void EvaluatesTrue_WithIsEnabledTrue_WithEndDateSameAsCurrentDateButLessTime ()
     {
-      _substitution.EndDate = DateTime.Now.AddMinutes (-1);
+      // Guard midnight
+      if (DateTime.Now.AddMinutes(-1).Date != DateTime.Now.Date)
+        Thread.Sleep(TimeSpan.FromMinutes(2));
+
+      _substitution.EndDate = DateTime.Now.AddMinutes(-1);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.True);
+      Assert.That(_substitution.IsActive, Is.True);
     }
 
     [Test]
-    public void EvaluatesFalse_WithIsEnabledTrue_WithEndDateLessThanCurrentDate()
+    public void EvaluatesFalse_WithIsEnabledTrue_WithEndDateLessThanCurrentDate ()
     {
-      _substitution.EndDate = DateTime.Today.AddDays (-2);
+      _substitution.EndDate = DateTime.Today.AddDays(-2);
       TestHelper.Transaction.CreateSubTransaction().EnterDiscardingScope();
 
-      Assert.That (_substitution.IsActive, Is.False);
+      Assert.That(_substitution.IsActive, Is.False);
     }
   }
 }

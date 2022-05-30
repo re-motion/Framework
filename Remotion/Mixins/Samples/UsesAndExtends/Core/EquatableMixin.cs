@@ -25,9 +25,9 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
   {
     private static readonly FieldInfo[] s_targetFields;
 
-    static EquatableMixin()
+    static EquatableMixin ()
     {
-      s_targetFields = typeof (T).GetFields (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+      s_targetFields = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
     }
 
     bool IEquatable<T>.Equals (T other)
@@ -37,10 +37,10 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
 
       for (int i = 0; i < s_targetFields.Length; i++)
       {
-        object thisFieldValue = s_targetFields[i].GetValue (Target);
-        object otherFieldValue = s_targetFields[i].GetValue (other);
-        
-        if (!Equals (thisFieldValue, otherFieldValue))
+        object thisFieldValue = s_targetFields[i].GetValue(Target);
+        object otherFieldValue = s_targetFields[i].GetValue(other);
+
+        if (!Equals(thisFieldValue, otherFieldValue))
           return false;
       }
 
@@ -50,7 +50,7 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
     [OverrideTarget]
     protected new bool Equals (object other)
     {
-      return ((IEquatable<T>)this).Equals (other as T);
+      return ((IEquatable<T>)this).Equals(other as T);
     }
 
     [OverrideTarget]
@@ -58,9 +58,9 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
     {
       var fieldValues = new object[s_targetFields.Length];
       for (int i = 0; i < fieldValues.Length; ++i)
-        fieldValues[i] = s_targetFields[i].GetValue (Target);
-      
-      return EqualityUtility.GetRotatedHashCode (fieldValues);
+        fieldValues[i] = s_targetFields[i].GetValue(Target);
+
+      return EqualityUtility.GetRotatedHashCode(fieldValues);
     }
   }
 }

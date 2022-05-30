@@ -35,15 +35,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
     private List<DataContainer> _unloadedDataContainers = new List<DataContainer>();
 
     public UnloadAllCommand (
-        IRelationEndPointManager relationEndPointManager, 
-        DataContainerMap dataContainerMap, 
+        IRelationEndPointManager relationEndPointManager,
+        DataContainerMap dataContainerMap,
         IInvalidDomainObjectManager invalidDomainObjectManager,
         IClientTransactionEventSink transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointManager", relationEndPointManager);
-      ArgumentUtility.CheckNotNull ("dataContainerMap", dataContainerMap);
-      ArgumentUtility.CheckNotNull ("invalidDomainObjectManager", invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink);
+      ArgumentUtility.CheckNotNull("relationEndPointManager", relationEndPointManager);
+      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
+      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull("transactionEventSink", transactionEventSink);
 
       _relationEndPointManager = relationEndPointManager;
       _dataContainerMap = dataContainerMap;
@@ -78,7 +78,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void Begin ()
     {
-      RaiseRecurringBeginEvent (domainObjects => _transactionEventSink.RaiseObjectsUnloadingEvent (domainObjects));
+      RaiseRecurringBeginEvent(domainObjects => _transactionEventSink.RaiseObjectsUnloadingEvent(domainObjects));
     }
 
     public void Perform ()
@@ -89,46 +89,46 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
       _unloadedDataContainers = _dataContainerMap.ToList();
       foreach (var dataContainer in _unloadedDataContainers)
       {
-        _dataContainerMap.Remove (dataContainer.ID);
+        _dataContainerMap.Remove(dataContainer.ID);
 
         var dataContainerState = dataContainer.State;
         dataContainer.Discard();
-        if (dataContainerState == StateType.New)
-          _invalidDomainObjectManager.MarkInvalid (dataContainer.DomainObject);
+        if (dataContainerState.IsNew)
+          _invalidDomainObjectManager.MarkInvalid(dataContainer.DomainObject);
       }
 
-      Assertion.IsTrue (_dataContainerMap.Count == 0);
+      Assertion.IsTrue(_dataContainerMap.Count == 0);
     }
 
     public void End ()
     {
       if (_unloadedDataContainers.Count > 0)
-        _transactionEventSink.RaiseObjectsUnloadedEvent (_unloadedDataContainers.Select (dc => dc.DomainObject).ToList().AsReadOnly());
+        _transactionEventSink.RaiseObjectsUnloadedEvent(_unloadedDataContainers.Select(dc => dc.DomainObject).ToList().AsReadOnly());
     }
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
 
     private void RaiseRecurringBeginEvent (Action<ReadOnlyCollection<DomainObject>> eventAction)
     {
-      var loadedObjectsEventRaised = new HashSet<DomainObject> ();
+      var loadedObjectsEventRaised = new HashSet<DomainObject>();
       ReadOnlyCollection<DomainObject> loadedObjectsEventNotRaised;
-      while ((loadedObjectsEventNotRaised = GetLoadedObjectsEventNotRaised (loadedObjectsEventRaised)).Count > 0)
+      while ((loadedObjectsEventNotRaised = GetLoadedObjectsEventNotRaised(loadedObjectsEventRaised)).Count > 0)
       {
-        eventAction (loadedObjectsEventNotRaised);
-        loadedObjectsEventRaised.UnionWith (loadedObjectsEventNotRaised);
+        eventAction(loadedObjectsEventNotRaised);
+        loadedObjectsEventRaised.UnionWith(loadedObjectsEventNotRaised);
       }
     }
 
     private ReadOnlyCollection<DomainObject> GetLoadedObjectsEventNotRaised (HashSet<DomainObject> loadedObjectsEventRaised)
     {
       return _dataContainerMap
-          .Select (dc => dc.DomainObject)
-          .Where (obj => !loadedObjectsEventRaised.Contains (obj))
-          .ToList ()
-          .AsReadOnly ();
+          .Select(dc => dc.DomainObject)
+          .Where(obj => !loadedObjectsEventRaised.Contains(obj))
+          .ToList()
+          .AsReadOnly();
     }
   }
 }

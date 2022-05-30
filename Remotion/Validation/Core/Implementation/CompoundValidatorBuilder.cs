@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentValidation;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Validation.Implementation
@@ -26,14 +26,15 @@ namespace Remotion.Validation.Implementation
   /// Implements the <see cref="IValidatorBuilder"/> interface as a composite of one or more builders.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor(typeof(IValidatorBuilder), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundValidatorBuilder : IValidatorBuilder
   {
     private readonly IReadOnlyCollection<IValidatorBuilder> _builders;
 
     public CompoundValidatorBuilder (IEnumerable<IValidatorBuilder> builders)
     {
-      ArgumentUtility.CheckNotNull ("builders", builders);
-      
+      ArgumentUtility.CheckNotNull("builders", builders);
+
       _builders = builders.ToList().AsReadOnly();
     }
 
@@ -44,10 +45,10 @@ namespace Remotion.Validation.Implementation
 
     public IValidator BuildValidator (Type validatedType)
     {
-      ArgumentUtility.CheckNotNull ("validatedType", validatedType);
+      ArgumentUtility.CheckNotNull("validatedType", validatedType);
 
-      var validators = _builders.Select (b => b.BuildValidator (validatedType));
-      return new CompoundValidator (validators, validatedType);
+      var validators = _builders.Select(b => b.BuildValidator(validatedType));
+      return new CompoundValidator(validators, validatedType);
     }
   }
 }

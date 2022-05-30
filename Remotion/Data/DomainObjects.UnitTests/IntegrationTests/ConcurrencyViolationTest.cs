@@ -27,22 +27,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void ConcurrencyViolationException_WhenSomebodyElseModifiesData ()
     {
-      SetDatabaseModifyable();
-
-      var computer = DomainObjectIDs.Computer1.GetObject<Computer> ();
+      var computer = DomainObjectIDs.Computer1.GetObject<Computer>();
       computer.SerialNumber = "100";
 
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var computerInOtherTransaction = DomainObjectIDs.Computer1.GetObject<Computer> ();
+        var computerInOtherTransaction = DomainObjectIDs.Computer1.GetObject<Computer>();
         computerInOtherTransaction.SerialNumber = "200";
-        ClientTransaction.Current.Commit ();
+        ClientTransaction.Current.Commit();
       }
 
       try
       {
-        TestableClientTransaction.Commit ();
-        Assert.Fail ("Expected ConcurrencyViolationException");
+        TestableClientTransaction.Commit();
+        Assert.Fail("Expected ConcurrencyViolationException");
       }
       catch (ConcurrencyViolationException)
       {
@@ -53,22 +51,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     [Test]
     public void ConcurrencyViolationException_WhenSomebodyElseRegistersForCommit ()
     {
-      SetDatabaseModifyable ();
+      var computer = DomainObjectIDs.Computer1.GetObject<Computer>();
+      computer.RegisterForCommit();
 
-      var computer = DomainObjectIDs.Computer1.GetObject<Computer> ();
-      computer.RegisterForCommit ();
-
-      using (ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ())
+      using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
-        var computerInOtherTransaction = DomainObjectIDs.Computer1.GetObject<Computer> ();
-        computerInOtherTransaction.RegisterForCommit ();
-        ClientTransaction.Current.Commit ();
+        var computerInOtherTransaction = DomainObjectIDs.Computer1.GetObject<Computer>();
+        computerInOtherTransaction.RegisterForCommit();
+        ClientTransaction.Current.Commit();
       }
 
       try
       {
-        TestableClientTransaction.Commit ();
-        Assert.Fail ("Expected ConcurrencyViolationException");
+        TestableClientTransaction.Commit();
+        Assert.Fail("Expected ConcurrencyViolationException");
       }
       catch (ConcurrencyViolationException)
       {

@@ -31,78 +31,74 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   public class BocTreeViewControlObject
       : BocControlObject,
           IControlObjectWithNodes<BocTreeViewNodeControlObject>,
-          IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>,
-          ISupportsValidationErrors
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
   {
     private readonly BocTreeViewNodeControlObject _metaRootNode;
 
     public BocTreeViewControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
-      _metaRootNode = new BocTreeViewNodeControlObject (context);
+      _metaRootNode = new BocTreeViewNodeControlObject(context);
     }
 
     /// <summary>
-    /// Returns the tree's root node.
+    /// Returns the tree's first root node.
     /// </summary>
+    [Obsolete("This method is equivalent to .GetNode().WithIndex (1), which should be used instead. (Version 3.0.0-alpha.14)", false)]
     public BocTreeViewNodeControlObject GetRootNode ()
     {
-      return _metaRootNode.GetNode().WithIndex (1);
+      return _metaRootNode.GetNode().WithIndex(1);
     }
 
     /// <inheritdoc/>
     public IFluentControlObjectWithNodes<BocTreeViewNodeControlObject> GetNode ()
     {
-      return this;
+      return _metaRootNode.GetNode();
     }
 
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNode (string itemID)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
-      return GetNode().WithItemID (itemID);
+      return GetNode().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
     public BocTreeViewNodeControlObject GetNode (int oneBasedIndex)
     {
-      return GetNode().WithIndex (oneBasedIndex);
+      return GetNode().WithIndex(oneBasedIndex);
     }
 
     /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithItemID (string itemID)
+    public IFluentControlObjectWithNodes<BocTreeViewNodeControlObject> GetNodeInHierarchy ()
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
-
-      return _metaRootNode.GetNode (itemID);
+      return _metaRootNode.GetNodeInHierarchy();
     }
 
     /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithIndex (int oneBasedIndex)
+    public BocTreeViewNodeControlObject GetNodeInHierarchy (string itemID)
     {
-      return _metaRootNode.GetNode().WithIndex (oneBasedIndex);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
+
+      return GetNodeInHierarchy().WithItemID(itemID);
     }
 
     /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithDisplayText (string displayText)
+    public BocTreeViewNodeControlObject GetNodeInHierarchy (int oneBasedIndex)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
-
-      return _metaRootNode.GetNode().WithDisplayText (displayText);
-    }
-
-    /// <inheritdoc/>
-    BocTreeViewNodeControlObject IFluentControlObjectWithNodes<BocTreeViewNodeControlObject>.WithDisplayTextContains (string containsDisplayText)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("containsDisplayText", containsDisplayText);
-
-      return _metaRootNode.GetNode().WithDisplayTextContains (containsDisplayText);
+      return GetNodeInHierarchy().WithIndex(oneBasedIndex);
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (GetScopeWithReferenceInformation());
+      return GetValidationErrors(GetScopeWithReferenceInformation());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly(GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -112,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetScopeWithReferenceInformation ()
     {
-      return GetRootNode().Scope.FindXPath ("..");
+      return GetNode().WithIndex(1).Scope.FindXPath("..");
     }
   }
 }

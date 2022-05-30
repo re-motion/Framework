@@ -26,27 +26,22 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Ge
   {
     private const int c_parameterCount = 1;
 
-    private string _foundControlID;
-
-    public FirstGenericTestPageParameter ()
-        : base (TestConstants.FirstSelectorID, c_parameterCount)
-    {
-    }
-
     /// <summary>
     /// HTML id of the first control.
     /// </summary>
-    public string FoundControlID
+    public string FoundControlID { get; private set; }
+
+    public FirstGenericTestPageParameter ()
+        : base(TestConstants.FirstSelectorID, c_parameterCount)
     {
-      get { return _foundControlID; }
     }
 
     /// <inheritdoc />
     public override void Apply (GenericTestPageParameter data)
     {
-      base.Apply (data);
+      base.Apply(data);
 
-      _foundControlID = data[0];
+      FoundControlID = data.Arguments[0];
     }
   }
 }

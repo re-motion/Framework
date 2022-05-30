@@ -26,6 +26,6 @@ namespace Remotion.Utilities
   public interface ITypeConverterFactory
   {
     [CanBeNull]
-    TypeConverter CreateTypeConverterOrDefault ([NotNull]Type type);
+    TypeConverter? CreateTypeConverterOrDefault ([NotNull]Type type);
   }
 }

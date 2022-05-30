@@ -32,7 +32,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
 
     public QueryResultRowReader (IStorageTypeInformationProvider storageTypeInformationProvider)
     {
-      ArgumentUtility.CheckNotNull ("storageTypeInformationProvider", storageTypeInformationProvider);
+      ArgumentUtility.CheckNotNull("storageTypeInformationProvider", storageTypeInformationProvider);
 
       _storageTypeInformationProvider = storageTypeInformationProvider;
     }
@@ -42,29 +42,29 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _storageTypeInformationProvider; }
     }
 
-    public IQueryResultRow Read (IDataReader dataReader)
+    public IQueryResultRow? Read (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       if (dataReader.Read())
-        return CreateResultRowFromReader (dataReader);
+        return CreateResultRowFromReader(dataReader);
       else
         return null;
     }
 
     public IEnumerable<IQueryResultRow> ReadSequence (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       while (dataReader.Read())
-        yield return CreateResultRowFromReader (dataReader);
+        yield return CreateResultRowFromReader(dataReader);
     }
 
     protected virtual IQueryResultRow CreateResultRowFromReader (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      return new QueryResultRow (dataReader, _storageTypeInformationProvider);
+      return new QueryResultRow(dataReader, _storageTypeInformationProvider);
     }
   }
 }

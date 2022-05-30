@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context.FluentBuilders;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core
 {
@@ -27,17 +27,20 @@ namespace Remotion.Mixins.UnitTests.Core
     [Test]
     public void Apply ()
     {
-      var attribute = new AdditionalMixinDependencyAttribute (typeof (string), typeof (int), typeof (double));
+      var attribute = new AdditionalMixinDependencyAttribute(typeof(string), typeof(int), typeof(double));
 
-      var configurationBuilderStub = MockRepository.GenerateStub<MixinConfigurationBuilder> (new object[] { null });
-      var classContextBuilderMock = MockRepository.GenerateStrictMock<ClassContextBuilder> (typeof (string));
-      
-      configurationBuilderStub.Stub (stub => stub.ForClass (typeof (string))).Return (classContextBuilderMock);
-      classContextBuilderMock.Expect (mock => mock.AddMixinDependency (typeof (int), typeof (double))).Return (classContextBuilderMock);
+      var configurationBuilderStub = new Mock<MixinConfigurationBuilder>(new object[] { null });
+      var classContextBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, typeof(string));
 
-      attribute.Apply (configurationBuilderStub, GetType().Assembly);
+      configurationBuilderStub.Setup(stub => stub.ForClass(typeof(string))).Returns(classContextBuilderMock.Object);
+      classContextBuilderMock
+          .Setup(mock => mock.AddMixinDependency(typeof(int), typeof(double)))
+          .Returns(classContextBuilderMock.Object)
+          .Verifiable();
 
-      classContextBuilderMock.VerifyAllExpectations();
-    } 
+      attribute.Apply(configurationBuilderStub.Object, GetType().Assembly);
+
+      classContextBuilderMock.Verify();
+    }
   }
 }

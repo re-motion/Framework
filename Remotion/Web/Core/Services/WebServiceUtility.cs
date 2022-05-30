@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Script.Services;
 using System.Web.Services;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Web.Services
@@ -30,11 +31,11 @@ namespace Remotion.Web.Services
   /// </summary>
   public static class WebServiceUtility
   {
-    private static readonly ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute> s_attributeCache =
-        new ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute>();
+    private static readonly ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute?> s_attributeCache =
+        new ConcurrentDictionary<Tuple<MemberInfo, Type>, Attribute?>();
 
-    private static readonly ConcurrentDictionary<Tuple<Type, string>, MethodInfo> s_methodInfoCache =
-        new ConcurrentDictionary<Tuple<Type, string>, MethodInfo>();
+    private static readonly ConcurrentDictionary<Tuple<Type, string>, MethodInfo?> s_methodInfoCache =
+        new ConcurrentDictionary<Tuple<Type, string>, MethodInfo?>();
 
     /// <summary>
     /// Checks that <paramref name="type"/> and <paramref name="method"/> declare a valid web service.
@@ -46,13 +47,13 @@ namespace Remotion.Web.Services
     /// </exception>
     public static void CheckWebService (Type type, string method)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty ("method", method);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty("method", method);
 
-      CheckType (type);
-      GetCheckedAttribute<WebServiceAttribute> (type);
-      var methodinfo = GetCheckedMethodInfo (type, method);
-      GetCheckedAttribute<WebMethodAttribute> (type, methodinfo);
+      CheckType(type);
+      GetCheckedAttribute<WebServiceAttribute>(type);
+      var methodinfo = GetCheckedMethodInfo(type, method);
+      GetCheckedAttribute<WebMethodAttribute>(type, methodinfo);
     }
 
     /// <summary>
@@ -65,14 +66,14 @@ namespace Remotion.Web.Services
     /// </exception>
     public static void CheckScriptService (Type type, string method)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty ("method", method);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty("method", method);
 
-      CheckWebService (type, method);
+      CheckWebService(type, method);
 
-      GetCheckedAttribute<ScriptServiceAttribute> (type);
-      var methodInfo = GetCheckedMethodInfo (type, method);
-      GetCheckedAttribute<ScriptMethodAttribute> (type, methodInfo);
+      GetCheckedAttribute<ScriptServiceAttribute>(type);
+      var methodInfo = GetCheckedMethodInfo(type, method);
+      GetCheckedAttribute<ScriptMethodAttribute>(type, methodInfo);
     }
 
     /// <summary>
@@ -86,44 +87,44 @@ namespace Remotion.Web.Services
     /// </exception>
     public static void CheckJsonService (Type type, string method, IReadOnlyCollection<string> parameters)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty ("method", method);
-      ArgumentUtility.CheckNotNull ("parameters", parameters);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty("method", method);
+      ArgumentUtility.CheckNotNull("parameters", parameters);
 
-      CheckScriptService (type, method);
+      CheckScriptService(type, method);
 
-      var methodInfo = GetCheckedMethodInfo (type, method);
-      var scriptMethodAttribute = GetCheckedAttribute<ScriptMethodAttribute> (type, methodInfo);
+      var methodInfo = GetCheckedMethodInfo(type, method);
+      var scriptMethodAttribute = GetCheckedAttribute<ScriptMethodAttribute>(type, methodInfo);
       if (scriptMethodAttribute.ResponseFormat != ResponseFormat.Json)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "Web method '{0}' on web service type '{1}' does not have the ResponseFormat property of the {2} set to Json.",
             method,
-            type.FullName,
-            typeof (ScriptMethodAttribute).Name);
+            type.GetFullNameSafe(),
+            typeof(ScriptMethodAttribute).Name);
       }
-      CheckParameters (type, methodInfo, parameters);
+      CheckParameters(type, methodInfo, parameters);
     }
 
     private static void CheckType (Type type)
     {
-      if (!typeof (WebService).IsAssignableFrom (type))
-        throw CreateArgumentException ("Web service type '{0}' does not derive from '{1}'.", type.FullName, typeof (WebService).FullName);
+      if (!typeof(WebService).IsAssignableFrom(type))
+        throw CreateArgumentException("Web service type '{0}' does not derive from '{1}'.", type.GetFullNameSafe(), typeof(WebService).GetFullNameSafe());
     }
 
     private static MethodInfo GetCheckedMethodInfo (Type type, string method)
     {
       // C# compiler 7.2 already provides caching for anonymous method.
-      var methodInfo = s_methodInfoCache.GetOrAdd (
-          Tuple.Create (type, method),
-          key => key.Item1.GetMethod (key.Item2, BindingFlags.Instance | BindingFlags.Public));
+      var methodInfo = s_methodInfoCache.GetOrAdd(
+          Tuple.Create(type, method),
+          key => key.Item1.GetMethod(key.Item2, BindingFlags.Instance | BindingFlags.Public));
 
       if (methodInfo == null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "Web method '{0}' was not found on the public API of web service type '{1}'.",
             method,
-            type.FullName);
+            type.GetFullNameSafe());
       }
       return methodInfo;
     }
@@ -131,13 +132,13 @@ namespace Remotion.Web.Services
     private static T GetCheckedAttribute<T> (Type type)
         where T: Attribute
     {
-      var attribute = GetAttributeFromCache<T> (type);
+      var attribute = GetAttributeFromCache<T>(type);
       if (attribute == null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "Web service type '{0}' does not have the '{1}' applied.",
-            type.FullName,
-            typeof (T).FullName);
+            type.GetFullNameSafe(),
+            typeof(T).GetFullNameSafe());
       }
       return attribute;
     }
@@ -145,57 +146,57 @@ namespace Remotion.Web.Services
     private static T GetCheckedAttribute<T> (Type type, MethodInfo methodInfo)
         where T: Attribute
     {
-      var attribute = GetAttributeFromCache<T> (methodInfo);
+      var attribute = GetAttributeFromCache<T>(methodInfo);
       if (attribute == null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "Web method '{0}' on web service type '{1}' does not have the '{2}' applied.",
             methodInfo.Name,
-            type.FullName,
-            typeof (T).FullName);
+            type.GetFullNameSafe(),
+            typeof(T).GetFullNameSafe());
       }
       return attribute;
     }
 
     private static void CheckParameters (Type type, MethodInfo methodInfo, IReadOnlyCollection<string> expectedParameters)
     {
-      var actualParameters = methodInfo.GetParameters().Select (pi => pi.Name).ToArray();
-      var missingParameters = expectedParameters.Except (actualParameters);
-      var unexpectedParameters = actualParameters.Except (expectedParameters);
+      var actualParameters = methodInfo.GetParameters().Select(pi => pi.Name).ToArray();
+      var missingParameters = expectedParameters.Except(actualParameters);
+      var unexpectedParameters = actualParameters.Except(expectedParameters);
 
       var firstMissingParameter = missingParameters.FirstOrDefault();
       if (firstMissingParameter != null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "Web method '{0}' on web service type '{1}' does not declare the required parameter '{2}'. Parameters are matched by name and case.",
             methodInfo.Name,
-            type.FullName,
+            type.GetFullNameSafe(),
             firstMissingParameter);
       }
 
       var firstUnexpectedParameter = unexpectedParameters.FirstOrDefault();
       if (firstUnexpectedParameter != null)
       {
-        throw CreateArgumentException (
+        throw CreateArgumentException(
             "Web method '{0}' on web service type '{1}' has unexpected parameter '{2}'.",
             methodInfo.Name,
-            type.FullName,
+            type.GetFullNameSafe(),
             firstUnexpectedParameter);
       }
     }
 
-    private static T GetAttributeFromCache<T> (MemberInfo memberInfo)
+    private static T? GetAttributeFromCache<T> (MemberInfo memberInfo)
         where T: Attribute
     {
       // C# compiler 7.2 already provides caching for anonymous method.
-      return (T) s_attributeCache.GetOrAdd (
-          Tuple.Create (memberInfo, typeof (T)),
-          key => AttributeUtility.GetCustomAttribute<T> (key.Item1, true));
+      return (T?)s_attributeCache.GetOrAdd(
+          Tuple.Create(memberInfo, typeof(T)),
+          key => AttributeUtility.GetCustomAttribute<T>(key.Item1, true));
     }
 
     private static ArgumentException CreateArgumentException (string message, params object[] args)
     {
-      return new ArgumentException (string.Format (message, args));
+      return new ArgumentException(string.Format(message, args));
     }
   }
 }

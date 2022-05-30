@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
@@ -26,37 +27,37 @@ public class SingleControlItemCollection
   : ICollection // For Designer Support. (VS2003, VS2005)
 {
   private readonly Type[] _supportedTypes;
-  private IControlItem _controlItem;
-  private IControl _ownerControl;
+  private IControlItem? _controlItem;
+  private IControl? _ownerControl;
 
   /// <summary> Creates a new instance. </summary>
   /// <param name="controlItem">The <see cref="IControlItem"/> to be stored in this instance.</param>
   /// <param name="supportedTypes"> Supported types must implement <see cref="IControlItem"/>. </param>
-  public SingleControlItemCollection (IControlItem controlItem, Type[] supportedTypes)
+  public SingleControlItemCollection (IControlItem? controlItem, Type[] supportedTypes)
   {
     _supportedTypes = supportedTypes;
     ControlItem = controlItem;
   }
 
   public SingleControlItemCollection (Type[] supportedTypes)
-    : this (null, supportedTypes)
+    : this(null, supportedTypes)
   {
   }
 
-  public IControlItem ControlItem
+  public IControlItem? ControlItem
   {
     get { return _controlItem; }
-    set 
+    set
     {
-      if (value != null && ! IsSupportedType (value)) 
-        throw ArgumentUtility.CreateArgumentTypeException ("value", value.GetType(), null);
+      if (value != null && ! IsSupportedType(value))
+        throw ArgumentUtility.CreateArgumentTypeException("value", value.GetType(), null);
       _controlItem = value;
       if (_controlItem != null)
         _controlItem.OwnerControl = _ownerControl;
     }
   }
 
-  public IControl OwnerControl
+  public IControl? OwnerControl
   {
     get { return _ownerControl; }
     set
@@ -74,16 +75,16 @@ public class SingleControlItemCollection
 
     foreach (Type type in _supportedTypes)
     {
-      if (type.IsAssignableFrom (controlItemType))
+      if (type.IsAssignableFrom(controlItemType))
         return true;
     }
-    
+
     return false;
   }
 
-  IEnumerator IEnumerable.GetEnumerator()
+  IEnumerator IEnumerable.GetEnumerator ()
   {
-     return new SingleControlItemCollectionEnumerator (_controlItem);
+     return new SingleControlItemCollectionEnumerator(_controlItem);
   }
 
   void ICollection.CopyTo (Array array, int index)
@@ -91,41 +92,41 @@ public class SingleControlItemCollection
     throw new NotSupportedException();
   }
 
-  int ICollection.Count 
+  int ICollection.Count
   {
     get { return 1; }
   }
 
-  bool ICollection.IsSynchronized 
-  { 
+  bool ICollection.IsSynchronized
+  {
     get { return true; }
   }
 
   object ICollection.SyncRoot
-  { 
+  {
     get { return this; }
   }
 
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public IControlItem this[int index]
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  public IControlItem? this[int index]
   {
 	  get
 	  {
-      if (index > 0) throw new NotSupportedException ("Getting an element above index 0 is not implemented.");
+      if (index > 0) throw new NotSupportedException("Getting an element above index 0 is not implemented.");
       return ControlItem;
 	  }
 	  set
 	  {
-      if (index > 0) throw new NotSupportedException ("Setting an element above index 0 is not implemented.");
+      if (index > 0) throw new NotSupportedException("Setting an element above index 0 is not implemented.");
       ControlItem = value;
 	  }
   }
 
   /// <summary> For Designer Support. (VS2003, VS2005) </summary>
   /// <exclude/>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public int Add (IControlItem value)
   {
     ControlItem = value;
@@ -135,34 +136,34 @@ public class SingleControlItemCollection
 
 public class SingleControlItemCollectionEnumerator: IEnumerator
 {
-  private readonly IControlItem _controlItem;
+  private readonly IControlItem? _controlItem;
   bool _isMoved;
   bool _isEnd;
 
-  internal SingleControlItemCollectionEnumerator (IControlItem controlItem)
+  internal SingleControlItemCollectionEnumerator (IControlItem? controlItem)
   {
     _controlItem = controlItem;
     _isMoved = false;
     _isEnd = false;
   }
 
-  public void Reset()
+  public void Reset ()
   {
     _isMoved = false;
     _isEnd = false;
   }
 
-  public object Current
+  public object? Current
   {
     get
     {
-      if (! _isMoved) throw new InvalidOperationException ("The enumerator is positioned before the first element.");
-      if (_isEnd) throw new InvalidOperationException ("The enumerator is positioned after the last element.");
+      if (! _isMoved) throw new InvalidOperationException("The enumerator is positioned before the first element.");
+      if (_isEnd) throw new InvalidOperationException("The enumerator is positioned after the last element.");
       return _controlItem;
     }
   }
 
-  public bool MoveNext()
+  public bool MoveNext ()
   {
     if (_isMoved)
       _isEnd = true;

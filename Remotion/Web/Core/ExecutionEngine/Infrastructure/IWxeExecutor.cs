@@ -24,7 +24,7 @@ namespace Remotion.Web.ExecutionEngine.Infrastructure
   {
     void ExecuteFunction (
         [NotNull] WxeFunction function,
-        [CanBeNull] Control sender,
+        [CanBeNull] Control? sender,
         [NotNull] WxeCallOptions options);
 
     void ExecuteFunctionNoRepost (

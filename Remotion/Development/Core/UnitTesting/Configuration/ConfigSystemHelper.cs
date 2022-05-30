@@ -34,46 +34,46 @@ namespace Remotion.Development.UnitTesting.Configuration
   /// </remarks>
   public class ConfigSystemHelper
   {
-    private Enum _notStarted;
-    private Enum _usable;
-    private FakeInternalConfigSystem _fakeConfigSystem;
-    private ConnectionStringsSection _connectionStringsSection = new ConnectionStringsSection ();
+    private Enum? _notStarted;
+    private Enum? _usable;
+    private FakeInternalConfigSystem? _fakeConfigSystem;
+    private ConnectionStringsSection _connectionStringsSection = new ConnectionStringsSection();
     private NameValueCollection _appSettings = new NameValueCollection();
 
-    public void SetUpConfigSystem()
+    public void SetUpConfigSystem ()
     {
-      Type initStateType = typeof (ConfigurationElement).Assembly.GetType ("System.Configuration.ConfigurationManager+InitState", true, false);
-      _notStarted = (Enum) Enum.Parse (initStateType, "NotStarted");
-      _usable = (Enum) Enum.Parse (initStateType, "Usable");
+      Type initStateType = typeof(ConfigurationElement).Assembly.GetType("System.Configuration.ConfigurationManager+InitState", true, false)!;
+      _notStarted = (Enum)Enum.Parse(initStateType, "NotStarted");
+      _usable = (Enum)Enum.Parse(initStateType, "Usable");
 
       _fakeConfigSystem = new FakeInternalConfigSystem();
-      PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", _fakeConfigSystem);
-      PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_initState", _usable);
+      PrivateInvoke.SetNonPublicStaticField(typeof(ConfigurationManager), "s_configSystem", _fakeConfigSystem);
+      PrivateInvoke.SetNonPublicStaticField(typeof(ConfigurationManager), "s_initState", _usable);
 
-      _fakeConfigSystem.AddSection ("connectionStrings", _connectionStringsSection);
-      _fakeConfigSystem.AddSection ("appSettings", _appSettings);
+      _fakeConfigSystem.AddSection("connectionStrings", _connectionStringsSection);
+      _fakeConfigSystem.AddSection("appSettings", _appSettings);
     }
 
     public void SetUpConnectionString (string name, string connectionString, string providerName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
-      
-      _connectionStringsSection.ConnectionStrings.Add (new ConnectionStringSettings (name, connectionString, providerName));
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
+
+      _connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings(name, connectionString, providerName));
     }
 
     public void SetUpAppSetting (string name, string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNull ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNull("name", name);
 
-      _appSettings.Add (name, key);
+      _appSettings.Add(name, key);
     }
-    
-    public void TearDownConfigSystem()
+
+    public void TearDownConfigSystem ()
     {
-      PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_initState", _notStarted);
-      PrivateInvoke.SetNonPublicStaticField (typeof (ConfigurationManager), "s_configSystem", null);
+      PrivateInvoke.SetNonPublicStaticField(typeof(ConfigurationManager), "s_initState", _notStarted);
+      PrivateInvoke.SetNonPublicStaticField(typeof(ConfigurationManager), "s_configSystem", null);
     }
   }
 }

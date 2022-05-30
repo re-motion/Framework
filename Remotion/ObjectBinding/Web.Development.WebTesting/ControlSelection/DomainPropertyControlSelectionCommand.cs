@@ -35,16 +35,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
   {
     private readonly IDomainPropertyControlSelector<TControlObject> _controlSelector;
     private readonly string _domainProperty;
-    private readonly string _domainClass;
+    private readonly string? _domainClass;
 
     public DomainPropertyControlSelectionCommand (
         [NotNull] IDomainPropertyControlSelector<TControlObject> controlSelector,
         [NotNull] string domainProperty,
-        [CanBeNull] string domainClass = null)
+        [CanBeNull] string? domainClass = null)
     {
-      ArgumentUtility.CheckNotNull ("controlSelector", controlSelector);
-      ArgumentUtility.CheckNotNullOrEmpty ("domainProperty", domainProperty);
-      ArgumentUtility.CheckNotEmpty ("domainClass", domainClass);
+      ArgumentUtility.CheckNotNull("controlSelector", controlSelector);
+      ArgumentUtility.CheckNotNullOrEmpty("domainProperty", domainProperty);
+      ArgumentUtility.CheckNotEmpty("domainClass", domainClass);
 
       _controlSelector = controlSelector;
       _domainProperty = domainProperty;
@@ -54,25 +54,25 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlSelection
     /// <inheritdoc/>
     public TControlObject Select (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectPerDomainProperty (context, _domainProperty, _domainClass);
+      return _controlSelector.SelectPerDomainProperty(context, _domainProperty, _domainClass);
     }
 
     /// <inheritdoc/>
-    public TControlObject SelectOptional (ControlSelectionContext context)
+    public TControlObject? SelectOptional (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.SelectOptionalPerDomainProperty (context, _domainProperty, _domainClass);
+      return _controlSelector.SelectOptionalPerDomainProperty(context, _domainProperty, _domainClass);
     }
 
     /// <inheritdoc/>
     public bool Exists (ControlSelectionContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _controlSelector.ExistsPerDomainProperty (context, _domainProperty, _domainClass);
+      return _controlSelector.ExistsPerDomainProperty(context, _domainProperty, _domainClass);
     }
   }
 }

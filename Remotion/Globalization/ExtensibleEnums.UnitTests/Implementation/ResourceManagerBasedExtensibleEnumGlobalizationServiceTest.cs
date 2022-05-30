@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Globalization.ExtensibleEnums.Implementation;
 using Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain;
 using Remotion.Reflection;
-using Rhino.Mocks;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
 {
@@ -27,43 +27,45 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
   public class ResourceManagerBasedExtensibleEnumGlobalizationServiceTest
   {
     private ResourceManagerBasedExtensibleEnumGlobalizationService _service;
-    private IGlobalizationService _globalizationServiceStub;
+    private Mock<IGlobalizationService> _globalizationServiceStub;
 
     [SetUp]
     public void SetUp ()
     {
-      _globalizationServiceStub = MockRepository.GenerateStub<IGlobalizationService>();
-      _service = new ResourceManagerBasedExtensibleEnumGlobalizationService (_globalizationServiceStub);
+      _globalizationServiceStub = new Mock<IGlobalizationService>();
+      _service = new ResourceManagerBasedExtensibleEnumGlobalizationService(_globalizationServiceStub.Object);
     }
 
     [Test]
     public void TryGetExtensibleEnumValueDisplayName_WithResourceManager_ReturnsLocalizedValue ()
     {
-      var resourceManagerStub = MockRepository.GenerateStub<IResourceManager>();
-      resourceManagerStub.Stub (_ => _.IsNull).Return (false);
+      var outValue = "expected";
+
+      var resourceManagerStub = new Mock<IResourceManager>();
+      resourceManagerStub.Setup(_ => _.IsNull).Returns(false);
       _globalizationServiceStub
-          .Stub (_ => _.GetResourceManager (TypeAdapter.Create (typeof (ColorExtensions))))
-          .Return (resourceManagerStub);
+          .Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(ColorExtensions))))
+          .Returns(resourceManagerStub.Object);
       resourceManagerStub
-          .Stub (
-              _ => _.TryGetString (
-                  Arg.Is ("Color.Red"),
-                  out Arg<string>.Out ("expected").Dummy))
-          .Return (true);
+          .Setup(
+              _ => _.TryGetString(
+                  "Color.Red",
+                  out outValue))
+          .Returns(true);
 
       string resourceValue;
-      Assert.That (_service.TryGetExtensibleEnumValueDisplayName (Color.Values.Red(), out resourceValue), Is.True);
-      Assert.That (resourceValue, Is.EqualTo ("expected"));
+      Assert.That(_service.TryGetExtensibleEnumValueDisplayName(Color.Values.Red(), out resourceValue), Is.True);
+      Assert.That(resourceValue, Is.EqualTo("expected"));
     }
 
     [Test]
     public void TryGetExtensibleEnumValueDisplayName_WithoutResourceManager_ReturnsFalse ()
     {
-      _globalizationServiceStub.Stub (_ => _.GetResourceManager (Arg<ITypeInformation>.Is.NotNull)).Return (NullResourceManager.Instance);
+      _globalizationServiceStub.Setup(_ => _.GetResourceManager(It.IsNotNull<ITypeInformation>())).Returns(NullResourceManager.Instance);
 
       string resourceValue;
-      Assert.That (_service.TryGetExtensibleEnumValueDisplayName (Color.Values.Red(), out resourceValue), Is.False);
-      Assert.That (resourceValue, Is.Null);
+      Assert.That(_service.TryGetExtensibleEnumValueDisplayName(Color.Values.Red(), out resourceValue), Is.False);
+      Assert.That(resourceValue, Is.Null);
     }
   }
 }

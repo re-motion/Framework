@@ -70,7 +70,7 @@ namespace JetBrains.Annotations
   /// and Lazy classes to indicate that the value of a collection item, of the Task.Result property
   /// or of the Lazy.Value property can never be null.
   /// </summary>
-  [AttributeUsage (
+  [AttributeUsage(
       AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
       AttributeTargets.Delegate | AttributeTargets.Field)]
   sealed partial class ItemNotNullAttribute : Attribute

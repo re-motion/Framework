@@ -16,8 +16,11 @@
 // 
 using System;
 using System.Reflection;
+using System.Resources;
+using Remotion.Globalization;
 
-[assembly: AssemblyTitle ("re-motion Globalization Support for Validation Rules")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Globalization and Remotion.Validation assemblies.")]
+[assembly: NeutralResourcesLanguage("en")]
+[assembly: AvailableResourcesLanguages("", "de", "fr", "it")]
+
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

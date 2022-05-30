@@ -25,7 +25,7 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation.TestDomain
     string Property5 { get; }
   }
 
-  [Extends (typeof (DerivedConcreteTypeForMixin))]
+  [Extends(typeof(DerivedConcreteTypeForMixin))]
   public class BaseMixinForDerivedType : Mixin<IDerivedConcreteTypeForMixin, IBaseMixinForDerivedType>
   {
 

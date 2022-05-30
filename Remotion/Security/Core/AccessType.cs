@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Concurrent;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Security
@@ -35,30 +36,30 @@ namespace Remotion.Security
 
     public static AccessType Get (EnumWrapper accessType)
     {
-      return new AccessType (accessType);
+      return new AccessType(accessType);
     }
 
     public static AccessType Get (Enum accessType)
     {
-      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      ArgumentUtility.CheckNotNull("accessType", accessType);
 
-      return s_accessTypeByEnumCache.GetOrAdd (accessType, s_getInternalFunc);
+      return s_accessTypeByEnumCache.GetOrAdd(accessType, s_getInternalFunc);
     }
 
     private static AccessType GetInternal (Enum accessType)
     {
       Type type = accessType.GetType();
-      if (!Attribute.IsDefined (type, typeof (AccessTypeAttribute), false))
+      if (!Attribute.IsDefined(type, typeof(AccessTypeAttribute), false))
       {
-        throw new ArgumentException (
-            string.Format (
+        throw new ArgumentException(
+            string.Format(
                 "Enumerated type '{0}' cannot be used as an access type. Valid access types must have the {1} applied.",
-                type.FullName,
-                typeof (AccessTypeAttribute).FullName),
+                type.GetFullNameSafe(),
+                typeof(AccessTypeAttribute).GetFullNameSafe()),
             "accessType");
       }
 
-      return new AccessType (EnumWrapper.Get (accessType));
+      return new AccessType(EnumWrapper.Get(accessType));
     }
 
     private EnumWrapper _value;
@@ -80,16 +81,16 @@ namespace Remotion.Security
 
     public bool Equals (AccessType other)
     {
-      return _value.Equals (other._value);
+      return _value.Equals(other._value);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (obj == null)
         return false;
-      if (obj.GetType() != typeof (AccessType))
+      if (obj.GetType() != typeof(AccessType))
         return false;
-      return Equals ((AccessType) obj);
+      return Equals((AccessType)obj);
     }
 
     public override int GetHashCode ()

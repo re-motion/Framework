@@ -31,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
 
     public CompoundCompletionDetectionStrategy ([NotNull] params ICompletionDetectionStrategy[] strategies)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("strategies", strategies);
+      ArgumentUtility.CheckNotNullOrEmpty("strategies", strategies);
 
       _strategies = strategies;
     }
@@ -39,27 +39,29 @@ namespace Remotion.Web.Development.WebTesting.CompletionDetectionStrategies
     /// <inheritdoc/>
     public object PrepareWaitForCompletion (PageObjectContext context)
     {
-      var states = new List<object>();
+      ArgumentUtility.CheckNotNull("context", context);
+
+      var states = new List<object?>();
 
       // ReSharper disable once LoopCanBeConvertedToQuery
       foreach (var strategy in _strategies)
       {
-        var state = strategy.PrepareWaitForCompletion (context);
-        states.Add (state);
+        var state = strategy.PrepareWaitForCompletion(context);
+        states.Add(state);
       }
 
       return states;
     }
 
     /// <inheritdoc/>
-    public void WaitForCompletion (PageObjectContext context, object state)
+    public void WaitForCompletion (PageObjectContext context, object? state)
     {
-      var states = (List<object>) state;
-      Assertion.IsNotNull (states, "The state should never be null - developer error.");
+      ArgumentUtility.CheckNotNull("context", context);
+      var states = ArgumentUtility.CheckNotNullAndType<List<object?>>("state", state!);
 
-      var stragiesWithState = _strategies.Zip (states, (s, ss) => new { Strategy = s, State = ss });
+      var stragiesWithState = _strategies.Zip(states, (s, ss) => new { Strategy = s, State = ss });
       foreach (var strategyWithState in stragiesWithState)
-        strategyWithState.Strategy.WaitForCompletion (context, strategyWithState.State);
+        strategyWithState.Strategy.WaitForCompletion(context, strategyWithState.State);
     }
   }
 }

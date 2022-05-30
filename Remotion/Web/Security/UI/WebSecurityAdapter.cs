@@ -18,12 +18,13 @@ using System;
 using System.Collections.Generic;
 using Remotion.Security;
 using Remotion.ServiceLocation;
+using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI;
 
 namespace Remotion.Web.Security.UI
 {
-  [ImplementationFor (typeof (IWebSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IWebSecurityAdapter), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple)]
   public class WebSecurityAdapter : IWebSecurityAdapter
   {
     // types
@@ -40,7 +41,7 @@ namespace Remotion.Web.Security.UI
 
     // methods and properties
 
-    public bool HasAccess (ISecurableObject securableObject, Delegate handler)
+    public bool HasAccess (ISecurableObject? securableObject, Delegate? handler)
     {
       if (handler == null)
         return true;
@@ -48,7 +49,7 @@ namespace Remotion.Web.Security.UI
       if (SecurityFreeSection.IsActive)
         return true;
 
-      List<DemandTargetPermissionAttribute> attributes = GetPermissionAttributes (handler.GetInvocationList ());
+      List<DemandTargetPermissionAttribute> attributes = GetPermissionAttributes(handler.GetInvocationList());
 
       bool hasAccess = true;
       foreach (DemandTargetPermissionAttribute attribute in attributes)
@@ -56,17 +57,25 @@ namespace Remotion.Web.Security.UI
         switch (attribute.PermissionSource)
         {
           case PermissionSource.WxeFunction:
-            hasAccess &= WxeFunction.HasAccess (attribute.FunctionType);
+            Assertion.IsNotNull(attribute.FunctionType, "FunctionType must not be null.");
+            hasAccess &= WxeFunction.HasAccess(attribute.FunctionType);
             break;
           case PermissionSource.SecurableObject:
-            SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+            Assertion.IsNotNull(attribute.MethodName, "MethodName must not be null.");
+            SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
             if (securableObject == null)
-              hasAccess &= securityClient.HasStatelessMethodAccess (attribute.SecurableClass, attribute.MethodName);
+            {
+              Assertion.IsNotNull(attribute.SecurableClass, "SecurableClass must not be null.");
+              hasAccess &= securityClient.HasStatelessMethodAccess(attribute.SecurableClass, attribute.MethodName);
+            }
             else
-              hasAccess &= securityClient.HasMethodAccess (securableObject, attribute.MethodName);
+            {
+              hasAccess &= securityClient.HasMethodAccess(securableObject, attribute.MethodName);
+            }
+
             break;
           default:
-            throw new InvalidOperationException (string.Format (
+            throw new InvalidOperationException(string.Format(
                 "Value '{0}' is not supported by the PermissionSource property of the DemandTargetPermissionAttribute.",
                 attribute.PermissionSource));
         }
@@ -85,16 +94,16 @@ namespace Remotion.Web.Security.UI
 
     private List<DemandTargetPermissionAttribute> GetPermissionAttributes (Delegate[] delegates)
     {
-      List<DemandTargetPermissionAttribute> attributes = new List<DemandTargetPermissionAttribute> ();
+      List<DemandTargetPermissionAttribute> attributes = new List<DemandTargetPermissionAttribute>();
       foreach (Delegate handler in delegates)
       {
-        DemandTargetPermissionAttribute attribute = (DemandTargetPermissionAttribute) Attribute.GetCustomAttribute (
+        DemandTargetPermissionAttribute? attribute = (DemandTargetPermissionAttribute?)Attribute.GetCustomAttribute(
             handler.Method,
-            typeof (DemandTargetPermissionAttribute),
+            typeof(DemandTargetPermissionAttribute),
             false);
 
         if (attribute != null)
-          attributes.Add (attribute);
+          attributes.Add(attribute);
       }
 
       return attributes;

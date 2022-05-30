@@ -28,14 +28,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
   public class SingleViewControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<SingleViewSelector, SingleViewControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<SingleViewSelector, SingleViewControlObject> testAction)
     {
-      testAction (Helper, e => e.SingleViews(), "singleView");
+      testAction(Helper, e => e.SingleViews(), "singleView");
     }
 
     [Test]
@@ -46,8 +46,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var singleView = home.SingleViews().Single();
 
       var topControls = singleView.GetTopControls();
-      Assert.That (topControls.Scope.Text, Is.StringContaining ("TopControls"));
-      Assert.That (topControls.Scope.Text, Is.Not.StringContaining ("Content"));
+      Assert.That(topControls.Scope.Text, Does.Contain("TopControls"));
+      Assert.That(topControls.Scope.Text, Does.Not.Contains("Content"));
     }
 
     [Test]
@@ -58,9 +58,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var singleView = home.SingleViews().Single();
 
       var view = singleView.GetView();
-      Assert.That (view.Scope.Text, Is.StringContaining ("Content"));
-      Assert.That (view.Scope.Text, Is.Not.StringContaining ("TopControls"));
-      Assert.That (view.Scope.Text, Is.Not.StringContaining ("BottomControls"));
+      Assert.That(view.Scope.Text, Does.Contain("Content"));
+      Assert.That(view.Scope.Text, Does.Not.Contains("TopControls"));
+      Assert.That(view.Scope.Text, Does.Not.Contains("BottomControls"));
     }
 
     [Test]
@@ -71,13 +71,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var singleView = home.SingleViews().Single();
 
       var bottomControls = singleView.GetBottomControls();
-      Assert.That (bottomControls.Scope.Text, Is.StringContaining ("BottomControls"));
-      Assert.That (bottomControls.Scope.Text, Is.Not.StringContaining ("Content"));
+      Assert.That(bottomControls.Scope.Text, Does.Contain("BottomControls"));
+      Assert.That(bottomControls.Scope.Text, Does.Not.Contains("Content"));
     }
 
     private WebFormsTestPageObject Start ()
     {
-      return Start<WebFormsTestPageObject> ("SingleViewTest.aspx");
+      return Start<WebFormsTestPageObject>("SingleViewTest.aspx");
     }
   }
 }

@@ -16,21 +16,16 @@
 // 
 using System;
 using System.Collections.Generic;
-using FluentValidation.Resources;
-using FluentValidation.Results;
-using FluentValidation.Validators;
+using Remotion.Validation.Results;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.TestHelpers
 {
   public class StubPropertyValidator : IPropertyValidator
   {
-    public IEnumerable<ValidationFailure> Validate (PropertyValidatorContext context)
+    public IEnumerable<PropertyValidationFailure> Validate (PropertyValidatorContext context)
     {
       throw new NotImplementedException();
     }
-
-    public ICollection<Func<object, object, object>> CustomMessageFormatArguments { get; private set; }
-    public Func<object, object> CustomStateProvider { get; set; }
-    public IStringSource ErrorMessageSource { get; set; }
   }
 }

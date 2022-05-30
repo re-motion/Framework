@@ -23,8 +23,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
   public class SetUpFixture
   {
 
-    [SetUp]
-    public void SetUp ()
+    [OneTimeSetUp]
+    public void OneTimeSetUp ()
     {
       TestMappingConfiguration.Initialize();
     }

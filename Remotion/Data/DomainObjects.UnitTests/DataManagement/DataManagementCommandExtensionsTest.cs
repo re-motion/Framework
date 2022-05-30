@@ -15,73 +15,69 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
   [TestFixture]
   public class DataManagementCommandExtensionsTest
   {
-    private IDataManagementCommand _commandMock;
+    private Mock<IDataManagementCommand> _commandMock;
 
     [SetUp]
     public void SetUp ()
     {
-      _commandMock = MockRepository.GenerateStrictMock<IDataManagementCommand> ();
+      _commandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
     }
 
     [Test]
     public void NotifyAndPerform ()
     {
-      using (_commandMock.GetMockRepository ().Ordered ())
-      {
-        _commandMock.Expect (mock => mock.Begin());
-        _commandMock.Expect (mock => mock.Perform());
-        _commandMock.Expect (mock => mock.End ());
-      }
+      var sequence = new MockSequence();
+      _commandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
-      _commandMock.Replay ();
+      DataManagementCommandExtensions.NotifyAndPerform(_commandMock.Object);
 
-      _commandMock.NotifyAndPerform ();
-
-      _commandMock.VerifyAllExpectations ();
+      _commandMock.Verify();
     }
 
     [Test]
     public void CanExecute_True ()
     {
-      _commandMock.Stub (stub => stub.GetAllExceptions()).Return (new Exception[0]);
-      Assert.That (_commandMock.CanExecute(), Is.True);
+      _commandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
+      Assert.That(DataManagementCommandExtensions.CanExecute(_commandMock.Object), Is.True);
     }
 
     [Test]
     public void CanExecute_False ()
     {
-      var exception1 = new Exception ("1");
-      var exception2 = new Exception ("2");
+      var exception1 = new Exception("1");
+      var exception2 = new Exception("2");
 
-      _commandMock.Stub (stub => stub.GetAllExceptions()).Return (new[] { exception1, exception2 });
-      Assert.That (_commandMock.CanExecute(), Is.False);
+      _commandMock.Setup(stub => stub.GetAllExceptions()).Returns(new[] { exception1, exception2 });
+      Assert.That(DataManagementCommandExtensions.CanExecute(_commandMock.Object), Is.False);
     }
 
     [Test]
     public void EnsureCanExecute_NoExceptions ()
     {
-      _commandMock.Stub (stub => stub.GetAllExceptions ()).Return (new Exception[0]);
-      _commandMock.EnsureCanExecute ();
+      _commandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
+      DataManagementCommandExtensions.EnsureCanExecute(_commandMock.Object);
     }
 
     [Test]
     public void EnsureCanExecute_WithExceptions ()
     {
-      var exception1 = new Exception ("1");
-      var exception2 = new Exception ("2");
-      _commandMock.Stub (stub => stub.GetAllExceptions ()).Return (new[] { exception1, exception2 });
+      var exception1 = new Exception("1");
+      var exception2 = new Exception("2");
+      _commandMock.Setup(stub => stub.GetAllExceptions()).Returns(new[] { exception1, exception2 });
 
-      var exception = Assert.Throws<Exception> (() => _commandMock.EnsureCanExecute());
-      Assert.That (exception, Is.SameAs (exception1));
+      var exception = Assert.Throws<Exception>(() => DataManagementCommandExtensions.EnsureCanExecute(_commandMock.Object));
+      Assert.That(exception, Is.SameAs(exception1));
     }
   }
 }

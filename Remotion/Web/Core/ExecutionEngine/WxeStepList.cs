@@ -17,8 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine.Infrastructure;
+using static Remotion.Utilities.Assertion;
 
 namespace Remotion.Web.ExecutionEngine
 {
@@ -33,9 +35,11 @@ namespace Remotion.Web.ExecutionEngine
 
     private int _executingStep = -1;
 
+    private bool _isDirtyFromExecutedSteps;
+
     public WxeStepList ()
     {
-      InitializeSteps ();
+      InitializeSteps();
     }
 
     /// <summary>
@@ -49,19 +53,19 @@ namespace Remotion.Web.ExecutionEngine
     protected void Encapsulate (WxeStepList innerList)
     {
       if (this.IsExecutionStarted)
-        throw new InvalidOperationException ("Cannot encapsulate executing list.");
+        throw new InvalidOperationException("Cannot encapsulate executing list.");
       if (innerList.Count > 0)
-        throw new ArgumentException ("List must be empty.", "innerList");
+        throw new ArgumentException("List must be empty.", "innerList");
       if (innerList.IsExecutionStarted)
-        throw new ArgumentException ("Cannot encapsulate into executing list.", "innerList");
+        throw new ArgumentException("Cannot encapsulate into executing list.", "innerList");
 
       innerList._steps = this._steps;
       foreach (WxeStep step in innerList._steps)
-        step.SetParentStep (innerList);
+        step.SetParentStep(innerList);
 
-      this._steps = new List<WxeStep> (1);
-      this._steps.Add (innerList);
-      innerList.SetParentStep (this);
+      this._steps = new List<WxeStep>(1);
+      this._steps.Add(innerList);
+      innerList.SetParentStep(this);
     }
 
     public override void Execute (WxeContext context)
@@ -73,8 +77,11 @@ namespace Remotion.Web.ExecutionEngine
       {
         var currentStep = _steps[_executingStep];
         if (currentStep.IsAborted)
-          throw new InvalidOperationException ("Step " + _executingStep + " of " + this.GetType ().FullName + " is aborted.");
-        currentStep.Execute (context);
+          throw new InvalidOperationException("Step " + _executingStep + " of " + this.GetType().GetFullNameSafe() + " is aborted.");
+        currentStep.Execute(context);
+
+        _isDirtyFromExecutedSteps = _isDirtyFromExecutedSteps || currentStep.EvaluateDirtyState();
+
         _executingStep++;
       }
     }
@@ -91,36 +98,36 @@ namespace Remotion.Web.ExecutionEngine
 
     public void Add (WxeStep step)
     {
-      ArgumentUtility.CheckNotNull ("step", step);
+      ArgumentUtility.CheckNotNull("step", step);
 
-      _steps.Add (step);
-      step.SetParentStep (this);
+      _steps.Add(step);
+      step.SetParentStep(this);
     }
 
     public void Add (WxeStepList target, MethodInfo method)
     {
-      ArgumentUtility.CheckNotNull ("target", target);
-      ArgumentUtility.CheckNotNull ("method", method);
+      ArgumentUtility.CheckNotNull("target", target);
+      ArgumentUtility.CheckNotNull("method", method);
 
-      Add (new WxeMethodStep (target, method));
+      Add(new WxeMethodStep(target, method));
     }
 
     public void AddStepList (WxeStepList steps)
     {
-      ArgumentUtility.CheckNotNull ("steps", steps);
+      ArgumentUtility.CheckNotNull("steps", steps);
 
       for (int i = 0; i < steps.Count; i++)
-        Add (steps[i]);
+        Add(steps[i]);
     }
 
     public void Insert (int index, WxeStep step)
     {
       if (_executingStep >= index)
-        throw new ArgumentException ("Cannot insert step only after the last executed step.", "index");
-      ArgumentUtility.CheckNotNull ("step", step);
-      
-      _steps.Insert (index, step);
-      step.SetParentStep (this);
+        throw new ArgumentException("Cannot insert step only after the last executed step.", "index");
+      ArgumentUtility.CheckNotNull("step", step);
+
+      _steps.Insert(index, step);
+      step.SetParentStep(this);
     }
 
     public override WxeStep ExecutingStep
@@ -134,7 +141,7 @@ namespace Remotion.Web.ExecutionEngine
       }
     }
 
-    public WxeStep LastExecutedStep
+    public WxeStep? LastExecutedStep
     {
       get
       {
@@ -152,8 +159,8 @@ namespace Remotion.Web.ExecutionEngine
 
     private void InitializeSteps ()
     {
-      Type type = this.GetType ();
-      MemberInfo[] members = NumberedMemberFinder.FindMembers (
+      Type type = this.GetType();
+      MemberInfo[] members = NumberedMemberFinder.FindMembers(
           type,
           "Step",
           MemberTypes.Field | MemberTypes.Method | MemberTypes.NestedType,
@@ -163,28 +170,72 @@ namespace Remotion.Web.ExecutionEngine
       {
         if (member is FieldInfo)
         {
-          FieldInfo fieldInfo = (FieldInfo) member;
-          Add ((WxeStep) fieldInfo.GetValue (this));
+          FieldInfo fieldInfo = (FieldInfo)member;
+          Add((WxeStep)fieldInfo.GetValue(this)!);
         }
         else if (member is MethodInfo)
         {
-          MethodInfo methodInfo = (MethodInfo) member;
-          Add (this, methodInfo);
+          MethodInfo methodInfo = (MethodInfo)member;
+          Add(this, methodInfo);
         }
         else if (member is Type)
         {
-          Type subtype = member as Type;
-          if (typeof (WxeStep).IsAssignableFrom (subtype))
-            Add ((WxeStep) Activator.CreateInstance (subtype));
+          Type subtype = (Type)member;
+          if (typeof(WxeStep).IsAssignableFrom(subtype))
+            Add((WxeStep)Activator.CreateInstance(subtype)!);
         }
       }
     }
 
     protected override void AbortRecursive ()
     {
-      base.AbortRecursive ();
+      base.AbortRecursive();
       foreach (WxeStep step in _steps)
-        step.Abort ();
+        step.Abort();
+    }
+
+    /// <summary>
+    /// Resets the dirty state for any previously executed steps recursively.
+    /// </summary>
+    public override void ResetDirtyStateForExecutedSteps ()
+    {
+      base.ResetDirtyStateForExecutedSteps();
+
+      for (var i = 0; i < _executingStep; i++)
+      {
+        var step = _steps[i];
+        step.ResetDirtyStateForExecutedSteps();
+      }
+
+      _isDirtyFromExecutedSteps = false;
+    }
+
+    /// <summary>
+    /// Evaluates the current dirty state for this <see cref="WxeStepList"/>.
+    /// </summary>
+    /// <remarks>
+    /// The evaluation includes the information for the currently executing <see cref="WxeStep"/>, the aggregated dirty state of previously executed steps.
+    /// </remarks>
+    /// <returns><see langword="true" /> if the <see cref="WxePageStep"/> represents unsaved changes.</returns>
+    public override bool EvaluateDirtyState ()
+    {
+      if (IsDirtyStateEnabled)
+      {
+        if (_isDirtyFromExecutedSteps)
+          return true;
+      }
+
+      // Using WxeStepList.ExecutingStep instead of LastExecutedStep would return the most-nested executing step,
+      // thus skipping the recursive evaluation of the dirty state.
+      var currentStepInThisStepList = LastExecutedStep;
+
+      // Evaluating the steps for the current dirty state is relevant even when IsDirtyStateEnabled is false
+      // to include information on sub-function dirty state in the result given that dirty state handling is disabled for each WxeFunction individually,
+      // instead of disabling dirty state handling across the entire stack.
+      if (currentStepInThisStepList?.EvaluateDirtyState() == true)
+        return true;
+
+      return base.EvaluateDirtyState();
     }
   }
 

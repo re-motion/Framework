@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using JetBrains.Annotations;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
@@ -32,10 +33,10 @@ namespace Remotion.Web.Utilities
     ///   <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. Does not throw on error. Does not ignore casing.
     /// </summary>
     [CanBeNull]
-    public static Type GetType (string abbreviatedTypeName)
+    public static Type? GetType (string abbreviatedTypeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
-      return GetType (abbreviatedTypeName, false, false);
+      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      return GetType(abbreviatedTypeName, false, false);
     }
 
     /// <summary>
@@ -43,10 +44,10 @@ namespace Remotion.Web.Utilities
     ///   <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. Does not ignore casing.
     /// </summary>
     [CanBeNull]
-    public static Type GetType (string abbreviatedTypeName, bool throwOnError)
+    public static Type? GetType (string abbreviatedTypeName, bool throwOnError)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
-      return GetType (abbreviatedTypeName, throwOnError, false);
+      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      return GetType(abbreviatedTypeName, throwOnError, false);
     }
 
     /// <summary>
@@ -54,25 +55,25 @@ namespace Remotion.Web.Utilities
     ///   <see cref="TypeUtility.ParseAbbreviatedTypeName"/>.
     /// </summary>
     [CanBeNull]
-    public static Type GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
+    public static Type? GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
-      string typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
-      return BuildManager.GetType (typeName, throwOnError, ignoreCase);
+      ArgumentUtility.CheckNotNullOrEmpty("abbreviatedTypeName", abbreviatedTypeName);
+      string typeName = TypeUtility.ParseAbbreviatedTypeName(abbreviatedTypeName);
+      return BuildManager.GetType(typeName, throwOnError, ignoreCase);
     }
 
     public static string GetQualifiedName (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      if (IsCompiledType (type))
-        return type.FullName;
-      return TypeUtility.GetPartialAssemblyQualifiedName (type);
+      ArgumentUtility.CheckNotNull("type", type);
+      if (IsCompiledType(type))
+        return type.GetFullNameChecked();
+      return TypeUtility.GetPartialAssemblyQualifiedName(type);
     }
 
     public static bool IsCompiledType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      IList codeAssemblies = BuildManager.CodeAssemblies;
+      ArgumentUtility.CheckNotNull("type", type);
+      IList? codeAssemblies = BuildManager.CodeAssemblies;
       if (codeAssemblies == null)
         return false;
 

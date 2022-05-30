@@ -21,12 +21,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   public sealed class BocListRow : IEquatable<BocListRow>
   {
-    public static bool operator== (BocListRow row1, BocListRow row2)
+    public static bool operator== (BocListRow? row1, BocListRow? row2)
     {
-      return Equals (row1, row2);
+      return Equals(row1, row2);
     }
 
-    public static bool operator!= (BocListRow row1, BocListRow row2)
+    public static bool operator!= (BocListRow? row1, BocListRow? row2)
     {
       return !(row1 == row2);
     }
@@ -37,8 +37,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public BocListRow (int index, IBusinessObject businessObject)
     {
       if (index < 0)
-        throw new ArgumentOutOfRangeException ("index", index, "Negative indices are not allowed.");
-      ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+        throw new ArgumentOutOfRangeException("index", index, "Negative indices are not allowed.");
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
       _index = index;
       _businessObject = businessObject;
@@ -54,17 +54,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _businessObject; }
     }
 
-    public bool Equals (BocListRow other)
+    public bool Equals (BocListRow? other)
     {
       if (other == null)
         return false;
 
-      return this._index == other._index && this._businessObject.Equals (other._businessObject);
+      return this._index == other._index && this._businessObject.Equals(other._businessObject);
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      return Equals (obj as BocListRow);
+      return Equals(obj as BocListRow);
     }
 
     public override int GetHashCode ()

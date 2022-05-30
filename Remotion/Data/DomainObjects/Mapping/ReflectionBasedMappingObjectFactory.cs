@@ -33,48 +33,53 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
     private readonly IDomainObjectCreator _instanceCreator;
+    private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
 
     public ReflectionBasedMappingObjectFactory (
         IMemberInformationNameResolver nameResolver,
         IClassIDProvider classIDProvider,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
-      ArgumentUtility.CheckNotNull ("nameResolver", nameResolver);
-      ArgumentUtility.CheckNotNull ("classIDProvider", classIDProvider);
-      ArgumentUtility.CheckNotNull ("propertyMetadataProvider", propertyMetadataProvider);
-      ArgumentUtility.CheckNotNull ("domainModelConstraintProvider", domainModelConstraintProvider);
-      ArgumentUtility.CheckNotNull ("instanceCreator", instanceCreator);
+      ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
+      ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
+      ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
+      ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
+      ArgumentUtility.CheckNotNull("instanceCreator", instanceCreator);
 
       _nameResolver = nameResolver;
       _classIDProvider = classIDProvider;
       _propertyMetadataProvider = propertyMetadataProvider;
       _domainModelConstraintProvider = domainModelConstraintProvider;
+      _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
       _instanceCreator = instanceCreator;
     }
 
-    public ClassDefinition CreateClassDefinition (Type type, ClassDefinition baseClass)
+    public ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      var classReflector = new ClassReflector (
+      var classReflector = new ClassReflector(
           type,
           this,
           _nameResolver,
           _classIDProvider,
           _propertyMetadataProvider,
           _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider,
           _instanceCreator);
-      return classReflector.GetMetadata (baseClass);
+      return classReflector.GetMetadata(baseClass);
     }
 
     public PropertyDefinition CreatePropertyDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      var propertyReflector = new PropertyReflector (
+      var propertyReflector = new PropertyReflector(
           classDefinition,
           propertyInfo,
           _nameResolver,
@@ -86,60 +91,61 @@ namespace Remotion.Data.DomainObjects.Mapping
     public RelationDefinition CreateRelationDefinition (
         IDictionary<Type, ClassDefinition> classDefinitions, ClassDefinition classDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      var relationReflector = new RelationReflector (classDefinition, propertyInfo, _nameResolver, _propertyMetadataProvider);
-      return relationReflector.GetMetadata (classDefinitions);
+      var relationReflector = new RelationReflector(classDefinition, propertyInfo, _nameResolver, _propertyMetadataProvider);
+      return relationReflector.GetMetadata(classDefinitions);
     }
 
     public IRelationEndPointDefinition CreateRelationEndPointDefinition (ClassDefinition classDefinition, IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector (
+      var relationEndPointReflector = RelationEndPointReflector.CreateRelationEndPointReflector(
           classDefinition,
           propertyInfo,
           _nameResolver,
           _propertyMetadataProvider,
-          _domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          _sortExpressionDefinitionProvider);
       return relationEndPointReflector.GetMetadata();
     }
 
     public ClassDefinition[] CreateClassDefinitionCollection (IEnumerable<Type> types)
     {
-      ArgumentUtility.CheckNotNull ("types", types);
+      ArgumentUtility.CheckNotNull("types", types);
 
-      var classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory (this);
-      return classDefinitionCollectionFactory.CreateClassDefinitionCollection (types);
+      var classDefinitionCollectionFactory = new ClassDefinitionCollectionFactory(this);
+      return classDefinitionCollectionFactory.CreateClassDefinitionCollection(types);
     }
 
     public PropertyDefinitionCollection CreatePropertyDefinitionCollection (
         ClassDefinition classDefinition, IEnumerable<IPropertyInformation> propertyInfos)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-      ArgumentUtility.CheckNotNull ("propertyInfos", propertyInfos);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("propertyInfos", propertyInfos);
 
-      var factory = new PropertyDefinitionCollectionFactory (this);
-      return factory.CreatePropertyDefinitions (classDefinition, propertyInfos);
+      var factory = new PropertyDefinitionCollectionFactory(this);
+      return factory.CreatePropertyDefinitions(classDefinition, propertyInfos);
     }
 
     public RelationDefinition[] CreateRelationDefinitionCollection (IDictionary<Type, ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
 
-      var factory = new RelationDefinitionCollectionFactory (this);
-      return factory.CreateRelationDefinitionCollection (classDefinitions);
+      var factory = new RelationDefinitionCollectionFactory(this);
+      return factory.CreateRelationDefinitionCollection(classDefinitions);
     }
 
     public RelationEndPointDefinitionCollection CreateRelationEndPointDefinitionCollection (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      var factory = new RelationEndPointDefinitionCollectionFactory (this, _nameResolver, _propertyMetadataProvider);
-      return factory.CreateRelationEndPointDefinitionCollection (classDefinition);
+      var factory = new RelationEndPointDefinitionCollectionFactory(this, _nameResolver, _propertyMetadataProvider);
+      return factory.CreateRelationEndPointDefinitionCollection(classDefinition);
     }
   }
 }

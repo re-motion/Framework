@@ -23,7 +23,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
   {
     public static Type GetVariableType<T> ([UsedImplicitly] T value)
     {
-      return typeof (T);
+      return typeof(T);
     }
   }
 }

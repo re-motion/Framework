@@ -20,7 +20,7 @@ using System.Web.UI.WebControls;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
-  [ToolboxItem (false)]
+  [ToolboxItem(false)]
   public class EditModeValidator : CustomValidator
   {
     // types
@@ -39,18 +39,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     // methods and properties
 
-    protected override bool EvaluateIsValid()
+    protected override bool EvaluateIsValid ()
     {
       return _editModeController.Validate();
     }
 
-    protected override bool ControlPropertiesValid()
+    protected override bool ControlPropertiesValid ()
     {
       string controlToValidate = ControlToValidate;
-      if (string.IsNullOrEmpty (controlToValidate))
+      if (string.IsNullOrEmpty(controlToValidate))
         return base.ControlPropertiesValid();
       else
-        return NamingContainer.FindControl (controlToValidate) != null;
+        return NamingContainer.FindControl(controlToValidate) != null;
     }
   }
 }

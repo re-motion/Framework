@@ -39,16 +39,16 @@ namespace Remotion.Web.Utilities
     /// Call <see cref="RegisterJavaScriptInclude"/> before calling this method.
     /// </summary>
     /// <param name="control">The <see cref="IControl"/> for which the border-elements are registered.</param>
-    /// <param name="jQuerySelectorForBorderSpanTarget">>The element-selector in jquery-syntax.</param>
-    void RegisterElementForBorderSpans (IControl control, string jQuerySelectorForBorderSpanTarget);
+    /// <param name="cssSelectorForBorderSpanTarget">>The element-selector as a css selector.</param>
+    void RegisterElementForBorderSpans (IControl control, string cssSelectorForBorderSpanTarget);
 
     /// <summary>
-    /// Registers the <paramref name="eventHandler"/> for the element identified by the <paramref name="jquerySelector"/>. 
+    /// Registers the <paramref name="eventHandler"/> for the element identified by the <paramref name="cssSelector"/>. 
     /// Call <see cref="RegisterJavaScriptInclude"/> before calling this method.
     /// </summary>
     /// <param name="control">The <see cref="IControl"/> for which the <paramref name="eventHandler"/> is registered.</param>
-    /// <param name="jquerySelector">The element-selector in jquery-syntax.</param>
+    /// <param name="cssSelector">The element-selector as a css selector.</param>
     /// <param name="eventHandler">The eventhandler, with the following signatur: <c>function (element)</c>.</param>
-    void RegisterResizeOnElement (IControl control, string jquerySelector, string eventHandler);
+    void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler);
   }
 }

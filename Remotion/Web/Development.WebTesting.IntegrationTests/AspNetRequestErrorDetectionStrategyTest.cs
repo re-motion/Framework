@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -17,7 +17,6 @@
 using System;
 using System.Diagnostics;
 using System.Threading;
-using Coypu;
 using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -34,13 +33,14 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void Parse_PostbackError ()
     {
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionStrategy();
-      var home = StartToErrorPage ("SyncPostbackError");
+      var home = StartToErrorPage("SyncPostbackError");
 
-      var exception = Assert.Throws<MissingHtmlException> (() => aspNetRequestErrorDetectionParser.CheckPageForError (home.Scope));
+      var exception = Assert.Throws<WebTestException>(() => aspNetRequestErrorDetectionParser.CheckPageForError(home.Scope));
 
-      Assert.That (exception.InnerException, Is.TypeOf (typeof (ServerErrorException)));
-      Assert.That (exception.InnerException.Message, Is.EqualTo ("SyncPostbackError"));
-      Assert.That (exception.InnerException.StackTrace, Is.StringStarting ("\r\n[Exception: SyncPostbackError]\r\n"));
+      Assert.That(exception.Message, Is.EqualTo("Request has failed due to a server error"));
+      Assert.That(exception.InnerException, Is.TypeOf(typeof(ServerErrorException)));
+      Assert.That(exception.InnerException.Message, Is.EqualTo("SyncPostbackError"));
+      Assert.That(exception.InnerException.StackTrace, Does.StartWith("\r\n[Exception: SyncPostbackError]\r\n"));
     }
 
     [Test]
@@ -49,35 +49,35 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var aspNetRequestErrorDetectionParser = new AspNetRequestErrorDetectionParser();
 
       var home = Start();
-      
-      Assert.That (
-          () => aspNetRequestErrorDetectionParser.Parse (home.Scope),
+
+      Assert.That(
+          () => aspNetRequestErrorDetectionParser.Parse(home.Scope),
           Throws.Nothing);
 
-      var result = aspNetRequestErrorDetectionParser.Parse (home.Scope);
+      var result = aspNetRequestErrorDetectionParser.Parse(home.Scope);
 
-      Assert.That (result.HasError, Is.EqualTo (false));
+      Assert.That(result.HasError, Is.EqualTo(false));
     }
-    
+
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject> ("RequestErrorDetectionStrategyTest.wxe");
+      return Start<WxePageObject>("RequestErrorDetectionStrategyTest.wxe");
     }
 
     private WxePageObject StartToErrorPage (string localButtonId)
     {
-      var home = Start ( );
-      var anchor = home.Anchors().GetByLocalID (localButtonId);
-      
+      var home = Start( );
+      var anchor = home.Anchors().GetByLocalID(localButtonId);
+
       //Note: Normale completion detection does not work because of the Error Page
-      anchor.Click (new WebTestActionOptions() { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
-      
+      anchor.Click(new WebTestActionOptions() { CompletionDetectionStrategy = new NullCompletionDetectionStrategy() });
+
       //Call Exists workaround because scope is not updated properly
-      home.Scope.FindCss ("body > span > h1").ExistsWorkaround();
+      home.Scope.FindCss("body > span > h1").ExistsWorkaround();
 
       //Wait for Message header to exist
-      home.Scope.FindCss ("body > span > h1").Exists();
+      home.Scope.FindCss("body > span > h1").Exists();
 
       return home;
     }

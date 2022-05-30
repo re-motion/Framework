@@ -24,22 +24,22 @@ namespace OBWTest
 [Serializable]
 public class ViewPersonDetailsWxeFunction: WxeFunction
 {
-  public ViewPersonDetailsWxeFunction()
-    :base (new NoneTransactionMode())
+  public ViewPersonDetailsWxeFunction ()
+    :base(new NoneTransactionMode())
   {
   }
 
   // parameters and local variables
 
-  [WxeParameter (1, true, WxeParameterDirection.In)]
+  [WxeParameter(1, true, WxeParameterDirection.In)]
   public string ID
   {
-    get { return (string) Variables["ID"]; }
+    get { return (string)Variables["ID"]; }
     set { Variables["ID"] = value; }
   }
 
   // steps
 
-  private WxeStep Step1 = new WxePageStep ("PersonDetailsForm.aspx");
+  private WxeStep Step1 = new WxePageStep("PersonDetailsForm.aspx");
 }
 }

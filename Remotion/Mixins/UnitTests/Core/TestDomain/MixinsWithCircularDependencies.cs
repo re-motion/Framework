@@ -22,7 +22,7 @@ namespace Remotion.Mixins.UnitTests.Core.TestDomain
   {
     public string Circular1 ()
     {
-      return "MixinWithCircularTargetCallDependency1.Circular1-" + Target.Circular2 ();
+      return "MixinWithCircularTargetCallDependency1.Circular1-" + Target.Circular2();
     }
   }
 

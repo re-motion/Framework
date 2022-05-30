@@ -31,27 +31,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
     [Test]
     public void Export_SerializesData ()
     {
-      DataContainer expectedContainer1 = DomainObjectIDs.Order1.GetObject<Order> ().InternalDataContainer;
-      DataContainer expectedContainer2 = DomainObjectIDs.Order3.GetObject<Order> ().InternalDataContainer;
+      DataContainer expectedContainer1 = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
+      DataContainer expectedContainer2 = DomainObjectIDs.Order3.GetObject<Order>().InternalDataContainer;
 
-      TransportItem item1 = TransportItem.PackageDataContainer (expectedContainer1);
-      TransportItem item2 = TransportItem.PackageDataContainer (expectedContainer2);
+      TransportItem item1 = TransportItem.PackageDataContainer(expectedContainer1);
+      TransportItem item2 = TransportItem.PackageDataContainer(expectedContainer2);
 
       var items = new[] { item1, item2 };
-      var versionIndependentItem1 = new KeyValuePair<string, Dictionary<string, object>> (item1.ID.ToString(), item1.Properties);
-      var versionIndependentItem2 = new KeyValuePair<string, Dictionary<string, object>> (item2.ID.ToString(), item2.Properties);
-      byte[] expectedData = Serializer.Serialize (new[] {versionIndependentItem1, versionIndependentItem2});
+      var versionIndependentItem1 = new KeyValuePair<string, Dictionary<string, object>>(item1.ID.ToString(), item1.Properties);
+      var versionIndependentItem2 = new KeyValuePair<string, Dictionary<string, object>>(item2.ID.ToString(), item2.Properties);
+      byte[] expectedData = Serializer.Serialize(new[] {versionIndependentItem1, versionIndependentItem2});
 
-      byte[] actualData = Export (items);
-      Assert.That (actualData, Is.EqualTo (expectedData));
+      byte[] actualData = Export(items);
+      Assert.That(actualData, Is.EqualTo(expectedData));
     }
 
     public static byte[] Export (params TransportItem[] transportItems)
     {
-      using (var stream = new MemoryStream ())
+      using (var stream = new MemoryStream())
       {
-        BinaryExportStrategy.Instance.Export (stream, transportItems);
-        return stream.ToArray ();
+        BinaryExportStrategy.Instance.Export(stream, transportItems);
+        return stream.ToArray();
       }
     }
   }

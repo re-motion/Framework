@@ -80,7 +80,16 @@
         For Internet applications the user might have disabled client scripting and the session timeout setting 
         should reflect the possiblity that no refresh requests are transmitted.
       </note>
-      
+
+      <h4 class="dtH4">Dirty State Tracking (specified in <see cref="ISmartPage"/>)</h4>
+      <para>
+        The <see cref="WxePage"/> extends the dirty state tracking provided by the <see cref="SmartPage"/> by
+        including the dirty state of the <see cref="WxeFunction"/> this <see cref="WxePage"/> belongs to as well as
+        the entire function stack (i.e. the dirty state of the shared root <see cref="WxeFunction"/>)
+        and the <see cref="Remotion.Web.ExecutionEngine.Infrastructure.ITransactionStrategy"/> associated with the
+        respective <see cref="WxeFunction"/>.
+      </para>
+
       <h4 class="dtH4">Page State Management</h4>
       <para>
         The <see cref="WxePage"/> generates client script code that will detect (and prevent) a user's attempt to 

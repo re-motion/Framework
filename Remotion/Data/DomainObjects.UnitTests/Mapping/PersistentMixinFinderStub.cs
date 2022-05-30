@@ -28,15 +28,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     private static ClassContext CreateClassContext (Type classType, Type[] persistentMixins)
     {
       var mixinContexts =
-          persistentMixins.Select (
+          persistentMixins.Select(
               t =>
-              new MixinContext (
-                  MixinKind.Extending,
-                  t,
-                  MemberVisibility.Private,
-                  Enumerable.Empty<Type>(),
-                  MixinContextOrigin.CreateForMethod (MethodBase.GetCurrentMethod())));
-      return new ClassContext (classType, mixinContexts, Enumerable.Empty<Type> ());
+                  new MixinContext(
+                      MixinKind.Extending,
+                      t,
+                      MemberVisibility.Private,
+                      Enumerable.Empty<Type>(),
+                      MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod())));
+      return new ClassContext(classType, mixinContexts, Enumerable.Empty<Type>());
     }
 
     private readonly Type _classType;
@@ -44,15 +44,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     private readonly ClassContext _mixinConfiguration;
 
-    public PersistentMixinFinderStub (Type classType, params Type[] persistentMixins) 
-        : this (classType, CreateClassContext (classType, persistentMixins))
+    public PersistentMixinFinderStub (Type classType, params Type[] persistentMixins)
+        : this(classType, CreateClassContext(classType, persistentMixins))
     {
     }
 
     public PersistentMixinFinderStub (Type classType, ClassContext mixinConfiguration)
     {
       _classType = classType;
-      _persistentMixins = mixinConfiguration.Mixins.Select (m => m.MixinType).ToArray();
+      _persistentMixins = mixinConfiguration.Mixins.Select(m => m.MixinType).ToArray();
 
       _mixinConfiguration = mixinConfiguration;
     }

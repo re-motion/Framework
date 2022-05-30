@@ -23,20 +23,20 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public class WxeFatalExecutionException:WxeException
   {
-    private readonly Exception _outerException;
+    private readonly Exception? _outerException;
 
-    public WxeFatalExecutionException (Exception innerExcection, Exception outerException)
-      : base ("Execution failed.\r\n" + innerExcection.Message + (outerException != null ? ("\r\n" + outerException.Message) : string.Empty), innerExcection)
+    public WxeFatalExecutionException (Exception innerExcection, Exception? outerException)
+      : base("Execution failed.\r\n" + innerExcection.Message + (outerException != null ? ("\r\n" + outerException.Message) : string.Empty), innerExcection)
     {
       _outerException = outerException;
     }
 
     public WxeFatalExecutionException (SerializationInfo info, StreamingContext context)
-      : base (info, context)
+      : base(info, context)
     {
     }
 
-    public Exception OuterException
+    public Exception? OuterException
     {
       get { return _outerException; }
     }

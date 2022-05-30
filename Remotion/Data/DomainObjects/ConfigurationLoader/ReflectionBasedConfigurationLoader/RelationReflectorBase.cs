@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
@@ -30,34 +31,36 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider)
-        : base (propertyInfo, nameResolver, propertyMetadataProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      ClassDefinition = classDefinition;
-      BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T> (true);
+      BidirectionalRelationAttribute = PropertyInfo.GetCustomAttribute<T>(true);
     }
 
-    public ClassDefinition ClassDefinition { get; private set; }
-    public T BidirectionalRelationAttribute { get; private set; }
+    public T? BidirectionalRelationAttribute { get; private set; }
 
+    [MemberNotNullWhen(true, nameof(BidirectionalRelationAttribute))]
     protected bool IsBidirectionalRelation
     {
       get { return BidirectionalRelationAttribute != null; }
     }
 
-    protected IPropertyInformation GetOppositePropertyInfo ()
+    protected IPropertyInformation? GetOppositePropertyInfo ()
     {
-      var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty (PropertyInfo);
-      var propertyFinder = new NameBasedPropertyFinder (
-          BidirectionalRelationAttribute.OppositeProperty, 
-          type, 
-          true, 
-          true, 
-          NameResolver, 
-          new PersistentMixinFinder (type, true),
+      Assertion.IsNotNull(BidirectionalRelationAttribute, "Property '{0}' is not part of a bi-directional relation.", PropertyInfo.Name);
+
+      var type = ReflectionUtility.GetRelatedObjectTypeFromRelationProperty(PropertyInfo);
+      if (type == null)
+        return null;
+
+      var propertyFinder = new NameBasedPropertyFinder(
+          BidirectionalRelationAttribute.OppositeProperty,
+          type,
+          true,
+          true,
+          NameResolver,
+          new PersistentMixinFinder(type, true),
           PropertyMetadataProvider);
-      
+
       return propertyFinder.FindPropertyInfos().LastOrDefault();
     }
   }

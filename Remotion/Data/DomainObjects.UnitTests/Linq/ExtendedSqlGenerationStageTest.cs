@@ -37,44 +37,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       base.SetUp();
 
       _stage = new ExtendedSqlGenerationStage();
-    
-      _commandBuilder = new SqlCommandBuilder ();
+
+      _commandBuilder = new SqlCommandBuilder();
     }
 
     [Test]
     public void GenerateTextForOuterSelectExpression_UsesExtendedVisitor ()
     {
-      var constructorInfo = typeof (ObjectID).GetConstructor (new[] { typeof (string), typeof (object) });
-      Assertion.IsNotNull (constructorInfo);
-      var newObjectIDExpression = Expression.New (
+      var constructorInfo = typeof(ObjectID).GetConstructor(new[] { typeof(string), typeof(object) });
+      Assertion.IsNotNull(constructorInfo);
+      var newObjectIDExpression = Expression.New(
           constructorInfo,
-          new SqlColumnDefinitionExpression (typeof (string), "t0", "CustomerClassID", false),
-          Expression.Convert (new SqlColumnDefinitionExpression (typeof (Guid), "t0", "CustomerID", false), typeof (object)));
-      var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments (newObjectIDExpression);
+          new SqlColumnDefinitionExpression(typeof(string), "t0", "CustomerClassID", false),
+          Expression.Convert(new SqlColumnDefinitionExpression(typeof(Guid), "t0", "CustomerID", false), typeof(object)));
+      var compoundExpression = NamedExpression.CreateNewExpressionWithNamedArguments(newObjectIDExpression);
 
       var someSetOperationsMode = SetOperationsMode.StatementIsSetCombined;
-      _stage.GenerateTextForOuterSelectExpression (_commandBuilder, compoundExpression, someSetOperationsMode);
+      _stage.GenerateTextForOuterSelectExpression(_commandBuilder, compoundExpression, someSetOperationsMode);
 
-      Assert.That (_commandBuilder.GetInMemoryProjectionBody().NodeType, Is.EqualTo (ExpressionType.Call));
+      Assert.That(_commandBuilder.GetInMemoryProjectionBody().NodeType, Is.EqualTo(ExpressionType.Call));
       var getObjectIDOrNullMethod =
-          MemberInfoFromExpressionUtility.GetMethod (() => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull (null, null));
-      Assert.That (((MethodCallExpression) _commandBuilder.GetInMemoryProjectionBody()).Method, Is.EqualTo (getObjectIDOrNullMethod));
-    } 
+          MemberInfoFromExpressionUtility.GetMethod(() => ExtendedSqlGeneratingOuterSelectExpressionVisitor.GetObjectIDOrNull(null, null));
+      Assert.That(((MethodCallExpression)_commandBuilder.GetInMemoryProjectionBody()).Method, Is.EqualTo(getObjectIDOrNullMethod));
+    }
 
     [Test]
     public void GenerateTextForOuterSelectExpression_PassesOnSetOperationsMode ()
     {
       var stage = new DefaultSqlGenerationStage();
 
-      var projectionWithMethodCall = Expression.Call (
-          MemberInfoFromExpressionUtility.GetMethod (() => SomeMethod (null)),
-          new NamedExpression (null, Expression.Constant ("")));
+      var projectionWithMethodCall = Expression.Call(
+          MemberInfoFromExpressionUtility.GetMethod(() => SomeMethod(null)),
+          new NamedExpression(null, Expression.Constant("")));
 
-      Assert.That (
-          () => stage.GenerateTextForOuterSelectExpression (_commandBuilder, projectionWithMethodCall, SetOperationsMode.StatementIsSetCombined),
+      Assert.That(
+          () => stage.GenerateTextForOuterSelectExpression(_commandBuilder, projectionWithMethodCall, SetOperationsMode.StatementIsSetCombined),
           Throws.TypeOf<NotSupportedException>());
-      Assert.That (
-          () => stage.GenerateTextForOuterSelectExpression (_commandBuilder, projectionWithMethodCall, SetOperationsMode.StatementIsNotSetCombined),
+      Assert.That(
+          () => stage.GenerateTextForOuterSelectExpression(_commandBuilder, projectionWithMethodCall, SetOperationsMode.StatementIsNotSetCombined),
           Throws.Nothing);
     }
 

@@ -1,151 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD1697E0-75A8-46C9-9F05-941D3E933F98}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Data.DomainObjects.Validation.UnitTests</RootNamespace>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Unit Tests for Remotion DomainObjects Validation</AssemblyTitle>
     <AssemblyName>Remotion.Data.DomainObjects.Validation.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>0067</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>0067</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Remotion.Linq, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.Linq.2.0.2\lib\net45\Remotion.Linq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Remotion.Linq.SqlBackend, Version=2.0.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Remotion.Linq.SqlBackend.2.0.0\lib\net45\Remotion.Linq.SqlBackend.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Rhino.Mocks">
-      <HintPath>..\..\..\prereq\Assemblies\Rhino.Mocks-3.6\net-3.5\Rhino.Mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Web.Extensions" />
+    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj" />
+    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj" />
+    <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj" />
+    <ProjectReference Include="..\Core\Data.Core.csproj" />
+    <ProjectReference Include="..\DomainObjects.Validation\Data.DomainObjects.Validation.csproj" />
+    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="DataContainerObjectMother.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflectorTests\DomainObjectMixin_DOABCPRRTest.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationCollectorProviderTest.cs" />
-    <Compile Include="DomainObjectAttributesBasedValidationPropertyRuleReflectorTests\DomainObject_DOABCPRRTest.cs" />
-    <Compile Include="DomainObjectFluentValidationExceptionTest.cs" />
-    <Compile Include="IClientTransactionExtensionFactoryTest.cs" />
-    <Compile Include="IValidationCollectorProviderTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetupFixture.cs" />
-    <Compile Include="Testdomain\MixinTarget_AnnotatedPropertiesNotPartOfMixin.cs" />
-    <Compile Include="Testdomain\NoDomainObject.cs" />
-    <Compile Include="Testdomain\MixinTarget_AnnotatedPropertiesPartOfInterface.cs" />
-    <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesNotPartOfInterface.cs" />
-    <Compile Include="Testdomain\MixinTypeWithDomainObjectAttributes_AnnotatedPropertiesPartOfInterface.cs" />
-    <Compile Include="Testdomain\DomainObjectWithoutAnnotatedProperties.cs" />
-    <Compile Include="Testdomain\StubStorageFactory.cs" />
-    <Compile Include="Testdomain\StubStorageProvider.cs" />
-    <Compile Include="Testdomain\TestDomainObject.cs" />
-    <Compile Include="Testdomain\TypeWithDomainObjectAttributes.cs" />
-    <Compile Include="ValidationClientTransactionExtensionFactoryTest.cs" />
-    <Compile Include="ValidationClientTransactionExtensionTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
-      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
-      <Name>Development.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mixins\Core\Mixins.Core.csproj">
-      <Project>{d641e4e2-23f3-4454-8074-1327ef07baa1}</Project>
-      <Name>Mixins.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Core\Validation.Core.csproj">
-      <Project>{d057d6f3-2015-4eb0-b6bd-77be8ed1571a}</Project>
-      <Name>Validation.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Validation\Mixins\Validation.Mixins.csproj">
-      <Project>{B34D9485-39D7-4F73-805C-39A65059001E}</Project>
-      <Name>Validation.Mixins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Core\Data.Core.csproj">
-      <Project>{70273934-12f1-49af-975a-303baefe1cae}</Project>
-      <Name>Data.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects.Validation\Data.DomainObjects.Validation.csproj">
-      <Project>{04FA07E3-B868-4846-A5E2-4D375F607C22}</Project>
-      <Name>Data.DomainObjects.Validation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DomainObjects\Data.DomainObjects.csproj">
-      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
-      <Name>Data.DomainObjects</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

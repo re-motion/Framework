@@ -15,8 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
+using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 
 namespace Remotion.Web.Development.WebTesting.TestSite
 {
@@ -24,15 +27,45 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyDropDownMenu.EventCommandClick += MyDropDownMenuOnCommandClick;
       MyDropDownMenu.WxeFunctionCommandClick += MyDropDownMenuOnCommandClick;
+
+      MyDropDownMenu_Delayed.SetLoadMenuItemStatus(
+          "DropDownMenuWebService.asmx",
+          nameof(DropDownMenuWebService.GetMenuItemStatusWithDelay),
+          new Dictionary<string, string> { { "arguments", 500.ToString() } });
+
+      MyDropDownMenu_DelayedLongerThanTimeout.SetLoadMenuItemStatus(
+          "DropDownMenuWebService.asmx",
+          nameof(DropDownMenuWebService.GetMenuItemStatusWithDelay),
+          new Dictionary<string, string> { { "arguments", (31 * 1000).ToString() } });
+
+      MyDropDownMenu_Error.SetLoadMenuItemStatus(
+          "DropDownMenuWebService.asmx",
+          nameof(DropDownMenuWebService.GetMenuItemStatusWithError),
+          new Dictionary<string, string>());
+
+      foreach (var i in Enumerable.Range(0, 100))
+      {
+        MyDropDownMenu_ManyMenuItems.MenuItems.Add(
+            new WebMenuItem(
+                "MenuItem" + i,
+                null,
+                WebString.CreateFromText("Item " + i),
+                new IconInfo(),
+                new IconInfo(),
+                WebMenuItemStyle.Text,
+                RequiredSelection.ExactlyOne,
+                false,
+                null));
+      }
     }
 
     private void MyDropDownMenuOnCommandClick (object sender, WebMenuItemClickEventArgs webMenuItemClickEventArgs)
     {
-      ((Layout) Master).SetTestOutput (webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
+      ((Layout)Master).SetTestOutput(webMenuItemClickEventArgs.Item.ItemID + "|" + webMenuItemClickEventArgs.Command.Type);
     }
   }
 }

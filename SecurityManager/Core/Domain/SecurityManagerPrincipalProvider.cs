@@ -21,7 +21,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [ImplementationFor (typeof (IPrincipalProvider),
+  [ImplementationFor(typeof(IPrincipalProvider),
       Lifetime = LifetimeKind.Singleton, Position = Position, RegistrationType = RegistrationType.Single)]
   public sealed class SecurityManagerPrincipalProvider : IPrincipalProvider
   {

@@ -31,16 +31,16 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     {
       var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
 
-      using (new CultureScope ("it", "de-AT"))
+      using (new CultureScope("it", "de-AT"))
       {
         string resourceValue;
-        Assert.That (
-            service.TryGetTypeDisplayName (
-                TypeAdapter.Create (typeof (ClassWithMultiLingualNameAttribute)),
-                TypeAdapter.Create (typeof (ClassWithResources)),
+        Assert.That(
+            service.TryGetTypeDisplayName(
+                TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+                TypeAdapter.Create(typeof(ClassWithResources)),
                 out resourceValue),
             Is.True);
-        Assert.That (resourceValue, Is.EqualTo ("Resource-based Type ID"));
+        Assert.That(resourceValue, Is.EqualTo("Resource-based Type ID"));
       }
     }
 
@@ -49,16 +49,16 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     {
       var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
 
-      using (new CultureScope ("it", "de-AT"))
+      using (new CultureScope("it", "de-AT"))
       {
         string resourceValue;
-        Assert.That (
-            service.TryGetPropertyDisplayName (
-                PropertyInfoAdapter.Create (typeof (ClassWithMultiLingualNameAttribute).GetProperty ("PropertyWithMultiLingualNameAttribute")),
-                TypeAdapter.Create (typeof (ClassWithResources)),
+        Assert.That(
+            service.TryGetPropertyDisplayName(
+                PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+                TypeAdapter.Create(typeof(ClassWithResources)),
                 out resourceValue),
             Is.True);
-        Assert.That (resourceValue, Is.EqualTo ("Resource-based Property ID"));
+        Assert.That(resourceValue, Is.EqualTo("Resource-based Property ID"));
       }
     }
 
@@ -67,11 +67,11 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     {
       var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
 
-      var result = service.GetAvailablePropertyDisplayNames (
-          PropertyInfoAdapter.Create (typeof (ClassWithMultiLingualNameAttribute).GetProperty ("PropertyWithMultiLingualNameAttribute")),
-          TypeAdapter.Create (typeof (ClassWithResources)));
+      var result = service.GetAvailablePropertyDisplayNames(
+          PropertyInfoAdapter.Create(typeof(ClassWithMultiLingualNameAttribute).GetProperty("PropertyWithMultiLingualNameAttribute")),
+          TypeAdapter.Create(typeof(ClassWithResources)));
 
-      Assert.That (result.Values, Is.EquivalentTo (new [] { "Resource-based Property ID", "de-AT Property Name", "de Property Name" }));
+      Assert.That(result.Values, Is.EquivalentTo(new [] { "Resource-based Property ID", "de-AT Property Name", "de Property Name" }));
     }
 
     [Test]
@@ -79,11 +79,11 @@ namespace Remotion.Globalization.UnitTests.IntegrationTests
     {
       var service = SafeServiceLocator.Current.GetInstance<IMemberInformationGlobalizationService>();
 
-      var result = service.GetAvailableTypeDisplayNames (
-          TypeAdapter.Create (typeof (ClassWithMultiLingualNameAttribute)),
-          TypeAdapter.Create (typeof (ClassWithResources)));
+      var result = service.GetAvailableTypeDisplayNames(
+          TypeAdapter.Create(typeof(ClassWithMultiLingualNameAttribute)),
+          TypeAdapter.Create(typeof(ClassWithResources)));
 
-      Assert.That (result.Values, Is.EquivalentTo (new[] { "Resource-based Type ID", "en Type Name", "de-AT Type Name", "de Type Name" }));
+      Assert.That(result.Values, Is.EquivalentTo(new[] { "Resource-based Type ID", "en Type Name", "de-AT Type Name", "de Type Name" }));
     }
   }
 }

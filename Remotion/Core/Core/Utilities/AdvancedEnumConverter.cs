@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using Remotion.Reflection;
 
 namespace Remotion.Utilities
 {
@@ -28,10 +29,10 @@ namespace Remotion.Utilities
     private readonly bool _isNullable;
 
     public AdvancedEnumConverter (Type enumType)
-        : base (Nullable.GetUnderlyingType (ArgumentUtility.CheckNotNull ("enumType", enumType)) ?? enumType)
+        : base(Nullable.GetUnderlyingType(ArgumentUtility.CheckNotNull("enumType", enumType)) ?? enumType)
     {
       _enumType = enumType;
-      _underlyingType = Enum.GetUnderlyingType (UnderlyingEnumType);
+      _underlyingType = Enum.GetUnderlyingType(UnderlyingEnumType);
       _isNullable = UnderlyingEnumType != EnumType;
     }
 
@@ -75,34 +76,34 @@ namespace Remotion.Utilities
     /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
     /// <param name="sourceType"> The <see cref="Type"/> of the value to be converted into an <see cref="Enum"/> type. </param>
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-    public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+    public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
-      ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
 
       if (sourceType == _underlyingType)
         return true;
-  
-      if (_isNullable && Nullable.GetUnderlyingType (sourceType) == _underlyingType)
+
+      if (_isNullable && Nullable.GetUnderlyingType(sourceType) == _underlyingType)
         return true;
 
-      return base.CanConvertFrom (context, sourceType);
+      return base.CanConvertFrom(context, sourceType);
     }
 
     /// <summary> Test: Can convert from <see cref="String"/> to <paramref name="destinationType"/>? </summary>
     /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
     /// <param name="destinationType"> The <see cref="Type"/> to convert an <see cref="Enum"/> value to. </param>
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
-    public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+    public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType!); // Override nullability for release v3.0 of re-motion to prevent changes during release phase
 
       if (!_isNullable && destinationType == _underlyingType)
         return true;
 
-      if (Nullable.GetUnderlyingType (destinationType) == _underlyingType)
+      if (Nullable.GetUnderlyingType(destinationType) == _underlyingType)
         return true;
 
-      return base.CanConvertFrom (context, destinationType);
+      return base.CanConvertFrom(context, destinationType);
     }
 
     /// <summary> Converts <paramref name="value"/> into an <see cref="Enum"/> value. </summary>
@@ -111,10 +112,10 @@ namespace Remotion.Utilities
     /// <param name="value"> The source value. </param>
     /// <returns> An <see cref="Enum"/> value.  </returns>
     /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
-    public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+    public override object? ConvertFrom (ITypeDescriptorContext? context, CultureInfo? culture, object? value)
     {
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
-      if (_isNullable && (value == null || (value is string) && string.IsNullOrEmpty ((string) value)))
+      if (_isNullable && (value == null || (value is string) && string.IsNullOrEmpty((string)value)))
         return null;
 
       if (!(value is string))
@@ -122,13 +123,13 @@ namespace Remotion.Utilities
         if (value != null && _underlyingType == value.GetType())
         {
           if (!EnumUtility.IsValidEnumValue(UnderlyingEnumType, value))
-            throw new ArgumentOutOfRangeException (string.Format ("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.FullName), (Exception) null);
+            throw new ArgumentOutOfRangeException(string.Format("The value {0} is not supported for enumeration '{1}'.", value, UnderlyingEnumType.GetFullNameSafe()), (Exception?)null);
 
-          return Enum.ToObject (UnderlyingEnumType, value);
+          return Enum.ToObject(UnderlyingEnumType, value);
         }
       }
 
-      return base.ConvertFrom (context, culture, value);
+      return base.ConvertFrom(context, culture, value!);
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
     }
 
@@ -139,25 +140,25 @@ namespace Remotion.Utilities
     /// <param name="destinationType"> The destination <see cref="Type"/>. Must not be <see langword="null"/>. </param>
     /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
     /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
-    public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
-      ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
 
       // ReSharper bug: value can be null
       // ReSharper disable ConditionIsAlwaysTrueOrFalse
       // ReSharper disable HeuristicUnreachableCode
       if (_isNullable && value == null)
-        return (destinationType == typeof (string)) ? string.Empty : null;
+        return (destinationType == typeof(string)) ? string.Empty : null;
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
-      
+
       bool isMatchingDestinationType = !_isNullable && destinationType == _underlyingType;
-      bool isMatchingNullableDestinationType = Nullable.GetUnderlyingType (destinationType) == _underlyingType;
-      
+      bool isMatchingNullableDestinationType = Nullable.GetUnderlyingType(destinationType) == _underlyingType;
+
       if (value is Enum && (isMatchingDestinationType || isMatchingNullableDestinationType))
-        return Convert.ChangeType (value, _underlyingType, culture);
-      
-      return base.ConvertTo (context, culture, value, destinationType);
+        return Convert.ChangeType(value, _underlyingType, culture);
+
+      return base.ConvertTo(context, culture, value, destinationType);
     }
   }
 }

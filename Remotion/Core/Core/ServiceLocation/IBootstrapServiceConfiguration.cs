@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 
 namespace Remotion.ServiceLocation
 {
@@ -47,6 +47,6 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// Removes all registered <see cref="ServiceConfigurationEntry"/> data.
     /// </summary>
-    void Reset();
+    void Reset ();
   }
 }

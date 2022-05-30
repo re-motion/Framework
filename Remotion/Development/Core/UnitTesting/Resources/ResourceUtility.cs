@@ -25,58 +25,58 @@ namespace Remotion.Development.UnitTesting.Resources
   {
     public static Stream GetResourceStream (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      ArgumentUtility.CheckNotNullOrEmpty ("resourceID", resourceID);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
-      var resourceStream = assembly.GetManifestResourceStream (resourceID);
+      var resourceStream = assembly.GetManifestResourceStream(resourceID);
       if (resourceStream == null)
-        throw new ResourceNotFoundException (string.Format ("Resource '{0}' in assembly '{1}' could not be found.", resourceID, assembly.FullName));
+        throw new ResourceNotFoundException(string.Format("Resource '{0}' in assembly '{1}' could not be found.", resourceID, assembly.FullName));
       return resourceStream;
     }
 
     public static Stream GetResourceStream (Type namespaceProvider, string shortResourceName)
     {
-      var resourceStream = namespaceProvider.Assembly.GetManifestResourceStream (namespaceProvider, shortResourceName);
+      var resourceStream = namespaceProvider.Assembly.GetManifestResourceStream(namespaceProvider, shortResourceName);
       if (resourceStream == null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Resource '{0}.{1}' in assembly '{2}' could not be found.", namespaceProvider.Namespace, shortResourceName, namespaceProvider);
-        throw new ResourceNotFoundException (message);
+        throw new ResourceNotFoundException(message);
       }
       return resourceStream;
     }
 
     public static byte[] GetResource (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      ArgumentUtility.CheckNotNullOrEmpty ("resourceID", resourceID);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
-      using (var resourceStream = GetResourceStream (assembly, resourceID))
+      using (var resourceStream = GetResourceStream(assembly, resourceID))
       {
-        return GetBytes (resourceStream);
+        return GetBytes(resourceStream);
       }
     }
 
     public static byte[] GetResource (Type namespaceProvider, string shortResourceName)
     {
-      ArgumentUtility.CheckNotNull ("namespaceProvider", namespaceProvider);
-      ArgumentUtility.CheckNotNullOrEmpty ("shortResourceName", shortResourceName);
+      ArgumentUtility.CheckNotNull("namespaceProvider", namespaceProvider);
+      ArgumentUtility.CheckNotNullOrEmpty("shortResourceName", shortResourceName);
 
 
-      using (var resourceStream = GetResourceStream (namespaceProvider, shortResourceName))
+      using (var resourceStream = GetResourceStream(namespaceProvider, shortResourceName))
       {
-        return GetBytes (resourceStream);
+        return GetBytes(resourceStream);
       }
     }
 
     public static string GetResourceString (Assembly assembly, string resourceID)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      ArgumentUtility.CheckNotNullOrEmpty ("resourceID", resourceID);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      ArgumentUtility.CheckNotNullOrEmpty("resourceID", resourceID);
 
-      using (var resourceStream = GetResourceStream (assembly, resourceID))
+      using (var resourceStream = GetResourceStream(assembly, resourceID))
       {
-        using (var streamReader = new StreamReader (resourceStream))
+        using (var streamReader = new StreamReader(resourceStream))
         {
           return streamReader.ReadToEnd();
         }
@@ -85,26 +85,26 @@ namespace Remotion.Development.UnitTesting.Resources
 
     public static string GetResourceString (Type namespaceProvider, string shortResourceName)
     {
-      ArgumentUtility.CheckNotNull ("namespaceProvider", namespaceProvider);
-      ArgumentUtility.CheckNotNullOrEmpty ("shortResourceName", shortResourceName);
+      ArgumentUtility.CheckNotNull("namespaceProvider", namespaceProvider);
+      ArgumentUtility.CheckNotNullOrEmpty("shortResourceName", shortResourceName);
 
-      using (var resourceStream = GetResourceStream (namespaceProvider, shortResourceName))
+      using (var resourceStream = GetResourceStream(namespaceProvider, shortResourceName))
       {
-        return GetString (resourceStream);
+        return GetString(resourceStream);
       }
     }
 
     private static byte[] GetBytes (Stream resourceStream)
     {
-      using (var binaryReader = new BinaryReader (resourceStream))
+      using (var binaryReader = new BinaryReader(resourceStream))
       {
-        return binaryReader.ReadBytes ((int) resourceStream.Length);
+        return binaryReader.ReadBytes((int)resourceStream.Length);
       }
     }
 
     private static string GetString (Stream resourceStream)
     {
-      using (var streamReader = new StreamReader (resourceStream))
+      using (var streamReader = new StreamReader(resourceStream))
       {
         return streamReader.ReadToEnd();
       }

@@ -17,10 +17,13 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
+using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.Web;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
@@ -40,73 +43,92 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderWithAvailableViews ()
     {
-      DropDownList dropDownList = MockRepository.GenerateMock<DropDownList>();
-      List.Stub (mock => mock.GetAvailableViewsList()).Return (dropDownList);
-      List.Stub (mock => mock.HasAvailableViewsList).Return (true);
-      List.Stub (mock => mock.AvailableViewsListTitle).Return ("Views List Title");
+      var dropDownList = new Mock<DropDownList>();
+      List.Setup(mock => mock.GetAvailableViewsList()).Returns(dropDownList.Object);
+      List.Setup(mock => mock.HasAvailableViewsList).Returns(true);
+      List.Setup(mock => mock.AvailableViewsListTitle).Returns(WebString.CreateFromText("Views List Title"));
 
-      dropDownList.Stub (mock => mock.ClientID).Return ("MockedDropDownListClientID");
-      dropDownList.Stub (mock => mock.RenderControl (Html.Writer)).WhenCalled (
-          invocation => ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown list"));
+      dropDownList.Setup(mock => mock.ClientID).Returns("MockedDropDownListClientID");
+      dropDownList.Setup(mock => mock.RenderControl(Html.Writer)).Callback(
+          (HtmlTextWriter writer) => writer.Write("mocked dropdown list"));
 
-      var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      var renderer = new BocListMenuBlockRenderer(_bocListCssClassDefinition);
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertStyleAttribute (div, "width", "100%");
-      Html.AssertStyleAttribute (div, "margin-bottom", "5pt");
+      var div = Html.GetAssertedChildElement(document, "div", 0);
 
-      var span = Html.GetAssertedChildElement (div, "label", 0);
-      Html.AssertAttribute (span, "for", "MockedDropDownListClientID");
-      Html.AssertAttribute (span, "class", _bocListCssClassDefinition.AvailableViewsListLabel);
-      Html.AssertTextNode (span, "Views List Title", 0);
+      var span = Html.GetAssertedChildElement(div, "label", 0);
+      Html.AssertAttribute(span, "for", "MockedDropDownListClientID");
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.AvailableViewsListLabel);
+      Html.AssertTextNode(span, "Views List Title", 0);
 
-      Html.AssertTextNode (div, HtmlHelper.WhiteSpace + "mocked dropdown list", 1);
+      Html.AssertTextNode(div, HtmlHelper.WhiteSpace + "mocked dropdown list", 1);
+    }
+
+    [Test]
+    public void RenderAvailableViewsListTitleWebString ()
+    {
+      var dropDownList = new Mock<DropDownList>();
+      List.Setup(mock => mock.GetAvailableViewsList()).Returns(dropDownList.Object);
+      List.Setup(mock => mock.HasAvailableViewsList).Returns(true);
+      List.Setup(mock => mock.AvailableViewsListTitle).Returns(WebString.CreateFromText("Multiline\nTitle"));
+
+      dropDownList.Setup(mock => mock.ClientID).Returns("MockedDropDownListClientID");
+      dropDownList.Setup(mock => mock.RenderControl(Html.Writer)).Callback((HtmlTextWriter writer) => writer.Write("mocked dropdown list"));
+
+      var renderer = new BocListMenuBlockRenderer(_bocListCssClassDefinition);
+      renderer.Render(CreateRenderingContext());
+
+      var document = Html.GetResultDocument();
+      var title = document.GetAssertedElementByClass(_bocListCssClassDefinition.AvailableViewsListLabel);
+      Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />Title"));
     }
 
     [Test]
     public void RenderWithOptions ()
     {
-      IDropDownMenu optionsMenu = MockRepository.GenerateStub<IDropDownMenu> ();
+      var optionsMenu = new Mock<IDropDownMenu>();
       StateBag bag = new StateBag();
-      AttributeCollection attributes = new AttributeCollection (bag);
-      optionsMenu.Stub (stub => stub.Style).Return (attributes.CssStyle);
-      optionsMenu.Visible = true;
+      AttributeCollection attributes = new AttributeCollection(bag);
+      optionsMenu.Setup(stub => stub.Style).Returns(attributes.CssStyle);
+      optionsMenu.SetupProperty(_ => _.Visible);
+      optionsMenu.Object.Visible = true;
 
-      List.Stub (mock => mock.OptionsMenu).Return (optionsMenu);
-      List.Stub (mock => mock.HasOptionsMenu).Return (true);
-      List.Stub (mock => mock.OptionsTitle).Return ("Options Menu Title");
-      List.Stub (mock => mock.MenuBlockItemOffset).Return (new Unit (7, UnitType.Pixel));
+      List.Setup(mock => mock.OptionsMenu).Returns(optionsMenu.Object);
+      List.Setup(mock => mock.HasOptionsMenu).Returns(true);
+      List.Setup(mock => mock.OptionsTitle).Returns(WebString.CreateFromText("Options Menu Title"));
 
-      optionsMenu.Stub (menuMock => menuMock.RenderControl (Html.Writer)).WhenCalled (
-          invocation => ((HtmlTextWriter) invocation.Arguments[0]).Write ("mocked dropdown menu"));
+      optionsMenu.Setup(menuMock => menuMock.RenderControl(Html.Writer)).Callback(
+          (HtmlTextWriter writer) => writer.Write("mocked dropdown menu"));
 
-      var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      var renderer = new BocListMenuBlockRenderer(_bocListCssClassDefinition);
+      renderer.Render(CreateRenderingContext());
 
-      Assert.That (Html.GetDocumentText().StartsWith ("mocked dropdown menu"));
+      Assert.That(Html.GetDocumentText().StartsWith("mocked dropdown menu"));
     }
 
     [Test]
     public void RenderWithListMenu ()
     {
-      List.Stub (mock => mock.HasListMenu).Return (true);
-      List.ListMenu.Visible = true;
+      List.Setup(mock => mock.HasListMenu).Returns(true);
+      List.Object.ListMenu.Visible = true;
 
-      Unit menuBlockOffset = new Unit (3, UnitType.Pixel);
-      List.Stub (mock => mock.MenuBlockItemOffset).Return (menuBlockOffset);
-
-      var renderer = new BocListMenuBlockRenderer (_bocListCssClassDefinition);
-      renderer.Render (new BocListRenderingContext(HttpContext, Html.Writer, List, new BocColumnRenderer[0]));
+      var renderer = new BocListMenuBlockRenderer(_bocListCssClassDefinition);
+      renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
 
-      var div = Html.GetAssertedChildElement (document, "div", 0);
-      Html.AssertStyleAttribute (div, "width", "100%");
-      Html.AssertStyleAttribute (div, "margin-bottom", menuBlockOffset.ToString());
-      Html.AssertChildElementCount (div, 0);
+      var div = Html.GetAssertedChildElement(document, "div", 0);
+      Html.AssertChildElementCount(div, 0);
+      Html.AssertAttribute(div, "class", "bocListListMenuContainer");
+    }
+
+    private BocListRenderingContext CreateRenderingContext ()
+    {
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(List.Object.DataSource, List.Object.Property, "Args");
+      return new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, new BocColumnRenderer[0]);
     }
   }
 }

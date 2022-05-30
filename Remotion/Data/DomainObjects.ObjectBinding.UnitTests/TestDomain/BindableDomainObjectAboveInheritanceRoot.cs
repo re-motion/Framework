@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     public virtual string NullableStringPropertyWithoutLengthConstraint { get; set;}
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public virtual string NotNullableStringPropertyWithLengthConstraint { get; set; }
 
     public virtual BindableDomainObjectOnInheritanceRoot NotMandatoryUnidirectionalRelation { get; set; }

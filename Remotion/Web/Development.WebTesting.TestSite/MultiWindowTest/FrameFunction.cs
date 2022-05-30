@@ -25,23 +25,23 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
   {
     [UsedImplicitly]
     public FrameFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     public FrameFunction (params object[] args)
-        : base (new NoneTransactionMode(), args)
+        : base(new NoneTransactionMode(), args)
     {
     }
 
-    [WxeParameter (1, true, WxeParameterDirection.In)]
+    [WxeParameter(1, true, WxeParameterDirection.In)]
     public bool AlwaysRefreshMain
     {
-      get { return (bool) Variables["AlwaysRefreshMain"]; }
+      get { return (bool)Variables["AlwaysRefreshMain"]; }
       [UsedImplicitly] set { Variables["AlwaysRefreshMain"] = value; }
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("MultiWindowTest/Frame.aspx");
+    private WxeStep Step1 = new WxePageStep("MultiWindowTest/Frame.aspx");
   }
 }

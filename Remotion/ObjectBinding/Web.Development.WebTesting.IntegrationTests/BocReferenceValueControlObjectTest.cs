@@ -15,12 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Coypu;
+using System.Linq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
 using Remotion.Web.Development.WebTesting;
+using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
+using Remotion.Web.Development.WebTesting.ControlObjects;
+using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
@@ -34,26 +37,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   public class BocReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
-    [RemotionTestCaseSource (typeof (DisabledTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ReadOnlyTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LabelTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (ValidationErrorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisabledTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ReadOnlyTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LabelTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(ValidationErrorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     public void GenericTests (GenericSelectorTestAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
-      testAction (Helper, e => e.ReferenceValues(), "referenceValue");
+      testAction(Helper, e => e.ReferenceValues(), "referenceValue");
     }
 
     [Test]
-    [RemotionTestCaseSource (typeof (HtmlIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (IndexControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (LocalIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (FirstControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (SingleControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DomainPropertyControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
-    [RemotionTestCaseSource (typeof (DisplayNameControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(HtmlIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(IndexControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(LocalIDControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(FirstControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(SingleControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DomainPropertyControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
+    [TestCaseSource(typeof(DisplayNameControlSelectorTestCaseFactory<BocReferenceValueSelector, BocReferenceValueControlObject>))]
     public void TestControlSelectors (GenericSelectorTestAction<BocReferenceValueSelector, BocReferenceValueControlObject> testAction)
     {
-      testAction (Helper, e => e.ReferenceValues(), "referenceValue");
+      testAction(Helper, e => e.ReferenceValues(), "referenceValue");
     }
 
     [Test]
@@ -63,14 +66,21 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var control = home.ReferenceValues().GetByLocalID ("PartnerField_Disabled");
+      var control = home.ReferenceValues().GetByLocalID("PartnerField_Disabled");
 
-      Assert.That (control.IsDisabled(), Is.True);
-      Assert.That (() => control.ExecuteCommand(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
-      Assert.That (() => control.SelectOption (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlDisabledException().Message));
+      Assert.That(control.IsDisabled(), Is.True);
+      Assert.That(
+          () => control.SelectOption().WithDisplayText("D, A"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption.WithDisplayText").Message));
+      Assert.That(
+          () => control.SelectOption().WithIndex(1),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption.WithIndex").Message));
+      Assert.That(
+          () => control.SelectOption().WithItemID(baValue),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption.WithItemID").Message));
+      Assert.That(
+          () => control.SelectOption(baValue),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlDisabledException(Driver, "SelectOption(itemID)").Message));
     }
 
     [Test]
@@ -80,15 +90,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var control = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
+      var control = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnly");
 
-      Assert.That (control.IsReadOnly(), Is.True);
-      Assert.That (() => control.GetOptionDefinitions(), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption().WithDisplayText ("D, A"), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption().WithIndex (1), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption().WithItemID (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-      Assert.That (() => control.SelectOption (baValue), Throws.Exception.Message.EqualTo (AssertionExceptionUtility.CreateControlReadOnlyException().Message));
-    
+      Assert.That(control.IsReadOnly(), Is.True);
+      Assert.That(
+          () => control.GetOptionDefinitions(),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.SelectOption().WithDisplayText("D, A"),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.SelectOption().WithIndex(1),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.SelectOption().WithItemID(baValue),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
+      Assert.That(
+          () => control.SelectOption(baValue),
+          Throws.Exception.With.Message.EqualTo(AssertionExceptionUtility.CreateControlReadOnlyException(Driver).Message));
     }
 
     [Test]
@@ -98,8 +117,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       const string daValue = "00000000-0000-0000-0000-000000000009";
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      AssertSelectedOption (bocReferenceValue, daValue, -1, "D, A");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      AssertSelectedOption(bocReferenceValue, daValue, -1, "D, A");
     }
 
     [Test]
@@ -107,8 +126,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_WithoutSelectedValue");
-      AssertSelectedOption (bocReferenceValue, "==null==", -1, "");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_WithoutSelectedValue");
+      AssertSelectedOption(bocReferenceValue, "==null==", -1, "");
+    }
+
+    [Test]
+    public void TestDropDownItemDisabledWithRequiredSelection ()
+    {
+      var home = Start();
+
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      var dropDownMenu = bocReferenceValue.GetDropDownMenu();
+
+      dropDownMenu.Open();
+      var menuItem = GetDropDownMenuItem3();
+      Assert.That(menuItem.IsDisabled, Is.False);
+
+      bocReferenceValue.SelectOption("==null==");
+      menuItem = GetDropDownMenuItem3();
+      Assert.That(menuItem.IsDisabled, Is.True);
+
+      bocReferenceValue.SelectOption().WithDisplayText("D, A");
+      menuItem = GetDropDownMenuItem3();
+      Assert.That(menuItem.IsDisabled, Is.False);
+
+      ItemDefinition GetDropDownMenuItem3 () => dropDownMenu.GetItemDefinitions().Single(x => x.ItemID == "OptCmd3");
     }
 
     [Test]
@@ -118,8 +160,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       const string daValue = "00000000-0000-0000-0000-000000000009";
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      AssertSelectedOption (bocReferenceValue, daValue, -1, "D, A");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnly");
+      AssertSelectedOption(bocReferenceValue, daValue, -1, "D, A");
     }
 
     [Test]
@@ -127,8 +169,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
-      AssertSelectedOption (bocReferenceValue, "==null==", -1, "");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnlyWithoutSelectedValue");
+      AssertSelectedOption(bocReferenceValue, "==null==", -1, "");
     }
 
     [Test]
@@ -138,8 +180,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       const string daValue = "00000000-0000-0000-0000-000000000009";
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      AssertSelectedOption (bocReferenceValue, daValue, -1, "D, A");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      AssertSelectedOption(bocReferenceValue, daValue, -1, "D, A");
     }
 
     private void AssertSelectedOption (
@@ -150,10 +192,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var optionDefinition = bocReferenceValue.GetSelectedOption();
 
-      Assert.That (optionDefinition.ItemID, Is.EqualTo (expectedItemID));
-      Assert.That (optionDefinition.Index, Is.EqualTo (expectedIndex));
-      Assert.That (optionDefinition.Text, Is.EqualTo (expectedText));
-      Assert.That (optionDefinition.IsSelected, Is.True);
+      Assert.That(optionDefinition.ItemID, Is.EqualTo(expectedItemID));
+      Assert.That(optionDefinition.Index, Is.EqualTo(expectedIndex));
+      Assert.That(optionDefinition.Text, Is.EqualTo(expectedText));
+      Assert.That(optionDefinition.IsSelected, Is.True);
     }
 
     [Test]
@@ -163,27 +205,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       const string fValue = "ef898bb1-7095-46d2-872b-5f732a7c0036";
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+
       var options = bocReferenceValue.GetOptionDefinitions();
-      Assert.That (options.Count, Is.EqualTo (16));
-      
-      Assert.That (options[0].ItemID, Is.EqualTo ("==null=="));
-      Assert.That (options[0].Index, Is.EqualTo (1));
-      Assert.That (options[0].Text, Is.Empty);
-      Assert.That (options[0].IsSelected, Is.False);
+      Assert.That(options.Count, Is.EqualTo(17));
 
-      Assert.That (options[2].Text, Is.EqualTo ("D, A"));
-      Assert.That (options[2].IsSelected, Is.True);
+      Assert.That(options[0].ItemID, Is.EqualTo("==null=="));
+      Assert.That(options[0].Index, Is.EqualTo(1));
+      Assert.That(options[0].Text, Is.Empty);
+      Assert.That(options[0].IsSelected, Is.False);
 
-      Assert.That (options[15].ItemID, Is.EqualTo (fValue));
-      Assert.That (options[15].Index, Is.EqualTo (16));
-      
-      if (Helper.BrowserConfiguration.IsInternetExplorer())
-        Assert.That (options[15].Text, Is.EqualTo ("F,"));
-      else
-        Assert.That (options[15].Text, Is.EqualTo ("F, "));
-      Assert.That (options[15].IsSelected, Is.False);
+      Assert.That(options[2].Text, Is.EqualTo("D, A"));
+      Assert.That(options[2].IsSelected, Is.True);
+
+      Assert.That(options[16].ItemID, Is.EqualTo(fValue));
+      Assert.That(options[16].Index, Is.EqualTo(17));
+
+      Assert.That(options[16].Text, Is.EqualTo("F,"));
+      Assert.That(options[16].IsSelected, Is.False);
     }
 
     [Test]
@@ -191,8 +230,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
-      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.True);
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnlyWithoutSelectedValue");
+      Assert.That(bocReferenceValue.HasNullOptionDefinition(), Is.True);
 
     }
 
@@ -201,8 +240,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.False);
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnly");
+      Assert.That(bocReferenceValue.HasNullOptionDefinition(), Is.False);
     }
 
     [Test]
@@ -210,8 +249,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.True);
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      Assert.That(bocReferenceValue.HasNullOptionDefinition(), Is.True);
 
     }
 
@@ -220,8 +259,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Required");
-      Assert.That (bocReferenceValue.HasNullOptionDefinition(), Is.False);
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Required");
+      Assert.That(bocReferenceValue.HasNullOptionDefinition(), Is.False);
 
     }
 
@@ -230,32 +269,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      Assert.That(bocReferenceValue.GetText(), Is.EqualTo("D, A"));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal_AlternativeRendering");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnly");
+      Assert.That(bocReferenceValue.GetText(), Is.EqualTo("D, A"));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnlyWithoutSelectedValue");
+      Assert.That(bocReferenceValue.GetText(), Is.EqualTo(""));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnlyWithoutSelectedValue");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo (""));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Disabled");
+      Assert.That(bocReferenceValue.GetText(), Is.EqualTo("D, A"));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly_AlternativeRendering");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_NoAutoPostBack");
+      Assert.That(bocReferenceValue.GetText(), Is.EqualTo("D, A"));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Disabled");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_NoCommandNoMenu");
+      Assert.That(bocReferenceValue.GetText(), Is.EqualTo("D, A"));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_NoAutoPostBack");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_NoCommandNoMenu");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo ("D, A"));
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_WithoutSelectedValue");
-      Assert.That (bocReferenceValue.GetText(), Is.EqualTo (""));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_WithoutSelectedValue");
+      Assert.That(bocReferenceValue.GetText(), Is.EqualTo(""));
     }
 
     [Test]
@@ -266,17 +299,29 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string baValue = "c8ace752-55f6-4074-8890-130276ea6cd1";
       const string daValue = "00000000-0000-0000-0000-000000000009";
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption (baValue);
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baValue));
+      {
+        var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocReferenceValue);
+        bocReferenceValue.SelectOption(baValue);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(baValue));
+      }
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption().WithIndex (1);
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.Empty);
+      {
+        var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocReferenceValue);
+        bocReferenceValue.SelectOption().WithIndex(1);
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.Empty);
+      }
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption().WithDisplayText ("D, A");
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daValue));
+      {
+        var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+        var completionDetection = new CompletionDetectionStrategyTestHelper(bocReferenceValue);
+        bocReferenceValue.SelectOption().WithDisplayText("D, A");
+        Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
+        Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(daValue));
+      }
     }
 
     [Test]
@@ -287,56 +332,28 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       const string baValue = "c8ace752-55f6-4074-8890-130276ea6cd1";
       const string daValue = "00000000-0000-0000-0000-000000000009";
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption ("==null==");
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.Empty);
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      bocReferenceValue.SelectOption("==null==");
+      Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.Empty);
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption (baValue);
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (baValue));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      bocReferenceValue.SelectOption(baValue);
+      Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(baValue));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_NoAutoPostBack");
-      bocReferenceValue.SelectOption (baValue); // no auto post back
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daValue));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_NoAutoPostBack");
+      var completionDetection = new CompletionDetectionStrategyTestHelper(bocReferenceValue);
+      bocReferenceValue.SelectOption(baValue); // no auto post back
+      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
+      Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(daValue));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption (baValue, Opt.ContinueImmediately()); // same value, does not trigger post back
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (daValue));
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      bocReferenceValue.SelectOption(baValue, Opt.ContinueImmediately()); // same value, does not trigger post back
+      Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(daValue));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.SelectOption (daValue);
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINormalLabel").Text, Is.EqualTo (daValue));
-      Assert.That (home.Scope.FindIdEndingWith ("BOUINoAutoPostBackLabel").Text, Is.EqualTo (baValue));
-    }
-
-    [Test]
-    public void TestExecuteCommand ()
-    {
-      var home = Start();
-
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
-      bocReferenceValue.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal_AlternativeRendering");
-      bocReferenceValue.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_Normal_AlternativeRendering"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      bocReferenceValue.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly_AlternativeRendering");
-      bocReferenceValue.ExecuteCommand();
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly_AlternativeRendering"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("CommandClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.Empty);
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
+      bocReferenceValue.SelectOption(daValue);
+      Assert.That(home.Scope.FindIdEndingWith("BOUINormalLabel").Text, Is.EqualTo(daValue));
+      Assert.That(home.Scope.FindIdEndingWith("BOUINoAutoPostBackLabel").Text, Is.EqualTo(baValue));
     }
 
     [Test]
@@ -344,38 +361,24 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     {
       var home = Start();
 
-      var bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal");
+      var bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_Normal");
       var dropDownMenu = bocReferenceValue.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_Normal"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("MenuItemClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|My menu command 2"));
+      dropDownMenu.SelectItem("OptCmd2");
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("PartnerField_Normal"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("MenuItemClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("OptCmd2|My menu command 2"));
 
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_Normal_AlternativeRendering");
+      bocReferenceValue = home.ReferenceValues().GetByLocalID("PartnerField_ReadOnly");
       dropDownMenu = bocReferenceValue.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_Normal_AlternativeRendering"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("MenuItemClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|My menu command 2"));
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly");
-      dropDownMenu = bocReferenceValue.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("MenuItemClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|My menu command 2"));
-
-      bocReferenceValue = home.ReferenceValues().GetByLocalID ("PartnerField_ReadOnly_AlternativeRendering");
-      dropDownMenu = bocReferenceValue.GetDropDownMenu();
-      dropDownMenu.SelectItem ("OptCmd2");
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedSenderLabel").Text, Is.EqualTo ("PartnerField_ReadOnly_AlternativeRendering"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedLabel").Text, Is.EqualTo ("MenuItemClick"));
-      Assert.That (home.Scope.FindIdEndingWith ("ActionPerformedParameterLabel").Text, Is.EqualTo ("OptCmd2|My menu command 2"));
+      dropDownMenu.SelectItem("OptCmd2");
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedSenderLabel").Text, Is.EqualTo("PartnerField_ReadOnly"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedLabel").Text, Is.EqualTo("MenuItemClick"));
+      Assert.That(home.Scope.FindIdEndingWith("ActionPerformedParameterLabel").Text, Is.EqualTo("OptCmd2|My menu command 2"));
     }
 
     private WxePageObject Start ()
     {
-      return Start ("BocReferenceValue");
+      return Start("BocReferenceValue");
     }
   }
 }

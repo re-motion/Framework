@@ -28,15 +28,15 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     private readonly OrganizationalStructureFactory _factory;
 
     public OrganizationalStructureTestHelper ()
-      : this (ClientTransaction.CreateRootTransaction ())
+      : this(ClientTransaction.CreateRootTransaction())
     {
     }
 
     public OrganizationalStructureTestHelper (ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
       _transaction = transaction;
-      _factory = new OrganizationalStructureFactory ();
+      _factory = new OrganizationalStructureFactory();
     }
 
     public ClientTransaction Transaction
@@ -46,14 +46,14 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Tenant CreateTenant (string name, string uniqueIdentifier)
     {
-      return CreateTenant (_transaction, name, uniqueIdentifier);
+      return CreateTenant(_transaction, name, uniqueIdentifier);
     }
 
     public Tenant CreateTenant (ClientTransaction transaction, string name, string uniqueIdentifier)
     {
       using (transaction.EnterNonDiscardingScope())
       {
-        Tenant tenant = _factory.CreateTenant ();
+        Tenant tenant = _factory.CreateTenant();
         tenant.UniqueIdentifier = uniqueIdentifier;
         tenant.Name = name;
 
@@ -63,19 +63,19 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public Group CreateGroup (string name, Group parent, Tenant tenant)
     {
-      return CreateGroup (_transaction, name, Guid.NewGuid().ToString(), parent, tenant);
+      return CreateGroup(_transaction, name, Guid.NewGuid().ToString(), parent, tenant);
     }
 
     public Group CreateGroup (string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
-      return CreateGroup (_transaction, name, uniqueIdentifier, parent, tenant);
+      return CreateGroup(_transaction, name, uniqueIdentifier, parent, tenant);
     }
 
     public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Tenant tenant)
     {
       using (transaction.EnterNonDiscardingScope())
       {
-        Group group = _factory.CreateGroup ();
+        Group group = _factory.CreateGroup();
         group.Name = name;
         group.Parent = parent;
         group.Tenant = tenant;
@@ -89,7 +89,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        User user = _factory.CreateUser ();
+        User user = _factory.CreateUser();
         user.UserName = userName;
         user.FirstName = firstName;
         user.LastName = lastName;
@@ -105,7 +105,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       using (_transaction.EnterNonDiscardingScope())
       {
-        Position position = _factory.CreatePosition ();
+        Position position = _factory.CreatePosition();
         position.Name = name;
 
         return position;
@@ -138,7 +138,7 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
     public GroupTypePosition CreateGroupTypePosition (GroupType groupType, Position position)
     {
-      using (_transaction.EnterNonDiscardingScope ())
+      using (_transaction.EnterNonDiscardingScope())
       {
         GroupTypePosition concretePosition = GroupTypePosition.NewObject();
         concretePosition.GroupType = groupType;

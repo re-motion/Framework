@@ -28,14 +28,14 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// A facade that modifies mixin target type by calling the methods on <see cref="TargetTypeGenerator"/> in the proper order.
   /// </summary>
   /// <threadsafety static="true" instance="true"/>
-  [ImplementationFor (typeof (ITargetTypeModifier), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
+  [ImplementationFor(typeof(ITargetTypeModifier), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class TargetTypeGeneratorFacade : ITargetTypeModifier
   {
     private readonly INextCallProxyGenerator _nextCallProxyGenerator;
 
     public TargetTypeGeneratorFacade (INextCallProxyGenerator nextCallProxyGenerator)
     {
-      ArgumentUtility.CheckNotNull ("nextCallProxyGenerator", nextCallProxyGenerator);
+      ArgumentUtility.CheckNotNull("nextCallProxyGenerator", nextCallProxyGenerator);
       _nextCallProxyGenerator = nextCallProxyGenerator;
     }
 
@@ -45,31 +45,31 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
         IEnumerable<Type> interfacesToImplement,
         IList<IMixinInfo> mixinInfos)
     {
-      ArgumentUtility.CheckNotNull ("concreteTarget", concreteTarget);
-      ArgumentUtility.CheckNotNull ("targetClassDefinition", targetClassDefinition);
-      ArgumentUtility.CheckNotNull ("interfacesToImplement", interfacesToImplement);
-      ArgumentUtility.CheckNotNull ("mixinInfos", mixinInfos);
+      ArgumentUtility.CheckNotNull("concreteTarget", concreteTarget);
+      ArgumentUtility.CheckNotNull("targetClassDefinition", targetClassDefinition);
+      ArgumentUtility.CheckNotNull("interfacesToImplement", interfacesToImplement);
+      ArgumentUtility.CheckNotNull("mixinInfos", mixinInfos);
 
-      var targetTypeGenerator = new TargetTypeGenerator (concreteTarget, new ExpressionBuilder(), new AttributeGenerator(), _nextCallProxyGenerator);
-      var mixinTypes = mixinInfos.Select (t => t.MixinType).ToList();
+      var targetTypeGenerator = new TargetTypeGenerator(concreteTarget, new ExpressionBuilder(), new AttributeGenerator(), _nextCallProxyGenerator);
+      var mixinTypes = mixinInfos.Select(t => t.MixinType).ToList();
 
-      targetTypeGenerator.AddInterfaces (interfacesToImplement);
-      targetTypeGenerator.AddExtensionsField ();
-      targetTypeGenerator.AddNextCallProxy (targetClassDefinition, mixinInfos);
+      targetTypeGenerator.AddInterfaces(interfacesToImplement);
+      targetTypeGenerator.AddExtensionsField();
+      targetTypeGenerator.AddNextCallProxy(targetClassDefinition, mixinInfos);
       targetTypeGenerator.AddFields();
-      targetTypeGenerator.AddTypeInitializations (targetClassDefinition.ConfigurationContext, mixinTypes);
+      targetTypeGenerator.AddTypeInitializations(targetClassDefinition.ConfigurationContext, mixinTypes);
       targetTypeGenerator.AddInitializations(mixinTypes);
 
-      targetTypeGenerator.ImplementIMixinTarget (targetClassDefinition.Name);
-      targetTypeGenerator.ImplementIntroducedInterfaces (targetClassDefinition.ReceivedInterfaces);
-      targetTypeGenerator.ImplementRequiredDuckMethods (targetClassDefinition);
-      targetTypeGenerator.ImplementAttributes (targetClassDefinition);
-      
-      targetTypeGenerator.AddMixedTypeAttribute (targetClassDefinition);
-      targetTypeGenerator.AddDebuggerDisplayAttribute (targetClassDefinition);
-      
-      targetTypeGenerator.ImplementOverrides (targetClassDefinition);
-      targetTypeGenerator.ImplementOverridingMethods (targetClassDefinition, mixinInfos);
+      targetTypeGenerator.ImplementIMixinTarget(targetClassDefinition.Name);
+      targetTypeGenerator.ImplementIntroducedInterfaces(targetClassDefinition.ReceivedInterfaces);
+      targetTypeGenerator.ImplementRequiredDuckMethods(targetClassDefinition);
+      targetTypeGenerator.ImplementAttributes(targetClassDefinition);
+
+      targetTypeGenerator.AddMixedTypeAttribute(targetClassDefinition);
+      targetTypeGenerator.AddDebuggerDisplayAttribute(targetClassDefinition);
+
+      targetTypeGenerator.ImplementOverrides(targetClassDefinition);
+      targetTypeGenerator.ImplementOverridingMethods(targetClassDefinition, mixinInfos);
     }
   }
 }

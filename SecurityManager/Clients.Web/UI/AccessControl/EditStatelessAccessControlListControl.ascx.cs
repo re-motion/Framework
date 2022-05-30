@@ -17,10 +17,10 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
+using Remotion.Web.Globalization;
 
 namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -29,10 +29,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     protected override void OnPreRender (EventArgs e)
     {
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
-      DeleteAccessControlListButton.Text = resourceManager.GetString(ResourceIdentifier.DeleteAccessControlListButtonText);
-      NewAccessControlEntryButton.Text = resourceManager.GetString(ResourceIdentifier.NewAccessControlEntryButtonText);
+      DeleteAccessControlListButton.Text = resourceManager.GetText(ResourceIdentifier.DeleteAccessControlListButtonText);
+      NewAccessControlEntryButton.Text = resourceManager.GetText(ResourceIdentifier.NewAccessControlEntryButtonText);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
     }
 
     public override IBusinessObjectDataSourceControl DataSource

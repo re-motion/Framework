@@ -34,8 +34,8 @@ namespace Remotion.Data.DomainObjects.Tracing
 
     public TracingDbTransaction (IDbTransaction transaction, IPersistenceExtension persistenceExtension, Guid connectionID)
     {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-      ArgumentUtility.CheckNotNull ("persistenceExtension", persistenceExtension);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
+      ArgumentUtility.CheckNotNull("persistenceExtension", persistenceExtension);
       _transaction = transaction;
       _persistenceExtension = persistenceExtension;
       _connectionID = connectionID;
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.Tracing
 
       if (!_isTransactionDisposed)
       {
-        PersistenceExtension.TransactionDisposed (_connectionID);
+        PersistenceExtension.TransactionDisposed(_connectionID);
         _isTransactionDisposed = true;
       }
     }
@@ -77,17 +77,17 @@ namespace Remotion.Data.DomainObjects.Tracing
     {
       _transaction.Commit();
       if (!_isTransactionDisposed)
-        PersistenceExtension.TransactionCommitted (_connectionID);
+        PersistenceExtension.TransactionCommitted(_connectionID);
     }
 
     public void Rollback ()
     {
       _transaction.Rollback();
       if (!_isTransactionDisposed)
-        PersistenceExtension.TransactionRolledBack (_connectionID);
+        PersistenceExtension.TransactionRolledBack(_connectionID);
     }
 
-    IDbConnection IDbTransaction.Connection
+    IDbConnection? IDbTransaction.Connection
     {
       get { return _transaction.Connection; }
     }

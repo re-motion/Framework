@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
@@ -33,46 +34,47 @@ namespace Remotion.Web.UI.Controls
     private SingleControlItemCollection _command;
     private MissingPermissionBehavior _missingPermissionBehavior;
 
-    protected MenuTab (string itemID, string text, IconInfo icon)
-      : base (itemID, text, icon)
+    protected MenuTab (string itemID, string text, IconInfo? icon)
+      : base(itemID, text, icon)
     {
-      Initialize ();
+      Initialize();
     }
 
     protected MenuTab ()
     {
-      Initialize ();
+      Initialize();
     }
 
+    [MemberNotNull(nameof(_command))]
     private void Initialize ()
     {
-      _command = new SingleControlItemCollection (new NavigationCommand (), new[] { typeof (NavigationCommand) });
+      _command = new SingleControlItemCollection(new NavigationCommand(), new[] { typeof(NavigationCommand) });
     }
 
     public override IWebTabRenderer GetRenderer ()
     {
-      return (IWebTabRenderer) SafeServiceLocator.Current.GetInstance<IMenuTabRenderer> ();
+      return (IWebTabRenderer)SafeServiceLocator.Current.GetInstance<IMenuTabRenderer>();
     }
 
-    protected TabbedMenu TabbedMenu
+    protected TabbedMenu? TabbedMenu
     {
-      get { return (TabbedMenu) OwnerControl; }
+      get { return (TabbedMenu?)OwnerControl; }
     }
 
     public NameValueCollection GetUrlParameters ()
     {
-      return TabbedMenu.GetUrlParameters (this);
+      return TabbedMenu!.GetUrlParameters(this); // TODO RM-8118: not null assertion
     }
 
     /// <summary> Gets or sets the <see cref="NavigationCommand"/> rendered for this menu item. </summary>
     /// <value> A <see cref="NavigationCommand"/>. </value>
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Category ("Behavior")]
-    [Description ("The command rendered for this menu item.")]
-    [NotifyParentProperty (true)]
-    public virtual NavigationCommand Command
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Category("Behavior")]
+    [Description("The command rendered for this menu item.")]
+    [NotifyParentProperty(true)]
+    public virtual NavigationCommand? Command
     {
-      get { return (NavigationCommand) _command.ControlItem; }
+      get { return (NavigationCommand?)_command.ControlItem; }
       set { _command.ControlItem = value; }
     }
 
@@ -96,13 +98,13 @@ namespace Remotion.Web.UI.Controls
     {
       if (Command != null)
       {
-        Command = (NavigationCommand) Activator.CreateInstance (Command.GetType ());
+        Command = (NavigationCommand)Activator.CreateInstance(Command.GetType())!;
         Command.Type = CommandType.None;
       }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [Browsable(false)]
     public SingleControlItemCollection PersistedCommand
     {
       get { return _command; }
@@ -115,27 +117,27 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     protected bool ShouldSerializePersistedCommand ()
     {
-      return ShouldSerializeCommand ();
+      return ShouldSerializeCommand();
     }
 
     protected override void OnOwnerControlChanged ()
     {
-      base.OnOwnerControlChanged ();
+      base.OnOwnerControlChanged();
 
       if (OwnerControl != null && !(OwnerControl is TabbedMenu))
-        throw new InvalidOperationException ("A SubMenuTab can only be added to a WebTabStrip that is part of a TabbedMenu.");
+        throw new InvalidOperationException("A SubMenuTab can only be added to a WebTabStrip that is part of a TabbedMenu.");
 
         _command.OwnerControl = OwnerControl;
     }
 
     public override void LoadResources (IResourceManager resourceManager, IGlobalizationService globalizationService)
     {
-      ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
-      ArgumentUtility.CheckNotNull ("globalizationService", globalizationService);
-      
-      base.LoadResources (resourceManager, globalizationService);
+      ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
+      ArgumentUtility.CheckNotNull("globalizationService", globalizationService);
+
+      base.LoadResources(resourceManager, globalizationService);
       if (Command != null)
-        Command.LoadResources (resourceManager, globalizationService);
+        Command.LoadResources(resourceManager, globalizationService);
     }
 
     protected virtual MenuTab GetActiveTab ()
@@ -150,25 +152,25 @@ namespace Remotion.Web.UI.Controls
 
     public override void OnClick ()
     {
-      base.OnClick ();
+      base.OnClick();
       if (!IsSelected)
         IsSelected = true;
     }
 
     public override bool EvaluateVisible ()
     {
-      if (!base.EvaluateVisible ())
+      if (!base.EvaluateVisible())
         return false;
 
       if (Command != null)
       {
-        if (WcagHelper.Instance.IsWaiConformanceLevelARequired ()
+        if (WcagHelper.Instance.IsWaiConformanceLevelARequired()
             && Command.Type == CommandType.Event)
         {
           return false;
         }
         if (MissingPermissionBehavior == MissingPermissionBehavior.Invisible)
-          return Command.HasAccess (null);
+          return Command.HasAccess(null);
       }
 
       return true;
@@ -176,21 +178,21 @@ namespace Remotion.Web.UI.Controls
 
     public override bool EvaluateEnabled ()
     {
-      if (!base.EvaluateEnabled ())
+      if (!base.EvaluateEnabled())
         return false;
 
       if (Command != null)
       {
         if (MissingPermissionBehavior == MissingPermissionBehavior.Disabled)
-          return Command.HasAccess (null);
+          return Command.HasAccess(null);
       }
       return true;
     }
 
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behavior")]
-    [NotifyParentProperty (true)]
-    [DefaultValue (MissingPermissionBehavior.Invisible)]
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [NotifyParentProperty(true)]
+    [DefaultValue(MissingPermissionBehavior.Invisible)]
     public MissingPermissionBehavior MissingPermissionBehavior
     {
       get { return _missingPermissionBehavior; }

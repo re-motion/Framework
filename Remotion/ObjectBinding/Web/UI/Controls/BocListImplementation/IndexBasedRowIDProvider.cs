@@ -35,73 +35,73 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     public IndexBasedRowIDProvider (IEnumerable<IBusinessObject> businessObjects)
     {
-      ArgumentUtility.CheckNotNull ("businessObjects", businessObjects);
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
 
-      _rowIDs = businessObjects.Select (obj => GetNextID()).ToList();
+      _rowIDs = businessObjects.Select(obj => GetNextID()).ToList();
     }
 
     public string GetControlRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
       return GetRowID(row);
     }
 
     public string GetItemRowID (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
 
       return GetRowID(row);
     }
 
-    public BocListRow GetRowFromItemRowID (IList values, string rowID)
+    public BocListRow? GetRowFromItemRowID (IReadOnlyList<IBusinessObject> values, string rowID)
     {
-      ArgumentUtility.CheckNotNull ("values", values);
-      ArgumentUtility.CheckNotNull ("rowID", rowID);
+      ArgumentUtility.CheckNotNull("values", values);
+      ArgumentUtility.CheckNotNull("rowID", rowID);
 
       var rowIndex = ParseRowID(rowID);
 
       if (values.Count == _rowIDs.Count && rowIndex < _rowIDs.Count)
-        return new BocListRow (rowIndex, (IBusinessObject) values[rowIndex]);
+        return new BocListRow(rowIndex, values[rowIndex]);
       else
         return null;
     }
 
     public void AddRow (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
       if (row.Index > _rowIDs.Count)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Tried to add row at index {0} but the current length of the row collection is {1}."
                 + "The index must not exceed the length of the row collection.",
                 row.Index,
                 _rowIDs.Count));
       }
 
-      _rowIDs.Insert (row.Index, GetNextID());
+      _rowIDs.Insert(row.Index, GetNextID());
     }
 
     public void RemoveRow (BocListRow row)
     {
-      ArgumentUtility.CheckNotNull ("row", row);
+      ArgumentUtility.CheckNotNull("row", row);
       if (row.Index > _rowIDs.Count)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Tried to remove row at index {0} but the current length of the row collection is {1}."
                 + "The index must not exceed the length of the row collection.",
                 row.Index,
                 _rowIDs.Count));
       }
-      
-      _rowIDs.RemoveAt (row.Index);
+
+      _rowIDs.RemoveAt(row.Index);
     }
 
     private string GetNextID ()
     {
-      var id = FormatRowID (_nextID);
+      var id = FormatRowID(_nextID);
       _nextID++;
       return id;
     }
@@ -110,8 +110,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     {
       if (row.Index >= _rowIDs.Count)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Tried to retrieve the ID for the row at index {0} but the current length of the row collection is {1}."
                 + "The index must not exceed the length of the row collection.",
                 row.Index,
@@ -123,14 +123,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
 
     private static string FormatRowID (int rowIndex)
     {
-      return rowIndex.ToString (CultureInfo.InvariantCulture);
+      return rowIndex.ToString(CultureInfo.InvariantCulture);
     }
 
     private int ParseRowID (string rowID)
     {
       int result;
-      if (!int.TryParse (rowID, NumberStyles.None, CultureInfo.InvariantCulture, out result))
-        throw new FormatException (string.Format ("RowID '{0}' could not be parsed as an integer.", rowID));
+      if (!int.TryParse(rowID, NumberStyles.None, CultureInfo.InvariantCulture, out result))
+        throw new FormatException(string.Format("RowID '{0}' could not be parsed as an integer.", rowID));
       return result;
     }
   }

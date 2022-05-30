@@ -25,11 +25,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.
   /// </summary>
   /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
-  [ImplementationFor (typeof (IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
+  [ImplementationFor(typeof(IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
   public class CompoundBocDateTimeValueValidatorFactory : CompoundValidatorFactory<IBocDateTimeValue>, IBocDateTimeValueValidatorFactory
   {
     public CompoundBocDateTimeValueValidatorFactory (IEnumerable<IBocDateTimeValueValidatorFactory> innerFactories)
-        : base (innerFactories)
+        : base(innerFactories)
     {
     }
   }

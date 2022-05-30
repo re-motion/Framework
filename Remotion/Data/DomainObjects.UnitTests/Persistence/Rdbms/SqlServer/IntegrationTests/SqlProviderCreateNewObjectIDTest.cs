@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests
 {
@@ -27,21 +28,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void CreateNewObjectID ()
     {
-      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition (typeof (Order));
-      var newObjectID = Provider.CreateNewObjectID (orderClass);
+      ClassDefinition orderClass = MappingConfiguration.Current.GetTypeDefinition(typeof(Order));
+      var newObjectID = Provider.CreateNewObjectID(orderClass);
 
-      Assert.IsNotNull (newObjectID, "ObjectID of new DataContainer.");
-      Assert.AreEqual (orderClass.ID, newObjectID.ClassID, "ClassID of ObjectID.");
-      Assert.AreEqual (typeof (Guid), newObjectID.Value.GetType (), "Type of ID value of ObjectID.");
+      Assert.IsNotNull(newObjectID, "ObjectID of new DataContainer.");
+      Assert.AreEqual(orderClass.ID, newObjectID.ClassID, "ClassID of ObjectID.");
+      Assert.AreEqual(typeof(Guid), newObjectID.Value.GetType(), "Type of ID value of ObjectID.");
     }
-    
+
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.\r\nParameter name: classDefinition")]
     public void CreateNewObjectID_ClassDefinitionOfOtherStorageProvider ()
     {
-      ClassDefinition classDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Official));
-      Provider.CreateNewObjectID (classDefinition);
+      ClassDefinition classDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Official));
+      Assert.That(
+          () => Provider.CreateNewObjectID(classDefinition),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.", "classDefinition"));
     }
   }
 }

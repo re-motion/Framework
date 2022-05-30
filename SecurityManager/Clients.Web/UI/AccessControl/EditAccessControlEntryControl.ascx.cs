@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -29,6 +30,7 @@ using Remotion.SecurityManager.Clients.Web.Classes.AccessControl;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls;
 
@@ -71,6 +73,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
     private const string c_denyAllMenuItemID = "DenyAllPermissions";
     private const string c_clearAllMenuItemID = "ClearAllPermissions";
 
+    private string? _cssClass;
     // construction and disposing
 
     // methods and properties
@@ -82,154 +85,159 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     public event EventHandler Delete
     {
-      add { Events.AddHandler (s_deleteEvent, value); }
-      remove { Events.RemoveHandler (s_deleteEvent, value); }
+      add { Events.AddHandler(s_deleteEvent, value); }
+      remove { Events.RemoveHandler(s_deleteEvent, value); }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    public string CssClass { get; set; }
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    [Browsable(false)]
+    [AllowNull]
+    public string CssClass
+    {
+      get { return _cssClass ?? string.Empty; }
+      set { _cssClass = value; }
+    }
 
     public bool IsCollapsed
     {
-      get { return (bool?) ViewState["IsCollapsed"] ?? true; }
+      get { return (bool?)ViewState["IsCollapsed"] ?? true; }
       set { ViewState["IsCollapsed"] = value; }
     }
 
-    protected AccessControlEntry CurrentAccessControlEntry
+    public AccessControlEntry CurrentAccessControlEntry
     {
-      get { return (AccessControlEntry) CurrentObject.BusinessObject; }
+      get { return Assertion.IsNotNull((AccessControlEntry?)CurrentObject.BusinessObject, "CurrentAccessControlEntry has not been set."); }
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      base.OnInit(e);
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
 
-      AllPermisionsMenu.MenuItems.Add (
+      AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
           {
               ItemID = c_clearAllMenuItemID,
-              Text = resourceManager.GetString (ResourceIdentifier.AllPermissionsMenu_ClearAllPermissions_Text),
-              Icon = new IconInfo (GetIconUrl ("PermissionUndefined.gif").GetUrl())
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_ClearAllPermissions_Text),
+              Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionUndefined").GetUrl())
           });
-      AllPermisionsMenu.MenuItems.Add (
+      AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
           {
               ItemID = c_grantAllMenuItemID,
-              Text = resourceManager.GetString (ResourceIdentifier.AllPermissionsMenu_GrantAllPermissions_Text),
-              Icon = new IconInfo (GetIconUrl ("PermissionGranted.gif").GetUrl())
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_GrantAllPermissions_Text),
+              Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionGranted").GetUrl())
           });
-      AllPermisionsMenu.MenuItems.Add (
+      AllPermisionsMenu.MenuItems.Add(
           new WebMenuItem
           {
               ItemID = c_denyAllMenuItemID,
-              Text = resourceManager.GetString (ResourceIdentifier.AllPermissionsMenu_DenyAllPermissions_Text),
-              Icon = new IconInfo (GetIconUrl ("PermissionDenied.gif").GetUrl())
+              Text = resourceManager.GetText(ResourceIdentifier.AllPermissionsMenu_DenyAllPermissions_Text),
+              Icon = new IconInfo(GetIconUrl("sprite.svg#PermissionDenied").GetUrl())
           });
       AllPermisionsMenu.EventCommandClick += AllPermisionsMenu_EventCommandClick;
 
-      if (string.IsNullOrEmpty (SpecificTenantField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificTenantField);
- 
-      if (string.IsNullOrEmpty (SpecificGroupField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificGroupField);
+      if (string.IsNullOrEmpty(SpecificTenantField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificTenantField);
 
-      if (string.IsNullOrEmpty (SpecificUserField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificUserField);
+      if (string.IsNullOrEmpty(SpecificGroupField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificGroupField);
 
-      if (string.IsNullOrEmpty (SpecificGroupTypeField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificGroupTypeField);
+      if (string.IsNullOrEmpty(SpecificUserField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificUserField);
 
-      if (string.IsNullOrEmpty (SpecificPositionField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificPositionField);
-      
-      if (string.IsNullOrEmpty (SpecificAbstractRoleField.SearchServicePath))
-        SecurityManagerSearchWebService.BindServiceToControl (SpecificAbstractRoleField);
+      if (string.IsNullOrEmpty(SpecificGroupTypeField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificGroupTypeField);
+
+      if (string.IsNullOrEmpty(SpecificPositionField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificPositionField);
+
+      if (string.IsNullOrEmpty(SpecificAbstractRoleField.ControlServicePath))
+        SecurityManagerAutoCompleteReferenceValueWebService.BindServiceToControl(SpecificAbstractRoleField);
     }
 
     protected override void OnPreRender (EventArgs e)
     {
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
-      SpecificGroupField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificGroupFieldRequiredFieldErrorMessage);
-      SpecificGroupTypeField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificGroupTypeFieldRequiredFieldErrorMessage);
-      SpecificPositionField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificPositionFieldRequiredFieldErrorMessage);
-      SpecificTenantField.NullItemErrorMessage = resourceManager.GetString(ResourceIdentifier.SpecificTenantFieldRequiredFieldErrorMessage);
-      SpecificUserField.NullItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
+      SpecificGroupField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificGroupFieldRequiredFieldErrorMessage);
+      SpecificGroupTypeField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificGroupTypeFieldRequiredFieldErrorMessage);
+      SpecificPositionField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificPositionFieldRequiredFieldErrorMessage);
+      SpecificTenantField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificTenantFieldRequiredFieldErrorMessage);
+      SpecificUserField.NullItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificUserFieldRequiredFieldErrorMessage);
 
-      SpecificGroupField.InvalidItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificGroupFieldInvalidItemErrorMessage);
-      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetString (ResourceIdentifier.SpecificUserFieldInvalidItemErrorMessage);
+      SpecificGroupField.InvalidItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificGroupFieldInvalidItemErrorMessage);
+      SpecificUserField.InvalidItemErrorMessage = resourceManager.GetText(ResourceIdentifier.SpecificUserFieldInvalidItemErrorMessage);
 
-      base.OnPreRender (e);
+      base.OnPreRender(e);
 
       if (IsCollapsed)
       {
-        var collapsedRenderer = new CollapsedAccessControlConditionsRenderer (CurrentAccessControlEntry, ResourceUrlFactory, GlobalizationService);
-        CollapsedTenantInformation.SetRenderMethodDelegate (
-            (writer, control) => collapsedRenderer.RenderTenant (writer, new ControlWrapper (control)));
-        CollapsedGroupInformation.SetRenderMethodDelegate (
-            (writer, control) => collapsedRenderer.RenderGroup (writer, new ControlWrapper (control)));
-        CollapsedUserInformation.SetRenderMethodDelegate (
-            (writer, control) => collapsedRenderer.RenderUser (writer, new ControlWrapper (control)));
-        CollapsedAbstractRoleInformation.SetRenderMethodDelegate (
-            (writer, control) => collapsedRenderer.RenderAbstractRole (writer, new ControlWrapper (control)));
+        var collapsedRenderer = new CollapsedAccessControlConditionsRenderer(CurrentAccessControlEntry, ResourceUrlFactory, GlobalizationService);
+        CollapsedTenantInformation.SetRenderMethodDelegate(
+            (writer, control) => collapsedRenderer.RenderTenant(writer, new ControlWrapper(control)));
+        CollapsedGroupInformation.SetRenderMethodDelegate(
+            (writer, control) => collapsedRenderer.RenderGroup(writer, new ControlWrapper(control)));
+        CollapsedUserInformation.SetRenderMethodDelegate(
+            (writer, control) => collapsedRenderer.RenderUser(writer, new ControlWrapper(control)));
+        CollapsedAbstractRoleInformation.SetRenderMethodDelegate(
+            (writer, control) => collapsedRenderer.RenderAbstractRole(writer, new ControlWrapper(control)));
       }
 
-      DetailsCell.Attributes.Add ("colspan", (4 + _permissionControls.Count + 3).ToString());
+      DetailsCell.Attributes.Add("colspan", (4 + _permissionControls.Count + 3).ToString());
 
-      DeleteAccessControlEntryButton.Icon = new IconInfo (GetIconUrl ("DeleteItem.gif").GetUrl());
+      DeleteAccessControlEntryButton.Icon = new IconInfo(GetIconUrl("sprite.svg#DeleteItem").GetUrl());
 
-      DeleteAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.DeleteAccessControlEntryButtonText);
+      DeleteAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString(ResourceIdentifier.DeleteAccessControlEntryButtonText);
 
       if (IsCollapsed)
       {
-        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl ("Expand.gif").GetUrl();
-        ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.ExpandAccessControlEntryButtonText);
+        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl("sprite.svg#Expand").GetUrl();
+        ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString(ResourceIdentifier.ExpandAccessControlEntryButtonText);
         DetailsView.Visible = false;
       }
       else
       {
-        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl ("Collapse.gif").GetUrl();
-        ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString (ResourceIdentifier.CollapseAccessControlEntryButtonText);
+        ToggleAccessControlEntryButton.Icon.Url = GetIconUrl("sprite.svg#Collapse").GetUrl();
+        ToggleAccessControlEntryButton.Icon.AlternateText = resourceManager.GetString(ResourceIdentifier.CollapseAccessControlEntryButtonText);
         DetailsView.Visible = true;
       }
 
-      PermissionsPlaceHolder.SetRenderMethodDelegate (RenderPermissions);
+      PermissionsPlaceHolder.SetRenderMethodDelegate(RenderPermissions);
     }
 
     private void RenderPermissions (HtmlTextWriter writer, Control container)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
-      ArgumentUtility.CheckNotNull ("container", container);
+      ArgumentUtility.CheckNotNull("writer", writer);
+      ArgumentUtility.CheckNotNull("container", container);
 
       // Text is not needed before rendering phase. 
       // By moving the evaluation into the Render-method, UpdatePanel-postbacks will not cause a hit for unaffected rows.
-      var resourceManager = GetResourceManager (typeof (ResourceIdentifier));
+      var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
       foreach (var tuple in _permissionControls)
       {
         var permission = tuple.Item1;
         var control = tuple.Item2;
         string accessTypeName = permission.AccessType.DisplayName;
-        control.TrueDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionGrantedText), accessTypeName);
-        control.FalseDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionDeniedText), accessTypeName);
-        control.NullDescription = string.Format(resourceManager.GetString (ResourceIdentifier.PermissionUndefinedText), accessTypeName);
+        control.TrueDescription = PlainTextString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionGrantedText), accessTypeName));
+        control.FalseDescription = PlainTextString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionDeniedText), accessTypeName));
+        control.NullDescription = PlainTextString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.PermissionUndefinedText), accessTypeName));
       }
 
-      container.SetRenderMethodDelegate (null);
-      container.RenderControl (writer);
+      container.SetRenderMethodDelegate(null);
+      container.RenderControl(writer);
     }
 
     public override void LoadValues (bool interim)
     {
-      base.LoadValues (interim);
+      base.LoadValues(interim);
 
-      LoadPermissions (interim);
-      AdjustSpecificTenantField (false);
-      AdjustTenantHierarchyConditionField (false);
-      AdjustSpecificGroupField (false);
-      AdjustGroupHierarchyConditionField (false);
+      LoadPermissions(interim);
+      AdjustSpecificTenantField(false);
+      AdjustTenantHierarchyConditionField(false);
+      AdjustSpecificGroupField(false);
+      AdjustGroupHierarchyConditionField(false);
       AdjustSpecificGroupTypeField();
-      AdjustSpecificUserField (false);
+      AdjustSpecificUserField(false);
       AdjustSpecificPositionField();
       AdjustSpecificAbstractRoleField();
     }
@@ -239,10 +247,10 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       bool hasSaved;
       using (SecurityFreeSection.Activate())
       {
-        hasSaved = base.SaveValues (interim);
+        hasSaved = base.SaveValues(interim);
       }
 
-      hasSaved &= SavePermissions (interim);
+      hasSaved &= SavePermissions(interim);
       return hasSaved;
     }
 
@@ -273,39 +281,39 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     protected void DeleteAccessControlEntryButton_Click (object sender, EventArgs e)
     {
-      EventHandler handler = (EventHandler) Events[s_deleteEvent];
+      var handler = (EventHandler?)Events[s_deleteEvent];
       if (handler != null)
-        handler (this, e);
+        handler(this, e);
     }
 
     protected void TenantConditionField_SelectionChanged (object sender, EventArgs e)
     {
-      AdjustSpecificTenantField (true);
-      AdjustTenantHierarchyConditionField (true);
+      AdjustSpecificTenantField(true);
+      AdjustTenantHierarchyConditionField(true);
     }
 
     protected void SpecificTenantField_SelectionChanged (object sender, EventArgs e)
     {
-      AdjustSpecificUserField (true);
-      AdjustSpecificGroupField (true);
+      AdjustSpecificUserField(true);
+      AdjustSpecificGroupField(true);
     }
 
     protected void GroupConditionField_SelectionChanged (object sender, EventArgs e)
     {
-      AdjustSpecificGroupField (false);
-      AdjustGroupHierarchyConditionField (true);
+      AdjustSpecificGroupField(false);
+      AdjustGroupHierarchyConditionField(true);
       AdjustSpecificGroupTypeField();
     }
 
     protected void UserConditionField_SelectionChanged (object sender, EventArgs e)
     {
-      AdjustSpecificUserField (false);
+      AdjustSpecificUserField(false);
       AdjustSpecificPositionField();
     }
 
     private void AdjustSpecificTenantField (bool hasTenantConditionChanged)
     {
-      var isSpecifciTenantSelected = (TenantCondition?) TenantConditionField.Value == TenantCondition.SpecificTenant;
+      var isSpecifciTenantSelected = (TenantCondition?)TenantConditionField.Value == TenantCondition.SpecificTenant;
       if (hasTenantConditionChanged && !isSpecifciTenantSelected)
         SpecificTenantField.Value = null;
       SpecificTenantField.Visible = isSpecifciTenantSelected;
@@ -313,8 +321,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void AdjustTenantHierarchyConditionField (bool hasTenantConditionChanged)
     {
-      bool isSpecificTenantSelected = (TenantCondition?) TenantConditionField.Value == TenantCondition.SpecificTenant;
-      bool isOwningTenantSelected = (TenantCondition?) TenantConditionField.Value == TenantCondition.OwningTenant;
+      bool isSpecificTenantSelected = (TenantCondition?)TenantConditionField.Value == TenantCondition.SpecificTenant;
+      bool isOwningTenantSelected = (TenantCondition?)TenantConditionField.Value == TenantCondition.OwningTenant;
 
       if (hasTenantConditionChanged)
       {
@@ -334,15 +342,15 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       if (resetValue)
         SpecificGroupField.Value = null;
 
-      SpecificGroupField.Args = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
+      SpecificGroupField.ControlServiceArguments = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
 
-      SpecificGroupField.Visible = (GroupCondition?) GroupConditionField.Value == GroupCondition.SpecificGroup;
+      SpecificGroupField.Visible = (GroupCondition?)GroupConditionField.Value == GroupCondition.SpecificGroup;
     }
 
     private void AdjustGroupHierarchyConditionField (bool hasGroupConditionChanged)
     {
-      bool isSpecificGroupSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.SpecificGroup;
-      bool isOwningGroupSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.OwningGroup;
+      bool isSpecificGroupSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.SpecificGroup;
+      bool isOwningGroupSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.OwningGroup;
 
       if (hasGroupConditionChanged)
       {
@@ -357,8 +365,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void AdjustSpecificGroupTypeField ()
     {
-      bool isSpecificGroupTypeSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.AnyGroupWithSpecificGroupType;
-      bool isBranchOfOwningGroupSelected = (GroupCondition?) GroupConditionField.Value == GroupCondition.BranchOfOwningGroup;
+      bool isSpecificGroupTypeSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.AnyGroupWithSpecificGroupType;
+      bool isBranchOfOwningGroupSelected = (GroupCondition?)GroupConditionField.Value == GroupCondition.BranchOfOwningGroup;
       SpecificGroupTypeField.Visible = isSpecificGroupTypeSelected || isBranchOfOwningGroupSelected;
     }
 
@@ -367,14 +375,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       if (resetValue)
         SpecificUserField.Value = null;
 
-      SpecificUserField.Args = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
+      SpecificUserField.ControlServiceArguments = SpecificTenantField.BusinessObjectUniqueIdentifier ?? CurrentFunction.TenantHandle.AsArgument();
 
-      SpecificUserField.Visible = (UserCondition?) UserConditionField.Value == UserCondition.SpecificUser;
+      SpecificUserField.Visible = (UserCondition?)UserConditionField.Value == UserCondition.SpecificUser;
     }
 
     private void AdjustSpecificPositionField ()
     {
-      bool isPositionSelected = (UserCondition?) UserConditionField.Value == UserCondition.SpecificPosition;
+      bool isPositionSelected = (UserCondition?)UserConditionField.Value == UserCondition.SpecificPosition;
       SpecificPositionField.Visible = isPositionSelected;
     }
 
@@ -385,12 +393,12 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private void LoadPermissions (bool interim)
     {
-      CreateEditPermissionControls (CurrentAccessControlEntry.GetPermissions());
+      CreateEditPermissionControls(CurrentAccessControlEntry.GetPermissions());
       foreach (var tuple in _permissionControls)
       {
         var permission = tuple.Item1;
         var control = tuple.Item2;
-        control.LoadUnboundValue (permission.Allowed, interim);
+        control.LoadUnboundValue(permission.Allowed, interim);
       }
     }
 
@@ -407,14 +415,14 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         var control = new PermissionBooleanValue();
         control.ID = "P_" + i;
         control.ShowDescription = false;
-        control.Width = Unit.Pixel (16);
+        control.Width = Unit.Pixel(16);
 
-        var td = new HtmlGenericControl ("td");
-        td.Attributes.Add ("class", "permissionCell");
-        PermissionsPlaceHolder.Controls.Add (td);
-        td.Controls.Add (control);
+        var td = new HtmlGenericControl("td");
+        td.Attributes.Add("class", "permissionCell");
+        PermissionsPlaceHolder.Controls.Add(td);
+        td.Controls.Add(control);
 
-        _permissionControls.Add (Tuple.Create (permission, control));
+        _permissionControls.Add(Tuple.Create(permission, control));
       }
     }
     private bool ValidatePermissions ()
@@ -437,7 +445,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
           isAllowed = null;
           break;
         default:
-          throw new InvalidOperationException (string.Format ("The menu item '{0}' is not defined.", e.Item.ItemID));
+          throw new InvalidOperationException(string.Format("The menu item '{0}' is not defined.", e.Item.ItemID));
       }
 
       foreach (var tuple in _permissionControls)
@@ -455,8 +463,8 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       }
       else if (Validate())
       {
-        SaveValues (false);
-        LoadValues (false);
+        SaveValues(false);
+        LoadValues(false);
         IsCollapsed = true;
       }
 
@@ -464,7 +472,7 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
 
     private IResourceUrl GetIconUrl (string url)
     {
-      return ResourceUrlFactory.CreateThemedResourceUrl (typeof (EditAccessControlEntryControl), ResourceType.Image, url);
+      return ResourceUrlFactory.CreateThemedResourceUrl(typeof(EditAccessControlEntryControl), ResourceType.Image, url);
     }
   }
 }

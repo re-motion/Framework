@@ -21,22 +21,26 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
   [DBTable]
   public class TypeWithDomainObjectAttributes : DomainObject
   {
-    public string PropertyWithoutAttribute { get; set; }
+    public virtual string PropertyWithoutAttribute { get; set; }
 
     [Mandatory]
-    public TestDomainObject PropertyWithMandatoryAttribute { get; set; }
+    public virtual TestDomainObject PropertyWithMandatoryAttribute { get; set; }
 
     [StringProperty(IsNullable = true, MaximumLength = 10)]
-    public string PropertyWithNullableStringPropertyAttribute { get; set; }
+    public virtual string PropertyWithNullableStringPropertyAttribute { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 20)]
-    public string PropertyWithMandatoryStringPropertyAttribute { get; set; }
+    [StringProperty(IsNullable = false, MaximumLength = 20)]
+    public virtual string PropertyWithMandatoryStringPropertyAttribute { get; set; }
 
-    [BinaryProperty (IsNullable = false)]
-    public byte[] BinaryProperty { get; set; }
+    [BinaryProperty(IsNullable = false)]
+    public virtual byte[] BinaryProperty { get; set; }
 
     [StorageClassNone]
     [Mandatory]
-    public ObjectList<TestDomainObject> CollectionProperty { get; set; }
+    public virtual ObjectList<TestDomainObject> DomainObjectCollectionProperty { get; set; }
+
+    [StorageClassNone]
+    [Mandatory]
+    public virtual IObjectList<TestDomainObject> VirtualCollectionProperty { get; set; }
   }
 }

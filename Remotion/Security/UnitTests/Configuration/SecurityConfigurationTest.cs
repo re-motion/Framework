@@ -18,7 +18,9 @@ using System;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
+using Remotion.Reflection;
 using Remotion.Security.Configuration;
+using Remotion.Utilities;
 
 namespace Remotion.Security.UnitTests.Configuration
 {
@@ -33,8 +35,8 @@ namespace Remotion.Security.UnitTests.Configuration
       {
         var configuration = SecurityConfiguration.Current;
 
-        Assert.That (configuration, Is.Not.Null);
-        Assert.That (configuration.DisableAccessChecks, Is.False);
+        Assert.That(configuration, Is.Not.Null);
+        Assert.That(configuration.DisableAccessChecks, Is.False);
       }
       finally
       {
@@ -47,7 +49,7 @@ namespace Remotion.Security.UnitTests.Configuration
     {
       string xmlFragment = @"<remotion.security xmlns=""http://www.re-motion.org/Security/Configuration/3.0"" />";
       var configuration = new SecurityConfiguration();
-      Assert.That (() => ConfigurationHelper.DeserializeSection (configuration, xmlFragment), Throws.Nothing);
+      Assert.That(() => ConfigurationHelper.DeserializeSection(configuration, xmlFragment), Throws.Nothing);
     }
 
     [Test]
@@ -55,8 +57,8 @@ namespace Remotion.Security.UnitTests.Configuration
     {
       string xmlFragment = @"<remotion.security xmlns=""http://www.re-motion.org/Security/Configuration/3.0"" disableAccessChecks=""true"" />";
       var configuration = new SecurityConfiguration();
-      ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
-      Assert.That (configuration.DisableAccessChecks, Is.True);
+      ConfigurationHelper.DeserializeSection(configuration, xmlFragment);
+      Assert.That(configuration.DisableAccessChecks, Is.True);
     }
 
     [Test]
@@ -64,16 +66,18 @@ namespace Remotion.Security.UnitTests.Configuration
     {
       string xmlFragment = @"<remotion.security xmlns=""http://www.re-motion.org/Security/Configuration/3.0"" disableAccessChecks=""false"" />";
       var configuration = new SecurityConfiguration();
-      ConfigurationHelper.DeserializeSection (configuration, xmlFragment);
-      Assert.That (configuration.DisableAccessChecks, Is.False);
+      ConfigurationHelper.DeserializeSection(configuration, xmlFragment);
+      Assert.That(configuration.DisableAccessChecks, Is.False);
     }
 
     private void ResetCurrentSecurityConfiguration ()
     {
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (SecurityConfiguration),
-          "s_current",
-          new Lazy<SecurityConfiguration> (() => new SecurityConfiguration()));
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(SecurityConfiguration), "s_fields");
+      Assertion.IsNotNull(fields);
+      PrivateInvoke.SetPublicField(
+          fields,
+          "Current",
+          new Lazy<SecurityConfiguration>(() => new SecurityConfiguration()));
     }
   }
 }

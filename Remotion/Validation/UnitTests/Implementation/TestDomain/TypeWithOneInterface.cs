@@ -21,7 +21,7 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
   public interface ITypeWithOneInterface
   {
   }
-  
+
   public class TypeWithOneInterface : ITypeWithOneInterface
   {
   }

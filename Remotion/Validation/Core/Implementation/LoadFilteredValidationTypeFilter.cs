@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -25,7 +26,7 @@ namespace Remotion.Validation.Implementation
   /// <summary>
   /// Implements the <see cref="IValidationTypeFilter"/> interface and filters <see cref="object"/> and <see cref="ISerializable"/>.
   /// </summary>
-  [ImplementationFor (typeof (IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
+  [ImplementationFor(typeof(IValidationTypeFilter), Lifetime = LifetimeKind.Singleton, Position = 0, RegistrationType = RegistrationType.Multiple)]
   public class LoadFilteredValidationTypeFilter : IValidationTypeFilter
   {
     private List<Type> _filterTypes;
@@ -37,18 +38,19 @@ namespace Remotion.Validation.Implementation
 
     public bool IsValidatableType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return !_filterTypes.Contains (type);
+      return !_filterTypes.Contains(type);
     }
 
+    [MemberNotNull(nameof(_filterTypes))]
     private void Initialize ()
     {
-      _filterTypes = new List<Type> (
+      _filterTypes = new List<Type>(
           new[]
           {
-              typeof (object),
-              typeof (ISerializable)
+              typeof(object),
+              typeof(ISerializable)
           });
     }
   }

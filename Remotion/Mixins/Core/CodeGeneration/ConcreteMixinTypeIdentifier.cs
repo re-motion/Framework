@@ -41,13 +41,13 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="deserializer">The deserializer to use.</param>
     public static ConcreteMixinTypeIdentifier Deserialize (IConcreteMixinTypeIdentifierDeserializer deserializer)
     {
-      ArgumentUtility.CheckNotNull ("deserializer", deserializer);
+      ArgumentUtility.CheckNotNull("deserializer", deserializer);
 
-      var mixinType = deserializer.GetMixinType ();
-      var externalOverriders = deserializer.GetOverriders ();
-      var wrappedProtectedMembers = deserializer.GetOverridden ();
+      var mixinType = deserializer.GetMixinType();
+      var externalOverriders = deserializer.GetOverriders();
+      var wrappedProtectedMembers = deserializer.GetOverridden();
 
-      return new ConcreteMixinTypeIdentifier (mixinType, externalOverriders, wrappedProtectedMembers);
+      return new ConcreteMixinTypeIdentifier(mixinType, externalOverriders, wrappedProtectedMembers);
     }
 
     private readonly Type _mixinType;
@@ -63,17 +63,17 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="overridden">Mixin methods that are overridden by the target class.</param>
     public ConcreteMixinTypeIdentifier (Type mixinType, HashSet<MethodInfo> overriders, HashSet<MethodInfo> overridden)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
-      ArgumentUtility.CheckNotNull ("overriders", overriders);
-      ArgumentUtility.CheckNotNull ("overridden", overridden);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("overriders", overriders);
+      ArgumentUtility.CheckNotNull("overridden", overridden);
 
       _mixinType = mixinType;
       _overriders = overriders;
       _overridden = overridden;
 
-      _cachedHashCode = MixinType.GetHashCode ()
-          ^ EqualityUtility.GetXorHashCode (_overriders)
-          ^ EqualityUtility.GetXorHashCode (_overridden);
+      _cachedHashCode = MixinType.GetHashCode()
+          ^ EqualityUtility.GetXorHashCode(_overriders)
+          ^ EqualityUtility.GetXorHashCode(_overridden);
     }
 
     /// <summary>
@@ -114,13 +114,13 @@ namespace Remotion.Mixins.CodeGeneration
     /// true if the specified <see cref="T:System.Object"/> is an <see cref="ConcreteMixinTypeIdentifier"/> that corresponds to the same concrete
     /// mixin type; otherwise, false.
     /// </returns>
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var other = obj as ConcreteMixinTypeIdentifier;
-      return other != null 
-          && other.MixinType == MixinType 
-          && other._overriders.SetEquals (_overriders) 
-          && other._overridden.SetEquals (_overridden);
+      return other != null
+          && other.MixinType == MixinType
+          && other._overriders.SetEquals(_overriders)
+          && other._overridden.SetEquals(_overridden);
     }
 
     /// <summary>
@@ -140,16 +140,16 @@ namespace Remotion.Mixins.CodeGeneration
     /// <param name="serializer">The serializer to use.</param>
     public void Serialize (IConcreteMixinTypeIdentifierSerializer serializer)
     {
-      ArgumentUtility.CheckNotNull ("serializer", serializer);
+      ArgumentUtility.CheckNotNull("serializer", serializer);
 
-      serializer.AddMixinType (MixinType);
-      serializer.AddOverriders (_overriders);
-      serializer.AddOverridden (_overridden);
+      serializer.AddMixinType(MixinType);
+      serializer.AddOverriders(_overriders);
+      serializer.AddOverridden(_overridden);
     }
 
     public override string ToString ()
     {
-      return string.Format ("Generated mixin type: {0}, {1} overriders, {2} overridden methods", MixinType, _overriders.Count, _overridden.Count);
+      return string.Format("Generated mixin type: {0}, {1} overriders, {2} overridden methods", MixinType, _overriders.Count, _overridden.Count);
     }
   }
 }

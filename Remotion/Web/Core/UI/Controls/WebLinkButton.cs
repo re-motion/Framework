@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.Practices.ServiceLocation;
 using Remotion.ServiceLocation;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Hotkey;
@@ -27,51 +26,70 @@ namespace Remotion.Web.UI.Controls
 {
   /// <summary> A <c>LinkButton</c> using <c>&amp;</c> as access key prefix in <see cref="LinkButton.Text"/>. </summary>
   /// <include file='..\..\doc\include\UI\Controls\WebLinkButton.xml' path='WebLinkButton/Class/*' />
-  [ToolboxData ("<{0}:WebLinkButton runat=server></{0}:WebLinkButton>")]
-  [ToolboxItem (false)]
+  [ToolboxData("<{0}:WebLinkButton runat=server></{0}:WebLinkButton>")]
+  [ToolboxItem(false)]
   public class WebLinkButton : LinkButton, IControl
   {
-    private TextWithHotkey _textWithHotkey;
+    private readonly IHotkeyFormatter _hotkeyFormatter;
+    private const string c_textViewStateKey = nameof(Text);
+    private const string c_textWebStringViewStateKey = c_textViewStateKey + "_" + nameof(WebStringType);
 
-    protected override void Render (HtmlTextWriter writer)
+    public WebLinkButton ()
     {
-      _textWithHotkey = HotkeyParser.Parse (Text);
-
-      base.Render (writer);
+      _hotkeyFormatter = SafeServiceLocator.Current.GetInstance<IHotkeyFormatter>();
     }
 
     protected override void AddAttributesToRender (HtmlTextWriter writer)
     {
-      if (string.IsNullOrEmpty (AccessKey) && _textWithHotkey.Hotkey.HasValue)
-        writer.AddAttribute (HtmlTextWriterAttribute.Accesskey, HotkeyFormatter.FormatHotkey (_textWithHotkey));
+      if (string.IsNullOrEmpty(AccessKey))
+      {
+        var accessKey = _hotkeyFormatter.GetAccessKey(Text);
+        if (accessKey.HasValue)
+          writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, accessKey.Value.ToString());
+      }
 
-      base.AddAttributesToRender (writer);
+      base.AddAttributesToRender(writer);
     }
 
     protected override void RenderContents (HtmlTextWriter writer)
     {
       if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-        WcagHelper.Instance.HandleError (1, this);
+        WcagHelper.Instance.HandleError(1, this);
 
       if (HasControls())
-        base.RenderContents (writer);
+        base.RenderContents(writer);
       else
-        writer.Write (HotkeyFormatter.FormatText (_textWithHotkey, false));
+        _hotkeyFormatter.WriteTo(writer, Text);
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
-    protected virtual IServiceLocator ServiceLocator
+    [Category("Appearance")]
+    [Description("WebLinkButton_Text")]
+    [DefaultValue("")]
+    public new WebString Text
     {
-      get { return SafeServiceLocator.Current; }
-    }
+      get
+      {
+        var value = (string?)ViewState[c_textViewStateKey];
+        var type = (WebStringType?)ViewState[c_textWebStringViewStateKey] ?? WebStringType.PlainText;
 
-    private IHotkeyFormatter HotkeyFormatter
-    {
-      get { return ServiceLocator.GetInstance<IHotkeyFormatter>(); }
+        return type switch
+        {
+            WebStringType.PlainText => WebString.CreateFromText(value),
+            WebStringType.Encoded => WebString.CreateFromHtml(value),
+            _ => throw new InvalidOperationException(
+                $"The value for key '{c_textWebStringViewStateKey}' in the ViewState contains invalid data '{type}'."),
+        };
+      }
+      set
+      {
+        ViewState[nameof(Text)] = value.GetValue();
+        ViewState[c_textWebStringViewStateKey] = value.Type;
+      }
     }
   }
 }

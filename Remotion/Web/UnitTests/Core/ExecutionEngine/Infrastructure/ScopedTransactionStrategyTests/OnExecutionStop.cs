@@ -16,11 +16,13 @@
 // 
 using System;
 using System.Collections;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
+using Remotion.Development.Moq.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTransactionStrategyTests
 {
@@ -30,337 +32,333 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     [Test]
     public void Test_WithoutAutoCommit ()
     {
-      var strategy = CreateScopedTransactionStrategy (false, NullTransactionStrategy.Null);
+      var strategy = CreateScopedTransactionStrategy(false, NullTransactionStrategy.Null).Object;
 
-      InvokeOnExecutionPlay (strategy);
-      using (MockRepository.Ordered())
-      {
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-        ExecutionContextMock.Expect (mock => mock.GetOutParameters ()).Return (new object[0]);
-        ScopeMock.Expect (mock => mock.Leave());
-        TransactionMock.Expect (mock => mock.Release());
-      }
+      InvokeOnExecutionPlay(strategy);
+      var sequence = new MockSequence();
+      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
 
-      MockRepository.ReplayAll();
+      strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
-      strategy.OnExecutionStop (Context, ExecutionListenerStub);
-
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.Null);
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.Null);
     }
 
     [Test]
     public void Test_WithAutoCommit ()
     {
-      var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
+      var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
 
-      InvokeOnExecutionPlay (strategy);
-      using (MockRepository.Ordered())
-      {
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-        TransactionMock.Expect (mock => mock.Commit ());
-        ExecutionContextMock.Expect (mock => mock.GetOutParameters()).Return (new object[0]);
-        ScopeMock.Expect (mock => mock.Leave());
-        TransactionMock.Expect (mock => mock.Release());
-      }
+      InvokeOnExecutionPlay(strategy);
+      var sequence = new MockSequence();
+      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
+      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
 
-      MockRepository.ReplayAll();
+      strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
-      strategy.OnExecutionStop (Context, ExecutionListenerStub);
-
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.Null);
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.Null);
     }
 
     [Test]
     public void Test_WithParentTransactionStrategy ()
     {
-      var strategy = CreateScopedTransactionStrategy (true, OuterTransactionStrategyMock);
+      var strategy = CreateScopedTransactionStrategy(true, OuterTransactionStrategyMock.Object).Object;
       var expectedObjects = new[] { new object() };
 
-      InvokeOnExecutionPlay (strategy);
-      using (MockRepository.Ordered())
-      {
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-        TransactionMock.Expect (mock => mock.Commit ());
+      InvokeOnExecutionPlay(strategy);
+      var sequence = new MockSequence();
+      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
-        ExecutionContextMock.Expect (mock => mock.GetOutParameters()).Return (expectedObjects);
-        OuterTransactionStrategyMock.Expect (mock => mock.EnsureCompatibility (expectedObjects));
+      ExecutionContextMock.InSequence(sequence).Setup(mock => mock.GetOutParameters()).Returns(expectedObjects).Verifiable();
+      OuterTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(expectedObjects)).Verifiable();
 
-        ScopeMock.Expect (mock => mock.Leave());
-        TransactionMock.Expect (mock => mock.Release());
-      }
+      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      TransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
 
-      MockRepository.ReplayAll();
+      strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
-      strategy.OnExecutionStop (Context, ExecutionListenerStub);
-
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.Null);
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.Null);
     }
 
     [Test]
     public void Test_WithCommitTransactionOverride ()
     {
-      var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
+      var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null);
 
-      InvokeOnExecutionPlay (strategy);
-      using (MockRepository.Ordered ())
-      {
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-        strategy.Expect (mock => PrivateInvoke.InvokeNonPublicMethod (mock, "CommitTransaction"));
-        ExecutionContextMock.Expect (mock => mock.GetOutParameters ()).Return (new object[0]);
-        ScopeMock.Expect (mock => mock.Leave ());
-        TransactionMock.Expect (mock => mock.Release ());
-      }
+      InvokeOnExecutionPlay(strategy.Object);
+      var sequenceCounter = 0;
+      ChildTransactionStrategyMock
+          .Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object))
+          .InSequence(ref sequenceCounter, 0)
+          .Verifiable();
+      strategy
+          .Protected()
+          .Setup("CommitTransaction", true)
+          .InSequence(ref sequenceCounter, 1)
+          .Verifiable();
+      ExecutionContextMock
+          .Setup(mock => mock.GetOutParameters())
+          .Returns(new object[0])
+          .InSequence(ref sequenceCounter, 2)
+          .Verifiable();
+      ScopeMock
+          .Setup(mock => mock.Leave())
+          .InSequence(ref sequenceCounter, 3)
+          .Verifiable();
+      TransactionMock
+          .Setup(mock => mock.Release())
+          .InSequence(ref sequenceCounter, 4)
+          .Verifiable();
 
-      MockRepository.ReplayAll ();
+      strategy.Object.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
-      strategy.OnExecutionStop (Context, ExecutionListenerStub);
-
-      MockRepository.VerifyAll ();
-      Assert.That (strategy.Scope, Is.Null);
+      VerifyAll();
+      strategy.Verify();
+      Assert.That(strategy.Object.Scope, Is.Null);
     }
 
     [Test]
     public void Test_WithReleaseTransactionOverride ()
     {
-      var strategy = CreateScopedTransactionStrategy (false, NullTransactionStrategy.Null);
+      var strategy = CreateScopedTransactionStrategy(false, NullTransactionStrategy.Null);
 
-      InvokeOnExecutionPlay (strategy);
-      using (MockRepository.Ordered ())
-      {
-        ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-        ExecutionContextMock.Expect (mock => mock.GetOutParameters ()).Return (new object[0]);
-        ScopeMock.Expect (mock => mock.Leave ());
-        strategy.Expect (mock => PrivateInvoke.InvokeNonPublicMethod ( mock, "ReleaseTransaction"));
-      }
+      InvokeOnExecutionPlay(strategy.Object);
+      var sequenceCounter = 0;
+      ChildTransactionStrategyMock
+          .Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object))
+          .InSequence(ref sequenceCounter, 0)
+          .Verifiable();
+      ExecutionContextMock
+          .Setup(mock => mock.GetOutParameters())
+          .Returns(new object[0])
+          .InSequence(ref sequenceCounter, 1)
+          .Verifiable();
+      ScopeMock
+          .Setup(mock => mock.Leave())
+          .InSequence(ref sequenceCounter, 2)
+          .Verifiable();
+      strategy
+          .Protected()
+          .Setup("ReleaseTransaction", true)
+          .InSequence(ref sequenceCounter, 3)
+          .Verifiable();
 
-      MockRepository.ReplayAll ();
+      strategy.Object.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
-      strategy.OnExecutionStop (Context, ExecutionListenerStub);
-
-      MockRepository.VerifyAll ();
-      Assert.That (strategy.Scope, Is.Null);
+      VerifyAll();
+      strategy.Verify();
+      Assert.That(strategy.Object.Scope, Is.Null);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException),
-        ExpectedMessage = "OnExecutionStop may not be invoked unless OnExecutionPlay was called first.")]
     public void Test_WithNullScope ()
     {
-      var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
+      var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
 
-      Assert.That (strategy.Scope, Is.Null);
-
-      strategy.OnExecutionStop (Context, ExecutionListenerStub);
+      Assert.That(strategy.Scope, Is.Null);
+      Assert.That(
+          () => strategy.OnExecutionStop(Context, ExecutionListenerStub.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("OnExecutionStop may not be invoked unless OnExecutionPlay was called first."));
     }
 
     [Test]
     public void Test_ChildStrategyThrows ()
     {
-      var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
-      var innerException = new ApplicationException ("InnerListener Exception");
+      var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
+      var innerException = new ApplicationException("InnerListener Exception");
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub)).Throw (innerException);
-
-      MockRepository.ReplayAll();
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
 
       try
       {
-        strategy.OnExecutionStop (Context, ExecutionListenerStub);
-        Assert.Fail ("Expected Exception");
+        strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (ApplicationException actualException)
       {
-        Assert.That (actualException, Is.SameAs (innerException));
+        Assert.That(actualException, Is.SameAs(innerException));
       }
 
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.SameAs (ScopeMock));
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
     [Test]
     public void Test_ChildStrategyThrowsFatalException ()
     {
-      var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
-      var innerException = new WxeFatalExecutionException (new Exception ("ChildStrategy Exception"), null);
+      var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
+      var innerException = new WxeFatalExecutionException(new Exception("ChildStrategy Exception"), null);
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub)).Throw (innerException);
-
-      MockRepository.ReplayAll();
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
 
       try
       {
-        strategy.OnExecutionStop (Context, ExecutionListenerStub);
-        Assert.Fail ("Expected Exception");
+        strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException, Is.SameAs (innerException));
+        Assert.That(actualException, Is.SameAs(innerException));
       }
 
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.SameAs (ScopeMock));
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
     [Test]
     public void Test_CommitThrows ()
     {
-      var strategy = CreateScopedTransactionStrategy (true, NullTransactionStrategy.Null);
-      var innerException = new ApplicationException ("Commit Exception");
+      var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null).Object;
+      var innerException = new ApplicationException("Commit Exception");
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-      TransactionMock.Expect (mock => mock.Commit ()).Throw (innerException);
-
-      MockRepository.ReplayAll();
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      TransactionMock.Setup(mock => mock.Commit()).Throws(innerException).Verifiable();
 
       try
       {
-        strategy.OnExecutionStop (Context, ExecutionListenerStub);
-        Assert.Fail ("Expected Exception");
+        strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (ApplicationException actualException)
       {
-        Assert.That (actualException, Is.SameAs (innerException));
+        Assert.That(actualException, Is.SameAs(innerException));
       }
 
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.SameAs (ScopeMock));
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
     [Test]
     public void Test_GetOutParameterThrows ()
     {
-      var strategy = CreateScopedTransactionStrategy (false, OuterTransactionStrategyMock);
-      var innerException = new ApplicationException ("GetOutParameters Exception");
+      var strategy = CreateScopedTransactionStrategy(false, OuterTransactionStrategyMock.Object).Object;
+      var innerException = new ApplicationException("GetOutParameters Exception");
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-      ExecutionContextMock.Expect (mock => mock.GetOutParameters()).Throw (innerException);
-
-      MockRepository.ReplayAll();
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      ExecutionContextMock.Setup(mock => mock.GetOutParameters()).Throws(innerException).Verifiable();
 
       try
       {
-        strategy.OnExecutionStop (Context, ExecutionListenerStub);
-        Assert.Fail ("Expected Exception");
+        strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (ApplicationException actualException)
       {
-        Assert.That (actualException, Is.SameAs (innerException));
+        Assert.That(actualException, Is.SameAs(innerException));
       }
 
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.SameAs (ScopeMock));
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
     [Test]
     public void Test_EnsureCompatibility_ThrowsBecauseOfIncompatibleOutParameters ()
     {
-      var strategy = CreateScopedTransactionStrategy (false, OuterTransactionStrategyMock);
-      var invalidOperationException = new InvalidOperationException ("Completely bad objects!");
+      var strategy = CreateScopedTransactionStrategy(false, OuterTransactionStrategyMock.Object).Object;
+      var invalidOperationException = new InvalidOperationException("Completely bad objects!");
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
 
-      ExecutionContextMock.Expect (mock => mock.GetOutParameters()).Return (new object[0]);
-      OuterTransactionStrategyMock.Expect (mock => mock.EnsureCompatibility (Arg<IEnumerable>.Is.Anything)).Throw (invalidOperationException);
+      ExecutionContextMock.Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      OuterTransactionStrategyMock.Setup(mock => mock.EnsureCompatibility(It.IsAny<IEnumerable>())).Throws(invalidOperationException).Verifiable();
 
-      MockRepository.ReplayAll();
-
-      Assert.That (
-          () => strategy.OnExecutionStop (Context, ExecutionListenerStub),
+      Assert.That(
+          () => strategy.OnExecutionStop(Context, ExecutionListenerStub.Object),
           Throws
-              .TypeOf<WxeException> ()
-              .With.Message.EqualTo (
+              .TypeOf<WxeException>()
+              .With.Message.EqualTo(
                   "One or more of the output parameters returned from the WxeFunction are incompatible with the function's parent transaction. "
                   + "Completely bad objects!")
-              .And.InnerException.SameAs (invalidOperationException));
-      
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.SameAs (ScopeMock));
+              .And.InnerException.SameAs(invalidOperationException));
+
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
     [Test]
     public void Test_EnsureCompatibilityThrowsUnexpected_GetsBubbledOut ()
     {
-      var strategy = CreateScopedTransactionStrategy (false, OuterTransactionStrategyMock);
-      var innerException = new ApplicationException ("GetOutParameters Exception");
+      var strategy = CreateScopedTransactionStrategy(false, OuterTransactionStrategyMock.Object).Object;
+      var innerException = new ApplicationException("GetOutParameters Exception");
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
 
-      ExecutionContextMock.Expect (mock => mock.GetOutParameters ()).Return (new object[0]);
-      OuterTransactionStrategyMock.Expect (mock => mock.EnsureCompatibility (Arg<IEnumerable>.Is.Anything)).Throw (innerException);
+      ExecutionContextMock.Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      OuterTransactionStrategyMock.Setup(mock => mock.EnsureCompatibility(It.IsAny<IEnumerable>())).Throws(innerException).Verifiable();
 
-      MockRepository.ReplayAll ();
+      Assert.That(
+          () => strategy.OnExecutionStop(Context, ExecutionListenerStub.Object),
+          Throws.Exception.SameAs(innerException));
 
-      Assert.That (
-          () => strategy.OnExecutionStop (Context, ExecutionListenerStub),
-          Throws.Exception.SameAs (innerException));
-
-
-      MockRepository.VerifyAll ();
-      Assert.That (strategy.Scope, Is.SameAs (ScopeMock));
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
     [Test]
     public void Test_LeaveThrows ()
     {
-      var strategy = CreateScopedTransactionStrategy (false, NullTransactionStrategy.Null);
-      var innerException = new Exception ("Leave Exception");
+      var strategy = CreateScopedTransactionStrategy(false, NullTransactionStrategy.Null).Object;
+      var innerException = new Exception("Leave Exception");
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-      ExecutionContextMock.Expect (mock => mock.GetOutParameters ()).Return (new object[0]);
-      ScopeMock.Expect (mock => mock.Leave()).Throw (innerException);
-
-      MockRepository.ReplayAll();
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      ExecutionContextMock.Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      ScopeMock.Setup(mock => mock.Leave()).Throws(innerException).Verifiable();
 
       try
       {
-        strategy.OnExecutionStop (Context, ExecutionListenerStub);
-        Assert.Fail ("Expected Exception");
+        strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException.InnerException, Is.SameAs (innerException));
+        Assert.That(actualException.InnerException, Is.SameAs(innerException));
       }
 
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.SameAs (ScopeMock));
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.SameAs(ScopeMock.Object));
     }
 
     [Test]
     public void Test_ReleaseThrows ()
     {
-      var strategy = CreateScopedTransactionStrategy (false, NullTransactionStrategy.Null);
-      var innerException = new Exception ("Release Exception");
+      var strategy = CreateScopedTransactionStrategy(false, NullTransactionStrategy.Null).Object;
+      var innerException = new Exception("Release Exception");
 
-      InvokeOnExecutionPlay (strategy);
-      ChildTransactionStrategyMock.Expect (mock => mock.OnExecutionStop (Context, ExecutionListenerStub));
-      ExecutionContextMock.Expect (mock => mock.GetOutParameters ()).Return (new object[0]);
-      ScopeMock.Expect (mock => mock.Leave());
-      TransactionMock.Expect (mock => mock.Release()).Throw (innerException);
-
-      MockRepository.ReplayAll();
+      InvokeOnExecutionPlay(strategy);
+      ChildTransactionStrategyMock.Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object)).Verifiable();
+      ExecutionContextMock.Setup(mock => mock.GetOutParameters()).Returns(new object[0]).Verifiable();
+      ScopeMock.Setup(mock => mock.Leave()).Verifiable();
+      TransactionMock.Setup(mock => mock.Release()).Throws(innerException).Verifiable();
 
       try
       {
-        strategy.OnExecutionStop (Context, ExecutionListenerStub);
-        Assert.Fail ("Expected Exception");
+        strategy.OnExecutionStop(Context, ExecutionListenerStub.Object);
+        Assert.Fail("Expected Exception");
       }
       catch (WxeFatalExecutionException actualException)
       {
-        Assert.That (actualException.InnerException, Is.SameAs (innerException));
+        Assert.That(actualException.InnerException, Is.SameAs(innerException));
       }
 
-      MockRepository.VerifyAll();
-      Assert.That (strategy.Scope, Is.Null);
+      VerifyAll();
+      Assert.That(strategy.Scope, Is.Null);
     }
   }
 }

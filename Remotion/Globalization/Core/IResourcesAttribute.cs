@@ -33,6 +33,6 @@ namespace Remotion.Globalization
     string BaseName { get; }
 
     [CanBeNull]
-    Assembly ResourceAssembly { get; }
+    Assembly? ResourceAssembly { get; }
   }
 }

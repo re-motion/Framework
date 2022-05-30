@@ -39,61 +39,75 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new GroupPropertyTypeSearchService();
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Role));
-      _property = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition ("Group");
-      Assert.That (_property, Is.Not.Null);
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
+      _property = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Group");
+      Assert.That(_property, Is.Not.Null);
 
-      var group = Group.FindByUnqiueIdentifier ("UID: group0");
-      Assert.That (group, Is.Not.Null);
+      var group = Group.FindByUnqiueIdentifier("UID: group0");
+      Assert.That(group, Is.Not.Null);
 
-      _tenantConstraint = new TenantConstraint (group.Tenant.GetHandle());
+      _tenantConstraint = new TenantConstraint(group.Tenant.GetHandle());
     }
 
     [Test]
     public void SupportsProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_property), Is.True);
+      Assert.That(_searchService.SupportsProperty(_property), Is.True);
     }
 
     [Test]
     public void Search ()
     {
-      var expected = Group.FindByTenant (_tenantConstraint.Value).ToArray();
-      Assert.That (expected, Is.Not.Empty);
+      var expected = Group.FindByTenant(_tenantConstraint.Value).ToArray();
+      Assert.That(expected, Is.Not.Empty);
 
-      var actual = _searchService.Search (null, _property, new SecurityManagerSearchArguments (_tenantConstraint, null, null));
+      var actual = _searchService.Search(null, _property, new SecurityManagerSearchArguments(_tenantConstraint, null, null));
 
-      Assert.That (actual, Is.EqualTo (expected));
+      Assert.That(actual, Is.EqualTo(expected));
     }
 
     [Test]
     public void Search_WithDisplayNameConstraint_FindNameContainingPrefix ()
     {
-      var expected = Group.FindByTenant (_tenantConstraint.Value).Where (g => g.Name.Contains ("Group1")).ToArray();
-      Assert.That (expected.Length, Is.GreaterThan (1));
+      var expected = Group.FindByTenant(_tenantConstraint.Value).Where(g => g.Name.Contains("Group1")).ToArray();
+      Assert.That(expected.Length, Is.GreaterThan(1));
 
-      var actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments ("Group1"));
+      var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("Group1"));
 
-      Assert.That (actual, Is.EquivalentTo (expected));
+      Assert.That(actual, Is.EquivalentTo(expected));
     }
 
     [Test]
     public void Search_WithDisplayNameConstraint_FindShortNameContainingPrefix ()
     {
-      var expected = Group.FindByTenant (_tenantConstraint.Value).Where (g => g.ShortName.Contains ("G1")).ToArray();
-      Assert.That (expected.Length, Is.GreaterThan (1));
+      var groupsWithShortNameNull = Group.FindByTenant(_tenantConstraint.Value).AsEnumerable().Where(g => g.ShortName == null).ToArray();
+      Assert.That(groupsWithShortNameNull, Is.Not.Empty);
 
-      var actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments ("G1"));
+      var expected = Group.FindByTenant(_tenantConstraint.Value).Where(g => g.ShortName.Contains("G1")).ToArray();
+      Assert.That(expected.Length, Is.GreaterThan(1));
 
-      Assert.That (actual, Is.EquivalentTo (expected));
+      var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("G1"));
+
+      Assert.That(actual, Is.EquivalentTo(expected));
+    }
+
+    [Test]
+    public void Search_WithoutTenantConstraint_FindsNoGroups ()
+    {
+      IBusinessObject[] actual = _searchService.Search(
+          null,
+          _property,
+          new SecurityManagerSearchArguments(null, null, new DisplayNameConstraint("Group1")));
+
+      Assert.That(actual, Is.Empty);
     }
 
     private SecurityManagerSearchArguments CreateSecurityManagerSearchArguments (string displayName)
     {
-      return new SecurityManagerSearchArguments (
+      return new SecurityManagerSearchArguments(
           _tenantConstraint,
           null,
-          !string.IsNullOrEmpty (displayName) ? new DisplayNameConstraint (displayName) : null);
+          !string.IsNullOrEmpty(displayName) ? new DisplayNameConstraint(displayName) : null);
     }
   }
 }

@@ -17,7 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Configuration;
@@ -25,7 +26,6 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -48,15 +48,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       base.SetUp();
       _bocMultilineTextValue = new BocMultilineTextValueMock();
       _bocMultilineTextValue.ID = "BocMultilineTextValue";
-      NamingContainer.Controls.Add (_bocMultilineTextValue);
+      NamingContainer.Controls.Add(_bocMultilineTextValue);
 
       _businessObject = TypeWithString.Create();
 
       _propertyStringArray =
-          (IBusinessObjectStringProperty) ((IBusinessObject) _businessObject).BusinessObjectClass.GetPropertyDefinition ("StringArray");
+          (IBusinessObjectStringProperty)((IBusinessObject)_businessObject).BusinessObjectClass.GetPropertyDefinition("StringArray");
 
-      _dataSource = new StubDataSource (((IBusinessObject) _businessObject).BusinessObjectClass);
-      _dataSource.BusinessObject = (IBusinessObject) _businessObject;
+      _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
+      _dataSource.BusinessObject = (IBusinessObject)_businessObject;
     }
 
 
@@ -66,8 +66,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
       _bocMultilineTextValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.False);
     }
 
     [Test]
@@ -77,8 +77,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.TextBoxStyle.AutoPostBack = true;
       _bocMultilineTextValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.False);
-      Assert.That (WcagHelperMock.HasError, Is.False);
+      Assert.That(WcagHelperMock.HasWarning, Is.False);
+      Assert.That(WcagHelperMock.HasError, Is.False);
     }
 
 
@@ -89,10 +89,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.TextBoxStyle.AutoPostBack = true;
       _bocMultilineTextValue.EvaluateWaiConformity();
 
-      Assert.That (WcagHelperMock.HasWarning, Is.True);
-      Assert.That (WcagHelperMock.Priority, Is.EqualTo (1));
-      Assert.That (WcagHelperMock.Control, Is.SameAs (_bocMultilineTextValue));
-      Assert.That (WcagHelperMock.Property, Is.EqualTo ("TextBoxStyle.AutoPostBack"));
+      Assert.That(WcagHelperMock.HasWarning, Is.True);
+      Assert.That(WcagHelperMock.Priority, Is.EqualTo(1));
+      Assert.That(WcagHelperMock.Control, Is.SameAs(_bocMultilineTextValue));
+      Assert.That(WcagHelperMock.Property, Is.EqualTo("TextBoxStyle.AutoPostBack"));
     }
 
     [Test]
@@ -100,8 +100,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _bocMultilineTextValue.ReadOnly = true;
       string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (0));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(0));
     }
 
     [Test]
@@ -109,9 +109,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _bocMultilineTextValue.ReadOnly = false;
       string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
-      Assert.That (actual, Is.Not.Null);
-      Assert.That (actual.Length, Is.EqualTo (1));
-      Assert.That (actual[0], Is.EqualTo (((IBocTextValueBase) _bocMultilineTextValue).GetValueName()));
+      Assert.That(actual, Is.Not.Null);
+      Assert.That(actual.Length, Is.EqualTo(1));
+      Assert.That(actual[0], Is.EqualTo(((IBocTextValueBase)_bocMultilineTextValue).GetValueName()));
     }
 
     [Test]
@@ -120,8 +120,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       string[] value = new[] { "Foo", "Bar" };
       _bocMultilineTextValue.IsDirty = false;
       _bocMultilineTextValue.Value = value;
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (value));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(value));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -129,8 +129,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     {
       _bocMultilineTextValue.IsDirty = false;
       _bocMultilineTextValue.Value = null;
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
 
@@ -138,29 +138,29 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
     public void HasValue_ValueIsSet_ReturnsTrue ()
     {
       _bocMultilineTextValue.Value = new[] { "x" };
-      Assert.That (_bocMultilineTextValue.HasValue, Is.True);
+      Assert.That(_bocMultilineTextValue.HasValue, Is.True);
     }
 
     [Test]
     public void HasValue_TextContainsOnlyWhitespace_ReturnsFalse ()
     {
       _bocMultilineTextValue.Text = " \r\n ";
-      Assert.That (_bocMultilineTextValue.HasValue, Is.False);
-      Assert.That (_bocMultilineTextValue.Value, Is.Null);
+      Assert.That(_bocMultilineTextValue.HasValue, Is.False);
+      Assert.That(_bocMultilineTextValue.Value, Is.Null);
     }
 
     [Test]
     public void HasValue_ValueIsNull_ReturnsFalse ()
     {
       _bocMultilineTextValue.Value = null;
-      Assert.That (_bocMultilineTextValue.HasValue, Is.False);
+      Assert.That(_bocMultilineTextValue.HasValue, Is.False);
     }
 
     [Test]
     public void Value_TrimsWhitespaceAndNewLines ()
     {
       _bocMultilineTextValue.Text = " \r\n \r\n a\r\n b \r\n\r\n d \r\n \r\n ";
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (new[] { "a", " b ", "", " d" }));
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(new[] { "a", " b ", "", " d" }));
     }
 
     [Test]
@@ -172,9 +172,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadValue (true);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      _bocMultilineTextValue.LoadValue(true);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -186,9 +186,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadValue (false);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (_businessObject.StringArray));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+      _bocMultilineTextValue.LoadValue(false);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(_businessObject.StringArray));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -200,9 +200,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = new[] { "Foo", "Bar" };
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadValue (false);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (_businessObject.StringArray));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+      _bocMultilineTextValue.LoadValue(false);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(_businessObject.StringArray));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -213,9 +213,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = new[] { "Foo", "Bar" };
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadValue (false);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (new[] { "Foo", "Bar" }));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      _bocMultilineTextValue.LoadValue(false);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(new[] { "Foo", "Bar" }));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -226,9 +226,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = new[] { "Foo", "Bar" };
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadValue (false);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (new[] { "Foo", "Bar" }));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      _bocMultilineTextValue.LoadValue(false);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(new[] { "Foo", "Bar" }));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -240,9 +240,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = new[] { "Foo", "Bar" };
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadValue (false);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+      _bocMultilineTextValue.LoadValue(false);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.False);
     }
 
 
@@ -253,9 +253,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadUnboundValue (value, true);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (null));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      _bocMultilineTextValue.LoadUnboundValue(value, true);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(null));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -265,9 +265,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadUnboundValue (value, false);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (value));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+      _bocMultilineTextValue.LoadUnboundValue(value, false);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(value));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -277,9 +277,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = new[] { "Foo", "Bar" };
       _bocMultilineTextValue.IsDirty = true;
 
-      _bocMultilineTextValue.LoadUnboundValue (value, false);
-      Assert.That (_bocMultilineTextValue.Value, Is.EqualTo (value));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+      _bocMultilineTextValue.LoadUnboundValue(value, false);
+      Assert.That(_bocMultilineTextValue.Value, Is.EqualTo(value));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -291,10 +291,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = true;
 
-      var result = _bocMultilineTextValue.SaveValue (true);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.StringArray, Is.EqualTo (new[] { "Foo", "Bar" }));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      var result = _bocMultilineTextValue.SaveValue(true);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.StringArray, Is.EqualTo(new[] { "Foo", "Bar" }));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -306,10 +306,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = true;
 
-      var result = _bocMultilineTextValue.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.StringArray, Is.EqualTo (null));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+      var result = _bocMultilineTextValue.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.StringArray, Is.EqualTo(null));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.False);
     }
 
     [Test]
@@ -320,12 +320,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Property = _propertyStringArray;
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = true;
-      _bocMultilineTextValue.RegisterValidator (new AlwaysInvalidValidator());
+      _bocMultilineTextValue.RegisterValidator(new AlwaysInvalidValidator());
 
-      var result = _bocMultilineTextValue.SaveValue (false);
-      Assert.That (result, Is.False);
-      Assert.That (_businessObject.StringArray, Is.EqualTo (new[] { "Foo", "Bar" }));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.True);
+      var result = _bocMultilineTextValue.SaveValue(false);
+      Assert.That(result, Is.False);
+      Assert.That(_businessObject.StringArray, Is.EqualTo(new[] { "Foo", "Bar" }));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.True);
     }
 
     [Test]
@@ -337,28 +337,28 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _bocMultilineTextValue.Value = null;
       _bocMultilineTextValue.IsDirty = false;
 
-      var result = _bocMultilineTextValue.SaveValue (false);
-      Assert.That (result, Is.True);
-      Assert.That (_businessObject.StringArray, Is.EqualTo (new[] { "Foo", "Bar" }));
-      Assert.That (_bocMultilineTextValue.IsDirty, Is.False);
+      var result = _bocMultilineTextValue.SaveValue(false);
+      Assert.That(result, Is.True);
+      Assert.That(_businessObject.StringArray, Is.EqualTo(new[] { "Foo", "Bar" }));
+      Assert.That(_bocMultilineTextValue.IsDirty, Is.False);
     }
 
     [Test]
     public void CreateValidators_UsesValidatorFactory ()
     {
       var control = new BocMultilineTextValue();
-      var serviceLocatorMock = MockRepository.GenerateMock<IServiceLocator>();
-      var factoryMock = MockRepository.GenerateMock<IBocMultilineTextValueValidatorFactory>();
-      serviceLocatorMock.Expect (m => m.GetInstance<IBocMultilineTextValueValidatorFactory>()).Return (factoryMock);
-      factoryMock.Expect (f => f.CreateValidators (control, false)).Return (new List<BaseValidator>());
+      var serviceLocatorMock = new Mock<IServiceLocator>();
+      var factoryMock = new Mock<IBocMultilineTextValueValidatorFactory>();
+      serviceLocatorMock.Setup(m => m.GetInstance<IBocMultilineTextValueValidatorFactory>()).Returns(factoryMock.Object).Verifiable();
+      factoryMock.Setup(f => f.CreateValidators(control, false)).Returns(new List<BaseValidator>()).Verifiable();
 
-      using (new ServiceLocatorScope (serviceLocatorMock))
+      using (new ServiceLocatorScope(serviceLocatorMock.Object))
       {
         control.CreateValidators();
       }
 
-      factoryMock.VerifyAllExpectations();
-      serviceLocatorMock.VerifyAllExpectations();
+      factoryMock.Verify();
+      serviceLocatorMock.Verify();
     }
   }
 }

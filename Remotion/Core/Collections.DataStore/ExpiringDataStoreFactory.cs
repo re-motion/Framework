@@ -42,12 +42,14 @@ namespace Remotion.Collections.DataStore
     /// </returns>
     public static ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> Create<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
-        [NotNull] IEqualityComparer<TKey> comparer)
+        [NotNull] IEqualityComparer<TKey?> comparer)
+        where TKey : notnull
+        where TValue : notnull
     {
-      ArgumentUtility.CheckNotNull ("policy", policy);
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("policy", policy);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> (policy, comparer);
+      return new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo>(policy, comparer);
     }
 
     /// <summary>
@@ -69,15 +71,17 @@ namespace Remotion.Collections.DataStore
     /// complete. When the factory delegates take a long time to execute, consider using <see cref="CreateWithLazyLocking{TKey,TValue,TExpirationInfo,TScanInfo}"/> 
     /// instead to reduce contention.
     /// </remarks>
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
+    [Obsolete("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LockingDataStoreDecorator<TKey, TValue> CreateWithLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<TValue, TExpirationInfo, TScanInfo> policy,
-        [NotNull] IEqualityComparer<TKey> comparer)
+        [NotNull] IEqualityComparer<TKey?> comparer)
+        where TKey : notnull
+        where TValue : notnull
     {
-      ArgumentUtility.CheckNotNull ("policy", policy);
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("policy", policy);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new LockingDataStoreDecorator<TKey, TValue> (new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo> (policy, comparer));
+      return new LockingDataStoreDecorator<TKey, TValue>(new ExpiringDataStore<TKey, TValue, TExpirationInfo, TScanInfo>(policy, comparer));
     }
 
     /// <summary>
@@ -99,18 +103,19 @@ namespace Remotion.Collections.DataStore
     /// in which the factory delegates passed to <see cref="IDataStore{TKey,TValue}.GetOrCreateValue"/> take a long time to execute. When the factory
     /// delegates do not take a long time, consider using <see cref="CreateWithLocking{TKey,TValue,TExpirationInfo,TScanInfo}"/> instead to reduce the number of locks used.
     /// </remarks>
-    [Obsolete ("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
+    [Obsolete("Presently, there is no synchronized version of the ExpiringDataStore available. (Version: 1.19.3)")]
     public static LazyLockingDataStoreAdapter<TKey, TValue> CreateWithLazyLocking<TKey, TValue, TExpirationInfo, TScanInfo> (
         [NotNull] IExpirationPolicy<Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> policy,
-        [NotNull] IEqualityComparer<TKey> comparer) 
-        where TValue: class
+        [NotNull] IEqualityComparer<TKey> comparer)
+        where TKey : notnull
+        where TValue: class?
     {
-      ArgumentUtility.CheckNotNull ("policy", policy);
-      ArgumentUtility.CheckNotNull ("comparer", comparer);
+      ArgumentUtility.CheckNotNull("policy", policy);
+      ArgumentUtility.CheckNotNull("comparer", comparer);
 
-      return new LazyLockingDataStoreAdapter<TKey, TValue> (
-          new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo> (
-              policy, 
+      return new LazyLockingDataStoreAdapter<TKey, TValue>(
+          new ExpiringDataStore<TKey, Lazy<LazyLockingDataStoreAdapter<TKey, TValue>.Wrapper>, TExpirationInfo, TScanInfo>(
+              policy,
               comparer));
     }
   }

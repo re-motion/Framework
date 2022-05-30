@@ -16,6 +16,9 @@
 // 
 using System;
 using System.ComponentModel.Design;
+using System.Reflection;
+using System.IO;
+using Moq;
 using NUnit.Framework;
 using Remotion.Configuration.TypeDiscovery;
 using Remotion.Configuration.TypeResolution;
@@ -23,9 +26,7 @@ using Remotion.Development.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeResolution;
 using Remotion.UnitTests.Configuration.TypeDiscovery;
-using Remotion.UnitTests.Design;
 using Remotion.Utilities;
-using Rhino.Mocks;
 
 namespace Remotion.UnitTests.Reflection
 {
@@ -45,104 +46,99 @@ namespace Remotion.UnitTests.Reflection
       _oldTypeResolutionService = ContextAwareTypeUtility.GetTypeResolutionService();
       _oldTypeResolutionConfiguration = TypeResolutionConfiguration.Current;
 
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeDiscoveryService",
-          new Lazy<ITypeDiscoveryService> (() => TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService()));
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeResolutionService",
-          new Lazy<ITypeResolutionService> (() => TypeResolutionConfiguration.Current.CreateTypeResolutionService()));
-      DesignerUtility.ClearDesignMode();
-      TypeDiscoveryConfiguration.SetCurrent (new TypeDiscoveryConfiguration());
-      TypeResolutionConfiguration.SetCurrent (new TypeResolutionConfiguration (new DefaultTypeResolutionService()));
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(ContextAwareTypeUtility), "s_fields");
+      Assertion.IsNotNull(fields);
+      PrivateInvoke.SetPublicField(
+          fields,
+          "DefaultTypeDiscoveryService",
+          new Lazy<ITypeDiscoveryService>(() => TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService()));
+      PrivateInvoke.SetPublicField(
+          fields,
+          "DefaultTypeResolutionService",
+          new Lazy<ITypeResolutionService>(() => TypeResolutionConfiguration.Current.CreateTypeResolutionService()));
+      TypeDiscoveryConfiguration.SetCurrent(new TypeDiscoveryConfiguration());
+      TypeResolutionConfiguration.SetCurrent(new TypeResolutionConfiguration(new DefaultTypeResolutionService()));
     }
 
     [TearDown]
     public void TearDown ()
     {
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeDiscoveryService",
-          new Lazy<ITypeDiscoveryService> (() => _oldTypeDiscoveryService));
-      PrivateInvoke.SetNonPublicStaticField (
-          typeof (ContextAwareTypeUtility),
-          "s_defaultTypeResolutionService",
-          new Lazy<ITypeResolutionService> (() => _oldTypeResolutionService));
-      DesignerUtility.ClearDesignMode();
+      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(ContextAwareTypeUtility), "s_fields");
+      Assertion.IsNotNull(fields);
+      PrivateInvoke.SetPublicField(
+          fields,
+          "DefaultTypeDiscoveryService",
+          new Lazy<ITypeDiscoveryService>(() => _oldTypeDiscoveryService));
+      PrivateInvoke.SetPublicField(
+          fields,
+          "DefaultTypeResolutionService",
+          new Lazy<ITypeResolutionService>(() => _oldTypeResolutionService));
 
-      TypeDiscoveryConfiguration.SetCurrent (_oldTypeDiscoveryConfiguration);
-      TypeResolutionConfiguration.SetCurrent (_oldTypeResolutionConfiguration);
+      TypeDiscoveryConfiguration.SetCurrent(_oldTypeDiscoveryConfiguration);
+      TypeResolutionConfiguration.SetCurrent(_oldTypeResolutionConfiguration);
     }
 
     [Test]
     public void GetTypeDiscoveryService_ComesFromConfiguration ()
     {
       TypeDiscoveryConfiguration.Current.Mode = TypeDiscoveryMode.CustomTypeDiscoveryService;
-      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof (FakeTypeDiscoveryService);
+      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof(FakeTypeDiscoveryService);
 
       var defaultService = ContextAwareTypeUtility.GetTypeDiscoveryService();
-      Assert.That (defaultService, Is.InstanceOf (typeof (FakeTypeDiscoveryService)));
+      Assert.That(defaultService, Is.InstanceOf(typeof(FakeTypeDiscoveryService)));
     }
 
     [Test]
     public void GetTypeDiscoveryService_Cached ()
     {
       TypeDiscoveryConfiguration.Current.Mode = TypeDiscoveryMode.CustomTypeDiscoveryService;
-      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof (FakeTypeDiscoveryService);
+      TypeDiscoveryConfiguration.Current.CustomTypeDiscoveryService.Type = typeof(FakeTypeDiscoveryService);
 
       var defaultService = ContextAwareTypeUtility.GetTypeDiscoveryService();
       var defaultService2 = ContextAwareTypeUtility.GetTypeDiscoveryService();
 
-      Assert.That (defaultService, Is.SameAs (defaultService2));
-    }
-
-    [Test]
-    public void GetTypeDiscoveryService_DesignModeContext ()
-    {
-      var typeDiscoveryServiceStub = MockRepository.GenerateStub<ITypeDiscoveryService>();
-      var designerHostMock = MockRepository.GenerateStub<IDesignerHost>();
-      designerHostMock.Expect (_ => _.GetService (typeof (ITypeDiscoveryService))).Return (typeDiscoveryServiceStub);
-
-      DesignerUtility.SetDesignMode (new StubDesignModeHelper (designerHostMock));
-      Assert.That (ContextAwareTypeUtility.GetTypeDiscoveryService(), Is.SameAs (typeDiscoveryServiceStub));
-
-      designerHostMock.VerifyAllExpectations();
+      Assert.That(defaultService, Is.SameAs(defaultService2));
     }
 
     [Test]
     public void GetTypeResolutionService_ComesFromConfiguration ()
     {
-      var typeResolutionServiceStub = MockRepository.GenerateStub<ITypeResolutionService>();
-      TypeResolutionConfiguration.SetCurrent (new TypeResolutionConfiguration (typeResolutionServiceStub));
+      var typeResolutionServiceStub = new Mock<ITypeResolutionService>();
+      TypeResolutionConfiguration.SetCurrent(new TypeResolutionConfiguration(typeResolutionServiceStub.Object));
 
       var defaultService = ContextAwareTypeUtility.GetTypeResolutionService();
-      Assert.That (defaultService, Is.SameAs (typeResolutionServiceStub));
+      Assert.That(defaultService, Is.SameAs(typeResolutionServiceStub.Object));
     }
 
     [Test]
     public void GetTypeResolutionService_Cached ()
     {
-      TypeResolutionConfiguration.SetCurrent (new TypeResolutionConfiguration (new DefaultTypeResolutionService()));
+      TypeResolutionConfiguration.SetCurrent(new TypeResolutionConfiguration(new DefaultTypeResolutionService()));
       var defaultService = ContextAwareTypeUtility.GetTypeResolutionService();
 
-      TypeResolutionConfiguration.SetCurrent (new TypeResolutionConfiguration (new DefaultTypeResolutionService()));
+      TypeResolutionConfiguration.SetCurrent(new TypeResolutionConfiguration(new DefaultTypeResolutionService()));
       var defaultService2 = ContextAwareTypeUtility.GetTypeResolutionService();
 
-      Assert.That (defaultService, Is.SameAs (defaultService2));
+      Assert.That(defaultService, Is.SameAs(defaultService2));
     }
 
+#if NETFRAMEWORK
     [Test]
-    public void GetTypeResolutionService_DesignModeContext ()
+    public void GetTypeDiscoveryService_WithCustomImplementation_DoesNotThrowOnInitialization ()
     {
-      var typeResolutionServiceStub = MockRepository.GenerateStub<ITypeResolutionService>();
-      var designerHostMock = MockRepository.GenerateStub<IDesignerHost>();
-      designerHostMock.Expect (_ => _.GetService (typeof (ITypeResolutionService))).Return (typeResolutionServiceStub);
+      var relativePath = @"Reflection\TestDomain\ContextAwareTypeUtilityTest\app.config";
+      var fullPath = Path.Combine(TestContext.CurrentContext.TestDirectory, relativePath);
+      Assert.That(File.Exists(fullPath));
 
-      DesignerUtility.SetDesignMode (new StubDesignModeHelper (designerHostMock));
-      Assert.That (ContextAwareTypeUtility.GetTypeResolutionService(), Is.SameAs (typeResolutionServiceStub));
+      var appDomainSetup = AppDomain.CurrentDomain.SetupInformation;
+      appDomainSetup.ConfigurationFile = fullPath;
 
-      designerHostMock.VerifyAllExpectations();
+      var appDomainRunner = new AppDomainRunner(
+          appDomainSetup,
+          objects => { ContextAwareTypeUtility.GetTypeDiscoveryService(); });
+
+      Assert.That(() => appDomainRunner.Run(), Throws.Nothing);
     }
+#endif
   }
 }

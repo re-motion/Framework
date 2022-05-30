@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
@@ -42,28 +41,28 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void AddListener (IClientTransactionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
-      _listeners.Add (listener);
+      _listeners.Add(listener);
     }
 
     public void RemoveListener (IClientTransactionListener listener)
     {
-      ArgumentUtility.CheckNotNull ("listener", listener);
+      ArgumentUtility.CheckNotNull("listener", listener);
 
-      _listeners.Remove (listener);
+      _listeners.Remove(listener);
     }
 
     public virtual void TransactionInitialize (ClientTransaction clientTransaction)
     {
       foreach (var listener in _listeners)
-        listener.TransactionInitialize (clientTransaction);
+        listener.TransactionInitialize(clientTransaction);
     }
 
     public virtual void TransactionDiscard (ClientTransaction clientTransaction)
     {
       foreach (var listener in _listeners)
-        listener.TransactionDiscard (clientTransaction);
+        listener.TransactionDiscard(clientTransaction);
     }
 
     public virtual void SubTransactionCreating (ClientTransaction clientTransaction)
@@ -75,209 +74,209 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public virtual void SubTransactionInitialize (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
       foreach (var listener in _listeners)
-        listener.SubTransactionInitialize (clientTransaction, subTransaction);
+        listener.SubTransactionInitialize(clientTransaction, subTransaction);
     }
 
     public virtual void SubTransactionCreated (ClientTransaction clientTransaction, ClientTransaction subTransaction)
     {
       foreach (var listener in _listeners)
-        listener.SubTransactionCreated (clientTransaction, subTransaction);
+        listener.SubTransactionCreated(clientTransaction, subTransaction);
     }
 
     public virtual void NewObjectCreating (ClientTransaction clientTransaction, Type type)
     {
       foreach (var listener in _listeners)
-        listener.NewObjectCreating (clientTransaction, type);
+        listener.NewObjectCreating(clientTransaction, type);
     }
 
-    public virtual void ObjectsLoading (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public virtual void ObjectsLoading (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
       foreach (var listener in _listeners)
-        listener.ObjectsLoading (clientTransaction, objectIDs);
+        listener.ObjectsLoading(clientTransaction, objectIDs);
     }
 
-    public virtual void ObjectsUnloaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public virtual void ObjectsUnloaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       foreach (var listener in _listeners)
-        listener.ObjectsUnloaded (clientTransaction, unloadedDomainObjects);
+        listener.ObjectsUnloaded(clientTransaction, unloadedDomainObjects);
     }
 
-    public virtual void ObjectsLoaded (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public virtual void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       foreach (var listener in _listeners)
-        listener.ObjectsLoaded (clientTransaction, domainObjects);
+        listener.ObjectsLoaded(clientTransaction, domainObjects);
     }
 
-    public void ObjectsNotFound (ClientTransaction clientTransaction, ReadOnlyCollection<ObjectID> objectIDs)
+    public void ObjectsNotFound (ClientTransaction clientTransaction, IReadOnlyList<ObjectID> objectIDs)
     {
       foreach (var listener in _listeners)
-        listener.ObjectsNotFound (clientTransaction, objectIDs);
+        listener.ObjectsNotFound(clientTransaction, objectIDs);
     }
 
-    public virtual void ObjectsUnloading (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> unloadedDomainObjects)
+    public virtual void ObjectsUnloading (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects)
     {
       foreach (var listener in _listeners)
-        listener.ObjectsUnloading (clientTransaction, unloadedDomainObjects);
+        listener.ObjectsUnloading(clientTransaction, unloadedDomainObjects);
     }
 
     public virtual void ObjectDeleting (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       foreach (var listener in _listeners)
-        listener.ObjectDeleting (clientTransaction, domainObject);
+        listener.ObjectDeleting(clientTransaction, domainObject);
     }
 
     public virtual void ObjectDeleted (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       foreach (var listener in _listeners)
-        listener.ObjectDeleted (clientTransaction, domainObject);
+        listener.ObjectDeleted(clientTransaction, domainObject);
     }
 
     public virtual void PropertyValueReading (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, ValueAccess valueAccess)
     {
       foreach (var listener in _listeners)
-        listener.PropertyValueReading (clientTransaction, domainObject, propertyDefinition, valueAccess);
+        listener.PropertyValueReading(clientTransaction, domainObject, propertyDefinition, valueAccess);
     }
 
-    public virtual void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object value, ValueAccess valueAccess)
+    public virtual void PropertyValueRead (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? value, ValueAccess valueAccess)
     {
       foreach (var listener in _listeners)
-        listener.PropertyValueRead (clientTransaction, domainObject, propertyDefinition, value, valueAccess);
+        listener.PropertyValueRead(clientTransaction, domainObject, propertyDefinition, value, valueAccess);
     }
 
-    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public virtual void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       foreach (var listener in _listeners)
-        listener.PropertyValueChanging (clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
+        listener.PropertyValueChanging(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
-    public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue)
+    public virtual void PropertyValueChanged (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
     {
       foreach (var listener in _listeners)
-        listener.PropertyValueChanged (clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
+        listener.PropertyValueChanged(clientTransaction, domainObject, propertyDefinition, oldValue, newValue);
     }
 
     public virtual void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess)
     {
       foreach (var listener in _listeners)
-        listener.RelationReading (clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
+        listener.RelationReading(clientTransaction, domainObject, relationEndPointDefinition, valueAccess);
     }
 
-    public virtual void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject relatedObject, ValueAccess valueAccess)
+    public virtual void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
     {
       foreach (var listener in _listeners)
-        listener.RelationRead (clientTransaction, domainObject, relationEndPointDefinition, relatedObject, valueAccess);
+        listener.RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObject, valueAccess);
     }
 
-    public virtual void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ReadOnlyDomainObjectCollectionAdapter<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public virtual void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
     {
       foreach (var listener in _listeners)
-        listener.RelationRead (clientTransaction, domainObject, relationEndPointDefinition, relatedObjects, valueAccess);
+        listener.RelationRead(clientTransaction, domainObject, relationEndPointDefinition, relatedObjects, valueAccess);
     }
 
-    public virtual void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public virtual void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       foreach (var listener in _listeners)
-        listener.RelationChanging (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
+        listener.RelationChanging(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
-    public virtual void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+    public virtual void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
     {
       foreach (var listener in _listeners)
-        listener.RelationChanged (clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
+        listener.RelationChanged(clientTransaction, domainObject, relationEndPointDefinition, oldRelatedObject, newRelatedObject);
     }
 
     public virtual QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T: DomainObject
     {
-      return _listeners.Aggregate (queryResult, (current, listener) => listener.FilterQueryResult (clientTransaction, current));
+      return _listeners.Aggregate(queryResult, (current, listener) => listener.FilterQueryResult(clientTransaction, current));
     }
 
     public virtual IEnumerable<T> FilterCustomQueryResult<T> (ClientTransaction clientTransaction, IQuery query, IEnumerable<T> results)
     {
-      return _listeners.Aggregate (results, (current, listener) => listener.FilterCustomQueryResult (clientTransaction, query, current));
+      return _listeners.Aggregate(results, (current, listener) => listener.FilterCustomQueryResult(clientTransaction, query, current));
     }
 
-    public virtual void TransactionCommitting (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
+    public virtual void TransactionCommitting (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects, ICommittingEventRegistrar eventRegistrar)
     {
       foreach (var listener in _listeners)
-        listener.TransactionCommitting (clientTransaction, domainObjects, eventRegistrar);
+        listener.TransactionCommitting(clientTransaction, domainObjects, eventRegistrar);
     }
 
-    public virtual void TransactionCommitValidate (ClientTransaction clientTransaction, ReadOnlyCollection<PersistableData> committedData)
+    public virtual void TransactionCommitValidate (ClientTransaction clientTransaction, IReadOnlyList<PersistableData> committedData)
     {
       foreach (var listener in _listeners)
-        listener.TransactionCommitValidate (clientTransaction, committedData);
+        listener.TransactionCommitValidate(clientTransaction, committedData);
     }
 
-    public virtual void TransactionCommitted (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public virtual void TransactionCommitted (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       foreach (var listener in _listeners)
-        listener.TransactionCommitted (clientTransaction, domainObjects);
+        listener.TransactionCommitted(clientTransaction, domainObjects);
     }
 
-    public virtual void TransactionRollingBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public virtual void TransactionRollingBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       foreach (var listener in _listeners)
-        listener.TransactionRollingBack (clientTransaction, domainObjects);
+        listener.TransactionRollingBack(clientTransaction, domainObjects);
     }
 
-    public virtual void TransactionRolledBack (ClientTransaction clientTransaction, ReadOnlyCollection<DomainObject> domainObjects)
+    public virtual void TransactionRolledBack (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> domainObjects)
     {
       foreach (var listener in _listeners)
-        listener.TransactionRolledBack (clientTransaction, domainObjects);
+        listener.TransactionRolledBack(clientTransaction, domainObjects);
     }
 
     public virtual void RelationEndPointMapRegistering (ClientTransaction clientTransaction, IRelationEndPoint endPoint)
     {
       foreach (var listener in _listeners)
-        listener.RelationEndPointMapRegistering (clientTransaction, endPoint);
+        listener.RelationEndPointMapRegistering(clientTransaction, endPoint);
     }
 
     public virtual void RelationEndPointMapUnregistering (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
       foreach (var listener in _listeners)
-        listener.RelationEndPointMapUnregistering (clientTransaction, endPointID);
+        listener.RelationEndPointMapUnregistering(clientTransaction, endPointID);
     }
 
     public virtual void RelationEndPointBecomingIncomplete (ClientTransaction clientTransaction, RelationEndPointID endPointID)
     {
       foreach (var listener in _listeners)
-        listener.RelationEndPointBecomingIncomplete (clientTransaction, endPointID);
+        listener.RelationEndPointBecomingIncomplete(clientTransaction, endPointID);
     }
 
     public virtual void ObjectMarkedInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       foreach (var listener in _listeners)
-        listener.ObjectMarkedInvalid (clientTransaction, domainObject);
+        listener.ObjectMarkedInvalid(clientTransaction, domainObject);
     }
 
     public virtual void ObjectMarkedNotInvalid (ClientTransaction clientTransaction, DomainObject domainObject)
     {
       foreach (var listener in _listeners)
-        listener.ObjectMarkedNotInvalid (clientTransaction, domainObject);
+        listener.ObjectMarkedNotInvalid(clientTransaction, domainObject);
     }
 
     public virtual void DataContainerMapRegistering (ClientTransaction clientTransaction, DataContainer container)
     {
       foreach (var listener in _listeners)
-        listener.DataContainerMapRegistering (clientTransaction, container);
+        listener.DataContainerMapRegistering(clientTransaction, container);
     }
 
     public virtual void DataContainerMapUnregistering (ClientTransaction clientTransaction, DataContainer container)
     {
       foreach (var listener in _listeners)
-        listener.DataContainerMapUnregistering (clientTransaction, container);
+        listener.DataContainerMapUnregistering(clientTransaction, container);
     }
 
-    public virtual void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, StateType newDataContainerState)
+    public virtual void DataContainerStateUpdated (ClientTransaction clientTransaction, DataContainer container, DataContainerState newDataContainerState)
     {
       foreach (var listener in _listeners)
-        listener.DataContainerStateUpdated (clientTransaction, container, newDataContainerState);
+        listener.DataContainerStateUpdated(clientTransaction, container, newDataContainerState);
     }
 
     public virtual void VirtualRelationEndPointStateUpdated (ClientTransaction clientTransaction, RelationEndPointID endPointID, bool? newEndPointChangeState)
     {
       foreach (var listener in _listeners)
-        listener.VirtualRelationEndPointStateUpdated (clientTransaction, endPointID, newEndPointChangeState);
+        listener.VirtualRelationEndPointStateUpdated(clientTransaction, endPointID, newEndPointChangeState);
     }
 
     bool INullObject.IsNull

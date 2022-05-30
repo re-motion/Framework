@@ -38,20 +38,20 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
 
     public bool IsDefaultValue (IBusinessObject obj, PropertyBase property)
     {
-      var domainObject = ArgumentUtility.CheckNotNullAndType<IDomainObject> ("obj", obj);
-      ArgumentUtility.CheckNotNull ("property", property);
-      
-      if (domainObject.GetState() != StateType.New)
+      var domainObject = ArgumentUtility.CheckNotNullAndType<IDomainObject>("obj", obj);
+      ArgumentUtility.CheckNotNull("property", property);
+
+      if (!domainObject.GetState().IsNew)
         return false;
 
-      var propertyDefinition = domainObject.ID.ClassDefinition.ResolveProperty (property.PropertyInfo);
+      var propertyDefinition = domainObject.ID.ClassDefinition.ResolveProperty(property.PropertyInfo);
       if (propertyDefinition != null)
       {
-        var properties = new PropertyIndexer (domainObject);
+        var properties = new PropertyIndexer(domainObject);
         return !properties[propertyDefinition.PropertyName].HasBeenTouched;
       }
 
-      return _innerDefaultValueStrategy.IsDefaultValue (obj, property);
+      return _innerDefaultValueStrategy.IsDefaultValue(obj, property);
     }
   }
 }

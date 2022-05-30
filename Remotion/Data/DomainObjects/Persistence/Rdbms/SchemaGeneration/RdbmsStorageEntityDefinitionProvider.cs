@@ -31,11 +31,11 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SchemaGeneration
   {
     public IEnumerable<IRdbmsStorageEntityDefinition> GetEntityDefinitions (IEnumerable<ClassDefinition> classDefinitions)
     {
-      ArgumentUtility.CheckNotNull ("classDefinitions", classDefinitions);
+      ArgumentUtility.CheckNotNull("classDefinitions", classDefinitions);
 
       return classDefinitions
-          .Select (cd => cd.StorageEntityDefinition)
-          .OfType<IRdbmsStorageEntityDefinition> ();
+          .Select(cd => cd.StorageEntityDefinition)
+          .OfType<IRdbmsStorageEntityDefinition>();
     }
   }
 }

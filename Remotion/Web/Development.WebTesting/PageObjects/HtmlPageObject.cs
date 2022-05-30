@@ -25,7 +25,7 @@ namespace Remotion.Web.Development.WebTesting.PageObjects
   public class HtmlPageObject : PageObject
   {
     public HtmlPageObject ([NotNull] PageObjectContext context)
-        : base (context)
+        : base(context)
     {
     }
   }

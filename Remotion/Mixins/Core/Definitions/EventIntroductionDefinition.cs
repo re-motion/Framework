@@ -23,14 +23,14 @@ namespace Remotion.Mixins.Definitions
   public class EventIntroductionDefinition : MemberIntroductionDefinitionBase<EventInfo, EventDefinition>
   {
     public EventIntroductionDefinition (InterfaceIntroductionDefinition declaringInterface, EventInfo interfaceMember, EventDefinition implementingMember, MemberVisibility visibility)
-      : base (declaringInterface, interfaceMember, implementingMember, visibility)
+      : base(declaringInterface, interfaceMember, implementingMember, visibility)
     {
     }
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
   }
 }

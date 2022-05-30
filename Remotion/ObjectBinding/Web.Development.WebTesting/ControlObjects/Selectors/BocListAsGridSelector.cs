@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
   public class BocListAsGridSelector : BocControlSelectorBase<BocListAsGridControlObject>
   {
     public BocListAsGridSelector ()
-        : base ("BocList")
+        : base("BocList")
     {
     }
 
@@ -36,10 +36,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return new BocListAsGridControlObject (newControlObjectContext);
+      return new BocListAsGridControlObject(newControlObjectContext);
     }
   }
 }

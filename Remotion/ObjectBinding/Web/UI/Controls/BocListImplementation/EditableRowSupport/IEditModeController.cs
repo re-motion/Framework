@@ -50,6 +50,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     bool IsRequired (int columnIndex);
     bool IsDirty ();
     string[] GetTrackedClientIDs ();
-    IEditableRow GetEditableRow (int index);
+    IEditableRow? GetEditableRow (int index);
   }
 }

@@ -20,18 +20,18 @@ using Remotion.Utilities;
 
 namespace Remotion.SecurityManager.Domain
 {
-  [PermanentGuid (c_permanentGuid)]
+  [PermanentGuid(c_permanentGuid)]
   public sealed class UserRevisionKey : IRevisionKey
   {
     public static readonly UserRevisionKey Global = new UserRevisionKey();
 
     private const string c_permanentGuid = "{7ABCDBE8-B3F8-41FB-826B-990DC3D4CB51}";
-    private static readonly Guid s_globalKey = new Guid (c_permanentGuid);
-    private readonly string _localKey;
+    private static readonly Guid s_globalKey = new Guid(c_permanentGuid);
+    private readonly string? _localKey;
 
     public UserRevisionKey (string userName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("userName", userName);
+      ArgumentUtility.CheckNotNullOrEmpty("userName", userName);
 
       _localKey = userName;
     }
@@ -46,22 +46,22 @@ namespace Remotion.SecurityManager.Domain
       get { return s_globalKey; }
     }
 
-    public string LocalKey
+    public string? LocalKey
     {
       get { return _localKey; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       var otherRevisionKey = obj as UserRevisionKey;
       if (otherRevisionKey == null)
         return false;
-      return string.Equals (_localKey, otherRevisionKey._localKey);
+      return string.Equals(_localKey, otherRevisionKey._localKey);
     }
 
     public override int GetHashCode ()
     {
-      return EqualityUtility.GetRotatedHashCode (s_globalKey, _localKey);
+      return EqualityUtility.GetRotatedHashCode(s_globalKey, _localKey);
     }
   }
 }

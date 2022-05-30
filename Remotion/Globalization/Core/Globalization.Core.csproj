@@ -1,140 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AC6AB6EB-F6AC-45A4-88A7-877D11A65CCB}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Remotion.Globalization</RootNamespace>
+    <ProjectType>Library</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Globalization Library</AssemblyTitle>
+    <Description>Infrastructure for globalizing an application.</Description>
     <AssemblyName>Remotion.Globalization</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <NoWarn>1591;0419</NoWarn>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Debug\Remotion.Globalization.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;JETBRAINS_ANNOTATIONS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>1591;0419</NoWarn>
-    <DocumentationFile>bin\Release\Remotion.Globalization.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Fork.JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Compile Include="..\..\..\SharedSource\Core\RoslynAnnotations\NullableAnnotations.cs" Link="SharedSource\RoslynAnnotations\NullableAnnotations.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
-    <Compile Include="AvailableResourcesLanguagesAttribute.cs" />
-    <Compile Include="CultureInfoExtensions.cs" />
-    <Compile Include="DeATAttribute.cs" />
-    <Compile Include="DeAttribute.cs" />
-    <Compile Include="DeCHAttribute.cs" />
-    <Compile Include="DeDEAttribute.cs" />
-    <Compile Include="EnAttribute.cs" />
-    <Compile Include="EnGBAttribute.cs" />
-    <Compile Include="EnUSAttribute.cs" />
-    <Compile Include="Implementation\CompoundEnumerationGlobalizationService.cs" />
-    <Compile Include="Implementation\CompoundMemberInformationGlobalizationService.cs" />
-    <Compile Include="Implementation\CompoundResourceManagerFactory.cs" />
-    <Compile Include="Implementation\IResourceManagerFactory.cs" />
-    <Compile Include="Implementation\LocalizedNameProviderBase.cs" />
-    <Compile Include="Implementation\MultiLingualNameBasedEnumerationGlobalizationService.cs" />
-    <Compile Include="Implementation\MultiLingualNameBasedMemberInformationGlobalizationService.cs" />
-    <Compile Include="Implementation\ResourceAttributeBasedResourceManagerFactory.cs" />
-    <Compile Include="MultiLingualNameAttribute.cs" />
-    <Compile Include="Obsolete\EnumDescription.cs" />
-    <Compile Include="Obsolete\EnumValue.cs" />
-    <Compile Include="GlobalizationServiceExtensions.cs" />
-    <Compile Include="IEnumerationGlobalizationService.cs" />
-    <Compile Include="IGlobalizationService.cs" />
-    <Compile Include="IMemberInformationGlobalizationService.cs" />
-    <Compile Include="Implementation\CompoundGlobalizationService.cs" />
-    <Compile Include="Implementation\ResourceManagerBasedEnumerationGlobalizationService.cs" />
-    <Compile Include="EnumerationGlobalizationServiceExtensions.cs" />
-    <Compile Include="Implementation\GlobalizationService.cs" />
-    <Compile Include="Implementation\IResourceManagerResolver.cs" />
-    <Compile Include="Implementation\ResourceManagerBasedMemberInformationGlobalizationService.cs" />
-    <Compile Include="MemberInformationGlobalizationServiceExtensions.cs" />
-    <Compile Include="Implementation\ResolvedResourceManagerResult.cs" />
-    <Compile Include="Implementation\ResourceManagerResolver.cs" />
-    <Compile Include="Implementation\ResourceManagerWrapper.cs" />
-    <Compile Include="IObjectWithResources.cs" />
-    <Compile Include="IResourceManager.cs" />
-    <Compile Include="IResourcesAttribute.cs" />
-    <Compile Include="Obsolete\MixedMultiLingualResources.cs" />
-    <Compile Include="Obsolete\MultiLingualResources.cs" />
-    <Compile Include="MultiLingualResourcesAttribute.cs" />
-    <Compile Include="NullResourceManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Obsolete\ResourceException.cs" />
-    <Compile Include="ResourceIdentifiersAttribute.cs" />
-    <Compile Include="Implementation\ResourceLogger.cs" />
-    <Compile Include="ResourceManagerExtensions.cs" />
-    <Compile Include="ResourceManagerSet.cs" />
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\remotion.snk">
-      <Link>remotion.snk</Link>
-    </None>
-    <None Include="..\..\Build\NuSpec\TemplateShared.nuspec">
-      <Link>TemplateShared.nuspec</Link>
-    </None>
-    <None Include="..\..\Remotion LGPL.licenseheader">
-      <Link>Remotion LGPL.licenseheader</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj">
-      <Project>{82D3420D-F557-4E31-955B-2935A785753E}</Project>
-      <Name>Core.Reflection</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FacetManifest.xml" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

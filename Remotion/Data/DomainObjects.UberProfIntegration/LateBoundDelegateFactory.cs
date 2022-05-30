@@ -17,6 +17,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration
@@ -30,47 +31,48 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
     {
       try
       {
-        return (TSignature) (object) Delegate.CreateDelegate (typeof (TSignature), target, methodName, false, true);
+        return (TSignature)(object)Delegate.CreateDelegate(typeof(TSignature), target, methodName, false, throwOnBindFailure: true)!;
       }
       catch (ArgumentException ex)
       {
-        throw CreateMissingMethodException (target, methodName, typeof (TSignature), ex);
+        throw CreateMissingMethodException(target, methodName, typeof(TSignature), ex);
       }
     }
 
     public static TSignature CreateDelegate<TSignature> (Type target, string methodName)
     {
-      return (TSignature) (object) CreateDelegate (target, methodName, typeof (TSignature));
+      return (TSignature)(object)CreateDelegate(target, methodName, typeof(TSignature));
     }
 
     public static Delegate CreateDelegate (Type target, string methodName, Type signature)
     {
       try
       {
-        return Delegate.CreateDelegate (signature, target, methodName, false, true);
+        return Delegate.CreateDelegate(signature, target, methodName, false, throwOnBindFailure: true)!;
       }
       catch (ArgumentException ex)
       {
-        throw CreateMissingMethodException (target, methodName, signature, ex);
+        throw CreateMissingMethodException(target, methodName, signature, ex);
       }
     }
 
     private static MissingMethodException CreateMissingMethodException (object target, string methodName, Type signatureType, Exception innerException)
     {
-      Type targetType = (target is Type) ? (Type) target : target.GetType();
+      Type targetType = (target is Type) ? (Type)target : target.GetType();
 
-      Assertion.IsTrue (typeof (Delegate).IsAssignableFrom (signatureType));
-      MethodInfo invoke = signatureType.GetMethod ("Invoke");
+      Assertion.IsTrue(typeof(Delegate).IsAssignableFrom(signatureType));
+      MethodInfo? invoke = signatureType.GetMethod("Invoke");
+      Assertion.DebugIsNotNull(invoke, "Delegate.Invoke(...) != null");
       Type returnType = invoke.ReturnType;
-      var parameters = invoke.GetParameters().Select (p => p.ParameterType);
+      var parameters = invoke.GetParameters().Select(p => p.ParameterType);
 
-      return new MissingMethodException (
-          String.Format (
+      return new MissingMethodException(
+          String.Format(
               "Type {0} does not define a method {3} {1}({2}).",
-              targetType.AssemblyQualifiedName,
+              targetType.GetAssemblyQualifiedNameSafe(),
               methodName,
-              string.Join (", ", parameters),
-              returnType == typeof (void) ? "void" : returnType.FullName),
+              string.Join(", ", parameters),
+              returnType == typeof(void) ? "void" : returnType.GetFullNameSafe()),
           innerException);
     }
   }

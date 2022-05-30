@@ -32,9 +32,14 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Creates a new context for a given DOM element <paramref name="scope"/>.
     /// </summary>
+    /// <exception cref="WebTestException">
+    /// If the control cannot be found.
+    /// <para>- or -</para>
+    /// If multiple matching controls are found.
+    /// </exception>
     protected WebTestObjectContext ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
       _scope = scope;
       _scope.EnsureExistence();

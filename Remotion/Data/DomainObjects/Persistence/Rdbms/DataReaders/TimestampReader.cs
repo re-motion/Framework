@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   /// The command whose data is converted must return an ID and a timestamp (as defined by the given <see cref="IRdbmsStoragePropertyDefinition"/>
   /// instances).
   /// </summary>
-  public class TimestampReader : IObjectReader<Tuple<ObjectID, object>>
+  public class TimestampReader : IObjectReader<Tuple<ObjectID, object>?>
   {
     private readonly IRdbmsStoragePropertyDefinition _idProperty;
     private readonly IRdbmsStoragePropertyDefinition _timestampProperty;
@@ -36,9 +36,9 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
     public TimestampReader (
         IRdbmsStoragePropertyDefinition idProperty, IRdbmsStoragePropertyDefinition timestampProperty, IColumnOrdinalProvider columnOrdinalProvider)
     {
-      ArgumentUtility.CheckNotNull ("idProperty", idProperty);
-      ArgumentUtility.CheckNotNull ("timestampProperty", timestampProperty);
-      ArgumentUtility.CheckNotNull ("columnOrdinalProvider", columnOrdinalProvider);
+      ArgumentUtility.CheckNotNull("idProperty", idProperty);
+      ArgumentUtility.CheckNotNull("timestampProperty", timestampProperty);
+      ArgumentUtility.CheckNotNull("columnOrdinalProvider", columnOrdinalProvider);
 
       _idProperty = idProperty;
       _timestampProperty = timestampProperty;
@@ -60,35 +60,37 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
       get { return _columnOrdinalProvider; }
     }
 
-    public Tuple<ObjectID, object> Read (IDataReader dataReader)
+    public Tuple<ObjectID, object>? Read (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      if (dataReader.Read ())
-        return GetTimestampTuple (new ColumnValueReader (dataReader, _columnOrdinalProvider));
+      if (dataReader.Read())
+        return GetTimestampTuple(new ColumnValueReader(dataReader, _columnOrdinalProvider));
       else
         return null;
     }
 
-    public IEnumerable<Tuple<ObjectID, object>> ReadSequence (IDataReader dataReader)
+    public IEnumerable<Tuple<ObjectID, object>?> ReadSequence (IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
-      var columnValueProvider = new ColumnValueReader (dataReader, _columnOrdinalProvider);
-      while (dataReader.Read ())
+      var columnValueProvider = new ColumnValueReader(dataReader, _columnOrdinalProvider);
+      while (dataReader.Read())
       {
-        yield return GetTimestampTuple (columnValueProvider);
+        yield return GetTimestampTuple(columnValueProvider);
       }
     }
 
-    private Tuple<ObjectID, object> GetTimestampTuple (IColumnValueProvider columnValueProvider)
+    private Tuple<ObjectID, object>? GetTimestampTuple (IColumnValueProvider columnValueProvider)
     {
-      var objectIDValue = (ObjectID) _idProperty.CombineValue (columnValueProvider);
+      var objectIDValue = (ObjectID?)_idProperty.CombineValue(columnValueProvider);
       if (objectIDValue == null)
         return null;
 
-      var timestampValue = _timestampProperty.CombineValue (columnValueProvider);
-      return Tuple.Create (objectIDValue, timestampValue);
+      var timestampValue = _timestampProperty.CombineValue(columnValueProvider);
+      if (timestampValue == null)
+        throw new RdbmsProviderException(string.Format("No timestamp was read for object '{0}'.", objectIDValue));
+      return Tuple.Create(objectIDValue, timestampValue);
     }
   }
 }

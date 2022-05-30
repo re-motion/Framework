@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\..\..\Build\Shared.build.NetFramework.props" />
   <PropertyGroup>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
@@ -15,7 +16,7 @@
     <AssemblyName>OBWTest</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
@@ -33,12 +34,14 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\remotion.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
@@ -89,21 +92,16 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentValidation, Version=5.0.0.1, Culture=neutral, PublicKeyToken=a82054b837897c66, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\FluentValidation-Signed.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    <Reference Include="CommonServiceLocator, Version=2.0.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CommonServiceLocator.2.0.6\lib\net46\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\log4net.2.0.12\lib\net45\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.5</RequiredTargetFramework>
     </Reference>
@@ -190,6 +188,10 @@
       <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
       <Name>ObjectBinding.Sample</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Validation\ObjectBinding.Validation.csproj">
+      <Project>{A00DD42F-48B0-4E49-B79A-9CD7F401A9F1}</Project>
+      <Name>ObjectBinding.Validation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Web.Validation\ObjectBinding.Web.Validation.csproj">
       <Project>{1abecbff-e3bc-4d02-af23-52094cee41de}</Project>
       <Name>ObjectBinding.Web.Validation</Name>
@@ -206,6 +208,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IndividualControlTests\BocDropDownMenuUserControl.cs">
+      <DependentUpon>BocDropDownMenuUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocAutoCompleteReferenceValueWebService.asmx.cs">
+      <DependentUpon>BocAutoCompleteReferenceValueWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocTreeViewWebService.asmx.cs">
+      <DependentUpon>BocTreeViewWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocReferenceValueWebService.asmx.cs">
+      <DependentUpon>BocReferenceValueWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocDropDownMenuWebService.cs">
+      <SubType>Component</SubType>
+      <DependentUpon>BocDropDownMenuWebService.asmx</DependentUpon>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocListWebService.cs">
+      <SubType>Component</SubType>
+      <DependentUpon>BocListWebService.asmx</DependentUpon>
+    </Compile>
+    <Compile Include="IndividualControlTests\IconServiceImplementation.cs" />
     <Compile Include="Validation\BocValidationTestForm.aspx.cs">
       <DependentUpon>BocValidationTestForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -223,20 +250,12 @@
       <DependentUpon>BocAutoCompleteReferenceValueUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="IndividualControlTests\IconService.asmx.cs">
-      <DependentUpon>IconService.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="QuirksMode.Master.cs">
       <DependentUpon>QuirksMode.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="QuirksMode.Master.designer.cs">
       <DependentUpon>QuirksMode.Master</DependentUpon>
-    </Compile>
-    <Compile Include="IndividualControlTests\AutoCompleteService.asmx.cs">
-      <DependentUpon>AutoCompleteService.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="IndividualControlTests\Form.aspx.designer.cs">
       <DependentUpon>Form.aspx</DependentUpon>
@@ -470,19 +489,6 @@
     <Compile Include="Validation\TestUserControl.ascx.designer.cs">
       <DependentUpon>TestUserControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocAutoCompleteReferenceValueValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocBooleanValueValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocCheckBoxValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocDateTimeValueValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocEnumValueValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocListValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocMultilineTextValueValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocReferenceValueValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBocTextValueValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingBusinessObjectReferenceDataSourceControlValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingUserControlBindingValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingValidatorFactoryDecorator.cs" />
-    <Compile Include="ValidatorFactoryDecorators\SwitchingValidatorFactoryState.cs" />
     <Compile Include="ViewLayoutTests\Form.aspx.cs">
       <DependentUpon>Form.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -498,6 +504,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Content Include="Experimental\FormGrid.htm" />
+    <Content Include="IndividualControlTests\BocDropDownMenuUserControl.ascx" />
+    <Content Include="IndividualControlTests\BocAutoCompleteReferenceValueWebService.asmx" />
+    <Content Include="IndividualControlTests\BocTreeViewWebService.asmx" />
+    <Content Include="IndividualControlTests\BocReferenceValueWebService.asmx" />
+    <Content Include="IndividualControlTests\BocDropDownMenuWebService.asmx" />
+    <Content Include="IndividualControlTests\BocListWebService.asmx" />
     <Content Include="Validation\BocValidationTestForm.aspx" />
     <Content Include="ClientForm.aspx">
       <SubType>Form</SubType>
@@ -537,9 +549,6 @@
     <Content Include="Images\DeleteItemDisabled.gif" />
     <Content Include="Images\EditItem.gif" />
     <Content Include="Images\NullIcon.gif" />
-    <Content Include="Images\Remotion.ObjectBinding.Sample.Job.gif" />
-    <Content Include="Images\Remotion.ObjectBinding.Sample.Person.gif" />
-    <Content Include="IndividualControlTests\AutoCompleteService.asmx" />
     <Content Include="IndividualControlTests\BocBooleanValueUserControl.ascx">
       <SubType>UserControl</SubType>
     </Content>
@@ -579,7 +588,6 @@
     <Content Include="IndividualControlTests\Form.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="IndividualControlTests\IconService.asmx" />
     <Content Include="LeftFrame.aspx">
       <SubType>Form</SubType>
     </Content>
@@ -661,7 +669,9 @@
   <ItemGroup>
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\Remotion.Infrastructure.Styles.Analyzer.1.1.3\analyzers\dotnet\cs\Remotion.Infrastructure.Styles.Analyzer.dll" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -681,7 +691,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50373</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:60400/trunk/ObjectBinding.Web.Test/</IISUrl>
+          <IISUrl>http://localhost:60400/fx-develop/ObjectBinding.Web.Test/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -693,4 +703,5 @@
   </ProjectExtensions>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="..\..\..\Build\Shared.build.NetFramework.targets" />
 </Project>

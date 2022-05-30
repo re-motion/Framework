@@ -15,13 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
 {
@@ -29,430 +30,455 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
   public class VirtualObjectEndPointDataManagerTest : StandardMappingTest
   {
     private RelationEndPointID _endPointID;
-    
+
     private VirtualObjectEndPointDataManager _dataManager;
 
     private OrderTicket _oppositeObject;
-    private IRealObjectEndPoint _oppositeEndPointStub;
+    private Mock<IRealObjectEndPoint> _oppositeEndPointStub;
 
     private OrderTicket _oppositeObject2;
-    private IRealObjectEndPoint _oppositeEndPointStub2;
+    private Mock<IRealObjectEndPoint> _oppositeEndPointStub2;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID (DomainObjectIDs.Order1, "OrderTicket");
+      _endPointID = RelationEndPointObjectMother.CreateRelationEndPointID(DomainObjectIDs.Order1, "OrderTicket");
 
-      _dataManager = new VirtualObjectEndPointDataManager (_endPointID);
+      _dataManager = new VirtualObjectEndPointDataManager(_endPointID);
 
-      _oppositeObject = DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket1);
-      _oppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      _oppositeEndPointStub.Stub (stub => stub.GetDomainObjectReference()).Return (_oppositeObject);
+      _oppositeObject = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket1);
+      _oppositeEndPointStub = new Mock<IRealObjectEndPoint>();
+      _oppositeEndPointStub.Setup(stub => stub.GetDomainObjectReference()).Returns(_oppositeObject);
 
-      _oppositeObject2 = DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
-      _oppositeEndPointStub2 = MockRepository.GenerateStub<IRealObjectEndPoint> ();
-      _oppositeEndPointStub2.Stub (stub => stub.GetDomainObjectReference()).Return (_oppositeObject2);
+      _oppositeObject2 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2);
+      _oppositeEndPointStub2 = new Mock<IRealObjectEndPoint>();
+      _oppositeEndPointStub2.Setup(stub => stub.GetDomainObjectReference()).Returns(_oppositeObject2);
     }
 
     [Test]
     public void CurrentOppositeObject_Set ()
     {
-      Assert.That (_dataManager.CurrentOppositeObject, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.Null);
 
       _dataManager.CurrentOppositeObject = _oppositeObject;
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
     }
 
     [Test]
     public void ContainsOriginalObjectID_False ()
     {
-      Assert.That (_dataManager.ContainsOriginalObjectID (_oppositeObject.ID), Is.False);
+      Assert.That(_dataManager.ContainsOriginalObjectID(_oppositeObject.ID), Is.False);
     }
 
     [Test]
     public void ContainsOriginalObjectID_True ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
 
-      Assert.That (_dataManager.ContainsOriginalObjectID (_oppositeObject.ID), Is.True);
+      Assert.That(_dataManager.ContainsOriginalObjectID(_oppositeObject.ID), Is.True);
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
 
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint_CurrentValueAlreadySet ()
     {
       _dataManager.CurrentOppositeObject = _oppositeObject2;
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub2);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub2.Object);
 
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
 
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.EqualTo (_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.EqualTo(_oppositeObject));
 
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub2));
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject2));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub2.Object));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject2));
     }
 
     [Test]
     public void RegisterOriginalOppositeEndPoint_PreviouslyItemWithoutEndPoint ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
-      
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
 
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.Null);
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.Null);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "A different original opposite item has already been registered.")]
     public void RegisterOriginalOppositeEndPoint_PreviouslyOtherItemWithoutEndPoint ()
     {
-      var oppositeObject2 = DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket2);
-      _dataManager.RegisterOriginalItemWithoutEndPoint (oppositeObject2);
-
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
+      var oppositeObject2 = DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(oppositeObject2);
+      Assert.That(
+          () => _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("A different original opposite item has already been registered."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The original opposite end-point has already been registered.")]
     public void RegisterOriginalOppositeEndPoint_AlreadyRegistered ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
-      _dataManager.RegisterOriginalOppositeEndPoint (MockRepository.GenerateStub<IRealObjectEndPoint>());
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(
+          () => _dataManager.RegisterOriginalOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The original opposite end-point has already been registered."));
     }
 
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.Not.Null);
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.Not.Null);
 
-      _dataManager.UnregisterOriginalOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.UnregisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
 
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.Null);
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Null);
-      Assert.That (_dataManager.CurrentOppositeObject, Is.Null);
-      Assert.That (_dataManager.OriginalOppositeObject, Is.Null);
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.Null);
+      Assert.That(_dataManager.OriginalOppositeObject, Is.Null);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The original opposite end-point has not been registered.")]
     public void UnregisterOriginalOppositeEndPoint_NotRegistered ()
     {
-      _dataManager.UnregisterOriginalOppositeEndPoint (_oppositeEndPointStub);
+      Assert.That(
+          () => _dataManager.UnregisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The original opposite end-point has not been registered."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The original opposite end-point has not been registered.")]
     public void UnregisterOriginalOppositeEndPoint_DifferentRegistered ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
-      _dataManager.UnregisterOriginalOppositeEndPoint (MockRepository.GenerateStub<IRealObjectEndPoint>());
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(
+          () => _dataManager.UnregisterOriginalOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The original opposite end-point has not been registered."));
     }
 
     [Test]
     public void RegisterOriginalItemWithoutEndPoint ()
     {
-      Assert.That (_dataManager.OriginalOppositeObject, Is.Not.SameAs (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeObject, Is.Not.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.Null);
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.Null);
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.OriginalOppositeObject, Is.Not.SameAs(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.Not.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.Null);
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Null);
 
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
 
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.Null);
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Null);
     }
 
     [Test]
     public void RegisterOriginalItemWithoutEndPoint_CurrentValueAlreadySet ()
     {
       _dataManager.CurrentOppositeObject = _oppositeObject2;
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub2);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub2.Object);
 
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
 
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.Null);
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.SameAs (_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.SameAs(_oppositeObject));
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject2));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub2));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject2));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub2.Object));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An original opposite item has already been registered.")]
     public void RegisterOriginalItemWithoutEndPoint_WithOriginalOppositeObjectID ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
+      Assert.That(
+          () => _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "An original opposite item has already been registered."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An original opposite item has already been registered.")]
     public void RegisterOriginalItemWithoutEndPoint_WithOriginalOppositeEndPoint ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
-
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(
+          () => _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "An original opposite item has already been registered."));
     }
 
     [Test]
     public void UnregisterOriginalItemWithoutEndPoint ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
-      Assert.That (_dataManager.OriginalOppositeObject, Is.Not.Null);
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.Not.Null);
-      Assert.That (_dataManager.CurrentOppositeObject, Is.Not.Null);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
+      Assert.That(_dataManager.OriginalOppositeObject, Is.Not.Null);
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.Not.Null);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.Not.Null);
 
-      _dataManager.UnregisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.UnregisterOriginalItemWithoutEndPoint(_oppositeObject);
 
-      Assert.That (_dataManager.OriginalOppositeObject, Is.Null);
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.Null);
-      Assert.That (_dataManager.CurrentOppositeObject, Is.Null);
+      Assert.That(_dataManager.OriginalOppositeObject, Is.Null);
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.Null);
     }
 
     [Test]
     public void UnregisterOriginalItemWithoutEndPoint_CurrentValueAlreadySet ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
       _dataManager.CurrentOppositeObject = _oppositeObject2;
 
-      _dataManager.UnregisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.UnregisterOriginalItemWithoutEndPoint(_oppositeObject);
 
-      Assert.That (_dataManager.OriginalOppositeObject, Is.Null);
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.Null);
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject2));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.Null);
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject2));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot unregister original item, it has not been registered.")]
     public void UnregisterOriginalItemWithoutEndPoint_InvalidID ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (_oppositeObject);
-
-      _dataManager.UnregisterOriginalItemWithoutEndPoint (DomainObjectMother.CreateFakeObject<OrderTicket> (DomainObjectIDs.OrderTicket2));
+      _dataManager.RegisterOriginalItemWithoutEndPoint(_oppositeObject);
+      Assert.That(
+          () => _dataManager.UnregisterOriginalItemWithoutEndPoint(DomainObjectMother.CreateFakeObject<OrderTicket>(DomainObjectIDs.OrderTicket2)),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Cannot unregister original item, it has not been registered."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage =
-        "Cannot unregister original item, an end-point has been registered for it.")]
     public void UnregisterOriginalItemWithoutEndPoint_EndPointExists ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
-
-      _dataManager.UnregisterOriginalItemWithoutEndPoint (_oppositeObject);
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(
+          () => _dataManager.UnregisterOriginalItemWithoutEndPoint(_oppositeObject),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Cannot unregister original item, an end-point has been registered for it."));
     }
 
     [Test]
     public void RegisterCurrentOppositeEndPoint ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
 
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An opposite end-point has already been registered.")]
     public void RegisterCurrentOppositeEndPoint_AlreadyRegistered ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint (MockRepository.GenerateStub<IRealObjectEndPoint>());
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.RegisterCurrentOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object);
+      Assert.That(
+          () => _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "An opposite end-point has already been registered."));
     }
 
     [Test]
     public void UnregisterCurrentOppositeEndPoint ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub);
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Not.Null);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Not.Null);
 
-      _dataManager.UnregisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
 
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Null);
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The opposite end-point has not been registered.")]
     public void UnregisterCurrentOppositeEndPoint_NotRegistered ()
     {
-      _dataManager.UnregisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      Assert.That(
+          () => _dataManager.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The opposite end-point has not been registered."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "The opposite end-point has not been registered.")]
     public void UnregisterCurrentOppositeEndPoint_DifferentRegistered ()
     {
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub);
-      _dataManager.UnregisterCurrentOppositeEndPoint (MockRepository.GenerateStub<IRealObjectEndPoint>());
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(
+          () => _dataManager.UnregisterCurrentOppositeEndPoint(new Mock<IRealObjectEndPoint>().Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "The opposite end-point has not been registered."));
     }
 
     [Test]
     public void HasDataChanged ()
     {
-      Assert.That (_dataManager.HasDataChanged(), Is.False);
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
 
       _dataManager.CurrentOppositeObject = _oppositeObject;
 
-      Assert.That (_dataManager.HasDataChanged(), Is.True);
+      Assert.That(_dataManager.HasDataChanged(), Is.True);
 
       _dataManager.CurrentOppositeObject = null;
 
-      Assert.That (_dataManager.HasDataChanged(), Is.False);
+      Assert.That(_dataManager.HasDataChanged(), Is.False);
     }
 
     [Test]
     public void Commit ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
 
-      _dataManager.UnregisterCurrentOppositeEndPoint (_oppositeEndPointStub);
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub2);
+      _dataManager.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub2.Object);
       _dataManager.CurrentOppositeObject = _oppositeObject2;
 
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.Not.SameAs (_oppositeEndPointStub2));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.Not.SameAs (_oppositeObject2));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.Not.SameAs(_oppositeEndPointStub2.Object));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.Not.SameAs(_oppositeObject2));
 
       _dataManager.Commit();
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.EqualTo (_oppositeObject2));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.EqualTo (_oppositeObject2));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub2));
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub2));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.EqualTo(_oppositeObject2));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.EqualTo(_oppositeObject2));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub2.Object));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub2.Object));
     }
 
     [Test]
     public void Commit_ClearsItemWithoutEndPoint ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (DomainObjectMother.CreateFakeObject<OrderTicket>());
+      _dataManager.RegisterOriginalItemWithoutEndPoint(DomainObjectMother.CreateFakeObject<OrderTicket>());
       _dataManager.CurrentOppositeObject = _oppositeObject;
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
 
-      _dataManager.Commit ();
+      _dataManager.Commit();
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.Null);
     }
 
     [Test]
     public void Commit_SetsItemWithoutEndPoint ()
     {
-      _dataManager.RegisterOriginalItemWithoutEndPoint (DomainObjectMother.CreateFakeObject<OrderTicket> ());
+      _dataManager.RegisterOriginalItemWithoutEndPoint(DomainObjectMother.CreateFakeObject<OrderTicket>());
       _dataManager.CurrentOppositeObject = _oppositeObject;
 
-      _dataManager.Commit ();
+      _dataManager.Commit();
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Null);
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.Null);
-      Assert.That (_dataManager.OriginalItemWithoutEndPoint, Is.SameAs (_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.OriginalItemWithoutEndPoint, Is.SameAs(_oppositeObject));
     }
 
     [Test]
     public void Rollback ()
     {
-      _dataManager.RegisterOriginalOppositeEndPoint (_oppositeEndPointStub);
-      Assert.That (_dataManager.CurrentOppositeObject, Is.EqualTo (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.EqualTo (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
+      _dataManager.RegisterOriginalOppositeEndPoint(_oppositeEndPointStub.Object);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.EqualTo(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.EqualTo(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
 
-      _dataManager.UnregisterCurrentOppositeEndPoint (_oppositeEndPointStub);
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub2);
+      _dataManager.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub2.Object);
       _dataManager.CurrentOppositeObject = _oppositeObject2;
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Not.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.CurrentOppositeObject, Is.Not.SameAs (_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Not.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.Not.SameAs(_oppositeObject));
 
       _dataManager.Rollback();
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.OriginalOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
-      Assert.That (_dataManager.OriginalOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.OriginalOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
+      Assert.That(_dataManager.OriginalOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
     }
 
     [Test]
     public void SetDataFromSubTransaction ()
     {
-      var sourceOppositeEndPointStub = MockRepository.GenerateStub<IRealObjectEndPoint>();
-      sourceOppositeEndPointStub.Stub (stub => stub.ID).Return (_oppositeEndPointStub.ID);
+      var sourceOppositeEndPointStub = new Mock<IRealObjectEndPoint>();
+      sourceOppositeEndPointStub.Setup(stub => stub.ID).Returns(_oppositeEndPointStub.Object.ID);
 
-      var sourceDataManager = new VirtualObjectEndPointDataManager (_endPointID);
+      var sourceDataManager = new VirtualObjectEndPointDataManager(_endPointID);
       sourceDataManager.CurrentOppositeObject = _oppositeObject;
-      sourceDataManager.RegisterCurrentOppositeEndPoint (sourceOppositeEndPointStub);
+      sourceDataManager.RegisterCurrentOppositeEndPoint(sourceOppositeEndPointStub.Object);
 
-      var endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider>();
+      var endPointProviderStub = new Mock<IRelationEndPointProvider>();
       endPointProviderStub
-          .Stub (stub => stub.GetRelationEndPointWithoutLoading (sourceOppositeEndPointStub.ID))
-          .Return (_oppositeEndPointStub);
+          .Setup(stub => stub.GetRelationEndPointWithoutLoading(sourceOppositeEndPointStub.Object.ID))
+          .Returns(_oppositeEndPointStub.Object);
 
-      _dataManager.SetDataFromSubTransaction (sourceDataManager, endPointProviderStub);
+      _dataManager.SetDataFromSubTransaction(sourceDataManager, endPointProviderStub.Object);
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.SameAs (_oppositeObject));
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.SameAs (_oppositeEndPointStub));
+      Assert.That(_dataManager.CurrentOppositeObject, Is.SameAs(_oppositeObject));
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.SameAs(_oppositeEndPointStub.Object));
     }
 
     [Test]
     public void SetDataFromSubTransaction_Null ()
     {
       _dataManager.CurrentOppositeObject = _oppositeObject;
-      _dataManager.RegisterCurrentOppositeEndPoint (_oppositeEndPointStub);
+      _dataManager.RegisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
 
-      var sourceDataManager = new VirtualObjectEndPointDataManager (_endPointID);
-      Assert.That (sourceDataManager.CurrentOppositeObject, Is.Null);
-      Assert.That (sourceDataManager.CurrentOppositeEndPoint, Is.Null);
-      var endPointProviderStub = MockRepository.GenerateStub<IRelationEndPointProvider> ();
+      var sourceDataManager = new VirtualObjectEndPointDataManager(_endPointID);
+      Assert.That(sourceDataManager.CurrentOppositeObject, Is.Null);
+      Assert.That(sourceDataManager.CurrentOppositeEndPoint, Is.Null);
+      var endPointProviderStub = new Mock<IRelationEndPointProvider>();
 
-      _dataManager.SetDataFromSubTransaction (sourceDataManager, endPointProviderStub);
+      _dataManager.SetDataFromSubTransaction(sourceDataManager, endPointProviderStub.Object);
 
-      Assert.That (_dataManager.CurrentOppositeObject, Is.Null);
-      Assert.That (_dataManager.CurrentOppositeEndPoint, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeObject, Is.Null);
+      Assert.That(_dataManager.CurrentOppositeEndPoint, Is.Null);
     }
 
     [Test]
     public void FlattenedSerializable ()
     {
-      var data = new VirtualObjectEndPointDataManager (_endPointID);
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var endPointFake = new SerializableRealObjectEndPointFake (null, DomainObjectMother.CreateFakeObject<Order> (DomainObjectIDs.Order1));
-      data.RegisterOriginalOppositeEndPoint (endPointFake);
+      var data = new VirtualObjectEndPointDataManager(_endPointID);
 
-      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize (data);
+      var endPointFake = new SerializableRealObjectEndPointFake(null, DomainObjectMother.CreateFakeObject<Order>(DomainObjectIDs.Order1));
+      data.RegisterOriginalOppositeEndPoint(endPointFake);
 
-      Assert.That (deserializedInstance.EndPointID, Is.Not.Null);
-      Assert.That (deserializedInstance.OriginalOppositeEndPoint, Is.Not.Null);
-      Assert.That (deserializedInstance.OriginalOppositeObject, Is.Not.Null);
-      Assert.That (deserializedInstance.CurrentOppositeEndPoint, Is.Not.Null);
-      Assert.That (deserializedInstance.CurrentOppositeObject, Is.Not.Null);
+      var deserializedInstance = FlattenedSerializer.SerializeAndDeserialize(data);
+
+      Assert.That(deserializedInstance.EndPointID, Is.Not.Null);
+      Assert.That(deserializedInstance.OriginalOppositeEndPoint, Is.Not.Null);
+      Assert.That(deserializedInstance.OriginalOppositeObject, Is.Not.Null);
+      Assert.That(deserializedInstance.CurrentOppositeEndPoint, Is.Not.Null);
+      Assert.That(deserializedInstance.CurrentOppositeObject, Is.Not.Null);
     }
   }
 }

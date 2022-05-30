@@ -28,90 +28,90 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths
     [Test]
     public void GetIdentifier_ReturnsIdentifier ()
     {
-      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create ("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
-      Assert.That (path.Identifier, Is.EqualTo ("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue"));
+      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
+      Assert.That(path.Identifier, Is.EqualTo("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue"));
     }
 
     [Test]
     public void GetIsDynamic_ReturnsTrue ()
     {
-      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create ("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
-      Assert.That (path.IsDynamic, Is.True);
+      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
+      Assert.That(path.IsDynamic, Is.True);
     }
 
     [Test]
     public void GetProperties_ThrowsNotSupportedException ()
     {
-      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create ("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
-      Assert.That (
+      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
+      Assert.That(
           () => path.Properties,
-          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo ("Properties collection cannot be retrieved for dynamic property paths."));
+          Throws.TypeOf<NotSupportedException>().With.Message.EqualTo("Properties collection cannot be retrieved for dynamic property paths."));
     }
 
     [Test]
     public void GetResult_ValidPropertyPath_EndsWithInt ()
     {
       var root = TypeOne.Create();
-      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create ("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
+      IBusinessObjectPropertyPath path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue.IntValue");
 
-      var result = path.GetResult (
-          (IBusinessObject) root,
+      var result = path.GetResult(
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
 
-      Assert.That (result, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
-      Assert.That (result.ResultObject, Is.SameAs (root.TypeTwoValue.TypeThreeValue.TypeFourValue));
-      Assert.That (
+      Assert.That(result, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
+      Assert.That(result.ResultObject, Is.SameAs(root.TypeTwoValue.TypeThreeValue.TypeFourValue));
+      Assert.That(
           result.ResultProperty,
-          Is.SameAs (((IBusinessObject) root.TypeTwoValue.TypeThreeValue.TypeFourValue).BusinessObjectClass.GetPropertyDefinition ("IntValue")));
+          Is.SameAs(((IBusinessObject)root.TypeTwoValue.TypeThreeValue.TypeFourValue).BusinessObjectClass.GetPropertyDefinition("IntValue")));
     }
 
     [Test]
     public void GetResult_ValidPropertyPath_EndsWithReferenceProperty ()
     {
       var root = TypeOne.Create();
-      var path = DynamicBusinessObjectPropertyPath.Create ("TypeTwoValue.TypeThreeValue.TypeFourValue");
+      var path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue");
 
-      var result = path.GetResult (
-          (IBusinessObject) root,
+      var result = path.GetResult(
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
 
-      Assert.That (result, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
-      Assert.That (result.ResultObject, Is.SameAs (root.TypeTwoValue.TypeThreeValue));
-      Assert.That (result.ResultProperty.Identifier, Is.EqualTo ("TypeFourValue"));
+      Assert.That(result, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
+      Assert.That(result.ResultObject, Is.SameAs(root.TypeTwoValue.TypeThreeValue));
+      Assert.That(result.ResultProperty.Identifier, Is.EqualTo("TypeFourValue"));
     }
 
     [Test]
     public void GetResult_InvalidPropertyPath_PropertyNotFound_ReturnsNullPath ()
     {
       var root = TypeOne.Create();
-      var path = DynamicBusinessObjectPropertyPath.Create ("TypeTwoValue.TypeThreeValue.TypeFourValue1.IntValue");
+      var path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.TypeThreeValue.TypeFourValue1.IntValue");
 
-      var result = path.GetResult (
-          (IBusinessObject) root,
+      var result = path.GetResult(
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
 
-      Assert.That (result, Is.InstanceOf<NullBusinessObjectPropertyPathResult>());
+      Assert.That(result, Is.InstanceOf<NullBusinessObjectPropertyPathResult>());
     }
 
     [Test]
     public void GetResult_InvalidPropertyPath_NonLastPropertyNotReferenceProperty_ReturnsNullPath ()
     {
       var root = TypeOne.Create();
-      var path = DynamicBusinessObjectPropertyPath.Create ("TypeTwoValue.IntValue.TypeFourValue");
+      var path = DynamicBusinessObjectPropertyPath.Create("TypeTwoValue.IntValue.TypeFourValue");
 
-      var result = path.GetResult (
-          (IBusinessObject) root,
+      var result = path.GetResult(
+          (IBusinessObject)root,
           BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue,
           BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties);
 
 
-      Assert.That (result, Is.InstanceOf<NullBusinessObjectPropertyPathResult>());
+      Assert.That(result, Is.InstanceOf<NullBusinessObjectPropertyPathResult>());
     }
   }
 }

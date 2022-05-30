@@ -27,8 +27,8 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
       if (!_disposed)
       {
         if (disposing)
-          CleanupManagedResources ();
-        CleanupUnmanagedResources ();
+          CleanupManagedResources();
+        CleanupUnmanagedResources();
         _disposed = true;
       }
     }
@@ -38,13 +38,13 @@ namespace Remotion.Mixins.Samples.UsesAndExtends.Core
 
     ~DisposableMixin ()
     {
-      Dispose (false);
+      Dispose(false);
     }
 
-    public void Dispose()
+    public void Dispose ()
     {
-      Dispose (true);
-      GC.SuppressFinalize (this);
+      Dispose(true);
+      GC.SuppressFinalize(this);
     }
   }
 }

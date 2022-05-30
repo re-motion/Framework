@@ -16,10 +16,11 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries
 {
@@ -30,11 +31,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     private Order _order3;
     private Order _order4;
 
-    private IQuery _query;
-    private IQuery _queryWithCustomType;
+    private Mock<IQuery> _query;
+    private Mock<IQuery> _queryWithCustomType;
 
     private QueryResult<Order> _result;
     private QueryResult<Order> _resultWithDuplicates;
+    private QueryResult<Order> _resultWithNullDuplicates;
     private QueryResult<Order> _resultWithNulls;
     private QueryResult<Order> _resultWithCustomType;
 
@@ -42,80 +44,88 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
     {
       base.SetUp();
 
-      _order1 = DomainObjectIDs.Order1.GetObject<Order> ();
-      _order3 = DomainObjectIDs.Order3.GetObject<Order> ();
-      _order4 = DomainObjectIDs.Order4.GetObject<Order> ();
+      _order1 = DomainObjectIDs.Order1.GetObject<Order>();
+      _order3 = DomainObjectIDs.Order3.GetObject<Order>();
+      _order4 = DomainObjectIDs.Order4.GetObject<Order>();
 
-      _query = MockRepository.GenerateStub<IQuery>();
-      _queryWithCustomType = MockRepository.GenerateStub<IQuery>();
-      _queryWithCustomType.Stub (stub => stub.CollectionType).Return (typeof (OrderCollection));
+      _query = new Mock<IQuery>();
+      _queryWithCustomType = new Mock<IQuery>();
+      _queryWithCustomType.Setup(stub => stub.CollectionType).Returns(typeof(OrderCollection));
 
-      _result = new QueryResult<Order> (_query, new[] { _order1, _order3, _order4 });
-      _resultWithDuplicates = new QueryResult<Order> (_query, new[] { _order1, _order3, _order4, _order1 });
-      _resultWithNulls = new QueryResult<Order> (_query, new[] { _order1, _order3, _order4, null });
-      _resultWithCustomType = new QueryResult<Order> (_queryWithCustomType, new[] { _order1, _order3, _order4 });
+      _result = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, _order4 });
+      _resultWithDuplicates = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, _order4, _order1 });
+      _resultWithNullDuplicates = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, null, _order4, null });
+      _resultWithNulls = new QueryResult<Order>(_query.Object, new[] { _order1, _order3, _order4, null });
+      _resultWithCustomType = new QueryResult<Order>(_queryWithCustomType.Object, new[] { _order1, _order3, _order4 });
     }
 
     [Test]
     public void Count ()
     {
-      Assert.That (_result.Count, Is.EqualTo (3));
+      Assert.That(_result.Count, Is.EqualTo(3));
     }
 
     [Test]
     public void Query ()
     {
-      Assert.That (_result.Query, Is.SameAs (_query));
+      Assert.That(_result.Query, Is.SameAs(_query.Object));
     }
 
     [Test]
-    [Obsolete ("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
+    [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
     public void ContainsDuplicates_False ()
     {
-      Assert.That (_result.ContainsDuplicates(), Is.False);
+      Assert.That(_result.ContainsDuplicates(), Is.False);
     }
 
     [Test]
-    [Obsolete ("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
+    [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
     public void ContainsDuplicates_True ()
     {
-      Assert.That (_resultWithDuplicates.ContainsDuplicates(), Is.True);
+      Assert.That(_resultWithDuplicates.ContainsDuplicates(), Is.True);
+    }
+
+    [Test]
+    [Obsolete("This feature has not yet been implemented - at the moment, queries cannot return duplicates. (1.13.176.0, RM-791).")]
+    public void ContainsDuplicates_WithNullValues_True ()
+    {
+      Assert.That(_resultWithNullDuplicates.ContainsDuplicates(), Is.True);
     }
 
     [Test]
     public void ContainsNulls_False ()
     {
-      Assert.That (_result.ContainsNulls(), Is.False);
+      Assert.That(_result.ContainsNulls(), Is.False);
     }
 
     [Test]
     public void ContainsNulls_True ()
     {
-      Assert.That (_resultWithNulls.ContainsNulls(), Is.True);
+      Assert.That(_resultWithNulls.ContainsNulls(), Is.True);
     }
 
     [Test]
     public void AsEnumerable ()
     {
-      Assert.That (_result.AsEnumerable().ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4 }));
-      Assert.That (_resultWithDuplicates.AsEnumerable().ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, _order1 }));
-      Assert.That (_resultWithNulls.AsEnumerable().ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, null }));
+      Assert.That(_result.AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(_resultWithDuplicates.AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
+      Assert.That(_resultWithNulls.AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
     }
 
     [Test]
     public void AsEnumerable_Interface ()
     {
-      Assert.That (((IQueryResult) _result).AsEnumerable().ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4 }));
-      Assert.That (((IQueryResult) _resultWithDuplicates).AsEnumerable().ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, _order1 }));
-      Assert.That (((IQueryResult) _resultWithNulls).AsEnumerable().ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, null }));
+      Assert.That(((IQueryResult)_result).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(((IQueryResult)_resultWithDuplicates).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
+      Assert.That(((IQueryResult)_resultWithNulls).AsEnumerable().ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
     }
 
     [Test]
     public void ToArray ()
     {
-      Assert.That (_result.ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4 }));
-      Assert.That (_resultWithDuplicates.ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, _order1 }));
-      Assert.That (_resultWithNulls.ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, null }));
+      Assert.That(_result.ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(_resultWithDuplicates.ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
+      Assert.That(_resultWithNulls.ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
     }
 
     [Test]
@@ -125,86 +135,95 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       array[0] = null;
 
       var array2 = _result.ToArray();
-      Assert.That (array2, Is.Not.SameAs (array));
-      Assert.That (array[0], Is.Null);
-      Assert.That (array2[0], Is.Not.Null);
+      Assert.That(array2, Is.Not.SameAs(array));
+      Assert.That(array[0], Is.Null);
+      Assert.That(array2[0], Is.Not.Null);
     }
 
     [Test]
     public void ToArray_Interface ()
     {
-      Assert.That (((IQueryResult) _result).ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4 }));
-      Assert.That (((IQueryResult) _resultWithDuplicates).ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, _order1 }));
-      Assert.That (((IQueryResult) _resultWithNulls).ToArray(), Is.EqualTo (new[] { _order1, _order3, _order4, null }));
+      Assert.That(((IQueryResult)_result).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(((IQueryResult)_resultWithDuplicates).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, _order1 }));
+      Assert.That(((IQueryResult)_resultWithNulls).ToArray(), Is.EqualTo(new[] { _order1, _order3, _order4, null }));
     }
 
     [Test]
     public void ToObjectList ()
     {
       var list = _result.ToObjectList();
-      Assert.That (list, Is.EqualTo (new[] { _order1, _order3, _order4 }));
-      Assert.That (list.IsReadOnly, Is.False);
+      Assert.That(list, Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(list.IsReadOnly, Is.False);
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' is null.\r\nParameter name: domainObjects")]
     public void ToObjectList_WithNull ()
     {
-      _resultWithNulls.ToObjectList();
+      Assert.That(
+          () => _resultWithNulls.ToObjectList(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' is null.",
+                  "domainObjects"));
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' "
-        + "is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').\r\nParameter name: domainObjects")]
     public void ToObjectList_WithDuplicates ()
     {
-      _resultWithDuplicates.ToObjectList();
+      Assert.That(
+          () => _resultWithDuplicates.ToObjectList(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Cannot create an ObjectList for the query result: Item 3 of parameter 'domainObjects' "
+                  + "is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').",
+                  "domainObjects"));
     }
 
     [Test]
     public void Interface_ToObjectList ()
     {
-      var list = ((IQueryResult) _result).ToObjectList();
-      Assert.That (list, Is.EqualTo (new[] { _order1, _order3, _order4 }));
-      Assert.That (list.IsReadOnly, Is.False);
+      var list = ((IQueryResult)_result).ToObjectList();
+      Assert.That(list, Is.EqualTo(new[] { _order1, _order3, _order4 }));
+      Assert.That(list.IsReadOnly, Is.False);
     }
 
     [Test]
     public void ToCustomCollection_WithCollectionType ()
     {
       var collection = _resultWithCustomType.ToCustomCollection();
-      Assert.That (collection, Is.InstanceOf (typeof (OrderCollection)));
-      Assert.That (collection, Is.EqualTo (new[] { _order1, _order3, _order4 }));
+      Assert.That(collection, Is.InstanceOf(typeof(OrderCollection)));
+      Assert.That(collection, Is.EqualTo(new[] { _order1, _order3, _order4 }));
     }
 
     [Test]
     public void ToCustomCollection_WithoutCollectionType ()
     {
       var collection = _result.ToCustomCollection();
-      Assert.That (collection, Is.InstanceOf (typeof (DomainObjectCollection)));
-      Assert.That (collection, Is.EqualTo (new[] { _order1, _order3, _order4 }));
+      Assert.That(collection, Is.InstanceOf(typeof(DomainObjectCollection)));
+      Assert.That(collection, Is.EqualTo(new[] { _order1, _order3, _order4 }));
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of parameter 'domainObjects' is null."
-        + "\r\nParameter name: domainObjects")]
     public void ToCustomCollection_WithNull ()
     {
-      _resultWithNulls.ToCustomCollection();
+      Assert.That(
+          () => _resultWithNulls.ToCustomCollection(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: Item 3 of parameter 'domainObjects' is null.",
+                  "domainObjects"));
     }
 
     [Test]
-    [ExpectedException (typeof (UnexpectedQueryResultException), ExpectedMessage =
-        "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: "
-        + "Item 3 of parameter 'domainObjects' is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid')."
-        + "\r\nParameter name: domainObjects")
-    ]
     public void ToCustomCollection_WithDuplicates ()
     {
-      _resultWithDuplicates.ToCustomCollection();
+      Assert.That(
+          () => _resultWithDuplicates.ToCustomCollection(),
+          Throws.InstanceOf<UnexpectedQueryResultException>()
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Cannot create a custom collection of type 'DomainObjectCollection' for the query result: "
+                  + "Item 3 of parameter 'domainObjects' is a duplicate ('Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid').",
+                  "domainObjects"));
     }
 
     [Test]
@@ -213,8 +232,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries
       using (ClientTransactionScope.EnterNullScope())
       {
         var collection = _resultWithCustomType.ToCustomCollection();
-        Assert.That (collection, Is.InstanceOf (typeof (OrderCollection)));
-        Assert.That (collection, Is.EqualTo (new[] { _order1, _order3, _order4 }));
+        Assert.That(collection, Is.InstanceOf(typeof(OrderCollection)));
+        Assert.That(collection, Is.EqualTo(new[] { _order1, _order3, _order4 }));
       }
     }
   }

@@ -28,29 +28,29 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
   {
     public ObjectEndPointSetUnidirectionalCommand (
         IObjectEndPoint modifiedEndPoint,
-        DomainObject newRelatedObject,
-        Action<DomainObject> oppositeObjectSetter,
+        DomainObject? newRelatedObject,
+        Action<DomainObject?> oppositeObjectSetter,
         IClientTransactionEventSink transactionEventSink)
-        : base (modifiedEndPoint, newRelatedObject, oppositeObjectSetter, transactionEventSink)
+        : base(modifiedEndPoint, newRelatedObject, oppositeObjectSetter, transactionEventSink)
     {
       if (!modifiedEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous)
       {
-        var message = string.Format ("EndPoint '{0}' is from a bidirectional relation - use a ObjectEndPointSetOneOneCommand or ObjectEndPointSetOneManyCommand instead.",
+        var message = string.Format("EndPoint '{0}' is from a bidirectional relation - use a ObjectEndPointSetOneOneCommand or ObjectEndPointSetOneManyCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "modifiedEndPoint");
+        throw new ArgumentException(message, "modifiedEndPoint");
       }
 
-      if (newRelatedObject == modifiedEndPoint.GetOppositeObject ())
+      if (newRelatedObject == modifiedEndPoint.GetOppositeObject())
       {
-        var message = string.Format ("New related object for EndPoint '{0}' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
+        var message = string.Format("New related object for EndPoint '{0}' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "newRelatedObject");
+        throw new ArgumentException(message, "newRelatedObject");
       }
     }
 
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

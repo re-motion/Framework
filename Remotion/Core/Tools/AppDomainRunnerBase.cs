@@ -30,7 +30,7 @@ namespace Remotion.Tools
 
     protected AppDomainRunnerBase (AppDomainSetup appDomainSetup)
     {
-      ArgumentUtility.CheckNotNull ("appDomainSetup", appDomainSetup);
+      ArgumentUtility.CheckNotNull("appDomainSetup", appDomainSetup);
 
       _appDomainSetup = appDomainSetup;
     }
@@ -44,26 +44,31 @@ namespace Remotion.Tools
 
     public void Run ()
     {
-      AppDomain appDomain = null;
+#if NETFRAMEWORK
+      AppDomain? appDomain = null;
 
       try
       {
-        appDomain = AppDomain.CreateDomain (_appDomainSetup.ApplicationName, AppDomain.CurrentDomain.Evidence, _appDomainSetup);
+        // TODO RM-7785: ApplicationName & ApplicationBase should be checked for null.
+        appDomain = AppDomain.CreateDomain(_appDomainSetup.ApplicationName!, AppDomain.CurrentDomain.Evidence, _appDomainSetup);
         AppDomainSetup parentAppDomainSetup = AppDomain.CurrentDomain.SetupInformation;
 
-        var resolverInAppDomain = AppDomainAssemblyResolver.CreateInAppDomain (appDomain, parentAppDomainSetup.ApplicationBase);
-        resolverInAppDomain.Register (appDomain);
+        var resolverInAppDomain = AppDomainAssemblyResolver.CreateInAppDomain(appDomain, parentAppDomainSetup.ApplicationBase!);
+        resolverInAppDomain.Register(appDomain);
 
-        appDomain.DoCallBack (CrossAppDomainCallbackHandler);
+        appDomain.DoCallBack(CrossAppDomainCallbackHandler);
       }
       finally
       {
         if (appDomain != null)
-          AppDomain.Unload (appDomain);
+          AppDomain.Unload(appDomain);
 
-        if (Directory.Exists (_appDomainSetup.DynamicBase))
-          Directory.Delete (_appDomainSetup.DynamicBase, true);
+        if (Directory.Exists(_appDomainSetup.DynamicBase))
+          Directory.Delete(_appDomainSetup.DynamicBase!, true);
       }
+#else
+      throw new PlatformNotSupportedException("This API is not supported on the current platform.");
+#endif
     }
   }
 }

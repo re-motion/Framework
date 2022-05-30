@@ -17,8 +17,8 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+using Moq;
 using Remotion.Web.ExecutionEngine;
-using Rhino.Mocks;
 
 namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 {
@@ -30,12 +30,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine
 
     public WxeContext CreateContext (WxeFunction rootFunction)
     {
-      HttpContextBase httpContext = MockRepository.GenerateStub<HttpContextBase> ();
-      WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager (MockRepository.GenerateStub<HttpSessionStateBase> ());
-      WxeFunctionState functionState = new WxeFunctionState (rootFunction, false);
-      NameValueCollection queryString = new NameValueCollection ();
+      var httpContext = new Mock<HttpContextBase>();
+      WxeFunctionStateManager functionStateManager = new WxeFunctionStateManager(new Mock<HttpSessionStateBase>().Object);
+      WxeFunctionState functionState = new WxeFunctionState(rootFunction, false);
+      NameValueCollection queryString = new NameValueCollection();
 
-      return new WxeContext (httpContext, functionStateManager, functionState, queryString);
+      return new WxeContext(httpContext.Object, functionStateManager, functionState, queryString);
     }
 
   }

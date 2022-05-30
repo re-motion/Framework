@@ -30,9 +30,9 @@ public abstract class WxeStep
 {
   /// <summary> Gets the <see cref="WxeFunction"/> for the passed <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetFunction/*' />
-  public static WxeFunction GetFunction (WxeStep step)
+  public static WxeFunction? GetFunction (WxeStep? step)
   {
-    return WxeStep.GetStepByType<WxeFunction> (step);
+    return WxeStep.GetStepByType<WxeFunction>(step);
   }
 
   /// <summary>
@@ -44,14 +44,14 @@ public abstract class WxeStep
   ///   The first <see cref="WxeStep"/> of the specified <typeparamref name="T"/> or <see langword="null"/> if the 
   ///   neither the <paramref name="step"/> nor it's parent steps are of a matching type. 
   /// </returns>
-  protected static T GetStepByType<T> (WxeStep step)
+  protected static T? GetStepByType<T> (WxeStep? step)
       where T : WxeStep
   {
     for (;
           step != null;
           step = step.ParentStep)
     {
-      T expectedStep = step as T;
+      T? expectedStep = step as T;
       if (expectedStep != null)
         return expectedStep;
     }
@@ -62,10 +62,10 @@ public abstract class WxeStep
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/varref/*' />
   protected static WxeVariableReference varref (string localVariable)
   {
-    return new WxeVariableReference (localVariable);
+    return new WxeVariableReference(localVariable);
   }
 
-  private WxeStep _parentStep = null;
+  private WxeStep? _parentStep = null;
   private bool _isAborted = false;
   /// <summary> 
   ///   <see langword="true"/> during the execution of <see cref="Abort"/>. Used to prevent circular aborting.
@@ -85,10 +85,10 @@ public abstract class WxeStep
   ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public void Execute ()
   {
-    Execute (WxeContext.Current);
+    Execute(WxeContext.Current!); // TODO RM-8118: not null assertion
   }
 
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
@@ -99,42 +99,42 @@ public abstract class WxeStep
   ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public abstract void Execute (WxeContext context);
 
   /// <summary> Gets the scope's variables collection. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Variables/*' />
-  public virtual NameObjectCollection Variables
+  public virtual NameObjectCollection? Variables
   {
     get { return (_parentStep == null) ? null : _parentStep.Variables; }
   }
 
   /// <summary> Gets the parent step of the the <see cref="WxeStep"/>. </summary>
   /// <value> The <see cref="WxeStep"/> assigned using <see cref="SetParentStep"/>. </value>
-  public WxeStep ParentStep
+  public WxeStep? ParentStep
   {
     get { return _parentStep; }
   }
 
   /// <summary> Sets the parent step of this <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/SetParentStep/*' />
-  [EditorBrowsable (EditorBrowsableState.Never)]
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
-    ArgumentUtility.CheckNotNull ("parentStep", parentStep);
+    ArgumentUtility.CheckNotNull("parentStep", parentStep);
     _parentStep = parentStep;
   }
 
   /// <summary> Gets the step currently being executed. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ExecutingStep/*' />
-  public virtual WxeStep ExecutingStep 
+  public virtual WxeStep ExecutingStep
   {
     get { return this; }
   }
 
   /// <summary> Gets the root <see cref="WxeFunction"/> of the execution hierarchy. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/RootFunction/*' />
-  public WxeFunction RootFunction
+  public WxeFunction? RootFunction
   {
     get
     {
@@ -147,9 +147,9 @@ public abstract class WxeStep
 
   /// <summary> Gets the parent <see cref="WxeFunction"/> for this <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ParentFunction/*' />
-  public WxeFunction ParentFunction
+  public WxeFunction? ParentFunction
   {
-    get { return WxeStep.GetFunction (ParentStep); }
+    get { return WxeStep.GetFunction(ParentStep); }
   }
 
   /// <summary> 
@@ -157,16 +157,16 @@ public abstract class WxeStep
   ///   <see cref="WxeStep"/>.
   /// </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/CurrentException/*' />
-  protected Exception CurrentException
+  protected Exception? CurrentException
   {
-    get 
+    get
     {
-      for (WxeStep step = this;
+      for (WxeStep? step = this;
            step != null;
            step = step.ParentStep)
       {
         if (step is WxeCatchBlock)
-          return ((WxeCatchBlock) step).Exception;
+          return ((WxeCatchBlock)step).Exception;
       }
 
       return null;
@@ -179,11 +179,11 @@ public abstract class WxeStep
   {
     get { return _isAborted; }
   }
-  
+
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public void Abort()
+  [EditorBrowsable(EditorBrowsableState.Never)]
+  public void Abort ()
   {
     if (! _isAborted && ! _isAborting)
     {
@@ -196,8 +196,40 @@ public abstract class WxeStep
 
   /// <summary> Contains the aborting logic for the <see cref="WxeStep"/>. </summary>
   /// <include file='..\doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/AbortRecursive/*' />
-  protected virtual void AbortRecursive()
+  protected virtual void AbortRecursive ()
   {
+  }
+
+  /// <summary>
+  /// Allows clearing the accumulated dirty state history for this <see cref="WxeStep"/>.
+  /// </summary>
+  public virtual void ResetDirtyStateForExecutedSteps ()
+  {
+  }
+
+  /// <summary>
+  /// Evaluates the current dirty state for this <see cref="WxeStep"/>.
+  /// </summary>
+  /// <returns><see langword="true" /> if the <see cref="WxeStep"/> represents unsaved changes.</returns>
+  public virtual bool EvaluateDirtyState ()
+  {
+    return false;
+  }
+
+  /// <summary> Gets the flag that determines whether to include this <see cref="WxeStep"/>'s dirty state during a call to <see cref="EvaluateDirtyState"/>. </summary>
+  /// <value>
+  /// The value returned by this <see cref="WxeStep"/>'s <see cref="ParentFunction"/> or <see langword="true" /> if this <see cref="WxeStep"/> does not have a <see cref="ParentFunction"/>.
+  /// </value>
+  public virtual bool IsDirtyStateEnabled
+  {
+    get
+    {
+      var parentFunction = ParentFunction;
+      if (parentFunction == null)
+        return true;
+
+      return parentFunction.IsDirtyStateEnabled;
+    }
   }
 }
 

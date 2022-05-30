@@ -25,21 +25,22 @@ namespace Remotion.Utilities
   /// </summary>
   public static class FrameworkVersionDetector
   {
-    private static readonly Lazy<bool> s_isNet_4_6_Supported = new Lazy<bool> (IsNet_4_6_Installed);
+    private static readonly Lazy<bool> s_isNet_4_6_Supported = new Lazy<bool>(IsNet_4_6_Installed);
 
-    private static readonly Lazy<bool> s_isNet_4_5_2_Supported = new Lazy<bool> (IsNet_4_5_2_Installed);
+    private static readonly Lazy<bool> s_isNet_4_5_2_Supported = new Lazy<bool>(IsNet_4_5_2_Installed);
 
-    private static readonly Lazy<bool> s_isNet_4_5_1_Supported = new Lazy<bool> (IsNet_4_5_1_Installed);
+    private static readonly Lazy<bool> s_isNet_4_5_1_Supported = new Lazy<bool>(IsNet_4_5_1_Installed);
 
-    private static readonly Lazy<bool> s_isNet_4_5_Supported = new Lazy<bool> (IsNet_4_5_Installed);
+    private static readonly Lazy<bool> s_isNet_4_5_Supported = new Lazy<bool>(IsNet_4_5_Installed);
 
-    private static readonly Lazy<bool> s_isNet_4_0_Supported = new Lazy<bool> (() => Environment.Version.Major >= 4);
+    private static readonly Lazy<bool> s_isNet_4_0_Supported = new Lazy<bool>(() => Environment.Version.Major >= 4);
 
     /// <summary>
     /// Returns <see langword="true" /> if the <paramref name="frameworkVersion"/> is supported by the current system/runtime.
     /// </summary>
     public static bool IsVersionSupported (FrameworkVersion frameworkVersion)
     {
+#if NETFRAMEWORK
       if (frameworkVersion >= FrameworkVersion.Net_4_6)
         return s_isNet_4_6_Supported.Value;
 
@@ -55,40 +56,43 @@ namespace Remotion.Utilities
       if (frameworkVersion == FrameworkVersion.Net_4_0)
         return s_isNet_4_0_Supported.Value;
 
-      throw new ArgumentException (string.Format("'{0}' is not a valid FrameworkVersion.", frameworkVersion));
+      throw new ArgumentException(string.Format("'{0}' is not a valid FrameworkVersion.", frameworkVersion));
+#else
+      throw new PlatformNotSupportedException("This API is not available on the current platform.");
+#endif
     }
 
     private static bool IsNet_4_6_Installed ()
     {
       // https://msdn.microsoft.com/en-US/library/ms171868.aspx#v46
-      return Type.GetType ("System.AppContext", throwOnError: false) != null;
+      return Type.GetType("System.AppContext", throwOnError: false) != null;
     }
 
     private static bool IsNet_4_5_2_Installed ()
     {
       // http://msdn.microsoft.com/en-us/library/ms171868.aspx#v452
-      var transactionType = typeof (Transaction);
-      return transactionType.GetMethod (
+      var transactionType = typeof(Transaction);
+      return transactionType.GetMethod(
           "PromoteAndEnlistDurable",
           new[]
           {
-              typeof (Guid),
-              typeof (IPromotableSinglePhaseNotification),
-              typeof (ISinglePhaseNotification),
-              typeof (EnlistmentOptions)
+              typeof(Guid),
+              typeof(IPromotableSinglePhaseNotification),
+              typeof(ISinglePhaseNotification),
+              typeof(EnlistmentOptions)
           }) != null;
     }
 
     private static bool IsNet_4_5_1_Installed ()
     {
       // http://msdn.microsoft.com/en-us/library/ms171868.aspx#v451
-      return Type.GetType ("System.Runtime.GCLargeObjectHeapCompactionMode", throwOnError: false, ignoreCase: false) != null;
+      return Type.GetType("System.Runtime.GCLargeObjectHeapCompactionMode", throwOnError: false, ignoreCase: false) != null;
     }
 
     private static bool IsNet_4_5_Installed ()
     {
       // http://msdn.microsoft.com/en-us/library/ms171868.aspx#v45
-      return Type.GetType ("System.Reflection.ReflectionContext", throwOnError: false) != null;
+      return Type.GetType("System.Reflection.ReflectionContext", throwOnError: false) != null;
     }
   }
 }

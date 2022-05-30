@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Test</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>Remotion BusinessObject Web Compatibility Library Unit Tests</AssemblyTitle>
+    <AssemblyName>Remotion.ObjectBinding.Web.Compatibility.UnitTests</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
+    <ProjectReference Include="..\Core\ObjectBinding.Core.csproj" />
+    <ProjectReference Include="..\Web.Compatibility\ObjectBinding.Web.Compatibility.csproj" />
+    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

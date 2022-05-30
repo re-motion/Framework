@@ -24,7 +24,7 @@ namespace Remotion.Web.UI
   public interface IWebSecurityAdapter
   {
     //verwendet fuer buttons etc, secObj = isntanz fur die sec gecheckt wird. handler ist eventhandler von butonclock etc der geschuetz werden soll.
-    bool HasAccess (ISecurableObject securableObject, Delegate handler);
+    bool HasAccess (ISecurableObject? securableObject, Delegate? handler);
     //bool HasStatelessAccess (Type functionType);
     //void CheckAccess (ISecurableObject securableObject, Delegate handler);
   }

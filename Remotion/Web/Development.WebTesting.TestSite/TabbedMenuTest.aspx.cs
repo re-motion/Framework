@@ -24,14 +24,14 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   {
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
 
       MyTabbedMenu.EventCommandClick += MyTabbedMenuOnEventCommandClick;
     }
 
     private void MyTabbedMenuOnEventCommandClick (object sender, MenuTabClickEventArgs menuTabClickEventArgs)
     {
-      ((Layout) Master).SetTestOutput (menuTabClickEventArgs.Tab.ItemID + "|" + menuTabClickEventArgs.Command.Type);
+      ((Layout)Master).SetTestOutput(menuTabClickEventArgs.Tab.ItemID + "|" + menuTabClickEventArgs.Command.Type);
     }
   }
 }

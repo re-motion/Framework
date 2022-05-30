@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities.Singleton
@@ -31,7 +31,7 @@ namespace Remotion.Utilities.Singleton
   /// </remarks>
   public class ServiceLocatorInstanceCreator<T> : IInstanceCreator<T>
   {
-    public T CreateInstance()
+    public T CreateInstance ()
     {
       return SafeServiceLocator.Current.GetInstance<T>();
     }

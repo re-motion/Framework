@@ -25,27 +25,27 @@ namespace Remotion.Mixins.Context.Serialization
   /// </summary>
   public abstract class ArrayMixinContextOriginSerializer : ArrayContextSerializerBase, IMixinContextOriginSerializer
   {
-    protected ArrayMixinContextOriginSerializer()
+    protected ArrayMixinContextOriginSerializer ()
         : base(3)
     {
     }
 
     public void AddKind (string kind)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("kind", kind);
-      SetValue (0, kind);
+      ArgumentUtility.CheckNotNullOrEmpty("kind", kind);
+      SetValue(0, kind);
     }
 
     public void AddAssembly (Assembly assembly)
     {
-      ArgumentUtility.CheckNotNull ("assembly", assembly);
-      SetValue (1, assembly);
+      ArgumentUtility.CheckNotNull("assembly", assembly);
+      SetValue(1, assembly);
     }
 
     public void AddLocation (string location)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("location", location);
-      SetValue (2, location);
+      ArgumentUtility.CheckNotNullOrEmpty("location", location);
+      SetValue(2, location);
     }
   }
 }

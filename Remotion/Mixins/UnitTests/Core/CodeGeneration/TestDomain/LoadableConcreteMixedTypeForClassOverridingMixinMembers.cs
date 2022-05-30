@@ -20,24 +20,24 @@ using Remotion.Mixins.UnitTests.Core.TestDomain;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.TestDomain
 {
-  [ConcreteMixedType (
-      new object[] 
-      { 
-        typeof (ClassOverridingMixinMembers), 
-        new object[] 
-        { 
-          new object[] 
-          { 
-            typeof (MixinWithAbstractMembers), 
-            MixinKind.Used, 
-            MemberVisibility.Private, 
+  [ConcreteMixedType(
+      new object[]
+      {
+        typeof(ClassOverridingMixinMembers),
+        new object[]
+        {
+          new object[]
+          {
+            typeof(MixinWithAbstractMembers),
+            MixinKind.Used,
+            MemberVisibility.Private,
             new Type[0],
             new object[] { "some kind", "mscorlib", "some location" }
-          } 
-        }, 
-        new Type[0] 
-      }, 
-      new[] {typeof (MixinWithAbstractMembers)
+          }
+        },
+        new Type[0]
+      },
+      new[] {typeof(MixinWithAbstractMembers)
     })]
   public class LoadableConcreteMixedTypeForClassOverridingMixinMembers
   { }

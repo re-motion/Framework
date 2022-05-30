@@ -22,12 +22,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebButtonTests
 {
 
 /// <summary> Exposes non-public members of the <see cref="WebButton"/> type. </summary>
-[ToolboxItem (false)]
+[ToolboxItem(false)]
 public class TestWebButton: WebButton
 {
 	public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 
   public new bool IsLegacyButtonEnabled

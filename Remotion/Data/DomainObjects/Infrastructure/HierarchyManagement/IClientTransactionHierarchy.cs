@@ -28,7 +28,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement
     ClientTransaction ActiveTransaction { get; }
 
     void AppendLeafTransaction (ClientTransaction leafTransaction);
-    void RemoveLeafTransaction();
+    void RemoveLeafTransaction ();
 
     IDisposable ActivateTransaction (ClientTransaction clientTransaction);
   }

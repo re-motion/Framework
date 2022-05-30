@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.IO;
 using System.Reflection;
+using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.ExtensibleEnums;
 
@@ -25,16 +27,16 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain
   {
     private const string c_testAssemblySourceDirectoryRoot = @"TestDomain\TestAssemblies";
 
-    public static readonly Lazy<Assembly> Without = new Lazy<Assembly> (() => CompileTestAssemblyInMemory ("Without"));
-    public static readonly Lazy<Assembly> En = new Lazy<Assembly> (() => CompileTestAssemblyInMemory ("En"));
-    public static readonly Lazy<Assembly> EnUS = new Lazy<Assembly> (() => CompileTestAssemblyInMemory ("EnUS"));
+    public static readonly Lazy<Assembly> Without = new Lazy<Assembly>(() => CompileTestAssemblyInMemory("Without"));
+    public static readonly Lazy<Assembly> En = new Lazy<Assembly>(() => CompileTestAssemblyInMemory("En"));
+    public static readonly Lazy<Assembly> EnUS = new Lazy<Assembly>(() => CompileTestAssemblyInMemory("EnUS"));
 
     private static Assembly CompileTestAssemblyInMemory (string assemblyName)
     {
-      var assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler (
-          c_testAssemblySourceDirectoryRoot + "\\" + assemblyName,
-          typeof (MultiLingualNameAttribute).Module.Name,
-          typeof (IExtensibleEnum).Module.Name);
+      var assemblyCompiler = AssemblyCompiler.CreateInMemoryAssemblyCompiler(
+          Path.Combine(TestContext.CurrentContext.TestDirectory, c_testAssemblySourceDirectoryRoot, assemblyName),
+          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof(MultiLingualNameAttribute).Module.Name),
+          Path.Combine(TestContext.CurrentContext.TestDirectory, typeof(IExtensibleEnum).Module.Name));
       assemblyCompiler.Compile();
       return assemblyCompiler.CompiledAssembly;
     }

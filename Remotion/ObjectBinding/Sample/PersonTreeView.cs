@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using System.Web.UI.WebControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
@@ -34,17 +35,21 @@ namespace Remotion.ObjectBinding.Sample
       BusinessObjectPropertyTreeNodeInfo[] nodeInfos;
       if (businessObject is Person)
       {
+        var childrenProperty = (IBusinessObjectReferenceProperty)businessObject.BusinessObjectClass.GetPropertyDefinition("Children");
+        var childCount = ((IList)businessObject.GetProperty(childrenProperty)).Count;
+
         nodeInfos = new BusinessObjectPropertyTreeNodeInfo[2];
-        nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo (
-            "Children",
-            "ToolTip: Children",
-            new IconInfo (null, Unit.Empty, Unit.Empty),
-            (IBusinessObjectReferenceProperty) businessObject.BusinessObjectClass.GetPropertyDefinition ("Children"));
-        nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo (
-            "Jobs",
-            "ToolTip: Jobs",
-            new IconInfo (null, Unit.Empty, Unit.Empty),
-            (IBusinessObjectReferenceProperty) businessObject.BusinessObjectClass.GetPropertyDefinition ("Jobs"));
+        nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo(
+            WebString.CreateFromText("Children"),
+            PlainTextString.CreateFromText("ToolTip: Children"),
+            new IconInfo(null, Unit.Empty, Unit.Empty),
+            childrenProperty);
+        nodeInfos[0].Badge = new Badge(WebString.CreateFromText("" + childCount), PlainTextString.CreateFromText(childCount + " children"));
+        nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo(
+            WebString.CreateFromText("Jobs"),
+            PlainTextString.CreateFromText("ToolTip: Jobs"),
+            new IconInfo(null, Unit.Empty, Unit.Empty),
+            (IBusinessObjectReferenceProperty)businessObject.BusinessObjectClass.GetPropertyDefinition("Jobs"));
       }
       else
         nodeInfos = new BusinessObjectPropertyTreeNodeInfo[0];
@@ -55,18 +60,18 @@ namespace Remotion.ObjectBinding.Sample
     protected override IBusinessObjectWithIdentity[] GetBusinessObjects (
         BocTreeNode parentNode, IBusinessObjectWithIdentity parent, IBusinessObjectReferenceProperty property)
     {
-      if (parent.UniqueIdentifier == new Guid (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1).ToString())
+      if (parent.UniqueIdentifier == new Guid(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1).ToString())
       {
-        IList children = (IList) parent.GetProperty (property);
+        IList children = (IList)parent.GetProperty(property);
         ArrayList childrenList = new ArrayList();
         for (int i = 0; i < children.Count; i++)
         {
           if (i != 1)
-            childrenList.Add (children[i]);
+            childrenList.Add(children[i]);
         }
-        return (IBusinessObjectWithIdentity[]) childrenList.ToArray (typeof (IBusinessObjectWithIdentity));
+        return (IBusinessObjectWithIdentity[])childrenList.ToArray(typeof(IBusinessObjectWithIdentity));
       }
-      return base.GetBusinessObjects (parentNode, parent, property);
+      return base.GetBusinessObjects(parentNode, parent, property);
     }
   }
 }

@@ -31,46 +31,46 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public ClassSerializer (ITableSerializer tableSerializer)
     {
-      ArgumentUtility.CheckNotNull ("tableSerializer", tableSerializer);
+      ArgumentUtility.CheckNotNull("tableSerializer", tableSerializer);
 
       _tableSerializer = tableSerializer;
     }
 
     public XElement Serialize (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
-      return new XElement (
+      return new XElement(
           Constants.Namespace + "class",
-          GetIdAttribute (classDefinition),
-          GetBaseClassAttribute (classDefinition),
-          GetIsAbstractAttribute (classDefinition),
-          GetTableElements (classDefinition)
+          GetIdAttribute(classDefinition),
+          GetBaseClassAttribute(classDefinition)!,
+          GetIsAbstractAttribute(classDefinition),
+          GetTableElements(classDefinition)!
           );
     }
 
     private static XAttribute GetIdAttribute (ClassDefinition classDefinition)
     {
-      return new XAttribute ("id", classDefinition.ID);
+      return new XAttribute("id", classDefinition.ID);
     }
 
     private static XAttribute GetIsAbstractAttribute (ClassDefinition classDefinition)
     {
-      return new XAttribute ("isAbstract", classDefinition.IsAbstract);
+      return new XAttribute("isAbstract", classDefinition.IsAbstract);
     }
 
-    private IEnumerable<XElement> GetTableElements (ClassDefinition classDefinition)
+    private IEnumerable<XElement>? GetTableElements (ClassDefinition classDefinition)
     {
       if (!classDefinition.IsAbstract)
-        return _tableSerializer.Serialize (classDefinition);
+        return _tableSerializer.Serialize(classDefinition);
       return null;
     }
 
-    private XAttribute GetBaseClassAttribute (ClassDefinition classDefinition)
+    private XAttribute? GetBaseClassAttribute (ClassDefinition classDefinition)
     {
       if (classDefinition.BaseClass == null)
         return null;
-      return new XAttribute ("baseClass", classDefinition.BaseClass.ID);
+      return new XAttribute("baseClass", classDefinition.BaseClass.ID);
     }
   }
 }

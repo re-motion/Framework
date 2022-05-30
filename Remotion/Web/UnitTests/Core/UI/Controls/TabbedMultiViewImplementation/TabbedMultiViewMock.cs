@@ -21,19 +21,5 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation
 {
   public class TabbedMultiViewMock : TabbedMultiView
   {
-    private bool _isDesignMode;
-
-    public override bool IsDesignMode
-    {
-      get
-      {
-        return _isDesignMode;
-      }
-    }
-
-    internal void SetDesignMode (bool value)
-    {
-      _isDesignMode = value;
-    }
   }
 }

@@ -27,30 +27,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     public void TryParse ()
     {
       object resultValue;
-      var success = GuidObjectIDValueParser.Instance.TryParse ("5d09030c-25c2-4735-b514-46333bd28ac8", out resultValue);
+      var success = GuidObjectIDValueParser.Instance.TryParse("5d09030c-25c2-4735-b514-46333bd28ac8", out resultValue);
 
-      Assert.That (success, Is.True);
-      Assert.That (resultValue, Is.EqualTo (new Guid ("5d09030c-25c2-4735-b514-46333bd28ac8")));
+      Assert.That(success, Is.True);
+      Assert.That(resultValue, Is.EqualTo(new Guid("5d09030c-25c2-4735-b514-46333bd28ac8")));
     }
 
     [Test]
     public void TryParse_EmptyValue ()
     {
       object resultValue;
-      var success = GuidObjectIDValueParser.Instance.TryParse ("", out resultValue);
+      var success = GuidObjectIDValueParser.Instance.TryParse("", out resultValue);
 
-      Assert.That (success, Is.False);
-      Assert.That (resultValue, Is.Null);
+      Assert.That(success, Is.False);
+      Assert.That(resultValue, Is.Null);
     }
 
     [Test]
     public void TryParse_NonGuid ()
     {
       object resultValue;
-      var success = GuidObjectIDValueParser.Instance.TryParse ("a", out resultValue);
+      var success = GuidObjectIDValueParser.Instance.TryParse("a", out resultValue);
 
-      Assert.That (success, Is.False);
-      Assert.That (resultValue, Is.Null);
+      Assert.That(success, Is.False);
+      Assert.That(resultValue, Is.Null);
     }
   }
 }

@@ -35,8 +35,8 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
       public AttributeConstraint (string message, params Type[] propertyTypes)
       {
-        ArgumentUtility.CheckNotNullOrEmpty ("message", message);
-        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("propertyTypes", propertyTypes);
+        ArgumentUtility.CheckNotNullOrEmpty("message", message);
+        ArgumentUtility.CheckNotNullOrEmptyOrItemsNull("propertyTypes", propertyTypes);
 
         _propertyTypes = propertyTypes;
         _message = message;
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
       }
     }
 
-    private Dictionary<Type, AttributeConstraint> _attributeConstraints;
+    private Dictionary<Type, AttributeConstraint>? _attributeConstraints;
 
     private Dictionary<Type, AttributeConstraint> AttributeConstraints
     {
@@ -62,7 +62,7 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
         if (_attributeConstraints == null)
         {
           _attributeConstraints = new Dictionary<Type, AttributeConstraint>();
-          AddAttributeConstraints (_attributeConstraints);
+          AddAttributeConstraints(_attributeConstraints);
         }
         return _attributeConstraints;
       }
@@ -74,10 +74,10 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     public IEnumerable<MappingValidationResult> Validate (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       return from PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions
-             select Validate (propertyDefinition.PropertyInfo);
+             select Validate(propertyDefinition.PropertyInfo);
     }
 
     //  //TODO 3467:
@@ -99,14 +99,14 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private MappingValidationResult Validate (IPropertyInformation propertyInfo)
     {
-      ArgumentUtility.CheckNotNull ("propertyInfo", propertyInfo);
+      ArgumentUtility.CheckNotNull("propertyInfo", propertyInfo);
 
-      foreach (var attribute in propertyInfo.GetCustomAttributes<Attribute> (true))
+      foreach (var attribute in propertyInfo.GetCustomAttributes<Attribute>(true))
       {
-        var constraint = GetAttributeConstraint (attribute.GetType());
-        if (constraint != null && !Array.Exists (constraint.PropertyTypes, t => IsPropertyTypeSupported (propertyInfo, t)))
+        var constraint = GetAttributeConstraint(attribute.GetType());
+        if (constraint != null && !Array.Exists(constraint.PropertyTypes, t => IsPropertyTypeSupported(propertyInfo, t)))
         {
-          return MappingValidationResult.CreateInvalidResultForProperty (propertyInfo, constraint.Message);
+          return MappingValidationResult.CreateInvalidResultForProperty(propertyInfo, constraint.Message);
         }
       }
       return MappingValidationResult.CreateValidResult();
@@ -114,48 +114,52 @@ namespace Remotion.Data.DomainObjects.Mapping.Validation.Reflection
 
     private bool IsPropertyTypeSupported (IPropertyInformation propertyInfo, Type type)
     {
-      if (type == typeof (ObjectList<>))
-        return ReflectionUtility.IsObjectList (propertyInfo.PropertyType);
-      return type.IsAssignableFrom (propertyInfo.PropertyType);
+      if (type == typeof(ObjectList<>))
+        return ReflectionUtility.IsObjectList(propertyInfo.PropertyType);
+      if (type == typeof(IObjectList<>))
+        return ReflectionUtility.IsIObjectList(propertyInfo.PropertyType);
+      return type.IsAssignableFrom(propertyInfo.PropertyType);
     }
 
-    private AttributeConstraint GetAttributeConstraint (Type attributeType)
+    private AttributeConstraint? GetAttributeConstraint (Type attributeType)
     {
-      return (AttributeConstraints.Where (c => c.Key.IsAssignableFrom (attributeType)).Select (c => c.Value)).FirstOrDefault();
+      return (AttributeConstraints.Where(c => c.Key.IsAssignableFrom(attributeType)).Select(c => c.Value)).FirstOrDefault();
     }
 
     private void AddAttributeConstraints (Dictionary<Type, AttributeConstraint> attributeConstraints)
     {
-      ArgumentUtility.CheckNotNull ("attributeConstraints", attributeConstraints);
+      ArgumentUtility.CheckNotNull("attributeConstraints", attributeConstraints);
 
-      attributeConstraints.Add (typeof (StringPropertyAttribute), CreateAttributeConstraintForPropertyType<StringPropertyAttribute, string>());
-      attributeConstraints.Add (typeof (BinaryPropertyAttribute), CreateAttributeConstraintForPropertyType<BinaryPropertyAttribute, byte[]>());
-      attributeConstraints.Add (
-          typeof (ExtensibleEnumPropertyAttribute), CreateAttributeConstraintForPropertyType<ExtensibleEnumPropertyAttribute, IExtensibleEnum>());
-      attributeConstraints.Add (typeof (MandatoryAttribute), CreateAttributeConstraintForRelationProperty<MandatoryAttribute>());
-      attributeConstraints.Add (
-          typeof (DBBidirectionalRelationAttribute), CreateAttributeConstraintForRelationProperty<DBBidirectionalRelationAttribute>());
+      attributeConstraints.Add(typeof(StringPropertyAttribute), CreateAttributeConstraintForPropertyType<StringPropertyAttribute, string>());
+      attributeConstraints.Add(typeof(BinaryPropertyAttribute), CreateAttributeConstraintForPropertyType<BinaryPropertyAttribute, byte[]>());
+      attributeConstraints.Add(
+          typeof(ExtensibleEnumPropertyAttribute), CreateAttributeConstraintForPropertyType<ExtensibleEnumPropertyAttribute, IExtensibleEnum>());
+      attributeConstraints.Add(typeof(MandatoryAttribute), CreateAttributeConstraintForRelationProperty<MandatoryAttribute>());
+      attributeConstraints.Add(
+          typeof(DBBidirectionalRelationAttribute), CreateAttributeConstraintForRelationProperty<DBBidirectionalRelationAttribute>());
     }
 
     private AttributeConstraint CreateAttributeConstraintForPropertyType<TAttribute, TProperty> ()
         where TAttribute: Attribute
     {
-      return new AttributeConstraint (
-          string.Format ("The '{0}' may be only applied to properties of type '{1}'.", typeof (TAttribute).Name, typeof (TProperty).Name),
-          typeof (TProperty));
+      return new AttributeConstraint(
+          string.Format("The '{0}' may be only applied to properties of type '{1}'.", typeof(TAttribute).Name, typeof(TProperty).Name),
+          typeof(TProperty));
     }
 
     private AttributeConstraint CreateAttributeConstraintForRelationProperty<TAttribute> ()
         where TAttribute: Attribute
     {
-      return new AttributeConstraint (
-          string.Format (
-              "The '{0}' may be only applied to properties assignable to types '{1}' or '{2}'.",
-              typeof (TAttribute).Name,
-              typeof (DomainObject).Name,
-              typeof (ObjectList<>).Name),
-          typeof (DomainObject),
-          typeof (ObjectList<>));
+      return new AttributeConstraint(
+          string.Format(
+              "The '{0}' may be only applied to properties assignable to types '{1}', '{2}', or '{3}'.",
+              typeof(TAttribute).Name,
+              typeof(DomainObject).Name,
+              typeof(ObjectList<>).Name,
+              typeof(IObjectList<>).Name),
+          typeof(DomainObject),
+          typeof(ObjectList<>),
+          typeof(IObjectList<>));
     }
   }
 }

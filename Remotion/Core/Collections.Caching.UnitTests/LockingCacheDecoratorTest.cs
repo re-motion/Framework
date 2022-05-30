@@ -21,10 +21,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Moq;
 using NUnit.Framework;
-using Remotion.Development.RhinoMocks.UnitTesting.Threading;
+using Remotion.Development.Moq.UnitTesting.Threading;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
 
 namespace Remotion.Collections.Caching.UnitTests
 {
@@ -38,31 +38,36 @@ namespace Remotion.Collections.Caching.UnitTests
     [SetUp]
     public void SetUp ()
     {
-      var innerCacheMock = MockRepository.GenerateStrictMock<ICache<string, int>>();
+      var innerCacheMock = new Mock<ICache<string, int>>(MockBehavior.Strict);
 
-      _decorator = new LockingCacheDecorator<string, int> (innerCacheMock);
+      _decorator = new LockingCacheDecorator<string, int>(innerCacheMock.Object);
 
-      var lockObject = PrivateInvoke.GetNonPublicField (_decorator, "_lock");
-      _helper = new LockingDecoratorTestHelper<ICache<string, int>> (_decorator, lockObject, innerCacheMock);
+      var lockObject = PrivateInvoke.GetNonPublicField(_decorator, "_lock");
+      _helper = new LockingDecoratorTestHelper<ICache<string, int>>(_decorator, lockObject, innerCacheMock);
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _decorator).IsNull, Is.False);
+      Assert.That(((INullObject)_decorator).IsNull, Is.False);
     }
 
     [Test]
     public void GetOrCreateValue ()
     {
-      _helper.ExpectSynchronizedDelegation (cache => cache.GetOrCreateValue ("hugo", delegate { return 3; }), 17);
+      Func<string, int> valueFactory = _ => 3;
+      _helper.ExpectSynchronizedDelegation(
+          cache => cache.GetOrCreateValue("hugo", It.Is<Func<string, int>>(_ => _ == valueFactory)),
+          cache => cache.GetOrCreateValue("hugo", valueFactory),
+          17,
+          _ => { });
     }
 
     [Test]
     public void TryGetValue ()
     {
       int value;
-      _helper.ExpectSynchronizedDelegation (cache => cache.TryGetValue ("hugo", out value), true);
+      _helper.ExpectSynchronizedDelegation(cache => cache.TryGetValue("hugo", out value), true);
     }
 
     [Test]
@@ -70,21 +75,21 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       object expected = new object();
 
-      var cache = new LockingCacheDecorator<string, object> (new Cache<string, object>());
+      var cache = new LockingCacheDecorator<string, object>(new Cache<string, object>());
 
-      var actualValue = cache.GetOrCreateValue (
+      var actualValue = cache.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => cache.TryGetValue (key, out _),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+            Assert.That(
+                () => cache.TryGetValue(key, out _),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
             return expected;
           });
 
-      Assert.That (actualValue, Is.SameAs (expected));
+      Assert.That(actualValue, Is.SameAs(expected));
     }
 
     [Test]
@@ -92,44 +97,43 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       object expected = new object();
 
-      var cache = new LockingCacheDecorator<string, object> (new Cache<string, object>());
+      var cache = new LockingCacheDecorator<string, object>(new Cache<string, object>());
 
-      var actualValue = cache.GetOrCreateValue (
+      var actualValue = cache.GetOrCreateValue(
           "key1",
           delegate (string key)
           {
-            Assert.That (
-                () => cache.GetOrCreateValue (key, nestedKey => 13),
-                Throws.InvalidOperationException.With.Message.StringStarting (
+            Assert.That(
+                () => cache.GetOrCreateValue(key, nestedKey => 13),
+                Throws.InvalidOperationException.With.Message.StartsWith(
                     "An attempt was detected to access the value for key ('key1') during the factory operation of GetOrCreateValue(key, factory)."));
 
             return expected;
           });
 
-      Assert.That (actualValue, Is.EqualTo (expected));
+      Assert.That(actualValue, Is.EqualTo(expected));
 
-      object actualValue2;
-      Assert.That (cache.TryGetValue ("key1", out actualValue2), Is.True);
-      Assert.That (actualValue2, Is.SameAs (expected));
+      Assert.That(cache.TryGetValue("key1", out var actualValue2), Is.True);
+      Assert.That(actualValue2, Is.SameAs(expected));
     }
 
     [Test]
     public void GetEnumerator_Generic ()
     {
-      _helper.ExpectSynchronizedDelegation (
+      _helper.ExpectSynchronizedDelegation(
           cache => cache.GetEnumerator(),
-          ((IEnumerable<KeyValuePair<string, int>>) new[]
+          ((IEnumerable<KeyValuePair<string, int>>)new[]
                                                     {
-                                                        new KeyValuePair<string, int> ("key1", 1),
-                                                        new KeyValuePair<string, int> ("key2", 2)
+                                                        new KeyValuePair<string, int>("key1", 1),
+                                                        new KeyValuePair<string, int>("key2", 2)
                                                     }).GetEnumerator(),
-          actual => Assert.That (
-              ConvertToSequenceGeneric (actual),
-              Is.EquivalentTo (
+          actual => Assert.That(
+              ConvertToSequenceGeneric(actual),
+              Is.EquivalentTo(
                   new[]
                   {
-                      new KeyValuePair<string, int> ("key1", 1),
-                      new KeyValuePair<string, int> ("key2", 2)
+                      new KeyValuePair<string, int>("key1", 1),
+                      new KeyValuePair<string, int>("key2", 2)
                   })));
     }
 
@@ -142,21 +146,21 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void GetEnumerator_NonGeneric ()
     {
-      _helper.ExpectSynchronizedDelegation (
+      _helper.ExpectSynchronizedDelegation(
           cache => cache.GetEnumerator(),
-          cache => ((IEnumerable) cache).GetEnumerator(),
-          ((IEnumerable<KeyValuePair<string, int>>) new[]
+          cache => ((IEnumerable)cache).GetEnumerator(),
+          ((IEnumerable<KeyValuePair<string, int>>)new[]
                                                     {
-                                                        new KeyValuePair<string, int> ("key1", 1),
-                                                        new KeyValuePair<string, int> ("key2", 2)
+                                                        new KeyValuePair<string, int>("key1", 1),
+                                                        new KeyValuePair<string, int>("key2", 2)
                                                     }).GetEnumerator(),
-          actual => Assert.That (
-              ConvertToSequenceNonGeneric (actual),
-              Is.EquivalentTo (
+          actual => Assert.That(
+              ConvertToSequenceNonGeneric(actual),
+              Is.EquivalentTo(
                   new[]
                   {
-                      new KeyValuePair<string, int> ("key1", 1),
-                      new KeyValuePair<string, int> ("key2", 2)
+                      new KeyValuePair<string, int>("key1", 1),
+                      new KeyValuePair<string, int>("key2", 2)
                   })));
     }
 
@@ -169,46 +173,45 @@ namespace Remotion.Collections.Caching.UnitTests
     [Test]
     public void Clear ()
     {
-      _helper.ExpectSynchronizedDelegation (store => store.Clear());
+      _helper.ExpectSynchronizedDelegation(store => store.Clear());
     }
 
     [Test]
     public void Serializable ()
     {
-      Serializer.SerializeAndDeserialize (new LockingCacheDecorator<string, int> (new Cache<string, int>()));
+      Serializer.SerializeAndDeserialize(new LockingCacheDecorator<string, int>(new Cache<string, int>()));
     }
 
     [Test]
-    [TestCase (1, 5800)]
-    [TestCase (2, 12500)]
-    [TestCase (3, 19000)]
-    [TestCase (4, 26000)]
+    [TestCase(1, 5800)]
+    [TestCase(2, 12500)]
+    [TestCase(3, 19000)]
+    [TestCase(4, 26000)]
     [Explicit]
     public void Performance (int threadCount, int timeTakenExpected)
     {
-      var cache = new LockingCacheDecorator<string, object> (new Cache<string, object>());
+      var cache = new LockingCacheDecorator<string, object>(new Cache<string, object>());
       var stopwatches = new Stopwatch[threadCount];
       for (int i = 0; i < threadCount; i++)
         stopwatches[i] = new Stopwatch();
 
-      var threadStart = new ParameterizedThreadStart (
+      var threadStart = new ParameterizedThreadStart(
           arg =>
           {
-            cache.GetOrCreateValue ("key", k => "value");
-            object value;
-            cache.TryGetValue ("key", out value);
+            cache.GetOrCreateValue("key", k => "value");
+            cache.TryGetValue("key", out var value);
 
-            var stopwatch = (Stopwatch) arg;
+            var stopwatch = (Stopwatch)arg;
             stopwatch.Start();
 
             for (int i = 0; i < 1000; i++)
             {
-              var key = i.ToString ("D9");
-              cache.GetOrCreateValue (key, k => k + ": value");
+              var key = i.ToString("D9");
+              cache.GetOrCreateValue(key, k => k + ": value");
 
               for (int j = 0; j < 100 * 1000; j++)
               {
-                cache.TryGetValue (key, out value);
+                cache.TryGetValue(key, out value);
               }
             }
 
@@ -220,18 +223,18 @@ namespace Remotion.Collections.Caching.UnitTests
 
       var threads = new Thread[threadCount];
       for (int i = 0; i < threadCount; i++)
-        threads[i] = new Thread (threadStart);
+        threads[i] = new Thread(threadStart);
 
       for (int i = 0; i < threadCount; i++)
-        threads[i].Start (stopwatches[i]);
+        threads[i].Start(stopwatches[i]);
 
       for (int i = 0; i < threadCount; i++)
         threads[i].Join();
 
-      var timeTakenActual = stopwatches.Sum (stopwatch => stopwatch.ElapsedMilliseconds) / stopwatches.Length;
+      var timeTakenActual = stopwatches.Sum(stopwatch => stopwatch.ElapsedMilliseconds) / stopwatches.Length;
 
-      Console.WriteLine ("Time expected: {0}ms (thread count: {1}, release build on Intel Xeon E5-1620 v2 @ 3.70GHz)", timeTakenExpected, threadCount);
-      Console.WriteLine ("Time taken: {0:D}ms", timeTakenActual);
+      Console.WriteLine("Time expected: {0}ms (thread count: {1}, release build on Intel Xeon E5-1620 v2 @ 3.70GHz)", timeTakenExpected, threadCount);
+      Console.WriteLine("Time taken: {0:D}ms", timeTakenActual);
     }
   }
 }

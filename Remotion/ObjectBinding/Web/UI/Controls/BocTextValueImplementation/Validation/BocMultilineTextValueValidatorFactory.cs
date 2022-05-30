@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
   /// Implements the <see cref="IBocMultilineTextValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocMultilineTextValueValidatorFactory"/>
-  [ImplementationFor (typeof (IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
+  [ImplementationFor(typeof(IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]
   public class BocMultilineTextValueValidatorFactory : IBocMultilineTextValueValidatorFactory
   {
     public const int Position = 0;
@@ -38,39 +38,80 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Vali
 
     public IEnumerable<BaseValidator> CreateValidators (IBocMultilineTextValue control, bool isReadOnly)
     {
-      ArgumentUtility.CheckNotNull ("control", control);
+      ArgumentUtility.CheckNotNull("control", control);
 
       if (isReadOnly)
         yield break;
 
       IResourceManager resourceManager = control.GetResourceManager();
-      if (control.IsRequired)
-        yield return CreateRequiredFieldValidator (control, resourceManager);
+      var requiredFieldValidator = CreateRequiredFieldValidator(control, resourceManager);
+      if (requiredFieldValidator != null)
+        yield return requiredFieldValidator;
 
-      if (control.TextBoxStyle.MaxLength.HasValue)
-        yield return CreateLengthValidator (control, resourceManager);
+      var lengthValidator = CreateLengthValidator(control, resourceManager);
+      if (lengthValidator != null)
+        yield return lengthValidator;
+
+      yield return CreateTypeIsStringValidator(control, resourceManager);
     }
 
-    private RequiredFieldValidator CreateRequiredFieldValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
+    private RequiredFieldValidator? CreateRequiredFieldValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
     {
-      RequiredFieldValidator requiredValidator = new RequiredFieldValidator ();
-      requiredValidator.ID = control.ID + "_ValidatorRequired";
-      requiredValidator.ControlToValidate = control.TargetControl.ID;
-      requiredValidator.ErrorMessage = resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.RequiredValidationMessage);
-      return requiredValidator;
+      var areOptionalValidatorsEnabled = control.AreOptionalValidatorsEnabled;
+      var isPropertyTypeRequired = !areOptionalValidatorsEnabled && control.DataSource?.BusinessObject != null && control.Property?.IsNullable == false;
+      var isControlRequired = areOptionalValidatorsEnabled && control.IsRequired;
+
+      if (isPropertyTypeRequired || isControlRequired)
+      {
+        RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+        requiredValidator.ID = control.ID + "_ValidatorRequired";
+        requiredValidator.ControlToValidate = control.TargetControl.ID;
+        requiredValidator.ErrorMessage = resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.RequiredValidationMessage);
+        requiredValidator.EnableViewState = false;
+
+        return requiredValidator;
+      }
+      else
+      {
+        return null;
+      }
     }
 
-    private LengthValidator CreateLengthValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
+    private LengthValidator? CreateLengthValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
     {
       var maxLength = control.TextBoxStyle.MaxLength;
-      Assertion.IsTrue (maxLength.HasValue);
+      var hasControlMaxLength = control.AreOptionalValidatorsEnabled && maxLength.HasValue;
 
-      LengthValidator lengthValidator = new LengthValidator ();
-      lengthValidator.ID = control.ID + "_ValidatorMaxLength";
-      lengthValidator.ControlToValidate = control.TargetControl.ID;
-      lengthValidator.MaximumLength = maxLength.Value;
-      lengthValidator.ErrorMessage = string.Format (resourceManager.GetString (BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage), maxLength.Value);
-      return lengthValidator;
+      if (hasControlMaxLength)
+      {
+        LengthValidator lengthValidator = new LengthValidator();
+        lengthValidator.ID = control.ID + "_ValidatorMaxLength";
+        lengthValidator.ControlToValidate = control.TargetControl.ID;
+        lengthValidator.MaximumLength = maxLength!.Value;
+        lengthValidator.ErrorMessage = string.Format(
+            resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.MaxLengthValidationMessage),
+            maxLength.Value);
+        lengthValidator.EnableViewState = false;
+
+        return lengthValidator;
+      }
+      else
+      {
+        return null;
+      }
+    }
+
+    private ControlCharactersCharactersValidator CreateTypeIsStringValidator (IBocMultilineTextValue control, IResourceManager resourceManager)
+    {
+      ControlCharactersCharactersValidator typeValidator = new ControlCharactersCharactersValidator();
+      typeValidator.ID = control.ID + "_ValidatorType";
+      typeValidator.ControlToValidate = control.TargetControl.ID;
+      typeValidator.SampleTextLength = 5;
+      typeValidator.EnableMultilineText = true;
+      typeValidator.ErrorMessageFormat = resourceManager.GetString(BocMultilineTextValue.ResourceIdentifier.InvalidCharactersErrorMessage);
+      typeValidator.EnableViewState = false;
+
+      return typeValidator;
     }
   }
 }

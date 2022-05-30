@@ -24,23 +24,23 @@ namespace Remotion.Mixins.Context.Serialization
   /// </summary>
   public abstract class ArrayMixinContextOriginDeserializer : ArrayContextDeserializerBase, IMixinContextOriginDeserializer
   {
-    protected ArrayMixinContextOriginDeserializer(object[] values) : base (values, 3)
+    protected ArrayMixinContextOriginDeserializer (object[] values) : base(values, 3)
     {
     }
 
     public string GetKind ()
     {
-      return GetValue<string> (0);
+      return GetValue<string>(0);
     }
 
     public Assembly GetAssembly ()
     {
-      return GetValue<Assembly> (1);
+      return GetValue<Assembly>(1);
     }
 
     public string GetLocation ()
     {
-      return GetValue<string> (2);
+      return GetValue<string>(2);
     }
   }
 }

@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Mixins.Context;
 using Remotion.Mixins.Context.Serialization;
@@ -29,42 +30,45 @@ namespace Remotion.Mixins.CodeGeneration.TypePipe
   /// </summary>
   public class ClassContextSerializerBase : IClassContextSerializer
   {
-    private Type _type;
-    private ReadOnlyCollection<MixinContext> _mixinContexts;
-    private ReadOnlyCollection<Type> _composedInterfaces;
+    private Type? _type;
+    private ReadOnlyCollection<MixinContext>? _mixinContexts;
+    private ReadOnlyCollection<Type>? _composedInterfaces;
 
-    public Type Type
+    public Type? Type
     {
       get { return _type; }
     }
 
-    public ReadOnlyCollection<MixinContext> MixinContexts
+    public ReadOnlyCollection<MixinContext>? MixinContexts
     {
       get { return _mixinContexts; }
     }
 
-    public ReadOnlyCollection<Type> ComposedInterfaces
+    public ReadOnlyCollection<Type>? ComposedInterfaces
     {
       get { return _composedInterfaces; }
     }
 
+    [MemberNotNull(nameof(_type))]
     public void AddClassType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       _type = type;
     }
 
+    [MemberNotNull(nameof(_mixinContexts))]
     public void AddMixins (IEnumerable<MixinContext> mixinContexts)
     {
-      ArgumentUtility.CheckNotNull ("mixinContexts", mixinContexts);
+      ArgumentUtility.CheckNotNull("mixinContexts", mixinContexts);
 
       _mixinContexts = mixinContexts.ToList().AsReadOnly();
     }
 
+    [MemberNotNull(nameof(_composedInterfaces))]
     public void AddComposedInterfaces (IEnumerable<Type> composedInterfaces)
     {
-      ArgumentUtility.CheckNotNull ("composedInterfaces", composedInterfaces);
+      ArgumentUtility.CheckNotNull("composedInterfaces", composedInterfaces);
 
       _composedInterfaces = composedInterfaces.ToList().AsReadOnly();
     }

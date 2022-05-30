@@ -39,31 +39,31 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     public void SetUp ()
     {
       var bindablePropertyReadAccessStrategy =
-          new CompundBindablePropertyReadAccessStrategy (
+          new CompundBindablePropertyReadAccessStrategy(
               new IBindablePropertyReadAccessStrategy[] { new BindableDomainObjectPropertyReadAccessStrategy() });
 
       var bindablePropertyWriteAccessStrategy =
-          new CompundBindablePropertyWriteAccessStrategy (
+          new CompundBindablePropertyWriteAccessStrategy(
               new IBindablePropertyWriteAccessStrategy[] { new BindableDomainObjectPropertyWriteAccessStrategy() });
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle<IBindablePropertyReadAccessStrategy> (() => bindablePropertyReadAccessStrategy);
-      serviceLocator.RegisterSingle<IBindablePropertyWriteAccessStrategy> (() => bindablePropertyWriteAccessStrategy);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle<IBindablePropertyReadAccessStrategy>(() => bindablePropertyReadAccessStrategy);
+      serviceLocator.RegisterSingle<IBindablePropertyWriteAccessStrategy>(() => bindablePropertyWriteAccessStrategy);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       _disableAccessChecksBackup = SecurityConfiguration.Current.DisableAccessChecks;
       SecurityConfiguration.Current.DisableAccessChecks = true;
-      ClientTransaction.CreateRootTransaction ().EnterDiscardingScope ();
+      ClientTransaction.CreateRootTransaction().EnterDiscardingScope();
 
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
     }
 
     [TearDown]
     public void TearDown ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
 
-      ClientTransactionScope.ResetActiveScope ();
+      ClientTransactionScope.ResetActiveScope();
       SecurityConfiguration.Current.DisableAccessChecks = _disableAccessChecksBackup;
       _serviceLocatorScope.Dispose();
     }
@@ -71,8 +71,8 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     [Test]
     public void String_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for String_GetProperty on reference system: ~0.8 µs (release build), ~2.0 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for String_GetProperty on reference system: ~0.8 Âµs (release build), ~2.0 Âµs (debug build)");
 
       var obj = ClassWithFewValueProperties.NewObject();
       obj.StringProperty1 = "A";
@@ -80,7 +80,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       bool value = false;
 
-      Assert.That (obj.StringProperty1, Is.Not.Null);
+      Assert.That(obj.StringProperty1, Is.Not.Null);
 
       var gcCounter = new GCCounter();
       gcCounter.BeginCount();
@@ -93,20 +93,20 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (value);
+      Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("String_GetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("String_GetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Unidirectional_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Unidirectional_GetProperty on reference system: ~1.1 µs (release build), ~3.3 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Unidirectional_GetProperty on reference system: ~1.1 Âµs (release build), ~3.3 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
       obj.Unary1 = OppositeClassWithAnonymousRelationProperties.NewObject();
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       bool value = false;
 
-      Assert.That (obj.Unary1, Is.Not.Null);
+      Assert.That(obj.Unary1, Is.Not.Null);
 
       var gcCounter = new GCCounter();
       gcCounter.BeginCount();
@@ -127,20 +127,20 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (value);
+      Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Unidirectional_GetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Unidirectional_GetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToOne_RealEndPoint_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToOne_RealEndPoint_GetProperty on reference system: ~1.1 µs (release build), ~3.3 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToOne_RealEndPoint_GetProperty on reference system: ~1.1 Âµs (release build), ~3.3 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
       obj.Real1 = OppositeClassWithVirtualRelationProperties.NewObject();
@@ -148,7 +148,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       bool value = false;
 
-      Assert.That (obj.Real1, Is.Not.Null);
+      Assert.That(obj.Real1, Is.Not.Null);
 
       var gcCounter = new GCCounter();
       gcCounter.BeginCount();
@@ -161,20 +161,20 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (value);
+      Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToOne_RealEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToOne_RealEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToOne_VirtualEndPoint_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToOne_VirtualEndPoint_GetProperty on reference system: ~0.9 µs (release build), ~2.5 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToOne_VirtualEndPoint_GetProperty on reference system: ~0.9 Âµs (release build), ~2.5 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
       obj.Virtual1 = OppositeClassWithRealRelationProperties.NewObject();
@@ -182,7 +182,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
       bool value = false;
 
-      Assert.That (obj.Virtual1, Is.Not.Null);
+      Assert.That(obj.Virtual1, Is.Not.Null);
 
       var gcCounter = new GCCounter();
       gcCounter.BeginCount();
@@ -195,30 +195,30 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (value);
+      Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToOne_VirtualEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToOne_VirtualEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToMany_RealEndPoint_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToMany_RealEndPoint_GetProperty on reference system: ~1.1 µs (release build), ~3.0 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToMany_RealEndPoint_GetProperty on reference system: ~1.1 Âµs (release build), ~3.0 Âµs (debug build)");
 
       var collection = ClassWithRelationProperties.NewObject();
-      collection.Collection.Add (OppositeClassWithCollectionRelationProperties.NewObject());
+      collection.Collection.Add(OppositeClassWithCollectionRelationProperties.NewObject());
 
       var obj = OppositeClassWithCollectionRelationProperties.NewObject();
       obj.EndOfCollection = collection;
 
       bool value = false;
 
-      Assert.That (obj.EndOfCollection, Is.Not.Null);
+      Assert.That(obj.EndOfCollection, Is.Not.Null);
 
       var gcCounter = new GCCounter();
       gcCounter.BeginCount();
@@ -231,28 +231,28 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (value);
+      Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToMany_RealEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToMany_RealEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToMany_CollectionEndPoint_GetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToMany_CollectionEndPoint_GetProperty on reference system: ~1.0 µs (release build), ~3.3 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToMany_CollectionEndPoint_GetProperty on reference system: ~1.0 Âµs (release build), ~3.3 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
-      obj.Collection.Add (OppositeClassWithCollectionRelationProperties.NewObject());
-      obj.Collection.Add (OppositeClassWithCollectionRelationProperties.NewObject());
+      obj.Collection.Add(OppositeClassWithCollectionRelationProperties.NewObject());
+      obj.Collection.Add(OppositeClassWithCollectionRelationProperties.NewObject());
 
       bool value = false;
 
-      Assert.That (obj.Collection, Is.Not.Null);
+      Assert.That(obj.Collection, Is.Not.Null);
 
       var gcCounter = new GCCounter();
       gcCounter.BeginCount();
@@ -265,20 +265,20 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
       stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (value);
+      Trace.WriteLine(value);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToMany_CollectionEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToMany_CollectionEndPoint_GetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void String_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for String_SetProperty on reference system: ~1.3 µs (release build), ~3.0 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for String_SetProperty on reference system: ~1.3 Âµs (release build), ~3.0 Âµs (debug build)");
 
       var obj = ClassWithFewValueProperties.NewObject();
       obj.StringProperty1 = "A";
@@ -286,29 +286,29 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
        var gcCounter = new GCCounter();
       gcCounter.BeginCount();
-     var stopwatch = new Stopwatch ();
-      stopwatch.Start ();
+     var stopwatch = new Stopwatch();
+      stopwatch.Start();
 
       for (int i = 0; i < TestRepititions; i++)
         obj.StringProperty1 = value[i & 1];
 
-      stopwatch.Stop ();
+      stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (obj.StringProperty1);
+      Trace.WriteLine(obj.StringProperty1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("String_SetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("String_SetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Unidirectional_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Unidirectional_SetProperty on reference system: ~4.0 µs (release build), ~9.0 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Unidirectional_SetProperty on reference system: ~4.0 Âµs (release build), ~9.0 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
       obj.Unary1 = OppositeClassWithAnonymousRelationProperties.NewObject();
@@ -316,29 +316,29 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
        var gcCounter = new GCCounter();
       gcCounter.BeginCount();
-     var stopwatch = new Stopwatch ();
-      stopwatch.Start ();
+     var stopwatch = new Stopwatch();
+      stopwatch.Start();
 
       for (int i = 0; i < TestRepititions; i++)
         obj.Unary1 = value[i & 1];
 
-      stopwatch.Stop ();
+      stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (obj.Unary1);
+      Trace.WriteLine(obj.Unary1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Unidirectional_SetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Unidirectional_SetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToOne_RealEndPoint_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToOne_RealEndPoint_SetProperty on reference system: ~10 µs (release build), ~21 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToOne_RealEndPoint_SetProperty on reference system: ~10 Âµs (release build), ~21 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
       obj.Real1 = OppositeClassWithVirtualRelationProperties.NewObject();
@@ -346,29 +346,29 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
        var gcCounter = new GCCounter();
       gcCounter.BeginCount();
-     var stopwatch = new Stopwatch ();
-      stopwatch.Start ();
+     var stopwatch = new Stopwatch();
+      stopwatch.Start();
 
       for (int i = 0; i < TestRepititions; i++)
         obj.Real1 = value[i & 1];
 
-      stopwatch.Stop ();
+      stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (obj.Real1);
+      Trace.WriteLine(obj.Real1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToOne_RealEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToOne_RealEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToOne_VirtualEndPoint_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToOne_VirtualEndPoint_SetProperty on reference system: ~11 µs (release build), ~22 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToOne_VirtualEndPoint_SetProperty on reference system: ~11 Âµs (release build), ~22 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
       obj.Virtual1 = OppositeClassWithRealRelationProperties.NewObject();
@@ -376,29 +376,29 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
        var gcCounter = new GCCounter();
       gcCounter.BeginCount();
-     var stopwatch = new Stopwatch ();
-      stopwatch.Start ();
+     var stopwatch = new Stopwatch();
+      stopwatch.Start();
 
       for (int i = 0; i < TestRepititions; i++)
         obj.Virtual1 = value[i & 1];
 
-      stopwatch.Stop ();
+      stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (obj.Virtual1);
+      Trace.WriteLine(obj.Virtual1);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToOne_VirtualEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToOne_VirtualEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToMany_RealEndPoint_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToMany_RealEndPoint_SetProperty on reference system: ~13 µs (release build), ~27 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToMany_RealEndPoint_SetProperty on reference system: ~13 Âµs (release build), ~27 Âµs (debug build)");
 
       var obj = OppositeClassWithCollectionRelationProperties.NewObject();
       obj.EndOfCollection = ClassWithRelationProperties.NewObject();
@@ -406,55 +406,55 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 
        var gcCounter = new GCCounter();
       gcCounter.BeginCount();
-     var stopwatch = new Stopwatch ();
-      stopwatch.Start ();
+     var stopwatch = new Stopwatch();
+      stopwatch.Start();
 
       for (int i = 0; i < TestRepititions; i++)
         obj.EndOfCollection = value[i & 1];
 
-      stopwatch.Stop ();
+      stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (obj.EndOfCollection);
+      Trace.WriteLine(obj.EndOfCollection);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToMany_RealEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToMany_RealEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
 
     [Test]
     public void Bidirectional_OneToMany_CollectionEndPoint_SetProperty ()
     {
-      Console.WriteLine (
-          "Expected average duration of PropertyTest for Bidirectional_OneToMany_CollectionEndPoint_SetProperty on reference system: ~28 µs (release build), ~55 µs (debug build)");
+      Console.WriteLine(
+          "Expected average duration of PropertyTest for Bidirectional_OneToMany_CollectionEndPoint_SetProperty on reference system: ~28 Âµs (release build), ~55 Âµs (debug build)");
 
       var obj = ClassWithRelationProperties.NewObject();
-      obj.Collection.Add (OppositeClassWithCollectionRelationProperties.NewObject());
+      obj.Collection.Add(OppositeClassWithCollectionRelationProperties.NewObject());
       var value = new[] { OppositeClassWithCollectionRelationProperties.NewObject(), OppositeClassWithCollectionRelationProperties.NewObject() };
 
        var gcCounter = new GCCounter();
       gcCounter.BeginCount();
-     var stopwatch = new Stopwatch ();
-      stopwatch.Start ();
+     var stopwatch = new Stopwatch();
+      stopwatch.Start();
 
       for (int i = 0; i < TestRepititions; i++)
       {
         obj.Collection.Clear();
-        obj.Collection.Add (value[i & 1]);
+        obj.Collection.Add(value[i & 1]);
       }
 
-      stopwatch.Stop ();
+      stopwatch.Stop();
       gcCounter.EndCount();
 
-      Trace.WriteLine (obj.Collection);
+      Trace.WriteLine(obj.Collection);
 
-      double averageMilliSeconds = ((double) stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
-      Console.WriteLine ("Bidirectional_OneToMany_CollectionEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} µs", TestRepititions, averageMilliSeconds);
-      gcCounter.PrintCount (Console.Out);
+      double averageMilliSeconds = ((double)stopwatch.ElapsedMilliseconds / TestRepititions) * 1000;
+      Console.WriteLine("Bidirectional_OneToMany_CollectionEndPoint_SetProperty ((executed {0:N0}x): Average duration: {1:N} Âµs", TestRepititions, averageMilliSeconds);
+      gcCounter.PrintCount(Console.Out);
 
-      Console.WriteLine ();
+      Console.WriteLine();
     }
   }
 }

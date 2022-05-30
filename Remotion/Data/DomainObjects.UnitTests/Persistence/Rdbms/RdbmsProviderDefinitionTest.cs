@@ -21,7 +21,7 @@ using NUnit.Framework;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Configuration;
 
@@ -33,115 +33,119 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
     private StorageProviderDefinition _definition;
     private SqlStorageObjectFactory _sqlStorageObjectFactory;
 
-    public override void SetUp()
+    public override void SetUp ()
     {
       base.SetUp();
 
       _sqlStorageObjectFactory = new SqlStorageObjectFactory();
-      _definition = new RdbmsProviderDefinition ("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString");
+      _definition = new RdbmsProviderDefinition("StorageProviderID", _sqlStorageObjectFactory, "ConnectionString");
 
       FakeConfigurationWrapper configurationWrapper = new FakeConfigurationWrapper();
-      configurationWrapper.SetUpConnectionString ("SqlProvider", "ConnectionString", null);
-      ConfigurationWrapper.SetCurrent (configurationWrapper);
+      configurationWrapper.SetUpConnectionString("SqlProvider", "ConnectionString", null);
+      ConfigurationWrapper.SetCurrent(configurationWrapper);
     }
 
     [Test]
-    public void Initialize_FromArguments()
+    public void Initialize_FromArguments ()
     {
-      RdbmsProviderDefinition provider = new RdbmsProviderDefinition ("Provider", _sqlStorageObjectFactory, "ConnectionString");
+      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", _sqlStorageObjectFactory, "ConnectionString");
 
-      Assert.That (provider.Name, Is.EqualTo ("Provider"));
-      Assert.That (provider.Factory, Is.TypeOf (typeof (SqlStorageObjectFactory)));
-      Assert.That (provider.ConnectionString, Is.EqualTo ("ConnectionString"));
+      Assert.That(provider.Name, Is.EqualTo("Provider"));
+      Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
+      Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
     }
 
     [Test]
-    public void Initialize_FromConfig()
+    public void Initialize_FromConfig ()
     {
       NameValueCollection config = new NameValueCollection();
-      config.Add ("description", "The Description");
-      config.Add ("factoryType", "Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2012.SqlStorageObjectFactory");
-      config.Add ("connectionString", "SqlProvider");
+      config.Add("description", "The Description");
+      config.Add("factoryType", "Remotion.Data.DomainObjects::Persistence.Rdbms.SqlServer.Sql2014.SqlStorageObjectFactory");
+      config.Add("connectionString", "SqlProvider");
 
-      RdbmsProviderDefinition provider = new RdbmsProviderDefinition ("Provider", config);
+      RdbmsProviderDefinition provider = new RdbmsProviderDefinition("Provider", config);
 
-      Assert.That (provider.Name, Is.EqualTo ("Provider"));
-      Assert.That (provider.Description, Is.EqualTo ("The Description"));
-      Assert.That (provider.Factory, Is.TypeOf(typeof (SqlStorageObjectFactory)));
-      Assert.That (provider.ConnectionString, Is.EqualTo ("ConnectionString"));
-      Assert.That (config, Is.Empty);
+      Assert.That(provider.Name, Is.EqualTo("Provider"));
+      Assert.That(provider.Description, Is.EqualTo("The Description"));
+      Assert.That(provider.Factory, Is.TypeOf(typeof(SqlStorageObjectFactory)));
+      Assert.That(provider.ConnectionString, Is.EqualTo("ConnectionString"));
+      Assert.That(config, Is.Empty);
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException), ExpectedMessage = 
-        "The factory type for the storage provider defined by 'Provider' must implement the 'IRdbmsStorageObjectFactory' interface. "
-        + "'InvalidRdbmsStorageObjectFactory' does not implement that interface.")]
     public void Initialize_FromConfig_InvalidFactoryType ()
     {
-      NameValueCollection config = new NameValueCollection ();
-      config.Add ("description", "The Description");
-      config.Add ("factoryType", typeof (InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
-      config.Add ("connectionString", "SqlProvider");
-
-      new RdbmsProviderDefinition ("Provider", config);
+      NameValueCollection config = new NameValueCollection();
+      config.Add("description", "The Description");
+      config.Add("factoryType", typeof(InvalidRdbmsStorageObjectFactory).AssemblyQualifiedName);
+      config.Add("connectionString", "SqlProvider");
+      Assert.That(
+          () => new RdbmsProviderDefinition("Provider", config),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo(
+                  "The factory type for the storage provider defined by 'Provider' must implement the 'IRdbmsStorageObjectFactory' interface. "
+                  + "'InvalidRdbmsStorageObjectFactory' does not implement that interface."));
     }
 
     [Test]
-    [ExpectedException (typeof (ConfigurationErrorsException),
-        ExpectedMessage = "The attribute 'factoryType' is missing in the configuration of the 'Provider' provider.")]
     public void Initialize_FromConfig_WithMissingFactoryType ()
     {
-      NameValueCollection config = new NameValueCollection ();
-      config.Add ("description", "The Description");
-      config.Add ("connectionString", "SqlProvider");
-      
-      Dev.Null = new RdbmsProviderDefinition ("Provider", config);
+      NameValueCollection config = new NameValueCollection();
+      config.Add("description", "The Description");
+      config.Add("connectionString", "SqlProvider");
+      Assert.That(
+          () => new RdbmsProviderDefinition("Provider", config),
+          Throws.InstanceOf<ConfigurationErrorsException>()
+              .With.Message.EqualTo("The attribute 'factoryType' is missing in the configuration of the 'Provider' provider."));
     }
 
     [Test]
-    public void IsIdentityTypeSupportedFalse()
+    public void IsIdentityTypeSupportedFalse ()
     {
-      Assert.That (_definition.IsIdentityTypeSupported (typeof (int)), Is.False);
+      Assert.That(_definition.IsIdentityTypeSupported(typeof(int)), Is.False);
     }
 
     [Test]
-    public void IsIdentityTypeSupportedTrue()
+    public void IsIdentityTypeSupportedTrue ()
     {
-      Assert.That (_definition.IsIdentityTypeSupported (typeof (Guid)), Is.True);
+      Assert.That(_definition.IsIdentityTypeSupported(typeof(Guid)), Is.True);
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentNullException))]
-    public void IsIdentityTypeSupportedNull()
+    public void IsIdentityTypeSupportedNull ()
     {
-      _definition.IsIdentityTypeSupported (null);
+      Assert.That(
+          () => _definition.IsIdentityTypeSupported(null),
+          Throws.InstanceOf<ArgumentNullException>());
     }
 
     [Test]
-    public void CheckValidIdentityType()
+    public void CheckValidIdentityType ()
     {
-      _definition.CheckIdentityType (typeof (Guid));
+      _definition.CheckIdentityType(typeof(Guid));
     }
 
     [Test]
-    [ExpectedException (typeof (IdentityTypeNotSupportedException), ExpectedMessage = 
-        "The storage provider defined by 'RdbmsProviderDefinition' does not support identity values of type 'System.String'.")]
-    public void CheckInvalidIdentityType()
+    public void CheckInvalidIdentityType ()
     {
-      _definition.CheckIdentityType (typeof (string));
+      Assert.That(
+          () => _definition.CheckIdentityType(typeof(string)),
+          Throws.InstanceOf<IdentityTypeNotSupportedException>()
+              .With.Message.EqualTo(
+                  "The storage provider defined by 'RdbmsProviderDefinition' does not support identity values of type 'System.String'."));
     }
 
     [Test]
-    public void CheckDetailsOfInvalidIdentityType()
+    public void CheckDetailsOfInvalidIdentityType ()
     {
       try
       {
-        _definition.CheckIdentityType (typeof (string));
-        Assert.Fail ("Test expects an IdentityTypeNotSupportedException.");
+        _definition.CheckIdentityType(typeof(string));
+        Assert.Fail("Test expects an IdentityTypeNotSupportedException.");
       }
       catch (IdentityTypeNotSupportedException ex)
       {
-        Assert.That (ex.InvalidIdentityType, Is.EqualTo (typeof (string)));
+        Assert.That(ex.InvalidIdentityType, Is.EqualTo(typeof(string)));
       }
     }
   }

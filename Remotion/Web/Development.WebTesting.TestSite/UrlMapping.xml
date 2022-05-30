@@ -24,6 +24,7 @@
   <add id="AnchorTest" type="Remotion.Web.Development.WebTesting.TestSite::AnchorTestFunction" resource="~/AnchorTest.wxe" />
   <add id="CommandTest" type="Remotion.Web.Development.WebTesting.TestSite::CommandTestFunction" resource="~/CommandTest.wxe" />
   <add id="CoypuElementScopeFindExtensionsTest" type="Remotion.Web.Development.WebTesting.TestSite::CoypuElementScopeFindExtensionsTestFunction" resource="~/CoypuElementScopeFindExtensionsTest.wxe" />
+  <add id="DirtyStateTest" type="Remotion.Web.Development.WebTesting.TestSite::DirtyStates.DirtyStateRootFunction" resource="~/DirtyStateTest.wxe" />
   <add id="DropDownListTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownListTestFunction" resource="~/DropDownListTest.wxe" />
   <add id="DropDownMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownMenuTestFunction" resource="~/DropDownMenuTest.wxe" />
   <add id="ElementScopeTest" type="Remotion.Web.Development.WebTesting.TestSite::ElementScopeTestFunction" resource="~/ElementScopeTest.wxe" />
@@ -41,6 +42,7 @@
   <add id="WebTabStripTest" type="Remotion.Web.Development.WebTesting.TestSite::WebTabStripTestFunction" resource="~/WebTabStripTest.wxe" />
   <add id="BrowserSessionTest" type="Remotion.Web.Development.WebTesting.TestSite::BrowserSessionTestFunction" resource="~/BrowserSessionTest.wxe" />
   <add id="PlatformTest" type="Remotion.Web.Development.WebTesting.TestSite::PlatformTestFunction" resource="~/PlatformTest.wxe" />
+  <add id="CompletionDetectionStrategyTest" type="Remotion.Web.Development.WebTesting.TestSite::CompletionDetectionStrategyTestFunction" resource="~/CompletionDetectionStrategyTest.wxe" />
 
   <add id="MultiWindowTest_Main" type="Remotion.Web.Development.WebTesting.TestSite::MultiWindowTest.MainFunction"
       resource="~/MultiWindowTest/Main.wxe" />

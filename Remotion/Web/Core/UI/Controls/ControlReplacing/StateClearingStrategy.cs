@@ -28,27 +28,27 @@ namespace Remotion.Web.UI.Controls.ControlReplacing
   {
     private class ViewStateSink : Control
     {
-      protected override void LoadViewState (object savedState)
+      protected override void LoadViewState (object? savedState)
       {
       }
     }
 
     public void LoadControlState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull ("replacer", replacer);
-      ArgumentUtility.CheckNotNull ("memberCaller", memberCaller);
+      ArgumentUtility.CheckNotNull("replacer", replacer);
+      ArgumentUtility.CheckNotNull("memberCaller", memberCaller);
 
-      memberCaller.ClearChildControlState (replacer);
+      memberCaller.ClearChildControlState(replacer);
     }
 
     public void LoadViewState (ControlReplacer replacer, IInternalControlMemberCaller memberCaller)
     {
-      ArgumentUtility.CheckNotNull ("replacer", replacer);
-      ArgumentUtility.CheckNotNull ("memberCaller", memberCaller);
+      ArgumentUtility.CheckNotNull("replacer", replacer);
+      ArgumentUtility.CheckNotNull("memberCaller", memberCaller);
 
-      Assertion.IsTrue (replacer.Controls.Count == 0);
-      replacer.Controls.Add (new ViewStateSink());
-      replacer.Controls.RemoveAt (0);
+      Assertion.IsTrue(replacer.Controls.Count == 0);
+      replacer.Controls.Add(new ViewStateSink());
+      replacer.Controls.RemoveAt(0);
     }
   }
 }

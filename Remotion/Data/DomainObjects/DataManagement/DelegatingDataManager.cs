@@ -28,9 +28,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
   [Serializable]
   public class DelegatingDataManager : IDataManager
   {
-    private IDataManager _innerDataManager;
+    private IDataManager? _innerDataManager;
 
-    public IDataManager InnerDataManager
+    public IDataManager? InnerDataManager
     {
       get { return _innerDataManager; }
       set { _innerDataManager = value; }
@@ -38,32 +38,32 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IVirtualEndPoint GetOrCreateVirtualEndPoint (RelationEndPointID endPointID)
     {
-      return SafeInnerDataManager.GetOrCreateVirtualEndPoint (endPointID);
+      return SafeInnerDataManager.GetOrCreateVirtualEndPoint(endPointID);
     }
 
     public IRelationEndPoint GetRelationEndPointWithLazyLoad (RelationEndPointID endPointID)
     {
-      return SafeInnerDataManager.GetRelationEndPointWithLazyLoad (endPointID);
+      return SafeInnerDataManager.GetRelationEndPointWithLazyLoad(endPointID);
     }
 
-    public IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
+    public IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID endPointID)
     {
-      return SafeInnerDataManager.GetRelationEndPointWithoutLoading (endPointID);
+      return SafeInnerDataManager.GetRelationEndPointWithoutLoading(endPointID);
     }
 
-    public DataContainer GetDataContainerWithoutLoading (ObjectID objectID)
+    public DataContainer? GetDataContainerWithoutLoading (ObjectID objectID)
     {
-      return SafeInnerDataManager.GetDataContainerWithoutLoading (objectID);
+      return SafeInnerDataManager.GetDataContainerWithoutLoading(objectID);
     }
 
     public void RegisterDataContainer (DataContainer dataContainer)
     {
-      SafeInnerDataManager.RegisterDataContainer (dataContainer);
+      SafeInnerDataManager.RegisterDataContainer(dataContainer);
     }
 
     public void Discard (DataContainer dataContainer)
     {
-      SafeInnerDataManager.Discard (dataContainer);
+      SafeInnerDataManager.Discard(dataContainer);
     }
 
     public IDataContainerMapReadOnlyView DataContainers
@@ -76,34 +76,34 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get { return SafeInnerDataManager.RelationEndPoints; }
     }
 
-    public StateType GetState (ObjectID objectID)
+    public DomainObjectState GetState (ObjectID objectID)
     {
-      return SafeInnerDataManager.GetState (objectID);
+      return SafeInnerDataManager.GetState(objectID);
     }
 
-    public DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
+    public DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound)
     {
-      return SafeInnerDataManager.GetDataContainerWithLazyLoad (objectID, throwOnNotFound);
+      return SafeInnerDataManager.GetDataContainerWithLazyLoad(objectID, throwOnNotFound);
     }
 
-    public IEnumerable<DataContainer> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
+    public IEnumerable<DataContainer?> GetDataContainersWithLazyLoad (IEnumerable<ObjectID> objectIDs, bool throwOnNotFound)
     {
-      return SafeInnerDataManager.GetDataContainersWithLazyLoad (objectIDs, throwOnNotFound);
+      return SafeInnerDataManager.GetDataContainersWithLazyLoad(objectIDs, throwOnNotFound);
     }
 
-    public IEnumerable<PersistableData> GetLoadedDataByObjectState (params StateType[] domainObjectStates)
+    public IEnumerable<PersistableData> GetLoadedDataByObjectState (Predicate<DomainObjectState> predicate)
     {
-      return SafeInnerDataManager.GetLoadedDataByObjectState (domainObjectStates);
+      return SafeInnerDataManager.GetLoadedDataByObjectState(predicate);
     }
 
     public void MarkInvalid (DomainObject domainObject)
     {
-      SafeInnerDataManager.MarkInvalid (domainObject);
+      SafeInnerDataManager.MarkInvalid(domainObject);
     }
 
     public void MarkNotInvalid (ObjectID objectID)
     {
-      SafeInnerDataManager.MarkNotInvalid (objectID);
+      SafeInnerDataManager.MarkNotInvalid(objectID);
     }
 
     public void Commit ()
@@ -118,17 +118,17 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public IDataManagementCommand CreateDeleteCommand (DomainObject deletedObject)
     {
-      return SafeInnerDataManager.CreateDeleteCommand (deletedObject);
+      return SafeInnerDataManager.CreateDeleteCommand(deletedObject);
     }
 
     public IDataManagementCommand CreateUnloadCommand (params ObjectID[] objectIDs)
     {
-      return SafeInnerDataManager.CreateUnloadCommand (objectIDs);
+      return SafeInnerDataManager.CreateUnloadCommand(objectIDs);
     }
 
     public IDataManagementCommand CreateUnloadVirtualEndPointsCommand (params RelationEndPointID[] endPointIDs)
     {
-      return SafeInnerDataManager.CreateUnloadVirtualEndPointsCommand (endPointIDs);
+      return SafeInnerDataManager.CreateUnloadVirtualEndPointsCommand(endPointIDs);
     }
 
     public IDataManagementCommand CreateUnloadAllCommand ()
@@ -138,17 +138,17 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void LoadLazyCollectionEndPoint (RelationEndPointID endPointID)
     {
-      SafeInnerDataManager.LoadLazyCollectionEndPoint (endPointID);
+      SafeInnerDataManager.LoadLazyCollectionEndPoint(endPointID);
     }
 
     public void LoadLazyVirtualObjectEndPoint (RelationEndPointID endPointID)
     {
-      SafeInnerDataManager.LoadLazyVirtualObjectEndPoint (endPointID);
+      SafeInnerDataManager.LoadLazyVirtualObjectEndPoint(endPointID);
     }
 
     public DataContainer LoadLazyDataContainer (ObjectID objectID)
     {
-      return SafeInnerDataManager.LoadLazyDataContainer (objectID);
+      return SafeInnerDataManager.LoadLazyDataContainer(objectID);
     }
 
     private IDataManager SafeInnerDataManager
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       get
       {
         if (_innerDataManager == null)
-          throw new InvalidOperationException ("InnerDataManager property must be set before it can be used.");
+          throw new InvalidOperationException("InnerDataManager property must be set before it can be used.");
         return _innerDataManager;
       }
     }

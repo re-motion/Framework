@@ -31,8 +31,8 @@ using Remotion.Utilities;
 namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 {
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Tenant")]
-  [PermanentGuid ("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Tenant")]
+  [PermanentGuid("BD8FB1A4-E300-4663-AB1E-D6BD7B106619")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -55,9 +55,9 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
              select t;
     }
 
-    public static Tenant FindByUnqiueIdentifier (string uniqueIdentifier)
+    public static Tenant? FindByUnqiueIdentifier (string uniqueIdentifier)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("uniqueIdentifier", uniqueIdentifier);
+      ArgumentUtility.CheckNotNullOrEmpty("uniqueIdentifier", uniqueIdentifier);
 
       var result = from t in QueryFactory.CreateLinqQuery<Tenant>()
                    where t.UniqueIdentifier == uniqueIdentifier
@@ -66,11 +66,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       return result.SingleOrDefault();
     }
 
-    [DemandPermission (GeneralAccessTypes.Search)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DemandPermission(GeneralAccessTypes.Search)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static void Search ()
     {
-      throw new NotImplementedException ("This method is only intended for framework support and should never be called.");
+      throw new NotImplementedException("This method is only intended for framework support and should never be called.");
     }
 
     protected Tenant ()
@@ -85,19 +85,19 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       }
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string UniqueIdentifier { get; set; }
 
     public abstract bool IsAbstract { get; set; }
 
-    [DBBidirectionalRelation ("Children")]
-    [SearchAvailableObjectsServiceType (typeof (TenantPropertyTypeSearchService))]
-    public abstract Tenant Parent { get; set; }
+    [DBBidirectionalRelation("Children")]
+    [SearchAvailableObjectsServiceType(typeof(TenantPropertyTypeSearchService))]
+    public abstract Tenant? Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<Tenant> Children { get; }
 
     public override string DisplayName
@@ -121,19 +121,19 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     /// <exception cref="InvalidOperationException">
     /// Thrown if the parent hierarchy contains a circular reference.
     /// </exception>
-    [DemandPermission (GeneralAccessTypes.Read)]
+    [DemandPermission(GeneralAccessTypes.Read)]
     public IEnumerable<Tenant> GetParents ()
     {
-      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      if (!securityClient.HasMethodAccess (this, "GetParents"))
+      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
+      if (!securityClient.HasMethodAccess(this, "GetParents"))
         return Enumerable.Empty<Tenant>();
 
-      return Parent.CreateSequenceWithCycleCheck (
+      return Parent.CreateSequenceWithCycleCheck(
           t => t.Parent,
-          t => t != null && securityClient.HasAccess (t, AccessType.Get (GeneralAccessTypes.Read)),
+          t => t != null && securityClient.HasAccess(t, AccessType.Get(GeneralAccessTypes.Read)),
           null,
-          t => new InvalidOperationException (
-              string.Format ("The parent hierarchy for tenant '{0}' cannot be resolved because a circular reference exists.", ID))
+          t => new InvalidOperationException(
+              string.Format("The parent hierarchy for tenant '{0}' cannot be resolved because a circular reference exists.", ID))
           );
     }
 
@@ -151,7 +151,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     /// </exception>
     public IEnumerable<Tenant> GetHierachy ()
     {
-      return GetHierarchyWithSecurityCheck (this);
+      return GetHierarchyWithSecurityCheck(this);
     }
 
     /// <summary>
@@ -160,11 +160,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     /// </summary>
     private IEnumerable<Tenant> GetHierarchyWithSecurityCheck (Tenant startPoint)
     {
-      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      if (!securityClient.HasAccess (this, AccessType.Get (GeneralAccessTypes.Read)))
+      var securityClient = SecurityClient.CreateSecurityClientFromConfiguration();
+      if (!securityClient.HasAccess(this, AccessType.Get(GeneralAccessTypes.Read)))
         return Enumerable.Empty<Tenant>();
 
-      return new[] { this }.Concat (Children.SelectMany (c => c.GetHierarchyWithCircularReferenceCheck (startPoint)));
+      return new[] { this }.Concat(Children.SelectMany(c => c.GetHierarchyWithCircularReferenceCheck(startPoint)));
     }
 
     /// <summary>
@@ -178,11 +178,11 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       if (this == startPoint)
       {
-        throw new InvalidOperationException (
-            string.Format ("The hierarchy for tenant '{0}' cannot be resolved because a circular reference exists.", startPoint.ID));
+        throw new InvalidOperationException(
+            string.Format("The hierarchy for tenant '{0}' cannot be resolved because a circular reference exists.", startPoint.ID));
       }
 
-      return GetHierarchyWithSecurityCheck (startPoint);
+      return GetHierarchyWithSecurityCheck(startPoint);
     }
   }
 }

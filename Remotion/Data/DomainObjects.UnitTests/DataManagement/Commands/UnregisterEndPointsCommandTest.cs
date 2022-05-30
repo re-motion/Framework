@@ -15,21 +15,21 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.Commands;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 {
   [TestFixture]
   public class UnregisterEndPointsCommandTest : StandardMappingTest
   {
-    private IRelationEndPoint _endPoint1;
-    private IRelationEndPoint _endPoint2;
+    private Mock<IRelationEndPoint> _endPoint1;
+    private Mock<IRelationEndPoint> _endPoint2;
 
-    private IRelationEndPointRegistrationAgent _registrationAgentMock;
+    private Mock<IRelationEndPointRegistrationAgent> _registrationAgentMock;
     private RelationEndPointMap _map;
 
     private UnregisterEndPointsCommand _command;
@@ -38,19 +38,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       base.SetUp();
 
-      _endPoint1 = MockRepository.GenerateStub<IRelationEndPoint> ();
-      _endPoint2 = MockRepository.GenerateStub<IRelationEndPoint> ();
+      _endPoint1 = new Mock<IRelationEndPoint>();
+      _endPoint2 = new Mock<IRelationEndPoint>();
 
-      _registrationAgentMock = MockRepository.GenerateStrictMock<IRelationEndPointRegistrationAgent>();
-      _map = new RelationEndPointMap (MockRepository.GenerateStub<IClientTransactionEventSink> ());
+      _registrationAgentMock = new Mock<IRelationEndPointRegistrationAgent>(MockBehavior.Strict);
+      _map = new RelationEndPointMap(new Mock<IClientTransactionEventSink>().Object);
 
-      _command = new UnregisterEndPointsCommand (new[] { _endPoint1, _endPoint2 }, _registrationAgentMock, _map);
+      _command = new UnregisterEndPointsCommand(new[] { _endPoint1.Object, _endPoint2.Object }, _registrationAgentMock.Object, _map);
     }
 
     [Test]
     public void GetAllExceptions ()
     {
-      Assert.That (_command.GetAllExceptions(), Is.Empty);
+      Assert.That(_command.GetAllExceptions(), Is.Empty);
     }
 
     [Test]
@@ -62,13 +62,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Perform ()
     {
-      _registrationAgentMock.Expect (mock => mock.UnregisterEndPoint (_endPoint1, _map));
-      _registrationAgentMock.Expect (mock => mock.UnregisterEndPoint (_endPoint2, _map));
-      _registrationAgentMock.Replay();
+      _registrationAgentMock.Setup(mock => mock.UnregisterEndPoint(_endPoint1.Object, _map)).Verifiable();
+      _registrationAgentMock.Setup(mock => mock.UnregisterEndPoint(_endPoint2.Object, _map)).Verifiable();
 
       _command.Perform();
 
-      _registrationAgentMock.VerifyAllExpectations();
+      _registrationAgentMock.Verify();
     }
 
     [Test]
@@ -82,7 +81,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       var result = _command.ExpandToAllRelatedObjects();
 
-      Assert.That (result.GetNestedCommands(), Is.EqualTo (new[] { _command }));
+      Assert.That(result.GetNestedCommands(), Is.EqualTo(new[] { _command }));
     }
   }
 }

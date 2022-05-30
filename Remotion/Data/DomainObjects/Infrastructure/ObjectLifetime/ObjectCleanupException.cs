@@ -43,10 +43,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     private readonly Exception _cleanupException;
 
     public ObjectCleanupException (string message, ObjectID objectID, Exception innerException, Exception cleanupException)
-        : base (message, ArgumentUtility.CheckNotNull ("innerException", innerException))
+        : base(message, ArgumentUtility.CheckNotNull("innerException", innerException))
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      ArgumentUtility.CheckNotNull ("cleanupException", cleanupException);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull("cleanupException", cleanupException);
 
       _objectID = objectID;
       _cleanupException = cleanupException;
@@ -55,8 +55,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
     protected ObjectCleanupException ([NotNull] SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
-      _objectID = (ObjectID) info.GetValue ("_objectID", typeof (ObjectID));
-      _cleanupException = (Exception) info.GetValue ("_cleanupException", typeof (Exception));
+      _objectID = (ObjectID)info.GetValue("_objectID", typeof(ObjectID))!;
+      _cleanupException = (Exception)info.GetValue("_cleanupException", typeof(Exception))!;
     }
 
     public ObjectID ObjectID
@@ -71,10 +71,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime
 
     public override void GetObjectData (SerializationInfo info, StreamingContext context)
     {
-      base.GetObjectData (info, context);
+      base.GetObjectData(info, context);
 
-      info.AddValue ("_objectID", _objectID);
-      info.AddValue ("_cleanupException", _cleanupException);
+      info.AddValue("_objectID", _objectID);
+      info.AddValue("_cleanupException", _cleanupException);
     }
   }
 }

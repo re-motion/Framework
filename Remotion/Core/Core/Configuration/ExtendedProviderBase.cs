@@ -40,32 +40,35 @@ namespace Remotion.Configuration
     /// </param>
     protected ExtendedProviderBase (string name, NameValueCollection config)
     {
-      NameValueCollection configClone = new NameValueCollection (config);
-      Initialize (name, config);
+      NameValueCollection configClone = new NameValueCollection(config);
+      Initialize(name, config);
       _config = configClone;
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override sealed void Initialize (string name, NameValueCollection config)
     {
-      base.Initialize (name, config);
-      Assertion.IsNull (_config, "Initialize can only succeed when called for the first time, from the constructor");
+      base.Initialize(name, config);
+      Assertion.IsNull(_config, "Initialize can only succeed when called for the first time, from the constructor");
     }
 
-    protected string GetAndRemoveNonEmptyStringAttribute (NameValueCollection config, string attribute, string providerName, bool required)
+    protected string? GetAndRemoveNonEmptyStringAttribute (NameValueCollection config, string attribute, string providerName, bool required)
     {
-      ArgumentUtility.CheckNotNull ("config", config);
-      ArgumentUtility.CheckNotNullOrEmpty ("attribute", attribute);
-      ArgumentUtility.CheckNotNullOrEmpty ("providerName", providerName);
+      ArgumentUtility.CheckNotNull("config", config);
+      ArgumentUtility.CheckNotNullOrEmpty("attribute", attribute);
+      ArgumentUtility.CheckNotNullOrEmpty("providerName", providerName);
 
-      string value = config.Get (attribute);
+      string? value = config.Get(attribute);
       if ((value == null && required) || (value != null && value.Length == 0))
       {
-        throw new ConfigurationErrorsException (
-            string.Format ("The attribute '{0}' is missing in the configuration of the '{1}' provider.", attribute, providerName));
+        throw new ConfigurationErrorsException(
+            string.Format("The attribute '{0}' is missing in the configuration of the '{1}' provider.", attribute, providerName));
       }
-      config.Remove (attribute);
-      
+      config.Remove(attribute);
+
+      if (required)
+        Assertion.IsNotNull(value, "value != null when required");
+
       return value;
     }
   }

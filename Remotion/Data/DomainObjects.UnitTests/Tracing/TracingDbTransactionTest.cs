@@ -16,30 +16,28 @@
 // 
 using System;
 using System.Data;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Tracing;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 {
   [TestFixture]
   public class TracingDbTransactionTest
   {
-    private MockRepository _mockRepository;
-    private IDbTransaction _innerTransactionMock;
-    private IPersistenceExtension _extensionMock;
+    private Mock<IDbTransaction> _innerTransactionMock;
+    private Mock<IPersistenceExtension> _extensionMock;
     private Guid _connectionID;
     private IDbTransaction _transaction;
 
     [SetUp]
     public void SetUp ()
     {
-      _mockRepository = new MockRepository ();
-      _innerTransactionMock = _mockRepository.StrictMock<IDbTransaction>();
-      _extensionMock = _mockRepository.StrictMock<IPersistenceExtension> ();
-      _connectionID = Guid.NewGuid ();
+      _innerTransactionMock = new Mock<IDbTransaction>(MockBehavior.Strict);
+      _extensionMock = new Mock<IPersistenceExtension>(MockBehavior.Strict);
+      _connectionID = Guid.NewGuid();
 
-      _transaction = new TracingDbTransaction (_innerTransactionMock, _extensionMock, _connectionID);
+      _transaction = new TracingDbTransaction(_innerTransactionMock.Object, _extensionMock.Object, _connectionID);
     }
 
     [Test]
@@ -47,141 +45,128 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       var result = ((TracingDbTransaction)_transaction).WrappedInstance;
 
-      Assert.That (result, Is.EqualTo (_innerTransactionMock));
+      Assert.That(result, Is.EqualTo(_innerTransactionMock.Object));
     }
 
     [Test]
     public void GetConnectionID ()
     {
-      var result = ((TracingDbTransaction) _transaction).ConnectionID;
+      var result = ((TracingDbTransaction)_transaction).ConnectionID;
 
-      Assert.That (result, Is.EqualTo (_connectionID));
+      Assert.That(result, Is.EqualTo(_connectionID));
     }
 
     [Test]
     public void GetTransactionID ()
     {
-      var result = ((TracingDbTransaction) _transaction).TransactionID;
+      var result = ((TracingDbTransaction)_transaction).TransactionID;
 
-      Assert.That (result, Is.TypeOf (typeof (Guid)));
+      Assert.That(result, Is.TypeOf(typeof(Guid)));
     }
 
     [Test]
     public void Dispose ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerTransactionMock.Expect (mock => mock.Dispose());
-        _extensionMock.Expect (mock => mock.TransactionDisposed (_connectionID));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
 
       _transaction.Dispose();
-      _mockRepository.VerifyAll();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Dispose_DisposedTransaction ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerTransactionMock.Expect (mock => mock.Dispose ());
-        _extensionMock.Expect (mock => mock.TransactionDisposed (_connectionID));
-        _innerTransactionMock.Expect (mock => mock.Dispose ());
-      }
-      _mockRepository.ReplayAll ();
+      var sequence = new MockSequence();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
 
-      _transaction.Dispose ();
-      _transaction.Dispose ();
-      _mockRepository.VerifyAll ();
+      _transaction.Dispose();
+      _transaction.Dispose();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Commit ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerTransactionMock.Expect (mock => mock.Commit ());
-        _extensionMock.Expect (mock => mock.TransactionCommitted (_connectionID));
-      }
-      _mockRepository.ReplayAll();
+      var sequence = new MockSequence();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionCommitted(_connectionID)).Verifiable();
 
       _transaction.Commit();
-      _mockRepository.VerifyAll();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Commit_DisposedTransaction ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerTransactionMock.Expect (mock => mock.Dispose());
-        _extensionMock.Expect (mock => mock.TransactionDisposed (_connectionID));
-        _innerTransactionMock.Expect (mock => mock.Commit ());
-        
-      }
-      _mockRepository.ReplayAll ();
+      var sequence = new MockSequence();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
       _transaction.Dispose();
-      _transaction.Commit ();
-      _mockRepository.VerifyAll ();
+      _transaction.Commit();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Rollback ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerTransactionMock.Expect (mock => mock.Rollback ());
-        _extensionMock.Expect (mock => mock.TransactionRolledBack (_connectionID));
-      }
-      _mockRepository.ReplayAll ();
+      var sequence = new MockSequence();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionRolledBack(_connectionID)).Verifiable();
 
-      _transaction.Rollback ();
-      _mockRepository.VerifyAll ();
+      _transaction.Rollback();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void Rollback_DisposedTransaction ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _innerTransactionMock.Expect (mock => mock.Dispose ());
-        _extensionMock.Expect (mock => mock.TransactionDisposed (_connectionID));
-        _innerTransactionMock.Expect (mock => mock.Rollback ());
+      var sequence = new MockSequence();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
 
-      }
-      _mockRepository.ReplayAll ();
-
-      _transaction.Dispose ();
-      _transaction.Rollback ();
-      _mockRepository.VerifyAll ();
+      _transaction.Dispose();
+      _transaction.Rollback();
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
     }
 
     [Test]
     public void GetConnection ()
     {
-      var dbConnection = _mockRepository.StrictMock<IDbConnection>();
-      _innerTransactionMock.Expect (mock => mock.Connection).Return (dbConnection);
-      _mockRepository.ReplayAll();
+      var dbConnection = new Mock<IDbConnection>(MockBehavior.Strict);
+      _innerTransactionMock.Setup(mock => mock.Connection).Returns(dbConnection.Object).Verifiable();
 
       var result = _transaction.Connection;
 
-      Assert.That (result, Is.EqualTo (dbConnection));
-      _mockRepository.VerifyAll();
+      Assert.That(result, Is.EqualTo(dbConnection.Object));
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
+      dbConnection.Verify();
     }
 
     [Test]
     public void GetIsolationLevel ()
     {
       var isolationLevel = IsolationLevel.Chaos;
-      _innerTransactionMock.Expect (mock => mock.IsolationLevel).Return (isolationLevel);
-      _mockRepository.ReplayAll ();
+      _innerTransactionMock.Setup(mock => mock.IsolationLevel).Returns(isolationLevel).Verifiable();
 
       var result = _transaction.IsolationLevel;
 
-      Assert.That (result, Is.EqualTo (isolationLevel));
-      _mockRepository.VerifyAll ();
+      Assert.That(result, Is.EqualTo(isolationLevel));
+      _innerTransactionMock.Verify();
+      _extensionMock.Verify();
     }
   }
 }

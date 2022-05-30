@@ -34,7 +34,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public StoragePropertyDefinitionResolver (IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
+      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
       _persistenceModelProvider = persistenceModelProvider;
     }
 
@@ -45,19 +45,19 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
 
     public IEnumerable<IRdbmsStoragePropertyDefinition> GetStoragePropertiesForHierarchy (ClassDefinition classDefinition)
     {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
 
       var allClassesInHierarchy = classDefinition
-          .CreateSequence (cd => cd.BaseClass)
-          .Reverse ()
-          .Concat (classDefinition.GetAllDerivedClasses ());
+          .CreateSequence(cd => cd.BaseClass)
+          .Reverse()
+          .Concat(classDefinition.GetAllDerivedClasses());
 
       var storageProperties =
           from cd in allClassesInHierarchy
           from PropertyDefinition pd in cd.MyPropertyDefinitions
           where pd.StorageClass == StorageClass.Persistent
-          group _persistenceModelProvider.GetStoragePropertyDefinition (pd) by pd.PropertyInfo into storagePropertyGroup
-          select Unify (storagePropertyGroup);
+          group _persistenceModelProvider.GetStoragePropertyDefinition(pd) by pd.PropertyInfo into storagePropertyGroup
+          select Unify(storagePropertyGroup);
 
       return storageProperties;
     }
@@ -65,7 +65,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
     private IRdbmsStoragePropertyDefinition Unify (IGrouping<IPropertyInformation, IRdbmsStoragePropertyDefinition> storagePropertyGroup)
     {
       var numberOfStorageProperties = storagePropertyGroup.Count();
-      Assertion.IsTrue (numberOfStorageProperties > 0);
+      Assertion.IsTrue(numberOfStorageProperties > 0);
       if (numberOfStorageProperties == 1)
         return storagePropertyGroup.Single();
       else
@@ -76,20 +76,20 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model.Building
         // be that non-nullable properties might be nullable due to mapping constraints. (See ValueStoragePropertyDefinitionFactory.MustBeNullable.)
 
         var first = storagePropertyGroup.First();
-        var rest = storagePropertyGroup.Skip (1);
+        var rest = storagePropertyGroup.Skip(1);
         try
         {
-          return first.UnifyWithEquivalentProperties (rest);
+          return first.UnifyWithEquivalentProperties(rest);
         }
         catch (ArgumentException ex)
         {
           var message =
-              string.Format (
+              string.Format(
                   "For property '{0}.{1}', storage properties with conflicting properties were created. This is not allowed, all storage properties "
                   + "for a .NET property must be equivalent. This error indicates a bug in the IValueStoragePropertyDefinitionFactor implementation.",
                   storagePropertyGroup.Key.DeclaringType,
                   storagePropertyGroup.Key.Name);
-          throw new InvalidOperationException (message, ex);
+          throw new InvalidOperationException(message, ex);
         }
       }
     }

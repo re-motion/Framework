@@ -24,7 +24,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -39,26 +39,27 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
     public static void Initialize ()
     {
       ProviderCollection<StorageProviderDefinition> providers = new ProviderCollection<StorageProviderDefinition>();
-      providers.Add (new RdbmsProviderDefinition ("PerformanceTestDomain", new SqlStorageObjectFactory(), ConnectionString));
-      StorageConfiguration storageConfiguration = new StorageConfiguration (providers, providers["PerformanceTestDomain"]);
+      providers.Add(new RdbmsProviderDefinition("PerformanceTestDomain", new SqlStorageObjectFactory(), ConnectionString));
+      StorageConfiguration storageConfiguration = new StorageConfiguration(providers, providers["PerformanceTestDomain"]);
 
-      DomainObjectsConfiguration.SetCurrent (new FakeDomainObjectsConfiguration (storage: storageConfiguration));
+      DomainObjectsConfiguration.SetCurrent(new FakeDomainObjectsConfiguration(storage: storageConfiguration));
 
 
-      var rootAssemblyFinder = new FixedRootAssemblyFinder (new RootAssembly (typeof (StandardConfiguration).Assembly, true));
-      var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
-      var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (rootAssemblyFinder, assemblyLoader));
-      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (assemblyFinder);
-      MappingConfiguration mappingConfiguration = new MappingConfiguration (
-          new MappingReflector (
+      var rootAssemblyFinder = new FixedRootAssemblyFinder(new RootAssembly(typeof(StandardConfiguration).Assembly, true));
+      var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
+      var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
+      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
+      MappingConfiguration mappingConfiguration = new MappingConfiguration(
+          new MappingReflector(
               typeDiscoveryService,
               new ClassIDProvider(),
               new ReflectionBasedMemberInformationNameResolver(),
               new PropertyMetadataReflector(),
               new DomainModelConstraintProvider(),
+              new SortExpressionDefinitionProvider(),
               MappingReflector.CreateDomainObjectCreator()),
-          new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (DomainObjectsConfiguration.Current.Storage)));
-      MappingConfiguration.SetCurrent (mappingConfiguration);
+          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage)));
+      MappingConfiguration.SetCurrent(mappingConfiguration);
     }
   }
 }

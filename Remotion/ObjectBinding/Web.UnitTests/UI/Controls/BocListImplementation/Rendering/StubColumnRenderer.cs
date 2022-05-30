@@ -25,14 +25,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   public class StubColumnRenderer : BocColumnRendererBase<StubColumnDefinition>
   {
     public StubColumnRenderer (IResourceUrlFactory resourceUrlFactory)
-        : base (resourceUrlFactory, Remotion.Web.UI.Controls.Rendering.RenderingFeatures.Default, new BocListCssClassDefinition())
+        : base(resourceUrlFactory, Remotion.Web.UI.Controls.Rendering.RenderingFeatures.Default, new BocListCssClassDefinition())
     {
     }
 
     protected override void RenderTitleCell (
         BocColumnRenderingContext<StubColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
     {
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Th);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -42,7 +42,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
         bool showIcon,
         BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
       renderingContext.Writer.RenderEndTag();
     }
 

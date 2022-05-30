@@ -15,9 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceTests
 {
@@ -25,60 +25,58 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectStringFormatterServiceT
   public class GetPropertyString_WithEnumerationProperty
   {
     private BusinessObjectStringFormatterService _stringFormatterService;
-    private MockRepository _mockRepository;
-    private IBusinessObject _mockBusinessObject;
-    private IBusinessObjectEnumerationProperty _mockProperty;
+    private Mock<IBusinessObject> _mockBusinessObject;
+    private Mock<IBusinessObjectEnumerationProperty> _mockProperty;
 
     [SetUp]
     public void SetUp ()
     {
-      _stringFormatterService = new BusinessObjectStringFormatterService ();
-      _mockRepository = new MockRepository ();
-      _mockBusinessObject = _mockRepository.StrictMock<IBusinessObject> ();
-      _mockProperty = _mockRepository.StrictMock<IBusinessObjectEnumerationProperty> ();
+      _stringFormatterService = new BusinessObjectStringFormatterService();
+      _mockBusinessObject = new Mock<IBusinessObject>(MockBehavior.Strict);
+      _mockProperty = new Mock<IBusinessObjectEnumerationProperty>(MockBehavior.Strict);
     }
 
     [Test]
     public void Scalar_WithValue ()
     {
-      IEnumerationValueInfo enumValueInfo = new EnumerationValueInfo (TestEnum.Value5, "Value5", "ExpectedStringValue", true);
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (TestEnum.Value5);
-      Expect.Call (_mockProperty.GetValueInfoByValue (TestEnum.Value5, _mockBusinessObject)).Return (enumValueInfo);
-      _mockRepository.ReplayAll ();
+      IEnumerationValueInfo enumValueInfo = new EnumerationValueInfo(TestEnum.Value5, "Value5", "ExpectedStringValue", true);
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(TestEnum.Value5).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(TestEnum.Value5, _mockBusinessObject.Object)).Returns(enumValueInfo).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.EqualTo ("ExpectedStringValue"));
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.EqualTo("ExpectedStringValue"));
     }
 
     [Test]
     public void Scalar_WithNull ()
     {
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (null);
-      Expect.Call (_mockProperty.GetValueInfoByValue (null, _mockBusinessObject)).Return (null);
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns((object)null).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(null, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo)null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.Empty);
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.Empty);
     }
 
     [Test]
     public void Scalar_WithUndefinedValue ()
     {
-      Expect.Call (_mockProperty.IsList).Return (false);
-      Expect.Call (_mockBusinessObject.GetProperty (_mockProperty)).Return (TestEnum.Value5);
-      Expect.Call (_mockProperty.GetValueInfoByValue (TestEnum.Value5, _mockBusinessObject)).Return (null);
-      _mockRepository.ReplayAll ();
+      _mockProperty.Setup(_ => _.IsList).Returns(false).Verifiable();
+      _mockBusinessObject.Setup(_ => _.GetProperty(_mockProperty.Object)).Returns(TestEnum.Value5).Verifiable();
+      _mockProperty.Setup(_ => _.GetValueInfoByValue(TestEnum.Value5, _mockBusinessObject.Object)).Returns((IEnumerationValueInfo)null).Verifiable();
 
-      string actual = _stringFormatterService.GetPropertyString (_mockBusinessObject, _mockProperty, null);
+      string actual = _stringFormatterService.GetPropertyString(_mockBusinessObject.Object, _mockProperty.Object, null);
 
-      _mockRepository.VerifyAll ();
-      Assert.That (actual, Is.Empty);
+      _mockBusinessObject.Verify();
+      _mockProperty.Verify();
+      Assert.That(actual, Is.Empty);
     }
   }
 }

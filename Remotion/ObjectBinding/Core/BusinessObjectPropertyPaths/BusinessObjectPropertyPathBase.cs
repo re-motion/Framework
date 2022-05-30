@@ -44,12 +44,12 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
         BusinessObjectPropertyPath.UnreachableValueBehavior unreachableValueBehavior,
         BusinessObjectPropertyPath.ListValueBehavior listValueBehavior)
     {
-      ArgumentUtility.CheckNotNull ("root", root);
+      ArgumentUtility.CheckNotNull("root", root);
 
       var propertyEnumerator = GetResultPropertyEnumerator();
       var currentObject = root;
       int propertyIndex = 0;
-      while (propertyEnumerator.MoveNext (currentObject.BusinessObjectClass))
+      while (propertyEnumerator.MoveNext(currentObject.BusinessObjectClass))
       {
         var currentProperty = propertyEnumerator.Current;
 
@@ -57,22 +57,22 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
           return new NullBusinessObjectPropertyPathResult();
 
         if (!propertyEnumerator.HasNext)
-          return new EvaluatedBusinessObjectPropertyPathResult (currentObject, currentProperty);
+          return new EvaluatedBusinessObjectPropertyPathResult(currentObject, currentProperty);
 
-        if (!currentProperty.IsAccessible (currentObject))
+        if (!currentProperty.IsAccessible(currentObject))
         {
-          HandlePropertyAccessDenied (unreachableValueBehavior, propertyIndex);
-          return new NotAccessibleBusinessObjectPropertyPathResult (currentObject.BusinessObjectClass.BusinessObjectProvider);
+          HandlePropertyAccessDenied(unreachableValueBehavior, propertyIndex);
+          return new NotAccessibleBusinessObjectPropertyPathResult(currentObject.BusinessObjectClass.BusinessObjectProvider);
         }
 
         try
         {
-          currentObject = GetPropertyValue (currentObject, (IBusinessObjectReferenceProperty) currentProperty, listValueBehavior, propertyIndex);
+          currentObject = GetPropertyValue(currentObject, (IBusinessObjectReferenceProperty)currentProperty, listValueBehavior, propertyIndex);
         }
         catch (BusinessObjectPropertyAccessException)
         {
-          HandlePropertyAccessDenied (unreachableValueBehavior, propertyIndex);
-          return new NotAccessibleBusinessObjectPropertyPathResult (currentObject.BusinessObjectClass.BusinessObjectProvider);
+          HandlePropertyAccessDenied(unreachableValueBehavior, propertyIndex);
+          return new NotAccessibleBusinessObjectPropertyPathResult(currentObject!.BusinessObjectClass.BusinessObjectProvider);
         }
 
         if (currentObject == null)
@@ -84,7 +84,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
         propertyIndex++;
       }
 
-      throw new InvalidOperationException ("Property path enumeration can never fall through.");
+      throw new InvalidOperationException("Property path enumeration can never fall through.");
     }
 
     public override string ToString ()
@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
       return Identifier;
     }
 
-    private IBusinessObject GetPropertyValue (
+    private IBusinessObject? GetPropertyValue (
         IBusinessObject currentObject,
         IBusinessObjectReferenceProperty currentProperty,
         BusinessObjectPropertyPath.ListValueBehavior listValueBehavior,
@@ -102,27 +102,28 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
       {
         if (listValueBehavior == BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties)
         {
-          throw new InvalidOperationException (
-              string.Format ("Property #{0} of property path '{1}' is not a single-value property.", propertyIndex, Identifier));
+          throw new InvalidOperationException(
+              string.Format("Property #{0} of property path '{1}' is not a single-value property.", propertyIndex, Identifier));
         }
 
-        var list = (IList) currentObject.GetProperty (currentProperty);
-        if (list.Count > 0)
-          return (IBusinessObject) list[0];
+        var list = (IList?)currentObject.GetProperty(currentProperty);
+
+        if (list is { Count: >0 })
+          return (IBusinessObject?)list[0];
         else
           return null;
       }
       else
       {
-        return (IBusinessObject) currentObject.GetProperty (currentProperty);
+        return (IBusinessObject?)currentObject.GetProperty(currentProperty);
       }
     }
 
     private void HandlePropertyAccessDenied (BusinessObjectPropertyPath.UnreachableValueBehavior unreachableValueBehavior, int propertyIndex)
     {
       if (unreachableValueBehavior == BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue)
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Access was denied to property #{0} of property path '{1}'. Cannot evaluate rest of path.", propertyIndex, Identifier));
     }
 
@@ -130,8 +131,8 @@ namespace Remotion.ObjectBinding.BusinessObjectPropertyPaths
     {
       if (unreachableValueBehavior == BusinessObjectPropertyPath.UnreachableValueBehavior.FailForUnreachableValue)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
             "A null value was returned for property #{0} of property path '{1}'. Cannot evaluate rest of path.", propertyIndex, Identifier));
       }
     }

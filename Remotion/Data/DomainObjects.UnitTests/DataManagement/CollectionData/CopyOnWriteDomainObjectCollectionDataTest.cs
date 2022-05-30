@@ -19,6 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement.CollectionData;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
@@ -30,113 +31,115 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     private Order _domainObject2;
     private Order _domainObject3;
 
-    private ObservableCollectionDataDecorator _copiedData;
-    private CopyOnWriteDomainObjectCollectionData _copyOnWriteData;
+    private ObservableDomainObjectCollectionDataDecorator _copiedData;
+    private CopyOnWriteDomainObjectDomainObjectCollectionData _copyOnWriteData;
     private DomainObjectCollectionData _underlyingCopiedData;
 
     [SetUp]
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _domainObject1 = DomainObjectMother.CreateFakeObject<Order> ();
-      _domainObject2 = DomainObjectMother.CreateFakeObject<Order> ();
-      _domainObject3 = DomainObjectMother.CreateFakeObject<Order> ();
+      _domainObject1 = DomainObjectMother.CreateFakeObject<Order>();
+      _domainObject2 = DomainObjectMother.CreateFakeObject<Order>();
+      _domainObject3 = DomainObjectMother.CreateFakeObject<Order>();
 
-      _underlyingCopiedData = new DomainObjectCollectionData (new[] { _domainObject1, _domainObject2 });
-      _copiedData = new ObservableCollectionDataDecorator (_underlyingCopiedData);
-      _copyOnWriteData = new CopyOnWriteDomainObjectCollectionData (_copiedData);
+      _underlyingCopiedData = new DomainObjectCollectionData(new[] { _domainObject1, _domainObject2 });
+      _copiedData = new ObservableDomainObjectCollectionDataDecorator(_underlyingCopiedData);
+      _copyOnWriteData = new CopyOnWriteDomainObjectDomainObjectCollectionData(_copiedData);
     }
 
     [Test]
     public void Initialization_SetsUpDelegationToCopiedValues_ByDefault ()
     {
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
 
-      _underlyingCopiedData.Add (_domainObject3);
-      
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2, _domainObject3 }));
+      _underlyingCopiedData.Add(_domainObject3);
+
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));
     }
 
     [Test]
     public void Initialization_SetsUpCopyOnWrite_ForCopiedCollection ()
     {
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
 
-      _copiedData.Add (_domainObject3);
+      _copiedData.Add(_domainObject3);
 
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
     }
 
     [Test]
     public void CopyOnWrite_SetsUpCopy ()
     {
-      _copyOnWriteData.CopyOnWrite ();
+      _copyOnWriteData.CopyOnWrite();
 
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
 
-      _underlyingCopiedData.Add (_domainObject3);
+      _underlyingCopiedData.Add(_domainObject3);
 
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
     }
 
     [Test]
     public void CopyOnWrite_Twice ()
     {
-      _copyOnWriteData.CopyOnWrite ();
-      var data1 = DomainObjectCollectionDataTestHelper.GetWrappedData (_copyOnWriteData);
+      _copyOnWriteData.CopyOnWrite();
+      var data1 = DomainObjectCollectionDataTestHelper.GetWrappedData(_copyOnWriteData);
 
-      _copyOnWriteData.CopyOnWrite ();
-      var data2 = DomainObjectCollectionDataTestHelper.GetWrappedData (_copyOnWriteData);
-      
-      Assert.That (data1, Is.SameAs (data2));
+      _copyOnWriteData.CopyOnWrite();
+      var data2 = DomainObjectCollectionDataTestHelper.GetWrappedData(_copyOnWriteData);
+
+      Assert.That(data1, Is.SameAs(data2));
     }
 
     [Test]
     public void IsContentsCopied_False ()
     {
-      Assert.That (_copyOnWriteData.IsContentsCopied, Is.False);
+      Assert.That(_copyOnWriteData.IsContentsCopied, Is.False);
     }
 
     [Test]
     public void IsContentsCopied_True ()
     {
-      _copyOnWriteData.CopyOnWrite ();
-      Assert.That (_copyOnWriteData.IsContentsCopied, Is.True);
+      _copyOnWriteData.CopyOnWrite();
+      Assert.That(_copyOnWriteData.IsContentsCopied, Is.True);
     }
 
     [Test]
     public void RevertToCopiedData ()
     {
-      _copyOnWriteData.CopyOnWrite ();
-      _underlyingCopiedData.Remove (_domainObject1);
-      
-      _copyOnWriteData.RevertToCopiedData ();
+      _copyOnWriteData.CopyOnWrite();
+      _underlyingCopiedData.Remove(_domainObject1);
 
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject2 }));
+      _copyOnWriteData.RevertToCopiedData();
 
-      _underlyingCopiedData.Add (_domainObject3);
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject2, _domainObject3 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject2 }));
+
+      _underlyingCopiedData.Add(_domainObject3);
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject2, _domainObject3 }));
     }
 
     [Test]
     public void OnDataChange_PerformsCopyOperation ()
     {
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
 
-      _copyOnWriteData.Add (_domainObject3);
+      _copyOnWriteData.Add(_domainObject3);
 
-      Assert.That (_copyOnWriteData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2, _domainObject3 }));
-      Assert.That (_copiedData.ToArray (), Is.EqualTo (new[] { _domainObject1, _domainObject2 }));
+      Assert.That(_copyOnWriteData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2, _domainObject3 }));
+      Assert.That(_copiedData.ToArray(), Is.EqualTo(new[] { _domainObject1, _domainObject2 }));
     }
 
     [Test]
     public void Serializable ()
     {
-     Assert.That (_copyOnWriteData.Count, Is.EqualTo (2));
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      var deserialized = Serializer.SerializeAndDeserialize (_copyOnWriteData);
-      Assert.That (deserialized.Count, Is.EqualTo (2));
+     Assert.That(_copyOnWriteData.Count, Is.EqualTo(2));
+
+      var deserialized = Serializer.SerializeAndDeserialize(_copyOnWriteData);
+      Assert.That(deserialized.Count, Is.EqualTo(2));
     }
   }
 }

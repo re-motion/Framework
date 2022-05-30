@@ -29,9 +29,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       var order = DomainObjectIDs.OrderWithoutOrderItems.GetObject<Order>();
 
-      Assert.That (
-          () => order.OrderItems.EnsureDataComplete (), 
-          Throws.TypeOf<PersistenceException> ().With.Message.EqualTo (
+      Assert.That(
+          () => order.OrderItems.EnsureDataComplete(),
+          Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
               "Collection for mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems' "
               + "on object 'Order|f7607cbc-ab34-465c-b282-0531d51f3b04|System.Guid' contains no items."));
     }
@@ -39,11 +39,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     [Test]
     public void LoadingMandatoryVirtualObjectEndPoint_WithNoRelatedObject_Throws ()
     {
-      var partner = DomainObjectIDs.PartnerWithoutCeo.GetObject<Partner> ();
+      var partner = DomainObjectIDs.PartnerWithoutCeo.GetObject<Partner>();
 
-      Assert.That (
+      Assert.That(
           () => partner.Ceo,
-          Throws.TypeOf<PersistenceException> ().With.Message.EqualTo (
+          Throws.TypeOf<PersistenceException>().With.Message.EqualTo(
               "Mandatory relation property 'Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Ceo' on object "
               + "'Partner|a65b123a-6e17-498e-a28e-946217c0ae30|System.Guid' contains no item."));
     }
@@ -53,9 +53,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Relations
     {
       // Note: This test documents current behavior, not necessarily desired behavior.
       OrderItem orderItemWithoutOrder = null;
-      Assert.That (() => orderItemWithoutOrder = DomainObjectIDs.OrderItemWithoutOrder.GetObject<OrderItem>(), Throws.Nothing);
+      Assert.That(() => orderItemWithoutOrder = DomainObjectIDs.OrderItemWithoutOrder.GetObject<OrderItem>(), Throws.Nothing);
 
-      Assert.That (orderItemWithoutOrder.Order, Is.Null);
+      Assert.That(orderItemWithoutOrder.Order, Is.Null);
     }
   }
 }

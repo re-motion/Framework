@@ -21,7 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
   [Instantiable]
   public abstract class DerivedClassWithDifferentProperties : ClassWithDifferentProperties
   {
-    protected DerivedClassWithDifferentProperties()
+    protected DerivedClassWithDifferentProperties ()
     {
     }
 
@@ -33,20 +33,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappin
 
     public abstract string OtherString { get; set; }
 
-    [DBColumn ("NewString")]
+    [DBColumn("NewString")]
     public new abstract string String { get; set; }
 
-    [DBColumn ("DerivedPrivateString")]
+    [DBColumn("DerivedPrivateString")]
     private string PrivateString
     {
       get {
         return Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithDifferentProperties.PrivateString"]
-            .GetValue<string> ();
+            .GetValue<string>();
       }
       set
       {
         Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample.DerivedClassWithDifferentProperties.PrivateString"]
-            .SetValue (value);
+            .SetValue(value);
       }
     }
   }

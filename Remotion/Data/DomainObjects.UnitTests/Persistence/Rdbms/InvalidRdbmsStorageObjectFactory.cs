@@ -30,7 +30,7 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
-  [ImplementationFor (typeof(InvalidRdbmsStorageObjectFactory))]
+  [ImplementationFor(typeof(InvalidRdbmsStorageObjectFactory))]
   internal class InvalidRdbmsStorageObjectFactory : IStorageObjectFactory
   {
     public InvalidRdbmsStorageObjectFactory ()
@@ -42,7 +42,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
-    public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public IPersistenceModelLoader CreatePersistenceModelLoader (
+        StorageProviderDefinition storageProviderDefinition,
+        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
       throw new NotImplementedException();
     }
@@ -57,7 +59,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
-    public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (StorageProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry, IMappingConfiguration mappingConfiguration)
+    public IDomainObjectQueryGenerator CreateDomainObjectQueryGenerator (
+        StorageProviderDefinition storageProviderDefinition,
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry,
+        IMappingConfiguration mappingConfiguration)
     {
       throw new NotImplementedException();
     }
@@ -67,7 +73,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
-    public IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public IDataStoragePropertyDefinitionFactory CreateDataStoragePropertyDefinitionFactory (
+        StorageProviderDefinition storageProviderDefinition,
+        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
       throw new NotImplementedException();
     }
@@ -77,7 +85,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
-    public IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public IRelationStoragePropertyDefinitionFactory CreateRelationStoragePropertyDefinitionFactory (
+        StorageProviderDefinition storageProviderDefinition,
+        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
       throw new NotImplementedException();
     }
@@ -117,7 +127,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms
       throw new NotImplementedException();
     }
 
-    public ISqlQueryGenerator CreateSqlQueryGenerator (IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
+    public ISqlQueryGenerator CreateSqlQueryGenerator (
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
     {
       throw new NotImplementedException();
     }

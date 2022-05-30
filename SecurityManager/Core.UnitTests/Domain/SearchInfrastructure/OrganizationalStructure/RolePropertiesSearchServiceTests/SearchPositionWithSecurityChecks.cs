@@ -17,6 +17,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Security;
@@ -28,7 +29,6 @@ using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 using Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStructure;
 using Remotion.ServiceLocation;
-using Rhino.Mocks;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.OrganizationalStructure.RolePropertiesSearchServiceTests
 {
@@ -37,25 +37,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
   {
     private IDomainObjectHandle<Group> _expectedRootGroupHandle;
     private IDomainObjectHandle<Group> _expectedParentGroup0Handle;
-    private MockRepository _mocks;
-    private ISecurityProvider _mockSecurityProvider;
-    private IPrincipalProvider _mockPrincipalProvider;
-    private IFunctionalSecurityStrategy _stubFunctionalSecurityStrategy;
+    private Mock<ISecurityProvider> _mockSecurityProvider;
+    private Mock<IPrincipalProvider> _mockPrincipalProvider;
+    private Mock<IFunctionalSecurityStrategy> _stubFunctionalSecurityStrategy;
     private RolePropertiesSearchService _searchService;
     private IBusinessObjectReferenceProperty _positionProperty;
     private ServiceLocatorScope _serviceLocatorScope;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
-        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransactionScope.CurrentTransaction);
+        Tenant tenant = dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransactionScope.CurrentTransaction);
         var expectedTenantHandle = tenant.GetHandle();
 
-        var groups = Group.FindByTenant (expectedTenantHandle);
+        var groups = Group.FindByTenant(expectedTenantHandle);
         foreach (Group group in groups)
         {
           if (group.UniqueIdentifier == "UID: rootGroup")
@@ -70,23 +69,22 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     {
       base.SetUp();
 
-      _mocks = new MockRepository();
-      _mockSecurityProvider = (ISecurityProvider) _mocks.StrictMock (typeof (ISecurityProvider));
-      SetupResult.For (_mockSecurityProvider.IsNull).Return (false);
-      _mockPrincipalProvider = (IPrincipalProvider) _mocks.StrictMock (typeof (IPrincipalProvider));
-      _stubFunctionalSecurityStrategy = _mocks.StrictMock<IFunctionalSecurityStrategy>();
+      _mockSecurityProvider = new Mock<ISecurityProvider>(MockBehavior.Strict);
+      _mockSecurityProvider.Setup(_ => _.IsNull).Returns(false).Verifiable();
+      _mockPrincipalProvider = new Mock<IPrincipalProvider>(MockBehavior.Strict);
+      _stubFunctionalSecurityStrategy = new Mock<IFunctionalSecurityStrategy>(MockBehavior.Strict);
 
       var serviceLocator = DefaultServiceLocator.Create();
-      serviceLocator.RegisterSingle (() => _stubFunctionalSecurityStrategy);
-      serviceLocator.RegisterSingle (() => _mockSecurityProvider);
-      serviceLocator.RegisterSingle (() => _mockPrincipalProvider);
-      _serviceLocatorScope = new ServiceLocatorScope (serviceLocator);
+      serviceLocator.RegisterSingle(() => _stubFunctionalSecurityStrategy.Object);
+      serviceLocator.RegisterSingle(() => _mockSecurityProvider.Object);
+      serviceLocator.RegisterSingle(() => _mockPrincipalProvider.Object);
+      _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
       _searchService = new RolePropertiesSearchService();
 
-      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Role));
-      _positionProperty = (IBusinessObjectReferenceProperty) roleClass.GetPropertyDefinition ("Position");
-      Assert.That (_positionProperty, Is.Not.Null);
+      IBusinessObjectClass roleClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Role));
+      _positionProperty = (IBusinessObjectReferenceProperty)roleClass.GetPropertyDefinition("Position");
+      Assert.That(_positionProperty, Is.Not.Null);
     }
 
     public override void TearDown ()
@@ -99,23 +97,23 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     [Test]
     public void Search_WithoutGroupType_AndWithSecurityProvider ()
     {
-      var principalStub = _mocks.Stub<ISecurityPrincipal> ();
-      SetupResult.For (principalStub.User).Return ("group0/user1");
-      SetupResult.For (_mockPrincipalProvider.GetPrincipal ()).Return (principalStub);
-      SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principalStub, SecurityManagerAccessTypes.AssignRole);
-      SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principalStub);
+      var principalStub = new Mock<ISecurityPrincipal>();
+      principalStub.Setup(_ => _.User).Returns("group0/user1");
+      _mockPrincipalProvider.Setup(_ => _.GetPrincipal()).Returns(principalStub.Object).Verifiable();
+      SetupResultSecurityProviderGetAccessForPosition(Delegation.Enabled, principalStub.Object, SecurityManagerAccessTypes.AssignRole);
+      SetupResultSecurityProviderGetAccessForPosition(Delegation.Disabled, principalStub.Object);
       Group rootGroup = _expectedRootGroupHandle.GetObject();
-      _mocks.ReplayAll();
 
-      var positions = _searchService.Search (null, _positionProperty, CreateSearchArguments (rootGroup));
+      var positions = _searchService.Search(null, _positionProperty, CreateSearchArguments(rootGroup));
 
-      _mocks.VerifyAll();
-      Assert.That (positions.Length, Is.EqualTo (2));
+      _stubFunctionalSecurityStrategy.Verify();
+      _mockPrincipalProvider.Verify();
+      Assert.That(positions.Length, Is.EqualTo(2));
       foreach (string positionName in new[] { "Official", "Global" })
       {
-        Assert.IsTrue (
+        Assert.IsTrue(
 // ReSharper disable AccessToModifiedClosure
-            Array.Exists (positions, current => positionName == ((Position) current).Name),
+            Array.Exists(positions, current => positionName == ((Position)current).Name),
 // ReSharper restore AccessToModifiedClosure
             "Position '{0}' was not found.",
             positionName);
@@ -125,75 +123,75 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
     [Test]
     public void Search_WithGroupType_AndWithSecurityProvider ()
     {
-      var principalStub = _mocks.Stub<ISecurityPrincipal> ();
-      SetupResult.For (principalStub.User).Return ("group0/user1");
-      SetupResult.For (_mockPrincipalProvider.GetPrincipal ()).Return (principalStub);
-      SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principalStub, SecurityManagerAccessTypes.AssignRole);
-      SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principalStub);
+      var principalStub = new Mock<ISecurityPrincipal>();
+      principalStub.Setup(_ => _.User).Returns("group0/user1");
+      _mockPrincipalProvider.Setup(_ => _.GetPrincipal()).Returns(principalStub.Object).Verifiable();
+      SetupResultSecurityProviderGetAccessForPosition(Delegation.Enabled, principalStub.Object, SecurityManagerAccessTypes.AssignRole);
+      SetupResultSecurityProviderGetAccessForPosition(Delegation.Disabled, principalStub.Object);
       Group parentGroup = _expectedParentGroup0Handle.GetObject();
-      _mocks.ReplayAll();
 
-      var positions = _searchService.Search (null, _positionProperty, CreateSearchArguments (parentGroup));
+      var positions = _searchService.Search(null, _positionProperty, CreateSearchArguments(parentGroup));
 
-      _mocks.VerifyAll();
-      Assert.That (positions.Length, Is.EqualTo (1));
-      Assert.That (((Position) positions[0]).Name, Is.EqualTo ("Official"));
+      _stubFunctionalSecurityStrategy.Verify();
+      _mockPrincipalProvider.Verify();
+      Assert.That(positions.Length, Is.EqualTo(1));
+      Assert.That(((Position)positions[0]).Name, Is.EqualTo("Official"));
     }
 
     [Test]
     public void Search_UsesSecurityFreeSectionToRetrieveGroupType ()
     {
-      ClientTransaction.Current.Extensions.Add (new SecurityClientTransactionExtension());
+      ClientTransaction.Current.Extensions.Add(new SecurityClientTransactionExtension());
       Group parentGroup = _expectedParentGroup0Handle.GetObject();
 
-      var principalStub = _mocks.Stub<ISecurityPrincipal> ();
-      SetupResult.For (principalStub.User).Return ("group0/user1");
-      SetupResult.For (_mockPrincipalProvider.GetPrincipal()).Return (principalStub);
-      SetupResultSecurityProviderGetAccessForGroup (parentGroup, principalStub);
-      SetupResultSecurityProviderGetAccessForPosition (Delegation.Enabled, principalStub, SecurityManagerAccessTypes.AssignRole, GeneralAccessTypes.Find);
-      SetupResultSecurityProviderGetAccessForPosition (Delegation.Disabled, principalStub, GeneralAccessTypes.Find);
-      _mocks.ReplayAll();
+      var principalStub = new Mock<ISecurityPrincipal>();
+      principalStub.Setup(_ => _.User).Returns("group0/user1");
+      _mockPrincipalProvider.Setup(_ => _.GetPrincipal()).Returns(principalStub.Object).Verifiable();
+      SetupResultSecurityProviderGetAccessForGroup(parentGroup, principalStub.Object);
+      SetupResultSecurityProviderGetAccessForPosition(Delegation.Enabled, principalStub.Object, SecurityManagerAccessTypes.AssignRole, GeneralAccessTypes.Find);
+      SetupResultSecurityProviderGetAccessForPosition(Delegation.Disabled, principalStub.Object, GeneralAccessTypes.Find);
 
-      var positions = _searchService.Search (null, _positionProperty, CreateSearchArguments (parentGroup));
+      var positions = _searchService.Search(null, _positionProperty, CreateSearchArguments(parentGroup));
 
-      _mocks.VerifyAll();
+      _stubFunctionalSecurityStrategy.Verify();
+      _mockPrincipalProvider.Verify();
 
-      ClientTransaction.Current.Extensions.Remove (new SecurityClientTransactionExtension().Key);
+      ClientTransaction.Current.Extensions.Remove(new SecurityClientTransactionExtension().Key);
 
-      Assert.That (positions.Length, Is.EqualTo (1));
-      Assert.That (((Position) positions[0]).Name, Is.EqualTo ("Official"));
+      Assert.That(positions.Length, Is.EqualTo(1));
+      Assert.That(((Position)positions[0]).Name, Is.EqualTo("Official"));
     }
 
     private void SetupResultSecurityProviderGetAccessForPosition (Delegation delegation, ISecurityPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
-      Type classType = typeof (Position);
+      Type classType = typeof(Position);
       string owner = string.Empty;
       string owningGroup = string.Empty;
       string owningTenant = string.Empty;
       Dictionary<string, Enum> states = new Dictionary<string, Enum>();
-      states.Add ("Delegation", delegation);
+      states.Add("Delegation", delegation);
       List<Enum> abstractRoles = new List<Enum>();
-      SecurityContext securityContext = SecurityContext.Create (classType, owner, owningGroup, owningTenant, states, abstractRoles);
+      SecurityContext securityContext = SecurityContext.Create(classType, owner, owningGroup, owningTenant, states, abstractRoles);
 
-      AccessType[] returnedAccessTypes = Array.ConvertAll (returnedAccessTypeEnums, AccessType.Get);
+      AccessType[] returnedAccessTypes = Array.ConvertAll(returnedAccessTypeEnums, AccessType.Get);
 
-      SetupResult.For (_mockSecurityProvider.GetAccess (securityContext, principal)).Return (returnedAccessTypes);
+      _mockSecurityProvider.Setup(_ => _.GetAccess(securityContext, principal)).Returns(returnedAccessTypes).Verifiable();
     }
 
     private void SetupResultSecurityProviderGetAccessForGroup (Group group, ISecurityPrincipal principal, params Enum[] returnedAccessTypeEnums)
     {
-      ISecurityContext securityContext = ((IDomainObjectSecurityContextFactory) group).CreateSecurityContext();
+      ISecurityContext securityContext = ((IDomainObjectSecurityContextFactory)group).CreateSecurityContext();
 
-      AccessType[] returnedAccessTypes = Array.ConvertAll (returnedAccessTypeEnums, AccessType.Get);
+      AccessType[] returnedAccessTypes = Array.ConvertAll(returnedAccessTypeEnums, AccessType.Get);
 
-      SetupResult.For (_mockSecurityProvider.GetAccess (securityContext, principal)).Return (returnedAccessTypes);
+      _mockSecurityProvider.Setup(_ => _.GetAccess(securityContext, principal)).Returns(returnedAccessTypes).Verifiable();
     }
 
     private ISearchAvailableObjectsArguments CreateSearchArguments (Group group)
     {
       if (group == null)
         return null;
-      return new RolePropertiesSearchArguments (group.GetHandle());
+      return new RolePropertiesSearchArguments(group.GetHandle());
     }
   }
 }

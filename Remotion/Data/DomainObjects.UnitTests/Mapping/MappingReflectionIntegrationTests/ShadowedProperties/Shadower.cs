@@ -21,10 +21,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegra
   [Instantiable]
   public abstract class Shadower : Base
   {
-    [DBColumn ("NewName")]
+    [DBColumn("NewName")]
     public new int Name
     {
-      get { return Properties[typeof (Shadower), "Name"].GetValue<int> (); }
+      get { return Properties[typeof(Shadower), "Name"].GetValue<int>(); }
     }
   }
 }

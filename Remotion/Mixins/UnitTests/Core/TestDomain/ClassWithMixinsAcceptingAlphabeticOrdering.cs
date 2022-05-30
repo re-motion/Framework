@@ -18,8 +18,8 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.TestDomain
 {
-  [Uses (typeof (MixinAcceptingAlphabeticOrdering1))]
-  [Uses (typeof (MixinAcceptingAlphabeticOrdering2))]
+  [Uses(typeof(MixinAcceptingAlphabeticOrdering1))]
+  [Uses(typeof(MixinAcceptingAlphabeticOrdering2))]
   public class ClassWithMixinsAcceptingAlphabeticOrdering
   {
     public override string ToString ()

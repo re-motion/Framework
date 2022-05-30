@@ -34,10 +34,10 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
         [NotNull] ElementScope scope,
         [NotNull] string value,
         [NotNull] FinishInputWithAction finishInputWithAction)
-        : base (control, scope)
+        : base(control, scope)
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckNotNull ("finishInputWithAction", finishInputWithAction);
+      ArgumentUtility.CheckNotNull("value", value);
+      ArgumentUtility.CheckNotNull("finishInputWithAction", finishInputWithAction);
 
       _value = value;
       _finishInputWithAction = finishInputWithAction;
@@ -52,10 +52,10 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     /// <inheritdoc/>
     protected override void ExecuteInteraction (ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      OutputDebugMessage (string.Format ("New value: '{0}'", _value));
-      scope.FillInWithFixed (_value, _finishInputWithAction);
+      OutputDebugMessage(string.Format("New value: '{0}'", _value));
+      scope.FillInWithFixed(_value, _finishInputWithAction);
     }
   }
 }

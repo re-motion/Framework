@@ -121,7 +121,7 @@
     <value>Unità strutturale</value>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.BranchOfOwningGroup" xml:space="preserve">
-    <value>Uguale ... (unità strutturale)</value>
+    <value>La stessa ... (unità strutturale)</value>
     <comment>"Same department", "Same team"</comment>
   </data>
   <data name="Remotion.SecurityManager.Domain.AccessControl.GroupCondition.None" xml:space="preserve">

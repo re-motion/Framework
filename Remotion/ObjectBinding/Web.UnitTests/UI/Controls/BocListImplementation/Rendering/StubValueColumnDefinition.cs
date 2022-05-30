@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
@@ -27,7 +27,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   {
     protected override IBocColumnRenderer GetRendererInternal (IServiceLocator locator)
     {
-      return new StubColumnRenderer (new FakeResourceUrlFactory());
+      return new StubColumnRenderer(new FakeResourceUrlFactory());
     }
 
     public override string GetStringValue (IBusinessObject obj)

@@ -36,21 +36,21 @@ namespace Remotion.Reflection.CodeGeneration
     private readonly EventKind _eventKind;
     private readonly Type _eventType;
 
-    private IMethodEmitter _addMethod;
-    private IMethodEmitter _removeMethod;
+    private IMethodEmitter? _addMethod;
+    private IMethodEmitter? _removeMethod;
 
     public CustomEventEmitter (CustomClassEmitter declaringType, string name, EventKind eventKind, Type eventType, EventAttributes attributes)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      ArgumentUtility.CheckNotNull ("eventType", eventType);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
+      ArgumentUtility.CheckNotNull("eventType", eventType);
 
       _declaringType = declaringType;
-      _eventBuilder = declaringType.TypeBuilder.DefineEvent (name, attributes, eventType);
+      _eventBuilder = declaringType.TypeBuilder.DefineEvent(name, attributes, eventType);
       _name = name;
       _eventKind = eventKind;
       _eventType = eventType;
-      declaringType.RegisterEventEmitter (this);
+      declaringType.RegisterEventEmitter(this);
     }
 
     public IMethodEmitter AddMethod
@@ -58,20 +58,20 @@ namespace Remotion.Reflection.CodeGeneration
       get
       {
         if (_addMethod == null)
-          CreateAddMethod ();
+          CreateAddMethod();
 
-        return _addMethod;
+        return _addMethod!;
       }
       set
       {
         if (value == null)
-          throw new ArgumentNullException ("value", "Event accessors cannot be set to null.");
+          throw new ArgumentNullException("value", "Event accessors cannot be set to null.");
 
         if (_addMethod != null)
-          throw new InvalidOperationException ("Add methods can only be assigned once.");
+          throw new InvalidOperationException("Add methods can only be assigned once.");
 
         _addMethod = value;
-        _eventBuilder.SetAddOnMethod (_addMethod.MethodBuilder);
+        _eventBuilder.SetAddOnMethod(_addMethod.MethodBuilder);
       }
     }
 
@@ -80,20 +80,20 @@ namespace Remotion.Reflection.CodeGeneration
       get
       {
         if (_removeMethod == null)
-          CreateRemoveMethod ();
+          CreateRemoveMethod();
 
-        return _removeMethod;
+        return _removeMethod!;
       }
       set
       {
         if (value == null)
-          throw new ArgumentNullException ("value", "Event accessors cannot be set to null.");
+          throw new ArgumentNullException("value", "Event accessors cannot be set to null.");
 
         if (_removeMethod != null)
-          throw new InvalidOperationException ("Remove methods can only be assigned once.");
+          throw new InvalidOperationException("Remove methods can only be assigned once.");
 
         _removeMethod = value;
-        _eventBuilder.SetRemoveOnMethod (_removeMethod.MethodBuilder);
+        _eventBuilder.SetRemoveOnMethod(_removeMethod.MethodBuilder);
       }
     }
 
@@ -124,38 +124,41 @@ namespace Remotion.Reflection.CodeGeneration
 
     private void CreateAddMethod ()
     {
-      Assertion.IsNull (_addMethod);
+      //TODO RM-7434: MemberNotNull AddMethod
+      Assertion.IsNull(_addMethod);
 
       MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
       if (EventKind == EventKind.Static)
         flags |= MethodAttributes.Static;
-      IMethodEmitter method = _declaringType.CreateMethod ("add_" + Name, flags, typeof (void), new [] { EventType });
+      IMethodEmitter method = _declaringType.CreateMethod("add_" + Name, flags, typeof(void), new [] { EventType });
       AddMethod = method;
     }
 
     private void CreateRemoveMethod ()
     {
-      Assertion.IsNull (_removeMethod);
+      //TODO RM-7434: MemberNotNull RemoveMethod
+      Assertion.IsNull(_removeMethod);
 
       MethodAttributes flags = MethodAttributes.Public | MethodAttributes.SpecialName;
       if (EventKind == EventKind.Static)
         flags |= MethodAttributes.Static;
-      IMethodEmitter method = _declaringType.CreateMethod ("remove_" + Name, flags, typeof (void), new [] { EventType });
+      IMethodEmitter method = _declaringType.CreateMethod("remove_" + Name, flags, typeof(void), new [] { EventType });
       RemoveMethod = method;
     }
 
     public void AddCustomAttribute (CustomAttributeBuilder customAttribute)
     {
-      _eventBuilder.SetCustomAttribute (customAttribute);
+      _eventBuilder.SetCustomAttribute(customAttribute);
     }
 
     internal void EnsureValid ()
     {
+      //TODO RM-7434: MemberNotNull RemoveMethod AddMethod
       IMethodEmitter addMethod = AddMethod; // cause generation of default method if none has been assigned
-      Assertion.IsNotNull (addMethod);
+      Assertion.IsNotNull(addMethod);
 
       IMethodEmitter removeMethod = RemoveMethod; // cause generation of default method if none has been assigned
-      Assertion.IsNotNull (removeMethod);
+      Assertion.IsNotNull(removeMethod);
     }
   }
 }

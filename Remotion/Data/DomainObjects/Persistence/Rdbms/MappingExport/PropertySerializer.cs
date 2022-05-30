@@ -17,6 +17,7 @@
 using System;
 using System.Xml.Linq;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
@@ -30,48 +31,48 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport
 
     public PropertySerializer (IColumnSerializer columnSerializer)
     {
-      ArgumentUtility.CheckNotNull ("columnSerializer", columnSerializer);
+      ArgumentUtility.CheckNotNull("columnSerializer", columnSerializer);
 
       _columnSerializer = columnSerializer;
     }
 
     public XElement Serialize (PropertyDefinition propertyDefinition, IRdbmsPersistenceModelProvider persistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-      ArgumentUtility.CheckNotNull ("persistenceModelProvider", persistenceModelProvider);
+      ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
+      ArgumentUtility.CheckNotNull("persistenceModelProvider", persistenceModelProvider);
 
-      var propertyType = GetPropertyType (propertyDefinition);
+      var propertyType = GetPropertyType(propertyDefinition);
 
-      return new XElement (
+      return new XElement(
           Constants.Namespace + "property",
-          new XAttribute ("name", propertyDefinition.PropertyName),
-          new XAttribute ("displayName", propertyDefinition.PropertyInfo.Name),
-          new XAttribute ("type", GetTypeName (propertyType)),
-          new XAttribute ("isNullable", propertyDefinition.IsNullable),
-          GetMaxLenghtAttribute (propertyDefinition),
-          _columnSerializer.Serialize (propertyDefinition, persistenceModelProvider)
+          new XAttribute("name", propertyDefinition.PropertyName),
+          new XAttribute("displayName", propertyDefinition.PropertyInfo.Name),
+          new XAttribute("type", GetTypeName(propertyType)),
+          new XAttribute("isNullable", propertyDefinition.IsNullable),
+          GetMaxLenghtAttribute(propertyDefinition)!,
+          _columnSerializer.Serialize(propertyDefinition, persistenceModelProvider)
           );
     }
 
-    private XAttribute GetMaxLenghtAttribute (PropertyDefinition propertyDefinition)
+    private XAttribute? GetMaxLenghtAttribute (PropertyDefinition propertyDefinition)
     {
-      return propertyDefinition.MaxLength.HasValue ? new XAttribute ("maxLength", propertyDefinition.MaxLength.Value) : null;
+      return propertyDefinition.MaxLength.HasValue ? new XAttribute("maxLength", propertyDefinition.MaxLength.Value) : null;
     }
 
     private string GetTypeName (Type propertyType)
     {
-      if (propertyType.Assembly == typeof (int).Assembly)
-        return propertyType.FullName;
+      if (propertyType.Assembly == typeof(int).Assembly)
+        return propertyType.GetFullNameChecked();
 
-      return TypeUtility.GetPartialAssemblyQualifiedName (propertyType);
+      return TypeUtility.GetPartialAssemblyQualifiedName(propertyType);
     }
 
     private Type GetPropertyType (PropertyDefinition propertyDefinition)
     {
       var propertyType = propertyDefinition.IsObjectID ? propertyDefinition.PropertyInfo.PropertyType : propertyDefinition.PropertyType;
 
-      if (NullableTypeUtility.IsNullableType (propertyType))
-        propertyType = NullableTypeUtility.GetBasicType (propertyType);
+      if (NullableTypeUtility.IsNullableType(propertyType))
+        propertyType = NullableTypeUtility.GetBasicType(propertyType);
       return propertyType;
     }
   }

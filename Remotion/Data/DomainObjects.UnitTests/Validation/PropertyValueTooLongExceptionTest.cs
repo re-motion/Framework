@@ -18,6 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Validation
@@ -28,22 +29,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Validation
     [Test]
     public void Serialization ()
     {
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
+
       var domainObject = Order.NewObject();
-      var inner = new InvalidOperationException ("Test");
-      var exception = new PropertyValueTooLongException (domainObject, "xy", 10, "Msg", inner);
+      var inner = new InvalidOperationException("Test");
+      var exception = new PropertyValueTooLongException(domainObject, "xy", 10, "Msg", inner);
 
-      var deserializedException = Serializer.SerializeAndDeserialize (exception);
+      var deserializedException = Serializer.SerializeAndDeserialize(exception);
 
-      Assert.That (deserializedException.DomainObject, Is.Not.Null);
-      Assert.That (deserializedException.DomainObject.ID, Is.EqualTo (domainObject.ID));
+      Assert.That(deserializedException.DomainObject, Is.Not.Null);
+      Assert.That(deserializedException.DomainObject.ID, Is.EqualTo(domainObject.ID));
 
-      Assert.That (deserializedException.PropertyName, Is.EqualTo ("xy"));
+      Assert.That(deserializedException.PropertyName, Is.EqualTo("xy"));
 
-      Assert.That (deserializedException.MaxLength, Is.EqualTo (10));
+      Assert.That(deserializedException.MaxLength, Is.EqualTo(10));
 
-      Assert.That (deserializedException.Message, Is.EqualTo ("Msg"));
+      Assert.That(deserializedException.Message, Is.EqualTo("Msg"));
 
-      Assert.That (deserializedException.InnerException, Is.TypeOf (typeof (InvalidOperationException)));
+      Assert.That(deserializedException.InnerException, Is.TypeOf(typeof(InvalidOperationException)));
     }
   }
 }

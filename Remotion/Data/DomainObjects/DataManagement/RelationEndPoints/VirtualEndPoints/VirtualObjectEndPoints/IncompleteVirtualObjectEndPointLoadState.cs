@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.VirtualObjectEndPoints
@@ -25,7 +26,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// loaded, or it has been unloaded).
   /// </summary>
   public class IncompleteVirtualObjectEndPointLoadState
-      : IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager, IVirtualObjectEndPointLoadState>,
+      : IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject?, IVirtualObjectEndPointDataManager, IVirtualObjectEndPointLoadState>,
         IVirtualObjectEndPointLoadState
   {
     private readonly IVirtualObjectEndPointDataManagerFactory _dataManagerFactory;
@@ -33,9 +34,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
     public IncompleteVirtualObjectEndPointLoadState (
         IEndPointLoader endPointLoader,
         IVirtualObjectEndPointDataManagerFactory dataManagerFactory)
-        : base (endPointLoader)
+        : base(endPointLoader)
     {
-      ArgumentUtility.CheckNotNull ("dataManagerFactory", dataManagerFactory);
+      ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
       _dataManagerFactory = dataManagerFactory;
     }
 
@@ -46,55 +47,55 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void EnsureDataComplete (IVirtualObjectEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
 
-      EndPointLoader.LoadEndPointAndGetNewState (endPoint);
+      EndPointLoader.LoadEndPointAndGetNewState(endPoint);
     }
 
-    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject item, Action<IVirtualObjectEndPointDataManager> stateSetter)
+    public void MarkDataComplete (IVirtualObjectEndPoint endPoint, DomainObject? item, Action<IVirtualObjectEndPointDataManager> stateSetter)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      ArgumentUtility.CheckNotNull ("stateSetter", stateSetter);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      ArgumentUtility.CheckNotNull("stateSetter", stateSetter);
 
-      var items = item == null ? new DomainObject[0] : new[] { item };
-      MarkDataComplete (endPoint, items, stateSetter);
+      var items = item == null ? Array.Empty<DomainObject>() : EnumerableUtility.Singleton(item);
+      MarkDataComplete(endPoint, items, stateSetter);
     }
 
     public IDataManagementCommand CreateSetCommand (
-        IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject newRelatedObject)
+        IVirtualObjectEndPoint virtualObjectEndPoint, DomainObject? newRelatedObject)
     {
-      ArgumentUtility.CheckNotNull ("virtualObjectEndPoint", virtualObjectEndPoint);
+      ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (virtualObjectEndPoint);
-      return completeState.CreateSetCommand (virtualObjectEndPoint, newRelatedObject);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(virtualObjectEndPoint);
+      return completeState.CreateSetCommand(virtualObjectEndPoint, newRelatedObject);
     }
 
     public IDataManagementCommand CreateDeleteCommand (IVirtualObjectEndPoint virtualObjectEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("virtualObjectEndPoint", virtualObjectEndPoint);
+      ArgumentUtility.CheckNotNull("virtualObjectEndPoint", virtualObjectEndPoint);
 
-      var completeState = EndPointLoader.LoadEndPointAndGetNewState (virtualObjectEndPoint);
-      return completeState.CreateDeleteCommand (virtualObjectEndPoint);
+      var completeState = EndPointLoader.LoadEndPointAndGetNewState(virtualObjectEndPoint);
+      return completeState.CreateDeleteCommand(virtualObjectEndPoint);
     }
 
     protected override IVirtualObjectEndPointDataManager CreateEndPointDataManager (IVirtualObjectEndPoint endPoint)
     {
-      ArgumentUtility.CheckNotNull ("endPoint", endPoint);
-      return _dataManagerFactory.CreateEndPointDataManager (endPoint.ID);
+      ArgumentUtility.CheckNotNull("endPoint", endPoint);
+      return _dataManagerFactory.CreateEndPointDataManager(endPoint.ID);
     }
 
     #region Serialization
 
     public IncompleteVirtualObjectEndPointLoadState (FlattenedDeserializationInfo info)
-        : base (info)
+        : base(info)
     {
-      _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory> ();
+      _dataManagerFactory = info.GetValueForHandle<IVirtualObjectEndPointDataManagerFactory>();
     }
 
     protected override void SerializeSubclassData (FlattenedSerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
-      info.AddHandle (_dataManagerFactory);
+      ArgumentUtility.CheckNotNull("info", info);
+      info.AddHandle(_dataManagerFactory);
     }
 
     #endregion Serialization

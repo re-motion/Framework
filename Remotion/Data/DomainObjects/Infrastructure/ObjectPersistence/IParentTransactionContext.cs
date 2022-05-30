@@ -32,19 +32,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     DomainObject GetObject (ObjectID objectID);
     DomainObject[] GetObjects (IEnumerable<ObjectID> objectIDs);
-    DomainObject TryGetObject (ObjectID objectID);
-    DomainObject[] TryGetObjects (IEnumerable<ObjectID> objectIDs);
+    DomainObject? TryGetObject (ObjectID objectID);
+    DomainObject?[] TryGetObjects (IEnumerable<ObjectID> objectIDs);
 
-    DomainObject ResolveRelatedObject (RelationEndPointID relationEndPointID);
+    DomainObject? ResolveRelatedObject (RelationEndPointID relationEndPointID);
     IEnumerable<DomainObject> ResolveRelatedObjects (RelationEndPointID relationEndPointID);
 
     QueryResult<DomainObject> ExecuteCollectionQuery (IQuery query);
     IEnumerable<IQueryResultRow> ExecuteCustomQuery (IQuery query);
-    object ExecuteScalarQuery (IQuery query);
+    object? ExecuteScalarQuery (IQuery query);
 
-    DataContainer GetDataContainerWithoutLoading (ObjectID objectID);
-    DataContainer GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound);
-    IRelationEndPoint GetRelationEndPointWithoutLoading (RelationEndPointID relationEndPointID);
+    DataContainer? GetDataContainerWithoutLoading (ObjectID objectID);
+    DataContainer? GetDataContainerWithLazyLoad (ObjectID objectID, bool throwOnNotFound);
+    IRelationEndPoint? GetRelationEndPointWithoutLoading (RelationEndPointID relationEndPointID);
 
     bool IsInvalid (ObjectID objectID);
 

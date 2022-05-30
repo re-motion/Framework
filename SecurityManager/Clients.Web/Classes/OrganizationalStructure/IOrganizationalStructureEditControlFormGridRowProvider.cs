@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.HtmlControls;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.SecurityManager.Clients.Web.UI.OrganizationalStructure;
 using Remotion.Web.UI.Controls;
 

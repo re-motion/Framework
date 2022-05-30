@@ -26,39 +26,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   {
     public static Employee NewObject ()
     {
-      return NewObject<Employee> ();
+      return NewObject<Employee>();
     }
 
     protected Employee ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Supervisor")]
+    [DBBidirectionalRelation("Supervisor")]
     public abstract ObjectList<Employee> Subordinates { get; }
 
-    [DBBidirectionalRelation ("Subordinates")]
+    [DBBidirectionalRelation("Subordinates")]
     public abstract Employee Supervisor { get; set; }
 
-    [DBBidirectionalRelation ("Employee")]
+    [DBBidirectionalRelation("Employee")]
     public Computer Computer
     {
       get { return Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].GetValue<Computer>(); }
-      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].SetValue (value); }
+      set { Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Computer"].SetValue(value); }
     }
 
     [StorageClassTransaction]
-    [DBBidirectionalRelation ("EmployeeTransactionProperty")]
+    [DBBidirectionalRelation("EmployeeTransactionProperty")]
     public abstract Computer ComputerTransactionProperty { get; set; }
 
     public void DeleteWithSubordinates ()
     {
-      foreach (Employee employee in Subordinates.Clone ())
-        employee.Delete ();
+      foreach (Employee employee in Subordinates.Clone())
+        employee.Delete();
 
-      this.Delete ();
+      this.Delete();
     }
   }
 }

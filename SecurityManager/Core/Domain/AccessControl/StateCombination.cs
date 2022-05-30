@@ -32,10 +32,10 @@ namespace Remotion.SecurityManager.Domain.AccessControl
   {
     public static StateCombination NewObject ()
     {
-      return NewObject<StateCombination> ();
+      return NewObject<StateCombination>();
     }
 
-    private DomainObjectDeleteHandler _deleteHandler;
+    private DomainObjectDeleteHandler? _deleteHandler;
 
     protected StateCombination ()
     {
@@ -43,38 +43,37 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public abstract int Index { get; set; }
 
-    [DBBidirectionalRelation ("StateCombination")]
+    [DBBidirectionalRelation("StateCombination")]
     protected abstract ObjectList<StateUsage> StateUsages { get; }
 
     [StorageClassNone]
-    public SecurableClassDefinition Class
+    public SecurableClassDefinition? Class
     {
       get { return AccessControlList != null ? AccessControlList.Class : null; }
     }
 
-    [DBBidirectionalRelation ("StateCombinationsInternal")]
+    [DBBidirectionalRelation("StateCombinationsInternal")]
     [Mandatory]
-    public abstract StatefulAccessControlList AccessControlList { get; }
+    public abstract StatefulAccessControlList? AccessControlList { get; }
 
     public bool MatchesStates (IList<StateDefinition> states)
     {
-      ArgumentUtility.CheckNotNullOrItemsNull ("states", states);
+      ArgumentUtility.CheckNotNullOrItemsNull("states", states);
 
       if (StateUsages.Count == 0 && states.Count > 0)
         return false;
 
-      return StateUsages.Select (stateUsage => stateUsage.StateDefinition).All (usedState => states.Contains (usedState));
+      return StateUsages.Select(stateUsage => stateUsage.StateDefinition).All(usedState => states.Contains(usedState));
     }
 
     public void AttachState (StateDefinition state)
     {
-      ArgumentUtility.CheckNotNull ("state", state);
-      StateUsage stateUsage = StateUsage.NewObject ();
-      stateUsage.StateDefinition = state;
-      StateUsages.Add (stateUsage);
+      ArgumentUtility.CheckNotNull("state", state);
+      StateUsage stateUsage = StateUsage.NewObject(state);
+      StateUsages.Add(stateUsage);
     }
 
-    public void ClearStates()
+    public void ClearStates ()
     {
       foreach (var stateUsage in StateUsages.ToList())
         stateUsage.Delete();
@@ -82,12 +81,12 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     public StateDefinition[] GetStates ()
     {
-      return StateUsages.Select (stateUsage => stateUsage.StateDefinition).ToArray();
+      return StateUsages.Select(stateUsage => stateUsage.StateDefinition).ToArray();
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
       if (Class != null)
         Class.RegisterForCommit();
@@ -97,16 +96,16 @@ namespace Remotion.SecurityManager.Domain.AccessControl
 
     protected override void OnDeleting (EventArgs args)
     {
-      base.OnDeleting (args);
+      base.OnDeleting(args);
 
-      _deleteHandler = new DomainObjectDeleteHandler (StateUsages);
+      _deleteHandler = new DomainObjectDeleteHandler(StateUsages);
     }
-    
+
     protected override void OnDeleted (EventArgs args)
     {
-      base.OnDeleted (args);
+      base.OnDeleted(args);
 
-      _deleteHandler.Delete();
+      _deleteHandler?.Delete();
     }
   }
 }

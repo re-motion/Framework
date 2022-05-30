@@ -27,15 +27,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   {
     private readonly RelationEndPointID _endPointID;
 
-    private DomainObject _currentOppositeObject;
-    private DomainObject _originalOppositeObject;
+    private DomainObject? _currentOppositeObject;
+    private DomainObject? _originalOppositeObject;
 
-    private IRealObjectEndPoint _currentOppositeEndPoint;
-    private IRealObjectEndPoint _originalOppositeEndPoint;
+    private IRealObjectEndPoint? _currentOppositeEndPoint;
+    private IRealObjectEndPoint? _originalOppositeEndPoint;
 
     public VirtualObjectEndPointDataManager (RelationEndPointID endPointID)
     {
-      ArgumentUtility.CheckNotNull ("endPointID", endPointID);
+      ArgumentUtility.CheckNotNull("endPointID", endPointID);
 
       _endPointID = endPointID;
     }
@@ -45,52 +45,52 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       get { return _endPointID; }
     }
 
-    public DomainObject CurrentOppositeObject
+    public DomainObject? CurrentOppositeObject
     {
       get { return _currentOppositeObject; }
       set { _currentOppositeObject = value; }
     }
 
-    public DomainObject OriginalOppositeObject
+    public DomainObject? OriginalOppositeObject
     {
       get { return _originalOppositeObject; }
     }
 
-    public IRealObjectEndPoint CurrentOppositeEndPoint
+    public IRealObjectEndPoint? CurrentOppositeEndPoint
     {
       get { return _currentOppositeEndPoint; }
     }
 
-    public IRealObjectEndPoint OriginalOppositeEndPoint
+    public IRealObjectEndPoint? OriginalOppositeEndPoint
     {
       get { return _originalOppositeEndPoint; }
     }
 
-    public DomainObject OriginalItemWithoutEndPoint
+    public DomainObject? OriginalItemWithoutEndPoint
     {
       get { return OriginalOppositeEndPoint == null ? OriginalOppositeObject : null; }
     }
 
     public bool ContainsOriginalObjectID (ObjectID objectID)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
 
-      return Equals (_originalOppositeObject.GetSafeID(), objectID);
+      return Equals(_originalOppositeObject.GetSafeID(), objectID);
     }
 
     public void RegisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       if (_originalOppositeEndPoint != null)
-        throw new InvalidOperationException ("The original opposite end-point has already been registered.");
+        throw new InvalidOperationException("The original opposite end-point has already been registered.");
 
       var oppositeObject = oppositeEndPoint.GetDomainObjectReference();
       if (_originalOppositeObject != null && _originalOppositeObject != oppositeObject)
-        throw new InvalidOperationException ("A different original opposite item has already been registered.");
+        throw new InvalidOperationException("A different original opposite item has already been registered.");
 
       // Only set current end-point/value if they haven't already been set to a different value
-      if (!HasDataChanged ())
+      if (!HasDataChanged())
       {
         _currentOppositeEndPoint = oppositeEndPoint;
         _currentOppositeObject = oppositeObject;
@@ -102,10 +102,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterOriginalOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       if (_originalOppositeEndPoint != oppositeEndPoint)
-        throw new InvalidOperationException ("The original opposite end-point has not been registered.");
+        throw new InvalidOperationException("The original opposite end-point has not been registered.");
 
       _originalOppositeEndPoint = null;
       _originalOppositeObject = null;
@@ -116,12 +116,12 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void RegisterOriginalItemWithoutEndPoint (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       if (_originalOppositeObject != null)
-        throw new InvalidOperationException ("An original opposite item has already been registered.");
+        throw new InvalidOperationException("An original opposite item has already been registered.");
 
-      Assertion.IsTrue (_originalOppositeEndPoint == null, "if _originalOppositeObject is null, _originalOppositeEndPoint must be null, too");
+      Assertion.IsTrue(_originalOppositeEndPoint == null, "if _originalOppositeObject is null, _originalOppositeEndPoint must be null, too");
 
       // Only set current value if it hasn't already been set to a different value
       if (!HasDataChanged())
@@ -132,44 +132,44 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void UnregisterOriginalItemWithoutEndPoint (DomainObject domainObject)
     {
-      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNull("domainObject", domainObject);
 
       if (domainObject != _originalOppositeObject)
-        throw new InvalidOperationException ("Cannot unregister original item, it has not been registered.");
+        throw new InvalidOperationException("Cannot unregister original item, it has not been registered.");
 
       if (_originalOppositeEndPoint != null)
-        throw new InvalidOperationException ("Cannot unregister original item, an end-point has been registered for it.");
+        throw new InvalidOperationException("Cannot unregister original item, an end-point has been registered for it.");
 
       // Only set current value if it hasn't already been set to a different value
-      if (!HasDataChanged ())
+      if (!HasDataChanged())
         _currentOppositeObject = null;
 
       _originalOppositeObject = null;
     }
-    
+
     public void RegisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       if (_currentOppositeEndPoint != null)
-        throw new InvalidOperationException ("An opposite end-point has already been registered.");
+        throw new InvalidOperationException("An opposite end-point has already been registered.");
 
       _currentOppositeEndPoint = oppositeEndPoint;
     }
 
     public void UnregisterCurrentOppositeEndPoint (IRealObjectEndPoint oppositeEndPoint)
     {
-      ArgumentUtility.CheckNotNull ("oppositeEndPoint", oppositeEndPoint);
+      ArgumentUtility.CheckNotNull("oppositeEndPoint", oppositeEndPoint);
 
       if (_currentOppositeEndPoint != oppositeEndPoint)
-        throw new InvalidOperationException ("The opposite end-point has not been registered.");
+        throw new InvalidOperationException("The opposite end-point has not been registered.");
 
       _currentOppositeEndPoint = null;
     }
 
     public bool HasDataChanged ()
     {
-      return !Equals (CurrentOppositeObject, OriginalOppositeObject);
+      return !Equals(CurrentOppositeObject, OriginalOppositeObject);
     }
 
     public void Commit ()
@@ -186,8 +186,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public void SetDataFromSubTransaction (IVirtualObjectEndPointDataManager sourceDataManager, IRelationEndPointProvider endPointProvider)
     {
-      ArgumentUtility.CheckNotNull ("sourceDataManager", sourceDataManager);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("sourceDataManager", sourceDataManager);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
 
       _currentOppositeObject = sourceDataManager.CurrentOppositeObject;
       if (sourceDataManager.CurrentOppositeEndPoint == null)
@@ -197,8 +197,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       else
       {
         _currentOppositeEndPoint =
-            (IRealObjectEndPoint) endPointProvider.GetRelationEndPointWithoutLoading (sourceDataManager.CurrentOppositeEndPoint.ID);
-        Assertion.IsNotNull (
+            (IRealObjectEndPoint?)endPointProvider.GetRelationEndPointWithoutLoading(sourceDataManager.CurrentOppositeEndPoint.ID);
+        Assertion.IsNotNull(
             _currentOppositeEndPoint,
             "When committing a current virtual relation value from a sub-transaction, the opposite end-point is guaranteed to exist.");
       }
@@ -208,24 +208,24 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
 
     public VirtualObjectEndPointDataManager (FlattenedDeserializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
       _endPointID = info.GetValueForHandle<RelationEndPointID>();
-      _originalOppositeEndPoint = info.GetValue<IRealObjectEndPoint>();
-      _originalOppositeObject = info.GetValueForHandle<DomainObject>();
-      _currentOppositeEndPoint = info.GetValue<IRealObjectEndPoint>();
-      _currentOppositeObject = info.GetValueForHandle<DomainObject> ();
+      _originalOppositeEndPoint = info.GetNullableValue<IRealObjectEndPoint>();
+      _originalOppositeObject = info.GetNullableValueForHandle<DomainObject>();
+      _currentOppositeEndPoint = info.GetNullableValue<IRealObjectEndPoint>();
+      _currentOppositeObject = info.GetNullableValueForHandle<DomainObject>();
     }
 
     public void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      ArgumentUtility.CheckNotNull ("info", info);
+      ArgumentUtility.CheckNotNull("info", info);
 
-      info.AddHandle (_endPointID);
-      info.AddValue (_originalOppositeEndPoint);
-      info.AddHandle (_originalOppositeObject);
-      info.AddValue (_currentOppositeEndPoint);
-      info.AddHandle (_currentOppositeObject);
+      info.AddHandle(_endPointID);
+      info.AddValue(_originalOppositeEndPoint);
+      info.AddHandle(_originalOppositeObject);
+      info.AddValue(_currentOppositeEndPoint);
+      info.AddHandle(_currentOppositeObject);
     }
 
     #endregion

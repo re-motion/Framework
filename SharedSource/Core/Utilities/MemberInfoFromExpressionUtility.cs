@@ -18,7 +18,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
-
+#nullable enable
 // ReSharper disable once CheckNamespace
 namespace Remotion.Utilities
 {
@@ -35,137 +35,137 @@ namespace Remotion.Utilities
     public static MemberInfo GetMember<TMemberType> (Expression<Func<TMemberType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetMemberInfoFromExpression (expression.Body);
+      return GetMemberInfoFromExpression(expression.Body);
     }
 
     public static MemberInfo GetMember<TSourceObject, TMemberType> (Expression<Func<TSourceObject, TMemberType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetMemberInfoFromExpression (expression.Body);
+      return GetMemberInfoFromExpression(expression.Body);
     }
 
     public static FieldInfo GetField<TFieldType> (Expression<Func<TFieldType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetFieldInfoFromMemberExpression (expression.Body);
+      return GetFieldInfoFromMemberExpression(expression.Body);
     }
 
     public static FieldInfo GetField<TSourceObject, TFieldType> (Expression<Func<TSourceObject, TFieldType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetFieldInfoFromMemberExpression (expression.Body);
+      return GetFieldInfoFromMemberExpression(expression.Body);
     }
 
     public static ConstructorInfo GetConstructor<TType> (Expression<Func<TType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetConstructorInfoFromNewExpression (expression.Body);
+      return GetConstructorInfoFromNewExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod (Expression<Action> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetMethodInfoFromMethodCallExpression (expression.Body);
+      return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod<TReturnType> (Expression<Func<TReturnType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetMethodInfoFromMethodCallExpression (expression.Body);
+      return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod<TSourceObject> (Expression<Action<TSourceObject>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetMethodInfoFromMethodCallExpression (expression.Body);
+      return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetMethod<TSourceObject, TReturnType> (Expression<Func<TSourceObject, TReturnType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetMethodInfoFromMethodCallExpression (expression.Body);
+      return GetMethodInfoFromMethodCallExpression(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition (Expression<Action> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetGenericMethodDefinition (expression.Body);
+      return GetGenericMethodDefinition(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition<TReturnType> (Expression<Func<TReturnType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetGenericMethodDefinition (expression.Body);
+      return GetGenericMethodDefinition(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition<TSourceObject> (Expression<Action<TSourceObject>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetGenericMethodDefinition (expression.Body);
+      return GetGenericMethodDefinition(expression.Body);
     }
 
     public static MethodInfo GetGenericMethodDefinition<TSourceObject, TReturnType> (Expression<Func<TSourceObject, TReturnType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetGenericMethodDefinition (expression.Body);
+      return GetGenericMethodDefinition(expression.Body);
     }
 
     public static PropertyInfo GetProperty<TPropertyType> (Expression<Func<TPropertyType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetPropertyInfoFromMemberExpression (expression.Body);
+      return GetPropertyInfoFromMemberExpression(expression.Body);
     }
 
     public static PropertyInfo GetProperty<TSourceObject, TPropertyType> (Expression<Func<TSourceObject, TPropertyType>> expression)
     {
       if (expression == null)
-        throw new ArgumentNullException ("expression");
+        throw new ArgumentNullException("expression");
 
-      return GetPropertyInfoFromMemberExpression (expression.Body);
+      return GetPropertyInfoFromMemberExpression(expression.Body);
     }
 
     private static MemberInfo GetMemberInfoFromExpression (Expression expression)
     {
       if (expression is MemberExpression)
-        if (((MemberExpression) expression).Member is PropertyInfo)
-          return GetPropertyInfoFromMemberExpression (expression);
+        if (((MemberExpression)expression).Member is PropertyInfo)
+          return GetPropertyInfoFromMemberExpression(expression);
         else
-          return GetFieldInfoFromMemberExpression (expression);
+          return GetFieldInfoFromMemberExpression(expression);
 
       if (expression is MethodCallExpression)
-        return GetMethodInfoFromMethodCallExpression (expression);
+        return GetMethodInfoFromMethodCallExpression(expression);
       if (expression is NewExpression)
-        return GetConstructorInfoFromNewExpression (expression);
+        return GetConstructorInfoFromNewExpression(expression);
 
-      throw new ArgumentException ("Must be a MemberExpression, MethodCallExpression or NewExpression.", "expression");
+      throw new ArgumentException("Must be a MemberExpression, MethodCallExpression or NewExpression.", "expression");
     }
 
     private static T GetTypedMemberInfoFromMemberExpression<T> (Expression expression, string memberType)
@@ -173,13 +173,13 @@ namespace Remotion.Utilities
     {
       var memberExpression = expression as MemberExpression;
       if (memberExpression == null)
-        throw new ArgumentException ("Must be a MemberExpression.", "expression");
+        throw new ArgumentException("Must be a MemberExpression.", "expression");
 
       var member = memberExpression.Member as T;
       if (member == null)
       {
-        var message = string.Format ("Must hold a {0} access expression.", memberType);
-        throw new ArgumentException (message, "expression");
+        var message = string.Format("Must hold a {0} access expression.", memberType);
+        throw new ArgumentException(message, "expression");
       }
 
       return member;
@@ -187,29 +187,30 @@ namespace Remotion.Utilities
 
     private static FieldInfo GetFieldInfoFromMemberExpression (Expression expression)
     {
-      return GetTypedMemberInfoFromMemberExpression<FieldInfo> (expression, "field");
+      return GetTypedMemberInfoFromMemberExpression<FieldInfo>(expression, "field");
     }
 
     private static PropertyInfo GetPropertyInfoFromMemberExpression (Expression expression)
     {
       // For redeclared properties (overridden in C#) the MemberExpression contains the root definition.
-      return GetTypedMemberInfoFromMemberExpression<PropertyInfo> (expression, "property");
+      return GetTypedMemberInfoFromMemberExpression<PropertyInfo>(expression, "property");
     }
 
     private static ConstructorInfo GetConstructorInfoFromNewExpression (Expression expression)
     {
       var newExpression = expression as NewExpression;
       if (newExpression == null)
-        throw new ArgumentException ("Must be a NewExpression.", "expression");
+        throw new ArgumentException("Must be a NewExpression.", "expression");
 
-      return newExpression.Constructor;
+      // TODO RM-7773: newExpression.Constructor possibly being null must be handled.
+      return newExpression.Constructor!;
     }
 
     private static MethodInfo GetMethodInfoFromMethodCallExpression (Expression expression)
     {
       var methodCallExpression = expression as MethodCallExpression;
       if (methodCallExpression == null)
-        throw new ArgumentException ("Must be a MethodCallExpression.", "expression");
+        throw new ArgumentException("Must be a MethodCallExpression.", "expression");
 
       // For virtual methods the MethodCallExpression containts the root definition.
       return methodCallExpression.Method;
@@ -217,11 +218,11 @@ namespace Remotion.Utilities
 
     private static MethodInfo GetGenericMethodDefinition (Expression expression)
     {
-      var methodInfo = GetMethodInfoFromMethodCallExpression (expression);
+      var methodInfo = GetMethodInfoFromMethodCallExpression(expression);
       if (!methodInfo.IsGenericMethod)
-        throw new ArgumentException ("Must hold a generic method access expression.", "expression");
+        throw new ArgumentException("Must hold a generic method access expression.", "expression");
 
-      return methodInfo.GetGenericMethodDefinition ();
+      return methodInfo.GetGenericMethodDefinition();
     }
   }
 }

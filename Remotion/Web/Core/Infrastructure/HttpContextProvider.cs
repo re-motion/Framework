@@ -20,16 +20,16 @@ using Remotion.ServiceLocation;
 
 namespace Remotion.Web.Infrastructure
 {
-  [ImplementationFor (typeof (IHttpContextProvider), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IHttpContextProvider), Lifetime = LifetimeKind.Singleton)]
   public class HttpContextProvider : IHttpContextProvider
   {
     public HttpContextBase GetCurrentHttpContext ()
     {
       var context = HttpContext.Current;
       if (context == null)
-        throw new InvalidOperationException ("No current HttpContext is set.");
+        throw new InvalidOperationException("No current HttpContext is set.");
 
-      return new HttpContextWrapper (context);
+      return new HttpContextWrapper(context);
     }
   }
 }

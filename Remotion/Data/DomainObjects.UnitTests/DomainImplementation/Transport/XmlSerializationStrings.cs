@@ -21,12 +21,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
 {
   public static class XmlSerializationStrings
   {
+#if !NETFRAMEWORK
+    private const char c_bom = (char)65279;
+#endif
+
     public static string XmlForComputer1
     {
       get
       {
         return
-          @"<?xml version=""1.0""?>
+#if NETFRAMEWORK
+            @"<?xml version=""1.0""?>"
+#else
+            c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
+#endif
+                  + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
     <Property Name=""Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"">
@@ -52,7 +61,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-            @"<?xml version=""1.0""?>
+#if NETFRAMEWORK
+            @"<?xml version=""1.0""?>"
+#else
+            c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
+#endif
+                  + @"
 <XmlTransportItem ID=""Computer|d6f50e77-2041-46b8-a840-aaa4d2e1bf5a|System.Guid"">
   <Properties>
     <Property Name=""Remotion.Data.DomainObjects.UnitTests.TestDomain.Computer.SerialNumber"">
@@ -80,10 +94,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-            @"<?xml version=""1.0""?>
+#if NETFRAMEWORK
+            @"<?xml version=""1.0""?>"
+#else
+            c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
+#endif
+                  + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
-    <Property Name=""Custom"" Type=""" + typeof (int).AssemblyQualifiedName + @""">
+    <Property Name=""Custom"" Type=""" + typeof(int).AssemblyQualifiedName + @""">
       <int>5</int>
     </Property>
   </Properties>
@@ -96,7 +115,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-            @"<?xml version=""1.0""?>
+#if NETFRAMEWORK
+            @"<?xml version=""1.0""?>"
+#else
+            c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
+#endif
+                  + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
     <Property Name=""CustomReference"" Type=""ObjectID"">Order|83445473-844a-4d3f-a8c3-c27f8d98e8ba|System.Guid</Property>
@@ -110,7 +134,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-            @"<?xml version=""1.0""?>
+#if NETFRAMEWORK
+            @"<?xml version=""1.0""?>"
+#else
+            c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
+#endif
+                  + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
     <Property Name=""CustomNull"" Type=""null"">
@@ -126,12 +155,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-            @"<?xml version=""1.0""?>
+#if NETFRAMEWORK
+            @"<?xml version=""1.0""?>"
+#else
+            c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
+#endif
+                  + @"
 <XmlTransportItem ID=""Computer|c7c26bf5-871d-48c7-822a-e9b05aac4e5a|System.Guid"">
   <Properties>
     <Property Name=""CustomExtensibleEnum"" Type=""@assemblyQualifiedName"">Remotion.Data.DomainObjects.UnitTests.TestDomain.ColorExtensions.Red</Property>
   </Properties>
-</XmlTransportItem>".Replace ("@assemblyQualifiedName", typeof (Color).AssemblyQualifiedName);
+</XmlTransportItem>".Replace("@assemblyQualifiedName", typeof(Color).AssemblyQualifiedName);
       }
     }
 
@@ -140,7 +174,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport
       get
       {
         return
-            @"<?xml version=""1.0""?>
+#if NETFRAMEWORK
+            @"<?xml version=""1.0""?>"
+#else
+            c_bom + @"<?xml version=""1.0"" encoding=""utf-8""?>"
+#endif
+                  + @"
 <ArrayOfXmlTransportItem xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
   <XmlTransportItem ID=""Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid"">
     <Properties>

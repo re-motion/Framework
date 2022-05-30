@@ -47,21 +47,21 @@ namespace Remotion.Collections
   {
     private static int CalculateHashCode (IEnumerable<T> items)
     {
-      return EqualityUtility.GetXorHashCode (items);
+      return EqualityUtility.GetXorHashCode(items);
     }
 
     private readonly HashSet<T> _items;
     private readonly int _cachedHashCode;
 
-    public SetBasedCacheKey(params T[] items) : this((IEnumerable<T>) items)
+    public SetBasedCacheKey (params T[] items) : this((IEnumerable<T>)items)
     {
     }
 
     public SetBasedCacheKey (IEnumerable<T> items)
     {
-      ArgumentUtility.CheckNotNull ("items", items);
-      _items = new HashSet<T> (items);
-      _cachedHashCode = CalculateHashCode (_items);
+      ArgumentUtility.CheckNotNull("items", items);
+      _items = new HashSet<T>(items);
+      _cachedHashCode = CalculateHashCode(_items);
     }
 
     public int Count
@@ -74,12 +74,12 @@ namespace Remotion.Collections
       return _cachedHashCode;
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
       if (!(obj is SetBasedCacheKey<T>))
         return false;
 
-      var other = (SetBasedCacheKey<T>) obj;
+      var other = (SetBasedCacheKey<T>)obj;
       if (other.Count != Count)
         return false;
 
@@ -87,7 +87,7 @@ namespace Remotion.Collections
       {
         foreach (T item in _items)
         {
-          if (!other._items.Contains (item))
+          if (!other._items.Contains(item))
             return false;
         }
       }

@@ -30,7 +30,7 @@ namespace Remotion.Web.Infrastructure
 
     public ClientScriptManagerWrapper (ClientScriptManager clientScriptManager)
     {
-      ArgumentUtility.CheckNotNull ("clientScriptManager", clientScriptManager);
+      ArgumentUtility.CheckNotNull("clientScriptManager", clientScriptManager);
 
       _clientScriptManager = clientScriptManager;
     }
@@ -51,7 +51,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterForEventValidation (PostBackOptions options)
     {
-      _clientScriptManager.RegisterForEventValidation (options);
+      _clientScriptManager.RegisterForEventValidation(options);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterForEventValidation (string uniqueId)
     {
-      _clientScriptManager.RegisterForEventValidation (uniqueId);
+      _clientScriptManager.RegisterForEventValidation(uniqueId);
     }
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterForEventValidation (string uniqueId, string argument)
     {
-      _clientScriptManager.RegisterForEventValidation (uniqueId, argument);
+      _clientScriptManager.RegisterForEventValidation(uniqueId, argument);
     }
 
     /// <summary>
@@ -83,7 +83,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void ValidateEvent (string uniqueId)
     {
-      _clientScriptManager.ValidateEvent (uniqueId);
+      _clientScriptManager.ValidateEvent(uniqueId);
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void ValidateEvent (string uniqueId, string argument)
     {
-      _clientScriptManager.ValidateEvent (uniqueId, argument);
+      _clientScriptManager.ValidateEvent(uniqueId, argument);
     }
 
     /// <summary>
@@ -114,8 +114,8 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public string GetCallbackEventReference (IControl control, string argument, string clientCallback, string context)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      return _clientScriptManager.GetCallbackEventReference ((Control) control, argument, clientCallback, context);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      return _clientScriptManager.GetCallbackEventReference((Control)control, argument, clientCallback, context);
     }
 
     /// <summary>
@@ -135,8 +135,8 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public string GetCallbackEventReference (IControl control, string argument, string clientCallback, string context, bool useAsync)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      return _clientScriptManager.GetCallbackEventReference ((Control) control, argument, clientCallback, context, useAsync);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      return _clientScriptManager.GetCallbackEventReference((Control)control, argument, clientCallback, context, useAsync);
     }
 
     /// <summary>
@@ -157,8 +157,8 @@ namespace Remotion.Web.Infrastructure
     public string GetCallbackEventReference (
         IControl control, string argument, string clientCallback, string context, string clientErrorCallback, bool useAsync)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      return _clientScriptManager.GetCallbackEventReference ((Control) control, argument, clientCallback, context, clientErrorCallback, useAsync);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      return _clientScriptManager.GetCallbackEventReference((Control)control, argument, clientCallback, context, clientErrorCallback, useAsync);
     }
 
     /// <summary>
@@ -178,7 +178,7 @@ namespace Remotion.Web.Infrastructure
     public string GetCallbackEventReference (
         string target, string argument, string clientCallback, string context, string clientErrorCallback, bool useAsync)
     {
-      return _clientScriptManager.GetCallbackEventReference (target, argument, clientCallback, context, clientErrorCallback, useAsync);
+      return _clientScriptManager.GetCallbackEventReference(target, argument, clientCallback, context, clientErrorCallback, useAsync);
     }
 
     /// <summary>
@@ -192,8 +192,8 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public string GetPostBackClientHyperlink (IControl control, string argument)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      return _clientScriptManager.GetPostBackClientHyperlink ((Control) control, argument);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      return _clientScriptManager.GetPostBackClientHyperlink((Control)control, argument);
     }
 
     /// <summary>
@@ -208,8 +208,8 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public string GetPostBackClientHyperlink (IControl control, string argument, bool registerForEventValidation)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      return _clientScriptManager.GetPostBackClientHyperlink ((Control) control, argument, registerForEventValidation);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      return _clientScriptManager.GetPostBackClientHyperlink((Control)control, argument, registerForEventValidation);
     }
 
     /// <summary>
@@ -222,10 +222,10 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="argument">A string of optional arguments to pass to the control that processes the postback.
     /// </param><exception cref="T:System.ArgumentNullException">The specified <see cref="T:System.Web.UI.Control"/> is null.
     /// </exception>
-    public string GetPostBackEventReference (IControl control, string argument)
+    public string GetPostBackEventReference (IControl control, string? argument)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      return _clientScriptManager.GetPostBackEventReference ((Control) control, argument);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      return _clientScriptManager.GetPostBackEventReference((Control)control, argument);
     }
 
     /// <summary>
@@ -239,10 +239,10 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="registerForEventValidation">true to register the event reference for validation; otherwise, false.
     /// </param><exception cref="T:System.ArgumentNullException">The specified <see cref="T:System.Web.UI.Control"/> is null.
     /// </exception>
-    public string GetPostBackEventReference (IControl control, string argument, bool registerForEventValidation)
+    public string GetPostBackEventReference (IControl control, string? argument, bool registerForEventValidation)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      return _clientScriptManager.GetPostBackEventReference ((Control) control, argument, registerForEventValidation);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      return _clientScriptManager.GetPostBackEventReference((Control)control, argument, registerForEventValidation);
     }
 
     /// <summary>
@@ -253,9 +253,9 @@ namespace Remotion.Web.Infrastructure
     /// </returns>
     /// <param name="options">A <see cref="T:System.Web.UI.PostBackOptions"/> that defines the postback.
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.PostBackOptions"/> parameter is null</exception>
-    public string GetPostBackEventReference (PostBackOptions options)
+    public string? GetPostBackEventReference (PostBackOptions options)
     {
-      return _clientScriptManager.GetPostBackEventReference (options);
+      return _clientScriptManager.GetPostBackEventReference(options);
     }
 
     /// <summary>
@@ -268,9 +268,9 @@ namespace Remotion.Web.Infrastructure
     /// </param><param name="registerForEventValidation">true to register the event reference for validation; otherwise, false.
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.PostBackOptions"/> is null.
     /// </exception>
-    public string GetPostBackEventReference (PostBackOptions options, bool registerForEventValidation)
+    public string? GetPostBackEventReference (PostBackOptions options, bool registerForEventValidation)
     {
-      return _clientScriptManager.GetPostBackEventReference (options, registerForEventValidation);
+      return _clientScriptManager.GetPostBackEventReference(options, registerForEventValidation);
     }
 
     /// <summary>
@@ -288,7 +288,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public string GetWebResourceUrl (Type type, string resourceName)
     {
-      return _clientScriptManager.GetWebResourceUrl (type, resourceName);
+      return _clientScriptManager.GetWebResourceUrl(type, resourceName);
     }
 
     /// <summary>
@@ -301,7 +301,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public bool IsClientScriptBlockRegistered (string key)
     {
-      return _clientScriptManager.IsClientScriptBlockRegistered (key);
+      return _clientScriptManager.IsClientScriptBlockRegistered(key);
     }
 
     /// <summary>
@@ -316,7 +316,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public bool IsClientScriptBlockRegistered (Type type, string key)
     {
-      return _clientScriptManager.IsClientScriptBlockRegistered (type, key);
+      return _clientScriptManager.IsClientScriptBlockRegistered(type, key);
     }
 
     /// <summary>
@@ -329,7 +329,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public bool IsClientScriptIncludeRegistered (string key)
     {
-      return _clientScriptManager.IsClientScriptIncludeRegistered (key);
+      return _clientScriptManager.IsClientScriptIncludeRegistered(key);
     }
 
     /// <summary>
@@ -344,7 +344,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public bool IsClientScriptIncludeRegistered (Type type, string key)
     {
-      return _clientScriptManager.IsClientScriptIncludeRegistered (type, key);
+      return _clientScriptManager.IsClientScriptIncludeRegistered(type, key);
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public bool IsStartupScriptRegistered (string key)
     {
-      return _clientScriptManager.IsStartupScriptRegistered (key);
+      return _clientScriptManager.IsStartupScriptRegistered(key);
     }
 
     /// <summary>
@@ -372,7 +372,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public bool IsStartupScriptRegistered (Type type, string key)
     {
-      return _clientScriptManager.IsStartupScriptRegistered (type, key);
+      return _clientScriptManager.IsStartupScriptRegistered(type, key);
     }
 
     /// <summary>
@@ -385,7 +385,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public bool IsOnSubmitStatementRegistered (string key)
     {
-      return _clientScriptManager.IsOnSubmitStatementRegistered (key);
+      return _clientScriptManager.IsOnSubmitStatementRegistered(key);
     }
 
     /// <summary>
@@ -400,7 +400,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public bool IsOnSubmitStatementRegistered (Type type, string key)
     {
-      return _clientScriptManager.IsOnSubmitStatementRegistered (type, key);
+      return _clientScriptManager.IsOnSubmitStatementRegistered(type, key);
     }
 
     /// <summary>
@@ -412,7 +412,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterArrayDeclaration (string arrayName, string arrayValue)
     {
-      _clientScriptManager.RegisterArrayDeclaration (arrayName, arrayValue);
+      _clientScriptManager.RegisterArrayDeclaration(arrayName, arrayValue);
     }
 
     /// <summary>
@@ -424,7 +424,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterExpandoAttribute (string controlId, string attributeName, string attributeValue)
     {
-      _clientScriptManager.RegisterExpandoAttribute (controlId, attributeName, attributeValue);
+      _clientScriptManager.RegisterExpandoAttribute(controlId, attributeName, attributeValue);
     }
 
     /// <summary>
@@ -437,7 +437,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterExpandoAttribute (string controlId, string attributeName, string attributeValue, bool encode)
     {
-      _clientScriptManager.RegisterExpandoAttribute (controlId, attributeName, attributeValue, encode);
+      _clientScriptManager.RegisterExpandoAttribute(controlId, attributeName, attributeValue, encode);
     }
 
     /// <summary>
@@ -451,9 +451,9 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterExpandoAttribute (IControl registratorControl, string controlId, string attributeName, string attributeValue, bool encode)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("registratorControl", registratorControl);
-      ScriptManager.RegisterExpandoAttribute (
-          (Control) registratorControl, controlId, attributeName, attributeValue ?? string.Empty, encode);
+      ArgumentUtility.CheckNotNullAndType<Control>("registratorControl", registratorControl);
+      ScriptManager.RegisterExpandoAttribute(
+          (Control)registratorControl, controlId, attributeName, attributeValue ?? string.Empty, encode);
     }
 
     /// <summary>
@@ -465,7 +465,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterHiddenField (string hiddenFieldName, string hiddenFieldInitialValue)
     {
-      _clientScriptManager.RegisterHiddenField (hiddenFieldName, hiddenFieldInitialValue);
+      _clientScriptManager.RegisterHiddenField(hiddenFieldName, hiddenFieldInitialValue);
     }
 
     /// <summary>
@@ -481,10 +481,10 @@ namespace Remotion.Web.Infrastructure
     ///   <paramref name="hiddenFieldName"/> is null.
     /// </exception>
     /// <seealso cref="ScriptManager.RegisterHiddenField(System.Web.UI.Control,string,string)"/>
-    public void RegisterHiddenField (IControl control, string hiddenFieldName, string hiddenFieldInitialValue)
+    public void RegisterHiddenField (IControl control, string hiddenFieldName, string? hiddenFieldInitialValue)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      ScriptManager.RegisterHiddenField ((Control) control, hiddenFieldName, hiddenFieldInitialValue ?? string.Empty);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      ScriptManager.RegisterHiddenField((Control)control, hiddenFieldName, hiddenFieldInitialValue ?? string.Empty);
     }
 
     /// <summary>
@@ -496,7 +496,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterClientScriptBlock (Type type, string key, string script)
     {
-      _clientScriptManager.RegisterClientScriptBlock (type, key, script);
+      _clientScriptManager.RegisterClientScriptBlock(type, key, script);
     }
 
     /// <summary>
@@ -510,7 +510,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterClientScriptBlock (Type type, string key, string script, bool addScriptTags)
     {
-      _clientScriptManager.RegisterClientScriptBlock (type, key, script, addScriptTags);
+      _clientScriptManager.RegisterClientScriptBlock(type, key, script, addScriptTags);
     }
 
     /// <summary>
@@ -533,14 +533,14 @@ namespace Remotion.Web.Infrastructure
     /// <seealso cref="ScriptManager.RegisterClientScriptBlock(System.Web.UI.Control,System.Type,string,string,bool)"/>
     public void RegisterClientScriptBlock (IControl control, Type type, string key, string script)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNullOrEmpty ("script", script);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("script", script);
 
       script += "\r\n";
 
-      ScriptManager.RegisterClientScriptBlock ((Control) control, type, key, script, true);
+      ScriptManager.RegisterClientScriptBlock((Control)control, type, key, script, true);
     }
 
     /// <summary>
@@ -549,10 +549,10 @@ namespace Remotion.Web.Infrastructure
     /// <param name="key">The key of the client script include to register. 
     /// </param><param name="url">The URL of the client script include to register. 
     /// </param>
-    [Obsolete ("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
+    [Obsolete("Use RegisterClientScriptInclude (IControl, Type, string, string) for compatibility with UpdatePanel.")]
     public void RegisterClientScriptInclude (string key, string url)
     {
-      _clientScriptManager.RegisterClientScriptInclude (key, url);
+      _clientScriptManager.RegisterClientScriptInclude(key, url);
     }
 
     /// <summary>
@@ -568,13 +568,13 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterClientScriptInclude (Type type, string key, string url)
     {
-      _clientScriptManager.RegisterClientScriptInclude (type, key, url);
+      _clientScriptManager.RegisterClientScriptInclude(type, key, url);
     }
 
     public void RegisterClientScriptInclude (IControl control, Type type, string key, string url)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      ScriptManager.RegisterClientScriptInclude ((Control) control, type, key, url);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      ScriptManager.RegisterClientScriptInclude((Control)control, type, key, url);
     }
 
     /// <summary>
@@ -589,13 +589,13 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterClientScriptResource (Type type, string resourceName)
     {
-      _clientScriptManager.RegisterClientScriptResource (type, resourceName);
+      _clientScriptManager.RegisterClientScriptResource(type, resourceName);
     }
 
     public void RegisterClientScriptResource (IControl control, Type type, string resourceName)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      ScriptManager.RegisterClientScriptResource ((Control) control, type, resourceName);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      ScriptManager.RegisterClientScriptResource((Control)control, type, resourceName);
     }
 
     /// <summary>
@@ -608,13 +608,13 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterOnSubmitStatement (Type type, string key, string script)
     {
-      _clientScriptManager.RegisterOnSubmitStatement (type, key, script);
+      _clientScriptManager.RegisterOnSubmitStatement(type, key, script);
     }
 
     public void RegisterOnSubmitStatement (IControl control, Type type, string key, string script)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      ScriptManager.RegisterOnSubmitStatement ((Control) control, type, key, script ?? string.Empty);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      ScriptManager.RegisterOnSubmitStatement((Control)control, type, key, script ?? string.Empty);
     }
 
     /// <summary>
@@ -626,7 +626,7 @@ namespace Remotion.Web.Infrastructure
     /// </param>
     public void RegisterStartupScript (Type type, string key, string script)
     {
-      _clientScriptManager.RegisterStartupScript (type, key, script);
+      _clientScriptManager.RegisterStartupScript(type, key, script);
     }
 
     /// <summary>
@@ -640,7 +640,7 @@ namespace Remotion.Web.Infrastructure
     /// </exception>
     public void RegisterStartupScript (Type type, string key, string script, bool addScriptTags)
     {
-      _clientScriptManager.RegisterStartupScript (type, key, script, addScriptTags);
+      _clientScriptManager.RegisterStartupScript(type, key, script, addScriptTags);
     }
 
     /// <summary>
@@ -655,14 +655,14 @@ namespace Remotion.Web.Infrastructure
     /// <seealso cref="ScriptManager.RegisterStartupScript(System.Web.UI.Control,System.Type,string,string,bool)"/>
     public void RegisterStartupScriptBlock (IControl control, Type type, string key, string script)
     {
-      ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNullOrEmpty ("script", script);
+      ArgumentUtility.CheckNotNullAndType<Control>("control", control);
+      ArgumentUtility.CheckNotNull("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("script", script);
 
       script += "\r\n";
 
-      ScriptManager.RegisterStartupScript ((Control) control, type, key, script, true);
+      ScriptManager.RegisterStartupScript((Control)control, type, key, script, true);
     }
   }
 }

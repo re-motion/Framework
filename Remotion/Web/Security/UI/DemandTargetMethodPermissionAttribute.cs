@@ -29,22 +29,22 @@ namespace Remotion.Web.Security.UI
     // construction and disposing
 
     public DemandTargetMethodPermissionAttribute (object methodEnum)
-      : base (methodEnum)
+      : base(methodEnum)
     {
     }
 
     public DemandTargetMethodPermissionAttribute (object methodEnum, Type securableClass)
-      : base (methodEnum, securableClass)
+      : base(methodEnum, securableClass)
     {
     }
 
     public DemandTargetMethodPermissionAttribute (string methodName)
-      : base (methodName)
+      : base(methodName)
     {
     }
 
     public DemandTargetMethodPermissionAttribute (string methodName, Type securableClass)
-      : base (methodName, securableClass)
+      : base(methodName, securableClass)
     {
     }
 

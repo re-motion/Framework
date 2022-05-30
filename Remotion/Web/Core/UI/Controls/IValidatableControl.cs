@@ -67,30 +67,30 @@ public class ValidatableControlInitializer
   {
     foreach (IValidator ivalidator in page.Validators)
     {
-      BaseValidator validator = ivalidator as BaseValidator;
+      BaseValidator? validator = ivalidator as BaseValidator;
       if (validator == null)
         continue;
 
-      Control validatedControl = validator.NamingContainer.FindControl (validator.ControlToValidate);
+      Control? validatedControl = validator.NamingContainer.FindControl(validator.ControlToValidate);
 
       if (validatedControl is IValidatableControl)
       {
         // register validator with parent
-        ((IValidatableControl)validatedControl).RegisterValidator (validator);
+        ((IValidatableControl)validatedControl).RegisterValidator(validator);
       }
       else
       {
         // try to find a parent control that supports IValidatableControl and has validatedControl as TargetControl
         // (the validator may point to a child control of the control that should actually be validated)
-        for (Control parentControl = validatedControl;
+        for (Control? parentControl = validatedControl;
             parentControl != null;
             parentControl = parentControl.Parent)
         {
-          if (   parentControl is IValidatableControl 
-              && parentControl is ISmartControl 
+          if (   parentControl is IValidatableControl
+              && parentControl is ISmartControl
               && ((ISmartControl)parentControl).TargetControl == validatedControl)
           {
-            ((IValidatableControl)parentControl).RegisterValidator (validator);
+            ((IValidatableControl)parentControl).RegisterValidator(validator);
           }
           continue;
         }
@@ -117,7 +117,7 @@ public class ValidatableControlInitializer
   {
     if (! _initialized)
     {
-      ValidatableControlInitializer.InitializeValidatableControls (_page);
+      ValidatableControlInitializer.InitializeValidatableControls(_page);
       _initialized = true;
     }
   }

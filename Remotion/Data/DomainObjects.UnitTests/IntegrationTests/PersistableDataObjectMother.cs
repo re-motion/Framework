@@ -29,18 +29,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
     public static PersistableData Create ()
     {
       var domainObject = DomainObjectMother.CreateFakeObject<Order>();
-      return new PersistableData (domainObject, StateType.New, DataContainer.CreateNew (domainObject.ID), new IRelationEndPoint[0]);
+      return new PersistableData(
+          domainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          DataContainer.CreateNew(domainObject.ID),
+          new IRelationEndPoint[0]);
     }
 
     public static PersistableData Create (ClientTransaction clientTransaction, DomainObject domainObject)
     {
-      var dataManager = ClientTransactionTestHelper.GetIDataManager (clientTransaction);
-      var dataContainer = dataManager.GetDataContainerWithoutLoading (domainObject.ID);
-      return new PersistableData (
+      var dataManager = ClientTransactionTestHelper.GetIDataManager(clientTransaction);
+      var dataContainer = dataManager.GetDataContainerWithoutLoading(domainObject.ID);
+      return new PersistableData(
           domainObject,
           domainObject.TransactionContext[clientTransaction].State,
           dataContainer,
-          dataContainer.AssociatedRelationEndPointIDs.Select (dataManager.GetRelationEndPointWithoutLoading).Where (ep => ep != null));
+          dataContainer.AssociatedRelationEndPointIDs.Select(dataManager.GetRelationEndPointWithoutLoading).Where(ep => ep != null));
     }
   }
 }

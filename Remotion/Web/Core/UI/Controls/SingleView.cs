@@ -16,7 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Web;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.ServiceLocation;
@@ -25,11 +25,10 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.UI.Controls.SingleViewImplementation;
 using Remotion.Web.UI.Controls.SingleViewImplementation.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
-  [ToolboxData ("<{0}:SingleView id=\"SingleView\" runat=\"server\">\r\n\t<View>\r\n\t</View>\r\n</{0}:SingleView>")]
+  [ToolboxData("<{0}:SingleView id=\"SingleView\" runat=\"server\">\r\n\t<View>\r\n\t</View>\r\n</{0}:SingleView>")]
   //[Designer( typeof (SingleViewDesigner))]
   public class SingleView : WebControl, ISingleView
   {
@@ -51,6 +50,9 @@ namespace Remotion.Web.UI.Controls
       _bottomControlsStyle = new Style();
     }
 
+    [MemberNotNull(nameof(_view))]
+    [MemberNotNull(nameof(_topControl))]
+    [MemberNotNull(nameof(_bottomControl))]
     private void CreateControls ()
     {
       _view = new PlaceHolder();
@@ -61,33 +63,30 @@ namespace Remotion.Web.UI.Controls
     protected override void CreateChildControls ()
     {
       _view.ID = ID + "_View";
-      Controls.Add (_view);
+      Controls.Add(_view);
 
       _topControl.ID = ID + "_TopControl";
-      Controls.Add (_topControl);
+      Controls.Add(_topControl);
 
       _bottomControl.ID = ID + "_BottomControl";
-      Controls.Add (_bottomControl);
+      Controls.Add(_bottomControl);
     }
 
     protected override void OnInit (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnInit(e);
       //CreateTemplatedControls (DesignMode);
       EnsureChildControls();
 
-      if (!IsDesignMode )
-      {
-        RegisterHtmlHeadContents (HtmlHeadAppender.Current);
-      }
+      RegisterHtmlHeadContents(HtmlHeadAppender.Current);
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       var renderer = CreateRenderer();
-      renderer.RegisterHtmlHeadContents (htmlHeadAppender, this);
+      renderer.RegisterHtmlHeadContents(htmlHeadAppender, this);
     }
 
     //private void CreateTemplatedControls (bool recreate)
@@ -131,22 +130,22 @@ namespace Remotion.Web.UI.Controls
 
     protected override void Render (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
       var renderer = CreateRenderer();
-      renderer.Render (CreateRenderingContext(writer));
+      renderer.Render(CreateRenderingContext(writer));
     }
 
     protected virtual ISingleViewRenderer CreateRenderer ()
     {
-      return SafeServiceLocator.Current.GetInstance<ISingleViewRenderer> ();
+      return SafeServiceLocator.Current.GetInstance<ISingleViewRenderer>();
     }
 
     protected virtual SingleViewRenderingContext CreateRenderingContext (HtmlTextWriter writer)
     {
-      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull("writer", writer);
 
-      return new SingleViewRenderingContext (Page.Context, writer, this);
+      return new SingleViewRenderingContext(Page!.Context!, writer, this); // TODO RM-8118: not null assertion
     }
 
     protected string ViewClientID
@@ -164,12 +163,12 @@ namespace Remotion.Web.UI.Controls
       get { return ClientID + "_Wrapper"; }
     }
 
-    public new IPage Page
+    public new IPage? Page
     {
-      get { return PageWrapper.CastOrCreate (base.Page); }
+      get { return PageWrapper.CastOrCreate(base.Page); }
     }
 
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public override ControlCollection Controls
     {
       get
@@ -194,9 +193,9 @@ namespace Remotion.Web.UI.Controls
       get { return _bottomControl; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     //[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     //[Browsable (false)]
     public ControlCollection View
@@ -247,39 +246,34 @@ namespace Remotion.Web.UI.Controls
     //  }
     //}
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the active view.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the active view.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style ViewStyle
     {
       get { return _viewStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to the top section. The height cannot be provided in percent.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to the top section. The height cannot be provided in percent.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style TopControlsStyle
     {
       get { return _topControlsStyle; }
     }
 
-    [Category ("Style")]
-    [Description ("The style that you want to apply to the bottom section. The height cannot be provided in percent.")]
-    [NotifyParentProperty (true)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Category("Style")]
+    [Description("The style that you want to apply to the bottom section. The height cannot be provided in percent.")]
+    [NotifyParentProperty(true)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
     public Style BottomControlsStyle
     {
       get { return _bottomControlsStyle; }
-    }
-
-    public bool IsDesignMode
-    {
-      get { return ControlHelper.IsDesignMode(this); }
     }
 
     string ISingleView.ViewClientID
@@ -287,17 +281,17 @@ namespace Remotion.Web.UI.Controls
       get { return ViewClientID; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public ControlCollection TopControls
     {
       get { return _topControl.Controls; }
     }
 
-    [PersistenceMode (PersistenceMode.InnerProperty)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [Browsable (false)]
+    [PersistenceMode(PersistenceMode.InnerProperty)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+    [Browsable(false)]
     public ControlCollection BottomControls
     {
       get { return _bottomControl.Controls; }

@@ -26,24 +26,24 @@ namespace Remotion.Security.UnitTests.NullSecurityClientTests
     [Test]
     public void GetNullInstance ()
     {
-      Assert.That (SecurityClient.Null, Is.InstanceOf<NullSecurityClient>());
+      Assert.That(SecurityClient.Null, Is.InstanceOf<NullSecurityClient>());
     }
 
     [Test]
     public void GetNullInstance_ReturnsSameInstanceTwice ()
     {
-      Assert.That (SecurityClient.Null, Is.SameAs (SecurityClient.Null));
+      Assert.That(SecurityClient.Null, Is.SameAs(SecurityClient.Null));
     }
 
     [Test]
     public void Initialize ()
     {
       var securityClient = new NullSecurityClient();
-      Assert.That (securityClient.SecurityProvider, Is.InstanceOf<NullSecurityProvider>());
-      Assert.That (securityClient.PrincipalProvider, Is.InstanceOf<NullPrincipalProvider>());
-      Assert.That (securityClient.PermissionProvider, Is.InstanceOf<PermissionReflector>());
-      Assert.That (securityClient.MemberResolver, Is.InstanceOf<NullMemberResolver>());
-      Assert.That (securityClient.FunctionalSecurityStrategy, Is.InstanceOf<NullFunctionalSecurityStrategy>());
+      Assert.That(securityClient.SecurityProvider, Is.InstanceOf<NullSecurityProvider>());
+      Assert.That(securityClient.PrincipalProvider, Is.InstanceOf<NullPrincipalProvider>());
+      Assert.That(securityClient.PermissionProvider, Is.InstanceOf<PermissionReflector>());
+      Assert.That(securityClient.MemberResolver, Is.InstanceOf<NullMemberResolver>());
+      Assert.That(securityClient.FunctionalSecurityStrategy, Is.InstanceOf<NullFunctionalSecurityStrategy>());
     }
   }
 }

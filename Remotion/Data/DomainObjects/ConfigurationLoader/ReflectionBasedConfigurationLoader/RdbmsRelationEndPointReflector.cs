@@ -17,6 +17,7 @@
 using System;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
 {
@@ -30,38 +31,35 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
-        : base (classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        ISortExpressionDefinitionProvider sortExpressionDefinitionProvider)
+        : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider, domainModelConstraintProvider, sortExpressionDefinitionProvider)
     {
     }
 
     public override bool IsVirtualEndRelationEndpoint ()
     {
-      if (base.IsVirtualEndRelationEndpoint())
-        return true;
-
-      return !ContainsKey();
-    }
-
-    private bool ContainsKey ()
-    {
       if (!IsBidirectionalRelation)
+        return false;
+
+      if (ReflectionUtility.IsObjectList(PropertyInfo.PropertyType))
         return true;
 
+      if (ReflectionUtility.IsIObjectList(PropertyInfo.PropertyType))
+        return true;
+
+      Assertion.DebugIsNotNull(BidirectionalRelationAttribute, "BidirectionalRelationAttribute != null");
       if (BidirectionalRelationAttribute.ContainsForeignKey)
-        return true;
-
-      if (ReflectionUtility.IsObjectList (PropertyInfo.PropertyType))
         return false;
 
       var oppositePropertyInfo = GetOppositePropertyInfo();
       if (oppositePropertyInfo == null)
-        return true;
-
-      if (ReflectionUtility.IsDomainObject (oppositePropertyInfo.PropertyType))
         return false;
 
-      return true;
+      if (ReflectionUtility.IsDomainObject(oppositePropertyInfo.PropertyType))
+        return true;
+
+      return false;
     }
   }
 }

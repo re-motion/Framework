@@ -25,6 +25,7 @@ using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ControlObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebTestActions;
 
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
@@ -37,15 +38,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
           IControlObjectWithSelectableOptions,
           IFluentControlObjectWithSelectableOptions,
           IControlObjectWithFormElements,
-          ISupportsValidationErrors
+          ISupportsValidationErrors,
+          ISupportsValidationErrorsForReadOnly
   {
     private readonly IBocEnumValueControlObjectVariant _variantImpl;
 
     public BocEnumValueControlObject ([NotNull] ControlObjectContext context)
-        : base (context)
+        : base(context)
     {
       var style = Scope[DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle];
-      _variantImpl = CreateVariant (style);
+      _variantImpl = CreateVariant(style);
+      _variantImpl.ActionExecute += OnActionExecute;
     }
 
     /// <summary>
@@ -54,7 +57,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public bool HasNullOptionDefinition ()
     {
       if (IsReadOnly())
-        throw new InvalidOperationException ("A read-only control cannot contain a null option definition.");
+        throw new InvalidOperationException("A read-only control cannot contain a null option definition.");
 
       return _variantImpl.HasNullOptionDefinition();
     }
@@ -69,7 +72,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
     {
       if (IsReadOnly())
-        throw new InvalidOperationException ("Cannot obtain option definitions on read-only control.");
+        throw new InvalidOperationException("Cannot obtain option definitions on read-only control.");
 
       return _variantImpl.GetOptionDefinitions();
     }
@@ -81,45 +84,57 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     }
 
     /// <inheritdoc/>
-    public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions actionOptions = null)
+    public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions = null)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption(itemID)");
 
-      return SelectOption().WithItemID (itemID, actionOptions);
+      return SelectOption().WithItemID(itemID, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string itemID, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithItemID (string itemID, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("itemID", itemID);
+      ArgumentUtility.CheckNotNullOrEmpty("itemID", itemID);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithItemID");
 
-      return _variantImpl.SelectOption (itemID, actionOptions);
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().ItemID == itemID)
+        return UnspecifiedPage();
+
+      return _variantImpl.SelectOption(itemID, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithIndex (int oneBasedIndex, IWebTestActionOptions? actionOptions)
     {
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithIndex");
 
-      return _variantImpl.SelectOption (oneBasedIndex, actionOptions);
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().Index == oneBasedIndex)
+        return UnspecifiedPage();
+
+      return _variantImpl.SelectOption(oneBasedIndex, actionOptions);
     }
 
     /// <inheritdoc/>
-    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions actionOptions)
+    UnspecifiedPageObject IFluentControlObjectWithSelectableOptions.WithDisplayText (string displayText, IWebTestActionOptions? actionOptions)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("displayText", displayText);
+      ArgumentUtility.CheckNotNullOrEmpty("displayText", displayText);
 
       if (IsDisabled())
-        throw AssertionExceptionUtility.CreateControlDisabledException();
+        throw AssertionExceptionUtility.CreateControlDisabledException(Driver, operationName: "SelectOption.WithDisplayText");
 
-      return _variantImpl.SelectOptionByText (displayText, actionOptions);
+      // Workaround for Marionette issue. (RM-7279)
+      if (Scope.Browser.IsFirefox() && GetSelectedOption().Text == displayText)
+        return UnspecifiedPage();
+
+      return _variantImpl.SelectOptionByText(displayText, actionOptions);
     }
 
     /// <summary>
@@ -130,12 +145,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     ICollection<string> IControlObjectWithFormElements.GetFormElementNames ()
     {
-      return new[] { string.Format ("{0}_Value", GetHtmlID()) };
+      return new[] { string.Format("{0}_Value", GetHtmlID()) };
     }
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors (GetScopeWithReferenceInformation());
+      return GetValidationErrors(GetScopeWithReferenceInformation());
+    }
+
+    public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
+    {
+      return GetValidationErrorsForReadOnly(GetScopeWithReferenceInformation());
     }
 
     protected override ElementScope GetLabeledElementScope ()
@@ -145,7 +165,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     private ElementScope GetScopeWithReferenceInformation ()
     {
-      return Scope.FindChild ("Value");
+      return Scope.FindChild("Value");
     }
 
     /// <summary>
@@ -156,34 +176,34 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <returns>The corresponding <see cref="IBocEnumValueControlObjectVariant"/> implementation.</returns>
     private IBocEnumValueControlObjectVariant CreateVariant ([NotNull] string style)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("style", style);
+      ArgumentUtility.CheckNotNullOrEmpty("style", style);
 
       switch (style)
       {
         case "DropDownList":
-          return new BocEnumValueSelectBasedControlObjectVariant (this);
+          return new BocEnumValueSelectBasedControlObjectVariant(this);
 
         case "ListBox":
-          return new BocEnumValueSelectBasedControlObjectVariant (this);
+          return new BocEnumValueSelectBasedControlObjectVariant(this);
 
         case "RadioButtonList":
-          return new BocEnumValueRadioButtonBasedControlObjectVariant (this);
+          return new BocEnumValueRadioButtonBasedControlObjectVariant(this);
       }
 
-      throw new ArgumentException ("style argument must be one of Remotion.ObjectBinding.Web.UI.Controls.ListControlType.", "style");
+      throw new ArgumentException("style argument must be one of Remotion.ObjectBinding.Web.UI.Controls.ListControlType.", "style");
     }
 
     /// <summary>
     /// Declares all methods a boc enum rendering variant must support.
     /// </summary>
-    private interface IBocEnumValueControlObjectVariant
+    private interface IBocEnumValueControlObjectVariant : IControlObjectNotifier
     {
       OptionDefinition GetSelectedOption ();
       IReadOnlyList<OptionDefinition> GetOptionDefinitions ();
-        
-      UnspecifiedPageObject SelectOption ([NotNull] string itemID, IWebTestActionOptions actionOptions);
-      UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions);
-      UnspecifiedPageObject SelectOptionByText ([NotNull] string text, IWebTestActionOptions actionOptions);
+
+      UnspecifiedPageObject SelectOption ([NotNull] string itemID, IWebTestActionOptions? actionOptions);
+      UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions);
+      UnspecifiedPageObject SelectOptionByText ([NotNull] string text, IWebTestActionOptions? actionOptions);
       bool HasNullOptionDefinition ();
     }
 
@@ -194,68 +214,74 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     private class BocEnumValueSelectBasedControlObjectVariant : IBocEnumValueControlObjectVariant
     {
+      public event Action<WebTestAction, IWebTestActionOptions>? ActionExecute;
+
       private readonly BocEnumValueControlObject _controlObject;
 
       public BocEnumValueSelectBasedControlObjectVariant ([NotNull] BocEnumValueControlObject controlObject)
       {
-        ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+        ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
         _controlObject = controlObject;
       }
 
       public OptionDefinition GetSelectedOption ()
       {
-        var scope = _controlObject.Scope.FindChild ("Value");
+        var scope = _controlObject.Scope.FindChild("Value");
 
         if (_controlObject.IsReadOnly())
-          return new OptionDefinition (scope["data-value"], -1, scope.Text, true);
+          return new OptionDefinition(scope["data-value"], -1, scope.Text, true);
 
         return scope.GetSelectedOption();
       }
 
       public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
       {
-        return RetryUntilTimeout.Run (
-            () => _controlObject.Scope.FindChild ("Value").FindAllCss ("option")
-                .Select ((optionScope, i) => new OptionDefinition (optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
+        return RetryUntilTimeout.Run(
+            () => _controlObject.Scope.FindChild("Value").FindAllCss("option")
+                .Select((optionScope, i) => new OptionDefinition(optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
                 .ToList());
       }
 
-      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull ("itemID", itemID);
+        ArgumentUtility.CheckNotNull("itemID", itemID);
 
-        Action<ElementScope> selectAction = s => s.SelectOptionByValue (itemID);
-        return SelectOption (selectAction, actionOptions);
+        Action<ElementScope> selectAction = s => s.SelectOptionByValue(itemID);
+        return SelectOption(selectAction, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions)
       {
-        Action<ElementScope> selectAction = s => s.SelectOptionByIndex (oneBasedIndex);
-        return SelectOption (selectAction, actionOptions);
+        Action<ElementScope> selectAction = s => s.SelectOptionByIndex(oneBasedIndex);
+        return SelectOption(selectAction, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull ("text", text);
+        ArgumentUtility.CheckNotNull("text", text);
 
-        Action<ElementScope> selectAction = s => s.SelectOption (text);
-        return SelectOption (selectAction, actionOptions);
+        Action<ElementScope> selectAction = s => s.SelectOption(text);
+        return SelectOption(selectAction, actionOptions);
       }
 
-      private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions actionOptions)
+      private UnspecifiedPageObject SelectOption ([NotNull] Action<ElementScope> selectAction, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull ("selectAction", selectAction);
+        ArgumentUtility.CheckNotNull("selectAction", selectAction);
 
-        var actualActionOptions = _controlObject.MergeWithDefaultActionOptions (_controlObject.Scope, actionOptions);
-        new CustomAction (_controlObject, _controlObject.Scope.FindChild ("Value"), "Select", selectAction).Execute (actualActionOptions);
+        var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
+
+        var customAction = new CustomAction(_controlObject, _controlObject.Scope.FindChild("Value"), "Select", selectAction);
+        ActionExecute?.Invoke(customAction, actualActionOptions);
+        customAction.Execute(actualActionOptions);
+
         return _controlObject.UnspecifiedPage();
       }
 
       public bool HasNullOptionDefinition ()
       {
         var nullIdentifier = _controlObject.Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
-        return GetOptionDefinitions().Any (o => o.ItemID == nullIdentifier);
+        return GetOptionDefinitions().Any(o => o.ItemID == nullIdentifier);
       }
     }
 
@@ -265,11 +291,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     private class BocEnumValueRadioButtonBasedControlObjectVariant : IBocEnumValueControlObjectVariant
     {
+      public event Action<WebTestAction, IWebTestActionOptions>? ActionExecute;
+
       private readonly BocEnumValueControlObject _controlObject;
 
       public BocEnumValueRadioButtonBasedControlObjectVariant ([NotNull] BocEnumValueControlObject controlObject)
       {
-        ArgumentUtility.CheckNotNull ("controlObject", controlObject);
+        ArgumentUtility.CheckNotNull("controlObject", controlObject);
 
         _controlObject = controlObject;
       }
@@ -278,23 +306,23 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         if (_controlObject.IsReadOnly())
         {
-          var scope = _controlObject.Scope.FindChild ("Value");
-          return new OptionDefinition (scope["data-value"], -1, scope.Text, true);
+          var scope = _controlObject.Scope.FindChild("Value");
+          return new OptionDefinition(scope["data-value"], -1, scope.Text, true);
         }
 
-        var selectedOption = GetOptionDefinitions().FirstOrDefault (o => o.IsSelected);
+        var selectedOption = GetOptionDefinitions().FirstOrDefault(o => o.IsSelected);
         if (selectedOption != null)
-          return new OptionDefinition (selectedOption.ItemID, -1, selectedOption.Text, true);
+          return new OptionDefinition(selectedOption.ItemID, -1, selectedOption.Text, true);
 
         var nullIdentifier = _controlObject.Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
-        return new OptionDefinition (nullIdentifier, -1, "", true);
+        return new OptionDefinition(nullIdentifier, -1, "", true);
       }
 
       public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
       {
-        return RetryUntilTimeout.Run (
-            () => _controlObject.Scope.FindAllCss ("input[type='radio']")
-                .Select ((radioScope, i) => CreateOptionDefinitionFromRadioScope (radioScope, i + 1))
+        return RetryUntilTimeout.Run(
+            () => _controlObject.Scope.FindAllCss("input[type='radio']")
+                .Select((radioScope, i) => CreateOptionDefinitionFromRadioScope(radioScope, i + 1))
                 .ToList());
       }
 
@@ -302,45 +330,49 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         var text = radioScope.FindXPath("../label").Text;
         var isSelected = !string.IsNullOrEmpty(radioScope["checked"]);
-        return new OptionDefinition (radioScope.Value, oneBasedIndex, text, isSelected);
+        return new OptionDefinition(radioScope.Value, oneBasedIndex, text, isSelected);
       }
 
-      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (string itemID, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull ("itemID", itemID);
+        ArgumentUtility.CheckNotNull("itemID", itemID);
 
-        var scope = _controlObject.Scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.ItemID, itemID).FindCss ("input");
-        return CheckScope (scope, actionOptions);
+        var scope = _controlObject.Scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.ItemID, itemID).FindCss("input");
+        return CheckScope(scope, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOption (int oneBasedIndex, IWebTestActionOptions? actionOptions)
       {
         var scope =
-            _controlObject.Scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).FindCss ("input");
-        return CheckScope (scope, actionOptions);
+            _controlObject.Scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.IndexInCollection, oneBasedIndex.ToString()).FindCss("input");
+        return CheckScope(scope, actionOptions);
       }
 
-      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions actionOptions)
+      public UnspecifiedPageObject SelectOptionByText (string text, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull ("text", text);
+        ArgumentUtility.CheckNotNull("text", text);
 
-        var scope = _controlObject.Scope.FindTagWithAttribute ("span", DiagnosticMetadataAttributes.Content, text).FindCss ("input");
-        return CheckScope (scope, actionOptions);
+        var scope = _controlObject.Scope.FindTagWithAttribute("span", DiagnosticMetadataAttributes.Content, text).FindCss("input");
+        return CheckScope(scope, actionOptions);
       }
 
-      private UnspecifiedPageObject CheckScope ([NotNull] ElementScope scope, IWebTestActionOptions actionOptions)
+      private UnspecifiedPageObject CheckScope ([NotNull] ElementScope scope, IWebTestActionOptions? actionOptions)
       {
-        ArgumentUtility.CheckNotNull ("scope", scope);
+        ArgumentUtility.CheckNotNull("scope", scope);
 
-        var actualActionOptions = _controlObject.MergeWithDefaultActionOptions (_controlObject.Scope, actionOptions);
-        new CheckAction (_controlObject, scope).Execute (actualActionOptions);
+        var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
+
+        var checkAction = new CheckAction(_controlObject, scope);
+        ActionExecute?.Invoke(checkAction, actualActionOptions);
+        checkAction.Execute(actualActionOptions);
+
         return _controlObject.UnspecifiedPage();
       }
 
       public bool HasNullOptionDefinition ()
       {
         var nullIdentifier = _controlObject.Scope[DiagnosticMetadataAttributesForObjectBinding.NullIdentifier];
-        return GetOptionDefinitions().Any (o => o.ItemID == nullIdentifier);
+        return GetOptionDefinitions().Any(o => o.ItemID == nullIdentifier);
       }
     }
   }

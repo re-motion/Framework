@@ -20,20 +20,20 @@ using Remotion.Utilities;
 namespace Remotion.Validation.Mixins.Attributes
 {
   /// <summary>
-  /// The <see cref="ApplyWithMixinAttribute"/> can be applied to a <see cref="IComponentValidationCollector"/> 
+  /// The <see cref="ApplyWithMixinAttribute"/> can be applied to a <see cref="IValidationRuleCollector"/> 
   /// to specify the mixin <see cref="Type"/> within the class hierarchy to associate with the collector. 
-  /// This can be used if the <see cref="IComponentValidationCollector.ValidatedType"/> is an interface 
+  /// This can be used if the <see cref="IValidationRuleCollector.ValidatedType"/> is an interface 
   /// but the collector should only applied with one or more specific mixin types.
   /// </summary>
   /// //TODO RM-5906: sample for derived type inhieriting interface
-  [AttributeUsage (AttributeTargets.Class)]
+  [AttributeUsage(AttributeTargets.Class)]
   public class ApplyWithMixinAttribute : Attribute
   {
     private readonly Type _mixinType;
 
     public ApplyWithMixinAttribute (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
       _mixinType = mixinType;
     }

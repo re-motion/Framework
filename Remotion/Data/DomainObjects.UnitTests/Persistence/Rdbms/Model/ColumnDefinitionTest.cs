@@ -33,21 +33,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model
     {
       _storageTypeInformation = StorageTypeInformationObjectMother.CreateStorageTypeInformation();
 
-      _columnDefinition = new ColumnDefinition ("Name", _storageTypeInformation, true);
+      _columnDefinition = new ColumnDefinition("Name", _storageTypeInformation, true);
     }
 
     [Test]
     public void Initialization ()
     {
-      Assert.That (_columnDefinition.Name, Is.EqualTo ("Name"));
-      Assert.That (_columnDefinition.StorageTypeInfo, Is.SameAs (_storageTypeInformation));
-      Assert.That (_columnDefinition.IsPartOfPrimaryKey, Is.True);
+      Assert.That(_columnDefinition.Name, Is.EqualTo("Name"));
+      Assert.That(_columnDefinition.StorageTypeInfo, Is.SameAs(_storageTypeInformation));
+      Assert.That(_columnDefinition.IsPartOfPrimaryKey, Is.True);
     }
 
     [Test]
     public void To_String ()
     {
-      Assert.That (_columnDefinition.ToString(), Is.EqualTo ("Name"));
+      Assert.That(_columnDefinition.ToString(), Is.EqualTo("Name"));
     }
   }
 }

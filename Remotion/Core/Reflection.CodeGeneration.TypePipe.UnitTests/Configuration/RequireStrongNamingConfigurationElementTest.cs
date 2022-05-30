@@ -24,30 +24,38 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests.Configuration
   [TestFixture]
   public class RequireStrongNamingConfigurationElementTest
   {
+#pragma warning disable SYSLIB0017
     private ForceStrongNamingConfigurationElement _element;
+#pragma warning restore
 
     [SetUp]
     public void SetUp ()
     {
+#pragma warning disable SYSLIB0017
       _element = new ForceStrongNamingConfigurationElement();
+#pragma warning restore
     }
 
     [Test]
     public void KeyFilePath ()
     {
       var xmlFragment = @"<forceStrongNaming keyFilePath=""C:\key.snk""/>";
-      ConfigurationHelper.DeserializeElement (_element, xmlFragment);
+      ConfigurationHelper.DeserializeElement(_element, xmlFragment);
 
-      Assert.That (_element.KeyFilePath, Is.EqualTo (@"C:\key.snk"));
+#pragma warning disable SYSLIB0017
+      Assert.That(_element.KeyFilePath, Is.EqualTo(@"C:\key.snk"));
+#pragma warning restore
     }
 
     [Test]
     public void KeyFilePath_Missing ()
     {
       var xmlFragment = @"<forceStrongNaming />";
-      ConfigurationHelper.DeserializeElement (_element, xmlFragment);
+      ConfigurationHelper.DeserializeElement(_element, xmlFragment);
 
-      Assert.That (_element.KeyFilePath, Is.Empty);
+#pragma warning disable SYSLIB0017
+      Assert.That(_element.KeyFilePath, Is.Empty);
+#pragma warning restore
     }
   }
 }

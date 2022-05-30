@@ -22,6 +22,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
+using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -34,13 +35,13 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
   /// Responsible for rendering a <see cref="ListMenu"/> control in standard mode.
   /// <seealso cref="IListMenu"/>
   /// </summary>
-  [ImplementationFor (typeof (IListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class ListMenuRenderer : RendererBase<IListMenu>, IListMenuRenderer
   {
     private const string c_whiteSpace = "&nbsp;";
 
     public ListMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService, IRenderingFeatures renderingFeatures)
-        : base (resourceUrlFactory, globalizationService, renderingFeatures)
+        : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
     }
 
@@ -51,45 +52,47 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
     {
-      ArgumentUtility.CheckNotNull ("htmlHeadAppender", htmlHeadAppender);
+      ArgumentUtility.CheckNotNull("htmlHeadAppender", htmlHeadAppender);
 
       htmlHeadAppender.RegisterUtilitiesJavaScriptInclude();
 
-      string scriptFileKey = typeof (ListMenuRenderer).FullName + "_Script";
-      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl (typeof (ListMenuRenderer), ResourceType.Html, "ListMenu.js");
-      htmlHeadAppender.RegisterJavaScriptInclude (scriptFileKey, scriptFileUrl);
+      string scriptFileKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Script";
+      var scriptFileUrl = ResourceUrlFactory.CreateResourceUrl(typeof(ListMenuRenderer), ResourceType.Html, "ListMenu.js");
+      htmlHeadAppender.RegisterJavaScriptInclude(scriptFileKey, scriptFileUrl);
 
-      string styleSheetKey = typeof (ListMenuRenderer).FullName + "_Style";
-      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl (typeof (ListMenuRenderer), ResourceType.Html, "ListMenu.css");
-      htmlHeadAppender.RegisterStylesheetLink (styleSheetKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+      htmlHeadAppender.RegisterCommonStyleSheet();
+
+      string styleSheetKey = typeof(ListMenuRenderer).GetFullNameChecked() + "_Style";
+      var styleSheetUrl = ResourceUrlFactory.CreateThemedResourceUrl(typeof(ListMenuRenderer), ResourceType.Html, "ListMenu.css");
+      htmlHeadAppender.RegisterStylesheetLink(styleSheetKey, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
 
     public void Render (ListMenuRenderingContext renderingContext)
     {
-      ArgumentUtility.CheckNotNull ("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      RegisterMenuItems (renderingContext);
+      RegisterMenuItems(renderingContext);
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassListMenu);
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ClientID);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassListMenu);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Menu);
       if (IsDiagnosticMetadataRenderingEnabled)
-        AddDiagnosticMetadataAttributes (renderingContext);
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Table);
+        AddDiagnosticMetadataAttributes(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
       var isFirst = true;
-      var groupedMenuItems = GetVisibleMenuItemsInGroups (renderingContext);
+      var groupedMenuItems = GetVisibleMenuItemsInGroups(renderingContext);
       foreach (var menuItemsInGroup in groupedMenuItems)
       {
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Tr);
-        renderingContext.Writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "listMenuRow");
-        renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Td);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+        renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, "100%");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "listMenuRow");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.None);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
         foreach (var menuItem in menuItemsInGroup)
         {
-          RenderListMenuItem (renderingContext, menuItem, renderingContext.Control.MenuItems.IndexOf (menuItem), isFirst);
+          RenderListMenuItem(renderingContext, menuItem, renderingContext.Control.MenuItems.IndexOf(menuItem), isFirst);
           isFirst = false;
         }
 
@@ -130,28 +133,28 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IListMenu> renderingContext)
     {
-      base.AddDiagnosticMetadataAttributes (renderingContext);
+      base.AddDiagnosticMetadataAttributes(renderingContext);
 
-      renderingContext.Writer.AddAttribute (DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
+      renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
     }
 
     private IEnumerable<IEnumerable<WebMenuItem>> GetVisibleMenuItemsInGroups (ListMenuRenderingContext renderingContext)
     {
-      var menuItems = renderingContext.Control.MenuItems.GroupMenuItems (false).Where (mi => mi.EvaluateVisible());
+      var menuItems = renderingContext.Control.MenuItems.GroupMenuItems(false).Where(mi => mi.EvaluateVisible());
       var lineBreaks = renderingContext.Control.LineBreaks;
       switch (lineBreaks)
       {
         case ListMenuLineBreaks.All:
-          return menuItems.Select (mi => new[] { mi }.AsEnumerable());
+          return menuItems.Select(mi => new[] { mi }.AsEnumerable());
 
         case ListMenuLineBreaks.BetweenGroups:
-          return menuItems.GroupBy (mi => mi.Category).Select (g => g.AsEnumerable());
+          return menuItems.GroupBy(mi => mi.Category).Select(g => g.AsEnumerable());
 
         case ListMenuLineBreaks.None:
           return new[] { menuItems };
 
         default:
-          throw new InvalidOperationException (string.Format ("'{0}' is not a valid option for ListMenuLineBreaks enum.", lineBreaks));
+          throw new InvalidOperationException(string.Format("'{0}' is not a valid option for ListMenuLineBreaks enum.", lineBreaks));
       }
     }
 
@@ -160,45 +163,47 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       bool showIcon = menuItem.Style == WebMenuItemStyle.Icon || menuItem.Style == WebMenuItemStyle.IconAndText;
       bool showText = menuItem.Style == WebMenuItemStyle.Text || menuItem.Style == WebMenuItemStyle.IconAndText;
 
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Id, GetMenuItemClientID (renderingContext, index));
-      renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute.Class, "listMenuItem");
-      renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetMenuItemClientID(renderingContext, index));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "listMenuItem");
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       var attributes = new NameValueCollection();
-      attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.MenuItem);
+      attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.MenuItem);
       if (renderingContext.Control.Enabled)
-        attributes.Add ("tabindex", isFirst ? "0" : "-1");
+        attributes.Add("tabindex", isFirst ? "0" : "-1");
 
+      var command = !menuItem.IsDisabled
+          ? Assertion.IsNotNull(menuItem.Command, "Command must not be null for an enabled menu item.")
+          : new Command(CommandType.None) { OwnerControl = menuItem.OwnerControl };
 
-      var command = !menuItem.IsDisabled ? menuItem.Command : new Command (CommandType.None) { OwnerControl = menuItem.OwnerControl };
-      if (string.IsNullOrEmpty (command.ItemID))
+      if (string.IsNullOrEmpty(command.ItemID))
         command.ItemID = "MenuItem_" + index + "_Command";
 
-      command.RenderBegin (
+      command.RenderBegin(
           renderingContext.Writer,
           RenderingFeatures,
-          "",
-          new[] { index.ToString() },
-          "",
-          null,
-          new NameValueCollection(),
-          true,
-          new Style(),
-          attributes);
+          postBackEvent: "",
+          parameters: new[] { index.ToString() },
+          onClick: null,
+          securableObject: null,
+          additionalUrlParameters: new NameValueCollection(),
+          includeNavigationUrlParameters: true,
+          style: new Style(),
+          attributes: attributes);
 
       if (showIcon && menuItem.Icon.HasRenderingInformation)
       {
-        menuItem.Icon.Render (renderingContext.Writer, renderingContext.Control);
+        menuItem.Icon.Render(renderingContext.Writer, renderingContext.Control);
       }
 
       if (showText)
       {
-        renderingContext.Writer.RenderBeginTag (HtmlTextWriterTag.Span);
-        renderingContext.Writer.Write (menuItem.Text); // Do not HTML encode.
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        menuItem.Text.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
       }
 
-      command.RenderEnd (renderingContext.Writer);
+      command.RenderEnd(renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -207,15 +212,15 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       if (!renderingContext.Control.HasClientScript)
         return;
 
-      WebMenuItem[] groupedListMenuItems = renderingContext.Control.MenuItems.GroupMenuItems (false);
+      WebMenuItem[] groupedListMenuItems = renderingContext.Control.MenuItems.GroupMenuItems(false);
 
       string key = renderingContext.Control.UniqueID + "_MenuItems";
-      if (!renderingContext.Control.Page.ClientScript.IsStartupScriptRegistered (typeof (ListMenuRenderer), key))
+      if (!renderingContext.Control.Page!.ClientScript.IsStartupScriptRegistered(typeof(ListMenuRenderer), key))
       {
         StringBuilder script = new StringBuilder();
-        script.AppendFormat ("ListMenu_Initialize ($('#{0}'));", renderingContext.Control.ClientID).AppendLine();
-        script.AppendFormat ("ListMenu_AddMenuInfo (document.getElementById ('{0}'), \r\n\t", renderingContext.Control.ClientID);
-        script.AppendFormat ("new ListMenu_MenuInfo ('{0}', new Array (\r\n", renderingContext.Control.ClientID);
+        script.AppendFormat("ListMenu.Initialize ('#{0}');", renderingContext.Control.ClientID).AppendLine();
+        script.AppendFormat("ListMenu.AddMenuInfo ('#{0}', \r\n\t", renderingContext.Control.ClientID);
+        script.AppendFormat("new ListMenu_MenuInfo ('{0}', new Array (\r\n", renderingContext.Control.ClientID);
         bool isFirstItemInGroup = true;
 
         for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
@@ -227,18 +232,18 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           if (isFirstItemInGroup)
             isFirstItemInGroup = false;
           else
-            script.AppendFormat (",\r\n");
-          AppendListMenuItem (renderingContext, script, currentItem);
+            script.AppendFormat(",\r\n");
+          AppendListMenuItem(renderingContext, script, currentItem);
         }
-        script.Append (" )"); // Close Array
-        script.Append (" )"); // Close new MenuInfo
-        script.Append (" );\r\n"); // Close AddMenuInfo
+        script.Append(" )"); // Close Array
+        script.Append(" )"); // Close new MenuInfo
+        script.Append(" );\r\n"); // Close AddMenuInfo
 
-        script.Append (renderingContext.Control.GetUpdateScriptReference ("null"));
+        script.Append(renderingContext.Control.GetUpdateScriptReference("null"));
 
-        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock (
+        renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
             renderingContext.Control,
-            typeof (ListMenuRenderer),
+            typeof(ListMenuRenderer),
             key,
             script.ToString());
       }
@@ -246,10 +251,12 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
 
     private void AppendListMenuItem (ListMenuRenderingContext renderingContext, StringBuilder stringBuilder, WebMenuItem menuItem)
     {
-      int menuItemIndex = renderingContext.Control.MenuItems.IndexOf (menuItem);
+      int menuItemIndex = renderingContext.Control.MenuItems.IndexOf(menuItem);
       string href = "null";
       string target = "null";
       bool isCommandEnabled = true;
+      var diagnosticMetadataTriggersNavigation = false;
+      var diagnosticMetadataTriggersPostBack = false;
       if (menuItem.Command != null)
       {
         bool isActive = menuItem.Command.Show == CommandShow.Always
@@ -266,15 +273,19 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
             // Clientside script creates an anchor with href="#" and onclick=function
             // The function will be executed using eval(...) and must therefor not end with a return statement.
             string argument = menuItemIndex.ToString();
-            href = renderingContext.Control.Page.ClientScript.GetPostBackClientHyperlink (renderingContext.Control, argument);
-            href = ScriptUtility.EscapeClientScript (href);
+            href = renderingContext.Control.Page!.ClientScript.GetPostBackClientHyperlink(renderingContext.Control, argument);
+            href = ScriptUtility.EscapeClientScript(href);
             href = "'" + href + "'";
+
+            diagnosticMetadataTriggersPostBack = true;
           }
           else if (menuItem.Command.Type == CommandType.Href)
           {
-            href = menuItem.Command.HrefCommand.FormatHref (menuItemIndex.ToString(), menuItem.ItemID);
-            href = "'" + renderingContext.Control.ResolveClientUrl (href) + "'";
+            href = menuItem.Command.HrefCommand.FormatHref(menuItemIndex.ToString(), menuItem.ItemID);
+            href = "'" + renderingContext.Control.ResolveClientUrl(href) + "'";
             target = "'" + menuItem.Command.HrefCommand.Target + "'";
+
+            diagnosticMetadataTriggersNavigation = true;
           }
         }
       }
@@ -283,48 +294,56 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       bool showText = menuItem.Style == WebMenuItemStyle.Text || menuItem.Style == WebMenuItemStyle.IconAndText;
       string icon = "null";
       if (showIcon && menuItem.Icon.HasRenderingInformation)
-        icon = "'" + renderingContext.Control.ResolveClientUrl (menuItem.Icon.Url) + "'";
+        icon = "'" + renderingContext.Control.ResolveClientUrl(menuItem.Icon.Url) + "'";
       string disabledIcon = "null";
       if (showIcon && menuItem.DisabledIcon.HasRenderingInformation)
-        disabledIcon = "'" + renderingContext.Control.ResolveClientUrl (menuItem.DisabledIcon.Url) + "'";
-      string text = showText ? "'" + menuItem.Text + "'" : "null";
+        disabledIcon = "'" + renderingContext.Control.ResolveClientUrl(menuItem.DisabledIcon.Url) + "'";
+      string text = showText
+          ? "'" + ScriptUtility.EscapeClientScript(menuItem.Text) + "'"
+          : "null";
 
       bool isDisabled = !renderingContext.Control.Enabled
                         || !menuItem.EvaluateEnabled()
                         || !isCommandEnabled;
 
-      stringBuilder.AppendFormat (
+      stringBuilder.AppendFormat(
           "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
-          GetMenuItemClientID (renderingContext, menuItemIndex),
-          menuItem.Category,
+          GetMenuItemClientID(renderingContext, menuItemIndex),
+          ScriptUtility.EscapeClientScript(menuItem.Category),
           text,
           icon,
           disabledIcon,
-          (int) menuItem.RequiredSelection,
+          (int)menuItem.RequiredSelection,
           isDisabled ? "true" : "false",
           href,
           target);
 
       if (IsDiagnosticMetadataRenderingEnabled)
       {
-        var diagnosticMetadataDictionary = new Dictionary<string, string>();
+        var diagnosticMetadataDictionary = new Dictionary<string, string?>();
 
-        if (!string.IsNullOrEmpty (menuItem.ItemID))
-          diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
+        if (!string.IsNullOrEmpty(menuItem.ItemID))
+          diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.ItemID, menuItem.ItemID);
 
-        if (!string.IsNullOrEmpty (menuItem.Text))
-          diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.Content, HtmlUtility.StripHtmlTags (menuItem.Text));
+        if (!menuItem.Text.IsEmpty)
+          diagnosticMetadataDictionary.Add(DiagnosticMetadataAttributes.Content, HtmlUtility.ExtractPlainText(menuItem.Text).GetValue());
 
-        diagnosticMetadataDictionary.Add (DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
+        stringBuilder.WriteDictionaryAsJson(diagnosticMetadataDictionary);
 
-        stringBuilder.WriteDictionaryAsJson (diagnosticMetadataDictionary);
+        stringBuilder.Append(", ");
+
+        var diagnosticMetadataDictionaryForCommand = new Dictionary<string, string?>();
+        diagnosticMetadataDictionaryForCommand.Add(DiagnosticMetadataAttributes.IsDisabled, isDisabled.ToString().ToLower());
+        diagnosticMetadataDictionaryForCommand.Add(DiagnosticMetadataAttributes.TriggersNavigation, diagnosticMetadataTriggersNavigation.ToString().ToLower());
+        diagnosticMetadataDictionaryForCommand.Add(DiagnosticMetadataAttributes.TriggersPostBack, diagnosticMetadataTriggersPostBack.ToString().ToLower());
+        stringBuilder.WriteDictionaryAsJson(diagnosticMetadataDictionaryForCommand);
       }
       else
       {
-        stringBuilder.Append ("null");
+        stringBuilder.Append("null, null");
       }
 
-      stringBuilder.Append (")");
+      stringBuilder.Append(")");
     }
 
     private string GetMenuItemClientID (ListMenuRenderingContext renderingContext, int menuItemIndex)

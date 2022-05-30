@@ -17,29 +17,30 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
+  [DebuggerDisplay("{MemberInfo}, DeclaringClass = {DeclaringClass.Type}")]
   public abstract class MemberDefinitionBase : IAttributeIntroductionTarget, IAttributeIntroductionSource
   {
     private IVisitableDefinition _parent;
 
-    private IDefinitionCollection<Type, MemberDefinitionBase> _internalOverridesWrapper = null;
+    private IDefinitionCollection<Type, MemberDefinitionBase>? _internalOverridesWrapper = null;
 
     protected MemberDefinitionBase (MemberInfo memberInfo, ClassDefinitionBase declaringClass)
     {
-      ArgumentUtility.CheckNotNull ("memberInfo", memberInfo);
-      ArgumentUtility.CheckNotNull ("declaringClass", declaringClass);
+      ArgumentUtility.CheckNotNull("memberInfo", memberInfo);
+      ArgumentUtility.CheckNotNull("declaringClass", declaringClass);
 
-      SuppressedReceivedAttributes = new MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> (a => a.AttributeType);
-      ReceivedAttributes = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition> (a => a.AttributeType);
-      CustomAttributes = new MultiDefinitionCollection<Type, AttributeDefinition> (a => a.AttributeType);
+      SuppressedReceivedAttributes = new MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition>(a => a.AttributeType);
+      ReceivedAttributes = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
+      CustomAttributes = new MultiDefinitionCollection<Type, AttributeDefinition>(a => a.AttributeType);
 
-      SuppressedAttributeIntroductions = new MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> (a => a.AttributeType);
-      NonAttributeIntroductions = new MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition> (a => a.AttributeType);
-      AttributeIntroductions = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition> (a => a.AttributeType);
+      SuppressedAttributeIntroductions = new MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition>(a => a.AttributeType);
+      NonAttributeIntroductions = new MultiDefinitionCollection<Type, NonAttributeIntroductionDefinition>(a => a.AttributeType);
+      AttributeIntroductions = new MultiDefinitionCollection<Type, AttributeIntroductionDefinition>(a => a.AttributeType);
 
       MemberInfo = memberInfo;
       DeclaringClass = declaringClass;
@@ -47,7 +48,7 @@ namespace Remotion.Mixins.Definitions
     }
 
     public MultiDefinitionCollection<Type, AttributeDefinition> CustomAttributes { get; private set; }
-    
+
     public MultiDefinitionCollection<Type, AttributeIntroductionDefinition> ReceivedAttributes { get; private set; }
     public MultiDefinitionCollection<Type, SuppressedAttributeIntroductionDefinition> SuppressedReceivedAttributes { get; private set; }
 
@@ -85,15 +86,15 @@ namespace Remotion.Mixins.Definitions
 
     public string FullName
     {
-      get { return MemberInfo.DeclaringType.FullName + "." + Name; }
+      get { return MemberInfo.DeclaringType!.GetFullNameChecked() + "." + Name; }
     }
 
-    public abstract MemberDefinitionBase BaseAsMember { get; protected internal set; }
+    public abstract MemberDefinitionBase? BaseAsMember { get; protected internal set; }
 
     public IVisitableDefinition Parent
     {
       get { return _parent; }
-      internal set { _parent = ArgumentUtility.CheckNotNull ("value", value); }
+      internal set { _parent = ArgumentUtility.CheckNotNull("value", value); }
     }
 
     public ICustomAttributeProvider CustomAttributeProvider
@@ -113,20 +114,20 @@ namespace Remotion.Mixins.Definitions
       }
     }
 
-    protected abstract IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper();
+    protected abstract IDefinitionCollection<Type, MemberDefinitionBase> GetInternalOverridesWrapper ();
 
     internal abstract void AddOverride (MemberDefinitionBase member);
 
     public void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      ChildSpecificAccept (visitor);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      ChildSpecificAccept(visitor);
 
-      CustomAttributes.Accept (visitor);
-      AttributeIntroductions.Accept (visitor);
-      NonAttributeIntroductions.Accept (visitor);
+      CustomAttributes.Accept(visitor);
+      AttributeIntroductions.Accept(visitor);
+      NonAttributeIntroductions.Accept(visitor);
 
-      Assertion.IsTrue (SuppressedAttributeIntroductions.Count == 0, "Must be updated once we support suppressing attributes on members");
+      Assertion.IsTrue(SuppressedAttributeIntroductions.Count == 0, "Must be updated once we support suppressing attributes on members");
     }
 
     protected abstract void ChildSpecificAccept (IDefinitionVisitor visitor);

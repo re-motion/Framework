@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Web.UI;
 // ReSharper disable RedundantUsingDirective
 using System.Web.UI;
@@ -39,10 +40,11 @@ namespace Remotion.Web.ExecutionEngine
     void ExecuteFunction (WxeFunction function, IWxeCallArguments callArguments);
 
     /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
+    [MemberNotNullWhen(true, nameof(ReturningFunction))]
     bool IsReturningPostBack { get; }
 
     /// <summary> Gets the WXE function that has been executed in the current page. </summary>
-    WxeFunction ReturningFunction { get; }
+    WxeFunction? ReturningFunction { get; }
 
     /// <summary>
     ///   Gets a flag that determines whether to abort the session upon closing the window. 
@@ -68,17 +70,11 @@ namespace Remotion.Web.ExecutionEngine
     /// <value> <see langword="true"/> if the page has been re-submitted. </value>
     bool IsOutOfSequencePostBack { get; }
 
-    /// <summary> 
-    ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
-    ///   tries to e.g. postback while a request is being processed.
-    /// </summary>
-    bool AreStatusMessagesEnabled { get; }
-
     /// <summary> Gets the message displayed when the user attempts to submit while the page is already aborting. </summary>
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    string StatusIsAbortingMessage { get; }
+    WebString StatusIsAbortingMessage { get; }
 
     /// <summary> 
     ///   Gets the message displayed when the user returnes to a cached page that has already been submited or aborted. 
@@ -86,19 +82,19 @@ namespace Remotion.Web.ExecutionEngine
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
     /// </remarks>
-    string StatusIsCachedMessage { get; }
+    WebString StatusIsCachedMessage { get; }
 
     /// <summary> Gets the permanent URL parameters the current page. </summary>
-    NameValueCollection GetPermanentUrlParameters();
+    NameValueCollection GetPermanentUrlParameters ();
 
     /// <summary> Gets the permanent URL for the current page. </summary>
-    string GetPermanentUrl();
-  
+    string GetPermanentUrl ();
+
     /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
     /// <include file='..\doc\include\ExecutionEngine\IWxePage.xml' 
     ///     path='IWxePage/GetPermanentUrl/param[@name="queryString"]' />
     string GetPermanentUrl (NameValueCollection queryString);
-  
+
     /// <summary> 
     ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
     ///   and using the <paramref name="queryString"/>.
@@ -108,7 +104,7 @@ namespace Remotion.Web.ExecutionEngine
     string GetPermanentUrl (Type functionType, NameValueCollection queryString);
 
     /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
-    [EditorBrowsable (EditorBrowsableState.Never)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     WxeHandler WxeHandler { get; }
   }
 }

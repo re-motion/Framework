@@ -26,24 +26,24 @@ namespace Remotion.Configuration.TypeDiscovery
   /// </summary>
   public class ByNameRootAssemblyElement : ConfigurationElement
   {
-    [ConfigurationProperty ("name", IsRequired = true, IsKey = true)]
+    [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
     public string Name
     {
-      get { return (string) this["name"]; }
+      get { return (string)this["name"]; }
       set { this["name"] = value; }
     }
 
-    [ConfigurationProperty ("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
+    [ConfigurationProperty("includeReferencedAssemblies", DefaultValue = "false", IsRequired = false)]
     public bool IncludeReferencedAssemblies
     {
-      get { return (bool) this["includeReferencedAssemblies"]; }
+      get { return (bool)this["includeReferencedAssemblies"]; }
       set { this["includeReferencedAssemblies"] = value; }
     }
 
     public AssemblyNameSpecification CreateSpecification ()
     {
-      var assemblyName = new AssemblyName (Name);
-      return new AssemblyNameSpecification (assemblyName, IncludeReferencedAssemblies);
+      var assemblyName = new AssemblyName(Name);
+      return new AssemblyNameSpecification(assemblyName, IncludeReferencedAssemblies);
     }
   }
 }

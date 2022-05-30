@@ -27,11 +27,9 @@ namespace Remotion.ObjectBinding.BindableObject
   {
     public static BindableObjectWithIdentityBaseImplementation Create (BindableObjectWithIdentityBase wrapper)
     {
-      ArgumentUtility.CheckNotNull ("wrapper", wrapper);
-      Assertion.DebugAssert (!TypeExtensions.CanAscribeTo (typeof (BindableObjectWithIdentityBaseImplementation), typeof (Mixin<,>)),
-          "we assume the mixin does not have a base object");
-      var impl = new BindableObjectWithIdentityBaseImplementation (wrapper);
-      ((IInitializableMixin) impl).Initialize (wrapper, null, false);
+      ArgumentUtility.CheckNotNull("wrapper", wrapper);
+      var impl = new BindableObjectWithIdentityBaseImplementation(wrapper);
+      ((IInitializableMixin)impl).Initialize(wrapper, null, false);
       return impl;
     }
 
@@ -39,20 +37,18 @@ namespace Remotion.ObjectBinding.BindableObject
 
     protected BindableObjectWithIdentityBaseImplementation (BindableObjectWithIdentityBase wrapper)
     {
-      ArgumentUtility.CheckNotNull ("wrapper", wrapper);
+      ArgumentUtility.CheckNotNull("wrapper", wrapper);
       _wrapper = wrapper;
     }
 
     public override string UniqueIdentifier
     {
-      get { return ((BindableObjectWithIdentityBase) Target).UniqueIdentifier; }
+      get { return ((BindableObjectWithIdentityBase)Target).UniqueIdentifier; }
     }
 
-    void IDeserializationCallback.OnDeserialization (object sender)
+    void IDeserializationCallback.OnDeserialization (object? sender)
     {
-      Assertion.DebugAssert (!TypeExtensions.CanAscribeTo (typeof (BindableObjectWithIdentityBaseImplementation), typeof (Mixin<,>)),
-          "we assume the mixin does not have a base object");
-      MixinTargetMockUtility.MockMixinTargetAfterDeserialization (this, _wrapper);
+      MixinTargetMockUtility.MockMixinTargetAfterDeserialization(this, _wrapper);
     }
 
     public string BaseDisplayName
@@ -62,7 +58,7 @@ namespace Remotion.ObjectBinding.BindableObject
 
     public override string DisplayName
     {
-      get { return ((IBusinessObjectWithIdentity) Target).DisplayName; }
+      get { return ((IBusinessObjectWithIdentity)Target).DisplayName; }
     }
   }
 }

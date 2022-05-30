@@ -29,8 +29,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
   /// <see cref="SubstitutingUser"/> can act as a stand-in for the <see cref="SubstitutedUser"/> and <see cref="SubstitutedRole"/>.
   /// </summary>
   [Serializable]
-  [MultiLingualResources ("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Substitution")]
-  [PermanentGuid ("5F3FEEE1-38E3-4ecb-AC2F-2D74AFFE3A27")]
+  [MultiLingualResources("Remotion.SecurityManager.Globalization.Domain.OrganizationalStructure.Substitution")]
+  [PermanentGuid("5F3FEEE1-38E3-4ecb-AC2F-2D74AFFE3A27")]
   [Instantiable]
   [DBTable]
   [SecurityManagerStorageGroup]
@@ -48,18 +48,18 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
       // ReSharper restore DoNotCallOverridableMethodsInConstructor
     }
 
-    [DBBidirectionalRelation ("SubstitutingFor")]
+    [DBBidirectionalRelation("SubstitutingFor")]
     [Mandatory]
-    [SearchAvailableObjectsServiceType (typeof (UserPropertyTypeSearchService))]
-    public abstract User SubstitutingUser { get; set; }
+    [SearchAvailableObjectsServiceType(typeof(UserPropertyTypeSearchService))]
+    public abstract User? SubstitutingUser { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutedBy")]
+    [DBBidirectionalRelation("SubstitutedBy")]
     [Mandatory]
-    public abstract User SubstitutedUser { get; set; }
+    public abstract User? SubstitutedUser { get; set; }
 
-    [DBBidirectionalRelation ("SubstitutedBy")]
-    [SearchAvailableObjectsServiceType (typeof (SubstitutionPropertiesSearchService))]
-    public abstract Role SubstitutedRole { get; set; }
+    [DBBidirectionalRelation("SubstitutedBy")]
+    [SearchAvailableObjectsServiceType(typeof(SubstitutionPropertiesSearchService))]
+    public abstract Role? SubstitutedRole { get; set; }
 
     [DateProperty]
     public abstract DateTime? BeginDate { get; set; }
@@ -70,16 +70,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     public abstract bool IsEnabled { get; set; }
 
     /// <summary>
-    /// The <see cref="Substitution"/> is only active when the object is <see cref="StateType.Unchanged"/>, the <see cref="IsEnabled"/> flag is set
-    /// and the present date is within the range defined by <see cref="BeginDate"/> and <see cref="EndDate"/>.
+    /// The <see cref="Substitution"/> is only active when the object is unchanged (<see cref="DomainObject.State"/>.<see cref="DomainObjectState.IsUnchanged"/> is <see langword="true" />),
+    /// the <see cref="IsEnabled"/> flag is set, and the present date is within the range defined by <see cref="BeginDate"/> and <see cref="EndDate"/>.
     /// </summary>
     [StorageClassNone]
     public bool IsActive
     {
       get
       {
-        EnsureDataAvailable ();
-        if (State != StateType.Unchanged)
+        EnsureDataAvailable();
+        if (!State.IsUnchanged)
           return false;
 
         if (!IsEnabled)
@@ -99,8 +99,8 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
     {
       get
       {
-        string userName = SubstitutedUser != null ? SubstitutedUser.DisplayName : null;
-        string roleName = SubstitutedRole != null ? SubstitutedRole.DisplayName : null;
+        string? userName = SubstitutedUser != null ? SubstitutedUser.DisplayName : null;
+        string? roleName = SubstitutedRole != null ? SubstitutedRole.DisplayName : null;
 
         string displayName = userName ?? "?";
         if (roleName != null)
@@ -112,13 +112,16 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)
     {
-      base.OnCommitting (args);
+      base.OnCommitting(args);
 
-      var substitutedUserProperty = Properties[typeof (Substitution), "SubstitutedUser"];
-      if (substitutedUserProperty.GetValue<User>() != null)
-        substitutedUserProperty.GetValue<User>().RegisterForCommit();
-      else if (substitutedUserProperty.GetOriginalValue<User>() != null)
-        substitutedUserProperty.GetOriginalValue<User>().RegisterForCommit();
+      var substitutedUserProperty = Properties[typeof(Substitution), "SubstitutedUser"];
+      var currentUser = substitutedUserProperty.GetValue<User>();
+      var originalUser = substitutedUserProperty.GetOriginalValue<User>();
+
+      if (currentUser != null)
+        currentUser.RegisterForCommit();
+      else if (originalUser != null)
+        originalUser.RegisterForCommit();
     }
   }
 }

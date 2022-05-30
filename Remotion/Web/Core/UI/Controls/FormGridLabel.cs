@@ -23,9 +23,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Utilities;
+using Remotion.Web.Globalization;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -37,12 +37,40 @@ namespace Remotion.Web.UI.Controls
 [ToolboxItemFilter("System.Web.UI")]
 public class FormGridLabel: Label, ISmartControl
 {
+  private const string c_textViewStateKey = nameof(Text);
+  private const string c_textWebStringViewStateKey = c_textViewStateKey + "_" + nameof(WebStringType);
+
   private bool _required = false;
-  private string _helpUrl = null;
+  private string? _helpUrl = null;
+
+  [Category("Appearance")]
+  [Description("The text to be shown for the Label.")]
+  [DefaultValue(typeof(WebString), "")]
+  public new WebString Text
+  {
+    get
+    {
+      var value = (string?)ViewState[c_textViewStateKey];
+      var type = (WebStringType?)ViewState[c_textWebStringViewStateKey] ?? WebStringType.PlainText;
+
+      return type switch
+      {
+          WebStringType.PlainText => WebString.CreateFromText(value),
+          WebStringType.Encoded => WebString.CreateFromHtml(value),
+          _ => throw new InvalidOperationException(
+              $"The value for key '{c_textWebStringViewStateKey}' in the ViewState contains invalid data '{type}'."),
+      };
+    }
+    set
+    {
+      ViewState[c_textViewStateKey] = value.GetValue();
+      ViewState[c_textWebStringViewStateKey] = value.Type;
+    }
+  }
 
   [Category("Behavior")]
-  [DefaultValue (false)]
-  [Description ("Specifies whether this row will be marked as 'required' in FormGrids.")]
+  [DefaultValue(false)]
+  [Description("Specifies whether this row will be marked as 'required' in FormGrids.")]
   public bool Required
   {
     get { return _required; }
@@ -50,26 +78,26 @@ public class FormGridLabel: Label, ISmartControl
   }
 
   [Category("Behavior")]
-  [DefaultValue (null)]
-  [Description ("Specifies the relative URL to the row's help text.")]
-  public string HelpUrl
+  [DefaultValue(null)]
+  [Description("Specifies the relative URL to the row's help text.")]
+  public string? HelpUrl
   {
     get { return _helpUrl; }
     set { _helpUrl = value ?? string.Empty; }
   }
 
-  [Browsable (false)]
+  [Browsable(false)]
   public bool IsRequired
   {
     get { return _required; }
   }
 
-  HelpInfo ISmartControl.HelpInfo
+  HelpInfo? ISmartControl.HelpInfo
   {
-    get { return (_helpUrl != null) ? new HelpInfo (_helpUrl) : null; }
+    get { return (_helpUrl != null) ? new HelpInfo(_helpUrl) : null; }
   }
 
-  IEnumerable<BaseValidator> ISmartControl.CreateValidators()
+  IEnumerable<BaseValidator> ISmartControl.CreateValidators ()
   {
     return Enumerable.Empty<BaseValidator>();
   }
@@ -88,21 +116,21 @@ public class FormGridLabel: Label, ISmartControl
   {
   }
 
-  string ISmartControl.DisplayName
+  WebString ISmartControl.DisplayName
   {
-    get { return base.Text; }
+    get { return Text; }
   }
 
-  IPage IControl.Page
+  IPage? IControl.Page
   {
-    get { return PageWrapper.CastOrCreate (base.Page); }
+    get { return PageWrapper.CastOrCreate(base.Page); }
   }
-  
+
   protected override HtmlTextWriterTag TagKey
   {
     get
     {
-      if (string.IsNullOrEmpty (AssociatedControlID))
+      if (string.IsNullOrEmpty(AssociatedControlID))
         return HtmlTextWriterTag.Span;
       return HtmlTextWriterTag.Label;
     }
@@ -110,22 +138,19 @@ public class FormGridLabel: Label, ISmartControl
 
   protected override void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    var resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
-    LoadResources (resourceManager);
+    var resourceManager = ResourceManagerUtility.GetResourceManager(this, true);
+    LoadResources(resourceManager);
   }
 
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    ArgumentUtility.CheckNotNull("resourceManager", resourceManager);
 
-    if (ControlHelper.IsDesignMode (this))
-      return;
-
-    string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
-    if (!string.IsNullOrEmpty (key))
-      Text = resourceManager.GetString (key);
+    string? key = ResourceManagerUtility.GetGlobalResourceKey(Text.GetValue());
+    if (!string.IsNullOrEmpty(key))
+      Text = resourceManager.GetWebString(key, Text.Type);
   }
 
   void ISmartControl.RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -137,7 +162,7 @@ public class FormGridLabel: Label, ISmartControl
     string associatedControlID = AssociatedControlID;
     if (associatedControlID.Length != 0)
     {
-      Control control = this.FindControl (associatedControlID);
+      Control? control = this.FindControl(associatedControlID);
       if (control == null)
         throw new HttpException(string.Format("Unable to find the control with id '{0}' that is associated with the Label '{1}'.", associatedControlID, ID));
       writer.AddAttribute("for", control.ClientID);
@@ -146,8 +171,14 @@ public class FormGridLabel: Label, ISmartControl
     base.AddAttributesToRender(writer);
     AssociatedControlID = associatedControlID;
   }
- 
 
+  protected override void RenderContents (HtmlTextWriter writer)
+  {
+    if (HasControls())
+      base.RenderContents(writer);
+    else
+      Text.WriteTo(writer);
+  }
 }
 
 }

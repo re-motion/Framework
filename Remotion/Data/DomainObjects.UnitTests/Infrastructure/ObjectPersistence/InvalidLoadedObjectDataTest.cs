@@ -15,10 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -30,43 +30,42 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _invalidObjectReference = DomainObjectMother.CreateFakeObject<Order>();
-      _loadedObjectData = new InvalidLoadedObjectData (_invalidObjectReference);
+      _loadedObjectData = new InvalidLoadedObjectData(_invalidObjectReference);
     }
 
     [Test]
     public void ObjectID ()
     {
-      Assert.That (_loadedObjectData.ObjectID, Is.EqualTo (_invalidObjectReference.ID));
+      Assert.That(_loadedObjectData.ObjectID, Is.EqualTo(_invalidObjectReference.ID));
     }
 
     [Test]
     public void GetDomainObjectReference ()
     {
-      var reference = _loadedObjectData.GetDomainObjectReference ();
+      var reference = _loadedObjectData.GetDomainObjectReference();
 
-      Assert.That (reference, Is.SameAs (_invalidObjectReference));
+      Assert.That(reference, Is.SameAs(_invalidObjectReference));
     }
 
     [Test]
     public void Accept ()
     {
-      var visitorMock = MockRepository.GenerateStrictMock<ILoadedObjectVisitor>();
+      var visitorMock = new Mock<ILoadedObjectVisitor>(MockBehavior.Strict);
 
-      visitorMock.Expect (mock => mock.VisitInvalidLoadedObject (_loadedObjectData));
-      visitorMock.Replay();
+      visitorMock.Setup(mock => mock.VisitInvalidLoadedObject(_loadedObjectData)).Verifiable();
 
-      _loadedObjectData.Accept (visitorMock);
+      _loadedObjectData.Accept(visitorMock.Object);
 
-      visitorMock.VerifyAllExpectations();
+      visitorMock.Verify();
     }
 
     [Test]
     public void IsNull ()
     {
-      Assert.That (((INullObject) _loadedObjectData).IsNull, Is.False);
+      Assert.That(((INullObject)_loadedObjectData).IsNull, Is.False);
     }
   }
 }

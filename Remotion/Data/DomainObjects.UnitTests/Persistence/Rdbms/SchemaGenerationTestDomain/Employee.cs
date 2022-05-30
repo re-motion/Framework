@@ -25,20 +25,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerati
   {
     public static Employee NewObject ()
     {
-      return DomainObject.NewObject<Employee> ();
+      return DomainObject.NewObject<Employee>();
     }
 
     protected Employee ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("Supervisor")]
+    [DBBidirectionalRelation("Supervisor")]
     public abstract ObjectList<Employee> Subordinates { get; }
 
-    [DBBidirectionalRelation ("Subordinates")]
+    [DBBidirectionalRelation("Subordinates")]
     public abstract Employee Supervisor { get; set; }
   }
 }

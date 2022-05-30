@@ -20,6 +20,7 @@ using System.Linq;
 using System.Web;
 using Remotion.Collections;
 using Remotion.Context;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web.Resources;
 using Remotion.Web.UI.Controls;
@@ -51,7 +52,7 @@ namespace Remotion.Web.UI
     }
 
     private static readonly SafeContextSingleton<HtmlHeadAppender> s_current =
-        new SafeContextSingleton<HtmlHeadAppender> (typeof (HtmlHeadAppender).AssemblyQualifiedName + "_Current", () => new HtmlHeadAppender());
+        new SafeContextSingleton<HtmlHeadAppender>(typeof(HtmlHeadAppender).GetAssemblyQualifiedNameChecked() + "_Current", () => new HtmlHeadAppender());
 
     /// <summary>
     ///   Gets the <see cref="HtmlHeadAppender"/> instance.
@@ -61,15 +62,15 @@ namespace Remotion.Web.UI
       get { return s_current.Current; }
     }
 
-    private readonly Dictionary<string, object> _registeredKeys = new Dictionary<string, object>();
+    private readonly Dictionary<string, object?> _registeredKeys = new Dictionary<string, object?>();
 
     private readonly MultiDictionary<Priority, HtmlHeadElement> _prioritizedHeadElements = new MultiDictionary<Priority, HtmlHeadElement>();
 
     /// <summary> <see langword="true"/> if <see cref="SetAppended"/> has already executed. </summary>
     private bool _hasAppendExecuted;
 
-    private WeakReference _handler = new WeakReference (null);
-    private TitleTag _title;
+    private WeakReference _handler = new WeakReference(null);
+    private TitleTag? _title;
 
     /// <remarks>
     ///   Factory pattern. No public construction.
@@ -86,9 +87,9 @@ namespace Remotion.Web.UI
       if (_title != null)
         yield return _title;
 
-      foreach (var priority in _prioritizedHeadElements.Keys.OrderBy (priority => (int) priority))
+      foreach (var priority in _prioritizedHeadElements.Keys.OrderBy(priority => (int)priority))
       {
-        foreach (var element in TransformHtmlHeadElements (_prioritizedHeadElements[priority]))
+        foreach (var element in TransformHtmlHeadElements(_prioritizedHeadElements[priority]))
           yield return element;
       }
     }
@@ -101,18 +102,18 @@ namespace Remotion.Web.UI
       foreach (var element in elements)
       {
         if (element is StyleSheetImportRule)
-          styleSheetImportRules.Add ((StyleSheetImportRule) element);
+          styleSheetImportRules.Add((StyleSheetImportRule)element);
         else if (element is StyleSheetElement)
-          styleSheetElements.Add ((StyleSheetElement) element);
+          styleSheetElements.Add((StyleSheetElement)element);
         else
           yield return element;
       }
 
-      foreach (var rules in styleSheetImportRules.Select ((r, i) => new { Rule = r, Index = i }).GroupBy (s => s.Index / 31, s => s.Rule))
-        yield return new StyleSheetBlock (rules);
+      foreach (var rules in styleSheetImportRules.Select((r, i) => new { Rule = r, Index = i }).GroupBy(s => s.Index / 31, s => s.Rule))
+        yield return new StyleSheetBlock(rules);
 
       if (styleSheetElements.Count > 0)
-        yield return new StyleSheetBlock (styleSheetElements);
+        yield return new StyleSheetBlock(styleSheetElements);
     }
 
     public void SetAppended ()
@@ -138,15 +139,13 @@ namespace Remotion.Web.UI
     ///   </para><para>
     ///     Remove the title tag from the aspx-source.
     ///   </para><para>
-    ///     Registeres the title with a default priority of Page.
+    ///     Registers the title with a default priority of Page.
     ///   </para>
     /// </remarks>
-    /// <param name="title"> The stirng to be isnerted as the title. </param>
-    public void SetTitle (string title)
+    /// <param name="title"> The <see cref="PlainTextString"/> to be inserted as the title. </param>
+    public void SetTitle (PlainTextString title)
     {
-      ArgumentUtility.CheckNotNull ("title", title);
-
-      _title = new TitleTag (title);
+      _title = new TitleTag(title);
     }
 
     /// <summary> 
@@ -170,10 +169,10 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterStylesheetLink (string key, IResourceUrl url, Priority priority)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNull ("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNull("url", url);
 
-      RegisterHeadElement (key, new StyleSheetImportRule (url), priority);
+      RegisterHeadElement(key, new StyleSheetImportRule(url), priority);
     }
 
     /// <summary> Registers a stylesheet file. </summary>
@@ -192,13 +191,13 @@ namespace Remotion.Web.UI
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if method is called after <see cref="SetAppended"/> has executed.
     /// </exception>
-    [Obsolete ("Use RegisterStylesheetLink (string, IResourceUrl, Priority) instead. (Version 1.17.9)")]
+    [Obsolete("Use RegisterStylesheetLink (string, IResourceUrl, Priority) instead. (Version 1.17.9)")]
     public void RegisterStylesheetLink (string key, string href, Priority priority)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNullOrEmpty ("href", href);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("href", href);
 
-      RegisterStylesheetLink (key, new StaticResourceUrl (href), priority);
+      RegisterStylesheetLink(key, new StaticResourceUrl(href), priority);
     }
 
     /// <summary> 
@@ -224,10 +223,10 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterStylesheetLink (string key, IResourceUrl url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNull ("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNull("url", url);
 
-      RegisterStylesheetLink (key, url, Priority.Page);
+      RegisterStylesheetLink(key, url, Priority.Page);
     }
 
     /// <summary> Registers a stylesheet file. </summary>
@@ -248,10 +247,10 @@ namespace Remotion.Web.UI
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if method is called after <see cref="SetAppended"/> has executed.
     /// </exception>
-    [Obsolete ("Use RegisterStylesheetLink (string, IResourceUrl) instead. (Version 1.17.9)")]
+    [Obsolete("Use RegisterStylesheetLink (string, IResourceUrl) instead. (Version 1.17.9)")]
     public void RegisterStylesheetLink (string key, string href)
     {
-      RegisterStylesheetLink (key, new StaticResourceUrl (href), Priority.Page);
+      RegisterStylesheetLink(key, new StaticResourceUrl(href), Priority.Page);
     }
 
     /// <summary> 
@@ -277,10 +276,10 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterJavaScriptInclude (string key, IResourceUrl url)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNull ("url", url);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNull("url", url);
 
-      RegisterHeadElement (key, new JavaScriptInclude (url), Priority.Script);
+      RegisterHeadElement(key, new JavaScriptInclude(url), Priority.Script);
     }
 
     /// <summary> Registers a javascript file. </summary>
@@ -301,13 +300,13 @@ namespace Remotion.Web.UI
     /// <exception cref="InvalidOperationException"> 
     ///   Thrown if method is called after <see cref="SetAppended"/> has executed.
     /// </exception>
-    [Obsolete ("Use RegisterJavaScriptInclude (string, IResourceUrl) instead. (Version 1.17.9)")]
+    [Obsolete("Use RegisterJavaScriptInclude (string, IResourceUrl) instead. (Version 1.17.9)")]
     public void RegisterJavaScriptInclude (string key, string src)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNullOrEmpty ("src", src);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("src", src);
 
-      RegisterJavaScriptInclude (key, new StaticResourceUrl (src));
+      RegisterJavaScriptInclude(key, new StaticResourceUrl(src));
     }
 
     /// <summary> Registers a <see cref="HtmlHeadElement"/>. </summary>
@@ -330,18 +329,18 @@ namespace Remotion.Web.UI
     /// </exception>
     public void RegisterHeadElement (string key, HtmlHeadElement headElement, Priority priority)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-      ArgumentUtility.CheckNotNull ("headElement", headElement);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
+      ArgumentUtility.CheckNotNull("headElement", headElement);
 
       EnsureStateIsClearedAfterServerTransfer();
 
       if (_hasAppendExecuted)
-        throw new InvalidOperationException ("RegisterHeadElement must not be called after SetAppended has been called.");
+        throw new InvalidOperationException("RegisterHeadElement must not be called after SetAppended has been called.");
 
-      if (! IsRegistered (key))
+      if (! IsRegistered(key))
       {
-        _registeredKeys.Add (key, null);
-        _prioritizedHeadElements.Add (priority, headElement);
+        _registeredKeys.Add(key, null);
+        _prioritizedHeadElements.Add(priority, headElement);
       }
     }
 
@@ -355,11 +354,11 @@ namespace Remotion.Web.UI
     /// </returns>
     public bool IsRegistered (string key)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
       EnsureStateIsClearedAfterServerTransfer();
 
-      return _registeredKeys.ContainsKey (key);
+      return _registeredKeys.ContainsKey(key);
     }
 
     private void EnsureStateIsClearedAfterServerTransfer ()
@@ -368,12 +367,12 @@ namespace Remotion.Web.UI
       if (context != null)
       {
         var handler = context.Handler;
-        if (!ReferenceEquals (handler, _handler.Target))
+        if (!ReferenceEquals(handler, _handler.Target))
         {
           _registeredKeys.Clear();
           _prioritizedHeadElements.Clear();
           _hasAppendExecuted = false;
-          _handler = new WeakReference (handler);
+          _handler = new WeakReference(handler);
         }
       }
     }

@@ -34,37 +34,37 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
   {
     public struct Row
     {
-      private readonly IEnumerable<object> _values;
+      private readonly IEnumerable<object?> _values;
 
-      public Row (IEnumerable<object> values)
+      public Row (IEnumerable<object?> values)
       {
-        ArgumentUtility.CheckNotNull ("values", values);
+        ArgumentUtility.CheckNotNull("values", values);
 
         _values = values;
       }
 
-      public IEnumerable<object> Values
+      public IEnumerable<object?> Values
       {
         get { return _values; }
       }
 
       public Row Concat (Row other)
       {
-        return new Row (_values.Concat (other._values));
+        return new Row(_values.Concat(other._values));
       }
     }
 
     public static ColumnValueTable Combine (ColumnValueTable table1, ColumnValueTable table2)
     {
-      var combinedColumns = table1.Columns.Concat (table2.Columns);
-      var combinedRows = table1.Rows.Zip (table2.Rows, (valueRow, classIDRow) => valueRow.Concat (classIDRow));
+      var combinedColumns = table1.Columns.Concat(table2.Columns);
+      var combinedRows = table1.Rows.Zip(table2.Rows, (valueRow, classIDRow) => valueRow.Concat(classIDRow));
 
-      return new ColumnValueTable (combinedColumns, combinedRows);
+      return new ColumnValueTable(combinedColumns, combinedRows);
     }
 
     public static ColumnValueTable Combine (IEnumerable<ColumnValueTable> tables)
     {
-      return tables.Aggregate (Combine);
+      return tables.Aggregate(Combine);
     }
 
     private readonly IEnumerable<ColumnDefinition> _columns;
@@ -72,8 +72,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
 
     public ColumnValueTable (IEnumerable<ColumnDefinition> columns, IEnumerable<Row> rows)
     {
-      ArgumentUtility.CheckNotNull ("columns", columns);
-      ArgumentUtility.CheckNotNull ("rows", rows);
+      ArgumentUtility.CheckNotNull("columns", columns);
+      ArgumentUtility.CheckNotNull("rows", rows);
 
       _columns = columns;
       _rows = rows;

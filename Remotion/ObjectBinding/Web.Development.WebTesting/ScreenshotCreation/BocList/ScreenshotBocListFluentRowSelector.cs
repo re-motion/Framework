@@ -28,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
       : IFluentItemIDSelector<ScreenshotBocListRow<TList, TRow, TCell>>,
           IFluentIndexSelector<ScreenshotBocListRow<TList, TRow, TCell>>
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
@@ -41,20 +41,20 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListRow<TList, TRow, TCell>> WithItemID (string itemID)
     {
-      var row = _fluentList.Target.List.GetRow (itemID).ForControlObjectScreenshot();
+      var row = _fluentList.Target.List.GetRow(itemID).ForControlObjectScreenshot();
 
-      return SelfResolvableFluentScreenshot.Create (
-          new ScreenshotBocListRow<TList, TRow, TCell> (_fluentList, row),
+      return SelfResolvableFluentScreenshot.Create(
+          new ScreenshotBocListRow<TList, TRow, TCell>(_fluentList, row),
           ElementVisibility.PartiallyVisible);
     }
 
     /// <inheritdoc />
     public FluentScreenshotElement<ScreenshotBocListRow<TList, TRow, TCell>> WithIndex (int oneBasedIndex)
     {
-      var row = _fluentList.Target.List.GetRow (oneBasedIndex).ForControlObjectScreenshot();
+      var row = _fluentList.Target.List.GetRow(oneBasedIndex).ForControlObjectScreenshot();
 
-      return SelfResolvableFluentScreenshot.Create (
-          new ScreenshotBocListRow<TList, TRow, TCell> (_fluentList, row),
+      return SelfResolvableFluentScreenshot.Create(
+          new ScreenshotBocListRow<TList, TRow, TCell>(_fluentList, row),
           ElementVisibility.PartiallyVisible);
     }
   }

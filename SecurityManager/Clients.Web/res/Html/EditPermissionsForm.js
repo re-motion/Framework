@@ -15,29 +15,40 @@
 // 
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 //
-jQuery(document).ready(function()
+(function () 
 {
-  var maximumLength = 0;
-  jQuery('.header').each(function(i) 
+  function fixCellHeaderStyle() 
   {
-    var headerRow = jQuery(this);
-    headerRow.children('.titleCellVertical').each(function() 
+    var maximumLength = 0;
+    document.querySelectorAll('.header').forEach(function(headerRow) 
     {
-      var currentLength = jQuery(this).text().length;
-      if (currentLength > maximumLength) 
-        maximumLength = currentLength;
+      headerRow.querySelectorAll(':scope > .titleCellVertical').forEach(function(headerCell) 
+      {
+        var currentLength = headerCell.textContent.length;
+        if (currentLength > maximumLength) 
+          maximumLength = currentLength;
+      });
     });
-  });
 
-  if (maximumLength > 0) 
-  {
-    var headerHeight = 1 + maximumLength * 0.5 + 'em';
-    var styleElement = document.createElement('style');
-    var textStyle = 'th.header, th.titleCellVertical, tr.header, tr.titleCellVertical {height: ' + headerHeight + ' !important;}';
-    styleElement.setAttribute("type", "text/css");
-    var textElement = document.createTextNode(textStyle);
-    styleElement.appendChild(textElement);
-    var headElement = document.getElementsByTagName('head')[0];
-    headElement.appendChild(styleElement);
+    if (maximumLength > 0) 
+    {
+      var headerHeight = 1 + maximumLength * 0.5 + 'em';
+      var styleElement = document.createElement('style');
+      var textStyle = 'th.header, th.titleCellVertical, tr.header, tr.titleCellVertical {height: ' + headerHeight + ' !important;}';
+      styleElement.setAttribute("type", "text/css");
+      var textElement = document.createTextNode(textStyle);
+      styleElement.appendChild(textElement);
+      var headElement = document.getElementsByTagName('head')[0];
+      headElement.appendChild(styleElement);
+    }
   }
-});
+
+  if (document.readyState != 'loading') 
+  {
+    fixCellHeaderStyle();
+  }
+  else 
+  {
+    document.addEventListener('DOMContentLoaded', fixCellHeaderStyle);
+  }
+})();

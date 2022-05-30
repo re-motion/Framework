@@ -37,7 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
 
     protected void CancelOperation ()
     {
-      throw new EventReceiverCancelException ();
+      throw new EventReceiverCancelException();
     }
   }
 }

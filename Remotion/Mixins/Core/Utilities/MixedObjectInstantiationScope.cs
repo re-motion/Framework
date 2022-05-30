@@ -40,9 +40,9 @@ namespace Remotion.Mixins.Utilities
   public class MixedObjectInstantiationScope : IDisposable
   {
     [ThreadStatic]
-    private static MixedObjectInstantiationScope s_current;
+    private static MixedObjectInstantiationScope? s_current;
 
-    private static readonly MixedObjectInstantiationScope s_empty = new MixedObjectInstantiationScope (false, new object[0]);
+    private static readonly MixedObjectInstantiationScope s_empty = new MixedObjectInstantiationScope(false, new object[0]);
 
     public static MixedObjectInstantiationScope Current
     {
@@ -61,13 +61,13 @@ namespace Remotion.Mixins.Utilities
 
     private readonly object[] _suppliedMixinInstances;
 
-    private MixedObjectInstantiationScope _previous;
+    private MixedObjectInstantiationScope? _previous;
     private bool _isDisposed = false;
 
     private MixedObjectInstantiationScope (bool setCurrent, object[] suppliedMixinInstances)
     {
       if (setCurrent)
-        StorePreviousAndSetCurrent ();
+        StorePreviousAndSetCurrent();
 
       _suppliedMixinInstances = suppliedMixinInstances;
     }
@@ -77,7 +77,7 @@ namespace Remotion.Mixins.Utilities
     /// <see cref="Current"/> scope object. The previous scope is restored when this scope's <see cref="Dispose"/>
     /// method is called, e.g. from a <c>using</c> statement. The new scope will not contain any pre-created mixin instances.
     /// </summary>
-    public MixedObjectInstantiationScope () : this (true, new object[0])
+    public MixedObjectInstantiationScope () : this(true, new object[0])
     {
     }
 
@@ -89,7 +89,7 @@ namespace Remotion.Mixins.Utilities
     /// <param name="suppliedMixinInstances">The mixin instances to be used when a mixed type is instantiated from within the scope. The objects
     /// specified must fit the mixin types specified in the mixed type's configuration. Users can also specify instances for a subset of the mixin
     /// types, the remaining ones will be created on demand.</param>
-    public MixedObjectInstantiationScope (params object[] suppliedMixinInstances) : this (true, suppliedMixinInstances)
+    public MixedObjectInstantiationScope (params object[] suppliedMixinInstances) : this(true, suppliedMixinInstances)
     {
     }
 
@@ -113,7 +113,7 @@ namespace Remotion.Mixins.Utilities
     {
       if (!_isDisposed)
       {
-        RestorePrevious ();
+        RestorePrevious();
         _isDisposed = true;
       }
     }

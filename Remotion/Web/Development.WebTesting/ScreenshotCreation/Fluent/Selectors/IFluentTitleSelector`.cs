@@ -24,6 +24,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent.Selector
   /// via the specified title.
   /// </summary>
   public interface IFluentTitleSelector<TResult> : IFluentSelector
+      where TResult : notnull
   {
     /// <summary>
     /// Selects the item with the specified <paramref name="title"/>.

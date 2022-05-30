@@ -17,6 +17,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Remotion.Utilities;
 
@@ -24,6 +25,7 @@ namespace Remotion.Collections.Caching
 {
   [Serializable]
   public sealed class InvalidationTokenBasedCacheDecorator<TKey, TValue> : ICache<TKey, TValue>
+      where TKey : notnull
   {
     private readonly ICache<TKey, TValue> _innerCache;
     private readonly InvalidationToken _invalidationToken;
@@ -32,8 +34,8 @@ namespace Remotion.Collections.Caching
 
     public InvalidationTokenBasedCacheDecorator (ICache<TKey, TValue> innerCache, InvalidationToken invalidationToken)
     {
-      ArgumentUtility.CheckNotNull ("innerCache", innerCache);
-      ArgumentUtility.CheckNotNull ("invalidationToken", invalidationToken);
+      ArgumentUtility.CheckNotNull("innerCache", innerCache);
+      ArgumentUtility.CheckNotNull("invalidationToken", invalidationToken);
 
       _innerCache = innerCache;
       _invalidationToken = invalidationToken;
@@ -48,24 +50,24 @@ namespace Remotion.Collections.Caching
 
     public TValue GetOrCreateValue (TKey key, Func<TKey, TValue> valueFactory)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
-      ArgumentUtility.DebugCheckNotNull ("valueFactory", valueFactory);
+      ArgumentUtility.DebugCheckNotNull("key", key);
+      ArgumentUtility.DebugCheckNotNull("valueFactory", valueFactory);
 
       CheckRevision();
-      return _innerCache.GetOrCreateValue (key, valueFactory);
+      return _innerCache.GetOrCreateValue(key, valueFactory);
     }
 
-    public bool TryGetValue (TKey key, out TValue value)
+    public bool TryGetValue (TKey key, [AllowNull, MaybeNullWhen(false)] out TValue value)
     {
-      ArgumentUtility.DebugCheckNotNull ("key", key);
+      ArgumentUtility.DebugCheckNotNull("key", key);
 
       if (CheckRevision())
       {
-        return _innerCache.TryGetValue (key, out value);
+        return _innerCache.TryGetValue(key, out value);
       }
       else
       {
-        value = default;
+        value = default!;
         return false;
       }
     }
@@ -104,7 +106,7 @@ namespace Remotion.Collections.Caching
     private bool CheckRevision ()
     {
       // ReSharper disable InconsistentlySynchronizedField
-      if (_invalidationToken.IsCurrent (_revision))
+      if (_invalidationToken.IsCurrent(_revision))
         return true;
       // ReSharper restore InconsistentlySynchronizedField
 
@@ -113,7 +115,7 @@ namespace Remotion.Collections.Caching
         // If the code enters the lock, a different thread may already have cleared the cache. 
         // After the cache was successfully cleared, the revision will be up-to-date unless there has been another change in the meantime.
         // Therefor, we can skip the cache-clear if the revision is current.
-        if (_invalidationToken.IsCurrent (_revision))
+        if (_invalidationToken.IsCurrent(_revision))
           return true;
 
         ClearInternal();
@@ -128,7 +130,7 @@ namespace Remotion.Collections.Caching
       {
         _revision = _invalidationToken.GetCurrent();
         _innerCache.Clear();
-      } while (!_invalidationToken.IsCurrent (_revision));
+      } while (!_invalidationToken.IsCurrent(_revision));
     }
   }
 }

@@ -39,9 +39,9 @@ namespace Remotion.Collections
 
     public ListAdapter (IList<TSource> adaptedList, Func<TSource, TDest> sourceToDest, Func<TDest, TSource> destToSource)
     {
-      ArgumentUtility.CheckNotNull ("adaptedList", adaptedList);
-      ArgumentUtility.CheckNotNull ("sourceToDest", sourceToDest);
-      ArgumentUtility.CheckNotNull ("destToSource", destToSource);
+      ArgumentUtility.CheckNotNull("adaptedList", adaptedList);
+      ArgumentUtility.CheckNotNull("sourceToDest", sourceToDest);
+      ArgumentUtility.CheckNotNull("destToSource", destToSource);
 
       _adaptedList = adaptedList;
       _sourceToDest = sourceToDest;
@@ -60,13 +60,13 @@ namespace Remotion.Collections
 
     public TDest this [int index]
     {
-      get { return _sourceToDest (_adaptedList[index]); }
-      set { _adaptedList[index] = _destToSource (value); }
+      get { return _sourceToDest(_adaptedList[index]); }
+      set { _adaptedList[index] = _destToSource(value); }
     }
 
     public IEnumerator<TDest> GetEnumerator ()
     {
-      return _adaptedList.Select (item => _sourceToDest (item)).GetEnumerator();
+      return _adaptedList.Select(item => _sourceToDest(item)).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator ()
@@ -76,22 +76,22 @@ namespace Remotion.Collections
 
     public void Insert (int index, TDest item)
     {
-      _adaptedList.Insert (index, _destToSource (item));
+      _adaptedList.Insert(index, _destToSource(item));
     }
 
     public void Add (TDest item)
     {
-      _adaptedList.Add (_destToSource (item));
+      _adaptedList.Add(_destToSource(item));
     }
 
     public bool Remove (TDest item)
     {
-      return _adaptedList.Remove (_destToSource (item));
+      return _adaptedList.Remove(_destToSource(item));
     }
 
     public void RemoveAt (int index)
     {
-      _adaptedList.RemoveAt (index);
+      _adaptedList.RemoveAt(index);
     }
 
     public void Clear ()
@@ -102,13 +102,13 @@ namespace Remotion.Collections
     public bool Contains (TDest item)
     {
       var equalityComparer = EqualityComparer<TDest>.Default;
-      return this.Any (element => equalityComparer.Equals (element, item));
+      return this.Any(element => equalityComparer.Equals(element, item));
     }
 
     public int IndexOf (TDest item)
     {
       var equalityComparer = EqualityComparer<TDest>.Default;
-      var result = this.Select ((element, i) => new { element, i }).FirstOrDefault (tuple => equalityComparer.Equals (item, tuple.element));
+      var result = this.Select((element, i) => new { element, i }).FirstOrDefault(tuple => equalityComparer.Equals(item, tuple.element));
       if (result == null)
         return -1;
       else
@@ -117,15 +117,15 @@ namespace Remotion.Collections
 
     public void CopyTo (TDest[] array, int arrayIndex)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("array", array);
+      ArgumentUtility.CheckNotNullOrEmpty("array", array);
 
       if (arrayIndex < 0)
-        throw new ArgumentOutOfRangeException ("arrayIndex", "Index must not be negative.");
+        throw new ArgumentOutOfRangeException("arrayIndex", "Index must not be negative.");
       if (arrayIndex >= array.Length)
-        throw new ArgumentException ("Index must be less than the length of the array.", "arrayIndex");
+        throw new ArgumentException("Index must be less than the length of the array.", "arrayIndex");
       if (arrayIndex + Count > array.Length)
       {
-        throw new ArgumentException (
+        throw new ArgumentException(
             "There must be enough space to copy all items into the destination array starting at the given index.", "arrayIndex");
       }
 
@@ -140,28 +140,28 @@ namespace Remotion.Collections
   public static class ListAdapter
   {
     public static ListAdapter<TSource, TDest> Adapt<TSource, TDest> (
-        IList<TSource> adaptedList, 
-        Func<TSource, TDest> sourceToDest, 
+        IList<TSource> adaptedList,
+        Func<TSource, TDest> sourceToDest,
         Func<TDest, TSource> destToSource)
     {
-      return new ListAdapter<TSource, TDest> (adaptedList, sourceToDest, destToSource);
+      return new ListAdapter<TSource, TDest>(adaptedList, sourceToDest, destToSource);
     }
 
     public static ListAdapter<TSource, TDest> AdaptOneWay<TSource, TDest> (IList<TSource> adaptedList, Func<TSource, TDest> sourceToDest)
     {
-      return new ListAdapter<TSource, TDest> (
+      return new ListAdapter<TSource, TDest>(
           adaptedList,
           sourceToDest,
           delegate
           {
-            var message = string.Format ("This list does not support setting of '{0}' values.", typeof (TDest).Name);
-            throw new NotSupportedException (message);
+            var message = string.Format("This list does not support setting of '{0}' values.", typeof(TDest).Name);
+            throw new NotSupportedException(message);
           });
     }
 
     public static ReadOnlyCollection<TDest> AdaptReadOnly<TSource, TDest> (IList<TSource> adaptedList, Func<TSource, TDest> sourceToDest)
     {
-      return new ReadOnlyCollection<TDest> (AdaptOneWay (adaptedList, sourceToDest));
+      return new ReadOnlyCollection<TDest>(AdaptOneWay(adaptedList, sourceToDest));
     }
   }
 }

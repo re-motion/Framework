@@ -1,0 +1,130 @@
+/* Style applied to the TabStrip. */
+
+.tabStripTabsPane ul
+{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-flow: wrap;
+  gap: var(--remotion-themed-spacing);
+  box-sizing: border-box;
+}
+
+.tabStripTabsPane ul::after
+{
+  content: "";
+  flex-grow: 99999;
+}
+
+.tabStripTabsPane ul li
+{
+  flex-grow: 1;
+}
+
+.tabStripTabWrapper .tabStripTab,
+.tabStripTabWrapper .tabStripTabSelected
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabStripTabWrapper .tabStripTab a,
+.tabStripTabWrapper .tabStripTabSelected a
+{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.tabStripTabWrapper .tabStripTab:not(.disabled) a,
+.tabStripTabWrapper .tabStripTabSelected:not(.disabled) a
+{
+  cursor: pointer;
+}
+
+.tabStripTabWrapper .tabStripTab a span.anchorBody,
+.tabStripTabWrapper .tabStripTabSelected a span.anchorBody
+{
+  display: flex;
+  gap: var(--remotion-themed-spacing);
+  width: 100%;
+  justify-content: center;
+}
+
+.tabStripTabWrapper .tabStripTab a span.anchorBody > img,
+.tabStripTabWrapper .tabStripTabSelected a span.anchorBody > img
+{
+  align-self: baseline;
+}
+
+/* region: tabstrip-spefic style */
+.tabStrip .tabStripTab,
+.tabStrip .tabStripTabSelected
+{
+  height: calc(var(--remotion-themed-line-height) + var(--remotion-themed-spacing));
+}
+
+.tabStrip .tabStripTab a,
+.tabStrip .tabStripTabSelected a
+{
+  border: var(--remotion-themed-border);
+  border-radius: var(--remotion-themed-border-radius);
+  padding: 0 calc(var(--remotion-themed-spacing));
+  text-decoration: none;
+  padding-top: var(--remotion-themed-text-alignment-fix);
+}
+
+.tabStrip .tabStripTab a
+{
+  color: var(--color-standard-text);
+  background-color: var(--remotion-themed-background-color-control);
+}
+
+.tabStrip .tabStripTabSelected a
+{
+  border-color: var(--color-highlight);
+  background-color: var(--color-highlight);
+}
+
+.tabStrip .tabStripTab:not(.disabled) a:hover,
+.tabStrip .tabStripTabSelected:not(.disabled) a:hover
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-hover);
+  box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+.tabStrip .tabStripTab:not(.disabled) a:focus,
+.tabStrip .tabStripTabSelected:not(.disabled) a:focus
+{
+  outline: none;
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
+.tabStrip .tabStripTab:not(.disabled) a:focus
+{
+  background-color: var(--remotion-themed-background-color-focus);
+}
+
+.tabStrip .tabStripTabSelected:not(.disabled) a:focus
+{
+  background-color: var(--color-highlight);
+}
+
+.tabStrip .tabStripTab.disabled a
+{
+  color: var(--color-disabled-text);
+  background-color: var(--remotion-themed-background-color-disabled);
+}
+
+.tabStrip .tabStripTabSelected.disabled a
+{
+  color: var(--color-disabled-text);
+  border-color: var(--color-disabled-border);
+  background-color: var(--remotion-themed-background-color-disabled);
+}

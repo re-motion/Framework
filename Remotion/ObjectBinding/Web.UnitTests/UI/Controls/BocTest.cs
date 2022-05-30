@@ -35,38 +35,38 @@ public class BocTest
   private NamingContainerMock _namingContainer;
   private ControlInvoker _invoker;
 
-  public BocTest()
+  public BocTest ()
   {
   }
-  
+
   [SetUp]
-  public virtual void SetUp()
+  public virtual void SetUp ()
   {
     _wcagHelperMock = new WcagHelperMock();
-    WcagHelper.SetInstance (_wcagHelperMock);
+    WcagHelper.SetInstance(_wcagHelperMock);
 
     _page = new Page();
 
     _namingContainer = new NamingContainerMock();
     _namingContainer.ID = "NamingContainer";
-    _page.Controls.Add (_namingContainer);
+    _page.Controls.Add(_namingContainer);
 
-    _invoker = new ControlInvoker (_namingContainer);
+    _invoker = new ControlInvoker(_namingContainer);
 
-    var context = HttpContextHelper.CreateHttpContext ("GET", "/", "");
-    HttpContextHelper.SetCurrent (context);
-    HttpBrowserCapabilities browser = new HttpBrowserCapabilities ();
-    browser.Capabilities = new Hashtable ();
-    browser.Capabilities.Add ("browser", "IE");
-    browser.Capabilities.Add ("majorversion", "7");
+    var context = HttpContextHelper.CreateHttpContext("GET", "/", "");
+    HttpContextHelper.SetCurrent(context);
+    HttpBrowserCapabilities browser = new HttpBrowserCapabilities();
+    browser.Capabilities = new Hashtable();
+    browser.Capabilities.Add("browser", "IE");
+    browser.Capabilities.Add("majorversion", "7");
     context.Request.Browser = browser;
   }
 
   [TearDown]
-  public virtual void TearDown()
+  public virtual void TearDown ()
   {
-    WcagHelper.SetInstance (null);
-    HttpContextHelper.SetCurrent (null);
+    WcagHelper.SetInstance(null);
+    HttpContextHelper.SetCurrent(null);
     WebConfigurationMock.Current = null;
   }
 

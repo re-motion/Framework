@@ -30,9 +30,9 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public LoadCalculatedArrayElementExpression (Expression arrayExpression, Expression elementIndexExpression, Type elementType)
     {
-      ArgumentUtility.CheckNotNull ("arrayExpression", arrayExpression);
-      ArgumentUtility.CheckNotNull ("elementIndexExpression", elementIndexExpression);
-      ArgumentUtility.CheckNotNull ("elementType", elementType);
+      ArgumentUtility.CheckNotNull("arrayExpression", arrayExpression);
+      ArgumentUtility.CheckNotNull("elementIndexExpression", elementIndexExpression);
+      ArgumentUtility.CheckNotNull("elementType", elementType);
 
       _arrayExpression = arrayExpression;
       _elementIndexExpression = elementIndexExpression;
@@ -41,9 +41,9 @@ namespace Remotion.Reflection.CodeGeneration.DPExtensions
 
     public override void Emit (IMemberEmitter member, ILGenerator gen)
     {
-      _arrayExpression.Emit (member, gen);
-      _elementIndexExpression.Emit (member, gen);
-      gen.Emit (OpCodes.Ldelem, _elementType);
+      _arrayExpression.Emit(member, gen);
+      _elementIndexExpression.Emit(member, gen);
+      gen.Emit(OpCodes.Ldelem, _elementType);
     }
   }
 }

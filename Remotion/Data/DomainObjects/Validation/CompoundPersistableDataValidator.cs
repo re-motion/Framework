@@ -28,24 +28,24 @@ namespace Remotion.Data.DomainObjects.Validation
   /// delegates the validation to them.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
-  [ImplementationFor (typeof (IPersistableDataValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
+  [ImplementationFor(typeof(IPersistableDataValidator), RegistrationType = RegistrationType.Compound, Lifetime = LifetimeKind.Singleton)]
   public class CompoundPersistableDataValidator : IPersistableDataValidator
   {
     private readonly IReadOnlyList<IPersistableDataValidator> _validators;
 
     public CompoundPersistableDataValidator (IEnumerable<IPersistableDataValidator> validators)
     {
-      ArgumentUtility.CheckNotNull ("validators", validators);
+      ArgumentUtility.CheckNotNull("validators", validators);
       _validators = validators.ToList().AsReadOnly();
     }
 
     public void Validate (ClientTransaction clientTransaction, PersistableData persistableData)
     {
-      ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
-      ArgumentUtility.CheckNotNull ("persistableData", persistableData);
-      
+      ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
+      ArgumentUtility.CheckNotNull("persistableData", persistableData);
+
       foreach (var validator in _validators)
-        validator.Validate (clientTransaction, persistableData);
+        validator.Validate(clientTransaction, persistableData);
     }
 
     public IReadOnlyList<IPersistableDataValidator> Validators

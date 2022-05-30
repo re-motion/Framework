@@ -15,21 +15,22 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Globalization
 {
 
-[AttributeUsage (AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]
+[AttributeUsage(AttributeTargets.Enum, AllowMultiple = false, Inherited = false)]
 public class ResourceIdentifiersAttribute: Attribute
 {
   public static string GetResourceIdentifier (Enum enumValue)
   {
-    ArgumentUtility.CheckNotNull ("enumValue", enumValue);
+    ArgumentUtility.CheckNotNull("enumValue", enumValue);
     Type type = enumValue.GetType();
-    if (type.DeclaringType != null && IsEnumTypeNameSuppressed (type)) // if the enum is a nested type, suppress enum name
+    if (type.DeclaringType != null && IsEnumTypeNameSuppressed(type)) // if the enum is a nested type, suppress enum name
       type = type.DeclaringType;
-    return type.FullName + "." + enumValue.ToString();
+    return type.GetFullNameChecked() + "." + enumValue.ToString();
 
 //    string typePath = type.FullName.Substring (0, type.FullName.Length - type.Name.Length);
 //    if (typePath.EndsWith ("+"))
@@ -38,18 +39,18 @@ public class ResourceIdentifiersAttribute: Attribute
 //      return type.FullName + "." + enumValue.ToString();
   }
 
-  public static ResourceIdentifiersAttribute GetAttribute (Type type)
+  public static ResourceIdentifiersAttribute? GetAttribute (Type type)
   {
-    object[] attributes = type.GetCustomAttributes (typeof (ResourceIdentifiersAttribute), false);
+    object[] attributes = type.GetCustomAttributes(typeof(ResourceIdentifiersAttribute), false);
     if (attributes == null || attributes.Length == 0)
       return null;
     else
-      return (ResourceIdentifiersAttribute) attributes[0];
+      return (ResourceIdentifiersAttribute)attributes[0];
   }
 
   private static bool IsEnumTypeNameSuppressed (Type type)
   {
-    ResourceIdentifiersAttribute attrib = GetAttribute (type);
+    ResourceIdentifiersAttribute? attrib = GetAttribute(type);
     if (attrib == null)
       return false;
     else
@@ -67,7 +68,7 @@ public class ResourceIdentifiersAttribute: Attribute
 
   /// <summary> Initializes a new instance. </summary>
   public ResourceIdentifiersAttribute ()
-    : this (true)
+    : this(true)
   {
   }
 

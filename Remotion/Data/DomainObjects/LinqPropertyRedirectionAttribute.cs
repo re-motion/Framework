@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects
   /// That way, a public unmapped property that acts as a wrapper for a protected mapped property can still be used in queries.
   /// </para>
   /// </remarks>
-  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+  [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
   public class LinqPropertyRedirectionAttribute : Attribute, AttributeEvaluatingExpressionTransformer.IMethodCallExpressionTransformerAttribute
   {
     /// <summary>
@@ -53,7 +53,7 @@ namespace Remotion.Data.DomainObjects
 
       public MethodCallTransformer (PropertyInfo mappedProperty)
       {
-        ArgumentUtility.CheckNotNull ("mappedProperty", mappedProperty);
+        ArgumentUtility.CheckNotNull("mappedProperty", mappedProperty);
         _mappedProperty = mappedProperty;
       }
 
@@ -69,61 +69,71 @@ namespace Remotion.Data.DomainObjects
 
       public Expression Transform (MethodCallExpression methodCallExpression)
       {
-        ArgumentUtility.CheckNotNull ("methodCallExpression", methodCallExpression);
+        ArgumentUtility.CheckNotNull("methodCallExpression", methodCallExpression);
 
         var isInstanceMethod = !methodCallExpression.Method.IsStatic;
-        var isExtensionMethod = !isInstanceMethod && AttributeUtility.IsDefined<ExtensionAttribute> (methodCallExpression.Method, false);
+        var isExtensionMethod = !isInstanceMethod && AttributeUtility.IsDefined<ExtensionAttribute>(methodCallExpression.Method, false);
 
         if (isInstanceMethod)
         {
           if (methodCallExpression.Arguments.Any())
-            throw CreateNotSupportedException (methodCallExpression, "Only methods without parameters can be redirected.");
+            throw CreateNotSupportedException(methodCallExpression, "Only methods without parameters can be redirected.");
         }
         else if (isExtensionMethod)
         {
           if (methodCallExpression.Arguments.Count != 1)
           {
-            throw CreateNotSupportedException (
+            throw CreateNotSupportedException(
                 methodCallExpression, "Extensions method expecting parameters other than the instance parameter cannot be redirected.");
           }
         }
         else
         {
-          throw CreateNotSupportedException (
+          throw CreateNotSupportedException(
               methodCallExpression, "Only instance or extension methods can be redirected, but the method is static.");
         }
 
-        if (methodCallExpression.Method.Equals (MappedProperty.GetGetMethod (true)))
-          throw CreateNotSupportedException (methodCallExpression, "The method would redirect to itself.");
+        if (methodCallExpression.Method.Equals(MappedProperty.GetGetMethod(true)))
+          throw CreateNotSupportedException(methodCallExpression, "The method would redirect to itself.");
 
-        Expression instanceExpression = isInstanceMethod ? methodCallExpression.Object : methodCallExpression.Arguments.Single();
+        Expression? instanceExpression;
+        if (isInstanceMethod)
+        {
+          instanceExpression = methodCallExpression.Object;
+          Assertion.DebugIsNotNull(instanceExpression, "methodCallExpression.Object != null when methodCallExpression.Method.IsStatic == false");
+        }
+        else
+        {
+          instanceExpression = methodCallExpression.Arguments.Single();
+        }
+
         try
         {
           if (instanceExpression.Type != MappedProperty.DeclaringType)
-            instanceExpression = Expression.Convert (instanceExpression, MappedProperty.DeclaringType);
+            instanceExpression = Expression.Convert(instanceExpression, MappedProperty.DeclaringType!);
         }
         catch (InvalidOperationException ex)
         {
-          throw CreateNotSupportedException (methodCallExpression, ex.Message, ex);
+          throw CreateNotSupportedException(methodCallExpression, ex.Message, ex);
         }
 
-        var memberAccess = Expression.MakeMemberAccess (instanceExpression, MappedProperty);
+        var memberAccess = Expression.MakeMemberAccess(instanceExpression, MappedProperty);
 
-        if (!methodCallExpression.Type.IsAssignableFrom (memberAccess.Type))
-          throw CreateNotSupportedException (methodCallExpression, "The property has an incompatible return type.");
+        if (!methodCallExpression.Type.IsAssignableFrom(memberAccess.Type))
+          throw CreateNotSupportedException(methodCallExpression, "The property has an incompatible return type.");
 
         return memberAccess;
       }
 
-      private NotSupportedException CreateNotSupportedException (MethodCallExpression methodCallExpression, string specificMessage, Exception inner = null)
+      private NotSupportedException CreateNotSupportedException (MethodCallExpression methodCallExpression, string specificMessage, Exception? inner = null)
       {
-        var message = string.Format (
+        var message = string.Format(
             "The method call '{0}' cannot be redirected to the property '{1}.{2}'. {3}",
             methodCallExpression,
             MappedProperty.DeclaringType,
             MappedProperty.Name,
             specificMessage);
-        return new NotSupportedException (message, inner);
+        return new NotSupportedException(message, inner);
       }
     }
 
@@ -141,8 +151,8 @@ namespace Remotion.Data.DomainObjects
     /// <param name="mappedPropertyName">The name of the property to which the attribute's target is redirected.</param>
     public LinqPropertyRedirectionAttribute (Type declaringType, string mappedPropertyName)
     {
-      ArgumentUtility.CheckNotNull ("declaringType", declaringType);
-      ArgumentUtility.CheckNotNullOrEmpty ("mappedPropertyName", mappedPropertyName);
+      ArgumentUtility.CheckNotNull("declaringType", declaringType);
+      ArgumentUtility.CheckNotNullOrEmpty("mappedPropertyName", mappedPropertyName);
 
       _declaringType = declaringType;
       _mappedPropertyName = mappedPropertyName;
@@ -173,11 +183,11 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="MappingException">The property does not exist.</exception>
     public PropertyInfo GetMappedProperty ()
     {
-      var mappedProperty = DeclaringType.GetProperty (MappedPropertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      var mappedProperty = DeclaringType.GetProperty(MappedPropertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
       if (mappedProperty == null)
       {
-        var message = string.Format ("The member redirects LINQ queries to '{0}.{1}', which does not exist.", DeclaringType, MappedPropertyName);
-        throw new MappingException (message);
+        var message = string.Format("The member redirects LINQ queries to '{0}.{1}', which does not exist.", DeclaringType, MappedPropertyName);
+        throw new MappingException(message);
       }
       return mappedProperty;
     }
@@ -187,14 +197,14 @@ namespace Remotion.Data.DomainObjects
       PropertyInfo mappedProperty;
       try
       {
-        mappedProperty = GetMappedProperty ();
+        mappedProperty = GetMappedProperty();
       }
       catch (MappingException ex)
       {
-        throw new InvalidOperationException (ex.Message, ex);
+        throw new InvalidOperationException(ex.Message, ex);
       }
-      
-      return new MethodCallTransformer (mappedProperty);
+
+      return new MethodCallTransformer(mappedProperty);
     }
   }
 }

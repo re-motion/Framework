@@ -22,27 +22,27 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
 {
   public class DatabaseTest
   {
-    [TestFixtureSetUp]
-    public virtual void TestFixtureSetUp()
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp ()
     {
     }
 
-    [TestFixtureTearDown]
-    public virtual void TestFixtureTearDown()
+    [OneTimeTearDown]
+    public virtual void TestFixtureTearDown ()
     {
     }
 
     [SetUp]
-    public virtual void SetUp()
+    public virtual void SetUp ()
     {
-      using (TestDataLoader loader = new TestDataLoader (StandardConfiguration.ConnectionString))
+      using (TestDataLoader loader = new TestDataLoader(StandardConfiguration.ConnectionString))
       {
         loader.Load();
       }
     }
 
     [TearDown]
-    public virtual void TearDown()
+    public virtual void TearDown ()
     {
     }
   }

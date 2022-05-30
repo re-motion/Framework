@@ -31,20 +31,20 @@ namespace Remotion.Configuration.TypeDiscovery
     /// Gets a <see cref="ByNameRootAssemblyElementCollection"/> allowing to specify assemblies by <see cref="AssemblyName"/>.
     /// </summary>
     /// <value>A <see cref="ByNameRootAssemblyElementCollection"/> allowing to specify assemblies by <see cref="AssemblyName"/>.</value>
-    [ConfigurationProperty ("byName")]
+    [ConfigurationProperty("byName")]
     public ByNameRootAssemblyElementCollection ByName
     {
-      get { return (ByNameRootAssemblyElementCollection) this["byName"]; }
+      get { return (ByNameRootAssemblyElementCollection)this["byName"]; }
     }
 
     /// <summary>
     /// Gets a <see cref="ByFileRootAssemblyElementCollection"/> allowing to specify assemblies by file name patterns.
     /// </summary>
     /// <value>A <see cref="ByFileRootAssemblyElementCollection"/> allowing to specify assemblies by file name patterns.</value>
-    [ConfigurationProperty ("byFile")]
+    [ConfigurationProperty("byFile")]
     public ByFileRootAssemblyElementCollection ByFile
     {
-      get { return (ByFileRootAssemblyElementCollection) this["byFile"]; }
+      get { return (ByFileRootAssemblyElementCollection)this["byFile"]; }
     }
 
     /// <summary>
@@ -54,10 +54,10 @@ namespace Remotion.Configuration.TypeDiscovery
     /// <returns>A <see cref="CompositeRootAssemblyFinder"/> for the assembly specifications.</returns>
     public CompositeRootAssemblyFinder CreateRootAssemblyFinder (IAssemblyLoader assemblyLoader)
     {
-      var namedFinder = ByName.CreateRootAssemblyFinder (assemblyLoader);
-      var filePatternFinder = ByFile.CreateRootAssemblyFinder (assemblyLoader);
+      var namedFinder = ByName.CreateRootAssemblyFinder(assemblyLoader);
+      var filePatternFinder = ByFile.CreateRootAssemblyFinder(assemblyLoader);
 
-      return new CompositeRootAssemblyFinder (new IRootAssemblyFinder[] { namedFinder, filePatternFinder });
+      return new CompositeRootAssemblyFinder(new IRootAssemblyFinder[] { namedFinder, filePatternFinder });
     }
   }
 }

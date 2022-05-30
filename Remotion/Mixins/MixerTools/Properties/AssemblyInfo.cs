@@ -17,6 +17,4 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Mixins Mixer Tools Console")]
-[assembly: AssemblyDescription ("Command line tool for pre-generating concrete mixed types.")]
-[assembly: AssemblyCulture ("")]
+[assembly: AssemblyCulture("")]

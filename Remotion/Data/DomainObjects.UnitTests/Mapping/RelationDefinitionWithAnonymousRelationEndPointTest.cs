@@ -29,30 +29,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
       _relation = FakeMappingConfiguration.Current.RelationDefinitions[
         "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location:Remotion.Data.DomainObjects.UnitTests.Mapping."
         +"TestDomain.Integration.Location.Client"];
-      _clientEndPoint = (AnonymousRelationEndPointDefinition) _relation.EndPointDefinitions[0];
-      _locationEndPoint = (RelationEndPointDefinition) _relation.EndPointDefinitions[1];
+      _clientEndPoint = (AnonymousRelationEndPointDefinition)_relation.EndPointDefinitions[0];
+      _locationEndPoint = (RelationEndPointDefinition)_relation.EndPointDefinitions[1];
     }
 
     [Test]
     public void GetOppositeEndPointDefinition ()
     {
-      Assert.That (_relation.GetOppositeEndPointDefinition ("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"), Is.SameAs (_clientEndPoint));
-      Assert.That (_relation.GetOppositeEndPointDefinition ("Client", null), Is.SameAs (_locationEndPoint));
+      Assert.That(
+          _relation.GetOppositeEndPointDefinition("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"),
+          Is.SameAs(_clientEndPoint));
+      Assert.That(_relation.GetOppositeEndPointDefinition("Client", null), Is.SameAs(_locationEndPoint));
     }
 
     [Test]
     public void IsEndPoint ()
     {
-      Assert.That (_relation.IsEndPoint ("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"), Is.True);
-      Assert.That (_relation.IsEndPoint ("Client", null), Is.True);
+      Assert.That(_relation.IsEndPoint("Location", "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Location.Client"), Is.True);
+      Assert.That(_relation.IsEndPoint("Client", null), Is.True);
 
-      Assert.That (_relation.IsEndPoint ("Location", null), Is.False);
-      Assert.That (_relation.IsEndPoint ("Client", "Client"), Is.False);
+      Assert.That(_relation.IsEndPoint("Location", null), Is.False);
+      Assert.That(_relation.IsEndPoint("Client", "Client"), Is.False);
     }
   }
 }

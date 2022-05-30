@@ -36,12 +36,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void OnCommitting_WithChangedPermission_RegistersClassForCommit ()
     {
-      var classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      var acl = _testHelper.CreateStatelessAcl (classDefinition);
+      var classDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      var acl = _testHelper.CreateStatelessAcl(classDefinition);
       var ace = _testHelper.CreateAceWithOwningUser();
-      acl.AccessControlEntries.Add (ace);
-      var accessType = _testHelper.AttachJournalizeAccessType (classDefinition);
-      ace.AllowAccess (accessType);
+      acl.AccessControlEntries.Add(ace);
+      var accessType = _testHelper.AttachJournalizeAccessType(classDefinition);
+      ace.AllowAccess(accessType);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -49,25 +49,25 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         ace.GetPermissions()[0].RegisterForCommit();
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
 
     [Test]
     public void OnCommitting_WithDeletedPermission_RegistersClassForCommit ()
     {
-      var classDefinition = _testHelper.CreateClassDefinition ("SecurableClass");
-      var acl = _testHelper.CreateStatelessAcl (classDefinition);
+      var classDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      var acl = _testHelper.CreateStatelessAcl(classDefinition);
       var ace = _testHelper.CreateAceWithOwningUser();
-      acl.AccessControlEntries.Add (ace);
-      var accessType = _testHelper.AttachJournalizeAccessType (classDefinition);
-      ace.AllowAccess (accessType);
+      acl.AccessControlEntries.Add(ace);
+      var accessType = _testHelper.AttachJournalizeAccessType(classDefinition);
+      ace.AllowAccess(accessType);
 
       using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
       {
@@ -75,13 +75,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
         classDefinition.Committing += (sender, e) =>
         {
           commitOnClassWasCalled = true;
-          Assert.That (GetDataContainer ((DomainObject) sender).HasBeenMarkedChanged, Is.True);
+          Assert.That(GetDataContainer((DomainObject)sender).HasBeenMarkedChanged, Is.True);
         };
         ace.GetPermissions()[0].Delete();
 
         ClientTransaction.Current.Commit();
 
-        Assert.That (commitOnClassWasCalled, Is.True);
+        Assert.That(commitOnClassWasCalled, Is.True);
       }
     }
   }

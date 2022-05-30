@@ -30,8 +30,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public UnregisterDataContainerCommand (ObjectID objectID, DataContainerMap map)
     {
-      ArgumentUtility.CheckNotNull ("objectID", objectID);
-      ArgumentUtility.CheckNotNull ("map", map);
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+      ArgumentUtility.CheckNotNull("map", map);
 
       _objectID = objectID;
       _map = map;
@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public void Perform ()
     {
-      _map.Remove (_objectID);
+      _map.Remove(_objectID);
     }
 
     public void End ()
@@ -68,7 +68,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands
 
     public ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

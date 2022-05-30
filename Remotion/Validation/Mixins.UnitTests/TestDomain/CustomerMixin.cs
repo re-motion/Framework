@@ -22,11 +22,11 @@ namespace Remotion.Validation.Mixins.UnitTests.TestDomain
 {
   public interface ICustomerIntroduced
   {
-    [NotEqual("Chef1")]
+    [NotEqualValidation("Chef1")]
     string Title { get; set; }
   }
 
-  [Extends (typeof (Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
+  [Extends(typeof(Customer), IntroducedMemberVisibility = MemberVisibility.Public)]
   public class CustomerMixin : Mixin<IPerson, CustomerMixin.IBaseMethods>, ICustomerIntroduced
   {
     public interface IBaseMethods

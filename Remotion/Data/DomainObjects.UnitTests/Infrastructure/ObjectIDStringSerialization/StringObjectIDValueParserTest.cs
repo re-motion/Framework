@@ -27,20 +27,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
     public void TryParse ()
     {
       object resultValue;
-      var success = StringObjectIDValueParser.Instance.TryParse ("abc", out resultValue);
+      var success = StringObjectIDValueParser.Instance.TryParse("abc", out resultValue);
 
-      Assert.That (success, Is.True);
-      Assert.That (resultValue, Is.EqualTo ("abc"));
+      Assert.That(success, Is.True);
+      Assert.That(resultValue, Is.EqualTo("abc"));
     }
 
     [Test]
     public void TryParse_EmptyValue ()
     {
       object resultValue;
-      var success = StringObjectIDValueParser.Instance.TryParse ("", out resultValue);
+      var success = StringObjectIDValueParser.Instance.TryParse("", out resultValue);
 
-      Assert.That (success, Is.False);
-      Assert.That (resultValue, Is.Null);
+      Assert.That(success, Is.False);
+      Assert.That(resultValue, Is.Null);
     }
   }
 }

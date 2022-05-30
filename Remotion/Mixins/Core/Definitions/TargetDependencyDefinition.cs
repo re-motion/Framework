@@ -26,16 +26,16 @@ namespace Remotion.Mixins.Definitions
   {
     private readonly MixinDefinition _dependingMixin;
 
-    public TargetCallDependencyDefinition (RequiredTargetCallTypeDefinition requiredType, MixinDefinition dependingMixin, TargetCallDependencyDefinition aggregator)
-      : base (requiredType, aggregator)
+    public TargetCallDependencyDefinition (RequiredTargetCallTypeDefinition requiredType, MixinDefinition dependingMixin, TargetCallDependencyDefinition? aggregator)
+      : base(requiredType, aggregator)
     {
-      ArgumentUtility.CheckNotNull ("dependingMixin", dependingMixin);
+      ArgumentUtility.CheckNotNull("dependingMixin", dependingMixin);
       _dependingMixin = dependingMixin;
     }
 
     public new RequiredTargetCallTypeDefinition RequiredType
     {
-      get { return (RequiredTargetCallTypeDefinition) base.RequiredType; }
+      get { return (RequiredTargetCallTypeDefinition)base.RequiredType; }
     }
 
     public override IVisitableDefinition Depender
@@ -45,13 +45,13 @@ namespace Remotion.Mixins.Definitions
 
     public override void Accept (IDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.Visit (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.Visit(this);
     }
 
     public override string GetDependencyDescription ()
     {
-      return string.Format ("mixin '{0}'", _dependingMixin.FullName);
+      return string.Format("mixin '{0}'", _dependingMixin.FullName);
     }
 
   }

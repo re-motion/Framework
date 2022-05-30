@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Globalization Support for Mixins")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Mixins and Remotion.Globalization assemblies.")]
-[assembly: AssemblyCulture ("")]
-[assembly: CLSCompliant (true)]
+[assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(true)]

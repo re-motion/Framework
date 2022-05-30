@@ -27,14 +27,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Serialization ()
     {
-      var innerException = new Exception ("Test");
-      var exception = new ObjectsNotFoundException ("Message", new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }, innerException);
+      var innerException = new Exception("Test");
+      var exception = new ObjectsNotFoundException("Message", new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }, innerException);
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (exception);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(exception);
 
-      Assert.That (deserializedInstance.Message, Is.EqualTo ("Message"));
-      Assert.That (deserializedInstance.IDs, Is.EqualTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
-      Assert.That (deserializedInstance.InnerException, Is.Not.Null);
+      Assert.That(deserializedInstance.Message, Is.EqualTo("Message"));
+      Assert.That(deserializedInstance.IDs, Is.EqualTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
+      Assert.That(deserializedInstance.InnerException, Is.Not.Null);
     }
   }
 }

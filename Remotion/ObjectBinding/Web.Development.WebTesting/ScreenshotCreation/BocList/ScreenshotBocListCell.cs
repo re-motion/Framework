@@ -31,7 +31,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
   /// </summary>
   public class ScreenshotBocListCell<TList, TRow, TCell> : IControlHost, ISelfResolvable
       where TList : BocListControlObjectBase<TRow, TCell>, IControlObjectWithRows<TRow>
-      where TRow : ControlObject, IControlObjectWithCells<TCell>
+      where TRow : ControlObject, IBocListRowControlObject<TCell>
       where TCell : ControlObject
   {
     private readonly IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> _fluentList;
@@ -41,8 +41,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         [NotNull] IFluentScreenshotElementWithCovariance<ScreenshotBocList<TList, TRow, TCell>> fluentList,
         [NotNull] IFluentScreenshotElement<TCell> fluentCell)
     {
-      ArgumentUtility.CheckNotNull ("fluentList", fluentList);
-      ArgumentUtility.CheckNotNull ("fluentCell", fluentCell);
+      ArgumentUtility.CheckNotNull("fluentList", fluentList);
+      ArgumentUtility.CheckNotNull("fluentCell", fluentCell);
 
       _fluentList = fluentList;
       _fluentCell = fluentCell;
@@ -72,26 +72,26 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     public TControlObject GetControl<TControlObject> (IControlSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _fluentCell.Target.Children.GetControl (controlSelectionCommand);
+      return _fluentCell.Target.Children.GetControl(controlSelectionCommand);
     }
 
     /// <inheritdoc />
-    public TControlObject GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
+    public TControlObject? GetControlOrNull<TControlObject> (IControlOptionalSelectionCommand<TControlObject> controlSelectionCommand)
         where TControlObject : ControlObject
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _fluentCell.Target.Children.GetControlOrNull (controlSelectionCommand);
+      return _fluentCell.Target.Children.GetControlOrNull(controlSelectionCommand);
     }
 
     /// <inheritdoc />
     public bool HasControl (IControlExistsCommand controlSelectionCommand)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionCommand", controlSelectionCommand);
+      ArgumentUtility.CheckNotNull("controlSelectionCommand", controlSelectionCommand);
 
-      return _fluentCell.Target.Children.HasControl (controlSelectionCommand);
+      return _fluentCell.Target.Children.HasControl(controlSelectionCommand);
     }
 
     /// <inheritdoc />
@@ -103,9 +103,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     /// <inheritdoc />
     public ResolvedScreenshotElement ResolveDesktopCoordinates (IBrowserContentLocator locator)
     {
-      ArgumentUtility.CheckNotNull ("locator", locator);
+      ArgumentUtility.CheckNotNull("locator", locator);
 
-      return _fluentCell.ResolveDesktopCoordinates (locator);
+      return _fluentCell.ResolveDesktopCoordinates(locator);
     }
   }
 }

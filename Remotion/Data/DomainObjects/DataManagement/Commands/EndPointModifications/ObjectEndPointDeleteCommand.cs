@@ -30,17 +30,15 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public ObjectEndPointDeleteCommand (
         IObjectEndPoint modifiedEndPoint, Action oppositeObjectNullSetter, IClientTransactionEventSink transactionEventSink)
-        : base (
-            ArgumentUtility.CheckNotNull ("modifiedEndPoint", modifiedEndPoint),
+        : base(
+            modifiedEndPoint,
             null,
             null,
-            ArgumentUtility.CheckNotNull ("transactionEventSink", transactionEventSink))
+            transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("oppositeObjectNullSetter", oppositeObjectNullSetter);
+      ArgumentUtility.CheckNotNull("oppositeObjectNullSetter", oppositeObjectNullSetter);
 
       _oppositeObjectNullSetter = oppositeObjectNullSetter;
-      if (modifiedEndPoint.IsNull)
-        throw new ArgumentException ("Modified end point is null, a NullEndPointModificationCommand is needed.", "modifiedEndPoint");
     }
 
     public override void Begin ()
@@ -61,7 +59,7 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      return new ExpandedCommand (this);
+      return new ExpandedCommand(this);
     }
   }
 }

@@ -21,6 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 {
@@ -41,62 +42,70 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var actual = _transaction.To<TestableClientTransaction>();
 
-      Assert.That (actual, Is.SameAs (TestableClientTransaction));
+      Assert.That(actual, Is.SameAs(TestableClientTransaction));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage =
-        "Parameter 'TTransaction' is a 'Remotion.Data.DomainObjects.DomainObject', "
-        + "which cannot be assigned to type 'Remotion.Data.DomainObjects.ClientTransaction'.\r\nParameter name: TTransaction")]
     public void To_InvalidType ()
     {
-      _transaction.To<DomainObject>();
+      Assert.That(
+          () => _transaction.To<DomainObject>(),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "Parameter 'TTransaction' is a 'Remotion.Data.DomainObjects.DomainObject', "
+                  + "which cannot be assigned to type 'Remotion.Data.DomainObjects.ClientTransaction'.", "TTransaction"));
     }
 
     [Test]
     public void CanCreateChild ()
     {
-      Assert.That (_transaction.CanCreateChild, Is.True);
+      Assert.That(_transaction.CanCreateChild, Is.True);
     }
 
     [Test]
     public void CreateChild ()
     {
       ITransaction child = _transaction.CreateChild();
-      Assert.That (child, Is.Not.Null);
-      Assert.IsInstanceOf (typeof (ClientTransactionWrapper), child);
-      Assert.IsInstanceOf (typeof (ClientTransaction), ((ClientTransactionWrapper) child).WrappedInstance);
+      Assert.That(child, Is.Not.Null);
+      Assert.IsInstanceOf(typeof(ClientTransactionWrapper), child);
+      Assert.IsInstanceOf(typeof(ClientTransaction), ((ClientTransactionWrapper)child).WrappedInstance);
 
-      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy (((ClientTransactionWrapper) child).WrappedInstance);
-      Assert.IsInstanceOf (typeof (SubPersistenceStrategy), persistenceStrategy);
+      var persistenceStrategy = ClientTransactionTestHelper.GetPersistenceStrategy(((ClientTransactionWrapper)child).WrappedInstance);
+      Assert.IsInstanceOf(typeof(SubPersistenceStrategy), persistenceStrategy);
     }
 
     [Test]
     public void IsChild ()
     {
       ITransaction child = _transaction.CreateChild();
-      Assert.That (child.IsChild, Is.True);
-      Assert.That (_transaction.IsChild, Is.False);
-      Assert.That (child.CreateChild().IsChild, Is.True);
+      Assert.That(child.IsChild, Is.True);
+      Assert.That(_transaction.IsChild, Is.False);
+      Assert.That(child.CreateChild().IsChild, Is.True);
     }
 
     [Test]
     public void Parent ()
     {
       ITransaction child = _transaction.CreateChild();
-      Assert.That (((ClientTransactionWrapper) child.Parent).WrappedInstance, Is.SameAs (((ClientTransactionWrapper) _transaction).WrappedInstance));
-      Assert.That (((ClientTransactionWrapper) child.CreateChild().Parent).WrappedInstance, Is.SameAs (((ClientTransactionWrapper) child).WrappedInstance));
+      Assert.That(((ClientTransactionWrapper)child.Parent).WrappedInstance, Is.SameAs(((ClientTransactionWrapper)_transaction).WrappedInstance));
+      Assert.That(((ClientTransactionWrapper)child.CreateChild().Parent).WrappedInstance, Is.SameAs(((ClientTransactionWrapper)child).WrappedInstance));
+    }
+
+    [Test]
+    public void Parent_WithoutParent ()
+    {
+      Assert.That((ClientTransactionWrapper)_transaction.Parent, Is.Null);
     }
 
     [Test]
     public void Release ()
     {
       ITransaction child = _transaction.CreateChild();
-      Assert.That (((ClientTransactionWrapper) _transaction).WrappedInstance.IsWriteable, Is.False);
-      Assert.That (((ClientTransactionWrapper) child).WrappedInstance.IsDiscarded, Is.False);
+      Assert.That(((ClientTransactionWrapper)_transaction).WrappedInstance.IsWriteable, Is.False);
+      Assert.That(((ClientTransactionWrapper)child).WrappedInstance.IsDiscarded, Is.False);
       child.Release();
-      Assert.That (((ClientTransactionWrapper) _transaction).WrappedInstance.IsWriteable, Is.True);
-      Assert.That (((ClientTransactionWrapper) child).WrappedInstance.IsDiscarded, Is.True);
+      Assert.That(((ClientTransactionWrapper)_transaction).WrappedInstance.IsWriteable, Is.True);
+      Assert.That(((ClientTransactionWrapper)child).WrappedInstance.IsDiscarded, Is.True);
     }
 
     [Test]
@@ -105,13 +114,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ITransaction transaction = ClientTransaction.CreateRootTransaction().ToITransaction();
 
       ClientTransactionScope.ResetActiveScope();
-      Assert.That (ClientTransactionScope.ActiveScope, Is.Null);
+      Assert.That(ClientTransactionScope.ActiveScope, Is.Null);
 
       ITransactionScope transactionScope = transaction.EnterScope();
 
-      Assert.That (ClientTransactionScope.ActiveScope, Is.SameAs (transactionScope));
-      Assert.That (ClientTransactionScope.ActiveScope.ScopedTransaction, Is.SameAs (((ClientTransactionWrapper) transaction).WrappedInstance));
-      Assert.That (ClientTransactionScope.ActiveScope.AutoRollbackBehavior, Is.EqualTo (AutoRollbackBehavior.None));
+      Assert.That(ClientTransactionScope.ActiveScope, Is.SameAs(transactionScope));
+      Assert.That(ClientTransactionScope.ActiveScope.ScopedTransaction, Is.SameAs(((ClientTransactionWrapper)transaction).WrappedInstance));
+      Assert.That(ClientTransactionScope.ActiveScope.AutoRollbackBehavior, Is.EqualTo(AutoRollbackBehavior.None));
       ClientTransactionScope.ResetActiveScope();
     }
 
@@ -119,14 +128,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void EnterScope_WithInactiveTransaction ()
     {
       var inactiveTransaction = ClientTransaction.CreateRootTransaction();
-      using (ClientTransactionTestHelper.MakeInactive (inactiveTransaction))
+      using (ClientTransactionTestHelper.MakeInactive(inactiveTransaction))
       {
         ITransaction transaction = inactiveTransaction.ToITransaction();
-        Assert.That (inactiveTransaction.ActiveTransaction, Is.Not.SameAs (inactiveTransaction));
+        Assert.That(inactiveTransaction.ActiveTransaction, Is.Not.SameAs(inactiveTransaction));
 
         var scope = transaction.EnterScope();
 
-        Assert.That (inactiveTransaction.ActiveTransaction, Is.SameAs (inactiveTransaction));
+        Assert.That(inactiveTransaction.ActiveTransaction, Is.SameAs(inactiveTransaction));
         scope.Leave();
       }
     }
@@ -134,15 +143,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void EnsureCompatibility_WithNonDomainObject_Succeeds ()
     {
-      _transaction.EnsureCompatibility (new[] { "what?" });
+      _transaction.EnsureCompatibility(new[] { "what?" });
     }
 
     [Test]
     public void EnsureCompatibility_WithObjectFromSameTransaction_Succeeds ()
     {
-      var domainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (TestableClientTransaction);
+      var domainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>(TestableClientTransaction);
 
-      _transaction.EnsureCompatibility (new[] { domainObject });
+      _transaction.EnsureCompatibility(new[] { domainObject });
     }
 
     [Test]
@@ -150,41 +159,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
-        var domainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (TestableClientTransaction);
-        _transaction.EnsureCompatibility (new[] { domainObject });
+        var domainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>(TestableClientTransaction);
+        _transaction.EnsureCompatibility(new[] { domainObject });
       }
     }
 
     [Test]
     public void EnsureCompatibility_WithObjectFromParentTransaction_Succeeds ()
     {
-      var domainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes> (TestableClientTransaction);
+      var domainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>(TestableClientTransaction);
       var transaction = TestableClientTransaction.CreateSubTransaction().ToITransaction();
-      transaction.EnsureCompatibility (new[] { domainObject });
+      transaction.EnsureCompatibility(new[] { domainObject });
     }
 
     [Test]
     public void EnsureCompatibility_WithObjectsFromUnrelatedTransaction_ThrowsException ()
     {
-      var domainObject1 = DomainObjectMother.GetObjectInOtherTransaction<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes1);
-      var domainObject2 = DomainObjectMother.GetObjectInOtherTransaction<ClassWithAllDataTypes> (DomainObjectIDs.ClassWithAllDataTypes2);
-      Assert.That (
-          () => _transaction.EnsureCompatibility (new[] { domainObject1, domainObject2 }),
-          Throws.TypeOf<InvalidOperationException>().With.Message.StringMatching (
+      var domainObject1 = DomainObjectMother.GetObjectInOtherTransaction<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes1);
+      var domainObject2 = DomainObjectMother.GetObjectInOtherTransaction<ClassWithAllDataTypes>(DomainObjectIDs.ClassWithAllDataTypes2);
+      Assert.That(
+          () => _transaction.EnsureCompatibility(new[] { domainObject1, domainObject2 }),
+          Throws.TypeOf<InvalidOperationException>().With.Message.Matches(
               @"The following objects are incompatible with the target transaction\: "
               + @"ClassWithAllDataTypes\|.*\|System\.Guid, ClassWithAllDataTypes\|.*\|System\.Guid\. "
               + @"Objects of type \'Remotion\.Data\.DomainObjects\.IDomainObjectHandle\`1\[T\]\' could be used instead\.")
-                .And.Message.StringContaining ("ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid")
-                .And.Message.StringContaining ("ClassWithAllDataTypes|583ec716-8443-4b55-92bf-09f7c8768529|System.Guid"));
+                .And.Message.Contains("ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid")
+                .And.Message.Contains("ClassWithAllDataTypes|583ec716-8443-4b55-92bf-09f7c8768529|System.Guid"));
     }
 
     [Test]
     public void CanBeDerivedFrom ()
     {
-      var ctor =  typeof (ClientTransactionWrapper).GetConstructor (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, 
-          new[] {typeof (ClientTransaction)}, null);
-      Assert.That (typeof (ClientTransactionWrapper).IsSealed, Is.False);
-      Assert.That (ctor.IsFamilyOrAssembly);
+      var ctor =  typeof(ClientTransactionWrapper).GetConstructor(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
+          new[] {typeof(ClientTransaction)}, null);
+      Assert.That(typeof(ClientTransactionWrapper).IsSealed, Is.False);
+      Assert.That(ctor.IsFamilyOrAssembly);
     }
   }
 }

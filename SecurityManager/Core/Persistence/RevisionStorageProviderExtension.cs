@@ -17,7 +17,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Remotion.Collections;
 using Remotion.Data.DomainObjects;
@@ -27,6 +26,7 @@ using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Reflection;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -51,30 +51,30 @@ namespace Remotion.SecurityManager.Persistence
         IUserNamesRevisionProvider userNamesRevisionProvider,
         IStorageProviderCommandFactory<IRdbmsProviderCommandExecutionContext> storageProviderCommandFactory)
     {
-      ArgumentUtility.CheckNotNull ("revisionProvider", revisionProvider);
-      ArgumentUtility.CheckNotNull ("userRevisionProvider", userRevisionProvider);
-      ArgumentUtility.CheckNotNull ("userNamesRevisionProvider", userNamesRevisionProvider);
-      ArgumentUtility.CheckNotNull ("storageProviderCommandFactory", storageProviderCommandFactory);
+      ArgumentUtility.CheckNotNull("revisionProvider", revisionProvider);
+      ArgumentUtility.CheckNotNull("userRevisionProvider", userRevisionProvider);
+      ArgumentUtility.CheckNotNull("userNamesRevisionProvider", userNamesRevisionProvider);
+      ArgumentUtility.CheckNotNull("storageProviderCommandFactory", storageProviderCommandFactory);
 
       _revisionProvider = revisionProvider;
       _userRevisionProvider = userRevisionProvider;
       _userNamesRevisionProvider = userNamesRevisionProvider;
       _storageProviderCommandFactory = storageProviderCommandFactory;
 
-      _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (User))
-          .GetPropertyDefinition (GetPropertyIdentifierFromTypeAndShortName (typeof (User), "UserName"));
+      _userNamePropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(User))
+          .GetMandatoryPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(User), "UserName"));
 
-      _substitutionUserPropertyDefinition = MappingConfiguration.Current.GetTypeDefinition (typeof (Substitution))
-          .GetPropertyDefinition (GetPropertyIdentifierFromTypeAndShortName (typeof (Substitution), "SubstitutingUser"));
+      _substitutionUserPropertyDefinition = MappingConfiguration.Current.GetTypeDefinition(typeof(Substitution))
+          .GetMandatoryPropertyDefinition(GetPropertyIdentifierFromTypeAndShortName(typeof(Substitution), "SubstitutingUser"));
     }
 
     public virtual void Saved (IRdbmsProviderCommandExecutionContext executionContext, IEnumerable<DataContainer> dataContainers)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
-      ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("dataContainers", dataContainers);
 
       var securityManagerDataContainers =
-          dataContainers.Where (dataContainer => typeof (BaseSecurityManagerObject).IsAssignableFrom (dataContainer.DomainObjectType));
+          dataContainers.Where(dataContainer => typeof(BaseSecurityManagerObject).IsAssignableFrom(dataContainer.DomainObjectType));
 
       bool isDomainRevisionInvalidated = false;
       bool isUserNamesRevisionInvalidated = false;
@@ -82,67 +82,69 @@ namespace Remotion.SecurityManager.Persistence
       var loadedUsers = new Dictionary<IDomainObjectHandle<User>, DataContainer>();
       foreach (var dataContainer in securityManagerDataContainers)
       {
-        if (!isDomainRevisionInvalidated && IsDomainRevisionRelevant (dataContainer))
+        if (!isDomainRevisionInvalidated && IsDomainRevisionRelevant(dataContainer))
         {
           var revisionKey = new RevisionKey();
-          IncrementRevision (executionContext, revisionKey);
-          _revisionProvider.InvalidateRevision (revisionKey);
+          IncrementRevision(executionContext, revisionKey);
+          _revisionProvider.InvalidateRevision(revisionKey);
 
           isDomainRevisionInvalidated = true;
         }
 
-        if (!isUserNamesRevisionInvalidated && IsUserNamesRevisionRelevant (dataContainer))
+        if (!isUserNamesRevisionInvalidated && IsUserNamesRevisionRelevant(dataContainer))
         {
-          IncrementRevision (executionContext, UserNamesRevisionKey.Global);
-          _userNamesRevisionProvider.InvalidateRevision (UserNamesRevisionKey.Global);
+          IncrementRevision(executionContext, UserNamesRevisionKey.Global);
+          _userNamesRevisionProvider.InvalidateRevision(UserNamesRevisionKey.Global);
 
           isUserNamesRevisionInvalidated = true;
         }
 
-        if (IsUserRevisionRelevant (dataContainer))
+        if (IsUserRevisionRelevant(dataContainer))
         {
-          var user = GetUserForInvalidation (dataContainer);
+          var user = GetUserForInvalidation(dataContainer);
           if (user != null)
-            usersToInvalidate.Add (user);
+            usersToInvalidate.Add(user);
         }
 
-        if (typeof (User).IsAssignableFrom (dataContainer.DomainObjectType))
-          loadedUsers.Add (dataContainer.ID.GetHandle<User>(), dataContainer);
+        if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
+          loadedUsers.Add(dataContainer.ID.GetHandle<User>(), dataContainer);
       }
 
       var userNamesToInvalidate = new List<string>();
       var notLoadedUsers = new List<IDomainObjectHandle<User>>();
       foreach (var userID in usersToInvalidate)
       {
-        var userDataContainer = loadedUsers.GetValueOrDefault (userID);
+        var userDataContainer = loadedUsers.GetValueOrDefault(userID);
         if (userDataContainer != null)
         {
-          userNamesToInvalidate.Add (GetValue<string> (userDataContainer, _userNamePropertyDefinition));
+          var userName = GetValue<string>(userDataContainer, _userNamePropertyDefinition);
+          Assertion.IsNotNull(userName, "User{{{0}}}.UserName must not be null.", userDataContainer.ID);
+          userNamesToInvalidate.Add(userName);
 
           // For changed user names, also invalidate the original revision to ensure that the old user name cannot be used with state cache values.
-          var originalUserName = GetOriginalValueOrDefault<string> (userDataContainer, _userNamePropertyDefinition);
+          var originalUserName = GetOriginalValueOrDefault<string>(userDataContainer, _userNamePropertyDefinition);
           if (originalUserName != null)
-            userNamesToInvalidate.Add (originalUserName);
+            userNamesToInvalidate.Add(originalUserName);
         }
         else
         {
-          notLoadedUsers.Add (userID);
+          notLoadedUsers.Add(userID);
         }
       }
 
-      userNamesToInvalidate.AddRange (LoadUserNames (executionContext, notLoadedUsers));
+      userNamesToInvalidate.AddRange(LoadUserNames(executionContext, notLoadedUsers));
 
       foreach (var userName in userNamesToInvalidate)
       {
-        var revisionKey = new UserRevisionKey (userName);
-        IncrementRevision (executionContext, revisionKey);
-        _userRevisionProvider.InvalidateRevision (revisionKey);
+        var revisionKey = new UserRevisionKey(userName);
+        IncrementRevision(executionContext, revisionKey);
+        _userRevisionProvider.InvalidateRevision(revisionKey);
       }
 
       if (userNamesToInvalidate.Any())
       {
-        IncrementRevision (executionContext, UserRevisionKey.Global);
-        _userRevisionProvider.InvalidateRevision (UserRevisionKey.Global);
+        IncrementRevision(executionContext, UserRevisionKey.Global);
+        _userRevisionProvider.InvalidateRevision(UserRevisionKey.Global);
       }
     }
 
@@ -152,33 +154,37 @@ namespace Remotion.SecurityManager.Persistence
         yield break;
 
       //TODO RM-5702: Support for more than 2000 parameters
-      var userIDs = users.Select (u => (Guid) u.ObjectID.Value).ToList();
-      var query = QueryFactory.CreateQuery<string> (
+      var userIDs = users.Select(u => (Guid)u.ObjectID.Value).ToList();
+      var query = QueryFactory.CreateQuery<string>(
           "load usernames",
           QueryFactory.CreateLinqQuery<User>()
-              .Where (u => userIDs.Contains ((Guid) u.ID.Value))
-              .Select (u => u.UserName));
+              .Where(u => userIDs.Contains((Guid)u.ID.Value))
+              .Select(u => u.UserName));
 
-      var storageProviderCommand = _storageProviderCommandFactory.CreateForCustomQuery (query);
-      foreach (var queryResultRow in storageProviderCommand.Execute (executionContext))
-        yield return queryResultRow.GetConvertedValue<string> (0);
+      var storageProviderCommand = _storageProviderCommandFactory.CreateForCustomQuery(query);
+      foreach (var queryResultRow in storageProviderCommand.Execute(executionContext))
+      {
+        var loadUserName = queryResultRow.GetConvertedValue<string>(0);
+        Assertion.IsNotNull(loadUserName, "Expected database result cannot contain null values.");
+        yield return loadUserName;
+      }
     }
 
     private bool IsDomainRevisionRelevant (DataContainer dataContainer)
     {
-      if (typeof (MetadataObject).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(MetadataObject).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
-      if (typeof (Position).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(Position).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
-      if (typeof (GroupType).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(GroupType).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
-      if (typeof (Group).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(Group).IsAssignableFrom(dataContainer.DomainObjectType))
         return true; // Group.Parent, Group.GroupType, Group.UniqueIdentifier
 
-      if (typeof (Tenant).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(Tenant).IsAssignableFrom(dataContainer.DomainObjectType))
         return true; //Tenant.UniqueIdentifier, Tenant.Parent
 
       return false;
@@ -186,70 +192,70 @@ namespace Remotion.SecurityManager.Persistence
 
     private bool IsUserNamesRevisionRelevant (DataContainer dataContainer)
     {
-      if (typeof (User).IsAssignableFrom (dataContainer.DomainObjectType))
-        return dataContainer.HasValueChanged (_userNamePropertyDefinition);
+      if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
+        return dataContainer.HasValueChanged(_userNamePropertyDefinition);
 
       return false;
     }
 
     private bool IsUserRevisionRelevant (DataContainer dataContainer)
     {
-      if (typeof (User).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
         return true; //user.Username, user.Roles
 
-      if (typeof (Substitution).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(Substitution).IsAssignableFrom(dataContainer.DomainObjectType))
         return true;
 
       return false;
     }
 
-    private IDomainObjectHandle<User> GetUserForInvalidation (DataContainer dataContainer)
+    private IDomainObjectHandle<User>? GetUserForInvalidation (DataContainer dataContainer)
     {
-      if (typeof (User).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(User).IsAssignableFrom(dataContainer.DomainObjectType))
         return dataContainer.ID.GetHandle<User>();
 
-      if (typeof (Substitution).IsAssignableFrom (dataContainer.DomainObjectType))
+      if (typeof(Substitution).IsAssignableFrom(dataContainer.DomainObjectType))
       {
-        var objectID = GetValue<ObjectID> (dataContainer, _substitutionUserPropertyDefinition);
+        var objectID = GetValue<ObjectID>(dataContainer, _substitutionUserPropertyDefinition);
         if (objectID != null)
           return objectID.GetHandle<User>();
         else
           return null;
       }
 
-      throw new ArgumentException (
-          string.Format ("DataContainer type can only be User or Substitution but was '{0}'.", dataContainer.DomainObjectType),
+      throw new ArgumentException(
+          string.Format("DataContainer type can only be User or Substitution but was '{0}'.", dataContainer.DomainObjectType),
           "dataContainer");
     }
 
-    private TResult GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private TResult? GetValue<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
-      var valueAccess = dataContainer.State != StateType.Deleted ? ValueAccess.Current : ValueAccess.Original;
-      return (TResult) dataContainer.GetValueWithoutEvents (propertyDefinition, valueAccess);
+      var valueAccess = dataContainer.State.IsDeleted ? ValueAccess.Original : ValueAccess.Current;
+      return (TResult?)dataContainer.GetValueWithoutEvents(propertyDefinition, valueAccess);
     }
 
-    private TResult GetOriginalValueOrDefault<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
+    private TResult? GetOriginalValueOrDefault<TResult> (DataContainer dataContainer, PropertyDefinition propertyDefinition)
     {
-      if (!dataContainer.HasValueChanged (propertyDefinition))
+      if (!dataContainer.HasValueChanged(propertyDefinition))
         return default(TResult);
 
-      if (dataContainer.State != StateType.Changed)
+      if (!dataContainer.State.IsChanged)
         return default(TResult);
 
-      return (TResult) dataContainer.GetValueWithoutEvents (propertyDefinition, ValueAccess.Original);
+      return (TResult?)dataContainer.GetValueWithoutEvents(propertyDefinition, ValueAccess.Original);
     }
 
     private string GetPropertyIdentifierFromTypeAndShortName (Type domainObjectType, string shortPropertyName)
     {
-      return domainObjectType.FullName + "." + shortPropertyName;
+      return domainObjectType.GetFullNameChecked() + "." + shortPropertyName;
     }
 
     private void IncrementRevision (IRdbmsProviderCommandExecutionContext executionContext, IRevisionKey revisionKey)
     {
-      var query = Revision.GetIncrementRevisionQuery (revisionKey);
-      Assertion.IsTrue (query.QueryType == QueryType.Scalar);
-      var storageProviderCommand = _storageProviderCommandFactory.CreateForScalarQuery (query);
-      storageProviderCommand.Execute (executionContext);
+      var query = Revision.GetIncrementRevisionQuery(revisionKey);
+      Assertion.IsTrue(query.QueryType == QueryType.Scalar);
+      var storageProviderCommand = _storageProviderCommandFactory.CreateForScalarQuery(query);
+      storageProviderCommand.Execute(executionContext);
     }
   }
 }

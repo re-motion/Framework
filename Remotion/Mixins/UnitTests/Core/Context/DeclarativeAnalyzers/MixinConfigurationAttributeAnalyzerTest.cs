@@ -16,10 +16,10 @@
 // 
 using System;
 using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Context.DeclarativeAnalyzers;
 using Remotion.Mixins.Context.FluentBuilders;
-using Rhino.Mocks;
 
 namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
 {
@@ -28,39 +28,39 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
   {
     private string _fakeEntity;
 
-    private MixinConfigurationBuilder _fakeConfigurationBuilder;
+    private Mock<MixinConfigurationBuilder> _fakeConfigurationBuilder;
 
     [SetUp]
     public void SetUp ()
     {
       _fakeEntity = "test entity";
 
-      _fakeConfigurationBuilder = MockRepository.GenerateStub<MixinConfigurationBuilder> (new object[] { null });
+      _fakeConfigurationBuilder = new Mock<MixinConfigurationBuilder>(new object[] { null });
     }
 
     [Test]
     public void Analyze ()
     {
-      var attributeMock1 = MockRepository.GenerateStrictMock<IMixinConfigurationAttribute<string>> ();
-      var attributeMock2 = MockRepository.GenerateStrictMock<IMixinConfigurationAttribute<string>> ();
+      var attributeMock1 = new Mock<IMixinConfigurationAttribute<string>>(MockBehavior.Strict);
+      var attributeMock2 = new Mock<IMixinConfigurationAttribute<string>>(MockBehavior.Strict);
 
       Func<string, IEnumerable<IMixinConfigurationAttribute<string>>> fakeAttributeProvider = s =>
       {
-        Assert.That (s, Is.EqualTo (_fakeEntity));
-        return new[] { attributeMock1, attributeMock2 };
+        Assert.That(s, Is.EqualTo(_fakeEntity));
+        return new[] { attributeMock1.Object, attributeMock2.Object };
       };
-      var analyzer = new MixinConfigurationAttributeAnalyzer<string> (fakeAttributeProvider);
+      var analyzer = new MixinConfigurationAttributeAnalyzer<string>(fakeAttributeProvider);
 
-      attributeMock1.Stub (mock => mock.IgnoresDuplicates).Return (false);
-      attributeMock2.Stub (mock => mock.IgnoresDuplicates).Return (false);
+      attributeMock1.Setup(mock => mock.IgnoresDuplicates).Returns(false);
+      attributeMock2.Setup(mock => mock.IgnoresDuplicates).Returns(false);
 
-      attributeMock1.Expect (mock => mock.Apply (_fakeConfigurationBuilder, _fakeEntity));
-      attributeMock2.Expect (mock => mock.Apply (_fakeConfigurationBuilder, _fakeEntity));
-      
-      analyzer.Analyze (_fakeEntity, _fakeConfigurationBuilder);
+      attributeMock1.Setup(mock => mock.Apply(_fakeConfigurationBuilder.Object, _fakeEntity)).Verifiable();
+      attributeMock2.Setup(mock => mock.Apply(_fakeConfigurationBuilder.Object, _fakeEntity)).Verifiable();
 
-      attributeMock1.VerifyAllExpectations ();
-      attributeMock2.VerifyAllExpectations ();
+      analyzer.Analyze(_fakeEntity, _fakeConfigurationBuilder.Object);
+
+      attributeMock1.Verify();
+      attributeMock2.Verify();
     }
   }
 }

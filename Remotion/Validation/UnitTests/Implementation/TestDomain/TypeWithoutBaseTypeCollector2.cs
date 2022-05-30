@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.UnitTests.Implementation.TestDomain
 {
-  public class TypeWithoutBaseTypeCollector2 : ComponentValidationCollector<TypeWithoutBaseType>
+  public class TypeWithoutBaseTypeCollector2 : ValidationRuleCollectorBase<TypeWithoutBaseType>
   {
     public TypeWithoutBaseTypeCollector2 ()
     {
-      RemoveRule (t => t.Property2).Validator<NotEmptyValidator> ().Validator<MaximumLengthValidator, TypeWithoutBaseTypeCollector1> ();
+      RemoveRule(t => t.Property2).Validator<NotEmptyValidator>(_ => true).Validator<MaximumLengthValidator, TypeWithoutBaseTypeCollector1>();
     }
   }
 }

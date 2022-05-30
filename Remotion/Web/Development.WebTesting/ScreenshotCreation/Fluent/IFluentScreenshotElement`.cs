@@ -23,6 +23,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.Fluent
   /// Represents an object of type <typeparamref name="T"/> in the fluent screenshot API.
   /// </summary>
   public interface IFluentScreenshotElement<T> : IFluentScreenshotElement
+      where T : notnull
   {
     /// <summary>
     /// The <see cref="IScreenshotElementResolver{TElement}"/> that will be used 

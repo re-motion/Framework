@@ -31,41 +31,41 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
 
     public ObjectEndPointSetOneManyCommand (
         IRealObjectEndPoint modifiedEndPoint,
-        DomainObject newRelatedObject,
-        Action<DomainObject> oppositeObjectSetter,
+        DomainObject? newRelatedObject,
+        Action<DomainObject?> oppositeObjectSetter,
         IRelationEndPointProvider endPointProvider,
         IClientTransactionEventSink transactionEventSink)
-        : base (
+        : base(
             modifiedEndPoint,
             newRelatedObject,
             oppositeObjectSetter,
             transactionEventSink)
     {
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
 
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().IsAnonymous)
       {
-        var message = string.Format (
+        var message = string.Format(
             "EndPoint '{0}' is from a unidirectional relation - use a ObjectEndPointSetUnidirectionalCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "modifiedEndPoint");
+        throw new ArgumentException(message, "modifiedEndPoint");
       }
 
       if (modifiedEndPoint.Definition.GetOppositeEndPointDefinition().Cardinality == CardinalityType.One)
       {
-        var message = string.Format (
+        var message = string.Format(
             "EndPoint '{0}' is from a 1:1 relation - use a ObjectEndPointSetOneOneCommand instead.",
             modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "modifiedEndPoint");
+        throw new ArgumentException(message, "modifiedEndPoint");
       }
 
-      if (newRelatedObject == modifiedEndPoint.GetOppositeObject ())
+      if (newRelatedObject == modifiedEndPoint.GetOppositeObject())
       {
         var message =
-            string.Format (
+            string.Format(
                 "New related object for EndPoint '{0}' is the same as its old value - use a ObjectEndPointSetSameCommand instead.",
                 modifiedEndPoint.Definition.PropertyName);
-        throw new ArgumentException (message, "newRelatedObject");
+        throw new ArgumentException(message, "newRelatedObject");
       }
 
       _endPointProvider = endPointProvider;
@@ -90,16 +90,18 @@ namespace Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModificati
     /// </remarks>
     public override ExpandedCommand ExpandToAllRelatedObjects ()
     {
-      var newRelatedEndPoint = (ICollectionEndPoint) GetOppositeEndPoint (ModifiedEndPoint, NewRelatedObject, _endPointProvider);
-      var oldRelatedEndPoint = (ICollectionEndPoint) GetOppositeEndPoint (ModifiedEndPoint, OldRelatedObject, _endPointProvider);
+      var newRelatedEndPoint = (ICollectionEndPoint<ICollectionEndPointData>)GetOppositeEndPoint(ModifiedEndPoint, NewRelatedObject, _endPointProvider);
+      var oldRelatedEndPoint = (ICollectionEndPoint<ICollectionEndPointData>)GetOppositeEndPoint(ModifiedEndPoint, OldRelatedObject, _endPointProvider);
 
-      var bidirectionalModification = new ExpandedCommand (
+      var removedRelatedObject = DomainObject;
+
+      var bidirectionalModification = new ExpandedCommand(
           // => order.Customer = newCustomer
           this,
           // => newCustomer.Orders.Add (order)
-          newRelatedEndPoint.CreateAddCommand (ModifiedEndPoint.GetDomainObject()),
+          newRelatedEndPoint.CreateAddCommand(removedRelatedObject),
           // => oldCustomer.Orders.Remove (order) (remove)
-          oldRelatedEndPoint.CreateRemoveCommand (ModifiedEndPoint.GetDomainObject()));
+          oldRelatedEndPoint.CreateRemoveCommand(removedRelatedObject));
       return bidirectionalModification;
     }
   }

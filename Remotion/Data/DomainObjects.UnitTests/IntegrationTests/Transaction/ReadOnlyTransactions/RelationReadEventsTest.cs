@@ -15,13 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.RhinoMocks.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Rhino.Mocks;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.ReadOnlyTransactions
 {
@@ -38,11 +38,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     {
       base.SetUp();
 
-      _loadedOrder = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Order1.GetObject<Order> ());
-      _relatedCustomer = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.Customer1.GetObject<Customer> ());
-      _relatedOrderTicket = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket> ());
-      _relatedOrderItem1 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
-      _relatedOrderItem2 = ExecuteInWriteableSubTransaction (() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>());
+      _loadedOrder = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Order1.GetObject<Order>());
+      _relatedCustomer = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.Customer1.GetObject<Customer>());
+      _relatedOrderTicket = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>());
+      _relatedOrderItem1 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderItem1.GetObject<OrderItem>());
+      _relatedOrderItem2 = ExecuteInWriteableSubTransaction(() => DomainObjectIDs.OrderItem2.GetObject<OrderItem>());
 
       InstallListenerMock();
       InstallExtensionMock();
@@ -52,46 +52,46 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void RelationReadEvents_OnlyRaisedInWriteableSub_NonVirtualEndPoint ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Order), "Customer");
-      ExpectRelationReadEvents (WriteableSubTransaction, _loadedOrder, endPointDefinition, _relatedCustomer);
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "Customer");
+      ExpectRelationReadEvents(WriteableSubTransaction, _loadedOrder, endPointDefinition, _relatedCustomer);
 
-      Dev.Null = ExecuteInWriteableSubTransaction (() => _loadedOrder.Customer);
+      Dev.Null = ExecuteInWriteableSubTransaction(() => _loadedOrder.Customer);
 
-      AssertNoRelationReadEvents (ReadOnlyMiddleTransaction);
-      AssertNoRelationReadEvents (ReadOnlyRootTransaction);
+      AssertNoRelationReadEvents(ReadOnlyMiddleTransaction);
+      AssertNoRelationReadEvents(ReadOnlyRootTransaction);
 
-      ListenerDynamicMock.VerifyAllExpectations();
-      ExtensionStrictMock.VerifyAllExpectations();
+      ListenerDynamicMock.Verify();
+      ExtensionStrictMock.Verify();
     }
 
     [Test]
     public void RelationReadEvents_OnlyRaisedInWriteableSub_VirtualEndPoint_One ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
-      ExpectRelationReadEvents (WriteableSubTransaction, _loadedOrder, endPointDefinition, _relatedOrderTicket);
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
+      ExpectRelationReadEvents(WriteableSubTransaction, _loadedOrder, endPointDefinition, _relatedOrderTicket);
 
-      Dev.Null = ExecuteInWriteableSubTransaction (() => _loadedOrder.OrderTicket);
+      Dev.Null = ExecuteInWriteableSubTransaction(() => _loadedOrder.OrderTicket);
 
-      AssertNoRelationReadEvents (ReadOnlyMiddleTransaction);
-      AssertNoRelationReadEvents (ReadOnlyRootTransaction);
+      AssertNoRelationReadEvents(ReadOnlyMiddleTransaction);
+      AssertNoRelationReadEvents(ReadOnlyRootTransaction);
 
-      ListenerDynamicMock.VerifyAllExpectations ();
-      ExtensionStrictMock.VerifyAllExpectations ();
+      ListenerDynamicMock.Verify();
+      ExtensionStrictMock.Verify();
     }
 
     [Test]
     public void RelationReadEvents_OnlyRaisedInWriteableSub_VirtualEndPoint_Many ()
     {
-      var endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
-      ExpectRelationReadEvents (WriteableSubTransaction, _loadedOrder, endPointDefinition, new[] { _relatedOrderItem1, _relatedOrderItem2 });
+      var endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
+      ExpectRelationReadEvents(WriteableSubTransaction, _loadedOrder, endPointDefinition, new[] { _relatedOrderItem1, _relatedOrderItem2 });
 
-      ExecuteInWriteableSubTransaction (() => _loadedOrder.OrderItems.EnsureDataComplete());
+      ExecuteInWriteableSubTransaction(() => _loadedOrder.OrderItems.EnsureDataComplete());
 
-      AssertNoRelationReadEvents (ReadOnlyMiddleTransaction);
-      AssertNoRelationReadEvents (ReadOnlyRootTransaction);
+      AssertNoRelationReadEvents(ReadOnlyMiddleTransaction);
+      AssertNoRelationReadEvents(ReadOnlyRootTransaction);
 
-      ListenerDynamicMock.VerifyAllExpectations ();
-      ExtensionStrictMock.VerifyAllExpectations ();
+      ListenerDynamicMock.Verify();
+      ExtensionStrictMock.Verify();
     }
 
     private void ExpectRelationReadEvents (
@@ -100,19 +100,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
         IRelationEndPointDefinition endPointDefinition,
         DomainObject relatedDomainObject)
     {
-      using (ListenerDynamicMock.GetMockRepository().Ordered())
-      {
-        ListenerDynamicMock.Expect (mock => mock.RelationReading (clientTransaction, domainObject, endPointDefinition, ValueAccess.Current));
-        ListenerDynamicMock.Expect (
-            mock => mock.RelationRead (clientTransaction, domainObject, endPointDefinition, relatedDomainObject, ValueAccess.Current));
-      }
+      var sequence1 = new MockSequence();
+      ListenerDynamicMock
+          .InSequence(sequence1)
+          .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
+          .Verifiable();
+      ListenerDynamicMock
+          .InSequence(sequence1)
+          .Setup(mock => mock.RelationRead(clientTransaction, domainObject, endPointDefinition, relatedDomainObject, ValueAccess.Current))
+          .Verifiable();
 
-      using (ExtensionStrictMock.GetMockRepository().Ordered())
-      {
-        ExtensionStrictMock.Expect (mock => mock.RelationReading (clientTransaction, domainObject, endPointDefinition, ValueAccess.Current));
-        ExtensionStrictMock.Expect (
-            mock => mock.RelationRead (clientTransaction, domainObject, endPointDefinition, relatedDomainObject, ValueAccess.Current));
-      }
+      var sequence2 = new MockSequence();
+
+      ExtensionStrictMock
+          .InSequence(sequence2)
+          .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
+          .Verifiable();
+
+      ExtensionStrictMock
+          .InSequence(sequence2)
+          .Setup(mock => mock.RelationRead(clientTransaction, domainObject, endPointDefinition, relatedDomainObject, ValueAccess.Current))
+          .Verifiable();
     }
 
     private void ExpectRelationReadEvents (
@@ -121,74 +129,96 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
         IRelationEndPointDefinition endPointDefinition,
         DomainObject[] relatedDomainObjects)
     {
-      using (ListenerDynamicMock.GetMockRepository ().Ordered ())
-      {
-        ListenerDynamicMock.Expect (mock => mock.RelationReading (clientTransaction, domainObject, endPointDefinition, ValueAccess.Current));
-        ListenerDynamicMock.Expect (
-            mock => mock.RelationRead (
-                Arg.Is (clientTransaction),
-                Arg.Is (domainObject),
-                Arg.Is (endPointDefinition),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.List.Equivalent (relatedDomainObjects),
-                Arg.Is (ValueAccess.Current)));
-      }
+      var sequence1 = new MockSequence();
+      ListenerDynamicMock
+          .InSequence(sequence1)
+          .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
+          .Verifiable();
+      ListenerDynamicMock
+          .InSequence(sequence1)
+          .Setup(
+              mock => mock.RelationRead(
+                  clientTransaction,
+                  domainObject,
+                  endPointDefinition,
+                  It.Is<IReadOnlyCollectionData<DomainObject>>(p => p.SetEquals(relatedDomainObjects)),
+                  ValueAccess.Current))
+          .Verifiable();
 
-      using (ExtensionStrictMock.GetMockRepository ().Ordered ())
-      {
-        ExtensionStrictMock.Expect (mock => mock.RelationReading (clientTransaction, domainObject, endPointDefinition, ValueAccess.Current));
-        ExtensionStrictMock.Expect (
-            mock => mock.RelationRead (
-                Arg.Is (clientTransaction),
-                Arg.Is (domainObject),
-                Arg.Is (endPointDefinition),
-                Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.List.Equivalent (relatedDomainObjects),
-                Arg.Is (ValueAccess.Current)));
-      }
+      var sequence2 = new MockSequence();
+
+      ExtensionStrictMock
+          .InSequence(sequence2)
+          .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
+          .Verifiable();
+
+      ExtensionStrictMock
+          .InSequence(sequence2)
+          .Setup(
+              mock => mock.RelationRead(
+                  clientTransaction,
+                  domainObject,
+                  endPointDefinition,
+                  It.Is<IReadOnlyCollectionData<DomainObject>>(p => p.SetEquals(relatedDomainObjects)),
+                  ValueAccess.Current))
+          .Verifiable();
     }
 
     private void AssertNoRelationReadEvents (ClientTransaction clientTransaction)
     {
-      ListenerDynamicMock.AssertWasNotCalled (
-          mock => mock.RelationReading (
-              Arg.Is (clientTransaction),
-              Arg<DomainObject>.Is.Anything,
-              Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<ValueAccess>.Is.Anything));
-      ListenerDynamicMock.AssertWasNotCalled (
-          mock => mock.RelationRead (
-              Arg.Is (clientTransaction),
-              Arg<DomainObject>.Is.Anything,
-              Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<ValueAccess>.Is.Anything));
-      ListenerDynamicMock.AssertWasNotCalled (
-          mock => mock.RelationRead (
-              Arg.Is (clientTransaction),
-              Arg<DomainObject>.Is.Anything,
-              Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Is.Anything,
-              Arg<ValueAccess>.Is.Anything));
+      ListenerDynamicMock
+          .Verify(
+              mock => mock.RelationReading(
+                  clientTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<ValueAccess>()),
+              Times.Never());
+      ListenerDynamicMock
+          .Verify(
+              mock => mock.RelationRead(
+                  clientTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<ValueAccess>()),
+              Times.Never());
+      ListenerDynamicMock
+          .Verify(
+              mock => mock.RelationRead(
+                  clientTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<IReadOnlyCollectionData<DomainObject>>(),
+                  It.IsAny<ValueAccess>()),
+              Times.Never());
 
-      ExtensionStrictMock.AssertWasNotCalled (
-          mock => mock.RelationReading (
-              Arg.Is (clientTransaction),
-              Arg<DomainObject>.Is.Anything,
-              Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<ValueAccess>.Is.Anything));
-      ExtensionStrictMock.AssertWasNotCalled (
-          mock => mock.RelationRead (
-              Arg.Is (clientTransaction),
-              Arg<DomainObject>.Is.Anything,
-              Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<DomainObject>.Is.Anything,
-              Arg<ValueAccess>.Is.Anything));
-      ExtensionStrictMock.AssertWasNotCalled (
-          mock => mock.RelationRead (
-              Arg.Is (clientTransaction),
-              Arg<DomainObject>.Is.Anything,
-              Arg<IRelationEndPointDefinition>.Is.Anything,
-              Arg<ReadOnlyDomainObjectCollectionAdapter<DomainObject>>.Is.Anything,
-              Arg<ValueAccess>.Is.Anything));
+      ExtensionStrictMock
+          .Verify(
+              mock => mock.RelationReading(
+                  clientTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<ValueAccess>()),
+              Times.Never());
+      ExtensionStrictMock
+          .Verify(
+              mock => mock.RelationRead(
+                  clientTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<ValueAccess>()),
+              Times.Never());
+      ExtensionStrictMock
+          .Verify(
+              mock => mock.RelationRead(
+                  clientTransaction,
+                  It.IsAny<DomainObject>(),
+                  It.IsAny<IRelationEndPointDefinition>(),
+                  It.IsAny<IReadOnlyCollectionData<DomainObject>>(),
+                  It.IsAny<ValueAccess>()),
+              Times.Never());
     }
   }
 }

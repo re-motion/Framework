@@ -30,23 +30,23 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void FailsIfClassMixinDependencyNotFulfilled ()
     {
-      ClassContext context = new ClassContextBuilder (typeof (TargetClassWithAdditionalDependencies)).AddMixin<MixinWithAdditionalClassDependency> ().WithDependency<MixinWithNoAdditionalDependency> ().BuildClassContext ();
+      ClassContext context = new ClassContextBuilder(typeof(TargetClassWithAdditionalDependencies)).AddMixin<MixinWithAdditionalClassDependency>().WithDependency<MixinWithNoAdditionalDependency>().BuildClassContext();
 
-      TargetClassDefinition definition = TargetClassDefinitionFactory.CreateWithoutValidation (context);
-      var log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalClassDependency)]);
+      TargetClassDefinition definition = TargetClassDefinitionFactory.CreateWithoutValidation(context);
+      var log = Validator.Validate(definition.Mixins[typeof(MixinWithAdditionalClassDependency)]);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log), Is.True);
     }
 
     [Test]
     public void FailsIfInterfaceMixinDependencyNotFulfilled ()
     {
-      ClassContext context = new ClassContextBuilder (typeof (TargetClassWithAdditionalDependencies)).AddMixin<MixinWithAdditionalInterfaceDependency> ().WithDependency<IMixinWithAdditionalClassDependency> ().BuildClassContext ();
+      ClassContext context = new ClassContextBuilder(typeof(TargetClassWithAdditionalDependencies)).AddMixin<MixinWithAdditionalInterfaceDependency>().WithDependency<IMixinWithAdditionalClassDependency>().BuildClassContext();
 
-      TargetClassDefinition definition = TargetClassDefinitionFactory.CreateWithoutValidation (context);
-      var log = Validator.Validate (definition.Mixins[typeof (MixinWithAdditionalInterfaceDependency)]);
+      TargetClassDefinition definition = TargetClassDefinitionFactory.CreateWithoutValidation(context);
+      var log = Validator.Validate(definition.Mixins[typeof(MixinWithAdditionalInterfaceDependency)]);
 
-      Assert.That (HasFailure ("Remotion.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log), Is.True);
+      Assert.That(HasFailure("Remotion.Mixins.Validation.Rules.DefaultMixinDependencyRules.DependencyMustBeSatisfiedByAnotherMixin", log), Is.True);
     }
 
   }

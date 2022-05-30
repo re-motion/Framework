@@ -29,19 +29,21 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.
 
     public TableDefinitionFinder (IRdbmsPersistenceModelProvider rdbmsPersistenceModelProvider)
     {
-      ArgumentUtility.CheckNotNull ("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
+      ArgumentUtility.CheckNotNull("rdbmsPersistenceModelProvider", rdbmsPersistenceModelProvider);
 
       _rdbmsPersistenceModelProvider = rdbmsPersistenceModelProvider;
     }
 
     public TableDefinition GetTableDefinition (ObjectID objectID)
     {
-      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<TableDefinition> (
-          _rdbmsPersistenceModelProvider.GetEntityDefinition (objectID.ClassDefinition),
+      ArgumentUtility.CheckNotNull("objectID", objectID);
+
+      return InlineRdbmsStorageEntityDefinitionVisitor.Visit<TableDefinition>(
+          _rdbmsPersistenceModelProvider.GetEntityDefinition(objectID.ClassDefinition),
           (table, continuation) => table,
-          (filterView, continuation) => continuation (filterView.BaseEntity),
-          (unionView, continuation) => { throw new InvalidOperationException ("An ObjectID's EntityDefinition cannot be a UnionViewDefinition."); },
-          (emptyView, continuation) => { throw new InvalidOperationException ("An ObjectID's EntityDefinition cannot be a EmptyViewDefinition."); });
+          (filterView, continuation) => continuation(filterView.BaseEntity),
+          (unionView, continuation) => { throw new InvalidOperationException("An ObjectID's EntityDefinition cannot be a UnionViewDefinition."); },
+          (emptyView, continuation) => { throw new InvalidOperationException("An ObjectID's EntityDefinition cannot be a EmptyViewDefinition."); });
     }
   }
 }

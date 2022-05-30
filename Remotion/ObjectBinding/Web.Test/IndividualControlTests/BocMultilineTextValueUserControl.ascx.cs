@@ -22,6 +22,7 @@ using System.Web.UI.WebControls;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
@@ -57,11 +58,12 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   protected WebButton ReadOnlyCVTestSetNewValueButton;
   protected HtmlTable FormGrid;
   protected BindableObjectDataSourceControl CurrentObject;
+  protected BindableObjectDataSourceControlValidationResultDispatchingValidator CurrentObjectValidationResultDispatchingValidator;
 
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
- 
+
     this.CVField.TextChanged += new EventHandler(this.CVField_TextChanged);
     this.CVTestSetNullButton.Click += new EventHandler(this.CVTestSetNullButton_Click);
     this.CVTestSetNewValueButton.Click += new EventHandler(this.CVTestSetNewValueButton_Click);
@@ -74,82 +76,83 @@ public class BocMultilineTextValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
+  public override BindableObjectDataSourceControlValidationResultDispatchingValidator DataSourceValidationResultDispatchingValidator
+  {
+    get { return CurrentObjectValidationResultDispatchingValidator; }
+  }
+
   override protected void OnLoad (EventArgs e)
   {
-    base.OnLoad (e);
+    base.OnLoad(e);
 
-    Person person = (Person) CurrentObject.BusinessObject;
+    Person person = (Person)CurrentObject.BusinessObject;
 
-    UnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
     //UnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    UnboundReadOnlyCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
-    UnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
-    DisabledUnboundCVField.LoadUnboundValue (person.CV, IsPostBack);
-    DisabledUnboundReadOnlyCVField.Property = (IBusinessObjectStringProperty) CurrentObject.BusinessObjectClass.GetPropertyDefinition("CV");
-    DisabledUnboundReadOnlyCVField.LoadUnboundValue (person.CV, IsPostBack);
-    
+    UnboundReadOnlyCVField.LoadUnboundValue(person.CV, IsPostBack);
+    DisabledUnboundCVField.LoadUnboundValue(person.CV, IsPostBack);
+    DisabledUnboundReadOnlyCVField.LoadUnboundValue(person.CV, IsPostBack);
+
     if (!IsPostBack)
     {
       if (Page is ISmartNavigablePage)
-        ((ISmartNavigablePage) Page).SetFocus (CVField);
+        ((ISmartNavigablePage)Page).SetFocus(CVField);
     }
   }
 
   override protected void OnPreRender (EventArgs e)
   {
-    base.OnPreRender (e);
+    base.OnPreRender(e);
 
-    SetDebugLabel (CVField, CVFieldValueLabel);
-    SetDebugLabel (ReadOnlyCVField, ReadOnlyCVFieldValueLabel);
-    SetDebugLabel (UnboundCVField, UnboundCVFieldValueLabel);
-    SetDebugLabel (UnboundReadOnlyCVField, UnboundReadOnlyCVFieldValueLabel);
-    SetDebugLabel (DisabledCVField, DisabledCVFieldValueLabel);
-    SetDebugLabel (DisabledReadOnlyCVField, DisabledReadOnlyCVFieldValueLabel);
-    SetDebugLabel (DisabledUnboundCVField, DisabledUnboundCVFieldValueLabel);
-    SetDebugLabel (DisabledUnboundReadOnlyCVField, DisabledUnboundReadOnlyCVFieldValueLabel);
+    SetDebugLabel(CVField, CVFieldValueLabel);
+    SetDebugLabel(ReadOnlyCVField, ReadOnlyCVFieldValueLabel);
+    SetDebugLabel(UnboundCVField, UnboundCVFieldValueLabel);
+    SetDebugLabel(UnboundReadOnlyCVField, UnboundReadOnlyCVFieldValueLabel);
+    SetDebugLabel(DisabledCVField, DisabledCVFieldValueLabel);
+    SetDebugLabel(DisabledReadOnlyCVField, DisabledReadOnlyCVFieldValueLabel);
+    SetDebugLabel(DisabledUnboundCVField, DisabledUnboundCVFieldValueLabel);
+    SetDebugLabel(DisabledUnboundReadOnlyCVField, DisabledUnboundReadOnlyCVFieldValueLabel);
   }
 
   private void SetDebugLabel (BocMultilineTextValue control, Label label)
   {
    if (control.Value != null)
    {
-     label.Text = string.Join ("<br />", control.Value.Select (HttpUtility.HtmlEncode));
+     label.Text = string.Join("<br />", control.Value.Select(HttpUtility.HtmlEncode));
    }
    else
       label.Text = "not set";
   }
 
-  private void CVTestSetNullButton_Click(object sender, EventArgs e)
+  private void CVTestSetNullButton_Click (object sender, EventArgs e)
   {
     CVField.Value = null;
   }
 
-  private void CVTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void CVTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     CVField.Value = new string[] {"Foo", "Bar"};
   }
 
-  private void ReadOnlyCVTestSetNullButton_Click(object sender, EventArgs e)
+  private void ReadOnlyCVTestSetNullButton_Click (object sender, EventArgs e)
   {
     ReadOnlyCVField.Value = null;
   }
 
-  private void ReadOnlyCVTestSetNewValueButton_Click(object sender, EventArgs e)
+  private void ReadOnlyCVTestSetNewValueButton_Click (object sender, EventArgs e)
   {
     ReadOnlyCVField.Value = new string[] {"Foo", "Bar"};
   }
 
-  private void CVField_TextChanged(object sender, EventArgs e)
+  private void CVField_TextChanged (object sender, EventArgs e)
   {
     if (CVField.Value != null)
-      CVFieldTextChangedLabel.Text = string.Join ("<br />", CVField.Value);
+      CVFieldTextChangedLabel.Text = string.Join("<br />", CVField.Value);
     else
       CVFieldTextChangedLabel.Text = "not set";
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
+	override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
@@ -157,12 +160,12 @@ public class BocMultilineTextValueUserControl : BaseUserControl
 		InitializeComponent();
 		base.OnInit(e);
 	}
-	
+
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
 	/// </summary>
-	private void InitializeComponent()
+	private void InitializeComponent ()
 	{
 
   }

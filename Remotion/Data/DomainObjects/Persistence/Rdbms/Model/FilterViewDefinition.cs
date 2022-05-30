@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
         IEnumerable<IRdbmsStoragePropertyDefinition> dataProperties,
         IEnumerable<IIndexDefinition> indexes,
         IEnumerable<EntityNameDefinition> synonyms)
-        : base (
+        : base(
             storageProviderDefinition,
             viewName,
             objectIDProperty,
@@ -50,14 +50,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
             indexes,
             synonyms)
     {
-      ArgumentUtility.CheckNotNull ("baseEntity", baseEntity);
-      ArgumentUtility.CheckNotNull ("classIDs", classIDs);
+      ArgumentUtility.CheckNotNull("baseEntity", baseEntity);
+      ArgumentUtility.CheckNotNull("classIDs", classIDs);
 
       var classIDsList = classIDs.ToList().AsReadOnly();
-      ArgumentUtility.CheckNotNullOrEmpty ("classIDs", classIDsList);
-      
+      ArgumentUtility.CheckNotNullOrEmpty("classIDs", classIDsList);
+
       if (!(baseEntity is TableDefinition || baseEntity is FilterViewDefinition))
-        throw new ArgumentException ("The base entity must either be a TableDefinition or a FilterViewDefinition.", "baseEntity");
+        throw new ArgumentException("The base entity must either be a TableDefinition or a FilterViewDefinition.", "baseEntity");
 
       _baseEntity = baseEntity;
       _classIDs = classIDsList;
@@ -78,15 +78,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.Model
     {
       var current = BaseEntity;
       while (current is FilterViewDefinition)
-        current = ((FilterViewDefinition) current).BaseEntity;
+        current = ((FilterViewDefinition)current).BaseEntity;
 
-      return (TableDefinition) current;
+      return (TableDefinition)current;
     }
 
     public override void Accept (IRdbmsStorageEntityDefinitionVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitFilterViewDefinition (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.VisitFilterViewDefinition(this);
     }
   }
 }

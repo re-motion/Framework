@@ -30,40 +30,46 @@ namespace Remotion.Reflection
   /// <threadsafety static="true" instance="false"/>
   public static class ContextAwareTypeUtility
   {
-    private static readonly Lazy<ITypeDiscoveryService> s_defaultTypeDiscoveryService =
-        new Lazy<ITypeDiscoveryService> (TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService, 
-          LazyThreadSafetyMode.ExecutionAndPublication);
+    /// <summary>Workaround to allow reflection to reset the fields since setting a static readonly field is not supported in .NET 3.0 and later.</summary>
+    private class Fields
+    {
+      public readonly Lazy<ITypeDiscoveryService> DefaultTypeDiscoveryService =
+          new Lazy<ITypeDiscoveryService>(
+              () => TypeDiscoveryConfiguration.Current.CreateTypeDiscoveryService(),
+              LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private static readonly Lazy<ITypeResolutionService> s_defaultTypeResolutionService =
-        new Lazy<ITypeResolutionService> (TypeResolutionConfiguration.Current.CreateTypeResolutionService, 
-          LazyThreadSafetyMode.ExecutionAndPublication);
+      public readonly Lazy<ITypeResolutionService> DefaultTypeResolutionService =
+          new Lazy<ITypeResolutionService>(
+              () => TypeResolutionConfiguration.Current.CreateTypeResolutionService(),
+              LazyThreadSafetyMode.ExecutionAndPublication);
+    }
+
+    private static readonly Fields s_fields = new Fields();
 
     /// <summary>
-    /// Gets the current context-specific <see cref="ITypeDiscoveryService"/>. If <see cref="DesignerUtility.IsDesignMode"/> is set to 
-    /// <see langword="true" />, the designer's <see cref="ITypeDiscoveryService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
+    /// Gets the current context-specific <see cref="ITypeDiscoveryService"/>. If an <see cref="T:System.ComponentModel.Design.IDesignerHost"/> is available,
+    /// the designer's <see cref="ITypeDiscoveryService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
     /// is used to create a new  <see cref="ITypeDiscoveryService"/> when the property is first retrieved. That instance is stored for later uses.
     /// </summary>
     /// <returns>The current context-specific <see cref="ITypeDiscoveryService"/>.</returns>
     public static ITypeDiscoveryService GetTypeDiscoveryService ()
     {
-      if (DesignerUtility.IsDesignMode)
-        return (ITypeDiscoveryService) DesignerUtility.DesignModeHelper.DesignerHost.GetService (typeof (ITypeDiscoveryService));
+      // Here you could choose to get the ITypeDiscoveryService from IDesignerHost.GetService (typeof (ITypeDiscoveryService)) instead of the resolved one.
 
-      return s_defaultTypeDiscoveryService.Value;
+      return s_fields.DefaultTypeDiscoveryService.Value;
     }
 
     /// <summary>
-    /// Gets the current context-specific <see cref="ITypeResolutionService"/>. If <see cref="DesignerUtility.IsDesignMode"/> is set to 
-    /// <see langword="true" />, the designer's <see cref="ITypeResolutionService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
+    /// Gets the current context-specific <see cref="ITypeResolutionService"/>. If an <see cref="T:System.ComponentModel.Design.IDesignerHost"/> is available,
+    /// the designer's <see cref="ITypeResolutionService"/> is returned. Otherwise, the <see cref="T:Remotion.Configuration.TypeDiscovery.TypeDiscoveryConfiguration"/> 
     /// is used to create a new  <see cref="ITypeResolutionService"/> when the property is first retrieved. That instance is stored for later uses.
     /// </summary>
     /// <returns>The current context-specific <see cref="ITypeResolutionService"/>.</returns>
     public static ITypeResolutionService GetTypeResolutionService ()
     {
-      if (DesignerUtility.IsDesignMode)
-        return (ITypeResolutionService) DesignerUtility.DesignModeHelper.DesignerHost.GetService (typeof (ITypeResolutionService));
+      // Here you could choose to get the ITypeResolutionService from IDesignerHost.GetService (typeof (ITypeResolutionService)) instead of the resolved one.
 
-      return s_defaultTypeResolutionService.Value;
+      return s_fields.DefaultTypeResolutionService.Value;
     }
   }
 }

@@ -29,22 +29,22 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.DataReaders
   {
     public int GetOrdinal (ColumnDefinition columnDefinition, IDataReader dataReader)
     {
-      ArgumentUtility.CheckNotNull ("columnDefinition", columnDefinition);
-      ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+      ArgumentUtility.CheckNotNull("columnDefinition", columnDefinition);
+      ArgumentUtility.CheckNotNull("dataReader", dataReader);
 
       try
       {
-        return dataReader.GetOrdinal (columnDefinition.Name);
+        return dataReader.GetOrdinal(columnDefinition.Name);
       }
       catch (IndexOutOfRangeException ex)
       {
-        var message = string.Format (
+        var message = string.Format(
           "The column '{0}' was not found in the query result. The included columns are: {1}.",
           columnDefinition.Name,
-          string.Join (", ", Enumerable.Range (0, dataReader.FieldCount).Select (dataReader.GetName)));
-        throw new RdbmsProviderException (message, ex);
+          string.Join(", ", Enumerable.Range(0, dataReader.FieldCount).Select(dataReader.GetName)));
+        throw new RdbmsProviderException(message, ex);
       }
-      
+
     }
   }
 }

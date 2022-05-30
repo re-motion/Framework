@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class WebTabStripTestFunction : WxeFunction
   {
     public WebTabStripTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("WebTabStripTest.aspx");
+    private WxeStep Step1 = new WxePageStep("WebTabStripTest.aspx");
   }
 }

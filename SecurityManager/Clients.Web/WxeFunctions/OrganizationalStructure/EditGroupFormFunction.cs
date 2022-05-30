@@ -33,12 +33,12 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     }
 
     protected EditGroupFormFunction (ITransactionMode transactionMode, params object[] args)
-      : base (transactionMode, args)
+      : base(transactionMode, args)
     {
     }
 
-    public EditGroupFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<Group> currentObjectHandle)
-      : base (transactionMode, currentObjectHandle)
+    public EditGroupFormFunction (ITransactionMode transactionMode, [CanBeNull] IDomainObjectHandle<Group>? currentObjectHandle)
+      : base(transactionMode, currentObjectHandle)
     {
     }
 
@@ -46,11 +46,11 @@ namespace Remotion.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStruct
     {
       if (CurrentObject == null)
       {
-        CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup ();
-        CurrentObject.Tenant = TenantHandle.GetObject ();
+        CurrentObject = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup();
+        CurrentObject.Tenant = TenantHandle.GetObject();
       }
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditGroupForm), "UI/OrganizationalStructure/EditGroupForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep(typeof(EditGroupForm), "UI/OrganizationalStructure/EditGroupForm.aspx");
   }
 }

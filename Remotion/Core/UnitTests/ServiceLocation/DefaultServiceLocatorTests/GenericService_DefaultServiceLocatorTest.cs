@@ -27,26 +27,26 @@ namespace Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests
     public void GetInstance_TypeWithGenericServiceInterface_AndImplementationClosedDuringDefinition ()
     {
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (
-          CreateSingleServiceConfigurationEntry (typeof (ITestGeneric<int>), typeof (TestGenericImplementationClosedWithInt)));
-      serviceLocator.Register (
-          CreateSingleServiceConfigurationEntry (typeof (ITestGeneric<string>), typeof (TestGenericImplementationClosedWithString)));
+      serviceLocator.Register(
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<int>), typeof(TestGenericImplementationClosedWithInt)));
+      serviceLocator.Register(
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<string>), typeof(TestGenericImplementationClosedWithString)));
 
-      Assert.That (serviceLocator.GetInstance (typeof (ITestGeneric<int>)), Is.TypeOf<TestGenericImplementationClosedWithInt>());
-      Assert.That (serviceLocator.GetInstance (typeof (ITestGeneric<string>)), Is.TypeOf<TestGenericImplementationClosedWithString>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<int>)), Is.TypeOf<TestGenericImplementationClosedWithInt>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<string>)), Is.TypeOf<TestGenericImplementationClosedWithString>());
     }
 
     [Test]
     public void GetInstance_TypeWithGenericServiceInterface_AndImplementationClosedDuringRegistration ()
     {
       var serviceLocator = CreateServiceLocator();
-      serviceLocator.Register (
-          CreateSingleServiceConfigurationEntry (typeof (ITestGeneric<int>), typeof (TestGenericImplementation<int>)));
-      serviceLocator.Register (
-          CreateSingleServiceConfigurationEntry (typeof (ITestGeneric<string>), typeof (TestGenericImplementation<string>)));
+      serviceLocator.Register(
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<int>), typeof(TestGenericImplementation<int>)));
+      serviceLocator.Register(
+          CreateSingleServiceConfigurationEntry(typeof(ITestGeneric<string>), typeof(TestGenericImplementation<string>)));
 
-      Assert.That (serviceLocator.GetInstance (typeof (ITestGeneric<int>)), Is.TypeOf<TestGenericImplementation<int>>());
-      Assert.That (serviceLocator.GetInstance (typeof (ITestGeneric<string>)), Is.TypeOf<TestGenericImplementation<string>>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<int>)), Is.TypeOf<TestGenericImplementation<int>>());
+      Assert.That(serviceLocator.GetInstance(typeof(ITestGeneric<string>)), Is.TypeOf<TestGenericImplementation<string>>());
     }
   }
 }

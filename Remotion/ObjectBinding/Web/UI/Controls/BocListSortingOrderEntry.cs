@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
@@ -32,13 +33,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly bool _isEmpty;
 
     [NonSerialized]
-    private readonly IBocSortableColumnDefinition _column;
+    private readonly IBocSortableColumnDefinition? _column;
 
     public BocListSortingOrderEntry (IBocSortableColumnDefinition column, SortingDirection direction)
     {
-      ArgumentUtility.CheckNotNull ("column", column);
+      ArgumentUtility.CheckNotNull("column", column);
       if (!column.IsSortable)
-        throw new ArgumentException ("BocListSortingOrderEntry can only use columns with IBocSortableColumnDefinition.IsSortable set true.", "column");
+        throw new ArgumentException("BocListSortingOrderEntry can only use columns with IBocSortableColumnDefinition.IsSortable set true.", "column");
 
       _isEmpty = false;
       _column = column;
@@ -54,13 +55,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> <see langword="true"/> if this sorting order entry is empty. </summary>
+    [MemberNotNullWhen(false, nameof(Column))]
     public bool IsEmpty
     {
       get { return _isEmpty; }
     }
 
     /// <summary> Gets the column to sort by. </summary>
-    public IBocSortableColumnDefinition Column
+    public IBocSortableColumnDefinition? Column
     {
       get { return _column; }
     }
@@ -79,9 +81,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     internal void SetColumnIndex (int columnIndex)
     {
       if (columnIndex < 0)
-        throw new ArgumentOutOfRangeException ("columnIndex", columnIndex, "The column index must not be a negative number.");
+        throw new ArgumentOutOfRangeException("columnIndex", columnIndex, "The column index must not be a negative number.");
       if (_isEmpty)
-        throw new InvalidOperationException ("Setting the column index of the empty BocListSortingOrderEntry is not supported.");
+        throw new InvalidOperationException("Setting the column index of the empty BocListSortingOrderEntry is not supported.");
       _columnIndex = columnIndex;
     }
   }

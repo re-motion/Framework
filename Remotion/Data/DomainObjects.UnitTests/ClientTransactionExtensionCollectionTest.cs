@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
@@ -25,618 +26,556 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   [TestFixture]
   public class ClientTransactionExtensionCollectionTest : ClientTransactionBaseTest
   {
-    private MockRepository _mockRepository;
     private ClientTransactionExtensionCollection _collection;
     private ClientTransactionExtensionCollection _collectionWithExtensions;
-    private IClientTransactionExtension _extension1;
-    private IClientTransactionExtension _extension2;
+    private Mock<IClientTransactionExtension> _extension1;
+    private Mock<IClientTransactionExtension> _extension2;
 
     private Order _order;
     private PropertyDefinition _propertyDefinition;
 
     public override void SetUp ()
     {
-      base.SetUp ();
+      base.SetUp();
 
-      _mockRepository = new MockRepository ();
-      _collection = new ClientTransactionExtensionCollection ("key");
-      _extension1 = _mockRepository.StrictMock<IClientTransactionExtension> ();
-      _extension2 = _mockRepository.StrictMock<IClientTransactionExtension> ();
+      _collection = new ClientTransactionExtensionCollection("key");
+      _extension1 = new Mock<IClientTransactionExtension>(MockBehavior.Strict);
+      _extension2 = new Mock<IClientTransactionExtension>(MockBehavior.Strict);
 
-      _extension1.Stub (stub => stub.Key).Return ("Name1");
-      _extension2.Stub (stub => stub.Key).Return ("Name2");
-      _mockRepository.ReplayAll();
+      _extension1.Setup(stub => stub.Key).Returns("Name1");
+      _extension2.Setup(stub => stub.Key).Returns("Name2");
 
-      _collectionWithExtensions = new ClientTransactionExtensionCollection ("key");
-      _collectionWithExtensions.Add (_extension1);
-      _collectionWithExtensions.Add (_extension2);
+      _collectionWithExtensions = new ClientTransactionExtensionCollection("key");
+      _collectionWithExtensions.Add(_extension1.Object);
+      _collectionWithExtensions.Add(_extension2.Object);
 
       // _mockRepository.BackToRecordAll();
 
-      _order = Order.NewObject ();
-      _propertyDefinition = GetPropertyDefinition (typeof (Order), "OrderNumber");
+      _order = Order.NewObject();
+      _propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
     }
 
     [Test]
     public void Initialization ()
     {
-      var collection = new ClientTransactionExtensionCollection ("abc");
+      var collection = new ClientTransactionExtensionCollection("abc");
 
-      Assert.That (((IClientTransactionExtension) collection).Key, Is.EqualTo ("abc"));
+      Assert.That(((IClientTransactionExtension)collection).Key, Is.EqualTo("abc"));
     }
 
     [Test]
     public void Add ()
     {
-      Assert.That (_collection.Count, Is.EqualTo (0));
+      Assert.That(_collection.Count, Is.EqualTo(0));
 
-      _collection.Add (_extension1);
+      _collection.Add(_extension1.Object);
 
-      Assert.That (_collection.Count, Is.EqualTo (1));
+      Assert.That(_collection.Count, Is.EqualTo(1));
     }
 
     [Test]
     public void Insert ()
     {
-      _collection.Add (_extension1);
-      Assert.That (_collection.Count, Is.EqualTo (1));
-      Assert.That (_collection[0], Is.SameAs (_extension1));
+      _collection.Add(_extension1.Object);
+      Assert.That(_collection.Count, Is.EqualTo(1));
+      Assert.That(_collection[0], Is.SameAs(_extension1.Object));
 
-      _collection.Insert (0, _extension2);
-      Assert.That (_collection.Count, Is.EqualTo (2));
-      Assert.That (_collection[0], Is.SameAs (_extension2));
-      Assert.That (_collection[1], Is.SameAs (_extension1));
+      _collection.Insert(0, _extension2.Object);
+      Assert.That(_collection.Count, Is.EqualTo(2));
+      Assert.That(_collection[0], Is.SameAs(_extension2.Object));
+      Assert.That(_collection[1], Is.SameAs(_extension1.Object));
     }
 
     [Test]
     public void Remove ()
     {
-      _collection.Add (_extension1);
-      Assert.That (_collection.Count, Is.EqualTo (1));
-      _collection.Remove (_extension1.Key);
-      Assert.That (_collection.Count, Is.EqualTo (0));
-      _collection.Remove (_extension1.Key);
+      _collection.Add(_extension1.Object);
+      Assert.That(_collection.Count, Is.EqualTo(1));
+      _collection.Remove(_extension1.Object.Key);
+      Assert.That(_collection.Count, Is.EqualTo(0));
+      _collection.Remove(_extension1.Object.Key);
       //expectation: no exception
     }
 
     [Test]
     public void Indexer ()
     {
-      _collection.Add (_extension1);
-      _collection.Add (_extension2);
-      Assert.That (_collection[0], Is.SameAs (_extension1));
-      Assert.That (_collection[1], Is.SameAs (_extension2));
+      _collection.Add(_extension1.Object);
+      _collection.Add(_extension2.Object);
+      Assert.That(_collection[0], Is.SameAs(_extension1.Object));
+      Assert.That(_collection[1], Is.SameAs(_extension2.Object));
     }
 
     [Test]
     public void IndexerWithName ()
     {
-      _collection.Add (_extension1);
-      _collection.Add (_extension2);
-      Assert.That (_collection[_extension1.Key], Is.SameAs (_extension1));
-      Assert.That (_collection[_extension2.Key], Is.SameAs (_extension2));
+      _collection.Add(_extension1.Object);
+      _collection.Add(_extension2.Object);
+      Assert.That(_collection[_extension1.Object.Key], Is.SameAs(_extension1.Object));
+      Assert.That(_collection[_extension2.Object.Key], Is.SameAs(_extension2.Object));
     }
 
     [Test]
     public void IndexOf ()
     {
-      _collection.Add (_extension1);
+      _collection.Add(_extension1.Object);
 
-      Assert.That (_collection.IndexOf (_extension1.Key), Is.EqualTo (0));
+      Assert.That(_collection.IndexOf(_extension1.Object.Key), Is.EqualTo(0));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An extension with key 'Name1' is already part of the collection.")]
     public void AddWithDuplicateKey ()
     {
-      _collection.Add (_extension1);
+      _collection.Add(_extension1.Object);
 
-      var extensionWithSameKey = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionWithSameKey.Stub (stub => stub.Key).Return (_extension1.Key);
-
-      _collection.Add (extensionWithSameKey);
+      var extensionWithSameKey = new Mock<IClientTransactionExtension>();
+      extensionWithSameKey.Setup(stub => stub.Key).Returns(_extension1.Object.Key);
+      Assert.That(
+          () => _collection.Add(extensionWithSameKey.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "An extension with key 'Name1' is already part of the collection."));
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidOperationException), ExpectedMessage = "An extension with key 'Name1' is already part of the collection.")]
     public void InsertWithDuplicateName ()
     {
-      _collection.Insert (0, _extension1);
+      _collection.Insert(0, _extension1.Object);
 
-      var extensionWithSameKey = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extensionWithSameKey.Stub (stub => stub.Key).Return (_extension1.Key);
-
-      _collection.Insert (0, extensionWithSameKey);
+      var extensionWithSameKey = new Mock<IClientTransactionExtension>();
+      extensionWithSameKey.Setup(stub => stub.Key).Returns(_extension1.Object.Key);
+      Assert.That(
+          () => _collection.Insert(0, extensionWithSameKey.Object),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "An extension with key 'Name1' is already part of the collection."));
     }
 
     [Test]
     public void TransactionInitialize ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.TransactionInitialize (TestableClientTransaction));
-        _extension2.Expect (mock => mock.TransactionInitialize (TestableClientTransaction));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.TransactionInitialize(TestableClientTransaction)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.TransactionInitialize(TestableClientTransaction)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.TransactionInitialize(TestableClientTransaction);
 
-      _collectionWithExtensions.TransactionInitialize (TestableClientTransaction);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void TransactionDiscard ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.TransactionDiscard (TestableClientTransaction));
-        _extension2.Expect (mock => mock.TransactionDiscard (TestableClientTransaction));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.TransactionDiscard(TestableClientTransaction)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.TransactionDiscard(TestableClientTransaction)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.TransactionDiscard(TestableClientTransaction);
 
-      _collectionWithExtensions.TransactionDiscard (TestableClientTransaction);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void SubTransactionCreating ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.SubTransactionCreating (TestableClientTransaction));
-        _extension2.Expect (mock => mock.SubTransactionCreating (TestableClientTransaction));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.SubTransactionCreating(TestableClientTransaction)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.SubTransactionCreating(TestableClientTransaction)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.SubTransactionCreating(TestableClientTransaction);
 
-      _collectionWithExtensions.SubTransactionCreating (TestableClientTransaction);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void SubTransactionInitialize ()
     {
-      ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
+      ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction();
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.SubTransactionInitialize (TestableClientTransaction, subTransaction));
-        _extension2.Expect (mock => mock.SubTransactionInitialize (TestableClientTransaction, subTransaction));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.SubTransactionInitialize(TestableClientTransaction, subTransaction)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.SubTransactionInitialize(TestableClientTransaction, subTransaction)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.SubTransactionInitialize(TestableClientTransaction, subTransaction);
 
-      _collectionWithExtensions.SubTransactionInitialize (TestableClientTransaction, subTransaction);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void SubTransactionCreated ()
     {
-      ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction ();
+      ClientTransaction subTransaction = TestableClientTransaction.CreateSubTransaction();
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.SubTransactionCreated (TestableClientTransaction, subTransaction));
-        _extension2.Expect (mock => mock.SubTransactionCreated (TestableClientTransaction, subTransaction));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.SubTransactionCreated(TestableClientTransaction, subTransaction)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.SubTransactionCreated(TestableClientTransaction, subTransaction)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.SubTransactionCreated(TestableClientTransaction, subTransaction);
 
-      _collectionWithExtensions.SubTransactionCreated (TestableClientTransaction, subTransaction);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void PropertyChanging ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.PropertyValueChanging (TestableClientTransaction, _order, _propertyDefinition, 0, 1));
-        _extension2.Expect (mock => mock.PropertyValueChanging (TestableClientTransaction, _order, _propertyDefinition, 0, 1));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.PropertyValueChanging(TestableClientTransaction, _order, _propertyDefinition, 0, 1)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.PropertyValueChanging(TestableClientTransaction, _order, _propertyDefinition, 0, 1)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.PropertyValueChanging(TestableClientTransaction, _order, _propertyDefinition, 0, 1);
 
-      _collectionWithExtensions.PropertyValueChanging (TestableClientTransaction, _order, _propertyDefinition, 0, 1);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void PropertyChanged ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.PropertyValueChanged (TestableClientTransaction, _order, _propertyDefinition, 0, 1));
-        _extension2.Expect (mock => mock.PropertyValueChanged (TestableClientTransaction, _order, _propertyDefinition, 0, 1));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.PropertyValueChanged(TestableClientTransaction, _order, _propertyDefinition, 0, 1)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.PropertyValueChanged(TestableClientTransaction, _order, _propertyDefinition, 0, 1)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.PropertyValueChanged(TestableClientTransaction, _order, _propertyDefinition, 0, 1);
 
-      _collectionWithExtensions.PropertyValueChanged (TestableClientTransaction, _order, _propertyDefinition, 0, 1);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void PropertyReading ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.PropertyValueReading (TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original));
-        _extension2.Expect (mock => mock.PropertyValueReading (TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original);
 
-      _collectionWithExtensions.PropertyValueReading (TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
-    [Explicit ("Performance test")]
+    [Explicit("Performance test")]
     public void PropertyReading_Perf ()
     {
-      var coll = new ClientTransactionExtensionCollection ("key");
+      var coll = new ClientTransactionExtensionCollection("key");
 
-      Stopwatch sw = Stopwatch.StartNew ();
+      Stopwatch sw = Stopwatch.StartNew();
       for (int i = 0; i < 100000; ++i)
-        coll.PropertyValueReading (TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original);
-      sw.Stop ();
-      Console.WriteLine (sw.Elapsed);
-      Console.WriteLine (sw.ElapsedMilliseconds / 100000.0);
+        coll.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original);
+      sw.Stop();
+      Console.WriteLine(sw.Elapsed);
+      Console.WriteLine(sw.ElapsedMilliseconds / 100000.0);
     }
 
     [Test]
     public void PropertyRead ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.PropertyValueRead (TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original));
-        _extension2.Expect (mock => mock.PropertyValueRead (TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original);
 
-      _collectionWithExtensions.PropertyValueRead (TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void RelationChanging ()
     {
       OrderTicket orderTicket = _order.OrderTicket;
-      OrderTicket newOrderTicket = OrderTicket.NewObject ();
+      OrderTicket newOrderTicket = OrderTicket.NewObject();
 
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition>();
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.RelationChanging (TestableClientTransaction, _order, relationEndPointDefinition, orderTicket, newOrderTicket));
-        _extension2.Expect (mock => mock.RelationChanging (TestableClientTransaction, _order, relationEndPointDefinition, orderTicket, newOrderTicket));
-      }
+      var sequence = new MockSequence();
 
-      _mockRepository.ReplayAll ();
+      _extension1
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanging(TestableClientTransaction, _order, relationEndPointDefinition.Object, orderTicket, newOrderTicket))
+          .Verifiable();
 
-      _collectionWithExtensions.RelationChanging (TestableClientTransaction, _order, relationEndPointDefinition, orderTicket, newOrderTicket);
-      
-      _mockRepository.VerifyAll ();
+      _extension2
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanging(TestableClientTransaction, _order, relationEndPointDefinition.Object, orderTicket, newOrderTicket))
+          .Verifiable();
+
+      _collectionWithExtensions.RelationChanging(TestableClientTransaction, _order, relationEndPointDefinition.Object, orderTicket, newOrderTicket);
+
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void RelationChanged ()
     {
       OrderTicket orderTicket = _order.OrderTicket;
-      OrderTicket newOrderTicket = OrderTicket.NewObject ();
-      
-      var relationEndPointDefinition = MockRepository.GenerateStub<IRelationEndPointDefinition> ();
+      OrderTicket newOrderTicket = OrderTicket.NewObject();
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.RelationChanged (TestableClientTransaction, _order, relationEndPointDefinition, orderTicket, newOrderTicket));
-        _extension2.Expect (mock => mock.RelationChanged (TestableClientTransaction, _order, relationEndPointDefinition, orderTicket, newOrderTicket));
-      }
+      var relationEndPointDefinition = new Mock<IRelationEndPointDefinition>();
 
-      _mockRepository.ReplayAll ();
+      var sequence = new MockSequence();
 
-      _collectionWithExtensions.RelationChanged (TestableClientTransaction, _order, relationEndPointDefinition, orderTicket, newOrderTicket);
+      _extension1
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanged(TestableClientTransaction, _order, relationEndPointDefinition.Object, orderTicket, newOrderTicket))
+          .Verifiable();
 
-      _mockRepository.VerifyAll ();
+      _extension2
+          .InSequence(sequence)
+          .Setup(mock => mock.RelationChanged(TestableClientTransaction, _order, relationEndPointDefinition.Object, orderTicket, newOrderTicket))
+          .Verifiable();
+
+      _collectionWithExtensions.RelationChanged(TestableClientTransaction, _order, relationEndPointDefinition.Object, orderTicket, newOrderTicket);
+
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void NewObjectCreating ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.NewObjectCreating (TestableClientTransaction, typeof(Order)));
-        _extension2.Expect (mock => mock.NewObjectCreating (TestableClientTransaction, typeof (Order)));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.NewObjectCreating(TestableClientTransaction, typeof(Order))).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.NewObjectCreating(TestableClientTransaction, typeof(Order))).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.NewObjectCreating(TestableClientTransaction, typeof(Order));
 
-      _collectionWithExtensions.NewObjectCreating (TestableClientTransaction, typeof (Order));
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void ObjectDeleting ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.ObjectDeleting (TestableClientTransaction, _order));
-        _extension2.Expect (mock => mock.ObjectDeleting (TestableClientTransaction, _order));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.ObjectDeleting(TestableClientTransaction, _order)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.ObjectDeleting(TestableClientTransaction, _order)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.ObjectDeleting(TestableClientTransaction, _order);
 
-      _collectionWithExtensions.ObjectDeleting (TestableClientTransaction, _order);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void ObjectDeleted ()
     {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.ObjectDeleted (TestableClientTransaction, _order));
-        _extension2.Expect (mock => mock.ObjectDeleted (TestableClientTransaction, _order));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.ObjectDeleted(TestableClientTransaction, _order)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.ObjectDeleted(TestableClientTransaction, _order)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.ObjectDeleted(TestableClientTransaction, _order);
 
-      _collectionWithExtensions.ObjectDeleted (TestableClientTransaction, _order);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void Committing ()
     {
-      var data = new ReadOnlyCollection<DomainObject> (new DomainObject[0]);
-      var eventRegistrar = MockRepository.GenerateStub<ICommittingEventRegistrar> ();
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.Committing (TestableClientTransaction, data, eventRegistrar));
-        _extension2.Expect (mock => mock.Committing (TestableClientTransaction, data, eventRegistrar));
-      }
+      var data = new ReadOnlyCollection<DomainObject>(new DomainObject[0]);
+      var eventRegistrar = new Mock<ICommittingEventRegistrar>();
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.Committing(TestableClientTransaction, data, eventRegistrar.Object)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.Committing(TestableClientTransaction, data, eventRegistrar.Object)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.Committing(TestableClientTransaction, data, eventRegistrar.Object);
 
-      _collectionWithExtensions.Committing (TestableClientTransaction, data, eventRegistrar);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void CommitValidate ()
     {
-      var data = new ReadOnlyCollection<PersistableData> (new PersistableData[0]);
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.CommitValidate (TestableClientTransaction, data));
-        _extension2.Expect (mock => mock.CommitValidate (TestableClientTransaction, data));
-      }
+      var data = new ReadOnlyCollection<PersistableData>(new PersistableData[0]);
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.CommitValidate(TestableClientTransaction, data)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.CommitValidate(TestableClientTransaction, data)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.CommitValidate(TestableClientTransaction, data);
 
-      _collectionWithExtensions.CommitValidate (TestableClientTransaction, data);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void Committed ()
     {
-      var data = new ReadOnlyCollection<DomainObject> (new DomainObject[0]);
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.Committed (TestableClientTransaction, data));
-        _extension2.Expect (mock => mock.Committed (TestableClientTransaction, data));
-      }
+      var data = new ReadOnlyCollection<DomainObject>(new DomainObject[0]);
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.Committed(TestableClientTransaction, data)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.Committed(TestableClientTransaction, data)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.Committed(TestableClientTransaction, data);
 
-      _collectionWithExtensions.Committed (TestableClientTransaction, data);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void RollingBack ()
     {
-      var data = new ReadOnlyCollection<DomainObject> (new DomainObject[0]);
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.RollingBack (TestableClientTransaction, data));
-        _extension2.Expect (mock => mock.RollingBack (TestableClientTransaction, data));
-      }
+      var data = new ReadOnlyCollection<DomainObject>(new DomainObject[0]);
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.RollingBack(TestableClientTransaction, data)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.RollingBack(TestableClientTransaction, data)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.RollingBack(TestableClientTransaction, data);
 
-      _collectionWithExtensions.RollingBack (TestableClientTransaction, data);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void RolledBack ()
     {
-      var data = new ReadOnlyCollection<DomainObject> (new DomainObject[0]);
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.RolledBack (TestableClientTransaction, data));
-        _extension2.Expect (mock => mock.RolledBack (TestableClientTransaction, data));
-      }
+      var data = new ReadOnlyCollection<DomainObject>(new DomainObject[0]);
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.RolledBack(TestableClientTransaction, data)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.RolledBack(TestableClientTransaction, data)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.RolledBack(TestableClientTransaction, data);
 
-      _collectionWithExtensions.RolledBack (TestableClientTransaction, data);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void ObjectsLoaded ()
     {
-      var loadedDomainObjects = new ReadOnlyCollection<DomainObject> (new[] { _order });
+      var loadedDomainObjects = new ReadOnlyCollection<DomainObject>(new[] { _order });
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.ObjectsLoaded (TestableClientTransaction, loadedDomainObjects));
-        _extension2.Expect (mock => mock.ObjectsLoaded (TestableClientTransaction, loadedDomainObjects));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, loadedDomainObjects)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.ObjectsLoaded(TestableClientTransaction, loadedDomainObjects)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.ObjectsLoaded(TestableClientTransaction, loadedDomainObjects);
 
-      _collectionWithExtensions.ObjectsLoaded (TestableClientTransaction, loadedDomainObjects);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void ObjectsLoading ()
     {
-      var objectIDs = new List<ObjectID> { _order.ID }.AsReadOnly ();
+      var objectIDs = new List<ObjectID> { _order.ID }.AsReadOnly();
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.ObjectsLoading (TestableClientTransaction, objectIDs));
-        _extension2.Expect (mock => mock.ObjectsLoading (TestableClientTransaction, objectIDs));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.ObjectsLoading(TestableClientTransaction, objectIDs)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.ObjectsLoading(TestableClientTransaction, objectIDs)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.ObjectsLoading(TestableClientTransaction, objectIDs);
 
-      _collectionWithExtensions.ObjectsLoading (TestableClientTransaction, objectIDs);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void ObjectsUnloaded ()
     {
-      var unloadedDomainObjects = new ReadOnlyCollection<DomainObject> (new[] { _order });
+      var unloadedDomainObjects = new ReadOnlyCollection<DomainObject>(new[] { _order });
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.ObjectsUnloaded (TestableClientTransaction, unloadedDomainObjects));
-        _extension2.Expect (mock => mock.ObjectsUnloaded (TestableClientTransaction, unloadedDomainObjects));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, unloadedDomainObjects)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, unloadedDomainObjects)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.ObjectsUnloaded(TestableClientTransaction, unloadedDomainObjects);
 
-      _collectionWithExtensions.ObjectsUnloaded (TestableClientTransaction, unloadedDomainObjects);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void ObjectsUnloading ()
     {
-      var unloadedDomainObjects = new ReadOnlyCollection<DomainObject> (new[] { _order });
+      var unloadedDomainObjects = new ReadOnlyCollection<DomainObject>(new[] { _order });
 
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.ObjectsUnloading (TestableClientTransaction, unloadedDomainObjects));
-        _extension2.Expect (mock => mock.ObjectsUnloading (TestableClientTransaction, unloadedDomainObjects));
-      }
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, unloadedDomainObjects)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, unloadedDomainObjects)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.ObjectsUnloading(TestableClientTransaction, unloadedDomainObjects);
 
-      _collectionWithExtensions.ObjectsUnloading (TestableClientTransaction, unloadedDomainObjects);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
 
     [Test]
     public void FilterQueryResult ()
     {
-      var queryStub = QueryFactory.CreateQuery (TestQueryFactory.CreateOrderQueryWithCustomCollectionType ());
+      var queryStub = QueryFactory.CreateQuery(TestQueryFactory.CreateOrderQueryWithCustomCollectionType());
 
-      var originalResult = new QueryResult<Order> (queryStub, new Order[0]);
-      var newResult1 = new QueryResult<Order> (queryStub, new[] { DomainObjectIDs.Order1.GetObject<Order> () });
-      var newResult2 = new QueryResult<Order> (queryStub, new[] { DomainObjectIDs.Order2.GetObject<Order> () });
+      var originalResult = new QueryResult<Order>(queryStub, new Order[0]);
+      var newResult1 = new QueryResult<Order>(queryStub, new[] { DomainObjectIDs.Order1.GetObject<Order>() });
+      var newResult2 = new QueryResult<Order>(queryStub, new[] { DomainObjectIDs.Order2.GetObject<Order>() });
 
-      _extension1.Expect (mock => mock.FilterQueryResult (TestableClientTransaction, originalResult)).Return (newResult1);
-      _extension2.Expect (mock => mock.FilterQueryResult (TestableClientTransaction, newResult1)).Return (newResult2);
+      _extension1.Setup(mock => mock.FilterQueryResult(TestableClientTransaction, originalResult)).Returns(newResult1).Verifiable();
+      _extension2.Setup(mock => mock.FilterQueryResult(TestableClientTransaction, newResult1)).Returns(newResult2).Verifiable();
 
-      var finalResult = _collectionWithExtensions.FilterQueryResult (TestableClientTransaction, originalResult);
-      Assert.That (finalResult, Is.SameAs (newResult2));
+      var finalResult = _collectionWithExtensions.FilterQueryResult(TestableClientTransaction, originalResult);
+      Assert.That(finalResult, Is.SameAs(newResult2));
 
-      _extension1.VerifyAllExpectations ();
-      _extension2.VerifyAllExpectations ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void RelationReading ()
     {
-      IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.RelationReading (TestableClientTransaction, _order, endPointDefinition, ValueAccess.Current));
-        _extension2.Expect (mock => mock.RelationReading (TestableClientTransaction, _order, endPointDefinition, ValueAccess.Current));
-      }
+      IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.RelationReading(TestableClientTransaction, _order, endPointDefinition, ValueAccess.Current)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.RelationReading(TestableClientTransaction, _order, endPointDefinition, ValueAccess.Current)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.RelationReading(TestableClientTransaction, _order, endPointDefinition, ValueAccess.Current);
 
-      _collectionWithExtensions.RelationReading (TestableClientTransaction, _order, endPointDefinition, ValueAccess.Current);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void RelationReadWithOneToOneRelation ()
     {
       OrderTicket orderTicket = _order.OrderTicket;
-      IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderTicket");
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.RelationRead (TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original));
-        _extension2.Expect (mock => mock.RelationRead (TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original));
-      }
+      IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original);
 
-      _collectionWithExtensions.RelationRead (TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
 
     [Test]
     public void RelationReadWithOneToManyRelation ()
     {
-      var orderItems = new ReadOnlyDomainObjectCollectionAdapter<DomainObject> (_order.OrderItems);
-      IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition (typeof (Order), "OrderItems");
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.Expect (mock => mock.RelationRead (TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original));
-        _extension2.Expect (mock => mock.RelationRead (TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original));
-      }
+      var orderItems = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(_order.OrderItems);
+      IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
+      var sequence = new MockSequence();
+      _extension1.InSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original)).Verifiable();
+      _extension2.InSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original)).Verifiable();
 
-      _mockRepository.ReplayAll ();
+      _collectionWithExtensions.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original);
 
-      _collectionWithExtensions.RelationRead (TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original);
-
-      _mockRepository.VerifyAll ();
+      _extension1.Verify();
+      _extension2.Verify();
     }
   }
 }

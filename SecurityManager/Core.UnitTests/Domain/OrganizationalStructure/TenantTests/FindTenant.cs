@@ -29,12 +29,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     private DatabaseFixtures _dbFixtures;
     private ObjectID _expectedTenantID;
 
-    public override void TestFixtureSetUp ()
+    public override void OneTimeSetUp ()
     {
-      base.TestFixtureSetUp();
+      base.OneTimeSetUp();
 
       _dbFixtures = new DatabaseFixtures();
-      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants (ClientTransaction.CreateRootTransaction());
+      Tenant tenant = _dbFixtures.CreateAndCommitOrganizationalStructureWithTwoTenants(ClientTransaction.CreateRootTransaction());
       _expectedTenantID = tenant.ID;
     }
 
@@ -43,24 +43,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     {
       var tenants = Tenant.FindAll().ToArray();
 
-      Assert.That (tenants.Length, Is.EqualTo (2));
-      Assert.That (tenants[1].ID, Is.EqualTo (_expectedTenantID));
+      Assert.That(tenants.Length, Is.EqualTo(2));
+      Assert.That(tenants[1].ID, Is.EqualTo(_expectedTenantID));
     }
 
     [Test]
     public void FindByUnqiueIdentifier_ValidTenant ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: testTenant");
+      Tenant foundTenant = Tenant.FindByUnqiueIdentifier("UID: testTenant");
 
-      Assert.That (foundTenant.UniqueIdentifier, Is.EqualTo ("UID: testTenant"));
+      Assert.That(foundTenant.UniqueIdentifier, Is.EqualTo("UID: testTenant"));
     }
 
     [Test]
     public void FindByUnqiueIdentifier_NotExistingTenant ()
     {
-      Tenant foundTenant = Tenant.FindByUnqiueIdentifier ("UID: NotExistingTenant");
+      Tenant foundTenant = Tenant.FindByUnqiueIdentifier("UID: NotExistingTenant");
 
-      Assert.That (foundTenant, Is.Null);
+      Assert.That(foundTenant, Is.Null);
     }
   }
 }

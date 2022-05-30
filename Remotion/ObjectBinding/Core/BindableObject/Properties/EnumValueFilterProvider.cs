@@ -32,9 +32,9 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public EnumValueFilterProvider (IPropertyInformation propertyInformation, Func<Type, T[]> typeAttributeProvider)
     {
-      ArgumentUtility.CheckNotNull ("propertyInformation", propertyInformation);
-      ArgumentUtility.CheckNotNull ("typeAttributeProvider", typeAttributeProvider);
-      
+      ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
+      ArgumentUtility.CheckNotNull("typeAttributeProvider", typeAttributeProvider);
+
       _propertyInformation = propertyInformation;
       _typeAttributeProvider = typeAttributeProvider;
     }
@@ -46,27 +46,27 @@ namespace Remotion.ObjectBinding.BindableObject.Properties
 
     public IEnumerationValueFilter GetEnumerationValueFilter ()
     {
-      return GetFilterFromProperty () ?? GetFilterFromType () ?? new NullEnumerationValueFilter();
+      return GetFilterFromProperty() ?? GetFilterFromType() ?? new NullEnumerationValueFilter();
     }
 
-    private IEnumerationValueFilter GetFilterFromProperty ()
+    private IEnumerationValueFilter? GetFilterFromProperty ()
     {
-      var attribute = PropertyInformation.GetCustomAttribute<T> (true);
-      return attribute != null ? attribute.GetEnumerationValueFilter () : null;
+      var attribute = PropertyInformation.GetCustomAttribute<T>(true);
+      return attribute != null ? attribute.GetEnumerationValueFilter() : null;
     }
 
-    private IEnumerationValueFilter GetFilterFromType ()
+    private IEnumerationValueFilter? GetFilterFromType ()
     {
-      var underlyingType = Nullable.GetUnderlyingType (PropertyInformation.PropertyType) ?? PropertyInformation.PropertyType;
-      var attributes = _typeAttributeProvider (underlyingType);
-      Assertion.IsNotNull (attributes, "TypeAttributeProvider must return a non-null array.");
+      var underlyingType = Nullable.GetUnderlyingType(PropertyInformation.PropertyType) ?? PropertyInformation.PropertyType;
+      var attributes = _typeAttributeProvider(underlyingType);
+      Assertion.IsNotNull(attributes, "TypeAttributeProvider must return a non-null array.");
 
       if (attributes.Length == 0)
         return null;
       else if (attributes.Length == 1)
-        return attributes[0].GetEnumerationValueFilter ();
+        return attributes[0].GetEnumerationValueFilter();
       else
-        return new CompositeEnumerationValueFilter (attributes.Select (attribute => attribute.GetEnumerationValueFilter ()).ToArray ());
+        return new CompositeEnumerationValueFilter(attributes.Select(attribute => attribute.GetEnumerationValueFilter()).ToArray());
     }
   }
 }

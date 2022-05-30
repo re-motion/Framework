@@ -15,7 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 
@@ -35,11 +35,11 @@ namespace Remotion.UnitTests.ServiceLocation
     [Test]
     public void Register_ServiceConfigurationEntry_AddsEntryToRegistrations_AndToBootstrapLocator ()
     {
-      var entry = new ServiceConfigurationEntry (typeof (IService), new ServiceImplementationInfo (typeof (Service), LifetimeKind.Singleton));
-      _configuration.Register (entry);
+      var entry = new ServiceConfigurationEntry(typeof(IService), new ServiceImplementationInfo(typeof(Service), LifetimeKind.Singleton));
+      _configuration.Register(entry);
 
-      Assert.That (_configuration.Registrations, Is.EqualTo (new[] { entry }));
-      Assert.That (_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
+      Assert.That(_configuration.Registrations, Is.EqualTo(new[] { entry }));
+      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
     }
 
     [Test]
@@ -49,42 +49,42 @@ namespace Remotion.UnitTests.ServiceLocation
       // later throw on Register.
       _configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute>();
 
-      var entry = new ServiceConfigurationEntry (
-          typeof (IServiceWithAttribute), 
-          new ServiceImplementationInfo (typeof (ServiceWithAttribute2), LifetimeKind.Singleton));
-      Assert.That (() => _configuration.Register (entry), Throws.InvalidOperationException);
+      var entry = new ServiceConfigurationEntry(
+          typeof(IServiceWithAttribute),
+          new ServiceImplementationInfo(typeof(ServiceWithAttribute2), LifetimeKind.Singleton));
+      Assert.That(() => _configuration.Register(entry), Throws.InvalidOperationException);
 
-      Assert.That (_configuration.Registrations, Is.Empty);
-      Assert.That (_configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute> (), Is.Not.Null.And.TypeOf<ServiceWithAttribute1> ());
+      Assert.That(_configuration.Registrations, Is.Empty);
+      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IServiceWithAttribute>(), Is.Not.Null.And.TypeOf<ServiceWithAttribute1>());
     }
 
     [Test]
     public void Register_Types_AddsEntry ()
     {
-      _configuration.Register (typeof (IService), typeof (Service), LifetimeKind.InstancePerDependency);
+      _configuration.Register(typeof(IService), typeof(Service), LifetimeKind.InstancePerDependency);
 
-      Assert.That (_configuration.Registrations, Has.Length.EqualTo (1));
-      Assert.That (_configuration.Registrations[0].ServiceType, Is.SameAs (typeof (IService)));
+      Assert.That(_configuration.Registrations, Has.Length.EqualTo(1));
+      Assert.That(_configuration.Registrations[0].ServiceType, Is.SameAs(typeof(IService)));
 
-      Assert.That (_configuration.Registrations[0].ImplementationInfos.Count, Is.EqualTo (1));
-      Assert.That (_configuration.Registrations[0].ImplementationInfos[0].ImplementationType, Is.EqualTo (typeof (Service)));
-      Assert.That (_configuration.Registrations[0].ImplementationInfos[0].Lifetime, Is.EqualTo (LifetimeKind.InstancePerDependency));
+      Assert.That(_configuration.Registrations[0].ImplementationInfos.Count, Is.EqualTo(1));
+      Assert.That(_configuration.Registrations[0].ImplementationInfos[0].ImplementationType, Is.EqualTo(typeof(Service)));
+      Assert.That(_configuration.Registrations[0].ImplementationInfos[0].Lifetime, Is.EqualTo(LifetimeKind.InstancePerDependency));
 
-      Assert.That (_configuration.BootstrapServiceLocator.GetInstance<IService> (), Is.Not.Null.And.TypeOf<Service> ());
+      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
     }
 
     [Test]
     public void Reset ()
     {
-      _configuration.Register (typeof (IService), typeof (Service), LifetimeKind.InstancePerDependency);
+      _configuration.Register(typeof(IService), typeof(Service), LifetimeKind.InstancePerDependency);
 
-      Assert.That (_configuration.Registrations, Is.Not.Empty);
-      Assert.That (_configuration.BootstrapServiceLocator.GetInstance<IService> (), Is.Not.Null.And.TypeOf<Service> ());
+      Assert.That(_configuration.Registrations, Is.Not.Empty);
+      Assert.That(_configuration.BootstrapServiceLocator.GetInstance<IService>(), Is.Not.Null.And.TypeOf<Service>());
 
       _configuration.Reset();
 
-      Assert.That (_configuration.Registrations, Is.Empty);
-      Assert.That (() => _configuration.BootstrapServiceLocator.GetInstance<IService> (), Throws.TypeOf<ActivationException>());
+      Assert.That(_configuration.Registrations, Is.Empty);
+      Assert.That(() => _configuration.BootstrapServiceLocator.GetInstance<IService>(), Throws.TypeOf<ActivationException>());
     }
 
     public interface IService { }
@@ -94,7 +94,7 @@ namespace Remotion.UnitTests.ServiceLocation
     {
     }
 
-    [ImplementationFor (typeof (IServiceWithAttribute))]
+    [ImplementationFor(typeof(IServiceWithAttribute))]
     public class ServiceWithAttribute1 : IServiceWithAttribute
     {
     }

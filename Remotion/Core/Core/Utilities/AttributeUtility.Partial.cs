@@ -35,153 +35,153 @@ namespace Remotion.Utilities
     private static readonly ConcurrentDictionary<Tuple<Type, bool>, IReadOnlyCollection<AttributeWithMetadata>> s_suppressAttributesCache =
         new ConcurrentDictionary<Tuple<Type, bool>, IReadOnlyCollection<AttributeWithMetadata>>();
 
-    private static readonly PropertyCustomAttributeRetriever s_propertyCustomAttributeRetriever = new PropertyCustomAttributeRetriever ();
-    private static readonly EventCustomAttributeRetriever s_eventCustomAttributeRetriever = new EventCustomAttributeRetriever ();
+    private static readonly PropertyCustomAttributeRetriever s_propertyCustomAttributeRetriever = new PropertyCustomAttributeRetriever();
+    private static readonly EventCustomAttributeRetriever s_eventCustomAttributeRetriever = new EventCustomAttributeRetriever();
 
    public static bool IsDefined<T> (MemberInfo element, bool inherit)
        where T : class
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      CheckAttributeType (typeof (T), "T");
+      ArgumentUtility.CheckNotNull("element", element);
+      CheckAttributeType(typeof(T), "T");
 
-      return IsDefined (element, typeof (T), inherit);
+      return IsDefined(element, typeof(T), inherit);
     }
 
     public static bool IsDefined (MemberInfo element, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      CheckAttributeType (attributeType, "attributeType");
+      ArgumentUtility.CheckNotNull("element", element);
+      CheckAttributeType(attributeType, "attributeType");
 
-      return GetCustomAttributes (element, attributeType, inherit).Length > 0;
+      return GetCustomAttributes(element, attributeType, inherit).Length > 0;
     }
 
-    public static T GetCustomAttribute<T> (MemberInfo element, bool inherit)
+    public static T? GetCustomAttribute<T> (MemberInfo element, bool inherit)
         where T: class
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      CheckAttributeType (typeof (T), "T");
-      
-      return (T) (object) GetCustomAttribute (element, typeof (T), inherit);
+      ArgumentUtility.CheckNotNull("element", element);
+      CheckAttributeType(typeof(T), "T");
+
+      return (T?)(object?)GetCustomAttribute(element, typeof(T), inherit);
     }
 
-    public static Attribute GetCustomAttribute (MemberInfo element, Type attributeType, bool inherit)
+    public static Attribute? GetCustomAttribute (MemberInfo element, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      CheckAttributeType (attributeType, "attributeType");
+      ArgumentUtility.CheckNotNull("element", element);
+      CheckAttributeType(attributeType, "attributeType");
 
-      object[] attributeArray = GetCustomAttributes (element, attributeType, inherit);
+      object[] attributeArray = GetCustomAttributes(element, attributeType, inherit);
       if ((attributeArray == null) || (attributeArray.Length == 0))
         return null;
       if (attributeArray.Length != 1)
-        throw new AmbiguousMatchException ("Multiple custom attributes of the same type found.");
+        throw new AmbiguousMatchException("Multiple custom attributes of the same type found.");
       return (Attribute)attributeArray[0];
     }
 
     public static T[] GetCustomAttributes<T> (MemberInfo element, bool inherit)
         where T: class
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      CheckAttributeType (typeof (T), "T");
-      
-      return (T[])GetCustomAttributes (element, typeof (T), inherit);
+      ArgumentUtility.CheckNotNull("element", element);
+      CheckAttributeType(typeof(T), "T");
+
+      return (T[])GetCustomAttributes(element, typeof(T), inherit);
     }
 
     public static object[] GetCustomAttributes (MemberInfo element, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull ("element", element);
-      CheckAttributeType (attributeType, "attributeType");
+      ArgumentUtility.CheckNotNull("element", element);
+      CheckAttributeType(attributeType, "attributeType");
 
       var elementAsType = element as Type;
       if (elementAsType != null)
-        return GetCustomAttributes (elementAsType, attributeType, inherit);
+        return GetCustomAttributes(elementAsType, attributeType, inherit);
 
       var elementAsProperty = element as PropertyInfo;
       if (elementAsProperty != null)
-        return s_propertyCustomAttributeRetriever.GetCustomAttributes (elementAsProperty, attributeType, inherit);
+        return s_propertyCustomAttributeRetriever.GetCustomAttributes(elementAsProperty, attributeType, inherit);
 
       var elementAsEvent = element as EventInfo;
       if (elementAsEvent != null)
-        return s_eventCustomAttributeRetriever.GetCustomAttributes (elementAsEvent, attributeType, inherit);
+        return s_eventCustomAttributeRetriever.GetCustomAttributes(elementAsEvent, attributeType, inherit);
 
-      return element.GetCustomAttributes (attributeType, inherit);
+      return element.GetCustomAttributes(attributeType, inherit);
     }
 
     public static object[] GetCustomAttributes (Type type, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-      CheckAttributeType (attributeType, "attributeType");
+      ArgumentUtility.CheckNotNull("type", type);
+      CheckAttributeType(attributeType, "attributeType");
 
-      var attributesWithRightType = GetCustomAttributesWithMetadata (type, attributeType, inherit);
-      var filteredAttributes = AttributeWithMetadata.ExcludeAll (attributesWithRightType, typeof (SuppressAttributesAttribute));
+      var attributesWithRightType = GetCustomAttributesWithMetadata(type, attributeType, inherit);
+      var filteredAttributes = AttributeWithMetadata.ExcludeAll(attributesWithRightType, typeof(SuppressAttributesAttribute));
 
-      var suppressAttributes = GetCachedSuppressAttributes (type, inherit);
-      var nonSuppressedAttributes = AttributeWithMetadata.Suppress (filteredAttributes, suppressAttributes);
-      var attributeInstances = AttributeWithMetadata.ExtractInstances (nonSuppressedAttributes);
+      var suppressAttributes = GetCachedSuppressAttributes(type, inherit);
+      var nonSuppressedAttributes = AttributeWithMetadata.Suppress(filteredAttributes, suppressAttributes);
+      var attributeInstances = AttributeWithMetadata.ExtractInstances(nonSuppressedAttributes);
 
-      return CreateTypedArray (attributeInstances, attributeType);
+      return CreateTypedArray(attributeInstances, attributeType);
     }
 
     public static IEnumerable<AttributeWithMetadata> GetCustomAttributesWithMetadata (Type type, Type attributeType, bool inherit)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       var attributeUsageAttributes = new Dictionary<Type, AttributeUsageAttribute>();
 
-      Type currentType = type;
+      Type? currentType = type;
       do
       {
-        var currentAttributes = currentType.GetCustomAttributes (attributeType, false); // get attributes exactly for current type
+        var currentAttributes = currentType.GetCustomAttributes(attributeType, false); // get attributes exactly for current type
         foreach (Attribute currentAttribute in currentAttributes)
         {
           var currentAttributeType = currentAttribute.GetType();
-          AttributeUsageAttribute currentAttributeUsage;
 
-          if (!attributeUsageAttributes.TryGetValue (currentAttributeType, out currentAttributeUsage))
+          if (!attributeUsageAttributes.TryGetValue(currentAttributeType, out var currentAttributeUsage))
           {
-            currentAttributeUsage = GetAttributeUsage (currentAttributeType);
-            attributeUsageAttributes.Add (currentAttributeType, currentAttributeUsage);
+            // TODO RM-7774: currentAttributeUsage should not be reassigned.
+            currentAttributeUsage = GetAttributeUsage(currentAttributeType);
+            attributeUsageAttributes.Add(currentAttributeType, currentAttributeUsage);
             if (currentType == type || currentAttributeUsage.Inherited)
-              yield return new AttributeWithMetadata (currentType, currentAttribute);
+              yield return new AttributeWithMetadata(currentType, currentAttribute);
           }
           else if ((currentType == type || currentAttributeUsage.Inherited) && currentAttributeUsage.AllowMultiple)
           {
-            yield return new AttributeWithMetadata (currentType, currentAttribute);
+            yield return new AttributeWithMetadata(currentType, currentAttribute);
           }
         }
         currentType = currentType.BaseType;
-      } while (inherit && currentType != null && currentType != typeof (object)); // iterate unless inherit == false, stop when typeof (object) is reached
+      } while (inherit && currentType != null && currentType != typeof(object)); // iterate unless inherit == false, stop when typeof (object) is reached
     }
 
     private static object[] CreateTypedArray (IEnumerable attributeInstances, Type elementType)
     {
-      var arrayList = new ArrayList ();
+      var arrayList = new ArrayList();
       foreach (var attributeInstance in attributeInstances)
       {
-        arrayList.Add (attributeInstance);
+        arrayList.Add(attributeInstance);
       }
-      return (object[]) arrayList.ToArray (elementType);
+      return (object[])arrayList.ToArray(elementType);
     }
 
     private static IReadOnlyCollection<AttributeWithMetadata> GetCachedSuppressAttributes (Type type, bool inherit)
     {
       IReadOnlyCollection<AttributeWithMetadata> result;
-      var key = Tuple.Create (type, inherit);
-      if (!s_suppressAttributesCache.TryGetValue (key, out result))
+      var key = Tuple.Create(type, inherit);
+      if (!s_suppressAttributesCache.TryGetValue(key, out result!))
       {
-        result = s_suppressAttributesCache.GetOrAdd (
-            key, k => GetCustomAttributesWithMetadata (k.Item1, typeof (SuppressAttributesAttribute), k.Item2).ToArray());
+        result = s_suppressAttributesCache.GetOrAdd(
+            key, k => GetCustomAttributesWithMetadata(k.Item1, typeof(SuppressAttributesAttribute), k.Item2).ToArray());
       }
       return result;
     }
 
     private static void CheckAttributeType (Type attributeType, string parameterName)
     {
-      ArgumentUtility.CheckNotNull ("attributeType", attributeType);
+      ArgumentUtility.CheckNotNull("attributeType", attributeType);
 
-      if (!typeof (Attribute).IsAssignableFrom (attributeType) && !attributeType.IsInterface)
+      if (!typeof(Attribute).IsAssignableFrom(attributeType) && !attributeType.IsInterface)
       {
         string message = "The attribute type must be assignable to System.Attribute or an interface.";
-        throw new ArgumentException (message, parameterName);
+        throw new ArgumentException(message, parameterName);
       }
     }
   }

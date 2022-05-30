@@ -32,7 +32,7 @@ namespace Remotion.SecurityManager.Domain.SearchInfrastructure.OrganizationalStr
 
     public RolePropertiesSearchArguments (IDomainObjectHandle<Group> groupHandle)
     {
-      ArgumentUtility.CheckNotNull ("groupHandle", groupHandle);
+      ArgumentUtility.CheckNotNull("groupHandle", groupHandle);
       _groupHandle = groupHandle;
     }
 

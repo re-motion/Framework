@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Mixins.UnitTests.Core.CodeGeneration.IntegrationTests.MixedTypeCodeGeneration.TestDomain
 {
-  [SuppressAttributes (typeof (Attribute))]
+  [SuppressAttributes(typeof(Attribute))]
   [MultiInherited, MultiNonInherited, NonMultiInherited, NonMultiNonInherited]
   public class MixinSuppressingAllAttributesAddingAttributes
   {

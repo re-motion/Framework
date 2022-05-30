@@ -31,15 +31,15 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
     {
       public static Result CreateErrorResult ([NotNull] string message, [NotNull] string stacktrace)
       {
-        ArgumentUtility.CheckNotNull ("message", message);
-        ArgumentUtility.CheckNotNull ("stacktrace", stacktrace);
+        ArgumentUtility.CheckNotNull("message", message);
+        ArgumentUtility.CheckNotNull("stacktrace", stacktrace);
 
-        return new Result (true, message, stacktrace);
+        return new Result(true, message, stacktrace);
       }
 
       public static Result CreateEmptyResult ()
       {
-        return new Result (false, "", "");
+        return new Result(false, "", "");
       }
 
       private readonly bool _hasError;
@@ -73,25 +73,25 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
 
     public Result Parse ([NotNull] ElementScope scope)
     {
-      ArgumentUtility.CheckNotNull ("scope", scope);
+      ArgumentUtility.CheckNotNull("scope", scope);
 
-      var pageRequestManagerException = scope.FindCss (".SmartPageErrorBody:first-child", Options.NoWait);
+      var pageRequestManagerException = scope.FindCss(".SmartPageErrorBody:first-child", Options.NoWait);
 
-      var startSelector = GetRootSelectorForErrorInformation (pageRequestManagerException);
+      var startSelector = GetRootSelectorForErrorInformation(pageRequestManagerException);
 
-      var message = scope.FindCss (startSelector + " > span > h2 > i", Options.NoWait);
-      var stacktrace = scope.FindCss (startSelector + " > font > table:nth-of-type(2) > tbody > tr > td > code > pre", Options.NoWait);
+      var message = scope.FindCss(startSelector + " > span > h2 > i", Options.NoWait);
+      var stacktrace = scope.FindCss(startSelector + " > font > table:nth-of-type(2) > tbody > tr > td > code > pre", Options.NoWait);
 
       if (message.ExistsWorkaround() && stacktrace.ExistsWorkaround())
-        return Result.CreateErrorResult (HttpUtility.HtmlDecode (message.InnerHTML.Replace ("<br>", "\r\n")), HttpUtility.HtmlDecode (stacktrace.InnerHTML));
+        return Result.CreateErrorResult(HttpUtility.HtmlDecode(message.InnerHTML.Replace("<br>", "\r\n")), HttpUtility.HtmlDecode(stacktrace.InnerHTML));
 
-      return Result.CreateEmptyResult ();
+      return Result.CreateEmptyResult();
     }
 
     private string GetRootSelectorForErrorInformation (ElementScope pageRequestManagerException)
     {
       if (pageRequestManagerException.ExistsWorkaround()
-          && pageRequestManagerException.Text.StartsWith ("Sys.WebForms.PageRequestManagerServerErrorException:"))
+          && pageRequestManagerException.Text.StartsWith("Sys.WebForms.PageRequestManagerServerErrorException:"))
       {
         return "div.SmartPageErrorBody > div";
       }

@@ -17,7 +17,5 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyTitle ("re-motion Globalization Support for Extensible Enums")]
-[assembly: AssemblyDescription ("Internal: Integrates Remotion.Globalization and Remotion.ExtensibleEnums assemblies.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]

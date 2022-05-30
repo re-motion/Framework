@@ -21,7 +21,7 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.MappingExport;
-using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2012;
+using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.UnitTests.Resources;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
@@ -34,14 +34,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var sqlStorageObjectFactory = new SqlStorageObjectFactory();
       var mappingSerializer =
-          new MappingSerializer (
+          new MappingSerializer(
               d => sqlStorageObjectFactory.CreateEnumSerializer(),
-              (d, enumSerializer) => sqlStorageObjectFactory.CreateStorageProviderSerializer (enumSerializer));
+              (d, enumSerializer) => sqlStorageObjectFactory.CreateStorageProviderSerializer(enumSerializer));
 
-      var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
-      var expected = XDocument.Load (new MemoryStream(ResourceManager.GetMappingExportOutput()));
+      var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
+      var expected = XDocument.Load(new MemoryStream(ResourceManager.GetMappingExportOutput()));
 
-      Assert.That (actual.ToString(), Is.EqualTo (expected.ToString()));
+      Assert.That(actual.ToString(), Is.EqualTo(expected.ToString()));
     }
 
     [Test]
@@ -49,15 +49,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.MappingExport
     {
       var sqlStorageObjectFactory = new SqlStorageObjectFactory();
       var mappingSerializer =
-          new MappingSerializer (
+          new MappingSerializer(
               d => sqlStorageObjectFactory.CreateEnumSerializer(),
-              (d, enumSerializer) => sqlStorageObjectFactory.CreateStorageProviderSerializer (enumSerializer));
+              (d, enumSerializer) => sqlStorageObjectFactory.CreateStorageProviderSerializer(enumSerializer));
 
-      var actual = mappingSerializer.Serialize (MappingConfiguration.Current.GetTypeDefinitions());
+      var actual = mappingSerializer.Serialize(MappingConfiguration.Current.GetTypeDefinitions());
 
       var schemaSet = new XmlSchemaSet();
-      schemaSet.Add (XmlSchema.Read (new MemoryStream (ResourceManager.GetRdbmsMappingSchema()), null));
-      actual.Validate (schemaSet, null);
+      schemaSet.Add(XmlSchema.Read(new MemoryStream(ResourceManager.GetRdbmsMappingSchema()), null));
+      actual.Validate(schemaSet, null);
     }
   }
 }

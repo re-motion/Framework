@@ -30,15 +30,15 @@ namespace Remotion.Development.Web.ResourceHosting
   {
     private readonly string _virtualPath;
     private readonly DirectoryInfo _physicalDirectory;
-    private readonly string _displayName;
+    private readonly string? _displayName;
 
-    public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string displayName = null)
-        : base (virtualPath)
+    public ResourceVirtualDirectory (string virtualPath, DirectoryInfo physicalDirectory, string? displayName = null)
+        : base(virtualPath)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
-      ArgumentUtility.CheckNotNull ("physicalDirectory", physicalDirectory);
+      ArgumentUtility.CheckNotNullOrEmpty("virtualPath", virtualPath);
+      ArgumentUtility.CheckNotNull("physicalDirectory", physicalDirectory);
 
-      _virtualPath = virtualPath;
+      _virtualPath = VirtualPathUtility.AppendTrailingSlash(virtualPath);
       _physicalDirectory = physicalDirectory;
       _displayName = displayName;
     }
@@ -47,8 +47,8 @@ namespace Remotion.Development.Web.ResourceHosting
     {
       get { return _virtualPath;  }
     }
-    
-    public virtual string PhysicalPath
+
+    public virtual string? PhysicalPath
     {
       get
       {
@@ -65,7 +65,7 @@ namespace Remotion.Development.Web.ResourceHosting
 
     public override string Name
     {
-      get { return _displayName ?? base.Name; }
+      get { return _displayName ?? base.Name!; }
     }
 
     public override IEnumerable Directories
@@ -76,8 +76,8 @@ namespace Remotion.Development.Web.ResourceHosting
         {
           foreach (var directory in _physicalDirectory.GetDirectories())
           {
-            var path = VirtualPathUtility.AppendTrailingSlash (VirtualPathUtility.Combine (AppRelativeVirtualPath, directory.Name));
-            yield return new ResourceVirtualDirectory (path, directory);
+            var path = VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.Combine(AppRelativeVirtualPath, directory.Name));
+            yield return new ResourceVirtualDirectory(path, directory);
           }
         }
       }
@@ -91,8 +91,8 @@ namespace Remotion.Development.Web.ResourceHosting
         {
           foreach (var file in _physicalDirectory.GetFiles())
           {
-            var path = VirtualPathUtility.Combine (AppRelativeVirtualPath, file.Name);
-            yield return new ResourceVirtualFile (path, file);
+            var path = VirtualPathUtility.Combine(AppRelativeVirtualPath, file.Name);
+            yield return new ResourceVirtualFile(path, file);
           }
         }
       }

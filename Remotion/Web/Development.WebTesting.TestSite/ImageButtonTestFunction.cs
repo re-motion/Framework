@@ -25,11 +25,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
   public class ImageButtonTestFunction : WxeFunction
   {
     public ImageButtonTestFunction ()
-        : base (new NoneTransactionMode())
+        : base(new NoneTransactionMode())
     {
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep ("ImageButtonTest.aspx");
+    private WxeStep Step1 = new WxePageStep("ImageButtonTest.aspx");
   }
 }

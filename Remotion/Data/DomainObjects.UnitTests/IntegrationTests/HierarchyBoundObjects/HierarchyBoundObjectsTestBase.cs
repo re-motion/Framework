@@ -22,14 +22,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
 {
   public class HierarchyBoundObjectsTestBase : StandardMappingTest
   {
-    protected StateType GetStateFromTransaction (DomainObject domainObject, ClientTransaction clientTransaction)
+    protected DomainObjectState GetStateFromTransaction (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      return ClientTransactionTestHelper.GetIDataManager (clientTransaction).GetState (domainObject.ID);
+      return ClientTransactionTestHelper.GetIDataManager(clientTransaction).GetState(domainObject.ID);
     }
 
     protected DataContainer GetDataContainerFromTransaction (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      return ClientTransactionTestHelper.GetIDataManager (clientTransaction).GetDataContainerWithoutLoading (domainObject.ID);
+      return ClientTransactionTestHelper.GetIDataManager(clientTransaction).GetDataContainerWithoutLoading(domainObject.ID);
     }
   }
 }

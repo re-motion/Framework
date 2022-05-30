@@ -41,22 +41,22 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     protected override void Render (HtmlTextWriter writer)
     {
-      base.Render (writer);
+      base.Render(writer);
 
-      var command = new Command (CommandType)
+      var command = new Command(CommandType)
                     {
                         EventCommand = EventCommandInfo,
                         HrefCommand = HrefCommandInfo,
                         ItemID = ItemID
                     };
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID);
-      var postBackEvent = Page.ClientScript.GetPostBackEventReference (this, "additional") + ";";
-      command.RenderBegin (writer, _renderingFeatures, postBackEvent, new string[0], null, null);
+      writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+      var postBackEvent = Page.ClientScript.GetPostBackEventReference(this, "additional") + ";";
+      command.RenderBegin(writer, _renderingFeatures, postBackEvent, new string[0], null, null);
 
-      writer.Write (Text);
+      writer.Write(Text);
 
-      command.RenderEnd (writer);
+      command.RenderEnd(writer);
     }
   }
 }

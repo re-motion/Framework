@@ -17,19 +17,23 @@
 using System;
 using System.ComponentModel;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Web.Services;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 /// <summary> Exposes non-public members of the <see cref="BocReferenceValue"/> type. </summary>
-[ToolboxItem (false)]
+[ToolboxItem(false)]
 public class BocReferenceValueMock: BocReferenceValue
 {
-  private bool _isDesignMode = true;
+  public BocReferenceValueMock (IWebServiceFactory webServiceFactory)
+      : base(webServiceFactory)
+  {
+  }
 
   public new void EvaluateWaiConformity ()
   {
-    base.EvaluateWaiConformity ();
+    base.EvaluateWaiConformity();
   }
 
   public new string InternalValue
@@ -41,16 +45,6 @@ public class BocReferenceValueMock: BocReferenceValue
   public new bool HasOptionsMenu
   {
     get { return base.HasOptionsMenu; }
-  }
-
-  protected override bool IsDesignMode
-  {
-    get { return _isDesignMode; }
-  }
-
-  public void SetDesignMode (bool value)
-  {
-    _isDesignMode = value;
   }
 }
 

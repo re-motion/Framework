@@ -24,6 +24,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
@@ -38,12 +39,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
   {
     public static ITypeDiscoveryService GetTypeDiscoveryService (params Assembly[] rootAssemblies)
     {
-      var rootAssemblyFinder = new FixedRootAssemblyFinder (rootAssemblies.Select (asm => new RootAssembly (asm, true)).ToArray());
-      var assemblyLoader = new FilteringAssemblyLoader (ApplicationAssemblyLoaderFilter.Instance);
-      var assemblyFinder = new CachingAssemblyFinderDecorator (new AssemblyFinder (rootAssemblyFinder, assemblyLoader));
-      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService (assemblyFinder);
+      var rootAssemblyFinder = new FixedRootAssemblyFinder(rootAssemblies.Select(asm => new RootAssembly(asm, true)).ToArray());
+      var assemblyLoader = new FilteringAssemblyLoader(ApplicationAssemblyLoaderFilter.Instance);
+      var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
+      ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
-      return FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist (
+      return FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(
           typeDiscoveryService,
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors",
           "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration",
@@ -64,32 +65,36 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     protected BaseConfiguration ()
     {
       ProviderCollection<StorageProviderDefinition> storageProviderDefinitionCollection = StorageProviderDefinitionObjectMother.CreateTestDomainStorageProviders();
-      
-      _storageConfiguration = new StorageConfiguration (
-          storageProviderDefinitionCollection, 
-          storageProviderDefinitionCollection[DatabaseTest.DefaultStorageProviderID]);
-      
-      _storageConfiguration.StorageGroups.Add (
-          new StorageGroupElement (
-              new TestDomainAttribute(), 
-              DatabaseTest.c_testDomainProviderID));
-      _storageConfiguration.StorageGroups.Add (
-          new StorageGroupElement (
-              new StorageProviderStubAttribute(), 
-              DatabaseTest.c_unitTestStorageProviderStubID));
-      _storageConfiguration.StorageGroups.Add (
-          new StorageGroupElement (
-              new TableInheritanceTestDomainAttribute(), 
-              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
-     
-      _mappingLoaderConfiguration = new MappingLoaderConfiguration();
-      _queryConfiguration = new QueryConfiguration ("QueriesForStandardMapping.xml");
-     
-      var typeDiscoveryService = GetTypeDiscoveryService (GetType().Assembly);
 
-      _mappingConfiguration = new MappingConfiguration (
-          MappingReflectorObjectMother.CreateMappingReflector (typeDiscoveryService), 
-          new PersistenceModelLoader (new StorageGroupBasedStorageProviderDefinitionFinder (_storageConfiguration)));
+      _storageConfiguration = new StorageConfiguration(
+          storageProviderDefinitionCollection,
+          storageProviderDefinitionCollection[DatabaseTest.DefaultStorageProviderID]);
+
+      _storageConfiguration.StorageGroups.Add(
+          new StorageGroupElement(
+              new TestDomainAttribute(),
+              DatabaseTest.c_testDomainProviderID));
+      _storageConfiguration.StorageGroups.Add(
+          new StorageGroupElement(
+              new NonPersistentTestDomainAttribute(),
+              DatabaseTest.c_nonPersistentTestDomainProviderID));
+      _storageConfiguration.StorageGroups.Add(
+          new StorageGroupElement(
+              new StorageProviderStubAttribute(),
+              DatabaseTest.c_unitTestStorageProviderStubID));
+      _storageConfiguration.StorageGroups.Add(
+          new StorageGroupElement(
+              new TableInheritanceTestDomainAttribute(),
+              TableInheritanceMappingTest.TableInheritanceTestDomainProviderID));
+
+      _mappingLoaderConfiguration = new MappingLoaderConfiguration();
+      _queryConfiguration = new QueryConfiguration("QueriesForStandardMapping.xml");
+
+      var typeDiscoveryService = GetTypeDiscoveryService(GetType().Assembly);
+
+      _mappingConfiguration = new MappingConfiguration(
+          MappingReflectorObjectMother.CreateMappingReflector(typeDiscoveryService),
+          new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(_storageConfiguration)));
     }
 
     public MappingConfiguration GetMappingConfiguration ()
@@ -104,7 +109,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
-      return new FakeDomainObjectsConfiguration (_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
+      return new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
     }
   }
 }

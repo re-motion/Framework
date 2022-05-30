@@ -33,8 +33,8 @@ namespace Remotion.ServiceLocation
     public static ServiceImplementationInfo CreateSingle<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.InstancePerDependency)
         where T : class
     {
-      ArgumentUtility.CheckNotNull ("factory", factory);
-      return new ServiceImplementationInfo (typeof (T), lifetime, RegistrationType.Single, factory);
+      ArgumentUtility.CheckNotNull("factory", factory);
+      return new ServiceImplementationInfo(typeof(T), lifetime, RegistrationType.Single, factory);
     }
 
     /// <summary>
@@ -46,11 +46,11 @@ namespace Remotion.ServiceLocation
     public static ServiceImplementationInfo CreateMultiple<T> (Func<T> factory, LifetimeKind lifetime = LifetimeKind.InstancePerDependency)
         where T : class
     {
-      ArgumentUtility.CheckNotNull ("factory", factory);
-      return new ServiceImplementationInfo (typeof(T), lifetime, RegistrationType.Multiple, factory);
+      ArgumentUtility.CheckNotNull("factory", factory);
+      return new ServiceImplementationInfo(typeof(T), lifetime, RegistrationType.Multiple, factory);
     }
 
-    private readonly Func<object> _factory;
+    private readonly Func<object>? _factory;
     private readonly Type _implementationType;
     private readonly LifetimeKind _lifetime;
     private readonly RegistrationType _registrationType;
@@ -62,14 +62,14 @@ namespace Remotion.ServiceLocation
     /// <param name="lifetime">The <see cref="LifetimeKind"/> of the instances of <paramref name="implementationType"/>. Defaults to <see cref="LifetimeKind.InstancePerDependency"/>.</param>
     /// <param name="registrationType">The <see cref="RegistrationType"/> of the <paramref name="implementationType"/>. Defaults to <see cref="T:RegistrationType.Single"/>.</param>
     public ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
-        : this (ArgumentUtility.CheckNotNull ("implementationType", implementationType), lifetime, registrationType, null)
+        : this(ArgumentUtility.CheckNotNull("implementationType", implementationType), lifetime, registrationType, null)
     {
     }
 
-    private ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType, Func<object> factory)
+    private ServiceImplementationInfo (Type implementationType, LifetimeKind lifetime, RegistrationType registrationType, Func<object>? factory)
     {
       if (registrationType == RegistrationType.Decorator && lifetime != LifetimeKind.InstancePerDependency)
-        throw new ArgumentException ("For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", "lifetime");
+        throw new ArgumentException("For implementations of type 'Decorator', the lifetime can only be specified as 'InstancePerDependency'.", "lifetime");
 
       _implementationType = implementationType;
       _lifetime = lifetime;
@@ -98,7 +98,7 @@ namespace Remotion.ServiceLocation
     /// <summary>
     /// The factory delegate that creates an instance of the service implementation.
     /// </summary>
-    public Func<object> Factory
+    public Func<object>? Factory
     {
       get { return _factory; }
     }
@@ -111,7 +111,7 @@ namespace Remotion.ServiceLocation
     /// <inheritdoc />
     public override string ToString ()
     {
-      return string.Format ("{{{0}, {1}, {2}}}", _implementationType, _lifetime, _registrationType);
+      return string.Format("{{{0}, {1}, {2}}}", _implementationType, _lifetime, _registrationType);
     }
   }
 }

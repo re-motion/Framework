@@ -16,10 +16,12 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using System.Web;
 using System.Web.SessionState;
 using Remotion.Data.DomainObjects;
+using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.ServiceLocation;
@@ -30,8 +32,8 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 {
   public class SecurityManagerHttpApplication : HttpApplication
   {
-    private static readonly string s_principalKey = typeof (SecurityManagerHttpApplication).AssemblyQualifiedName + "_Principal";
-    private ISecurityManagerPrincipalFactory _securityManagerPrincipalFactory;
+    private static readonly string s_principalKey = typeof(SecurityManagerHttpApplication).GetAssemblyQualifiedNameChecked() + "_Principal";
+    private ISecurityManagerPrincipalFactory? _securityManagerPrincipalFactory;
 
     public SecurityManagerHttpApplication ()
     {
@@ -39,26 +41,30 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
 
     public ISecurityManagerPrincipalFactory SecurityManagerPrincipalFactory
     {
-      get { return _securityManagerPrincipalFactory; }
-      set { _securityManagerPrincipalFactory = ArgumentUtility.CheckNotNull ("value", value); }
+      get
+      {
+        Assertion.IsNotNull(_securityManagerPrincipalFactory, "_securityManagerPrincipalFactory != null after HttpApplication.Init()");
+        return _securityManagerPrincipalFactory;
+      }
+      set { _securityManagerPrincipalFactory = ArgumentUtility.CheckNotNull("value", value); }
     }
 
     public void SetCurrentPrincipal (ISecurityManagerPrincipal securityManagerPrincipal)
     {
-      ArgumentUtility.CheckNotNull ("securityManagerPrincipal", securityManagerPrincipal);
+      ArgumentUtility.CheckNotNull("securityManagerPrincipal", securityManagerPrincipal);
 
       SecurityManagerPrincipal.Current = securityManagerPrincipal;
-      SavePrincipalToSession (securityManagerPrincipal);
+      SavePrincipalToSession(securityManagerPrincipal);
     }
 
     protected ISecurityManagerPrincipal LoadPrincipalFromSession ()
     {
-      return (ISecurityManagerPrincipal) Session[s_principalKey] ?? SecurityManagerPrincipal.Null;
+      return (ISecurityManagerPrincipal)Session[s_principalKey] ?? SecurityManagerPrincipal.Null;
     }
 
     protected void SavePrincipalToSession (ISecurityManagerPrincipal principal)
     {
-      ArgumentUtility.CheckNotNull ("principal", principal);
+      ArgumentUtility.CheckNotNull("principal", principal);
 
       Session[s_principalKey] = principal;
     }
@@ -68,44 +74,55 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       get { return Context.Handler is IRequiresSessionState; }
     }
 
+    [MemberNotNull(nameof(_securityManagerPrincipalFactory))]
     public override void Init ()
     {
       base.Init();
 
-      if (SecurityManagerPrincipalFactory == null)
-        SecurityManagerPrincipalFactory = SafeServiceLocator.Current.GetInstance<ISecurityManagerPrincipalFactory>();
+      if (_securityManagerPrincipalFactory == null)
+        _securityManagerPrincipalFactory = SafeServiceLocator.Current.GetInstance<ISecurityManagerPrincipalFactory>();
 
       PostAcquireRequestState += SecurityManagerHttpApplication_PostAcquireRequestState;
     }
 
-    private void SecurityManagerHttpApplication_PostAcquireRequestState (object sender, EventArgs e)
+    private void SecurityManagerHttpApplication_PostAcquireRequestState (object? sender, EventArgs e)
     {
       if (HasSessionState)
       {
         ISecurityManagerPrincipal principal;
         if (Session.IsNewSession)
-          principal = GetSecurityManagerPrincipalByUserName (Context.User);
+          principal = GetSecurityManagerPrincipalByUserName(Context.User);
         else
           principal = LoadPrincipalFromSession();
 
-        SetCurrentPrincipal (principal);
+        SetCurrentPrincipal(principal);
       }
     }
 
     private ISecurityManagerPrincipal GetSecurityManagerPrincipalByUserName (IPrincipal principal)
     {
+      if (principal.Identity == null)
+        return SecurityManagerPrincipal.Null;
+
       if (!principal.Identity.IsAuthenticated)
         return SecurityManagerPrincipal.Null;
+
+      Assertion.IsNotNull(principal.Identity.Name, "IPrincipal.Identity.Name != null when IPrincipal.Identity.IsAuthenticated == true");
 
       using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
       {
         using (SecurityFreeSection.Activate())
         {
-          var user = SecurityManagerUser.FindByUserName (principal.Identity.Name);
+          var user = SecurityManagerUser.FindByUserName(principal.Identity.Name);
           if (user == null)
+          {
             return SecurityManagerPrincipal.Null;
+          }
           else
-            return SecurityManagerPrincipalFactory.Create (user.Tenant.GetHandle(), user.GetHandle(), null);
+          {
+            Assertion.IsNotNull(user.Tenant, "User{{{0}}}.Tenant != null", user.ID);
+            return SecurityManagerPrincipalFactory.Create(user.Tenant.GetHandle(), user.GetHandle(), null);
+          }
         }
       }
     }

@@ -35,7 +35,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       get
       {
         if (s_scope == null)
-          throw new InvalidOperationException ("SetUp must be called before the scope is accessed.");
+          throw new InvalidOperationException("SetUp must be called before the scope is accessed.");
         return s_scope;
       }
     }
@@ -45,43 +45,54 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
       get
       {
         if (s_scope == null)
-          throw new InvalidOperationException ("SetUp must be called before the scope is accessed.");
+          throw new InvalidOperationException("SetUp must be called before the scope is accessed.");
         return s_unsavedScope;
       }
     }
 
-    [SetUp]
-    public virtual void SetUp ()
+    [OneTimeSetUp]
+    public virtual void OneTimeSetUp ()
     {
-      Console.WriteLine ("Setting up code generation tests");
-      s_scope = new ModuleScope (true, false, "Remotion.Reflection.CodeGeneration.Generated.Signed", "Remotion.Reflection.CodeGeneration.Generated.Signed.dll", "Remotion.Reflection.CodeGeneration.Generated.Unsigned", "Remotion.Reflection.CodeGeneration.Generated.Unsigned.dll");
-      s_unsavedScope = new ModuleScope (true);
-      DeleteIfExists (Path.Combine (s_scope.StrongNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
-      DeleteIfExists (Path.Combine (s_scope.WeakNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
+      Console.WriteLine("Setting up code generation tests");
+      s_scope = new ModuleScope(
+          true,
+          false,
+          "Remotion.Reflection.CodeGeneration.Generated.Signed",
+          Path.Combine(TestContext.CurrentContext.TestDirectory, "Remotion.Reflection.CodeGeneration.Generated.Signed.dll"),
+          "Remotion.Reflection.CodeGeneration.Generated.Unsigned",
+          Path.Combine(TestContext.CurrentContext.TestDirectory, "Remotion.Reflection.CodeGeneration.Generated.Unsigned.dll"));
+      s_unsavedScope = new ModuleScope(true);
+#if FEATURE_ASSEMBLYBUILDER_SAVE
+      DeleteIfExists(Path.Combine(s_scope.StrongNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
+      DeleteIfExists(Path.Combine(s_scope.WeakNamedModuleDirectory ?? Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
+#else
+      DeleteIfExists(Path.Combine(Environment.CurrentDirectory, s_scope.StrongNamedModuleName));
+      DeleteIfExists(Path.Combine(Environment.CurrentDirectory, s_scope.WeakNamedModuleName));
+#endif
     }
 
-    [TearDown]
-    public virtual void TearDown ()
+    [OneTimeTearDown]
+    public virtual void OneTimeTearDown ()
     {
-      Console.WriteLine ("Tearing down code generation tests");
-#if !NO_PEVERIFY
-      string[] paths = AssemblySaver.SaveAssemblies (s_scope);
+      Console.WriteLine("Tearing down code generation tests");
+#if FEATURE_ASSEMBLYBUILDER_SAVE && !NO_PEVERIFY
+      string[] paths = AssemblySaver.SaveAssemblies(s_scope);
       s_scope = null;
       s_unsavedScope = null;
 
       foreach (string path in paths)
       {
-        PEVerifier.CreateDefault ().VerifyPEFile (path);
-        FileUtility.DeleteAndWaitForCompletion (path);
-        FileUtility.DeleteAndWaitForCompletion (path.Replace (".dll", ".pdb"));
+        PEVerifier.CreateDefault().VerifyPEFile(path);
+        FileUtility.DeleteAndWaitForCompletion(path);
+        FileUtility.DeleteAndWaitForCompletion(path.Replace(".dll", ".pdb"));
       }
 #endif
     }
 
     private void DeleteIfExists (string path)
     {
-      if (File.Exists (path))
-        FileUtility.DeleteAndWaitForCompletion (path);
+      if (File.Exists(path))
+        FileUtility.DeleteAndWaitForCompletion(path);
     }
   }
 }

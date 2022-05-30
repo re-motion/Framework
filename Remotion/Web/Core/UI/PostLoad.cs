@@ -32,13 +32,13 @@ public class PostLoadInvoker
   public static void InvokePostLoad (Control control)
   {
     if (control is ISupportsPostLoadControl)
-      ((ISupportsPostLoadControl)control).OnPostLoad ();
+      ((ISupportsPostLoadControl)control).OnPostLoad();
 
     ControlCollection controls = control.Controls;
     for (int i = 0; i < controls.Count; ++i)
     {
       Control childControl = controls[i];
-      InvokePostLoad (childControl);
+      InvokePostLoad(childControl);
     }
   }
 
@@ -55,7 +55,7 @@ public class PostLoadInvoker
   {
     if (! _invoked)
     {
-      InvokePostLoad (_control);
+      InvokePostLoad(_control);
       _invoked = true;
     }
   }

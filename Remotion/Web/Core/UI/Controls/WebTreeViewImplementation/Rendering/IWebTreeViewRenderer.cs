@@ -25,7 +25,7 @@ namespace Remotion.Web.UI.Controls.WebTreeViewImplementation.Rendering
   {
     void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender);
 
-    [Obsolete ("The Render method is not supported at this time.", true)]
+    [Obsolete("The Render method is not supported at this time.", true)]
     void Render (WebTreeViewRenderingContext renderingContext);
   }
 }

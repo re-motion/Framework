@@ -31,12 +31,12 @@ namespace Remotion.Configuration.TypeResolution
   public sealed class TypeResolutionConfiguration : ConfigurationSection
   {
     private static readonly DoubleCheckedLockingContainer<TypeResolutionConfiguration> s_current =
-        new DoubleCheckedLockingContainer<TypeResolutionConfiguration> (GetTypeResolutionConfiguration);
+        new DoubleCheckedLockingContainer<TypeResolutionConfiguration>(GetTypeResolutionConfiguration);
 
     /// <summary>
     /// Gets the current <see cref="TypeResolutionConfiguration"/> instance. This is used by 
-    /// <see cref="ContextAwareTypeUtility.GetTypeDiscoveryService"/> to retrieve a <see cref="ITypeDiscoveryService"/> instance if
-    /// <see cref="DesignerUtility.IsDesignMode"/> is not set to <see langword="true" />.
+    /// <see cref="ContextAwareTypeUtility.GetTypeDiscoveryService"/> to retrieve a <see cref="ITypeDiscoveryService"/> instance
+    /// if no <see cref="IDesignerHost"/> is available.
     /// </summary>
     /// <value>The current <see cref="TypeResolutionConfiguration"/>.</value>
     public static TypeResolutionConfiguration Current
@@ -56,15 +56,15 @@ namespace Remotion.Configuration.TypeResolution
     private static TypeResolutionConfiguration GetTypeResolutionConfiguration ()
     {
       // return (TypeResolutionConfiguration) ConfigurationWrapper.Current.GetSection ("remotion.typeResolution", false) ?? new TypeResolutionConfiguration();
-      return new TypeResolutionConfiguration (new DefaultTypeResolutionService());
+      return new TypeResolutionConfiguration(new DefaultTypeResolutionService());
     }
 
     private readonly ITypeResolutionService _typeResolutionService;
 
     public TypeResolutionConfiguration (ITypeResolutionService typeResolutionService)
     {
-      ArgumentUtility.CheckNotNull ("typeResolutionService", typeResolutionService);
-      
+      ArgumentUtility.CheckNotNull("typeResolutionService", typeResolutionService);
+
       _typeResolutionService = typeResolutionService;
     }
 

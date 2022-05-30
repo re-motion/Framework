@@ -28,46 +28,56 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.Configuration
   /// </summary>
   /// <remarks>
   /// <see cref="WebTestConfigurationSection"/> <see cref="WebTestConfigurationSection.HostingProviderSettings"/> 
-  /// provides the hosting strategy type, use <c>IisExpress</c> for hosting the application in an auto-configured IIS Express.
-  /// Leave <see cref="WebTestConfigurationSection.HostingProviderSettings"/> empty if the web application is already hosted, eg. in IIS.
+  /// provides the hosting strategy type, use <c>IisExpress</c> for hosting the application in an auto-configured IIS Express or <c>Docker</c>
+  /// for hosting the application in a Docker container. Leave <see cref="WebTestConfigurationSection.HostingProviderSettings"/> empty if the
+  /// web application is already hosted, eg. in IIS.
   /// </remarks>
   public class HostingConfiguration : IHostingConfiguration
   {
+    private readonly ITestSiteLayoutConfiguration _testSiteLayoutConfiguration;
+
     private static readonly Dictionary<string, Type> s_wellKnownHostingStrategyTypes =
         new Dictionary<string, Type>
         {
-            { "IisExpress", typeof (IisExpressHostingStrategy) }
+            { "IisExpress", typeof(IisExpressHostingStrategy) },
+            { "Docker", typeof(DockerHostingStrategy) },
         };
 
     private readonly ProviderSettings _hostingProviderSettings;
+    private TimeSpan _verifyWebApplicationStartedTimeout;
 
-    public HostingConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection)
+    public HostingConfiguration ([NotNull] WebTestConfigurationSection webTestConfigurationSection, [NotNull] ITestSiteLayoutConfiguration testSiteLayoutConfiguration)
     {
-      ArgumentUtility.CheckNotNull ("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("webTestConfigurationSection", webTestConfigurationSection);
+      ArgumentUtility.CheckNotNull("testSiteLayoutConfiguration", testSiteLayoutConfiguration);
 
       _hostingProviderSettings = webTestConfigurationSection.HostingProviderSettings;
+      _verifyWebApplicationStartedTimeout = webTestConfigurationSection.VerifyWebApplicationStartedTimeout;
+      _testSiteLayoutConfiguration = testSiteLayoutConfiguration;
     }
+
+    public TimeSpan VerifyWebApplicationStartedTimeout => _verifyWebApplicationStartedTimeout;
 
     public IHostingStrategy GetHostingStrategy ()
     {
-      if (string.IsNullOrEmpty (_hostingProviderSettings.Type))
-        return new NullHostingStrategy ();
+      if (string.IsNullOrEmpty(_hostingProviderSettings.Type))
+        return new NullHostingStrategy();
 
       var hostingStrategyTypeName = _hostingProviderSettings.Type;
-      var hostingStrategyType = GetHostingStrategyType (hostingStrategyTypeName);
-      Assertion.IsNotNull (hostingStrategyType, string.Format ("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
+      var hostingStrategyType = GetHostingStrategyType(hostingStrategyTypeName);
+      Assertion.IsNotNull(hostingStrategyType, string.Format("Hosting strategy '{0}' could not be loaded.", hostingStrategyTypeName));
 
-      var hostingStrategy = (IHostingStrategy) Activator.CreateInstance (hostingStrategyType, new object[] { _hostingProviderSettings.Parameters });
+      var hostingStrategy = (IHostingStrategy)Activator.CreateInstance(hostingStrategyType, new object[] { _testSiteLayoutConfiguration, _hostingProviderSettings.Parameters })!;
       return hostingStrategy;
     }
 
     [CanBeNull]
-    private Type GetHostingStrategyType (string hostingStrategyTypeName)
+    private Type? GetHostingStrategyType (string hostingStrategyTypeName)
     {
-      if (s_wellKnownHostingStrategyTypes.ContainsKey (hostingStrategyTypeName))
+      if (s_wellKnownHostingStrategyTypes.ContainsKey(hostingStrategyTypeName))
         return s_wellKnownHostingStrategyTypes [hostingStrategyTypeName];
 
-      return Type.GetType (hostingStrategyTypeName, throwOnError: false, ignoreCase: false);
+      return Type.GetType(hostingStrategyTypeName, throwOnError: false, ignoreCase: false);
     }
   }
 }

@@ -21,6 +21,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
 using Remotion.Web.Development.WebTesting.Utilities;
+using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
@@ -33,8 +34,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     public void SetUp ()
     {
       _tempSavePath = Path.GetTempPath() + Path.GetRandomFileName();
-     
-      while (Directory.Exists (_tempSavePath))
+
+      while (Directory.Exists(_tempSavePath))
         _tempSavePath = Path.GetTempPath() + Path.GetRandomFileName();
 
       IntegrationTestSetUp();
@@ -43,14 +44,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [TearDown]
     public void TearDown ()
     {
-      var files = Directory.GetFiles (_tempSavePath, "*.png");
+      if (Directory.Exists(_tempSavePath))
+      {
+        var files = Directory.GetFiles(_tempSavePath, "*.png");
 
-      foreach (var file in files)
-        File.Delete (file);
+        foreach (var file in files)
+          File.Delete(file);
 
-      Directory.Delete (_tempSavePath);
+        Directory.Delete(_tempSavePath);
+      }
 
-      if (IsAlertDialogPresent ((IWebDriver) Helper.MainBrowserSession.Driver.Native))
+      if (IsAlertDialogPresent((IWebDriver)Helper.MainBrowserSession.Driver.Native))
         Helper.MainBrowserSession.Window.AcceptModalDialog();
 
       IntegrationTestTearDown();
@@ -59,32 +63,32 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_SavesToCorrectPath ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var tempFileName = "RandomFileName";
       var suffix = "Desktop";
       var extension = "png";
 
-      var fullPath = CombineToFullPath (_tempSavePath, tempFileName, suffix, extension);
+      var fullPath = CombineToFullPath(_tempSavePath, tempFileName, suffix, extension);
 
-      Assert.That (File.Exists (fullPath), Is.False);
-      testExecutionScreenshotRecorder.TakeDesktopScreenshot (tempFileName);
-      Assert.That (File.Exists (fullPath), Is.True);
+      Assert.That(File.Exists(fullPath), Is.False);
+      testExecutionScreenshotRecorder.TakeDesktopScreenshot(tempFileName);
+      Assert.That(File.Exists(fullPath), Is.True);
     }
 
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_ReplacesInvalidFileNameChars ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var tempFileName = "<Random\"File\"Na|me>";
       var suffix = "Desktop";
       var extension = "png";
 
       var tempFileNameWitCharReplaced = "_Random_File_Na_me_";
-      var fullPathWitCharReplaced = CombineToFullPath (_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
+      var fullPathWitCharReplaced = CombineToFullPath(_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
 
-      Assert.That (File.Exists (fullPathWitCharReplaced), Is.False);
-      testExecutionScreenshotRecorder.TakeDesktopScreenshot (tempFileName);
-      Assert.That (File.Exists (fullPathWitCharReplaced), Is.True);
+      Assert.That(File.Exists(fullPathWitCharReplaced), Is.False);
+      testExecutionScreenshotRecorder.TakeDesktopScreenshot(tempFileName);
+      Assert.That(File.Exists(fullPathWitCharReplaced), Is.True);
     }
 
     [Test]
@@ -93,16 +97,16 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var tempFileName = "RandomFileName";
       var suffix = "Browser0-0";
       var extension = "png";
 
-      var fullPath = CombineToFullPath (_tempSavePath, tempFileName, suffix, extension);
+      var fullPath = CombineToFullPath(_tempSavePath, tempFileName, suffix, extension);
 
-      Assert.That (File.Exists (fullPath), Is.False);
-      testExecutionScreenshotRecorder.TakeBrowserScreenshot (tempFileName, new[] {Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
-      Assert.That (File.Exists (fullPath), Is.True);
+      Assert.That(File.Exists(fullPath), Is.False);
+      testExecutionScreenshotRecorder.TakeBrowserScreenshot(tempFileName, new[] {Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
+      Assert.That(File.Exists(fullPath), Is.True);
     }
 
     [Test]
@@ -111,38 +115,38 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var tempFileName = "<Random\"File\"Na|me>";
       var suffix = "Browser0-0";
       var extension = "png";
 
       var tempFileNameWitCharReplaced = "_Random_File_Na_me_";
-      var fullPathWitCharReplaced = CombineToFullPath (_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
-      
-      Assert.That (File.Exists (fullPathWitCharReplaced), Is.False);
-      testExecutionScreenshotRecorder.TakeBrowserScreenshot (tempFileName, new[] { Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
-      Assert.That (File.Exists (fullPathWitCharReplaced), Is.True);
+      var fullPathWitCharReplaced = CombineToFullPath(_tempSavePath, tempFileNameWitCharReplaced, suffix, extension);
+
+      Assert.That(File.Exists(fullPathWitCharReplaced), Is.False);
+      testExecutionScreenshotRecorder.TakeBrowserScreenshot(tempFileName, new[] { Helper.MainBrowserSession }, Helper.BrowserConfiguration.Locator);
+      Assert.That(File.Exists(fullPathWitCharReplaced), Is.True);
     }
 
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenBrowserDisposed ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var fileName = "RandomFileName";
-      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
+      var fullPath = CombineToFullPath(_tempSavePath, fileName, "Browser0-0", "png");
 
       var browserSession = Helper.CreateNewBrowserSession();
       browserSession.Dispose();
 
-      Assert.That (
+      Assert.That(
           () =>
-              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot(
                   fileName,
                   new[] { browserSession },
                   Helper.BrowserConfiguration.Locator),
-          Throws.Nothing); 
+          Throws.Nothing);
 
-      Assert.That (File.Exists (fullPath), Is.False);
+      Assert.That(File.Exists(fullPath), Is.False);
     }
 
     [Test]
@@ -151,45 +155,51 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser so we can take a browser Screenshot
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var fileName = "RandomFileName";
-      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser1-0", "png");
+      var fullPath = CombineToFullPath(_tempSavePath, fileName, "Browser1-0", "png");
 
       var secondBrowserSession = Helper.CreateNewBrowserSession();
       secondBrowserSession.Dispose();
 
-      Assert.That (File.Exists (fullPath), Is.False);
-      Assert.That (
+      Assert.That(File.Exists(fullPath), Is.False);
+      Assert.That(
           () =>
-              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot(
                   fileName,
                   new[] { secondBrowserSession, Helper.MainBrowserSession},
                   Helper.BrowserConfiguration.Locator),
-          Throws.Nothing); 
+          Throws.Nothing);
 
-      Assert.That (File.Exists (fullPath), Is.True);
+      Assert.That(File.Exists(fullPath), Is.True);
     }
 
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesNotThrowWhenAlertWindowIsOpen ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      if (Helper.BrowserConfiguration.IsEdge())
+        Assert.Ignore("Edge v79 does not find an alert dialog. (RM-7387)");
+
+      if (Helper.BrowserConfiguration.IsFirefox())
+        Assert.Ignore("Firefox does not show an alert dialog.");
+
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var fileName = "RandomFileName";
 
       var home = Start();
 
       // Produce an alert dialog
-      home.Frame.TextBoxes().GetByLocalID ("MyTextBox").FillWith ("MyText", FinishInput.Promptly);
-      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID ("LoadFrameFunctionInFrame");
-      loadFrameFunctionInFrameButton.Click (Opt.ContinueImmediately());
-      Thread.Sleep (TimeSpan.FromSeconds (1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
- 
-      Assert.That (IsAlertDialogPresent ((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
+      home.Frame.TextBoxes().GetByLocalID("MyTextBox").FillWith("MyText", FinishInput.Promptly);
+      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrame");
+      loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately());
+      Thread.Sleep(TimeSpan.FromSeconds(1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
+
+      Assert.That(IsAlertDialogPresent((IWebDriver)home.Context.Browser.Driver.Native), Is.True);
 
 
-      Assert.That (
+      Assert.That(
           () =>
-              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot(
                   fileName,
                   new[] { Helper.MainBrowserSession },
                   Helper.BrowserConfiguration.Locator),
@@ -197,30 +207,30 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    [Ignore ("Is currently not working. See RM-6837 for Details.")]
+    [Ignore("Is currently not working. See RM-6837 for Details.")]
     public void TestExecutionScreenshotRecorderTest_TakeBrowserScreenshot_DoesCreateScreenshotWhenAlertWindowIsOpen ()
     {
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
       var fileName = "RandomFileName";
-      var fullPath = CombineToFullPath (_tempSavePath, fileName, "Browser0-0", "png");
+      var fullPath = CombineToFullPath(_tempSavePath, fileName, "Browser0-0", "png");
 
       var home = Start();
 
       // Produce an alert dialog
-      home.Frame.TextBoxes().GetByLocalID ("MyTextBox").FillWith ("MyText", FinishInput.Promptly);
-      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID ("LoadFrameFunctionInFrame");
-      loadFrameFunctionInFrameButton.Click (Opt.ContinueImmediately());
-      Thread.Sleep (TimeSpan.FromSeconds (1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
- 
-      Assert.That (IsAlertDialogPresent ((IWebDriver) home.Context.Browser.Driver.Native), Is.True);
+      home.Frame.TextBoxes().GetByLocalID("MyTextBox").FillWith("MyText", FinishInput.Promptly);
+      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrame");
+      loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately());
+      Thread.Sleep(TimeSpan.FromSeconds(1)); //Cannot use normal CompletionDetection, as it would require to close the alert dialog
 
-      Assert.That (File.Exists (fullPath), Is.False);
-      testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+      Assert.That(IsAlertDialogPresent((IWebDriver)home.Context.Browser.Driver.Native), Is.True);
+
+      Assert.That(File.Exists(fullPath), Is.False);
+      testExecutionScreenshotRecorder.TakeBrowserScreenshot(
           fileName,
           new[] { Helper.MainBrowserSession },
           Helper.BrowserConfiguration.Locator);
 
-      Assert.That (File.Exists (fullPath), Is.True);
+      Assert.That(File.Exists(fullPath), Is.True);
     }
 
     [Test]
@@ -229,50 +239,50 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       //Just open the browser
       Start();
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
-      var fileName = new String ('A', 300);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
+      var fileName = new String('A', 300);
       var suffix = "Browser0-0";
       var extension = "png";
 
-      var fileNameShortened = new String ('A', 259 - (_tempSavePath.Length + suffix.Length + extension.Length + 3));
-      var fullPath = CombineToFullPath (_tempSavePath, fileNameShortened, suffix, extension);
+      var fileNameShortened = new String('A', 259 - (_tempSavePath.Length + suffix.Length + extension.Length + 3));
+      var fullPath = CombineToFullPath(_tempSavePath, fileNameShortened, suffix, extension);
 
-      Assert.That (File.Exists (fullPath), Is.False);
-      Assert.That (
+      Assert.That(File.Exists(fullPath), Is.False);
+      Assert.That(
           () =>
-              testExecutionScreenshotRecorder.TakeBrowserScreenshot (
+              testExecutionScreenshotRecorder.TakeBrowserScreenshot(
                   fileName,
                   new[] { Helper.MainBrowserSession },
                   Helper.BrowserConfiguration.Locator),
           Throws.Nothing);
-      Assert.That (File.Exists (fullPath), Is.True);
+      Assert.That(File.Exists(fullPath), Is.True);
     }
 
     [Test]
     public void TestExecutionScreenshotRecorderTest_TakeDesktopScreenshot_SavesScreenshotWithShortenedName ()
     {
-      var fileName = new String ('A', 300);
+      var fileName = new String('A', 300);
       var suffix = "Desktop";
       var extension = "png";
 
-      var fileNameShortened = new String ('A', 259 - (_tempSavePath.Length + suffix.Length + extension.Length + 3));
-      var fullPath = CombineToFullPath (_tempSavePath, fileNameShortened, suffix, extension);
+      var fileNameShortened = new String('A', 259 - (_tempSavePath.Length + suffix.Length + extension.Length + 3));
+      var fullPath = CombineToFullPath(_tempSavePath, fileNameShortened, suffix, extension);
 
-      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder (_tempSavePath);
+      var testExecutionScreenshotRecorder = new TestExecutionScreenshotRecorder(_tempSavePath);
 
-      Assert.That (File.Exists (fullPath), Is.False);
-      Assert.That (
+      Assert.That(File.Exists(fullPath), Is.False);
+      Assert.That(
           () =>
-              testExecutionScreenshotRecorder.TakeDesktopScreenshot (
+              testExecutionScreenshotRecorder.TakeDesktopScreenshot(
                   fileName),
           Throws.Nothing);
-      Assert.That (File.Exists (fullPath), Is.True);
+      Assert.That(File.Exists(fullPath), Is.True);
     }
 
     private string CombineToFullPath (string tempPath, string fileName, string suffix, string extension)
     {
-      var fullFileNameWitCharReplaced = string.Format ("{0}.{1}.{2}", fileName, suffix, extension);
-      var fullPathWitCharReplaced = string.Concat (tempPath, "/", fullFileNameWitCharReplaced);
+      var fullFileNameWitCharReplaced = string.Format("{0}.{1}.{2}", fileName, suffix, extension);
+      var fullPathWitCharReplaced = string.Concat(tempPath, "/", fullFileNameWitCharReplaced);
       return fullPathWitCharReplaced;
     }
 
@@ -286,17 +296,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       {
         return false;
       }
-      catch (UnhandledAlertException)
-      {
-        // Since WebDriver 2.35 and Chrome 63, above code throws an UnhandledAlertException if an alert exception is present.
-        // This is just a shortcut. See RM-6943.
-        return true;
-      }
     }
 
     private MultiWindowTestPageObject Start ()
     {
-      return Start<MultiWindowTestPageObject> ("MultiWindowTest/Main.wxe");
+      return Start<MultiWindowTestPageObject>("MultiWindowTest/Main.wxe");
     }
   }
 }

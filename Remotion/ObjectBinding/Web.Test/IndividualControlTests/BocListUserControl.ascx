@@ -17,72 +17,78 @@
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocListUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocListUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 
 
-
-
 <table id="FormGrid" runat="server">
   <tr>
-    <td colSpan=2><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue></td></tr>
+    <td colSpan=2><remotion:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue>&nbsp;<remotion:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></remotion:boctextvalue></td>
+  </tr>
   <tr>
     <td></td>
-    <td><remotion:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" selection="SingleRadioButton" index="Disabled" PageSize="2" ShowSortingOrder="True" Width="100%" Height="10em">
-</remotion:boclist></td></tr>
+    <td>
+      <remotion:boclist id=JobList runat="server" datasourcecontrol="CurrentObject" showallproperties="True" showavailableviewslist="False" propertyidentifier="Jobs" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" selection="SingleRadioButton" index="Disabled" PageSize="2" ShowSortingOrder="True" Width="100%" Height="15em">
+      </remotion:boclist>
+    </td>
+  </tr>
   <tr>
     <td></td>
-    <td></td></tr>
+    <td></td>
+  </tr>
   <tr>
-    <td colSpan=2><ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" Width="100%" Height="10em">
-<fixedcolumns>
-<remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></remotion:BocRowEditModeColumnDefinition>
-<remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
-<persistedcommand>
-<remotion:BocListItemCommand ToolTip="An Event Command" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState" Type="Event"></remotion:BocListItemCommand>
-</PersistedCommand>
-</remotion:BocCommandColumnDefinition>
-<remotion:BocCommandColumnDefinition ItemID="Href" Text="Href">
-<persistedcommand>
-<remotion:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></remotion:BocListItemCommand>
-</PersistedCommand>
-</remotion:BocCommandColumnDefinition>
-<remotion:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" IsDynamic="True">
-<persistedcommand>
-<remotion:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></remotion:BocListItemCommand>
-</PersistedCommand>
-</remotion:BocSimpleColumnDefinition>
-<remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+    <td colSpan=2>
+      <ros:TestBocList id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" Index="InitialOrder" Selection="Multiple" Width="100%" Height="15em" ControlServicePath="BocListWebService.asmx" ControlServiceArguments="ControlServiceArgs">
+        <fixedcolumns>
+          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit" ColumnTitle="Edit" ShowColumnTitle="False"></remotion:BocRowEditModeColumnDefinition>
+          <remotion:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
+            <persistedcommand>
+              <remotion:BocListItemCommand ToolTip="An Event Command" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState" Type="Event"></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocCommandColumnDefinition>
+          <remotion:BocCommandColumnDefinition ItemID="Href" Text="Href" ShowColumnTitle="False">
+            <persistedcommand>
+              <remotion:BocListItemCommand HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}" Type="Href"></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocCommandColumnDefinition>
+          <remotion:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" IsDynamic="True">
+            <persistedcommand>
+              <remotion:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocSimpleColumnDefinition>
+          <remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
 
-<persistedcommand>
-<remotion:BocListItemCommand></remotion:BocListItemCommand>
-</PersistedCommand>
-<propertypathbindings>
-<remotion:PropertyPathBinding PropertyPathIdentifier="LastName"></remotion:PropertyPathBinding>
-<remotion:PropertyPathBinding PropertyPathIdentifier="FirstName"></remotion:PropertyPathBinding>
-</PropertyPathBindings>
-</remotion:BocCompoundColumnDefinition>
-<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="6em" ColumnTitle="Partner" EnableIcon="True" >
-<persistedcommand>
-<remotion:BocListItemCommand></remotion:BocListItemCommand>
-</PersistedCommand>
-</remotion:BocSimpleColumnDefinition>
-<remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Parter" >
-<persistedcommand>
-<remotion:BocListItemCommand Type="Event"></remotion:BocListItemCommand>
-</PersistedCommand>
-</remotion:BocSimpleColumnDefinition>
-<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" ColumnTitle="LastName" IsReadOnly="True">
-<persistedcommand>
-<remotion:BocListItemCommand></remotion:BocListItemCommand>
-</PersistedCommand>
-</remotion:BocSimpleColumnDefinition>
-<remotion:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Remotion.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></remotion:BocCustomColumnDefinition>
-<remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased" IsSortable="False" ColumnTitle="Deceased">
-<persistedcommand>
-<remotion:BocListItemCommand></remotion:BocListItemCommand>
-</PersistedCommand>
-</remotion:BocSimpleColumnDefinition>
-<remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" Width="16px" ColumnTitle="Menu"></remotion:BocDropDownMenuColumnDefinition>
-</FixedColumns>
-</ros:TestBocList></td></tr>
-<%--  <tr>
+            <persistedcommand>
+              <remotion:BocListItemCommand></remotion:BocListItemCommand>
+            </PersistedCommand>
+            <propertypathbindings>
+              <remotion:PropertyPathBinding PropertyPathIdentifier="LastName"></remotion:PropertyPathBinding>
+              <remotion:PropertyPathBinding PropertyPathIdentifier="FirstName"></remotion:PropertyPathBinding>
+            </PropertyPathBindings>
+          </remotion:BocCompoundColumnDefinition>
+          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="6em" ColumnTitle="Partner" EnableIcon="True">
+            <persistedcommand>
+              <remotion:BocListItemCommand></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocSimpleColumnDefinition>
+          <remotion:BocSimpleColumnDefinition ItemID="PartnerFirstName" PropertyPathIdentifier="Partner.FirstName" ColumnTitle="Partner Firstname" ShowColumnTitle="False">
+            <persistedcommand>
+              <remotion:BocListItemCommand Type="Event"></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocSimpleColumnDefinition>
+          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="LastName" ColumnTitle="LastName" IsReadOnly="True">
+            <persistedcommand>
+              <remotion:BocListItemCommand></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocSimpleColumnDefinition>
+          <remotion:BocCustomColumnDefinition ItemID="CustomCell" PropertyPathIdentifier="LastName" CustomCellType="Remotion.ObjectBinding.Sample::PersonCustomCell" Mode="ControlInEditedRow" ColumnTitle="Custom Cell"></remotion:BocCustomColumnDefinition>
+          <remotion:BocSimpleColumnDefinition PropertyPathIdentifier="Deceased" IsSortable="False" ColumnTitle="Deceased">
+            <persistedcommand>
+              <remotion:BocListItemCommand></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocSimpleColumnDefinition>
+          <remotion:BocDropDownMenuColumnDefinition ItemID="RowMenu" MenuTitleText="Context" ShowMenuTitle="true" Width="16px" ColumnTitle="Menu" ShowColumnTitle="False"></remotion:BocDropDownMenuColumnDefinition>
+        </FixedColumns>
+      </ros:TestBocList>
+    </td>
+  </tr>
+  <%--  <tr>
     <td></td>
     <td></td></tr>
   <tr>
@@ -215,7 +221,15 @@
   <asp:button id="ChildrenListAddRowButton" runat="server" Text="Add"></asp:button>
   <asp:button id="ChildrenListRemoveRowsButton" runat="server" Text="Remove Selected"></asp:button>
 </p>
-<p><asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox></p>
-<p><asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label></p>
+<p>
+  <asp:checkbox id=ChildrenListEventCheckBox runat="server" Text="ChildrenList Event raised" enableviewstate="False" Enabled="False"></asp:checkbox>
+</p>
+<p>
+  <asp:label id=ChildrenListEventArgsLabel runat="server" enableviewstate="False"></asp:label>
+</p>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
-<remotion:formgridmanager id=FormGridManager runat="server"/><remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/><remotion:BindableObjectDataSourceControl id=EmptyDataSourceControl runat="server" Type="Remotion.ObjectBinding.Sample::Person"/></div>
+  <remotion:formgridmanager id=FormGridManager runat="server"/>
+  <remotion:BindableObjectDataSourceControl id=CurrentObject runat="server" Type="Remotion.ObjectBinding.Sample::Person"/>
+  <remotion:BindableObjectDataSourceControl id=EmptyDataSourceControl runat="server" Type="Remotion.ObjectBinding.Sample::Person"/>
+  <remotion:BindableObjectDataSourceControlValidationResultDispatchingValidator ID="CurrentObjectValidationResultDispatchingValidator" ControlToValidate="CurrentObject" runat="server"/>
+</div>

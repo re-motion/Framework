@@ -25,10 +25,8 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("Remotion Shared Source Development Library")]
-[assembly: AssemblyDescription("Contains source files intended for embedding in unit test projects.")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(true)]
 
-[assembly: InternalsVisibleTo ("Remotion.SharedSource.UnitTests")]
-[assembly: InternalsVisibleTo (Rhino.Mocks.RhinoMocks.NormalName)]
+[assembly: InternalsVisibleTo("Remotion.SharedSource.UnitTests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

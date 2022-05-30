@@ -20,23 +20,23 @@ using Remotion.Utilities;
 
 namespace Remotion.Mixins.Definitions
 {
-  [DebuggerDisplay ("{RequiredType.Type}, Depender = {Depender}")]
+  [DebuggerDisplay("{RequiredType.Type}, Depender = {Depender}")]
   public abstract class DependencyDefinitionBase : IVisitableDefinition
   {
     private readonly UniqueDefinitionCollection<Type, DependencyDefinitionBase> _aggregatedDependencies;
 
     private readonly RequirementDefinitionBase _requirement; // the required face or base interface
-    private readonly DependencyDefinitionBase _aggregator; // the outer dependency containing this dependency, if defined indirectly
+    private readonly DependencyDefinitionBase? _aggregator; // the outer dependency containing this dependency, if defined indirectly
 
-    public DependencyDefinitionBase (RequirementDefinitionBase requirement, DependencyDefinitionBase aggregator)
+    public DependencyDefinitionBase (RequirementDefinitionBase requirement, DependencyDefinitionBase? aggregator)
     {
-      ArgumentUtility.CheckNotNull ("requirement", requirement);
-      ArgumentUtility.CheckType ("aggregator", aggregator, GetType ());
+      ArgumentUtility.CheckNotNull("requirement", requirement);
+      ArgumentUtility.CheckType("aggregator", aggregator, GetType());
 
       _requirement = requirement;
       _aggregator = aggregator;
 
-      _aggregatedDependencies = new UniqueDefinitionCollection<Type, DependencyDefinitionBase> (
+      _aggregatedDependencies = new UniqueDefinitionCollection<Type, DependencyDefinitionBase>(
           delegate (DependencyDefinitionBase d) { return d.RequiredType.Type; },
           HasSameDepender);
     }
@@ -48,7 +48,7 @@ namespace Remotion.Mixins.Definitions
 
     private bool HasSameDepender (DependencyDefinitionBase dependencyToCheck)
     {
-      ArgumentUtility.CheckNotNull ("dependencyToCheck", dependencyToCheck);
+      ArgumentUtility.CheckNotNull("dependencyToCheck", dependencyToCheck);
       return dependencyToCheck.Depender == Depender;
     }
 
@@ -62,12 +62,12 @@ namespace Remotion.Mixins.Definitions
       get { return _requirement; }
     }
 
-    public DependencyDefinitionBase Aggregator
+    public DependencyDefinitionBase? Aggregator
     {
       get { return _aggregator; }
     }
 
-    public string FullName
+    public string? FullName
     {
       get { return RequiredType.FullName; }
     }
@@ -98,14 +98,14 @@ namespace Remotion.Mixins.Definitions
       get { return _aggregatedDependencies; }
     }
 
-    public virtual ClassDefinitionBase GetImplementer()
+    public virtual ClassDefinitionBase? GetImplementer ()
     {
-      if (RequiredType.Type.IsAssignableFrom (TargetClass.Type))
+      if (RequiredType.Type.IsAssignableFrom(TargetClass.Type))
         return TargetClass;
-      else if (TargetClass.ReceivedInterfaces.ContainsKey (RequiredType.Type))
+      else if (TargetClass.ReceivedInterfaces.ContainsKey(RequiredType.Type))
         return TargetClass.ReceivedInterfaces[RequiredType.Type].Implementer;
       else if (!RequiredType.IsEmptyInterface) // duck interface
-        return TargetClass; 
+        return TargetClass;
       else
         return null; // empty interface that is neither introduced nor implemented
     }

@@ -32,76 +32,76 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public RelationEndPointID CreateRelationEndPointID (PropertyAccessor propertyAccessor)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      return RelatedObjectPropertyAccessorStrategy.Instance.CreateRelationEndPointID (propertyAccessor);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      return RelatedObjectPropertyAccessorStrategy.Instance.CreateRelationEndPointID(propertyAccessor);
     }
 
-    public Type GetPropertyType (PropertyDefinition propertyDefinition, IRelationEndPointDefinition relationEndPointDefinition)
+    public Type GetPropertyType (PropertyDefinition? propertyDefinition, IRelationEndPointDefinition? relationEndPointDefinition)
     {
-      ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
-      return RelatedObjectPropertyAccessorStrategy.Instance.GetPropertyType (propertyDefinition, relationEndPointDefinition);
+      ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition!);
+      return RelatedObjectPropertyAccessorStrategy.Instance.GetPropertyType(propertyDefinition, relationEndPointDefinition);
     }
 
     public bool HasChanged (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return RelatedObjectPropertyAccessorStrategy.Instance.HasChanged (propertyAccessor, transaction);
+      return RelatedObjectPropertyAccessorStrategy.Instance.HasChanged(propertyAccessor, transaction);
     }
 
     public bool HasBeenTouched (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return RelatedObjectPropertyAccessorStrategy.Instance.HasBeenTouched (propertyAccessor, transaction);
+      return RelatedObjectPropertyAccessorStrategy.Instance.HasBeenTouched(propertyAccessor, transaction);
     }
 
     public bool IsNull (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
       return false;
     }
 
     public object GetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return transaction.GetRelatedObjects (CreateRelationEndPointID (propertyAccessor));
+      return transaction.GetRelatedObjects(CreateRelationEndPointID(propertyAccessor));
     }
 
-    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object value)
+    public void SetValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction, object? value)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
-      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection> ("value", value);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
+      var newCollection = ArgumentUtility.CheckNotNullAndType<DomainObjectCollection>("value", value!);
 
-      DomainObjectCheckUtility.EnsureNotDeleted (propertyAccessor.DomainObject, transaction);
+      DomainObjectCheckUtility.EnsureNotDeleted(propertyAccessor.DomainObject, transaction);
 
-      RelationEndPointID id = CreateRelationEndPointID (propertyAccessor);
-      var endPoint = (ICollectionEndPoint) transaction.DataManager.GetRelationEndPointWithLazyLoad (id);
+      RelationEndPointID id = CreateRelationEndPointID(propertyAccessor);
+      var endPoint = (IDomainObjectCollectionEndPoint)transaction.DataManager.GetRelationEndPointWithLazyLoad(id);
 
       if (newCollection.AssociatedEndPointID != null && newCollection.AssociatedEndPointID != endPoint.ID)
-        throw new ArgumentException ("The given collection is already associated with an end point.", "value");
+        throw new ArgumentException("The given collection is already associated with an end point.", "value");
 
       if (newCollection.RequiredItemType != endPoint.Collection.RequiredItemType
           && !newCollection.IsReadOnly
           && !endPoint.Collection.IsReadOnly)
       {
-        throw new InvalidOperationException ("The given collection has a different item type than the end point's current opposite collection.");
+        throw new InvalidOperationException("The given collection has a different item type than the end point's current opposite collection.");
       }
 
-      if (newCollection.GetType () != endPoint.Collection.GetType ())
+      if (newCollection.GetType() != endPoint.Collection.GetType())
       {
-        var message = string.Format (
+        var message = string.Format(
             "The given collection ('{0}') is not of the same type as the end point's current opposite collection ('{1}').",
-            newCollection.GetType (),
-            endPoint.Collection.GetType ());
-        throw new InvalidOperationException (message);
+            newCollection.GetType(),
+            endPoint.Collection.GetType());
+        throw new InvalidOperationException(message);
       }
 
       var command = endPoint.CreateSetCollectionCommand(newCollection);
@@ -111,10 +111,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object GetOriginalValueWithoutTypeCheck (PropertyAccessor propertyAccessor, ClientTransaction transaction)
     {
-      ArgumentUtility.CheckNotNull ("propertyAccessor", propertyAccessor);
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull("propertyAccessor", propertyAccessor);
+      ArgumentUtility.CheckNotNull("transaction", transaction);
 
-      return transaction.GetOriginalRelatedObjects (CreateRelationEndPointID (propertyAccessor));
+      return transaction.GetOriginalRelatedObjects(CreateRelationEndPointID(propertyAccessor));
     }
   }
 }

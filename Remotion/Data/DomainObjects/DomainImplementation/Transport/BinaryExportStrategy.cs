@@ -31,30 +31,32 @@ namespace Remotion.Data.DomainObjects.DomainImplementation.Transport
 
     public void Export (Stream outputStream, TransportItem[] transportedItems)
     {
-      ArgumentUtility.CheckNotNull ("outputStream", outputStream);
-      ArgumentUtility.CheckNotNull ("transportedItems", transportedItems);
+      ArgumentUtility.CheckNotNull("outputStream", outputStream);
+      ArgumentUtility.CheckNotNull("transportedItems", transportedItems);
 
-      var formatter = new BinaryFormatter ();
-      KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems = GetVersionIndependentItems (transportedItems);
-      PerformSerialization (versionIndependentItems, outputStream, formatter);
+      var formatter = new BinaryFormatter();
+      KeyValuePair<string, Dictionary<string, object?>>[] versionIndependentItems = GetVersionIndependentItems(transportedItems);
+      PerformSerialization(versionIndependentItems, outputStream, formatter);
     }
 
     protected virtual void PerformSerialization (
-        KeyValuePair<string, Dictionary<string, object>>[] versionIndependentItems, 
+        KeyValuePair<string, Dictionary<string, object?>>[] versionIndependentItems,
         Stream dataStream,
         BinaryFormatter formatter)
     {
-      ArgumentUtility.CheckNotNull ("versionIndependentItems", versionIndependentItems);
-      ArgumentUtility.CheckNotNull ("dataStream", dataStream);
-      ArgumentUtility.CheckNotNull ("formatter", formatter);
+      ArgumentUtility.CheckNotNull("versionIndependentItems", versionIndependentItems);
+      ArgumentUtility.CheckNotNull("dataStream", dataStream);
+      ArgumentUtility.CheckNotNull("formatter", formatter);
 
-      formatter.Serialize (dataStream, versionIndependentItems);
+#pragma warning disable SYSLIB0011
+      formatter.Serialize(dataStream, versionIndependentItems);
+#pragma warning restore SYSLIB0011
     }
 
-    private KeyValuePair<string, Dictionary<string, object>>[] GetVersionIndependentItems (TransportItem[] transportItems)
+    private KeyValuePair<string, Dictionary<string, object?>>[] GetVersionIndependentItems (TransportItem[] transportItems)
     {
-      return Array.ConvertAll (transportItems,
-                               item => new KeyValuePair<string, Dictionary<string, object>> (item.ID.ToString(), item.Properties));
+      return Array.ConvertAll(transportItems,
+                               item => new KeyValuePair<string, Dictionary<string, object?>>(item.ID.ToString(), item.Properties));
     }
   }
 }

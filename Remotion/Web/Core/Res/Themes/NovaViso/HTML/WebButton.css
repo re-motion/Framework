@@ -1,0 +1,76 @@
+/* Style applied to the WebButton. */
+:root
+{
+  --webbutton-min-height-standard: calc(var(--remotion-themed-singleline-min-height));
+  --webbutton-min-height-large: calc(var(--remotion-themed-singleline-min-height) + var(--remotion-themed-spacing));
+  --webbutton-min-height: var(--webbutton-min-height-standard);
+}
+
+button.webButton,
+input.webButton
+{
+  min-height: var(--webbutton-min-height);
+  padding: 0;
+  box-sizing: border-box;
+  display: inline-block;
+}
+
+button.webButton span.buttonBody
+{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: calc(var(--remotion-themed-spacing) / 2 - var(--remotion-themed-border-width)) var(--remotion-themed-spacing-large);
+  gap: var(--remotion-themed-spacing);
+  text-align: left;
+  vertical-align: middle;
+}
+
+button.webButton span.buttonBody > img
+{
+  align-self: flex-start;
+}
+
+button.webButton.primary:not(:disabled)
+{
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  border-color: var(--color-primary);
+}
+
+button.webButton.primary:not(:disabled):hover
+{
+  background-color: var(--color-primary-highlight);
+  border-color: var(--color-primary-highlight);
+}
+
+button.webButton.primary:not(:disabled):focus
+{
+  background-color: var(--color-primary);
+  border-color: var(--color-primary-text);
+}
+
+button.webButton.supplemental
+{
+  background-color: transparent;
+  border-color: transparent;
+}
+
+button.webButton.supplemental:not(:disabled):hover
+{
+  background-color: var(--color-highlight);
+  border-color: var(--color-primary);
+}
+
+button.webButton.supplemental:not(:disabled):focus
+{
+  background-color: transparent;
+  border-color: var(--color-primary);
+}
+
+button.webButton.supplemental:not(:disabled):hover:focus
+{
+  background-color: var(--color-highlight);
+  border-color: var(--color-primary);
+}

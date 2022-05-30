@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
@@ -26,7 +25,6 @@ using Remotion.Data.DomainObjects.Infrastructure.HierarchyManagement;
 using Remotion.Data.DomainObjects.Infrastructure.InvalidObjects;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.Queries.EagerFetching;
-using Remotion.Data.DomainObjects.Validation;
 using Remotion.FunctionalProgramming;
 using Remotion.Mixins;
 using Remotion.TypePipe;
@@ -40,9 +38,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   [Serializable]
   public class RootClientTransactionComponentFactory : ClientTransactionComponentFactoryBase
   {
-    public static RootClientTransactionComponentFactory Create()
+    public static RootClientTransactionComponentFactory Create ()
     {
-      return ObjectFactory.Create<RootClientTransactionComponentFactory> (true, ParamList.Empty);
+      return ObjectFactory.Create<RootClientTransactionComponentFactory>(true, ParamList.Empty);
     }
 
     protected RootClientTransactionComponentFactory ()
@@ -50,75 +48,79 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
 
     public override ITransactionHierarchyManager CreateTransactionHierarchyManager (
-        ClientTransaction constructedTransaction, 
+        ClientTransaction constructedTransaction,
         IClientTransactionEventSink eventSink)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      return new TransactionHierarchyManager (constructedTransaction, eventSink);
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      return new TransactionHierarchyManager(constructedTransaction, eventSink);
     }
 
     public override IDictionary<Enum, object> CreateApplicationData (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      return new Dictionary<Enum, object> ();
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      return new Dictionary<Enum, object>();
     }
 
     public override IEnlistedDomainObjectManager CreateEnlistedObjectManager (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      return new DictionaryBasedEnlistedDomainObjectManager ();
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      return new DictionaryBasedEnlistedDomainObjectManager();
     }
 
     public override IInvalidDomainObjectManager CreateInvalidDomainObjectManager (
         ClientTransaction constructedTransaction, IClientTransactionEventSink eventSink)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      ArgumentUtility.CheckNotNull ("eventSink", eventSink);
-      return new InvalidDomainObjectManager (eventSink);
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      ArgumentUtility.CheckNotNull("eventSink", eventSink);
+      return new InvalidDomainObjectManager(eventSink);
     }
 
     public override IPersistenceStrategy CreatePersistenceStrategy (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      return ObjectFactory.Create<RootPersistenceStrategy> (true, ParamList.Create (constructedTransaction.ID));
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      return ObjectFactory.Create<RootPersistenceStrategy>(true, ParamList.Create(constructedTransaction.ID));
     }
 
     protected override IEnumerable<IClientTransactionListener> CreateListeners (ClientTransaction constructedTransaction)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      return base.CreateListeners (constructedTransaction)
-          .Concat (new NotFoundObjectsClientTransactionListener());
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      return base.CreateListeners(constructedTransaction)
+          .Concat(new NotFoundObjectsClientTransactionListener());
     }
 
     protected override IRelationEndPointManager CreateRelationEndPointManager (
         ClientTransaction constructedTransaction,
         IRelationEndPointProvider endPointProvider,
         ILazyLoader lazyLoader,
-        IClientTransactionEventSink eventSink)
+        IClientTransactionEventSink eventSink,
+        IDataContainerMapReadOnlyView dataContainerMap)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull ("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
+      ArgumentUtility.CheckNotNull("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull("dataContainerMap", dataContainerMap);
 
-      var endPointChangeDetectionStrategy = new RootCollectionEndPointChangeDetectionStrategy();
-      var collectionEndPointDataManagerFactory = new CollectionEndPointDataManagerFactory (endPointChangeDetectionStrategy);
+      var domainObjectCollectionEndPointChangeDetectionStrategy = new RootDomainObjectCollectionEndPointChangeDetectionStrategy();
+      var domainObjectCollectionEndPointDataManagerFactory = new DomainObjectCollectionEndPointDataManagerFactory(domainObjectCollectionEndPointChangeDetectionStrategy);
+      var virtualCollectionEndPointDataManagerFactory = new VirtualCollectionEndPointDataManagerFactory(dataContainerMap);
       var virtualObjectEndPointDataManagerFactory = new VirtualObjectEndPointDataManagerFactory();
 
-      var relationEndPointFactory = CreateRelationEndPointFactory (
+      var relationEndPointFactory = CreateRelationEndPointFactory(
           constructedTransaction,
           endPointProvider,
           lazyLoader,
           eventSink,
           virtualObjectEndPointDataManagerFactory,
-          collectionEndPointDataManagerFactory);
-      var virtualEndPointStateUpdateListener = new VirtualEndPointStateUpdateListener (eventSink);
-      var stateUpdateRaisingRelationEndPointFactory = new StateUpdateRaisingRelationEndPointFactoryDecorator (
-          relationEndPointFactory, 
+          domainObjectCollectionEndPointDataManagerFactory,
+          virtualCollectionEndPointDataManagerFactory);
+      var virtualEndPointStateUpdateListener = new VirtualEndPointStateUpdateListener(eventSink);
+      var stateUpdateRaisingRelationEndPointFactory = new StateUpdateRaisingRelationEndPointFactoryDecorator(
+          relationEndPointFactory,
           virtualEndPointStateUpdateListener);
 
-      var relationEndPointRegistrationAgent = new RootRelationEndPointRegistrationAgent (endPointProvider);
-      return new RelationEndPointManager (
+      var relationEndPointRegistrationAgent = new RootRelationEndPointRegistrationAgent(endPointProvider);
+      return new RelationEndPointManager(
           constructedTransaction, lazyLoader, eventSink, stateUpdateRaisingRelationEndPointFactory, relationEndPointRegistrationAgent);
     }
 
@@ -128,26 +130,31 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         ILazyLoader lazyLoader,
         IClientTransactionEventSink eventSink,
         IVirtualObjectEndPointDataManagerFactory virtualObjectEndPointDataManagerFactory,
-        ICollectionEndPointDataManagerFactory collectionEndPointDataManagerFactory)
+        IDomainObjectCollectionEndPointDataManagerFactory domainObjectCollectionEndPointDataManagerFactory,
+        IVirtualCollectionEndPointDataManagerFactory virtualCollectionEndPointDataManagerFactory)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      ArgumentUtility.CheckNotNull ("endPointProvider", endPointProvider);
-      ArgumentUtility.CheckNotNull ("lazyLoader", lazyLoader);
-      ArgumentUtility.CheckNotNull ("eventSink", eventSink);
-      ArgumentUtility.CheckNotNull ("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
-      ArgumentUtility.CheckNotNull ("collectionEndPointDataManagerFactory", collectionEndPointDataManagerFactory);
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      ArgumentUtility.CheckNotNull("endPointProvider", endPointProvider);
+      ArgumentUtility.CheckNotNull("lazyLoader", lazyLoader);
+      ArgumentUtility.CheckNotNull("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull("virtualObjectEndPointDataManagerFactory", virtualObjectEndPointDataManagerFactory);
+      ArgumentUtility.CheckNotNull("domainObjectCollectionEndPointDataManagerFactory", domainObjectCollectionEndPointDataManagerFactory);
 
-      var associatedCollectionDataStrategyFactory = new AssociatedCollectionDataStrategyFactory (endPointProvider);
-      var collectionEndPointCollectionProvider = new CollectionEndPointCollectionProvider (associatedCollectionDataStrategyFactory);
-      return new RelationEndPointFactory (
+      var associatedDomainObjectCollectionDataStrategyFactory = new AssociatedDomainObjectCollectionDataStrategyFactory(endPointProvider);
+      var domainObjectCollectionEndPointCollectionProvider = new DomainObjectCollectionEndPointCollectionProvider(associatedDomainObjectCollectionDataStrategyFactory);
+      var virtualCollectionEndPointCollectionProvider = new VirtualCollectionEndPointCollectionProvider(endPointProvider);
+
+      return new RelationEndPointFactory(
           constructedTransaction,
           endPointProvider,
           lazyLoader,
           eventSink,
           virtualObjectEndPointDataManagerFactory,
-          collectionEndPointDataManagerFactory, 
-          collectionEndPointCollectionProvider,
-          associatedCollectionDataStrategyFactory);
+          domainObjectCollectionEndPointDataManagerFactory,
+          domainObjectCollectionEndPointCollectionProvider,
+          associatedDomainObjectCollectionDataStrategyFactory,
+          virtualCollectionEndPointCollectionProvider,
+          virtualCollectionEndPointDataManagerFactory);
     }
 
     protected override IObjectLoader CreateObjectLoader (
@@ -158,26 +165,26 @@ namespace Remotion.Data.DomainObjects.Infrastructure
         IDataManager dataManager,
         ITransactionHierarchyManager hierarchyManager)
     {
-      ArgumentUtility.CheckNotNull ("constructedTransaction", constructedTransaction);
-      ArgumentUtility.CheckNotNull ("eventSink", eventSink);
+      ArgumentUtility.CheckNotNull("constructedTransaction", constructedTransaction);
+      ArgumentUtility.CheckNotNull("eventSink", eventSink);
       var fetchEnabledPersistenceStrategy =
-          ArgumentUtility.CheckNotNullAndType<IFetchEnabledPersistenceStrategy> ("persistenceStrategy", persistenceStrategy);
-      ArgumentUtility.CheckNotNull ("invalidDomainObjectManager", invalidDomainObjectManager);
-      ArgumentUtility.CheckNotNull ("dataManager", dataManager);
-      ArgumentUtility.CheckNotNull ("hierarchyManager", hierarchyManager);
+          ArgumentUtility.CheckNotNullAndType<IFetchEnabledPersistenceStrategy>("persistenceStrategy", persistenceStrategy);
+      ArgumentUtility.CheckNotNull("invalidDomainObjectManager", invalidDomainObjectManager);
+      ArgumentUtility.CheckNotNull("dataManager", dataManager);
+      ArgumentUtility.CheckNotNull("hierarchyManager", hierarchyManager);
 
-      var loadedObjectDataProvider = new LoadedObjectDataProvider (dataManager, invalidDomainObjectManager);
-      var registrationListener = new LoadedObjectDataRegistrationListener (eventSink, hierarchyManager);
-      var loadedObjectDataRegistrationAgent = new LoadedObjectDataRegistrationAgent (constructedTransaction, dataManager, registrationListener);
+      var loadedObjectDataProvider = new LoadedObjectDataProvider(dataManager, invalidDomainObjectManager);
+      var registrationListener = new LoadedObjectDataRegistrationListener(eventSink, hierarchyManager);
+      var loadedObjectDataRegistrationAgent = new LoadedObjectDataRegistrationAgent(constructedTransaction, dataManager, registrationListener);
 
       IFetchedRelationDataRegistrationAgent registrationAgent =
-          new DelegatingFetchedRelationDataRegistrationAgent (
+          new DelegatingFetchedRelationDataRegistrationAgent(
               new FetchedRealObjectRelationDataRegistrationAgent(),
-              new FetchedVirtualObjectRelationDataRegistrationAgent (dataManager),
-              new FetchedCollectionRelationDataRegistrationAgent (dataManager));
-      var eagerFetcher = new EagerFetcher (registrationAgent);
+              new FetchedVirtualObjectRelationDataRegistrationAgent(dataManager),
+              new FetchedCollectionRelationDataRegistrationAgent(dataManager));
+      var eagerFetcher = new EagerFetcher(registrationAgent);
 
-      return new FetchEnabledObjectLoader (
+      return new FetchEnabledObjectLoader(
           fetchEnabledPersistenceStrategy,
           loadedObjectDataRegistrationAgent,
           loadedObjectDataProvider,

@@ -16,29 +16,29 @@
 // 
 using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit;
 using Remotion.TypePipe.CodeGeneration.ReflectionEmit.Abstractions;
 using Remotion.TypePipe.MutableReflection;
-using Rhino.Mocks;
 
 namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
 {
   [TestFixture]
   public class RemotionModuleBuilderFactoryDecoratorTest
   {
-    private IModuleBuilderFactory _innerFactoryMock;
+    private Mock<IModuleBuilderFactory> _innerFactoryMock;
 
     private RemotionModuleBuilderFactoryDecorator _factory;
 
     [SetUp]
     public void SetUp ()
     {
-      _innerFactoryMock = MockRepository.GenerateStrictMock<IModuleBuilderFactory>();
+      _innerFactoryMock = new Mock<IModuleBuilderFactory>(MockBehavior.Strict);
 
-      _factory = new RemotionModuleBuilderFactoryDecorator (_innerFactoryMock);
+      _factory = new RemotionModuleBuilderFactoryDecorator(_innerFactoryMock.Object);
     }
 
     [Test]
@@ -49,28 +49,29 @@ namespace Remotion.Reflection.CodeGeneration.TypePipe.UnitTests
       var strongNamed = BooleanObjectMother.GetRandomBoolean();
       var keyFilePathOrNull = "key file path";
 
-      var moduleBuilderMock = MockRepository.GenerateStrictMock<IModuleBuilder>();
-      var assemblyBuilderMock = MockRepository.GenerateStrictMock<IAssemblyBuilder>();
+      var moduleBuilderMock = new Mock<IModuleBuilder>(MockBehavior.Strict);
+      var assemblyBuilderMock = new Mock<IAssemblyBuilder>(MockBehavior.Strict);
       _innerFactoryMock
-          .Expect (mock => mock.CreateModuleBuilder (assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull))
-          .Return (moduleBuilderMock);
-      moduleBuilderMock.Expect (mock => mock.AssemblyBuilder).Return (assemblyBuilderMock);
+          .Setup(mock => mock.CreateModuleBuilder(assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull))
+          .Returns(moduleBuilderMock.Object)
+          .Verifiable();
+      moduleBuilderMock.Setup(mock => mock.AssemblyBuilder).Returns(assemblyBuilderMock.Object).Verifiable();
       assemblyBuilderMock
-          .Expect (mock => mock.SetCustomAttribute (Arg<CustomAttributeDeclaration>.Is.Anything))
-          .WhenCalled (
-              mi =>
+          .Setup(mock => mock.SetCustomAttribute(It.IsAny<CustomAttributeDeclaration>()))
+          .Callback(
+              (CustomAttributeDeclaration customAttributeDeclaration) =>
               {
-                var declaration = (CustomAttributeDeclaration) mi.Arguments.Single();
-                Assert.That (declaration.Type, Is.SameAs (typeof (NonApplicationAssemblyAttribute)));
-                Assert.That (declaration.ConstructorArguments, Is.Empty);
-              });
+                Assert.That(customAttributeDeclaration.Type, Is.SameAs(typeof(NonApplicationAssemblyAttribute)));
+                Assert.That(customAttributeDeclaration.ConstructorArguments, Is.Empty);
+              })
+          .Verifiable();
 
-      var result = _factory.CreateModuleBuilder (assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull);
+      var result = _factory.CreateModuleBuilder(assemblyName, assemblyDirectoryOrNull, strongNamed, keyFilePathOrNull);
 
-      _innerFactoryMock.VerifyAllExpectations();
-      moduleBuilderMock.VerifyAllExpectations();
-      assemblyBuilderMock.VerifyAllExpectations();
-      Assert.That (result, Is.SameAs (moduleBuilderMock));
+      _innerFactoryMock.Verify();
+      moduleBuilderMock.Verify();
+      assemblyBuilderMock.Verify();
+      Assert.That(result, Is.SameAs(moduleBuilderMock.Object));
     }
   }
 }

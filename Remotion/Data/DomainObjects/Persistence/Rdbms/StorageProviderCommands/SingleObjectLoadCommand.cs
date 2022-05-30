@@ -26,15 +26,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
   /// Executes the command created by the given <see cref="IDbCommandBuilder"/> and parses the result into a single object using the specified
   /// <see cref="IObjectReader{T}"/>.
   /// </summary>
-  public class SingleObjectLoadCommand<T> : IStorageProviderCommand<T, IRdbmsProviderCommandExecutionContext>
+  public class SingleObjectLoadCommand<T> : IStorageProviderCommand<T?, IRdbmsProviderCommandExecutionContext>
   {
     private readonly IDbCommandBuilder _dbCommandBuilder;
     private readonly IObjectReader<T> _objectReader;
 
     public SingleObjectLoadCommand (IDbCommandBuilder dbCommandBuilder, IObjectReader<T> objectReader)
     {
-      ArgumentUtility.CheckNotNull ("dbCommandBuilder", dbCommandBuilder);
-      ArgumentUtility.CheckNotNull ("objectReader", objectReader);
+      ArgumentUtility.CheckNotNull("dbCommandBuilder", dbCommandBuilder);
+      ArgumentUtility.CheckNotNull("objectReader", objectReader);
 
       _dbCommandBuilder = dbCommandBuilder;
       _objectReader = objectReader;
@@ -50,15 +50,15 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands
       get { return _objectReader; }
     }
 
-    public T Execute (IRdbmsProviderCommandExecutionContext executionContext)
+    public T? Execute (IRdbmsProviderCommandExecutionContext executionContext)
     {
-      ArgumentUtility.CheckNotNull ("executionContext", executionContext);
+      ArgumentUtility.CheckNotNull("executionContext", executionContext);
 
-      using (var command = _dbCommandBuilder.Create (executionContext))
+      using (var command = _dbCommandBuilder.Create(executionContext))
       {
-        using (var reader = executionContext.ExecuteReader (command, CommandBehavior.SingleRow))
+        using (var reader = executionContext.ExecuteReader(command, CommandBehavior.SingleRow))
         {
-          return _objectReader.Read (reader);
+          return _objectReader.Read(reader);
         }
       }
     }

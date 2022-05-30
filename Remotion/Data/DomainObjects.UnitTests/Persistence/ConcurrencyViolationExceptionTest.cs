@@ -28,41 +28,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence
     [Test]
     public void Initialize_WithoutObjectIDs_HasEmptyIDsCollection ()
     {
-      var exception = new ConcurrencyViolationException ("The Message", new ObjectID[0], null);
+      var exception = new ConcurrencyViolationException("The Message", new ObjectID[0], null);
 
-      Assert.That (exception.Message, Is.EqualTo ("The Message"));
-      Assert.That (exception.IDs, Is.Empty);
-      Assert.That (exception.InnerException, Is.Null);
+      Assert.That(exception.Message, Is.EqualTo("The Message"));
+      Assert.That(exception.IDs, Is.Empty);
+      Assert.That(exception.InnerException, Is.Null);
     }
 
     [Test]
     public void Initialize_WithoutObjectIDs_HasIDsInCollection ()
     {
       IEnumerable<ObjectID> expectedIDs = new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 };
-      var exception = new ConcurrencyViolationException (expectedIDs);
+      var exception = new ConcurrencyViolationException(expectedIDs);
 
-      Assert.That (
+      Assert.That(
           exception.Message,
-          Is.EqualTo (
-              string.Format (
+          Is.EqualTo(
+              string.Format(
                   "Concurrency violation encountered. One or more object(s) have already been changed by someone else: '{0}', '{1}'",
                   DomainObjectIDs.Order1,
                   DomainObjectIDs.Order3)));
-      Assert.That (exception.IDs, Is.Not.SameAs (expectedIDs));
-      Assert.That (exception.IDs, Is.EqualTo (expectedIDs));
+      Assert.That(exception.IDs, Is.Not.SameAs(expectedIDs));
+      Assert.That(exception.IDs, Is.EqualTo(expectedIDs));
     }
 
     [Test]
     public void Serialization ()
     {
-      var innerException = new Exception ("Test");
-      var exception = new ConcurrencyViolationException ("Message", new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }, innerException);
+      var innerException = new Exception("Test");
+      var exception = new ConcurrencyViolationException("Message", new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }, innerException);
 
-      var deserializedInstance = Serializer.SerializeAndDeserialize (exception);
+      var deserializedInstance = Serializer.SerializeAndDeserialize(exception);
 
-      Assert.That (deserializedInstance.Message, Is.EqualTo ("Message"));
-      Assert.That (deserializedInstance.IDs, Is.EqualTo (new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
-      Assert.That (deserializedInstance.InnerException, Is.Not.Null);
+      Assert.That(deserializedInstance.Message, Is.EqualTo("Message"));
+      Assert.That(deserializedInstance.IDs, Is.EqualTo(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 }));
+      Assert.That(deserializedInstance.InnerException, Is.Not.Null);
     }
   }
 }

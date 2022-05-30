@@ -23,53 +23,53 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
   {
     public static DataContainer Create (ObjectID objectID = null)
     {
-      return CreateNew (objectID);
+      return CreateNew(objectID);
     }
 
     public static DataContainer Create (DomainObject domainObject)
     {
-      var dataContainer = Create (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = Create(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
 
     public static DataContainer CreateNew (ObjectID objectID)
     {
-      var dataContainer = DataContainer.CreateNew (objectID);
+      var dataContainer = DataContainer.CreateNew(objectID);
       return dataContainer;
     }
 
     public static DataContainer CreateNew (DomainObject domainObject)
     {
-      var dataContainer = CreateNew (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = CreateNew(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
 
     public static DataContainer CreateExisting (ObjectID objectID)
     {
-      var dataContainer = DataContainer.CreateForExisting (objectID, 4711, pd => pd.DefaultValue);
+      var dataContainer = DataContainer.CreateForExisting(objectID, 4711, pd => pd.DefaultValue);
       return dataContainer;
     }
 
     public static DataContainer CreateExisting (DomainObject domainObject)
     {
-      var dataContainer = CreateExisting (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = CreateExisting(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
 
     public static DataContainer CreateDeleted (ObjectID objectID = null)
     {
-      var dataContainer = CreateExisting (objectID);
+      var dataContainer = CreateExisting(objectID);
       dataContainer.Delete();
       return dataContainer;
     }
 
     public static DataContainer CreateDeleted (DomainObject domainObject)
     {
-      var dataContainer = CreateDeleted (domainObject.ID);
-      dataContainer.SetDomainObject (domainObject);
+      var dataContainer = CreateDeleted(domainObject.ID);
+      dataContainer.SetDomainObject(domainObject);
       return dataContainer;
     }
   }

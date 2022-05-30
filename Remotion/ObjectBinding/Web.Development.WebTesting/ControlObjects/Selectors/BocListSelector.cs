@@ -36,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
       where TBocListControlObject : BocListControlObject
   {
     public BocListSelector ()
-        : base ("BocList")
+        : base("BocList")
     {
     }
 
@@ -45,10 +45,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selec
         ControlObjectContext newControlObjectContext,
         ControlSelectionContext controlSelectionContext)
     {
-      ArgumentUtility.CheckNotNull ("controlSelectionContext", controlSelectionContext);
-      ArgumentUtility.CheckNotNull ("newControlObjectContext", newControlObjectContext);
+      ArgumentUtility.CheckNotNull("controlSelectionContext", controlSelectionContext);
+      ArgumentUtility.CheckNotNull("newControlObjectContext", newControlObjectContext);
 
-      return (TBocListControlObject) Activator.CreateInstance (typeof (TBocListControlObject), newControlObjectContext);
+      return (TBocListControlObject)Activator.CreateInstance(typeof(TBocListControlObject), newControlObjectContext)!;
     }
   }
 }

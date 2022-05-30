@@ -1,4 +1,4 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -15,9 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Coypu;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using Remotion.Web.Development.WebTesting;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
@@ -28,6 +31,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
   /// </summary>
   public abstract class IntegrationTest
   {
+    private static Lazy<Uri> s_webApplicationRoot;
+
     private WebTestHelper _webTestHelper;
 
     protected virtual bool MaximizeMainBrowserSession
@@ -40,32 +45,44 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       get { return _webTestHelper; }
     }
 
-    [TestFixtureSetUp]
-    public void IntegrationTestTestFixtureSetUp ()
+    protected IDriver Driver
+    {
+      get { return _webTestHelper.MainBrowserSession?.Driver; }
+    }
+
+    [OneTimeSetUp]
+    public void IntegrationTestOneTimeSetUp ()
     {
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-      _webTestHelper.OnFixtureSetUp (MaximizeMainBrowserSession);
+      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession);
+      s_webApplicationRoot = new Lazy<Uri>(
+          () =>
+          {
+            var uri = new Uri(_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
+
+            // RM-7401: Edge loads pages slower due to repeated hostname resolution.
+            if (_webTestHelper.BrowserConfiguration.IsEdge())
+              return HostnameResolveHelper.ResolveHostname(uri);
+
+            return uri;
+          });
     }
 
     [SetUp]
     public void IntegrationTestSetUp ()
     {
-      _webTestHelper.OnSetUp (GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
-
-      // Prevent failing IE tests due to topmost windows
-      if (_webTestHelper.BrowserConfiguration.IsInternetExplorer())
-        KillAnyExistingWindowsErrorReportingProcesses();
+      _webTestHelper.OnSetUp(GetType().Name + "_" + TestContext.CurrentContext.Test.Name);
     }
 
     [TearDown]
     public void IntegrationTestTearDown ()
     {
-      var hasSucceeded = TestContext.CurrentContext.Result.Status != TestStatus.Failed;
-      _webTestHelper.OnTearDown (hasSucceeded);
+      var hasSucceeded = TestContext.CurrentContext.Result.Outcome.Status != TestStatus.Failed;
+      _webTestHelper.OnTearDown(hasSucceeded);
     }
 
-    [TestFixtureTearDown]
+    [OneTimeTearDown]
     public void IntegrationTestTestFixtureTearDown ()
     {
       _webTestHelper.OnFixtureTearDown();
@@ -73,18 +90,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
     protected WxePageObject Start (string userControl)
     {
-      var userControlUrl = string.Format ("Controls/{0}UserControl.ascx", userControl);
+      var userControlUrl = string.Format("Controls/{0}UserControl.ascx", userControl);
 
-      var url = string.Format ("{0}ControlTest.wxe?UserControl={1}", _webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot, userControlUrl);
-      _webTestHelper.MainBrowserSession.Window.Visit (url);
+      var url = string.Format("{0}ControlTest.wxe?UserControl={1}", s_webApplicationRoot.Value, userControlUrl);
+      _webTestHelper.MainBrowserSession.Window.Visit(url);
       _webTestHelper.AcceptPossibleModalDialog();
 
-      return _webTestHelper.CreateInitialPageObject<WxePageObject> (_webTestHelper.MainBrowserSession);
-    }
-
-    private static void KillAnyExistingWindowsErrorReportingProcesses ()
-    {
-      ProcessUtils.KillAllProcessesWithName ("WerFault");
+      return _webTestHelper.CreateInitialPageObject<WxePageObject>(_webTestHelper.MainBrowserSession);
     }
   }
 }

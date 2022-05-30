@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 {
   [Instantiable]
   [DBTable]
-  [Uses (typeof (SecurableObjectMixin))]
+  [Uses(typeof(SecurableObjectMixin))]
   public abstract class SecurableObject : DomainObject, ISecurableObject, ISecurityContextFactory
   {
     private static Action<SecurableObject> _ctorHandler;
@@ -37,9 +37,9 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
       try
       {
-        using (clientTransaction.EnterNonDiscardingScope ())
+        using (clientTransaction.EnterNonDiscardingScope())
         {
-          return NewObject<SecurableObject> (ParamList.Create (securityStrategy));
+          return NewObject<SecurableObject>(ParamList.Create(securityStrategy));
         }
       }
       finally
@@ -54,13 +54,13 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
     {
       _securityStrategy = securityStrategy;
       if (_ctorHandler != null)
-        _ctorHandler (this);
+        _ctorHandler(this);
     }
 
     protected override void OnLoaded (LoadMode loadMode)
     {
-      base.OnLoaded (loadMode);
-      _securityStrategy = ObjectSecurityStrategy.Create (this, InvalidationToken.Create());
+      base.OnLoaded(loadMode);
+      _securityStrategy = ObjectSecurityStrategy.Create(this, InvalidationToken.Create());
     }
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
@@ -77,25 +77,25 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
     public abstract string OtherStringProperty { get; set; }
 
-    [DBBidirectionalRelation ("Children")]
+    [DBBidirectionalRelation("Children")]
     public abstract SecurableObject Parent { get; set; }
 
-    [DBBidirectionalRelation ("Parent")]
+    [DBBidirectionalRelation("Parent")]
     public abstract ObjectList<SecurableObject> Children { get; }
 
-    [DBBidirectionalRelation ("OtherChildren")]
+    [DBBidirectionalRelation("OtherChildren")]
     public abstract SecurableObject OtherParent { get; set; }
 
-    [DBBidirectionalRelation ("OtherParent")]
+    [DBBidirectionalRelation("OtherParent")]
     public abstract ObjectList<SecurableObject> OtherChildren { get; }
 
     public abstract string PropertyWithDefaultPermission { get; set; }
 
-    public abstract string PropertyWithCustomPermission { [DemandPermission (TestAccessTypes.First)]get; set; }
+    public abstract string PropertyWithCustomPermission { [DemandPermission(TestAccessTypes.First)]get; set; }
 
-    protected abstract string NonPublicPropertyWithCustomPermission { [DemandPermission (TestAccessTypes.First)] get;  [DemandPermission (TestAccessTypes.Second)] set; }
+    protected abstract string NonPublicPropertyWithCustomPermission { [DemandPermission(TestAccessTypes.First)] get;  [DemandPermission(TestAccessTypes.Second)] set; }
 
-    protected abstract SecurableObject NonPublicRelationPropertyWithCustomPermission { [DemandPermission (TestAccessTypes.First)] get; [DemandPermission (TestAccessTypes.Second)] set; }
+    protected abstract SecurableObject NonPublicRelationPropertyWithCustomPermission { [DemandPermission(TestAccessTypes.First)] get; [DemandPermission(TestAccessTypes.Second)] set; }
 
     public abstract string PropertyWithMissingGetAccessor { set; }
 

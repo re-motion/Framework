@@ -33,35 +33,35 @@ namespace Remotion.Configuration
 
     public ConfigurationWrapperFromConfigurationObject (System.Configuration.Configuration configuration)
     {
-      ArgumentUtility.CheckNotNull ("configuration", configuration);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
 
       _configuration = configuration;
-      
-      MethodInfo getRuntimeObject = configuration.AppSettings.GetType ().GetMethod (
+
+      MethodInfo getRuntimeObject = configuration.AppSettings.GetType().GetMethod(
         "GetRuntimeObject",
-        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.ExactBinding);
-      Assertion.IsNotNull (getRuntimeObject, "System.Configuration.AppSettingsSection.GetRuntimeObject() does not exist.");
-      _appSettings = (NameValueCollection) getRuntimeObject.Invoke (configuration.AppSettings, new object[0]) ?? new NameValueCollection();
+        BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.ExactBinding)!;
+      Assertion.IsNotNull(getRuntimeObject, "System.Configuration.AppSettingsSection.GetRuntimeObject() does not exist.");
+      _appSettings = (NameValueCollection?)getRuntimeObject.Invoke(configuration.AppSettings, new object[0]) ?? new NameValueCollection();
     }
 
     public override object GetSection (string sectionName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("sectionName", sectionName);
+      ArgumentUtility.CheckNotNullOrEmpty("sectionName", sectionName);
 
-      return _configuration.GetSection (sectionName);
+      return _configuration.GetSection(sectionName);
     }
 
     public override ConnectionStringSettings GetConnectionString (string name)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty("name", name);
 
       return _configuration.ConnectionStrings.ConnectionStrings[name];
     }
 
-    public override string GetAppSetting (string name)
+    public override string? GetAppSetting (string name)
     {
-       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-      
+       ArgumentUtility.CheckNotNullOrEmpty("name", name);
+
       return _appSettings[name];
     }
   }

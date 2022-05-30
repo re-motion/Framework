@@ -29,17 +29,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
       return NewObject<Person>();
     }
 
-    protected Person()
+    protected Person ()
     {
     }
 
-    [StringProperty (IsNullable = false, MaximumLength = 100)]
+    [StringProperty(IsNullable = false, MaximumLength = 100)]
     public abstract string Name { get; set; }
 
-    [DBBidirectionalRelation ("ContactPerson", ContainsForeignKey = false)]
+    [DBBidirectionalRelation("ContactPerson", ContainsForeignKey = false)]
     public abstract Partner AssociatedPartnerCompany { get; set; }
 
-    [DBBidirectionalRelation ("ContactPerson", ContainsForeignKey = true)]
+    [DBBidirectionalRelation("ContactPerson", ContainsForeignKey = true)]
     public abstract Customer AssociatedCustomerCompany { get; set; }
+
+    [DBBidirectionalRelation("Reviewer")]
+    public abstract IObjectList<ProductReview> Reviews { get; set; }
   }
 }

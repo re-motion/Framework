@@ -37,10 +37,9 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithParamsArray ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      _securityClient.CheckStatelessAccess (typeof (SecurableObject), AccessType.Get (TestAccessTypes.First));
+      _securityClient.CheckStatelessAccess(typeof(SecurableObject), AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
     }
@@ -48,11 +47,10 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_WithParamsArray_AndSecurityPrincipal ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
       var securityPrincipal = _securityClient.PrincipalProvider.GetPrincipal();
-      _securityClient.CheckStatelessAccess (typeof (SecurableObject), securityPrincipal, AccessType.Get (TestAccessTypes.First));
+      _securityClient.CheckStatelessAccess(typeof(SecurableObject), securityPrincipal, AccessType.Get(TestAccessTypes.First));
 
       _testHelper.VerifyAll();
     }
@@ -60,34 +58,30 @@ namespace Remotion.Security.UnitTests.SecurityClientTests
     [Test]
     public void Test_AccessGranted ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, true);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, true);
 
-      _securityClient.CheckStatelessAccess (typeof (SecurableObject), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+      _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
 
       _testHelper.VerifyAll();
     }
 
     [Test]
-    [ExpectedException (typeof (PermissionDeniedException))]
     public void Test_AccessDenied_ShouldThrowPermissionDeniedException ()
     {
-      _testHelper.ExpectFunctionalSecurityStrategyHasAccess (TestAccessTypes.First, false);
-      _testHelper.ReplayAll();
+      _testHelper.ExpectFunctionalSecurityStrategyHasAccess(TestAccessTypes.First, false);
 
-      _securityClient.CheckStatelessAccess (typeof (SecurableObject), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
-
+      Assert.That(
+          () => _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) }),
+          Throws.InstanceOf<PermissionDeniedException>());
       _testHelper.VerifyAll();
     }
 
     [Test]
     public void Test_WithinSecurityFreeSection_AccessGranted ()
     {
-      _testHelper.ReplayAll();
-
       using (SecurityFreeSection.Activate())
       {
-        _securityClient.CheckStatelessAccess (typeof (SecurableObject), (IReadOnlyList<AccessType>) new[] { AccessType.Get (TestAccessTypes.First) });
+        _securityClient.CheckStatelessAccess(typeof(SecurableObject), (IReadOnlyList<AccessType>)new[] { AccessType.Get(TestAccessTypes.First) });
       }
 
       _testHelper.VerifyAll();

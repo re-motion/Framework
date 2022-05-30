@@ -21,7 +21,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
@@ -31,13 +31,13 @@ namespace Remotion.ServiceLocation
   {
     private class Registration
     {
-      public readonly Func<object> SingleFactory;
-      public readonly Func<object> CompoundFactory;
+      public readonly Func<object>? SingleFactory;
+      public readonly Func<object>? CompoundFactory;
       public readonly IReadOnlyCollection<Func<object>> MultipleFactories;
 
       public Registration (
-          Func<object> singleFactory,
-          Func<object> compoundFactory,
+          Func<object>? singleFactory,
+          Func<object>? compoundFactory,
           IReadOnlyCollection<Func<object>> multipleFactories)
       {
         SingleFactory = singleFactory;
@@ -47,10 +47,10 @@ namespace Remotion.ServiceLocation
     }
 
     private static readonly MethodInfo s_resolveIndirectDependencyMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((DefaultServiceLocator sl) => sl.ResolveIndirectDependency<object> (null))
+        MemberInfoFromExpressionUtility.GetMethod((DefaultServiceLocator sl) => sl.ResolveIndirectDependency<object>(null))
         .GetGenericMethodDefinition();
     private static readonly MethodInfo s_resolveIndirectCollectionDependencyMethod =
-        MemberInfoFromExpressionUtility.GetMethod ((DefaultServiceLocator sl) => sl.ResolveIndirectCollectionDependency<object> (null, false))
+        MemberInfoFromExpressionUtility.GetMethod((DefaultServiceLocator sl) => sl.ResolveIndirectCollectionDependency<object>(null, false))
         .GetGenericMethodDefinition();
 
     private readonly ConcurrentDictionary<Type, Registration> _dataStore = new ConcurrentDictionary<Type, Registration>();
@@ -59,15 +59,15 @@ namespace Remotion.ServiceLocation
     /// <inheritdoc/>
     public void Register (ServiceConfigurationEntry serviceConfigurationEntry)
     {
-      ArgumentUtility.CheckNotNull ("serviceConfigurationEntry", serviceConfigurationEntry);
+      ArgumentUtility.CheckNotNull("serviceConfigurationEntry", serviceConfigurationEntry);
 
-      var registration = CreateRegistration (serviceConfigurationEntry);
-      if (!_dataStore.TryAdd (serviceConfigurationEntry.ServiceType, registration))
+      var registration = CreateRegistration(serviceConfigurationEntry);
+      if (!_dataStore.TryAdd(serviceConfigurationEntry.ServiceType, registration))
       {
-        var message = string.Format (
+        var message = string.Format(
             "Register cannot be called twice or after GetInstance for service type: '{0}'.",
             serviceConfigurationEntry.ServiceType);
-        throw new InvalidOperationException (message);
+        throw new InvalidOperationException(message);
       }
     }
 
@@ -75,72 +75,72 @@ namespace Remotion.ServiceLocation
     {
       try
       {
-        return _dataStore.GetOrAdd (serviceType, _createRegistrationFromTypeFunc);
+        return _dataStore.GetOrAdd(serviceType, _createRegistrationFromTypeFunc);
       }
       catch (Exception ex)
       {
-        var message = string.Format ("Error resolving service Type '{0}': {1}", serviceType, ex.Message);
-        throw new ActivationException (message, ex);
+        var message = string.Format("Error resolving service Type '{0}': {1}", serviceType, ex.Message);
+        throw new ActivationException(message, ex);
       }
     }
 
     private Registration CreateRegistrationFromType (Type serviceType)
     {
-      var serviceConfigurationEntry = _serviceConfigurationDiscoveryService.GetDefaultConfiguration (serviceType);
-      return CreateRegistration (serviceConfigurationEntry);
+      var serviceConfigurationEntry = _serviceConfigurationDiscoveryService.GetDefaultConfiguration(serviceType);
+      return CreateRegistration(serviceConfigurationEntry);
     }
 
     private Registration CreateRegistration (ServiceConfigurationEntry serviceConfigurationEntry)
     {
-      var isCompound = serviceConfigurationEntry.ImplementationInfos.Any (i => i.RegistrationType == RegistrationType.Compound);
+      var isCompound = serviceConfigurationEntry.ImplementationInfos.Any(i => i.RegistrationType == RegistrationType.Compound);
       Func<Func<object>, object> noDecorators = f => f();
 
-      var decoratorChain = CreateDecoratorChain (
+      var decoratorChain = CreateDecoratorChain(
           serviceConfigurationEntry.ServiceType,
-          serviceConfigurationEntry.ImplementationInfos.Where (i => i.RegistrationType == RegistrationType.Decorator));
+          serviceConfigurationEntry.ImplementationInfos.Where(i => i.RegistrationType == RegistrationType.Decorator));
 
       var singleFactory = serviceConfigurationEntry.ImplementationInfos
-          .Where (i => i.RegistrationType == RegistrationType.Single)
-          .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
-          .SingleOrDefault (
-              () => new InvalidOperationException (
-                  string.Format (
+          .Where(i => i.RegistrationType == RegistrationType.Single)
+          .Select(i => CreateInstanceFactory(serviceConfigurationEntry.ServiceType, i, decoratorChain))
+          .SingleOrDefault(
+              () => new InvalidOperationException(
+                  string.Format(
                       "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
                       RegistrationType.Single,
                       serviceConfigurationEntry.ServiceType)));
 
       var compoundFactory = serviceConfigurationEntry.ImplementationInfos
-          .Where (i => i.RegistrationType == RegistrationType.Compound)
-          .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, decoratorChain))
-          .SingleOrDefault (
-              () => new InvalidOperationException (
-                  string.Format (
+          .Where(i => i.RegistrationType == RegistrationType.Compound)
+          .Select(i => CreateInstanceFactory(serviceConfigurationEntry.ServiceType, i, decoratorChain))
+          .SingleOrDefault(
+              () => new InvalidOperationException(
+                  string.Format(
                       "Cannot register multiple implementations with registration type '{0}' for service type '{1}'.",
                       RegistrationType.Compound,
                       serviceConfigurationEntry.ServiceType)));
 
       var multipleFactories = serviceConfigurationEntry.ImplementationInfos
-          .Where (i => i.RegistrationType == RegistrationType.Multiple)
-          .Select (i => CreateInstanceFactory (serviceConfigurationEntry.ServiceType, i, isCompound ? noDecorators : decoratorChain))
+          .Where(i => i.RegistrationType == RegistrationType.Multiple)
+          .Select(i => CreateInstanceFactory(serviceConfigurationEntry.ServiceType, i, isCompound ? noDecorators : decoratorChain))
           .ToArray();
 
       if (singleFactory != null && multipleFactories.Any())
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Service type '{0}': Registrations of type 'Single' and 'Multiple' are mutually exclusive.",
                 serviceConfigurationEntry.ServiceType));
       }
 
       if (singleFactory != null && compoundFactory != null)
       {
-        throw new InvalidOperationException (
-            string.Format (
+        throw new InvalidOperationException(
+            string.Format(
                 "Service type '{0}': Registrations of type 'Single' and 'Compound' are mutually exclusive.",
                 serviceConfigurationEntry.ServiceType));
       }
 
-      return new Registration (singleFactory, compoundFactory, multipleFactories);
+      return new Registration(singleFactory, compoundFactory, multipleFactories);
     }
 
     private Func<Func<object>, object> CreateDecoratorChain (Type serviceType, IEnumerable<ServiceImplementationInfo> decorators)
@@ -155,25 +155,25 @@ namespace Remotion.ServiceLocation
 
       foreach (var decoratorImplementationInfo in decorators)
       {
-        var ctorInfo = GetSingleConstructor (decoratorImplementationInfo, serviceType);
+        var ctorInfo = GetSingleConstructor(decoratorImplementationInfo, serviceType);
 
-        var decoratedObjectArgumentExpression = Expression.Parameter (typeof (object));
-        var serviceLocator = Expression.Constant (this);
+        var decoratedObjectArgumentExpression = Expression.Parameter(typeof(object));
+        var serviceLocator = Expression.Constant(this);
         var parameterInfos = ctorInfo.GetParameters();
-        var ctorArgExpressions = parameterInfos.Select (
+        var ctorArgExpressions = parameterInfos.Select(
             x => x.ParameterType == serviceType
-                ? Expression.Convert (decoratedObjectArgumentExpression, serviceType)
-                : GetIndirectResolutionCall (serviceLocator, x, false));
+                ? Expression.Convert(decoratedObjectArgumentExpression, serviceType)
+                : GetIndirectResolutionCall(serviceLocator, x, false));
 
         // arg => new DecoratorType (<this.GetInstance(),> (ServiceType) arg <,this.GetInstance()>)
-        var activationExpression = Expression.Lambda<Func<object, object>> (
-            Expression.New (ctorInfo, ctorArgExpressions),
+        var activationExpression = Expression.Lambda<Func<object, object>>(
+            Expression.New(ctorInfo, ctorArgExpressions),
             decoratedObjectArgumentExpression);
         var compiledExpression = activationExpression.Compile();
 
         var previousActivator = activator;
 
-        activator = (innerActivator) => compiledExpression (previousActivator (innerActivator));
+        activator = (innerActivator) => compiledExpression(previousActivator(innerActivator));
       }
       return activator;
     }
@@ -187,21 +187,21 @@ namespace Remotion.ServiceLocation
       if (serviceImplementationInfo.Factory == null)
       {
         var isCompound = serviceImplementationInfo.RegistrationType == RegistrationType.Compound;
-        var expectedParameterType = isCompound ? typeof (IEnumerable<>).MakeGenericType (serviceType) : null;
-        var ctorInfo = GetSingleConstructor (serviceImplementationInfo, expectedParameterType);
-        instanceFactory = CreateInstanceFactoryFromConstructorInfo (ctorInfo, isCompound);
+        var expectedParameterType = isCompound ? typeof(IEnumerable<>).MakeGenericType(serviceType) : null;
+        var ctorInfo = GetSingleConstructor(serviceImplementationInfo, expectedParameterType);
+        instanceFactory = CreateInstanceFactoryFromConstructorInfo(ctorInfo, isCompound);
       }
       else
       {
         instanceFactory = serviceImplementationInfo.Factory;
       }
 
-      Func<object> decoratedFactory = () => decoratorChain (instanceFactory);
+      Func<object> decoratedFactory = () => decoratorChain(instanceFactory);
 
       switch (serviceImplementationInfo.Lifetime)
       {
         case LifetimeKind.Singleton:
-          var factoryContainer = new Lazy<object> (decoratedFactory, LazyThreadSafetyMode.ExecutionAndPublication);
+          var factoryContainer = new Lazy<object>(decoratedFactory, LazyThreadSafetyMode.ExecutionAndPublication);
           return () => factoryContainer.Value;
         default:
           return decoratedFactory;
@@ -210,59 +210,59 @@ namespace Remotion.ServiceLocation
 
     private Func<object> CreateInstanceFactoryFromConstructorInfo (ConstructorInfo ctorInfo, bool isCompoundResolution)
     {
-      var serviceLocator = Expression.Constant (this);
+      var serviceLocator = Expression.Constant(this);
 
       var parameterInfos = ctorInfo.GetParameters();
-      var ctorArgExpressions = parameterInfos.Select (x => GetIndirectResolutionCall (serviceLocator, x, isCompoundResolution));
+      var ctorArgExpressions = parameterInfos.Select(x => GetIndirectResolutionCall(serviceLocator, x, isCompoundResolution));
 
-      var factoryLambda = Expression.Lambda<Func<object>> (Expression.New (ctorInfo, ctorArgExpressions));
+      var factoryLambda = Expression.Lambda<Func<object>>(Expression.New(ctorInfo, ctorArgExpressions));
       return factoryLambda.Compile();
     }
 
-    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo, Type expectedParameterType)
+    private ConstructorInfo GetSingleConstructor (ServiceImplementationInfo serviceImplementationInfo, Type? expectedParameterType)
     {
-      var argumentTypesDoNotMatchMessage = string.Format (
+      var argumentTypesDoNotMatchMessage = string.Format(
           " The public constructor must at least accept an argument of type '{0}'.",
           expectedParameterType);
 
-      var exceptionMessage = string.Format (
+      var exceptionMessage = string.Format(
           "Type '{0}' cannot be instantiated. The type must have exactly one public constructor.{1}",
           serviceImplementationInfo.ImplementationType,
           expectedParameterType == null ? "" : argumentTypesDoNotMatchMessage);
 
       var constructors = serviceImplementationInfo.ImplementationType.GetConstructors();
       if (constructors.Length != 1)
-        throw new InvalidOperationException (exceptionMessage);
+        throw new InvalidOperationException(exceptionMessage);
 
       var constructor = constructors.First();
       if (expectedParameterType != null && constructor.GetParameters().Count(p => p.ParameterType == expectedParameterType) != 1)
-        throw new InvalidOperationException (exceptionMessage);
+        throw new InvalidOperationException(exceptionMessage);
 
       return constructor;
     }
 
     private Expression GetIndirectResolutionCall (Expression serviceLocator, ParameterInfo parameterInfo, bool isCompoundResolution)
     {
-      var context = string.Format ("constructor parameter '{0}' of type '{1}'", parameterInfo.Name, parameterInfo.Member.DeclaringType);
+      var context = string.Format("constructor parameter '{0}' of type '{1}'", parameterInfo.Name, parameterInfo.Member.DeclaringType);
 
       MethodInfo resolutionMethod;
       Expression[] arguments;
-      if (parameterInfo.ParameterType.IsGenericType && parameterInfo.ParameterType.GetGenericTypeDefinition() == typeof (IEnumerable<>))
+      if (parameterInfo.ParameterType.IsGenericType && parameterInfo.ParameterType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
       {
         var elementType = parameterInfo.ParameterType.GetGenericArguments().Single();
-        resolutionMethod = s_resolveIndirectCollectionDependencyMethod.MakeGenericMethod (elementType);
-        arguments = new Expression[] { Expression.Constant (context), Expression.Constant (isCompoundResolution) };
+        resolutionMethod = s_resolveIndirectCollectionDependencyMethod.MakeGenericMethod(elementType);
+        arguments = new Expression[] { Expression.Constant(context), Expression.Constant(isCompoundResolution) };
       }
       else
       {
-        resolutionMethod = s_resolveIndirectDependencyMethod.MakeGenericMethod (parameterInfo.ParameterType);
-        arguments = new Expression[] { Expression.Constant (context) };
+        resolutionMethod = s_resolveIndirectDependencyMethod.MakeGenericMethod(parameterInfo.ParameterType);
+        arguments = new Expression[] { Expression.Constant(context) };
       }
 
-      return Expression.Call (serviceLocator, resolutionMethod, arguments);
+      return Expression.Call(serviceLocator, resolutionMethod, arguments);
     }
 
-    private T ResolveIndirectDependency<T> (string context)
+    private T ResolveIndirectDependency<T> (string? context)
     {
       try
       {
@@ -270,22 +270,22 @@ namespace Remotion.ServiceLocation
       }
       catch (ActivationException ex)
       {
-        var message = string.Format ("Error resolving indirect dependency of {0}: {1}", context, ex.Message);
-        throw new ActivationException (message, ex);
+        var message = string.Format("Error resolving indirect dependency of {0}: {1}", context, ex.Message);
+        throw new ActivationException(message, ex);
       }
     }
 
-    private IEnumerable<T> ResolveIndirectCollectionDependency<T> (string context, bool isCompoundResolution)
+    private IEnumerable<T> ResolveIndirectCollectionDependency<T> (string? context, bool isCompoundResolution)
     {
       IEnumerable<object> enumerable;
       try
       {
-        enumerable = GetAllInstances(typeof (T), isCompoundResolution);
+        enumerable = GetAllInstances(typeof(T), isCompoundResolution);
       }
       catch (ActivationException ex)
       {
-        var message = string.Format ("Error resolving indirect collection dependency of {0}: {1}", context, ex.Message);
-        throw new ActivationException (message, ex);
+        var message = string.Format("Error resolving indirect collection dependency of {0}: {1}", context, ex.Message);
+        throw new ActivationException(message, ex);
       }
 
       // To keep the lazy sequence semantics of GetAllInstances, and still be able to catch the ActivationException, we need to manually iterate
@@ -300,12 +300,12 @@ namespace Remotion.ServiceLocation
           {
             if (!enumerator.MoveNext())
               yield break;
-            current = (T) enumerator.Current;
+            current = (T)enumerator.Current;
           }
           catch (ActivationException ex)
           {
-            var message = string.Format ("Error resolving indirect collection dependency of {0}: {1}", context, ex.Message);
-            throw new ActivationException (message, ex);
+            var message = string.Format("Error resolving indirect collection dependency of {0}: {1}", context, ex.Message);
+            throw new ActivationException(message, ex);
           }
           yield return current;
         }

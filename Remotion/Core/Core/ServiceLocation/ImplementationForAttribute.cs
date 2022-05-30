@@ -16,7 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation
@@ -39,7 +39,7 @@ namespace Remotion.ServiceLocation
     /// <param name="serviceType">The type representing the concrete implementation for the service type.</param>
     public ImplementationForAttribute (Type serviceType)
     {
-      ArgumentUtility.CheckNotNull ("serviceType", serviceType);
+      ArgumentUtility.CheckNotNull("serviceType", serviceType);
 
       _serviceType = serviceType;
       Lifetime = LifetimeKind.InstancePerDependency;
@@ -78,7 +78,7 @@ namespace Remotion.ServiceLocation
     public int Position  { get; set; }
 
     /// <summary>
-    /// Defines wether an implementation is registered as a single value or as a sequence, a compound type or a decorator.
+    /// Gets or sets the registration type of the concrete implementation type.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -97,6 +97,7 @@ namespace Remotion.ServiceLocation
     /// types.
     /// </para>
     /// </remarks>
+    /// <value>The registration type of the concrete implementation type.</value>
     public RegistrationType RegistrationType
     {
       get { return _registrationType; }

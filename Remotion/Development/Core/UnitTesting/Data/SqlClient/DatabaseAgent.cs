@@ -28,81 +28,81 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
   public class DatabaseAgent
   {
     private string _connectionString;
-    private string _fileName = null;
+    private string? _fileName = null;
 
     public DatabaseAgent (string connectionString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
 
       _connectionString = connectionString;
     }
 
     public void SetConnectionString (string connectionString)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
+      ArgumentUtility.CheckNotNullOrEmpty("connectionString", connectionString);
 
       _connectionString = connectionString;
     }
 
     public void SetDatabaseReadWrite (string database)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("database", database);
-      ExecuteCommand (string.Format ("ALTER DATABASE [{0}] SET READ_WRITE WITH ROLLBACK IMMEDIATE", database));
+      ArgumentUtility.CheckNotNullOrEmpty("database", database);
+      ExecuteCommand(string.Format("ALTER DATABASE [{0}] SET READ_WRITE WITH ROLLBACK IMMEDIATE", database));
     }
 
     public void SetDatabaseReadOnly (string database)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("database", database);
-      ExecuteCommand (string.Format ("ALTER DATABASE [{0}] SET READ_ONLY WITH ROLLBACK IMMEDIATE", database));
+      ArgumentUtility.CheckNotNullOrEmpty("database", database);
+      ExecuteCommand(string.Format("ALTER DATABASE [{0}] SET READ_ONLY WITH ROLLBACK IMMEDIATE", database));
     }
 
     public int ExecuteBatchFile (string sqlFileName, bool useTransaction)
     {
-      return ExecuteBatchFile (sqlFileName, useTransaction, new Dictionary<string, string>());
+      return ExecuteBatchFile(sqlFileName, useTransaction, new Dictionary<string, string>());
     }
 
     public int ExecuteBatchFile (string sqlFileName, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("sqlFileName", sqlFileName);
-      ArgumentUtility.CheckNotNull ("replacementDictionary", replacementDictionary);      
+      ArgumentUtility.CheckNotNullOrEmpty("sqlFileName", sqlFileName);
+      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);
 
       _fileName = sqlFileName;
-      if (!Path.IsPathRooted (sqlFileName))
+      if (!Path.IsPathRooted(sqlFileName))
       {
-        string assemblyUrl = typeof (DatabaseAgent).Assembly.CodeBase;
-        Uri uri = new Uri (assemblyUrl);
-        sqlFileName = Path.Combine (Path.GetDirectoryName (uri.LocalPath), sqlFileName);
+        var assemblyNameWithoutShadowCopy = typeof(DatabaseAgent).Assembly.GetName(copiedName: false);
+        var codeBaseUri = new Uri(assemblyNameWithoutShadowCopy.EscapedCodeBase!);
+        sqlFileName = Path.Combine(Path.GetDirectoryName(codeBaseUri.LocalPath)!, sqlFileName);
       }
-      return ExecuteBatchString (File.ReadAllText (sqlFileName, Encoding.Default), useTransaction, replacementDictionary);
+      return ExecuteBatchString(File.ReadAllText(sqlFileName, Encoding.UTF8), useTransaction, replacementDictionary);
     }
 
     public int ExecuteBatchString (string commandBatch, bool useTransaction)
     {
-      return ExecuteBatchString (commandBatch, useTransaction, new Dictionary<string, string>());
+      return ExecuteBatchString(commandBatch, useTransaction, new Dictionary<string, string>());
     }
 
     public int ExecuteBatchString (string commandBatch, bool useTransaction, IDictionary<string, string> replacementDictionary)
     {
-      ArgumentUtility.CheckNotNull ("commandBatch", commandBatch);
-      ArgumentUtility.CheckNotNull ("replacementDictionary", replacementDictionary);      
+      ArgumentUtility.CheckNotNull("commandBatch", commandBatch);
+      ArgumentUtility.CheckNotNull("replacementDictionary", replacementDictionary);
 
       foreach (var replacement in replacementDictionary)
-        commandBatch = commandBatch.Replace (replacement.Key, replacement.Value);
+        commandBatch = commandBatch.Replace(replacement.Key, replacement.Value);
 
       var count = 0;
-      using (IDbConnection connection = CreateConnection ())
+      using (IDbConnection connection = CreateConnection())
       {
-        connection.Open ();
+        connection.Open();
         if (useTransaction)
         {
-          using (IDbTransaction transaction = connection.BeginTransaction ())
+          using (IDbTransaction transaction = connection.BeginTransaction())
           {
-            count = ExecuteBatchString (connection, commandBatch, transaction);
-            transaction.Commit ();
+            count = ExecuteBatchString(connection, commandBatch, transaction);
+            transaction.Commit();
           }
         }
         else
-          count = ExecuteBatchString (connection, commandBatch, null);
+          count = ExecuteBatchString(connection, commandBatch, null);
       }
 
       return count;
@@ -110,12 +110,12 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     protected virtual IDbConnection CreateConnection ()
     {
-      return new SqlConnection (_connectionString);
+      return new SqlConnection(_connectionString);
     }
 
-    protected virtual IDbCommand CreateCommand (IDbConnection connection, string commandText, IDbTransaction transaction)
+    protected virtual IDbCommand CreateCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
     {
-      IDbCommand command = connection.CreateCommand ();
+      IDbCommand command = connection.CreateCommand();
       command.CommandType = CommandType.Text;
       command.CommandText = commandText;
       command.Transaction = transaction;
@@ -124,48 +124,56 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
 
     public int ExecuteCommand (string commandText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("commandText", commandText);
+      ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
 
-      using (IDbConnection connection = CreateConnection ())
+      using (IDbConnection connection = CreateConnection())
       {
-        connection.Open ();
-        return ExecuteCommand (connection, commandText, null);
+        connection.Open();
+        return ExecuteCommand(connection, commandText, null);
       }
     }
 
-    public object ExecuteScalarCommand (string commandText)
+    public object? ExecuteScalarCommand (string commandText)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("commandText", commandText);
+      ArgumentUtility.CheckNotNullOrEmpty("commandText", commandText);
 
-      using (IDbConnection connection = CreateConnection ())
+      using (IDbConnection connection = CreateConnection())
       {
-        connection.Open ();
-        return ExecuteScalarCommand (connection, commandText, null);
+        connection.Open();
+        return ExecuteScalarCommand(connection, commandText, null);
       }
     }
 
-    protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction transaction)
+    /// <summary>
+    /// Opens a <see cref="NoDatabaseWriteSection"/> ensuring that no database writes occur while the section is open.
+    /// </summary>
+    /// <seealso cref="NoDatabaseWriteSection"/>
+    public IDisposable OpenNoDatabaseWriteSection () => new NoDatabaseWriteSection(this, GetLastUsedTimestamp());
+
+    public byte[] GetLastUsedTimestamp () => (byte[])ExecuteScalarCommand("SELECT @@DBTS")!;
+
+    protected virtual int ExecuteBatchString (IDbConnection connection, string commandBatch, IDbTransaction? transaction)
     {
-      ArgumentUtility.CheckNotNull ("connection", connection);
-      ArgumentUtility.CheckNotNullOrEmpty ("commandBatch", commandBatch);
+      ArgumentUtility.CheckNotNull("connection", connection);
+      ArgumentUtility.CheckNotNullOrEmpty("commandBatch", commandBatch);
 
       var count = 0;
-      foreach (var command in GetCommandTextBatches (commandBatch))
+      foreach (var command in GetCommandTextBatches(commandBatch))
       {
         if (command.Content != null)
         {
           try
           {
-            count += ExecuteCommand (connection, command.Content, transaction);
+            count += ExecuteCommand(connection, command.Content, transaction);
           }
           catch (Exception ex)
           {
-            throw new SqlBatchCommandException (
-                string.Format (
+            throw new SqlBatchCommandException(
+                string.Format(
                     "Could not execute batch command from row {0} to row {1}{2}. (Error message: {3})",
                     command.StartRowNumber,
                     command.EndRowNumber,
-                    !string.IsNullOrEmpty (_fileName) ? " in file '" + _fileName + "'" : string.Empty,
+                    !string.IsNullOrEmpty(_fileName) ? " in file '" + _fileName + "'" : string.Empty,
                     ex.Message),
                 ex);
           }
@@ -174,36 +182,36 @@ namespace Remotion.Development.UnitTesting.Data.SqlClient
       return count;
     }
 
-    protected virtual int ExecuteCommand (IDbConnection connection, string commandText, IDbTransaction transaction)
+    protected virtual int ExecuteCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
     {
-      using (IDbCommand command = CreateCommand (connection, commandText, transaction))
+      using (IDbCommand command = CreateCommand(connection, commandText, transaction))
       {
-        return command.ExecuteNonQuery ();
+        return command.ExecuteNonQuery();
       }
     }
 
-    protected virtual object ExecuteScalarCommand (IDbConnection connection, string commandText, IDbTransaction transaction)
+    protected virtual object? ExecuteScalarCommand (IDbConnection connection, string commandText, IDbTransaction? transaction)
     {
-      using (IDbCommand command = CreateCommand (connection, commandText, transaction))
+      using (IDbCommand command = CreateCommand(connection, commandText, transaction))
       {
-        return command.ExecuteScalar ();
+        return command.ExecuteScalar();
       }
     }
 
     private IEnumerable<BatchCommand> GetCommandTextBatches (string commandBatch)
     {
       var lineNumber = 1;
-      var command = new BatchCommand (lineNumber, commandBatch.Length);
-      foreach (var line in commandBatch.Split (new[] { "\n", "\r\n" }, StringSplitOptions.None))
+      var command = new BatchCommand(lineNumber, commandBatch.Length);
+      foreach (var line in commandBatch.Split(new[] { "\n", "\r\n" }, StringSplitOptions.None))
       {
-        if (line.Trim ().Equals ("GO", StringComparison.OrdinalIgnoreCase))
+        if (line.Trim().Equals("GO", StringComparison.OrdinalIgnoreCase))
         {
           var batch = command;
-          command = new BatchCommand (lineNumber + 1, commandBatch.Length);
+          command = new BatchCommand(lineNumber + 1, commandBatch.Length);
           yield return batch;
         }
         else
-          command.AppendCommandBatchLine (line.Trim ());
+          command.AppendCommandBatchLine(line.Trim());
         lineNumber++;
       }
 

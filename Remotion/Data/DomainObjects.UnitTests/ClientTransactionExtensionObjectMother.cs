@@ -15,17 +15,16 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Rhino.Mocks;
-
+using Moq;
 namespace Remotion.Data.DomainObjects.UnitTests
 {
   public static class ClientTransactionExtensionObjectMother
   {
     public static IClientTransactionExtension Create ()
     {
-      var extension = MockRepository.GenerateStub<IClientTransactionExtension>();
-      extension.Stub (stub => stub.Key).Return ("key");
-      return extension;
+      var extension = new Mock<IClientTransactionExtension>();
+      extension.Setup(stub => stub.Key).Returns("key");
+      return extension.Object;
     }
   }
 }

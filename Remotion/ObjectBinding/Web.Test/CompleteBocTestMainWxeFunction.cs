@@ -25,7 +25,7 @@ namespace OBWTest
 public class CompleteBocTestMainWxeFunction: WxeFunction
 {
   public CompleteBocTestMainWxeFunction ()
-    : base (new NoneTransactionMode ())
+    : base(new NoneTransactionMode())
   {
     ReturnUrl = "StartForm.aspx";
     Variables["id"] = new Guid(0,0,0,0,0,0,0,0,0,0,1).ToString();
@@ -33,8 +33,8 @@ public class CompleteBocTestMainWxeFunction: WxeFunction
 
   // steps
 
-  private WxeStep Step1 = new WxePageStep ("CompleteBocTestForm.aspx");
-  private WxeStep Step2 = new WxePageStep ("CompleteBocTestUserControlForm.aspx");
+  private WxeStep Step1 = new WxePageStep("CompleteBocTestForm.aspx");
+  private WxeStep Step2 = new WxePageStep("CompleteBocTestUserControlForm.aspx");
 }
 
 }

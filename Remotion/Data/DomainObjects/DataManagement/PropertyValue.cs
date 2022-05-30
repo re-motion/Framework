@@ -18,6 +18,7 @@ using System;
 using System.Collections;
 using Remotion.Data.DomainObjects.Infrastructure.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Reflection;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.DataManagement
@@ -29,26 +30,26 @@ namespace Remotion.Data.DomainObjects.DataManagement
   {
     public static bool IsTypeSupported (Type propertyType)
     {
-      ArgumentUtility.CheckNotNull ("propertyType", propertyType);
+      ArgumentUtility.CheckNotNull("propertyType", propertyType);
 
       return propertyType.IsValueType
-          || ReflectionUtility.IsStringPropertyValueType (propertyType)
-          || ReflectionUtility.IsBinaryPropertyValueType (propertyType)
-          || ReflectionUtility.IsTypePropertyValueType (propertyType)
-          || ReflectionUtility.IsObjectIDPropertyValueType (propertyType)
-          || ReflectionUtility.IsExtensibleEnumPropertyValueType (propertyType)
-          || ReflectionUtility.IsStructuralEquatablePropertyValueType (propertyType);
+          || ReflectionUtility.IsStringPropertyValueType(propertyType)
+          || ReflectionUtility.IsBinaryPropertyValueType(propertyType)
+          || ReflectionUtility.IsTypePropertyValueType(propertyType)
+          || ReflectionUtility.IsObjectIDPropertyValueType(propertyType)
+          || ReflectionUtility.IsExtensibleEnumPropertyValueType(propertyType)
+          || ReflectionUtility.IsStructuralEquatablePropertyValueType(propertyType);
     }
 
-    public static bool AreValuesDifferent (object value1, object value2)
+    public static bool AreValuesDifferent (object? value1, object? value2)
     {
-      if (ReferenceEquals (value1, value2))
+      if (ReferenceEquals(value1, value2))
         return false;
 
       if (value1 is byte[])
         return true;
 
-      if (StructuralComparisons.StructuralEqualityComparer.Equals (value1, value2))
+      if (StructuralComparisons.StructuralEqualityComparer.Equals(value1, value2))
         return false;
 
       return true;
@@ -56,8 +57,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     private readonly PropertyDefinition _definition;
 
-    private object _value;
-    private object _originalValue;
+    private object? _value;
+    private object? _originalValue;
     private bool _hasBeenTouched;
 
     // construction and disposing
@@ -69,19 +70,19 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <param name="value">The initial <see cref="Value"/> for the <b>PropertyValue</b>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="definition"/> is <see langword="null"/>.</exception>
     /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
-    public PropertyValue (PropertyDefinition definition, object value)
+    public PropertyValue (PropertyDefinition definition, object? value)
     {
-      ArgumentUtility.CheckNotNull ("definition", definition);
+      ArgumentUtility.CheckNotNull("definition", definition);
 
-      if (!IsTypeSupported (definition.PropertyType))
+      if (!IsTypeSupported(definition.PropertyType))
       {
-        var message = string.Format ("The property '{0}' (declared on class '{1}') is invalid because its values cannot be copied. Only value types, "
+        var message = string.Format("The property '{0}' (declared on class '{1}') is invalid because its values cannot be copied. Only value types, "
             + "strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is '{2}'.",
-            definition.PropertyName, definition.ClassDefinition.ID, definition.PropertyType.FullName);
-        throw new NotSupportedException (message);
+            definition.PropertyName, definition.ClassDefinition.ID, definition.PropertyType.GetFullNameSafe());
+        throw new NotSupportedException(message);
       }
 
-      CheckValue (value, definition);
+      CheckValue(value, definition);
 
       _definition = definition;
       _value = value;
@@ -97,7 +98,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="PropertyValue"/> has been discarded. 
     /// See <see cref="ObjectInvalidException"/> for further information.</exception>
     /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <see cref="PropertyDefinition"/>.</exception>
-    public object Value
+    public object? Value
     {
       get
       {
@@ -105,7 +106,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       }
       set
       {
-        CheckValue (value, _definition);
+        CheckValue(value, _definition);
         _value = value;
         Touch();
       }
@@ -121,7 +122,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </summary>
     /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="PropertyValue"/> has been discarded. 
     /// See <see cref="ObjectInvalidException"/> for further information.</exception>
-    public object OriginalValue
+    public object? OriginalValue
     {
       get
       {
@@ -138,7 +139,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       get
       {
-        return AreValuesDifferent (_value, _originalValue);
+        return AreValuesDifferent(_value, _originalValue);
       }
     }
 
@@ -163,20 +164,20 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     public void SetDataFromSubTransaction (PropertyValue source)
     {
-      ArgumentUtility.CheckNotNull ("source", source);
+      ArgumentUtility.CheckNotNull("source", source);
 
       if (source._definition != _definition)
       {
-        var message = string.Format (
+        var message = string.Format(
             "Cannot set this property's value from '{0}'; the properties do not have the same property definition.",
             source._definition);
-        throw new ArgumentException (message, "source");
+        throw new ArgumentException(message, "source");
       }
 
       _value = source._value;
 
       if (source.HasBeenTouched || HasChanged)
-        Touch ();
+        Touch();
     }
 
     public void CommitState ()
@@ -195,21 +196,21 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenTouched = false;
     }
 
-    private void CheckValue (object value, PropertyDefinition definition)
+    private void CheckValue (object? value, PropertyDefinition definition)
     {
       if (value != null)
       {
-        if (!definition.PropertyType.IsInstanceOfType (value))
-          throw new InvalidTypeException (definition.PropertyName, definition.PropertyType, value.GetType ());
+        if (!definition.PropertyType.IsInstanceOfType(value))
+          throw new InvalidTypeException(definition.PropertyName, definition.PropertyType, value.GetType());
 
         if (value is Enum)
-          CheckEnumValue (value, definition);
+          CheckEnumValue(value, definition);
       }
       else
       {
         if (!definition.IsNullablePropertyType)
         {
-          throw new InvalidOperationException (string.Format ("Property '{0}' does not allow null values.", definition.PropertyName));
+          throw new InvalidOperationException(string.Format("Property '{0}' does not allow null values.", definition.PropertyName));
         }
       }
     }
@@ -218,16 +219,16 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       if (value != null)
       {
-        Type underlyingType = definition.IsNullable ? NullableTypeUtility.GetBasicType (definition.PropertyType) : definition.PropertyType;
-        if (!EnumUtility.IsValidEnumValue (underlyingType, value))
+        Type underlyingType = definition.IsNullable ? NullableTypeUtility.GetBasicType(definition.PropertyType) : definition.PropertyType;
+        if (!EnumUtility.IsValidEnumValue(underlyingType, value))
         {
-          string message = string.Format (
+          string message = string.Format(
               "Value '{0}' for property '{1}' is not defined by enum type '{2}'.",
               value,
               definition.PropertyName,
               underlyingType);
 
-          throw new InvalidEnumValueException (message, definition.PropertyName, underlyingType, value);
+          throw new InvalidEnumValueException(message, definition.PropertyName, underlyingType, value);
         }
       }
     }
@@ -235,20 +236,20 @@ namespace Remotion.Data.DomainObjects.DataManagement
     #region Serialization
     internal void DeserializeFromFlatStructure (FlattenedDeserializationInfo info)
     {
-      _hasBeenTouched = info.GetBoolValue ();
-      _value = info.GetValue<object> ();
+      _hasBeenTouched = info.GetBoolValue();
+      _value = info.GetNullableValue<object>();
       if (_hasBeenTouched)
-        _originalValue = info.GetValue<object> ();
+        _originalValue = info.GetNullableValue<object>();
       else
         _originalValue = _value;
     }
 
     internal void SerializeIntoFlatStructure (FlattenedSerializationInfo info)
     {
-      info.AddBoolValue (_hasBeenTouched);
-      info.AddValue (_value);
+      info.AddBoolValue(_hasBeenTouched);
+      info.AddValue(_value);
       if (_hasBeenTouched)
-        info.AddValue (_originalValue);
+        info.AddValue(_originalValue);
     }
     #endregion
   }

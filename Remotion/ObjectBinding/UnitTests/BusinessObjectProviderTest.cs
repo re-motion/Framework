@@ -15,12 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
-using Rhino.Mocks;
 
 namespace Remotion.ObjectBinding.UnitTests
 {
@@ -28,222 +29,215 @@ namespace Remotion.ObjectBinding.UnitTests
   public class BusinessObjectProviderTest : TestBase
   {
     private IBusinessObjectProvider _provider;
-    private MockRepository _mockRepository;
-    private IBusinessObjectServiceFactory _serviceFactoryStub;
+    private Mock<IBusinessObjectServiceFactory> _serviceFactoryStub;
 
     public override void SetUp ()
     {
       base.SetUp();
 
-      _serviceFactoryStub = MockRepository.GenerateStub<IBusinessObjectServiceFactory>();
-      _provider = new StubBusinessObjectProvider (_serviceFactoryStub);
-      _mockRepository = new MockRepository();
+      _serviceFactoryStub = new Mock<IBusinessObjectServiceFactory>();
+      _provider = new StubBusinessObjectProvider(_serviceFactoryStub.Object);
 
-      BusinessObjectProvider.SetProvider<StubBusinessObjectProviderAttribute> (null);
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (null);
+      BusinessObjectProvider.SetProvider<StubBusinessObjectProviderAttribute>(null);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(null);
     }
 
     public override void TearDown ()
     {
       base.TearDown();
 
-      BusinessObjectProvider.SetProvider<StubBusinessObjectProviderAttribute> (null);
-      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute> (null);
+      BusinessObjectProvider.SetProvider<StubBusinessObjectProviderAttribute>(null);
+      BusinessObjectProvider.SetProvider<BindableObjectProviderAttribute>(null);
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.That (((BusinessObjectProvider) _provider).ServiceFactory, Is.SameAs (_serviceFactoryStub));
+      Assert.That(((BusinessObjectProvider)_provider).ServiceFactory, Is.SameAs(_serviceFactoryStub.Object));
     }
 
     [Test]
     public void GetProvider ()
     {
-      IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute));
-      Assert.That (provider, Is.TypeOf (typeof (StubBusinessObjectProvider)));
-      Assert.That (((BusinessObjectProvider)provider).ProviderAttribute, Is.TypeOf (typeof (StubBusinessObjectProviderAttribute)));
+      IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute));
+      Assert.That(provider, Is.TypeOf(typeof(StubBusinessObjectProvider)));
+      Assert.That(((BusinessObjectProvider)provider).ProviderAttribute, Is.TypeOf(typeof(StubBusinessObjectProviderAttribute)));
     }
 
     [Test]
     public void GetProvider_WithMixin ()
     {
-      using (MixinConfiguration.BuildNew().ForClass (typeof (StubBusinessObjectProvider)).AddMixin<MixinStub>().EnterScope())
+      using (MixinConfiguration.BuildNew().ForClass(typeof(StubBusinessObjectProvider)).AddMixin<MixinStub>().EnterScope())
       {
-        IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute));
-        Assert.That (provider, Is.InstanceOf (typeof (IMixinTarget)));
+        IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute));
+        Assert.That(provider, Is.InstanceOf(typeof(IMixinTarget)));
       }
     }
 
     [Test]
     public void GetProvider_WithDifferentAttributesResultingInDifferentProviders ()
     {
-      IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute));
-      Assert.That (provider, Is.TypeOf (typeof (StubBusinessObjectProvider)));
-      Assert.That (provider, Is.Not.SameAs (BusinessObjectProvider.GetProvider (typeof (Stub2BusinessObjectProviderAttribute))));
-      Assert.That (provider, Is.Not.SameAs (BusinessObjectProvider.GetProvider (typeof (DerivedStubBusinessObjectProviderAttribute))));
+      IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute));
+      Assert.That(provider, Is.TypeOf(typeof(StubBusinessObjectProvider)));
+      Assert.That(provider, Is.Not.SameAs(BusinessObjectProvider.GetProvider(typeof(Stub2BusinessObjectProviderAttribute))));
+      Assert.That(provider, Is.Not.SameAs(BusinessObjectProvider.GetProvider(typeof(DerivedStubBusinessObjectProviderAttribute))));
     }
 
     [Test]
     public void GetProvider_FromOtherBusinessObjectImplementation ()
     {
-      IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider (typeof (OtherBusinessObjectImplementationProviderAttribute));
-      Assert.That (provider, Is.TypeOf (typeof (OtherBusinessObjectImplementationProvider)));
+      IBusinessObjectProvider provider = BusinessObjectProvider.GetProvider(typeof(OtherBusinessObjectImplementationProviderAttribute));
+      Assert.That(provider, Is.TypeOf(typeof(OtherBusinessObjectImplementationProvider)));
     }
 
     [Test]
     public void GetProvider_SameTwice ()
     {
-      Assert.That (
-          BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute)),
-          Is.SameAs (BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute))));
+      Assert.That(
+          BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute)),
+          Is.SameAs(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute))));
     }
 
     [Test]
     public void GetProvider_FromGeneric ()
     {
-      Assert.That (
+      Assert.That(
           BusinessObjectProvider.GetProvider<StubBusinessObjectProviderAttribute>(),
-          Is.SameAs (BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute))));
+          Is.SameAs(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute))));
     }
 
     [Test]
     public void SetProvider ()
     {
-      BusinessObjectProvider.SetProvider (typeof (StubBusinessObjectProviderAttribute), _provider);
-      Assert.That (BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute)), Is.SameAs (_provider));
-      Assert.That (((BusinessObjectProvider) _provider).ProviderAttribute, Is.TypeOf (typeof (StubBusinessObjectProviderAttribute)));
+      BusinessObjectProvider.SetProvider(typeof(StubBusinessObjectProviderAttribute), _provider);
+      Assert.That(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute)), Is.SameAs(_provider));
+      Assert.That(((BusinessObjectProvider)_provider).ProviderAttribute, Is.TypeOf(typeof(StubBusinessObjectProviderAttribute)));
     }
 
     [Test]
     public void SetProvider_FromOtherBusinessObjectImplementation ()
     {
       OtherBusinessObjectImplementationProvider provider = new OtherBusinessObjectImplementationProvider();
-      BusinessObjectProvider.SetProvider (typeof (OtherBusinessObjectImplementationProviderAttribute), provider);
-      Assert.That (BusinessObjectProvider.GetProvider (typeof (OtherBusinessObjectImplementationProviderAttribute)), Is.SameAs (provider));
+      BusinessObjectProvider.SetProvider(typeof(OtherBusinessObjectImplementationProviderAttribute), provider);
+      Assert.That(BusinessObjectProvider.GetProvider(typeof(OtherBusinessObjectImplementationProviderAttribute)), Is.SameAs(provider));
     }
 
     [Test]
     public void SetProvider_WithGeneric ()
     {
-      BusinessObjectProvider.SetProvider<StubBusinessObjectProviderAttribute> (_provider);
-      Assert.That (BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute)), Is.SameAs (_provider));
+      BusinessObjectProvider.SetProvider<StubBusinessObjectProviderAttribute>(_provider);
+      Assert.That(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute)), Is.SameAs(_provider));
     }
 
     [Test]
     public void SetProvider_Twice ()
     {
-      BusinessObjectProvider.SetProvider (typeof (StubBusinessObjectProviderAttribute), new StubBusinessObjectProvider (_serviceFactoryStub));
-      BusinessObjectProvider.SetProvider (typeof (StubBusinessObjectProviderAttribute), _provider);
-      Assert.That (BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute)), Is.SameAs (_provider));
+      BusinessObjectProvider.SetProvider(typeof(StubBusinessObjectProviderAttribute), new StubBusinessObjectProvider(_serviceFactoryStub.Object));
+      BusinessObjectProvider.SetProvider(typeof(StubBusinessObjectProviderAttribute), _provider);
+      Assert.That(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute)), Is.SameAs(_provider));
     }
 
     [Test]
     public void SetProvider_Null ()
     {
-      BusinessObjectProvider.SetProvider (typeof (StubBusinessObjectProviderAttribute), _provider);
-      BusinessObjectProvider.SetProvider (typeof (StubBusinessObjectProviderAttribute), null);
-      Assert.That (BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute)), Is.Not.SameAs (_provider));
-      Assert.That (BusinessObjectProvider.GetProvider (typeof (StubBusinessObjectProviderAttribute)), Is.TypeOf (typeof (StubBusinessObjectProvider)));
+      BusinessObjectProvider.SetProvider(typeof(StubBusinessObjectProviderAttribute), _provider);
+      BusinessObjectProvider.SetProvider(typeof(StubBusinessObjectProviderAttribute), null);
+      Assert.That(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute)), Is.Not.SameAs(_provider));
+      Assert.That(BusinessObjectProvider.GetProvider(typeof(StubBusinessObjectProviderAttribute)), Is.TypeOf(typeof(StubBusinessObjectProvider)));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException),
-        ExpectedMessage = 
-        "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation."
-        + "\r\nParameter name: provider")]
     public void SetProvider_WithMismatchedTypes ()
     {
-      BusinessObjectProvider.SetProvider (typeof (BindableObjectProviderAttribute), _provider);
+      Assert.That(
+          () => BusinessObjectProvider.SetProvider(typeof(BindableObjectProviderAttribute), _provider),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The provider is not compatible with the provider-type required by the businessObjectProviderAttributeType's instantiation.",
+                  "provider"));
     }
 
     [Test]
     public void AddAndGetService ()
     {
-      IBusinessObjectService expectedService = _mockRepository.Stub<IBusinessObjectService>();
-      Assert.That (_provider.GetService (expectedService.GetType()), Is.Null);
+      var expectedService = new Mock<IBusinessObjectService>();
+      Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.Null);
 
-      ((BusinessObjectProvider) _provider).AddService (expectedService.GetType(), expectedService);
+      ((BusinessObjectProvider)_provider).AddService(expectedService.Object.GetType(), expectedService.Object);
 
-      Assert.That (_provider.GetService (expectedService.GetType()), Is.SameAs (expectedService));
+      Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.SameAs(expectedService.Object));
     }
 
     [Test]
     public void AddService_Twice ()
     {
-      IBusinessObjectService expectedService = _mockRepository.Stub<IBusinessObjectService>();
-      Assert.That (_provider.GetService (expectedService.GetType()), Is.Null);
+      var expectedService = new Mock<IBusinessObjectService>();
+      Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.Null);
 
-      ((BusinessObjectProvider) _provider).AddService (expectedService.GetType(), _mockRepository.Stub<IBusinessObjectService>());
-      ((BusinessObjectProvider) _provider).AddService (expectedService.GetType(), expectedService);
+      ((BusinessObjectProvider)_provider).AddService(expectedService.Object.GetType(), new Mock<IBusinessObjectService>().Object);
+      ((BusinessObjectProvider)_provider).AddService(expectedService.Object.GetType(), expectedService.Object);
 
-      Assert.That (_provider.GetService (expectedService.GetType()), Is.SameAs (expectedService));
+      Assert.That(_provider.GetService(expectedService.Object.GetType()), Is.SameAs(expectedService.Object));
     }
 
     [Test]
     public void AddService_WithGeneric ()
     {
       StubBusinessObjectService expectedService = new StubBusinessObjectService();
-      Assert.That (_provider.GetService (expectedService.GetType ()), Is.Null);
+      Assert.That(_provider.GetService(expectedService.GetType()), Is.Null);
 
-      ((BusinessObjectProvider) _provider).AddService<IBusinessObjectService> (new StubBusinessObjectService());
-      ((BusinessObjectProvider) _provider).AddService (expectedService);
+      ((BusinessObjectProvider)_provider).AddService<IBusinessObjectService>(new StubBusinessObjectService());
+      ((BusinessObjectProvider)_provider).AddService(expectedService);
 
-      Assert.That (_provider.GetService (typeof (IBusinessObjectService)), Is.InstanceOf (typeof (StubBusinessObjectService)));
-      Assert.That (_provider.GetService (expectedService.GetType ()), Is.SameAs (expectedService));
-      Assert.That (_provider.GetService (expectedService.GetType ()), Is.Not.SameAs (_provider.GetService (typeof (IBusinessObjectService))));
+      Assert.That(_provider.GetService(typeof(IBusinessObjectService)), Is.InstanceOf(typeof(StubBusinessObjectService)));
+      Assert.That(_provider.GetService(expectedService.GetType()), Is.SameAs(expectedService));
+      Assert.That(_provider.GetService(expectedService.GetType()), Is.Not.SameAs(_provider.GetService(typeof(IBusinessObjectService))));
     }
 
     [Test]
     public void GetService_FromGeneric ()
     {
-      ((BusinessObjectProvider) _provider).AddService (typeof (IBusinessObjectService), _mockRepository.Stub<IBusinessObjectService>());
+      ((BusinessObjectProvider)_provider).AddService(typeof(IBusinessObjectService), new Mock<IBusinessObjectService>().Object);
 
-      Assert.That (
-          ((BusinessObjectProvider) _provider).GetService<IBusinessObjectService>(),
-          Is.SameAs (_provider.GetService (typeof (IBusinessObjectService))));
+      Assert.That(
+          ((BusinessObjectProvider)_provider).GetService<IBusinessObjectService>(),
+          Is.SameAs(_provider.GetService(typeof(IBusinessObjectService))));
     }
 
     [Test]
     public void GetService_FromServiceFactory ()
     {
-      MockRepository mockRepository = new MockRepository();
-      IBusinessObjectServiceFactory serviceFactoryMock = mockRepository.StrictMock<IBusinessObjectServiceFactory>();
-      IBusinessObjectStringFormatterService serviceStub = MockRepository.GenerateStub<IBusinessObjectStringFormatterService>();
-      BusinessObjectProvider provider = new StubBusinessObjectProvider (serviceFactoryMock);
+      var serviceFactoryMock = new Mock<IBusinessObjectServiceFactory>(MockBehavior.Strict);
+      var serviceStub = new Mock<IBusinessObjectStringFormatterService>();
+      BusinessObjectProvider provider = new StubBusinessObjectProvider(serviceFactoryMock.Object);
 
-      Expect.Call (serviceFactoryMock.CreateService (provider, typeof (IBusinessObjectStringFormatterService))).Return (serviceStub);
+      serviceFactoryMock.Setup(_ => _.CreateService(provider, typeof(IBusinessObjectStringFormatterService))).Returns(serviceStub.Object).Verifiable();
 
-      mockRepository.ReplayAll();
+      IBusinessObjectService actual = provider.GetService(typeof(IBusinessObjectStringFormatterService));
+      IBusinessObjectService actual2 = provider.GetService(typeof(IBusinessObjectStringFormatterService));
 
-      IBusinessObjectService actual = provider.GetService (typeof (IBusinessObjectStringFormatterService));
-      IBusinessObjectService actual2 = provider.GetService (typeof (IBusinessObjectStringFormatterService));
+      serviceFactoryMock.Verify();
 
-      mockRepository.VerifyAll();
-
-      Assert.That (actual, Is.SameAs (serviceStub));
-      Assert.That (actual, Is.SameAs (actual2));
+      Assert.That(actual, Is.SameAs(serviceStub.Object));
+      Assert.That(actual, Is.SameAs(actual2));
     }
 
     [Test]
     public void GetService_FromExplictValue ()
     {
-      MockRepository mockRepository = new MockRepository();
-      IBusinessObjectServiceFactory serviceFactoryMock = mockRepository.StrictMock<IBusinessObjectServiceFactory>();
-      IBusinessObjectStringFormatterService serviceStub = MockRepository.GenerateStub<IBusinessObjectStringFormatterService>();
-      BusinessObjectProvider provider = new StubBusinessObjectProvider (serviceFactoryMock);
+      var serviceFactoryMock = new Mock<IBusinessObjectServiceFactory>(MockBehavior.Strict);
+      var serviceStub = new Mock<IBusinessObjectStringFormatterService>();
+      BusinessObjectProvider provider = new StubBusinessObjectProvider(serviceFactoryMock.Object);
 
-      provider.AddService (typeof (IBusinessObjectStringFormatterService), serviceStub);
+      provider.AddService(typeof(IBusinessObjectStringFormatterService), serviceStub.Object);
 
-      mockRepository.ReplayAll();
+      IBusinessObjectService actual = provider.GetService(typeof(IBusinessObjectStringFormatterService));
+      IBusinessObjectService actual2 = provider.GetService(typeof(IBusinessObjectStringFormatterService));
 
-      IBusinessObjectService actual = provider.GetService (typeof (IBusinessObjectStringFormatterService));
-      IBusinessObjectService actual2 = provider.GetService (typeof (IBusinessObjectStringFormatterService));
+      serviceFactoryMock.Verify();
 
-      mockRepository.VerifyAll();
-
-      Assert.That (actual, Is.SameAs (serviceStub));
-      Assert.That (actual, Is.SameAs (actual2));
+      Assert.That(actual, Is.SameAs(serviceStub.Object));
+      Assert.That(actual, Is.SameAs(actual2));
     }
   }
 }

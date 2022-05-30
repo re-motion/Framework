@@ -27,28 +27,28 @@ namespace Remotion.Web.ExecutionEngine
   [Serializable]
   public sealed class WxePermaUrlOptions : INullObject
   {
-    public static readonly WxePermaUrlOptions Null = new WxePermaUrlOptions (false, false, null);
+    public static readonly WxePermaUrlOptions Null = new WxePermaUrlOptions(false, false, null);
 
     private readonly bool _usePermaUrl;
     private readonly bool _useParentPermaUrl;
-    private readonly NameValueCollection _urlParameters;
+    private readonly NameValueCollection? _urlParameters;
 
     public WxePermaUrlOptions ()
-        : this (true, false, null)
+        : this(true, false, null)
     {
     }
 
     public WxePermaUrlOptions (bool useParentPermaUrl)
-        : this (true, useParentPermaUrl, null)
+        : this(true, useParentPermaUrl, null)
     {
     }
 
-    public WxePermaUrlOptions (bool useParentPermaUrl, NameValueCollection urlParameters)
-        : this (true, useParentPermaUrl, urlParameters)
+    public WxePermaUrlOptions (bool useParentPermaUrl, NameValueCollection? urlParameters)
+        : this(true, useParentPermaUrl, urlParameters)
     {
     }
 
-    private WxePermaUrlOptions (bool usePermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+    private WxePermaUrlOptions (bool usePermaUrl, bool useParentPermaUrl, NameValueCollection? urlParameters)
     {
       _usePermaUrl = usePermaUrl;
       _useParentPermaUrl = useParentPermaUrl;
@@ -65,7 +65,7 @@ namespace Remotion.Web.ExecutionEngine
       get { return _useParentPermaUrl; }
     }
 
-    public NameValueCollection UrlParameters
+    public NameValueCollection? UrlParameters
     {
       get { return _urlParameters; }
     }

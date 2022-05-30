@@ -37,45 +37,45 @@ namespace Remotion.SecurityManager.UnitTests.Domain.SearchInfrastructure.Organiz
       base.SetUp();
 
       _searchService = new GroupTypePropertyTypeSearchService();
-      IBusinessObjectClass groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass (typeof (Group));
-      _property = (IBusinessObjectReferenceProperty) groupClass.GetPropertyDefinition ("GroupType");
-      Assert.That (_property, Is.Not.Null);
+      IBusinessObjectClass groupClass = BindableObjectProviderTestHelper.GetBindableObjectClass(typeof(Group));
+      _property = (IBusinessObjectReferenceProperty)groupClass.GetPropertyDefinition("GroupType");
+      Assert.That(_property, Is.Not.Null);
     }
 
     [Test]
     public void SupportsProperty ()
     {
-      Assert.That (_searchService.SupportsProperty (_property), Is.True);
+      Assert.That(_searchService.SupportsProperty(_property), Is.True);
     }
 
     [Test]
     public void Search ()
     {
       var expected = GroupType.FindAll().ToArray();
-      Assert.That (expected, Is.Not.Empty);
+      Assert.That(expected, Is.Not.Empty);
 
-      var actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments (null));
+      var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments(null));
 
-      Assert.That (actual, Is.EqualTo (expected));
+      Assert.That(actual, Is.EqualTo(expected));
     }
 
     [Test]
     public void Search_WithDisplayNameConstraint_FindNameContainingPrefix ()
     {
-      var expected = GroupType.FindAll().Where (g => g.Name.Contains ("groupType")).ToArray();
-      Assert.That (expected.Length, Is.GreaterThan (1));
+      var expected = GroupType.FindAll().Where(g => g.Name.Contains("groupType")).ToArray();
+      Assert.That(expected.Length, Is.GreaterThan(1));
 
-      var actual = _searchService.Search (null, _property, CreateSecurityManagerSearchArguments ("groupType"));
+      var actual = _searchService.Search(null, _property, CreateSecurityManagerSearchArguments("groupType"));
 
-      Assert.That (actual, Is.EquivalentTo (expected));
+      Assert.That(actual, Is.EquivalentTo(expected));
     }
 
     private SecurityManagerSearchArguments CreateSecurityManagerSearchArguments (string displayName)
     {
-      return new SecurityManagerSearchArguments (
+      return new SecurityManagerSearchArguments(
           null,
           null,
-          !string.IsNullOrEmpty (displayName) ? new DisplayNameConstraint (displayName) : null);
+          !string.IsNullOrEmpty(displayName) ? new DisplayNameConstraint(displayName) : null);
     }
   }
 }

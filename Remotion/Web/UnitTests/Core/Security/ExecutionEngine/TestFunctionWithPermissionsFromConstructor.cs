@@ -22,7 +22,7 @@ using Remotion.Web.UnitTests.Core.Security.Domain;
 
 namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
 {
-  [WxeDemandCreatePermission (typeof (SecurableObject))]
+  [WxeDemandCreatePermission(typeof(SecurableObject))]
   public class TestFunctionWithPermissionsFromConstructor : WxeFunction
   {
     // types
@@ -34,7 +34,7 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
     // construction and disposing
 
     public TestFunctionWithPermissionsFromConstructor ()
-      : base (new NoneTransactionMode ())
+      : base(new NoneTransactionMode())
     {
     }
 

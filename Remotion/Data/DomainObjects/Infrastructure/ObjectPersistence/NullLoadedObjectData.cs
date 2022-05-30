@@ -24,20 +24,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
   /// </summary>
   public class NullLoadedObjectData : ILoadedObjectData
   {
-    public ObjectID ObjectID
+    public ObjectID? ObjectID
     {
       get { return null; }
     }
 
-    public DomainObject GetDomainObjectReference ()
+    public DomainObject? GetDomainObjectReference ()
     {
       return null;
     }
 
     public void Accept (ILoadedObjectVisitor visitor)
     {
-      ArgumentUtility.CheckNotNull ("visitor", visitor);
-      visitor.VisitNullLoadedObject (this);
+      ArgumentUtility.CheckNotNull("visitor", visitor);
+      visitor.VisitNullLoadedObject(this);
     }
 
     bool INullObject.IsNull

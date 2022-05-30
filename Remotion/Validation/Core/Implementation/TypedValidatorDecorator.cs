@@ -15,11 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using FluentValidation;
-using FluentValidation.Results;
 using Remotion.Utilities;
+using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Implementation
 {
@@ -28,16 +25,17 @@ namespace Remotion.Validation.Implementation
   /// </summary>
   /// <typeparam name="T"></typeparam>
   public class TypedValidatorDecorator<T> : IValidator<T>
+      where T : notnull
   {
     private readonly IValidator _validator;
 
     public TypedValidatorDecorator (IValidator validator)
     {
-      ArgumentUtility.CheckNotNull ("validator", validator);
-      if (!validator.CanValidateInstancesOfType (typeof (T)))
+      ArgumentUtility.CheckNotNull("validator", validator);
+      if (!validator.CanValidateInstancesOfType(typeof(T)))
       {
-        throw new ArgumentException (
-            string.Format ("The validated type '{0}' is not supported by the passed validator.", typeof (T).Name),
+        throw new ArgumentException(
+            string.Format("The validated type '{0}' is not supported by the passed validator.", typeof(T).Name),
             "validator");
       }
 
@@ -51,64 +49,35 @@ namespace Remotion.Validation.Implementation
 
     public ValidationResult Validate (T instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      return _validator.Validate (instance);
+      return _validator.Validate(instance);
     }
 
-    public ValidationResult Validate (ValidationContext<T> context)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-
-      return _validator.Validate (context);
-    }
-
-    public IValidatorDescriptor CreateDescriptor ()
+    public ValidatorDescriptor CreateDescriptor ()
     {
       return _validator.CreateDescriptor();
     }
 
     public bool CanValidateInstancesOfType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
-      return _validator.CanValidateInstancesOfType (type);
+      return _validator.CanValidateInstancesOfType(type);
     }
 
     ValidationResult IValidator.Validate (object instance)
     {
-      ArgumentUtility.CheckNotNull ("instance", instance);
+      ArgumentUtility.CheckNotNull("instance", instance);
 
-      return _validator.Validate (instance);
+      return _validator.Validate(instance);
     }
 
     ValidationResult IValidator.Validate (ValidationContext context)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull("context", context);
 
-      return _validator.Validate (context);
-    }
-
-    IEnumerator IEnumerable.GetEnumerator ()
-    {
-      return GetEnumerator();
-    }
-
-    public IEnumerator<IValidationRule> GetEnumerator ()
-    {
-      return _validator.GetEnumerator();
-    }
-
-    CascadeMode IValidator<T>.CascadeMode
-    {
-      get
-      {
-        throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (TypedValidatorDecorator<>).FullName));
-      }
-      set
-      {
-        throw new NotSupportedException (string.Format ("CascadeMode is not supported for a '{0}'", typeof (TypedValidatorDecorator<>).FullName));
-      }
+      return _validator.Validate(context);
     }
   }
 }

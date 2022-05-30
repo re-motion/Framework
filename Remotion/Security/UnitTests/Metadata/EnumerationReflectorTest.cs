@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.TestDomain;
 
@@ -46,59 +47,62 @@ namespace Remotion.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _enumerationReflector = new EnumerationReflector ();
-      _cache = new MetadataCache ();
+      _enumerationReflector = new EnumerationReflector();
+      _cache = new MetadataCache();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.IsInstanceOf (typeof (IEnumerationReflector), _enumerationReflector);
+      Assert.IsInstanceOf(typeof(IEnumerationReflector), _enumerationReflector);
     }
 
     [Test]
     public void GetValues ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessTypes), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(typeof(DomainAccessTypes), _cache);
 
-      Assert.That (values, Is.Not.Null);
-      Assert.That (values.Count, Is.EqualTo (2));
+      Assert.That(values, Is.Not.Null);
+      Assert.That(values.Count, Is.EqualTo(2));
 
-      Assert.That (values[DomainAccessTypes.Journalize].Value, Is.EqualTo (0));
-      Assert.That (values[DomainAccessTypes.Journalize].Name, Is.EqualTo ("Journalize"));
-      Assert.That (values[DomainAccessTypes.Journalize].ID, Is.EqualTo ("00000002-0001-0000-0000-000000000000"));
+      Assert.That(values[DomainAccessTypes.Journalize].Value, Is.EqualTo(0));
+      Assert.That(values[DomainAccessTypes.Journalize].Name, Is.EqualTo("Journalize"));
+      Assert.That(values[DomainAccessTypes.Journalize].ID, Is.EqualTo("00000002-0001-0000-0000-000000000000"));
 
-      Assert.That (values[DomainAccessTypes.Archive].Value, Is.EqualTo (1));
-      Assert.That (values[DomainAccessTypes.Archive].Name, Is.EqualTo ("Archive"));
-      Assert.That (values[DomainAccessTypes.Archive].ID, Is.EqualTo ("00000002-0002-0000-0000-000000000000"));
+      Assert.That(values[DomainAccessTypes.Archive].Value, Is.EqualTo(1));
+      Assert.That(values[DomainAccessTypes.Archive].Name, Is.EqualTo("Archive"));
+      Assert.That(values[DomainAccessTypes.Archive].ID, Is.EqualTo("00000002-0002-0000-0000-000000000000"));
     }
 
     [Test]
     public void GetValue ()
     {
-      EnumValueInfo value = _enumerationReflector.GetValue (DomainAccessTypes.Journalize, _cache);
+      EnumValueInfo value = _enumerationReflector.GetValue(DomainAccessTypes.Journalize, _cache);
 
-      Assert.That (value, Is.Not.Null);
+      Assert.That(value, Is.Not.Null);
 
-      Assert.That (value.Value, Is.EqualTo (0));
-      Assert.That (value.Name, Is.EqualTo ("Journalize"));
-      Assert.That (value.ID, Is.EqualTo ("00000002-0001-0000-0000-000000000000"));
+      Assert.That(value.Value, Is.EqualTo(0));
+      Assert.That(value.Name, Is.EqualTo("Journalize"));
+      Assert.That(value.ID, Is.EqualTo("00000002-0001-0000-0000-000000000000"));
     }
 
     [Test]
     public void GetValuesFromCache ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessTypes), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues(typeof(DomainAccessTypes), _cache);
 
-      Assert.That (_cache.GetEnumValueInfo (DomainAccessTypes.Journalize), Is.SameAs (values[DomainAccessTypes.Journalize]));
-      Assert.That (_cache.GetEnumValueInfo (DomainAccessTypes.Archive), Is.SameAs (values[DomainAccessTypes.Archive]));
+      Assert.That(_cache.GetEnumValueInfo(DomainAccessTypes.Journalize), Is.SameAs(values[DomainAccessTypes.Journalize]));
+      Assert.That(_cache.GetEnumValueInfo(DomainAccessTypes.Archive), Is.SameAs(values[DomainAccessTypes.Archive]));
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), ExpectedMessage = "The type 'System.String' is not an enumerated type.\r\nParameter name: type")]
     public void GetMetadataWithInvalidType ()
     {
-      new EnumerationReflector ().GetValues (typeof (string), _cache);
+      Assert.That(
+          () => new EnumerationReflector().GetValues(typeof(string), _cache),
+          Throws.ArgumentException
+              .With.ArgumentExceptionMessageEqualTo(
+                  "The type 'System.String' is not an enumerated type.", "type"));
     }
   }
 }

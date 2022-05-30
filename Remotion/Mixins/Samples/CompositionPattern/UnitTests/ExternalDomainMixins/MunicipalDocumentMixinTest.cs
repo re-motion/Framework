@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Moq;
 using NUnit.Framework;
 using Remotion.Mixins.Samples.CompositionPattern.Core.Domain;
 using Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins;
@@ -26,7 +27,7 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
   public class MunicipalDocumentMixinTest
   {
     private MunicipalDocumentMixin _mixin;
-    private ITarget _targetStub;
+    private Mock<ITarget> _targetStub;
 
     public interface ITarget : ITenantBoundObject, IMunicipalSettlement
     {
@@ -35,41 +36,48 @@ namespace Remotion.Mixins.Samples.CompositionPattern.UnitTests.ExternalDomainMix
     [SetUp]
     public void SetUp ()
     {
-      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<MunicipalDocumentMixin, ITenantBoundObject, ITarget> (out _targetStub);
+      _mixin = MixinInstanceFactory.CreateDomainObjectMixinWithTargetStub<MunicipalDocumentMixin, ITenantBoundObject, ITarget>(out _targetStub);
     }
 
     [Test]
     public void Title_Set_IncludesMunicipalityID ()
     {
-      Assert.That (_mixin.Title, Is.Null);
+      Assert.That(_mixin.Title, Is.Null);
 
-      _targetStub.MunicipalityID = 13;
+      _targetStub.SetupProperty(_ => _.MunicipalityID);
+
+      _targetStub.Object.MunicipalityID = 13;
       _mixin.Title = "Test";
 
-      Assert.That (_mixin.Title, Is.EqualTo ("Test (for municipality 13)"));
+      Assert.That(_mixin.Title, Is.EqualTo("Test (for municipality 13)"));
     }
-    
+
     [Test]
     public void TargetCommitting_ReplacesNullTitle ()
     {
-      _targetStub.Tenant = "TheTenant";
-      _targetStub.MunicipalityID = 13;
-      Assert.That (_mixin.Title, Is.Null);
+      _targetStub.SetupProperty(_ => _.Tenant);
+      _targetStub.SetupProperty(_ => _.MunicipalityID);
 
-      _mixin.TargetEvents.OnCommitting ();
+      _targetStub.Object.Tenant = "TheTenant";
+      _targetStub.Object.MunicipalityID = 13;
+      Assert.That(_mixin.Title, Is.Null);
 
-      Assert.That (_mixin.Title, Is.EqualTo ("(unnamed document of TheTenant) (for municipality 13)"));
+      _mixin.TargetEvents.OnCommitting();
+
+      Assert.That(_mixin.Title, Is.EqualTo("(unnamed document of TheTenant) (for municipality 13)"));
     }
 
     [Test]
     public void TargetCommitting_LeavesNonEmptyTitle ()
     {
-      _targetStub.MunicipalityID = 13;
+      _targetStub.SetupProperty(_ => _.MunicipalityID);
+
+      _targetStub.Object.MunicipalityID = 13;
       _mixin.Title = "Blah";
 
-      _mixin.TargetEvents.OnCommitting ();
+      _mixin.TargetEvents.OnCommitting();
 
-      Assert.That (_mixin.Title, Is.EqualTo ("Blah (for municipality 13)"));
+      Assert.That(_mixin.Title, Is.EqualTo("Blah (for municipality 13)"));
     }
   }
 }

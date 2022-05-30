@@ -28,6 +28,9 @@
       <remotion:TabView ID="Tab2" Title="Tab2Title" runat="server">
         <span>Content2</span>
       </remotion:TabView>
+      <remotion:TabView runat="server" ID="Tab3" Title="Tab3Title" Icon-Url="~/Images/SampleIcon.gif" runat="server">
+        <span>Content3</span>
+      </remotion:TabView>
     </Views>
     <BottomControls>
       <span>BottomControls</span>

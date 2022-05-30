@@ -27,47 +27,49 @@ namespace Remotion.Data.DomainObjects.Mapping
   {
     public static ClassContext GetMixinConfigurationForDomainObjectType (Type type)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
 
       // For performance, use the ClassContextCollection rather than ActiveConfiguration.GetClassContext
       // (The former checks whether type is a generated type, which we know isn't the case here.)
-      return Mixins.MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance (type) ?? CreateEmptyClassContext(type);
+      return Mixins.MixinConfiguration.ActiveConfiguration.ClassContexts.GetWithInheritance(type) ?? CreateEmptyClassContext(type);
     }
 
     public static bool IsPersistenceRelevant (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
-      return TypeExtensions.CanAscribeTo (mixinType, typeof (DomainObjectMixin<,>));
+      return typeof(IDomainObjectMixin).IsAssignableFrom(mixinType);
     }
 
     private static ClassContext CreateEmptyClassContext (Type type)
     {
-      return new ClassContext (type, Enumerable.Empty<MixinContext> (), Enumerable.Empty<Type> ());
+      return new ClassContext(type, Enumerable.Empty<MixinContext>(), Enumerable.Empty<Type>());
     }
 
     private readonly ClassContext _mixinConfiguration;
-    private readonly List<ClassContext> _allParentClassContexts;
-    private readonly ClassContext _parentClassContext;
+    private readonly List<ClassContext>? _allParentClassContexts;
+    private readonly ClassContext? _parentClassContext;
     private readonly bool _includeInherited;
 
-    private Type[] _persistentMixins;
+    private Type[]? _persistentMixins;
 
     public PersistentMixinFinder (Type type)
-      : this (type, false)
+      : this(type, false)
     {
     }
 
     public PersistentMixinFinder (Type type, bool includeInherited)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull("type", type);
+      // API does not guarantee that type is DomainObject-derived. This is probably required when generating the mapping configuration prior to validation.
+
       Type = type;
       _includeInherited = includeInherited;
-      
-      _mixinConfiguration = GetMixinConfigurationForDomainObjectType (type); // never null
-       
-      if (Type.BaseType != null)
-        _parentClassContext = GetMixinConfigurationForDomainObjectType (Type.BaseType); // never null
+
+      _mixinConfiguration = GetMixinConfigurationForDomainObjectType(type);
+
+      if (type.BaseType != null)
+        _parentClassContext = GetMixinConfigurationForDomainObjectType(type.BaseType);
 
       if (IncludeInherited)
         _allParentClassContexts = GetParentClassContexts();
@@ -75,16 +77,16 @@ namespace Remotion.Data.DomainObjects.Mapping
 
     private List<ClassContext> GetParentClassContexts ()
     {
-      var parentClassContexts = new List<ClassContext> ();
-      ClassContext current = MixinConfiguration;
+      var parentClassContexts = new List<ClassContext>();
+      ClassContext? current = MixinConfiguration;
       while (current != null && current.Type.BaseType != null)
       {
-        ClassContext parent = Mixins.MixinConfiguration.ActiveConfiguration.GetContext (current.Type.BaseType);
+        ClassContext? parent = Mixins.MixinConfiguration.ActiveConfiguration.GetContext(current.Type.BaseType);
         if (parent != null)
-          parentClassContexts.Add (parent);
+          parentClassContexts.Add(parent);
         current = parent;
       }
-      parentClassContexts.Reverse (); // first base is first
+      parentClassContexts.Reverse(); // first base is first
       return parentClassContexts;
     }
 
@@ -95,7 +97,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       get { return _mixinConfiguration; }
     }
 
-    public ClassContext ParentClassContext
+    public ClassContext? ParentClassContext
     {
       get { return _parentClassContext; }
     }
@@ -108,13 +110,16 @@ namespace Remotion.Data.DomainObjects.Mapping
     public Type[] GetPersistentMixins ()
     {
       if (_persistentMixins == null)
-        _persistentMixins = CalculatePersistentMixins ().ToArray();
+        _persistentMixins = CalculatePersistentMixins().ToArray();
       return _persistentMixins;
     }
 
     public bool IsInParentContext (Type mixinType)
     {
-      return ParentClassContext.Mixins.ContainsAssignableMixin (mixinType);
+      if (ParentClassContext == null)
+        return false;
+
+      return ParentClassContext.Mixins.ContainsAssignableMixin(mixinType);
     }
 
     private IEnumerable<Type> CalculatePersistentMixins ()
@@ -125,26 +130,29 @@ namespace Remotion.Data.DomainObjects.Mapping
       // might change with the derived class, so we can't allow it.
       // (The need to specify all generic arguments is also consistent with the mapping rule disallowing generic domain object types in the mapping;
       // and Extends and Uses both provide means to explicitly specify generic type arguments.)
-      CheckForSuppressedMixins ();
+      CheckForSuppressedMixins();
 
       return from mixin in MixinConfiguration.Mixins
-             where IsPersistenceRelevant (mixin.MixinType) && (IncludeInherited || !IsInParentContext (mixin.MixinType))
-             select CheckNotOpenGenericMixin (mixin).MixinType;
+             where IsPersistenceRelevant(mixin.MixinType) && (IncludeInherited || !IsInParentContext(mixin.MixinType))
+             select CheckNotOpenGenericMixin(mixin).MixinType;
     }
 
     private void CheckForSuppressedMixins ()
     {
+      if (ParentClassContext == null)
+        return;
+
       var suppressedMixins = from mixin in ParentClassContext.Mixins
-                             where IsPersistenceRelevant (mixin.MixinType) && !MixinConfiguration.Mixins.ContainsAssignableMixin (mixin.MixinType)
+                             where IsPersistenceRelevant(mixin.MixinType) && !MixinConfiguration.Mixins.ContainsAssignableMixin(mixin.MixinType)
                              select mixin;
 
-      MixinContext suppressedMixin = suppressedMixins.FirstOrDefault();
+      MixinContext? suppressedMixin = suppressedMixins.FirstOrDefault();
       if (suppressedMixin != null)
       {
-        string message = string.Format ("Class '{0}' suppresses mixin '{1}' inherited from its base class '{2}'. This is not allowed because "
-            + "the mixin adds persistence information to the base class which must also be present in the derived class.", Type.FullName,
+        string message = string.Format("Class '{0}' suppresses mixin '{1}' inherited from its base class '{2}'. This is not allowed because "
+            + "the mixin adds persistence information to the base class which must also be present in the derived class.", Type.GetFullNameSafe(),
             suppressedMixin.MixinType.Name, ParentClassContext.Type.Name);
-        throw new MappingException (message);
+        throw new MappingException(message);
       }
     }
 
@@ -152,27 +160,27 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       if (mixin.MixinType.ContainsGenericParameters)
       {
-        string message = string.Format ("The persistence-relevant mixin {0} applied to class {1} has open generic type parameters. All type "
-            + "parameters of the mixin must be specified when it is applied to a DomainObject.", mixin.MixinType.FullName, Type.FullName);
-        throw new MappingException (message);
+        string message = string.Format("The persistence-relevant mixin {0} applied to class {1} has open generic type parameters. All type "
+            + "parameters of the mixin must be specified when it is applied to a DomainObject.", mixin.MixinType.GetFullNameSafe(), Type.GetFullNameSafe());
+        throw new MappingException(message);
       }
       else
         return mixin;
     }
 
-    public Type FindOriginalMixinTarget (Type mixinType)
+    public Type? FindOriginalMixinTarget (Type mixinType)
     {
-      ArgumentUtility.CheckNotNull ("mixinType", mixinType);
+      ArgumentUtility.CheckNotNull("mixinType", mixinType);
 
-      Assertion.IsTrue (_allParentClassContexts != null || !IncludeInherited, "If IncludeInherited is set, _allParentClassContexts is never null.");
+      Assertion.IsTrue(_allParentClassContexts != null || !IncludeInherited, "If IncludeInherited is set, _allParentClassContexts is never null.");
 
-      if (!IncludeInherited && ParentClassContext.Mixins.ContainsKey (mixinType))
-        throw new InvalidOperationException ("The given mixin is inherited from the base class, but includeInherited is not set to true.");
+      if (!IncludeInherited && ParentClassContext != null && ParentClassContext.Mixins.ContainsKey(mixinType))
+        throw new InvalidOperationException("The given mixin is inherited from the base class, but includeInherited is not set to true.");
 
-      ClassContext parent = _allParentClassContexts != null ? _allParentClassContexts.FirstOrDefault (c => c.Mixins.ContainsKey (mixinType)) : null;
+      ClassContext? parent = _allParentClassContexts != null ? _allParentClassContexts.FirstOrDefault(c => c.Mixins.ContainsKey(mixinType)) : null;
       if (parent != null)
         return parent.Type;
-      else if (MixinConfiguration.Mixins.ContainsKey (mixinType))
+      else if (MixinConfiguration.Mixins.ContainsKey(mixinType))
         return MixinConfiguration.Type;
       else
         return null;

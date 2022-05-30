@@ -26,9 +26,9 @@ namespace Remotion.Web.ExecutionEngine
 
     public WxeVariableReference (string variableName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("variableName", variableName);
-      if (! System.Text.RegularExpressions.Regex.IsMatch (variableName, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
-        throw new ArgumentException (string.Format ("The variable name '{0}' is not valid.", variableName), "variableName");
+      ArgumentUtility.CheckNotNullOrEmpty("variableName", variableName);
+      if (! System.Text.RegularExpressions.Regex.IsMatch(variableName, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
+        throw new ArgumentException(string.Format("The variable name '{0}' is not valid.", variableName), "variableName");
       _name = variableName;
     }
 
@@ -37,16 +37,16 @@ namespace Remotion.Web.ExecutionEngine
       get { return _name; }
     }
 
-    public override bool Equals (object obj)
+    public override bool Equals (object? obj)
     {
-      WxeVariableReference other = obj as WxeVariableReference;
+      WxeVariableReference? other = obj as WxeVariableReference;
       if (other == null)
         return false;
-    
+
       return this._name == other._name;
     }
 
-    public override int GetHashCode()
+    public override int GetHashCode ()
     {
       return _name.GetHashCode();
     }

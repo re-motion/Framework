@@ -34,8 +34,8 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public SerializationInfoConcreteMixinTypeIdentifierDeserializer (SerializationInfo serializationInfo, string key)
     {
-      ArgumentUtility.CheckNotNull ("serializationInfo", serializationInfo);
-      ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+      ArgumentUtility.CheckNotNull("serializationInfo", serializationInfo);
+      ArgumentUtility.CheckNotNullOrEmpty("key", key);
 
       _serializationInfo = serializationInfo;
       _key = key;
@@ -43,33 +43,35 @@ namespace Remotion.Mixins.CodeGeneration.Serialization
 
     public Type GetMixinType ()
     {
-      return Type.GetType (_serializationInfo.GetString (_key + ".MixinType"));
+      // TODO RM-7810: A meaningful exception should be thrown if no type can be found.
+      return Type.GetType(_serializationInfo.GetString(_key + ".MixinType")!)!;
     }
 
     public HashSet<MethodInfo> GetOverriders ()
     {
-      return DeserializeMethods (_key + ".Overriders");
+      return DeserializeMethods(_key + ".Overriders");
     }
 
     public HashSet<MethodInfo> GetOverridden ()
     {
-      return DeserializeMethods (_key + ".Overridden");
+      return DeserializeMethods(_key + ".Overridden");
     }
 
     private HashSet<MethodInfo> DeserializeMethods (string collectionKey)
     {
-      var methods = new HashSet<MethodInfo> ();
-      var count = _serializationInfo.GetInt32 (collectionKey + ".Count");
+      var methods = new HashSet<MethodInfo>();
+      var count = _serializationInfo.GetInt32(collectionKey + ".Count");
 
       for (int i = 0; i < count; ++i)
       {
-        var methodDeclaringType = Type.GetType (_serializationInfo.GetString (collectionKey + "[" + i + "].DeclaringType"));
+        // TODO RM-7810: A meaningful exception should be thrown if no type can be found.
+        var methodDeclaringType = Type.GetType(_serializationInfo.GetString(collectionKey + "[" + i + "].DeclaringType")!)!;
 
-        var name = _serializationInfo.GetString (collectionKey + "[" + i + "].Name");
-        var signature = _serializationInfo.GetString (collectionKey + "[" + i + "].Signature");
+        var name = _serializationInfo.GetString(collectionKey + "[" + i + "].Name")!;
+        var signature = _serializationInfo.GetString(collectionKey + "[" + i + "].Signature")!;
 
-        var method = MethodResolver.ResolveMethod (methodDeclaringType, name, signature);
-        methods.Add (method);
+        var method = MethodResolver.ResolveMethod(methodDeclaringType, name, signature);
+        methods.Add(method);
       }
       return methods;
     }

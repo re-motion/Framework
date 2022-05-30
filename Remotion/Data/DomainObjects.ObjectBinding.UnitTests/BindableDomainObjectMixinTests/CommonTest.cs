@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
 using Remotion.ObjectBinding;
 
@@ -28,35 +29,39 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests.BindableDomainObje
     [Test]
     public void InstantiateMixedType ()
     {
-      Assert.That (SampleBindableMixinDomainObject.NewObject(), Is.InstanceOf (typeof (IBusinessObject)));
+      Assert.That(SampleBindableMixinDomainObject.NewObject(), Is.InstanceOf(typeof(IBusinessObject)));
     }
 
     [Test]
     public void SerializeAndDeserialize ()
     {
-      SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject ();
-      Assert.That (value.Name, Is.Not.EqualTo ("Earl"));
-      value.Name = "Earl";
-      var deserialized = Serializer.SerializeAndDeserialize (Tuple.Create (TestableClientTransaction, value));
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      using (deserialized.Item1.EnterDiscardingScope ())
+      SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject();
+      Assert.That(value.Name, Is.Not.EqualTo("Earl"));
+      value.Name = "Earl";
+      var deserialized = Serializer.SerializeAndDeserialize(Tuple.Create(TestableClientTransaction, value));
+
+      using (deserialized.Item1.EnterDiscardingScope())
       {
-        Assert.That (deserialized.Item2.Name, Is.EqualTo ("Earl"));
-        Assert.That (((IBusinessObject) deserialized.Item2).BusinessObjectClass, Is.SameAs (((IBusinessObject) value).BusinessObjectClass));
+        Assert.That(deserialized.Item2.Name, Is.EqualTo("Earl"));
+        Assert.That(((IBusinessObject)deserialized.Item2).BusinessObjectClass, Is.SameAs(((IBusinessObject)value).BusinessObjectClass));
       }
     }
 
     [Test]
     public void SerializeAndDeserialize_WithNewBindableObjectProvider ()
     {
-      SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject ();
-      byte[] serialized = Serializer.Serialize (Tuple.Create (TestableClientTransaction, value));
-      BusinessObjectProvider.SetProvider (typeof (BindableDomainObjectProviderAttribute), null);
-      var deserialized = (Tuple<ClientTransaction, SampleBindableMixinDomainObject>) Serializer.Deserialize (serialized);
+      Assert2.IgnoreIfFeatureSerializationIsDisabled();
 
-      using (deserialized.Item1.EnterDiscardingScope ())
+      SampleBindableMixinDomainObject value = SampleBindableMixinDomainObject.NewObject();
+      byte[] serialized = Serializer.Serialize(Tuple.Create(TestableClientTransaction, value));
+      BusinessObjectProvider.SetProvider(typeof(BindableDomainObjectProviderAttribute), null);
+      var deserialized = (Tuple<ClientTransaction, SampleBindableMixinDomainObject>)Serializer.Deserialize(serialized);
+
+      using (deserialized.Item1.EnterDiscardingScope())
       {
-        Assert.That (((IBusinessObject) deserialized.Item2).BusinessObjectClass, Is.Not.SameAs (((IBusinessObject) value).BusinessObjectClass));
+        Assert.That(((IBusinessObject)deserialized.Item2).BusinessObjectClass, Is.Not.SameAs(((IBusinessObject)value).BusinessObjectClass));
       }
     }
   }

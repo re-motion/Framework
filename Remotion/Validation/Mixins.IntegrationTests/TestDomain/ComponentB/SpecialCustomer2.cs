@@ -15,15 +15,15 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using FluentValidation.Validators;
 using Remotion.Validation.Attributes.Validation;
 using Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentA;
+using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.Mixins.IntegrationTests.TestDomain.ComponentB
 {
   public class SpecialCustomer2 : Customer
   {
-    [RemoveValidator (typeof (LengthValidator))]
+    [RemoveValidator(typeof(LengthValidator))]
     public override string LastName { get; set; }
 
     public override string UserName { get; set; }

@@ -22,7 +22,7 @@ namespace Remotion.ExtensibleEnums.UnitTests.TestDomain
   public class Planet : ExtensibleEnum<Planet>
   {
     public Planet (MethodBase currentMethod)
-        : this (currentMethod.Name)
+        : this(currentMethod.Name)
     {
     }
 

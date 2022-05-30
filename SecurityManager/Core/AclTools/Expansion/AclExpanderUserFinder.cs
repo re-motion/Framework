@@ -26,13 +26,13 @@ namespace Remotion.SecurityManager.AclTools.Expansion
 {
   public class AclExpanderUserFinder : IAclExpanderUserFinder
   {
-    private readonly string _firstName;
-    private readonly string _lastName;
-    private readonly string _userName;
+    private readonly string? _firstName;
+    private readonly string? _lastName;
+    private readonly string? _userName;
 
     public AclExpanderUserFinder () : this(null,null,null) {}
 
-    public AclExpanderUserFinder (string firstName, string lastName, string userName)
+    public AclExpanderUserFinder (string? firstName, string? lastName, string? userName)
     {
       _firstName = firstName;
       _lastName = lastName;
@@ -42,10 +42,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion
     public List<User> FindUsers ()
     {
       var findAllUsersQuery = from u in QueryFactory.CreateLinqQuery<User>()
-                              where 
-                                (_lastName == null || u.LastName == _lastName) && 
+                              where
+                                (_lastName == null || u.LastName == _lastName) &&
                                 (_firstName == null || u.FirstName == _firstName) &&
-                                (_userName == null || u.UserName == _userName) 
+                                (_userName == null || u.UserName == _userName)
                               orderby u.LastName , u.FirstName
                               select u;
       return findAllUsersQuery.ToList();
