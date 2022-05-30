@@ -183,7 +183,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
         return;
       }
       SaveValues(false);
-      Page.IsDirty = true;
 
       CurrentAccessControlList.CreateStateCombination();
 
@@ -206,7 +205,6 @@ namespace Remotion.SecurityManager.Clients.Web.UI.AccessControl
       accessControlEntry.Delete();
 
       SaveStateCombinations(false);
-      Page.IsDirty = true;
 
       LoadStateCombinations(false);
     }
