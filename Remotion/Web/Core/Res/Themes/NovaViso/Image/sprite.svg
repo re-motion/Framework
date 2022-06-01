@@ -39,9 +39,7 @@
   </svg>
   <svg class="sprite-part" id="CheckBoxNull" width="16px" height="16px" viewBox="0 0 16 16">
     <rect x="0.5" y="0.5" height="15" width="15" fill="#ffffff" fill-opacity="0.5" rx="2" ry="2" stroke="#979797" />
-    <use href="#Checkmark" />
-    <circle cx="11.5" cy="11.5" r="5" fill="#979797" stroke="#ffffff" />
-    <rect x="10" y="11" height="1" width="3" fill="#ffffff" stroke-width="0" />
+    <rect x="3" y="7" width="10" height="2" fill="#979797" stroke-width="0" />
   </svg>
   <svg class="sprite-part" id="CheckBoxTrue" width="16px" height="16px" viewBox="0 0 16 16">
     <rect x="0.5" y="0.5" height="15" width="15" fill="#136DA3" rx="2" ry="2" stroke="#136DA3" />
