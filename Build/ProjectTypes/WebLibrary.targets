@@ -5,6 +5,10 @@
       <Pack>true</Pack>
       <PackagePath>build\$(AssemblyName).targets</PackagePath>
     </Content>
+    <Content Include="$(MSBuildThisFileDirectory)..\NuSpec\Web.targets" CopyToOutputDirectory="Never">
+      <Pack>true</Pack>
+      <PackagePath>buildTransitive\$(AssemblyName).targets</PackagePath>
+    </Content>
     <Content Include="$(MSBuildThisFileDirectory)..\NuSpec\Install.ps1" CopyToOutputDirectory="Never">
       <Pack>true</Pack>
       <PackagePath>tools</PackagePath>
