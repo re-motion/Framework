@@ -46,7 +46,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
       Assert.That(
           filter.SystemAssemblyMatchExpression,
-          Is.EqualTo(@"^((mscorlib)|(System)|(System\..*)|(Microsoft\..*)|(Moq)|(netstandard)|(NUnit\..*)|(NUnit3\..*)|(Remotion\..*\.Generated\..*)|(Rhino.Mocks)|(testcentric\.engine\.metadata)|(TypePipe_.*Generated.*))$"));
+          Is.EqualTo(@"^((mscorlib)|(System)|(System\..*)|(Microsoft\..*)|(CoreForms\.Web)|(CoreForms\.Web\..*)|(Moq)|(netstandard)|(NUnit\..*)|(NUnit3\..*)|(Remotion\..*\.Generated\..*)|(Rhino.Mocks)|(testcentric\.engine\.metadata)|(TypePipe_.*Generated.*))$"));
     }
 
     [Test]
@@ -69,6 +69,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("Remotion.Data.DomainObjects.Generated.Signed")), Is.False);
       Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("Remotion.Data.DomainObjects.Generated.Unsigned")), Is.False);
       Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("Rhino.Mocks")), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("CoreForms.Web")), Is.False);
+      Assert.That(filter.ShouldConsiderAssembly(new AssemblyName("CoreForms.Web.Services")), Is.False);
     }
 
     [Test]

@@ -77,6 +77,8 @@ namespace Remotion.Reflection.TypeDiscovery.AssemblyLoading
                 @"System",
                 @"System\..*",
                 @"Microsoft\..*",
+                @"CoreForms\.Web",
+                @"CoreForms\.Web\..*",
                 @"Moq",
                 @"netstandard",
                 @"NUnit\..*",
