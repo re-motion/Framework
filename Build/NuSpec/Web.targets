@@ -9,16 +9,40 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <!-- Old .NET Framwork ASP.NET projects are detected using the project type guid -->
     <WebApplicationProjectTypeGuid>{349c5851-65df-11da-9384-00065b846f21}</WebApplicationProjectTypeGuid>
-    <RemotionWebResource_IsWebApplication>$(ProjectTypeGuids.ToLower().Contains($(WebApplicationProjectTypeGuid)))</RemotionWebResource_IsWebApplication>
+    <_isNetFramworkWebApplicationProject>$(ProjectTypeGuids.ToLower().Contains($(WebApplicationProjectTypeGuid)))</_isNetFramworkWebApplicationProject>
+    <!-- .Contains returns 'True'/'False' so we need to normalize to lowercase here -->
+    <_isNetFramworkWebApplicationProject>$(_isNetFramworkWebApplicationProject.ToLower())</_isNetFramworkWebApplicationProject>
+    <!-- 'UsingMicrosoftNETSdkWeb' is set in the Sdk.props of the 'Microsoft.NET.Sdk.Web' SDK (all the ASP.NET Core projects) -->
+    <_isAspNetCoreWebApplicationProject>$(UsingMicrosoftNETSdkWeb)</_isAspNetCoreWebApplicationProject>
+    <_isWebApplicationProject>false</_isWebApplicationProject>
+    <_isWebApplicationProject Condition="'$(_isNetFramworkWebApplicationProject)' == 'true' OR '$(_isAspNetCoreWebApplicationProject)' == 'true'">true</_isWebApplicationProject>
+    <!-- Determine if we use symlinks (old) or contentFiles (new). For .NET Framework ASP.NET projects we choose symlinks, otherwise we use contentFiles. -->
+    <_useSymlink>false</_useSymlink>
+    <_useSymlink Condition="'$(_isNetFramworkWebApplicationProject)' == 'true'">true</_useSymlink>
   </PropertyGroup>
 
-  <Target Name="RemotionWebResource_DeleteResFolder" Condition="'$(RemotionWebResource_IsWebApplication)' == 'True'">
+  <PropertyGroup>
+    <RemotionWebResource_IsWebApplication Condition="'$(RemotionWebResource_IsWebApplication)' == ''">$(_isWebApplicationProject)</RemotionWebResource_IsWebApplication>
+    <RemotionWebResource_TargetPath Condition="'$(RemotionWebResource_TargetPath)' == ''">res</RemotionWebResource_TargetPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(RemotionWebResource_IsWebApplication)' == 'true' AND '$(_useSymlink)' == 'false'">
+    <_remotionWebResourcesToCopy Remove="@(_remotionWebResourcesToCopy)" />
+    <_remotionWebResourcesToCopy Include="$(MSBuildThisFileDirectory)..\res\**\*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(RemotionWebResource_IsWebApplication)' == 'true' AND '$(_useSymlink)' == 'false'">
+    <Content Include="$(MSBuildThisFileDirectory)..\res\**\*" CopyToOutputDirectory="PreserveNewest" Visible="true" Link="$(RemotionWebResource_TargetPath)\$(MSBuildThisFileName)\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <Target Name="RemotionWebResource_DeleteResFolder" Condition="'$(RemotionWebResource_IsWebApplication)' == 'true' AND '$(_useSymlink)' == 'true'">
     <RemoveDir Directories="%(RemotionWebResource_Package.ProjectResFolder)"/>
   </Target>
 
   <Target Name="RemotionWebResource_CreateResFolder" DependsOnTargets="RemotionWebResource_DeleteResFolder" 
-          Condition="'$(RemotionWebResource_IsWebApplication)' == 'True'">
+          Condition="'$(RemotionWebResource_IsWebApplication)' == 'true' AND '$(_useSymlink)' == 'true'">
     <PropertyGroup>
       <_resFolder>$(MSBuildProjectDirectory)\res</_resFolder>
     </PropertyGroup>
