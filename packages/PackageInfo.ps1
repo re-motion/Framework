@@ -301,6 +301,13 @@ $output =
 
 $output += CreateOutput($false)
 
+$output += "| [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) "
+$output += "| 1.0.0 "
+$output += "| [MIT License](https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt) "
+$output += "| SharpZipLib (#ziplib, formerly NZipLib) is a compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language) "
+$output += "|
+"
+
 $output += "| JetBrains Annotations (Source Code) "
 $output += "| 2017.2 "
 $output += "| [MIT License](https://raw.githubusercontent.com/JetBrains/ExternalAnnotations/master/LICENSE.md) "
