@@ -6,10 +6,6 @@ body
 body
 {
   font: var(--remotion-themed-font-standard);
-}
-
-body
-{
   font-size: var(--remotion-themed-font-size);
 }
 
