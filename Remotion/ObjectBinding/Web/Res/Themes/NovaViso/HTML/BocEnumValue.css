@@ -71,7 +71,6 @@
   min-height: unset;
   height: var(--remotion-themed-img-width);
   width: var(--remotion-themed-img-width);
-  margin-top: calc(-1 * (var(--remotion-themed-line-height) - 1em));
 }
 
 .bocEnumValue input[type=radio]:focus + label
