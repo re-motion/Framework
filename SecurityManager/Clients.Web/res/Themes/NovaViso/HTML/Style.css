@@ -68,6 +68,12 @@ button.imageButton img
   width: var(--imagebutton-image-width);
 }
 
+img.Icon
+{
+  height: var(--imagebutton-image-width);
+  width: var(--imagebutton-image-width);
+}
+
 div.singleViewTopControls div.content h1.pageTitle
 {
   padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-large) 0 var(--remotion-themed-spacing-large);
