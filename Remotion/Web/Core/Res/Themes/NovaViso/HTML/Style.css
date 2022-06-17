@@ -13,32 +13,57 @@ body
     The font-size relation between headings and body is maintained with the used percentages. */
 h1
 {
-  font-size: 200%;
+  font: var(--remotion-themed-font-heading);
+  font-weight: normal;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
 }
 
 h2
 {
-  font-size: 150%;
+  font: var(--remotion-themed-font-heading);
+  font-weight: normal;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
 }
 
 h3
 {
-  font-size: 125%;
+  font: var(--remotion-themed-font-subheading);
+  font-weight: normal;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
 }
 
 h4
 {
-  font-size: 100%;
+  font: var(--remotion-themed-font-subheading);
+  font-weight: normal;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
 }
 
 h5
 {
-  font-size: 80%;
+  font: var(--remotion-themed-font-subheading);
+  font-weight: normal;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
 }
 
 h6
 {
-  font-size: 60%;
+  font: var(--remotion-themed-font-subheading);
+  font-weight: normal;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+}
+
+b,
+strong
+{
+  font: var(--remotion-themed-font-bold);
+  font-weight: normal;
 }
 
 img.Icon
