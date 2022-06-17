@@ -129,7 +129,7 @@ select.remotion-themed,
 .remotion-themed select
 {
   /* adjust alignment of text in box to create a better middle alignment */
-  /*padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);*/
+  padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);
 }
 
 button.remotion-themed,
