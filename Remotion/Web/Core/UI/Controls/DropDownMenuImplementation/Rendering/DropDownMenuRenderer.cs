@@ -145,7 +145,9 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
       if (HasTitleText(renderingContext))
       {
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
         renderingContext.Control.TitleText.WriteTo(renderingContext.Writer);
+        renderingContext.Writer.RenderEndTag();
       }
 
       renderingContext.Writer.RenderEndTag();

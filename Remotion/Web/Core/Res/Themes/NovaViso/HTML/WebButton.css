@@ -25,17 +25,30 @@ button.webButton span.buttonBody
   gap: var(--remotion-themed-spacing);
   text-align: left;
   width: inherit; /* required for text-overflow */
+
+  /* adjust alignment of text in box to create a better middle alignment */
+  /*position: relative;
+  top: var(--remotion-themed-box-alignment-fix);
+  vertical-align: var(--remotion-themed-box-alignment-fix);*/
 }
 button.webButton span.buttonBody > span
 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* adjust alignment of text in box to create a better middle alignment */
+  position: relative;
+  top: var(--remotion-themed-box-alignment-fix);
 }
 
 button.webButton span.buttonBody > img
 {
   align-self: flex-start;
+
+  /* adjust alignment of text in box to create a better middle alignment */
+  /*position: relative;
+  top: calc(-1 * var(--remotion-themed-box-alignment-fix));*/
 }
 
 button.webButton.primary:not(:disabled)

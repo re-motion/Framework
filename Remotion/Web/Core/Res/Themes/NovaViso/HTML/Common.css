@@ -96,6 +96,7 @@
   --remotion-themed-font-heading: 128.571428%/1.22222222em 'Roboto-Bold', sans-serif; /* (18px / 14px) & (22px / 18px) */
   --remotion-themed-font-subheading: 100%/var(--remotion-themed-line-height) 'Roboto-Bold', sans-serif; /* (14px / 14px) & (16px / 14px) */
   --remotion-themed-font-alert: 92.857142%/1.15384615em 'Roboto-Regular', sans-serif; /* (13px / 14px) & (15px / 13px) */
+  --remotion-themed-box-alignment-fix: 0.07142857em; /* 1px / 14px : when displaying text inside a box, the text must be pushed down a bit for correct vertical centering */
   --z-index-max: 2147483647;
   --z-index-hidden: -1;
   --default-icon-size: 16px;
@@ -113,6 +114,22 @@ span.remotion-themed,
 .remotion-themed select
 {
   font: var(--remotion-themed-font-standard);
+}
+
+input.remotion-themed:not([type=submit], [type=button]),
+textarea.remotion-themed,
+.remotion-themed input:not([type=submit], [type=button]),
+.remotion-themed textarea
+{
+  /* adjust alignment of text in box to create a better middle alignment */
+  padding-top: calc(var(--remotion-themed-box-alignment-fix) * 2);
+}
+
+select.remotion-themed,
+.remotion-themed select
+{
+  /* adjust alignment of text in box to create a better middle alignment */
+  padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);
 }
 
 button.remotion-themed,

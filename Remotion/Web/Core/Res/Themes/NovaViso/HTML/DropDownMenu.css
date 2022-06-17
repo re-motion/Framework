@@ -140,6 +140,13 @@ span.DropDownMenuSelect a.DropDownMenuLabel
   text-decoration: none;
 }
 
+span.DropDownMenuSelect a.DropDownMenuLabel > span
+{
+  /* adjust alignment of text in box to create a better middle alignment */
+  position: relative;
+  top: var(--remotion-themed-box-alignment-fix);
+}
+
 span.DropDownMenuSelect.disabled a.DropDownMenuLabel
 {
   border-right: var(--remotion-themed-border-disabled);

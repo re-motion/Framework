@@ -38,6 +38,13 @@ span.bocTimeInputWrapper input
   width: 100%;
 }
 
+span.bocDateInputWrapper.remotion-themed input,
+span.bocTimeInputWrapper.remotion-themed input
+{
+  /* adjust alignment of text in box to create a better middle alignment */
+  padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);
+}
+
 span.bocTimeInputWrapper.bocTime24HoursWithSeconds input,
 span.bocTimeInputWrapper.bocTime24Hours input
 {
