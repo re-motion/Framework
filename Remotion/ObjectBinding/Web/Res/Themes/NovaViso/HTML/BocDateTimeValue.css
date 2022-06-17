@@ -6,8 +6,10 @@ span.bocDateValue
   min-height: var(--remotion-themed-singleline-min-height);
   width: var(--remotion-themed-control-width);
   display: inline-flex;
-  align-items: center;
+  /*align-items: center;*/
+  align-items: self-end;
   gap: var(--remotion-themed-spacing);
+  vertical-align: middle;
 }
 
 span.bocDateTimeValue.readOnly
@@ -42,7 +44,8 @@ span.bocDateInputWrapper.remotion-themed input,
 span.bocTimeInputWrapper.remotion-themed input
 {
   /* adjust alignment of text in box to create a better middle alignment */
-  padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);
+  /*padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);*/
+  /*vertical-align: calc(-1 * var(--remotion-themed-box-alignment-fix));*/
 }
 
 span.bocTimeInputWrapper.bocTime24HoursWithSeconds input,
@@ -60,8 +63,8 @@ span.bocTimeInputWrapper.bocTime12Hours input
 span.bocDateTimeValue a,
 span.bocDateValue a
 {
-  display: flex;
-  align-items: center;
+  /*display: flex;*/
+  /*align-items: center;*/
 }
 
 span.bocDateTimeValue a img,

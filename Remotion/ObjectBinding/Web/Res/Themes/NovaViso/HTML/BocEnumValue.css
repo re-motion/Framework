@@ -3,7 +3,13 @@
   display: inline-flex;
   width: var(--remotion-themed-control-width);
   min-height: var(--remotion-themed-singleline-min-height);
-  align-items: center;
+  /*align-items: center;*/
+  align-items: self-end;
+  vertical-align: middle;
+}
+.bocEnumValue.radioButtonList
+{
+  /*vertical-align: middle;*/
 }
 
 .bocEnumValue.radioButtonList

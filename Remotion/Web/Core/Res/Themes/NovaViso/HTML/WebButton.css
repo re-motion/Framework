@@ -18,7 +18,7 @@ input.webButton
 button.webButton span.buttonBody
 {
   display: inline-flex;
-  align-items: baseline;
+  /*align-items: baseline;*/
   justify-content: center;
   box-sizing: border-box;
   padding: calc(var(--remotion-themed-spacing) / 2 - var(--remotion-themed-border-width)) var(--remotion-themed-spacing-large);
@@ -30,6 +30,9 @@ button.webButton span.buttonBody
   /*position: relative;
   top: var(--remotion-themed-box-alignment-fix);
   vertical-align: var(--remotion-themed-box-alignment-fix);*/
+  line-height: 1em;
+  vertical-align: middle;
+  align-items: self-end;
 }
 button.webButton span.buttonBody > span
 {
@@ -38,13 +41,13 @@ button.webButton span.buttonBody > span
   text-overflow: ellipsis;
 
   /* adjust alignment of text in box to create a better middle alignment */
-  position: relative;
-  top: var(--remotion-themed-box-alignment-fix);
+  /*position: relative;
+  top: var(--remotion-themed-box-alignment-fix);*/
 }
 
 button.webButton span.buttonBody > img
 {
-  align-self: flex-start;
+ /* align-self: flex-start;*/
 
   /* adjust alignment of text in box to create a better middle alignment */
   /*position: relative;

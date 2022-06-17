@@ -4,9 +4,18 @@ span.bocTextValue
 {
   min-height: var(--remotion-themed-singleline-min-height);
   width: var(--remotion-themed-control-width);
-  position: relative;
-  display: inline-block;
+  /*position: relative;*/
+  /*display: inline-flex;*/
   vertical-align: middle;
+  display: inline-flex;
+  align-items: self-end;
+}
+
+span.bocTextValue input,
+span.bocTextValue textarea
+{
+  /*padding-top: unset !important;*/
+  /*vertical-align: baseline;*/
 }
 
 span.bocTextValue textarea
