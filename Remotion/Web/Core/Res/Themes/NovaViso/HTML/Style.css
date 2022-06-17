@@ -7,6 +7,7 @@ body
 {
   font: var(--remotion-themed-font-standard);
   font-size: var(--remotion-themed-font-size);
+  /*line-height: var(--remotion-themed-line-height);*/
 }
 
 /*  The headings do not automatically scale with the body's font-size. Now they do. 

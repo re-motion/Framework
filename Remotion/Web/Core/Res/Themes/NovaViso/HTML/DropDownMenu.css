@@ -16,7 +16,6 @@ span.DropDownMenuSelect
   position: relative;
   align-items: center;
   height: var(--remotion-themed-singleline-min-height);
-  line-height: var(--remotion-themed-line-height);
   width: 100%;
   background-color: var(--remotion-themed-background-color-control);
   border: var(--remotion-themed-border);

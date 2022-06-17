@@ -77,7 +77,7 @@
   --remotion-themed-popup-scrollbar-color-thumb: var(--remotion-themed-scrollbar-color-thumb);
   --remotion-themed-popup-scrollbar-color-track: var(--remotion-themed-scrollbar-color-track);
   --remotion-themed-popup-scrollbar-color: var(--remotion-themed-popup-scrollbar-color-thumb) var(--remotion-themed-popup-scrollbar-color-track);
-  --remotion-themed-line-height: 1.14285714em;   /* 16px / 14px */
+  --remotion-themed-line-height: 1.14285714em; /* 16px / 14px */
   --remotion-themed-spacing: 0.375rem; /* 6px / 16px */
   --remotion-themed-spacing-small: calc(var(--remotion-themed-spacing) * 0.5);
   --remotion-themed-spacing-large: calc(var(--remotion-themed-spacing) * 3);
@@ -90,17 +90,17 @@
   --remotion-themed-tooltip-border: var(--remotion-themed-border-width) solid var(--color-tooltip-border);
   --remotion-themed-img-width: var(--remotion-themed-line-height);
   --remotion-themed-layer-box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.2);
-  --remotion-themed-font-size: 87.5%; /* 14/16 */
-  --remotion-themed-font-standard: 100% 'Roboto-Regular', sans-serif; /* 14px / 14px */
-  --remotion-themed-font-bold: 100% 'Roboto-Medium', sans-serif;
-  --remotion-themed-font-heading: 128.571428% 'Roboto-Bold', sans-serif; /* 18px / 14px */
-  --remotion-themed-font-subheading: 100% 'Roboto-Bold', sans-serif;
-  --remotion-themed-font-alert: 92.857142% 'Roboto-Regular', sans-serif; /* 13px / 14px */
+  --remotion-themed-font-size: 87.5%; /* 14px / 16px */
+  --remotion-themed-font-standard: 100%/var(--remotion-themed-line-height) 'Roboto-Regular', sans-serif; /* (14px / 14px) & (16px / 14px) */
+  --remotion-themed-font-bold: 100%/var(--remotion-themed-line-height) 'Roboto-Medium', sans-serif; /* (14px / 14px) & (16px / 14px) */
+  --remotion-themed-font-heading: 128.571428%/1.22222222em 'Roboto-Bold', sans-serif; /* (18px / 14px) & (22px / 18px) */
+  --remotion-themed-font-subheading: 100%/var(--remotion-themed-line-height) 'Roboto-Bold', sans-serif; /* (14px / 14px) & (16px / 14px) */
+  --remotion-themed-font-alert: 92.857142%/1.15384615em 'Roboto-Regular', sans-serif; /* (13px / 14px) & (15px / 13px) */
   --z-index-max: 2147483647;
   --z-index-hidden: -1;
   --default-icon-size: 16px;
   --transition-delay-tooltip: 0.7s;
-  --tooltip-font: 92.857142% 'Roboto-Regular', sans-serif; /* 13px / 14px */
+  --tooltip-font: 92.857142%/1.15384615em 'Roboto-Regular', sans-serif; /* (13px / 14px) & (15px / 13px) */
   --single-whitespace-width: 0.3em;
 }
 
@@ -168,7 +168,7 @@ select:not([size]).remotion-themed,
 .blink select:not([size]).remotion-themed,
 .blink .remotion-themed select:not([size])
 {
-  padding-top: var(--remotion-themed-border-width);
+  /* padding-top: var(--remotion-themed-border-width); */
 }
 
 .mozilla select:not([size]).remotion-themed,
