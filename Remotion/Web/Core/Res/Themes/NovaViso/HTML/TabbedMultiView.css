@@ -115,7 +115,6 @@ div.tabbedMultiViewTabStrip .tabStripTabSelected a
   border-radius: var(--remotion-themed-border-radius);
   padding: 0 calc(var(--remotion-themed-spacing));
   text-decoration: none;
-  padding-top: var(--remotion-themed-text-alignment-fix);
 }
 
 div.tabbedMultiViewTabStrip .tabStripTab a
