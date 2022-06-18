@@ -169,7 +169,8 @@
   min-height: var(--remotion-themed-singleline-min-height);
   box-sizing: border-box;
   display: flex;
-  align-items: center;
+  /*align-items: center;*/
+  align-items: self-end;
   padding: var(--remotion-themed-control-padding-readonly);
   border: var(--remotion-themed-border-readonly);
   border-radius: var(--remotion-themed-border-radius);
