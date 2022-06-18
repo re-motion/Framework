@@ -144,8 +144,10 @@ span.DropDownMenuSelect a.DropDownMenuLabel
 span.DropDownMenuSelect a.DropDownMenuLabel > span
 {
   /* adjust alignment of text in box to create a better middle alignment */
-  position: relative;
-  top: calc(var(--remotion-themed-box-alignment-fix) - var(--remotion-themed-border-width));
+  /*position: relative;*/
+  /*top: calc(var(--remotion-themed-box-alignment-fix) - var(--remotion-themed-border-width));*/
+  display: inline-block;
+  padding-top: calc(var(--remotion-themed-box-alignment-fix));
 }
 
 span.DropDownMenuSelect.disabled a.DropDownMenuLabel
