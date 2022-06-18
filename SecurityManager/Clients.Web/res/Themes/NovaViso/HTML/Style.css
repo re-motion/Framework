@@ -107,6 +107,11 @@ div.accessControlListContainer td.stateCombinationsContainer
   width: 13em;
 }
 
+div.accessControlListContainer td.stateCombinationsContainer > div > div
+{
+  display: flex;
+}
+
 div.accessControlListContainer td.stateCombinationsButtons
 {
   vertical-align: top;
@@ -272,6 +277,12 @@ div.accessControlListContainer table.accessControlEntryExpanded td.formGridTopDa
 div.accessControlListContainer table.accessControlEntryExpanded td.formGridTitleCell
 {
   display: none;
+}
+
+div.accessControlListContainer table.accessControlEntryExpanded td.formGridControlsCell > div > div
+{
+  display: flex;
+  gap: var(--remotion-themed-spacing);
 }
 
 div.accessControlListContainer tr.underlinedMarkerCellRow td.formGridMarkersCell
