@@ -276,6 +276,7 @@ div.bocList div.bocListTableBlock div.bocListNavigator > span > input
   /* defined inline on the markup */
   --size: var(--size, 3);
 
+  box-sizing: content-box;
   min-height: unset;
   height: var(--remotion-themed-line-height);
   padding: var(--remotion-themed-spacing-small);
