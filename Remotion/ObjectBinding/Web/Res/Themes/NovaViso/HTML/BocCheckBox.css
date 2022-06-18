@@ -40,8 +40,10 @@
 
 .bocCheckBox span.description
 {
-  display: inline-flex;
-  align-items: center;
+  /*display: inline-flex;*/
+  /*align-items: center;*/
+  display: inline-block;
+  padding-top: calc(var(--remotion-themed-box-alignment-fix) - var(--remotion-themed-border-width));
   margin-right: var(--remotion-themed-spacing);
 }
 
