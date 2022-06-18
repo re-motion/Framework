@@ -80,7 +80,7 @@
 
   /* adjust alignment of text in box to create a better middle alignment */
   /*padding-top: calc(var(--remotion-themed-box-alignment-fix) - var(--remotion-themed-border));*/
-  line-height: var(--remotion-themed-line-height);
+  /*line-height: var(--remotion-themed-line-height);*/
 }
 
 .mozilla .bocReferenceValue span.content select

@@ -23,8 +23,8 @@
   width: 100%;
 
   /* adjust alignment of text in box to create a better middle alignment */
-  padding-top: var(--remotion-themed-box-alignment-fix));
-  line-height: var(--remotion-themed-line-height);
+  /*padding-top: var(--remotion-themed-box-alignment-fix);*/
+  /*line-height: var(--remotion-themed-line-height);*/
 }
 
 .bocEnumValue table
