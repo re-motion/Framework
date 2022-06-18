@@ -138,14 +138,14 @@ span.DropDownMenuSelect a.DropDownMenuLabel
   outline: none;
   font: var(--remotion-themed-font-bold);
   text-decoration: none;
-  line-height: 1em;
+  /*line-height: 1em;*/
 }
 
 span.DropDownMenuSelect a.DropDownMenuLabel > span
 {
   /* adjust alignment of text in box to create a better middle alignment */
-  /*position: relative;*/
-  /*top: var(--remotion-themed-box-alignment-fix);*/
+  position: relative;
+  top: calc(var(--remotion-themed-box-alignment-fix) - var(--remotion-themed-border-width));
 }
 
 span.DropDownMenuSelect.disabled a.DropDownMenuLabel

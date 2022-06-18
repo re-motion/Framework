@@ -85,6 +85,13 @@
   height: 100%;
 }
 
+.bocAutoCompleteReferenceValue span.content span.bocAutoCompleteReferenceValueInput input
+{
+  /* adjust alignment of text in box to create a better middle alignment */
+  padding-top: var(--remotion-themed-box-alignment-fix);
+  line-height: var(--remotion-themed-line-height);
+}
+
 .bocAutoCompleteReferenceValue span.content span.bocAutoCompleteReferenceValueInput input,
 .bocAutoCompleteReferenceValue span.content.hasIcon span.bocAutoCompleteReferenceValueInput input
 {

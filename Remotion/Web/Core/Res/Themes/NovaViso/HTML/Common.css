@@ -92,11 +92,11 @@
   --remotion-themed-layer-box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, 0.2);
   --remotion-themed-font-size: 87.5%; /* 14px / 16px */
   --remotion-themed-font-standard: 100%/var(--remotion-themed-line-height) 'Roboto-Regular', sans-serif; /* (14px / 14px) & (16px / 14px) */
-  --remotion-themed-font-bold: 100%/var(--remotion-themed-line-height) 'Roboto-Medium', sans-serif; /* (14px / 14px) & (16px / 14px) */
+  --remotion-themed-font-bold: 100%/1.21428571em 'Roboto-Medium', sans-serif; /* (14px / 14px) & (17px / 14px) */
   --remotion-themed-font-heading: 128.571428%/1.22222222em 'Roboto-Bold', sans-serif; /* (18px / 14px) & (22px / 18px) */
-  --remotion-themed-font-subheading: 100%/var(--remotion-themed-line-height) 'Roboto-Bold', sans-serif; /* (14px / 14px) & (16px / 14px) */
+  --remotion-themed-font-subheading: 100%/1.21428571em 'Roboto-Bold', sans-serif; /* (14px / 14px) & (17px / 14px) */
   --remotion-themed-font-alert: 92.857142%/1.15384615em 'Roboto-Regular', sans-serif; /* (13px / 14px) & (15px / 13px) */
-  --remotion-themed-box-alignment-fix: 0.07142857em; /* 1px / 14px : when displaying text inside a box, the text must be pushed down a bit for correct vertical centering */
+  --remotion-themed-box-alignment-fix: 0.14285714em; /* 2px / 14px : when displaying text inside a box, the text must be pushed down a bit for correct vertical centering */
   --z-index-max: 2147483647;
   --z-index-hidden: -1;
   --default-icon-size: 16px;
@@ -122,14 +122,14 @@ textarea.remotion-themed,
 .remotion-themed textarea
 {
   /* adjust alignment of text in box to create a better middle alignment */
-  padding-top: calc(var(--remotion-themed-box-alignment-fix) * 2);
+  /*padding-top: calc(var(--remotion-themed-box-alignment-fix) * 2);*/
 }
 
 select.remotion-themed,
 .remotion-themed select
 {
   /* adjust alignment of text in box to create a better middle alignment */
-  padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);
+  /*padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);*/
 }
 
 button.remotion-themed,

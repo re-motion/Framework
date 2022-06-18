@@ -44,6 +44,8 @@ span.bocDateInputWrapper.remotion-themed input,
 span.bocTimeInputWrapper.remotion-themed input
 {
   /* adjust alignment of text in box to create a better middle alignment */
+  padding-top: var(--remotion-themed-box-alignment-fix);
+  line-height: var(--remotion-themed-line-height);
   /*padding-top: calc(var(--remotion-themed-box-alignment-fix) * 1);*/
   /*vertical-align: calc(-1 * var(--remotion-themed-box-alignment-fix));*/
 }
