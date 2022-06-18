@@ -129,6 +129,8 @@ textarea.remotion-themed,
   /* adjust alignment of text in box to create a better middle alignment */
   padding-top: var(--remotion-themed-box-alignment-fix);
   line-height: var(--remotion-themed-line-height);
+  /* required for adjusting stand-alone input elements  */
+  vertical-align: middle;
 }
 
 select.remotion-themed,
