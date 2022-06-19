@@ -49,8 +49,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void Select ()
     {
-      var scope = GetRowSelectorScope();
-      ExecuteAction(new CheckAction(this, scope), Opt.ContinueImmediately());
+      var scope = GetRowSelectorScopeForClick();
+
+      WebTestAction webTestAction;
+      if (!IsSelected)
+        webTestAction = new ClickAction(this, scope);
+      else
+        webTestAction = new NopAction(this, scope);
+
+      ExecuteAction(webTestAction, Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -58,8 +65,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// </summary>
     public void Deselect ()
     {
-      var scope = GetRowSelectorScope();
-      ExecuteAction(new UncheckAction(this, scope), Opt.ContinueImmediately());
+      var scope = GetRowSelectorScopeForClick();
+
+      WebTestAction webTestAction;
+      if (IsSelected)
+        webTestAction = new ClickAction(this, scope);
+      else
+        webTestAction = new NopAction(this, scope);
+
+      ExecuteAction(webTestAction, Opt.ContinueImmediately());
     }
 
     /// <summary>
@@ -69,12 +83,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       get
       {
-        var rowSelectorCheckboxScope = GetRowSelectorScope();
-        return rowSelectorCheckboxScope.IsSelected();
+        var rowSelectorScope = GetRowSelectorScopeForStatus();
+        return rowSelectorScope.IsSelected();
       }
     }
 
-    private ElementScope GetRowSelectorScope ()
+    private ElementScope GetRowSelectorScopeForClick ()
+    {
+      return Context.Scope.FindCss(".bocListDataCellRowSelector input[type='checkbox'] + span, .bocListDataCellRowSelector input[type='radio'] + span");
+    }
+
+    private ElementScope GetRowSelectorScopeForStatus ()
     {
       return Context.Scope.FindCss(".bocListDataCellRowSelector input[type='checkbox'], .bocListDataCellRowSelector input[type='radio']");
     }
