@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Coypu;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -362,9 +363,15 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
 
-        var checkAction = new CheckAction(_controlObject, scope);
-        ActionExecute?.Invoke(checkAction, actualActionOptions);
-        checkAction.Execute(actualActionOptions);
+        // Use ClickAction instead of CheckAction because
+        // a) the radio-button is idem-potent when getting clicked and
+        // b) the CheckAction does not work when the input element is hidden.
+        // Note: Using the label instead of the input element is not required but good practice for the current setup where the theme hides the input element.
+        //       Given that a radio button always needs a label anyway for a good user experience, relying on the label instead of the input element is a robust approach.
+        //var clickAction = new ClickAction(_controlObject, scope);
+        var sendKeyAction = new CustomAction(_controlObject, scope, "Send SPACE key", s => s.SendKeys(Keys.Space));
+        ActionExecute?.Invoke(sendKeyAction, actualActionOptions);
+        sendKeyAction.Execute(actualActionOptions);
 
         return _controlObject.UnspecifiedPage();
       }
