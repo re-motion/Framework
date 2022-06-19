@@ -19,6 +19,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head runat="server">
     <title>MyMain</title>
+    <script type="text/javascript">
+      function ReloadFrame()
+      {
+        window.frames['frame'].location = 'Frame.wxe?AlwaysRefreshMain=False';
+      }
+    </script>
   </head>
   <body>
     <form id="form1" runat="server">
@@ -31,6 +37,7 @@
             <p><remotion:WebButton ID="SimplePostBack" Text="Simple PostBack" runat="server"/></p>
             <p><remotion:WebButton ID="LoadFrameFunctionInFrame" Text="Load FrameFunction in Frame" runat="server"/></p>
             <p><remotion:WebButton ID="LoadFrameFunctionAsSubInFrame" Text="Load FrameFunction (as sub function) in Frame" runat="server"/></p>
+            <p><remotion:WebButton ID="LoadFrameFunctionInFrameWithoutPostback" Text="Load FrameFunction in Frame (without postback)" runat="server" UseSubmitBehavior="False" OnClientClick="ReloadFrame()"/></p>
             <p><remotion:WebButton ID="LoadWindowFunctionInFrame" Text="Load WindowFunction in Frame" runat="server"/></p>
             <p><remotion:WebButton ID="LoadMainAutoRefreshingFrameFunctionInFrame" Text="Load Main-auto-refreshing FrameFunction in Frame" runat="server"/></p>
             <p><remotion:WebButton ID="LoadWindowFunctionInNewWindow" Text="Load WindowFunction in new Window" runat="server"/></p>
