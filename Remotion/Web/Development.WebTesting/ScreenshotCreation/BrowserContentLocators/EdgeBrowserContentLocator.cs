@@ -49,7 +49,16 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
     /// Edge nests the expected View several layers deep but there are other matches outside of the specified stack.
     /// To allow a targeted match, the full stack walk must be specified.
     /// </summary>
-    private static string[] s_edgePaneElementClassNamesStack = new[] { "BrowserRootView", "NonClientView", "GlassBrowserFrameView", "BrowserView", "View" };
+    private static string[] s_edgePaneElementClassNamesStack = new[]
+                                                               {
+                                                                   "BrowserRootView",
+                                                                   "NonClientView",
+                                                                   "GlassBrowserFrameView",
+                                                                   "BrowserView",
+                                                                   "SidebarContentsSplitView",
+                                                                   "SidebarContentsSplitView",
+                                                                   "View"
+                                                               };
 
     public EdgeBrowserContentLocator ()
     {
