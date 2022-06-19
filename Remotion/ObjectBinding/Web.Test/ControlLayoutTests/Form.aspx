@@ -120,6 +120,8 @@
               M
               <remotion:WebButton ID="Line03Button" runat="server" Text="Button" Icon-Url="Images/NullIcon.gif" />
               M
+                <input class="remotion-themed" type="text" value="May" name="test1"/>
+              M
             </td>
             <td>
               Line&nbsp;3
