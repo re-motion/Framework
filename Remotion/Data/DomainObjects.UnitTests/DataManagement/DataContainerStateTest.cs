@@ -26,6 +26,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetUnchanged().Value;
       Assert.That(state.IsUnchanged, Is.True);
+      CheckOnlySingleFlagIsSet(state);
     }
 
 
@@ -48,6 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetChanged().Value;
       Assert.That(state.IsChanged, Is.True);
+      CheckOnlySingleFlagIsSet(state);
     }
 
 
@@ -70,6 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetNew().Value;
       Assert.That(state.IsNew, Is.True);
+      CheckOnlySingleFlagIsSet(state);
     }
 
 
@@ -92,6 +95,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetDeleted().Value;
       Assert.That(state.IsDeleted, Is.True);
+      CheckOnlySingleFlagIsSet(state);
     }
 
 
@@ -114,6 +118,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetDiscarded().Value;
       Assert.That(state.IsDiscarded, Is.True);
+      CheckOnlySingleFlagIsSet(state);
     }
 
 
@@ -136,6 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetPersistentDataChanged().Value;
       Assert.That(state.IsPersistentDataChanged, Is.True);
+      CheckOnlySingleFlagIsSet(state);
     }
 
 
@@ -158,6 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetNonPersistentDataChanged().Value;
       Assert.That(state.IsNonPersistentDataChanged, Is.True);
+      CheckOnlySingleFlagIsSet(state);
     }
 
 
@@ -166,6 +173,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DomainObjectState.Builder().SetInvalid().SetDeleted().Value;
       Assert.That(state.ToString(), Is.EqualTo("DomainObjectState (Deleted, Invalid)"));
+    }
+
+    private void CheckOnlySingleFlagIsSet (DataContainerState state)
+    {
+      int count = 0;
+      if (state.IsNew)
+        count++;
+      if (state.IsNewInHierarchy)
+        count++;
+      if (state.IsChanged)
+        count++;
+      if (state.IsDeleted)
+        count++;
+      if (state.IsDiscarded)
+        count++;
+      if (state.IsUnchanged)
+        count++;
+      if (state.IsPersistentDataChanged)
+        count++;
+      if (state.IsNonPersistentDataChanged)
+        count++;
+
+      Assert.That(count, Is.EqualTo(1));
     }
   }
 }
