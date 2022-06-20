@@ -56,9 +56,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Deselects the row.
     /// </summary>
+    /// <exception cref="WebTestException">Thrown if the row-selection is based on radio buttons instead of checkboxes.</exception>
     public void Deselect ()
     {
       var scope = GetRowSelectorScope();
+      if (scope.GetAttribute("type") == "radio")
+      {
+        throw AssertionExceptionUtility.CreateExpectationException(
+            Driver,
+            "Unable to de-select the row because the list uses radio buttons for row selection instead of checkboxes.");
+      }
+
       ExecuteAction(new UncheckAction(this, scope), Opt.ContinueImmediately());
     }
 
