@@ -2023,6 +2023,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
         count++;
       if (dataContainerState.IsNonPersistentDataChanged)
         count++;
+      if (dataContainerState.IsNewInHierarchy)
+        count++;
 
       return count;
     }

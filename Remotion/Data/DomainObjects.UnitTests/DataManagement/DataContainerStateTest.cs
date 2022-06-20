@@ -72,6 +72,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state = new DataContainerState.Builder().SetNew().Value;
       Assert.That(state.IsNew, Is.True);
+    }
+
+
+    [Test]
+    public void IsNewInHierarchy_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DataContainerState.Builder().Value;
+      Assert.That(state.IsNewInHierarchy, Is.False);
+    }
+
+    [Test]
+    public void IsNewInHierarchy_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DataContainerState.Builder().SetChanged().Value;
+      Assert.That(state.IsNewInHierarchy, Is.False);
+    }
+
+    [Test]
+    public void IsNewInHierarchy_WithBuilderSettingNewInHierarchy_ReturnsTrue ()
+    {
+      var state = new DataContainerState.Builder().SetNewInHierarchy().Value;
+      Assert.That(state.IsNewInHierarchy, Is.True);
       CheckOnlySingleFlagIsSet(state);
     }
 
