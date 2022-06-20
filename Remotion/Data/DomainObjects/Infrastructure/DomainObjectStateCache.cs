@@ -128,6 +128,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       if (dataContainerState.IsDiscarded)
         throw new InvalidOperationException($"DataContainer for object '{objectID}' has been discarded without removing the instance from the DataManager.");
 
+      if (dataContainerState.IsNewInHierarchy)
+        stateBuilder = stateBuilder.SetNewInHierarchy();
+
       var hasRelationChanged = HasRelationChanged(dataContainer);
       if (hasRelationChanged)
         stateBuilder = stateBuilder.SetRelationChanged();

@@ -112,6 +112,14 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
                 nameof(DomainObjectState.IsDeleted),
                 nameof(DomainObjectState.IsNotLoadedYet)));
       }
+      else if (domainObjectState.IsNewInHierarchy)
+      {
+        throw new InvalidOperationException(
+            string.Format(
+                "The {0} is already covered by {1}.",
+                domainObjectState,
+                nameof(DomainObjectState.IsNew)));
+      }
       else
       {
         throw new NotSupportedException(string.Format("The {0} is not supported.", domainObjectState));

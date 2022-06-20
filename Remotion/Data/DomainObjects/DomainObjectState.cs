@@ -77,6 +77,12 @@ namespace Remotion.Data.DomainObjects
       /// May be set when <see cref="Changed"/>, <see cref="New"/>, <see cref="Deleted"/>, or <see cref="NotLoadedYet"/> are set.
       /// </summary>
       RelationChanged = 1 << 9,
+
+      /// <summary>
+      /// May be set when <see cref="New"/>, <see cref="Deleted"/>, <see cref="Unchanged"/>, <see cref="Changed"/>,
+      /// <see cref="DataChanged"/>, <see cref="PersistentDataChanged"/>, <see cref="NonPersistentDataChanged"/>, or <see cref="RelationChanged"/> is set.
+      /// </summary>
+      NewInHierarchy = 1 << 10,
     }
 
     /// <summary>
@@ -114,6 +120,10 @@ namespace Remotion.Data.DomainObjects
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsNew"/>.</summary>
       [MustUseReturnValue]
       public Builder SetNew () => SetFlag(Flags.New);
+
+      /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsNewInHierarchy"/>.</summary>
+      [MustUseReturnValue]
+      public Builder SetNewInHierarchy () => SetFlag(Flags.NewInHierarchy);
 
       /// <summary>Sets <see cref="DomainObjectState"/>.<see cref="DomainObjectState.IsDeleted"/>.</summary>
       [MustUseReturnValue]
@@ -178,6 +188,16 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="IsNonPersistentDataChanged"/>, and <see cref="IsRelationChanged"/>.
     /// </remarks>
     public bool IsNew => (_flags & Flags.New) != 0;
+
+    /// <summary>
+    /// The <see cref="DomainObject"/> has been instantiated in this <see cref="ClientTransaction"/> or one of its <see cref="ClientTransaction.ParentTransaction"/>s
+    /// and has not been committed in the <see cref="ClientTransaction.RootTransaction"/>.
+    /// </summary>
+    /// <remarks>
+    /// When this flag is set, the following other flags may also be set: <see cref="IsNew"/>, <see cref="IsDeleted"/>, <see cref="IsUnchanged"/>, <see cref="IsChanged"/>,
+    /// <see cref="IsDataChanged"/>, <see cref="IsPersistentDataChanged"/>, <see cref="IsNonPersistentDataChanged"/>, and <see cref="IsRelationChanged"/>.
+    /// </remarks>
+    public bool IsNewInHierarchy => (_flags & Flags.NewInHierarchy) != 0;
 
     /// <summary>
     /// The <see cref="DomainObject"/> has been deleted.

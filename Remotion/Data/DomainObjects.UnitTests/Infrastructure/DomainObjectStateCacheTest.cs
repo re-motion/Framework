@@ -91,7 +91,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var domainObjectState = _cachingListener.GetState(_newOrder.ID);
       Assert.That(domainObjectState.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(1));
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(2));
     }
 
     [Test]
@@ -99,7 +100,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var domainObjectState = _cachingListener.GetState(_newOrderViewModel.ID);
       Assert.That(domainObjectState.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(1));
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(2));
     }
 
     [Test]
@@ -109,9 +111,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       var domainObjectState = _cachingListener.GetState(_newOrder.ID);
       Assert.That(domainObjectState.IsNew, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
       Assert.That(domainObjectState.IsDataChanged, Is.True);
       Assert.That(domainObjectState.IsPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(3));
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(4));
     }
 
     [Test]
@@ -121,9 +124,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       var domainObjectState = _cachingListener.GetState(_newOrderTicket.ID);
       Assert.That(domainObjectState.IsNew, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
       Assert.That(domainObjectState.IsDataChanged, Is.True);
       Assert.That(domainObjectState.IsNonPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(3));
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(4));
     }
 
     [Test]
@@ -165,9 +169,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       var domainObjectState = _cachingListener.GetState(_newOrderViewModel.ID);
       Assert.That(domainObjectState.IsNew, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
       Assert.That(domainObjectState.IsDataChanged, Is.True);
       Assert.That(domainObjectState.IsNonPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(3));
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(4));
     }
 
     [Test]
@@ -190,6 +195,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       Assert.That(domainObjectState.IsChanged, Is.True);
       Assert.That(domainObjectState.IsRelationChanged, Is.True);
       Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_New_IsNewInHierarchy ()
+    {
+      var domainObjectState = _cachingListener.GetState(_newOrder.ID);
+      Assert.That(domainObjectState.IsNew, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_Unchanged_IsNewInHierarchy ()
+    {
+      _existingOrder.GetInternalDataContainerForTransaction(_transaction).SetNewInHierarchy();
+
+      var domainObjectState = _cachingListener.GetState(_existingOrder.ID);
+      Assert.That(domainObjectState.IsUnchanged, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_Changed_IsNewInHierarchy ()
+    {
+      _existingOrder.GetInternalDataContainerForTransaction(_transaction).SetNewInHierarchy();
+      _existingOrder.DeliveryDate = DateTime.Now;
+
+      var domainObjectState = _cachingListener.GetState(_existingOrder.ID);
+      Assert.That(domainObjectState.IsChanged, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_Deleted_IsNewInHierarchy ()
+    {
+      _existingOrder.GetInternalDataContainerForTransaction(_transaction).SetNewInHierarchy();
+      _existingOrder.Delete();
+
+      var domainObjectState = _cachingListener.GetState(_existingOrder.ID);
+      Assert.That(domainObjectState.IsDeleted, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_ChangedRelation_IsNewInHierarchy ()
+    {
+      _existingOrder.GetInternalDataContainerForTransaction(_transaction).SetNewInHierarchy();
+      _transaction.ExecuteInScope(() => _existingOrder.OrderItems.Clear());
+
+      var domainObjectState = _cachingListener.GetState(_existingOrder.ID);
+      Assert.That(domainObjectState.IsDataChanged, Is.False);
+      Assert.That(domainObjectState.IsRelationChanged, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -337,7 +395,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var stateAfterChange = _cachingListener.GetState(_newOrder.ID);
 
       Assert.That(stateBeforeChange.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
+      Assert.That(stateBeforeChange.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
 
       Assert.That(stateAfterChange.IsInvalid, Is.True);
       Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
@@ -492,6 +551,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       if (domainObjectState.IsNonPersistentDataChanged)
         count++;
       if (domainObjectState.IsRelationChanged)
+        count++;
+      if (domainObjectState.IsNewInHierarchy)
         count++;
 
       return count;
