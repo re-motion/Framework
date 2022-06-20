@@ -1091,7 +1091,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestRowSelectAndDeselectForRadioButton ()
+    public void TestRowSelectForRadioButton ()
     {
       var home = Start();
 
@@ -1108,11 +1108,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocList.GetListMenu().SelectItem("ListMenuCmd1");
       Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("1"));
+      Assert.That(row.IsSelected, Is.True);
 
-      row.Deselect();
+      var otherRow = bocList.GetRow(1);
+
+      otherRow.Select();
       bocList.GetListMenu().SelectItem("ListMenuCmd1");
-      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("NoneSelected"));
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("0"));
+      Assert.That(otherRow.IsSelected, Is.True);
+
+      Assert.That(row.IsSelected, Is.False);
+    }
+
+    [Test]
+    public void TestRowDeselect_ForRadioButton ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_WithRadioButtons");
+      var row = bocList.GetRow(2);
+
+      Assert.That(
+          () => row.Deselect(),
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(
+                      Driver,
+                      "Unable to de-select the row because the list uses radio buttons for row selection instead of checkboxes.").Message));
     }
 
     [Test]
