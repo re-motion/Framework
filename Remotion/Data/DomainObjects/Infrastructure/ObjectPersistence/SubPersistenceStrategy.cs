@@ -209,7 +209,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
 
     private DataContainer TransferParentContainer (DataContainer parentDataContainer)
     {
-      if (parentDataContainer.State.IsDeleted)
+      var parentDataContainerState = parentDataContainer.State;
+
+      if (parentDataContainerState.IsDeleted)
       {
         var message = string.Format("Object '{0}' is already deleted in the parent transaction.", parentDataContainer.ID);
         throw new ObjectDeletedException(message, parentDataContainer.ID);
@@ -219,6 +221,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           parentDataContainer.ID,
           parentDataContainer.Timestamp,
           pd => parentDataContainer.GetValueWithoutEvents(pd, ValueAccess.Current));
+
+      if (parentDataContainerState.IsNewInHierarchy)
+        thisDataContainer.SetNewInHierarchy();
 
       Assertion.IsTrue(thisDataContainer.State.IsUnchanged);
       return thisDataContainer;

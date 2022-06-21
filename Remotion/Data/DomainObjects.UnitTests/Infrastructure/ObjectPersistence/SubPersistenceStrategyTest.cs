@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var objectID = DomainObjectIDs.Order1;
       var parentObject = DomainObjectMother.CreateFakeObject<Order>(objectID);
       var parentDataContainer = CreateChangedDataContainer(objectID, 4711, _orderNumberPropertyDefinition, 17);
-      CheckDataContainer(parentDataContainer, objectID, 4711, state => state.IsChanged, _orderNumberPropertyDefinition, 17, 0, true);
+      CheckDataContainer(parentDataContainer, objectID, 4711, state => state.IsChanged && !state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
 
       var parentEventListenerMock = new Mock<IDataContainerEventListener>(MockBehavior.Strict);
       parentDataContainer.SetEventListener(parentEventListenerMock.Object);
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(result, Is.TypeOf<FreshlyLoadedObjectData>());
       Assert.That(result.ObjectID, Is.EqualTo(objectID));
       var dataContainer = ((FreshlyLoadedObjectData)result).FreshlyLoadedDataContainer;
-      CheckDataContainer(dataContainer, objectID, 4711, state => state.IsUnchanged, _orderNumberPropertyDefinition, 17, 17, false);
+      CheckDataContainer(dataContainer, objectID, 4711, state => state.IsUnchanged && !state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 17, false);
     }
 
     [Test]
@@ -138,6 +138,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(() => _persistenceStrategy.LoadObjectData(objectID), Throws.Exception.SameAs(exception));
 
       _parentTransactionContextMock.Verify();
+    }
+
+    [Test]
+    public void LoadObjectData_Single_ParentObjectIsNewInHierarchy ()
+    {
+      var objectID = DomainObjectIDs.Order1;
+      var parentObject = DomainObjectMother.CreateFakeObject<Order>(objectID);
+      var parentDataContainer = CreateChangedDataContainer(objectID, 4711, _orderNumberPropertyDefinition, 17);
+      parentDataContainer.SetNewInHierarchy();
+      CheckDataContainer(parentDataContainer, objectID, 4711, state => state.IsChanged && state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
+
+      var parentEventListenerMock = new Mock<IDataContainerEventListener>(MockBehavior.Strict);
+      parentDataContainer.SetEventListener(parentEventListenerMock.Object);
+
+      _parentTransactionContextMock
+          .Setup(mock => mock.TryGetObject(objectID))
+          .Returns(parentObject)
+          .Verifiable();
+      _parentTransactionContextMock
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(objectID, true))
+          .Returns(parentDataContainer)
+          .Verifiable();
+
+      var result = _persistenceStrategy.LoadObjectData(objectID);
+
+      _parentTransactionContextMock.Verify();
+      parentEventListenerMock.Verify(mock => mock.PropertyValueReading(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<ValueAccess>()), Times.Never());
+
+      Assert.That(result, Is.TypeOf<FreshlyLoadedObjectData>());
+      Assert.That(result.ObjectID, Is.EqualTo(objectID));
+      var dataContainer = ((FreshlyLoadedObjectData)result).FreshlyLoadedDataContainer;
+      CheckDataContainer(dataContainer, objectID, 4711, state => state.IsUnchanged && state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 17, false);
     }
 
     [Test]
@@ -190,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var parentObject1 = DomainObjectMother.CreateFakeObject<Order>(objectID1);
       var parentDataContainer1 = CreateChangedDataContainer(objectID1, 4711, _orderNumberPropertyDefinition, 17);
-      CheckDataContainer(parentDataContainer1, objectID1, 4711, state => state.IsChanged, _orderNumberPropertyDefinition, 17, 0, true);
+      CheckDataContainer(parentDataContainer1, objectID1, 4711, state => state.IsChanged && !state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
 
       var parentObject3 = DomainObjectMother.CreateFakeObject<Order>(objectID3);
       var parentDataContainer3 = DataContainerObjectMother.CreateExisting(objectID3);
@@ -228,7 +260,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           ((FreshlyLoadedObjectData)result[0]).FreshlyLoadedDataContainer,
           objectID1,
           4711,
-          state => state.IsUnchanged,
+          state => state.IsUnchanged && !state.IsNewInHierarchy,
           _orderNumberPropertyDefinition,
           17,
           17,
@@ -260,6 +292,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(() => _persistenceStrategy.LoadObjectData(objectID), Throws.Exception.SameAs(exception));
 
       _parentTransactionContextMock.Verify();
+    }
+
+    [Test]
+    public void LoadObjectData_Multiple_ParentObjectIsNewInHierarchy ()
+    {
+      var objectID1 = DomainObjectIDs.Order1;
+      var objectID2 = DomainObjectIDs.Order4;
+
+      var parentObject1 = DomainObjectMother.CreateFakeObject<Order>(objectID1);
+      var parentDataContainer1 = CreateChangedDataContainer(objectID1, 4711, _orderNumberPropertyDefinition, 17);
+      parentDataContainer1.SetNewInHierarchy();
+      CheckDataContainer(parentDataContainer1, objectID1, 4711, state => state.IsChanged && state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
+
+      var parentObject2 = DomainObjectMother.CreateFakeObject<Order>(objectID2);
+      var parentDataContainer2 = DataContainerObjectMother.CreateExisting(objectID2);
+
+      var parentEventListenerMock = new Mock<IDataContainerEventListener>(MockBehavior.Strict);
+      parentDataContainer1.SetEventListener(parentEventListenerMock.Object);
+      parentDataContainer2.SetEventListener(parentEventListenerMock.Object);
+
+      // Use a strict mock because the parameter should not be enumerated, it should only be passed on TryGetObjects
+
+      _parentTransactionContextMock
+          .Setup(mock => mock.TryGetObjects(new[] { objectID1, objectID2 }))
+          .Returns(new DomainObject[] { parentObject1, parentObject2 })
+          .Verifiable();
+      _parentTransactionContextMock
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(objectID1, true))
+          .Returns(parentDataContainer1)
+          .Verifiable();
+      _parentTransactionContextMock
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(objectID2, true))
+          .Returns(parentDataContainer2)
+          .Verifiable();
+
+      var result = _persistenceStrategy.LoadObjectData(new[] { objectID1, objectID2 }.AsOneTime()).ToList();
+
+      _parentTransactionContextMock.Verify();
+      parentEventListenerMock
+          .Verify(
+              mock => mock.PropertyValueReading(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<ValueAccess>()),
+              Times.Never());
+
+      Assert.That(result[0], Is.TypeOf<FreshlyLoadedObjectData>());
+      Assert.That(result[0].ObjectID, Is.EqualTo(objectID1));
+      Assert.That(((FreshlyLoadedObjectData)result[0]).FreshlyLoadedDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(((FreshlyLoadedObjectData)result[0]).FreshlyLoadedDataContainer.State.IsNewInHierarchy, Is.True);
+
+      Assert.That(result[1], Is.TypeOf<FreshlyLoadedObjectData>());
+      Assert.That(result[1].ObjectID, Is.EqualTo(objectID2));
+      Assert.That(((FreshlyLoadedObjectData)result[1]).FreshlyLoadedDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(((FreshlyLoadedObjectData)result[1]).FreshlyLoadedDataContainer.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -762,6 +846,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Verify();
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock.Verify();
+    }
+
+    [Test]
+    public void PersistData_NewDataContainer_PreservesNewInHierarchyFlag ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order>();
+      var persistedDataContainer = DataContainerObjectMother.CreateNew(domainObject);
+      var persistableData = new PersistableData(
+          domainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          persistedDataContainer,
+          Array.Empty<IRelationEndPoint>());
+
+      _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
+      _parentTransactionContextMock.Setup(stub => stub.IsInvalid(domainObject.ID)).Returns(true);
+      _parentTransactionContextMock.Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID)).Returns((DataContainer)null);
+
+      _unlockedParentTransactionContextMock.Setup(mock => mock.MarkNotInvalid(domainObject.ID));
+      _unlockedParentTransactionContextMock.Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()));
+      _unlockedParentTransactionContextMock.Setup(mock => mock.Dispose());
+
+      Assert.That(persistedDataContainer.State.IsNew, Is.True);
+      Assert.That(persistedDataContainer.State.IsNewInHierarchy, Is.True);
+
+      _persistenceStrategy.PersistData(new[] { persistableData }.AsOneTime());
+
+      Assert.That(persistedDataContainer.State.IsNew, Is.True);
+      Assert.That(persistedDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
