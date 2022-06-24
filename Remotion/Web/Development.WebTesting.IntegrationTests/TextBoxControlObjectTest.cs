@@ -16,6 +16,8 @@
 // 
 using System;
 using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.Extensions;
 using Remotion.Web.Development.WebTesting.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -138,6 +140,24 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var htmlTextBox = home.TextBoxes().GetByLocalID("MyHtmlTextBox");
       Assert.That(htmlTextBox.GetText(), Is.EqualTo("MyHtmlTextBoxValue"));
+    }
+
+    [Test]
+    public void TestFirefox ()
+    {
+      var home = Start();
+      var driver = (IWebDriver)home.Driver.Native;
+      IWebElement element = driver.FindElement(By.Id("body_MyHtmlTextBox"));
+      element.SendKeys(Keys.Control + "a" + Keys.Control + Keys.Delete);
+      //element.SendKeys("Test");
+
+      driver.ExecuteJavaScript("document.getElementById('body_MyHtmlTextBox').value = 'Tes'", element);
+      element.SendKeys(Keys.End);
+      element.SendKeys("t");
+      var valueFromProperty = element.GetProperty("value");
+      Assert.That(valueFromProperty, Is.EqualTo("Test"));
+      var valueFromAttribute = element.GetAttribute("value");
+      Assert.That(valueFromAttribute, Is.EqualTo("Test"));
     }
 
     [Test]
