@@ -564,6 +564,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <see cref="ClientTransaction"/> and <see cref="DomainObject"/> are not set, so the returned <see cref="DataContainer"/> cannot be 
     /// used until it is registered with a <see cref="DomainObjects.ClientTransaction"/>. Its <see cref="DomainObject"/> is set via the
     /// <see cref="SetDomainObject"/> method.</returns>
+    [Obsolete("When cloning existing unchanged DataContainer, use DataContainer.CreateForExisting(id, dataContainer.Timestamp, pd => dataContainer.GetValueWithoutEvents(pd, ValueAccess.Current)) instead. "
+              + "All other scenarios are broken for DataContainer.Clone(). (Version: 3.0.0")]
     public DataContainer Clone (ObjectID id)
     {
       CheckNotDiscarded();
