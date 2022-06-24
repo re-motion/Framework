@@ -922,6 +922,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_SetsID ()
     {
       var original = _existingDataContainer;
@@ -932,6 +933,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesState ()
     {
       var originalNew = _newDataContainer;
@@ -952,6 +954,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesTimestamp ()
     {
       var original = _newDataContainer;
@@ -962,6 +965,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesPropertyValues_WithPersistentProperty ()
     {
       var original = _existingDataContainer;
@@ -977,6 +981,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesPropertyValues_WithNonPersistentProperty ()
     {
       var original = _dataContainerWithNonPersistentProperty;
@@ -992,6 +997,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesHasBeenMarkedChanged ()
     {
       var original = _existingDataContainer;
@@ -1003,6 +1009,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesHasBeenChangedFlag_WithPersistentProperty ()
     {
       var original = _existingDataContainer;
@@ -1024,6 +1031,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesHasBeenChangedFlag_WithNonPersistentProperty ()
     {
       var original = _dataContainerWithNonPersistentProperty;
@@ -1045,6 +1053,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_DomainObjectEmpty ()
     {
       var original = _existingDataContainer;
@@ -1056,6 +1065,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_TransactionEmpty ()
     {
       var original = _existingDataContainer;
@@ -1068,6 +1078,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_EventListenerEmpty ()
     {
       _existingDataContainer.SetEventListener(_eventListenerMock.Object);
@@ -1636,7 +1647,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetDataFromSubTransaction_ResetsChangedFlag_IfUnchanged_WithPersistentProperty ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order1);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order1);
       targetDataContainer.SetValue(_orderNumberProperty, 10);
       var stateBeforeChange = targetDataContainer.State;
       Assert.That(stateBeforeChange.IsChanged, Is.True);
@@ -1658,7 +1669,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var sourceDataContainer = _dataContainerWithNonPersistentProperty;
       sourceDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 42);
-      var targetDataContainer = sourceDataContainer.Clone(new ObjectID(sourceDataContainer.ClassDefinition, Guid.NewGuid()));
+      var targetDataContainer = DataContainer.CreateForExisting(sourceDataContainer.ID, sourceDataContainer.Timestamp, pd => sourceDataContainer.GetValueWithoutEvents(pd));
       targetDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
       var stateBeforeChange = targetDataContainer.State;
       Assert.That(stateBeforeChange.IsChanged, Is.True);
@@ -1697,7 +1708,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetDataFromSubTransaction_RaisesStateUpdated_Unchanged ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order3);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order3);
       targetDataContainer.SetValue(_orderNumberProperty, 10);
       var state = targetDataContainer.State;
       Assert.That(state.IsChanged, Is.True);
@@ -1716,7 +1727,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetDataFromSubTransaction_RaisesStateUpdated_OtherState ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order3);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order3);
       targetDataContainer.Delete();
       var state = targetDataContainer.State;
       Assert.That(state.IsDeleted, Is.True);
@@ -1733,7 +1744,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetDataFromSubTransaction_DoNotSetMarkAsChangedWhenSourceHasNotBeenMarkedChanged ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order1);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order1);
       Assert.That(sourceDataContainer.HasBeenMarkedChanged, Is.False);
       Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
 
@@ -1746,7 +1757,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetDataFromSubTransaction_SetMarkAsChangedWhenSourceHasBeenMarkedChanged ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order1);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order1);
       sourceDataContainer.MarkAsChanged();
       Assert.That(sourceDataContainer.HasBeenMarkedChanged, Is.True);
       Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
@@ -1823,28 +1834,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(state5.IsUnchanged, Is.True);
       Assert.That(GetNumberOfSetFlags(state5), Is.EqualTo(1));
       Assert.That(dataContainer.State.IsUnchanged, Is.True);
-
-      DataContainer clone = dataContainer.Clone(DomainObjectIDs.Order1);
-      var state6 = clone.State;
-      Assert.That(state6.IsUnchanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state6), Is.EqualTo(1));
-      Assert.That(clone.State.IsUnchanged, Is.True);
-
-      dataContainer.MarkAsChanged();
-      var state7 = dataContainer.State;
-      Assert.That(state7.IsChanged, Is.True);
-      Assert.That(state7.IsPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state7), Is.EqualTo(2));
-      Assert.That(dataContainer.State.IsChanged, Is.True);
-      Assert.That(dataContainer.State.IsPersistentDataChanged, Is.True);
-
-      clone = dataContainer.Clone(DomainObjectIDs.Order1);
-      var state8 = clone.State;
-      Assert.That(state8.IsChanged, Is.True);
-      Assert.That(state8.IsPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state8), Is.EqualTo(2));
-      Assert.That(clone.State.IsChanged, Is.True);
-      Assert.That(clone.State.IsPersistentDataChanged, Is.True);
     }
 
     [Test]
@@ -2036,6 +2025,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
         count++;
 
       return count;
+    }
+
+    private DataContainer Copy (DataContainer source, ObjectID newID)
+    {
+      Assert.That(source.State.IsUnchanged, Is.True);
+      return DataContainer.CreateForExisting(
+          newID,
+          source.Timestamp,
+          pd => source.GetValueWithoutEvents(pd, ValueAccess.Current));
     }
   }
 }
