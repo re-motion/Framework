@@ -251,6 +251,83 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     }
 
     [Test]
+    public void GetState_FromDataContainer_NotLoadedYetInSubTransaction_NewInRootTransaction_IsNewInHierarchy ()
+    {
+      var subTransaction = _transaction.CreateSubTransaction();
+      var subTransactionStateCache = new DomainObjectStateCache(subTransaction);
+
+      var domainObjectState = subTransactionStateCache.GetState(_newOrder.ID);
+      Assert.That(domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_NotLoadedYetInSubSubTransaction_NewInParentTransaction_IsNewInHierarchy ()
+    {
+      var subTransaction = _transaction.CreateSubTransaction();
+      var newOrder = (Order)LifetimeService.NewObject(subTransaction, typeof(Order), ParamList.Empty);
+
+      var subSubTransaction = subTransaction.CreateSubTransaction();
+      var subSubTransactionStateCache = new DomainObjectStateCache(subSubTransaction);
+
+      var domainObjectState = subSubTransactionStateCache.GetState(newOrder.ID);
+      Assert.That(domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_NotLoadedYetInSubSubSubTransaction_NewInParentTransaction_IsNewInHierarchy ()
+    {
+      var subTransaction = _transaction.CreateSubTransaction();
+      var newOrder = (Order)LifetimeService.NewObject(subTransaction, typeof(Order), ParamList.Empty);
+
+      var subSubSubTransaction = subTransaction.CreateSubTransaction().CreateSubTransaction();
+      var subSubSubTransactionStateCache = new DomainObjectStateCache(subSubSubTransaction);
+
+      var domainObjectState = subSubSubTransactionStateCache.GetState(newOrder.ID);
+      Assert.That(domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_NotLoadedYetInSubTransaction_UnchangedInRootTransaction_IsNewInHierarchy ()
+    {
+      var subSubTransaction = _transaction.CreateSubTransaction().CreateSubTransaction();
+      var subSubTransactionStateCache = new DomainObjectStateCache(subSubTransaction);
+
+      var domainObjectState = subSubTransactionStateCache.GetState(_existingOrder.ID);
+      Assert.That(domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.False);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_NotLoadedYetInSubTransaction_NotLoadedInRootTransaction_IsNewInHierarchy ()
+    {
+      var subSubTransaction = _transaction.CreateSubTransaction().CreateSubTransaction();
+      var subSubTransactionStateCache = new DomainObjectStateCache(subSubTransaction);
+
+      var domainObjectState = subSubTransactionStateCache.GetState(_notYetLoadedOrder.ID);
+      Assert.That(domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.False);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void GetState_FromDataContainer_NotLoadedYetInRootTransaction_IsNewInHierarchy ()
+    {
+      var transactionStateCache = new DomainObjectStateCache(_transaction);
+
+      var domainObjectState = transactionStateCache.GetState(_notYetLoadedOrder.ID);
+      Assert.That(domainObjectState.IsNotLoadedYet, Is.True);
+      Assert.That(domainObjectState.IsNewInHierarchy, Is.False);
+      Assert.That(GetNumberOfSetFlags(domainObjectState), Is.EqualTo(1));
+    }
+
+    [Test]
     public void GetState_IDWithoutDomainObject ()
     {
       Assert.That(_transaction.GetEnlistedDomainObject(DomainObjectIDs.Order4), Is.Null);
