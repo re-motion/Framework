@@ -125,6 +125,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void CreateNew_NewInHierarchyFlagIsSet ()
+    {
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()));
+      Assert.That(dc.State.IsNew, Is.True);
+      Assert.That(dc.State.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
     public void CreateForExisting_IncludesStorageClassPersistentProperties_WithLookupValue ()
     {
       DataContainer dc = DataContainer.CreateForExisting(
@@ -146,6 +154,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
       Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(2));
       Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void CreateForExisting_NewInHierarchyFlagIsNotSet ()
+    {
+      DataContainer dc = DataContainer.CreateForExisting(
+          new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()),
+          1,
+          delegate { return 2; });
+      Assert.That(dc.State.IsUnchanged, Is.True);
+      Assert.That(dc.State.IsNew, Is.False);
+      Assert.That(dc.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -498,25 +518,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state1 = _newDataContainer.State;
       Assert.That(state1.IsNew, Is.True);
+      Assert.That(state1.IsNewInHierarchy, Is.True);
       Assert.That(_newDataContainer.State.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
       Assert.That(_newDataContainer.GetValue(_orderNumberProperty), Is.Not.EqualTo(17));
 
       _newDataContainer.SetValue(_orderNumberProperty, 17);
 
       var state2 = _newDataContainer.State;
       Assert.That(state2.IsNew, Is.True);
+      Assert.That(state2.IsNewInHierarchy, Is.True);
       Assert.That(state2.IsPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(3));
       Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
       Assert.That(_newDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _newDataContainer.SetValue(_orderNumberProperty, 0);
 
       var state3 = _newDataContainer.State;
       Assert.That(state3.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
+      Assert.That(state3.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(2));
       Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -524,25 +550,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state1 = _newNonPersistentDataContainer.State;
       Assert.That(state1.IsNew, Is.True);
+      Assert.That(state1.IsNewInHierarchy, Is.True);
       Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
       Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer), Is.Not.EqualTo(17));
 
       _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 17);
 
       var state2 = _newNonPersistentDataContainer.State;
       Assert.That(state2.IsNew, Is.True);
+      Assert.That(state2.IsNewInHierarchy, Is.True);
       Assert.That(state2.IsNonPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(3));
       Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
       Assert.That(_newNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
 
       _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 0);
 
       var state3 = _newNonPersistentDataContainer.State;
       Assert.That(state3.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
+      Assert.That(state3.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(2));
       Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -625,7 +657,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       CheckStateNotification(
           _newDataContainer,
           dc => dc.SetValue(_orderNumberProperty, 5),
-          new DataContainerState.Builder().SetNew().SetPersistentDataChanged().Value);
+          new DataContainerState.Builder().SetNew().SetNewInHierarchy().SetPersistentDataChanged().Value);
     }
 
     [Test]
@@ -1095,14 +1127,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state = _newDataContainer.State;
       Assert.That(state.IsUnchanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(1));
+      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(2));
       Assert.That(_newDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
     public void CommitState_RaisesStateUpdated ()
     {
-      CheckStateNotification(_newDataContainer, dc => dc.CommitState(), new DataContainerState.Builder().SetUnchanged().Value);
+      CheckStateNotification(_newDataContainer, dc => dc.CommitState(), new DataContainerState.Builder().SetUnchanged().SetNewInHierarchy().Value);
     }
 
     [Test]
@@ -1237,14 +1270,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state = _newDataContainer.State;
       Assert.That(state.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(1));
+      Assert.That(state.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(2));
       Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
     public void CommitPropertyValuesOnNewDataContainer_RaisesStateUpdated ()
     {
-      CheckStateNotification(_newDataContainer, dc => dc.CommitPropertyValuesOnNewDataContainer(), new DataContainerState.Builder().SetNew().Value);
+      CheckStateNotification(_newDataContainer, dc => dc.CommitPropertyValuesOnNewDataContainer(), new DataContainerState.Builder().SetNew().SetNewInHierarchy().Value);
     }
 
     [Test]
@@ -1286,18 +1321,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var stateBeforeChange = _newDataContainer.State;
       Assert.That(stateBeforeChange.IsNew, Is.True);
+      Assert.That(stateBeforeChange.IsNewInHierarchy, Is.True);
       Assert.That(stateBeforeChange.IsPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(3));
       Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
       Assert.That(_newDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _newDataContainer.CommitPropertyValuesOnNewDataContainer();
 
       var stateAfterChange = _newDataContainer.State;
       Assert.That(stateAfterChange.IsNew, Is.True);
+      Assert.That(stateAfterChange.IsNewInHierarchy, Is.True);
       Assert.That(stateAfterChange.IsPersistentDataChanged, Is.False);
-      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
       Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -1307,18 +1346,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var stateBeforeChange = _newNonPersistentDataContainer.State;
       Assert.That(stateBeforeChange.IsNew, Is.True);
+      Assert.That(stateBeforeChange.IsNewInHierarchy, Is.True);
       Assert.That(stateBeforeChange.IsNonPersistentDataChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(3));
       Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
       Assert.That(_newNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
 
       _newNonPersistentDataContainer.CommitPropertyValuesOnNewDataContainer();
 
       var stateAfterChange = _newNonPersistentDataContainer.State;
       Assert.That(stateAfterChange.IsNew, Is.True);
+      Assert.That(stateAfterChange.IsNewInHierarchy, Is.True);
       Assert.That(stateAfterChange.IsNonPersistentDataChanged, Is.False);
-      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
       Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -1883,6 +1926,90 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "Only existing DataContainers can be marked as changed."));
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForNewDataContainer_ThrowsInvalidOperationException ()
+    {
+      Assert.That(
+          () => _newDataContainer.SetNewInHierarchy(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only existing DataContainers can be marked as new-in-hierarchy."));
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForExistingDataContainer_IsNewInHierarchyIsSet ()
+    {
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.False);
+
+      _existingDataContainer.SetNewInHierarchy();
+
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForDeletedDataContainer_ThrowsInvalidOperationException ()
+    {
+      Assert.That(
+          () => _deletedDataContainer.SetNewInHierarchy(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only existing DataContainers can be marked as new-in-hierarchy."));
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForDiscardedDataContainer_ThrowsObjectInvalidException ()
+    {
+      Assert.That(
+          () => _discardedDataContainer.SetNewInHierarchy(),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForNewDataContainer_ThrowsInvalidOperationException ()
+    {
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+
+      _newDataContainer.ClearNewInHierarchy();
+
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.False);
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForExistingDataContainer_IsNewInHierarchyIsNotSet ()
+    {
+      _existingDataContainer.SetNewInHierarchy();
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+
+      _existingDataContainer.ClearNewInHierarchy();
+
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.False);
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForDeletedDataContainer_IsNewInHierarchyIsNotSet ()
+    {
+      _existingDataContainer.SetNewInHierarchy();
+      _existingDataContainer.Delete();
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_existingDataContainer.State.IsDeleted, Is.True);
+
+      _existingDataContainer.ClearNewInHierarchy();
+
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.False);
+      Assert.That(_existingDataContainer.State.IsDeleted, Is.True);
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForDiscardedDataContainer_ThrowsObjectInvalidException ()
+    {
+      Assert.That(
+          () => _discardedDataContainer.ClearNewInHierarchy(),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]

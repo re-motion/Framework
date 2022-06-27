@@ -65,6 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       computer.SerialNumber = "abc";
 
       DataContainer dataContainer = computer.InternalDataContainer;
+
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 
       Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
@@ -139,6 +140,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 
       Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+    }
+
+    [Test]
+    public void DataContainer_IsNewInHierarchy_Contents ()
+    {
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
+      DataContainer dataContainer = employee.InternalDataContainer;
+      dataContainer.SetNewInHierarchy();
+
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
+
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+      Assert.That(deserializedDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
