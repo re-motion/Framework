@@ -176,6 +176,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence
           persistenceManager.Save(collection);
         }
       }
+
+      foreach (var dataContainer in collection)
+        dataContainer.ClearNewInHierarchy();
     }
 
     public virtual IEnumerable<LoadedObjectDataWithDataSourceData> ExecuteFetchQuery (IQuery query, ILoadedObjectDataProvider alreadyLoadedObjectDataProvider)

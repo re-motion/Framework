@@ -149,6 +149,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
     private object? _timestamp;
     private DataContainerStateType _state;
     private bool _isDiscarded;
+    private bool _isNewInHierarchy;
     private bool _hasBeenMarkedChanged;
     private bool? _hasBeenChangedForPersistentData;
     private bool? _hasBeenChangedForNonPersistentData;
@@ -165,6 +166,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _id = id;
       _timestamp = timestamp;
       _state = state;
+      if (state == DataContainerStateType.New)
+        _isNewInHierarchy = true;
 
       _persistentPropertyValues = persistentPropertyValues;
       _nonPersistentPropertyValues = nonPersistentPropertyValues;
@@ -467,6 +470,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
         if (_isDiscarded)
           return stateBuilder.SetDiscarded().Value;
 
+        if (_isNewInHierarchy)
+          stateBuilder = stateBuilder.SetNewInHierarchy();
+
         if (!_hasBeenChangedForPersistentData.HasValue)
           _hasBeenChangedForPersistentData = _persistentPropertyValues.Values.Any(pv => pv.HasChanged);
 
@@ -521,6 +527,36 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenMarkedChanged = true;
 
       RaiseStateUpdatedNotification();
+    }
+
+    /// <summary>
+    /// Marks an existing <see cref="DataContainer"/> as being new in the <see cref="ClientTransaction"/>.<see cref="DomainObjects.ClientTransaction.ParentTransaction"/> hierarchy.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">This <see cref="DataContainer"/> is not in state <see cref="DataContainerStateType.Existing"/>.
+    /// New or deleted objects cannot be marked as new-in-hierarchy.</exception>
+    /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="DataContainer"/> has been discarded.
+    /// See <see cref="ObjectInvalidException"/> for further information.</exception>
+    public void SetNewInHierarchy ()
+    {
+      CheckNotDiscarded();
+      if (_state != DataContainerStateType.Existing)
+        throw new InvalidOperationException("Only existing DataContainers can be marked as new-in-hierarchy.");
+
+      _isNewInHierarchy = true;
+    }
+
+    /// <summary>
+    /// Removes the information than an existing or deleted <see cref="DataContainer"/> is new in the
+    /// <see cref="ClientTransaction"/>.<see cref="DomainObjects.ClientTransaction.ParentTransaction"/> hierarchy.
+    /// </summary>
+    /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="DataContainer"/> has been discarded.
+    /// See <see cref="ObjectInvalidException"/> for further information.</exception>
+    public void ClearNewInHierarchy ()
+    {
+      CheckNotDiscarded();
+      // No check for state since the flag must be cleared before the state is updated.
+
+      _isNewInHierarchy = false;
     }
 
     /// <summary>
@@ -806,6 +842,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _eventListener = info.GetNullableValueForHandle<IDataContainerEventListener>();
       _state = (DataContainerStateType)info.GetIntValue();
       _domainObject = info.GetNullableValueForHandle<DomainObject>();
+      _isNewInHierarchy = info.GetBoolValue();
       _hasBeenMarkedChanged = info.GetBoolValue();
       _hasBeenChangedForPersistentData = info.GetNullableValue<bool?>();
       _hasBeenChangedForNonPersistentData = info.GetNullableValue<bool?>();
@@ -831,6 +868,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       info.AddHandle(_eventListener);
       info.AddIntValue((int)_state);
       info.AddHandle(_domainObject);
+      info.AddBoolValue(_isNewInHierarchy);
       info.AddBoolValue(_hasBeenMarkedChanged);
       info.AddValue(_hasBeenChangedForPersistentData);
       info.AddValue(_hasBeenChangedForNonPersistentData);

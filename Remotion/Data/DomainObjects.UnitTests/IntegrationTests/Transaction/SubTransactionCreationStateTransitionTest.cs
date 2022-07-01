@@ -201,5 +201,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       }
       Assert.That(obj.State.IsInvalid, Is.True);
     }
+
+    [Test]
+    public void RootToSubNewIsNewInHierarchy ()
+    {
+      DomainObject obj = GetNewUnchanged();
+      Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
+        obj.EnsureDataAvailable();
+        Assert.That(obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
+      }
+    }
+
+    [Test]
+    public void RootToSubUnchangedIsNewInHierarchy ()
+    {
+      DomainObject obj = GetUnchanged();
+      Assert.That(obj.State.IsUnchanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.False);
+        obj.EnsureDataAvailable();
+        Assert.That(obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.False);
+      }
+    }
+
+    [Test]
+    public void RootToSubDeletedIsNewInHierarchy ()
+    {
+      Order obj = GetDeleted();
+      Assert.That(obj.State.IsDeleted, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
+      using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.That(obj.State.IsInvalid, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.False);
+      }
+    }
+
   }
 }

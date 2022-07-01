@@ -424,7 +424,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         Assert.That(ex.Message, Is.EqualTo(
             "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-            + string.Format("'Order|{0}|System.Guid' (DataContainerState (New, PersistentDataChanged)).", orderNew.ID.Value)));
+            + string.Format("'Order|{0}|System.Guid' (DataContainerState (New, PersistentDataChanged, NewInHierarchy)).", orderNew.ID.Value)));
       }
 
       Assert.That(orderNew.State.IsNew, Is.True);

@@ -120,6 +120,10 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       {
         if (HasRelationChangedForNotLoadedYetDataContainer(objectID))
           stateBuilder = stateBuilder.SetRelationChanged();
+
+        if (IsNewInHierarchyForNotLoadedYetDataContainer(objectID))
+          stateBuilder = stateBuilder.SetNewInHierarchy();
+
         return stateBuilder.SetNotLoadedYet().Value;
       }
 
@@ -127,6 +131,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       if (dataContainerState.IsDiscarded)
         throw new InvalidOperationException($"DataContainer for object '{objectID}' has been discarded without removing the instance from the DataManager.");
+
+      if (dataContainerState.IsNewInHierarchy)
+        stateBuilder = stateBuilder.SetNewInHierarchy();
 
       var hasRelationChanged = HasRelationChanged(dataContainer);
       if (hasRelationChanged)
@@ -165,6 +172,38 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return RelationEndPointID.GetAllRelationEndPointIDs(objectID)
           .Select(id => _clientTransaction.DataManager.GetRelationEndPointWithoutLoading(id))
           .Any(endPoint => endPoint != null && endPoint.HasChanged);
+    }
+
+    private bool IsNewInHierarchyForNotLoadedYetDataContainer (ObjectID objectID)
+    {
+      var rootTransaction = _clientTransaction.RootTransaction;
+      if (rootTransaction == _clientTransaction)
+      {
+        // Performance optimization for special case: when the _clientTransaction is the rootTransaction, no additional lookup is needed.
+        Assertion.DebugAssert(rootTransaction.DataManager.DataContainers[objectID] == null, "rootTransaction.DataManager.DataContainers[objectID] == null");
+        return false;
+      }
+
+      var dataContainerInRootTransaction = rootTransaction.DataManager.DataContainers[objectID];
+      if (dataContainerInRootTransaction != null)
+      {
+        // Performance optimization for existing objects: when the object is loaded, it always exists in the root transaction
+        // and can thus supply the correct DataContainer.State for both existing and new objects.
+        return dataContainerInRootTransaction.State.IsNewInHierarchy;
+      }
+
+      for (var parentTransaction = _clientTransaction.ParentTransaction;
+           parentTransaction != rootTransaction;
+           parentTransaction = parentTransaction.ParentTransaction)
+      {
+        Assertion.DebugIsNotNull(parentTransaction, "parentTransaction != null when iteration is aborted on rootTransaction");
+
+        var dataContainerInParentTransaction = parentTransaction.DataManager.DataContainers[objectID];
+        if (dataContainerInParentTransaction != null && dataContainerInParentTransaction.State.IsNewInHierarchy)
+          return true;
+      }
+
+      return false;
     }
   }
 

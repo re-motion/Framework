@@ -1,7 +1,6 @@
 using System;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.Mapping;
-using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 
 namespace Remotion.Data.DomainObjects.DataManagement
@@ -21,6 +20,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       Discarded = 1 << 4,
       PersistentDataChanged = 1 << 5,
       NonPersistentDataChanged = 1 << 6,
+      NewInHierarchy = 1 << 7,
     }
 
     /// <summary>
@@ -54,6 +54,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
       /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsNew"/></summary>
       [MustUseReturnValue]
       public Builder SetNew () => SetFlag(Flags.New);
+
+      /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsNewInHierarchy"/></summary>
+      [MustUseReturnValue]
+      public Builder SetNewInHierarchy () => SetFlag(Flags.NewInHierarchy);
 
       /// <summary>Sets <see cref="DataContainerState"/>.<see cref="DataContainerState.IsDeleted"/></summary>
       [MustUseReturnValue]
@@ -100,6 +104,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// The <see cref="DataContainer"/> has been instantiated and has not been committed.
     /// </summary>
     public bool IsNew => (_flags & Flags.New) != 0;
+
+    /// <summary>
+    /// The <see cref="DataContainer"/> has been instantiated in this or one of the parent transactions and has not been committed in the root transaction.
+    /// </summary>
+    public bool IsNewInHierarchy =>  (_flags & Flags.NewInHierarchy) != 0;
 
     /// <summary>
     /// The <see cref="DataContainer"/> has been deleted.

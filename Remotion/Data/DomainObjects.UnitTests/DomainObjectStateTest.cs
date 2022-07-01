@@ -74,6 +74,28 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
 
     [Test]
+    public void IsNewInHierarchy_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().Value;
+      Assert.That(state.IsNewInHierarchy, Is.False);
+    }
+
+    [Test]
+    public void IsNewInHierarchy_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().SetChanged().Value;
+      Assert.That(state.IsNewInHierarchy, Is.False);
+    }
+
+    [Test]
+    public void IsNewInHierarchy_WithBuilderSettingNewInHierarchy_ReturnsTrue ()
+    {
+      var state = new DomainObjectState.Builder().SetNewInHierarchy().Value;
+      Assert.That(state.IsNewInHierarchy, Is.True);
+    }
+
+
+    [Test]
     public void IsDeleted_WithBuilderDefault_ReturnsFalse ()
     {
       var state = new DomainObjectState.Builder().Value;

@@ -36,7 +36,7 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.UnitTests
     {
       Assert.That(
           typeof(DomainObjectState).GetProperties(BindingFlags.Instance | BindingFlags.Public).Length,
-          Is.EqualTo(10),
+          Is.EqualTo(11),
           "DomainObjectState enum has changed. BindableDomainObjectPropertyWriteAccessStrategy implementation must be updated accordingly.");
     }
 
