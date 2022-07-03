@@ -74,6 +74,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       substitution1.SubstitutingUser = substitutingUser;
       substitution1.SubstitutedUser = CreateUser();
 
+      SimulateExistingObjectForSecurityTest(substitutingUser);
+      SimulateExistingObjectForSecurityTest(substitution1);
+
       var securityProviderStub = new Mock<ISecurityProvider>();
       securityProviderStub
           .Setup(stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>()))
