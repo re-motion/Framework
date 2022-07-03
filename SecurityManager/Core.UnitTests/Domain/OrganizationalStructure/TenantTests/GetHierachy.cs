@@ -99,6 +99,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       Tenant child2_1 = TestHelper.CreateTenant("Child2.1", "UID: Child2.1");
       child2_1.Parent = child2;
 
+      SimulateExistingObjectForSecurityTest(root);
+      SimulateExistingObjectForSecurityTest(child1);
+      SimulateExistingObjectForSecurityTest(child2);
+      SimulateExistingObjectForSecurityTest(child1_1);
+      SimulateExistingObjectForSecurityTest(child2_1);
+
       var securityProviderStub = new Mock<ISecurityProvider>();
 
       var childOfChild2SecurityContext = ((ISecurityContextFactory)child2_1).CreateSecurityContext();
@@ -129,6 +135,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
     public void Test_WithSecurity_PermissionDeniedOnRoot ()
     {
       Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
+
+      SimulateExistingObjectForSecurityTest(root);
 
       var securityProviderStub = new Mock<ISecurityProvider>();
 

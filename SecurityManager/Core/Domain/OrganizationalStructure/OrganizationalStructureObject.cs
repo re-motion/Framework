@@ -77,7 +77,7 @@ namespace Remotion.SecurityManager.Domain.OrganizationalStructure
 
     bool IDomainObjectSecurityContextFactory.IsNew
     {
-      get { return State.IsNew; }
+      get { return State.IsNewInHierarchy; }
     }
 
     bool IDomainObjectSecurityContextFactory.IsDeleted

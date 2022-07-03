@@ -108,6 +108,13 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       Group child1_1 = TestHelper.CreateGroup("GrandChild1.1", "UID: GrandChild1.1", child1, tenant);
       Group child2_1 = TestHelper.CreateGroup("GrandChild2.1", "UID: GrandChild2.1", child2, tenant);
 
+      SimulateExistingObjectForSecurityTest(tenant);
+      SimulateExistingObjectForSecurityTest(root);
+      SimulateExistingObjectForSecurityTest(child1);
+      SimulateExistingObjectForSecurityTest(child2);
+      SimulateExistingObjectForSecurityTest(child1_1);
+      SimulateExistingObjectForSecurityTest(child2_1);
+
       var securityProviderStub = new Mock<ISecurityProvider>();
 
       var childOfChild2SecurityContext = ((ISecurityContextFactory)child2_1).CreateSecurityContext();
@@ -139,6 +146,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
     {
       Tenant tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
       Group root = TestHelper.CreateGroup("Root", "UID: Root", null, tenant);
+
+      SimulateExistingObjectForSecurityTest(tenant);
+      SimulateExistingObjectForSecurityTest(root);
 
       var securityProviderStub = new Mock<ISecurityProvider>();
       securityProviderStub.Setup(

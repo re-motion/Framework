@@ -54,6 +54,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
       var securityClient = _securityTestHelper.CreatedStubbedSecurityClient<User>();
       var methodInformation = MethodInfoAdapter.Create(typeof(User).GetProperty("Roles").GetSetMethod(true));
 
+      SimulateExistingObjectForSecurityTest(_user);
+
       Assert.That(securityClient.HasPropertyWriteAccess(_user, methodInformation), Is.False);
     }
 
@@ -71,6 +73,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.User
     {
       var securityClient = _securityTestHelper.CreatedStubbedSecurityClient<User>();
       var methodInformation = MethodInfoAdapter.Create(typeof(User).GetProperty("SubstitutedBy").GetSetMethod(true));
+
+      SimulateExistingObjectForSecurityTest(_user);
 
       Assert.That(securityClient.HasPropertyWriteAccess(_user, methodInformation), Is.False);
     }

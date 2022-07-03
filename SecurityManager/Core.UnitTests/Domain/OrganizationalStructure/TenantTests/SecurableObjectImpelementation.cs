@@ -17,6 +17,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -67,6 +68,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       tenant.Delete();
 
       Assert.That(factory.IsInvalid, Is.True);
+    }
+
+    [Test]
+    public void DomainObjectSecurityContextFactoryImplementation_InSubTransaction ()
+    {
+      Tenant tenant = TestHelper.CreateTenant("Tenant", "UID: Tenant");
+      IDomainObjectSecurityContextFactory factory = tenant;
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.That(factory.IsInvalid, Is.False);
+        Assert.That(factory.IsNew, Is.True);
+        Assert.That(factory.IsDeleted, Is.False);
+
+        tenant.Delete();
+
+        Assert.That(factory.IsDeleted, Is.True);
+      }
     }
 
     [Test]
