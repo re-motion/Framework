@@ -24,10 +24,11 @@ using JetBrains.Annotations;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A column definition for displaying data and an optional command. </summary>
-  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition, IBocSortableColumnDefinition
+  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport
   {
     private bool _enforceWidth;
     private bool _isSortable = true;
+    private bool _isRowHeader;
 
     protected BocValueColumnDefinition ()
     {
@@ -77,6 +78,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _isSortable; }
       set { _isSortable = value; }
+    }
+
+    /// <summary> Gets or sets a flag that determines whether to use the value of this column as a row header. </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to use the value if this column as a row header.")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
+    public bool IsRowHeader
+    {
+      get { return _isRowHeader; }
+      set { _isRowHeader = value; }
     }
 
     /// <summary> Gets the human readable name of this type. </summary>
