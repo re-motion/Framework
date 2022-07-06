@@ -60,22 +60,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// the column definition in <see cref="BocColumnRenderingContext.ColumnDefinition"/>, and populated with the menu items in
     /// the <see cref="IBocList.RowMenus"/> property.
     /// </remarks>
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<BocDropDownMenuColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<BocDropDownMenuColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
-      if (renderingContext.Control.RowMenus.Count <= rowIndex)
+      if (renderingContext.Control.RowMenus.Count <= arguments.RowIndex)
       {
         renderingContext.Writer.Write(c_whiteSpace);
         return;
       }
 
-      var dropDownMenu = renderingContext.Control.RowMenus[rowIndex];
+      var dropDownMenu = renderingContext.Control.RowMenus[arguments.RowIndex];
 
       if (renderingContext.Control.HasClientScript)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
@@ -97,10 +92,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         stringValueParametersDictionary.Add("businessObjectClass", renderingContext.BusinessObjectWebServiceContext.BusinessObjectClass);
         stringValueParametersDictionary.Add("businessObjectProperty", renderingContext.BusinessObjectWebServiceContext.BusinessObjectProperty);
         stringValueParametersDictionary.Add("businessObject", renderingContext.BusinessObjectWebServiceContext.BusinessObjectIdentifier);
-        stringValueParametersDictionary.Add("rowIndex", dataRowRenderEventArgs.ListIndex.ToString());
+        stringValueParametersDictionary.Add("rowIndex", arguments.ListIndex.ToString());
         stringValueParametersDictionary.Add(
             "rowBusinessObject",
-            (dataRowRenderEventArgs.BusinessObject as IBusinessObjectWithIdentity)?.UniqueIdentifier);
+            (arguments.BusinessObject as IBusinessObjectWithIdentity)?.UniqueIdentifier);
         stringValueParametersDictionary.Add("arguments", renderingContext.BusinessObjectWebServiceContext.Arguments);
 
         dropDownMenu.SetLoadMenuItemStatus(

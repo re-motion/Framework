@@ -24,7 +24,6 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
@@ -62,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -81,7 +80,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -102,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject)businessObject, false, true);
       IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -120,7 +119,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.PropertyPathBindings.Add(new PropertyPathBinding("ReferenceValue"));
       IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       Assert.That(businessObject.ReferenceValue, Is.Null);
       var document = Html.GetResultDocument();
@@ -136,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
       var renderArgs = new BocListDataRowRenderEventArgs(0, (IBusinessObject)TypeWithReference.Create("value\r\nExtraText<html>"), false, true);
-      renderer.RenderDataCell(_renderingContext, 0, false, renderArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(renderArgs));
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -160,7 +159,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       IBocColumnRenderer renderer = new BocCompoundColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
 
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);

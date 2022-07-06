@@ -20,7 +20,6 @@ using System.Collections.ObjectModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.ObjectBinding.Web.Services;
@@ -28,7 +27,6 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
@@ -76,7 +74,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       var args = new BocListDataRowRenderEventArgs(10, EventArgs.BusinessObject, EventArgs.IsEditableRow, EventArgs.IsOddRow);
-      renderer.RenderDataCell(_renderingContext, 0, false, args);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(args));
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -94,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       var args = new BocListDataRowRenderEventArgs(20, EventArgs.BusinessObject, EventArgs.IsEditableRow, EventArgs.IsOddRow);
-      renderer.RenderDataCell(_renderingContext, 0, false,args);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(args));
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -111,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.Mode = BocCustomColumnDefinitionMode.NoControls;
 
       IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);

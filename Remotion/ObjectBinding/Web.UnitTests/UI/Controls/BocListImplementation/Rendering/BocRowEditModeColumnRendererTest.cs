@@ -25,7 +25,6 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
@@ -70,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       EventArgs = new BocListDataRowRenderEventArgs(EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
 
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
 
@@ -95,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       EventArgs = new BocListDataRowRenderEventArgs(EventArgs.ListIndex, EventArgs.BusinessObject, true, EventArgs.IsOddRow);
 
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
       var editTest = document.GetAssertedElementByID(List.Object.ClientID + "_Column_0_RowEditCommand_Edit_Row_10");
@@ -111,7 +110,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
 
@@ -142,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           RenderingFeatures.Default,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
       var id = List.Object.ClientID;
@@ -159,7 +158,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           RenderingFeatures.WithDiagnosticMetadata,
           _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
 

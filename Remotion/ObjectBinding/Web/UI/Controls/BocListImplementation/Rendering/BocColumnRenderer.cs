@@ -115,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 
-      _columnRenderer.RenderDataCell(columnRenderingContext, rowIndex, _showIcon, dataRowRenderEventArgs);
+      _columnRenderer.RenderDataCell(columnRenderingContext, new BocDataCellRenderArguments(dataRowRenderEventArgs, rowIndex, _showIcon));
     }
 
     private BocColumnRenderingContext CreateBocColumnRenderingContext (BocListRenderingContext renderingContext)

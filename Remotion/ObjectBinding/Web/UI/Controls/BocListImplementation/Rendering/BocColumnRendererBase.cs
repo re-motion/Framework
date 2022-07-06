@@ -288,39 +288,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    void IBocColumnRenderer.RenderDataCell (
-        BocColumnRenderingContext renderingContext,
-        int rowIndex,
-        bool showIcon,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    void IBocColumnRenderer.RenderDataCell (BocColumnRenderingContext renderingContext, in BocDataCellRenderArguments arguments)
     {
-      RenderDataCell(
-          new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext),
-          rowIndex,
-          showIcon,
-          dataRowRenderEventArgs);
+      RenderDataCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
 
     /// <summary>
     /// Renders a table cell for <see cref="BocColumnRenderingContext.ColumnDefinition"/> containing the appropriate data from the 
-    /// <see cref="IBusinessObject"/> contained in <paramref name="dataRowRenderEventArgs"/>
+    /// <see cref="IBusinessObject"/> contained in <paramref name="arguments"/>
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocColumnDefinition}"/>.</param>
-    /// <param name="rowIndex">The zero-based index of the row on the page to be displayed.</param>
-    /// <param name="showIcon">Specifies if an object-specific icon will be rendered in the table cell.</param>
-    /// <param name="dataRowRenderEventArgs">Specifies row-specific arguments used in rendering the table cell.</param>
+    /// <param name="arguments">The cell-specific rendering arguments.</param>
     /// <remarks>
     /// This is a template method. Deriving classes must implement <see cref="RenderCellContents"/> to provide the contents of
     /// the table cell (&lt;td&gt;) element.
     /// </remarks>
     protected virtual void RenderDataCell (
         BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        int rowIndex,
-        bool showIcon,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+        in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       string cssClassTableCell = CssClasses.DataCell;
 
@@ -335,7 +322,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         AddDiagnosticMetadataAttributes(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
-      RenderCellContents(renderingContext, dataRowRenderEventArgs, rowIndex, showIcon);
+      RenderCellContents(renderingContext, arguments);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -362,13 +349,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// Renders the contents of the table cell. It is called by <see cref="RenderDataCell"/> and should not be called by other clients.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocCOlumnDefinition}"/>.</param>
-    /// <param name="dataRowRenderEventArgs">The row-specific rendering arguments.</param>
-    /// <param name="rowIndex">The zero-based index of the row to render in <see cref="IBocList"/>.</param>
-    /// <param name="showIcon">Specifies if the cell should contain an icon of the current <see cref="IBusinessObject"/>.</param>
+    /// <param name="arguments">The cell-specific rendering arguments.</param>
     protected abstract void RenderCellContents (
         BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon);
+        in BocDataCellRenderArguments arguments);
   }
 }

@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderDataCell ()
     {
-      var dataRowRenderEventArgs = new BocListDataRowRenderEventArgs(0, null, true, true);
+      var dataRowRenderEventArgs = new BocListDataRowRenderEventArgs(0, Mock.Of<IBusinessObject>(), true, true);
 
       _columnRenderMock.Setup(
           mock => mock.RenderDataCell(
@@ -102,9 +102,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                   rc =>
                       rc.HttpContext == _httpContextStub.Object && rc.Control == _bocListStub.Object && rc.Writer == _htmlTextWriterStub.Object && rc.ColumnIndex == 0
                       && rc.ColumnDefinition == _columnDefinition),
-              0,
-              true,
-              dataRowRenderEventArgs)).Verifiable();
+              new BocDataCellRenderArguments(dataRowRenderEventArgs, 0, true)
+              )).Verifiable();
 
       _columnRendererAdapter.RenderDataCell(_renderingContext, 0, dataRowRenderEventArgs);
 

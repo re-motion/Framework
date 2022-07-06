@@ -74,7 +74,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderDataCell ()
     {
-      _nullColumnRenderer.RenderDataCell(_renderingContext, 0, true, null);
+      _nullColumnRenderer.RenderDataCell(
+          _renderingContext,
+          new BocDataCellRenderArguments(new BocListDataRowRenderEventArgs(0, Mock.Of<IBusinessObject>(), false, false), 0, false));
 
       _htmlTextWriterMock.Verify();
     }

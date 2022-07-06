@@ -36,21 +36,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderingContext.Writer.RenderEndTag();
     }
 
-    protected override void RenderDataCell (
-        BocColumnRenderingContext<StubColumnDefinition> renderingContext,
-        int rowIndex,
-        bool showIcon,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    protected override void RenderDataCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
       renderingContext.Writer.RenderEndTag();
     }
 
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<StubColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       throw new NotImplementedException();
     }

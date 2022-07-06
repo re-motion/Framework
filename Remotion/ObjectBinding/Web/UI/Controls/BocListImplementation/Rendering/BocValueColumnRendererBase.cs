@@ -42,17 +42,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// Renders a table cell for a <see cref="BocValueColumnDefinition"/>.
     /// </summary>
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
-      int originalRowIndex = dataRowRenderEventArgs.ListIndex;
-      IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
+      int originalRowIndex = arguments.ListIndex;
+      IBusinessObject businessObject = arguments.BusinessObject;
 
       IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex);
 
@@ -68,7 +63,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!hasEditModeControl)
       {
-        if (showIcon)
+        if (arguments.ShowIcon)
           RenderCellIcon(renderingContext, businessObject);
 
         RenderOtherIcons(renderingContext, businessObject);

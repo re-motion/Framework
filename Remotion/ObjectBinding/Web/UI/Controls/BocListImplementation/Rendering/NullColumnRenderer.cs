@@ -37,11 +37,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
     }
 
-    public void RenderDataCell (
-        BocColumnRenderingContext renderingContext,
-        int rowIndex,
-        bool showIcon,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    public void RenderDataCell (BocColumnRenderingContext renderingContext, in BocDataCellRenderArguments arguments)
     {
     }
 

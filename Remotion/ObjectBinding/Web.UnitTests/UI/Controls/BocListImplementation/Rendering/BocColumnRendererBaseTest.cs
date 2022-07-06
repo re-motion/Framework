@@ -195,7 +195,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var renderingContext = CreateRenderingContext();
 
-      renderer.RenderDataCell(renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
