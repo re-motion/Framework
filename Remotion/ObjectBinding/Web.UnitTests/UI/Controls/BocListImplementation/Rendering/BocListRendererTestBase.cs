@@ -59,7 +59,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       }
       else
       {
-        businessObject = TypeWithReference.Create();
+        businessObject = TypeWithReference.Create(
+            TypeWithReference.Create("referencedObject1"),
+            TypeWithReference.Create("referencedObject2"));
         businessObject.ReferenceList = new TypeWithReference[0];
       }
       BusinessObject = (IBusinessObject)businessObject;
