@@ -29,11 +29,6 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(RemotionWebResource_IsWebApplication)' == 'true' AND '$(_useSymlink)' == 'false'">
-    <_remotionWebResourcesToCopy Remove="@(_remotionWebResourcesToCopy)" />
-    <_remotionWebResourcesToCopy Include="$(MSBuildThisFileDirectory)..\res\**\*" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(RemotionWebResource_IsWebApplication)' == 'true' AND '$(_useSymlink)' == 'false'">
     <Content Include="$(MSBuildThisFileDirectory)..\res\**\*" CopyToOutputDirectory="PreserveNewest" Visible="true" Link="$(RemotionWebResource_TargetPath)\$(MSBuildThisFileName)\%(RecursiveDir)%(Filename)%(Extension)" Pack="false" />
   </ItemGroup>
 
