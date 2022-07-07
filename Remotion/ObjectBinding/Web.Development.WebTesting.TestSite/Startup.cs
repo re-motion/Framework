@@ -1,6 +1,5 @@
 using System;
-using System.Web;
-using System.Web.Integration;
+using CoreForms.Web.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
