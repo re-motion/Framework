@@ -50,12 +50,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                              new BocColumnRenderer(
                                  new StubColumnRenderer(new FakeResourceUrlFactory()),
                                  stubColumnDefinition,
-                                 columnIndex: 0,
-                                 visibleColumnIndex: 0,
+                                 columnIndex: 7,
+                                 visibleColumnIndex: 13,
                                  isRowHeader: false,
                                  showIcon: false,
                                  SortingDirection.Ascending,
-                                 orderIndex: 0)
+                                 orderIndex: 5)
                          };
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
@@ -76,7 +76,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var tr = Html.GetAssertedChildElement(document, "tr", 0);
       Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement(tr, "th", 0);
+      var th = Html.GetAssertedChildElement(tr, "th", 0);
+      Html.AssertAttribute(th, "arguments-CellID", List.Object.ClientID + "_C13");
     }
 
     [Test]
@@ -146,7 +147,79 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(tr, "class", _bocListCssClassDefinition.DataRow + " " + _bocListCssClassDefinition.DataRowOdd);
       Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement(tr, "td", 0);
+      var td = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertAttribute(td, "arguments-CellID", "null");
+      Html.AssertAttribute(td, "arguments-HeaderIDs", "MyList_C13");
+    }
+
+    [Test]
+    public void RenderDataRow_WithRowHeaders ()
+    {
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                             {
+                                 CreateBocColumnRenderer(3, isRowHeader: false),
+                                 CreateBocColumnRenderer(4, isRowHeader: true),
+                                 CreateBocColumnRenderer(5, isRowHeader: false),
+                                 CreateBocColumnRenderer(6, isRowHeader: true),
+                                 CreateBocColumnRenderer(7, isRowHeader: false),
+                                 CreateBocColumnRenderer(8, isRowHeader: true),
+                                 CreateBocColumnRenderer(9, isRowHeader: false)
+                             };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertAttribute(td0, "arguments-CellID", "null");
+      Html.AssertAttribute(td0, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C3");
+
+      var td1 = Html.GetAssertedChildElement(tr, "td", 1);
+      Html.AssertAttribute(td1, "arguments-CellID", "MyList_C4_R17");
+      Html.AssertAttribute(td1, "arguments-HeaderIDs", "MyList_C4");
+
+      var td2 = Html.GetAssertedChildElement(tr, "td", 2);
+      Html.AssertAttribute(td2, "arguments-CellID", "null");
+      Html.AssertAttribute(td2, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C5");
+
+      var td3 = Html.GetAssertedChildElement(tr, "td", 3);
+      Html.AssertAttribute(td3, "arguments-CellID", "MyList_C6_R17");
+      Html.AssertAttribute(td3, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6");
+
+      var td4 = Html.GetAssertedChildElement(tr, "td", 4);
+      Html.AssertAttribute(td4, "arguments-CellID", "null");
+      Html.AssertAttribute(td4, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C7");
+
+      var td5 = Html.GetAssertedChildElement(tr, "td", 5);
+      Html.AssertAttribute(td5, "arguments-CellID", "MyList_C8_R17");
+      Html.AssertAttribute(td5, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8");
+
+      var td6 = Html.GetAssertedChildElement(tr, "td", 6);
+      Html.AssertAttribute(td6, "arguments-CellID", "null");
+      Html.AssertAttribute(td6, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C9");
+
+      BocColumnRenderer CreateBocColumnRenderer (int visibleColumnIndex, bool isRowHeader)
+      {
+        return new BocColumnRenderer(
+            new StubColumnRenderer(new FakeResourceUrlFactory()),
+            new StubColumnDefinition(),
+            columnIndex: 0,
+            visibleColumnIndex: visibleColumnIndex,
+            isRowHeader: isRowHeader,
+            showIcon: false,
+            SortingDirection.None,
+            orderIndex: -1);
+      }
     }
 
     [Test]

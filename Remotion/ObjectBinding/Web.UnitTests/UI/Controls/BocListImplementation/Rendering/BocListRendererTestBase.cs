@@ -131,17 +131,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     protected BocTitleCellRenderArguments CreateBocTitleCellRenderArguments (
         SortingDirection sortingDirection = SortingDirection.None,
-        int orderIndex = -1)
+        int orderIndex = -1,
+        string cellID = null,
+        bool isRowHeader = false)
     {
-      return new BocTitleCellRenderArguments(sortingDirection, orderIndex);
+      return new BocTitleCellRenderArguments(sortingDirection, orderIndex, cellID ?? "TitleCellID", isRowHeader);
     }
 
     protected BocDataCellRenderArguments CreateBocDataCellRenderArguments (
         BocListDataRowRenderEventArgs dataRowRenderEventArgs = null,
         int rowIndex = 0,
-        bool showIcon = false)
+        bool showIcon = false,
+        string cellID = null,
+        IReadOnlyCollection<string> headerIDs = null)
     {
-      return new BocDataCellRenderArguments(dataRowRenderEventArgs ?? EventArgs, rowIndex, showIcon);
+      return new BocDataCellRenderArguments(dataRowRenderEventArgs ?? EventArgs, rowIndex, showIcon, cellID, headerIDs ?? Array.Empty<string>());
     }
   }
 }

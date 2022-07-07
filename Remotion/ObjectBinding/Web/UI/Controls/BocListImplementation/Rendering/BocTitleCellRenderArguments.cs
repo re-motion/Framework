@@ -15,6 +15,7 @@
 // // along with re-motion; if not, see http://www.gnu.org/licenses.
 // //
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -31,10 +32,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     public int OrderIndex { get; }
 
-    public BocTitleCellRenderArguments (SortingDirection sortingDirection, int orderIndex)
+    /// <summary>Gets the id of the rendered title cell for referencing as the column header.</summary>
+    public string CellID { get; }
+
+    /// <summary>Gets a flag that describes if the <see cref="BocColumnDefinition"/> is configured as a row header.</summary>
+    public bool IsRowHeader { get; }
+
+    public BocTitleCellRenderArguments (SortingDirection sortingDirection, int orderIndex, string cellID, bool isRowHeader)
     {
+      ArgumentUtility.CheckNotNullOrEmpty("cellID", cellID);
+
       SortingDirection = sortingDirection;
       OrderIndex = orderIndex;
+      CellID = cellID;
+      IsRowHeader = isRowHeader;
     }
   }
 }

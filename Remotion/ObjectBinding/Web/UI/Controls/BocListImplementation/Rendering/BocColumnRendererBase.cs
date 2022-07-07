@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -106,6 +107,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     protected virtual void RenderTitleCell (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
+      if (arguments.CellID == null)
+        throw new ArgumentException("arguments.CellID is null", "arguments");
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, arguments.CellID);
 
       string cssClassTitleCell = CssClasses.TitleCell;
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
@@ -308,9 +314,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableCell);
+
+      if (arguments.IsRowHeader)
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, arguments.CellID);
+
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      // renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Headers, string.Join(" ", arguments.HeaderIDs));
+
+      string ariaRoleForTableDataElement;
+      if (arguments.IsRowHeader)
+      {
+        ariaRoleForTableDataElement = HtmlRoleAttributeValue.RowHeader;
+      }
+      else
+      {
 #pragma warning disable CS0618 // Type or member is obsolete
-      var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
+        ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
 #pragma warning restore CS0618 // Type or member is obsolete
+      }
+
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes(renderingContext);

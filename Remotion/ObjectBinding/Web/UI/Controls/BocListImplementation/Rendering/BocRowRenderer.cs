@@ -15,8 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
-using Remotion.Globalization;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -24,9 +25,7 @@ using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Globalization;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -72,7 +71,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       GetSelectorColumnRenderer().RenderTitleCell(renderingContext);
 
       foreach (var columnRenderer in renderingContext.ColumnRenderers)
-        columnRenderer.RenderTitleCell(renderingContext);
+      {
+        var titleCellID = GetTitleCellID(renderingContext, columnRenderer.VisibleColumnIndex);
+        columnRenderer.RenderTitleCell(renderingContext, cellID: titleCellID);
+      }
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -174,8 +176,53 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderDataCells (BocListRenderingContext renderingContext, int rowIndex, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
-      foreach (BocColumnRenderer columnRenderer in renderingContext.ColumnRenderers)
-        columnRenderer.RenderDataCell(renderingContext, rowIndex, dataRowRenderEventArgs);
+      var renderInformation = renderingContext.ColumnRenderers
+          .Select(r => (ColumnRenderer: r, DataCellID: r.IsRowHeader ? GetDataCellID(renderingContext, columnIndex: r.VisibleColumnIndex, rowIndex: rowIndex) : null))
+          .ToArray();
+
+      foreach (var (columnRenderer, dataCellID) in renderInformation)
+      {
+        var titleCellID = GetTitleCellID(renderingContext, columnRenderer.VisibleColumnIndex);
+        string[] headerIDs;
+        if (columnRenderer.IsRowHeader)
+        {
+          // If the current column is part of the row header, only columns to the left of the current column will be integrated as a row header.
+          // This prevents the screen reader from announcing duplicate information by including the current cell in the row header. The cells to the right are excluded
+          // because skipping just the current column would disrupt the intended information flow (e.g. only read the first name without the last name).
+          headerIDs = renderInformation
+              .Where(i => i.ColumnRenderer.IsRowHeader && i.ColumnRenderer.VisibleColumnIndex < columnRenderer.VisibleColumnIndex)
+              .Select(i => i.DataCellID!)
+              .Concat(titleCellID)
+              .ToArray();
+        }
+        else
+        {
+          // If the current column is not part of the row header, all row header columns will be integrated as the row header.
+          // This allows for proper annotation of commands, the index and selector columns, etc
+          headerIDs = renderInformation
+              .Where(i => i.ColumnRenderer.IsRowHeader)
+              .Select(i => i.DataCellID!)
+              .Concat(titleCellID)
+              .ToArray();
+        }
+
+        columnRenderer.RenderDataCell(
+            renderingContext,
+            rowIndex: rowIndex,
+            cellID: dataCellID,
+            headerIDs: headerIDs,
+            dataRowRenderEventArgs);
+      }
+    }
+
+    private string GetTitleCellID (BocListRenderingContext renderingContext, int columnIndex)
+    {
+      return renderingContext.Control.ClientID + "_C" + columnIndex;
+    }
+
+    private string GetDataCellID (BocListRenderingContext renderingContext, int columnIndex, int rowIndex)
+    {
+      return renderingContext.Control.ClientID + "_C" + columnIndex + "_R" + rowIndex;
     }
 
     private string GetCssClassTableRow (

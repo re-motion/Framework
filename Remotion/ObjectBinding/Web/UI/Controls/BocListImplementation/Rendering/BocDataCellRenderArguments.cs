@@ -14,6 +14,8 @@
 // // You should have received a copy of the GNU Lesser General Public License
 // // along with re-motion; if not, see http://www.gnu.org/licenses.
 // //
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -30,15 +32,36 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>Gets a flag that describes if an icon should be displayed in this cell.</summary>
     public bool ShowIcon { get; }
 
+    /// <summary>Gets a flag that describes if the <see cref="BocColumnDefinition"/> is configured as a row header.</summary>
+    [MemberNotNullWhen(true, nameof(CellID))]
+    public bool IsRowHeader { get; }
+
+    /// <summary>Gets the ID of the rendered title cell for referencing as the row header.</summary>
+    /// <returns>Returns not <see langword="null"/> if <see cref="IsRowHeader"/> is <see langword="true"/>, otherwise <see langword="null"/>. </returns>
+    public string? CellID { get; }
+
+    /// <summary>Gets the list of IDs that describe the header for this cell.</summary>
+    public IReadOnlyCollection<string> HeaderIDs { get; }
+
     private readonly BocListDataRowRenderEventArgs _dataRowRenderEventArgs;
 
-    public BocDataCellRenderArguments (BocListDataRowRenderEventArgs dataRowRenderEventArgs, int rowIndex, bool showIcon)
+    public BocDataCellRenderArguments (
+        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
+        int rowIndex,
+        bool showIcon,
+        string? cellID,
+        IReadOnlyCollection<string> headerIDs)
     {
       ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotEmpty("cellID", cellID);
+      ArgumentUtility.CheckNotNull("headerIDs", headerIDs);
 
       _dataRowRenderEventArgs = dataRowRenderEventArgs;
       RowIndex = rowIndex;
       ShowIcon = showIcon;
+      IsRowHeader = cellID != null;
+      CellID = cellID;
+      HeaderIDs = headerIDs;
     }
 
     /// <inheritdoc cref="BocListItemEventArgs.ListIndex"/>

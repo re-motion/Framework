@@ -50,8 +50,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           visibleColumnIndex: 0,
           isRowHeader: false,
           showIcon: true,
-          SortingDirection.None,
-          orderIndex: 0);
+          SortingDirection.Ascending,
+          orderIndex: 3);
       _htmlTextWriterStub = new Mock<HtmlTextWriter>(TextWriter.Null);
       _httpContextStub = new Mock<HttpContextBase>();
       _bocListStub = new Mock<IBocList>();
@@ -74,10 +74,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                       rc =>
                           rc.HttpContext == _httpContextStub.Object && rc.Control == _bocListStub.Object && rc.Writer == _htmlTextWriterStub.Object && rc.ColumnIndex == 0
                           && rc.ColumnDefinition == _columnDefinition),
-                  new BocTitleCellRenderArguments(SortingDirection.None, 0)))
+                  new BocTitleCellRenderArguments(SortingDirection.Ascending, 3, "TitleCellID", false)))
           .Verifiable();
 
-      _columnRendererAdapter.RenderTitleCell(_renderingContext);
+      _columnRendererAdapter.RenderTitleCell(_renderingContext, cellID: "TitleCellID");
 
       _columnRenderMock.Verify();
     }
@@ -102,6 +102,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderDataCell ()
     {
       var dataRowRenderEventArgs = new BocListDataRowRenderEventArgs(0, Mock.Of<IBusinessObject>(), true, true);
+      var rowIndex = 13;
+      var cellID = "DataCell_0";
+      var headerIDs = new string[] { "ID1" };
 
       _columnRenderMock.Setup(
           mock => mock.RenderDataCell(
@@ -109,10 +112,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                   rc =>
                       rc.HttpContext == _httpContextStub.Object && rc.Control == _bocListStub.Object && rc.Writer == _htmlTextWriterStub.Object && rc.ColumnIndex == 0
                       && rc.ColumnDefinition == _columnDefinition),
-              new BocDataCellRenderArguments(dataRowRenderEventArgs, 0, true)
+              new BocDataCellRenderArguments(dataRowRenderEventArgs, rowIndex, true, cellID, headerIDs)
               )).Verifiable();
 
-      _columnRendererAdapter.RenderDataCell(_renderingContext, 0, dataRowRenderEventArgs);
+      _columnRendererAdapter.RenderDataCell(_renderingContext, rowIndex: rowIndex, cellID: cellID, headerIDs: headerIDs, dataRowRenderEventArgs);
 
       _columnRenderMock.Verify();
     }

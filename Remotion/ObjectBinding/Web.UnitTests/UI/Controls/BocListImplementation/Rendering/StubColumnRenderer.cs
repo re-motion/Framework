@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
@@ -30,12 +31,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
     protected override void RenderTitleCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
+      renderingContext.Writer.AddAttribute("arguments-CellID", arguments.CellID);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderEndTag();
     }
 
     protected override void RenderDataCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
+      renderingContext.Writer.AddAttribute("arguments-CellID", arguments.CellID ?? "null");
+      renderingContext.Writer.AddAttribute("arguments-HeaderIDs", arguments.HeaderIDs.Any() ? string.Join(", ", arguments.HeaderIDs) : "empty");
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
       renderingContext.Writer.RenderEndTag();
     }

@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitleCell ()
     {
-      _nullColumnRenderer.RenderTitleCell(_renderingContext, new BocTitleCellRenderArguments(SortingDirection.None, 0));
+      _nullColumnRenderer.RenderTitleCell(_renderingContext, new BocTitleCellRenderArguments(SortingDirection.None, 0, "TitleCellID", isRowHeader: false));
 
       _htmlTextWriterMock.Verify();
     }
@@ -76,7 +76,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       _nullColumnRenderer.RenderDataCell(
           _renderingContext,
-          new BocDataCellRenderArguments(new BocListDataRowRenderEventArgs(0, Mock.Of<IBusinessObject>(), false, false), 0, false));
+          new BocDataCellRenderArguments(
+              new BocListDataRowRenderEventArgs(0, Mock.Of<IBusinessObject>(), false, false),
+              0,
+              showIcon: false,
+              cellID: null,
+              headerIDs: Array.Empty<string>()));
 
       _htmlTextWriterMock.Verify();
     }

@@ -28,6 +28,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.UI;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
@@ -98,11 +99,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       var renderingContext = CreateRenderingContext();
-      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(cellID: "TheColumnID"));
 
       var document = Html.GetResultDocument();
 
       var th = Html.GetAssertedChildElement(document, "th", 0);
+      Html.AssertAttribute(th, "id", "TheColumnID");
       Html.AssertAttribute(th, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(th, "class", c_columnCssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(th, "role", "columnheader");
@@ -183,6 +185,46 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertChildElementCount(titleSpan, 0);
 
       Html.AssertTextNode(cellBody, c_whitespace, 1);
+    }
+
+    [Test]
+    public void TestRowHeaderRendering_HeaderColumn ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition);
+
+      var renderingContext = CreateRenderingContext();
+
+      renderer.RenderDataCell(renderingContext, CreateBocDataCellRenderArguments(cellID: "HeaderCell"));
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "role", "rowheader");
+      Html.AssertAttribute(td, "id", "HeaderCell");
+    }
+
+    [Test]
+    public void TestRowHeaderRendering_DataColumnReferencingRowHeader ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(
+          new FakeResourceUrlFactory(),
+          RenderingFeatures.WithDiagnosticMetadata,
+          _bocListCssClassDefinition);
+
+      var renderingContext = CreateRenderingContext();
+
+      var headerIDs = new[] { "c1", "c2" };
+      renderer.RenderDataCell(renderingContext, CreateBocDataCellRenderArguments(headerIDs: headerIDs));
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "role", "cell");
+      Html.AssertNoAttribute(td, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td, "headers");
     }
 
     [Test]
