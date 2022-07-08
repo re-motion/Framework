@@ -50,11 +50,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                              new BocColumnRenderer(
                                  new StubColumnRenderer(new FakeResourceUrlFactory()),
                                  stubColumnDefinition,
-                                 0,
-                                 0,
-                                 false,
+                                 columnIndex: 0,
+                                 visibleColumnIndex: 0,
+                                 isRowHeader: false,
+                                 showIcon: false,
                                  SortingDirection.Ascending,
-                                 0)
+                                 orderIndex: 0)
                          };
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
