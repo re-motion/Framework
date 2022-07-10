@@ -86,10 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCustomColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (
-        BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext,
-        SortingDirection sortingDirection,
-        int orderIndex)
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
@@ -108,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         }
       }
 
-      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, arguments);
     }
 
     private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex, int rowIndex)

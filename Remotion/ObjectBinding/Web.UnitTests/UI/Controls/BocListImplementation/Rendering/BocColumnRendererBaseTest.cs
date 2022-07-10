@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       var renderingContext = CreateRenderingContext();
-      renderer.RenderTitleCell(renderingContext, SortingDirection.None, -1);
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
       var document = Html.GetResultDocument();
 
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       var renderingContext = CreateRenderingContext();
-      renderer.RenderTitleCell(renderingContext, SortingDirection.None, -1);
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
       var document = Html.GetResultDocument();
       var title = document.GetAssertedElementByID(List.Object.ClientID + "_0_Title");
@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var renderingContext = CreateRenderingContext();
       renderingContext.ColumnDefinition.ShowColumnTitle = false;
 
-      renderer.RenderTitleCell(renderingContext, SortingDirection.None, -1);
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
       var document = Html.GetResultDocument();
 
@@ -166,7 +166,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderingContext.ColumnDefinition.ShowColumnTitle = false;
       renderingContext.ColumnDefinition.IsSortable = false;
 
-      renderer.RenderTitleCell(renderingContext, SortingDirection.None, -1);
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
       var document = Html.GetResultDocument();
 
@@ -214,7 +214,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var renderingContext = CreateRenderingContext();
 
-      renderer.RenderTitleCell(renderingContext, SortingDirection.None, 0);
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(orderIndex: 0));
 
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement(document, "th", 0);
@@ -231,7 +231,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.ColumnTitle = WebString.Empty;
       var renderingContext = CreateRenderingContext();
 
-      renderer.RenderTitleCell(renderingContext, SortingDirection.None, 0);
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(orderIndex: 0));
 
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement(document, "th", 0);
@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
       var renderingContext = CreateRenderingContext();
-      renderer.RenderTitleCell(renderingContext, sortDirection, sortIndex);
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(sortDirection, sortIndex));
 
       var document = Html.GetResultDocument();
 

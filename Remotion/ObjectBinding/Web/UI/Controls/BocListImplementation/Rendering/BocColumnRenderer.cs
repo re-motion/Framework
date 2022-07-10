@@ -96,7 +96,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 
-      _columnRenderer.RenderTitleCell(columnRenderingContext, _sortingDirection, _orderIndex);
+      _columnRenderer.RenderTitleCell(
+          columnRenderingContext,
+          new BocTitleCellRenderArguments(
+              sortingDirection: _sortingDirection,
+              orderIndex: _orderIndex));
     }
 
     public void RenderDataColumnDeclaration (BocListRenderingContext renderingContext, bool isTextXml)

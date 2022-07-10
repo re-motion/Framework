@@ -27,9 +27,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// Renders a table header cell for a <see cref="BocColumnDefinition"/> including title and sorting controls.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext"/>.</param>
-    /// <param name="sortingDirection">Specifies if rows are sorted by this column's data, and if so in which direction.</param>
-    /// <param name="orderIndex">The zero-based index of the column in a virtual sorted list containing all columns by which data is sorted.</param>
-    void RenderTitleCell (BocColumnRenderingContext renderingContext, SortingDirection sortingDirection, int orderIndex);
+    /// <param name="arguments">The cell-specific rendering arguments.</param>
+    void RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments);
 
     /// <summary>
     /// Renders a table cell for a <see cref="BocColumnDefinition"/> containing the appropriate data from the <see cref="IBusinessObject"/>

@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web.UI;
-using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
 
@@ -29,8 +28,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
     }
 
-    protected override void RenderTitleCell (
-        BocColumnRenderingContext<StubColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    protected override void RenderTitleCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderEndTag();

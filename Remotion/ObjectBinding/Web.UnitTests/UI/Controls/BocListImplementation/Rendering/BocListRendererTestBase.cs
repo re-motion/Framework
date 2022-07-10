@@ -129,6 +129,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string url) => url.TrimStart('~'));
     }
 
+    protected BocTitleCellRenderArguments CreateBocTitleCellRenderArguments (
+        SortingDirection sortingDirection = SortingDirection.None,
+        int orderIndex = -1)
+    {
+      return new BocTitleCellRenderArguments(sortingDirection, orderIndex);
+    }
+
     protected BocDataCellRenderArguments CreateBocDataCellRenderArguments (
         BocListDataRowRenderEventArgs dataRowRenderEventArgs = null,
         int rowIndex = 0,

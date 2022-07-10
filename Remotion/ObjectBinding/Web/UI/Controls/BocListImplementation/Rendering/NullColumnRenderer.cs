@@ -33,7 +33,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return null; }
     }
 
-    public void RenderTitleCell (BocColumnRenderingContext renderingContext, SortingDirection sortingDirection, int orderIndex)
+    public void RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments)
     {
     }
 

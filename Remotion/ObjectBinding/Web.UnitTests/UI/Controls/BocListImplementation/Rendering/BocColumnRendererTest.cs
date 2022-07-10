@@ -66,8 +66,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                       rc =>
                           rc.HttpContext == _httpContextStub.Object && rc.Control == _bocListStub.Object && rc.Writer == _htmlTextWriterStub.Object && rc.ColumnIndex == 0
                           && rc.ColumnDefinition == _columnDefinition),
-                  SortingDirection.None,
-                  0))
+                  new BocTitleCellRenderArguments(SortingDirection.None, 0)))
           .Verifiable();
 
       _columnRendererAdapter.RenderTitleCell(_renderingContext);

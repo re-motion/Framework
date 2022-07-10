@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderTitleCell ()
     {
-      _nullColumnRenderer.RenderTitleCell(_renderingContext, SortingDirection.None, 0);
+      _nullColumnRenderer.RenderTitleCell(_renderingContext, new BocTitleCellRenderArguments(SortingDirection.None, 0));
 
       _htmlTextWriterMock.Verify();
     }

@@ -98,18 +98,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return false; }
     }
 
-    void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, SortingDirection sortingDirection, int orderIndex)
+    void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      RenderTitleCell(
-          new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext),
-          sortingDirection,
-          orderIndex);
+      RenderTitleCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
 
-    protected virtual void RenderTitleCell (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        SortingDirection sortingDirection,
-        int orderIndex)
+    protected virtual void RenderTitleCell (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
@@ -140,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       RenderBeginTagTitleCellSortCommand(renderingContext);
       RenderTitleCellText(renderingContext);
       if (renderingContext.Control.IsClientSideSortingEnabled || renderingContext.Control.HasSortingKeys)
-        RenderTitleCellSortingButton(renderingContext, sortingDirection, orderIndex);
+        RenderTitleCellSortingButton(renderingContext, arguments.SortingDirection, arguments.OrderIndex);
       RenderEndTagTitleCellSortCommand(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
