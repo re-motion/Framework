@@ -52,7 +52,7 @@
               <remotion:BocListItemCommand WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" WxeFunctionCommand-Parameters="id" Type="WxeFunction"></remotion:BocListItemCommand>
             </PersistedCommand>
           </remotion:BocSimpleColumnDefinition>
-          <remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+          <remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name" IsRowHeader="True">
 
             <persistedcommand>
               <remotion:BocListItemCommand></remotion:BocListItemCommand>
