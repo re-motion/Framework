@@ -99,6 +99,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(tr, "role", "row");
 
       var thIndex = Html.GetAssertedChildElement(tr, "th", 0);
+      Html.AssertAttribute(thIndex, "id", "MyList_C0");
       Html.AssertAttribute(thIndex, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(thIndex, "class", _bocListCssClassDefinition.TitleCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
 
@@ -220,6 +221,44 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
             SortingDirection.None,
             orderIndex: -1);
       }
+    }
+
+    [Test]
+    public void RenderDataRow_WithIndex_WithRowHeaders ()
+    {
+      List.Setup(_ => _.IsIndexEnabled).Returns(true);
+      List.Setup(_ => _.IsSelectionEnabled).Returns(false);
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 5,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertNoAttribute(td0, "id");
+      Html.AssertAttribute(td0, "headers", "MyList_C5_R17 MyList_C0");
     }
 
     [Test]

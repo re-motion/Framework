@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -49,11 +48,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(mock => mock.Index).Returns(RowIndex.InitialOrder);
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderTitleCell(CreateRenderingContext());
+      renderer.RenderTitleCell(CreateRenderingContext(), "TitleCellID");
 
       var document = Html.GetResultDocument();
 
       var th = Html.GetAssertedChildElement(document, "th", 0);
+      Html.AssertAttribute(th, "id", "TitleCellID");
       Html.AssertAttribute(th, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(th, "class", _bocListCssClassDefinition.TitleCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(th, "role", "columnheader");
@@ -80,13 +80,21 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void RenderIndexDataCellWithHeaderIDs ()
+    {
+      List.Setup(mock => mock.Index).Returns(RowIndex.InitialOrder);
+
+      RenderIndexDataCell(0, "h1 h2");
+    }
+
+    [Test]
     public void TestDiagnosticMetadataRenderingInTitleCell ()
     {
       List.Setup(mock => mock.Index).Returns(RowIndex.InitialOrder);
       List.Setup(mock => mock.IndexColumnTitle).Returns(WebString.CreateFromText("My_IndexColumn"));
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      renderer.RenderTitleCell(CreateRenderingContext());
+      renderer.RenderTitleCell(CreateRenderingContext(), "CellID");
 
       var document = Html.GetResultDocument();
       var th = Html.GetAssertedChildElement(document, "th", 0);
@@ -100,7 +108,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(mock => mock.IndexColumnTitle).Returns(WebString.CreateFromText("Multiline\nTitle"));
 
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderTitleCell(CreateRenderingContext());
+      renderer.RenderTitleCell(CreateRenderingContext(), "CellID");
 
       var document = Html.GetResultDocument();
 
@@ -108,10 +116,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />Title"));
     }
 
-    private void RenderIndexDataCell (int indexOffset)
+    private void RenderIndexDataCell (int indexOffset, string headerIDs = null)
     {
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      renderer.RenderDataCell(CreateRenderingContext(), 0, 0);
+      renderer.RenderDataCell(CreateRenderingContext(), 0, 0, headerIDs == null ? Array.Empty<string>() : headerIDs.Split(' '));
 
       var document = Html.GetResultDocument();
 
@@ -119,6 +127,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(td, "role", "cell");
+      if (headerIDs == null)
+      {
+        Html.AssertNoAttribute(td, "headers");
+      }
+      else
+      {
+        // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+        // Therefor, the header IDs are simply not rendered in the first place.
+        Html.AssertNoAttribute(td, "headers");
+      }
       Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
 
       var label = Html.GetAssertedChildElement(td, "span", 0);

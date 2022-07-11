@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -52,9 +54,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return _cssClasses; }
     }
 
-    public void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex)
+    public void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex, IReadOnlyCollection<string> headerIDs)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNull("headerIDs", headerIDs);
 
       if (!renderingContext.Control.IsIndexEnabled)
         return;
@@ -88,13 +91,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, oneBasedCellIndex.ToString());
     }
 
-    public void RenderTitleCell (BocListRenderingContext renderingContext)
+    public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNullOrEmpty("cellID", cellID);
 
       if (!renderingContext.Control.IsIndexEnabled)
         return;
 
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, cellID);
       string cssClass = CssClasses.TitleCell + " " + CssClasses.TitleCellIndex;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
