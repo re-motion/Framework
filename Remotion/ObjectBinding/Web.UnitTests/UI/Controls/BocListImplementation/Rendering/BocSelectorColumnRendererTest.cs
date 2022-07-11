@@ -79,13 +79,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell(
           _bocListRenderingContext,
-          new BocListRowRenderingContext(row, 0, false),
-          "bocListTableCell");
+          new BocListRowRenderingContext(row, 0, false));
 
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertAttribute(td, "class", "bocListTableCell remotion-themed bocListDataCellRowSelector");
+      Html.AssertAttribute(td, "class", "bocListDataCell remotion-themed bocListDataCellRowSelector");
 
       var input = Html.GetAssertedChildElement(td, "input", 0);
       Html.AssertAttribute(input, "type", "checkbox");
@@ -120,12 +119,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell(
           _bocListRenderingContext,
-          new BocListRowRenderingContext(row, 0, false),
-          "bocListTableCell");
+          new BocListRowRenderingContext(row, 0, false));
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertAttribute(td, "class", "bocListTableCell remotion-themed bocListDataCellRowSelector");
+      Html.AssertAttribute(td, "class", "bocListDataCell remotion-themed bocListDataCellRowSelector");
       Html.AssertAttribute(td, "role", "cell");
 
       var input = Html.GetAssertedChildElement(td, "input", 0);
@@ -161,8 +159,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderDataCell(
           _bocListRenderingContext,
-          new BocListRowRenderingContext(row, 0, false),
-          "bocListTableCell");
+          new BocListRowRenderingContext(row, 0, false));
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);

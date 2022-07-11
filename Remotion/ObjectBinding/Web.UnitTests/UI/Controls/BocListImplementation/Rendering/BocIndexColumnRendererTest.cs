@@ -111,13 +111,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private void RenderIndexDataCell (int indexOffset)
     {
       IBocIndexColumnRenderer renderer = new BocIndexColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      const string cssClassTableCell = "bocListTableCell";
-      renderer.RenderDataCell(CreateRenderingContext(), 0, 0, cssClassTableCell);
+      renderer.RenderDataCell(CreateRenderingContext(), 0, 0);
 
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      Html.AssertAttribute(td, "class", cssClassTableCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(td, "role", "cell");
       Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());

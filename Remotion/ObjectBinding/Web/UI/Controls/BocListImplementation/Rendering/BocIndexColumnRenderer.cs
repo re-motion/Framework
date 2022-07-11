@@ -52,16 +52,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return _cssClasses; }
     }
 
-    public void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex, string cssClassTableCell)
+    public void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("cssClassTableCell", cssClassTableCell);
 
       if (!renderingContext.Control.IsIndexEnabled)
         return;
 
       string selectorControlID = renderingContext.Control.GetSelectorControlName().Replace('$', '_') + "_" + originalRowIndex;
-      string cssClass = cssClassTableCell + " " + CssClasses.DataCellIndex;
+      string cssClass = CssClasses.DataCell + " " + CssClasses.DataCellIndex;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
 #pragma warning disable CS0618 // Type or member is obsolete
       var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();

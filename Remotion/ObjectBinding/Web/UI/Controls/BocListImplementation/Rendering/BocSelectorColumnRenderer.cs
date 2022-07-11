@@ -51,17 +51,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return _cssClasses; }
     }
 
-    public void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, string cssClassTableCell)
+    public void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("cssClassTableCell", cssClassTableCell);
-      ArgumentUtility.CheckNotNullOrEmpty("cssClassTableCell", cssClassTableCell);
+      ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
 
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
       string selectorControlID = renderingContext.Control.GetSelectorControlName().Replace('$', '_') + "_" + rowRenderingContext.Row.Index;
-      var cssClass = cssClassTableCell + " " + CssClasses.Themed + " " + CssClasses.DataCellSelector;
+      var cssClass = CssClasses.DataCell + " " + CssClasses.Themed + " " + CssClasses.DataCellSelector;
       var selectorControlName = renderingContext.Control.GetSelectorControlName();
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue(rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;

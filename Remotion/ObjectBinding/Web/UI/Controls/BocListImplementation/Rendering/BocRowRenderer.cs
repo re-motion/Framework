@@ -136,7 +136,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Control.OnDataRowRendering(dataRowRenderEventArgs);
 
       string cssClassTableRow = GetCssClassTableRow(renderingContext, isChecked, dataRowRenderEventArgs);
-      string cssClassTableCell = CssClasses.DataCell;
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableRow);
       if (_renderingFeatures.EnableDiagnosticMetadata)
@@ -156,8 +155,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       // This behavior extends the original behavior, where clicking the selector-control or the associated label in the index-cell 
       // changed the selection state. This improves usability as the user does not have to precisely hit the text or the checkbox/radio button.
       // If this is changed, an update to the Javascript code will be required.
-      GetIndexColumnRenderer().RenderDataCell(renderingContext, originalRowIndex, absoluteRowIndex, cssClassTableCell);
-      GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext, cssClassTableCell);
+      GetIndexColumnRenderer().RenderDataCell(renderingContext, originalRowIndex, absoluteRowIndex);
+      GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext);
 
       RenderDataCells(renderingContext, rowIndex, dataRowRenderEventArgs);
 
