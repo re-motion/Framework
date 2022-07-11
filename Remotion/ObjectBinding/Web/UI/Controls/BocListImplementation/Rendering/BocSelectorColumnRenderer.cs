@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
@@ -51,7 +52,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return _cssClasses; }
     }
 
-    public void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext)
+    public void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, string[] headerIDs)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
@@ -83,15 +84,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       return HtmlRoleAttributeValue.Cell;
     }
 
-    public void RenderTitleCell (BocListRenderingContext renderingContext)
+    public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNullOrEmpty("cellID", cellID);
 
       if (!renderingContext.Control.IsSelectionEnabled)
         return;
 
       var cssClass = CssClasses.TitleCell + " " + CssClasses.Themed + " " + CssClasses.TitleCellSelector;
 
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, cellID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
       if (_renderingFeatures.EnableDiagnosticMetadata)

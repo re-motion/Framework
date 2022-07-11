@@ -67,8 +67,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Row);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-      GetSelectorColumnRenderer().RenderTitleCell(renderingContext);
       GetIndexColumnRenderer().RenderTitleCell(renderingContext, cellID: GetTitleCellIDForIndexColumn(renderingContext));
+      GetSelectorColumnRenderer().RenderTitleCell(renderingContext, cellID: GetTitleCellIDForSelectorColumn(renderingContext));
 
       foreach (var columnRenderer in renderingContext.ColumnRenderers)
       {
@@ -154,13 +154,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var dataCellIDs = renderingContext.ColumnRenderers
           .Where(r => r.IsRowHeader)
           .Select(r => GetDataCellID(renderingContext, columnIndex: r.VisibleColumnIndex, rowIndex: rowIndex));
+      // ReSharper disable once PossibleMultipleEnumeration
       var dataCellIDsForIndexColumn = dataCellIDs.Concat(GetTitleCellIDForIndexColumn(renderingContext)).ToArray();
+      // ReSharper disable once PossibleMultipleEnumeration
+      var dataCellIDsForSelectorColumn = dataCellIDs.Concat(GetTitleCellIDForSelectorColumn(renderingContext)).ToArray();
+
       // Note: The cells preceding the selector-control will also act as selector, allowing adding/removing of the selection.
       // This behavior extends the original behavior, where clicking the selector-control or the associated label in the index-cell 
       // changed the selection state. This improves usability as the user does not have to precisely hit the text or the checkbox/radio button.
       // If this is changed, an update to the Javascript code will be required.
       GetIndexColumnRenderer().RenderDataCell(renderingContext, originalRowIndex: originalRowIndex, absoluteRowIndex: absoluteRowIndex, headerIDs: dataCellIDsForIndexColumn);
-      GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext);
+      GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext, headerIDs: dataCellIDsForSelectorColumn);
 
       RenderDataCells(renderingContext, rowIndex, dataRowRenderEventArgs);
 
@@ -226,6 +230,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private string GetTitleCellIDForIndexColumn (BocListRenderingContext renderingContext)
     {
       return GetTitleCellID(renderingContext, 0);
+    }
+
+    private string GetTitleCellIDForSelectorColumn (BocListRenderingContext renderingContext)
+    {
+      return GetTitleCellID(renderingContext, renderingContext.Control.IsIndexEnabled ? 1 : 0);
     }
 
     private string GetDataCellID (BocListRenderingContext renderingContext, int columnIndex, int rowIndex)

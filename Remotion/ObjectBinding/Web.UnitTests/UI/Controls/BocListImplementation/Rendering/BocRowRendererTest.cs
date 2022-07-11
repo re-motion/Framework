@@ -258,7 +258,97 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td0 = Html.GetAssertedChildElement(tr, "td", 0);
       Html.AssertNoAttribute(td0, "id");
-      Html.AssertAttribute(td0, "headers", "MyList_C5_R17 MyList_C0");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td0, "headers");
+    }
+
+    [Test]
+    public void RenderDataRow_WithSelection_WithRowHeaders ()
+    {
+      List.Setup(_ => _.IsIndexEnabled).Returns(false);
+      List.Setup(_ => _.IsSelectionEnabled).Returns(true);
+      List.Setup(_ => _.GetSelectorControlValue(It.IsAny<BocListRow>())).Returns("Value");
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 5,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertNoAttribute(td0, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td0, "headers");
+    }
+
+    [Test]
+    public void RenderDataRow_WithIndexAndSelection_WithRowHeaders ()
+    {
+      List.Setup(_ => _.IsIndexEnabled).Returns(true);
+      List.Setup(_ => _.IsSelectionEnabled).Returns(true);
+      List.Setup(_ => _.GetSelectorControlValue(It.IsAny<BocListRow>())).Returns("Value");
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 5,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertNoAttribute(td0, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td0, "headers");
+
+      var td1 = Html.GetAssertedChildElement(tr, "td", 1);
+      Html.AssertNoAttribute(td1, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td1, "headers");
     }
 
     [Test]

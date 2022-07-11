@@ -54,11 +54,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderTitleCell(_bocListRenderingContext);
+      renderer.RenderTitleCell(_bocListRenderingContext, "TitleCellID");
 
       var document = Html.GetResultDocument();
 
       var th = Html.GetAssertedChildElement(document, "th", 0);
+      Html.AssertAttribute(th, "id", "TitleCellID");
       Html.AssertAttribute(th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.Themed + " " + _bocListCssClassDefinition.TitleCellSelector);
       Html.AssertAttribute(th, "role", "columnheader");
 
@@ -79,12 +80,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell(
           _bocListRenderingContext,
-          new BocListRowRenderingContext(row, 0, false));
+          new BocListRowRenderingContext(row, 0, false),
+          Array.Empty<string>());
 
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
       Html.AssertAttribute(td, "class", "bocListDataCell remotion-themed bocListDataCellRowSelector");
+      Html.AssertNoAttribute(td, "headers");
 
       var input = Html.GetAssertedChildElement(td, "input", 0);
       Html.AssertAttribute(input, "type", "checkbox");
@@ -99,11 +102,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderTitleCell(_bocListRenderingContext);
+      renderer.RenderTitleCell(_bocListRenderingContext, "TitleCellID");
 
       var document = Html.GetResultDocument();
 
       var th = Html.GetAssertedChildElement(document, "th", 0);
+      Html.AssertAttribute(th, "id", "TitleCellID");
       Html.AssertAttribute(th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.Themed + " " + _bocListCssClassDefinition.TitleCellSelector);
       Html.AssertAttribute(th, "role", "columnheader");
 
@@ -119,12 +123,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
       renderer.RenderDataCell(
           _bocListRenderingContext,
-          new BocListRowRenderingContext(row, 0, false));
+          new BocListRowRenderingContext(row, 0, false),
+          Array.Empty<string>());
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
       Html.AssertAttribute(td, "class", "bocListDataCell remotion-themed bocListDataCellRowSelector");
       Html.AssertAttribute(td, "role", "cell");
+      Html.AssertNoAttribute(td, "headers");
 
       var input = Html.GetAssertedChildElement(td, "input", 0);
       Html.AssertAttribute(input, "type", "radio");
@@ -135,11 +141,30 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void RenderDataCell_WithRowHeader ()
+    {
+      var row = new BocListRow(1, BusinessObject);
+      List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
+      List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
+      renderer.RenderDataCell(
+          _bocListRenderingContext,
+          new BocListRowRenderingContext(row, 0, false),
+          new[]{"h1", "h2"});
+      var document = Html.GetResultDocument();
+
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td, "headers");
+    }
+
+    [Test]
     public void TestDiagnosticMetadataRenderingInTitleCell ()
     {
       List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      renderer.RenderTitleCell(_bocListRenderingContext);
+      renderer.RenderTitleCell(_bocListRenderingContext, "TitleCellID");
 
       var document = Html.GetResultDocument();
 
@@ -159,7 +184,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
       renderer.RenderDataCell(
           _bocListRenderingContext,
-          new BocListRowRenderingContext(row, 0, false));
+          new BocListRowRenderingContext(row, 0, false),
+          Array.Empty<string>());
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);

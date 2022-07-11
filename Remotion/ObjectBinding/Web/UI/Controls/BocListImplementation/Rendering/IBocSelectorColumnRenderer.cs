@@ -27,13 +27,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// Renders the cell for the title row.
     /// </summary>
-    void RenderTitleCell (BocListRenderingContext renderingContext);
+    void RenderTitleCell (BocListRenderingContext renderingContext, string cellID);
 
     /// <summary>
     /// Renders a cell containing the selector control for the current data row.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocListRenderingContext"/>.</param>
     /// <param name="rowRenderingContext">The <see cref="BocListRowRenderingContext"/> for the current data row.</param>
-    void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext);
+    /// <param name="headerIDs">The list of IDs (column and row) that identify this cell.</param>
+    void RenderDataCell (BocListRenderingContext renderingContext, BocListRowRenderingContext rowRenderingContext, string[] headerIDs);
   }
 }
