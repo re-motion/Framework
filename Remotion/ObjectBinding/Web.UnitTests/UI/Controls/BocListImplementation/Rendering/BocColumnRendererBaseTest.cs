@@ -264,6 +264,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(th, DiagnosticMetadataAttributes.Content, Column.ColumnTitleDisplayValue.GetValue());
       Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 7.ToString());
       Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute, "true");
+      Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader, "false");
     }
 
     [Test]
@@ -279,6 +280,19 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var th = Html.GetAssertedChildElement(document, "th", 0);
       Assert.That(Column.ColumnTitleDisplayValue.ToString(), Is.Empty);
       Html.AssertAttribute(th, DiagnosticMetadataAttributes.Content, string.Empty);
+    }
+
+    [Test]
+    public void TestDiagnosticMetadataRenderingWithColumnIsRowHeader ()
+    {
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      var renderingContext = CreateRenderingContext();
+
+      renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments(isRowHeader: true));
+
+      var document = Html.GetResultDocument();
+      var th = Html.GetAssertedChildElement(document, "th", 0);
+      Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader, "true");
     }
 
     private void RenderTitleCell (

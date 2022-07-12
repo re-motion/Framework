@@ -236,6 +236,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetColumnDefinitionsWithRowHeaders ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_EmptyWithRowHeaders");
+      Assert.That(
+          bocList.GetColumnDefinitions().Select(cd => (cd.Title, cd.IsRowHeader)),
+          Is.EquivalentTo(new[] { ("Title", true), ("StartDate", false), ("EndDate", false), ("DisplayName", true) }));
+    }
+
+    [Test]
     public void TestGetDisplayedRows ()
     {
       var home = Start();

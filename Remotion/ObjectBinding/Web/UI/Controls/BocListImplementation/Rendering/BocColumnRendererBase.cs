@@ -133,6 +133,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute(
             DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute,
             HasContentAttribute.ToString().ToLower());
+
+        renderingContext.Writer.AddAttribute(
+            DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader,
+            arguments.IsRowHeader.ToString().ToLower());
       }
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
 
