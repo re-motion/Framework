@@ -15,13 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Moq;
 using NUnit.Framework;
+using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
@@ -31,6 +30,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   {
     private BocListCssClassDefinition _bocListCssClassDefinition;
     private BocListRenderingContext _bocListRenderingContext;
+    private ILabelReferenceRenderer _stubLabelReferenceRenderer;
 
     [SetUp]
     public void SetUp ()
@@ -47,13 +47,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           List.Object,
           businessObjectWebServiceContext,
           new BocColumnRenderer[0]);
+      _stubLabelReferenceRenderer = new StubLabelReferenceRenderer();
     }
 
     [Test]
     public void RenderTitleCellForMultiSelect ()
     {
       List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
-      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
       renderer.RenderTitleCell(_bocListRenderingContext, "TitleCellID");
 
       var document = Html.GetResultDocument();
@@ -72,16 +73,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void RenderDataCellForMultiSelect ()
+    public void RenderDataCellForMultiSelect_WithIndexDisabled ()
     {
       var row = new BocListRow(1, BusinessObject);
       List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
       List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
-      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
+      List.Setup(mock => mock.IsIndexEnabled).Returns(false);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
       renderer.RenderDataCell(
           _bocListRenderingContext,
           new BocListRowRenderingContext(row, 0, false),
-          Array.Empty<string>());
+          new[] { "rowID1", "rowID2", "columnID" });
 
       var document = Html.GetResultDocument();
 
@@ -94,14 +96,65 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(input, "id", "SelectRowControl_UnqiueID_1");
       Html.AssertAttribute(input, "name", "SelectRowControl$UnqiueID");
       Html.AssertAttribute(input, "value", "row1");
-      Html.AssertAttribute(input, "title", "Select this row");
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, "rowID1 rowID2 SelectRowControl_UnqiueID_1_Label");
+
+      var checkboxSpan = Html.GetAssertedChildElement(td, "span", 1);
+      Html.AssertChildElementCount(checkboxSpan, 0);
+
+      var labelSpan = Html.GetAssertedChildElement(td, "span", 2);
+      Html.AssertAttribute(labelSpan, "id", "SelectRowControl_UnqiueID_1_Label");
+      Html.AssertAttribute(labelSpan, "hidden", "hidden");
+      Html.AssertTextNode(labelSpan, "Select this row", 0);
+    }
+
+    [Test]
+    public void RenderDataCellForMultiSelect_WithIndexColumn ()
+    {
+      var row = new BocListRow(1, BusinessObject);
+      List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
+      List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
+      List.Setup(mock => mock.IsIndexEnabled).Returns(true);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
+      renderer.RenderDataCell(
+          _bocListRenderingContext,
+          new BocListRowRenderingContext(row, 0, false),
+          new[] { "rowID1", "rowID2", "columnID" });
+
+      var document = Html.GetResultDocument();
+
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+
+      var input = Html.GetAssertedChildElement(td, "input", 0);
+      Html.AssertAttribute(input, "id", "SelectRowControl_UnqiueID_1");
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, "SelectRowControl_UnqiueID_1_Label");
+    }
+
+    [Test]
+    public void RenderDataCellForMultiSelect_WithoutHeaders ()
+    {
+      var row = new BocListRow(1, BusinessObject);
+      List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
+      List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
+      renderer.RenderDataCell(
+          _bocListRenderingContext,
+          new BocListRowRenderingContext(row, 0, false),
+          Array.Empty<string>());
+
+      var document = Html.GetResultDocument();
+
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+
+      var input = Html.GetAssertedChildElement(td, "input", 0);
+      Html.AssertAttribute(input, "id", "SelectRowControl_UnqiueID_1");
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, "SelectRowControl_UnqiueID_1_Label");
     }
 
     [Test]
     public void RenderTitleCellForSingleSelect ()
     {
       List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
-      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
       renderer.RenderTitleCell(_bocListRenderingContext, "TitleCellID");
 
       var document = Html.GetResultDocument();
@@ -115,16 +168,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
-    public void RenderDataCellForSingleSelect ()
+    public void RenderDataCellForSingleSelect_WithoutIndexColumn ()
     {
       var row = new BocListRow(1, BusinessObject);
       List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
       List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
-      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
+      List.Setup(mock => mock.IsIndexEnabled).Returns(false);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
       renderer.RenderDataCell(
           _bocListRenderingContext,
           new BocListRowRenderingContext(row, 0, false),
-          Array.Empty<string>());
+          new[] { "rowID3", "rowID4", "columnID" });
       var document = Html.GetResultDocument();
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -137,7 +191,56 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(input, "id", "SelectRowControl_UnqiueID_1");
       Html.AssertAttribute(input, "name", "SelectRowControl$UnqiueID");
       Html.AssertAttribute(input, "value", "row1");
-      Html.AssertAttribute(input, "title", "Select this row");
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, "rowID3 rowID4 SelectRowControl_UnqiueID_1_Label");
+
+      var checkboxSpan = Html.GetAssertedChildElement(td, "span", 1);
+      Html.AssertChildElementCount(checkboxSpan, 0);
+
+      var labelSpan = Html.GetAssertedChildElement(td, "span", 2);
+      Html.AssertAttribute(labelSpan, "id", "SelectRowControl_UnqiueID_1_Label");
+      Html.AssertAttribute(labelSpan, "hidden", "hidden");
+      Html.AssertTextNode(labelSpan, "Select this row", 0);
+    }
+
+    [Test]
+    public void RenderDataCellForSingleSelect_WithIndexColumn ()
+    {
+      var row = new BocListRow(1, BusinessObject);
+      List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
+      List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
+      List.Setup(mock => mock.IsIndexEnabled).Returns(true);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
+      renderer.RenderDataCell(
+          _bocListRenderingContext,
+          new BocListRowRenderingContext(row, 0, false),
+          new[] { "rowID3", "rowID4", "columnID" });
+      var document = Html.GetResultDocument();
+
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+
+      var input = Html.GetAssertedChildElement(td, "input", 0);
+      Html.AssertAttribute(input, "id", "SelectRowControl_UnqiueID_1");
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, "SelectRowControl_UnqiueID_1_Label");
+    }
+
+    [Test]
+    public void RenderDataCellForSingleSelect_WithoutHeaders ()
+    {
+      var row = new BocListRow(1, BusinessObject);
+      List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
+      List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
+      renderer.RenderDataCell(
+          _bocListRenderingContext,
+          new BocListRowRenderingContext(row, 0, false),
+          Array.Empty<string>());
+      var document = Html.GetResultDocument();
+
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+
+      var input = Html.GetAssertedChildElement(td, "input", 0);
+      Html.AssertAttribute(input, "id", "SelectRowControl_UnqiueID_1");
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, "SelectRowControl_UnqiueID_1_Label");
     }
 
     [Test]
@@ -146,7 +249,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var row = new BocListRow(1, BusinessObject);
       List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
       List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
-      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
       renderer.RenderDataCell(
           _bocListRenderingContext,
           new BocListRowRenderingContext(row, 0, false),
@@ -163,7 +266,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void TestDiagnosticMetadataRenderingInTitleCell ()
     {
       List.Setup(mock => mock.Selection).Returns(RowSelection.Multiple);
-      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
       renderer.RenderTitleCell(_bocListRenderingContext, "TitleCellID");
 
       var document = Html.GetResultDocument();
@@ -181,7 +284,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var row = new BocListRow(1, BusinessObject);
       List.Setup(mock => mock.Selection).Returns(RowSelection.SingleRadioButton);
       List.Setup(mock => mock.GetSelectorControlValue(row)).Returns("row1");
-      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      IBocSelectorColumnRenderer renderer = new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, _stubLabelReferenceRenderer);
       renderer.RenderDataCell(
           _bocListRenderingContext,
           new BocListRowRenderingContext(row, 0, false),

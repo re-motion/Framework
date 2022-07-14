@@ -15,9 +15,10 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
-using Remotion.Globalization;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -37,14 +38,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private readonly IRenderingFeatures _renderingFeatures;
     private readonly BocListCssClassDefinition _cssClasses;
+    private readonly ILabelReferenceRenderer _labelReferenceRenderer;
 
-    public BocSelectorColumnRenderer (IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses)
+    public BocSelectorColumnRenderer (IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, ILabelReferenceRenderer labelReferenceRenderer)
     {
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
       ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
 
       _renderingFeatures = renderingFeatures;
       _cssClasses = cssClasses;
+      _labelReferenceRenderer = labelReferenceRenderer;
     }
 
     public BocListCssClassDefinition CssClasses
@@ -65,6 +69,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       var selectorControlName = renderingContext.Control.GetSelectorControlName();
       var selectorControlValue = renderingContext.Control.GetSelectorControlValue(rowRenderingContext.Row);
       var isChecked = rowRenderingContext.IsSelected;
+      var isFirstColumn = !renderingContext.Control.IsIndexEnabled;
+      // JAWS 2021 with Edge 102 and NVDA 2021 with Firefox 101 do not announce the row-header for the first column.
+      var columnHeaderCount = 1;
+      var headerIDsForSelectorControl = isFirstColumn ? headerIDs.Take(headerIDs.Length - columnHeaderCount) : Array.Empty<string>();
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -74,7 +82,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataListCellIndex(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
-      RenderDataRowSelectorControl(renderingContext, selectorControlID, selectorControlName, selectorControlValue, isChecked);
+      RenderDataRowSelectorControl(renderingContext, selectorControlID, selectorControlName, selectorControlValue, isChecked, headerIDsForSelectorControl);
       renderingContext.Writer.RenderEndTag();
     }
 
@@ -112,9 +120,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private void RenderTitleRowSelectorControl (BocListRenderingContext renderingContext, string name)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-
       var labelText = renderingContext.Control.GetResourceManager().GetText(BocList.ResourceIdentifier.SelectAllRowsLabelText);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
@@ -146,13 +151,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    private void RenderDataRowSelectorControl (BocListRenderingContext renderingContext, string id, string name, string value, bool isChecked)
+    private void RenderDataRowSelectorControl (BocListRenderingContext renderingContext, string id, string name, string value, bool isChecked, IEnumerable<string> headerIDs)
     {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNullOrEmpty("id", id);
-      ArgumentUtility.CheckNotNullOrEmpty("name", name);
-
       var labelText = renderingContext.Control.GetResourceManager().GetText(BocList.ResourceIdentifier.SelectRowLabelText);
+      var labelID = id + "_Label";
 
       if (renderingContext.Control.Selection == RowSelection.SingleRadioButton)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
@@ -168,11 +170,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Disabled, "disabled");
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Value, value);
 
-      labelText.AddAttributeTo(renderingContext.Writer, HtmlTextWriterAttribute.Title);
+      var labelIDs = headerIDs.Concat(labelID).ToArray();
+      _labelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs, Array.Empty<string>());
 
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Input);
       renderingContext.Writer.RenderEndTag();
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderEndTag();
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, labelID);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      labelText.WriteTo(renderingContext.Writer);
       renderingContext.Writer.RenderEndTag();
     }
 
