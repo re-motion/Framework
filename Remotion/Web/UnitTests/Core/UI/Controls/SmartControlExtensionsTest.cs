@@ -25,6 +25,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
   public class SmartControlExtensionsTest
   {
     [Test]
+    [Obsolete("SmartControlExtensions.AssignLabel(...) is only intended for easier migration.")]
     public void AssignLabel ()
     {
       var controlMock = new Mock<ISmartControl>();

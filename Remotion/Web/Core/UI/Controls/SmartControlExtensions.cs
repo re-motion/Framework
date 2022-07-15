@@ -28,6 +28,7 @@ namespace Remotion.Web.UI.Controls
     /// <summary>
     /// Assigns a single <paramref name="labelID"/> to a <paramref name="control"/>.
     /// </summary>
+    [Obsolete("Use ISmartControl.AssignLabels(IEnumerable<string>) instead. (Version 3.10.0)")]
     public static void AssignLabel (this ISmartControl control, string labelID)
     {
       ArgumentUtility.CheckNotNull("control", control);
