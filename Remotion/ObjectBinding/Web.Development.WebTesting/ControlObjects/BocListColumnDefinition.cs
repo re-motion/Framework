@@ -31,11 +31,19 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     private readonly string _itemID;
     private readonly int _oneBasedIndex;
     private readonly string _title;
+    private readonly bool _isRowHeader;
     private readonly bool _hasDomainPropertyPaths;
     private readonly string[] _domainPropertyPaths;
     private readonly bool _hasDiagnosticMetadata;
 
-    public BocListColumnDefinition (string itemID, int oneBasedIndex, string title, bool hasDomainPropertyPaths, string[] domainPropertyPaths, bool hasDiagnosticMetadata)
+    public BocListColumnDefinition (
+        string itemID,
+        int oneBasedIndex,
+        string title,
+        bool isRowHeader,
+        bool hasDomainPropertyPaths,
+        string[] domainPropertyPaths,
+        bool hasDiagnosticMetadata)
     {
       ArgumentUtility.CheckNotNull("itemID", itemID);
       ArgumentUtility.CheckNotNull("title", title);
@@ -44,6 +52,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       _itemID = itemID;
       _oneBasedIndex = oneBasedIndex;
       _title = title;
+      _isRowHeader = isRowHeader;
       _hasDomainPropertyPaths = hasDomainPropertyPaths;
       _domainPropertyPaths = domainPropertyPaths;
       _hasDiagnosticMetadata = hasDiagnosticMetadata;
@@ -62,6 +71,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public string Title
     {
       get { return _title; }
+    }
+
+    public bool IsRowHeader
+    {
+      get { return _isRowHeader; }
     }
 
     public bool HasDomainPropertyPaths

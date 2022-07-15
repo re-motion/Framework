@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderBasicCell ()
     {
       IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 5, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(rowIndex: 5));
 
       var document = Html.GetResultDocument();
 
@@ -87,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Column.Text = WebString.CreateFromText("Multiline\nText");
       IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 5, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(rowIndex: 5));
 
       var document = Html.GetResultDocument();
       var title = document.GetAssertedElementByID(List.Object.ClientID + "_Column_0_Command_Row_10");
@@ -98,7 +98,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderIconCell ()
     {
       IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, true, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(showIcon: true));
 
       var document = Html.GetResultDocument();
 
@@ -123,7 +123,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.Icon.Height = new Unit(16, UnitType.Pixel);
 
       IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
 
@@ -146,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       WebConfigurationMock.Current.Wcag.ConformanceLevel = WaiConformanceLevel.A;
 
       IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
 

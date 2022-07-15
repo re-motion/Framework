@@ -21,7 +21,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSu
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -100,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// Renders a custom title cell that includes information about bound property paths of <see cref="BocSimpleColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
@@ -121,7 +120,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         }
       }
 
-      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, arguments);
     }
 
     private void RenderEditModeControl (

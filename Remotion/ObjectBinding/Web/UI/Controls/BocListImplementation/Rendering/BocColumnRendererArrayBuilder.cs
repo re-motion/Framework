@@ -68,6 +68,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       for (int columnIndex = 0; columnIndex < _columnDefinitions.Length; columnIndex++)
       {
         var columnDefinition = _columnDefinitions[columnIndex];
+        var isRowHeader = (columnDefinition as IBocColumnDefinitionWithRowHeaderSupport)?.IsRowHeader ?? false;
         var showIcon = !firstValueColumnRendered && columnDefinition is BocValueColumnDefinition && EnableIcon;
 
         var sortingDirection = SortingDirection.None;
@@ -78,12 +79,32 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         if (IsColumnVisible(columnDefinition))
         {
           var columnRenderer = columnDefinition.GetRenderer(_serviceLocator);
-          bocColumnRenderers.Add(new BocColumnRenderer(columnRenderer, columnDefinition, columnIndex, visibleColumnIndex, showIcon, sortingDirection, orderIndex));
+          bocColumnRenderers.Add(
+              new BocColumnRenderer(
+                  columnRenderer,
+                  columnDefinition,
+                  columnIndex,
+                  visibleColumnIndex,
+                  isRowHeader: isRowHeader,
+                  showIcon: showIcon,
+                  sortingDirection,
+                  orderIndex));
 
           visibleColumnIndex++;
         }
         else
-          bocColumnRenderers.Add(new BocColumnRenderer(new NullColumnRenderer(), columnDefinition, columnIndex, -1, false, sortingDirection, orderIndex));
+        {
+          bocColumnRenderers.Add(
+              new BocColumnRenderer(
+                  new NullColumnRenderer(),
+                  columnDefinition,
+                  columnIndex,
+                  -1,
+                  isRowHeader: isRowHeader,
+                  showIcon: false,
+                  sortingDirection,
+                  orderIndex));
+        }
 
         if (columnDefinition is BocValueColumnDefinition)
           firstValueColumnRendered = true;

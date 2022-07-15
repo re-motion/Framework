@@ -67,22 +67,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// Otherwise, a click wrapper is rendered around the child control obtained from
     /// <see cref="IBocList"/>'s <see cref="IBocList.CustomColumns"/> property.
     /// </remarks>
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
-      int originalRowIndex = dataRowRenderEventArgs.ListIndex;
-      IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
+      int originalRowIndex = arguments.ListIndex;
+      IBusinessObject businessObject = arguments.BusinessObject;
       bool isEditedRow = renderingContext.Control.EditModeController.IsRowEditModeActive &&
                          renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex) != null;
 
       if (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
           || (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && isEditedRow))
-        RenderCustomCellInnerControls(renderingContext, originalRowIndex, rowIndex);
+        RenderCustomCellInnerControls(renderingContext, originalRowIndex, arguments.RowIndex);
       else
         RenderCustomCellDirectly(renderingContext, businessObject, originalRowIndex);
     }
@@ -90,10 +86,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCustomColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (
-        BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext,
-        SortingDirection sortingDirection,
-        int orderIndex)
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       if (_renderingFeatures.EnableDiagnosticMetadata)
       {
@@ -112,7 +105,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         }
       }
 
-      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, arguments);
     }
 
     private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex, int rowIndex)

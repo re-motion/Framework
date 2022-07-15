@@ -165,27 +165,33 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _stubColumnRenderers = new[]
                              {
-                                 new BocColumnRenderer(new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                 new BocColumnRenderer(
+                                     new StubColumnRenderer(new FakeResourceUrlFactory()),
                                      stubColumnDefinition1,
-                                     0,
-                                     0,
-                                     false,
+                                     columnIndex: 0,
+                                     visibleColumnIndex: 0,
+                                     isRowHeader: false,
+                                     showIcon: false,
                                      SortingDirection.Ascending,
-                                     0),
-                                 new BocColumnRenderer(new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                     orderIndex: 0),
+                                 new BocColumnRenderer(
+                                     new StubColumnRenderer(new FakeResourceUrlFactory()),
                                      stubColumnDefinition2,
-                                     1,
-                                     1,
-                                     false,
+                                     columnIndex: 1,
+                                     visibleColumnIndex: 1,
+                                     isRowHeader: false,
+                                     showIcon: false,
                                      SortingDirection.Ascending,
-                                     1),
-                                 new BocColumnRenderer(new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                     orderIndex: 1),
+                                 new BocColumnRenderer(
+                                     new StubColumnRenderer(new FakeResourceUrlFactory()),
                                      stubColumnDefinition2,
-                                     2,
-                                     2,
-                                     false,
+                                     columnIndex: 2,
+                                     visibleColumnIndex: 2,
+                                     isRowHeader: false,
+                                     showIcon: false,
                                      SortingDirection.Ascending,
-                                     3)
+                                     orderIndex: 3)
                              };
     }
 

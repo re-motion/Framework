@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -27,7 +28,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// Renders the index cell for the title row.
     /// </summary>
-    void RenderTitleCell (BocListRenderingContext renderingContext);
+    void RenderTitleCell (BocListRenderingContext renderingContext, string cellID);
 
     /// <summary>
     /// Renders the index cell for the data row identified by <paramref name="originalRowIndex"/>.
@@ -35,7 +36,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <param name="renderingContext">The <see cref="BocListRenderingContext"/>.</param>
     /// <param name="originalRowIndex">The absolute row index in the original (unsorted) item collection.</param>
     /// <param name="absoluteRowIndex">The absolute row index (including previous pages) after sorting.</param>
-    /// <param name="cssClassTableCell">The CSS class to apply to the cell.</param>
-    void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex, string cssClassTableCell);
+    /// <param name="headerIDs">The list of IDs (column and row) that identify this cell.</param>
+    void RenderDataCell (BocListRenderingContext renderingContext, int originalRowIndex, int absoluteRowIndex, IReadOnlyCollection<string> headerIDs);
   }
 }

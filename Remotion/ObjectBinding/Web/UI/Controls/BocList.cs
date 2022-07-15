@@ -1624,22 +1624,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_allPropertyColumns != null)
         return _allPropertyColumns;
 
+      bool isBusinessObjectWithIdentity;
       IBusinessObjectProperty[] properties;
       if (DataSource == null)
       {
         properties = new IBusinessObjectProperty[0];
+        isBusinessObjectWithIdentity = false;
       }
       else if (Property == null)
       {
         Assertion.IsNotNull(DataSource.BusinessObjectClass, "DataSource.BusinessObjectClass must not be null.");
         properties = DataSource.BusinessObjectClass.GetPropertyDefinitions();
+        isBusinessObjectWithIdentity = DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity;
       }
       else
       {
         properties = Property.ReferenceClass.GetPropertyDefinitions();
+        isBusinessObjectWithIdentity = Property.ReferenceClass is IBusinessObjectClassWithIdentity;
       }
 
-      _allPropertyColumns = new BocColumnDefinition[properties.Length];
+      var allPropertyColumns = new List<BocColumnDefinition>(properties.Length);
       for (int i = 0; i < properties.Length; i++)
       {
         IBusinessObjectProperty property = properties[i];
@@ -1648,8 +1652,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         column.ColumnTitle = WebString.CreateFromText(property.DisplayName);
         column.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { property }));
         column.OwnerControl = this;
-        _allPropertyColumns[i] = column;
+        if (isBusinessObjectWithIdentity && property.Identifier == nameof(IBusinessObjectWithIdentity.DisplayName))
+        {
+          allPropertyColumns.Insert(0, column);
+          column.IsRowHeader = true;
+        }
+        else
+        {
+          allPropertyColumns.Add(column);
+        }
       }
+
+      _allPropertyColumns = allPropertyColumns.ToArray();
       return _allPropertyColumns;
     }
 
