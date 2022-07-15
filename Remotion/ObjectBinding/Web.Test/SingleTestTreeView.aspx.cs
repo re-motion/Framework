@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Sample;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -66,7 +67,7 @@ namespace OBWTest
     protected override void OnPreRender (EventArgs e)
     {
       BocTreeNode node = PersonTreeView.SelectedNode;
-      PersonTreeView.AssignLabel(PersonTreeViewLabel.ClientID);
+      PersonTreeView.AssignLabels(EnumerableUtility.Singleton(PersonTreeViewLabel.ClientID));
       base.OnPreRender(e);
     }
 

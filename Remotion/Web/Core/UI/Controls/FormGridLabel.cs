@@ -112,7 +112,7 @@ public class FormGridLabel: Label, ISmartControl
     get { return true; }
   }
 
-  void ISmartControl.AssignLabel (string labelID)
+  void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
   {
   }
 

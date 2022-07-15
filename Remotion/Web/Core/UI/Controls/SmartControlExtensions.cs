@@ -15,6 +15,7 @@
 // // along with re-motion; if not, see http://www.gnu.org/licenses.
 // //
 using System;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
@@ -24,12 +25,15 @@ namespace Remotion.Web.UI.Controls
   /// </summary>
   public static class SmartControlExtensions
   {
+    /// <summary>
+    /// Assigns a single <paramref name="labelID"/> to a <paramref name="control"/>.
+    /// </summary>
     public static void AssignLabel (this ISmartControl control, string labelID)
     {
       ArgumentUtility.CheckNotNull("control", control);
       ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
 
-      control.AssignLabel(labelID);
+      control.AssignLabels(EnumerableUtility.Singleton(labelID));
     }
   }
 }

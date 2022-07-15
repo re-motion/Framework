@@ -14,6 +14,7 @@
 // // You should have received a copy of the GNU Lesser General Public License
 // // along with re-motion; if not, see http://www.gnu.org/licenses.
 // //
+using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
@@ -30,7 +31,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       SmartControlExtensions.AssignLabel(controlMock.Object, "TestLabelID");
 
-      controlMock.Verify(_ => _.AssignLabel("TestLabelID"));
+      controlMock.Verify(_ => _.AssignLabels(new[] { "TestLabelID" }));
     }
   }
 }

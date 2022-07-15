@@ -18,6 +18,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.Utilities;
 using Remotion.Web.Globalization;
@@ -85,7 +86,7 @@ public class SmartLabel: WebControl, IControl
     {
       var smartControl = NamingContainer.FindControl(ForControl) as ISmartControl;
       if (smartControl != null)
-        smartControl.AssignLabel(ClientID);
+        smartControl.AssignLabels(EnumerableUtility.Singleton(ClientID));
     }
   }
 
