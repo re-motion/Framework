@@ -115,7 +115,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertChildElementCount(sortCommandLink, 1);
 
       var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
-      Html.AssertAttribute(titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       Html.AssertChildElementCount(titleSpan, 0);
     }
@@ -130,7 +129,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderer.RenderTitleCell(renderingContext, CreateBocTitleCellRenderArguments());
 
       var document = Html.GetResultDocument();
-      var title = document.GetAssertedElementByID(List.Object.ClientID + "_0_Title");
+      var th = document.GetAssertedChildElement("th", 0);
+      var sortCommandLink = Html.GetAssertedChildElement(th, "a", 0);
+      var title = sortCommandLink.GetAssertedChildElement("span", 0);
       Assert.That(title.InnerXml, Is.EqualTo("Multiline<br />ColumnTitle"));
     }
 
@@ -153,7 +154,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
       Html.AssertAttribute(titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
-      Html.AssertAttribute(titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       Html.AssertChildElementCount(titleSpan, 0);
 
@@ -180,7 +180,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var titleSpan = Html.GetAssertedChildElement(cellBody, "span", 0);
       Html.AssertAttribute(titleSpan, "class", c_screenReaderText, HtmlHelperBase.AttributeValueCompareMode.Equal);
-      Html.AssertAttribute(titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       Html.AssertChildElementCount(titleSpan, 0);
 
@@ -318,7 +317,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertChildElementCount(sortCommandLink, 2);
 
       var titleSpan = Html.GetAssertedChildElement(sortCommandLink, "span", 0);
-      Html.AssertAttribute(titleSpan, "id", List.Object.ClientID + "_0_Title");
       Html.AssertTextNode(titleSpan, Column.ColumnTitleDisplayValue.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
 
       Html.AssertTextNode(sortCommandLink, HtmlHelper.WhiteSpace, 1);
