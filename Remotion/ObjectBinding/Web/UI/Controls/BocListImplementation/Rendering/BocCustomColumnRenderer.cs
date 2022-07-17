@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -23,6 +24,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -75,12 +77,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       IBusinessObject businessObject = arguments.BusinessObject;
       bool isEditedRow = renderingContext.Control.EditModeController.IsRowEditModeActive &&
                          renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex) != null;
+      var headerIDs = arguments.HeaderIDs;
 
       if (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
           || (renderingContext.ColumnDefinition.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow && isEditedRow))
-        RenderCustomCellInnerControls(renderingContext, originalRowIndex, arguments.RowIndex);
+        RenderCustomCellInnerControls(renderingContext, originalRowIndex, arguments.RowIndex, headerIDs);
       else
-        RenderCustomCellDirectly(renderingContext, businessObject, originalRowIndex);
+        RenderCustomCellDirectly(renderingContext, businessObject, originalRowIndex, headerIDs);
     }
 
     /// <summary>
@@ -108,7 +111,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       base.RenderTitleCell(renderingContext, arguments);
     }
 
-    private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex, int rowIndex)
+    private void RenderCustomCellInnerControls (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, int originalRowIndex,
+        int rowIndex,
+        IReadOnlyCollection<string> headerIDs)
     {
       BocListCustomColumnTuple[] customColumnTuples = renderingContext.Control.CustomColumns[renderingContext.ColumnDefinition];
       BocListCustomColumnTuple? customColumnTuple;
@@ -128,6 +133,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       Control control = customColumnTuple.Item3;
       if (control != null)
       {
+        if (control is ISmartControl smartControl)
+          smartControl.AssignLabels(headerIDs);
+
         ApplyStyleDefaults(control);
         control.RenderControl(renderingContext.Writer);
       }
@@ -175,7 +183,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     private void RenderCustomCellDirectly (
-        BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext, IBusinessObject businessObject, int originalRowIndex)
+        BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext,
+        IBusinessObject businessObject,
+        int originalRowIndex,
+        IReadOnlyCollection<string> headerIDs)
     {
       string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
       BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments(
@@ -184,6 +195,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.ColumnDefinition,
           renderingContext.ColumnIndex,
           originalRowIndex,
+          headerIDs,
           onClick);
       renderingContext.ColumnDefinition.CustomCell.RenderInternal(renderingContext.Writer, arguments);
     }
