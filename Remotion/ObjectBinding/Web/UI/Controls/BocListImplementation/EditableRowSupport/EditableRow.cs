@@ -25,11 +25,9 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport
 {
@@ -419,12 +417,12 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         BocSimpleColumnDefinition column,
         IBusinessObject businessObject,
         int columnIndex,
-        string columnTitleID)
+        IReadOnlyCollection<string> headerIDs)
     {
       ArgumentUtility.CheckNotNull("writer", writer);
       ArgumentUtility.CheckNotNull("column", column);
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
-      ArgumentUtility.CheckNotNullOrEmpty("columnTitleID", columnTitleID);
+      ArgumentUtility.CheckNotNull("headerIDs", headerIDs);
 
       if (! HasEditControl(columnIndex))
         return;
@@ -486,7 +484,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       foreach (BaseValidator validator in validators)
         editModeControl.RegisterValidator(validator);
 
-      editModeControl.AssignLabels(EnumerableUtility.Singleton(columnTitleID));
+      editModeControl.AssignLabels(headerIDs);
 
       editModeControl.RenderControl(writer);
 
