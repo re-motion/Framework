@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         RenderOtherIcons(renderingContext, businessObject);
       }
       if (showEditModeControl)
-        RenderCellDataForEditMode(renderingContext, businessObject, editableRow!);
+        RenderCellDataForEditMode(renderingContext, arguments, editableRow!);
       else
         RenderValueColumnCellText(renderingContext, valueColumnText!);
 
@@ -78,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     protected abstract void RenderCellDataForEditMode (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow);
+        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow editableRow);
 
     /// <summary>
     /// Used by <see cref="RenderCellContents"/> to render icons in addition to the <paramref name="businessObject"/>'s icon.

@@ -191,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Mock.Get(List.Object.EditModeController).Setup(mock => mock.GetEditableRow(EventArgs.ListIndex)).Returns(editableRow.Object);
 
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(headerIDs: new[] { "r1 c1" }));
 
       var document = Html.GetResultDocument();
 
@@ -211,7 +211,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               Column,
               firstObject,
               0,
-              List.Object.ClientID + "_0_Title"),
+              new[] { "r1 c1" }),
           Times.AtLeastOnce());
     }
 
@@ -227,7 +227,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Mock.Get(List.Object.EditModeController).Setup(mock => mock.GetEditableRow(EventArgs.ListIndex)).Returns(editableRow.Object);
 
       IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(headerIDs: new[] { "r1 c1" }));
 
       var document = Html.GetResultDocument();
 
@@ -244,7 +244,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
               Column,
               firstObject,
               0,
-              List.Object.ClientID + "_0_Title"),
+              new[] { "r1 c1" }),
           Times.AtLeastOnce());
     }
   }
