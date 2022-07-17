@@ -16,6 +16,8 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.FunctionalProgramming;
@@ -33,6 +35,7 @@ namespace Remotion.Web.UI.Controls
 public class SmartLabel: WebControl, IControl
 {
   private string? _forControl = null;
+  private string? _parentLabel;
   private WebString _text;
 
   public SmartLabel ()
@@ -47,6 +50,17 @@ public class SmartLabel: WebControl, IControl
   {
     get { return _forControl; }
     set { _forControl = value; }
+  }
+
+  /// <summary>
+  /// The ID of the parent <see cref="SmartLabel"/> used when creating hierarchical labels.
+  /// The parent <see cref="SmartLabel"/> must be located within the same <see cref="Control.NamingContainer"/>.
+  /// </summary>
+  [Category("Behavior")]
+  public string? ParentLabel
+  {
+    get { return _parentLabel; }
+    set { _parentLabel = value; }
   }
 
   /// <summary>
@@ -86,7 +100,28 @@ public class SmartLabel: WebControl, IControl
     {
       var smartControl = NamingContainer.FindControl(ForControl) as ISmartControl;
       if (smartControl != null)
-        smartControl.AssignLabels(EnumerableUtility.Singleton(ClientID));
+      {
+        var labels = this.CreateSequenceWithCycleCheck(
+            GetParentLabel,
+            label => new HttpException(string.Format("SmartLabel '{0}' forms a cyclic reference via it's ParentLabel property.", label.ParentLabel)));
+
+        var labelIDs = labels.Select(label => label.ClientID).Reverse();
+        smartControl.AssignLabels(labelIDs);
+      }
+    }
+
+    static SmartLabel? GetParentLabel (SmartLabel label)
+    {
+      if (label.ParentLabel == null)
+        return null;
+
+      var control = label.NamingContainer.FindControl(label.ParentLabel);
+      return control switch
+      {
+          SmartLabel smartLabel => smartLabel,
+          null => throw new HttpException(string.Format("Unable to find the control with id '{0}' referenced as ParentLabel for the label '{1}'.", label.ParentLabel, label.ID)),
+          _ => throw new HttpException(string.Format("Control with id '{0}' referenced as ParentLabel for the label '{1}' is not a SmartLabel.", label.ParentLabel, label.ID))
+      };
     }
   }
 
