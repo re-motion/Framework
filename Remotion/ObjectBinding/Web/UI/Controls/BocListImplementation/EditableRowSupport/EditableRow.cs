@@ -25,6 +25,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -485,7 +486,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       foreach (BaseValidator validator in validators)
         editModeControl.RegisterValidator(validator);
 
-      editModeControl.AssignLabel(columnTitleID);
+      editModeControl.AssignLabels(EnumerableUtility.Singleton(columnTitleID));
 
       editModeControl.RenderControl(writer);
 

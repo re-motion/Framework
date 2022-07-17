@@ -323,9 +323,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return false; }
     }
 
-    void ISmartControl.AssignLabel (string labelID)
+    void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
 
       //BocLiteral does not have a root element that could be labeled.
     }

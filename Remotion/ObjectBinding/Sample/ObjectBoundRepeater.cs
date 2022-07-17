@@ -321,9 +321,9 @@ namespace Remotion.ObjectBinding.Sample
       get { return false; }
     }
 
-    void ISmartControl.AssignLabel (string labelID)
+    void ISmartControl.AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
     }
 
     /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>

@@ -61,7 +61,10 @@ namespace Remotion.Web.UI.Controls
     /// </remarks>
     bool UseLabel { get; }
 
-    void AssignLabel ([NotNull] string labelID);
+    /// <summary>
+    /// Assigns a sequence of <paramref name="labelIDs"/> for this <see cref="ISmartControl"/>.
+    /// </summary>
+    void AssignLabels (IEnumerable<string> labelIDs);
 
     //  /// <summary>
     //  ///   If UseInputControlCSS is true, the control requires special formatting.
