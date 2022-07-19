@@ -89,5 +89,12 @@ namespace Remotion.Web.UI.Controls
     {
       get { return "supplemental"; }
     }
+
+    /// <summary> Gets the CSS-Class applied to elements only visible to screen readers. </summary>
+    /// <remarks> Class: <c>screenReaderText</c> </remarks>
+    public static string ScreenReaderText
+    {
+      get { return "screenReaderText"; }
+    }
   }
 }

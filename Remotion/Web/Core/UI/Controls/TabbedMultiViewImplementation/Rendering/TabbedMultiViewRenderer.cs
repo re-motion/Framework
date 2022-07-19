@@ -287,7 +287,7 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     public string CssClassScreenReaderText
     {
-      get { return "screenReaderText"; }
+      get { return CssClassDefinition.ScreenReaderText; }
     }
 
     #endregion

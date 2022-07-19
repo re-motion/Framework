@@ -1511,7 +1511,7 @@ namespace Remotion.Web.UI.Controls
     /// <remarks> Class: <c>screenReaderText</c> </remarks>
     protected string CssClassScreenReaderText
     {
-      get { return "screenReaderText"; }
+      get { return CssClassDefinition.ScreenReaderText; }
     }
 
     #endregion
