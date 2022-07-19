@@ -84,8 +84,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       {
         if (inStyleProperty)
         {
-          TextValue.Object.Style["height"] = Height.ToString();
-          TextValue.Object.Style["width"] = Width.ToString();
+          TextValue.Object.Style[HtmlTextWriterStyle.Height] = Height.ToString();
+          TextValue.Object.Style[HtmlTextWriterStyle.Width] = Width.ToString();
         }
         else
         {

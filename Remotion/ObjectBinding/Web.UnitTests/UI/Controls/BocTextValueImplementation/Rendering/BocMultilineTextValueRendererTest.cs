@@ -237,6 +237,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       SetStyle(withStyle, withCssClass, inStandardProperties, false);
 
       TextValue.Setup(mock => mock.IsReadOnly).Returns(true);
+      TextValue.Setup(mock => mock.Enabled).Returns(true);
 
       _renderer.Render(new BocMultilineTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
@@ -250,26 +251,37 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertChildElementCount(span, 1);
       var content = Html.GetAssertedChildElement(span, "span", 0);
       Html.AssertAttribute(content, "class", "content");
-      Html.AssertChildElementCount(content, 2);
+      Html.AssertChildElementCount(content, 3);
 
       if (withStyle)
       {
         Html.AssertStyleAttribute(span, "height", Height.ToString());
       }
 
-      var label = Html.GetAssertedChildElement(content, "span", 0);
-      Html.AssertAttribute(label, "id", c_textValueID);
-      Html.AssertAttribute(label, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute(label, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_textValueID);
-      Html.AssertAttribute(label, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
-      Html.AssertAttribute(label, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
-      Html.AssertAttribute(label, "tabindex", "0");
+      var textarea = Html.GetAssertedChildElement(content, "textarea", 0);
+      Html.AssertAttribute(textarea, "id", c_textValueID);
+      Html.AssertAttribute(textarea, "name", c_textValueID);
+      Html.AssertAttribute(textarea, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(textarea, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(textarea, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
+      Html.AssertAttribute(textarea, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
+      if (TextValue.Object.TextBoxStyle.AutoPostBack == true)
+        Html.AssertAttribute(textarea, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_textValueID));
+      CheckTextAreaStyle(textarea, false, withStyle);
+      Html.AssertNoAttribute(textarea, "disabled");
+      Html.AssertAttribute(textarea, "class", CssClassDefinition.ScreenReaderText);
+      Html.AssertTextNode(textarea, TextValue.Object.Text, 0);
+      Html.AssertChildElementCount(textarea, 0);
+
+      var label = Html.GetAssertedChildElement(content, "span", 1);
+      Html.AssertNoAttribute(label, "tabindex");
+      Html.AssertAttribute(label, "aria-hidden", "true");
       Html.AssertTextNode(label, BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, 0);
       Html.GetAssertedChildElement(label, "br", 1);
       Html.AssertTextNode(label, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText, 2);
       Html.AssertChildElementCount(label, 1);
 
-      var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
+      var validationErrors = Html.GetAssertedChildElement(content, "fake", 2);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, c_validationErrors);
     }
