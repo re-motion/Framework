@@ -39,6 +39,7 @@ namespace Remotion.Web.UI
     public const string AriaOwns = "aria-owns";
     public const string AriaReadOnly = "aria-readonly";
     public const string AriaRequired = "aria-required";
+    public const string AriaRoleDescription = "aria-roledescription";
     public const string AriaSelected = "aria-selected";
     public const string Hidden = "hidden";
     public const string Label = "label";

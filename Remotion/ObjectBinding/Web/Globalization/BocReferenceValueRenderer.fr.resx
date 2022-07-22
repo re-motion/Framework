@@ -120,4 +120,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.LoadIconFailedErrorMessage" xml:space="preserve">
     <value>Impossible de charger l’icône afférente à votre choix.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.ScreenReaderLabelForComboboxReadOnly" xml:space="preserve">
+      <value>Zone de liste déroulante en lecture seule</value>
+  </data>
 </root>

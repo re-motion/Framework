@@ -61,6 +61,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       SearchStringForDropDownDoesNotMatchRegexMessage,
       /// <summary> The message displayed when the user input does not result in a result.</summary>
       NoDataFoundMessage,
+      /// <summary> The aria-role description for the combobox as a read-only element. </summary>
+      ScreenReaderLabelForComboboxReadOnly,
     }
 
     private readonly Func<TextBox> _textBoxFactory;
@@ -301,12 +303,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return jsonBuilder.ToString();
     }
 
-    protected virtual IResourceManager GetResourceManager (BocAutoCompleteReferenceValueRenderingContext renderingContext)
+    protected virtual IResourceManager GetResourceManager (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
     {
       return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
-    protected override sealed void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
+    protected sealed override string GetAriaHasPopupForCombobox ()
+    {
+      return HtmlAriaHasPopupAttributeValue.Listbox;
+    }
+
+    protected sealed override string GetAriaRoleDescriptionForComboboxReadOnly (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
+    {
+      var resourceManager = GetResourceManager(renderingContext);
+      return resourceManager.GetString(ResourceIdentifier.ScreenReaderLabelForComboboxReadOnly);
+    }
+
+    protected sealed override void RenderEditModeValue (BocRenderingContext<IBocAutoCompleteReferenceValue> renderingContext)
     {
       TextBox textBox = GetTextBox(renderingContext);
       var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
@@ -316,7 +329,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassInput + " " + CssClassThemed);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Listbox);
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaHasPopup, GetAriaHasPopupForCombobox());
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();

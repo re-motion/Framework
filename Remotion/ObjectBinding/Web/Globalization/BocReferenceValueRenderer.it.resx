@@ -120,4 +120,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.LoadIconFailedErrorMessage" xml:space="preserve">
     <value>Impossibile caricare l'icona relativa alla selezione.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.ScreenReaderLabelForComboboxReadOnly" xml:space="preserve">
+      <value>Casella combinata sola lettura</value>
+  </data>
 </root>
