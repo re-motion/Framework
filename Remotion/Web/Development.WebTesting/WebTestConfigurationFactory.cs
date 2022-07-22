@@ -96,7 +96,8 @@ namespace Remotion.Web.Development.WebTesting
           configSettings.CommandTimeout,
           configSettings.SearchTimeout,
           configSettings.RetryInterval,
-          configSettings.AsyncJavaScriptTimeout);
+          configSettings.AsyncJavaScriptTimeout,
+          configSettings.Headless);
     }
 
     /// <summary>

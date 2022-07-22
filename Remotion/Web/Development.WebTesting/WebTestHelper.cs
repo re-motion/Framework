@@ -184,7 +184,8 @@ namespace Remotion.Web.Development.WebTesting
       s_log.InfoFormat("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
 
       // Note: otherwise cursor could interfere with element hovering.
-      EnsureCursorIsOutsideBrowserWindow();
+      if (!_mainBrowserSession.Headless)
+        EnsureCursorIsOutsideBrowserWindow();
     }
 
     /// <summary>
@@ -363,7 +364,8 @@ namespace Remotion.Web.Development.WebTesting
           configurationOverride.CommandTimeout ?? configuration.CommandTimeout,
           configurationOverride.SearchTimeout ?? configuration.SearchTimeout,
           configurationOverride.RetryInterval ?? configuration.RetryInterval,
-          configurationOverride.AsyncJavaScriptTimeout ?? configuration.AsyncJavaScriptTimeout);
+          configurationOverride.AsyncJavaScriptTimeout ?? configuration.AsyncJavaScriptTimeout,
+          configurationOverride.Headless ?? configuration.Headless);
     }
 
     /// <summary>

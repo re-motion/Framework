@@ -36,7 +36,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
   public class ChromeBrowserFactory : IBrowserFactory
   {
     private readonly IChromeConfiguration _chromeConfiguration;
-    private readonly ExtendedChromeOptions _extendedChromeOptions;
     private readonly IBrowserSessionCleanUpStrategy _registryCleanUpStrategy;
 
     public ChromeBrowserFactory ([NotNull] IChromeConfiguration chromeConfiguration)
@@ -44,7 +43,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       ArgumentUtility.CheckNotNull("chromeConfiguration", chromeConfiguration);
 
       _chromeConfiguration = chromeConfiguration;
-      _extendedChromeOptions = _chromeConfiguration.CreateChromeOptions();
       _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForChrome(_chromeConfiguration.DisableSecurityWarningsBehavior);
     }
 
@@ -55,7 +53,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
       var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;
 
-      var driver = CreateChromeDriver(out var driverProcessID, commandTimeout);
+      var extendedChromeOptions = _chromeConfiguration.CreateChromeOptions();
+      if (configuration.Headless)
+        extendedChromeOptions.AddArgument("headless");
+
+      var driver = CreateChromeDriver(extendedChromeOptions, out var driverProcessID, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
       var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.Chrome));
@@ -64,10 +66,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
           session,
           _chromeConfiguration,
           driverProcessID,
+          configuration.Headless,
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy(_chromeConfiguration.UserDirectoryRoot, _extendedChromeOptions.UserDirectory!)
+              new ChromiumUserDirectoryCleanUpStrategy(_chromeConfiguration.UserDirectoryRoot, extendedChromeOptions.UserDirectory!)
           });
     }
 
@@ -85,11 +88,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
              };
     }
 
-    private ChromeDriver CreateChromeDriver (out int driverProcessID, TimeSpan commandTimeout)
+    private ChromeDriver CreateChromeDriver (ExtendedChromeOptions extendedChromeOptions, out int driverProcessID, TimeSpan commandTimeout)
     {
       var driverService = CreateChromeDriverService();
 
-      var driver = new ChromeDriver(driverService, _extendedChromeOptions, commandTimeout);
+      var driver = new ChromeDriver(driverService, extendedChromeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
 
       return driver;

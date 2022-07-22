@@ -35,8 +35,9 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Edge
         [NotNull] Coypu.BrowserSession value,
         [NotNull] IEdgeConfiguration configuration,
         int driverProcessID,
+        bool headless,
         [CanBeNull] [ItemNotNull] IReadOnlyCollection<IBrowserSessionCleanUpStrategy>? cleanUpStrategies = null)
-        : base(value, configuration, driverProcessID)
+        : base(value, configuration, driverProcessID, headless)
     {
       _cleanUpStrategies = cleanUpStrategies ?? new IBrowserSessionCleanUpStrategy[0];
     }

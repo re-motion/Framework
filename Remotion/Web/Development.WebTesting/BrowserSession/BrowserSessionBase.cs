@@ -38,12 +38,14 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     private readonly T _browserConfiguration;
     private readonly Coypu.BrowserSession _value;
     private readonly int _driverProcessID;
+    private readonly bool _headless;
     private bool _isDisposed;
 
     protected BrowserSessionBase (
         [NotNull] Coypu.BrowserSession value,
         [NotNull] T browserConfiguration,
-        int driverProcessId)
+        int driverProcessId,
+        bool headless)
     {
       ArgumentUtility.CheckNotNull("value", value);
       ArgumentUtility.CheckNotNull("browserConfiguration", browserConfiguration);
@@ -54,6 +56,7 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
       _value = value;
       _browserConfiguration = browserConfiguration;
       _driverProcessID = driverProcessId;
+      _headless = headless;
     }
 
     /// <inheritdoc />
@@ -80,6 +83,11 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     public BrowserWindow Window
     {
       get { return _value; }
+    }
+
+    public bool Headless
+    {
+      get { return _headless; }
     }
 
     public BrowserWindow FindWindow (string locator, Options? options = null)

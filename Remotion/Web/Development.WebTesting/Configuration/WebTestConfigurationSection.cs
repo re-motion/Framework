@@ -49,6 +49,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     private readonly ConfigurationProperty _chrome;
     private readonly ConfigurationProperty _edge;
     private readonly ConfigurationProperty _testSiteLayoutProperty;
+    private readonly ConfigurationProperty _headless;
 
     static WebTestConfigurationSection ()
     {
@@ -94,6 +95,7 @@ namespace Remotion.Web.Development.WebTesting.Configuration
       _testSiteLayoutProperty = new ConfigurationProperty("testSiteLayout", typeof(TestSiteLayoutConfigurationElement));
       _chrome = new ConfigurationProperty("chrome", typeof(ChromiumConfigurationElement));
       _edge = new ConfigurationProperty("edge", typeof(ChromiumConfigurationElement));
+      _headless = new ConfigurationProperty("headless", typeof(bool), false);
 
       _properties = new ConfigurationPropertyCollection
                     {
@@ -115,7 +117,8 @@ namespace Remotion.Web.Development.WebTesting.Configuration
                         _hostingProperty,
                         _testSiteLayoutProperty,
                         _chrome,
-                        _edge
+                        _edge,
+                        _headless
                     };
     }
 
@@ -286,6 +289,14 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     public ChromiumConfigurationElement Edge
     {
       get { return (ChromiumConfigurationElement)this[_edge]; }
+    }
+
+    /// <summary>
+    /// Run the web browser without a user interface (headless mode).
+    /// </summary>
+    public bool Headless
+    {
+      get { return (bool)this[_headless]; }
     }
   }
 }
