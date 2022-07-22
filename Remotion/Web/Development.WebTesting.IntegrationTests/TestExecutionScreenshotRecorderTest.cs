@@ -20,12 +20,14 @@ using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [RequiresUserInterface]
   public class TestExecutionScreenshotRecorderTest : IntegrationTest
   {
     private string _tempSavePath = "";

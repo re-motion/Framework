@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics;
 using Coypu;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
@@ -53,9 +54,13 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [OneTimeSetUp]
     public void IntegrationTestOneTimeSetUp ()
     {
+      DriverConfigurationOverride driverConfigurationOverride = null;
+      if (Debugger.IsAttached || RequiresUserInterfaceAttribute.GetPropertyValue(TestContext.CurrentContext))
+        driverConfigurationOverride = new DriverConfigurationOverride { Headless = false };
+
       _webTestHelper = WebTestHelper.CreateFromConfiguration<CustomWebTestConfigurationFactory>();
 
-      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession);
+      _webTestHelper.OnFixtureSetUp(MaximizeMainBrowserSession, driverConfigurationOverride);
       s_webApplicationRoot = new Lazy<Uri>(
           () =>
           {
