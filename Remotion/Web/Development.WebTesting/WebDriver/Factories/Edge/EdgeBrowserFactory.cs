@@ -36,7 +36,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
   public class EdgeBrowserFactory : IBrowserFactory
   {
     private readonly IEdgeConfiguration _edgeConfiguration;
-    private readonly ExtendedEdgeOptions _extendedEdgeOptions;
     private readonly IBrowserSessionCleanUpStrategy _registryCleanUpStrategy;
 
     public EdgeBrowserFactory ([NotNull] IEdgeConfiguration edgeConfiguration)
@@ -44,7 +43,6 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
       ArgumentUtility.CheckNotNull("edgeConfiguration", edgeConfiguration);
 
       _edgeConfiguration = edgeConfiguration;
-      _extendedEdgeOptions = _edgeConfiguration.CreateEdgeOptions();
       _registryCleanUpStrategy = ChromiumSecurityWarningsRegistryCleanUpStrategyFactory.CreateForEdge(_edgeConfiguration.DisableSecurityWarningsBehavior);
     }
 
@@ -55,7 +53,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
       var sessionConfiguration = CreateSessionConfiguration(configuration);
       var commandTimeout = configuration.CommandTimeout;
 
-      var driver = CreateEdgeDriver(out var driverProcessID, commandTimeout);
+      var extendedEdgeOptions = _edgeConfiguration.CreateEdgeOptions();
+      if (configuration.Headless)
+        extendedEdgeOptions.AddArgument("headless");
+
+      var driver = CreateEdgeDriver(extendedEdgeOptions, out var driverProcessID, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
 
       var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.Edge));
@@ -64,10 +66,11 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
           session,
           _edgeConfiguration,
           driverProcessID,
+          configuration.Headless,
           new[]
           {
               _registryCleanUpStrategy,
-              new ChromiumUserDirectoryCleanUpStrategy(_edgeConfiguration.UserDirectoryRoot, _extendedEdgeOptions.UserDirectory!)
+              new ChromiumUserDirectoryCleanUpStrategy(_edgeConfiguration.UserDirectoryRoot, extendedEdgeOptions.UserDirectory!)
           });
     }
 
@@ -85,10 +88,10 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
              };
     }
 
-    private EdgeDriver CreateEdgeDriver (out int driverProcessID, TimeSpan commandTimeout)
+    private EdgeDriver CreateEdgeDriver (ExtendedEdgeOptions extendedEdgeOptions, out int driverProcessID, TimeSpan commandTimeout)
     {
       var driverService = CreateEdgeDriverService();
-      var driver = new EdgeDriver(driverService, _extendedEdgeOptions, commandTimeout);
+      var driver = new EdgeDriver(driverService, extendedEdgeOptions, commandTimeout);
       driverProcessID = driverService.ProcessId;
 
       return driver;

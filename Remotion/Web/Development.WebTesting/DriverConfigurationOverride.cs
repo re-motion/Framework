@@ -46,6 +46,11 @@ namespace Remotion.Web.Development.WebTesting
     /// </summary>
     public TimeSpan? AsyncJavaScriptTimeout { get; set; }
 
+    /// <summary>
+    /// Gets a boolean indicating if the web browser should run without a user interface (headless mode).
+    /// </summary>
+    public bool? Headless { get; set; }
+
     public DriverConfigurationOverride ()
     {
     }

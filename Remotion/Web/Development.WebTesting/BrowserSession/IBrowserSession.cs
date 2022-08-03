@@ -34,6 +34,11 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession
     IDriver Driver { get; }
 
     /// <summary>
+    /// Indicates if the web browser is running without a user interfaces (headless mode).
+    /// </summary>
+    bool Headless { get; }
+
+    /// <summary>
     /// Returns the new browser log entries of the <see cref="IBrowserSession"/> since the last call of <see cref="GetBrowserLogs"/> or
     /// the last refresh of the page, if no <see cref="GetBrowserLogs"/> call was made.
     /// </summary>

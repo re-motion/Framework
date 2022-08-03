@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using Remotion.Utilities;
@@ -39,7 +41,10 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
       ArgumentUtility.CheckNotNull("locator", locator);
 
-      return CreateBrowserScreenshot(browserSession, locator);
+      if (browserSession.Headless)
+        return CreateBrowserScreenshotBasedOnDriver(browserSession);
+      else
+        return CreateBrowserScreenshotBasedOnScreen(browserSession, locator);
     }
 
     /// <summary>
@@ -76,7 +81,7 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
     }
 
     [NotNull]
-    private static Screenshot CreateBrowserScreenshot (IBrowserSession browserSession, IBrowserContentLocator locator)
+    private static Screenshot CreateBrowserScreenshotBasedOnScreen (IBrowserSession browserSession, IBrowserContentLocator locator)
     {
       var browserBounds = locator.GetBrowserContentBounds((IWebDriver)browserSession.Driver.Native);
       var image = new Bitmap(browserBounds.Width, browserBounds.Height);
@@ -92,6 +97,30 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation
           Size.Empty,
           new[] { new Rectangle(Point.Empty, browserBounds.Size) },
           CursorInformation.Capture(),
+          CoordinateSystem.Browser);
+    }
+
+    [NotNull]
+    private static Screenshot CreateBrowserScreenshotBasedOnDriver (IBrowserSession browserSession)
+    {
+      ArgumentUtility.CheckNotNull("browserSession", browserSession);
+
+      var screenshot = ((ITakesScreenshot)browserSession.Driver.Native).GetScreenshot();
+
+      Bitmap image;
+      using (var memoryStream = new MemoryStream(screenshot.AsByteArray, false))
+      {
+        // For some reasons GDI+ might throw an OutOfMemory exception when the image provided by the driver is used
+        // As such, we copy the image which is quite fast (~5ms) and prevents any issues down the line
+        var corruptedImage = (Bitmap)Image.FromStream(memoryStream);
+        image = new Bitmap(corruptedImage);
+      }
+
+      return new Screenshot(
+          image,
+          Size.Empty,
+          new[] { new Rectangle(Point.Empty, image.Size) },
+          CursorInformation.Empty,
           CoordinateSystem.Browser);
     }
 

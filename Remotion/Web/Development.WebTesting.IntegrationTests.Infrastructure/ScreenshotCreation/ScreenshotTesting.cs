@@ -86,7 +86,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.Sc
 
       var results = new List<SubTestResult>();
 
-      if (type.HasFlag(ScreenshotTestingType.Desktop))
+      if (type.HasFlag(ScreenshotTestingType.Desktop) && !helper.MainBrowserSession.Headless)
       {
         using (var diagnosticScreenshotBuilder = DiagnosticScreenshotBuilder.CreateDesktopScreenshot(helper.BrowserConfiguration.Locator))
         {

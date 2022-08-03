@@ -27,8 +27,8 @@ namespace Remotion.Web.Development.WebTesting.BrowserSession.Firefox
   /// </summary>
   public class FirefoxBrowserSession : BrowserSessionBase<IFirefoxConfiguration>
   {
-    public FirefoxBrowserSession ([NotNull] Coypu.BrowserSession value, [NotNull] IFirefoxConfiguration browserConfiguration, int driverProcessId)
-        : base(value, browserConfiguration, driverProcessId)
+    public FirefoxBrowserSession ([NotNull] Coypu.BrowserSession value, [NotNull] IFirefoxConfiguration browserConfiguration, int driverProcessId, bool headless)
+        : base(value, browserConfiguration, driverProcessId, headless)
     {
     }
 
