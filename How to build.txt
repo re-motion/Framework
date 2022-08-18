@@ -27,6 +27,7 @@ You can also graft the repositories together by first checking out both
 repositories into the same local copy and then using the git-replace command:
 git replace --graft e9da3872012ac60583b703c2525ce3112a7f31f5 87c543e3daaf3f2746ca9dcbe08de8543408d30b
 
+DUMMY CHANGE
 
 Creating your own remotion.snk keyfile
 --------------------------------------
