@@ -1770,7 +1770,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
         let contentWidth = parseInt(popUp.dataset['popUpContentWidth']!, 10);
         if (!isVisibe)
         {
-            contentWidth = Math.max(0, Math.max(...(Array.from(popUpDiv.children) as HTMLElement[]).map(function (el) { return el.offsetWidth + el.offsetLeft; })));
+            const htmlPopUpDiv = popUpDiv as HTMLElement;
+            contentWidth = Math.max(0, htmlPopUpDiv.offsetLeft + htmlPopUpDiv.offsetWidth);
             popUp.dataset['popUpContentWidth'] = '' + contentWidth;
         }
 
