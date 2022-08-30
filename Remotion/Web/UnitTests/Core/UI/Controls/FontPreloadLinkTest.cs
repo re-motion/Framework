@@ -48,6 +48,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       _htmlHelper.AssertAttribute(element, "as", "font");
       _htmlHelper.AssertAttribute(element, "type", "font-type");
       _htmlHelper.AssertAttribute(element, "href", "myfont.ttf");
+      _htmlHelper.AssertAttribute(element, "crossorigin", "anonymous");
     }
   }
 }
