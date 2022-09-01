@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -26,6 +25,7 @@ using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
@@ -39,6 +39,7 @@ using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 using AttributeCollection = System.Web.UI.AttributeCollection;
@@ -46,19 +47,14 @@ using AttributeCollection = System.Web.UI.AttributeCollection;
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplementation.Rendering.BocEnumValueRendererTests
 {
   [TestFixture]
-  public class SelectList_BEVRT : RendererTestBase
+  public class SelectListReadOnly_BEVRT : RendererTestBase
   {
-    private enum NullOption
-    {
-      WithoutNullValue,
-      HasNullValueWithScreenReaderOnlyText,
-      HasNullValueWithVisibleText
-    }
-
     private const string c_clientID = "MyEnumValue";
-    private const string c_valueName = "ListControlClientID";
+    private const string c_valueName = "MyEnumValue_TextValue";
     private const string c_labelID = "Label";
+
     private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
+
     private Mock<IBocEnumValue> _enumValue;
     private readonly Unit _width = Unit.Point(173);
     private readonly Unit _height = Unit.Point(17);
@@ -91,6 +87,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
                   SafeServiceLocator.Current.GetInstance<BindableObjectGlobalizationService>(),
                   new Mock<IBusinessObjectPropertyConstraintProvider>().Object));
 
+      _enumValue.SetupProperty(_ => _.Property);
       _enumValue.Object.Property = property;
       _enumValue.Setup(stub => stub.ClientID).Returns(c_clientID);
       _enumValue.Setup(stub => stub.ControlType).Returns("BocEnumValue");
@@ -109,97 +106,58 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       _enumValue.Setup(mock => mock.GetNullItemText()).Returns(PlainTextString.CreateFromText("null-text"));
       _enumValue.Setup(mock => mock.NullIdentifier).Returns("null-id");
-      _enumValue.Setup(mock => mock.GetValueName()).Returns(c_valueName);
+      _enumValue.Setup(mock => mock.GetValueName()).Throws(new InvalidOperationException("Should not be called."));
 
       StateBag stateBag = new StateBag();
+      _enumValue.Setup(mock => mock.Enabled).Returns(true);
+      _enumValue.Setup(mock => mock.IsReadOnly).Returns(true);
       _enumValue.Setup(mock => mock.Attributes).Returns(new AttributeCollection(stateBag));
       _enumValue.Setup(mock => mock.Style).Returns(_enumValue.Object.Attributes.CssStyle);
       _enumValue.Setup(mock => mock.LabelStyle).Returns(new Style(stateBag));
-      _enumValue.Setup(mock => mock.ListControlStyle).Returns(new ListControlStyle { ControlType = ListControlType.DropDownList });
+      _enumValue.Setup(mock => mock.ListControlStyle).Returns(new ListControlStyle() { ControlType = ListControlType.DropDownList });
       _enumValue.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
-      _enumValue.Setup(mock => mock.Enabled).Returns(true);
+
+      _enumValue.Setup(stub => stub.GetResourceManager()).Returns(NullResourceManager.Instance);
 
       _internalControlMemberCaller = SafeServiceLocator.Current.GetInstance<IInternalControlMemberCaller>();
     }
 
     [Test]
-    public void Render_NullValueSelected_IsNotRequired ()
+    public void Render_NullValue ()
     {
-      _enumValue.Setup(mock => mock.IsRequired).Returns(false);
-
-      AssertOptionList(NullOption.HasNullValueWithScreenReaderOnlyText, null, false, false);
+      AssertReadOnlySelectList(null, false);
     }
 
     [Test]
-    public void Render_NullValueSelected_IsRequired ()
+    public void Render_NamedValue ()
     {
-      _enumValue.Setup(mock => mock.IsRequired).Returns(true);
-
-      AssertOptionList(NullOption.HasNullValueWithScreenReaderOnlyText, null, false, false);
-    }
-
-    [Test]
-    public void Render_NamedValueSelected ()
-    {
-      _enumValue.Setup(mock => mock.IsRequired).Returns(true);
       _enumValue.SetupProperty(_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
+      _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertOptionList(NullOption.WithoutNullValue, TestEnum.First, false, false);
-    }
-
-    [Test]
-    public void Render_NamedValueSelected_AutoPostback ()
-    {
-      _enumValue.Setup(mock => mock.IsRequired).Returns(true);
-      _enumValue.Object.ListControlStyle.AutoPostBack = true;
-      _enumValue.SetupProperty(_ => _.Value);
-      _enumValue.Object.Value = TestEnum.First;
-
-      AssertOptionList(NullOption.WithoutNullValue, TestEnum.First, false, true);
-    }
-
-    [Test]
-    public void Render_NamedValueSelected_WithNullOption ()
-    {
-      _enumValue.Setup(mock => mock.IsRequired).Returns(false);
-      _enumValue.SetupProperty(_ => _.Value);
-      _enumValue.Object.Value = TestEnum.First;
-
-      AssertOptionList(NullOption.HasNullValueWithScreenReaderOnlyText, TestEnum.First, false, false);
+      AssertReadOnlySelectList(TestEnum.First, false);
     }
 
     [Test]
     public void Render_NamedValueSelected_WithCssClass ()
     {
       _enumValue.Object.CssClass = "CssClass";
-      _enumValue.Setup(mock => mock.IsRequired).Returns(true);
       _enumValue.SetupProperty(_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
+      _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertOptionList(NullOption.WithoutNullValue, TestEnum.First, false, false);
-    }
-
-    [Test]
-    public void Render_NullOption_WithVisibleText ()
-    {
-      _enumValue.Setup(mock => mock.IsRequired).Returns(false);
-      _enumValue.Object.ListControlStyle.DropDownListNullValueTextVisible = true;
-      _enumValue.SetupProperty(_ => _.Value);
-      _enumValue.Object.Value = TestEnum.First;
-
-      AssertOptionList(NullOption.HasNullValueWithVisibleText, TestEnum.First, false, false);
+      AssertReadOnlySelectList(TestEnum.First, false);
     }
 
     [Test]
     public void Render_NamedValueSelected_WithCssClassInAttributes ()
     {
       _enumValue.Object.Attributes["class"] = "CssClass";
-      _enumValue.Setup(mock => mock.IsRequired).Returns(true);
       _enumValue.SetupProperty(_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
+      _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertOptionList(NullOption.WithoutNullValue, TestEnum.First, false, false);
+      AssertReadOnlySelectList(TestEnum.First, false);
     }
 
     [Test]
@@ -211,28 +169,29 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Width = _width;
       _enumValue.Object.ControlStyle.Height = _height;
       _enumValue.Object.ControlStyle.Width = _width;
-      _enumValue.Setup(mock => mock.IsRequired).Returns(true);
       _enumValue.SetupProperty(_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
+      _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertOptionList(NullOption.WithoutNullValue, TestEnum.First, true, false);
+      AssertReadOnlySelectList(TestEnum.First, true);
     }
 
     [Test]
     public void Render_NamedValueSelected_WithStyleInAttributes ()
     {
-      _enumValue.Object.Style[HtmlTextWriterStyle.Height] = _height.ToString();
-      _enumValue.Object.Style[HtmlTextWriterStyle.Width] = _width.ToString();
-      _enumValue.Setup(mock => mock.IsRequired).Returns(true);
+      _enumValue.Object.Style["height"] = _height.ToString();
+      _enumValue.Object.Style["width"] = _width.ToString();
       _enumValue.SetupProperty(_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;
+      _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertOptionList(NullOption.WithoutNullValue, TestEnum.First, true, false);
+      AssertReadOnlySelectList(TestEnum.First, false);
     }
 
     [Test]
     public void RenderDiagnosticMetadataAttributes ()
     {
+      _enumValue.Object.ListControlStyle.ControlType = ListControlType.ListBox;
       _enumValue.Object.ListControlStyle.AutoPostBack = true;
 
       var resourceUrlFactory = new FakeResourceUrlFactory();
@@ -249,32 +208,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.ControlType, "BocEnumValue");
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributes.TriggersPostBack, "true");
-      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "DropDownList");
+      Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributesForObjectBinding.BocEnumValueStyle, "ListBox");
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, "null-id");
     }
 
-    private XmlNode GetAssertedSpan (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)
-    {
-      var div = Html.GetAssertedChildElement(document, "span", 0);
-      string cssClass = _enumValue.Object.CssClass;
-      if (string.IsNullOrEmpty(cssClass))
-        cssClass = _enumValue.Object.Attributes["class"];
-      if (string.IsNullOrEmpty(cssClass))
-        cssClass = "bocEnumValue dropDownList";
-
-      Html.AssertAttribute(div, "id", "MyEnumValue");
-      Html.AssertAttribute(div, "class", cssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
-
-      if (withStyle)
-      {
-        Html.AssertStyleAttribute(div, "height", _height.ToString());
-        Html.AssertStyleAttribute(div, "width", _width.ToString());
-      }
-
-      return div;
-    }
-
-    private void AssertOptionList (NullOption nullOption, TestEnum? selectedValue, bool withStyle, bool autoPostBack)
+    private void AssertReadOnlySelectList (TestEnum? value, bool withStyle)
     {
       var renderer = new BocEnumValueRenderer(
           new FakeResourceUrlFactory(),
@@ -286,63 +224,64 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       renderer.Render(new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue.Object));
 
       var document = Html.GetResultDocument();
-      var div = GetAssertedSpan(document, false, renderer);
+      XmlNode div = GetAssertedSpan(document, false, renderer);
 
-      var select = Html.GetAssertedChildElement(div, "select", 0);
-      Html.AssertAttribute(select, "id", c_valueName);
-      Html.AssertAttribute(select, "name", c_valueName);
-      Html.AssertAttribute(select, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute(select, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-      Html.AssertAttribute(select, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(select, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+      var input = Html.GetAssertedChildElement(div, "input", 0);
+      Html.AssertAttribute(input, "id", c_valueName);
+      Html.AssertAttribute(input, "name", c_valueName);
+      Html.AssertAttribute(input, "readonly", "readonly");
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(input, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(input, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(input, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+      Html.AssertNoAttribute(input, "disabled");
+      Html.AssertAttribute(input, "aria-roledescription", "read only combobox");
+      Html.AssertAttribute(input, "role", "combobox");
+      Html.AssertAttribute(input, "class", CssClassDefinition.ScreenReaderText);
 
+      if (_enumValue.Object.EnumerationValueInfo == null)
+        Html.AssertAttribute(input, "data-value", _enumValue.Object.NullIdentifier);
+      else
+        Html.AssertAttribute(input, "data-value", _enumValue.Object.EnumerationValueInfo.Identifier);
+
+      var labelSpan =  Html.GetAssertedChildElement(div, "span", 1);
+      Html.AssertNoAttribute(labelSpan, "tabindex");
+      Html.AssertAttribute(labelSpan, "aria-hidden", "true");
+      if (value.HasValue)
+        Html.AssertTextNode(labelSpan, value.Value.ToString(), 0);
+      else
+        Html.AssertChildElementCount(labelSpan, 0);
       if (withStyle)
-        Html.AssertStyleAttribute(select, "height", "100%");
-
-      if (nullOption == NullOption.HasNullValueWithScreenReaderOnlyText)
-        AssertNullOptionWithScreenReaderOnlyText(select, !selectedValue.HasValue);
-      else if (nullOption == NullOption.HasNullValueWithVisibleText)
-        AssertNullOptionWithVisibleText(select, !selectedValue.HasValue);
-
-      if (autoPostBack)
-        Html.AssertAttribute(select, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_valueName));
-
-      int index = nullOption == NullOption.WithoutNullValue ? 0 : 1;
-      foreach (TestEnum value in Enum.GetValues(typeof(TestEnum)))
       {
-        AssertOption(select, value.ToString(), value.ToString(), index, selectedValue == value);
-        ++index;
+        Html.AssertStyleAttribute(labelSpan, "width", _width.ToString());
+        Html.AssertStyleAttribute(labelSpan, "height", "100%");
       }
 
-      var validationErrors = Html.GetAssertedChildElement(div, "fake", 1);
+      var validationErrors = Html.GetAssertedChildElement(div, "fake", 2);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
-    private XmlNode AssertOption (XmlNode select, string value, string text, int index, bool isSelected)
+    private XmlNode GetAssertedSpan (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)
     {
-      var option = Html.GetAssertedChildElement(select, "option", index);
-      Html.AssertAttribute(option, "value", value);
+      var div = Html.GetAssertedChildElement(document, "span", 0);
+      string cssClass = _enumValue.Object.CssClass;
+      if (string.IsNullOrEmpty(cssClass))
+        cssClass = _enumValue.Object.Attributes["class"];
+      if (string.IsNullOrEmpty(cssClass))
+        cssClass = "bocEnumValue";
 
-      if (!string.IsNullOrEmpty(text))
-        Html.AssertTextNode(option, text, 0);
+      Html.AssertAttribute(div, "id", "MyEnumValue");
+      Html.AssertAttribute(div, "class", cssClass, HtmlHelperBase.AttributeValueCompareMode.Contains);
+      Html.AssertAttribute(div, "class", renderer.CssClassReadOnly, HtmlHelperBase.AttributeValueCompareMode.Contains);
 
-      if (isSelected)
-        Html.AssertAttribute(option, "selected", "selected");
+      if (withStyle)
+      {
+        Html.AssertStyleAttribute(div, "height", _height.ToString());
+        Html.AssertStyleAttribute(div, "width", _width.ToString());
+      }
 
-      return option;
-    }
-
-    private void AssertNullOptionWithScreenReaderOnlyText (XmlNode select, bool isSelected)
-    {
-      var option = AssertOption(select, _enumValue.Object.NullIdentifier, "", 0, isSelected);
-      Html.AssertAttribute(option, HtmlTextWriterAttribute2.Label, ((char)160).ToString());
-      Html.AssertAttribute(option, HtmlTextWriterAttribute2.AriaLabel, "null-text");
-    }
-
-    private void AssertNullOptionWithVisibleText (XmlNode select, bool isSelected)
-    {
-      AssertOption(select, _enumValue.Object.NullIdentifier, "null-text", 0, isSelected);
+      return div;
     }
   }
 }

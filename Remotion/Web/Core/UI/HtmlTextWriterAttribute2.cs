@@ -46,5 +46,6 @@ namespace Remotion.Web.UI
     [Obsolete("Use 'AriaRequired' instead to prevent the browser from adding a tooltip to the input fields for 'input required'.")]
     public const string Required = "required";
     public const string Role = "role";
+    public const string Tabindex = "tabindex";
   }
 }
