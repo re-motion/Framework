@@ -58,12 +58,15 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.TextWriterFactor
     {
       const string textWriterName = "abc";
       var streamWriterFactory = new StreamWriterFactory();
-      streamWriterFactory.Directory = "xyz";
-      streamWriterFactory.CreateTextWriter(textWriterName);
+      var tempDirectory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+      streamWriterFactory.Directory = tempDirectory;
+      var textWriter = streamWriterFactory.CreateTextWriter(textWriterName);
       Assert.That(
           () => streamWriterFactory.CreateTextWriter(textWriterName),
           Throws.ArgumentException
               .With.Message.EqualTo(@"TextWriter with name ""abc"" already exists."));
+      textWriter.Close();
+      Directory.Delete(tempDirectory, true);
     }
 
 
