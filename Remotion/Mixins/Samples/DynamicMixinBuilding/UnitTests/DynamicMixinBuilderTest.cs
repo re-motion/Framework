@@ -62,11 +62,12 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
     private MethodInvocationHandler _invocationHandler;
     private DynamicMixinBuilder _builder;
     private ServiceLocatorScope _serviceLocatorScope;
+    private string _tempDirectory;
 
     [SetUp]
     public void SetUp ()
     {
-      string directory = PrepareDirectory();
+      _tempDirectory = PrepareDirectory();
 
       // Force-initialize ObjectFactory to ensure it does not default onto the test pipeline.
       Dev.Null = Remotion.Mixins.ObjectFactory.Create<object>();
@@ -78,8 +79,8 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       serviceLocator.RegisterSingle<IPipelineRegistry>(() => pipelineRegistry);
       _serviceLocatorScope = new ServiceLocatorScope(serviceLocator);
 
-      DynamicMixinBuilder.Scope = new ModuleScope(true, false, "DynamicMixinBuilder.Signed", Path.Combine(directory, "DynamicMixinBuilder.Signed.dll"),
-        "DynamicMixinBuilder.Unsigned", Path.Combine(directory, "DynamicMixinBuilder.Unsigned.dll"));
+      DynamicMixinBuilder.Scope = new ModuleScope(true, false, "DynamicMixinBuilder.Signed", Path.Combine(_tempDirectory, "DynamicMixinBuilder.Signed.dll"),
+        "DynamicMixinBuilder.Unsigned", Path.Combine(_tempDirectory, "DynamicMixinBuilder.Unsigned.dll"));
 
       _invocationHandler = delegate (object instance, MethodInfo method, object[] args, BaseMethodInvoker baseMethod)
       {
@@ -109,9 +110,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
 
     private string PrepareDirectory ()
     {
-      string directory = Path.Combine(Environment.CurrentDirectory, "DynamicMixinBuilder.Generated");
-      if (Directory.Exists(directory))
-        Directory.Delete(directory, true);
+      string directory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
       Directory.CreateDirectory(directory);
 
       CopyFile(typeof(Mixin<,>).Assembly.ManifestModule.FullyQualifiedName, directory); // Core/Mixins assembly
@@ -141,6 +140,7 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.UnitTests
       }
 #endif
       _serviceLocatorScope.Dispose();
+      Directory.Delete(_tempDirectory, true);
     }
 
     [Test]
