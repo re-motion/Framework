@@ -19,6 +19,7 @@ using System.Collections;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Microsoft.Win32.SafeHandles;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
@@ -267,7 +268,7 @@ namespace Remotion.Web.Test.Shared.MultiplePostBackCatching
     {
       HyperLink hyperLink = new HyperLink();
       hyperLink.ID = CreateID(prefix, id);
-      hyperLink.NavigateUrl = "#";
+      hyperLink.NavigateUrl = SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL();
       hyperLink.Attributes["onclick"] = string.Empty;
       hyperLink.PreRender += delegate
       {

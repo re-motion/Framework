@@ -54,6 +54,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
     }
 
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     private const string c_whiteSpace = "&nbsp;";
 
@@ -61,12 +62,15 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        ILabelReferenceRenderer labelReferenceRenderer)
+        ILabelReferenceRenderer labelReferenceRenderer,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
 
       _labelReferenceRenderer = labelReferenceRenderer;
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -136,7 +140,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
       if (renderingContext.Control.Enabled)
       {
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
       }
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 
@@ -183,7 +187,7 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
         if (renderingContext.Control.Enabled)
         {
-          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
         }
       }
       else
@@ -403,9 +407,9 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       WebString diagnosticMetadataText = showText ? menuItem.Text : default;
 
       bool isDisabled = !menuItem.EvaluateEnabled() || !isCommandEnabled;
-
+      var fallbackNavigationUrl = ScriptUtility.EscapeClientScript(_fallbackNavigationUrlProvider.GetURL());
       stringBuilder.AppendFormat(
-          "\t\tnew DropDownMenu_ItemInfo ({0}, '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
+          "\t\tnew DropDownMenu_ItemInfo ({0}, '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, '{9}', ",
           string.IsNullOrEmpty(menuItem.ItemID) ? "null" : "'" + menuItem.ItemID + "'",
           ScriptUtility.EscapeClientScript(menuItem.Category),
           text,
@@ -414,7 +418,8 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
           (int)menuItem.RequiredSelection,
           isDisabled ? "true" : "false",
           href,
-          target);
+          target,
+          fallbackNavigationUrl);
 
       if (IsDiagnosticMetadataRenderingEnabled)
       {

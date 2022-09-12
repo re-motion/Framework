@@ -19,6 +19,7 @@ using System.Web;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation;
@@ -90,7 +91,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
 
     private void AssertDateTimePickerButton (bool isDisabled, bool hasClientScript)
     {
-      var renderer = new DatePickerButtonRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
+      var renderer = new DatePickerButtonRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default, new FakeFallbackNavigationUrlProvider());
       renderer.Render(new DatePickerButtonRenderingContext(_httpContext.Object, _htmlHelper.Writer, _datePickerButton.Object));
       var buttonDocument = _htmlHelper.GetResultDocument();
 
@@ -113,7 +114,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DatePickerButtonImplementation
       }
 
       _htmlHelper.AssertAttribute(button, "onclick", script);
-      _htmlHelper.AssertAttribute(button, "href", "#");
+      _htmlHelper.AssertAttribute(button, "href", "fakeFallbackUrl");
       _htmlHelper.AssertAttribute(button, "tabindex", "-1");
 
       if (hasClientScript)

@@ -17,6 +17,7 @@
 using System;
 using System.Web.UI;
 using JetBrains.Annotations;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI.Controls.Rendering;
@@ -65,7 +66,7 @@ namespace Remotion.Web.UI.Controls
       ArgumentUtility.CheckNotEmpty("title", title);
       ArgumentUtility.CheckNotNullOrEmpty("onClick", onClick);
 
-      return new CommandInfo(title, accessKey, "#", null, onClick, null);
+      return new CommandInfo(title, accessKey, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL(), null, onClick, null);
     }
 
     private readonly string? _title;

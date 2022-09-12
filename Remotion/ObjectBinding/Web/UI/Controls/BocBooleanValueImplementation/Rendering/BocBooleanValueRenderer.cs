@@ -64,6 +64,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     public BocBooleanValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
@@ -71,16 +72,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IRenderingFeatures renderingFeatures,
         IBocBooleanValueResourceSetFactory resourceSetFactory,
         ILabelReferenceRenderer labelReferenceRenderer,
-        IValidationErrorRenderer validationErrorRenderer)
+        IValidationErrorRenderer validationErrorRenderer,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("resourceSetFactory", resourceSetFactory);
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
 
       _resourceSetFactory = resourceSetFactory;
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -204,7 +208,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       // isClientScriptEnabled also includes IsReadOnly
       linkControl.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
-      linkControl.Attributes.Add("href", "#");
+      linkControl.Attributes.Add("href", _fallbackNavigationUrlProvider.GetURL());
 
       if (!isClientScriptEnabled)
         return;

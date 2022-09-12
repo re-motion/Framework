@@ -21,6 +21,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -96,7 +97,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
       _clientScriptManagerMock.Setup(
           mock => mock.RegisterStartupScriptBlock(_control.Object, typeof(ListMenuRenderer), _control.Object.UniqueID + "_MenuItems", script)).Verifiable();
 
-      var renderer = new ListMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default);
+      var renderer = new ListMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.Default, new FakeFallbackNavigationUrlProvider());
       renderer.Render(new ListMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
       _clientScriptManagerMock.Verify();
     }
@@ -207,7 +208,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private XmlNode GetAssertedWrapper ()
     {
-      var renderer = new ListMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata);
+      var renderer = new ListMenuRenderer(new FakeResourceUrlFactory(), GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new FakeFallbackNavigationUrlProvider());
       renderer.Render(new ListMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
 
       var document = _htmlHelper.GetResultDocument();
@@ -341,10 +342,11 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
 
     private string GetItemScript (int itemIndex)
     {
-      const string itemTemplate = "new ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10})";
+      const string itemTemplate = "new ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, '{9}', {10}, {11})";
       var menuItem = (WebMenuItem)_control.Object.MenuItems[itemIndex];
       const string diagnosticMetadata = "null";
       const string diagnosticMetadataForCommand = "null";
+      const string fallbackNavigationUrl = "fakeFallbackUrl";
 
       string href;
       string target = "null";
@@ -374,6 +376,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ListMenuImplementation.Renderi
           (itemIndex == 4) ? "true" : "false",
           href,
           target,
+          fallbackNavigationUrl,
           diagnosticMetadata,
           diagnosticMetadataForCommand);
     }

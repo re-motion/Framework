@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// This class should not be instantiated directly by clients. Instead, a <see cref="BocRowRenderer"/> should use a
     /// factory to obtain instances of this class.
     /// </remarks>
-    public BocCommandColumnRenderer (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+    public BocCommandColumnRenderer (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
     }
 

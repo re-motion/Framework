@@ -61,7 +61,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       Assert.That(commandInfo.Title, Is.EqualTo("TheTitle"));
       Assert.That(commandInfo.AccessKey, Is.EqualTo("A"));
       Assert.That(commandInfo.OnClick, Is.EqualTo("ClickHandler"));
-      Assert.That(commandInfo.Href, Is.EqualTo("#"));
+      Assert.That(commandInfo.Href, Is.EqualTo("fakeFallbackUrl"));
       Assert.That(commandInfo.Target, Is.Null);
     }
 
@@ -73,7 +73,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       Assert.That(commandInfo.Title, Is.Null);
       Assert.That(commandInfo.AccessKey, Is.Null);
       Assert.That(commandInfo.OnClick, Is.EqualTo("ClickHandler"));
-      Assert.That(commandInfo.Href, Is.EqualTo("#"));
+      Assert.That(commandInfo.Href, Is.EqualTo("fakeFallbackUrl"));
       Assert.That(commandInfo.Target, Is.Null);
     }
 
@@ -197,7 +197,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       Assert.That(result, Does.Not.Contains("title="));
       Assert.That(result, Does.Not.Contains("accesskey="));
       Assert.That(result, Does.Contain("onclick=\"ClickHandler\""));
-      Assert.That(result, Does.Contain("href=\"#\""));
+      Assert.That(result, Does.Contain("href=\"fakeFallbackUrl\""));
       Assert.That(result, Does.Not.Contains("target="));
     }
 
@@ -402,7 +402,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       Assert.That(result, Does.Contain(DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
       Assert.That(result, Does.Contain(DiagnosticMetadataAttributes.TriggersPostBack + "=\"false\""));
-      Assert.That(result, Does.Contain(DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+      Assert.That(result, Does.Contain(DiagnosticMetadataAttributes.TriggersNavigation + "=\"true\""));
     }
 
     [Test]

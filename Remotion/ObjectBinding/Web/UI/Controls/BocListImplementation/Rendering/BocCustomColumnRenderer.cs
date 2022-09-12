@@ -48,8 +48,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public BocCustomColumnRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 

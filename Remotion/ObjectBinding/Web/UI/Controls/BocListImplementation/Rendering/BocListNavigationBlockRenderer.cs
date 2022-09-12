@@ -106,6 +106,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     private readonly BocListCssClassDefinition _cssClasses;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     /// <summary>
     /// Contructs a renderer bound to a <see cref="BocList"/> to render and an <see cref="HtmlTextWriter"/> to render to.
@@ -118,12 +119,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
 
       _cssClasses = cssClasses;
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public BocListCssClassDefinition CssClasses
@@ -279,7 +283,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         var postBackEvent = string.Format("let element = document.getElementById('{0}');element.value = {1};element.dispatchEvent(new Event('change'));return false;", currentPageControlClientID, pageIndex);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
 
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
 
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
 

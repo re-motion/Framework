@@ -22,6 +22,7 @@ using System.Xml;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Globalization;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -168,7 +169,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       _control.Setup(stub => stub.ShowTitle).Returns(true);
       PopulateMenu();
 
-      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer());
+      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer(), new FakeFallbackNavigationUrlProvider());
       renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
 
       var document = _htmlHelper.GetResultDocument();
@@ -271,7 +272,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
         return;
 
       var titleAnchor = titleDiv.GetAssertedChildElement("a", 0);
-      titleAnchor.AssertAttributeValueEquals("href", "#");
+      titleAnchor.AssertAttributeValueEquals("href", "fakeFallbackUrl");
       titleAnchor.AssertNoAttribute("onclick");
       titleAnchor.AssertAttributeValueEquals(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Button);
       titleAnchor.AssertChildElementCount(withIcon ? 1 : 0);
@@ -297,7 +298,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
               _ => throw new ArgumentOutOfRangeException(nameof(buttonType), buttonType, null)
           };
 
-      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer());
+      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer(), new FakeFallbackNavigationUrlProvider());
       renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement("span", 0);

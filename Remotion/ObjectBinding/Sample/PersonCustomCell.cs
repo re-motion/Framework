@@ -18,6 +18,8 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Sample
 {
@@ -57,7 +59,7 @@ namespace Remotion.ObjectBinding.Sample
 
     protected override void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
     {
-      writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+      writer.AddAttribute(HtmlTextWriterAttribute.Href, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL());
       string onClickEvent = GetPostBackClientEvent("async");
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClickEvent);
       writer.RenderBeginTag(HtmlTextWriterTag.A);
@@ -65,7 +67,7 @@ namespace Remotion.ObjectBinding.Sample
       writer.RenderEndTag();
       writer.Write(" ");
 
-      writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+      writer.AddAttribute(HtmlTextWriterAttribute.Href, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL());
       onClickEvent = GetPostBackClientEvent("sync");
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClickEvent);
       writer.RenderBeginTag(HtmlTextWriterTag.A);
