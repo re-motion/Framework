@@ -825,8 +825,10 @@ class DropDownMenu
     return item;
   }
 
-  private static OnItemClick (this: HTMLAnchorElement): boolean
+  private static OnItemClick (this: HTMLAnchorElement, ev: MouseEvent): boolean
   {
+    ev.preventDefault();
+
     if (this.href == null || this.href === '')
       return false;
 
