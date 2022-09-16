@@ -330,6 +330,25 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
     }
 
     [Test]
+    public void AddDiagnosticMetadataAttributes_FromCreateForLink_WithDoPostBackAndUrl ()
+    {
+      var commandInfo = CommandInfo.CreateForLink("TheTitle", null, "TheUrl", "TheTarget", "FrontGarbage__doPostBackBackGarbage");
+
+      var stringWriter = new StringWriter();
+      var htmlTextWriter = new HtmlTextWriter(stringWriter);
+      commandInfo.AddAttributesToRender(htmlTextWriter, RenderingFeatures.WithDiagnosticMetadata);
+
+      htmlTextWriter.RenderBeginTag(HtmlTextWriterTag.A);
+      htmlTextWriter.RenderEndTag();
+
+      var result = stringWriter.ToString();
+
+      Assert.That(result, Does.Contain(DiagnosticMetadataAttributes.ControlType + "=\"Command\""));
+      Assert.That(result, Does.Contain(DiagnosticMetadataAttributes.TriggersPostBack + "=\"true\""));
+      Assert.That(result, Does.Contain(DiagnosticMetadataAttributes.TriggersNavigation + "=\"false\""));
+    }
+
+    [Test]
     public void AddDiagnosticMetadataAttributes_FromCreateForLink_WithPureJavaScript ()
     {
       var commandInfo = CommandInfo.CreateForLink("TheTitle", null, "#", "TheTarget", "javascript:Foo();");
