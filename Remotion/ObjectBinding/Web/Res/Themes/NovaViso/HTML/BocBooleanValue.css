@@ -35,6 +35,11 @@
   margin-right: var(--remotion-themed-spacing);
 }
 
+.bocBooleanValue.readOnly span.description:not([hidden])
+{
+  margin-left: var(--remotion-themed-spacing);
+}
+
 .bocBooleanValue img
 {
   height: var(--remotion-themed-img-width);

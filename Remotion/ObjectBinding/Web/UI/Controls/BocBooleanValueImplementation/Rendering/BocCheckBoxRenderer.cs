@@ -43,9 +43,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
 
-    private const string c_trueIcon = "sprite.svg#CheckBoxTrue";
-    private const string c_falseIcon = "sprite.svg#CheckBoxFalse";
-
     private static readonly string s_startUpScriptKey = typeof(BocCheckBoxRenderer).GetFullNameChecked() + "_Startup";
 
     public BocCheckBoxRenderer (
@@ -95,43 +92,35 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var labelControl = new Label { ID = renderingContext.Control.ClientID + "_Description", ClientIDMode = ClientIDMode.Static };
       var checkBoxVisualizerControl = new HtmlGenericControl { ID = null, TagName = "span" };
 
-      WebString description = GetDescription(renderingContext);
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
 
       if (renderingContext.Control.IsReadOnly)
       {
-        var imageControl = new Image();
-        PrepareImage(renderingContext, imageControl, description);
-
+        var isChecked = renderingContext.Control.Value == true;
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.GetValueName());
-        if (renderingContext.Control.Value.HasValue)
-          renderingContext.Writer.AddAttribute("data-value", renderingContext.Control.Value.Value.ToString());
+        renderingContext.Writer.AddAttribute("data-value", isChecked.ToString());
         renderingContext.Writer.AddAttribute("tabindex", "0");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaChecked, isChecked ? HtmlAriaCheckedAttributeValue.True : HtmlAriaCheckedAttributeValue.False);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "screenReaderText");
 
         _labelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs);
 
         var attributeCollection = new AttributeCollection(new StateBag());
 
-        if (renderingContext.Control.IsDescriptionEnabled)
-          attributeCollection.Add(HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+        attributeCollection.Add(HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
         _validationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);
 
         attributeCollection.AddAttributes(renderingContext.Writer);
 
         renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-        imageControl.RenderControl(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();
 
-        checkBoxVisualizerControl.RenderControl(renderingContext.Writer);
-
-        if (renderingContext.Control.IsDescriptionEnabled)
-        {
-          PrepareLabel(renderingContext, description, labelControl);
-          labelControl.RenderControl(renderingContext.Writer);
-        }
+        var description = GetDescription(renderingContext);
+        PrepareLabel(renderingContext, description, labelControl);
+        labelControl.RenderControl(renderingContext.Writer);
       }
       else
       {
@@ -156,6 +145,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
         if (renderingContext.Control.IsDescriptionEnabled)
         {
+          var description = GetDescription(renderingContext);
           PrepareLabel(renderingContext, description, labelControl);
           labelControl.RenderControl(renderingContext.Writer);
         }
@@ -232,18 +222,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(renderingContext.Control, typeof(BocCheckBoxRenderer), s_startUpScriptKey, startupScript);
     }
 
-    private void PrepareImage (BocCheckBoxRenderingContext renderingContext, Image imageControl, WebString description)
-    {
-      var imageUrl = ResourceUrlFactory.CreateThemedResourceUrl(
-          typeof(HtmlHeadAppenderExtensions),
-          ResourceType.Image,
-          renderingContext.Control.Value!.Value ? c_trueIcon : c_falseIcon);
-
-      imageControl.ImageUrl = imageUrl.GetUrl();
-      imageControl.AlternateText = description.GetValue();
-      imageControl.GenerateEmptyAlternateText = true;
-    }
-
     private void PrepareLabel (BocCheckBoxRenderingContext renderingContext, WebString description, Label labelControl)
     {
       labelControl.CssClass = "description";
@@ -255,21 +233,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
     private WebString GetDescription (BocCheckBoxRenderingContext renderingContext)
     {
-      WebString trueDescription = WebString.Empty;
-      WebString falseDescription = WebString.Empty;
-      if (renderingContext.Control.IsDescriptionEnabled)
-      {
-        WebString defaultTrueDescription = renderingContext.Control.DefaultTrueDescription;
-        WebString defaultFalseDescription = renderingContext.Control.DefaultFalseDescription;
+      WebString defaultTrueDescription = renderingContext.Control.DefaultTrueDescription;
+      WebString defaultFalseDescription = renderingContext.Control.DefaultFalseDescription;
 
-        trueDescription = renderingContext.Control.TrueDescription.IsEmpty
-            ? defaultTrueDescription
-            : renderingContext.Control.TrueDescription;
+      WebString trueDescription = renderingContext.Control.TrueDescription.IsEmpty
+          ? defaultTrueDescription
+          : renderingContext.Control.TrueDescription;
 
-        falseDescription = renderingContext.Control.FalseDescription.IsEmpty
-            ? defaultFalseDescription
-            : renderingContext.Control.FalseDescription;
-      }
+      WebString falseDescription = renderingContext.Control.FalseDescription.IsEmpty
+          ? defaultFalseDescription
+          : renderingContext.Control.FalseDescription;
 
       return renderingContext.Control.Value!.Value ? trueDescription : falseDescription;
     }

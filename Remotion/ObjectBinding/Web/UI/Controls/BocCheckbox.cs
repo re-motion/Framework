@@ -307,15 +307,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get { return _labelStyle; }
     }
 
-    /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox. </summary>
+    /// <summary> Gets or sets the flag that determines whether to show the description next to the checkbox during editing. </summary>
     /// <value> 
-    ///   <see langword="true"/> to enable the description. 
+    ///   <see langword="true"/> to enable the description during editing. 
     ///   Defaults to <see langword="null"/>, which is interpreted as <see langword="false"/>.
     /// </value>
     /// <remarks>
     ///   Use <see cref="IsDescriptionEnabled"/> to evaluate this property.
+    ///   Note that the description is always displayed instead of the checkbox when the <see cref="BocCheckBox"/> is readonly.
     /// </remarks>
-    [Description("The flag that determines whether to show the description next to the checkbox. Undefined is interpreted as false.")]
+    [Description("The flag that determines whether to show the description next to the checkbox during editing. Undefined is interpreted as false.")]
     [Category("Appearance")]
     [DefaultValue(typeof(bool?), "")]
     public bool? ShowDescription

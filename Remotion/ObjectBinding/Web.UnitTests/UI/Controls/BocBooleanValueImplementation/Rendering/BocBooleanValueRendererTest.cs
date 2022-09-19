@@ -407,7 +407,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(label, "id", c_clientID + "_Description");
       Html.AssertAttribute(label, "class", "description");
       Html.AssertTextNode(label, description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
-      if (_booleanValue.Object.ShowDescription)
+      if (_booleanValue.Object.ShowDescription || _booleanValue.Object.IsReadOnly)
         Html.AssertNoAttribute(label, "hidden");
       else
         Html.AssertAttribute(label, "hidden", "hidden");
@@ -461,6 +461,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
       AssertValidationErrors(link);
 
+      if (isReadOnly)
+        Html.AssertAttribute(link, "class", "screenReaderText");
       Html.AssertAttribute(link, "role", "checkbox");
       Html.AssertAttribute(link, "aria-checked", checkedState);
       if (isReadOnly)
