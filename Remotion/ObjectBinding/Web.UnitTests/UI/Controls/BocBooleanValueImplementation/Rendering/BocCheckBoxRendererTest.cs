@@ -298,28 +298,27 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         valueSpan.AssertAttributeValueEquals("data-value", value.ToString());
         valueSpan.AssertAttributeValueEquals("tabindex", "0");
         valueSpan.AssertAttributeValueEquals("role", "checkbox");
+        valueSpan.AssertAttributeValueEquals("aria-checked", value ? "true" : "false");
         valueSpan.AssertAttributeValueEquals("aria-readonly", "true");
+        valueSpan.AssertAttributeValueEquals("class", "screenReaderText");
         Html.AssertAttribute(valueSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
         Html.AssertAttribute(valueSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
         Html.AssertAttribute(valueSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
         Html.AssertAttribute(valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
-        CheckImage(value, valueSpan, spanText);
-        CheckOuterSpan(outerSpan);
-
-        AssertValidationErrors(outerSpan);
+        AssertValidationErrors(outerSpan, 2);
       }
       else
       {
         CheckInput(value, outerSpan);
         CheckOuterSpan(outerSpan);
 
-        AssertValidationErrors(outerSpan);
+        AssertValidationErrors(outerSpan, 3);
       }
 
-      if (_checkbox.Object.IsDescriptionEnabled)
+      if (_checkbox.Object.IsDescriptionEnabled || _checkbox.Object.IsReadOnly)
       {
-        var label = Html.GetAssertedChildElement(outerSpan, "span", 2);
+        var label = Html.GetAssertedChildElement(outerSpan, "span", _checkbox.Object.IsReadOnly ? 1 : 2);
         Html.AssertAttribute(label, "id", c_clientID + "_Description");
         Html.AssertAttribute(label, "class", "description");
         Html.AssertTextNode(label, spanText.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
@@ -343,9 +342,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       return Html.GetResultDocument();
     }
 
-    private void AssertValidationErrors (XmlNode node)
+    private void AssertValidationErrors (XmlNode node, int index)
     {
-      var validationErrorsSpan = node.GetAssertedChildElement("fake", 3);
+      var validationErrorsSpan = node.GetAssertedChildElement("fake", index);
 
       Html.AssertAttribute(validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute(validationErrorsSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);

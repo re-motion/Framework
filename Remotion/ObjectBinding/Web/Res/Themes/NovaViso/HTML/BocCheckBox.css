@@ -10,8 +10,7 @@
   vertical-align: middle;
 }
 
-.bocCheckBox:not(.readOnly) input + span,
-.bocCheckBox.readOnly span[role=checkbox]
+.bocCheckBox:not(.readOnly) input + span
 {
   display: inline-flex;
   align-items: center;
@@ -33,11 +32,6 @@
   box-shadow: unset;
 }
 
-.bocCheckBox.readOnly span[role=checkbox]:focus
-{
-  outline: none;
-}
-
 .bocCheckBox span.description
 {
   display: inline-flex;
@@ -45,10 +39,9 @@
   margin-right: var(--remotion-themed-spacing);
 }
 
-.bocCheckBox img
+.bocCheckBox.readOnly span.description
 {
-  height: var(--remotion-themed-img-width);
-  width: var(--remotion-themed-img-width);
+  margin-left: var(--remotion-themed-spacing);
 }
 
 .bocCheckBox:not(.readOnly, .disabled):focus-within
