@@ -157,12 +157,26 @@ namespace Remotion.Web.UI.Controls
 
     private bool IsTriggeringNavigation ()
     {
-      return _href != "#";
+      if (_href == null)
+        return false;
+      else if (_href.StartsWith("#"))
+        return false;
+      else if (_onClick == null)
+        return true;
+      else if (_onClick.Contains("__doPostBack"))
+        return false;
+      else
+        return true;
     }
 
     private bool IsTriggeringPostBack ()
     {
-      return !IsTriggeringNavigation() && _onClick!.Contains("__doPostBack"); // TODO RM-8104: Guard _onClick
+      if (_onClick == null)
+        return false;
+      else if (_onClick.Contains("__doPostBack"))
+        return true;
+      else
+        return false;
     }
   }
 }
