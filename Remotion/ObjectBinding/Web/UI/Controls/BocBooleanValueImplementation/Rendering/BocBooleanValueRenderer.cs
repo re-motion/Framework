@@ -320,12 +320,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
 
       linkControl.Attributes.Add(HtmlTextWriterAttribute2.AriaChecked, checkedState);
+      if (renderingContext.Control.IsReadOnly)
+      {
+        linkControl.CssClass = "screenReaderText";
+      }
 
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;
 
       labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-      if (!renderingContext.Control.ShowDescription)
+      var isDescriptionEnabled = renderingContext.Control.ShowDescription || renderingContext.Control.IsReadOnly;
+      if (!isDescriptionEnabled)
       {
         linkControl.ToolTip = description.Type == WebStringType.PlainText ? description.GetValue() : HttpUtility.HtmlDecode(description.GetValue());
         labelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);

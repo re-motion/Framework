@@ -16,6 +16,17 @@
 {
 }
 
+.bocBooleanValue.readOnly span.description
+{
+  margin-left: 4px;
+}
+
+.bocBooleanValue.readOnly a:focus ~ span.description
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
 .bocBooleanValue span
 {
   vertical-align: middle;
