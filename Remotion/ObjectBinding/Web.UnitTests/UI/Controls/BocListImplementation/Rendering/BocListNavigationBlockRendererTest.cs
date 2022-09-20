@@ -20,10 +20,12 @@ using System.Xml;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
@@ -60,7 +62,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          _bocListCssClassDefinition);
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -99,7 +102,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          _bocListCssClassDefinition);
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -139,7 +143,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          _bocListCssClassDefinition);
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -179,7 +184,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.Default,
-          _bocListCssClassDefinition);
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -219,7 +225,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           new FakeResourceUrlFactory(),
           GlobalizationService,
           RenderingFeatures.WithDiagnosticMetadata,
-          _bocListCssClassDefinition);
+          _bocListCssClassDefinition,
+          new FakeFallbackNavigationUrlProvider());
       renderer.Render(CreateRenderingContext());
 
       var document = Html.GetResultDocument();
@@ -272,7 +279,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Html.AssertAttribute(link, "id", List.Object.ClientID + "_Navigation_" + command);
       Html.AssertAttribute(link, "onclick", string.Format("let element = document.getElementById('CurrentPageControl_UniqueID');element.value = {0};element.dispatchEvent(new Event('change'));return false;", pageIndex));
-      Html.AssertAttribute(link, "href", "#");
+      Html.AssertAttribute(link, "href", "fakeFallbackUrl");
 
       var icon = Html.GetAssertedChildElement(link, "img", 0);
       Html.AssertAttribute(icon, "src", string.Format("/sprite.svg#Move{0}", command), HtmlHelperBase.AttributeValueCompareMode.Contains);

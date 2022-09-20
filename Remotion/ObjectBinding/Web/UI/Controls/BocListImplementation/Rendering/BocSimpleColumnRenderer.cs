@@ -22,6 +22,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSu
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -45,8 +46,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public BocSimpleColumnRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 

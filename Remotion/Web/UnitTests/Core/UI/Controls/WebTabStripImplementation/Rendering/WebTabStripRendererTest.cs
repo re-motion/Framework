@@ -481,7 +481,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.WebTabStripImplementation.Rend
       bool isDisabledBySelection = webTab.IsSelected && !_webTabStrip.Object.EnableSelectedTab;
       if (webTab.EvaluateEnabled())
       {
-        link.AssertAttributeValueEquals("href", "#");
+        link.AssertAttributeValueEquals("href", "fakeFallbackUrl");
       }
       if (webTab.EvaluateEnabled() && !isDisabledBySelection)
       {

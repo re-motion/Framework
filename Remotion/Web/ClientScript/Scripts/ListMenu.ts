@@ -36,6 +36,7 @@ class ListMenuItemInfo
     public readonly IsDisabled: boolean,
     public readonly Href: string,
     public readonly Target: string,
+    public readonly FallbackNavigationUrl: string,
     public readonly DiagnosticMetadata: Dictionary<string | boolean>,
     public readonly DiagnosticMetadataForCommand: Dictionary<string | boolean>)
   {
@@ -122,7 +123,7 @@ class ListMenu
         {
           if (itemInfo.Href.toLowerCase().indexOf ('javascript:') >= 0)
           {
-            anchor.href = '#';
+            anchor.href = itemInfo.FallbackNavigationUrl;
             anchor.removeAttribute ('target');
             anchor.setAttribute ('javascript', itemInfo.Href);
             anchor.removeAttribute ('onclick');

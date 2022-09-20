@@ -20,6 +20,7 @@ using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
@@ -31,7 +32,7 @@ namespace Remotion.ObjectBinding.Sample
     private class ToolTipBasedHelpInfo : HelpInfo
     {
       public ToolTipBasedHelpInfo (string toolTip)
-          : base("#", null, toolTip, "return false;")
+          : base(SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL(), null, toolTip, "return false;")
       {
       }
     }

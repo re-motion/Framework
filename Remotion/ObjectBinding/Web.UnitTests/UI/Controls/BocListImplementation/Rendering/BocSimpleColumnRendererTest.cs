@@ -18,6 +18,7 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
@@ -61,7 +62,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderBasicCell ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
 
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
       var document = Html.GetResultDocument();
@@ -82,7 +83,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var businessObject = TypeWithReference.Create("");
       EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject)businessObject, false, true);
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
 
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
@@ -99,7 +100,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var businessObject = TypeWithReference.Create();
       EventArgs = new BocListDataRowRenderEventArgs(10, (IBusinessObject)businessObject, false, true);
       Column.PropertyPathIdentifier = "ReferenceValue";
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
 
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
@@ -114,7 +115,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderBasicCell_WithNewLineAndEncoding ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
 
       var renderArgs = new BocListDataRowRenderEventArgs(0, (IBusinessObject)TypeWithReference.Create("value\r\nExtraText<html>"), false, true);
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(renderArgs));
@@ -139,7 +140,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.Command = new BocListItemCommand(CommandType.Href);
       Column.Command.HrefCommand.Href = "url";
 
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
 
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(rowIndex: 5));
       var document = Html.GetResultDocument();
@@ -160,7 +161,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderIconCell ()
     {
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
 
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(showIcon: true));
       var document = Html.GetResultDocument();
@@ -190,7 +191,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Mock.Get(List.Object.EditModeController).Setup(mock => mock.GetEditableRow(EventArgs.ListIndex)).Returns(editableRow.Object);
 
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(headerIDs: new[] { "r1 c1" }));
 
       var document = Html.GetResultDocument();
@@ -226,7 +227,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       Mock.Get(List.Object.EditModeController).Setup(mock => mock.GetEditableRow(EventArgs.ListIndex)).Returns(editableRow.Object);
 
-      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocSimpleColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(headerIDs: new[] { "r1 c1" }));
 
       var document = Html.GetResultDocument();

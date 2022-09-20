@@ -38,11 +38,14 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
   [ImplementationFor(typeof(IListMenuRenderer), Lifetime = LifetimeKind.Singleton)]
   public class ListMenuRenderer : RendererBase<IListMenu>, IListMenuRenderer
   {
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
     private const string c_whiteSpace = "&nbsp;";
 
-    public ListMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService, IRenderingFeatures renderingFeatures)
+    public ListMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService, IRenderingFeatures renderingFeatures, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public string CssClassListMenu
@@ -339,9 +342,9 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
       bool isDisabled = !renderingContext.Control.Enabled
                         || !menuItem.EvaluateEnabled()
                         || !isCommandEnabled;
-
+      var fallbackNavigationUrl = ScriptUtility.EscapeClientScript(_fallbackNavigationUrlProvider.GetURL());
       stringBuilder.AppendFormat(
-          "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, ",
+          "\t\tnew ListMenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8}, '{9}', ",
           GetMenuItemClientID(renderingContext, menuItemIndex),
           ScriptUtility.EscapeClientScript(menuItem.Category),
           text,
@@ -350,7 +353,8 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
           (int)menuItem.RequiredSelection,
           isDisabled ? "true" : "false",
           href,
-          target);
+          target,
+          fallbackNavigationUrl);
 
       if (IsDiagnosticMetadataRenderingEnabled)
       {

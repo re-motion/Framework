@@ -21,6 +21,7 @@ using System.Xml;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
@@ -33,6 +34,7 @@ using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -361,7 +363,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           RenderingFeatures.WithDiagnosticMetadata,
           new BocBooleanValueResourceSetFactory(resourceUrlFactory),
           new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer());
+          new StubValidationErrorRenderer(),
+          new FakeFallbackNavigationUrlProvider());
       _renderer.Render(new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue.Object));
 
       return Html.GetResultDocument();
@@ -376,7 +379,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           RenderingFeatures.Default,
           new BocBooleanValueResourceSetFactory(resourceUrlFactory),
           new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer());
+          new StubValidationErrorRenderer(),
+          new FakeFallbackNavigationUrlProvider());
       _renderer.Render(new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue.Object));
       var document = Html.GetResultDocument();
       var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
@@ -467,7 +471,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(link, "aria-checked", checkedState);
       if (isReadOnly)
         Html.AssertAttribute(link, "aria-readonly", "true");
-      Html.AssertAttribute(link, "href", "#");
+      Html.AssertAttribute(link, "href", "fakeFallbackUrl");
       if (!isReadOnly)
       {
         Html.AssertAttribute(link, "onclick", _booleanValue.Object.Enabled ? GetClickScript(isRequired, _booleanValue.Object.IsAutoPostBackEnabled) : _dummyScript);

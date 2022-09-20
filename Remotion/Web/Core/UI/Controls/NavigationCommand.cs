@@ -19,6 +19,8 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
 using JetBrains.Annotations;
+using Remotion.FunctionalProgramming;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
@@ -29,22 +31,33 @@ namespace Remotion.Web.UI.Controls
   /// <summary> A <see cref="NavigationCommand"/> defines an action the user can invoke when navigating between pages. </summary>
   public class NavigationCommand : Command
   {
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
+
     public NavigationCommand ()
-        : this(CommandType.Href, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(CommandType.Href, GetWebSecurityAdapter(), GetWxeSecurityAdapter(), GetFallbackNavigationUrlProvider())
     {
     }
 
     public NavigationCommand (CommandType defaultType)
-        : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter())
+        : this(defaultType, GetWebSecurityAdapter(), GetWxeSecurityAdapter(), GetFallbackNavigationUrlProvider())
     {
     }
 
     public NavigationCommand (
         CommandType defaultType,
         [CanBeNull] IWebSecurityAdapter? webSecurityAdapter,
-        [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter)
+        [CanBeNull] IWxeSecurityAdapter? wxeSecurityAdapter,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(defaultType, webSecurityAdapter, wxeSecurityAdapter)
     {
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
+
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
+    }
+
+    private static IFallbackNavigationUrlProvider GetFallbackNavigationUrlProvider ()
+    {
+      return SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>();
     }
 
     /// <summary> Creates a <see cref="CommandInfo"/> for the <see cref="Command.WxeFunctionCommand"/>. </summary>
@@ -87,7 +100,7 @@ namespace Remotion.Web.UI.Controls
         throw new InvalidOperationException(
             "Call to GetCommandInfoForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
 
-      string href = "#";
+      string href = _fallbackNavigationUrlProvider.GetURL();
       if (HttpContext.Current != null)
         href = GetWxeFunctionPermanentUrl(additionalUrlParameters);
 

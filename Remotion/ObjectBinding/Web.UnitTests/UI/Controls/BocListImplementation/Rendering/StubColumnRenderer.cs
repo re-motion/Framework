@@ -17,15 +17,17 @@
 using System;
 using System.Linq;
 using System.Web.UI;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   public class StubColumnRenderer : BocColumnRendererBase<StubColumnDefinition>
   {
     public StubColumnRenderer (IResourceUrlFactory resourceUrlFactory)
-        : base(resourceUrlFactory, Remotion.Web.UI.Controls.Rendering.RenderingFeatures.Default, new BocListCssClassDefinition())
+        : base(resourceUrlFactory, Remotion.Web.UI.Controls.Rendering.RenderingFeatures.Default, new BocListCssClassDefinition(), new FakeFallbackNavigationUrlProvider())
     {
     }
 

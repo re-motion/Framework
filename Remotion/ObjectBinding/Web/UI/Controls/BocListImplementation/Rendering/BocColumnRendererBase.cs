@@ -20,6 +20,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -53,19 +54,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IRenderingFeatures _renderingFeatures;
     private readonly BocListCssClassDefinition _cssClasses;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     protected BocColumnRendererBase (
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
     {
       ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
       ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
 
       _resourceUrlFactory = resourceUrlFactory;
       _renderingFeatures = renderingFeatures;
       _cssClasses = cssClasses;
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public bool IsNull
@@ -204,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           postBackEvent += "; return false;";
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
 
-          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
 
           renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
         }

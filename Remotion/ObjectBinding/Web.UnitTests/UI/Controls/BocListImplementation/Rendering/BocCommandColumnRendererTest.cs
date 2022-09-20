@@ -19,10 +19,12 @@ using System.Web.UI.WebControls;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Configuration;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Configuration;
 using Remotion.Web.UI.Controls;
@@ -65,7 +67,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderBasicCell ()
     {
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(rowIndex: 5));
 
       var document = Html.GetResultDocument();
@@ -76,7 +78,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var a = Html.GetAssertedChildElement(td, "a", 0);
       Html.AssertAttribute(a, "id", List.Object.ClientID + "_Column_0_Command_Row_10");
-      Html.AssertAttribute(a, "href", "#");
+      Html.AssertAttribute(a, "href", "fakeFallbackUrl");
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
       Html.AssertTextNode(a, "TestCommand", 0);
@@ -86,7 +88,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void RenderTextWebString ()
     {
       Column.Text = WebString.CreateFromText("Multiline\nText");
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(rowIndex: 5));
 
       var document = Html.GetResultDocument();
@@ -97,7 +99,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void RenderIconCell ()
     {
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(showIcon: true));
 
       var document = Html.GetResultDocument();
@@ -107,7 +109,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "role", "cell");
 
       var a = Html.GetAssertedChildElement(td, "a", 0);
-      Html.AssertAttribute(a, "href", "#");
+      Html.AssertAttribute(a, "href", "fakeFallbackUrl");
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
       Html.AssertIcon(a, EventArgs.BusinessObject, null);
@@ -122,7 +124,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Column.Icon.Width = new Unit(16, UnitType.Pixel);
       Column.Icon.Height = new Unit(16, UnitType.Pixel);
 
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
@@ -132,7 +134,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "role", "cell");
 
       var a = Html.GetAssertedChildElement(td, "a", 0);
-      Html.AssertAttribute(a, "href", "#");
+      Html.AssertAttribute(a, "href", "fakeFallbackUrl");
       Html.AssertAttribute(a, "onclick", "postBackEventReference;BocList.OnCommandClick();return false;");
 
       Html.AssertIcon(a, EventArgs.BusinessObject, Column.Icon.Url.TrimStart('~'));
@@ -145,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       WebConfigurationMock.Current.Wcag.ConformanceLevel = WaiConformanceLevel.A;
 
-      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCommandColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();

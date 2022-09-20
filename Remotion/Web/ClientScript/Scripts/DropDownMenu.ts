@@ -70,6 +70,7 @@ class DropDownMenu_ItemInfo
       public IsDisabled: boolean,
       public readonly Href: Nullable<string>,
       public readonly Target: Nullable<string>,
+      public readonly FallbackNavigationUrl: string,
       public readonly DiagnosticMetadata: Nullable<Dictionary<string | boolean>>,
       public readonly DiagnosticMetadataForCommand: Nullable<Dictionary<string | boolean>>)
   {
@@ -728,7 +729,7 @@ class DropDownMenu
     anchor.setAttribute('tabindex', '-1');
     if (isEnabled)
     {
-      anchor.setAttribute('href', '#');
+      anchor.setAttribute('href', itemInfo.FallbackNavigationUrl);
     }
     else
     {
