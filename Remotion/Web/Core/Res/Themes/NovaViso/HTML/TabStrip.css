@@ -17,16 +17,11 @@
   flex-grow: 99999;
 }
 
-.tabStripTabsPane ul li
-{
-  flex-grow: 1;
-}
-
 .tabStripTabWrapper .tabStripTab,
 .tabStripTabWrapper .tabStripTabSelected
 {
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 }
 
