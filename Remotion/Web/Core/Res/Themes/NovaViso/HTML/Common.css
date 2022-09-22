@@ -386,7 +386,7 @@ a.remotion-themed:hover,
 a.remotion-themed:focus,
 .remotion-themed a:focus
 {
-  text-decoration: underline;
+  text-decoration: none;
   outline: none;
 }
 
