@@ -237,6 +237,12 @@ ul.DropDownMenuOptions li.selected a:focus:not(li.DropDownMenuItemDisabled a)
   box-shadow: var(--remotion-themed-box-shadow-hover);
 }
 
+ul.DropDownMenuOptions li a:focus,
+ul.DropDownMenuOptions li a:hover
+{
+  text-decoration: none;
+}
+
 /* style separator */
 span.DropDownMenuSeparator
 {
