@@ -34,18 +34,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       var browserSession = Start();
 
-      var allCookiesBeforeCreation = ((RemoteWebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
+      var allCookiesBeforeCreation = ((OpenQA.Selenium.WebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
 
       browserSession.WebButtons().GetByLocalID("CreateSessionCookie").Click();
       browserSession.WebButtons().GetByLocalID("CreatePersistentCookie").Click();
 
-      var allCookiesBeforeDelete = ((RemoteWebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
+      var allCookiesBeforeDelete = ((OpenQA.Selenium.WebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
 
       Assert.That(allCookiesBeforeDelete.Count, Is.EqualTo(allCookiesBeforeCreation.Count + 2));
 
       browserSession.Context.Browser.DeleteAllCookies();
 
-      var allCookiesAfterDelete = ((RemoteWebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
+      var allCookiesAfterDelete = ((OpenQA.Selenium.WebDriver)browserSession.Context.Browser.Driver.Native).Manage().Cookies.AllCookies;
       Assert.That(allCookiesAfterDelete.Count, Is.EqualTo(0));
     }
 
@@ -75,12 +75,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var home = Start();
 
-      var selenium = (IWebDriver)home.Context.Browser.Driver.Native;
+      var js = JavaScriptExecutor.GetJavaScriptExecutor(home.Context.Browser);
+      js.ExecuteScript($"console.error('Error')");
+      js.ExecuteScript($"console.warn('Warning')");
 
-      Assert.That(
-          () => selenium.Manage().Logs.GetLog(LogType.Browser),
-          Throws.InstanceOf<NullReferenceException>().With.Message
-              .EqualTo("Object reference not set to an instance of an object."));
+      var logs = ((IWebDriver)home.Context.Browser.Driver.Native).Manage().Logs.GetLog(LogType.Browser);
+
+      Assert.That(logs, Is.Empty);
     }
 
     private void TestDriverSupportsBrowserLogs ()

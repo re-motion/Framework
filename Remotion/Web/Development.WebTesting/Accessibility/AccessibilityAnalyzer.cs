@@ -42,7 +42,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// </summary>
     [NotNull]
     public static AccessibilityAnalyzer CreateForRemoteWebDriver (
-        [NotNull] RemoteWebDriver remoteWebDriver,
+        [NotNull] OpenQA.Selenium.WebDriver remoteWebDriver,
         [NotNull] IAxeResultParser axeResultParser,
         [NotNull] IAccessibilityConfiguration configuration,
         [NotNull] IAxeSourceProvider sourceProvider,

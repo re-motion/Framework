@@ -252,7 +252,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
     private AccessibilityAnalyzer CreateAnalyzer (IAccessibilityConfiguration config)
     {
       return AccessibilityAnalyzer.CreateForRemoteWebDriver(
-          (RemoteWebDriver)Helper.MainBrowserSession.Driver.Native,
+          (OpenQA.Selenium.WebDriver)Helper.MainBrowserSession.Driver.Native,
           new AxeResultParser(),
           config,
           new AxeSourceProvider(),
