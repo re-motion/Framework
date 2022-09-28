@@ -377,8 +377,8 @@ namespace Remotion.Web.Development.WebTesting
     {
       ArgumentUtility.CheckNotNull("browserSession", browserSession);
 
-      return AccessibilityAnalyzer.CreateForRemoteWebDriver(
-          (RemoteWebDriver)browserSession.Driver.Native,
+      return AccessibilityAnalyzer.CreateForWebDriver(
+          (IWebDriver)browserSession.Driver.Native,
           new AxeResultParser(),
           _accessibilityConfiguration,
           new AxeSourceProvider(),

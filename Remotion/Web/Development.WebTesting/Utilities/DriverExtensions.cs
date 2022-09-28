@@ -17,9 +17,9 @@
 using System.Collections.Generic;
 using Coypu;
 using JetBrains.Annotations;
-using Microsoft.Edge.SeleniumTools;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using Remotion.Utilities;
 
@@ -66,8 +66,8 @@ namespace Remotion.Web.Development.WebTesting.Utilities
 
       return driver.Native switch
       {
-          ChromeDriver _ => driverWithCapabilities.Capabilities.GetCapability("version") as string ?? c_unknown,
-          EdgeDriver _ => driverWithCapabilities.Capabilities.GetCapability("version") as string ?? c_unknown,
+          ChromeDriver _ => driverWithCapabilities.Capabilities.GetCapability("browserVersion") as string ?? c_unknown,
+          EdgeDriver _ => driverWithCapabilities.Capabilities.GetCapability("browserVersion") as string ?? c_unknown,
           FirefoxDriver _ => driverWithCapabilities.Capabilities.GetCapability("browserVersion") as string ?? c_unknown,
           _ => c_unknown
       };

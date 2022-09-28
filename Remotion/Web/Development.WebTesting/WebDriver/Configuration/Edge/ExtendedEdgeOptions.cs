@@ -16,7 +16,7 @@
 // 
 using System;
 using JetBrains.Annotations;
-using Microsoft.Edge.SeleniumTools;
+using OpenQA.Selenium.Edge;
 
 namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Edge
 {

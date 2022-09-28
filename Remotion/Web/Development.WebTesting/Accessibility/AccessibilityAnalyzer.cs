@@ -37,9 +37,33 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     private static readonly TimeSpan s_defaultMaximumTimeToWaitForFrame = TimeSpan.FromMilliseconds(3000);
 
     /// <summary>
+    /// Creates an <see cref="AccessibilityAnalyzer"/> that uses an instance of <see cref="IWebDriver"/> for both <see cref="IWebDriver"/>
+    /// and <see cref="IJavaScriptExecutor"/>.
+    /// </summary>
+    [NotNull]
+    public static AccessibilityAnalyzer CreateForWebDriver (
+        [NotNull] IWebDriver webDriver,
+        [NotNull] IAxeResultParser axeResultParser,
+        [NotNull] IAccessibilityConfiguration configuration,
+        [NotNull] IAxeSourceProvider sourceProvider,
+        [NotNull] IAccessibilityResultMapper mapper,
+        [NotNull] ILog logger)
+    {
+      ArgumentUtility.CheckNotNull("webDriver", webDriver);
+      ArgumentUtility.CheckNotNull("axeResultParser", axeResultParser);
+      ArgumentUtility.CheckNotNull("configuration", configuration);
+      ArgumentUtility.CheckNotNull("sourceProvider", sourceProvider);
+      ArgumentUtility.CheckNotNull("mapper", mapper);
+      ArgumentUtility.CheckNotNull("logger", logger);
+
+      return new AccessibilityAnalyzer(webDriver, (IJavaScriptExecutor)webDriver, axeResultParser, configuration, sourceProvider, mapper, logger);
+    }
+
+    /// <summary>
     /// Creates an <see cref="AccessibilityAnalyzer"/> that uses an instance of <see cref="RemoteWebDriver"/> for both <see cref="IWebDriver"/>
     /// and <see cref="IJavaScriptExecutor"/>.
     /// </summary>
+    [Obsolete("Use CreateForWebDriver(IWebDriver, IAxeResultParser, IAccessibilityConfiguration, IAxeSourceProvider, IAccessibilityResultMapper, ILog) instead. (Version: 3.20.0)", false)]
     [NotNull]
     public static AccessibilityAnalyzer CreateForRemoteWebDriver (
         [NotNull] RemoteWebDriver remoteWebDriver,
