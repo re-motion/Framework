@@ -27,6 +27,20 @@ td.tabbedMainMenuCell
   background-color: var(--color-contrast);
 }
 
+div.tabbedMainMenu div.tabStripTabsPane ul li,
+div.tabbedSubMenu div.tabStripTabsPane ul li
+{
+  flex-grow: unset;
+}
+
+div.tabbedMainMenu .tabStripTabWrapper .tabStripTab,
+div.tabbedMainMenu .tabStripTabWrapper .tabStripTabSelected,
+div.tabbedSubMenu .tabStripTabWrapper .tabStripTab,
+div.tabbedSubMenu .tabStripTabWrapper .tabStripTabSelected
+{
+  justify-content: start;
+}
+
 td.tabbedMainMenuCell,
 td.tabbedSubMenuCell
 {
