@@ -395,6 +395,7 @@
         PropertyIdentifier="Jobs"
         ShowAllProperties="True"
         ShowEmptyListMessage="true"
+        Selection="Multiple"
         Width="100%"
         Height="10em"
         runat="server">
