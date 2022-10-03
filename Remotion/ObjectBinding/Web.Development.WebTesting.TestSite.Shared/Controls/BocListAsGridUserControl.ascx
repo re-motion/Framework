@@ -163,6 +163,7 @@
           EmptyListMessage="A wonderful empty list."
           ShowAllProperties="True"
           ShowEmptyListMessage="True"
+          Selection="Multiple"
           Width="100%"
           Height="10em"
           runat="server">
