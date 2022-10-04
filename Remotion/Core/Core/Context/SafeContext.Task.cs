@@ -27,7 +27,7 @@ namespace Remotion.Context
     /// Provides methods for running <see cref="SystemTask"/>s which are <see cref="SafeContext"/> aware.
     /// <see cref="SafeContext"/> values do not flow into the executed tasks.
     /// </summary>
-    public static class Task
+    public static partial class Task
     {
       /// <inheritdoc cref="M:Task_.Run(System.Action)" />
       public static SystemTask Run (Action action) => Run(Instance, action);
@@ -103,10 +103,10 @@ namespace Remotion.Context
           ISafeContextStorageProvider provider,
           Func<SystemTask> function)
       {
-        return async () =>
+        return () =>
         {
           provider.OpenSafeContextBoundary();
-          await function();
+          return function();
         };
       }
 
@@ -114,10 +114,10 @@ namespace Remotion.Context
           ISafeContextStorageProvider provider,
           Func<Task<T>> function)
       {
-        return async () =>
+        return () =>
         {
           provider.OpenSafeContextBoundary();
-          return await function();
+          return function();
         };
       }
     }
