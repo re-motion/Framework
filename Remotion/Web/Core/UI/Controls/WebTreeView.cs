@@ -366,6 +366,8 @@ namespace Remotion.Web.UI.Controls
         _isLoadControlStateCompleted = true;
 
       RegisterHtmlHeadContents(HtmlHeadAppender.Current, Context);
+
+      ScriptUtility.Instance.RegisterJavaScriptInclude(this, HtmlHeadAppender.Current);
     }
 
 
