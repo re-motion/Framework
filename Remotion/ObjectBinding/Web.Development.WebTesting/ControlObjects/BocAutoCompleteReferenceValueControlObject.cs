@@ -394,7 +394,7 @@ return CallWebService();";
 
         case AutoCompleteSearchService.Error:
           var errorData = (IDictionary<string, object>)data;
-          throw new WebServiceExceutionException(
+          throw new WebServiceExecutionException(
               (long)errorData["readyState"],
               (string)errorData["responseText"],
               (long)errorData["status"],

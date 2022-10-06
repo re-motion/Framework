@@ -24,14 +24,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
   /// Exception is thrown whenever the web service call in <see cref="BocAutoCompleteReferenceValueControlObject.GetSearchServiceResults"/> or
   /// <see cref="BocAutoCompleteReferenceValueControlObject.GetExactSearchServiceResult"/> fails.
   /// </summary>
-  public sealed class WebServiceExceutionException : Exception
+  public sealed class WebServiceExecutionException : Exception
   {
     private readonly long _readyState;
     private readonly string _responseText;
     private readonly long _status;
     private readonly string _statusText;
 
-    public WebServiceExceutionException (long readyState, [NotNull] string responseText, long status, [NotNull] string statusText)
+    public WebServiceExecutionException (long readyState, [NotNull] string responseText, long status, [NotNull] string statusText)
         : base(
             string.Format(
                 "The web service call failed with status '{0} - {1}'. The returned JSON object was: '{2}'.",
