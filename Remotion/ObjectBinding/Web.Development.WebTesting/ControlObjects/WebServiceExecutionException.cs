@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
                 statusText,
                 responseText))
     {
-      ArgumentUtility.CheckNotNullOrEmpty("responseText", responseText);
-      ArgumentUtility.CheckNotNullOrEmpty("statusText", statusText);
+      ArgumentUtility.CheckNotNull("responseText", responseText); // The response body may be empty.
+      ArgumentUtility.CheckNotNull("statusText", statusText); // The HTTP statusText is empty for HTTPS responses
 
       _readyState = readyState;
       _responseText = responseText;
@@ -48,21 +48,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       _statusText = statusText;
     }
 
+    /// <summary>
+    /// The ready-state of the Javascript XmlWebRequest object used to perform the reuqest.
+    /// </summary>
     public long ReadyState
     {
       get { return _readyState; }
     }
 
+    /// <summary>
+    /// The response body.
+    /// </summary>
     public string ResponseText
     {
       get { return _responseText; }
     }
 
+    /// <summary>
+    /// The HTTP status code of the response.
+    /// </summary>
     public long Status
     {
       get { return _status; }
     }
 
+    /// <summary>
+    /// The HTTP status text of the response. Empty if the request is performed via HTTPS.
+    /// </summary>
     public string StatusText
     {
       get { return _statusText; }
