@@ -107,7 +107,7 @@ namespace Remotion.Collections.Caching.UnitTests
       var waitHandleThread1a = new ManualResetEvent(false);
       var waitHandleThread1b = new ManualResetEvent(false);
       var waitHandleThread2 = new ManualResetEvent(false);
-
+#pragma warning disable RMCORE0001
       var thread2 = Task.Run(
           () =>
           {
@@ -121,7 +121,7 @@ namespace Remotion.Collections.Caching.UnitTests
                 });
             waitHandleThread1b.Set();
           });
-
+#pragma warning restore RMCORE0001
       Assert.That(waitHandleThread1a.WaitOne(TimeSpan.FromSeconds(1)), "Dead lock detected.");
       var resultThread1 = _cache.GetOrCreateValue(
           "key1",
@@ -142,14 +142,14 @@ namespace Remotion.Collections.Caching.UnitTests
       var expectedThread1 = "T1";
       object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent(false);
-
+#pragma warning disable RMCORE0001
       var thread2 = Task.Run(
           () =>
           {
             Assert.That(waitHandleThread2.WaitOne(TimeSpan.FromSeconds(1)), "Dead lock detected.");
             resultThread2 = _cache.GetOrCreateValue("key", key => throw new InvalidOperationException());
           });
-
+#pragma warning restore RMCORE0001
       var resultThread1 = _cache.GetOrCreateValue(
           "key",
           key =>
@@ -167,14 +167,14 @@ namespace Remotion.Collections.Caching.UnitTests
     {
       object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent(false);
-
+#pragma warning disable RMCORE0001
       var thread2 = Task.Run(
           () =>
           {
             Assert.That(waitHandleThread2.WaitOne(TimeSpan.FromSeconds(1)), "Dead lock detected.");
             resultThread2 = _cache.GetOrCreateValue("key", key => throw new InvalidOperationException());
           });
-
+#pragma warning restore RMCORE0001
       var resultThread1 = _cache.GetOrCreateValue(
           "key",
           key =>
@@ -203,14 +203,14 @@ namespace Remotion.Collections.Caching.UnitTests
       var expectedThread1 = "T1";
       object resultThread2 = null;
       var waitHandleThread2 = new ManualResetEvent(false);
-
+#pragma warning disable RMCORE0001
       var thread2 = Task.Run(
           () =>
           {
             Assert.That(waitHandleThread2.WaitOne(TimeSpan.FromSeconds(1)), "Dead lock detected.");
             _cache.TryGetValue("key", out resultThread2);
           });
-
+#pragma warning restore RMCORE0001
       var resultThread1 = _cache.GetOrCreateValue(
           "key",
           key =>
@@ -522,11 +522,11 @@ namespace Remotion.Collections.Caching.UnitTests
 
       GC.Collect();
       GC.WaitForFullGCComplete();
-
+#pragma warning disable RMCORE0001
       var threads = new Thread[threadCount];
       for (int i = 0; i < threadCount; i++)
         threads[i] = new Thread(threadStart);
-
+#pragma warning restore RMCORE0001
       for (int i = 0; i < threadCount; i++)
         threads[i].Start(stopwatches[i]);
 

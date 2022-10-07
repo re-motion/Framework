@@ -50,7 +50,7 @@
     <UnitTestProjectFiles Include="$(SolutionDirectory)\SharedSource\UnitTests\SharedSource.UnitTests.csproj">
       <TestConfiguration>$(NormalTestConfiguration)</TestConfiguration>
     </UnitTestProjectFiles>
-
+    <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Development.Analyzers\Core.Development.Analyzers.csproj" />
     <ReleaseProjectFiles Include="$(SolutionDirectory)\Remotion\Core\Core\Core.Core.csproj">
       <CreateNuGetPackageWithSymbolServerSupport>True</CreateNuGetPackageWithSymbolServerSupport>
     </ReleaseProjectFiles>
