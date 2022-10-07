@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Timers;
 using NUnit.Framework;
@@ -24,6 +25,7 @@ using Timer = System.Timers.Timer;
 namespace Remotion.UnitTests.Context.SafeContextTests
 {
   [TestFixture]
+  [SuppressMessage("Usage", "RMCORE0001:Use SafeContext instead of typical API")]
   public class SafeContextTimersTest : SafeContextTestBase
   {
     private class TestCallback
