@@ -27,6 +27,40 @@ class WebTreeView
       WebTreeView.OnKeyDown (event, treeView);
     });
 
+    // The following code is responsible for making the whole tree view node clickable
+    // Nodes in NovaGray are not full-width so we do this handling only in NovaViso
+    if (!StyleUtility.IsNovaGray)
+    {
+      const nodes = [...treeView.querySelectorAll ('.treeViewNode')];
+      for (const node of nodes)
+      {
+        const linkElement = node.querySelector (':scope > .treeViewNodeHead > a[onclick], :scope > .treeViewNodeHeadSelected > a[onclick]') as Nullable<HTMLElement>;
+        if (linkElement)
+        {
+          node.addEventListener ('click', ev =>
+          {
+            // Prevent recursion through bubbling
+            if (!ev.isTrusted)
+              return;
+
+            linkElement.dispatchEvent (new MouseEvent (ev.type, ev));
+            ev.preventDefault();
+            ev.stopPropagation();
+          });
+          node.addEventListener('contextmenu', ev =>
+          {
+            // Prevent recursion through bubbling
+            if (!ev.isTrusted)
+              return;
+
+            linkElement.dispatchEvent (new PointerEvent (ev.type, ev));
+            ev.preventDefault();
+            ev.stopPropagation();
+          });
+        }
+      }
+    }
+
     var focusableTreeNode = treeView.querySelector ('li[tabindex="0"][role=treeitem]');
     if (focusableTreeNode === null)
     {

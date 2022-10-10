@@ -18,6 +18,8 @@ function StyleUtility()
 {
 }
 
+StyleUtility.IsNovaGray = true;
+
 StyleUtility.CreateBorderSpans = function (selector)
 {
 };

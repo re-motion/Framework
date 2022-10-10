@@ -101,6 +101,12 @@ ul.treeViewRoot li[aria-selected=true]:focus > span.treeViewNode:hover
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
+ul.treeViewRoot span.treeViewNodeHead,
+ul.treeViewRoot span.treeViewNodeHeadSelected
+{
+  flex-grow: 1;
+}
+
 ul.treeViewRoot span.treeViewNode,
 ul.treeViewRoot span.treeViewNodeHead > a,
 ul.treeViewRoot span.treeViewNodeHeadSelected > a
