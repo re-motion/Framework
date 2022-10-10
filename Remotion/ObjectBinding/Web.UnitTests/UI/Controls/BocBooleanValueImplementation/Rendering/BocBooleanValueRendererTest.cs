@@ -21,7 +21,6 @@ using System.Xml;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
-using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
@@ -34,7 +33,6 @@ using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -48,7 +46,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private const string c_nullDescription = "Unbestimmt";
     private const string c_cssClass = "someCssClass";
     private const string c_postbackEventReference = "postbackEventReference";
-    private const string _dummyScript = "return false;";
     private const string c_clientID = "MyBooleanValue";
     private const string c_keyValueName = "MyBooleanValue_Value";
     private const string c_displayValueName = "MyBooleanValue_DisplayValue";
@@ -220,6 +217,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     [Test]
     public void RenderTrueDisabled ()
     {
+      _booleanValue.Setup(mock => mock.Enabled).Returns(false);
       _booleanValue.Object.Value = true;
       CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
     }
@@ -227,6 +225,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     [Test]
     public void RenderFalseDisabled ()
     {
+      _booleanValue.Setup(mock => mock.Enabled).Returns(false);
       _booleanValue.Object.Value = false;
       CheckRendering("false", false.ToString(), "FalseIconUrl", _booleanValue.Object.FalseDescription);
     }
@@ -234,6 +233,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     [Test]
     public void RenderNullDisabled ()
     {
+      _booleanValue.Setup(mock => mock.Enabled).Returns(false);
       _booleanValue.Object.Value = null;
       CheckRendering("mixed", "null", "NullIconUrl", _booleanValue.Object.NullDescription);
     }
@@ -363,8 +363,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           RenderingFeatures.WithDiagnosticMetadata,
           new BocBooleanValueResourceSetFactory(resourceUrlFactory),
           new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer(),
-          new FakeFallbackNavigationUrlProvider());
+          new StubValidationErrorRenderer());
       _renderer.Render(new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue.Object));
 
       return Html.GetResultDocument();
@@ -379,8 +378,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           RenderingFeatures.Default,
           new BocBooleanValueResourceSetFactory(resourceUrlFactory),
           new StubLabelReferenceRenderer(),
-          new StubValidationErrorRenderer(),
-          new FakeFallbackNavigationUrlProvider());
+          new StubValidationErrorRenderer());
       _renderer.Render(new BocBooleanValueRenderingContext(HttpContext, Html.Writer, _booleanValue.Object));
       var document = Html.GetResultDocument();
       var outerSpan = Html.GetAssertedChildElement(document, "span", 0);
@@ -392,10 +390,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         CheckDataValueField(outerSpan, value);
       Html.AssertChildElementCount(outerSpan, 5);
 
-      var link = Html.GetAssertedChildElement(outerSpan, "a", 1);
-      CheckLinkAttributes(link, checkedState, null, _booleanValue.Object.IsReadOnly, _booleanValue.Object.IsRequired);
+      var checkbox = Html.GetAssertedChildElement(outerSpan, "span", 1);
+      CheckCheckboxAttributes(checkbox, checkedState, _booleanValue.Object.IsReadOnly, _booleanValue.Object.IsRequired);
 
-      var image = Html.GetAssertedChildElement(link, "img", 0);
+      var image = Html.GetAssertedChildElement(checkbox, "img", 0);
       checkImageAttributes(image, iconUrl);
 
       var requiredLabel = Html.GetAssertedChildElement(outerSpan, "span", 2);
@@ -412,15 +410,25 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(label, "class", "description");
       Html.AssertTextNode(label, description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       if (_booleanValue.Object.ShowDescription || _booleanValue.Object.IsReadOnly)
-        Html.AssertNoAttribute(label, "hidden");
-      else
-        Html.AssertAttribute(label, "hidden", "hidden");
-
-      if (!_booleanValue.Object.IsReadOnly)
       {
-        var clickScript = _booleanValue.Object.Enabled ? GetClickScript(_booleanValue.Object.IsRequired, _booleanValue.Object.IsAutoPostBackEnabled) : _dummyScript;
-        Html.AssertAttribute(label, "onclick", clickScript);
+        Html.AssertNoAttribute(label, "hidden");
+        Html.AssertAttribute(label, "aria-hidden", "true");
       }
+      else
+      {
+        Html.AssertAttribute(label, "hidden", "hidden");
+        Html.AssertNoAttribute(label, "aria-hidden");
+      }
+
+      if (!_booleanValue.Object.ShowDescription && !_booleanValue.Object.IsReadOnly)
+        Html.AssertAttribute(checkbox, "title", description.GetValue());
+      else
+        Html.AssertNoAttribute(checkbox, "title");
+
+      if (!_booleanValue.Object.IsReadOnly && _booleanValue.Object.Enabled)
+        Html.AssertAttribute(label, "onclick", GetClickScript(_booleanValue.Object.IsRequired, _booleanValue.Object.IsAutoPostBackEnabled));
+      else
+        Html.AssertNoAttribute(label, "onclick");
 
       AssertValidationErrors(Html.GetAssertedChildElement(outerSpan, "fake", 4));
     }
@@ -453,34 +461,56 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(image, "alt", "");
     }
 
-    private void CheckLinkAttributes (XmlNode link, string checkedState, string description, bool isReadOnly, bool isRequired)
+    private void CheckCheckboxAttributes (XmlNode checkbox, string checkedState, bool isReadOnly, bool isRequired)
     {
-      Html.AssertAttribute(link, "id", c_displayValueName);
-      Html.AssertAttribute(link, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(checkbox, "id", c_displayValueName);
+      Html.AssertAttribute(checkbox, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
       if (isRequired && !isReadOnly)
-        Html.AssertAttribute(link, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_clientID + "_Required");
+        Html.AssertAttribute(checkbox, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_clientID + "_Required");
       else
-        Html.AssertAttribute(link, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
-      Html.AssertAttribute(link, "aria-describedby", c_clientID + "_Description");
+        Html.AssertAttribute(checkbox, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
 
-      AssertValidationErrors(link);
+      AssertValidationErrors(checkbox);
 
+      Html.AssertAttribute(checkbox, "role", "checkbox");
+      Html.AssertAttribute(checkbox, "aria-checked", checkedState);
       if (isReadOnly)
-        Html.AssertAttribute(link, "class", "screenReaderText");
-      Html.AssertAttribute(link, "role", "checkbox");
-      Html.AssertAttribute(link, "aria-checked", checkedState);
-      if (isReadOnly)
-        Html.AssertAttribute(link, "aria-readonly", "true");
-      Html.AssertAttribute(link, "href", "fakeFallbackUrl");
-      if (!isReadOnly)
       {
-        Html.AssertAttribute(link, "onclick", _booleanValue.Object.Enabled ? GetClickScript(isRequired, _booleanValue.Object.IsAutoPostBackEnabled) : _dummyScript);
-        Html.AssertAttribute(link, "onkeydown", _keyDownScript);
+        Html.AssertAttribute(checkbox, "class", "screenReaderText");
+        Html.AssertAttribute(checkbox, "aria-readonly", "true");
+        Html.AssertAttribute(checkbox, "aria-roledescription", "read only checkbox");
       }
-      if (description == null)
-        Html.AssertNoAttribute(link, "title");
+
+      if (!isReadOnly && _booleanValue.Object.Enabled)
+      {
+        Html.AssertAttribute(checkbox, "onclick", GetClickScript(isRequired, _booleanValue.Object.IsAutoPostBackEnabled));
+        Html.AssertAttribute(checkbox, "onkeydown", _keyDownScript);
+      }
       else
-        Html.AssertAttribute(link, "title", description);
+      {
+        Html.AssertNoAttribute(checkbox, "onclick");
+        Html.AssertNoAttribute(checkbox, "onkeydown");
+      }
+
+      if (_booleanValue.Object.Enabled)
+      {
+        Html.AssertAttribute(checkbox, "tabindex", "0");
+        Html.AssertNoAttribute(checkbox, "aria-disabled");
+      }
+      else
+      {
+        Html.AssertNoAttribute(checkbox, "tabindex");
+        Html.AssertAttribute(checkbox, "aria-disabled", "true");
+      }
+
+      if (_booleanValue.Object.ShowDescription)
+      {
+        Html.AssertAttribute(checkbox, "aria-describedby", c_clientID + "_Description");
+      }
+      else
+      {
+        Html.AssertNoAttribute(checkbox, "aria-describedby");
+      }
     }
 
     private void AssertValidationErrors (XmlNode node)
@@ -508,8 +538,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
     private string GetClickScript (bool isRequired, bool isAutoPostbackEnabled)
     {
-      return "BocBooleanValue.SelectNextCheckboxValue ('ResourceKey', this.parentNode.querySelector(':scope > a'), "
-             + "this.parentNode.querySelector(':scope > a > img'), this.parentNode.querySelectorAll(':scope > span')[1], "
+      return "BocBooleanValue.SelectNextCheckboxValue ('ResourceKey', this.parentNode.querySelector(':scope > span[role=checkbox]'), "
+             + "this.parentNode.querySelector(':scope > span[role=checkbox] > img'), this.parentNode.querySelectorAll(':scope > span')[1], "
              + "this.parentNode.querySelector(':scope > input'), " + isRequired.ToString().ToLower() + ", "
              + "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');"
              + (isAutoPostbackEnabled ? c_postbackEventReference + ";" : "")

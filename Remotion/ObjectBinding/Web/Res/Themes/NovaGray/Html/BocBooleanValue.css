@@ -21,7 +21,7 @@
   margin-left: 4px;
 }
 
-.bocBooleanValue.readOnly a:focus ~ span.description
+.bocBooleanValue.readOnly span[role=checkbox]:focus ~ span.description
 {
   outline: dotted black 1px;
   outline: auto 5px -webkit-focus-ring-color;
@@ -32,14 +32,14 @@
   vertical-align: middle;
 }
 
-.bocBooleanValue a
+.bocBooleanValue span[role=checkbox]
 {
   padding : 0;
   border: none;
   background-color: transparent;
 }
 
-.bocBooleanValue a[href]
+.bocBooleanValue:not(.readOnly) span[role=checkbox]
 {
   cursor: default;
 }

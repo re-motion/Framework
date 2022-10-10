@@ -47,5 +47,6 @@ namespace Remotion.Web.UI
     public const string Required = "required";
     public const string Role = "role";
     public const string Tabindex = "tabindex";
+    public const string Title = "title";
   }
 }

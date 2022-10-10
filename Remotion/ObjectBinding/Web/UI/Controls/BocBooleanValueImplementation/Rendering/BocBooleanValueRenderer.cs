@@ -15,13 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.Reflection;
@@ -54,7 +53,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     public enum ResourceIdentifier
     {
       /// <summary> Additional text to announce required information since the required-attribute is not supported on anchor elements.</summary>
-      ScreenReaderRequiredLabelText
+      ScreenReaderRequiredLabelText,
+      /// <summary> The aria-role description for the checkbox as a read-only element. </summary>
+      ScreenReaderLabelForCheckboxReadOnly
     }
 
     private const string c_nullString = "null";
@@ -64,7 +65,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private readonly IBocBooleanValueResourceSetFactory _resourceSetFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
-    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     public BocBooleanValueRenderer (
         IResourceUrlFactory resourceUrlFactory,
@@ -72,19 +72,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         IRenderingFeatures renderingFeatures,
         IBocBooleanValueResourceSetFactory resourceSetFactory,
         ILabelReferenceRenderer labelReferenceRenderer,
-        IValidationErrorRenderer validationErrorRenderer,
-        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        IValidationErrorRenderer validationErrorRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("resourceSetFactory", resourceSetFactory);
       ArgumentUtility.CheckNotNull("labelReferenceRenderer", labelReferenceRenderer);
       ArgumentUtility.CheckNotNull("validationErrorRenderer", validationErrorRenderer);
-      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
 
       _resourceSetFactory = resourceSetFactory;
       _labelReferenceRenderer = labelReferenceRenderer;
       _validationErrorRenderer = validationErrorRenderer;
-      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -124,40 +121,49 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       var imageControl = new Image();
       var hiddenFieldControl = new HiddenField { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
       var dataValueReadOnlyControl = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
-      var linkControl = new HyperLink { ID = renderingContext.Control.GetDisplayValueName(), ClientIDMode = ClientIDMode.Static };
+      var checkboxControl = new HtmlGenericControl("span") { ID = renderingContext.Control.GetDisplayValueName(), ClientIDMode = ClientIDMode.Static };
 
-      bool isClientScriptEnabled = DetermineClientScriptLevel(renderingContext);
-      if (isClientScriptEnabled)
+      checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
+
+      if (renderingContext.Control.Enabled && !renderingContext.Control.IsReadOnly)
       {
-        if (renderingContext.Control.Enabled)
-          RegisterStarupScriptIfNeeded(renderingContext, resourceSet);
+        RegisterStarupScriptIfNeeded(renderingContext, resourceSet);
 
-        var script = GetClickScript(
-            renderingContext,
-            resourceSet,
-            renderingContext.Control.Enabled);
+        var script = GetClickScript(renderingContext, resourceSet);
         descriptionLabelControl.Attributes.Add("onclick", script);
-        linkControl.Attributes.Add("onclick", script);
+        checkboxControl.Attributes.Add("onclick", script);
+        checkboxControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
       }
 
-      PrepareLinkControl(renderingContext, linkControl, isClientScriptEnabled);
-      PrepareVisibleControls(renderingContext, resourceSet, linkControl, imageControl, descriptionLabelControl);
+      if (renderingContext.Control.Enabled)
+      {
+        checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.Tabindex, "0");
+      }
+      else
+      {
+        checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.AriaDisabled, HtmlAriaDisabledAttributeValue.True);
+      }
 
-      if (!renderingContext.Control.IsReadOnly)
+      PrepareVisibleControls(renderingContext, resourceSet, checkboxControl, imageControl, descriptionLabelControl);
+
+      if (renderingContext.Control.IsReadOnly)
+      {
+        if (renderingContext.Control.Value.HasValue)
+          dataValueReadOnlyControl.Attributes.Add("data-value", renderingContext.Control.Value.Value.ToString());
+        dataValueReadOnlyControl.RenderControl(renderingContext.Writer);
+        checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+        checkboxControl.Attributes.Add(
+            HtmlTextWriterAttribute2.AriaRoleDescription,
+            GetResourceManager(renderingContext).GetString(ResourceIdentifier.ScreenReaderLabelForCheckboxReadOnly));
+      }
+      else
       {
         hiddenFieldControl.Value = renderingContext.Control.Value.HasValue ? renderingContext.Control.Value.ToString()! : c_nullString;
         hiddenFieldControl.Visible = true;
         hiddenFieldControl.RenderControl(renderingContext.Writer);
       }
-      else
-      {
-        if (renderingContext.Control.Value.HasValue)
-          dataValueReadOnlyControl.Attributes.Add("data-value", renderingContext.Control.Value.Value.ToString());
-        dataValueReadOnlyControl.RenderControl(renderingContext.Writer);
-        linkControl.Attributes.Add(HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
-      }
 
-      linkControl.Controls.Add(imageControl);
+      checkboxControl.Controls.Add(imageControl);
 
       string[] accessibilityLabelIDs;
       if (!renderingContext.Control.IsReadOnly && renderingContext.Control.IsRequired)
@@ -171,12 +177,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.SetLabelsReferenceOnControl(linkControl, labelIDs, accessibilityLabelIDs);
+      _labelReferenceRenderer.SetLabelsReferenceOnControl(checkboxControl, labelIDs, accessibilityLabelIDs);
 
-      linkControl.Attributes.Add(HtmlTextWriterAttribute2.AriaDescribedBy, descriptionLabelControl.ClientID);
-      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(linkControl, validationErrorsID, validationErrors);
+      if (renderingContext.Control.ShowDescription)
+        checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.AriaDescribedBy, descriptionLabelControl.ClientID);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(checkboxControl, validationErrorsID, validationErrors);
 
-      linkControl.RenderControl(renderingContext.Writer);
+      checkboxControl.RenderControl(renderingContext.Writer);
 
       requiredLabelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
       requiredLabelControl.RenderControl(renderingContext.Writer);
@@ -199,22 +206,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocBooleanValueIsTriState, isTriState.ToString().ToLower());
     }
 
-    private bool DetermineClientScriptLevel (BocBooleanValueRenderingContext renderingContext)
-    {
-      return !renderingContext.Control.IsReadOnly;
-    }
-
-    private void PrepareLinkControl (BocBooleanValueRenderingContext renderingContext, HyperLink linkControl, bool isClientScriptEnabled)
+    private void PrepareCheckboxControl (BocBooleanValueRenderingContext renderingContext, HtmlGenericControl checkboxControl)
     {
       // isClientScriptEnabled also includes IsReadOnly
-      linkControl.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
-      linkControl.Attributes.Add("href", _fallbackNavigationUrlProvider.GetURL());
+      checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
 
-      if (!isClientScriptEnabled)
-        return;
-
-      linkControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
-      linkControl.Enabled = renderingContext.Control.Enabled;
+      if (renderingContext.Control.Enabled)
+        checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.Tabindex, "0");
     }
 
     private void RegisterStarupScriptIfNeeded (BocBooleanValueRenderingContext renderingContext, BocBooleanValueResourceSet resourceSet)
@@ -246,24 +244,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
     }
 
-    private string GetClickScript (
-        BocBooleanValueRenderingContext renderingContext,
-        BocBooleanValueResourceSet resourceSet,
-        bool isEnabled)
+    private string GetClickScript (BocBooleanValueRenderingContext renderingContext, BocBooleanValueResourceSet resourceSet)
     {
-      string script = "return false;";
-      if (!isEnabled)
-        return script;
-
       string requiredFlag = renderingContext.Control.IsRequired ? "true" : "false";
 
       var scriptBuilder = new StringBuilder(500);
       scriptBuilder.Append("BocBooleanValue.SelectNextCheckboxValue (");
       scriptBuilder.Append("'").Append(resourceSet.ResourceKey).Append("'");
       scriptBuilder.Append(", ");
-      scriptBuilder.Append("this.parentNode.querySelector(':scope > a')");
+      scriptBuilder.Append("this.parentNode.querySelector(':scope > span[role=checkbox]')");
       scriptBuilder.Append(", ");
-      scriptBuilder.Append("this.parentNode.querySelector(':scope > a > img')");
+      scriptBuilder.Append("this.parentNode.querySelector(':scope > span[role=checkbox] > img')");
       scriptBuilder.Append(", ");
       if (renderingContext.Control.ShowDescription)
         scriptBuilder.Append("this.parentNode.querySelectorAll(':scope > span')[1]");
@@ -290,7 +281,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     private void PrepareVisibleControls (
         BocBooleanValueRenderingContext renderingContext,
         BocBooleanValueResourceSet resourceSet,
-        HyperLink linkControl,
+        HtmlGenericControl checkboxControl,
         Image imageControl,
         Label labelControl)
     {
@@ -323,21 +314,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
             : renderingContext.Control.FalseDescription;
       }
 
-      linkControl.Attributes.Add(HtmlTextWriterAttribute2.AriaChecked, checkedState);
+      checkboxControl.Attributes.Add(HtmlTextWriterAttribute2.AriaChecked, checkedState);
       if (renderingContext.Control.IsReadOnly)
       {
-        linkControl.CssClass = "screenReaderText";
+        checkboxControl.Attributes.Add("class", CssClassDefinition.ScreenReaderText);
       }
 
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;
 
       labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-      var isDescriptionEnabled = renderingContext.Control.ShowDescription || renderingContext.Control.IsReadOnly;
-      if (!isDescriptionEnabled)
+      if (renderingContext.Control.ShowDescription || renderingContext.Control.IsReadOnly)
       {
-        linkControl.ToolTip = description.Type == WebStringType.PlainText ? description.GetValue() : HttpUtility.HtmlDecode(description.GetValue());
+        labelControl.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      }
+      else
+      {
         labelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      }
+
+      if (!renderingContext.Control.ShowDescription && !renderingContext.Control.IsReadOnly)
+      {
+        checkboxControl.Attributes.Add(
+            HtmlTextWriterAttribute2.Title,
+            description.Type == WebStringType.PlainText ? description.GetValue() : HttpUtility.HtmlDecode(description.GetValue()));
       }
 
       labelControl.Width = Unit.Empty;
