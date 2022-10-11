@@ -78,7 +78,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       BusinessObjectBoundEditableWebControl,
       IBocReferenceValueBase,
       IPostBackDataHandler,
-      IPostBackEventHandler,
       IBocMenuItemContainer,
       IResourceDispatchTarget
   {
@@ -606,45 +605,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       EventHandler? eventHandler = (EventHandler?)Events[SelectionChangedEvent];
       if (eventHandler != null)
         eventHandler(this, EventArgs.Empty);
-    }
-
-    /// <summary> Calls the <see cref="RaisePostBackEvent"/> method. </summary>
-    void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
-    {
-      RaisePostBackEvent(eventArgument);
-    }
-
-    /// <summary> Called when the control caused a post back. </summary>
-    /// <param name="eventArgument"> an empty <see cref="String"/>. </param>
-    protected virtual void RaisePostBackEvent (string eventArgument)
-    {
-#pragma warning disable 618
-      HandleCommand();
-#pragma warning restore 618
-    }
-
-    /// <summary> Handles post back events raised by the value's <see cref="Command"/>. </summary>
-    [Obsolete("This feature has been removed. (Version 1.22.3)", false)]
-    private void HandleCommand ()
-    {
-      switch (Command.Type)
-      {
-        case CommandType.Event:
-        {
-          OnCommandClick(Value);
-          break;
-        }
-        case CommandType.WxeFunction:
-        {
-          if (Page is IWxePage)
-            Command.ExecuteWxeFunction((IWxePage)Page, Value);
-          break;
-        }
-        default:
-        {
-          break;
-        }
-      }
     }
 
     IBusinessObject[] IBocMenuItemContainer.GetSelectedBusinessObjects ()
