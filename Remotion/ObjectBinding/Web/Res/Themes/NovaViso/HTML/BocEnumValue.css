@@ -91,7 +91,8 @@
   width: fit-content;
 }
 
-.bocEnumValue.readOnly span[tabindex]
+.bocEnumValue.readOnly input:read-only + span,
+.bocEnumValue.readOnly span[role=radiogroup] + span
 {
   min-height: var(--remotion-themed-singleline-min-height);
   box-sizing: border-box;
@@ -102,7 +103,8 @@
   border-radius: var(--remotion-themed-border-radius);
 }
 
-.bocEnumValue.readOnly span[tabindex]:focus-visible
+.bocEnumValue.readOnly input:read-only:focus-visible + span,
+.bocEnumValue.readOnly span[role=radiogroup]:focus-within + span
 {
   outline: none;
   border: var(--remotion-themed-border-readonly-focus);
@@ -110,13 +112,15 @@
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
-.bocEnumValue.readOnly span[tabindex]:empty
+.bocEnumValue.readOnly input:read-only + span:empty,
+.bocEnumValue.readOnly span[role=radiogroup] + span:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entire width of the span. */
   width: 100%;
 }
 
-.bocEnumValue.readOnly span[tabindex]:empty::before
+.bocEnumValue.readOnly input:read-only + span:empty:empty::before,
+.bocEnumValue.readOnly span[role=radiogroup] + span:empty::before
 {
   /* Inserting a 'zero width space' unicode character as placeholder so that empty 
     readonly values are not collapsed and can therefore visualize the keyboard focus. 

@@ -56,7 +56,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       if (IsReadOnly())
       {
-        var scope = GetValueScope();
+        var scope = GetReadOnlyValueScope();
         return scope["data-value"] == nullIdentifier;
       }
 
@@ -66,11 +66,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public OptionDefinition GetSelectedOption ()
     {
-      var scope = GetValueScope();
       if (IsReadOnly())
-        return new OptionDefinition(scope["data-value"], -1, scope.Text, true);
+      {
+        var scope = GetReadOnlyValueScope();
+        return new OptionDefinition(scope["data-value"], -1, scope.Value, true);
+      }
       else
+      {
+        var scope = GetValueScope();
         return scope.GetSelectedOption();
+      }
     }
 
     /// <inheritdoc/>
@@ -88,11 +93,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc/>
     public string GetText ()
     {
-      var scope = Scope.FindChild("Value");
       if (IsReadOnly())
-        return scope.Text; // do not trim
+      {
+        var scope = GetReadOnlyValueScope();
+        return scope.Value; // do not trim
+      }
       else
+      {
+        var scope = GetValueScope();
         return scope.GetSelectedOption().Text;
+      }
     }
 
     /// <inheritdoc/>
@@ -210,9 +220,14 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     protected override ElementScope GetLabeledElementScope ()
     {
       if (IsReadOnly())
-        return Scope.FindChild("Content");
+        return GetReadOnlyValueScope();
+      else
+        return GetValueScope();
+    }
 
-      return GetValueScope();
+    private ElementScope GetReadOnlyValueScope ()
+    {
+      return Scope.FindChild("TextValue");
     }
 
     private ElementScope GetValueScope ()

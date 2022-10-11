@@ -244,7 +244,7 @@ div.accessControlListContainer table.accessControlEntriesTable td.permissionCell
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
-div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue a[role=checkbox]
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue span[role=checkbox]
 {
   margin-left: 0;
   margin-right: 0;

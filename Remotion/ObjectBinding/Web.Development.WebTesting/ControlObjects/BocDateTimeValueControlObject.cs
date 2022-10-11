@@ -63,18 +63,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     {
       string dateTimeString;
 
-      if (IsReadOnly())
-      {
-        dateTimeString = Scope.FindCss("span:nth-child(1)").Text;
-        if (_hasTimeField)
-          dateTimeString += " " + Scope.FindCss("span:nth-child(3)").Text;
-      }
-      else
-      {
-        dateTimeString = GetDateScope().Value;
-        if (_hasTimeField)
-          dateTimeString += " " + GetTimeScope().Value;
-      }
+      dateTimeString = GetDateScope().Value;
+      if (_hasTimeField)
+        dateTimeString += " " + GetTimeScope().Value;
 
       return dateTimeString;
     }

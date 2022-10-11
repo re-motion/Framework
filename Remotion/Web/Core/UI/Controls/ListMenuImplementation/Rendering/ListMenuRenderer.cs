@@ -93,7 +93,7 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
         var heading = renderingContext.Control.Heading;
         var tag = GetTagFromHeadingLevel(renderingContext.Control.HeadingLevel);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, headingID);
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "screenReaderText");
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDefinition.ScreenReaderText);
         renderingContext.Writer.RenderBeginTag(tag);
         heading.WriteTo(renderingContext.Writer);
         renderingContext.Writer.RenderEndTag();

@@ -55,6 +55,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     {
       /// <summary> The error message dispayed when the icon could not be loaded from the server. </summary>
       LoadIconFailedErrorMessage,
+      /// <summary> The aria-role description for the drop-down list as a read-only element. </summary>
+      ScreenReaderLabelForComboboxReadOnly,
     }
 
     private readonly Func<DropDownList> _dropDownListFactoryMethod;
@@ -190,12 +192,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
       return jsonBuilder.ToString();
     }
 
-    protected virtual IResourceManager GetResourceManager (BocReferenceValueRenderingContext renderingContext)
+    protected virtual IResourceManager GetResourceManager (BocRenderingContext<IBocReferenceValue> renderingContext)
     {
       return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
-    protected override sealed void RenderEditModeValue (BocRenderingContext<IBocReferenceValue> renderingContext)
+    protected sealed override string GetAriaHasPopupForCombobox ()
+    {
+      return HtmlAriaHasPopupAttributeValue.Menu;
+    }
+
+    protected sealed override string GetAriaRoleDescriptionForComboboxReadOnly (BocRenderingContext<IBocReferenceValue> renderingContext)
+    {
+      var resourceManager = GetResourceManager(renderingContext);
+      return resourceManager.GetString(ResourceIdentifier.ScreenReaderLabelForComboboxReadOnly);
+    }
+
+    protected sealed override void RenderEditModeValue (BocRenderingContext<IBocReferenceValue> renderingContext)
     {
       DropDownList dropDownList = GetDropDownList(renderingContext);
       var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();

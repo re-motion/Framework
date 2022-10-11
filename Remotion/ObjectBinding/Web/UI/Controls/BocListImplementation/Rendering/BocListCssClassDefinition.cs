@@ -247,7 +247,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <remarks> Class: <c>screenReaderText</c> </remarks>
     public string CssClassScreenReaderText
     {
-      get { return "screenReaderText"; }
+      get { return CssClassDefinition.ScreenReaderText; }
     }
 
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s table block. </summary>

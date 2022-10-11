@@ -192,16 +192,3 @@ span.treeViewNodeBadge
   padding-bottom: 3px;
   user-select: none;
 }
-
-/* Shared in other CSS files */
-.screenReaderText
-{
-  clip: rect(1px, 1px, 1px, 1px) !important;
-  height: 1px !important;
-  width: 1px !important;
-  overflow: hidden !important;
-  position: absolute !important;
-  display: inline !important;
-  padding: 0 !important;
-  margin: 0 !important;
-}

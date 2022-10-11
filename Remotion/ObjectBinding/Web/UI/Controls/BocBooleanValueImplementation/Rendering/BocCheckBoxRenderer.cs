@@ -40,6 +40,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
   [ImplementationFor(typeof(IBocCheckBoxRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocCheckBoxRenderer : BocBooleanValueRendererBase<IBocCheckBox>, IBocCheckBoxRenderer
   {
+    /// <summary> A list of control specific resources. </summary>
+    /// <remarks> 
+    ///   Resources will be accessed using 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   See the documentation of <b>GetString</b> for further details.
+    /// </remarks>
+    [ResourceIdentifiers]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocCheckBoxRenderer")]
+    public enum ResourceIdentifier
+    {
+      /// <summary> The aria-role description for the checkbox as a read-only element. </summary>
+      ScreenReaderLabelForCheckboxReadOnly
+    }
+
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
 
@@ -99,17 +113,28 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         var isChecked = renderingContext.Control.Value == true;
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.GetValueName());
         renderingContext.Writer.AddAttribute("data-value", isChecked.ToString());
-        renderingContext.Writer.AddAttribute("tabindex", "0");
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Checkbox);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaChecked, isChecked ? HtmlAriaCheckedAttributeValue.True : HtmlAriaCheckedAttributeValue.False);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, "screenReaderText");
+        renderingContext.Writer.AddAttribute(
+            HtmlTextWriterAttribute2.AriaRoleDescription,
+            GetResourceManager(renderingContext).GetString(ResourceIdentifier.ScreenReaderLabelForCheckboxReadOnly));
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassDefinition.ScreenReaderText);
+        if (renderingContext.Control.Enabled)
+        {
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Tabindex, "0");
+        }
+        else
+        {
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.AriaDisabled, HtmlAriaDisabledAttributeValue.True);
+        }
 
         _labelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs);
 
         var attributeCollection = new AttributeCollection(new StateBag());
 
-        attributeCollection.Add(HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
+        if (renderingContext.Control.IsDescriptionEnabled)
+          attributeCollection.Add(HtmlTextWriterAttribute2.AriaDescribedBy, labelControl.ClientID);
 
         _validationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);
 
@@ -250,6 +275,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     public override string GetCssClassBase (IBocCheckBox control)
     {
       return "bocCheckBox";
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocCheckBoxRenderingContext renderingContext)
+    {
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
   }
 }

@@ -117,10 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.LoadIconFailedErrorMessage" xml:space="preserve">
-    <value>Das Symbol für Ihre Auswahl konnte nicht geladen werden.</value>
-  </data>
-  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.ScreenReaderLabelForComboboxReadOnly" xml:space="preserve">
-      <value>nur lesen Ausklappliste</value>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering.BocCheckBoxRenderer.ScreenReaderLabelForCheckboxReadOnly" xml:space="preserve">
+    <value>read only checkbox</value>
   </data>
 </root>

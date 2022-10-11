@@ -120,4 +120,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering.BocBooleanValueRenderer.ScreenReaderRequiredLabelText" xml:space="preserve">
     <value>erforderlich</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering.BocBooleanValueRenderer.ScreenReaderLabelForCheckboxReadOnly" xml:space="preserve">
+      <value>nur lesen Kontrollfeld</value>
+  </data>
 </root>

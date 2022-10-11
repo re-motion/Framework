@@ -15,9 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Reflection;
@@ -77,33 +75,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       return textBox;
     }
 
-    protected override Label GetLabel (BocRenderingContext<IBocTextValue> renderingContext)
-    {
-      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-
-      Label label = new Label { Text = renderingContext.Control.Text, ClientIDMode = ClientIDMode.Static};
-      label.ID = renderingContext.Control.GetValueName();
-      label.EnableViewState = false;
-      label.Text = GetText(renderingContext);
-
-      label.Width = Unit.Empty;
-      label.Height = Unit.Empty;
-      label.ApplyStyle(renderingContext.Control.CommonStyle);
-      label.ApplyStyle(renderingContext.Control.LabelStyle);
-
-      label.Attributes.Add("tabindex", "0");
-      // Screenreaders (JAWS v18) will not read the contents of a span with role=textbox,
-      // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
-      //label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Textbox);
-      //label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
-
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs, new[] { label.ClientID });
-
-      return label;
-    }
-
-    private static string GetText (BocRenderingContext<IBocTextValue> renderingContext)
+    protected override string GetText (BocRenderingContext<IBocTextValue> renderingContext)
     {
       var textMode = renderingContext.Control.TextBoxStyle.TextMode;
 

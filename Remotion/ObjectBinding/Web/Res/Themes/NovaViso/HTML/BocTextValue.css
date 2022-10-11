@@ -32,7 +32,8 @@ span.bocTextValue textarea
   width: 100%;
 }
 
-.bocTextValue.readOnly .content span[tabindex]
+.bocTextValue.readOnly .content input:read-only + span,
+.bocTextValue.readOnly .content textarea:read-only + span
 {
   min-height: var(--remotion-themed-singleline-min-height);
   box-sizing: border-box;
@@ -43,7 +44,8 @@ span.bocTextValue textarea
   border-radius: var(--remotion-themed-border-radius);
 }
 
-.bocTextValue.readOnly .content span[tabindex]:focus-visible
+.bocTextValue.readOnly .content input:read-only:focus-visible + span,
+.bocTextValue.readOnly .content textarea:read-only:focus-visible + span
 {
   outline: none;
   border: var(--remotion-themed-border-readonly-focus);
@@ -51,13 +53,15 @@ span.bocTextValue textarea
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
-.bocTextValue.readOnly .content span[tabindex]:empty
+.bocTextValue.readOnly .content input:read-only:empty + span,
+.bocTextValue.readOnly .content textarea:read-only:empty + span
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
   width: 100%;
 }
 
-.bocTextValue.readOnly .content span[tabindex]:empty::before
+.bocTextValue.readOnly .content input:read-only:empty + span::before,
+.bocTextValue.readOnly .content textarea:read-only:empty + span::before
 {
   /* Inserting a 'zero width space' unicode character as placeholder so that empty 
     readonly values are not collapsed and can therefore visualize the keyboard focus. 

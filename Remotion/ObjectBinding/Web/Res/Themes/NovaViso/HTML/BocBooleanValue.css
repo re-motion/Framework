@@ -10,7 +10,7 @@
   vertical-align: middle;
 }
 
-.bocBooleanValue a[role=checkbox]
+.bocBooleanValue span[role=checkbox]
 {
   display: inline-flex;
   align-items: center;
@@ -18,12 +18,12 @@
   margin-right: var(--remotion-themed-spacing);
 }
 
-.bocBooleanValue a[role=checkbox]:focus
+.bocBooleanValue span[role=checkbox]:focus
 {
   outline: none;
 }
 
-.bocBooleanValue a[role=checkbox]:hover
+.bocBooleanValue span[role=checkbox]:hover
 {
   cursor: default;
 }

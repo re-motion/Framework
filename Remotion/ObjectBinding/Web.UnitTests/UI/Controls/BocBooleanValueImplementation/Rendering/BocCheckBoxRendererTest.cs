@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -24,7 +23,7 @@ using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
-using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.Rendering;
@@ -32,7 +31,6 @@ using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplementation.Rendering
@@ -86,6 +84,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _checkbox.Setup(mock => mock.Page).Returns(pageStub.Object);
       _checkbox.Setup(mock => mock.TrueDescription).Returns(PlainTextString.CreateFromText(c_trueDescription));
       _checkbox.Setup(mock => mock.FalseDescription).Returns(PlainTextString.CreateFromText(c_falseDescription));
+      _checkbox.Setup(stub => stub.GetResourceManager()).Returns(NullResourceManager.Instance);
 
       _checkbox.SetupProperty(_ => _.CssClass);
 
@@ -296,7 +295,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         var valueSpan = outerSpan.GetAssertedChildElement("span", 0);
         valueSpan.AssertAttributeValueEquals("id", c_valueName);
         valueSpan.AssertAttributeValueEquals("data-value", value.ToString());
-        valueSpan.AssertAttributeValueEquals("tabindex", "0");
         valueSpan.AssertAttributeValueEquals("role", "checkbox");
         valueSpan.AssertAttributeValueEquals("aria-checked", value ? "true" : "false");
         valueSpan.AssertAttributeValueEquals("aria-readonly", "true");
@@ -305,6 +303,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute(valueSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
         Html.AssertAttribute(valueSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
         Html.AssertAttribute(valueSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+        if (_checkbox.Object.Enabled)
+        {
+          valueSpan.AssertAttributeValueEquals("tabindex", "0");
+          valueSpan.AssertNoAttribute("aria-disabled");
+        }
+        else
+        {
+          valueSpan.AssertNoAttribute("tabindex");
+          valueSpan.AssertAttributeValueEquals("aria-disabled", "true");
+        }
 
         AssertValidationErrors(outerSpan, 2);
       }
@@ -321,6 +329,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         var label = Html.GetAssertedChildElement(outerSpan, "span", _checkbox.Object.IsReadOnly ? 1 : 2);
         Html.AssertAttribute(label, "id", c_clientID + "_Description");
         Html.AssertAttribute(label, "class", "description");
+        if (_checkbox.Object.IsDescriptionEnabled)
+        {
+          Html.AssertNoAttribute(label, "hidden");
+          Html.AssertNoAttribute(label, "aria-hidden");
+        }
+        else
+        {
+          Html.AssertNoAttribute(label, "aria-hidden");
+        }
+
         Html.AssertTextNode(label, spanText.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
       }
       else
@@ -375,14 +393,6 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
       Html.AssertAttribute(checkbox, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute(checkbox, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
-    }
-
-    private void CheckImage (bool value, XmlNode outerSpan, PlainTextString altText)
-    {
-      var image = Html.GetAssertedChildElement(outerSpan, "img", 0);
-      Html.AssertNoAttribute(image, "id");
-      Html.AssertAttribute(image, "src", string.Format("/sprite.svg#CheckBox{0}", value), HtmlHelper.AttributeValueCompareMode.Contains);
-      Html.AssertAttribute(image, "alt", altText);
     }
 
     private void CheckOuterSpan (XmlNode outerSpan)

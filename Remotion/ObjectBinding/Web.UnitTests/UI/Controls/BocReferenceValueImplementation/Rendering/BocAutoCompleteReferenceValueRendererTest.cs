@@ -48,7 +48,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     private const string c_contentID = "MyReferenceValue_Content";
     private const string c_textValueName = "MyReferenceValue_SelectedTextValue";
     private const string c_keyValueName = "MyReferenceValue_SelectedKeyValue";
-    private const string c_readOnlyTextValueName = "MyReferenceValue_Value";
+    private const string c_readOnlyTextValueName = "MyReferenceValue_TextValue";
     private const string c_uniqueidentifier = "uniqueidentifier";
     private const string c_labelID = "Label";
 
@@ -462,26 +462,42 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       var iconOffset = hasIcon ? 1 : 0;
       var hasIconCssClass = hasIcon ? " hasIcon" : "";
 
-      span.AssertChildElementCount(2 + iconOffset + optionsMenuOffset);
+      span.AssertChildElementCount(1 + iconOffset + optionsMenuOffset);
 
       var contentSpan = span.GetAssertedChildElement("span", 0 + iconOffset);
       contentSpan.AssertAttributeValueEquals("id",  c_contentID);
       contentSpan.AssertAttributeValueEquals("class", "content remotion-themed" + hasIconCssClass + " " + hasOptionsMenuCssClass);
-      contentSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      contentSpan.AssertAttributeValueEquals(StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_readOnlyTextValueName);
-      contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, Control.Object.ClientID + "_ValidationErrors");
-      contentSpan.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
-      contentSpan.AssertChildElementCount(1);
+      contentSpan.AssertChildElementCount(3);
 
-      var innerSpan = contentSpan.GetAssertedChildElement("span", 0);
-      innerSpan.AssertAttributeValueEquals("id", c_readOnlyTextValueName);
-      innerSpan.AssertAttributeValueEquals("data-value", c_uniqueidentifier);
-      innerSpan.AssertChildElementCount(0);
-      innerSpan.AssertTextNode("MyText", 0);
+      var input = contentSpan.GetAssertedChildElement("input", 0);
+      input.AssertAttributeValueEquals("id", c_readOnlyTextValueName);
+      input.AssertAttributeValueEquals("name", c_readOnlyTextValueName);
+      input.AssertAttributeValueEquals("readonly", "readonly");
+      input.AssertNoAttribute("disabled");
+      input.AssertAttributeValueEquals("value", "MyText");
+      input.AssertAttributeValueEquals("role", "combobox");
+      input.AssertAttributeValueEquals("aria-roledescription", "read only combobox");
+      input.AssertAttributeValueEquals("aria-expanded", "false");
+      input.AssertAttributeValueEquals("aria-haspopup", "listbox");
+      input.AssertAttributeValueEquals(StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      input.AssertAttributeValueEquals(StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      input.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      input.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+      input.AssertAttributeValueEquals("data-value", c_uniqueidentifier);
+      input.AssertAttributeValueEquals("class", CssClassDefinition.ScreenReaderText);
+
+      var labelSpan = contentSpan.GetAssertedChildElement("span", 1);
+      labelSpan.AssertNoAttribute("tabindex");
+      labelSpan.AssertAttributeValueEquals("aria-hidden", "true");
+      labelSpan.AssertTextNode("MyText", 0);
+
+      var validationErrors = contentSpan.GetAssertedChildElement("fake", 2);
+      validationErrors.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      validationErrors.AssertAttributeValueEquals(StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
 
       if (hasOptionsMenu)
       {
-        var wrapperSpan = span.GetAssertedChildElement("span", 2 + iconOffset);
+        var wrapperSpan = span.GetAssertedChildElement("span", 1 + iconOffset);
         wrapperSpan.AssertAttributeValueEquals("class", "optionsMenu");
         wrapperSpan.AssertChildElementCount(0);
         wrapperSpan.AssertTextNode("DropDownMenu", 0);
