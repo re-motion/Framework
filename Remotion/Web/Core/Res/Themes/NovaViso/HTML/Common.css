@@ -178,14 +178,14 @@ select:not([size]).remotion-themed,
   padding-top: calc(var(--remotion-themed-spacing) - var(--remotion-themed-border-width));
 }
 
-select.remotion-themed:not(:disabled) option,
-.remotion-themed select:not(:disabled) option
+select.remotion-themed:not(:disabled) option:not(:checked),
+.remotion-themed select:not(:disabled) option:not(:checked)
 {
   background-color: var(--remotion-themed-background-color-control);
 }
 
-select.remotion-themed:disabled option,
-.remotion-themed select:disabled option
+select.remotion-themed:disabled option:not(:checked),
+.remotion-themed select:disabled option:not(:checked)
 {
   background-color: var(--remotion-themed-background-color-disabled);
 }
@@ -202,8 +202,8 @@ select.remotion-themed:not(:disabled) option:hover,
   background-color: var(--remotion-themed-background-color-hover);
 }
 
-.mozilla select.remotion-themed:disabled option[selected],
-.mozilla .remotion-themed select:disabled option[selected]
+.mozilla select.remotion-themed:disabled option:checked,
+.mozilla .remotion-themed select:disabled option:checked
 {
   filter: grayscale(100%);
   opacity: 0.33;
