@@ -324,7 +324,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       imageControl.GenerateEmptyAlternateText = true;
 
       labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
-      if (renderingContext.Control.ShowDescription || renderingContext.Control.IsReadOnly)
+      if (renderingContext.Control.IsReadOnly)
+      {
+        if (renderingContext.Control.Value.HasValue)
+          labelControl.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+        else
+          labelControl.Attributes.Add(HtmlTextWriterAttribute2.Hidden, HtmlHiddenAttributeValue.Hidden);
+      }
+      else if (renderingContext.Control.ShowDescription)
       {
         labelControl.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
       }

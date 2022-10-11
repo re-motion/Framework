@@ -409,7 +409,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       Html.AssertAttribute(label, "id", c_clientID + "_Description");
       Html.AssertAttribute(label, "class", "description");
       Html.AssertTextNode(label, description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), 0);
-      if (_booleanValue.Object.ShowDescription || _booleanValue.Object.IsReadOnly)
+      var isDescriptionVisible = (_booleanValue.Object.IsReadOnly && _booleanValue.Object.Value.HasValue)
+                                 || (!_booleanValue.Object.IsReadOnly && _booleanValue.Object.ShowDescription);
+      if (isDescriptionVisible)
       {
         Html.AssertNoAttribute(label, "hidden");
         Html.AssertAttribute(label, "aria-hidden", "true");
