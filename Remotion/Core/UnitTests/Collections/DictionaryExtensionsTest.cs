@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -170,9 +171,9 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetOrCreateValue_WithNewKey ()
+    public void GetOrCreateValue_WithDictionary_WithNewKey ()
     {
-      var foundValue = ((IDictionary<string,string>)_dictionary).GetOrCreateValue("key", key => "value");
+      var foundValue = ((Dictionary<string,string>)_dictionary).GetOrCreateValue("key", key => "value");
       Assert.That(foundValue, Is.EqualTo("value"));
 
       Assert.That(_dictionary.ContainsKey("key"), Is.True);
@@ -180,21 +181,16 @@ namespace Remotion.UnitTests.Collections
     }
 
     [Test]
-    public void GetOrCreateValue_WithExistingKey ()
+    public void GetOrCreateValue_WithDictionary_WithExistingKey ()
     {
-      var foundValue = ((IDictionary<string,string>)_dictionary).GetOrCreateValue("a", key => throw new InvalidOperationException());
+      var foundValue = ((Dictionary<string,string>)_dictionary).GetOrCreateValue("a", key => throw new InvalidOperationException());
       Assert.That(foundValue, Is.EqualTo("Alpha"));
     }
 
     [Test]
-    public void GetOrCreateValue_WithNullKey ()
+    public void GetOrCreateValue_WithDictionary_WithNullKey ()
     {
-      var dictionaryStub = new Mock<IDictionary<string, string>>();
-      var outResult = "out";
-      dictionaryStub.Setup(stub => stub.TryGetValue(null, out outResult)).Returns(true);
-
-      var foundValue = dictionaryStub.Object.GetOrCreateValue(null, key => throw new InvalidOperationException());
-      Assert.That(foundValue, Is.EqualTo("out"));
+      Assert.That(() => ((Dictionary<string, string>)_dictionary).GetOrCreateValue(null, key => throw new InvalidOperationException()), Throws.ArgumentNullException);
     }
 
     [Test]

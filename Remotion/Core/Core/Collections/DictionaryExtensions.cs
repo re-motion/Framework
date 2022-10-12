@@ -108,11 +108,12 @@ namespace Remotion.Collections
       return ((IReadOnlyDictionary<TKey, TValue>)dictionary).GetValueOrDefault<TKey, TValue>(key, defaultValue);
     }
 
-    public static TValue GetOrCreateValue<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
+    public static TValue GetOrCreateValue<TKey, TValue> (this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
         where TKey : notnull
     {
       ArgumentUtility.CheckNotNull("dictionary", dictionary);
-      // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
+      ArgumentUtility.CheckNotNull("key", key);
+      ArgumentUtility.CheckNotNull("valueFactory", valueFactory);
 
       if (dictionary.TryGetValue(key, out var value))
         return value;
