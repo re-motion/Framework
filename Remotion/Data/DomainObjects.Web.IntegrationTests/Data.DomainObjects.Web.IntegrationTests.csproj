@@ -12,7 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Database\CreateDB.sql" CopyToOutputDirectory="PreserveNewest" />
-    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\Assert2.cs" Link="SharedSource\NUnit\UnitTesting\Assert2.cs" />
+    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />

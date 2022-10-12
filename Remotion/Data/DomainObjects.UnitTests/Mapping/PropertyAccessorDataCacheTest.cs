@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.ReflectionBasedMappingSample;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Reflection;
 

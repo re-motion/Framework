@@ -17,8 +17,8 @@
 using System;
 using System.Reflection;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions;
 

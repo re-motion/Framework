@@ -19,7 +19,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 {

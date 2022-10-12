@@ -18,7 +18,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Utilities;
 
 namespace Remotion.UnitTests.Utilities.EnumUtilityTests

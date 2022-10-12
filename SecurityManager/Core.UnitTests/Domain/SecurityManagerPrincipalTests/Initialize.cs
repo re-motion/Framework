@@ -19,7 +19,7 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
 

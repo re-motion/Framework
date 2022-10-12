@@ -17,8 +17,8 @@
 using System;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.UnitTests.TestDomain;
 using Remotion.Utilities;

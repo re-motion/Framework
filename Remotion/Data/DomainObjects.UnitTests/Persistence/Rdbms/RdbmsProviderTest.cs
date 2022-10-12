@@ -32,7 +32,7 @@ using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using SortOrder = Remotion.Data.DomainObjects.Mapping.SortExpressions.SortOrder;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms

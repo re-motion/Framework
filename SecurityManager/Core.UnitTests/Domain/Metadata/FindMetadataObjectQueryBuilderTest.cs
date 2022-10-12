@@ -20,7 +20,7 @@ using System.Linq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Development.Data.UnitTesting.DomainObjects.Linq;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.SecurityManager.Domain.Metadata;
 
 namespace Remotion.SecurityManager.UnitTests.Domain.Metadata

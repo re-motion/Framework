@@ -20,7 +20,7 @@ using System.Linq;
 using log4net.Core;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Logging;
 
 namespace Remotion.UnitTests.Logging

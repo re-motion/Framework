@@ -23,7 +23,7 @@ using log4net.Core;
 using log4net.Layout;
 using log4net.Util;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Logging;
 using LogManager = log4net.LogManager;
 
