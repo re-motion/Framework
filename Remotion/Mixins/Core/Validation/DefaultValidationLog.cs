@@ -24,7 +24,7 @@ namespace Remotion.Mixins.Validation
   public class DefaultValidationLog : IValidationLog
   {
     private readonly Stack<ValidationResult> _currentData = new Stack<ValidationResult>();
-    private readonly IDictionary<object, object> _contextStore = new Dictionary<object, object>();
+    private readonly Dictionary<object, object> _contextStore = new Dictionary<object, object>();
 
     private readonly ValidationLogData _data = new ValidationLogData();
 
@@ -94,7 +94,7 @@ namespace Remotion.Mixins.Validation
       GetCurrentResult().Exceptions.Add(new ValidationExceptionResultItem(rule.RuleName, ex));
     }
 
-    public IDictionary<object, object> ContextStore
+    public Dictionary<object, object> ContextStore
     {
       get { return _contextStore; }
     }
