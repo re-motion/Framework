@@ -12,8 +12,7 @@
     <NoWarn>$(NoWarn);NU1701</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
-    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\Assert2.cs" Link="SharedSource\NUnit\UnitTesting\Assert2.cs" />
+    <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
     <Content Include="Database\*.sql" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Queries*.xml" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="ScalarQueryWithCollectionType.xml" CopyToOutputDirectory="PreserveNewest" />
