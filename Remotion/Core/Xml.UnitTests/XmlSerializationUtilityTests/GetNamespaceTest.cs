@@ -16,7 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Xml.UnitTests.XmlSerializationUtilityTests.TestDomain;
 
 namespace Remotion.Xml.UnitTests.XmlSerializationUtilityTests

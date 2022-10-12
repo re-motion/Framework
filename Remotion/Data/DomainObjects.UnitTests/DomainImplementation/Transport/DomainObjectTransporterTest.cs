@@ -23,8 +23,8 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation.Transport;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Transport

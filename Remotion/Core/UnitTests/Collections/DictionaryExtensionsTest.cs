@@ -21,7 +21,7 @@ using System.Collections.ObjectModel;
 using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.UnitTests.Collections
 {

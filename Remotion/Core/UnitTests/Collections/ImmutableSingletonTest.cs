@@ -19,7 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Collections;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.UnitTests.Collections
 {

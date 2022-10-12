@@ -17,7 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Security.UnitTests.SampleDomain;
 
 namespace Remotion.Security.UnitTests

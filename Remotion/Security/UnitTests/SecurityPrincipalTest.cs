@@ -17,8 +17,8 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Security.UnitTests
 {

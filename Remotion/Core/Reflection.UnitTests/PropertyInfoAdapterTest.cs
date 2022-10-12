@@ -20,7 +20,7 @@ using System.Linq;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection.UnitTests.CodeGeneration.MethodWrapperEmitterTests.TestDomain;
 using Remotion.Reflection.UnitTests.TestDomain.MemberInfoAdapter;
 using Remotion.ServiceLocation;
