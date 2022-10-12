@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -108,11 +109,20 @@ namespace Remotion.Collections
       return ((IReadOnlyDictionary<TKey, TValue>)dictionary).GetValueOrDefault<TKey, TValue>(key, defaultValue);
     }
 
+    [Obsolete("ConcurrentDictionary is not supported for GetOrCreateValue(...). (Version: 3.0)", true)]
+    public static TValue GetOrCreateValue<TKey, TValue> (this ConcurrentDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
+        where TKey : notnull
+    {
+      throw new NotSupportedException("ConcurrentDictionary is not supported for GetOrCreateValue(...).");
+    }
+
     public static TValue GetOrCreateValue<TKey, TValue> (this IDictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
         where TKey : notnull
     {
       ArgumentUtility.CheckNotNull("dictionary", dictionary);
       // Implementations of IDictionary<TKey, TValue> are free to allow null keys.
+      if (dictionary is ConcurrentDictionary<TKey, TValue>)
+        throw new ArgumentException("ConcurrentDictionary is not supported for GetOrCreateValue(...).", "dictionary");
 
       if (dictionary.TryGetValue(key, out var value))
         return value;
