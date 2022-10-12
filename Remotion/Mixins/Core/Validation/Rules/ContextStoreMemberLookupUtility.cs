@@ -27,7 +27,7 @@ namespace Remotion.Mixins.Validation.Rules
   {
     private Func<object, object>? _contextStoreValueFactory;
 
-    public IEnumerable<TMemberDefinition> GetCachedMembersByName (IDictionary<object, object> contextStore, TargetClassDefinition targetClass, string name)
+    public IEnumerable<TMemberDefinition> GetCachedMembersByName (Dictionary<object, object> contextStore, TargetClassDefinition targetClass, string name)
     {
       Tuple<string, TargetClassDefinition> cacheKey =
           Tuple.Create(typeof(ContextStoreMemberLookupUtility<TMemberDefinition>).GetFullNameChecked() + ".GetCachedMembersByName", targetClass);
