@@ -23,7 +23,7 @@ using Remotion.Context;
 namespace Remotion.UnitTests.Context.SafeContextTests
 {
   [TestFixture]
-  public class SafeContextTaskTest : SafeContextTestBase
+  public partial class SafeContextTaskTest : SafeContextTestBase
   {
     [Test]
     public void Assumption_TaskWithRegisteredCancellationToken_MarksTaskCancelled ()
