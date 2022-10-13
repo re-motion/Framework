@@ -18,7 +18,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.UnitTests.Utilities.AttributeUtilityTests.TestDomain;
 using Remotion.Utilities;
 

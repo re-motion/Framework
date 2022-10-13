@@ -19,7 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Mixins.Context;
 
 namespace Remotion.Mixins.UnitTests.Core.Context

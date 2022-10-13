@@ -21,7 +21,7 @@ using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.MetaValidation.Rules.Custom;

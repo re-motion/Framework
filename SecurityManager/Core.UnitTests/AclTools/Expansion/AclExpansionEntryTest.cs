@@ -18,8 +18,8 @@
 using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 using Remotion.SecurityManager.AclTools.Expansion;
 using Remotion.SecurityManager.Domain.AccessControl;
 using Remotion.SecurityManager.Domain.Metadata;

@@ -16,7 +16,7 @@
 // 
 using System;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Security.Metadata;
 using Remotion.Security.UnitTests.SampleDomain;

@@ -21,8 +21,8 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
 {

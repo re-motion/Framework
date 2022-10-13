@@ -17,7 +17,7 @@
 using System;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 using Remotion.Validation.Rules;

@@ -18,7 +18,7 @@ using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;

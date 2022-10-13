@@ -9,7 +9,7 @@ using Remotion.Data.DomainObjects.Persistence.NonPersistent;
 using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.NonPersistent
 {

@@ -36,7 +36,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.TypePipe;
 

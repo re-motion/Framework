@@ -21,8 +21,8 @@ using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.ObjectIDs
 {

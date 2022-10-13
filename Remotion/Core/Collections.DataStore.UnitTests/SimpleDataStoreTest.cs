@@ -20,8 +20,8 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Collections.DataStore.UnitTests.Utilities;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Collections.DataStore.UnitTests
 {

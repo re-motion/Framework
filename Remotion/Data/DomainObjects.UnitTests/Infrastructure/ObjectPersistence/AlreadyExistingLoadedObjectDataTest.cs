@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectPersistence;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {

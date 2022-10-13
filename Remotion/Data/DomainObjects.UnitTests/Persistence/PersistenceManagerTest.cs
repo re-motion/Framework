@@ -27,7 +27,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Tracing;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence
 {
