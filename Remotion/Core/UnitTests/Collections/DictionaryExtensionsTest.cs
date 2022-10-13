@@ -15,11 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Moq;
 using NUnit.Framework;
 using Remotion.Collections;
+using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.UnitTests.Collections
 {
@@ -195,6 +197,15 @@ namespace Remotion.UnitTests.Collections
 
       var foundValue = dictionaryStub.Object.GetOrCreateValue(null, key => throw new InvalidOperationException());
       Assert.That(foundValue, Is.EqualTo("out"));
+    }
+
+    [Test]
+    public void GetOrCreateValue_WithConcurrentDictionary ()
+    {
+      IDictionary<string, string> dictionary = new ConcurrentDictionary<string, string>();
+      Assert.That(
+          () => dictionary.GetOrCreateValue("a", key => throw new InvalidOperationException()),
+          Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo("ConcurrentDictionary is not supported for GetOrCreateValue(...).", "dictionary"));
     }
 
     [Test]
