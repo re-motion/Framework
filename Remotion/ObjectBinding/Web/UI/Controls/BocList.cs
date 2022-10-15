@@ -169,6 +169,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RowEditModeCancelAlternateText,
       SelectAllRowsLabelText,
       SelectRowLabelText,
+      SelectionHeaderText,
       IndexColumnTitle,
       /// <summary> The menu title text used for an automatically generated row menu column. </summary>
       RowMenuTitle,

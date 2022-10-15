@@ -81,6 +81,7 @@ div.bocList:not(.hasDimensions) div.bocListTableBlock div.bocListTableContainer 
 
 /*region cells*/
 div.bocList table.bocListTable th.bocListTitleCell,
+div.bocList table.bocListTable td.bocListTitleCell,
 div.bocList table.bocListTable td.bocListDataCell
 {
   border-top: none;
@@ -94,13 +95,14 @@ div.bocList table.bocListTable td.bocListDataCell
   vertical-align: top;
 }
 
-div.bocList table.bocListTable th.bocListTitleCell.bocListTitleCellAllRowsSelector,
+div.bocList table.bocListTable td.bocListTitleCell.bocListTitleCellAllRowsSelector,
 div.bocList table.bocListTable td.bocListDataCellRowSelector
 {
   padding-bottom: 0;
 }
 
-div.bocList table.bocListTable th.bocListTitleCell
+div.bocList table.bocListTable th.bocListTitleCell,
+div.bocList table.bocListTable td.bocListTitleCell
 {
   font-weight: normal;
   text-align: left;
@@ -108,7 +110,7 @@ div.bocList table.bocListTable th.bocListTitleCell
   white-space: nowrap;
 }
 
-div.bocList table.bocListTable th.bocListTitleCell.bocListTitleCellAllRowsSelector > input + span::before,
+div.bocList table.bocListTable td.bocListTitleCell.bocListTitleCellAllRowsSelector > input + span::before,
 div.bocList table.bocListTable td.bocListDataCellRowSelector > input + span::before
 {
   min-height: calc(var(--remotion-themed-line-height) + var(--remotion-themed-spacing));
@@ -116,7 +118,8 @@ div.bocList table.bocListTable td.bocListDataCellRowSelector > input + span::bef
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a,
-div.bocList table.bocListTable th.bocListTitleCell > span
+div.bocList table.bocListTable th.bocListTitleCell > span,
+div.bocList table.bocListTable td.bocListTitleCell > span
 {
   display: inline-flex;
   align-items: center;
@@ -141,19 +144,20 @@ div.bocList table.bocListTable td.bocListDataCell > span.bocListContent > span[o
   width: 100%;
 }
 
-div.bocList table.bocListTable th.bocListTitleCell.bocListTitleCellAllRowsSelector > span,
+div.bocList table.bocListTable td.bocListTitleCell.bocListTitleCellAllRowsSelector > span,
 div.bocList table.bocListTable td.bocListDataCell.bocListDataCellRowSelector > span
 {
   padding: revert;
 }
 
-div.bocList table.bocListTable th.bocListTitleCell.bocListTitleCellAllRowsSelector:first-child > span,
+div.bocList table.bocListTable td.bocListTitleCell.bocListTitleCellAllRowsSelector:first-child > span,
 div.bocList table.bocListTable td.bocListDataCell.bocListDataCellRowSelector:first-child > span
 {
   padding-left: var(--remotion-themed-spacing);
 }
 
-div.bocList table.bocListTable th.bocListTitleCell
+div.bocList table.bocListTable th.bocListTitleCell,
+div.bocList table.bocListTable td.bocListTitleCell
 {
   height: var(--remotion-themed-singleline-min-height);
 }
@@ -393,7 +397,8 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable
   border-style: none;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer thead.bocListTableHead[aria-hidden] > tr > th > *
+div.bocList div.bocListTableBlock div.bocListTableContainer thead.bocListTableHead[aria-hidden] > tr > th > *,
+div.bocList div.bocListTableBlock div.bocListTableContainer thead.bocListTableHead[aria-hidden] > tr > td > *
 {
   visibility: hidden;
 }

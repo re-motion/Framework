@@ -153,6 +153,9 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsLabelText" xml:space="preserve">
     <value>Marquer toutes les lignes</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectionHeaderText" xml:space="preserve">
+    <value>Marqueur de ligne</value>
+  </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.IndexColumnTitle" xml:space="preserve">
     <value>N°</value>
   </data>

@@ -104,17 +104,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, cellID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.ColumnHeader);
+
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataListCellIndex(renderingContext);
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
+
+      // The selection column is not rendered with a header-column.
+      // This allows the screen reader to read the select-all cell without interfering with the row-selection controls.
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Cell);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
+
       if (renderingContext.Control.Selection == RowSelection.Multiple)
       {
         string selectorControlName = renderingContext.Control.GetSelectAllControlName();
         RenderTitleRowSelectorControl(renderingContext, selectorControlName);
       }
       else
-        renderingContext.Writer.Write(c_whiteSpace);
+      {
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
+        renderingContext.Writer.RenderBeginTag("span");
+        var titleText = renderingContext.Control.GetResourceManager().GetText(BocList.ResourceIdentifier.SelectionHeaderText);
+        titleText.WriteTo(renderingContext.Writer);
+        renderingContext.Writer.RenderEndTag();
+      }
+
       renderingContext.Writer.RenderEndTag();
     }
 

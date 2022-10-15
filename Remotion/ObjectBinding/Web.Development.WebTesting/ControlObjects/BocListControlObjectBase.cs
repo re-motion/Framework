@@ -242,7 +242,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<BocListColumnDefinition<TRowControlObject, TCellControlObject>> GetColumnDefinitions ()
     {
       return RetryUntilTimeout.Run(
-          () => Scope.FindAllCss(_hasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th")
+          () => Scope.FindAllCss(_hasFakeTableHead ? ".bocListFakeTableHead thead .bocListTitleCell" : ".bocListTableContainer thead .bocListTitleCell")
               .Select(
                   (s, i) =>
                       new BocListColumnDefinition<TRowControlObject, TCellControlObject>(
