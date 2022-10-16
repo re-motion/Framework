@@ -51,6 +51,13 @@ button.webButton.primary:not(:disabled):focus
   border-color: var(--color-primary-text);
 }
 
+button.webButton.primary:disabled
+{
+  background-color: var(--color-disabled-border);
+  color: var(--color-disabled-background);
+  border-color: var(--color-disabled-border);
+}
+
 button.webButton.supplemental
 {
   background-color: transparent;
