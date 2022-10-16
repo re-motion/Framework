@@ -65,7 +65,7 @@ button.webButton.supplemental:not(:disabled):hover
 
 button.webButton.supplemental:not(:disabled):focus
 {
-  background-color: transparent;
+  background-color: var(--color-standard-background);
   border-color: var(--color-primary);
 }
 
