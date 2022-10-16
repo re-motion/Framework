@@ -224,6 +224,36 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
+    public void CreateAccessControlEntry_DeleteEntries ()
+    {
+      SecurableClassDefinition classDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      AccessControlList acl = _testHelper.CreateStatefulAcl(classDefinition);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        acl.EnsureDataAvailable();
+        Assert.That(acl.State.IsUnchanged, Is.True);
+
+        AccessControlEntry ace0 = acl.CreateAccessControlEntry();
+        AccessControlEntry acel = acl.CreateAccessControlEntry();
+        AccessControlEntry ace2 = acl.CreateAccessControlEntry();
+        AccessControlEntry ace3 = acl.CreateAccessControlEntry();
+
+        Assert.That(acl.AccessControlEntries, Is.EqualTo(new[] { ace0, acel, ace2, ace3 }));
+        Assert.That(ace0.Index, Is.EqualTo(0));
+        Assert.That(acel.Index, Is.EqualTo(1));
+        Assert.That(ace2.Index, Is.EqualTo(2));
+        Assert.That(ace3.Index, Is.EqualTo(3));
+
+        acel.Delete();
+
+        Assert.That(acl.AccessControlEntries, Is.EqualTo(new[] { ace0, ace2, ace3 }));
+        Assert.That(ace0.Index, Is.EqualTo(0));
+        Assert.That(ace2.Index, Is.EqualTo(1));
+        Assert.That(ace3.Index, Is.EqualTo(2));
+      }
+    }
+
+    [Test]
     public void GetChangedAt_AfterCreation ()
     {
       AccessControlList acl = _testHelper.CreateStatefulAcl(_testHelper.CreateOrderClassDefinitionWithProperties());

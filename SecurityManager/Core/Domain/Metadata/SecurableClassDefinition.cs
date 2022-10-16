@@ -426,14 +426,15 @@ namespace Remotion.SecurityManager.Domain.Metadata
     protected override void OnRelationChanged (RelationChangedEventArgs args)
     {
       base.OnRelationChanged(args);
-      if (args.IsRelation(this, "StatefulAccessControlLists"))
-        HandleStatefulAccessControlListsChanged((StatefulAccessControlList?)args.NewRelatedObject);
+      if (args.IsRelation(this, nameof(StatefulAccessControlLists)))
+        HandleStatefulAccessControlListsChanged();
     }
 
-    private void HandleStatefulAccessControlListsChanged (StatefulAccessControlList? acl)
+    private void HandleStatefulAccessControlListsChanged ()
     {
-      if (acl != null)
-        acl.Index = StatefulAccessControlLists.IndexOf(acl);
+      var acls = StatefulAccessControlLists;
+      for (int i = 0; i < acls.Count; i++)
+        acls[i].Index = i;
     }
 
     protected override void OnDeleting (EventArgs args)

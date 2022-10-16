@@ -47,14 +47,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     protected override void OnRelationChanged (RelationChangedEventArgs args)
     {
       base.OnRelationChanged(args);
-      if (args.IsRelation(this, "StateCombinationsInternal"))
-        HandleStateCombinationsChanged((StateCombination?)args.NewRelatedObject);
+      if (args.IsRelation(this, nameof(StateCombinationsInternal)))
+        HandleStateCombinationsChanged();
     }
 
-    private void HandleStateCombinationsChanged (StateCombination? stateCombination)
+    private void HandleStateCombinationsChanged ()
     {
-      if (stateCombination != null)
-        stateCombination.Index = StateCombinationsInternal.IndexOf(stateCombination);
+      var stateCombinations = StateCombinationsInternal;
+      for (int i = 0; i < stateCombinations.Count; i++)
+        stateCombinations[i].Index = i;
     }
 
     public abstract int Index { get; set; }

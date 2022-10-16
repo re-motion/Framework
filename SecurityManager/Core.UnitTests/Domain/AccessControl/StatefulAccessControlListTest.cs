@@ -112,6 +112,37 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
+    public void CreateStateCombination_DeleteEntries ()
+    {
+      StatefulAccessControlList acl = StatefulAccessControlList.NewObject();
+      var securableClassDefinition = _testHelper.CreateClassDefinition("SecurableClass");
+      securableClassDefinition.StatefulAccessControlLists.Add(acl);
+      using (_testHelper.Transaction.CreateSubTransaction().EnterDiscardingScope())
+      {
+        acl.EnsureDataAvailable();
+        Assert.That(acl.State.IsUnchanged, Is.True);
+
+        StateCombination stateCombination0 = acl.CreateStateCombination();
+        StateCombination stateCombination1 = acl.CreateStateCombination();
+        StateCombination stateCombination2 = acl.CreateStateCombination();
+        StateCombination stateCombination3 = acl.CreateStateCombination();
+
+        Assert.That(acl.StateCombinations, Is.EqualTo(new[] { stateCombination0, stateCombination1, stateCombination2, stateCombination3 }));
+        Assert.That(stateCombination0.Index, Is.EqualTo(0));
+        Assert.That(stateCombination1.Index, Is.EqualTo(1));
+        Assert.That(stateCombination2.Index, Is.EqualTo(2));
+        Assert.That(stateCombination3.Index, Is.EqualTo(3));
+
+        stateCombination1.Delete();
+
+        Assert.That(acl.StateCombinations, Is.EqualTo(new[] { stateCombination0, stateCombination2, stateCombination3 }));
+        Assert.That(stateCombination0.Index, Is.EqualTo(0));
+        Assert.That(stateCombination2.Index, Is.EqualTo(1));
+        Assert.That(stateCombination3.Index, Is.EqualTo(2));
+      }
+    }
+
+    [Test]
     public void Get_StateCombinationsFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures();
