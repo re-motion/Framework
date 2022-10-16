@@ -267,6 +267,66 @@
       <remotion:DropDownMenu ID="MyDropDownMenu_ManyMenuItems" Mode="DropDownMenu" TitleText="Many menu items" runat="server" />
       <h3>DropDownMenu (umlauts)</h3>
       <remotion:DropDownMenu ID="MyDropDownMenu_Umlaut" TitleText="(html)UmlautÖ" runat="server" />
+      <h3>DropDownMenu with Grouping</h3>
+      <remotion:DropDownMenu ID="DropDownMenuWithGrouping" Mode="DropDownMenu" runat="server" EnableGrouping="True">
+        <MenuItems>
+          <remotion:WebMenuItem Category="Category0" ItemID="Category0a" Text="Category 0/a" IsVisible="False">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category1" ItemID="Category1a" Text="Category 1/a">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="Category2a" Text="Category 2/a" IsVisible="False">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category1" ItemID="Category1b" Text="Category 1/b">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="Category2b" Text="Category 2/b">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category1" ItemID="Category1c" Text="Category 1/c">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="Category2c" Text="Category 2/c">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category3" ItemID="Category3a" Text="Category 3/a" IsVisible="False">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category3" ItemID="Category3b" Text="Category 3/b" IsVisible="False">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category4" ItemID="Category4a" Text="Category 4a">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category5" ItemID="Category5a" Text="Category 5a" IsVisible="False">
+            <PersistedCommand>
+              <remotion:Command Type="Event" />
+            </PersistedCommand>
+          </remotion:WebMenuItem>
+        </MenuItems>
+      </remotion:DropDownMenu>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

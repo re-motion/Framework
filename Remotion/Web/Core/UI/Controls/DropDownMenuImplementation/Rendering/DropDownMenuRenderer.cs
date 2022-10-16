@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Web.UI;
 using Remotion.Globalization;
@@ -306,37 +307,41 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
         script.AppendFormat("  new DropDownMenu_MenuInfo ('{0}', ", renderingContext.Control.ClientID);
         script.Append("function(onSuccess, onError) {").AppendLine();
         script.Append("    const unfilteredMenuItems = [").AppendLine();
-        bool isFirstItem = true;
 
         WebMenuItem[] menuItems;
         if (renderingContext.Control.EnableGrouping)
-          menuItems = renderingContext.Control.MenuItems.GroupMenuItems(true);
+          menuItems = renderingContext.Control.MenuItems.GroupMenuItems(true).Where(mi => mi.EvaluateVisible()).ToArray();
         else
-          menuItems = renderingContext.Control.MenuItems.ToArray();
+          menuItems = renderingContext.Control.MenuItems.Cast<WebMenuItem>().Where(mi => mi.EvaluateVisible()).ToArray();
 
-        string? category = null;
-        bool isCategoryVisible = false;
-        List<WebMenuItem> visibleMenuItems = new List<WebMenuItem>();
+        var menuItemsToBeRendered = new List<WebMenuItem>(menuItems.Length);
         for (int i = 0; i < menuItems.Length; i++)
         {
-          WebMenuItem menuItem = menuItems[i];
-          if (renderingContext.Control.EnableGrouping && category != menuItem.Category)
-          {
-            category = menuItem.Category;
-            isCategoryVisible = false;
-          }
-          if (!menuItem.EvaluateVisible())
+          var menuItem = menuItems[i];
+
+          // Skip leading separators
+          if (menuItem.IsSeparator && menuItemsToBeRendered.Count == 0)
             continue;
-          if (renderingContext.Control.EnableGrouping && menuItem.IsSeparator && !isCategoryVisible)
+
+          // Skip duplicate separators
+          if (menuItem.IsSeparator && (i + 1) < menuItems.Length - 1 && menuItems[i + 1].IsSeparator)
             continue;
-          if (renderingContext.Control.EnableGrouping)
-            isCategoryVisible = true;
+
+          // Skip trailing separator
+          if (menuItem.IsSeparator && i == menuItems.Length - 1)
+            continue;
+
+          menuItemsToBeRendered.Add(menuItem);
+        }
+
+        bool isFirstItem = true;
+        foreach (var menuItem in menuItemsToBeRendered)
+        {
           if (isFirstItem)
             isFirstItem = false;
           else
             script.AppendFormat(",").AppendLine();
           AppendMenuItem(renderingContext, script, menuItem, renderingContext.Control.MenuItems.IndexOf(menuItem));
-          visibleMenuItems.Add(menuItem);
         }
         script.Append("];").AppendLine(); // Close Array
 
