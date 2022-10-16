@@ -86,6 +86,7 @@
 
 .tabStrip .tabStripTabSelected a
 {
+  color: var(--color-standard-text);
   border-color: var(--color-highlight);
   background-color: var(--color-highlight);
 }
