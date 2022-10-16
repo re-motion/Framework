@@ -156,6 +156,14 @@ div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:focus
   background-color: var(--color-highlight);
 }
 
+div.tabbedMultiViewTabStrip .tabStripTab:not(.disabled) a:focus:hover,
+div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:focus:hover
+{
+  background-color: var(--remotion-themed-background-color-hover);
+  border: var(--remotion-themed-border-focus);
+  box-shadow: var(--remotion-themed-box-shadow-focus);
+}
+
 div.tabbedMultiViewTabStrip .tabStripTab.disabled a
 {
   color: var(--color-disabled-text);
