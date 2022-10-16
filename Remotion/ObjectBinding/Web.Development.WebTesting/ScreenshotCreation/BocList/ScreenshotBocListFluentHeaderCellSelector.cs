@@ -66,7 +66,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "There are multiple header rows with the same item ID '{0}'.", itemID);
 
       var element = _fluentElement.Target.FindTagWithAttribute(
-          "th",
+          "tr > *",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           columns[0].Index.ToString());
 
@@ -77,7 +77,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
     public FluentScreenshotElement<ElementScope> WithIndex (int oneBasedIndex)
     {
       var element = _fluentElement.Target.FindTagWithAttribute(
-          "th",
+          "tr > *",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           oneBasedIndex.ToString());
 
@@ -97,7 +97,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "There are multiple header rows with the same title '{0}'.", title);
 
       var element = _fluentElement.Target.FindTagWithAttribute(
-          "th",
+          "tr > *",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           columns[0].Index.ToString());
 
@@ -117,7 +117,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation.B
         throw AssertionExceptionUtility.CreateExpectationException(_fluentList.Target.List.Driver, "There are multiple header rows where title contain '{0}'.", content);
 
       var element = _fluentElement.Target.FindTagWithAttribute(
-          "th",
+          "tr > *",
           DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex,
           columns[0].Index.ToString());
 

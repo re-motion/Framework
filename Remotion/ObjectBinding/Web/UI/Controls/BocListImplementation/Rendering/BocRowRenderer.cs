@@ -157,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       // ReSharper disable once PossibleMultipleEnumeration
       var dataCellIDsForIndexColumn = dataCellIDs.Concat(GetTitleCellIDForIndexColumn(renderingContext)).ToArray();
       // ReSharper disable once PossibleMultipleEnumeration
-      var dataCellIDsForSelectorColumn = dataCellIDs.Concat(GetTitleCellIDForSelectorColumn(renderingContext)).ToArray();
+      var dataCellIDsForSelectorColumn = dataCellIDs.ToArray(); // Selector column intentionally does not have a header column.
 
       // Note: The cells preceding the selector-control will also act as selector, allowing adding/removing of the selection.
       // This behavior extends the original behavior, where clicking the selector-control or the associated label in the index-cell 

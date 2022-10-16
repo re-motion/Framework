@@ -59,12 +59,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
 
-      var th = Html.GetAssertedChildElement(document, "th", 0);
-      Html.AssertAttribute(th, "id", "TitleCellID");
-      Html.AssertAttribute(th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.Themed + " " + _bocListCssClassDefinition.TitleCellSelector);
-      Html.AssertAttribute(th, "role", "columnheader");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "id", "TitleCellID");
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.Themed + " " + _bocListCssClassDefinition.TitleCellSelector);
+      Html.AssertAttribute(td, "role", "cell");
 
-      var input = Html.GetAssertedChildElement(th, "input", 0);
+      var input = Html.GetAssertedChildElement(td, "input", 0);
       Html.AssertAttribute(input, "type", "checkbox");
       Html.AssertAttribute(input, "name", List.Object.GetSelectAllControlName());
       Html.AssertNoAttribute(input, "id");
@@ -159,12 +159,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
 
-      var th = Html.GetAssertedChildElement(document, "th", 0);
-      Html.AssertAttribute(th, "id", "TitleCellID");
-      Html.AssertAttribute(th, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.Themed + " " + _bocListCssClassDefinition.TitleCellSelector);
-      Html.AssertAttribute(th, "role", "columnheader");
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "id", "TitleCellID");
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.TitleCell + " " + _bocListCssClassDefinition.Themed + " " + _bocListCssClassDefinition.TitleCellSelector);
+      Html.AssertAttribute(td, "role", "cell");
 
-      Html.AssertTextNode(th, HtmlHelper.WhiteSpace, 0);
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.CssClassScreenReaderText);
+      Html.AssertTextNode(span, "Row selection", 0);
     }
 
     [Test]
@@ -271,10 +273,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
 
-      var th = Html.GetAssertedChildElement(document, "th", 0);
-      Html.AssertAttribute(th, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, 1.ToString());
 
-      var input = Html.GetAssertedChildElement(th, "input", 0);
+      var input = Html.GetAssertedChildElement(td, "input", 0);
       Html.AssertAttribute(input, DiagnosticMetadataAttributesForObjectBinding.BocListWellKnownSelectAllControl, "true");
     }
 
