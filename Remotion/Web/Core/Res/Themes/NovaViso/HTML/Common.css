@@ -265,10 +265,24 @@ input[type="password"].remotion-themed,
   box-sizing: border-box;
 }
 
-.remotion-themed input[type=checkbox] + label::before,
-.remotion-themed input[type=checkbox] + span::before
+.remotion-themed input[type=checkbox] + label:not(:hover)::before,
+.remotion-themed input[type=checkbox] + span:not(:hover)::before,
+.remotion-themed input[type=checkbox]:disabled + label::before,
+.remotion-themed input[type=checkbox]:disabled + span::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxFalse');
+}
+
+.remotion-themed input[type=checkbox]:not(:disabled) + label:hover::before,
+.remotion-themed input[type=checkbox]:not(:disabled) + span:hover::before
+{
+  background-image: url('../Image/sprite.svg#CheckBoxFalseHover');
+}
+
+.remotion-themed input[type=checkbox]:not(:disabled) + label:hover,
+.remotion-themed input[type=checkbox]:not(:disabled) + span:hover
+{
+  cursor: pointer;
 }
 
 .remotion-themed input[type=radio] + label::before,
@@ -277,10 +291,18 @@ input[type="password"].remotion-themed,
   background-image: url('../Image/sprite.svg#RadioButtonFalse');
 }
 
-.remotion-themed input[type=checkbox]:checked + label::before,
-.remotion-themed input[type=checkbox]:checked + span::before
+.remotion-themed input[type=checkbox]:checked + label:not(:hover)::before,
+.remotion-themed input[type=checkbox]:checked + span:not(:hover)::before,
+.remotion-themed input[type=checkbox]:checked:disabled + label::before,
+.remotion-themed input[type=checkbox]:checked:disabled + span::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxTrue');
+}
+
+.remotion-themed input[type=checkbox]:checked:not(:disabled) + label:hover::before,
+.remotion-themed input[type=checkbox]:checked:not(:disabled) + span:hover::before
+{
+  background-image: url('../Image/sprite.svg#CheckBoxTrueHover');
 }
 
 .remotion-themed input[type=radio]:checked + label::before,
