@@ -72,6 +72,11 @@
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
+.bocBooleanValue:not(.readOnly, .disabled):hover
+{
+  cursor: pointer;
+}
+
 .bocBooleanValue.disabled span.description
 {
   color: var(--color-disabled-text);

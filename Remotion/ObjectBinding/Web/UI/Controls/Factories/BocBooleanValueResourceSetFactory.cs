@@ -35,6 +35,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
     private const string c_trueIcon = "sprite.svg#CheckBoxTrue";
     private const string c_falseIcon = "sprite.svg#CheckBoxFalse";
     private const string c_nullIcon = "sprite.svg#CheckBoxNull";
+    private const string c_trueHoverIcon = "sprite.svg#CheckBoxTrueHover";
+    private const string c_falseHoverIcon = "sprite.svg#CheckBoxFalseHover";
+    private const string c_nullHoverIcon = "sprite.svg#CheckBoxNullHover";
     private const string c_defaultResourceGroup = "default";
 
     private readonly IResourceUrlFactory _resourceUrlFactory;
@@ -58,13 +61,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Factories
       IResourceManager resourceManager = control.GetResourceManager();
 
       BocBooleanValueResourceSet resourceSet = new BocBooleanValueResourceSet(
-          c_defaultResourceGroup,
-          GetResourceUrl(c_trueIcon),
-          GetResourceUrl(c_falseIcon),
-          GetResourceUrl(c_nullIcon),
-          resourceManager.GetText(BocBooleanValue.ResourceIdentifier.TrueDescription),
-          resourceManager.GetText(BocBooleanValue.ResourceIdentifier.FalseDescription),
-          resourceManager.GetText(BocBooleanValue.ResourceIdentifier.NullDescription)
+          resourceKey: c_defaultResourceGroup,
+          trueIconUrl: GetResourceUrl(c_trueIcon),
+          falseIconUrl: GetResourceUrl(c_falseIcon),
+          nullIconUrl: GetResourceUrl(c_nullIcon),
+          trueHoverIconUrl: GetResourceUrl(c_trueHoverIcon),
+          falseHoverIconUrl: GetResourceUrl(c_falseHoverIcon),
+          nullHoverIconUrl: GetResourceUrl(c_nullHoverIcon),
+          defaultTrueDescription: resourceManager.GetText(BocBooleanValue.ResourceIdentifier.TrueDescription),
+          defaultFalseDescription: resourceManager.GetText(BocBooleanValue.ResourceIdentifier.FalseDescription),
+          defaultNullDescription: resourceManager.GetText(BocBooleanValue.ResourceIdentifier.NullDescription)
           );
 
       return resourceSet;

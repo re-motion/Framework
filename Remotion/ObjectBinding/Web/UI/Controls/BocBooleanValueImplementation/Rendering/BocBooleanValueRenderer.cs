@@ -110,9 +110,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       var resourceSet = _resourceSetFactory.CreateResourceSet(renderingContext.Control);
 
-      AddAttributesToRender(renderingContext);
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-
       var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID(renderingContext);
 
@@ -128,11 +125,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       if (renderingContext.Control.Enabled && !renderingContext.Control.IsReadOnly)
       {
         RegisterStarupScriptIfNeeded(renderingContext, resourceSet);
-
-        var script = GetClickScript(renderingContext, resourceSet);
-        descriptionLabelControl.Attributes.Add("onclick", script);
-        checkboxControl.Attributes.Add("onclick", script);
-        checkboxControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
       }
 
       if (renderingContext.Control.Enabled)
@@ -145,6 +137,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       }
 
       PrepareVisibleControls(renderingContext, resourceSet, checkboxControl, imageControl, descriptionLabelControl);
+
+      if (renderingContext.Control.Enabled && !renderingContext.Control.IsReadOnly)
+      {
+        RegisterStarupScriptIfNeeded(renderingContext, resourceSet);
+
+        var script = GetClickScript(renderingContext, resourceSet);
+        checkboxControl.Attributes.Add("onkeydown", "BocBooleanValue.OnKeyDown (this);");
+        renderingContext.Writer.AddAttribute("onclick", script);
+        renderingContext.Writer.AddAttribute("onmouseover", "BocBooleanValue.OnMouseOver (this);");
+        renderingContext.Writer.AddAttribute("onmouseout", "BocBooleanValue.OnMouseOut (this);");
+      }
+      AddAttributesToRender(renderingContext);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
       if (renderingContext.Control.IsReadOnly)
       {
@@ -225,7 +230,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
         string nullValue = c_nullString;
 
         string startupScript = string.Format(
-            "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
+            "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}');",
             resourceSet.ResourceKey,
             trueValue,
             falseValue,
@@ -235,7 +240,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
             ScriptUtility.EscapeClientScript(resourceSet.DefaultNullDescription),
             resourceSet.TrueIconUrl,
             resourceSet.FalseIconUrl,
-            resourceSet.NullIconUrl);
+            resourceSet.NullIconUrl,
+            resourceSet.TrueHoverIconUrl,
+            resourceSet.FalseHoverIconUrl,
+            resourceSet.NullHoverIconUrl);
         renderingContext.Control.Page.ClientScript.RegisterStartupScriptBlock(
             renderingContext.Control,
             typeof(BocBooleanValueRenderer),
@@ -252,16 +260,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       scriptBuilder.Append("BocBooleanValue.SelectNextCheckboxValue (");
       scriptBuilder.Append("'").Append(resourceSet.ResourceKey).Append("'");
       scriptBuilder.Append(", ");
-      scriptBuilder.Append("this.parentNode.querySelector(':scope > span[role=checkbox]')");
+      scriptBuilder.Append("this.querySelector(':scope > span[role=checkbox]')");
       scriptBuilder.Append(", ");
-      scriptBuilder.Append("this.parentNode.querySelector(':scope > span[role=checkbox] > img')");
+      scriptBuilder.Append("this.querySelector(':scope > span[role=checkbox] > img')");
       scriptBuilder.Append(", ");
       if (renderingContext.Control.ShowDescription)
-        scriptBuilder.Append("this.parentNode.querySelectorAll(':scope > span')[1]");
+        scriptBuilder.Append("this.querySelectorAll(':scope > span')[1]");
       else
         scriptBuilder.Append("null");
       scriptBuilder.Append(", ");
-      scriptBuilder.Append("this.parentNode.querySelector(':scope > input')");
+      scriptBuilder.Append("this.querySelector(':scope > input')");
       scriptBuilder.Append(", ");
       scriptBuilder.Append(requiredFlag);
       scriptBuilder.Append(", ");
@@ -287,12 +295,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       string checkedState;
       string imageUrl;
+      string imageHoverUrl;
       WebString description;
 
       if (!renderingContext.Control.Value.HasValue)
       {
         checkedState = HtmlAriaCheckedAttributeValue.Mixed;
         imageUrl = resourceSet.NullIconUrl;
+        imageHoverUrl = resourceSet.NullHoverIconUrl;
         description = renderingContext.Control.NullDescription.IsEmpty
             ? resourceSet.DefaultNullDescription
             : renderingContext.Control.NullDescription;
@@ -301,6 +311,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       {
         checkedState = HtmlAriaCheckedAttributeValue.True;
         imageUrl = resourceSet.TrueIconUrl;
+        imageHoverUrl = resourceSet.TrueHoverIconUrl;
         description = renderingContext.Control.TrueDescription.IsEmpty
             ? resourceSet.DefaultTrueDescription
             : renderingContext.Control.TrueDescription;
@@ -309,6 +320,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       {
         checkedState = HtmlAriaCheckedAttributeValue.False;
         imageUrl = resourceSet.FalseIconUrl;
+        imageHoverUrl = resourceSet.FalseHoverIconUrl;
         description = renderingContext.Control.FalseDescription.IsEmpty
             ? resourceSet.DefaultFalseDescription
             : renderingContext.Control.FalseDescription;
@@ -322,6 +334,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
 
       imageControl.ImageUrl = imageUrl;
       imageControl.GenerateEmptyAlternateText = true;
+      imageControl.Attributes.Add("data-src", imageUrl);
+      imageControl.Attributes.Add("data-src-hover", imageHoverUrl);
 
       labelControl.Text = description.ToString(WebStringEncoding.HtmlWithTransformedLineBreaks);
       if (renderingContext.Control.IsReadOnly)

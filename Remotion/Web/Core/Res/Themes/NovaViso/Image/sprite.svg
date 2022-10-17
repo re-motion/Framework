@@ -45,6 +45,17 @@
     <rect x="0.5" y="0.5" height="15" width="15" fill="#136DA3" rx="2" ry="2" stroke="#136DA3" />
     <use href="#Checkmark" />
   </svg>
+  <svg class="sprite-part" id="CheckBoxNullHover" width="16px" height="16px" viewBox="0 0 16 16">
+    <rect x="0.5" y="0.5" height="15" width="15" fill="#DEF3FE" fill-opacity="0.5" rx="2" ry="2" stroke="#0C6594" />
+    <rect x="3" y="7" width="10" height="2" fill="#0C6594" stroke-width="0" />
+  </svg>
+  <svg class="sprite-part" id="CheckBoxTrueHover" width="16px" height="16px" viewBox="0 0 16 16">
+    <rect x="0.5" y="0.5" height="15" width="15" fill="#218FC9" rx="2" ry="2" stroke="#218FC9" />
+    <use href="#Checkmark" />
+  </svg>
+  <svg class="sprite-part" id="CheckBoxFalseHover" width="16px" height="16px" viewBox="0 0 16 16">
+    <rect x="0.5" y="0.5" height="15" width="15" fill="#DEF3FE" rx="2" ry="2" stroke="#0C6594"/>
+  </svg>
   <svg class="sprite-part" id="DatePicker" width="16" height="16" viewBox="0 0 16 16">
     <rect x="0" y="2" height="10" width="16" rx="2" ry="2" fill="#FFFFFF" />
     <g fill="#000000" fill-rule="evenodd">
@@ -136,6 +147,17 @@
     <g>
       <circle fill="#ffffff" stroke="#0c6594" stroke-width="1" cx="8" cy="8" r="7.5" />
       <circle fill="#0c6594" cx="8" cy="8" r="5.4" />
+    </g>
+  </svg>
+  <svg class="sprite-part" id="RadioButtonFalseHover" width="16px" height="16px" viewBox="0 0 16 16">
+    <g>
+      <circle fill="#DEF3FE" stroke="#0C6594" stroke-width="1" cy="8" cx="8" r="7.5" />
+    </g>
+  </svg>
+  <svg class="sprite-part" id="RadioButtonTrueHover" width="16px" height="16px" viewBox="0 0 16 16">
+    <g>
+      <circle fill="#ffffff" stroke="#218FC9" stroke-width="1" cx="8" cy="8" r="7.5" />
+      <circle fill="#218FC9" cx="8" cy="8" r="5.4" />
     </g>
   </svg>
 </svg>
