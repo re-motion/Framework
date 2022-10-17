@@ -18,6 +18,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls;
 
@@ -59,6 +60,10 @@ namespace Remotion.ObjectBinding.Sample
 
     protected override void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
     {
+      var cssClasses = SafeServiceLocator.Current.GetInstance<BocListCssClassDefinition>();
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClasses.CellStructureElement);
+      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
       writer.AddAttribute(HtmlTextWriterAttribute.Href, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL());
       string onClickEvent = GetPostBackClientEvent("async");
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClickEvent);
@@ -72,6 +77,8 @@ namespace Remotion.ObjectBinding.Sample
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClickEvent);
       writer.RenderBeginTag(HtmlTextWriterTag.A);
       writer.Write("sync");
+      writer.RenderEndTag();
+
       writer.RenderEndTag();
     }
   }

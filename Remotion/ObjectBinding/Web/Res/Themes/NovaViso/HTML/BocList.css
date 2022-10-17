@@ -130,15 +130,25 @@ div.bocList table.bocListTable td.bocListDataCell > a:not([hidden]),
 div.bocList table.bocListTable td.bocListDataCell > span:not([hidden]),
 div.bocList table.bocListTable td.bocListDataCell > div:not([hidden])
 {
-  display: flex;
+  display: flex !important; /*overrides hardcoded enforce-width setting 'display:block' */
   align-items: center;
-  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
-  gap: var(--remotion-themed-spacing);
   box-sizing: border-box;
   width: 100%;
 }
 
-div.bocList table.bocListTable td.bocListDataCell > span.bocListContent > span[onclick]
+div.bocList table.bocListTable td.bocListDataCell > a:not([hidden]),
+div.bocList table.bocListTable td.bocListDataCell > span:not([hidden], .bocListCellStructureElement),
+div.bocList table.bocListTable td.bocListDataCell > div:not([hidden], .bocListCellStructureElement),
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:not([hidden]),
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > span:not([hidden], .bocListCellStructureElement),
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not([hidden], .bocListCellStructureElement)
+{
+  display: inline-block;
+  padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
+}
+
+div.bocList table.bocListTable td.bocListDataCell > span.bocListContent > span[onclick],
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > span.bocListContent > span[onclick]
 {
   display: block;
   width: 100%;
@@ -163,7 +173,8 @@ div.bocList table.bocListTable td.bocListTitleCell
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a,
-div.bocList table.bocListTable td.bocListDataCell > a
+div.bocList table.bocListTable td.bocListDataCell > a,
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a
 {
   color: var(--color-primary);
   text-decoration: none;
@@ -171,33 +182,42 @@ div.bocList table.bocListTable td.bocListDataCell > a
 
 div.bocList table.bocListTable th.bocListTitleCell > a,
 div.bocList table.bocListTable td.bocListDataCell > a,
-div.bocList table.bocListTable td.bocListDataCell > span,
-div.bocList table.bocListTable td.bocListDataCell > div
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a,
+div.bocList table.bocListTable td.bocListDataCell > span:not(.bocListCellStructureElement),
+div.bocList table.bocListTable td.bocListDataCell > span:not(.bocListCellStructureElement),
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not(.bocListCellStructureElement),
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not(.bocListCellStructureElement)
 {
   border-radius: var(--remotion-themed-border-radius);
   border: var(--remotion-themed-border-placeholder);
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a:hover,
-div.bocList table.bocListTable td.bocListDataCell > a:hover
+div.bocList table.bocListTable td.bocListDataCell > a:hover,
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:hover
 {
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-hover);
   border: var(--remotion-themed-border-hover);
   box-shadow: var(--remotion-themed-box-shadow-hover);
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a:focus,
-div.bocList table.bocListTable td.bocListDataCell > a:focus
+div.bocList table.bocListTable td.bocListDataCell > a:focus,
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:focus
 {
   outline: none;
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-focus);
   border: var(--remotion-themed-border-focus);
   box-shadow: var(--remotion-themed-box-shadow-focus);
 }
 
 div.bocList table.bocListTable th.bocListTitleCell > a:focus:hover,
-div.bocList table.bocListTable td.bocListDataCell > a:focus:hover
+div.bocList table.bocListTable td.bocListDataCell > a:focus:hover,
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:focus:hover
 {
+  color: var(--color-standard-text);
   background-color: var(--remotion-themed-background-color-focus-hover);
   border: var(--remotion-themed-border-focus-hover);
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
@@ -209,9 +229,21 @@ div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
 }
 
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > span.bocListContent > img,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > span.bocListContent > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > a > img
 {
   align-self: start;
+}
+
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > span.bocListContent > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > span.bocListContent > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > a > img
+{
+  /* Intended gap between the image and the text is --remotion-themed-spacing. Given there is already a non-breaking-space rendered after the image
+     we only place half the spaceing and assume this will result in a visually fitting distance. */
+  margin-right: var(--remotion-themed-spacing-small);
 }
 
 div.bocList table.bocListTable tr.bocListDataRow.selected td.bocListDataCell

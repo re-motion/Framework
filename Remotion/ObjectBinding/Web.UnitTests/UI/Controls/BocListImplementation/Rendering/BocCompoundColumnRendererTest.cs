@@ -169,6 +169,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "role", "cell");
 
       var cropSpan = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(cropSpan, "class", _bocListCssClassDefinition.CellStructureElement);
       Html.AssertAttribute(cropSpan, "title", "referencedObject1");
       Html.AssertStyleAttribute(cropSpan, "width", "40px");
       Html.AssertStyleAttribute(cropSpan, "display", "block");
