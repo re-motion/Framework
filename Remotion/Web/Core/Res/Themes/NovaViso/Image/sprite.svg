@@ -145,4 +145,15 @@
       <circle fill="#0c6594" cx="8" cy="8" r="5.4" />
     </g>
   </svg>
+  <svg class="sprite-part" id="RadioButtonFalseHover" width="16px" height="16px" viewBox="0 0 16 16">
+    <g>
+      <circle fill="#DEF3FE" stroke="#0C6594" stroke-width="1" cy="8" cx="8" r="7.5" />
+    </g>
+  </svg>
+  <svg class="sprite-part" id="RadioButtonTrueHover" width="16px" height="16px" viewBox="0 0 16 16">
+    <g>
+      <circle fill="#ffffff" stroke="#218FC9" stroke-width="1" cx="8" cy="8" r="7.5" />
+      <circle fill="#218FC9" cx="8" cy="8" r="5.4" />
+    </g>
+  </svg>
 </svg>
