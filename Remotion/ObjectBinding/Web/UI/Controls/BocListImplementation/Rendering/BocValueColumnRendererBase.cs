@@ -126,6 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (enforceWidth)
       {
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.CellStructureElement);
         renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, renderingContext.ColumnDefinition.Width.ToString());
         renderingContext.Writer.AddStyleAttribute("overflow", "hidden");
         renderingContext.Writer.AddStyleAttribute("white-space", "nowrap");

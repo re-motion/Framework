@@ -250,6 +250,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return CssClassDefinition.ScreenReaderText; }
     }
 
+    public string CellStructureElement
+    {
+      get { return "bocListCellStructureElement"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s table block. </summary>
     /// <param name="hasMenuBlock"><see langword="true" /> if the list has a menu block, otherwise <see langword="false" />.</param>
     /// <param name="hasNavigator"><see langword="true" /> if the list has a navigation block, otherwise <see langword="false" />.</param>
