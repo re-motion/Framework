@@ -28,12 +28,15 @@ class BocBooleanValue_Resource
     private readonly _nullDescription: string,
     private readonly _trueIconUrl: string,
     private readonly _falseIconUrl: string,
-    private readonly _nullIconUrl: string) 
+    private readonly _nullIconUrl: string,
+    private readonly _trueHoverIconUrl: string,
+    private readonly _falseHoverIconUrl: string,
+    private readonly _nullHoverIconUrl: string) 
   {
   }
 
   public SelectNextCheckboxValue (
-    link: HTMLElement,
+    checkboxSpan: HTMLElement,
     icon: HTMLImageElement,
     label: Nullable<HTMLElement>,
     hiddenField: HTMLInputElement,
@@ -72,11 +75,13 @@ class BocBooleanValue_Resource
     hiddenField.value = newValue;
     var checkedState: Optional<string>;
     var iconSrc: Optional<string>;
+    var iconHoverSrc: Optional<string>;
     var description: Optional<string>;
 
     if (newValue == falseValue) {
         checkedState = 'false';
         iconSrc = this._falseIconUrl;
+        iconHoverSrc = this._falseHoverIconUrl;
         if (falseDescription == null)
             description = this._falseDescription;
         else
@@ -85,6 +90,7 @@ class BocBooleanValue_Resource
     else if (newValue == nullValue) {
         checkedState = 'mixed';
         iconSrc = this._nullIconUrl;
+        iconHoverSrc = this._nullHoverIconUrl;
         if (nullDescription == null)
             description = this._nullDescription;
         else
@@ -93,18 +99,24 @@ class BocBooleanValue_Resource
     else if (newValue == trueValue) {
         checkedState = 'true';
         iconSrc = this._trueIconUrl;
+        iconHoverSrc = this._trueHoverIconUrl;
         if (trueDescription == null)
             description = this._trueDescription;
         else
             description = trueDescription;
     } // RM-7676: Handle invalid check box states in BocBooleanValue_Resource.SelectNextCheckboxValue
 
-    
-    link.setAttribute('aria-checked', checkedState!);
-    icon.src = iconSrc!;
+
+    checkboxSpan.setAttribute('aria-checked', checkedState!);
+
+    const isHover = icon.src == icon.dataset['srcHover'];
+    icon.dataset["src"] = iconSrc!;
+    icon.dataset['srcHover'] = iconHoverSrc!;
+    icon.src = isHover ? icon.dataset["src"] : icon.dataset['srcHover'];
+
     if (label == null)
     {
-      link.title = StringUtility.GetPlainTextFromHtml(description!);
+      checkboxSpan.title = StringUtility.GetPlainTextFromHtml(description!);
     }
     else
     {
@@ -128,7 +140,10 @@ class BocBooleanValue
       nullDescription: string,
       trueIconUrl: string, 
       falseIconUrl: string, 
-      nullIconUrl: string): void
+      nullIconUrl: string,
+      trueHoverIconUrl: string,
+      falseHoverIconUrl: string,
+      nullHoverIconUrl: string): void
   {
     BocBooleanValue._bocBooleanValue_Resources[key] = new BocBooleanValue_Resource(
         trueValue,
@@ -139,18 +154,21 @@ class BocBooleanValue
         nullDescription,
         trueIconUrl,
         falseIconUrl,
-        nullIconUrl);
+        nullIconUrl,
+        trueHoverIconUrl,
+        falseHoverIconUrl,
+        nullHoverIconUrl);
   }
 
   // Selected the next value of the tri-state checkbox, skipping the null value if isRequired is true.
-  // link: The anchor tag representing the clickable area.
+  // checkboxSpan: The span tag representing the clickable area.
   // icon: The icon representing the tri-state checkbox.
   // label: The label containing the description for the value. null for no description.
   // hiddenField: The hidden input field used to store the value between postbacks.
   // isRequired: true to enqable the null value, false to limit the choices to true and false.
   public static SelectNextCheckboxValue (
     key: string,
-    link: HTMLAnchorElement,
+    checkboxSpan: HTMLElement,
     icon: HTMLImageElement,
     label: Nullable<HTMLElement>,
     hiddenField: HTMLInputElement,
@@ -161,7 +179,7 @@ class BocBooleanValue
   {
     var resource = BocBooleanValue._bocBooleanValue_Resources[key]!;
     resource.SelectNextCheckboxValue(
-    link,
+    checkboxSpan,
     icon,
     label,
     hiddenField,
@@ -171,7 +189,7 @@ class BocBooleanValue
     nullDescription);
   }
 
-  public static OnKeyDown (context: HTMLAnchorElement): void
+  public static OnKeyDown (context: HTMLElement): void
   {
     // TODO RM-7677: Pass event objects into the handler methods instead of using the ambient event variable
     function typeOverride <T>(value: unknown): asserts value is T {};
@@ -179,9 +197,21 @@ class BocBooleanValue
 
     if (event.keyCode == 32)
     {
-      context.click();
+      context.parentElement!.click();
       event.cancelBubble = true;
       event.returnValue = false;
     }
+  }
+
+  public static OnMouseOver (context: HTMLElement): void
+  {
+    const img = context.querySelector('img')!;
+    img.src = img.dataset['srcHover']!;
+  }
+
+  public static OnMouseOut (context: HTMLElement): void
+  {
+    const img = context.querySelector('img')!;
+    img.src = img.dataset["src"]!;
   }
 }

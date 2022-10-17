@@ -70,6 +70,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           "TrueIconUrl",
           "FalseIconUrl",
           "NullIconUrl",
+          "TrueHoverIconUrl",
+          "FalseHoverIconUrl",
+          "NullHoverIconUrl",
           PlainTextString.CreateFromText("DefaultTrueDescription"),
           PlainTextString.CreateFromText("DefaultFalseDescription"),
           PlainTextString.CreateFromText("DefaultNullDescription"));
@@ -87,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
       string startupScriptKey = typeof(BocBooleanValueRenderer).FullName + "_Startup_" + _resourceSet.ResourceKey;
       _startupScript = string.Format(
-          "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}');",
+          "BocBooleanValue.InitializeGlobals ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}');",
           _resourceSet.ResourceKey,
           "true",
           "false",
@@ -97,7 +100,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
           ScriptUtility.EscapeClientScript(_resourceSet.DefaultNullDescription),
           _resourceSet.TrueIconUrl,
           _resourceSet.FalseIconUrl,
-          _resourceSet.NullIconUrl);
+          _resourceSet.NullIconUrl,
+          _resourceSet.TrueHoverIconUrl,
+          _resourceSet.FalseHoverIconUrl,
+          _resourceSet.NullHoverIconUrl);
       clientScriptManagerMock.Setup(mock => mock.RegisterStartupScriptBlock(_booleanValue.Object, typeof(BocBooleanValueRenderer), startupScriptKey, _startupScript)).Verifiable();
       clientScriptManagerMock.Setup(mock => mock.IsStartupScriptRegistered(It.IsNotNull<Type>(), It.IsNotNull<string>())).Returns(false);
       clientScriptManagerMock.Setup(mock => mock.GetPostBackEventReference(_booleanValue.Object, string.Empty)).Returns(c_postbackEventReference);
@@ -141,7 +147,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = true;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -149,7 +155,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = false;
-      CheckRendering("false", false.ToString(), "FalseIconUrl", _booleanValue.Object.FalseDescription);
+      CheckRendering("false", false.ToString(), "FalseIconUrl", "FalseHoverIconUrl", _booleanValue.Object.FalseDescription);
     }
 
     [Test]
@@ -157,7 +163,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = null;
-      CheckRendering("mixed", "null", "NullIconUrl", _booleanValue.Object.NullDescription);
+      CheckRendering("mixed", "null", "NullIconUrl", "NullHoverIconUrl", _booleanValue.Object.NullDescription);
     }
 
     [Test]
@@ -166,7 +172,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.IsRequired).Returns(true);
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = true;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -175,7 +181,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.IsRequired).Returns(true);
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = false;
-      CheckRendering("false", false.ToString(), "FalseIconUrl", _booleanValue.Object.FalseDescription);
+      CheckRendering("false", false.ToString(), "FalseIconUrl", "FalseHoverIconUrl", _booleanValue.Object.FalseDescription);
     }
 
     [Test]
@@ -184,7 +190,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.IsRequired).Returns(true);
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = null;
-      CheckRendering("mixed", "null", "NullIconUrl", _booleanValue.Object.NullDescription);
+      CheckRendering("mixed", "null", "NullIconUrl", "NullHoverIconUrl", _booleanValue.Object.NullDescription);
     }
 
     [Test]
@@ -193,7 +199,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = true;
       _booleanValue.Setup(mock => mock.IsReadOnly).Returns(true);
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -202,7 +208,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = false;
       _booleanValue.Setup(mock => mock.IsReadOnly).Returns(true);
-      CheckRendering("false", false.ToString(), "FalseIconUrl", _booleanValue.Object.FalseDescription);
+      CheckRendering("false", false.ToString(), "FalseIconUrl", "FalseHoverIconUrl", _booleanValue.Object.FalseDescription);
     }
 
     [Test]
@@ -211,7 +217,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = null;
       _booleanValue.Setup(mock => mock.IsReadOnly).Returns(true);
-      CheckRendering("mixed", "null", "NullIconUrl", _booleanValue.Object.NullDescription);
+      CheckRendering("mixed", "null", "NullIconUrl", "NullHoverIconUrl", _booleanValue.Object.NullDescription);
     }
 
     [Test]
@@ -219,7 +225,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(false);
       _booleanValue.Object.Value = true;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -227,7 +233,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(false);
       _booleanValue.Object.Value = false;
-      CheckRendering("false", false.ToString(), "FalseIconUrl", _booleanValue.Object.FalseDescription);
+      CheckRendering("false", false.ToString(), "FalseIconUrl", "FalseHoverIconUrl", _booleanValue.Object.FalseDescription);
     }
 
     [Test]
@@ -235,7 +241,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Setup(mock => mock.Enabled).Returns(false);
       _booleanValue.Object.Value = null;
-      CheckRendering("mixed", "null", "NullIconUrl", _booleanValue.Object.NullDescription);
+      CheckRendering("mixed", "null", "NullIconUrl", "NullHoverIconUrl", _booleanValue.Object.NullDescription);
     }
 
     [Test]
@@ -244,7 +250,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = true;
       _booleanValue.Object.CssClass = c_cssClass;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -252,7 +258,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Object.Value = true;
       _booleanValue.Object.CssClass = c_cssClass;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -262,7 +268,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Object.Value = true;
       _booleanValue.Setup(mock => mock.IsReadOnly).Returns(true);
       _booleanValue.Object.CssClass = c_cssClass;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -271,7 +277,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = true;
       _booleanValue.Object.Attributes["class"] = c_cssClass;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -279,7 +285,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     {
       _booleanValue.Object.Value = true;
       _booleanValue.Object.Attributes["class"] = c_cssClass;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -289,7 +295,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Object.Value = true;
       _booleanValue.Setup(mock => mock.IsReadOnly).Returns(true);
       _booleanValue.Object.Attributes["class"] = c_cssClass;
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -298,7 +304,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       _booleanValue.Setup(mock => mock.Enabled).Returns(true);
       _booleanValue.Object.Value = true;
       _booleanValue.Setup(mock => mock.IsAutoPostBackEnabled).Returns(true);
-      CheckRendering("true", true.ToString(), "TrueIconUrl", _booleanValue.Object.TrueDescription);
+      CheckRendering("true", true.ToString(), "TrueIconUrl", "TrueHoverIconUrl", _booleanValue.Object.TrueDescription);
     }
 
     [Test]
@@ -369,7 +375,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       return Html.GetResultDocument();
     }
 
-    private void CheckRendering (string checkedState, string value, string iconUrl, WebString description)
+    private void CheckRendering (string checkedState, string value, string iconUrl, string iconHoverUrl, WebString description)
     {
       var resourceUrlFactory = new FakeResourceUrlFactory();
       _renderer = new BocBooleanValueRenderer(
@@ -394,7 +400,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       CheckCheckboxAttributes(checkbox, checkedState, _booleanValue.Object.IsReadOnly, _booleanValue.Object.IsRequired);
 
       var image = Html.GetAssertedChildElement(checkbox, "img", 0);
-      checkImageAttributes(image, iconUrl);
+      checkImageAttributes(image, iconUrl, iconHoverUrl);
 
       var requiredLabel = Html.GetAssertedChildElement(outerSpan, "span", 2);
       Html.AssertAttribute(requiredLabel, "hidden", "hidden");
@@ -428,9 +434,17 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertNoAttribute(checkbox, "title");
 
       if (!_booleanValue.Object.IsReadOnly && _booleanValue.Object.Enabled)
-        Html.AssertAttribute(label, "onclick", GetClickScript(_booleanValue.Object.IsRequired, _booleanValue.Object.IsAutoPostBackEnabled));
+      {
+        Html.AssertAttribute(outerSpan, "onclick", GetClickScript(_booleanValue.Object.IsRequired, _booleanValue.Object.IsAutoPostBackEnabled));
+        Html.AssertAttribute(outerSpan, "onmouseover", "BocBooleanValue.OnMouseOver (this);");
+        Html.AssertAttribute(outerSpan, "onmouseout", "BocBooleanValue.OnMouseOut (this);");
+      }
       else
-        Html.AssertNoAttribute(label, "onclick");
+      {
+        Html.AssertNoAttribute(outerSpan, "onclick");
+        Html.AssertNoAttribute(outerSpan, "onmouseover");
+        Html.AssertNoAttribute(outerSpan, "onmouseout");
+      }
 
       AssertValidationErrors(Html.GetAssertedChildElement(outerSpan, "fake", 4));
     }
@@ -457,10 +471,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
         Html.AssertAttribute(outerSpan, "class", _renderer.CssClassReadOnly, HtmlHelper.AttributeValueCompareMode.Contains);
     }
 
-    private void checkImageAttributes (XmlNode image, string iconUrl)
+    private void checkImageAttributes (XmlNode image, string iconUrl, string iconHoverUrl)
     {
       Html.AssertAttribute(image, "src", iconUrl);
       Html.AssertAttribute(image, "alt", "");
+      Html.AssertAttribute(image, "data-src", iconUrl);
+      Html.AssertAttribute(image, "data-src-hover", iconHoverUrl);
     }
 
     private void CheckCheckboxAttributes (XmlNode checkbox, string checkedState, bool isReadOnly, bool isRequired)
@@ -485,12 +501,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
       if (!isReadOnly && _booleanValue.Object.Enabled)
       {
-        Html.AssertAttribute(checkbox, "onclick", GetClickScript(isRequired, _booleanValue.Object.IsAutoPostBackEnabled));
         Html.AssertAttribute(checkbox, "onkeydown", _keyDownScript);
       }
       else
       {
-        Html.AssertNoAttribute(checkbox, "onclick");
         Html.AssertNoAttribute(checkbox, "onkeydown");
       }
 
@@ -540,9 +554,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
 
     private string GetClickScript (bool isRequired, bool isAutoPostbackEnabled)
     {
-      return "BocBooleanValue.SelectNextCheckboxValue ('ResourceKey', this.parentNode.querySelector(':scope > span[role=checkbox]'), "
-             + "this.parentNode.querySelector(':scope > span[role=checkbox] > img'), this.parentNode.querySelectorAll(':scope > span')[1], "
-             + "this.parentNode.querySelector(':scope > input'), " + isRequired.ToString().ToLower() + ", "
+      return "BocBooleanValue.SelectNextCheckboxValue ('ResourceKey', this.querySelector(':scope > span[role=checkbox]'), "
+             + "this.querySelector(':scope > span[role=checkbox] > img'), this.querySelectorAll(':scope > span')[1], "
+             + "this.querySelector(':scope > input'), " + isRequired.ToString().ToLower() + ", "
              + "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');"
              + (isAutoPostbackEnabled ? c_postbackEventReference + ";" : "")
              + "return false;";
