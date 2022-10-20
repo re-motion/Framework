@@ -309,7 +309,7 @@ $output += "|
 "
 
 $output += "| JetBrains Annotations (Source Code) "
-$output += "| 2017.2 "
+$output += "| 2022.1 "
 $output += "| [MIT License](https://raw.githubusercontent.com/JetBrains/ExternalAnnotations/master/LICENSE.md) "
 $output += "| This software (assemblies 'Remotion' and 'Remotion.*') embeds code based on 'JetBrains Annotations'. <br> Copyright (c) 2016 JetBrains http://www.jetbrains.com <br> Original software available via ReSharper -> Options -> Code Annotations -> Copy to Clipboard. "
 $output += "|
