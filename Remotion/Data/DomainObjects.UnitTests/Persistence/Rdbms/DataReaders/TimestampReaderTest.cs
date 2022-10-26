@@ -71,9 +71,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _dataReaderStrictMock.Setup(mock => mock.Read()).Returns(true).Verifiable();
       _idPropertyStrictMock
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns((object)null)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
           .Verifiable();
 
       var result = _reader.Read(_dataReaderStrictMock.Object);
@@ -87,14 +86,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _dataReaderStrictMock.Setup(mock => mock.Read()).Returns(true).Verifiable();
       _idPropertyStrictMock
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(_fakeObjectIDResult)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
           .Verifiable();
       _timestampStrictMock
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(_fakeTimestampResult)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
           .Verifiable();
 
       var result = _reader.Read(_dataReaderStrictMock.Object);
@@ -108,14 +105,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _dataReaderStrictMock.Setup(mock => mock.Read()).Returns(true).Verifiable();
       _idPropertyStrictMock
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(_fakeObjectIDResult)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
           .Verifiable();
       _timestampStrictMock
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns((object)null)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
           .Verifiable();
 
       Assert.That(
@@ -131,44 +126,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       var fakeObjectIDResult2 = new ObjectID(typeof(OrderItem), Guid.NewGuid());
       var fakeTimestampResult2 = new object();
 
-      var sequence = new MockSequence();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
+      _dataReaderStrictMock
+          .SetupSequence(mock => mock.Read())
+          .Returns(true)
+          .Returns(true)
+          .Returns(true)
+          .Returns(false);
       _idPropertyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .SetupSequence(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(_fakeObjectIDResult)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Verifiable();
-      _timestampStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
-          .Returns(_fakeTimestampResult)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Verifiable();
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _idPropertyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
           .Returns((object)null)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Verifiable();
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _idPropertyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
-          .Returns(fakeObjectIDResult2)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Verifiable();
+          .Returns(fakeObjectIDResult2);
       _timestampStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Returns(fakeTimestampResult2)
-          .Verifiable();
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(false).Verifiable();
+          .SetupSequence(mock => mock.CombineValue(MatchColumnValueReader()))
+          .Returns(_fakeTimestampResult)
+          // NOP
+          .Returns(fakeTimestampResult2);
 
       var result = _reader.ReadSequence(_dataReaderStrictMock.Object).ToArray();
 
@@ -197,11 +170,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _timestampStrictMock.Verify();
     }
 
-    private void CheckColumnValueReader (IColumnValueProvider columnValueProvider)
+    private ColumnValueReader MatchColumnValueReader ()
     {
-      var columnValueReader = (ColumnValueReader)columnValueProvider;
-      Assert.That(columnValueReader.DataReader, Is.SameAs(_dataReaderStrictMock.Object));
-      Assert.That(columnValueReader.ColumnOrdinalProvider, Is.SameAs(_columnOrdinalProviderStub.Object));
+      return Match<IColumnValueProvider>.Create<ColumnValueReader>(
+          r => r.DataReader == _dataReaderStrictMock.Object
+               && r.ColumnOrdinalProvider == _columnOrdinalProviderStub.Object);
     }
 
   }

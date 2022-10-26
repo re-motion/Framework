@@ -188,33 +188,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CanBeCollected ()
+    public void CanBeCollected_WithCanEndPointBeCollectedIsTrue_ReturnsTrue ()
     {
-      var sequence = new MockSequence();
-      _loadStateMock.InSequence(sequence).Setup(mock => mock.CanEndPointBeCollected(_endPoint)).Returns(true).Verifiable();
-      _loadStateMock.InSequence(sequence).Setup(mock => mock.CanEndPointBeCollected(_endPoint)).Returns(false).Verifiable();
+      _loadStateMock.Setup(mock => mock.CanEndPointBeCollected(_endPoint)).Returns(true).Verifiable();
 
-      var result1 = _endPoint.CanBeCollected;
-      var result2 = _endPoint.CanBeCollected;
+      var result = _endPoint.CanBeCollected;
 
       _loadStateMock.Verify();
-      Assert.That(result1, Is.True);
-      Assert.That(result2, Is.False);
+      Assert.That(result, Is.True);
     }
 
     [Test]
-    public void CanBeMarkedIncomplete ()
+    public void CanBeCollected_WithCanEndPointBeCollectedIsFalse_ReturnsFalse ()
     {
-      var sequence = new MockSequence();
-      _loadStateMock.InSequence(sequence).Setup(mock => mock.CanDataBeMarkedIncomplete(_endPoint)).Returns(true).Verifiable();
-      _loadStateMock.InSequence(sequence).Setup(mock => mock.CanDataBeMarkedIncomplete(_endPoint)).Returns(false).Verifiable();
+      _loadStateMock.Setup(mock => mock.CanEndPointBeCollected(_endPoint)).Returns(false).Verifiable();
 
-      var result1 = _endPoint.CanBeMarkedIncomplete;
-      var result2 = _endPoint.CanBeMarkedIncomplete;
+      var result = _endPoint.CanBeCollected;
 
       _loadStateMock.Verify();
-      Assert.That(result1, Is.True);
-      Assert.That(result2, Is.False);
+      Assert.That(result, Is.False);
+    }
+
+    [Test]
+    public void CanBeMarkedIncomplete_WithCanDataBeMarkedIncompleteIsTrue_ReturnsTrue ()
+    {
+      _loadStateMock.Setup(mock => mock.CanDataBeMarkedIncomplete(_endPoint)).Returns(true).Verifiable();
+
+      var result = _endPoint.CanBeMarkedIncomplete;
+
+      _loadStateMock.Verify();
+      Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void CanBeMarkedIncomplete_WithCanDataBeMarkedIncompleteIsFalse_ReturnsFalse ()
+    {
+      _loadStateMock.Setup(mock => mock.CanDataBeMarkedIncomplete(_endPoint)).Returns(false).Verifiable();
+
+      var result = _endPoint.CanBeMarkedIncomplete;
+
+      _loadStateMock.Verify();
+      Assert.That(result, Is.False);
     }
 
     [Test]

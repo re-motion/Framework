@@ -328,16 +328,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       order1.SetUnloadEventReceiver(unloadEventReceiver.Object);
       order3.SetUnloadEventReceiver(unloadEventReceiver.Object);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       clientTransactionListener
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.ObjectsUnloading(
                   TestableClientTransaction,
                   It.Is<ReadOnlyCollection<DomainObject>>(_ => new[] { order1, order3 }.All(_.Contains))))
           .Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloading(order1)).Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloading(order3)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order1)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order3)).Verifiable();
 
       clientTransactionListener
           .Setup(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, order1CustomerRelationEndPointID))
@@ -364,10 +364,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       clientTransactionListener
           .Setup(mock => mock.DataContainerMapUnregistering(TestableClientTransaction, order3.InternalDataContainer))
           .Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloaded(order3)).Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloaded(order1)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloaded(order3)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloaded(order1)).Verifiable();
       clientTransactionListener
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.ObjectsUnloaded(
                     TestableClientTransaction,
@@ -386,6 +386,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       clientTransactionListener.Verify();
       unloadEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -398,12 +399,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       order.SetUnloadEventReceiver(unloadEventReceiver.Object);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       clientTransactionListener
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { order }))
             .Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloading(order)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order)).Verifiable();
 
       clientTransactionListener
           .Setup(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, It.IsAny<RelationEndPointID>()))
@@ -413,9 +414,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           .Setup(mock => mock.DataContainerMapUnregistering(TestableClientTransaction, order.InternalDataContainer))
           .Verifiable();
       clientTransactionListener.Setup(mock => mock.ObjectMarkedInvalid(TestableClientTransaction, order)).Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloaded(order)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloaded(order)).Verifiable();
       clientTransactionListener
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, new[] { order }))
             .Verifiable();
 
@@ -432,6 +433,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       clientTransactionListener
           .Verify(mock => mock.RelationEndPointMapUnregistering(TestableClientTransaction, It.IsAny<RelationEndPointID>()), Times.AtLeastOnce());
       unloadEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -503,13 +505,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       order.SetUnloadEventReceiver(unloadEventReceiver.Object);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       clientTransactionListener
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.ObjectsUnloading(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(_ => new[] { order }.All(_.Contains))))
           .Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloading(order)).Throws(exception).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order)).Throws(exception).Verifiable();
 
       TestableClientTransaction.AddListener(clientTransactionListener.Object);
       try
@@ -523,6 +525,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
        clientTransactionListener.Verify();
        unloadEventReceiver.Verify();
+       sequence.Verify();
 
       CheckDataAndEndPoints(order, true);
     }
@@ -542,27 +545,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       order3.SetUnloadEventReceiver(unloadEventReceiver.Object);
       order4.SetUnloadEventReceiver(unloadEventReceiver.Object);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       clientTransactionListener
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { order1 }))
             .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => order3.EnsureDataAvailable())
             .Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloading(order1)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order1)).Verifiable();
       clientTransactionListener
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { order3 }))
             .Verifiable();
       unloadEventReceiver
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.OnUnloading(order3))
             .Callback((DomainObject _) => order4.EnsureDataAvailable())
             .Verifiable();
       clientTransactionListener
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { order4 }))
             .Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloading(order4)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order4)).Verifiable();
 
       clientTransactionListener
           .Setup(mock => mock.DataContainerMapUnregistering(TestableClientTransaction, It.Is<DataContainer>(dc => dc.ID == order1.ID)))
@@ -573,11 +576,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       clientTransactionListener
           .Setup(mock => mock.DataContainerMapUnregistering(TestableClientTransaction, It.Is<DataContainer>(dc => dc.ID == order4.ID)))
           .Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloaded(order4)).Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloaded(order3)).Verifiable();
-      unloadEventReceiver.InSequence(sequence).Setup(mock => mock.OnUnloaded(order1)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloaded(order4)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloaded(order3)).Verifiable();
+      unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloaded(order1)).Verifiable();
       clientTransactionListener
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, new[] { order1, order3, order4 }))
             .Verifiable();
 
@@ -593,6 +596,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       clientTransactionListener.Verify();
       unloadEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]

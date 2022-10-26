@@ -64,30 +64,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Synchronize ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectLoadOpposite(sequence);
-      _endPointMock.InSequence(sequence).Setup(mock => mock.Synchronize()).Verifiable();
+      _endPointMock.InVerifiableSequence(sequence).Setup(mock => mock.Synchronize()).Verifiable();
 
       _state.Synchronize(_endPointMock.Object, _oppositeEndPointMock.Object);
 
       _virtualEndPointProviderMock.Verify();
       _endPointMock.Verify();
       _oppositeEndPointMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void CreateDeleteCommand ()
     {
       var fakeCommand = new Mock<IDataManagementCommand>();
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectLoadOpposite(sequence);
-      _endPointMock.InSequence(sequence).Setup(mock => mock.CreateDeleteCommand()).Returns(fakeCommand.Object).Verifiable();
+      _endPointMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateDeleteCommand()).Returns(fakeCommand.Object).Verifiable();
 
       var result = _state.CreateDeleteCommand(_endPointMock.Object, () => Assert.Fail("should not be called."));
 
       _virtualEndPointProviderMock.Verify();
       _endPointMock.Verify();
       _oppositeEndPointMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.SameAs(fakeCommand.Object));
     }
 
@@ -96,15 +98,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       var newRelatedObject = DomainObjectMother.CreateFakeObject<Order>();
       var fakeCommand = new Mock<IDataManagementCommand>();
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectLoadOpposite(sequence);
-      _endPointMock.InSequence(sequence).Setup(mock => mock.CreateSetCommand(newRelatedObject)).Returns(fakeCommand.Object).Verifiable();
+      _endPointMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateSetCommand(newRelatedObject)).Returns(fakeCommand.Object).Verifiable();
 
       var result = _state.CreateSetCommand(_endPointMock.Object, newRelatedObject, id => Assert.Fail("should not be called."));
 
       _virtualEndPointProviderMock.Verify();
       _endPointMock.Verify();
       _oppositeEndPointMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.SameAs(fakeCommand.Object));
     }
 
@@ -112,15 +115,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     public void CreateSetCommand_Null ()
     {
       var fakeCommand = new Mock<IDataManagementCommand>();
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectLoadOpposite(sequence);
-      _endPointMock.InSequence(sequence).Setup(mock => mock.CreateSetCommand(null)).Returns(fakeCommand.Object).Verifiable();
+      _endPointMock.InVerifiableSequence(sequence).Setup(mock => mock.CreateSetCommand(null)).Returns(fakeCommand.Object).Verifiable();
 
       var result = _state.CreateSetCommand(_endPointMock.Object, null, id => Assert.Fail("should not be called."));
 
       _virtualEndPointProviderMock.Verify();
       _endPointMock.Verify();
       _oppositeEndPointMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.SameAs(fakeCommand.Object));
     }
 
@@ -136,11 +140,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       Assert.That(result.VirtualEndPointProvider, Is.Not.Null);
     }
 
-    private void ExpectLoadOpposite (MockSequence sequence)
+    private void ExpectLoadOpposite (VerifiableSequence sequence)
     {
       var oppositeID = RelationEndPointID.CreateOpposite(_endPointID.Definition, DomainObjectIDs.Customer1);
-      _virtualEndPointProviderMock.InSequence(sequence).Setup(mock => mock.GetOrCreateVirtualEndPoint(oppositeID)).Returns(_oppositeEndPointMock.Object).Verifiable();
-      _oppositeEndPointMock.InSequence(sequence).Setup(mock => mock.EnsureDataComplete()).Verifiable();
+      _virtualEndPointProviderMock.InVerifiableSequence(sequence).Setup(mock => mock.GetOrCreateVirtualEndPoint(oppositeID)).Returns(_oppositeEndPointMock.Object).Verifiable();
+      _oppositeEndPointMock.InVerifiableSequence(sequence).Setup(mock => mock.EnsureDataComplete()).Verifiable();
     }
   }
 }

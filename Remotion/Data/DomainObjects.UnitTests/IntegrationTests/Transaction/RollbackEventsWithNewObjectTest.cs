@@ -89,11 +89,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var clientTransactionMockEventReceiver = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, TestableClientTransaction);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
-      clientTransactionMockEventReceiver.InSequence(sequence).SetupRollingBack(TestableClientTransaction, _newCustomer).Verifiable();
+      clientTransactionMockEventReceiver.InVerifiableSequence(sequence).SetupRollingBack(TestableClientTransaction, _newCustomer).Verifiable();
 
-      clientTransactionMockEventReceiver.InSequence(sequence).SetupRolledBack(TestableClientTransaction).Verifiable();
+      clientTransactionMockEventReceiver.InVerifiableSequence(sequence).SetupRolledBack(TestableClientTransaction).Verifiable();
 
       TestableClientTransaction.Rollback();
 

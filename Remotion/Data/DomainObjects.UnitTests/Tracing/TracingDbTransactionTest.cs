@@ -67,79 +67,85 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void Dispose ()
     {
-      var sequence = new MockSequence();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
 
       _transaction.Dispose();
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Dispose_DisposedTransaction ()
     {
-      var sequence = new MockSequence();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
 
       _transaction.Dispose();
       _transaction.Dispose();
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Commit ()
     {
-      var sequence = new MockSequence();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionCommitted(_connectionID)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionCommitted(_connectionID)).Verifiable();
 
       _transaction.Commit();
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Commit_DisposedTransaction ()
     {
-      var sequence = new MockSequence();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Commit()).Verifiable();
 
       _transaction.Dispose();
       _transaction.Commit();
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Rollback ()
     {
-      var sequence = new MockSequence();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionRolledBack(_connectionID)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionRolledBack(_connectionID)).Verifiable();
 
       _transaction.Rollback();
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Rollback_DisposedTransaction ()
     {
-      var sequence = new MockSequence();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
-      _innerTransactionMock.InSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.TransactionDisposed(_connectionID)).Verifiable();
+      _innerTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Rollback()).Verifiable();
 
       _transaction.Dispose();
       _transaction.Rollback();
       _innerTransactionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
