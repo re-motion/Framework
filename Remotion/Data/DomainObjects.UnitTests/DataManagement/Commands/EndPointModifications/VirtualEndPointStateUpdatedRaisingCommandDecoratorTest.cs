@@ -67,14 +67,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Perform ()
     {
-      var sequence = new MockSequence();
-      _decoratedCommandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _stateUpdateListenerMock.InSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, null)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _decoratedCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _stateUpdateListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, null)).Verifiable();
 
       _commandDecorator.Perform();
 
       _decoratedCommandMock.Verify();
       _stateUpdateListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -93,13 +94,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Perform_WithDifferentStates ()
     {
-      var sequence = new MockSequence();
-      _decoratedCommandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _stateUpdateListenerMock.InSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, true)).Verifiable();
-      _decoratedCommandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _stateUpdateListenerMock.InSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, false)).Verifiable();
-      _decoratedCommandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _stateUpdateListenerMock.InSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, null)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _decoratedCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _stateUpdateListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, true)).Verifiable();
+      _decoratedCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _stateUpdateListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, false)).Verifiable();
+      _decoratedCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _stateUpdateListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.VirtualEndPointStateUpdated(_modifiedEndPointID, null)).Verifiable();
 
       _fakeChangeState = true;
       _commandDecorator.Perform();
@@ -110,6 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       _decoratedCommandMock.Verify();
       _stateUpdateListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

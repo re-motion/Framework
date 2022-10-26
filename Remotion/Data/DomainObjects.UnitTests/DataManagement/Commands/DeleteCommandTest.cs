@@ -71,9 +71,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       var endPointCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
       endPointCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _transactionEventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectDeletingEvent(_order1)).Verifiable();
-      endPointCommandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _transactionEventSinkWithMock.InVerifiableSequence(sequence).Setup(mock => mock.RaiseObjectDeletingEvent(_order1)).Verifiable();
+      endPointCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
 
       var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
       var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock.Object);
@@ -83,6 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       endPointCommandMock.Verify();
       endPointCommandMock.Reset(); // For Discard
+      sequence.Verify();
     }
 
     [Test]
@@ -101,9 +102,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       var endPointCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
       endPointCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      endPointCommandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _transactionEventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectDeletedEvent(_order1)).Verifiable();
+      var sequence = new VerifiableSequence();
+      endPointCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _transactionEventSinkWithMock.InVerifiableSequence(sequence).Setup(mock => mock.RaiseObjectDeletedEvent(_order1)).Verifiable();
 
       var compositeCommand = (CompositeCommand)PrivateInvoke.GetNonPublicField(_deleteOrder1Command, "_endPointDeleteCommands");
       var compositeCommandWithMockStep = compositeCommand.CombineWith(endPointCommandMock.Object);
@@ -113,6 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
 
       endPointCommandMock.Verify();
       endPointCommandMock.Reset(); // For Discard
+      sequence.Verify();
     }
 
     [Test]

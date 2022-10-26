@@ -174,22 +174,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
           .Setup(stub => stub.AddParameters(_dbCommandStub.Object, _sqlDialectStub.Object))
           .Verifiable();
 
-      var sequence = new MockSequence();
       _comparedColumnsStrictMock
-          .InSequence(sequence)
           .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
-          .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"))
-          .Verifiable();
-      _comparedColumnsStrictMock
-          .InSequence(sequence)
-          .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
-          .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"))
-          .Verifiable();
-      _comparedColumnsStrictMock
-          .InSequence(sequence)
-          .Setup(stub => stub.AppendComparisons(It.IsAny<StringBuilder>(), _dbCommandStub.Object, _sqlDialectStub.Object))
-          .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"))
-          .Verifiable();
+          .Callback((StringBuilder statement, IDbCommand command, ISqlDialect sqlDialect) => statement.Append("[delimited FKID] = pFKID"));
 
       var result = builder.Create(_commandExecutionContextStub.Object);
 

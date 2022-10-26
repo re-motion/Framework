@@ -84,10 +84,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Perform ()
     {
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock3.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock3.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
 
       var compositeCommand = CreateComposite();
       compositeCommand.Perform();
@@ -97,6 +97,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _commandMock3.Verify();
       _nonExecutableCommandMock1.Verify();
       _nonExecutableCommandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -113,10 +114,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void Begin ()
     {
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock3.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock3.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
 
       var compositeCommand = CreateComposite();
       compositeCommand.Begin();
@@ -126,6 +127,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _commandMock3.Verify();
       _nonExecutableCommandMock1.Verify();
       _nonExecutableCommandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -143,10 +145,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void End ()
     {
-      var sequence = new MockSequence();
-      _commandMock3.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock3.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       var compositeCommand = CreateComposite();
       compositeCommand.End();
@@ -156,6 +158,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _commandMock3.Verify();
       _nonExecutableCommandMock1.Verify();
       _nonExecutableCommandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -238,16 +241,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     [Test]
     public void NotifyAndPerform_IntegrationTest ()
     {
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock3.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock3.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock3.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock3.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock3.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock3.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       var compositeCommand = CreateComposite();
       compositeCommand.NotifyAndPerform();
@@ -257,6 +260,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _commandMock3.Verify();
       _nonExecutableCommandMock1.Verify();
       _nonExecutableCommandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]

@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Moq;
@@ -87,8 +89,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       StubPersistenceModelProviderForProperty(typeof(OrderTicket), "FileName", _fileNamePropertyStrictMock.Object);
       StubPersistenceModelProviderForProperty(typeof(OrderTicket), "Order", _orderPropertyStrictMock.Object);
 
-      _dataReaderStrictMock.Setup(mock => mock.Read()).Returns(true).Verifiable();
-      ExpectPropertyCombinesForOrderTicket(new MockSequence(), DomainObjectIDs.OrderTicket1, 17, "abc", DomainObjectIDs.Order1);
+      var sequence = new VerifiableSequence();
+      _dataReaderStrictMock.InVerifiableSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
+      _idPropertyStrictMock.InVerifiableSequence(sequence).Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns(DomainObjectIDs.OrderTicket1).Verifiable();
+      _timestampPropertyStrictMock.InVerifiableSequence(sequence).Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns(17).Verifiable();
+      _fileNamePropertyStrictMock.InVerifiableSequence(sequence).Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns("abc").Verifiable();
+      _orderPropertyStrictMock.InVerifiableSequence(sequence).Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns(DomainObjectIDs.Order1).Verifiable();
 
       var dataContainer = _dataContainerReader.Read(_dataReaderStrictMock.Object);
 
@@ -96,6 +102,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
           provider => provider.GetStoragePropertyDefinition(GetPropertyDefinition(typeof(OrderTicket), "Int32TransactionProperty")),
           Times.Never());
       VerifyAll();
+      sequence.Verify();
       Assert.That(dataContainer, Is.Not.Null);
       CheckLoadedDataContainer(dataContainer, DomainObjectIDs.OrderTicket1, 17, "abc", DomainObjectIDs.Order1);
       _dataContainerValidatorStub.Verify(_ => _.Validate(dataContainer), Times.AtLeastOnce());
@@ -156,18 +163,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       StubPersistenceModelProviderForProperty(typeof(OrderTicket), "FileName", _fileNamePropertyStrictMock.Object);
       StubPersistenceModelProviderForProperty(typeof(OrderTicket), "Order", _orderPropertyStrictMock.Object);
 
-      var sequence = new MockSequence();
+      var idPropertyQueue = new Queue<ObjectID>(new[] { DomainObjectIDs.OrderTicket1, DomainObjectIDs.OrderTicket2, DomainObjectIDs.OrderTicket3 });
+      var timestampPropertyQueue = new Queue<object>(new object[] { 0, 1, 2 });
+      var fileNamePropertyQueue = new Queue<string>(new[] { "first", "second", "third" });
+      var orderPropertyQueue = new Queue<ObjectID>(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3, DomainObjectIDs.Order4 });
 
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      ExpectPropertyCombinesForOrderTicket(sequence, DomainObjectIDs.OrderTicket1, 0, "first", DomainObjectIDs.Order1);
+      _dataReaderStrictMock.Setup(mock => mock.Read()).Returns(() => idPropertyQueue.Count > 0).Verifiable();
 
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      ExpectPropertyCombinesForOrderTicket(sequence, DomainObjectIDs.OrderTicket2, 1, "second", DomainObjectIDs.Order3);
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      ExpectPropertyCombinesForOrderTicket(sequence, DomainObjectIDs.OrderTicket3, 2, "third", DomainObjectIDs.Order4);
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(false).Verifiable();
+      _idPropertyStrictMock.Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns(() => idPropertyQueue.Dequeue()).Verifiable();
+      _timestampPropertyStrictMock.Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns(() => timestampPropertyQueue.Dequeue()).Verifiable();
+      _fileNamePropertyStrictMock.Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns(() => fileNamePropertyQueue.Dequeue()).Verifiable();
+      _orderPropertyStrictMock.Setup(mock => mock.CombineValue(MatchColumnValueReader())).Returns(() => orderPropertyQueue.Dequeue()).Verifiable();
 
       var result = _dataContainerReader.ReadSequence(_dataReaderStrictMock.Object).ToArray();
 
@@ -186,9 +192,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void ReadSequence_DataReaderReadTrue_NullIDIsReturned ()
     {
-      var sequence = new MockSequence();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(false).Verifiable();
+      _dataReaderStrictMock
+          .SetupSequence(mock => mock.Read())
+          .Returns(true)
+          .Returns(false);
 
       _idPropertyStrictMock
           .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
@@ -206,34 +213,31 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _idPropertyStrictMock
           .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(objectID)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader((ColumnValueReader)columnValueProvider))
           .Verifiable();
       _timestampPropertyStrictMock
           .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(timestamp)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader((ColumnValueReader)columnValueProvider))
           .Verifiable();
       _fileNamePropertyStrictMock
           .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(fileName)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader((ColumnValueReader)columnValueProvider))
           .Verifiable();
       _orderPropertyStrictMock
           .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader((ColumnValueReader)columnValueProvider))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(order)
           .Verifiable();
     }
 
-    private void CheckColumnValueReader (ColumnValueReader columnValueReader)
+    private ColumnValueReader MatchColumnValueReader ()
     {
-      Assert.That(columnValueReader.DataReader, Is.SameAs(_dataReaderStrictMock.Object));
-      Assert.That(columnValueReader.ColumnOrdinalProvider, Is.SameAs(_ordinalProviderStub.Object));
+      return Match<IColumnValueProvider>.Create<ColumnValueReader>(
+          r => r.DataReader == _dataReaderStrictMock.Object
+               && r.ColumnOrdinalProvider == _ordinalProviderStub.Object);
     }
 
     private void StubPersistenceModelProviderForProperty (

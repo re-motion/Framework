@@ -75,9 +75,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
-      extensionMock.InSequence(sequence).Setup(mock => mock.NewObjectCreating(_subTransaction, typeof(Order))).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.NewObjectCreating(_subTransaction, typeof(Order))).Verifiable();
 
       Order.NewObject();
 
@@ -89,21 +89,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.Order3 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.Order3 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
 
@@ -111,6 +111,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = DomainObjectIDs.Order3.GetObject<Order>();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     private void TestObjectLoadingWithRelatedObject (
@@ -120,78 +121,79 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         ObjectID expectedRelatedID)
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { expectedMainObjectID }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
           .Verifiable();
-      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { expectedMainObjectID })).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { expectedMainObjectID })).Verifiable();
       extensionMock
-          .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
-          .Setup(mock => mock.RelationReading(_subTransaction, It.IsAny<DomainObject>(), It.IsAny<IRelationEndPointDefinition>(), It.IsAny<ValueAccess>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, It.IsNotNull<DomainObject>(), It.IsNotNull<IRelationEndPointDefinition>(), ValueAccess.Current))
           .Verifiable();
       if (expectLoadEventsForRelatedObject)
       {
         extensionMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Contains(expectedRelatedID))))
             .Verifiable();
         extensionMock
-            .InSequence(sequence)
-            .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
             .Verifiable();
         extensionMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Contains(expectedRelatedID))))
             .Verifiable();
         extensionMock
-            .InSequence(sequence)
-            .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
             .Verifiable();
       }
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
+                  It.IsNotNull<DomainObject>(),
+                  It.IsNotNull<IRelationEndPointDefinition>(),
                   It.IsAny<DomainObject>(),
-                  It.IsAny<IRelationEndPointDefinition>(),
-                  It.IsAny<DomainObject>(),
-                  It.IsAny<ValueAccess>()))
+                  ValueAccess.Current))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationReading(
                   _subTransaction,
-                  It.IsAny<DomainObject>(),
-                  It.IsAny<IRelationEndPointDefinition>(),
-                  It.IsAny<ValueAccess>()))
+                  It.IsNotNull<DomainObject>(),
+                  It.IsNotNull<IRelationEndPointDefinition>(),
+                  ValueAccess.Current))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
+                  It.IsNotNull<DomainObject>(),
+                  It.IsNotNull<IRelationEndPointDefinition>(),
                   It.IsAny<DomainObject>(),
-                  It.IsAny<IRelationEndPointDefinition>(),
-                  It.IsAny<DomainObject>(),
-                  It.IsAny<ValueAccess>()))
+                  ValueAccess.Current))
           .Verifiable();
       accessCode();
       accessCode();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     private void TestObjectLoadingWithRelatedObjectCollection (
@@ -202,83 +204,85 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       // loading of main object
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { expectedMainObjectID }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { expectedMainObjectID })).Verifiable();
       extensionMock
-          .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _ != null)))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
-          .Setup(mock => mock.RelationReading(_subTransaction, It.IsAny<DomainObject>(), It.IsAny<IRelationEndPointDefinition>(), It.IsAny<ValueAccess>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.RelationReading(_subTransaction, It.IsNotNull<DomainObject>(), It.IsNotNull<IRelationEndPointDefinition>(), ValueAccess.Current))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
-                  It.IsAny<DomainObject>(),
-                  It.IsAny<IRelationEndPointDefinition>(),
-                  It.IsAny<IReadOnlyCollectionData<DomainObject>>(),
-                  It.IsAny<ValueAccess>()))
+                  It.IsNotNull<DomainObject>(),
+                  It.IsNotNull<IRelationEndPointDefinition>(),
+                  It.IsNotNull<IReadOnlyCollectionData<DomainObject>>(),
+                  ValueAccess.Current))
           .Verifiable();
 
       if (expectLoadEventsForRelatedObjects)
       {
         extensionMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => expectedRelatedIDs.All(_.Contains))))
             .Verifiable();
         extensionMock
-            .InSequence(sequence)
-            .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
             .Verifiable();
 
         extensionMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => expectedRelatedIDs.All(_.Contains))))
             .Verifiable();
         extensionMock
-            .InSequence(sequence)
-            .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsAny<IReadOnlyList<DomainObject>>()))
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.IsNotNull<IReadOnlyList<DomainObject>>()))
             .Verifiable();
       }
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationReading(
                   _subTransaction,
-                  It.IsAny<DomainObject>(),
-                  It.IsAny<IRelationEndPointDefinition>(),
-                  It.IsAny<ValueAccess>())).Verifiable();
+                  It.IsNotNull<DomainObject>(),
+                  It.IsNotNull<IRelationEndPointDefinition>(),
+                  ValueAccess.Current))
+          .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
-                  It.IsAny<DomainObject>(),
-                  It.IsAny<IRelationEndPointDefinition>(),
-                  It.IsAny<IReadOnlyCollectionData<DomainObject>>(),
-                  It.IsAny<ValueAccess>()))
+                  It.IsNotNull<DomainObject>(),
+                  It.IsNotNull<IRelationEndPointDefinition>(),
+                  It.IsNotNull<IReadOnlyCollectionData<DomainObject>>(),
+                  ValueAccess.Current))
           .Verifiable();
 
       accessCode();
       accessCode();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -406,27 +410,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
 
       DomainObjectIDs.ClassWithAllDataTypes1.GetObject<ClassWithAllDataTypes>();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -434,27 +439,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.Order3 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.Order3 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
 
       DomainObjectIDs.Order3.GetObject<Order>();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -464,25 +470,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _subTransaction);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.ClassWithAllDataTypes1 }))
           .Verifiable();
       clientTransactionEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Loaded(_subTransaction, It.Is<ClientTransactionEventArgs>(args => args.DomainObjects.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
 
@@ -490,6 +496,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       extensionMock.Verify();
       clientTransactionEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -500,20 +507,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var computerEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, computer);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
-      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, computer)).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, computer)).Verifiable();
 
-      computerEventReceiver.InSequence(sequence).Setup(mock => mock.Deleting(computer, EventArgs.Empty)).Verifiable();
+      computerEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.Deleting(computer, EventArgs.Empty)).Verifiable();
 
-      computerEventReceiver.InSequence(sequence).Setup(mock => mock.Deleted(computer, EventArgs.Empty)).Verifiable();
+      computerEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.Deleted(computer, EventArgs.Empty)).Verifiable();
 
-      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, computer)).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, computer)).Verifiable();
 
       computer.Delete();
 
       extensionMock.Verify();
       computerEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -544,11 +552,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           DomainObjectCollectionMockEventReceiver.CreateMock(MockBehavior.Strict, officialOrders);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
-      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, _order1)).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, _order1)).Verifiable();
 
-      order1MockEventReceiver.InSequence(sequence).Setup(mock => mock.Deleting(_order1, EventArgs.Empty)).Verifiable();
+      order1MockEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.Deleting(_order1, EventArgs.Empty)).Verifiable();
 
       customerOrdersMockEventReceiver
           .SetupRemoving(customerOrders, _order1)
@@ -632,9 +640,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Setup(mock => mock.RelationChanged(_subTransaction, official, GetEndPointDefinition(typeof(Official), "Orders"), _order1, null))
           .Verifiable();
 
-      order1MockEventReceiver.InSequence(sequence).Setup(mock => mock.Deleted(_order1, EventArgs.Empty)).Verifiable();
+      order1MockEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.Deleted(_order1, EventArgs.Empty)).Verifiable();
 
-      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, _order1)).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, _order1)).Verifiable();
       _order1.Delete();
 
       extensionMock.Verify();
@@ -646,6 +654,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       customerMockEventReceiver.Verify();
       customerOrdersMockEventReceiver.Verify();
       officialOrdersMockEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -659,20 +668,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Client newClient = Client.NewObject();
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanging(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanged(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
           .Verifiable();
       location.Client = newClient;
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -687,20 +697,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Client newClient = Client.NewObject();
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanging(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanged(_subTransaction, location, GetEndPointDefinition(typeof(Location), "Client"), deletedClient, newClient))
           .Verifiable();
       location.Client = newClient;
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -709,16 +720,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Computer computer = DomainObjectIDs.Computer4.GetObject<Computer>();
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
-      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, computer)).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ObjectDeleting(_subTransaction, computer)).Verifiable();
 
-      extensionMock.InSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, computer)).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ObjectDeleted(_subTransaction, computer)).Verifiable();
 
       computer.Delete();
       computer.Delete();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -728,25 +740,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Current))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, orderNumber, ValueAccess.Current))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Original))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, orderNumber, ValueAccess.Original))
           .Verifiable();
 
@@ -763,21 +775,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var customerID = _order1.Properties[propertyDefinition.PropertyName].GetRelatedObjectID();
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Current))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, customerID, ValueAccess.Current))
           .Verifiable();
 
       Dev.Null = _order1.Properties[propertyDefinition.PropertyName].GetRelatedObjectID();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -801,35 +814,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueChanging(_subTransaction, _order1, propertyDefinition, oldOrderNumber, newOrderNumber))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueChanged(_subTransaction, _order1, propertyDefinition, oldOrderNumber, newOrderNumber))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Current))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, newOrderNumber, ValueAccess.Current))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueReading(_subTransaction, _order1, propertyDefinition, ValueAccess.Original))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueRead(_subTransaction, _order1, propertyDefinition, oldOrderNumber, ValueAccess.Original))
           .Verifiable();
 
@@ -838,6 +851,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _order1.Properties[typeof(Order), "OrderNumber"].GetOriginalValueWithoutTypeCheck();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -848,21 +862,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueChanging(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueChanged(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
           .Verifiable();
 
       _order1.OrderNumber = oldOrderNumber + 1;
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -874,29 +889,30 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var propertyDefinition = GetPropertyDefinition(typeof(Order), "OrderNumber");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueChanging(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
           .Verifiable();
       domainObjectMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyChanging(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
           .Verifiable();
       domainObjectMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyChanged(It.IsAny<object>(), It.IsAny<PropertyChangeEventArgs>()))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.PropertyValueChanged(_subTransaction, _order1, propertyDefinition, oldOrderNumber, oldOrderNumber + 1))
           .Verifiable();
       _order1.OrderNumber = oldOrderNumber + 1;
 
       extensionMock.Verify();
       domainObjectMockEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -905,20 +921,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       OrderTicket orderTicket = _order1.OrderTicket;
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Current))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationRead(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket, ValueAccess.Current))
           .Verifiable();
       Dev.Null = _order1.OrderTicket;
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -927,20 +944,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var originalOrderTicket = (OrderTicket)_order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Original))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationRead(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), originalOrderTicket, ValueAccess.Original))
           .Verifiable();
       Dev.Null = _order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -950,14 +968,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       orderItems.EnsureDataComplete();
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Current))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -970,6 +988,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _order1.OrderItems;
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -980,15 +999,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
               "Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Original))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -1000,6 +1019,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -1009,15 +1029,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           _product1.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _product1, GetEndPointDefinition(typeof(Product), "Reviews"), ValueAccess.Original))
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -1029,36 +1049,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _product1.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void GetRelatedObjectWithLazyLoad ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Current))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -1070,20 +1091,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _order1.OrderTicket;
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void GetRelatedObjectsWithLazyLoad ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Current))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -1093,54 +1115,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                   ValueAccess.Current))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<ObjectID>>(_ => _.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<IReadOnlyList<ObjectID>>(_ => _.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 2)))
           .Verifiable();
       _order1.OrderItems.EnsureDataComplete();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void GetOriginalRelatedObjectWithLazyLoad ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), ValueAccess.Original))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => _.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Count == 1)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -1153,36 +1176,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _order1.GetOriginalRelatedObject("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderTicket");
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void GetOriginalRelatedObjectsWithLazyLoad_ForDomainObjectCollection ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), ValueAccess.Original))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -1194,36 +1218,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _order1.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Order.OrderItems");
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void GetOriginalRelatedObjectsWithLazyLoad_ForVirtualCollection ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationReading(_subTransaction, _product1, GetEndPointDefinition(typeof(Product), "Reviews"), ValueAccess.Original))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 3)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 3)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.Count == 3)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(list => list.Count == 3)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.RelationRead(
                   _subTransaction,
@@ -1235,6 +1260,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Dev.Null = _product1.GetOriginalRelatedObjectsAsVirtualCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Product.Reviews");
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -1281,7 +1307,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       ClientTransactionTestHelper.SetIsWriteable(TestableClientTransaction, false);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
           .Setup(
@@ -1290,21 +1316,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                   It.Is<ReadOnlyCollection<ObjectID>>(list => list.SetEquals(new[] { DomainObjectIDs.Order4, DomainObjectIDs.Order5 }))))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.FilterQueryResult(_subTransaction.ParentTransaction, It.Is<QueryResult<DomainObject>>(qr => qr.Count == 2 && qr.Query == query)))
           .Returns(parentFilteredQueryResult)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(list => list.SetEquals(new[] { DomainObjectIDs.Order1 }))))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 1)))
           .Verifiable();
       extensionMock
@@ -1316,6 +1342,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Assert.That(finalQueryResult, Is.SameAs(subFilteredQueryResult));
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -1325,21 +1352,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       computer.SerialNumber = "newSerialNumber";
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Committing(_subTransaction, new[] { computer }, It.IsNotNull<CommittingEventRegistrar>()))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CommitValidate(_subTransaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new[] { computer }))))
           .Verifiable();
-      extensionMock.InSequence(sequence).Setup(mock => mock.Committed(_subTransaction, new[] { computer })).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.Committed(_subTransaction, new[] { computer })).Verifiable();
 
       _subTransaction.Commit();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -1350,10 +1378,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       computer.Employee = employee;
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.Committing(
                   _subTransaction,
@@ -1361,19 +1389,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CommitValidate(
                   _subTransaction,
                   It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new DomainObject[] { computer, employee }))))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Committed(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new DomainObject[] { computer, employee }))))
           .Verifiable();
 
       _subTransaction.Commit();
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -1384,10 +1413,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _order1.Customer = newCustomer;
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.Committing(
                   _subTransaction,
@@ -1395,20 +1424,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
                   It.IsNotNull<CommittingEventRegistrar>()))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CommitValidate(
                   _subTransaction,
                   It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new DomainObject[] { _order1, newCustomer, oldCustomer }))))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Committed(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(new DomainObject[] { _order1, newCustomer, oldCustomer }))))
           .Verifiable();
 
       _subTransactionScope.Commit();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -1422,27 +1452,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var computerEventReveiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, computer);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Committing(_subTransaction, new[] { computer }, It.IsNotNull<CommittingEventRegistrar>()))
           .Verifiable();
-      clientTransactionMockEventReceiver.InSequence(sequence).SetupCommitting(_subTransaction, computer).Verifiable();
-      computerEventReveiver.InSequence(sequence).Setup(mock => mock.Committing(computer, It.IsAny<DomainObjectCommittingEventArgs>())).Verifiable();
+      clientTransactionMockEventReceiver.InVerifiableSequence(sequence).SetupCommitting(_subTransaction, computer).Verifiable();
+      computerEventReveiver.InVerifiableSequence(sequence).Setup(mock => mock.Committing(computer, It.IsAny<DomainObjectCommittingEventArgs>())).Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CommitValidate(_subTransaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(new[] { computer }))))
           .Verifiable();
-      computerEventReveiver.InSequence(sequence).Setup(mock => mock.Committed(computer, It.IsAny<EventArgs>())).Verifiable();
-      clientTransactionMockEventReceiver.InSequence(sequence).SetupCommitted(_subTransaction, computer).Verifiable();
-      extensionMock.InSequence(sequence).Setup(mock => mock.Committed(_subTransaction, new[] { computer })).Verifiable();
+      computerEventReveiver.InVerifiableSequence(sequence).Setup(mock => mock.Committed(computer, It.IsAny<EventArgs>())).Verifiable();
+      clientTransactionMockEventReceiver.InVerifiableSequence(sequence).SetupCommitted(_subTransaction, computer).Verifiable();
+      extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.Committed(_subTransaction, new[] { computer })).Verifiable();
 
       _subTransaction.Commit();
 
       extensionMock.Verify();
       clientTransactionMockEventReceiver.Verify();
       computerEventReveiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -1452,42 +1483,43 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       computer.SerialNumber = "newSerialNumber";
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RollingBack(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Contains(computer))))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RolledBack(_subTransaction, It.Is<IReadOnlyList<DomainObject>>(_ => _.Contains(computer))))
           .Verifiable();
 
       ClientTransactionScope.CurrentTransaction.Rollback();
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void GetObjects ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, new[] { DomainObjectIDs.Order3, DomainObjectIDs.Order4 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 2)))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(_subTransaction, new[] { DomainObjectIDs.Order3, DomainObjectIDs.Order4 }))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(_subTransaction, It.Is<ReadOnlyCollection<DomainObject>>(list => list.Count == 2)))
           .Verifiable();
 
@@ -1497,31 +1529,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       }
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void UnloadData ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction, _subTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloading(_subTransaction, new[] { _order1 }))
           .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_subTransactionDataManager.DataContainers[_order1.ID] != null))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloading(_subTransaction.ParentTransaction, new[] { _order1 }))
           .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_parentTransactionDataManager.DataContainers[_order1.ID] != null))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloaded(_subTransaction.ParentTransaction, new[] { _order1 }))
           .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_parentTransactionDataManager.DataContainers[_order1.ID] == null))
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloaded(_subTransaction, new[] { _order1 }))
           .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(_subTransactionDataManager.DataContainers[_order1.ID] == null))
           .Verifiable();
@@ -1529,6 +1562,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       UnloadService.UnloadData(_subTransaction, _order1.ID);
 
       extensionMock.Verify();
+      sequence.Verify();
     }
 
     private Mock<IClientTransactionExtension> AddExtensionToClientTransaction (ClientTransaction rootClientTransaction, ClientTransaction subClientTransaction)

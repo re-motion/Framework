@@ -50,9 +50,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void FilterQueryResult_RaisedInAllHierarchyLevels ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.FilterQueryResult(
                     ReadOnlyRootTransaction,
@@ -61,7 +61,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
             .Callback((ClientTransaction _, QueryResult<DomainObject> _) => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False))
             .Verifiable();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.FilterQueryResult(
                     ReadOnlyMiddleTransaction,
@@ -70,7 +70,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
             .Callback((ClientTransaction _, QueryResult<DomainObject> _) => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False))
             .Verifiable();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.FilterQueryResult(
                     WriteableSubTransaction,
@@ -82,6 +82,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       var result = ExecuteInWriteableSubTransaction(() => QueryFactory.CreateLinqQuery<Order>().Where(obj => obj.ID == _order1.ID).ToList());
 
       ExtensionStrictMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.EqualTo(new[] { _order5 }));
     }
 
@@ -97,10 +98,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       var fakeQueryResultRow2 = new Mock<IQueryResultRow>();
       var fakeQueryResultRow3 = new Mock<IQueryResultRow>();
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       ListenerDynamicMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.FilterCustomQueryResult(
                     ReadOnlyRootTransaction,
@@ -111,7 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
             .Verifiable();
 
       ListenerDynamicMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.FilterCustomQueryResult(
                     ReadOnlyMiddleTransaction,
@@ -122,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
             .Verifiable();
 
       ListenerDynamicMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.FilterCustomQueryResult(
                     WriteableSubTransaction,
@@ -137,6 +138,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       var result = WriteableSubTransaction.QueryManager.GetCustom(query, qrr => qrr).ToList();
 
       ListenerDynamicMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.EqualTo(new[] { fakeQueryResultRow3.Object }));
     }
   }

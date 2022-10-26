@@ -55,34 +55,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Clear ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order1, 0))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order4, 2))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order4, 2))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order1, 0))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(0)))
           .Verifiable();
@@ -90,19 +90,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _observableDomainObjectDecoratorWithRealContent.Clear();
 
       _eventSinkMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Insert ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 2))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 2))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(4)))
           .Verifiable();
@@ -110,19 +111,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _observableDomainObjectDecoratorWithRealContent.Insert(2, _order5);
 
       _eventSinkMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Remove ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
           .Verifiable();
@@ -130,6 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       var result = _observableDomainObjectDecoratorWithRealContent.Remove(_order3);
 
       _eventSinkMock.Verify();
+      sequence.Verify();
 
       Assert.That(result, Is.True);
     }
@@ -160,14 +163,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Remove_ID ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.Count, Is.EqualTo(2)))
           .Verifiable();
@@ -175,6 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       var result = _observableDomainObjectDecoratorWithRealContent.Remove(_order3.ID);
 
       _eventSinkMock.Verify();
+      sequence.Verify();
 
       Assert.That(result, Is.True);
     }
@@ -205,24 +209,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Replace ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order3)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Remove, _order3, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Insert, _order5, 1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent.GetObject(1), Is.SameAs(_order5)))
           .Verifiable();
@@ -230,6 +234,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _observableDomainObjectDecoratorWithRealContent.Replace(1, _order5);
 
       _eventSinkMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -270,14 +275,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
     [Test]
     public void Sort ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanging(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order1, _order3, _order4 })))
           .Verifiable();
       _eventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CollectionChanged(ObservableDomainObjectCollectionDataDecoratorBase.OperationKind.Sort, null, -1))
           .Callback((IInvocation _) => Assert.That(_observableDomainObjectDecoratorWithRealContent, Is.EqualTo(new[] { _order4, _order3, _order1 })))
           .Verifiable();
@@ -288,6 +293,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.CollectionData
       _observableDomainObjectDecoratorWithRealContent.Sort(comparison);
 
       _eventSinkMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

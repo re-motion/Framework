@@ -65,9 +65,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     {
       _dataReaderStrictMock.Setup(mock => mock.Read()).Returns(true).Verifiable();
       _idPropertyStrictMock
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .Setup(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(_objectID)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
           .Verifiable();
       ReplayAll();
 
@@ -94,32 +93,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     public void ReadSequence ()
     {
       var objectID2 = new ObjectID("OrderItem", Guid.NewGuid());
-      var sequence = new MockSequence();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
+      _dataReaderStrictMock
+          .SetupSequence(mock => mock.Read())
+          .Returns(true)
+          .Returns(true)
+          .Returns(true)
+          .Returns(false);
       _idPropertyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
+          .SetupSequence(mock => mock.CombineValue(MatchColumnValueReader()))
           .Returns(_objectID)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Verifiable();
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _idPropertyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
           .Returns((object)null)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Verifiable();
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _idPropertyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CombineValue(It.IsAny<IColumnValueProvider>()))
-          .Returns(objectID2)
-          .Callback((IColumnValueProvider columnValueProvider) => CheckColumnValueReader(columnValueProvider))
-          .Verifiable();
-
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(false).Verifiable();
+          .Returns(objectID2);
       ReplayAll();
 
       var result = _reader.ReadSequence(_dataReaderStrictMock.Object).ToArray();
@@ -130,7 +114,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       Assert.That(result[1], Is.Null);
       Assert.That(result[2], Is.SameAs(objectID2));
     }
-
     [Test]
     public void ReadSequence_NoData ()
     {
@@ -153,11 +136,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
       _idPropertyStrictMock.Verify();
     }
 
-    private void CheckColumnValueReader (IColumnValueProvider columnValueProvider)
+    private ColumnValueReader MatchColumnValueReader ()
     {
-      var columnValueReader = (ColumnValueReader)columnValueProvider;
-      Assert.That(columnValueReader.DataReader, Is.SameAs(_dataReaderStrictMock.Object));
-      Assert.That(columnValueReader.ColumnOrdinalProvider, Is.SameAs(_columnOrdinalProviderStub.Object));
+      return Match<IColumnValueProvider>.Create<ColumnValueReader>(
+          r => r.DataReader == _dataReaderStrictMock.Object
+               && r.ColumnOrdinalProvider == _columnOrdinalProviderStub.Object);
     }
   }
 }

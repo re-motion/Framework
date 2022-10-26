@@ -100,27 +100,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
         IRelationEndPointDefinition endPointDefinition,
         DomainObject relatedDomainObject)
     {
-      var sequence1 = new MockSequence();
+      var sequence1 = new VerifiableSequence();
       ListenerDynamicMock
-          .InSequence(sequence1)
+          .InVerifiableSequence(sequence1)
           .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
           .Verifiable();
       ListenerDynamicMock
-          .InSequence(sequence1)
+          .InVerifiableSequence(sequence1)
           .Setup(mock => mock.RelationRead(clientTransaction, domainObject, endPointDefinition, relatedDomainObject, ValueAccess.Current))
           .Verifiable();
 
-      var sequence2 = new MockSequence();
-
+      var sequence2 = new VerifiableSequence();
       ExtensionStrictMock
-          .InSequence(sequence2)
+          .InVerifiableSequence(sequence2)
           .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
           .Verifiable();
-
       ExtensionStrictMock
-          .InSequence(sequence2)
+          .InVerifiableSequence(sequence2)
           .Setup(mock => mock.RelationRead(clientTransaction, domainObject, endPointDefinition, relatedDomainObject, ValueAccess.Current))
           .Verifiable();
+
+      // No sequence.Verify() is needed because incorrect sequence order will fail the test.
     }
 
     private void ExpectRelationReadEvents (
@@ -129,13 +129,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
         IRelationEndPointDefinition endPointDefinition,
         DomainObject[] relatedDomainObjects)
     {
-      var sequence1 = new MockSequence();
+      var sequence1 = new VerifiableSequence();
       ListenerDynamicMock
-          .InSequence(sequence1)
+          .InVerifiableSequence(sequence1)
           .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
           .Verifiable();
       ListenerDynamicMock
-          .InSequence(sequence1)
+          .InVerifiableSequence(sequence1)
           .Setup(
               mock => mock.RelationRead(
                   clientTransaction,
@@ -145,15 +145,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                   ValueAccess.Current))
           .Verifiable();
 
-      var sequence2 = new MockSequence();
-
+      var sequence2 = new VerifiableSequence();
       ExtensionStrictMock
-          .InSequence(sequence2)
+          .InVerifiableSequence(sequence2)
           .Setup(mock => mock.RelationReading(clientTransaction, domainObject, endPointDefinition, ValueAccess.Current))
           .Verifiable();
-
       ExtensionStrictMock
-          .InSequence(sequence2)
+          .InVerifiableSequence(sequence2)
           .Setup(
               mock => mock.RelationRead(
                   clientTransaction,
@@ -162,6 +160,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                   It.Is<IReadOnlyCollectionData<DomainObject>>(p => p.SetEquals(relatedDomainObjects)),
                   ValueAccess.Current))
           .Verifiable();
+
+      // No sequence.Verify() is needed because incorrect sequence order will fail the test.
     }
 
     private void AssertNoRelationReadEvents (ClientTransaction clientTransaction)

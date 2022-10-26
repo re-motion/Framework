@@ -193,7 +193,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           x => x.SubTransactionCreated(_clientTransaction, subTransaction),
           sequence =>
               _transactionEventReceiverMock
-                  .InSequence(sequence)
+                  .InVerifiableSequence(sequence)
                   .Setup(
                       mock => mock.SubTransactionCreated(
                           _clientTransaction,
@@ -232,17 +232,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _loadEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.OnLoaded(_domainObject1))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _loadEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.OnLoaded(_domainObject2))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _transactionEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(
                     mock => mock.Loaded(
                         _clientTransaction,
@@ -273,12 +273,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _unloadEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.OnUnloading(_domainObject1))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _unloadEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.OnUnloading(_domainObject2))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
@@ -297,12 +297,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _unloadEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.OnUnloaded(_domainObject2))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _unloadEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.OnUnloaded(_domainObject1))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
@@ -318,7 +318,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           x => x.ObjectDeleting(_clientTransaction, _domainObject1),
           sequence =>
               _order1EventReceiverMock
-                  .InSequence(sequence)
+                  .InVerifiableSequence(sequence)
                   .Setup(mock => mock.Deleting(_domainObject1, EventArgs.Empty))
                   .WithCurrentTransaction(_clientTransaction)
                   .Verifiable());
@@ -333,7 +333,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           x => x.ObjectDeleted(_clientTransaction, _domainObject1),
           sequence =>
               _order1EventReceiverMock
-                  .InSequence(sequence)
+                  .InVerifiableSequence(sequence)
                   .Setup(mock => mock.Deleted(_domainObject1, EventArgs.Empty))
                   .WithCurrentTransaction(_clientTransaction)
                   .Verifiable());
@@ -381,7 +381,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           l => l.PropertyValueChanging(_clientTransaction, _domainObject1, propertyDefinition, oldValue, newValue),
           x => x.PropertyValueChanging(_clientTransaction, _domainObject1, propertyDefinition, oldValue, newValue),
           sequence => _order1EventReceiverMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .SetupPropertyChanging(_domainObject1, propertyDefinition, oldValue, newValue)
               .WithCurrentTransaction(_clientTransaction)
               .Verifiable());
@@ -397,7 +397,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           l => l.PropertyValueChanging(_clientTransaction, _domainObject1, propertyDefinition, null, null),
           x => x.PropertyValueChanging(_clientTransaction, _domainObject1, propertyDefinition, null, null),
           sequence => _order1EventReceiverMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .SetupPropertyChanging(_domainObject1, propertyDefinition, null, null)
               .WithCurrentTransaction(_clientTransaction)
               .Verifiable());
@@ -415,7 +415,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           l => l.PropertyValueChanged(_clientTransaction, _domainObject1, propertyDefinition, oldValue, newValue),
           x => x.PropertyValueChanged(_clientTransaction, _domainObject1, propertyDefinition, oldValue, newValue),
           sequence => _order1EventReceiverMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .SetupPropertyChanged(_domainObject1, propertyDefinition, oldValue, newValue)
               .WithCurrentTransaction(_clientTransaction)
               .Verifiable());
@@ -431,7 +431,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           l => l.PropertyValueChanged(_clientTransaction, _domainObject1, propertyDefinition, null, null),
           x => x.PropertyValueChanged(_clientTransaction, _domainObject1, propertyDefinition, null, null),
           sequence => _order1EventReceiverMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .SetupPropertyChanged(_domainObject1, propertyDefinition, null, null)
               .WithCurrentTransaction(_clientTransaction)
               .Verifiable());
@@ -495,7 +495,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           x => x.RelationChanging(_clientTransaction, _domainObject1, endPointDefinition, oldValue, newValue),
           sequence =>
               _order1EventReceiverMock
-                  .InSequence(sequence)
+                  .InVerifiableSequence(sequence)
                   .SetupRelationChanging(_domainObject1, endPointDefinition, oldValue, newValue)
                   .WithCurrentTransaction(_clientTransaction)
                   .Verifiable());
@@ -511,7 +511,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           l => l.RelationChanging(_clientTransaction, _domainObject1, endPointDefinition, null, null),
           x => x.RelationChanging(_clientTransaction, _domainObject1, endPointDefinition, null, null),
           sequence => _order1EventReceiverMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .SetupRelationChanging(_domainObject1, endPointDefinition, null, null)
               .WithCurrentTransaction(_clientTransaction)
               .Verifiable());
@@ -530,7 +530,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           x => x.RelationChanged(_clientTransaction, _domainObject1, endPointDefinition, oldValue, newValue),
           sequence =>
               _order1EventReceiverMock
-                  .InSequence(sequence)
+                  .InVerifiableSequence(sequence)
                   .SetupRelationChanged(_domainObject1, endPointDefinition, oldValue, newValue)
                   .WithCurrentTransaction(_clientTransaction)
                   .Verifiable());
@@ -547,7 +547,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           x => x.RelationChanged(_clientTransaction, _domainObject1, endPointDefinition, null, null),
           sequence =>
               _order1EventReceiverMock
-                  .InSequence(sequence)
+                  .InVerifiableSequence(sequence)
                   .SetupRelationChanged(_domainObject1, endPointDefinition, null, null)
                   .WithCurrentTransaction(_clientTransaction)
                   .Verifiable());
@@ -560,9 +560,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var queryResult2 = QueryResultObjectMother.CreateQueryResult<Order>();
       var queryResult3 = QueryResultObjectMother.CreateQueryResult<Order>();
 
-      var sequence = new MockSequence();
-      _listenerMock.InSequence(sequence).Setup(l => l.FilterQueryResult(_clientTransaction, queryResult1)).Returns(queryResult2).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(x => x.FilterQueryResult(_clientTransaction, queryResult2)).Returns(queryResult3).Verifiable();
+      var sequence = new VerifiableSequence();
+      _listenerMock.InVerifiableSequence(sequence).Setup(l => l.FilterQueryResult(_clientTransaction, queryResult1)).Returns(queryResult2).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(x => x.FilterQueryResult(_clientTransaction, queryResult2)).Returns(queryResult3).Verifiable();
 
       var result = _eventBroker.RaiseFilterQueryResultEvent(queryResult1);
 
@@ -574,6 +574,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _loadEventReceiverMock.Verify();
       _extensionMock.Verify();
       _listenerMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.SameAs(queryResult3));
     }
 
@@ -612,7 +613,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _transactionEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(
                     mock => mock.Committing(
                         _clientTransaction,
@@ -620,7 +621,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _order1EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(
                     mock => mock.Committing(
                         _domainObject1,
@@ -628,7 +629,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _order2EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(
                     mock => mock.Committing(
                         _domainObject2,
@@ -650,15 +651,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _transactionEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .SetupCommitting(_clientTransaction, new[] { _invalidDomainObject })
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
-            _invalidObjectEventReceiverMock
-                .InSequence(sequence)
-                .Setup(mock => mock.Committing(It.IsAny<object>(), It.IsAny<DomainObjectCommittingEventArgs>()))
-                .Verifiable("DomainObject event should not be RaisedEvent if object is made invalid.");
           });
+
+      // DomainObject event should not be RaisedEvent if object is made invalid.
+      _invalidObjectEventReceiverMock.Verify(mock => mock.Committing(It.IsAny<object>(), It.IsAny<DomainObjectCommittingEventArgs>()), Times.Never());
     }
 
 
@@ -685,17 +685,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _order2EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.Committed(_domainObject2, EventArgs.Empty))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _order1EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.Committed(_domainObject1, EventArgs.Empty))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _transactionEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .SetupCommitted(_clientTransaction, _domainObject1, _domainObject2)
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
@@ -713,17 +713,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _transactionEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .SetupRollingBack(_clientTransaction, _domainObject1, _domainObject2)
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _order1EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.RollingBack(_domainObject1, EventArgs.Empty))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _order2EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.RollingBack(_domainObject2, EventArgs.Empty))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
@@ -740,15 +740,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _transactionEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .SetupRollingBack(_clientTransaction, new[] { _invalidDomainObject })
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
-            _invalidObjectEventReceiverMock
-                .InSequence(sequence)
-                .Setup(mock => mock.RollingBack(It.IsAny<DomainObject>(), It.IsAny<EventArgs>()))
-                .Verifiable("DomainObject event should not be RaisedEvent if object is made invalid.");
           });
+
+      // DomainObject event should not be RaisedEvent if object is made invalid.
+      _invalidObjectEventReceiverMock.Verify(mock => mock.RollingBack(It.IsAny<DomainObject>(), It.IsAny<EventArgs>()), Times.Never());
     }
 
     [Test]
@@ -762,17 +761,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
           sequence =>
           {
             _order2EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.RolledBack(_domainObject2, EventArgs.Empty))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _order1EventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .Setup(mock => mock.RolledBack(_domainObject1, EventArgs.Empty))
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
             _transactionEventReceiverMock
-                .InSequence(sequence)
+                .InVerifiableSequence(sequence)
                 .SetupRolledBack(_clientTransaction, _domainObject1, _domainObject2)
                 .WithCurrentTransaction(_clientTransaction)
                 .Verifiable();
@@ -938,12 +937,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
         Action<IClientTransactionEventSink> raiseAction,
         Expression<Action<IClientTransactionListener>> listenerEvent,
         Expression<Action<IClientTransactionExtension>> extensionEvent,
-        Action<MockSequence> orderedPreListenerExpectations = null)
+        Action<VerifiableSequence> orderedPreListenerExpectations = null)
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       orderedPreListenerExpectations?.Invoke(sequence);
-      _extensionMock.InSequence(sequence).Setup(extensionEvent).Verifiable();
-      _listenerMock.InSequence(sequence).Setup(listenerEvent).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(extensionEvent).Verifiable();
+      _listenerMock.InVerifiableSequence(sequence).Setup(listenerEvent).Verifiable();
 
       raiseAction(_eventBroker);
 
@@ -955,18 +954,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _loadEventReceiverMock.Verify();
       _extensionMock.Verify();
       _listenerMock.Verify();
+      sequence.Verify();
     }
 
     private void CheckEventWithListenersFirst (
         Action<IClientTransactionEventSink> raiseAction,
         Expression<Action<IClientTransactionListener>> listenerEvent,
         Expression<Action<IClientTransactionExtension>> extensionEvent,
-        Action<MockSequence> orderedPostListenerExpectations = null)
+        Action<VerifiableSequence> orderedPostListenerExpectations = null)
     {
-      var sequence = new MockSequence();
-      _listenerMock.InSequence(sequence).Setup(listenerEvent).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(extensionEvent).Verifiable();
-        orderedPostListenerExpectations?.Invoke(sequence);
+      var sequence = new VerifiableSequence();
+      _listenerMock.InVerifiableSequence(sequence).Setup(listenerEvent).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(extensionEvent).Verifiable();
+      orderedPostListenerExpectations?.Invoke(sequence);
 
       raiseAction(_eventBroker);
 
@@ -978,6 +978,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       _loadEventReceiverMock.Verify();
       _extensionMock.Verify();
       _listenerMock.Verify();
+      sequence.Verify();
     }
 
     private void CheckEventWithListenersOnly (
