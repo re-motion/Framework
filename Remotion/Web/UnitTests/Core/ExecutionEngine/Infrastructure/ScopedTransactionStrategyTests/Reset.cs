@@ -21,6 +21,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data;
+using Remotion.FunctionalProgramming;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -55,7 +56,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetVariables()).Returns(new[] { object1, object2 }).Verifiable();
       _newTransactionMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains))))
+          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(p => p.SetEquals(new[] { object1, object2 }))))
           .Verifiable();
       Assert.That(_strategy.Scope, Is.Null);
 
@@ -115,7 +116,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetVariables()).Returns(new[] { object1, object2 }).Verifiable();
       _newTransactionMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains))))
+          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(p => p.SetEquals(new[] { object1, object2 }))))
           .Verifiable();
       Assert.That(_strategy.Scope, Is.SameAs(ScopeMock.Object));
 
@@ -193,7 +194,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
 
       ExecutionContextMock.Setup(mock => mock.GetVariables()).Returns(new[] { object1, object2 });
       _newTransactionMock
-          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(_ => new[] { object1, object2 }.All(_.Contains))))
+          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(p => p.SetEquals(new[] { object1, object2 }))))
           .Throws(invalidOperationException);
 
       Assert.That(
