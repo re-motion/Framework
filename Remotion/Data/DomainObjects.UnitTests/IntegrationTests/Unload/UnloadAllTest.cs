@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
+using Remotion.FunctionalProgramming;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 {
@@ -334,7 +335,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           .Setup(
               mock => mock.ObjectsUnloading(
                   TestableClientTransaction,
-                  It.Is<ReadOnlyCollection<DomainObject>>(_ => new[] { order1, order3 }.All(_.Contains))))
+                  It.Is<ReadOnlyCollection<DomainObject>>(p => p.Contains(order1) && p.Contains(order3))))
           .Verifiable();
       unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order1)).Verifiable();
       unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order3)).Verifiable();
@@ -371,7 +372,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
             .Setup(
                 mock => mock.ObjectsUnloaded(
                     TestableClientTransaction,
-                    It.Is<ReadOnlyCollection<DomainObject>>(_ => new[] { order1, order3 }.All(_.Contains))))
+                    It.Is<ReadOnlyCollection<DomainObject>>(p => p.Contains(order1) && p.Contains(order3))))
             .Verifiable();
 
       TestableClientTransaction.AddListener(clientTransactionListener.Object);
@@ -508,8 +509,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var sequence = new VerifiableSequence();
       clientTransactionListener
           .InVerifiableSequence(sequence)
-          .Setup(
-              mock => mock.ObjectsUnloading(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(_ => new[] { order }.All(_.Contains))))
+          .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.Contains(order))))
           .Verifiable();
       unloadEventReceiver.InVerifiableSequence(sequence).Setup(mock => mock.OnUnloading(order)).Throws(exception).Verifiable();
 

@@ -241,7 +241,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         extensionMock
             .InVerifiableSequence(sequence)
-            .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => expectedRelatedIDs.All(_.Contains))))
+            .Setup(mock => mock.ObjectsLoading(_subTransaction.ParentTransaction, It.Is<ReadOnlyCollection<ObjectID>>(p => p.SetEquals(expectedRelatedIDs))))
             .Verifiable();
         extensionMock
             .InVerifiableSequence(sequence)
@@ -250,7 +250,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
         extensionMock
             .InVerifiableSequence(sequence)
-            .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(_ => expectedRelatedIDs.All(_.Contains))))
+            .Setup(mock => mock.ObjectsLoading(_subTransaction, It.Is<ReadOnlyCollection<ObjectID>>(p => p.SetEquals(expectedRelatedIDs))))
             .Verifiable();
         extensionMock
             .InVerifiableSequence(sequence)
