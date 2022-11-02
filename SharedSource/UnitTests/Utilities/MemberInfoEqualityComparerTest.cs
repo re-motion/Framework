@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.UnitTests.Utilities.MemberInfoEqualityComparerTestDomain;
@@ -280,7 +281,7 @@ namespace Remotion.UnitTests.Utilities
     [Test]
     public void Equals_Types ()
     {
-      Assert.That(MemberInfoEqualityComparer<Type>.Instance.Equals(typeof(List), typeof(List)), Is.True);
+      Assert.That(MemberInfoEqualityComparer<Type>.Instance.Equals(typeof(Enumerable), typeof(Enumerable)), Is.True);
       Assert.That(MemberInfoEqualityComparer<Type>.Instance.Equals(typeof(List<int>), typeof(List<int>)), Is.True);
       Assert.That(MemberInfoEqualityComparer<Type>.Instance.Equals(typeof(List<>), typeof(List<>)), Is.True);
       Assert.That(MemberInfoEqualityComparer<Type>.Instance.Equals(typeof(List<int>), typeof(List<>)), Is.False);
