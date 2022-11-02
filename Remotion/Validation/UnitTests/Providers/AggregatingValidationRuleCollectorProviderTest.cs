@@ -100,62 +100,66 @@ namespace Remotion.Validation.UnitTests.Providers
           stub => stub.GetTypes(typeof(Customer)))
           .Returns(new[] { typeGroup1, typeGroup2, typeGroup3 });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _validationRuleCollectorProviderMock1
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup1))
             .Returns(new[] { new[] { _validationRuleCollectorInfo1 }, new[] { _validationRuleCollectorInfo2 } })
             .Verifiable();
       _validationRuleCollectorProviderMock2
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup1))
             .Returns(new[] { new[] { _validationRuleCollectorInfo3 }, new[] { _validationRuleCollectorInfo4 } })
             .Verifiable();
       _validationRuleCollectorProviderMock3
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup1))
             .Returns(new[] { new[] { _validationRuleCollectorInfo5 } })
             .Verifiable();
       _validationRuleCollectorProviderMock4
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup1))
             .Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
             .Verifiable();
       _validationRuleCollectorProviderMock1
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup2))
             .Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
             .Verifiable();
       _validationRuleCollectorProviderMock2
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup2))
             .Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
             .Verifiable();
       _validationRuleCollectorProviderMock3
-            .InSequence(sequence)
-            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup2)).Returns(new[] { new[] { _validationRuleCollectorInfo6 } })
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup2))
+            .Returns(new[] { new[] { _validationRuleCollectorInfo6 } })
             .Verifiable();
       _validationRuleCollectorProviderMock4
-            .InSequence(sequence)
-            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup2)).Returns(new[] { new[] { _validationRuleCollectorInfo7 } })
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup2))
+            .Returns(new[] { new[] { _validationRuleCollectorInfo7 } })
             .Verifiable();
       _validationRuleCollectorProviderMock1
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup3))
             .Returns(new[] { new[] { _validationRuleCollectorInfo8, _validationRuleCollectorInfo9 }, new[] { _validationRuleCollectorInfo10 } })
             .Verifiable();
       _validationRuleCollectorProviderMock2
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.GetValidationRuleCollectors(typeGroup3))
             .Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
             .Verifiable();
       _validationRuleCollectorProviderMock3
-            .InSequence(sequence)
-            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup3)).Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup3))
+            .Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
             .Verifiable();
       _validationRuleCollectorProviderMock4
-            .InSequence(sequence)
-            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup3)).Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.GetValidationRuleCollectors(typeGroup3))
+            .Returns(Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>())
             .Verifiable();
 
       var result = _validationRuleCollectorProvider.GetValidationRuleCollectors(new[] { typeof(Customer) }).SelectMany(g => g).ToArray();
@@ -164,6 +168,7 @@ namespace Remotion.Validation.UnitTests.Providers
       _validationRuleCollectorProviderMock2.Verify();
       _validationRuleCollectorProviderMock3.Verify();
       _validationRuleCollectorProviderMock4.Verify();
+      sequence.Verify();
       Assert.That(
           new[]
           {

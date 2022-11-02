@@ -141,35 +141,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       DeletedObjectEventReceiverMock.Verify();
     }
 
-    protected void ExpectCommittingEvents (
-        MockSequence sequence,
+    private protected void ExpectCommittingEvents (
+        VerifiableSequence sequence,
         (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
         Action<IInvocation> extensionCallback = null,
-        Action<IInvocation> transactionCallback = null)
+        Action<IInvocation> transactionCallback = null,
+        bool suppressVerificationForListenerMock = false,
+        bool suppressVerificationForExtensionMock = false)
     {
       var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
 
-      ListenerMock
-          .InSequence(sequence)
+      var listenerMockSetup = ListenerMock
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.TransactionCommitting(
                   _transaction,
                   It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
-                  It.IsNotNull<CommittingEventRegistrar>()))
-          .Verifiable();
+                  It.IsNotNull<CommittingEventRegistrar>()));
+      if (!suppressVerificationForListenerMock)
+          listenerMockSetup.Verifiable();
 
-      ExtensionMock
-          .InSequence(sequence)
+      var extensionMockSetup = ExtensionMock
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.Committing(
                   _transaction,
                   It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects)),
                   It.IsNotNull<CommittingEventRegistrar>()))
-          .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
-          .Verifiable();
+          .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation));
+      if (!suppressVerificationForExtensionMock)
+        extensionMockSetup.Verifiable();
 
       TransactionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupCommitting(_transaction, domainObjects)
           .Callback(
               (IInvocation invocation) =>
@@ -194,8 +198,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       }
     }
 
-    protected void ExpectCommittedEvents (
-        MockSequence sequence,
+    private protected void ExpectCommittedEvents (
+        VerifiableSequence sequence,
         (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
         Action<IInvocation> extensionCallback = null,
         Action<IInvocation> transactionCallback = null)
@@ -215,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
       TransactionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupCommitted(_transaction, domainObjects)
           .Callback(
               (IInvocation invocation) =>
@@ -226,51 +230,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
 
       ExtensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Committed(_transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
           .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
           .Verifiable();
 
       ListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionCommitted(_transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
     }
 
-    protected void ExpectCommitValidateEvents (MockSequence sequence, DomainObject[] domainObjects)
+    private protected void ExpectCommitValidateEvents (VerifiableSequence sequence, DomainObject[] domainObjects)
     {
       ListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionCommitValidate(_transaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(domainObjects))))
           .Callback((ClientTransaction _, IReadOnlyList<PersistableData> _) => Assert.That(_transaction.HasChanged(), Is.True, "CommitValidate: last event before actual commit."))
           .Verifiable();
 
       ExtensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CommitValidate(_transaction, It.Is<ReadOnlyCollection<PersistableData>>(c => c.Select(d => d.DomainObject).SetEquals(domainObjects))))
           .Verifiable();
     }
 
-    protected void ExpectRollingBackEvents (
-        MockSequence sequence,
+    private protected void ExpectRollingBackEvents (
+        VerifiableSequence sequence,
         (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
         Action<IInvocation> extensionCallback = null,
         Action<IInvocation> transactionCallback = null)
     {
       var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
       ListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionRollingBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
 
       ExtensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RollingBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
           .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
           .Verifiable();
 
       TransactionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRollingBack(Transaction, domainObjects)
           .Callback(
               (IInvocation invocation) =>
@@ -294,8 +298,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       }
     }
 
-    protected void ExpectRolledBackEvents (
-        MockSequence sequence,
+    private protected void ExpectRolledBackEvents (
+        VerifiableSequence sequence,
         (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[] domainObjectsAndMocks,
         Action<IInvocation> extensionCallback = null,
         Action<IInvocation> transactionCallback = null)
@@ -316,7 +320,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var domainObjects = domainObjectsAndMocks.Select(t => t.DomainObject).ToArray();
 
       TransactionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRolledBack(Transaction, domainObjects)
           .Callback(
               (IInvocation invocation) =>
@@ -327,13 +331,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
           .Verifiable();
 
       ExtensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RolledBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
           .Callback((IInvocation invocation) => extensionCallback?.Invoke(invocation))
           .Verifiable();
 
       ListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionRolledBack(Transaction, It.Is<ReadOnlyCollection<DomainObject>>(p => p.SetEquals(domainObjects))))
           .Verifiable();
     }

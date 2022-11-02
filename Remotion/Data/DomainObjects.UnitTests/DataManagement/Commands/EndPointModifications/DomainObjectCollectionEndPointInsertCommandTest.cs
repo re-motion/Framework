@@ -76,14 +76,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       CollectionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupAdding(CollectionEndPoint.Collection, _insertedRelatedObject)
           .WithCurrentTransaction(Transaction)
           .Verifiable();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, null, _insertedRelatedObject))
           .Verifiable();
 
@@ -91,18 +91,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       CollectionMockEventReceiver.Verify();
       TransactionEventSinkMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void End ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, null, _insertedRelatedObject))
           .Verifiable();
       CollectionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupAdded(CollectionEndPoint.Collection, _insertedRelatedObject)
           .WithCurrentTransaction(Transaction)
           .Verifiable();
@@ -111,6 +112,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       TransactionEventSinkMock.Verify();
       CollectionMockEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]

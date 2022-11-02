@@ -670,7 +670,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           persistedDataContainer,
           new[] { persistedEndPoint1.Object, persistedEndPoint2.Object, persistedEndPoint3.Object });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
@@ -680,7 +680,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Returns(parentEndPointMock1.Object)
           .Verifiable();
       parentEndPointMock1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint1.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
 
@@ -690,7 +690,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Returns(parentEndPointMock3.Object)
           .Verifiable();
       parentEndPointMock3
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint3.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
       _unlockedParentTransactionContextMock
@@ -703,6 +703,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock1.Verify();
       parentEndPointMock3.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -719,18 +720,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           persistedDataContainer,
           new[] { persistedEndPoint.Object });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
       _parentTransactionContextMock.Setup(stub => stub.IsInvalid(domainObject.ID)).Returns(true);
       _parentTransactionContextMock.Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID)).Returns((DataContainer)null);
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.MarkNotInvalid(domainObject.ID))
           .Verifiable();
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()))
           .Callback(
               (DataContainer dataContainer) =>
@@ -740,16 +741,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var parentEndPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
       _parentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.GetRelationEndPointWithoutLoading(persistedEndPoint.Object.ID))
           .Returns(parentEndPointMock.Object)
           .Verifiable("New DataContainers must be registered before the parent relation end-points are retrieved for persistence.");
       parentEndPointMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Verifiable("Dispose should come at the end.");
 
@@ -758,6 +759,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Verify();
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -813,18 +815,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           persistedDataContainer,
           new[] { persistedEndPoint.Object });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
       var parentEndPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
       _parentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.GetRelationEndPointWithoutLoading(persistedEndPoint.Object.ID))
           .Returns(parentEndPointMock.Object)
           .Verifiable("Deleted DataContainers must be persisted after the parent relation end-points are retrieved for persistence.");
       parentEndPointMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
       var parentDataContainer = DataContainerObjectMother.CreateNew(persistedDataContainer.ID);
@@ -833,11 +835,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID))
           .Returns(parentDataContainer);
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Discard(parentDataContainer))
           .Verifiable("Deleted DataContainers must be persisted after the parent relation end-points are retrieved for persistence.");
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Verifiable("Dispose should come at the end.");
 
@@ -846,6 +848,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Verify();
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -891,7 +894,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var parentEndPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
       _parentTransactionContextMock
@@ -899,7 +902,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Returns(parentEndPointMock.Object)
           .Verifiable();
       parentEndPointMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
 
@@ -909,7 +912,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID))
           .Returns(parentDataContainer);
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Callback(
               () => Assert.That(
@@ -923,6 +926,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Verify();
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock.Verify();
+      sequence.Verify();
     }
 
     private void CheckDataContainer (

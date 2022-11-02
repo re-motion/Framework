@@ -131,33 +131,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
       get { return _businessObjectWithIdentityList; }
     }
 
-    public void ExpectOnceOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, object returnValue)
+    public void ExpectOnceOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, object returnValue, VerifiableSequence sequence)
     {
-      businessObject.Setup(_ => _.GetProperty(property)).Returns(returnValue).Verifiable();
+      businessObject.InVerifiableSequence(sequence).Setup(_ => _.GetProperty(property)).Returns(returnValue).Verifiable();
     }
 
-    public void ExpectOnceOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, object returnValue, MockSequence sequence)
+    public void ExpectThrowOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, Exception exception, VerifiableSequence sequence)
     {
-      businessObject.InSequence(sequence).Setup(_ => _.GetProperty(property)).Returns(returnValue).Verifiable();
-    }
-
-    public void ExpectThrowOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, Exception exception)
-    {
-      businessObject.Setup(_ => _.GetProperty(property)).Throws(exception).Verifiable();
-    }
-
-    public void ExpectThrowOnGetProperty (Mock<IBusinessObject> businessObject, IBusinessObjectProperty property, Exception exception, MockSequence sequence)
-    {
-      businessObject.InSequence(sequence).Setup(_ => _.GetProperty(property)).Throws(exception).Verifiable();
-    }
-
-    public void ExpectOnceOnIsAccessible (
-        IBusinessObjectClass businessObjectClass,
-        IBusinessObject businessObject,
-        Mock<IBusinessObjectProperty> property,
-        bool returnValue)
-    {
-      property.Setup(_ => _.IsAccessible(businessObject)).Returns(returnValue).Verifiable();
+      businessObject.InVerifiableSequence(sequence).Setup(_ => _.GetProperty(property)).Throws(exception).Verifiable();
     }
 
     public void ExpectOnceOnIsAccessible (
@@ -165,9 +146,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
         IBusinessObject businessObject,
         Mock<IBusinessObjectProperty> property,
         bool returnValue,
-        MockSequence sequence)
+        VerifiableSequence sequence)
     {
-      property.InSequence(sequence).Setup(_ => _.IsAccessible(businessObject)).Returns(returnValue).Verifiable();
+      property.InVerifiableSequence(sequence).Setup(_ => _.IsAccessible(businessObject)).Returns(returnValue).Verifiable();
     }
   }
 }

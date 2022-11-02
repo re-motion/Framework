@@ -69,10 +69,10 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     [Test]
     public void CanRead_WithNullBusinessObject_ReturnsValue ()
     {
-      var sequence = new MockSequence();
-      _innerStrategy1.InSequence(sequence).Setup(mock => mock.CanRead(null, _property)).Returns(true).Verifiable();
-      _innerStrategy2.InSequence(sequence).Setup(mock => mock.CanRead(null, _property)).Returns(true).Verifiable();
-      _innerStrategy3.InSequence(sequence).Setup(mock => mock.CanRead(null, _property)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerStrategy1.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(null, _property)).Returns(true).Verifiable();
+      _innerStrategy2.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(null, _property)).Returns(true).Verifiable();
+      _innerStrategy3.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(null, _property)).Returns(true).Verifiable();
 
       var result = _strategy.CanRead(null, _property);
 
@@ -81,15 +81,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _innerStrategy1.Verify();
       _innerStrategy2.Verify();
       _innerStrategy3.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void CanRead_WithAllStrategiesReturingTrue_ReturnsTrue ()
     {
-      var sequence = new MockSequence();
-      _innerStrategy1.InSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
-      _innerStrategy2.InSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
-      _innerStrategy3.InSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerStrategy1.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
+      _innerStrategy2.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
+      _innerStrategy3.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
 
       var result = _strategy.CanRead(_businessObject.Object, _property);
 
@@ -98,15 +99,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _innerStrategy1.Verify();
       _innerStrategy2.Verify();
       _innerStrategy3.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void CanRead_WithOneStrategyReturingFalse_ReturnsFalse_AndAbortsChecks ()
     {
-      var sequence = new MockSequence();
-      _innerStrategy1.InSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
-      _innerStrategy2.InSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(false).Verifiable();
-      _innerStrategy3.InSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerStrategy1.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(true).Verifiable();
+      _innerStrategy2.InVerifiableSequence(sequence).Setup(mock => mock.CanRead(_businessObject.Object, _property)).Returns(false).Verifiable();
+      _innerStrategy3.Setup(mock => mock.CanRead(_businessObject.Object, _property)).Verifiable(); // Not in sequence because not called
 
       var result = _strategy.CanRead(_businessObject.Object, _property);
 
@@ -115,6 +117,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _innerStrategy1.Verify();
       _innerStrategy2.Verify();
       _innerStrategy3.Verify(mock => mock.CanRead(_businessObject.Object, _property), Times.Never());
+      sequence.Verify();
     }
 
     [Test]
@@ -123,9 +126,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var exception = new Exception();
       var expectedException = new BusinessObjectPropertyAccessException("Unexpected", null);
       BusinessObjectPropertyAccessException nullOutValue = null;
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _innerStrategy1
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.IsPropertyAccessException(
                     _businessObject.Object,
@@ -135,7 +138,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
             .Returns(false)
             .Verifiable();
       _innerStrategy2
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.IsPropertyAccessException(
                     _businessObject.Object,
@@ -145,7 +148,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
             .Returns(false)
             .Verifiable();
       _innerStrategy3
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.IsPropertyAccessException(
                     _businessObject.Object,
@@ -164,6 +167,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       _innerStrategy1.Verify();
       _innerStrategy2.Verify();
       _innerStrategy3.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -172,9 +176,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
       var exception = new Exception();
       var expectedException = new BusinessObjectPropertyAccessException("The Message", null);
       BusinessObjectPropertyAccessException nullOutValue = null;
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _innerStrategy1
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.IsPropertyAccessException(
                     _businessObject.Object,
@@ -184,7 +188,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
             .Returns(false)
             .Verifiable();
       _innerStrategy2
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.IsPropertyAccessException(
                     _businessObject.Object,
@@ -194,7 +198,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
             .Returns(true)
             .Verifiable();
       _innerStrategy3
-            .InSequence(sequence)
+            // Not in sequence because not called
             .Setup(
                 mock => mock.IsPropertyAccessException(
                     _businessObject.Object,
@@ -218,6 +222,7 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
                 exception,
                 out nullOutValue),
           Times.Never());
+      sequence.Verify();
     }
   }
 }

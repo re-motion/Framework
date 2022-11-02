@@ -70,16 +70,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock1.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       var result = _executor.TryExecuteCommandForTransactionHierarchy(_leafRootTransaction);
 
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
       Assert.That(result, Is.True);
     }
 
@@ -115,19 +116,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock2.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       _executor.TryExecuteCommandForTransactionHierarchy(_rootTransactionWithSub);
 
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -145,19 +147,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock2.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       _executor.TryExecuteCommandForTransactionHierarchy(_leafSubTransaction);
 
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -217,10 +220,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock1.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.True)).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.True)).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
 
       Assert.That(_readOnlyTransaction.IsWriteable, Is.False);
       _executor.TryExecuteCommandForTransactionHierarchy(_readOnlyTransaction);
@@ -229,6 +232,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -240,16 +244,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock1.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       _executor.ExecuteCommandForTransactionHierarchy(_leafRootTransaction);
 
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -267,19 +272,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock2.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       _executor.ExecuteCommandForTransactionHierarchy(_rootTransactionWithSub);
 
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -297,19 +303,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock2.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock2.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       _executor.ExecuteCommandForTransactionHierarchy(_leafSubTransaction);
 
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -367,10 +374,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
           .Verifiable();
       _commandMock1.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.True)).Verifiable();
-      _commandMock1.InSequence(sequence).Setup(mock => mock.End()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.True)).Verifiable();
+      _commandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Callback(() => Assert.That(_readOnlyTransaction.IsWriteable, Is.False)).Verifiable();
 
       Assert.That(_readOnlyTransaction.IsWriteable, Is.False);
       _executor.ExecuteCommandForTransactionHierarchy(_readOnlyTransaction);
@@ -379,6 +386,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
       _commandFactoryMock.Verify();
       _commandMock1.Verify();
       _commandMock2.Verify();
+      sequence.Verify();
     }
   }
 }

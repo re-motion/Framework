@@ -53,9 +53,9 @@ namespace Remotion.Globalization.UnitTests.Implementation
       string nullOutValue = null;
       var theNameOutValue = "The Name";
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _innerService1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetEnumerationValueDisplayName(
                 enumValue,
@@ -63,7 +63,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
           .Returns(false)
           .Verifiable();
       _innerService2
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetEnumerationValueDisplayName(
                 enumValue,
@@ -71,7 +71,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
           .Returns(true)
           .Verifiable();
       _innerService3
-          .InSequence(sequence)
+          // Not in sequence because not called
           .Setup(
             mock => mock.TryGetEnumerationValueDisplayName(
                 It.IsAny<Enum>(),
@@ -91,6 +91,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
                 It.IsAny<Enum>(),
                 out nullOutValue),
           Times.Never());
+      sequence.Verify();
     }
 
     [Test]
@@ -99,9 +100,9 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var enumValue = EnumWithResources.Value1;
       string nullOutValue = null;
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _innerService1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetEnumerationValueDisplayName(
                 enumValue,
@@ -109,7 +110,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
           .Returns(false)
           .Verifiable();
       _innerService2
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetEnumerationValueDisplayName(
                 enumValue,
@@ -117,7 +118,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
           .Returns(false)
           .Verifiable();
       _innerService3
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetEnumerationValueDisplayName(
                 enumValue,
@@ -134,6 +135,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       _innerService1.Verify();
       _innerService2.Verify();
       _innerService3.Verify();
+      sequence.Verify();
     }
   }
 }

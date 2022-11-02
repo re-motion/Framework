@@ -122,29 +122,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var enumerableStub = new Mock<IEnumerable<ObjectID>>();
       var enumeratorMock = new Mock<IEnumerator<ObjectID>>(MockBehavior.Strict);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _dbCommandBuilder1Mock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Create(_commandExecutionContextStub.Object))
           .Returns(_dbCommandMock1.Object)
           .Verifiable();
 
       _commandExecutionContextStub
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(stub => stub.ExecuteReader(_dbCommandMock1.Object, CommandBehavior.SingleResult))
           .Returns(_dataReaderMock.Object);
 
       _objectIDReaderStub
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(stub => stub.ReadSequence(_dataReaderMock.Object))
           .Returns(enumerableStub.Object);
 
       enumerableStub.Setup(stub => stub.GetEnumerator()).Returns(enumeratorMock.Object);
-      enumeratorMock.InSequence(sequence).Setup(mock => mock.MoveNext()).Returns(false).Verifiable();
-      enumeratorMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dataReaderMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _dbCommandMock1.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.MoveNext()).Returns(false).Verifiable();
+      enumeratorMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dataReaderMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
       var command = new MultiObjectIDLoadCommand(new[] { _dbCommandBuilder1Mock.Object, _dbCommandBuilder2Mock.Object }, _objectIDReaderStub.Object);
 
       var result =
@@ -161,6 +161,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock2.Verify();
       _dataReaderMock.Verify();
       enumeratorMock.Verify();
+      sequence.Verify();
     }
   }
 }

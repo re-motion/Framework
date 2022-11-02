@@ -233,14 +233,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void UnregisterOriginalOppositeEndPoint ()
     {
-      var sequence = new MockSequence();
-      _virtualEndPointMock.InSequence(sequence).Setup(mock => mock.MarkDataIncomplete()).Verifiable();
-      _virtualEndPointMock.InSequence(sequence).Setup(mock => mock.UnregisterOriginalOppositeEndPoint(_relatedEndPointStub.Object)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _virtualEndPointMock.InVerifiableSequence(sequence).Setup(mock => mock.MarkDataIncomplete()).Verifiable();
+      _virtualEndPointMock.InVerifiableSequence(sequence).Setup(mock => mock.UnregisterOriginalOppositeEndPoint(_relatedEndPointStub.Object)).Verifiable();
 
       _loadState.UnregisterOriginalOppositeEndPoint(_virtualEndPointMock.Object, _relatedEndPointStub.Object);
 
       _dataManagerMock.Verify();
       _virtualEndPointMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

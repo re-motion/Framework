@@ -31,7 +31,6 @@ namespace Remotion.Validation.UnitTests.Providers
   [TestFixture]
   public class AttributeBasedValidationRuleCollectorProviderBaseTest
   {
-    private Mock<IAttributesBasedValidationPropertyRuleReflector> _validationPropertyRuleReflectorMock1;
     private Mock<IPropertyValidator> _propertyValidatorStub1;
     private Mock<IPropertyValidator> _propertyValidatorStub2;
     private Mock<IPropertyValidator> _propertyValidatorStub3;
@@ -43,9 +42,12 @@ namespace Remotion.Validation.UnitTests.Providers
     private Mock<IPropertyValidator> _propertyValidatorStub5;
     private Mock<IPropertyValidator> _propertyValidatorStub6;
     private MaxLengthPropertyMetaValidationRule _propertyMetaValidationRule1;
-    private MaxValidatorCountRule _metaValidationRule2;
+    private MaxValidatorCountRule _propertyMetaValidationRule2;
     private MaxLengthPropertyMetaValidationRule _propertyMetaValidationRule3;
-    private Mock<IAttributesBasedValidationPropertyRuleReflector> _validationPropertyRuleReflectorMock2;
+    private Mock<IAttributesBasedValidationPropertyRuleReflector> _validationPropertyRuleReflectorMockForEmployeePosition;
+    private Mock<IAttributesBasedValidationPropertyRuleReflector> _validationPropertyRuleReflectorMockForEmployeeNotes;
+    private Mock<IAttributesBasedValidationPropertyRuleReflector> _validationPropertyRuleReflectorMockForSpecialCustomer1LastName;
+    private Mock<IAttributesBasedValidationPropertyRuleReflector> _validationPropertyRuleReflectorMockForSpecialCustomer1UserName;
 
     [SetUp]
     public void SetUp ()
@@ -58,7 +60,7 @@ namespace Remotion.Validation.UnitTests.Providers
       _propertyValidatorStub6 = new Mock<IPropertyValidator>();
 
       _propertyMetaValidationRule1 = new MaxLengthPropertyMetaValidationRule();
-      _metaValidationRule2 = new MaxValidatorCountRule();
+      _propertyMetaValidationRule2 = new MaxValidatorCountRule();
       _propertyMetaValidationRule3 = new MaxLengthPropertyMetaValidationRule();
 
       _removingValidatorRegistration1 = new RemovingValidatorRegistration(typeof(NotNullValidator), null);
@@ -66,38 +68,63 @@ namespace Remotion.Validation.UnitTests.Providers
       _removingValidatorRegistration3 = new RemovingValidatorRegistration(typeof(NotNullValidator), null);
       _removingValidatorRegistration4 = new RemovingValidatorRegistration(typeof(NotEmptyValidator), null);
 
-      _validationPropertyRuleReflectorMock1 = new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);
-      _validationPropertyRuleReflectorMock2 = new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);
+      _validationPropertyRuleReflectorMockForEmployeePosition = new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);
+      _validationPropertyRuleReflectorMockForEmployeeNotes= new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);
+      _validationPropertyRuleReflectorMockForSpecialCustomer1LastName = new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);
+      _validationPropertyRuleReflectorMockForSpecialCustomer1UserName = new Mock<IAttributesBasedValidationPropertyRuleReflector>(MockBehavior.Strict);
     }
 
     [Test]
     public void GetValidationRuleCollectors ()
     {
-      var dictionary = new Dictionary<Type, Mock<IAttributesBasedValidationPropertyRuleReflector>>();
-      dictionary.Add(typeof(Employee), _validationPropertyRuleReflectorMock1);
-      dictionary.Add(typeof(SpecialCustomer1), _validationPropertyRuleReflectorMock2);
+      var dictionary = new Dictionary<(Type DeclaringType, string PropertyName), Mock<IAttributesBasedValidationPropertyRuleReflector>>();
 
-      var collectorProvider =
-          new TestableAttributeBasedValidationRuleCollectorProviderBase(
-              dictionary,
-              _propertyValidatorStub1.Object,
-              _propertyValidatorStub2.Object,
-              _propertyValidatorStub3.Object,
-              _propertyValidatorStub4.Object,
-              _propertyValidatorStub5.Object,
-              _propertyValidatorStub6.Object,
-              _removingValidatorRegistration1,
-              _removingValidatorRegistration2,
-              _removingValidatorRegistration3,
-              _removingValidatorRegistration4,
-              _propertyMetaValidationRule1,
-              _metaValidationRule2,
-              _propertyMetaValidationRule3);
+      dictionary.Add((typeof(Employee), nameof(Employee.Position)), _validationPropertyRuleReflectorMockForEmployeePosition);
+      TestableAttributeBasedValidationRuleCollectorProviderBase.SetupPropertyRuleReflector(
+          _validationPropertyRuleReflectorMockForEmployeePosition,
+          typeof(Employee),
+          nameof(Employee.Position),
+          e => ((Employee)e).Position,
+          removablePropertyValidators: new[] { _propertyValidatorStub1.Object },
+          nonRemovablePropertyValidators: new[] { _propertyValidatorStub2.Object });
+
+      dictionary.Add((typeof(Employee), nameof(Employee.Notes)), _validationPropertyRuleReflectorMockForEmployeeNotes);
+      TestableAttributeBasedValidationRuleCollectorProviderBase.SetupPropertyRuleReflector(
+          _validationPropertyRuleReflectorMockForEmployeeNotes,
+          typeof(Employee),
+          nameof(Employee.Notes),
+          e => ((Employee)e).Notes,
+          removablePropertyValidators: new[] { _propertyValidatorStub3.Object },
+          removingValidatorRegistrations: new[] { _removingValidatorRegistration1, _removingValidatorRegistration2 });
+
+      dictionary.Add((typeof(SpecialCustomer1), nameof(SpecialCustomer1.LastName)), _validationPropertyRuleReflectorMockForSpecialCustomer1LastName);
+      TestableAttributeBasedValidationRuleCollectorProviderBase.SetupPropertyRuleReflector(
+          _validationPropertyRuleReflectorMockForSpecialCustomer1LastName,
+          typeof(SpecialCustomer1),
+          nameof(SpecialCustomer1.LastName),
+          c => ((SpecialCustomer1)c).LastName,
+          removablePropertyValidators: new[] { _propertyValidatorStub4.Object, _propertyValidatorStub5.Object },
+          propertyMetaValidationRules: new[] { _propertyMetaValidationRule1, _propertyMetaValidationRule3 });
+
+      dictionary.Add((typeof(SpecialCustomer1), nameof(SpecialCustomer1.UserName)), _validationPropertyRuleReflectorMockForSpecialCustomer1UserName);
+      TestableAttributeBasedValidationRuleCollectorProviderBase.SetupPropertyRuleReflector(
+          _validationPropertyRuleReflectorMockForSpecialCustomer1UserName,
+          typeof(SpecialCustomer1),
+          nameof(SpecialCustomer1.UserName),
+          c => ((SpecialCustomer1)c).UserName,
+          removablePropertyValidators: new[] { _propertyValidatorStub6.Object },
+          removingValidatorRegistrations: new[] { _removingValidatorRegistration3, _removingValidatorRegistration4 },
+          propertyMetaValidationRules: new[] { _propertyMetaValidationRule2 });
+
+      var collectorProvider = new TestableAttributeBasedValidationRuleCollectorProviderBase(dictionary);
 
       var result = collectorProvider.GetValidationRuleCollectors(new[] { typeof(Employee), typeof(SpecialCustomer1) }).SelectMany(g => g).ToArray();
 
-      _validationPropertyRuleReflectorMock1.Verify();
-      _validationPropertyRuleReflectorMock2.Verify();
+      _validationPropertyRuleReflectorMockForEmployeePosition.Verify();
+      _validationPropertyRuleReflectorMockForEmployeeNotes.Verify();
+      _validationPropertyRuleReflectorMockForSpecialCustomer1LastName.Verify();
+      _validationPropertyRuleReflectorMockForSpecialCustomer1UserName.Verify();
+
       Assert.That(result.Count(), Is.EqualTo(2));
       Assert.That(result[0].Collector.GetType().Name, Is.EqualTo("AttributeBasedValidationRuleCollector"));
       Assert.That(result[0].ProviderType, Is.EqualTo(typeof(TestableAttributeBasedValidationRuleCollectorProviderBase)));
@@ -128,7 +155,7 @@ namespace Remotion.Validation.UnitTests.Providers
           result[1].Collector.PropertyMetaValidationRules.ToArray().SelectMany(pr => pr.MetaValidationRules);
       Assert.That(
           addingPropertyRuleMetaValidationRules,
-          Is.EquivalentTo(new IPropertyMetaValidationRule[] { _propertyMetaValidationRule1, _propertyMetaValidationRule3, _metaValidationRule2 }));
+          Is.EquivalentTo(new IPropertyMetaValidationRule[] { _propertyMetaValidationRule1, _propertyMetaValidationRule3, _propertyMetaValidationRule2 }));
 
       removedPropertyRuleRegistrations =
           result[1].Collector.RemovedPropertyRules.ToArray().SelectMany(pr => pr.Validators.Select(v => v.ValidatorType));

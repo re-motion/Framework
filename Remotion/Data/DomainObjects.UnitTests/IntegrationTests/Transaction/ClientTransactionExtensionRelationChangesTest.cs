@@ -85,41 +85,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var orderRelationEndPointDefinition = GetEndPointDefinition(typeof(OrderTicket), "Order");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, orderTicketRelationEndPointDefinition, _orderTicket1, null))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, orderTicketRelationEndPointDefinition, _orderTicket1, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _orderTicket1, orderRelationEndPointDefinition, _order1, null))
           .Verifiable();
       _orderTicket1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_orderTicket1, orderRelationEndPointDefinition, _order1, null)
           .Verifiable();
 
       _orderTicket1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_orderTicket1, orderRelationEndPointDefinition, _order1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _orderTicket1, orderRelationEndPointDefinition, _order1, null))
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, orderTicketRelationEndPointDefinition, _orderTicket1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, orderTicketRelationEndPointDefinition, _orderTicket1, null))
           .Verifiable();
 
@@ -130,6 +130,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _orderTicket1EventReceiver.Verify();
       _location1EventReceiver.Verify();
       _client1EventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -145,29 +146,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var orderRelationEndPointDefinition = GetEndPointDefinition(typeof(OrderTicket), "Order");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, order, orderTicketRelationEndPointDefinition, null, orderTicket))
           .Verifiable();
-      orderEventReceiver.InSequence(sequence).SetupRelationChanging(order, orderTicketRelationEndPointDefinition, null, orderTicket).Verifiable();
+      orderEventReceiver.InVerifiableSequence(sequence).SetupRelationChanging(order, orderTicketRelationEndPointDefinition, null, orderTicket).Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, orderTicket, orderRelationEndPointDefinition, null, order))
           .Verifiable();
-      orderTicketEventReceiver.InSequence(sequence).SetupRelationChanging(orderTicket, orderRelationEndPointDefinition, null, order).Verifiable();
+      orderTicketEventReceiver.InVerifiableSequence(sequence).SetupRelationChanging(orderTicket, orderRelationEndPointDefinition, null, order).Verifiable();
 
-      orderTicketEventReceiver.InSequence(sequence).SetupRelationChanged(orderTicket, orderRelationEndPointDefinition, null, order).Verifiable();
+      orderTicketEventReceiver.InVerifiableSequence(sequence).SetupRelationChanged(orderTicket, orderRelationEndPointDefinition, null, order).Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, orderTicket, orderRelationEndPointDefinition, null, order))
           .Verifiable();
 
-      orderEventReceiver.InSequence(sequence).SetupRelationChanged(order, orderTicketRelationEndPointDefinition, null, orderTicket).Verifiable();
+      orderEventReceiver.InVerifiableSequence(sequence).SetupRelationChanged(order, orderTicketRelationEndPointDefinition, null, orderTicket).Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, order, orderTicketRelationEndPointDefinition, null, orderTicket))
           .Verifiable();
 
@@ -180,6 +181,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _client1EventReceiver.Verify();
       orderEventReceiver.Verify();
       orderTicketEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -196,85 +198,85 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var orderTicketRelationEndPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, orderTicket3, orderRelationEndPointDefinition, oldOrderOfOrderTicket3, _order1))
           .Verifiable();
 
       orderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(orderTicket3, orderRelationEndPointDefinition, oldOrderOfOrderTicket3, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, oldOrderOfOrderTicket3, orderTicketRelationEndPointDefinition, orderTicket3, null))
           .Verifiable();
 
       oldOrderOfOrderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(oldOrderOfOrderTicket3, orderTicketRelationEndPointDefinition, orderTicket3, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, orderTicketRelationEndPointDefinition, _orderTicket1, orderTicket3))
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, orderTicketRelationEndPointDefinition, _orderTicket1, orderTicket3)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _orderTicket1, orderRelationEndPointDefinition, _order1, null))
           .Verifiable();
 
       _orderTicket1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_orderTicket1, orderRelationEndPointDefinition, _order1, null)
           .Verifiable();
 
       _orderTicket1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_orderTicket1, orderRelationEndPointDefinition, _order1, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _orderTicket1, orderRelationEndPointDefinition, _order1, null))
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, orderTicketRelationEndPointDefinition, _orderTicket1, orderTicket3)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, orderTicketRelationEndPointDefinition, _orderTicket1, orderTicket3))
           .Verifiable();
 
       oldOrderOfOrderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(oldOrderOfOrderTicket3, orderTicketRelationEndPointDefinition, orderTicket3, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, oldOrderOfOrderTicket3, orderTicketRelationEndPointDefinition, orderTicket3, null))
           .Verifiable();
 
       orderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(orderTicket3, orderRelationEndPointDefinition, oldOrderOfOrderTicket3, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, orderTicket3, orderRelationEndPointDefinition, oldOrderOfOrderTicket3, _order1))
           .Verifiable();
 
@@ -287,6 +289,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _client1EventReceiver.Verify();
       orderTicket3EventReceiver.Verify();
       oldOrderOfOrderTicket3EventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -314,77 +317,77 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var oldOrderOfOrderTicket3EventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, oldOrderOfOrderTicket3);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), _orderTicket1, orderTicket3))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), _orderTicket1, orderTicket3)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _orderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null))
           .Verifiable();
       _orderTicket1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_orderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, orderTicket3, GetEndPointDefinition(typeof(OrderTicket), "Order"), oldOrderOfOrderTicket3, _order1))
           .Verifiable();
       orderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(orderTicket3, GetEndPointDefinition(typeof(OrderTicket), "Order"), oldOrderOfOrderTicket3, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, oldOrderOfOrderTicket3, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null))
           .Verifiable();
       oldOrderOfOrderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(oldOrderOfOrderTicket3, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null)
           .Verifiable();
 
       oldOrderOfOrderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(oldOrderOfOrderTicket3, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, oldOrderOfOrderTicket3, GetEndPointDefinition(typeof(Order), "OrderTicket"), orderTicket3, null))
           .Verifiable();
 
       orderTicket3EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(orderTicket3, GetEndPointDefinition(typeof(OrderTicket), "Order"), oldOrderOfOrderTicket3, _order1)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, orderTicket3, GetEndPointDefinition(typeof(OrderTicket), "Order"), oldOrderOfOrderTicket3, _order1))
           .Verifiable();
 
       _orderTicket1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_orderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _orderTicket1, GetEndPointDefinition(typeof(OrderTicket), "Order"), _order1, null))
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), _orderTicket1, orderTicket3)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderTicket"), _orderTicket1, orderTicket3))
           .Verifiable();
 
@@ -397,6 +400,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _client1EventReceiver.Verify();
       orderTicket3EventReceiver.Verify();
       oldOrderOfOrderTicket3EventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -418,23 +422,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void UnidirectionalRelationWithNewNull ()
     {
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, null))
           .Verifiable();
       _location1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, null)
           .Verifiable();
 
       _location1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, null))
           .Verifiable();
 
@@ -445,6 +449,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _orderTicket1EventReceiver.Verify();
       _location1EventReceiver.Verify();
       _client1EventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -455,23 +460,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var newLocationEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newLocation);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, newLocation, GetEndPointDefinition(typeof(Location), "Client"), null, _client1))
           .Verifiable();
       newLocationEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(newLocation, GetEndPointDefinition(typeof(Location), "Client"), null, _client1)
           .Verifiable();
 
       newLocationEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(newLocation, GetEndPointDefinition(typeof(Location), "Client"), null, _client1)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, newLocation, GetEndPointDefinition(typeof(Location), "Client"), null, _client1))
           .Verifiable();
 
@@ -483,6 +488,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _location1EventReceiver.Verify();
       _client1EventReceiver.Verify();
       newLocationEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -492,23 +498,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var newClientEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newClient); // no events for newClient
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, newClient))
           .Verifiable();
       _location1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, newClient)
           .Verifiable();
 
       _location1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, newClient)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _location1, GetEndPointDefinition(typeof(Location), "Client"), _client1, newClient))
           .Verifiable();
 
@@ -520,6 +526,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _location1EventReceiver.Verify();
       _client1EventReceiver.Verify();
       newClientEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -533,41 +540,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var orderItemEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, orderItem);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
       orderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), orderItem, null))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), orderItem, null)
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), orderItem, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), orderItem, null))
           .Verifiable();
 
       orderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
 
@@ -579,6 +586,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _location1EventReceiver.Verify();
       _client1EventReceiver.Verify();
       orderItemEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -591,41 +599,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var orderItemEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, orderItem);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1))
           .Verifiable();
       orderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, orderItem))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, orderItem)
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, orderItem)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, orderItem))
           .Verifiable();
 
       orderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, orderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1))
           .Verifiable();
 
@@ -637,6 +645,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _location1EventReceiver.Verify();
       _client1EventReceiver.Verify();
       orderItemEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -653,59 +662,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var oldOrderOfNewOrderItemEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, oldOrderOfNewOrderItem);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1))
           .Verifiable();
       newOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null))
           .Verifiable();
       oldOrderOfNewOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null)
           .Verifiable();
 
       oldOrderOfNewOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null))
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, newOrderItem))
           .Verifiable();
 
       newOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1))
           .Verifiable();
 
@@ -718,6 +727,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _client1EventReceiver.Verify();
       newOrderItemEventReceiver.Verify();
       oldOrderOfNewOrderItemEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -751,59 +761,59 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var newOrderItemEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, newOrderItem);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
       oldOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1))
           .Verifiable();
       newOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem)
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem))
           .Verifiable();
 
       newOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1))
           .Verifiable();
 
       oldOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
 
@@ -816,6 +826,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       _client1EventReceiver.Verify();
       oldOrderItemEventReceiver.Verify();
       newOrderItemEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -834,78 +845,78 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var oldOrderOfNewOrderItemEventReceiver = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, oldOrderOfNewOrderItem);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
 
       oldOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1))
           .Verifiable();
       newOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanging(TestableClientTransaction, oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null))
           .Verifiable();
       oldOrderOfNewOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null)
           .Verifiable();
 
       oldOrderOfNewOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, oldOrderOfNewOrderItem, GetEndPointDefinition(typeof(Order), "OrderItems"), newOrderItem, null))
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), oldOrderItem, newOrderItem))
           .Verifiable();
 
       newOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, newOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), oldOrderOfNewOrderItem, _order1))
           .Verifiable();
 
       oldOrderItemEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(_ => _.RelationChanged(TestableClientTransaction, oldOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
 
@@ -919,6 +930,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       oldOrderItemEventReceiver.Verify();
       newOrderItemEventReceiver.Verify();
       oldOrderOfNewOrderItemEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -936,81 +948,81 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       var addedOrderItemEventReceiverMock = DomainObjectMockEventReceiver.CreateMock(MockBehavior.Strict, addedOrderItem);
 
       var extensionMock = AddExtensionToClientTransaction(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       extensionMock
-          .InSequence(sequence)
+          //.InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanging(TestableClientTransaction, removedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
       removedOrderItemEventReceiverMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(removedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanging(TestableClientTransaction, addedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1))
           .Verifiable();
       addedOrderItemEventReceiverMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(addedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), removedOrderItem, null))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), removedOrderItem, null)
           .Verifiable();
 
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanging(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, addedOrderItem))
           .Verifiable();
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanging(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, addedOrderItem)
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, addedOrderItem)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), null, addedOrderItem))
           .Verifiable();
 
       _order1EventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(_order1, GetEndPointDefinition(typeof(Order), "OrderItems"), removedOrderItem, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanged(TestableClientTransaction, _order1, GetEndPointDefinition(typeof(Order), "OrderItems"), removedOrderItem, null))
           .Verifiable();
 
       addedOrderItemEventReceiverMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(addedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanged(TestableClientTransaction, addedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), null, _order1))
           .Verifiable();
 
       removedOrderItemEventReceiverMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRelationChanged(removedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null)
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RelationChanged(TestableClientTransaction, removedOrderItem, GetEndPointDefinition(typeof(OrderItem), "Order"), _order1, null))
           .Verifiable();
 
-      _order1OrderItems = newCollection;
+      _order1.OrderItems = newCollection;
 
       extensionMock.Verify();
       _order1EventReceiver.Verify();
@@ -1020,6 +1032,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       removedOrderItemEventReceiverMock.Verify();
       addedOrderItemEventReceiverMock.Verify();
       stayingOrderItemEventReceiverMock.Verify();
+      sequence.Verify();
     }
 
     private static Mock<IClientTransactionExtension> AddExtensionToClientTransaction (TestableClientTransaction transaction)

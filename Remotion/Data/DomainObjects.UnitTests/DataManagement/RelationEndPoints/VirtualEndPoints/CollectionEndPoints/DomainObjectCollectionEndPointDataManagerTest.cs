@@ -461,17 +461,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasDataChanged_Cache_InvalidatedOnModifyingOperations ()
     {
-      var sequence = new MockSequence();
       _changeDetectionStrategyMock
-            .InSequence(sequence)
-            .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+            .SetupSequence(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
             .Returns(true)
-            .Verifiable();
-      _changeDetectionStrategyMock
-            .InSequence(sequence)
-            .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
-            .Returns(false)
-            .Verifiable();
+            .Returns(false);
 
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
@@ -484,7 +477,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result2 = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.Verify();
+      _changeDetectionStrategyMock.Verify(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData), Times.Exactly(2));
+
       Assert.That(result1, Is.EqualTo(true));
       Assert.That(result2, Is.EqualTo(false));
     }
@@ -625,9 +619,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Rollback_InvalidatesHasChangedCache ()
     {
-      var sequence = new MockSequence();
       _changeDetectionStrategyMock
-            .InSequence(sequence)
             .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
             .Returns(true)
             .Verifiable();

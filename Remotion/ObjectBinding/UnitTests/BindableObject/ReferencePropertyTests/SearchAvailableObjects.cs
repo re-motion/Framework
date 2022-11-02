@@ -51,15 +51,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObject[] expected = new IBusinessObject[0];
       var searchArgumentsStub = new Mock<ISearchAvailableObjectsArguments>();
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      mockService.InSequence(sequence).Setup(_ => _.Search(stubBusinessObject.Object, property, searchArgumentsStub.Object)).Returns(expected).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.Search(stubBusinessObject.Object, property, searchArgumentsStub.Object)).Returns(expected).Verifiable();
 
       _bindableObjectProviderForDeclaringType.AddService(mockService.Object);
       IBusinessObject[] actual = property.SearchAvailableObjects(stubBusinessObject.Object, searchArgumentsStub.Object);
 
       mockService.Verify();
+      sequence.Verify();
       Assert.That(actual, Is.SameAs(expected));
     }
 
@@ -71,15 +72,16 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
       IBusinessObject[] expected = new IBusinessObject[0];
       var searchArgumentsStub = new Mock<ISearchAvailableObjectsArguments>();
 
-      var sequence = new MockSequence();
-      mockService.InSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
 
-      mockService.InSequence(sequence).Setup(_ => _.Search(null, property, searchArgumentsStub.Object)).Returns(expected).Verifiable();
+      mockService.InVerifiableSequence(sequence).Setup(_ => _.Search(null, property, searchArgumentsStub.Object)).Returns(expected).Verifiable();
 
       _bindableObjectProviderForPropertyType.AddService(mockService.Object);
       IBusinessObject[] actual = property.SearchAvailableObjects(null, searchArgumentsStub.Object);
 
       mockService.Verify();
+      sequence.Verify();
       Assert.That(actual, Is.SameAs(expected));
     }
 

@@ -147,8 +147,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _virtualObjectEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
 
       var newManagerMock = new Mock<IVirtualObjectEndPointDataManager>();
-      var sequence = new MockSequence();
-      newManagerMock.InSequence(sequence).Setup(mock => mock.RegisterOriginalItemWithoutEndPoint(item)).Verifiable();
+      newManagerMock.Setup(mock => mock.RegisterOriginalItemWithoutEndPoint(item)).Verifiable();
 
       _dataManagerFactoryStub.Setup(stub => stub.CreateEndPointDataManager(_endPointID)).Returns(newManagerMock.Object);
 
@@ -173,8 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _virtualObjectEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
 
       var newManagerMock = new Mock<IVirtualObjectEndPointDataManager>();
-      var sequence = new MockSequence();
-      newManagerMock.InSequence(sequence).Setup(mock => mock.RegisterOriginalOppositeEndPoint(oppositeEndPointMock.Object)).Verifiable();
+      newManagerMock.Setup(mock => mock.RegisterOriginalOppositeEndPoint(oppositeEndPointMock.Object)).Verifiable();
 
       _dataManagerFactoryStub.Setup(stub => stub.CreateEndPointDataManager(_endPointID)).Returns(newManagerMock.Object);
 

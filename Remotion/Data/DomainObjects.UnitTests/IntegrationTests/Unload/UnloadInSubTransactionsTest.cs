@@ -588,13 +588,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
       try
       {
-        var sequence = new MockSequence();
+        var sequence = new VerifiableSequence();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(_subTransaction, new[] { orderItemA, orderItemB }))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloading(rootTransaction, new[] { orderItemA, orderItemB }))
             .Callback(
                 (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) =>
@@ -609,55 +609,55 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
                 })
             .Verifiable();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointBecomingIncomplete(_subTransaction, endPointID))
             .Verifiable();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.DataContainerMapUnregistering(_subTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemA.ID)))
             .Verifiable();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointMapUnregistering(_subTransaction, oppositeEndPointIDA))
             .Verifiable();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.DataContainerMapUnregistering(_subTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemB.ID)))
             .Verifiable();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointMapUnregistering(_subTransaction, endPointID))
             .Verifiable();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointMapUnregistering(_subTransaction, oppositeEndPointIDB))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointBecomingIncomplete(rootTransaction, endPointID))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.DataContainerMapUnregistering(rootTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemA.ID)))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointMapUnregistering(rootTransaction, oppositeEndPointIDA))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.DataContainerMapUnregistering(rootTransaction, It.Is<DataContainer>(dc => dc.ID == orderItemB.ID)))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointMapUnregistering(rootTransaction, endPointID))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RelationEndPointMapUnregistering(rootTransaction, oppositeEndPointIDB))
             .Verifiable();
         rootListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloaded(rootTransaction, new[] { orderItemA, orderItemB }))
             .Callback(
                 (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> unloadedDomainObjects) =>
@@ -672,7 +672,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
                 })
             .Verifiable();
         subListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.ObjectsUnloaded(_subTransaction, new[] { orderItemA, orderItemB }))
             .Verifiable();
 
@@ -681,6 +681,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
 
         subListenerMock.Verify();
         rootListenerMock.Verify();
+        sequence.Verify();
       }
       finally
       {

@@ -71,15 +71,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(dataContainer.HasDomainObject, Is.False);
 
       var loadedObjectIDs = new[] { dataContainer.ID };
-      var sequence = new MockSequence();
-      _registrationListenerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _registrationListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterDataContainer(dataContainer))
           .Callback((DataContainer dataContainer) => CheckHasEnlistedDomainObject(dataContainer))
           .Verifiable();
       _registrationListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
@@ -91,6 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
+      sequence.Verify();
       Assert.That(_clientTransaction.IsDiscarded, Is.False);
       Assert.That(result, Is.EqualTo(new[] { freshlyLoadedObject }));
     }
@@ -176,25 +177,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var loadedObjectIDs = new[] { registerableDataContainer1.ID, registerableDataContainer2.ID };
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _registrationListenerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.OnObjectsNotFound(new[] { notFoundLoadedObject1.ObjectID, notFoundLoadedObject2.ObjectID }))
             .Verifiable();
       _registrationListenerMock
-            .InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+            .InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
       _dataManagerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RegisterDataContainer(registerableDataContainer1))
             .Callback((DataContainer dataContainer) => CheckHasEnlistedDomainObject(registerableDataContainer1))
             .Verifiable();
       _dataManagerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RegisterDataContainer(registerableDataContainer2))
             .Callback((DataContainer dataContainer) => CheckHasEnlistedDomainObject(registerableDataContainer2))
             .Verifiable();
       _registrationListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
@@ -217,6 +218,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
+      sequence.Verify();
       Assert.That(_clientTransaction.IsDiscarded, Is.False);
       Assert.That(result, Is.EqualTo(allObjects));
     }
@@ -277,14 +279,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var loadedObjectIDs = new[] { registerableDataContainer1a.ID };
 
-      var sequence = new MockSequence();
-      _registrationListenerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _registrationListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterDataContainer(registerableDataContainer1a))
           .Callback((DataContainer dataContainer) => CheckHasEnlistedDomainObject(registerableDataContainer1a))
           .Verifiable();
-      _registrationListenerMock.InSequence(sequence)
+      _registrationListenerMock.InVerifiableSequence(sequence)
           .Setup(
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
@@ -297,6 +299,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
+      sequence.Verify();
       Assert.That(_clientTransaction.IsDiscarded, Is.False);
       Assert.That(result, Is.EqualTo(new[] { freshlyLoadedObject1a, freshlyLoadedObject1a }));
 
@@ -331,16 +334,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var loadedObjectIDs = new[] { registerableDataContainer1.ID, registerableDataContainer2.ID };
 
-      var sequence = new MockSequence();
-      _registrationListenerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
-      _dataManagerMock.InSequence(sequence).Setup(mock => mock.RegisterDataContainer(registerableDataContainer1)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _registrationListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      _dataManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterDataContainer(registerableDataContainer1)).Verifiable();
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterDataContainer(registerableDataContainer2))
           .Throws(exception)
           .Verifiable();
       _registrationListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,
@@ -354,6 +357,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -366,15 +370,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var loadedObjectIDs = new[] { registerableDataContainer1.ID };
 
-      var sequence = new MockSequence();
-      _registrationListenerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _registrationListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterDataContainer(registerableDataContainer1))
           .Throws(exception)
           .Verifiable();
       _registrationListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs, new DomainObject[0]))
           .Verifiable();
 
@@ -384,6 +388,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -425,12 +430,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var notFoundLoadedObject = GetNotFoundLoadedObject();
 
-      var sequence = new MockSequence();
       _registrationListenerMock
-            .InSequence(sequence)
-            .Setup(
-                mock => mock.OnObjectsNotFound(
-                    new[] { notFoundLoadedObject.ObjectID }))
+            .Setup(mock => mock.OnObjectsNotFound(new[] { notFoundLoadedObject.ObjectID }))
             .Verifiable();
 
       var allObjects =
@@ -460,9 +461,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var notFoundLoadedObject = GetNotFoundLoadedObject();
 
       _registrationListenerMock
-          .Setup(
-              mock => mock.OnObjectsNotFound(
-                  new[] { notFoundLoadedObject.ObjectID }))
+          .Setup(mock => mock.OnObjectsNotFound(new[] { notFoundLoadedObject.ObjectID }))
           .Verifiable();
 
       var allObjects =
@@ -515,14 +514,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var dataContainer2 = DataContainerObjectMother.Create(DomainObjectIDs.Order3);
       var collector = CreateCollectorAndPrepare(dataContainer1, dataContainer2);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var loadedObjectIDs = new[] { dataContainer1.ID, dataContainer2.ID };
-      _registrationListenerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
-      _dataManagerMock.InSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer1)).Verifiable();
-      _dataManagerMock.InSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer2)).Verifiable();
+      _registrationListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      _dataManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer1)).Verifiable();
+      _dataManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer2)).Verifiable();
       _registrationListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.OnAfterObjectRegistration(new[] { dataContainer1.ID, dataContainer2.ID }, new[] { dataContainer1.DomainObject, dataContainer2.DomainObject }))
           .Verifiable();
 
@@ -530,6 +529,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -541,14 +541,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var exception = new Exception("Test");
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var loadedObjectIDs = new[] { dataContainer1.ID, dataContainer2.ID };
-      _registrationListenerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
-      _dataManagerMock.InSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer1)).Verifiable();
-      _dataManagerMock.InSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer2)).Throws(exception).Verifiable();
+      _registrationListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      _dataManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer1)).Verifiable();
+      _dataManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterDataContainer(dataContainer2)).Throws(exception).Verifiable();
       _registrationListenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.OnAfterObjectRegistration(new[] { dataContainer1.ID, dataContainer2.ID }, new[] { dataContainer1.DomainObject }))
           .Verifiable();
 
@@ -556,6 +556,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _dataManagerMock.Verify();
       _registrationListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

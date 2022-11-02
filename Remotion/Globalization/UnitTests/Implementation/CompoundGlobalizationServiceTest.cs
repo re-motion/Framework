@@ -56,10 +56,10 @@ namespace Remotion.Globalization.UnitTests.Implementation
       var resourceManagerStub2 = new Mock<IResourceManager>();
       var resourceManagerStub3 = new Mock<IResourceManager>();
 
-      var sequence = new MockSequence();
-      _innerService3.InSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub1.Object).Verifiable();
-      _innerService2.InSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub2.Object).Verifiable();
-      _innerService1.InSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub3.Object).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerService3.InVerifiableSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub1.Object).Verifiable();
+      _innerService2.InVerifiableSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub2.Object).Verifiable();
+      _innerService1.InVerifiableSequence(sequence).Setup(mock => mock.GetResourceManager(_typeInformationStub.Object)).Returns(resourceManagerStub3.Object).Verifiable();
 
       var result = _service.GetResourceManager(_typeInformationStub.Object);
 
@@ -69,6 +69,7 @@ namespace Remotion.Globalization.UnitTests.Implementation
       _innerService1.Verify();
       _innerService2.Verify();
       _innerService3.Verify();
+      sequence.Verify();
     }
   }
 }
