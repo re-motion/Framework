@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using log4net;
 using NUnit.Framework;
-using OpenQA.Selenium.Remote;
+using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.Accessibility;
 using Remotion.Web.Development.WebTesting.Accessibility.Implementation;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
@@ -264,8 +264,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
 
     private AccessibilityAnalyzer CreateAnalyzer (IAccessibilityConfiguration config)
     {
-      return AccessibilityAnalyzer.CreateForRemoteWebDriver(
-          (RemoteWebDriver)Helper.MainBrowserSession.Driver.Native,
+      return AccessibilityAnalyzer.CreateForWebDriver(
+          (IWebDriver)Helper.MainBrowserSession.Driver.Native,
           new AxeResultParser(),
           config,
           new AxeSourceProvider(),

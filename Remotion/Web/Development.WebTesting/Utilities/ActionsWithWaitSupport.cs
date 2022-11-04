@@ -18,44 +18,25 @@ using System;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
-using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.Utilities
 {
   /// <summary>
   /// Enhanced version of Selenium's <see cref="Actions"/> class. It enables us to add WaitFor predicates after actions.
   /// </summary>
+  [Obsolete("ActionsWithWaitSupport is no longer supported and affected code should be rewritten. See RM-8621 for details. (Version: 3.20.0)", true)]
   public class ActionsWithWaitSupport : Actions
   {
-    private class ActionAdapter : IAction
-    {
-      private readonly Action _action;
-
-      public ActionAdapter (Action action)
-      {
-        _action = action;
-      }
-
-      public void Perform ()
-      {
-        _action();
-      }
-    }
-
     /// <summary>
     /// Pre-defined predicate for "is element visible" condition.
     /// </summary>
     public static readonly Func<IWebElement, bool> IsVisible = we => we.Displayed;
 
-    private readonly IWebDriver _driver;
-
+    [Obsolete("ActionsWithWaitSupport is no longer supported and affected code should be rewritten. See RM-8621 for details. (Version: 3.20.0)", true)]
     public ActionsWithWaitSupport (IWebDriver driver)
         : base(driver)
     {
-      ArgumentUtility.CheckNotNull("driver", driver);
-
-      _driver = driver;
+      throw new NotSupportedException("ActionsWithWaitSupport is no longer supported and affected code should be rewritten. See RM-8621 for details. (Version: 3.20.0)");
     }
 
     /// <summary>
@@ -68,21 +49,10 @@ namespace Remotion.Web.Development.WebTesting.Utilities
     /// <exception cref="WebDriverException">Depending on the predicate, a variety of <see cref="WebDriverException"/>s may be thrown.
     /// <see cref="StaleElementReferenceException"/> may only appear after the timeout has been reached, before the timeout, it is ignored and the
     /// check of the condition is retried.</exception>
+    [Obsolete("ActionsWithWait support is no longer supported and affected code should be rewritten. See RM-8621 for details. (Version: 3.20.0)", true)]
     public ActionsWithWaitSupport WaitFor ([NotNull] IWebElement webElement, [NotNull] Func<IWebElement, bool> predicate, TimeSpan timeout)
     {
-      ArgumentUtility.CheckNotNull("webElement", webElement);
-      ArgumentUtility.CheckNotNull("predicate", predicate);
-
-      AddAction(
-          new ActionAdapter(
-              () =>
-              {
-                var webDriverWait = new WebDriverWait(_driver, timeout);
-                webDriverWait.IgnoreExceptionTypes(typeof(StaleElementReferenceException));
-                webDriverWait.Until(_ => predicate(webElement));
-              }));
-
-      return this;
+      throw new NotSupportedException("ActionsWithWaitSupport is no longer supported and affected code should be rewritten. See RM-8621 for details. (Version: 3.20.0)");
     }
   }
 }

@@ -17,7 +17,7 @@
 using System;
 using System.Drawing;
 using JetBrains.Annotations;
-using OpenQA.Selenium.Internal;
+using OpenQA.Selenium;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting;

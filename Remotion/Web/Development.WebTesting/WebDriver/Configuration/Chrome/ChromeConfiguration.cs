@@ -129,7 +129,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Configuration.Chrome
       var knownCapabilityNames = (Dictionary<string, string>)s_knownCapabilityNamesField.Value.GetValue(chromeOptions)!;
       knownCapabilityNames.Remove("w3c");
 
-      chromeOptions.AddAdditionalCapability("w3c", false);
+      chromeOptions.AddAdditionalOption("w3c", false);
     }
 
     private string CreateUnusedUserDirectoryPath ()
