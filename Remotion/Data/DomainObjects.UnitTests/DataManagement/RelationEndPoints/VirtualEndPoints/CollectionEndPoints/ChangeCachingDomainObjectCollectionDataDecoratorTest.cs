@@ -149,17 +149,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void OnWrappedDataChanged_InvalidatedCacheLeadsToReEvaluation ()
     {
-      var sequence = new MockSequence();
       _strategyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.HasDataChanged(_decoratorWithRealData, It.IsAny<IDomainObjectCollectionData>()))
+          .SetupSequence(mock => mock.HasDataChanged(_decoratorWithRealData, It.IsAny<IDomainObjectCollectionData>()))
           .Returns(true)
-          .Verifiable();
-      _strategyStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.HasDataChanged(_decoratorWithRealData, It.IsAny<IDomainObjectCollectionData>()))
-          .Returns(false)
-          .Verifiable();
+          .Returns(false);
 
       _decoratorWithRealData.Replace(0, DomainObjectMother.CreateFakeObject<Order>()); // make strategy necessary
 
@@ -167,8 +160,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       CallOnDataChangedOnWrappedData(_decoratorWithRealData);
 
       var result2 = _decoratorWithRealData.HasChanged(_strategyStrictMock.Object);
-
-      _strategyStrictMock.Verify();
 
       Assert.That(result1, Is.True);
       Assert.That(result2, Is.False);

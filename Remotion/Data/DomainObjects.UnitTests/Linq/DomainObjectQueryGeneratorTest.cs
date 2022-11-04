@@ -224,17 +224,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithDownCast ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Company));
       var targetTypeQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(Company)));
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
+      _sqlQueryGeneratorMock.InVerifiableSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Partner o) => o.ContactPerson, targetTypeQueryModel);
       var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(Person));
 
       _sqlQueryGeneratorMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(p => p != targetTypeQueryModel)))
           .Returns(fakeFetchSqlQueryResult)
           .Callback(
               (QueryModel queryModel) =>
@@ -248,6 +248,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var result = _generator.CreateSequenceQuery<Company>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
 
       _sqlQueryGeneratorMock.Verify();
+      sequence.Verify();
       var expectedEndPointDefinition = GetEndPointDefinition(typeof(Partner), typeof(Partner), "ContactPerson");
       CheckSingleFetchRequest(result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof(Person));
     }
@@ -255,18 +256,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithMixinFetchRequest ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(TargetClassForPersistentMixin));
       var targetTypeQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(TargetClassForPersistentMixin)));
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
+      _sqlQueryGeneratorMock.InVerifiableSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((IMixinAddingPersistentProperties o) => o.RelationProperty);
       var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(RelationTargetForPersistentMixin));
 
       _sqlQueryGeneratorMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(p => p != targetTypeQueryModel)))
           .Returns(fakeFetchSqlQueryResult)
           .Callback(
               (QueryModel queryModel) =>
@@ -280,6 +281,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var result = _generator.CreateSequenceQuery<TargetClassForPersistentMixin>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
 
       _sqlQueryGeneratorMock.Verify();
+      sequence.Verify();
       var expectedEndPointDefinition = GetEndPointDefinition(
           typeof(TargetClassForPersistentMixin), typeof(MixinAddingPersistentProperties), "RelationProperty");
       CheckSingleFetchRequest(result.EagerFetchQueries, expectedEndPointDefinition, "FETCH", typeof(RelationTargetForPersistentMixin));
@@ -294,17 +296,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpression ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Customer));
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(stub => stub.CreateSqlQuery(_customerQueryModel)).Returns(fakeSqlQuery);
+      _sqlQueryGeneratorMock.InVerifiableSequence(sequence).Setup(stub => stub.CreateSqlQuery(_customerQueryModel)).Returns(fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchManyQueryModelBuilder((Customer o) => o.Orders);
       var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(Order));
 
       _sqlQueryGeneratorMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(p => p != _customerQueryModel)))
           .Returns(fakeFetchSqlQueryResult)
           .Callback(
               (QueryModel queryModel) =>
@@ -328,23 +330,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _generator.CreateSequenceQuery<Customer>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
 
       _sqlQueryGeneratorMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpressionBasedOnMixinProperty ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(RelationTargetForPersistentMixin));
       var targetTypeQueryModel = QueryModelObjectMother.Create(Expression.Constant(null, typeof(RelationTargetForPersistentMixin)));
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
+      _sqlQueryGeneratorMock.InVerifiableSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchManyQueryModelBuilder((RelationTargetForPersistentMixin o) => o.RelationProperty4, targetTypeQueryModel);
       var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(TargetClassForPersistentMixin));
 
       _sqlQueryGeneratorMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(p => p != targetTypeQueryModel)))
           .Returns(fakeFetchSqlQueryResult)
           .Callback(
               (QueryModel queryModel) =>
@@ -377,31 +380,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
           new[] { fetchQueryModelBuilder });
 
       _sqlQueryGeneratorMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpressionBasedOnMixinPropertyNotPartOfInterface_ThrowsNotSupportedException ()
     {
-      var sequence = new MockSequence();
-
       var fakeSqlQuery =
           CreateSqlQueryGeneratorResult(
               selectedEntityType: typeof(RelationTarget));
       var targetTypeQueryModel =
           QueryModelObjectMother.Create(
               Expression.Constant(null, typeof(RelationTarget)));
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
+      _sqlQueryGeneratorMock.Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
 
       var fetchQueryModelBuilder =
           CreateFetchManyQueryModelBuilder(
               (RelationTarget o) => o.CollectionProperty,
               targetTypeQueryModel);
-      var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(MixinTarget));
 
       _sqlQueryGeneratorMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>()))
-          .Returns(fakeFetchSqlQueryResult);
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(p => p != targetTypeQueryModel)))
+          .Throws(new InvalidOperationException("Should not be called because of expected NotSupportedException at earlier point in execution."));
 
       Assert.That(
           () => _generator.CreateSequenceQuery<RelationTarget>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder }),
@@ -415,7 +415,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithFetchRequestWithSortExpressionBasedOnPropertyDeclaredOnDerivedType ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var fakeSqlQuery =
           CreateSqlQueryGeneratorResult(
@@ -423,7 +423,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var targetTypeQueryModel =
           QueryModelObjectMother.Create(
               Expression.Constant(null, typeof(RelationTargetManySide)));
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
+      _sqlQueryGeneratorMock.InVerifiableSequence(sequence).Setup(stub => stub.CreateSqlQuery(targetTypeQueryModel)).Returns(fakeSqlQuery);
 
       var fetchQueryModelBuilder =
           CreateFetchManyQueryModelBuilder(
@@ -432,8 +432,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "FETCH", selectedEntityType: typeof(RelationTargetOneSide));
 
       _sqlQueryGeneratorMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(p => p != targetTypeQueryModel)))
           .Returns(fakeFetchSqlQueryResult)
           .Callback(
               (QueryModel queryModel) =>
@@ -460,27 +460,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       _generator.CreateSequenceQuery<RelationTargetManySide>("id", TestDomainStorageProviderDefinition, targetTypeQueryModel, new[] { fetchQueryModelBuilder });
 
       _sqlQueryGeneratorMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void CreateSequenceQuery_EntityQuery_WithNestedFetchRequests ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var fakeSqlQuery = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Customer));
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(stub => stub.CreateSqlQuery(_customerQueryModel)).Returns(fakeSqlQuery);
+      _sqlQueryGeneratorMock.InVerifiableSequence(sequence).Setup(stub => stub.CreateSqlQuery(_customerQueryModel)).Returns(fakeSqlQuery);
 
       var fetchQueryModelBuilder = CreateFetchOneQueryModelBuilder((Customer c) => c.Ceo);
       var fakeFetchSqlQueryResult = CreateSqlQueryGeneratorResult(selectedEntityType: typeof(Ceo), commandText: "FETCH");
-      _sqlQueryGeneratorMock.InSequence(sequence).Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>())).Returns(fakeFetchSqlQueryResult).Verifiable();
+      _sqlQueryGeneratorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(qm => qm.SelectClause.Selector.Type == typeof(Ceo))))
+          .Returns(fakeFetchSqlQueryResult)
+          .Verifiable();
 
       var innerFetchRequest = CreateFetchOneRequest((Ceo c) => c.Company);
       fetchQueryModelBuilder.FetchRequest.GetOrAddInnerFetchRequest(innerFetchRequest);
 
       var fakeInnerFetchSqlQueryResult = CreateSqlQueryGeneratorResult(commandText: "INNER FETCH", selectedEntityType: typeof(Company));
       _sqlQueryGeneratorMock
-          .InSequence(sequence)
-          .Setup(mock => mock.CreateSqlQuery(It.IsAny<QueryModel>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.CreateSqlQuery(It.Is<QueryModel>(qm => qm.SelectClause.Selector.Type == typeof(Company))))
           .Returns(fakeInnerFetchSqlQueryResult)
           .Callback(
               (QueryModel queryModel) =>
@@ -493,6 +498,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Linq
       var result = _generator.CreateSequenceQuery<Customer>("id", TestDomainStorageProviderDefinition, _customerQueryModel, new[] { fetchQueryModelBuilder });
 
       _sqlQueryGeneratorMock.Verify();
+      sequence.Verify();
 
       var fetchQuery = result.EagerFetchQueries.Single();
       CheckSingleFetchRequest(fetchQuery.Value.EagerFetchQueries, typeof(Ceo), "Company", "INNER FETCH", typeof(Company));

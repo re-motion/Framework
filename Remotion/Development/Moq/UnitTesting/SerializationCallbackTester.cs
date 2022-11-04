@@ -69,35 +69,37 @@ namespace Remotion.Development.Moq.UnitTesting
 
     private void CheckSerialization (Mock<ISerializationEventReceiver> receiver)
     {
-      ExpectSerializationCallbacks(receiver);
+      var sequence = new VerifiableSequence();
+      ExpectSerializationCallbacks(receiver, sequence);
 
       Serializer.Serialize(_instance);
 
       receiver.Verify();
+      sequence.Verify();
     }
 
     private void CheckDeserialization (byte[] bytes, Mock<ISerializationEventReceiver> receiver)
     {
-      ExpectDeserializationCallbacks(receiver);
+      var sequence = new VerifiableSequence();
+      ExpectDeserializationCallbacks(receiver, sequence);
 
       Serializer.Deserialize(bytes);
 
       receiver.VerifyAll();
+      sequence.Verify();
     }
 
-    private void ExpectSerializationCallbacks (Mock<ISerializationEventReceiver> receiver)
+    private void ExpectSerializationCallbacks (Mock<ISerializationEventReceiver> receiver, VerifiableSequence sequence)
     {
-      int sequenceCounter = 0;
-      receiver.Setup(_ => _.OnSerializing(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 0).Verifiable();
-      receiver.Setup(_ => _.OnSerialized(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 1).Verifiable();
+      receiver.InVerifiableSequence(sequence).Setup(_ => _.OnSerializing(It.IsAny<StreamingContext>())).Verifiable();
+      receiver.InVerifiableSequence(sequence).Setup(_ => _.OnSerialized(It.IsAny<StreamingContext>())).Verifiable();
     }
 
-    private void ExpectDeserializationCallbacks (Mock<ISerializationEventReceiver> receiver)
+    private void ExpectDeserializationCallbacks (Mock<ISerializationEventReceiver> receiver, VerifiableSequence sequence)
     {
-      int sequenceCounter = 0;
-      receiver.Setup(_ => _.OnDeserializing(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 0).Verifiable();
-      receiver.Setup(_ => _.OnDeserialized(It.IsAny<StreamingContext>())).InSequence(ref sequenceCounter, 1).Verifiable();
-      receiver.Setup(_ => _.OnDeserialization(It.IsAny<object>())).InSequence(ref sequenceCounter, 2).Verifiable();
+      receiver.InVerifiableSequence(sequence).Setup(_ => _.OnDeserializing(It.IsAny<StreamingContext>())).Verifiable();
+      receiver.InVerifiableSequence(sequence).Setup(_ => _.OnDeserialized(It.IsAny<StreamingContext>())).Verifiable();
+      receiver.InVerifiableSequence(sequence).Setup(_ => _.OnDeserialization(It.IsAny<object>())).Verifiable();
     }
   }
 }

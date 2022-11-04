@@ -73,16 +73,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       _unloadDataCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _transactionEventSinkWithMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseObjectsUnloadingEvent(new[] { _domainObject1, _domainObject2 }))
           .Verifiable();
-      _unloadDataCommandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _unloadDataCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
 
       _unloadCommand.Begin();
 
       _unloadDataCommandMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -123,16 +124,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands
     {
       _unloadDataCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
 
-      var sequence = new MockSequence();
-      _unloadDataCommandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _unloadDataCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
       _transactionEventSinkWithMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseObjectsUnloadedEvent(new[] { _domainObject1, _domainObject2 }))
           .Verifiable();
 
       _unloadCommand.End();
 
       _unloadDataCommandMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

@@ -73,15 +73,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DataReaders
     [Test]
     public void ReadSequence ()
     {
-      var sequence = new MockSequence();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
-      _dataReaderStrictMock.InSequence(sequence).Setup(mock => mock.Read()).Returns(false).Verifiable();
+      _dataReaderStrictMock
+          .SetupSequence(mock => mock.Read())
+          .Returns(true).Returns(true)
+          .Returns(true)
+          .Returns(false);
 
       var result = _queryResultRowReader.ReadSequence(_dataReaderStrictMock.Object).OfType<QueryResultRow>().ToList();
 
-      _dataReaderStrictMock.Verify();
+      _dataReaderStrictMock.Verify(mock => mock.Read(), Times.Exactly(4));
       Assert.That(result, Is.Not.Null);
       Assert.That(result.Count, Is.EqualTo(3));
       CheckQueryResultRow(result[0]);

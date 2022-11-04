@@ -48,13 +48,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       TestFunction2 function = new TestFunction2();
       function.SetExecutionListener(_executionListenerMock.Object);
 
-      var sequence = new MockSequence();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
 
       function.Execute(_context);
 
       _executionListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -68,14 +69,15 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
           .Returns(_executionListenerMock.Object)
           .Verifiable();
 
-      var sequence = new MockSequence();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
 
       function.Execute(_context);
 
       _executionListenerMock.Verify();
       transactionModeMock.Verify();
+      sequence.Verify();
       Assert.That(function.ExecutionListener, Is.SameAs(_executionListenerMock.Object));
     }
 
@@ -93,9 +95,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       step2.Setup(mock => mock.Execute(_context)).Verifiable();
       function.Add(step2.Object);
 
-      var sequence1 = new MockSequence();
-      _executionListenerMock.InSequence(sequence1).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
-      _executionListenerMock.InSequence(sequence1).Setup(mock => mock.OnExecutionPause(_context)).Verifiable();
+      var sequence1 = new VerifiableSequence();
+      _executionListenerMock.InVerifiableSequence(sequence1).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InVerifiableSequence(sequence1).Setup(mock => mock.OnExecutionPause(_context)).Verifiable();
 
       try
       {
@@ -108,6 +110,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       }
 
       _executionListenerMock.Verify();
+      sequence1.Verify();
       step1.Verify(mock => mock.Execute(_context), Times.Once);
       step2.Verify(mock => mock.Execute(_context), Times.Never);
 
@@ -115,13 +118,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       step1.Reset();
       step1.Reset();
 
-      var sequence2 = new MockSequence();
-      _executionListenerMock.InSequence(sequence2).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
-      _executionListenerMock.InSequence(sequence2).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
+      var sequence2 = new VerifiableSequence();
+      _executionListenerMock.InVerifiableSequence(sequence2).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InVerifiableSequence(sequence2).Setup(mock => mock.OnExecutionStop(_context)).Verifiable();
 
       function.Execute(_context);
 
       _executionListenerMock.Verify();
+      sequence2.Verify();
       step1.Verify(mock => mock.Execute(_context), Times.Once);
       step2.Verify(mock => mock.Execute(_context), Times.Once);
     }
@@ -138,9 +142,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 
       var fatalExecutionException = new WxeFatalExecutionException(new Exception("Pause exception"), null);
 
-      var sequence = new MockSequence();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(_context)).Throws(fatalExecutionException).Verifiable();
+      var sequence = new VerifiableSequence();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPause(_context)).Throws(fatalExecutionException).Verifiable();
 
       try
       {
@@ -152,6 +156,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
         Assert.That(actualException, Is.SameAs(fatalExecutionException));
         WxeThreadAbortHelper.ResetAbort();
       }
+      sequence.Verify();
     }
 
     [Test]
@@ -165,9 +170,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       step1.Setup(mock => mock.Execute(_context)).Throws(stepException).Verifiable();
       function.Add(step1.Object);
 
-      var sequence = new MockSequence();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionFail(_context, stepException)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionFail(_context, stepException)).Verifiable();
 
       try
       {
@@ -180,6 +185,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       }
 
       _executionListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -195,9 +201,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
 
       Exception listenerException = new Exception("ListenerException");
 
-      var sequence = new MockSequence();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
-      _executionListenerMock.InSequence(sequence).Setup(mock => mock.OnExecutionFail(_context, stepException)).Throws(listenerException).Verifiable();
+      var sequence = new VerifiableSequence();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPlay(_context)).Verifiable();
+      _executionListenerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionFail(_context, stepException)).Throws(listenerException).Verifiable();
 
       try
       {
@@ -211,6 +217,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       }
 
       _executionListenerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

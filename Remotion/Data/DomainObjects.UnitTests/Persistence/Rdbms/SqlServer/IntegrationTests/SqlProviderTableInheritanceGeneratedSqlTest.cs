@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     [Test]
     public void LoadDataContainersByRelatedID_NoSortExpression ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
@@ -65,18 +65,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [Name] FROM [TableInheritance_OrganizationalUnit] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.OrganizationalUnit.Value));
-      _testHelper.Replay();
 
       var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(TIDomainBase), "Client");
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, DomainObjectIDs.Client).ToArray();
 
       _testHelper.VerifyAllExpectations();
+      sequence.Verify();
     }
 
     [Test]
     public void LoadDataContainersByRelatedID_WithSortExpression ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
@@ -96,7 +96,6 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID], [Timestamp], [CreatedBy], [CreatedAt], [ClientID], [Name] FROM [TableInheritance_OrganizationalUnit] WHERE [ID] = @ID;",
           Tuple.Create("@ID", DbType.Guid, DomainObjectIDs.OrganizationalUnit.Value));
-      _testHelper.Replay();
 
       var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(TIDomainBase), "Client");
       var sortExpression = new SortExpressionDefinition(
@@ -108,6 +107,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, sortExpression, DomainObjectIDs.Client).ToArray();
 
       _testHelper.VerifyAllExpectations();
+      sequence.Verify();
     }
 
     [Test]
@@ -115,19 +115,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       var newObjectID = _testHelper.Provider.CreateNewObjectID(Configuration.GetTypeDefinition(typeof(TIClient)));
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _testHelper.ExpectExecuteReader(
           sequence,
           CommandBehavior.SingleResult,
           "SELECT [ID], [ClassID] FROM [TableInheritance_Person] WHERE [ClientID] = @ClientID "
           + "UNION ALL SELECT [ID], [ClassID] FROM [TableInheritance_OrganizationalUnit] WHERE [ClientID] = @ClientID;",
           Tuple.Create("@ClientID", DbType.Guid, newObjectID.Value));
-      _testHelper.Replay();
 
       var relationEndPointDefinition = (RelationEndPointDefinition)GetEndPointDefinition(typeof(TIDomainBase), "Client");
       _testHelper.Provider.LoadDataContainersByRelatedID(relationEndPointDefinition, null, newObjectID).ToArray();
 
       _testHelper.VerifyAllExpectations();
+      sequence.Verify();
     }
   }
 }

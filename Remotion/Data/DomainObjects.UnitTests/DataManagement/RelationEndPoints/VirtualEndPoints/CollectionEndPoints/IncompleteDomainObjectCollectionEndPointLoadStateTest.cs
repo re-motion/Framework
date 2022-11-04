@@ -162,9 +162,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _collectionEndPointMock.Setup(stub => stub.GetCollectionEventRaiser()).Returns(new Mock<IDomainObjectCollectionEventRaiser>().Object);
 
       var newManagerMock = new Mock<IDomainObjectCollectionEndPointDataManager>();
-      var sequence = new MockSequence();
-      newManagerMock.InSequence(sequence).Setup(mock => mock.RegisterOriginalOppositeEndPoint(oppositeEndPointForItem1Mock.Object)).Verifiable();
-      newManagerMock.InSequence(sequence).Setup(mock => mock.RegisterOriginalItemWithoutEndPoint(_relatedObject2)).Verifiable();
+      var sequence = new VerifiableSequence();
+      newManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterOriginalOppositeEndPoint(oppositeEndPointForItem1Mock.Object)).Verifiable();
+      newManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterOriginalItemWithoutEndPoint(_relatedObject2)).Verifiable();
 
       _dataManagerFactoryStub.Setup(stub => stub.CreateEndPointDataManager(_endPointID)).Returns(newManagerMock.Object);
 
@@ -173,12 +173,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       newManagerMock.Verify();
       oppositeEndPointForItem1Mock.Verify();
       _collectionEndPointMock.Verify(mock => mock.RegisterOriginalOppositeEndPoint(It.IsAny<IRealObjectEndPoint>()), Times.Never());
+      sequence.Verify();
     }
 
     [Test]
     public void MarkDataComplete_RaisesEvent ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _loadState.RegisterOriginalOppositeEndPoint(_collectionEndPointMock.Object, _relatedEndPointStub.Object);
 
@@ -189,22 +190,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var newManagerMock = new Mock<IDomainObjectCollectionEndPointDataManager>();
       newManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterOriginalOppositeEndPoint(_relatedEndPointStub.Object))
           .Verifiable();
       newManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterOriginalItemWithoutEndPoint(_relatedObject2))
           .Verifiable();
 
       _dataManagerFactoryStub.Setup(stub => stub.CreateEndPointDataManager(_endPointID)).Returns(newManagerMock.Object);
 
       var setterActionMock = new Mock<ISetterAction>();
-      setterActionMock.InSequence(sequence).Setup(_ => _.Do()).Verifiable();
+      setterActionMock.InVerifiableSequence(sequence).Setup(_ => _.Do()).Verifiable();
 
       Action<IDomainObjectCollectionEndPointDataManager> stateSetter = dataManager => setterActionMock.Object.Do();
       eventRaiserMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.WithinReplaceData())
           .Verifiable();
 
@@ -212,6 +213,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       newManagerMock.Verify();
       eventRaiserMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

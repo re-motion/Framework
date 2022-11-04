@@ -38,13 +38,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
     {
       InvokeOnExecutionPlay(_strategy);
 
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Verifiable();
-      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      var sequence = new VerifiableSequence();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Verifiable();
+      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
 
       _strategy.OnExecutionPause(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(_strategy.Scope, Is.Null);
     }
 
@@ -64,9 +65,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var innerException = new ApplicationException("InnerListener Exception");
 
       InvokeOnExecutionPlay(_strategy);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
-      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
+      var sequence = new VerifiableSequence();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
+      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
 
       try
       {
@@ -79,6 +80,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       }
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(_strategy.Scope, Is.Null);
     }
 
@@ -110,9 +112,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var innerException = new Exception("Leave Exception");
 
       InvokeOnExecutionPlay(_strategy);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Verifiable();
-      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Throws(innerException).Verifiable();
+      var sequence = new VerifiableSequence();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Verifiable();
+      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Throws(innerException).Verifiable();
 
       try
       {
@@ -125,6 +127,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       }
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(_strategy.Scope, Is.Not.Null);
     }
 
@@ -135,9 +138,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var outerException = new Exception("Leave Exception");
 
       InvokeOnExecutionPlay(_strategy);
-      var sequence = new MockSequence();
-      ChildTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
-      ScopeMock.InSequence(sequence).Setup(mock => mock.Leave()).Throws(outerException).Verifiable();
+      var sequence = new VerifiableSequence();
+      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionPause(Context, ExecutionListenerStub.Object)).Throws(innerException).Verifiable();
+      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Throws(outerException).Verifiable();
 
       try
       {
@@ -151,6 +154,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       }
 
       VerifyAll();
+      sequence.Verify();
       Assert.That(_strategy.Scope, Is.Not.Null);
     }
   }

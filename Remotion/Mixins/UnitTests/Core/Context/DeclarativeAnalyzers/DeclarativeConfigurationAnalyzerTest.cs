@@ -46,18 +46,34 @@ namespace Remotion.Mixins.UnitTests.Core.Context.DeclarativeAnalyzers
     {
       var types = new[] { typeof(object), typeof(string), typeof(DeclarativeConfigurationAnalyzerTest) };
 
-      var sequence = new MockSequence();
-      _typeAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(object), _fakeConfigurationBuilder.Object)).Verifiable();
-      _assemblyAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(object).Assembly, _fakeConfigurationBuilder.Object)).Verifiable();
-      _typeAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(string), _fakeConfigurationBuilder.Object)).Verifiable();
-      _typeAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest), _fakeConfigurationBuilder.Object)).Verifiable();
-      _assemblyAnalyzerMock.InSequence(sequence).Setup(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest).Assembly, _fakeConfigurationBuilder.Object)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _typeAnalyzerMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Analyze(typeof(object), _fakeConfigurationBuilder.Object))
+          .Verifiable();
+      _assemblyAnalyzerMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Analyze(typeof(object).Assembly, _fakeConfigurationBuilder.Object))
+          .Verifiable();
+      _typeAnalyzerMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Analyze(typeof(string), _fakeConfigurationBuilder.Object))
+          .Verifiable();
+      _typeAnalyzerMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest), _fakeConfigurationBuilder.Object))
+          .Verifiable();
+      _assemblyAnalyzerMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Analyze(typeof(DeclarativeConfigurationAnalyzerTest).Assembly, _fakeConfigurationBuilder.Object))
+          .Verifiable();
 
       var analyzer = new DeclarativeConfigurationAnalyzer(new[] { _typeAnalyzerMock.Object }, new[] {_assemblyAnalyzerMock.Object });
       analyzer.Analyze(types, _fakeConfigurationBuilder.Object);
 
       _typeAnalyzerMock.Verify();
       _assemblyAnalyzerMock.Verify();
+      sequence.Verify();
     }
   }
 }

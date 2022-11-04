@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.Queries;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.Security.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
+using Remotion.FunctionalProgramming;
 using Remotion.Reflection;
 using Remotion.Security;
 using Remotion.Security.Metadata;
@@ -131,86 +132,81 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy();
       Mock.Get(objectSecurityStrategy)
-          .Setup(_ => _.HasAccess(
-              _mockSecurityProvider.Object,
-              _stubUser.Object,
-              new[] { AccessType.Get(accessTypeEnum) }))
+          .Setup(
+              _ => _.HasAccess(
+                  _mockSecurityProvider.Object,
+                  _stubUser.Object,
+                  new[] { AccessType.Get(accessTypeEnum) }))
           .Callback((ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) => CheckTransaction())
           .Returns(doDelegate)
           .Verifiable();
     }
 
-    public void ExpectObjectSecurityStrategyHasAccess (MockSequence sequence, SecurableObject securableObject, Enum accessTypeEnum, bool returnValue)
+    [CLSCompliant(false)]
+    public void ExpectObjectSecurityStrategyHasAccess (VerifiableSequence sequence, SecurableObject securableObject, Enum accessTypeEnum, bool returnValue)
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy();
       Mock.Get(objectSecurityStrategy)
-          .InSequence(sequence)
-          .Setup(_ => _.HasAccess(
-              _mockSecurityProvider.Object,
-              _stubUser.Object,
-              new[] { AccessType.Get(accessTypeEnum) }))
-          .Callback(
-              (ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) =>
-              {
-                CheckTransaction();
-                CheckTransaction();
-              })
+          .InVerifiableSequence(sequence)
+          .Setup(
+              _ => _.HasAccess(
+                  _mockSecurityProvider.Object,
+                  _stubUser.Object,
+                  new[] { AccessType.Get(accessTypeEnum) }))
+          .Callback((ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) => { CheckTransaction(); })
           .Returns(returnValue)
           .Verifiable();
     }
 
-    public void ExpectFunctionalSecurityStrategyHasAccess (MockSequence sequence, Type securableObjectType, Enum accessTypeEnum, HasStatelessAccessDelegate doDelegate)
+    [CLSCompliant(false)]
+    public void ExpectFunctionalSecurityStrategyHasAccess (VerifiableSequence sequence, Type securableObjectType, Enum accessTypeEnum, HasStatelessAccessDelegate doDelegate)
     {
       _mockFunctionalSecurityStrategy
-          .InSequence(sequence)
-          .Setup(_ => _.HasAccess(
-              securableObjectType,
-              _mockSecurityProvider.Object,
-              _stubUser.Object,
-              new[] { AccessType.Get(accessTypeEnum) }))
-          .Callback(
-              (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) =>
-              {
-                CheckTransaction();
-                CheckTransaction();
-              })
+          .InVerifiableSequence(sequence)
+          .Setup(
+              _ => _.HasAccess(
+                  securableObjectType,
+                  _mockSecurityProvider.Object,
+                  _stubUser.Object,
+                  new[] { AccessType.Get(accessTypeEnum) }))
+          .Callback((Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) => { CheckTransaction(); })
           .Returns(doDelegate)
           .Verifiable();
     }
 
-    public void ExpectFunctionalSecurityStrategyHasAccess (MockSequence sequence, Type securableObjectType, Enum accessTypeEnum, bool returnValue)
+    [CLSCompliant(false)]
+    public void ExpectFunctionalSecurityStrategyHasAccess (VerifiableSequence sequence, Type securableObjectType, Enum accessTypeEnum, bool returnValue)
     {
       _mockFunctionalSecurityStrategy
-          .InSequence(sequence)
-          .Setup(_ => _.HasAccess(
-              securableObjectType,
-              _mockSecurityProvider.Object,
-              _stubUser.Object,
-              new[] { AccessType.Get(accessTypeEnum) }))
-          .Callback(
-              (Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) =>
-              {
-                CheckTransaction();
-                CheckTransaction();
-              })
+          .InVerifiableSequence(sequence)
+          .Setup(
+              _ => _.HasAccess(
+                  securableObjectType,
+                  _mockSecurityProvider.Object,
+                  _stubUser.Object,
+                  new[] { AccessType.Get(accessTypeEnum) }))
+          .Callback((Type type, ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) => { CheckTransaction(); })
           .Returns(returnValue)
           .Verifiable();
     }
 
-    public void ExpectPermissionReflectorGetRequiredMethodPermissions (MockSequence sequence, IMethodInformation methodInformation, params Enum[] returnedAccessTypes)
+    [CLSCompliant(false)]
+    public void ExpectPermissionReflectorGetRequiredMethodPermissions (VerifiableSequence sequence, IMethodInformation methodInformation, params Enum[] returnedAccessTypes)
     {
       _mockPermissionReflector
-          .InSequence(sequence)
-          .Setup(_ => _.GetRequiredMethodPermissions(
-              typeof(SecurableObject),
-              It.Is<IMethodInformation>(mi => mi.Equals(methodInformation))))
+          .InVerifiableSequence(sequence)
+          .Setup(
+              _ => _.GetRequiredMethodPermissions(
+                  typeof(SecurableObject),
+                  It.Is<IMethodInformation>(mi => mi.Equals(methodInformation))))
           .Returns(returnedAccessTypes)
           .Verifiable();
     }
 
     public void ExpectSecurityProviderGetAccess (SecurityContext context, params Enum[] returnedAccessTypes)
     {
-      _mockSecurityProvider.Setup(_ => _.GetAccess(context, _stubUser.Object))
+      _mockSecurityProvider
+          .Setup(_ => _.GetAccess(context, _stubUser.Object))
           .Callback((ISecurityContext context, ISecurityPrincipal principal) => CheckTransaction())
           .Returns(Array.ConvertAll(returnedAccessTypes, AccessType.Get))
           .Verifiable();
@@ -220,10 +216,11 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy();
       Mock.Get(objectSecurityStrategy)
-          .Setup(_ => _.HasAccess(
-              It.IsAny<ISecurityProvider>(),
-              It.IsAny<ISecurityPrincipal>(),
-              It.IsAny<IReadOnlyList<AccessType>>()))
+          .Setup(
+              _ => _.HasAccess(
+                  It.IsAny<ISecurityProvider>(),
+                  It.IsAny<ISecurityPrincipal>(),
+                  It.IsAny<IReadOnlyList<AccessType>>()))
           .Callback((ISecurityProvider securityProvider, ISecurityPrincipal principal, IReadOnlyList<AccessType> requiredAccessTypes) => CheckScope(expectedScope))
           .Returns(true)
           .Verifiable();

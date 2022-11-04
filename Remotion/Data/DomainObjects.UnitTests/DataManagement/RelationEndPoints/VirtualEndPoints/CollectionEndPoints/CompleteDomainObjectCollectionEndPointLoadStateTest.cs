@@ -74,15 +74,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void HasChangedFast ()
+    public void HasChangedFast_WithHasDataChangedFastIsTrue_ReturnsTrue ()
     {
-      var sequence = new MockSequence();
-      _dataManagerMock.InSequence(sequence).Setup(stub => stub.HasDataChangedFast()).Returns(true);
-      _dataManagerMock.InSequence(sequence).Setup(stub => stub.HasDataChangedFast()).Returns(false);
-      _dataManagerMock.InSequence(sequence).Setup(stub => stub.HasDataChangedFast()).Returns((bool?)null);
+      _dataManagerMock.Setup(stub => stub.HasDataChangedFast()).Returns(true);
 
       Assert.That(_loadState.HasChangedFast(), Is.True);
+    }
+
+    [Test]
+    public void HasChangedFast_WithHasDataChangedFastIsFalse_ReturnsFalse ()
+    {
+      _dataManagerMock.Setup(stub => stub.HasDataChangedFast()).Returns(false);
+
       Assert.That(_loadState.HasChangedFast(), Is.False);
+    }
+
+    [Test]
+    public void HasChangedFast_WithHasDataChangedFastIsNull_ReturnsNull ()
+    {
+      _dataManagerMock.Setup(stub => stub.HasDataChangedFast()).Returns((bool?)null);
+
       Assert.That(_loadState.HasChangedFast(), Is.Null);
     }
 
@@ -113,18 +124,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SetDataFromSubTransaction ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _collectionEndPointMock.Setup(stub => stub.GetCollectionEventRaiser()).Returns(_eventRaiserMock.Object);
 
       var sourceDataManager = new Mock<IDomainObjectCollectionEndPointDataManager>();
       var sourceLoadState = new CompleteDomainObjectCollectionEndPointLoadState(sourceDataManager.Object, _endPointProviderStub.Object, _transactionEventSinkStub.Object);
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(sourceDataManager.Object, _endPointProviderStub.Object))
           .Verifiable();
       _eventRaiserMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.WithinReplaceData())
           .Verifiable();
 
@@ -132,6 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _dataManagerMock.Verify();
       _eventRaiserMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -147,17 +159,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void SortCurrentData_RaisesEvent ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _collectionEndPointMock.Setup(stub => stub.GetCollectionEventRaiser()).Returns(_eventRaiserMock.Object);
 
       Comparison<DomainObject> comparison = (one, two) => 0;
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SortCurrentData(comparison))
           .Verifiable();
       _eventRaiserMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.WithinReplaceData())
           .Verifiable();
 
@@ -165,20 +177,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _dataManagerMock.Verify();
       _eventRaiserMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Rollback_RaisesEvent ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _collectionEndPointMock.Setup(stub => stub.GetCollectionEventRaiser()).Returns(_eventRaiserMock.Object);
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Rollback())
           .Verifiable();
       _eventRaiserMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.WithinReplaceData())
           .Verifiable();
 
@@ -186,22 +199,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _dataManagerMock.Verify();
       _eventRaiserMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Synchronize ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _collectionEndPointMock.Setup(stub => stub.GetCollectionEventRaiser()).Returns(_eventRaiserMock.Object);
 
       _dataManagerMock.Setup(stub => stub.OriginalItemsWithoutEndPoints).Returns(new[] { _relatedObject });
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.UnregisterOriginalItemWithoutEndPoint(_relatedObject))
           .Verifiable();
       _eventRaiserMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.WithinReplaceData())
           .Verifiable();
 
@@ -209,20 +223,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _dataManagerMock.Verify();
       _eventRaiserMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void SynchronizeOppositeEndPoint ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _collectionEndPointMock.Setup(stub => stub.GetCollectionEventRaiser()).Returns(_eventRaiserMock.Object);
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterOriginalOppositeEndPoint(_relatedEndPointStub.Object))
           .Verifiable();
       _eventRaiserMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.WithinReplaceData())
           .Verifiable();
 
@@ -232,6 +247,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       _dataManagerMock.Verify();
       _eventRaiserMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

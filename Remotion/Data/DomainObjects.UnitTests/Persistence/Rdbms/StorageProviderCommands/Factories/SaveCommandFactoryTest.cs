@@ -27,6 +27,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.StorageProviderCommands.Factories;
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProviderCommands.Factories
 {
@@ -71,51 +72,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var updateDbCommandBuilderNew1 = new Mock<IDbCommandBuilder>();
       var updateDbCommandBuilderNew2 = new Mock<IDbCommandBuilder>();
 
-      var tableDefinition1 = (TableDefinition)dataContainerNew1.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition2 = (TableDefinition)dataContainerNew2.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition3 = (TableDefinition)dataContainerNewWithoutRelations.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinitionA = (TableDefinition)dataContainerNew1.ClassDefinition.StorageEntityDefinition;
+      Assertion.DebugAssert((TableDefinition)dataContainerNew2.ClassDefinition.StorageEntityDefinition == tableDefinitionA);
+      var tableDefinitionB = (TableDefinition)dataContainerNewWithoutRelations.ClassDefinition.StorageEntityDefinition;
 
-      var insertSequence = new MockSequence();
+      var insertStatementParameters = new Queue<DataContainer>(new[] { dataContainerNew1, dataContainerNew2 });
+      var insertStatementReturnValues = new Queue<IDbCommandBuilder>(new[] { insertDbCommandBuilderNew1.Object, insertDbCommandBuilderNew2.Object });
       _dbCommandBuilderFactoryStrictMock
-          .InSequence(insertSequence)
-          .Setup(stub => stub.CreateForInsert(tableDefinition1, It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback((TableDefinition _, IEnumerable<ColumnValue> insertedColumns) => CheckInsertedComputerColumns(insertedColumns.ToArray(), dataContainerNew1))
-          .Returns(insertDbCommandBuilderNew1.Object);
+          .Setup(stub => stub.CreateForInsert(tableDefinitionA, It.IsNotNull<IEnumerable<ColumnValue>>()))
+          .Callback(
+              (TableDefinition _, IEnumerable<ColumnValue> insertedColumns) => CheckInsertedComputerColumns(insertedColumns.ToArray(), insertStatementParameters.Dequeue()))
+          .Returns(() => insertStatementReturnValues.Dequeue());
       _dbCommandBuilderFactoryStrictMock
-          .InSequence(insertSequence)
-          .Setup(stub => stub.CreateForInsert(tableDefinition2, It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback((TableDefinition _, IEnumerable<ColumnValue> insertedColumns) => CheckInsertedComputerColumns(insertedColumns.ToArray(), dataContainerNew2))
-          .Returns(insertDbCommandBuilderNew2.Object);
-      _dbCommandBuilderFactoryStrictMock
-          .InSequence(insertSequence)
-          .Setup(stub => stub.CreateForInsert(tableDefinition3, It.IsAny<IEnumerable<ColumnValue>>()))
+          .Setup(stub => stub.CreateForInsert(tableDefinitionB, It.IsAny<IEnumerable<ColumnValue>>()))
           .Returns(insertDbCommandBuilderNew3.Object);
 
-      var updateSequence = new MockSequence();
+      var updateStatementParameters = new Queue<DataContainer>(new[] { dataContainerNew1, dataContainerNew2 });
+      var updateStatementReturnValues = new Queue<IDbCommandBuilder>(new[] { updateDbCommandBuilderNew1.Object, updateDbCommandBuilderNew2.Object });
       _dbCommandBuilderFactoryStrictMock
-          .InSequence(updateSequence)
-          .Setup(stub => stub.CreateForUpdate(tableDefinition1, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
+          .Setup(stub => stub.CreateForUpdate(tableDefinitionA, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
           .Callback(
               (TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
               {
-                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainerNew1, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerNew1, tableDefinition1);
+                var dataContainer = updateStatementParameters.Dequeue();
+                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainer, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
+                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainer, tableDefinitionA);
               })
-          .Returns(updateDbCommandBuilderNew1.Object);
-      _dbCommandBuilderFactoryStrictMock
-          .InSequence(updateSequence)
-          .Setup(stub => stub.CreateForUpdate(tableDefinition2, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback(
-              (TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
-              {
-                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainerNew2, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerNew2, tableDefinition1);
-              })
-          .Returns(updateDbCommandBuilderNew2.Object);
+          .Returns(() => updateStatementReturnValues.Dequeue());
 
-      StubTableDefinitionFinder(dataContainerNew1.ID, tableDefinition1);
-      StubTableDefinitionFinder(dataContainerNew2.ID, tableDefinition2);
-      StubTableDefinitionFinder(dataContainerNewWithoutRelations.ID, tableDefinition3);
+      StubTableDefinitionFinder(dataContainerNew1.ID, tableDefinitionA);
+      StubTableDefinitionFinder(dataContainerNew2.ID, tableDefinitionA);
+      StubTableDefinitionFinder(dataContainerNewWithoutRelations.ID, tableDefinitionB);
 
       var result = _factory.CreateForSave(
           new[]
@@ -126,6 +113,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           });
 
       _tableDefinitionFinderStrictMock.Verify();
+      Assert.That(insertStatementReturnValues, Is.Empty);
+      Assert.That(updateStatementReturnValues, Is.Empty);
       Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
       var tuples = ((MultiDataContainerSaveCommand)result).Tuples.ToList();
 
@@ -156,45 +145,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var updateDbCommandBuilderChangedEmployee = new Mock<IDbCommandBuilder>();
       var updateDbCommandBuilderMarkedAsChanged = new Mock<IDbCommandBuilder>();
 
-      var tableDefinitionChangedSerialNumber = (TableDefinition)dataContainerChangedSerialNumber.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinitionChangedEmployee = (TableDefinition)dataContainerChangedEmployee.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinitionMarkedAsChanged = (TableDefinition)dataContainerChangedMarkedAsChanged.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinition = (TableDefinition)dataContainerChangedSerialNumber.ClassDefinition.StorageEntityDefinition;
+      Assertion.DebugAssert((TableDefinition)dataContainerChangedEmployee.ClassDefinition.StorageEntityDefinition == tableDefinition);
+      Assertion.DebugAssert((TableDefinition)dataContainerChangedMarkedAsChanged.ClassDefinition.StorageEntityDefinition == tableDefinition);
 
-      var sequence = new MockSequence();
+      var updateStatementParameters = new Queue<(DataContainer DataContainer, bool ExpectEmployee, bool ExpectSerialNumber, bool ExpectClassID)>(
+          new[]
+          {
+              (DataContainer: dataContainerChangedSerialNumber, ExpectEmployee: false, ExpectSerialNumber: true, ExpectClassID: false),
+              (DataContainer: dataContainerChangedEmployee, ExpectEmployee: true, ExpectSerialNumber: false, ExpectClassID: false),
+              (DataContainer: dataContainerChangedMarkedAsChanged, ExpectEmployee: false, ExpectSerialNumber: false, ExpectClassID: true)
+          });
+      var updateStatementReturnValues = new Queue<IDbCommandBuilder>(
+          new[] { updateDbCommandBuilderChangedSerialNumber.Object, updateDbCommandBuilderChangedEmployee.Object, updateDbCommandBuilderMarkedAsChanged.Object });
       _dbCommandBuilderFactoryStrictMock
-          .InSequence(sequence)
-          .Setup(stub => stub.CreateForUpdate(tableDefinitionChangedSerialNumber, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
+          .Setup(stub => stub.CreateForUpdate(tableDefinition, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
           .Callback(
               (TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
               {
-                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainerChangedSerialNumber, expectEmployee: false, expectSerialNumber: true, expectClassID: false);
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerChangedSerialNumber, tableDefinitionChangedSerialNumber);
+                var parameters = updateStatementParameters.Dequeue();
+                CheckUpdatedComputerColumns(
+                    updatedColumns.ToArray(),
+                    parameters.DataContainer,
+                    expectEmployee: parameters.ExpectEmployee,
+                    expectSerialNumber: parameters.ExpectSerialNumber,
+                    expectClassID: parameters.ExpectClassID);
+                CheckComparedColumns(
+                    comparedColumnValues.ToArray(),
+                    parameters.DataContainer,
+                    tableDefinition);
               })
-          .Returns(updateDbCommandBuilderChangedSerialNumber.Object);
-      _dbCommandBuilderFactoryStrictMock
-          .InSequence(sequence)
-          .Setup(stub => stub.CreateForUpdate(tableDefinitionChangedEmployee, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback(
-              (TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
-              {
-                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainerChangedEmployee, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerChangedEmployee, tableDefinitionChangedSerialNumber);
-              })
-          .Returns(updateDbCommandBuilderChangedEmployee.Object);
-      _dbCommandBuilderFactoryStrictMock
-          .InSequence(sequence)
-          .Setup(stub => stub.CreateForUpdate(tableDefinitionMarkedAsChanged, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback(
-              (TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
-              {
-                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainerChangedMarkedAsChanged, expectEmployee: false, expectSerialNumber: false, expectClassID: true);
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerChangedMarkedAsChanged, tableDefinitionMarkedAsChanged);
-              })
-          .Returns(updateDbCommandBuilderMarkedAsChanged.Object);
+          .Returns(() => updateStatementReturnValues.Dequeue());
 
-      StubTableDefinitionFinder(dataContainerChangedSerialNumber.ID, tableDefinitionChangedSerialNumber);
-      StubTableDefinitionFinder(dataContainerChangedEmployee.ID, tableDefinitionChangedSerialNumber);
-      StubTableDefinitionFinder(dataContainerChangedMarkedAsChanged.ID, tableDefinitionMarkedAsChanged);
+      StubTableDefinitionFinder(dataContainerChangedSerialNumber.ID, tableDefinition);
+      StubTableDefinitionFinder(dataContainerChangedEmployee.ID, tableDefinition);
+      StubTableDefinitionFinder(dataContainerChangedMarkedAsChanged.ID, tableDefinition);
 
       var result =
           _factory.CreateForSave(new[] { dataContainerChangedSerialNumber, dataContainerChangedEmployee, dataContainerChangedMarkedAsChanged });
@@ -203,6 +188,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var tuples = ((MultiDataContainerSaveCommand)result).Tuples.ToList();
 
       _tableDefinitionFinderStrictMock.Verify();
+      Assert.That(updateStatementReturnValues, Is.Empty);
       Assert.That(tuples.Count, Is.EqualTo(3));
       Assert.That(tuples[0].Item1, Is.EqualTo(dataContainerChangedSerialNumber.ID));
       Assert.That(tuples[0].Item2, Is.SameAs(updateDbCommandBuilderChangedSerialNumber.Object));
@@ -222,9 +208,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var dataContainerDeletedWithRelations2 = DataContainer.CreateForExisting(DomainObjectIDs.Computer2, null, pd => pd.DefaultValue);
       dataContainerDeletedWithRelations2.Delete();
 
-      var tableDefinition1 = (TableDefinition)dataContainerDeletedWithoutRelations.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition2 = (TableDefinition)dataContainerDeletedWithRelations1.ID.ClassDefinition.StorageEntityDefinition;
-      var tableDefinition3 = (TableDefinition)dataContainerDeletedWithRelations2.ID.ClassDefinition.StorageEntityDefinition;
+      var tableDefinitionA = (TableDefinition)dataContainerDeletedWithoutRelations.ClassDefinition.StorageEntityDefinition;
+      var tableDefinitionB = (TableDefinition)dataContainerDeletedWithRelations1.ClassDefinition.StorageEntityDefinition;
+
+      Assertion.DebugAssert((TableDefinition)dataContainerDeletedWithRelations2.ClassDefinition.StorageEntityDefinition == tableDefinitionB);
 
       var updateDbCommandBuilderDeleted2 = new Mock<IDbCommandBuilder>();
       var updateDbCommandBuilderDeleted3 = new Mock<IDbCommandBuilder>();
@@ -232,60 +219,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       var deleteDbCommandBuilderDeleted2 = new Mock<IDbCommandBuilder>();
       var deleteDbCommandBuilderDeleted3 = new Mock<IDbCommandBuilder>();
 
-      var updateSequence = new MockSequence();
+      var updateStatementParameters = new Queue<DataContainer>(new[] { dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2 });
+      var updateStatementReturnValues = new Queue<IDbCommandBuilder>(new[] { updateDbCommandBuilderDeleted2.Object, updateDbCommandBuilderDeleted3.Object });
       _dbCommandBuilderFactoryStrictMock
-          .InSequence(updateSequence)
-          .Setup(stub => stub.CreateForUpdate(tableDefinition2, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
+          .Setup(stub => stub.CreateForUpdate(tableDefinitionB, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
           .Callback(
               (TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
               {
-                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainerDeletedWithRelations1, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerDeletedWithRelations1, tableDefinition2);
+                var dataContainer = updateStatementParameters.Dequeue();
+                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainer, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
+                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainer, tableDefinitionB);
               })
-          .Returns(updateDbCommandBuilderDeleted2.Object);
-      _dbCommandBuilderFactoryStrictMock
-          .InSequence(updateSequence)
-          .Setup(stub => stub.CreateForUpdate(tableDefinition3, It.IsNotNull<IEnumerable<ColumnValue>>(), It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback(
-              (TableDefinition _, IEnumerable<ColumnValue> updatedColumns, IEnumerable<ColumnValue> comparedColumnValues) =>
-              {
-                CheckUpdatedComputerColumns(updatedColumns.ToArray(), dataContainerDeletedWithRelations2, expectEmployee: true, expectSerialNumber: false, expectClassID: false);
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerDeletedWithRelations2, tableDefinition3);
-              })
-          .Returns(updateDbCommandBuilderDeleted3.Object);
+          .Returns(()=> updateStatementReturnValues.Dequeue());
 
-      var deleteSequence = new MockSequence();
+      var deleteStatementParameters = new Queue<DataContainer>(
+          new[] { dataContainerDeletedWithoutRelations, dataContainerDeletedWithRelations1, dataContainerDeletedWithRelations2 });
+      var deleteStatementReturnValues = new Queue<IDbCommandBuilder>(
+          new[] { deleteDbCommandBuilderDeleted1.Object, deleteDbCommandBuilderDeleted2.Object, deleteDbCommandBuilderDeleted3.Object });
       _dbCommandBuilderFactoryStrictMock
-          .InSequence(deleteSequence)
-          .Setup(stub => stub.CreateForDelete(tableDefinition1, It.IsNotNull<IEnumerable<ColumnValue>>()))
+          .Setup(
+              stub => stub.CreateForDelete(
+                  It.Is<TableDefinition>(p => p == deleteStatementParameters.Peek().ClassDefinition.StorageEntityDefinition),
+                  It.IsNotNull<IEnumerable<ColumnValue>>()))
           .Callback(
               (TableDefinition _, IEnumerable<ColumnValue> comparedColumnValues) =>
               {
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerDeletedWithoutRelations, tableDefinition1);
+                var dataContainer = deleteStatementParameters.Dequeue();
+                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainer, (TableDefinition)dataContainer.ClassDefinition.StorageEntityDefinition);
               })
-          .Returns(deleteDbCommandBuilderDeleted1.Object);
-      _dbCommandBuilderFactoryStrictMock
-          .InSequence(deleteSequence)
-          .Setup(stub => stub.CreateForDelete(tableDefinition2, It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback(
-              (TableDefinition _, IEnumerable<ColumnValue> comparedColumnValues) =>
-              {
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerDeletedWithRelations1, tableDefinition2);
-              })
-          .Returns(deleteDbCommandBuilderDeleted2.Object);
-      _dbCommandBuilderFactoryStrictMock
-          .InSequence(deleteSequence)
-          .Setup(stub => stub.CreateForDelete(tableDefinition3, It.IsNotNull<IEnumerable<ColumnValue>>()))
-          .Callback(
-              (TableDefinition _, IEnumerable<ColumnValue> comparedColumnValues) =>
-              {
-                CheckComparedColumns(comparedColumnValues.ToArray(), dataContainerDeletedWithRelations2, tableDefinition3);
-              })
-          .Returns(deleteDbCommandBuilderDeleted3.Object);
+          .Returns(() => deleteStatementReturnValues.Dequeue());
 
-      StubTableDefinitionFinder(dataContainerDeletedWithoutRelations.ID, tableDefinition1);
-      StubTableDefinitionFinder(dataContainerDeletedWithRelations1.ID, tableDefinition2);
-      StubTableDefinitionFinder(dataContainerDeletedWithRelations2.ID, tableDefinition3);
+      StubTableDefinitionFinder(dataContainerDeletedWithoutRelations.ID, tableDefinitionA);
+      StubTableDefinitionFinder(dataContainerDeletedWithRelations1.ID, tableDefinitionB);
+      StubTableDefinitionFinder(dataContainerDeletedWithRelations2.ID, tableDefinitionB);
 
       var result = _factory.CreateForSave(
           new[]
@@ -296,6 +262,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
           });
 
       _tableDefinitionFinderStrictMock.Verify();
+      Assert.That(updateStatementReturnValues, Is.Empty);
+      Assert.That(deleteStatementReturnValues, Is.Empty);
       Assert.That(result, Is.TypeOf(typeof(MultiDataContainerSaveCommand)));
       var tuples = ((MultiDataContainerSaveCommand)result).Tuples.ToList();
 

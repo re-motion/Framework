@@ -425,13 +425,17 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       var controlToWrap = new ReplaceableControlMock();
       MemberCallerMock.Setup(stub => stub.GetControlState(controlToReplace)).Returns(ControlState.ChildrenInitialized);
 
-      var sequence = new MockSequence();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, null)).Returns("error").Verifiable();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error")).Returns((string)null).Callback(
-          (ControlCollection collection, string exceptionMessage) => Assert.That(
-                              testPageHolder.Page.Controls,
-                              Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }))).Verifiable();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.InitRecursive(replacer, testPageHolder.Page)).Verifiable();
+      var sequence = new VerifiableSequence();
+      MemberCallerMock.InVerifiableSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, null)).Returns("error").Verifiable();
+      MemberCallerMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error"))
+          .Returns((string)null)
+          .Callback(
+              (ControlCollection collection, string exceptionMessage) =>
+                  Assert.That(testPageHolder.Page.Controls, Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer })))
+          .Verifiable();
+      MemberCallerMock.InVerifiableSequence(sequence).Setup(mock => mock.InitRecursive(replacer, testPageHolder.Page)).Verifiable();
 
       Assert.That(replacer.Controls, Is.Empty);
 
@@ -439,6 +443,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       replacer.ReplaceAndWrap(controlToReplace, controlToWrap, new StateLoadingStrategy());
 
       MemberCallerMock.Verify();
+      sequence.Verify();
 
       Assert.That(
           testPageHolder.Page.Controls,
@@ -458,19 +463,24 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.ControlReplacing
       var controlToWrap = new ReplaceableControlMock();
       MemberCallerMock.Setup(stub => stub.GetControlState(controlToReplace)).Returns(ControlState.ChildrenInitialized);
 
-      var sequence = new MockSequence();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, null)).Returns("error").Verifiable();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error")).Returns((string)null).Callback(
-          (ControlCollection collection, string exceptionMessage) => Assert.That(
-                              testPageHolder.Page.Controls,
-                              Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }))).Verifiable();
-      MemberCallerMock.InSequence(sequence).Setup(mock => mock.InitRecursive(replacer, testPageHolder.Page)).Verifiable();
+      var sequence = new VerifiableSequence();
+      MemberCallerMock.InVerifiableSequence(sequence).Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, null)).Returns("error").Verifiable();
+      MemberCallerMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.SetCollectionReadOnly(testPageHolder.Page.Controls, "error"))
+          .Returns((string)null)
+          .Callback(
+              (ControlCollection collection, string exceptionMessage) =>
+                  Assert.That(testPageHolder.Page.Controls, Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer })))
+          .Verifiable();
+      MemberCallerMock.InVerifiableSequence(sequence).Setup(mock => mock.InitRecursive(replacer, testPageHolder.Page)).Verifiable();
 
       Assert.That(replacer.Controls, Is.Empty);
 
       testPageHolder.Page.Controls.Add(controlToReplace);
       replacer.ReplaceAndWrap(controlToReplace, controlToWrap, new StateLoadingStrategy());
       MemberCallerMock.Verify();
+      sequence.Verify();
       Assert.That(
           testPageHolder.Page.Controls,
           Is.EqualTo(new Control[] { testPageHolder.OtherNamingContainer, testPageHolder.NamingContainer, replacer }));

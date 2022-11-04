@@ -51,9 +51,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       endPointStub.Setup(stub => stub.ID).Returns(endPointID);
       endPointStub.Setup(stub => stub.Definition).Returns(endPointID.Definition);
       endPointStub.Setup(stub => stub.IsDataComplete).Returns(true);
-      var sequence = new MockSequence();
-      endPointStub.InSequence(sequence).Setup(stub => stub.IsSynchronized).Returns(true);
-      endPointStub.InSequence(sequence).Setup(stub => stub.IsSynchronized).Returns(false);
+      endPointStub
+          .SetupSequence(stub => stub.IsSynchronized)
+          .Returns(true)
+          .Returns(false);
       RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
 
       Assert.That(BidirectionalRelationSyncService.IsSynchronized(_transaction, endPointID), Is.True);
@@ -68,9 +69,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation
       endPointStub.Setup(stub => stub.ID).Returns(endPointID);
       endPointStub.Setup(stub => stub.Definition).Returns(endPointID.Definition);
       endPointStub.Setup(stub => stub.IsDataComplete).Returns(true);
-      var sequence = new MockSequence();
-      endPointStub.InSequence(sequence).Setup(stub => stub.IsSynchronized).Returns(true);
-      endPointStub.InSequence(sequence).Setup(stub => stub.IsSynchronized).Returns(false);
+      endPointStub
+          .SetupSequence(stub => stub.IsSynchronized)
+          .Returns(true)
+          .Returns(false);
       RelationEndPointManagerTestHelper.AddEndPoint(_relationEndPointManager, endPointStub.Object);
 
       var subTransaction = _transaction.CreateSubTransaction();

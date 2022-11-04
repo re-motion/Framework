@@ -71,19 +71,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       CollectionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRemoving(CollectionEndPoint.Collection, _replacedRelatedObject)
           .WithCurrentTransaction(Transaction)
           .Verifiable();
       CollectionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupAdding(CollectionEndPoint.Collection, _replacementRelatedObject)
           .WithCurrentTransaction(Transaction)
           .Verifiable();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _replacedRelatedObject, _replacementRelatedObject))
           .Verifiable();
 
@@ -91,23 +91,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       TransactionEventSinkMock.Verify();
       CollectionMockEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void End ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _replacedRelatedObject, _replacementRelatedObject))
           .Verifiable();
       CollectionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupAdded(CollectionEndPoint.Collection, _replacementRelatedObject)
           .WithCurrentTransaction(Transaction)
           .Verifiable();
       CollectionMockEventReceiver
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupRemoved(CollectionEndPoint.Collection, _replacedRelatedObject)
           .WithCurrentTransaction(Transaction)
           .Verifiable();
@@ -116,6 +117,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
 
       TransactionEventSinkMock.Verify();
       CollectionMockEventReceiver.Verify();
+      sequence.Verify();
     }
 
     [Test]

@@ -27,7 +27,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     [Test]
     public void FullEventChain ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectCommittingEvents(
           sequence,
           new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
@@ -53,12 +53,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
       Assert.That(ClientTransaction.Current, Is.Not.SameAs(Transaction));
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InExtension ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectCommittingEvents(
           sequence,
           new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
@@ -99,12 +100,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Transaction.Commit();
 
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InTransaction ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectCommittingEvents(
           sequence,
           new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
@@ -145,12 +147,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Transaction.Commit();
 
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
     public void FullEventChain_WithReiterationDueToAddedObject_InDomainObject ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectCommittingEvents(
           sequence,
           new (DomainObject DomainObject, Mock<IDomainObjectMockEventReceiver> Mock, Action<IInvocation> Callback)[]
@@ -189,6 +192,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       Transaction.Commit();
 
       VerifyAll();
+      sequence.Verify();
     }
   }
 }

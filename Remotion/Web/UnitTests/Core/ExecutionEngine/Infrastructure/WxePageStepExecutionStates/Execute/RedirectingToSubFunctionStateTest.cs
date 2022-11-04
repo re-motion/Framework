@@ -48,9 +48,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     [Test]
     public void ExecuteSubFunction_GoesToExecutingSubFunction ()
     {
-      var sequence = new MockSequence();
-      ResponseMock.InSequence(sequence).Setup(mock => mock.Redirect("~/destination.wxe")).Callback((string url) => WxeThreadAbortHelper.Abort()).Verifiable();
-      ExecutionStateContextMock.InSequence(sequence)
+      var sequence = new VerifiableSequence();
+      ResponseMock.InVerifiableSequence(sequence).Setup(mock => mock.Redirect("~/destination.wxe")).Callback((string url) => WxeThreadAbortHelper.Abort()).Verifiable();
+      ExecutionStateContextMock.InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithPermaUrlState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -71,6 +71,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       }
 
       VerifyAll();
+      sequence.Verify();
     }
 
     [Test]
