@@ -57,6 +57,8 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
                                                                    "BrowserView",
                                                                    "SidebarContentsSplitView",
                                                                    "SidebarContentsSplitView",
+                                                                   "SidebarContentsSplitView",
+                                                                   "SidebarContentsSplitView",
                                                                    "View"
                                                                };
 
