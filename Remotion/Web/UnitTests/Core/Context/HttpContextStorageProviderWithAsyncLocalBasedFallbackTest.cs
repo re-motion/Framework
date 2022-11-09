@@ -101,7 +101,7 @@ namespace Remotion.Web.UnitTests.Core.Context
 
       var context = HttpContext.Current;
       int? threadResult = null;
-
+#pragma warning disable RMCORE0001
       var t = new Thread(
           () =>
           {
@@ -110,7 +110,7 @@ namespace Remotion.Web.UnitTests.Core.Context
           });
       t.Start();
       t.Join();
-
+#pragma warning restore RMCORE0001
       var result = _provider.GetData("test");
       Assert.That(result, Is.EqualTo(123));
       Assert.That(threadResult, Is.EqualTo(123));
@@ -122,7 +122,7 @@ namespace Remotion.Web.UnitTests.Core.Context
       _provider.SetData("test", 123);
 
       int? threadResult = null;
-
+#pragma warning disable RMCORE0001
       var t = new Thread(
           () =>
           {
@@ -130,7 +130,7 @@ namespace Remotion.Web.UnitTests.Core.Context
           });
       t.Start();
       t.Join();
-
+#pragma warning restore RMCORE0001
       var result = _provider.GetData("test");
       Assert.That(result, Is.EqualTo(123));
       Assert.That(threadResult, Is.Null);

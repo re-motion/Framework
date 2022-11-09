@@ -9,8 +9,8 @@
 
   <PropertyGroup>
     <TargetFrameworks>net6.0-windows</TargetFrameworks>
-    <AssemblyTitle>Remotion Web Analyzer Integration Tests</AssemblyTitle>
-    <AssemblyName>Remotion.Web.Development.Analyzers.IntegrationTests</AssemblyName>
+    <AssemblyTitle>Remotion Core Analyzer Integration Tests</AssemblyTitle>
+    <AssemblyName>Remotion.Core.Development.Analyzers.IntegrationTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>
     <SignAssembly>False</SignAssembly>
   </PropertyGroup>
@@ -20,9 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
-    <ProjectReference Include="..\Core\Web.Core.csproj" />
-    <ProjectReference Include="..\Development.Analyzers\Web.Development.Analyzers.csproj" />
+    <ProjectReference Include="..\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\Development.Analyzers\Core.Development.Analyzers.csproj" />
   </ItemGroup>
 
   <Import Project="..\..\..\Build\Shared.build.targets" />

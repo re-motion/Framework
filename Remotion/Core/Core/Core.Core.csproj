@@ -27,4 +27,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
+  <ItemGroup>
+    <None Include="..\Development.Analyzers\bin\$(Configuration)\netstandard2.0\Remotion.Core.Development.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
 </Project>
