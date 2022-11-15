@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 
 namespace Remotion.Web.UI.Controls
@@ -33,7 +34,8 @@ namespace Remotion.Web.UI.Controls
 
     // fields
 
-    private string? _title;
+    private WebString _title;
+    private string _accessKey = string.Empty;
     private IconInfo _icon;
     private LazyContainer _lazyContainer;
 
@@ -114,10 +116,20 @@ namespace Remotion.Web.UI.Controls
     [Category("Appearance")]
     [Description("The title displayed in this view's tab.")]
     [NotifyParentProperty(true)]
-    public virtual string? Title
+    public virtual WebString Title
     {
       get { return _title; }
       set { _title = value; }
+    }
+
+    [Category("Accessibility")]
+    [Description("The AccessKey rendered in the anchor tag.")]
+    [DefaultValue("")]
+    [AllowNull]
+    public string AccessKey
+    {
+      get { return _accessKey; }
+      set { _accessKey = value ?? string.Empty; }
     }
 
     /// <summary> Gets or sets the icon displayed in the tab for this view. </summary>
@@ -177,7 +189,7 @@ namespace Remotion.Web.UI.Controls
   {
     public EmptyTabView ()
     {
-      Title = "&nbsp;";
+      Title = WebString.CreateFromHtml("&nbsp;");
       ID = null;
     }
 

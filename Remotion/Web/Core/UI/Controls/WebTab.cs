@@ -48,24 +48,23 @@ public class WebTab: IWebTab, IControlStateManager
   private string _accessKey = string.Empty;
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTab (string itemID, string text, IconInfo? icon)
+  public WebTab (string itemID, WebString text, IconInfo? icon)
   {
     ArgumentUtility.CheckNotNull("itemID", itemID);
-    ArgumentUtility.CheckNotNull("text", text);
 
     _itemID = itemID;
-    _text = WebString.CreateFromText(text);
+    _text = text;
     _icon = icon ?? new IconInfo(string.Empty);
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTab (string itemID, string text, string iconUrl)
+  public WebTab (string itemID, WebString text, string iconUrl)
     : this(itemID, text, new IconInfo(iconUrl))
   {
   }
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTab (string itemID, string text)
+  public WebTab (string itemID, WebString text)
     : this(itemID, text, (IconInfo?)null)
   {
   }
