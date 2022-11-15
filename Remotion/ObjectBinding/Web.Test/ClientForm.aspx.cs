@@ -56,7 +56,7 @@ public class ClientForm : TestWxeBasePage
     IDataEditControl dataEditControl;
     dataEditControl = AddPage(
         "TestTabbedPersonDetailsUserControl",
-        "Person Details",
+        WebString.CreateFromText("Person Details"),
         new IconInfo(
             resourceUrlFactory.CreateResourceUrl(typeof(Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif").GetUrl()),
         "TestTabbedPersonDetailsUserControl.ascx");
@@ -64,7 +64,7 @@ public class ClientForm : TestWxeBasePage
       dataEditControls.Add(dataEditControl);
     dataEditControl = AddPage(
         "TestTabbedPersonJobsUserControl",
-        "Jobs",
+        WebString.CreateFromText("Jobs"),
         new IconInfo(resourceUrlFactory.CreateResourceUrl(typeof(Job), ResourceType.Image, "Remotion.ObjectBinding.Sample.Job.gif").GetUrl()),
         "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
@@ -81,7 +81,7 @@ public class ClientForm : TestWxeBasePage
   }
 
 
-  private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
+  private IDataEditControl AddPage (string id, WebString title, IconInfo icon, string path)
   {
     TabView view = new TabView();
     view.ID = id+ "_View";
