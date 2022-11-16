@@ -161,6 +161,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     }
 
     [Test]
+    public void RenderMultilineEnabledWithStyleAndStandardPlaceholder ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, PlainTextString.CreateFromText("Great placeholder"));
+    }
+
+    [Test]
+    public void RenderMultilineEnabledWithStyleAndEncodedPlaceholder ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, PlainTextString.CreateFromText("P. \"The Great\" Holder"));
+    }
+
+    [Test]
+    public void RenderMultilineEnabledWithStyleAndEmptyPlaceholder ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, PlainTextString.Empty);
+    }
+
+    [Test]
     public void TestDiagnosticMetadataRenderingWithAutoPostBack ()
     {
       _renderer = new BocMultilineTextValueRenderer(
@@ -190,9 +208,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
-    private XmlNode RenderMultiLineEditable (bool isDisabled, bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack)
+    private XmlNode RenderMultiLineEditable (bool isDisabled, bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null)
     {
       SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
+      if (placeholder.HasValue)
+        TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
 
       TextValue.Setup(mock => mock.Enabled).Returns(!isDisabled);
 
@@ -224,6 +244,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       CheckTextAreaStyle(textarea, false, withStyle);
       Html.AssertTextNode(textarea, TextValue.Object.Text, 0);
       Html.AssertChildElementCount(textarea, 0);
+
+      if (placeholder.HasValue && !placeholder.Value.IsEmpty)
+        Html.AssertAttribute(textarea, "placeholder", placeholder);
+      else
+        Html.AssertNoAttribute(textarea, "placeholder");
+
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");

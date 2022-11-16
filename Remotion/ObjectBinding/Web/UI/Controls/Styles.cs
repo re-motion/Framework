@@ -21,7 +21,6 @@ using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -400,6 +399,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private static readonly string s_scriptFileKey = typeof(TextBoxStyle).GetFullNameChecked() + "_Script";
 
     private int? _rows;
+    private PlainTextString _placeholder;
     private BocTextBoxMode _textMode;
     private readonly BocTextBoxMode _defaultTextMode = BocTextBoxMode.SingleLine;
     private bool? _wrap;
@@ -424,6 +424,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (_wrap != null)
         textBox.Wrap = _wrap.Value;
+
+      if (!_placeholder.IsEmpty)
+        textBox.Attributes.Add("placeholder", _placeholder.GetValue());
 
       if (_textMode == BocTextBoxMode.MultiLine
           && MaxLength != null
@@ -467,6 +470,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         Rows = ts.Rows;
         TextMode = ts.TextMode;
         Wrap = ts.Wrap;
+        Placeholder = ts.Placeholder;
       }
     }
 
@@ -478,6 +482,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _rows; }
       set { _rows = value; }
+    }
+
+    [Description("The placeholder value of the textbox.")]
+    [Category("Data")]
+    [DefaultValue(typeof(string), "")]
+    [NotifyParentProperty(true)]
+    public PlainTextString Placeholder
+    {
+      get { return _placeholder; }
+      set { _placeholder = value; }
     }
 
     [Description("The behavior mode of the textbox.")]

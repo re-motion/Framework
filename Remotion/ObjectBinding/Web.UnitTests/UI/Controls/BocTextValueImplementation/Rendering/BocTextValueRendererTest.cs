@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Xml;
 using Moq;
 using NUnit.Framework;
@@ -105,6 +107,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     public void RenderSingleLineEditableWithStyle ()
     {
       RenderSingleLineEditable(true, false, false, false);
+    }
+
+    [Test]
+    public void RenderSingleLineEditableWithStyleAndStandardPlaceholder ()
+    {
+      RenderSingleLineEditable(true, false, false, false, PlainTextString.CreateFromText("Great Placeholder"));
+    }
+
+    [Test]
+    public void RenderSingleLineEditableWithStyleAndEncodedPlaceholder ()
+    {
+      RenderSingleLineEditable(true, false, false, false, PlainTextString.CreateFromText("P. \"The Great\" Holder"));
+    }
+
+    [Test]
+    public void RenderSingleLineEditableWithStyleAndEmptyPlaceholder ()
+    {
+      RenderSingleLineEditable(true, false, false, false, PlainTextString.Empty);
     }
 
     [Test]
@@ -204,6 +224,24 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     }
 
     [Test]
+    public void RenderPasswordMaskedEditableWithStandardPlaceholder ()
+    {
+      RenderPasswordEditable(true, false, PlainTextString.CreateFromText("Great Placeholder"));
+    }
+
+    [Test]
+    public void RenderPasswordMaskedEditableWithEncodedPlaceholder ()
+    {
+      RenderPasswordEditable(true, false, PlainTextString.CreateFromText("P. \"The Great\" Holder"));
+    }
+
+    [Test]
+    public void RenderPasswordMaskedEditableWithEmptyPlaceholder ()
+    {
+      RenderPasswordEditable(true, false, PlainTextString.Empty);
+    }
+
+    [Test]
     public void RenderPasswordMaskedEditableWithAutoPostback ()
     {
       RenderPasswordEditable(true, true);
@@ -255,12 +293,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
-    private XmlNode RenderSingleLineEditable (bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack)
+    private XmlNode RenderSingleLineEditable (bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null)
     {
       TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
       TextValue.Setup(mock => mock.Enabled).Returns(true);
 
       SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
+      if (placeholder != null)
+        TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
 
       _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
@@ -289,6 +329,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         Html.AssertAttribute(input, "onchange", string.Format("javascript:__doPostBack('{0}','')", c_valueName));
       else
         Html.AssertNoAttribute(input, "onchange");
+
+      if (placeholder.HasValue && !placeholder.Value.IsEmpty)
+        Html.AssertAttribute(input, "placeholder", placeholder);
+      else
+        Html.AssertNoAttribute(input, "placeholder");
 
       CheckStyle(withStyle, span, input);
 
@@ -427,13 +472,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
-    private void RenderPasswordEditable (bool renderPassword, bool autoPostBack)
+    private void RenderPasswordEditable (bool renderPassword, bool autoPostBack, PlainTextString? placeholder = null)
     {
       TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
       TextValue.Setup(mock => mock.Enabled).Returns(true);
 
       SetStyle(false, false, false, autoPostBack);
       TextValue.Object.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
+      if (placeholder.HasValue)
+        TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
 
       _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
@@ -453,6 +500,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         Html.AssertAttribute(input, "value", c_firstLineText);
       else
         Html.AssertNoAttribute(input, "value");
+      if (placeholder.HasValue && !placeholder.Value.IsEmpty)
+        Html.AssertAttribute(input, "placeholder", placeholder);
+      else
+        Html.AssertNoAttribute(input, "placeholder");
+
 
       Assert.That(TextValue.Object.TextBoxStyle.AutoPostBack, Is.EqualTo(autoPostBack));
       if (autoPostBack)
