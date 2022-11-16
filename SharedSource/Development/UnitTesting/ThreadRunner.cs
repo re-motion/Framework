@@ -54,7 +54,7 @@ namespace Remotion.Development.UnitTesting
     public void Run ()
     {
       Exception? lastException = null;
-
+#pragma warning disable RMCORE0001
       // Use anonymous delegate to catch and store exceptions from the thread in the current scope.
       Thread otherThread =
         new Thread((ThreadStart)delegate
@@ -77,7 +77,7 @@ namespace Remotion.Development.UnitTesting
             }
           }
          );
-
+#pragma warning restore RMCORE0001
       otherThread.Start();
       bool timedOut = !JoinThread(otherThread);
 

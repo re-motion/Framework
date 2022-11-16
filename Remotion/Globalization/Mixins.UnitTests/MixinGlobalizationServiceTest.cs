@@ -314,7 +314,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
         Assert.That(outValue, Is.Not.Null);
         Assert.That(resourceManagerCache.TryGetValue(typeInformation2, out outValue), Is.False);
         Assert.That(outValue, Is.Null);
-
+#pragma warning disable RMCORE0001
         var task = Task.Run(
             () =>
             {
@@ -330,7 +330,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
               Assert.That(resourceManagerCache.TryGetValue(typeInformation2, out outValue), Is.True);
               Assert.That(outValue, Is.Not.Null);
             });
-
+#pragma warning restore RMCORE0001
         task.Wait();
 
         MixinConfiguration.SetActiveConfiguration(newMasterConfiguration);
@@ -370,7 +370,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
 
         Assert.That(resourceManagerCache.TryGetValue(typeInformation1, out outValue), Is.True);
         Assert.That(resourceManagerCache.TryGetValue(typeInformation2, out outValue), Is.False);
-
+#pragma warning disable RMCORE0001
         var task = Task.Run(
             () =>
             {
@@ -385,6 +385,7 @@ namespace Remotion.Globalization.Mixins.UnitTests
               Assert.That(resourceManagerCache.TryGetValue(typeInformation1, out outValue), Is.True);
               Assert.That(resourceManagerCache.TryGetValue(typeInformation2, out outValue), Is.True);
             });
+#pragma warning restore RMCORE0001
         task.Wait();
 
         MixinConfiguration.SetMasterConfiguration(newMasterConfiguration);
