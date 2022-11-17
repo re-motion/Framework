@@ -54,6 +54,7 @@
     <None Include="NuSpec\Web.targets" />
     <None Include="packages.config" />
     <None Include="ProjectFeatures\UseWebForms.props" />
+    <None Include="ProjectTypes\Analyzer.props" />
     <None Include="ProjectTypes\Executable.props" />
     <None Include="ProjectTypes\JavascriptLibrary.props" />
     <None Include="ProjectTypes\Library.props" />
