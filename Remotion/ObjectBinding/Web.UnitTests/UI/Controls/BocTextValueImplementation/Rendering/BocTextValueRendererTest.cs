@@ -15,10 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Net.Mime;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml;
 using Moq;
@@ -116,6 +114,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     }
 
     [Test]
+    public void RenderSingleLineEditableWithStyleAndAutoCompleteEmpty ()
+    {
+      RenderSingleLineEditable(true, false, false, false, autoComplete: string.Empty);
+    }
+
+    [Test]
     public void RenderSingleLineEditableWithStyleAndEncodedPlaceholder ()
     {
       RenderSingleLineEditable(true, false, false, false, PlainTextString.CreateFromText("P. \"The Great\" Holder"));
@@ -125,6 +129,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     public void RenderSingleLineEditableWithStyleAndEmptyPlaceholder ()
     {
       RenderSingleLineEditable(true, false, false, false, PlainTextString.Empty);
+    }
+
+    public void RenderSingleLineEditableWithStyleAndTypicalAutoComplete ()
+    {
+      RenderSingleLineEditable(true, false, false, false, autoComplete: "on");
     }
 
     [Test]
@@ -248,9 +257,33 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     }
 
     [Test]
+    public void RenderPasswordMaskedEditableWithAutoPostbackAndAutoCompleteEmpty ()
+    {
+      RenderPasswordEditable(true, true, autoComplete: string.Empty);
+    }
+
+    [Test]
+    public void RenderPasswordMaskedEditableWithAutoPostbackAndTypicalAutoComplete ()
+    {
+      RenderPasswordEditable(true, true, autoComplete: "current-password");
+    }
+
+    [Test]
     public void RenderPasswordNoRenderEditable ()
     {
       RenderPasswordEditable(false, false);
+    }
+
+    [Test]
+    public void RenderPasswordNoRenderEditableWithAutoCompleteEmpty ()
+    {
+      RenderPasswordEditable(false, false, autoComplete: string.Empty);
+    }
+
+    [Test]
+    public void RenderPasswordNoRenderEditableWithTypicalAutoComplete ()
+    {
+      RenderPasswordEditable(false, false, autoComplete:"current-password");
     }
 
     [Test]
@@ -293,7 +326,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
-    private XmlNode RenderSingleLineEditable (bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null)
+    private XmlNode RenderSingleLineEditable (bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null, string autoComplete = null)
     {
       TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
       TextValue.Setup(mock => mock.Enabled).Returns(true);
@@ -301,6 +334,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
       if (placeholder != null)
         TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
+      TextValue.Object.TextBoxStyle.AutoComplete = autoComplete;
 
       _renderer.Render(new BocTextValueRenderingContext(new Mock<HttpContextBase>().Object, Html.Writer, TextValue.Object));
 
@@ -334,6 +368,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         Html.AssertAttribute(input, "placeholder", placeholder);
       else
         Html.AssertNoAttribute(input, "placeholder");
+
+      if (string.IsNullOrEmpty(autoComplete))
+        Html.AssertNoAttribute(input, "autocomplete");
+      else
+        Html.AssertAttribute(input, "autocomplete", autoComplete);
 
       CheckStyle(withStyle, span, input);
 
@@ -472,12 +511,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
-    private void RenderPasswordEditable (bool renderPassword, bool autoPostBack, PlainTextString? placeholder = null)
+    private void RenderPasswordEditable (bool renderPassword, bool autoPostBack, PlainTextString? placeholder = null, string autoComplete = null)
     {
       TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
       TextValue.Setup(mock => mock.Enabled).Returns(true);
 
       SetStyle(false, false, false, autoPostBack);
+      TextValue.Object.TextBoxStyle.AutoComplete = autoComplete;
       TextValue.Object.TextBoxStyle.TextMode = renderPassword ? BocTextBoxMode.PasswordRenderMasked : BocTextBoxMode.PasswordNoRender;
       if (placeholder.HasValue)
         TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
@@ -500,11 +540,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
         Html.AssertAttribute(input, "value", c_firstLineText);
       else
         Html.AssertNoAttribute(input, "value");
+
       if (placeholder.HasValue && !placeholder.Value.IsEmpty)
         Html.AssertAttribute(input, "placeholder", placeholder);
       else
         Html.AssertNoAttribute(input, "placeholder");
 
+      if (string.IsNullOrEmpty(autoComplete))
+        Html.AssertNoAttribute(input, "autocomplete");
+      else
+        Html.AssertAttribute(input, "autocomplete", autoComplete);
 
       Assert.That(TextValue.Object.TextBoxStyle.AutoPostBack, Is.EqualTo(autoPostBack));
       if (autoPostBack)
