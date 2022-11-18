@@ -24,31 +24,41 @@ StyleUtility.CreateBorderSpans = function (selector)
 
 StyleUtility.AddBrowserSwitch = function ()
 {
-  var browser;
-  if (navigator.appVersion.indexOf ('Edge') !== -1)
+  function containsBrowser(brands, expectedBrand)
   {
-    browser = 'edge';
+    return brands.some(c => c.brand === expectedBrand);
   }
-  else if (navigator.appVersion.indexOf ('Chrome') !== -1)
+
+  let browser;
+  if (navigator.userAgentData)
   {
-    browser = 'blink';
+    const brands = navigator.userAgentData.brands;
+    if (containsBrowser(brands, 'Microsoft Edge'))
+      browser = 'blink';
+    else if (containsBrowser(brands, 'Google Chrome'))
+      browser = 'blink';
+    else if (containsBrowser(brands, 'Opera'))
+      browser = 'blink';
   }
-  else if (navigator.appVersion.indexOf ('OPR') !== -1)
+
+  // Fallback to the old api navigator.userAgent to prevent incorrect detection in future
+  // if a browser adds support for userAgentData
+  if(!browser)
   {
-    browser = 'blink';
+    if (navigator.userAgent.indexOf('Edg/') !== -1)
+      browser = 'blink';
+    else if (navigator.userAgent.indexOf('Chrome') !== -1)
+      browser = 'blink';
+    else if (navigator.userAgent.indexOf('OPR') !== -1)
+      browser = 'blink';
+    else if (navigator.userAgent.indexOf('WebKit') !== -1)
+      browser = 'webkit';
+    else if (navigator.userAgent.indexOf('Gecko') !== -1)
+      browser = 'mozilla';
+    else
+      browser = 'browserUnknown';
   }
-  else if (navigator.appVersion.indexOf('WebKit') !== -1)
-  {
-    browser = 'webkit';
-  }
-  else if (navigator.appName === 'Netscape')
-  {
-    browser = 'mozilla';
-  }
-  else
-  {
-    browser = 'browserUnknown';
-  }
+
   StyleUtility.AddPlatformSwitch();
 
   if (!document.body.classList.contains (browser))
@@ -57,15 +67,29 @@ StyleUtility.AddBrowserSwitch = function ()
 
 StyleUtility.AddPlatformSwitch = function ()
 {
-  var platform;
-  if (navigator.appVersion.indexOf ('Win') !== -1)
-    platform = 'win';
-  else if (navigator.appVersion.indexOf ('Mac') !== -1)
-    platform = 'mac';
-  else if (navigator.appVersion.indexOf ('X11') !== -1)
-    platform = 'x11';
+  let platform;
+  if (navigator.userAgentData)
+  {
+    if (navigator.userAgentData.platform === 'Windows')
+      platform = 'win';
+    else if (navigator.userAgentData.platform === 'macOS')
+      platform = 'mac';
+    else if (navigator.userAgentData.platform === 'Linux')
+      platform = 'x11';
+    else
+      platform = 'platformUnknown';
+  }
   else
-    platform = 'platformUnknown';
+  {
+    if (navigator.userAgent.indexOf ('Win') !== -1)
+      platform = 'win';
+    else if (navigator.userAgent.indexOf ('Mac') !== -1)
+      platform = 'mac';
+    else if (navigator.userAgent.indexOf ('X11') !== -1)
+      platform = 'x11';
+    else
+      platform = 'platformUnknown';
+  }
 
   if (!document.body.classList.contains (platform))
     document.body.classList.add (platform);
