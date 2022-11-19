@@ -163,19 +163,15 @@ input[type=button].remotion-themed,
 select:not([size]).remotion-themed,
 .remotion-themed select:not([size])
 {
-  padding-left: calc(var(--remotion-themed-spacing-small) - var(--remotion-themed-border-width));
-}
-
-.blink select:not([size]).remotion-themed,
-.blink .remotion-themed select:not([size])
-{
   padding-top: var(--remotion-themed-border-width);
+  padding-left: calc(var(--remotion-themed-spacing-small) - var(--remotion-themed-border-width));
 }
 
 .mozilla select:not([size]).remotion-themed,
 .mozilla .remotion-themed select:not([size])
 {
   padding-top: calc(var(--remotion-themed-spacing) - var(--remotion-themed-border-width));
+  padding-left: var(--remotion-themed-spacing);
 }
 
 select.remotion-themed:not(:disabled) option:not(:checked),

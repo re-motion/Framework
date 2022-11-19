@@ -79,6 +79,8 @@
   width: 100%;
 }
 
+.blink .bocReferenceValue span.content select,
+.edge .bocReferenceValue span.content select,
 .mozilla .bocReferenceValue span.content select
 {
   padding-top: revert;
@@ -87,6 +89,11 @@
 .bocReferenceValue span.content.hasIcon select
 {
   padding-left: calc(var(--default-icon-size) + var(--remotion-themed-spacing));
+}
+
+.mozilla .bocReferenceValue span.content.hasIcon select
+{
+  padding-left: calc(var(--default-icon-size) + var(--remotion-themed-spacing) + var(--remotion-themed-border-width) + var(--remotion-themed-spacing-small));
 }
 
 .bocReferenceValue span.content select.error
