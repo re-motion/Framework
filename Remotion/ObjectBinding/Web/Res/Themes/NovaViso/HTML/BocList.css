@@ -469,12 +469,17 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable s
 /*endregion*/
 
 /*region Validation markers*/
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker > img,
 div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable .validationRequiredMarker
 {
   height: var(--remotion-themed-img-width);
   width: var(--remotion-themed-img-width);
   margin-right: calc(-1 * (var(--single-whitespace-width) + var(--remotion-themed-spacing)));
+}
+
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker > img
+{
+  height: var(--remotion-themed-img-width);
+  width: var(--remotion-themed-img-width);
 }
 
 div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .bocListEditModeValidationMessage
@@ -545,7 +550,10 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable s
 {
   grid-row: 1;
   grid-column: 1;
-  margin: auto var(--remotion-themed-spacing);
+  margin-left: 0;
+  margin-right: var(--remotion-themed-spacing);
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker + .control
