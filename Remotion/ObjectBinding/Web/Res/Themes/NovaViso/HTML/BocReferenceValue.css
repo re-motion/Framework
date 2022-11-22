@@ -80,7 +80,6 @@
 }
 
 .blink .bocReferenceValue span.content select,
-.edge .bocReferenceValue span.content select,
 .mozilla .bocReferenceValue span.content select
 {
   padding-top: revert;
