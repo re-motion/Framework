@@ -117,7 +117,7 @@ public class SmartPage : Page, ISmartPage, ISmartNavigablePage
   [Description("The message displayed when the user attempts to leave the page.")]
   [Category("Appearance")]
   [DefaultValue("")]
-  public virtual WebString AbortMessage
+  public virtual PlainTextString AbortMessage
   {
     get { return _smartPageInfo.AbortMessage; }
     set { _smartPageInfo.AbortMessage = value; }
