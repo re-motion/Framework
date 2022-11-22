@@ -34,7 +34,7 @@ namespace Remotion.Web.UI.Controls
     private SingleControlItemCollection _command;
     private MissingPermissionBehavior _missingPermissionBehavior;
 
-    protected MenuTab (string itemID, string text, IconInfo? icon)
+    protected MenuTab (string itemID, WebString text, IconInfo? icon)
       : base(itemID, text, icon)
     {
       Initialize();

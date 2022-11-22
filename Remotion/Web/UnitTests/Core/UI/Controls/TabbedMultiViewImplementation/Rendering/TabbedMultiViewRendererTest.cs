@@ -163,7 +163,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
     {
       _control.Object.TopControl.Controls.Add(new LiteralControl("TopControls"));
 
-      var view1 = new TabView { ID="View1ID", Title = "View1Title" };
+      var view1 = new TabView { ID="View1ID", Title = WebString.CreateFromText("View1Title") };
       view1.LazyControls.Add(new LiteralControl("View1Contents"));
       _control.Setup(stub=>stub.GetActiveView()).Returns(view1);
 

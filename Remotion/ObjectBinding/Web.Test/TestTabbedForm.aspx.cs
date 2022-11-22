@@ -100,14 +100,16 @@ public class TestTabbedForm : TestWxeBasePage
     IDataEditControl dataEditControl;
     dataEditControl = AddPage(
         "TestTabbedPersonDetailsUserControl",
-        "&Person Details",
+        WebString.CreateFromHtml("<u>P</u>erson <b>Details</b>"),
+        "p",
         new IconInfo(resourceUrlFactory.CreateResourceUrl(typeof(Person), ResourceType.Image, "Remotion.ObjectBinding.Sample.Person.gif").GetUrl()),
         "TestTabbedPersonDetailsUserControl.ascx");
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
     dataEditControl = AddPage(
         "TestTabbedPersonJobsUserControl",
-        "&Jobs",
+        WebString.CreateFromText("&Jobs"),
+        "",
         new IconInfo(resourceUrlFactory.CreateResourceUrl(typeof(Job), ResourceType.Image, "Remotion.ObjectBinding.Sample.Job.gif").GetUrl()),
         "TestTabbedPersonJobsUserControl.ascx");
     if (dataEditControl != null)
@@ -124,7 +126,7 @@ public class TestTabbedForm : TestWxeBasePage
     PagesTabStrip.Tabs.Add(tab);
   }
 
-  private void AddMainMenuTab (string id, string text, IconInfo icon)
+  private void AddMainMenuTab (string id, WebString text, IconInfo icon)
   {
     WebTab tab = new WebTab();
     tab.Text = WebString.CreateFromText("text");
@@ -133,11 +135,12 @@ public class TestTabbedForm : TestWxeBasePage
     NavigationTabs.Tabs.Add(tab);
   }
 
-  private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
+  private IDataEditControl AddPage (string id, WebString title, string accessKey, IconInfo icon, string path)
   {
     TabView view = new TabView();
     view.ID = id+ "_View";
     view.Title = title;
+    view.AccessKey = accessKey;
     view.Icon = icon;
 
     UserControl control = (UserControl)this.LoadControl(path);
