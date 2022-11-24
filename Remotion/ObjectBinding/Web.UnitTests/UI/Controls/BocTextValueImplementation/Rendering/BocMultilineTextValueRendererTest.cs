@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Linq;
 using System.Web;
 using System.Xml;
 using Moq;
@@ -92,6 +91,18 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
     public void RenderMultiLineEditableWithStyle ()
     {
       RenderMultiLineEditable(false, true, false, false, false);
+    }
+
+    [Test]
+    public void RenderMultiLineEditableWithStyleAndEmptyAutoComplete ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, autoComplete: string.Empty);
+    }
+
+    [Test]
+    public void RenderMultiLineEditableWithStyleAndTypicalAutoComplete ()
+    {
+      RenderMultiLineEditable(false, true, false, false, false, autoComplete: "on");
     }
 
     [Test]
@@ -208,11 +219,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
-    private XmlNode RenderMultiLineEditable (bool isDisabled, bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null)
+    private XmlNode RenderMultiLineEditable (bool isDisabled, bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null, string autoComplete = null)
     {
       SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
       if (placeholder.HasValue)
         TextValue.Object.TextBoxStyle.Placeholder = placeholder.Value;
+      TextValue.Object.TextBoxStyle.AutoComplete = autoComplete;
 
       TextValue.Setup(mock => mock.Enabled).Returns(!isDisabled);
 
@@ -250,6 +262,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       else
         Html.AssertNoAttribute(textarea, "placeholder");
 
+      if (string.IsNullOrEmpty(autoComplete))
+        Html.AssertNoAttribute(textarea, "autocomplete");
+      else
+        Html.AssertAttribute(textarea, "autocomplete", autoComplete);
 
       var validationErrors = Html.GetAssertedChildElement(content, "fake", 1);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, "MyTextValue_ValidationErrors");

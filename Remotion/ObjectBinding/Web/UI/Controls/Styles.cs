@@ -403,11 +403,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private BocTextBoxMode _textMode;
     private readonly BocTextBoxMode _defaultTextMode = BocTextBoxMode.SingleLine;
     private bool? _wrap;
+    private string _autoComplete;
 
     public TextBoxStyle (BocTextBoxMode defaultTextMode)
     {
       _defaultTextMode = defaultTextMode;
       _textMode = _defaultTextMode;
+      _autoComplete = string.Empty;
     }
 
     public TextBoxStyle ()
@@ -427,6 +429,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       if (!_placeholder.IsEmpty)
         textBox.Attributes.Add("placeholder", _placeholder.GetValue());
+
+      if (!string.IsNullOrEmpty(_autoComplete))
+        textBox.Attributes.Add("autocomplete", _autoComplete);
 
       if (_textMode == BocTextBoxMode.MultiLine
           && MaxLength != null
@@ -471,6 +476,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         TextMode = ts.TextMode;
         Wrap = ts.Wrap;
         Placeholder = ts.Placeholder;
+        AutoComplete = ts.AutoComplete;
       }
     }
 
@@ -492,6 +498,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _placeholder; }
       set { _placeholder = value; }
+    }
+
+    ///  <summary>
+    /// Defines the autocomplete behaviour of the textbox.
+    /// Standard values are provided in <see cref="BocTextValueAutoCompleteAttribute"/>.
+    /// </summary>
+    [Description("The autocomplete behaviour of the textbox.")]
+    [Category("Behavior")]
+    [DefaultValue(typeof(string), "")]
+    [NotifyParentProperty(true)]
+    public string AutoComplete
+    {
+      get { return _autoComplete; }
+      set { _autoComplete = StringUtility.NullToEmpty(value); }
     }
 
     [Description("The behavior mode of the textbox.")]
