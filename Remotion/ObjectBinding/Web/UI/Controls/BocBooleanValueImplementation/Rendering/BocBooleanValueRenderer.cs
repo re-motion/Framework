@@ -265,7 +265,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       scriptBuilder.Append("this.querySelector(':scope > span[role=checkbox] > img')");
       scriptBuilder.Append(", ");
       if (renderingContext.Control.ShowDescription)
-        scriptBuilder.Append("this.querySelectorAll(':scope > span')[1]");
+        scriptBuilder.Append("this.querySelector(':scope > span.").Append(CssClassDescription).Append("')");
       else
         scriptBuilder.Append("null");
       scriptBuilder.Append(", ");
@@ -364,7 +364,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
       labelControl.Width = Unit.Empty;
       labelControl.Height = Unit.Empty;
       labelControl.ApplyStyle(renderingContext.Control.LabelStyle);
-      labelControl.CssClass = "description";
+      labelControl.CssClass = CssClassDescription;
     }
 
     public override string GetCssClassBase (IBocBooleanValue control)
@@ -376,5 +376,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocBooleanValueImplementation.R
     {
       return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
+
+    private string CssClassDescription => "description";
   }
 }

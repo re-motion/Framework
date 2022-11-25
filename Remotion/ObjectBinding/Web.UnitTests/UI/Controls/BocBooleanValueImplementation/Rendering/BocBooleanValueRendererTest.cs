@@ -555,7 +555,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
     private string GetClickScript (bool isRequired, bool isAutoPostbackEnabled)
     {
       return "BocBooleanValue.SelectNextCheckboxValue ('ResourceKey', this.querySelector(':scope > span[role=checkbox]'), "
-             + "this.querySelector(':scope > span[role=checkbox] > img'), this.querySelectorAll(':scope > span')[1], "
+             + "this.querySelector(':scope > span[role=checkbox] > img'), this.querySelector(':scope > span.description'), "
              + "this.querySelector(':scope > input'), " + isRequired.ToString().ToLower() + ", "
              + "'" + c_trueDescription + "', '" + c_falseDescription + "', '" + c_nullDescription + "');"
              + (isAutoPostbackEnabled ? c_postbackEventReference + ";" : "")
