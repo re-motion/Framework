@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Linq;
+using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
@@ -74,6 +75,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
     public override string GetCssClassBase (IBocMultilineTextValue control)
     {
       return "bocMultilineTextValue";
+    }
+
+    protected sealed override TextBox GetTextBox (BocRenderingContext<IBocMultilineTextValue> renderingContext)
+    {
+      return base.GetTextBox(renderingContext);
     }
   }
 }
