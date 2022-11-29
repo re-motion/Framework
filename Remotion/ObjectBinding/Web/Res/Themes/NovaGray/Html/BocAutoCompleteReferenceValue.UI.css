@@ -29,6 +29,7 @@
   margin: 0;
   width: 100%;
   display: table;
+  border-collapse: collapse;
 }
 
 .ac_results li
