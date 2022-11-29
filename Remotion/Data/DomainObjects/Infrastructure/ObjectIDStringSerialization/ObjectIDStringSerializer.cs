@@ -123,14 +123,22 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
       var valuePart = objectIDString.Substring(indexOfValuePart, indexOfTypeDelimiter - indexOfValuePart);
       var typePart = objectIDString.Substring(indexOfTypePart);
 
-      Type? type = TypeUtility.GetType(typePart, throwOnError: false);
-      if (type == null)
-      {
-        return errorHandler(
-            string.Format("Serialized ObjectID '{0}' is invalid: '{1}' is not the name of a loadable type.", objectIDString, typePart));
-      }
+#if NETFRAMEWORK
+      var typeParts = typePart.Split(new[] { ',' }, 3);
+      var isFromMscorlib = typeParts.Length < 2 || typeParts[1].Trim() == "mscorlib";
+      var typeName = isFromMscorlib ? typeParts[0].Trim() : null;
+#else
+      var typeName = typePart;
+#endif
 
-      var valueParser = GetValueParser(type);
+      IObjectIDValueParser? valueParser = typeName switch
+      {
+          "System.Guid" => GuidObjectIDValueParser.Instance,
+          "System.Int32" => Int32ObjectIDValueParser.Instance,
+          "System.String" => StringObjectIDValueParser.Instance,
+          _ => null
+      };
+
       if (valueParser == null)
         return errorHandler(string.Format("Serialized ObjectID '{0}' is invalid: type '{1}' is not supported.", objectIDString, typePart));
 
@@ -148,18 +156,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization
 
       var classDefinition = MappingConfiguration.Current.GetClassDefinition(classIDPart);
       return new ObjectID(classDefinition, value);
-    }
-
-    private IObjectIDValueParser? GetValueParser (Type type)
-    {
-      if (type == typeof(Guid))
-        return GuidObjectIDValueParser.Instance;
-      else if (type == typeof(Int32))
-        return Int32ObjectIDValueParser.Instance;
-      else if (type == typeof(String))
-        return StringObjectIDValueParser.Instance;
-      else
-        return null;
     }
 
     private string GetDelimitedValueTypeName (object value)
