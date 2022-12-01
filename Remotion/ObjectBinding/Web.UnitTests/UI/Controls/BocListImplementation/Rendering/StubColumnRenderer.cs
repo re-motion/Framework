@@ -24,21 +24,22 @@ using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
-  public class StubColumnRenderer : BocColumnRendererBase<StubColumnDefinition>
+  public class StubColumnRenderer : IBocColumnRenderer
   {
     public StubColumnRenderer (IResourceUrlFactory resourceUrlFactory)
-        : base(resourceUrlFactory, Remotion.Web.UI.Controls.Rendering.RenderingFeatures.Default, new BocListCssClassDefinition(), new FakeFallbackNavigationUrlProvider())
     {
     }
 
-    protected override void RenderTitleCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
+    public bool IsNull => false;
+
+    void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments)
     {
       renderingContext.Writer.AddAttribute("arguments-CellID", arguments.CellID);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderEndTag();
     }
 
-    protected override void RenderDataCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
+    public void RenderDataCell (BocColumnRenderingContext renderingContext, in BocDataCellRenderArguments arguments)
     {
       renderingContext.Writer.AddAttribute("arguments-CellID", arguments.CellID ?? "null");
       renderingContext.Writer.AddAttribute("arguments-HeaderIDs", arguments.HeaderIDs.Any() ? string.Join(", ", arguments.HeaderIDs) : "empty");
@@ -46,9 +47,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       renderingContext.Writer.RenderEndTag();
     }
 
-    protected override void RenderCellContents (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
+    public void RenderDataColumnDeclaration (BocColumnRenderingContext renderingContext, bool isTextXml)
     {
-      throw new NotImplementedException();
+      renderingContext.Writer.WriteBeginTag("col");
+      renderingContext.Writer.Write(" />");
     }
   }
 }
