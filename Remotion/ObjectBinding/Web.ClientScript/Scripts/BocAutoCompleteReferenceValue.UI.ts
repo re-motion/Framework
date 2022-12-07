@@ -1771,7 +1771,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
         if (!isVisibe)
         {
             const htmlPopUpDiv = popUpDiv as HTMLElement;
-            contentWidth = Math.max(0, htmlPopUpDiv.offsetLeft + htmlPopUpDiv.offsetWidth);
+            const width = LayoutUtility.GetOuterWidth(popUp);
+            contentWidth = Math.max(0, width);
             popUp.dataset['popUpContentWidth'] = '' + contentWidth;
         }
 
@@ -1809,11 +1810,15 @@ namespace Remotion.BocAutoCompleteReferenceValue
             maxHeight = '';
         }
 
-        const availableWidth = position.left + LayoutUtility.GetOuterWidth(reference);
-        const minWidth = LayoutUtility.GetOuterWidth(reference);
-        const maxWidth = Math.min (isNaN (options.maxWidth) ? LayoutUtility.GetOuterWidth(reference) : options.maxWidth, availableWidth);
-        const requiredWidth = contentWidth + 30;
-        const elementWidth = Math.max (Math.min (requiredWidth, maxWidth), minWidth);
+        const referenceWidth = LayoutUtility.GetOuterWidth(reference);
+        const marginLeft = 30;
+        const availableWidth = position.left + referenceWidth - marginLeft;
+        // js rounding errors sometimes create linebreaks
+        // therefore we add a single pixel for the field to always be wide enough:
+        const requiredWidth = contentWidth + 1;
+        const maxWidth = Math.min (isNaN (options.maxWidth) ? referenceWidth : options.maxWidth, availableWidth);
+        const maxAllowedWidth = Math.min(requiredWidth, maxWidth)
+        const elementWidth = Math.max(referenceWidth, maxAllowedWidth)
 
         const rightPosition = position.right;
 
