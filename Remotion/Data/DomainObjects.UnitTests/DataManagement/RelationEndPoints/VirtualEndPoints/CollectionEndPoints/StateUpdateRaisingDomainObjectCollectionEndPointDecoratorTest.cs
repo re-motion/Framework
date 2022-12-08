@@ -286,10 +286,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       // Check with HasChangedFast returning true, then false
 
       _innerEndPointMock.Reset();
-      var sequence1 = new MockSequence();
       _innerEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
-      _innerEndPointMock.InSequence(sequence1).Setup(stub => stub.HasChangedFast).Returns(true);
-      _innerEndPointMock.InSequence(sequence1).Setup(stub => stub.HasChangedFast).Returns(false);
+      _innerEndPointMock
+          .SetupSequence(stub => stub.HasChangedFast)
+          .Returns(true)
+          .Returns(false);
 
       _listenerMock.Reset();
       _listenerMock.Setup(mock => mock.VirtualEndPointStateUpdated(_endPointID, false)).Verifiable();
@@ -301,10 +302,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       // Check with exception
 
       _innerEndPointMock.Reset();
-      var sequence2 = new MockSequence();
       _innerEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
-      _innerEndPointMock.InSequence(sequence2).Setup(stub => stub.HasChangedFast).Returns(true);
-      _innerEndPointMock.InSequence(sequence2).Setup(stub => stub.HasChangedFast).Returns(false);
+      _innerEndPointMock
+          .SetupSequence(stub => stub.HasChangedFast)
+          .Returns(true)
+          .Returns(false);
 
       _listenerMock.Reset();
       _listenerMock.Setup(mock => mock.VirtualEndPointStateUpdated(_endPointID, false)).Verifiable();

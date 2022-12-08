@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Moq;
@@ -62,19 +64,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       // No load events for _order
       _order.SetLoadEventReceiver(null);
 
-      var sequence = new MockSequence();
-
         // Load _location, but try to modify _order
       ExpectOnLoadedCalls(
-          sequence,
-            _location,
+          _location,
             mi => CheckForbiddenSetProperty(ReadOnlyRootTransaction, _location, _order, o => o.OrderNumber, newValue: 2),
             mi => CheckForbiddenSetProperty(ReadOnlyMiddleTransaction, _location, _order, o => o.OrderNumber, newValue: 3),
             mi => CheckForbiddenSetProperty(WriteableSubTransaction, _location, _order, o => o.OrderNumber, newValue: 4));
 
       WriteableSubTransaction.EnsureDataAvailable(_location.ID);
 
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_location), Times.Exactly(3));
 
       CheckProperty(ReadOnlyRootTransaction, _order, o => o.OrderNumber, expectedOriginalValue: 1, expectedCurrentValue: 1);
 
@@ -89,19 +88,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       // No load events for _location
       _location.SetLoadEventReceiver(null);
 
-      var sequence = new MockSequence();
-
         // Load _order, but try to modify _location
       ExpectOnLoadedCalls(
-          sequence,
-            _order,
+          _order,
             mi => CheckForbiddenSetProperty(ReadOnlyRootTransaction, _order, _location, l => l.Client, newValue: _client2),
             mi => CheckForbiddenSetProperty(ReadOnlyMiddleTransaction, _order, _location, l => l.Client, newValue: _client3),
             mi => CheckForbiddenSetProperty(WriteableSubTransaction, _order, _location, l => l.Client, newValue: _client4));
 
       WriteableSubTransaction.EnsureDataAvailable(_order.ID);
 
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_order), Times.Exactly(3));
 
       CheckProperty(ReadOnlyRootTransaction, _location, l => l.Client, expectedOriginalValue: _client1, expectedCurrentValue: _client1);
 
@@ -116,11 +112,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       // No load events for _location
       _order.SetLoadEventReceiver(null);
 
-      var sequence = new MockSequence();
-
         // Load _location, but try to modify _order
       ExpectOnLoadedCalls(
-          sequence,
           _location,
           mi => CheckForbiddenSetProperty(ReadOnlyRootTransaction, _location, _order, o => o.OrderTicket, newValue: null),
           mi => CheckForbiddenSetProperty(ReadOnlyMiddleTransaction, _location, _order, o => o.OrderTicket, newValue: null),
@@ -128,7 +121,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
 
       WriteableSubTransaction.EnsureDataAvailable(_location.ID);
 
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_location), Times.Exactly(3));
 
       CheckProperty(ReadOnlyRootTransaction, _order, o => o.OrderTicket, expectedOriginalValue: _orderTicket1, expectedCurrentValue: _orderTicket1);
 
@@ -140,18 +133,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CannotModifyThisObject_BidirectionalRelations ()
     {
-      var sequence = new MockSequence();
-        // Load _order, but trying to modify _order.OrderTicket would also modify _orderTicket1
+      // Load _order, but trying to modify _order.OrderTicket would also modify _orderTicket1
       var offendingObject = _orderTicket1;
       var offendingProperty = GetPropertyIdentifier(typeof(OrderTicket), "Order");
       ExpectOnLoadedCalls(
-          sequence,
-            _order,
+          _order,
             mi => CheckForbiddenSetProperty(ReadOnlyRootTransaction, _order, _order, o => o.OrderTicket, null, offendingObject, offendingProperty),
             mi => CheckForbiddenSetProperty(ReadOnlyMiddleTransaction, _order, _order, o => o.OrderTicket, null, offendingObject, offendingProperty),
             mi => CheckForbiddenSetProperty(WriteableSubTransaction, _order, _order, o => o.OrderTicket, null, offendingObject, offendingProperty));
       WriteableSubTransaction.EnsureDataAvailable(_order.ID);
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_order), Times.Exactly(3));
       CheckProperty(ReadOnlyRootTransaction, _order, o => o.OrderTicket, expectedOriginalValue: _orderTicket1, expectedCurrentValue: _orderTicket1);
       CheckProperty(ReadOnlyMiddleTransaction, _order, o => o.OrderTicket, expectedOriginalValue: _orderTicket1, expectedCurrentValue: _orderTicket1);
       CheckProperty(WriteableSubTransaction, _order, o => o.OrderTicket, expectedOriginalValue: _orderTicket1, expectedCurrentValue: _orderTicket1);
@@ -160,16 +151,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CannotCreateObject ()
     {
-      var sequence = new MockSequence();
       var expectedSpecificMessage = "An object of type 'Partner' cannot be created.";
       ExpectOnLoadedCalls(
-          sequence,
-            _order,
+          _order,
             mi => CheckForbiddenOperation(ReadOnlyRootTransaction, () => Partner.NewObject(), _order, expectedSpecificMessage),
             mi => CheckForbiddenOperation(ReadOnlyMiddleTransaction, () => Partner.NewObject(), _order, expectedSpecificMessage),
             mi => CheckForbiddenOperation(WriteableSubTransaction, () => Partner.NewObject(), _order, expectedSpecificMessage));
       WriteableSubTransaction.EnsureDataAvailable(_order.ID);
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_order), Times.Exactly(3));
       CheckNoDataLoadedForType(ReadOnlyRootTransaction);
       Assert.That(
             ClientTransactionTestHelper.GetIDataManager(ReadOnlyMiddleTransaction).DataContainers.All(
@@ -182,16 +171,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CannotDeleteObject ()
     {
-      var sequence = new MockSequence();
       var expectedSpecificMessage = "Object 'Client|1627ade8-125f-4819-8e33-ce567c42b00c|System.Guid' cannot be deleted.";
       ExpectOnLoadedCalls(
-          sequence,
-            _order,
+          _order,
             mi => CheckForbiddenOperation(ReadOnlyRootTransaction, () => _client1.Delete(), _order, expectedSpecificMessage),
             mi => CheckForbiddenOperation(ReadOnlyMiddleTransaction, () => _client1.Delete(), _order, expectedSpecificMessage),
             mi => CheckForbiddenOperation(WriteableSubTransaction, () => _client1.Delete(), _order, expectedSpecificMessage));
       WriteableSubTransaction.EnsureDataAvailable(_order.ID);
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_order), Times.Exactly(3));
       CheckState(ReadOnlyRootTransaction, _client1, state => state.IsUnchanged);
       CheckState(ReadOnlyMiddleTransaction, _client1, state => state.IsUnchanged);
       CheckState(WriteableSubTransaction, _client1, state => state.IsUnchanged);
@@ -200,9 +187,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CannotCauseSameObjectToBeLoadedInSubTx_WhileItIsLoadedIntoParent_InitiatedFromParent ()
     {
-      var sequence = new MockSequence();
       _loadEventReceiverMock
-            .InSequence(sequence)
             .Setup(mock => mock.OnLoaded(_order))
             .Callback(
                 (DomainObject domainObject) =>
@@ -216,7 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                 })
             .Verifiable();
       ReadOnlyRootTransaction.EnsureDataAvailable(_order.ID);
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_order), Times.Exactly(1));
       CheckState(ReadOnlyRootTransaction, _order, state => state.IsUnchanged);
       CheckState(ReadOnlyMiddleTransaction, _order, state => state.IsNotLoadedYet);
       CheckState(WriteableSubTransaction, _order, state => state.IsNotLoadedYet);
@@ -225,12 +210,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CannotCauseSameObjectToBeLoadedInSubTx_WhileItIsLoadedIntoParent_InitiatedFromSub ()
     {
-      var sequence = new MockSequence();
+      int invocationCounter = 0;
       _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_order))
-            .Callback(
-                (DomainObject domainObject) =>
+          .Setup(mock => mock.OnLoaded(_order))
+          .Callback(
+              (DomainObject domainObject) =>
+              {
+                invocationCounter++;
+                if (invocationCounter == 1)
                 {
                   Assert.That(ClientTransaction.Current, Is.SameAs(ReadOnlyRootTransaction));
                   Assert.That(
@@ -243,13 +230,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                       Throws.InvalidOperationException.With.Message.EqualTo(
                           "It's not possible to load objects into a subtransaction while they are being loaded into a parent transaction: "
                           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
-                })
-            .Verifiable();
-      _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_order))
-            .Callback(
-                (DomainObject domainObject) =>
+                }
+                else if (invocationCounter == 2)
                 {
                   Assert.That(ClientTransaction.Current, Is.SameAs(ReadOnlyMiddleTransaction));
                   Assert.That(
@@ -257,15 +239,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
                       Throws.InvalidOperationException.With.Message.EqualTo(
                           "It's not possible to load objects into a subtransaction while they are being loaded into a parent transaction: "
                           + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'."));
-                })
-            .Verifiable();
-      _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_order))
-            .Callback((DomainObject domainObject) => Assert.That(ClientTransaction.Current, Is.SameAs(WriteableSubTransaction)))
-            .Verifiable();
+                }
+                else if (invocationCounter == 3)
+                {
+                  Assert.That(ClientTransaction.Current, Is.SameAs(WriteableSubTransaction));
+                }
+              })
+          .Verifiable();
       WriteableSubTransaction.EnsureDataAvailable(_order.ID);
-      _loadEventReceiverMock.Verify();
+      _loadEventReceiverMock.Verify(_ => _.OnLoaded(_order), Times.Exactly(3));
       CheckState(ReadOnlyRootTransaction, _order, state => state.IsUnchanged);
       CheckState(ReadOnlyMiddleTransaction, _order, state => state.IsUnchanged);
       CheckState(WriteableSubTransaction, _order, state => state.IsUnchanged);
@@ -301,26 +283,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     }
 
     private void ExpectOnLoadedCalls (
-        MockSequence sequence,
         DomainObject loadedObject,
         Action<IInvocation> actionInRoot,
         Action<IInvocation> actionInMiddle,
         Action<IInvocation> actionInSub)
     {
+      var callbackQueue = new Queue<Action<IInvocation>>(new[] { actionInRoot, actionInMiddle, actionInSub });
       _loadEventReceiverMock
-          .InSequence(sequence)
           .Setup(mock => mock.OnLoaded(loadedObject))
-          .Callback(actionInRoot)
-          .Verifiable();
-      _loadEventReceiverMock
-          .InSequence(sequence)
-          .Setup(mock => mock.OnLoaded(loadedObject))
-          .Callback(actionInMiddle)
-          .Verifiable();
-      _loadEventReceiverMock
-          .InSequence(sequence)
-          .Setup(mock => mock.OnLoaded(loadedObject))
-          .Callback(actionInSub)
+          .Callback((IInvocation invocation) => callbackQueue.Dequeue().Invoke(invocation))
           .Verifiable();
     }
 

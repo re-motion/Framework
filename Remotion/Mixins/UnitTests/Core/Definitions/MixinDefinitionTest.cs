@@ -154,19 +154,20 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var nextCallDependency = DefinitionObjectMother.CreateNextCallDependencyDefinition(definition);
       var mixinDependency = DefinitionObjectMother.CreateMixinDependencyDefinition(definition);
 
-      var sequence = new MockSequence();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(definition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(interfaceIntroduction)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(nonInterfaceIntroduction)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(attributeIntroduction)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(nonAttributeIntroduction)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(suppressedAttributeIntroduction)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(targetCallDependency)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(nextCallDependency)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(mixinDependency)).Verifiable();
+      var sequence = new VerifiableSequence();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(definition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(interfaceIntroduction)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(nonInterfaceIntroduction)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(attributeIntroduction)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(nonAttributeIntroduction)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(suppressedAttributeIntroduction)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(targetCallDependency)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(nextCallDependency)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(mixinDependency)).Verifiable();
 
       PrivateInvoke.InvokeNonPublicMethod(definition, "ChildSpecificAccept", visitorMock.Object);
       visitorMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

@@ -20,7 +20,7 @@ using System.Text;
 using System.Web;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.Utilities;
 

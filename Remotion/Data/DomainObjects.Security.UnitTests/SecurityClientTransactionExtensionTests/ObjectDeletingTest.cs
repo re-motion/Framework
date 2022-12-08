@@ -51,7 +51,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Delete, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, GeneralAccessTypes.Delete, true);
 
       _extension.ObjectDeleting(_testHelper.Transaction, securableObject);
 
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Delete, false);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, GeneralAccessTypes.Delete, false);
       Assert.That(
           () => _extension.ObjectDeleting(_testHelper.Transaction, securableObject),
           Throws.InstanceOf<PermissionDeniedException>());
@@ -106,7 +106,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
         return true;
       };
       _testHelper.ExpectObjectSecurityStrategyHasAccess(securableObject, GeneralAccessTypes.Delete, hasAccess);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), otherObject, GeneralAccessTypes.Delete, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), otherObject, GeneralAccessTypes.Delete, true);
 
       _extension.ObjectDeleting(_testHelper.Transaction, securableObject);
 
@@ -119,7 +119,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
       _testHelper.AddExtension(_extension);
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Delete, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, GeneralAccessTypes.Delete, true);
 
       _testHelper.Transaction.ExecuteInScope(securableObject.Delete);
 
@@ -156,7 +156,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Delete, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, GeneralAccessTypes.Delete, true);
 
       using (ClientTransaction.CreateRootTransaction().EnterDiscardingScope())
       {
@@ -171,7 +171,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
     {
       SecurableObject securableObject = _testHelper.CreateSecurableObject();
       _testHelper.Transaction.Commit();
-      _testHelper.ExpectObjectSecurityStrategyHasAccess(new MockSequence(), securableObject, GeneralAccessTypes.Delete, true);
+      _testHelper.ExpectObjectSecurityStrategyHasAccess(new VerifiableSequence(), securableObject, GeneralAccessTypes.Delete, true);
 
       using (_testHelper.Transaction.EnterNonDiscardingScope())
       {

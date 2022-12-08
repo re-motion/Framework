@@ -162,6 +162,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void NewObject_CreationException_CausesObjectToBeDeleted ()
     {
+      var sequence = new VerifiableSequence();
+
       var constructorParameters = ParamList.Empty;
 
       _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
@@ -180,7 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .Returns((DomainObject)null)
           .Verifiable();
 
-      var deleteCommandMock = SetupDeleteExpectations(_dataManagerMock, _domainObject1);
+      var deleteCommandMock = SetupDeleteExpectations(sequence, _dataManagerMock, _domainObject1);
       _enlistedDomainObjectManagerMock.Setup(mock => mock.DisenlistDomainObject(_domainObject1)).Verifiable();
 
       Assert.That(() => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters), Throws.Exception.SameAs(exception));
@@ -189,11 +191,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _dataManagerMock.Verify();
       deleteCommandMock.Verify();
       _enlistedDomainObjectManagerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void NewObject_CreationException_WithExceptionInDelete ()
     {
+      var sequence = new VerifiableSequence();
+
       var constructorParameters = ParamList.Empty;
 
       _eventSinkWithMock.Setup(stub => stub.RaiseNewObjectCreatingEvent(_typeDefinitionWithCreatorMock.ClassType));
@@ -212,7 +217,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
           .Verifiable();
 
       var exceptionInDelete = new InvalidOperationException("Cancelled");
-      var deleteCommandMock = SetupDeleteExpectationsWithException(_dataManagerMock, _domainObject1, exceptionInDelete);
+      var deleteCommandMock = SetupDeleteExpectationsWithException(sequence, _dataManagerMock, _domainObject1, exceptionInDelete);
 
       Assert.That(
           () => _agent.NewObject(_typeDefinitionWithCreatorMock, constructorParameters),
@@ -231,6 +236,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       _domainObjectCreatorMock.Verify();
       _dataManagerMock.Verify();
       deleteCommandMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -497,12 +503,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void Delete ()
     {
-      var deleteCommandMock = SetupDeleteExpectations(_dataManagerMock, _domainObject1);
+      var sequence = new VerifiableSequence();
+
+      var deleteCommandMock = SetupDeleteExpectations(sequence, _dataManagerMock, _domainObject1);
 
       _agent.Delete(_domainObject1);
 
       _dataManagerMock.Verify();
       deleteCommandMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -528,27 +537,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       Assert.That(deserializedInstance.PersistenceStrategy, Is.Not.Null);
     }
 
-    private Mock<IDataManagementCommand> SetupDeleteExpectations (Mock<IDataManager> dataManagerMock, DomainObject deletedObject)
+    private Mock<IDataManagementCommand> SetupDeleteExpectations (VerifiableSequence sequence, Mock<IDataManager> dataManagerMock, DomainObject deletedObject)
     {
       var initialCommandStub = new Mock<IDataManagementCommand>(MockBehavior.Strict);
       var actualCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
 
-      var sequence = new MockSequence();
       actualCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(Enumerable.Empty<Exception>());
       initialCommandStub
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(new ExpandedCommand(actualCommandMock.Object))
           .Verifiable();
       actualCommandMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Begin())
           .Verifiable();
       actualCommandMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Perform())
           .Verifiable();
       actualCommandMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.End())
           .Verifiable();
       dataManagerMock
@@ -558,20 +566,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       return actualCommandMock;
     }
 
-    private Mock<IDataManagementCommand> SetupDeleteExpectationsWithException (Mock<IDataManager> dataManagerMock, DomainObject deletedObject, Exception exception)
+    private Mock<IDataManagementCommand> SetupDeleteExpectationsWithException (
+        VerifiableSequence sequence,
+        Mock<IDataManager> dataManagerMock,
+        DomainObject deletedObject,
+        Exception exception)
     {
       var initialCommandStub = new Mock<IDataManagementCommand>(MockBehavior.Strict);
       var actualCommandMock = new Mock<IDataManagementCommand>(MockBehavior.Strict);
 
-      var sequence = new MockSequence();
       actualCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(Enumerable.Empty<Exception>());
       initialCommandStub
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(stub => stub.ExpandToAllRelatedObjects())
           .Returns(new ExpandedCommand(actualCommandMock.Object))
           .Verifiable();
       actualCommandMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Begin())
           .Throws(exception)
           .Verifiable();

@@ -82,21 +82,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       var command = new MultiDataContainerSaveCommand(new[] { _tuple1 });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _dbCommandBuilderMock1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Create(_rdbmsExecutionContextStrictMock.Object))
           .Returns(_dbCommandMock1.Object)
           .Verifiable();
 
       _rdbmsExecutionContextStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ExecuteNonQuery(_dbCommandMock1.Object))
           .Returns(0)
           .Verifiable();
       _dbCommandMock1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Verifiable();
 
@@ -108,6 +108,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
       _rdbmsExecutionContextStrictMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -144,22 +145,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       var command = new MultiDataContainerSaveCommand(new[] { _tuple1 });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _dbCommandBuilderMock1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Create(_rdbmsExecutionContextStrictMock.Object))
           .Returns(_dbCommandMock1.Object)
           .Verifiable();
 
       _rdbmsExecutionContextStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ExecuteNonQuery(_dbCommandMock1.Object))
           .Returns(1)
           .Verifiable();
 
       _dbCommandMock1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Verifiable();
 
@@ -170,6 +171,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
       _rdbmsExecutionContextStrictMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -177,17 +179,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
     {
       var command = new MultiDataContainerSaveCommand(new[] { _tuple1, _tuple2 });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _dbCommandBuilderMock1.Setup(mock => mock.Create(_rdbmsExecutionContextStrictMock.Object)).Returns(_dbCommandMock1.Object).Verifiable();
 
       _rdbmsExecutionContextStrictMock.Setup(mock => mock.ExecuteNonQuery(_dbCommandMock1.Object)).Returns(1).Verifiable();
-      _dbCommandMock1.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
 
       _dbCommandBuilderMock2.Setup(mock => mock.Create(_rdbmsExecutionContextStrictMock.Object)).Returns(_dbCommandMock2.Object).Verifiable();
 
       _rdbmsExecutionContextStrictMock.Setup(mock => mock.ExecuteNonQuery(_dbCommandMock2.Object)).Returns(1).Verifiable();
-      _dbCommandMock2.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _dbCommandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
 
       command.Execute(_rdbmsExecutionContextStrictMock.Object);
 
@@ -196,6 +198,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
       _dbCommandMock1.Verify();
       _dbCommandMock2.Verify();
       _rdbmsExecutionContextStrictMock.Verify();
+      sequence.Verify();
     }
   }
 }

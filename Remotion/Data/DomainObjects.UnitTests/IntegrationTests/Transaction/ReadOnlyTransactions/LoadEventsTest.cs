@@ -41,34 +41,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void ObjectsLoading_Loaded_RaisedInAllHierarchyLevels ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(ReadOnlyRootTransaction, new[] { _order.ID }))
           .Callback((ClientTransaction _, IReadOnlyList<ObjectID> _) => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False))
           .Verifiable();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(ReadOnlyRootTransaction, new[] { _order }))
           .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(ReadOnlyRootTransaction.IsWriteable, Is.False))
           .Verifiable();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(ReadOnlyMiddleTransaction, new[] { _order.ID }))
           .Callback((ClientTransaction _, IReadOnlyList<ObjectID> _) => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False))
           .Verifiable();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(ReadOnlyMiddleTransaction, new[] { _order }))
           .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(ReadOnlyMiddleTransaction.IsWriteable, Is.False))
           .Verifiable();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoading(WriteableSubTransaction, new[] { _order.ID }))
           .Callback((ClientTransaction _, IReadOnlyList<ObjectID> _) => Assert.That(WriteableSubTransaction.IsWriteable, Is.True))
           .Verifiable();
       ExtensionStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsLoaded(WriteableSubTransaction, new[] { _order }))
           .Callback((ClientTransaction _, IReadOnlyList<DomainObject> _) => Assert.That(WriteableSubTransaction.IsWriteable, Is.True))
           .Verifiable();
@@ -76,6 +76,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       ExecuteInWriteableSubTransaction(() => _order.EnsureDataAvailable());
 
       ExtensionStrictMock.Verify();
+      sequence.Verify();
     }
   }
 }

@@ -19,7 +19,7 @@ using System.Linq;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Mixins.Definitions;
 using Remotion.Mixins.UnitTests.Core.Definitions.TestDomain;
 using Remotion.Mixins.UnitTests.Core.TestDomain;
@@ -189,16 +189,17 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var attributeDefinition = DefinitionObjectMother.CreateAttributeDefinition(_classDefinition1);
 
       var visitorMock = new Mock<IDefinitionVisitor>();
-      var sequence = new MockSequence();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(methodDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(propertyDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(eventDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(attributeDefinition)).Verifiable();
+      var sequence = new VerifiableSequence();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(methodDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(propertyDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(eventDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(attributeDefinition)).Verifiable();
 
       _classDefinition1.Accept(visitorMock.Object);
       Assert.That(_classDefinition1.ChildSpecificAcceptCalled, Is.True);
 
       visitorMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

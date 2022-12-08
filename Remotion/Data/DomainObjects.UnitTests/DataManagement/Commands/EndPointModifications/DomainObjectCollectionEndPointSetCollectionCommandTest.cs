@@ -22,7 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement.Commands.EndPointModifications;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPointModifications
 {
@@ -95,37 +95,39 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     [Test]
     public void Begin ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, _order2, null))
           .Verifiable();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangingEvent(DomainObject, CollectionEndPoint.Definition, null, _order3))
           .Verifiable();
 
       _command.Begin();
 
       TransactionEventSinkMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void End ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, null, _order3))
           .Verifiable();
       TransactionEventSinkMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseRelationChangedEvent(DomainObject, CollectionEndPoint.Definition, _order2, null))
           .Verifiable();
 
       _command.End();
 
       TransactionEventSinkMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

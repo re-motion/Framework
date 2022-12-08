@@ -23,7 +23,7 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.DbCommandBuilders.Specifications;
 using Remotion.Data.DomainObjects.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuilders.Specifications
 {
@@ -94,9 +94,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.DbCommandBuild
 
       _dbCommandStub.Setup(stub => stub.Parameters).Returns(dataParameterCollectionMock.Object);
       _dbCommandStub.SetupProperty(stub => stub.CommandText);
-      var sequence = new MockSequence();
-      _dbCommandStub.InSequence(sequence).Setup(stub => stub.CreateParameter()).Returns(parameter1StrictMock.Object);
-      _dbCommandStub.InSequence(sequence).Setup(stub => stub.CreateParameter()).Returns(parameter2StrictMock.Object);
+      _dbCommandStub
+          .SetupSequence(stub => stub.CreateParameter())
+          .Returns(parameter1StrictMock.Object)
+          .Returns(parameter2StrictMock.Object);
 
       dataParameterCollectionMock.Setup(mock => mock.Add(parameter1StrictMock.Object)).Returns(0).Verifiable();
       dataParameterCollectionMock.Setup(mock => mock.Add(parameter2StrictMock.Object)).Returns(1).Verifiable();

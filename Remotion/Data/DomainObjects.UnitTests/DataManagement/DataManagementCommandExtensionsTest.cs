@@ -35,14 +35,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void NotifyAndPerform ()
     {
-      var sequence = new MockSequence();
-      _commandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      _commandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _commandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      var sequence = new VerifiableSequence();
+      _commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      _commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _commandMock.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
 
       DataManagementCommandExtensions.NotifyAndPerform(_commandMock.Object);
 
       _commandMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

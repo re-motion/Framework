@@ -124,38 +124,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void Open ()
     {
-      var sequence = new MockSequence();
-      _innerConnectionMock.InSequence(sequence).Setup(mock => mock.Open()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.ConnectionOpened(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerConnectionMock.InVerifiableSequence(sequence).Setup(mock => mock.Open()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ConnectionOpened(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
 
       _connection.Open();
 
       _innerConnectionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Dispose_ConnectionOpen ()
     {
-      var sequence = new MockSequence();
-      _innerConnectionMock.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.ConnectionClosed(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerConnectionMock.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ConnectionClosed(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
 
       _connection.Dispose();
       _innerConnectionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Close ()
     {
-      var sequence = new MockSequence();
-      _innerConnectionMock.InSequence(sequence).Setup(mock => mock.Close()).Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.ConnectionClosed(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerConnectionMock.InVerifiableSequence(sequence).Setup(mock => mock.Close()).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.ConnectionClosed(((TracingDbConnection)_connection).ConnectionID)).Verifiable();
 
       _connection.Close();
       _innerConnectionMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

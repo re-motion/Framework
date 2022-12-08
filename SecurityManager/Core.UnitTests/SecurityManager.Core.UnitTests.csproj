@@ -11,8 +11,7 @@
     <RootNamespace>$(AssemblyName)</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\SharedSource\Development\UnitTesting\NUnit\NUnitExtensions.cs" Link="SharedSource\UnitTesting\NUnit\NUnitExtensions.cs" />
-    <Compile Include="..\..\SharedSource\Development\NUnit\UnitTesting\Assert2.cs" Link="SharedSource\NUnit\UnitTesting\Assert2.cs" />
+    <Compile Include="..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
     <DatabaseFiles Include="..\Core\Database\SecurityManagerTearDownDB.sql" Link="SecurityManagerTearDownDB.sql" />
     <DatabaseFiles Include="..\Core\Database\SecurityManagerTearDownDBSpecialTables.sql" Link="SecurityManagerTearDownDBSpecialTables.sql" />
     <DatabaseFiles Include="..\Core\Database\SecurityManagerCreateDB.sql" />

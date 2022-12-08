@@ -20,7 +20,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;

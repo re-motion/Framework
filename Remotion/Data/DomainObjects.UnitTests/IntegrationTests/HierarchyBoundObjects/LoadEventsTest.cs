@@ -46,31 +46,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
       var eventReceiverMock = new Mock<ILoadEventReceiver>(MockBehavior.Strict);
       _orderReference.SetLoadEventReceiver(eventReceiverMock.Object);
 
-      var sequence = new MockSequence();
+      int invocationCounter = 0;
       eventReceiverMock
-          .InSequence(sequence)
           .Setup(mock => mock.OnLoaded(_orderReference))
           .Callback(
               (DomainObject domainObject) =>
               {
-                Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
-                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
-              })
-          .Verifiable();
-      eventReceiverMock
-          .InSequence(sequence)
-          .Setup(mock => mock.OnLoaded(_orderReference))
-          .Callback(
-              (DomainObject domainObject) =>
-              {
-                Assert.That(ClientTransaction.Current, Is.SameAs(_subTransaction));
-                Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_subTransaction));
+                invocationCounter++;
+                if (invocationCounter == 1)
+                {
+                  Assert.That(ClientTransaction.Current, Is.SameAs(_rootTransaction));
+                  Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_rootTransaction));
+                }
+                else if (invocationCounter == 2)
+                {
+                  Assert.That(ClientTransaction.Current, Is.SameAs(_subTransaction));
+                  Assert.That(ClientTransaction.Current.ActiveTransaction, Is.SameAs(_subTransaction));
+                }
               })
           .Verifiable();
 
       _orderReference.EnsureDataAvailable();
 
-      eventReceiverMock.Verify();
+      eventReceiverMock.Verify(_ => _.OnLoaded(_orderReference), Times.Exactly(2));
     }
 
     [Test]
@@ -79,9 +77,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
       var rootTransactionEventReceiverMock = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _rootTransaction);
       var subTransactionEventReceiverMock = ClientTransactionMockEventReceiver.CreateMock(MockBehavior.Strict, _subTransaction);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       rootTransactionEventReceiverMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupLoaded(_rootTransaction, new[] { _orderReference })
           .Callback(
               (object _, ClientTransactionEventArgs _) =>
@@ -91,7 +89,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
               })
           .Verifiable();
       subTransactionEventReceiverMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .SetupLoaded(_subTransaction, new[] { _orderReference })
           .Callback(
               (object _, ClientTransactionEventArgs _) =>
@@ -105,6 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.HierarchyBoundO
 
       rootTransactionEventReceiverMock.Verify();
       subTransactionEventReceiverMock.Verify();
+      sequence.Verify();
     }
   }
 }

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
 using System.Threading;
@@ -94,7 +95,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
     {
       NameValueCollection callerUrlParameters = new NameValueCollection { { "CallerKey", "CallerValue" } };
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
+      var executeCallbacks = new Queue<Action>();
 
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(_postBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
@@ -108,27 +110,33 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
             .Verifiable();
 
       //Show external sub function
-      _subFunction.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
-          (WxeContext context) =>
+      executeCallbacks.Enqueue(
+          () =>
           {
             PrivateInvoke.SetNonPublicField(_functionState, "_postBackID", 100);
             _pageStep.Object.SetPostBackCollection(new NameValueCollection());
-              WxeThreadAbortHelper.Abort();
-          }).Verifiable();
+            WxeThreadAbortHelper.Abort();
+          });
+      _subFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
 
       //Return from external sub function
-      _subFunction.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Throws(new WxeExecuteNextStepException()).Verifiable();
+      executeCallbacks.Enqueue(() => { throw new WxeExecuteNextStepException(); });
+      _subFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
 
-      _requestMock.InSequence(sequence).Setup(mock => mock.HttpMethod).Returns("GET").Verifiable();
-      _pageExecutorMock.InSequence(sequence).Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", true)).Callback(
-          (WxeContext context, string page, bool isPostBack) =>
-          {
-            Assert.That(((IExecutionStateContext)_pageStep.Object).ExecutionState, Is.SameAs(NullExecutionState.Null));
-            Assert.That(_pageStep.Object.PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo("100"));
-            Assert.That(_pageStep.Object.PostBackCollection.AllKeys, Has.Member("Key"));
-            Assert.That(_pageStep.Object.ReturningFunction, Is.SameAs(_subFunction.Object));
-            Assert.That(_pageStep.Object.IsReturningPostBack, Is.True);
-          }).Verifiable();
+      _requestMock.InVerifiableSequence(sequence).Setup(mock => mock.HttpMethod).Returns("GET").Verifiable();
+      _pageExecutorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", true))
+          .Callback(
+              (WxeContext context, string page, bool isPostBack) =>
+              {
+                Assert.That(((IExecutionStateContext)_pageStep.Object).ExecutionState, Is.SameAs(NullExecutionState.Null));
+                Assert.That(_pageStep.Object.PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo("100"));
+                Assert.That(_pageStep.Object.PostBackCollection.AllKeys, Has.Member("Key"));
+                Assert.That(_pageStep.Object.ReturningFunction, Is.SameAs(_subFunction.Object));
+                Assert.That(_pageStep.Object.IsReturningPostBack, Is.True);
+              })
+          .Verifiable();
 
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       try
@@ -176,12 +184,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _pageMock.Verify();
       _responseMock.Verify();
       _requestMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Test_DoNotReturnToCaller ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
+      var executeCallbacks = new Queue<Action>();
 
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(_postBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
@@ -194,10 +204,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
             .Verifiable();
 
       //Show external sub function
-      _subFunction.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback((WxeContext context) => WxeThreadAbortHelper.Abort()).Verifiable();
+      executeCallbacks.Enqueue(() => WxeThreadAbortHelper.Abort());
+      _subFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
 
       //Return from external sub function
-      _subFunction.InSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Throws(new WxeExecuteNextStepException()).Verifiable();
+      executeCallbacks.Enqueue(() => { throw new WxeExecuteNextStepException(); });
+      _subFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
 
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       try
@@ -242,6 +254,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _pageMock.Verify();
       _responseMock.Verify();
       _requestMock.Verify();
+      sequence.Verify();
     }
   }
 }

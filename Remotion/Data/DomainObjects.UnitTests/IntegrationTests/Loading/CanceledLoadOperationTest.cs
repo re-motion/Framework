@@ -42,14 +42,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Loading
 
       // First, load an object and throw in ObjectsLoading.
 
-      var sequence = new MockSequence();
       _listenerDynamicMock
-          .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()))
-          .Throws(exception);
-      _listenerDynamicMock
-          .InSequence(sequence)
-          .Setup(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()));
+          .SetupSequence(mock => mock.ObjectsLoading(It.IsAny<ClientTransaction>(), It.IsAny<ReadOnlyCollection<ObjectID>>()))
+          .Throws(exception)
+          .Pass();
 
       var abortedDomainObject = DomainObjectIDs.ClassWithAllDataTypes1.GetObjectReference<ClassWithAllDataTypes>();
       Assert.That(() => abortedDomainObject.EnsureDataAvailable(), Throws.Exception.SameAs(exception));

@@ -461,14 +461,15 @@ namespace Remotion.Collections.DataStore.UnitTests
       PrepareItem("Test2", _fakeValue2, _fakeExpirationInfo2);
 
       _expirationPolicyMock.Setup(stub => stub.ShouldScanForExpiredItems(_initialScanInfo)).Returns(true);
-      var sequence = new MockSequence();
-      _expirationPolicyMock.InSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue, _fakeExpirationInfo)).Returns(false).Verifiable();
-      _expirationPolicyMock.InSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue2, _fakeExpirationInfo2)).Returns(true).Verifiable();
-      _expirationPolicyMock.InSequence(sequence).Setup(mock => mock.GetNextScanInfo()).Returns(_initialScanInfo + new TimeSpan(3)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _expirationPolicyMock.InVerifiableSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue, _fakeExpirationInfo)).Returns(false).Verifiable();
+      _expirationPolicyMock.InVerifiableSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue2, _fakeExpirationInfo2)).Returns(true).Verifiable();
+      _expirationPolicyMock.InVerifiableSequence(sequence).Setup(mock => mock.GetNextScanInfo()).Returns(_initialScanInfo + new TimeSpan(3)).Verifiable();
 
       action(_dataStore);
 
       _expirationPolicyMock.Verify();
+      sequence.Verify();
 
       CheckItemContained("Test1", _fakeValue, _fakeExpirationInfo);
       CheckKeyNotContained("Test2");
@@ -481,14 +482,15 @@ namespace Remotion.Collections.DataStore.UnitTests
       PrepareItem("Test2", _fakeValue2, _fakeExpirationInfo2);
 
       _expirationPolicyMock.Setup(stub => stub.ShouldScanForExpiredItems(_initialScanInfo)).Returns(true);
-      var sequence = new MockSequence();
-      _expirationPolicyMock.InSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue, _fakeExpirationInfo)).Returns(false).Verifiable();
-      _expirationPolicyMock.InSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue2, _fakeExpirationInfo2)).Returns(true).Verifiable();
-      _expirationPolicyMock.InSequence(sequence).Setup(mock => mock.GetNextScanInfo()).Returns(_initialScanInfo + new TimeSpan(3)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _expirationPolicyMock.InVerifiableSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue, _fakeExpirationInfo)).Returns(false).Verifiable();
+      _expirationPolicyMock.InVerifiableSequence(sequence).Setup(mock => mock.IsExpired(_fakeValue2, _fakeExpirationInfo2)).Returns(true).Verifiable();
+      _expirationPolicyMock.InVerifiableSequence(sequence).Setup(mock => mock.GetNextScanInfo()).Returns(_initialScanInfo + new TimeSpan(3)).Verifiable();
 
       var result = action(_dataStore);
 
       _expirationPolicyMock.Verify();
+      sequence.Verify();
 
       CheckItemContained("Test1", _fakeValue, _fakeExpirationInfo);
       CheckKeyNotContained("Test2");

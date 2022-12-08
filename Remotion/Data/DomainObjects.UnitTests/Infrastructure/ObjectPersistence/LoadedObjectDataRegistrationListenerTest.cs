@@ -48,14 +48,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
     public void OnBeforeObjectRegistration ()
     {
       var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
-      var sequence = new MockSequence();
-      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
-      _eventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectsLoadingEvent(loadedObjectIDs)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _hierarchyManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      _eventSinkWithMock.InVerifiableSequence(sequence).Setup(mock => mock.RaiseObjectsLoadingEvent(loadedObjectIDs)).Verifiable();
 
       _decorator.OnBeforeObjectRegistration(loadedObjectIDs);
 
       _eventSinkWithMock.Verify();
       _hierarchyManagerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -64,13 +65,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
 
       var exception = new Exception("Test");
-      var sequence = new MockSequence();
-      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Throws(exception).Verifiable();
+      var sequence = new VerifiableSequence();
+      _hierarchyManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Throws(exception).Verifiable();
 
       Assert.That(() => _decorator.OnBeforeObjectRegistration(loadedObjectIDs), Throws.Exception.SameAs(exception));
 
       _eventSinkWithMock.Verify(mock => mock.RaiseObjectsLoadingEvent(It.IsAny<ReadOnlyCollection<ObjectID>>()), Times.Never());
       _hierarchyManagerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -79,15 +81,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
 
       var exception = new Exception("Test");
-      var sequence = new MockSequence();
-      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
-      _eventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectsLoadingEvent(loadedObjectIDs)).Throws(exception).Verifiable();
-      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _hierarchyManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnBeforeObjectRegistration(loadedObjectIDs)).Verifiable();
+      _eventSinkWithMock.InVerifiableSequence(sequence).Setup(mock => mock.RaiseObjectsLoadingEvent(loadedObjectIDs)).Throws(exception).Verifiable();
+      _hierarchyManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs)).Verifiable();
 
       Assert.That(() => _decorator.OnBeforeObjectRegistration(loadedObjectIDs), Throws.Exception.SameAs(exception));
 
       _eventSinkWithMock.Verify();
       _hierarchyManagerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -96,14 +99,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var loadedObjectIDs = Array.AsReadOnly(new[] { DomainObjectIDs.Order1, DomainObjectIDs.Order3 });
       var actuallyLoadedDomainObjects = Array.AsReadOnly(new[] { DomainObjectMother.CreateFakeObject(), DomainObjectMother.CreateFakeObject() });
 
-      var sequence = new MockSequence();
-      _eventSinkWithMock.InSequence(sequence).Setup(mock => mock.RaiseObjectsLoadedEvent(actuallyLoadedDomainObjects)).Verifiable();
-      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _eventSinkWithMock.InVerifiableSequence(sequence).Setup(mock => mock.RaiseObjectsLoadedEvent(actuallyLoadedDomainObjects)).Verifiable();
+      _hierarchyManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs)).Verifiable();
 
       _decorator.OnAfterObjectRegistration(loadedObjectIDs, actuallyLoadedDomainObjects);
 
       _eventSinkWithMock.Verify();
       _hierarchyManagerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -113,14 +117,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var actuallyLoadedDomainObjects = Array.AsReadOnly(new[] { DomainObjectMother.CreateFakeObject(), DomainObjectMother.CreateFakeObject() });
 
       var exception = new Exception("Test");
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _eventSinkWithMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.RaiseObjectsLoadedEvent(actuallyLoadedDomainObjects))
             .Throws(exception)
             .Verifiable();
       _hierarchyManagerMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(mock => mock.OnAfterObjectRegistration(loadedObjectIDs))
             .Verifiable();
 
@@ -128,6 +132,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _eventSinkWithMock.Verify();
       _hierarchyManagerMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

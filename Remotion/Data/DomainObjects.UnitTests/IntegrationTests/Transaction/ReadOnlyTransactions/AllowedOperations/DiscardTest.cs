@@ -31,19 +31,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
 
       var extensionMock = CreateAndAddExtensionMock();
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionDiscard(ReadOnlyRootTransaction))
           .Callback((ClientTransaction _) => CheckTransactionHierarchy())
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionDiscard(ReadOnlyMiddleTransaction))
           .Callback((ClientTransaction _) => CheckTransactionHierarchy())
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionDiscard(WriteableSubTransaction))
           .Callback((ClientTransaction _) => CheckTransactionHierarchy())
           .Verifiable();
@@ -51,6 +51,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       ReadOnlyRootTransaction.Discard();
 
       extensionMock.Verify();
+      sequence.Verify();
       Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.True);
       Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.True);
       Assert.That(WriteableSubTransaction.IsDiscarded, Is.True);
@@ -64,19 +65,21 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
       Assert.That(WriteableSubTransaction.IsDiscarded, Is.False);
 
       var extensionMock = CreateAndAddExtensionMock();
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionDiscard(ReadOnlyMiddleTransaction))
           .Callback((ClientTransaction _) => CheckTransactionHierarchy())
           .Verifiable();
       extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.TransactionDiscard(WriteableSubTransaction))
           .Callback((ClientTransaction _) => CheckTransactionHierarchy())
           .Verifiable();
 
       ReadOnlyMiddleTransaction.Discard();
+
+      sequence.Verify();
 
       Assert.That(ReadOnlyRootTransaction.IsDiscarded, Is.False);
       Assert.That(ReadOnlyMiddleTransaction.IsDiscarded, Is.True);

@@ -60,12 +60,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       WxeReturnOptions returnOptions = new WxeReturnOptions();
       IExecutionState executionState = CreateExecutionState(permaUrlOptions, returnOptions);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InSequence(sequence)
+      ExecutionStateContextMock.InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<PreparingRedirectToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -85,6 +85,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
 
       _pageMock.Verify();
       VerifyAll();
+      sequence.Verify();
     }
 
     private PreProcessingSubFunctionState CreateExecutionState (WxePermaUrlOptions permaUrlOptions, WxeReturnOptions returnOptions)
