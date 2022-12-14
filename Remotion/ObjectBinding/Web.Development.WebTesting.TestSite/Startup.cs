@@ -12,6 +12,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
     public void ConfigureServices (IServiceCollection services)
     {
       services.AddRouting();
+
+      services.AddLegacyAspNet();
     }
 
     public void Configure (IApplicationBuilder app, IWebHostEnvironment env)
@@ -23,7 +25,11 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.TestSite
 
       app.UseRouting();
 
-      app.UseLegacyAspNet(LegacyAspNetOptions.Default);
+      app.UseEndpoints(
+          endpoints =>
+          {
+            endpoints.MapLegacyAspNet("/{**rest}");
+          });
     }
   }
 }
