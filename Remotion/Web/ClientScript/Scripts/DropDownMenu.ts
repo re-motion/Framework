@@ -28,6 +28,13 @@ interface DropDownMenuPositioningDetails
   offsetY: number;
 }
 
+interface IKeyboardEventLike
+{
+  keyCode: number;
+  preventDefault(): void;
+  stopPropagation(): void;
+}
+
 type DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler = (itemInfos: DropDownMenu_ItemInfo[]) => void;
 type DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler = () => void;
 type DropDownMenu_MenuInfo_LoadMenuItemsCallback = (successHandler: DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler, errorHandler: DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler) => void;
@@ -858,20 +865,21 @@ class DropDownMenu
     if (DropDownMenu._currentMenu === null && !hasDedicatedDropDownMenuElement)
       return;
 
-    switch (event.keyCode)
+    let keyboardEvent: IKeyboardEventLike = event;
+    switch (keyboardEvent.keyCode)
     {
       case 9: // tab
         DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
         return;
       case 13: //enter
       case 32: //space
-        event.preventDefault();
-        event.stopPropagation();
+        keyboardEvent.preventDefault();
+        keyboardEvent.stopPropagation();
         if (dropDownMenu !== DropDownMenu._currentMenu)
         {
           DropDownMenu.OnClick (dropDownMenu, dropDownMenu.id, getSelectionCount, null);
-          (event.keyCode as number) = 40; // always act as if the down-arrow was used when opening the drop down menu.
-          DropDownMenu.Options_OnKeyDown (event, dropDownMenu);
+          keyboardEvent = this.CreateKeyboardEventLikeWithKeyCode(keyboardEvent, 40); //down arrow
+          DropDownMenu.Options_OnKeyDown (keyboardEvent, dropDownMenu);
         }
         else
         {
@@ -879,28 +887,28 @@ class DropDownMenu
         }
         return;
       case 27: //escape
-        event.preventDefault();
-        event.stopPropagation();
+        keyboardEvent.preventDefault();
+        keyboardEvent.stopPropagation();
         DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
         return;
       case 38: // up arrow
       case 40: // down arrow
-        event.preventDefault();
-        event.stopPropagation();
+        keyboardEvent.preventDefault();
+        keyboardEvent.stopPropagation();
         if (dropDownMenu !== DropDownMenu._currentMenu)
         {
           DropDownMenu.OnClick (dropDownMenu, dropDownMenu.id, getSelectionCount, null);
-          (event.keyCode as number) = 40; // always act as if the down-arrow was used when opening the drop down menu.
+          keyboardEvent = this.CreateKeyboardEventLikeWithKeyCode(keyboardEvent, 40); //down arrow
         }
-        DropDownMenu.Options_OnKeyDown (event, dropDownMenu);
+        DropDownMenu.Options_OnKeyDown (keyboardEvent, dropDownMenu);
         return;
       default:
-        DropDownMenu.Options_OnKeyDown(event, dropDownMenu);
+        DropDownMenu.Options_OnKeyDown(keyboardEvent, dropDownMenu);
         return;
     }
   }
 
-  private static Options_OnKeyDown (event: KeyboardEvent, dropDownMenu: HTMLElement): void
+  private static Options_OnKeyDown (event: IKeyboardEventLike, dropDownMenu: HTMLElement): void
   {
     if (DropDownMenu._currentPopup == null)
       return;
@@ -996,6 +1004,15 @@ class DropDownMenu
       // So we ignore mouse events for a small amount of time to deal with cascading events triggered by the selection change
       DropDownMenu._ignoreHoverMouseEvents = true;
       setTimeout(() => DropDownMenu._ignoreHoverMouseEvents = false, 250);
+    }
+  }
+
+  private static CreateKeyboardEventLikeWithKeyCode(event: IKeyboardEventLike, keyCode: number): IKeyboardEventLike
+  {
+    return {
+      keyCode: keyCode,
+      preventDefault: () => event.preventDefault(),
+      stopPropagation: () => event.stopPropagation()
     }
   }
 
