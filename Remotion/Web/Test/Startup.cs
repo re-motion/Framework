@@ -12,6 +12,8 @@ namespace Remotion.Web.Test
     public void ConfigureServices (IServiceCollection services)
     {
       services.AddRouting();
+
+      services.AddLegacyAspNet();
     }
 
     public void Configure (IApplicationBuilder app, IWebHostEnvironment env)
@@ -21,12 +23,13 @@ namespace Remotion.Web.Test
         app.UseDeveloperExceptionPage();
       }
 
-      //app.UseHsts();
-      //app.UseHttpsRedirection();
-
       app.UseRouting();
 
-      app.UseLegacyAspNet(LegacyAspNetOptions.Default);
+      app.UseEndpoints(
+          endpoints =>
+          {
+            endpoints.MapLegacyAspNet("/{**rest}");
+          });
     }
   }
 }
