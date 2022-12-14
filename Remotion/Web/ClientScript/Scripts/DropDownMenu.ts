@@ -349,7 +349,7 @@ class DropDownMenu
     else
       statusPopup.setAttribute ('aria-labelledby', menuButton.id);
     DropDownMenu._currentStatusPopup = statusPopup;
-    document.getElementById (menuID)!.closest ('div, td, th, body')!.append (statusPopup);
+    document.getElementById (menuID)!.closest ('div, td, th, body, span.bocListEditableCell > span.control')!.append (statusPopup);
 
     const positioningDetails = this.CalculatePositioningDetails(titleDivFunc(), evt);
     DropDownMenu.ApplyPosition (statusPopup, positioningDetails, titleDivFunc(), false);
@@ -417,7 +417,7 @@ class DropDownMenu
     div.appendChild(ul);
 
     const menuButton = document.getElementById (menuID)!;
-    menuButton.closest ('div, td, th, body')!.append (div);
+    menuButton.closest ('div, td, th, body, span.bocListEditableCell > span.control')!.append (div);
 
     ul.addEventListener ('mouseleave', function ()
     {

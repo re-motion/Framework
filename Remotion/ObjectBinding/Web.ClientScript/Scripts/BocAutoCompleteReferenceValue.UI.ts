@@ -1172,7 +1172,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.style.position = 'fixed';
             LayoutUtility.Hide(this.element);
 
-            this.input.closest('div, td, th, body')!.appendChild(this.element);
+            this.input.closest('div, td, th, body, span.bocListEditableCell > span.control')!.appendChild(this.element);
 
             this.options.combobox.setAttribute('aria-owns', this.options.selectListID);
             const isAria11 = this.options.combobox !== this.input;
@@ -1611,7 +1611,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.style.position = 'fixed';
 
             LayoutUtility.Hide(this.element);
-            this.input.closest('div, td, th, body')!.appendChild(this.element);
+
+            this.input.closest('div, td, th, body, span.bocListEditableCell > span.control')!.appendChild(this.element);
+
 
             if (this.options.combobox.getAttribute('aria-labelledby') !== null) {
                 this.element.setAttribute("aria-labelledby", this.options.combobox.getAttribute('aria-labelledby')!);
