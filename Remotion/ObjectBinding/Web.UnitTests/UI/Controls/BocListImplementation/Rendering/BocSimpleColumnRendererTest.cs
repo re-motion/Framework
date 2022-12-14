@@ -71,7 +71,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var span = Html.GetAssertedChildElement(td, "div", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
       var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
@@ -89,7 +89,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var span = Html.GetAssertedChildElement(td, "div", 0);
       var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
       Html.AssertAttribute(textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
@@ -107,7 +107,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(businessObject.ReferenceValue, Is.Null);
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
-      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var span = Html.GetAssertedChildElement(td, "div", 0);
       var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
       Html.AssertAttribute(textWrapper, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, string.Empty);
     }
@@ -125,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var span = Html.GetAssertedChildElement(td, "div", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
       var textWrapper = Html.GetAssertedChildElement(span, "span", 0);
@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var span = Html.GetAssertedChildElement(td, "div", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
       Html.AssertIcon(span, EventArgs.BusinessObject, null);
@@ -200,10 +200,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "span", 0);
+      var span = Html.GetAssertedChildElement(td, "div", 0);
       Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
 
-      var clickSpan = Html.GetAssertedChildElement(span, "span", 0);
+      var clickSpan = Html.GetAssertedChildElement(span, "div", 0);
       Html.AssertAttribute(clickSpan, "onclick", "BocList.OnCommandClick();");
 
       editableRow.Verify(
@@ -234,8 +234,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       var td = Html.GetAssertedChildElement(document, "td", 0);
       Html.AssertAttribute(td, DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex, "1");
-      var span = Html.GetAssertedChildElement(td, "span", 0);
-      var clickSpan = Html.GetAssertedChildElement(span, "span", 0);
+      var span = Html.GetAssertedChildElement(td, "div", 0);
+      var clickSpan = Html.GetAssertedChildElement(span, "div", 0);
       Html.AssertAttribute(clickSpan, "onclick", "BocList.OnCommandClick();");
       Html.AssertAttribute(clickSpan, DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, "referencedObject1");
 

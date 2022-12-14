@@ -127,7 +127,6 @@ div.bocList table.bocListTable td.bocListTitleCell > span
 }
 
 div.bocList table.bocListTable td.bocListDataCell > a:not([hidden]),
-div.bocList table.bocListTable td.bocListDataCell > span:not([hidden]),
 div.bocList table.bocListTable td.bocListDataCell > div:not([hidden])
 {
   display: flex !important; /*overrides hardcoded enforce-width setting 'display:block' */
@@ -137,18 +136,16 @@ div.bocList table.bocListTable td.bocListDataCell > div:not([hidden])
 }
 
 div.bocList table.bocListTable td.bocListDataCell > a:not([hidden]),
-div.bocList table.bocListTable td.bocListDataCell > span:not([hidden], .bocListCellStructureElement),
 div.bocList table.bocListTable td.bocListDataCell > div:not([hidden], .bocListCellStructureElement),
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a:not([hidden]),
-div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > span:not([hidden], .bocListCellStructureElement),
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not([hidden], .bocListCellStructureElement)
 {
   display: inline-block;
   padding: calc(var(--remotion-themed-spacing) / 2) var(--remotion-themed-spacing);
 }
 
-div.bocList table.bocListTable td.bocListDataCell > span.bocListContent > span[onclick],
-div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > span.bocListContent > span[onclick]
+div.bocList table.bocListTable td.bocListDataCell > div.bocListContent > div[onclick],
+div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > div[onclick]
 {
   display: block;
   width: 100%;
@@ -183,9 +180,7 @@ div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement 
 div.bocList table.bocListTable th.bocListTitleCell > a,
 div.bocList table.bocListTable td.bocListDataCell > a,
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > a,
-div.bocList table.bocListTable td.bocListDataCell > span:not(.bocListCellStructureElement),
-div.bocList table.bocListTable td.bocListDataCell > span:not(.bocListCellStructureElement),
-div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not(.bocListCellStructureElement),
+div.bocList table.bocListTable td.bocListDataCell > div:not(.bocListCellStructureElement),
 div.bocList table.bocListTable td.bocListDataCell *.bocListCellStructureElement > div:not(.bocListCellStructureElement)
 {
   border-radius: var(--remotion-themed-border-radius);
@@ -228,16 +223,16 @@ div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell
   background-color: var(--remotion-themed-background-color-page);
 }
 
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > span.bocListContent > img,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > span.bocListContent > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > div.bocListContent > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > a > img
 {
   align-self: start;
 }
 
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > span.bocListContent > img,
-div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > span.bocListContent > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > div.bocListContent > img,
+div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > div.bocListContent > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell > a > img,
 div.bocList table.bocListTable tr.bocListDataRow td.bocListDataCell *.bocListCellStructureElement > a > img
 {
@@ -256,7 +251,7 @@ div.bocList table.bocListTable td.bocListDataCell
   border-bottom: var(--boclist-tabledata-border);
 }
 
-div.bocList table.bocListTable td.bocListDataCellIndex > span
+div.bocList table.bocListTable td.bocListDataCellIndex > div
 {
   justify-content: end;
 }
@@ -455,13 +450,13 @@ div.bocList div.bocListTableBlock div.bocListTableContainer span.bocListSortingO
 /*endregion*/
 
 /*region Editable cell*/
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .control
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .control
 {
   width: 100%;
   display: block;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .control > *
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .control > *
 {
   width: 100%;
   --width: 100%;
@@ -476,24 +471,24 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable .
   margin-right: calc(-1 * (var(--single-whitespace-width) + var(--remotion-themed-spacing)));
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker > img
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .validationErrorMarker > img
 {
   height: var(--remotion-themed-img-width);
   width: var(--remotion-themed-img-width);
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .bocListEditModeValidationMessage
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .bocListEditModeValidationMessage
 {
   color: var(--color-validationerror-text);
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .validationErrorMarker
 {
   position: relative;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after,
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after,
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
 {
 
   visibility: hidden;
@@ -516,8 +511,8 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable s
   z-index: var(--z-index-max);
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
 {
   visibility: visible;
   transition-delay: var(--transition-delay-tooltip);
@@ -525,7 +520,7 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable s
 /*endregion*/
 
 /*region Validation layout*/
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell
 {
   display: grid;
   grid-template-columns: min-content 1fr;
@@ -534,19 +529,19 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable s
   width: 100%;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .control
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell > .control
 {
   grid-row: 1;
   grid-column: 1 / span 2;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationMessages
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell > .validationMessages
 {
   grid-row: 2;
   grid-column: 1 / span 2;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell > .validationErrorMarker
 {
   grid-row: 1;
   grid-column: 1;
@@ -556,12 +551,12 @@ div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable s
   margin-bottom: auto;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker + .control
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell > .validationErrorMarker + .control
 {
   grid-column: 2;
 }
 
-div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable span.bocListEditableCell > .validationErrorMarker ~ .validationMessages
+div.bocList div.bocListTableBlock div.bocListTableContainer table.bocListTable div.bocListEditableCell > .validationErrorMarker ~ .validationMessages
 {
   grid-column: 2;
   padding-top: var(--remotion-themed-spacing-small);

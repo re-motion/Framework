@@ -62,7 +62,7 @@ namespace Remotion.ObjectBinding.Sample
     {
       var cssClasses = SafeServiceLocator.Current.GetInstance<BocListCssClassDefinition>();
       writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClasses.CellStructureElement);
-      writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
       writer.AddAttribute(HtmlTextWriterAttribute.Href, SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>().GetURL());
       string onClickEvent = GetPostBackClientEvent("async");

@@ -156,10 +156,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
       Html.AssertAttribute(td, "role", "cell");
 
-      var span = Html.GetAssertedChildElement(td, "span", 0);
-      Html.AssertAttribute(span, "class", _bocListCssClassDefinition.Content);
+      var div = Html.GetAssertedChildElement(td, "div", 0);
+      Html.AssertAttribute(div, "class", _bocListCssClassDefinition.Content);
 
-      Html.AssertTextNode(span, "TestCommand", 0);
+      Html.AssertTextNode(div, "TestCommand", 0);
     }
   }
 }

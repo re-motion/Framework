@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     {
       string onClick = renderingContext.Control.HasClientScript ? c_onCommandClickScript : string.Empty;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
     }
 
     private void RenderClickWrapperEndTag (BocColumnRenderingContext<BocCustomColumnDefinition> renderingContext)
