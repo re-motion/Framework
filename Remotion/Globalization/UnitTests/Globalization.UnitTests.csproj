@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
     <ProjectReference Include="..\..\Core\Reflection\Core.Reflection.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
+    <ProjectReference Include="..\..\Development\UnitTesting.Compilation\Development.UnitTesting.Compilation.csproj" />
     <ProjectReference Include="..\Core\Globalization.Core.csproj" />
   </ItemGroup>
 

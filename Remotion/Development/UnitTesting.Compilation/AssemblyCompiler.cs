@@ -22,7 +22,7 @@ using System.Text;
 using Microsoft.CSharp;
 using Remotion.Utilities;
 
-namespace Remotion.Development.UnitTesting
+namespace Remotion.Development.UnitTesting.Compilation
 {
   [Serializable]
   public class AssemblyCompiler
@@ -61,7 +61,7 @@ namespace Remotion.Development.UnitTesting
 
       _compilerParameters = new CompilerParameters();
       _compilerParameters.GenerateExecutable = false;
-      _compilerParameters.OutputAssembly = null;
+      _compilerParameters.OutputAssembly = null!;
       _compilerParameters.GenerateInMemory = true;
       _compilerParameters.TreatWarningsAsErrors = false;
       _compilerParameters.ReferencedAssemblies.AddRange(referencedAssemblies);

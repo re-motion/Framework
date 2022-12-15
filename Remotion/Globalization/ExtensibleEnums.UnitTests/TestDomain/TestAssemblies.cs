@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Compilation;
 using Remotion.ExtensibleEnums;
 
 namespace Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain

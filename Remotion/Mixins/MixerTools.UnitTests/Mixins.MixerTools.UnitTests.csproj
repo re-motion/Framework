@@ -19,6 +19,7 @@
     <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj" />
     <ProjectReference Include="..\..\Development\Mixins\Development.Mixins.csproj" />
+    <ProjectReference Include="..\..\Development\UnitTesting.Compilation\Development.UnitTesting.Compilation.csproj" />
     <ProjectReference Include="..\Core\Mixins.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
