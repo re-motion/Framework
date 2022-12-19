@@ -1,12 +1,14 @@
 @echo off
 setlocal
 set buildconf=Debug
+set tfm=net48
 if not "%1"=="" set buildconf=%1
-echo Running .\..\..\Remotion\Data\DomainObjects.RdbmsTools\bin\%buildconf%\dbschema.exe from %CD%...
+if not "%2"=="" set tfm=%2
+echo Running .\..\..\Remotion\Data\DomainObjects.RdbmsTools\bin\%buildconf%\%tfm%\dbschema.exe from %CD%...
 
-.\..\..\Remotion\Data\DomainObjects.RdbmsTools\bin\%buildconf%\dbschema.exe ^
-    "/baseDirectory:bin\%buildconf%" ^
-    "/config:..\Clients.Web\web.config" ^
+.\..\..\Remotion\Data\DomainObjects.RdbmsTools\bin\%buildconf%\%tfm%\dbschema.exe ^
+    "/baseDirectory:bin\%buildconf%\%tfm%" ^
+    "/config:dbschema.config" ^
     "/schema" ^
     "/schemaDirectory:Database"
 

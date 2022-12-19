@@ -15,19 +15,26 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.IO;
 using System.Linq;
 using Remotion.Logging;
 using Remotion.Reflection;
-using Remotion.Tools;
 using Remotion.Tools.Console;
 using Remotion.Utilities;
+using Remotion.Tools;
+#if NETFRAMEWORK
+using System.IO;
+#endif
 
 namespace Remotion.Mixins.MixerTools
 {
+#if NETFRAMEWORK
   [Serializable]
   public class MixerRunner : AppDomainRunnerBase
+#else
+  public class MixerRunner : CustomAppContextRunnerBase
+#endif
   {
+#if NETFRAMEWORK
     public static AppDomainSetup CreateAppDomainSetup (MixerParameters parameters)
     {
       ArgumentUtility.CheckNotNull("parameters", parameters);
@@ -52,16 +59,25 @@ namespace Remotion.Mixins.MixerTools
       }
       return setup;
     }
+#endif
 
     private readonly MixerParameters _parameters;
 
     public MixerRunner (MixerParameters parameters)
+#if NETFRAMEWORK
         : base(CreateAppDomainSetup(ArgumentUtility.CheckNotNull("parameters", parameters)))
+#else
+        : base(ArgumentUtility.CheckNotNull("parameters", parameters).BaseDirectory, parameters.ConfigFile)
+#endif
     {
       _parameters = parameters;
     }
 
+#if NETFRAMEWORK
     protected override void CrossAppDomainCallbackHandler ()
+#else
+    protected override void RunImplementation ()
+#endif
     {
       ConfigureLogging();
 
@@ -90,10 +106,10 @@ namespace Remotion.Mixins.MixerTools
       else
       {
         var mixerLoggers = from t in AssemblyTypeCache.GetTypes(typeof(Mixer).Assembly)
-                           where t.Namespace == typeof(Mixer).GetNamespaceChecked()
-                           select LogManager.GetLogger(t);
+            where t.Namespace == typeof(Mixer).GetNamespaceChecked()
+            select LogManager.GetLogger(t);
         var logThresholds = from l in mixerLoggers
-                            select new LogThreshold(l, LogLevel.Info);
+            select new LogThreshold(l, LogLevel.Info);
         LogManager.InitializeConsole(LogLevel.Warn, logThresholds.ToArray());
       }
     }

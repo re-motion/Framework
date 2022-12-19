@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.IO;
 using System.Linq;
 using Remotion.Configuration;
 using Remotion.Data.DomainObjects.Configuration;
@@ -30,6 +29,9 @@ using Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Sql2014;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Logging;
 using Remotion.Tools;
+#if NETFRAMEWORK
+using System.IO;
+#endif
 
 namespace Remotion.Data.DomainObjects.RdbmsTools
 {
@@ -37,15 +39,14 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
   /// The <see cref="RdbmsToolsRunner"/> type contains the encapsulates the execution of the various functionality provided by the 
   /// <b>Remotion.Data.DomainObjects.RdbmsTools</b> assembly.
   /// </summary>
+#if NETFRAMEWORK
   [Serializable]
   public class RdbmsToolsRunner : AppDomainRunnerBase
+#else
+  public class RdbmsToolsRunner : CustomAppContextRunnerBase
+#endif
   {
-    public static RdbmsToolsRunner Create (RdbmsToolsParameters rdbmsToolsParameters)
-    {
-      AppDomainSetup appDomainSetup = CreateAppDomainSetup(rdbmsToolsParameters);
-      return new RdbmsToolsRunner(appDomainSetup, rdbmsToolsParameters);
-    }
-
+#if NETFRAMEWORK
     public static AppDomainSetup CreateAppDomainSetup (RdbmsToolsParameters rdbmsToolsParameters)
     {
       AppDomainSetup appDomainSetup = new AppDomainSetup();
@@ -66,16 +67,25 @@ namespace Remotion.Data.DomainObjects.RdbmsTools
       }
       return appDomainSetup;
     }
+#endif
 
     private readonly RdbmsToolsParameters _rdbmsToolsParameters;
 
-    protected RdbmsToolsRunner (AppDomainSetup appDomainSetup, RdbmsToolsParameters rdbmsToolsParameters)
-        : base(appDomainSetup)
+    public RdbmsToolsRunner (RdbmsToolsParameters rdbmsToolsParameters)
+#if NETFRAMEWORK
+        : base(CreateAppDomainSetup(rdbmsToolsParameters))
+#else
+        : base(rdbmsToolsParameters.BaseDirectory, rdbmsToolsParameters.ConfigFile)
+#endif
     {
       _rdbmsToolsParameters = rdbmsToolsParameters;
     }
 
+#if NETFRAMEWORK
     protected override void CrossAppDomainCallbackHandler ()
+#else
+    protected override void RunImplementation ()
+#endif
     {
       if (_rdbmsToolsParameters.Verbose)
         LogManager.InitializeConsole();
