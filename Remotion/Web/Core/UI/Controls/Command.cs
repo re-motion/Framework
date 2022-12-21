@@ -596,7 +596,7 @@ namespace Remotion.Web.UI.Controls
         }
       }
       href = UrlUtility.AddParameters(href, additionalUrlParameters);
-      if (OwnerControl != null)
+      if (OwnerControl != null && !href.StartsWith("?"))
         href = OwnerControl.ResolveClientUrl(href);
 
       return CommandInfo.CreateForLink(

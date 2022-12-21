@@ -18,6 +18,7 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Moq;
 using NUnit.Framework;
 using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Web.UI.Controls;
@@ -119,6 +120,32 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.CommandTests
       Assert.IsNotNull(_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual(HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
       Assert.AreEqual(0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
+    }
+
+    [Test]
+    public void GetCommandInfo_WithEmptyHrefAndParameters_DoesNotResolveClientUrl ()
+    {
+      var ownerControlMock = new Mock<IControl>();
+      ownerControlMock.Setup(e => e.ResolveClientUrl(It.IsAny<string>())).Throws<InvalidOperationException>();
+
+      var command = new Command
+                    {
+                        Type = CommandType.Href,
+                        OwnerControl = ownerControlMock.Object
+                    };
+
+      var additionalUrlParameters = new NameValueCollection();
+      additionalUrlParameters.Add("test", "1");
+
+      var commandInfo = command.GetCommandInfo(
+          null,
+          Array.Empty<string>(),
+          null,
+          null,
+          additionalUrlParameters,
+          false);
+
+      Assert.That(commandInfo.Href, Is.EqualTo("?test=1"));
     }
   }
 }
