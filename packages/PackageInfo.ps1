@@ -372,6 +372,13 @@ $output += "| This software (assemblies in the 'CoreForms.Web' family) embeds co
 $output += "|
 "
 
+$output += "| [RoslynCodeDomProvider](https://github.com/aspnet/RoslynCodeDomProvider) (Source Code) "
+$output += "| adapted from commit: 213c6bdf00e7f56557024e3b2b1287f8529c7155 "
+$output += "| [MIT License](https://github.com/aspnet/RoslynCodeDomProvider/blob/main/LICENSE.txt) "
+$output += "| This software (assembly 'Remotion.Development.UnitTesting.Compilation') embeds code based on the 'RoslynCodeDomProvider'. <br> Copyright (c) Microsoft Corporation <br> https://github.com/aspnet/RoslynCodeDomProvider "
+$output += "|
+"
+
 $output += "
 "
 

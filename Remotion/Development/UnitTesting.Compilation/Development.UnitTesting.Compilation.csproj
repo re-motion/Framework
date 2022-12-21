@@ -16,5 +16,7 @@
   <ItemGroup>
     <PackageReference Include="System.CodeDom" Version="7.0.0" />
   </ItemGroup>
+    <None Include="ThirdPartyNotice.txt" Pack="true" PackagePath="ThirdPartyNotice.txt" />
+    <None Include="..\..\license\LGPLv2.1.txt" Pack="true" PackagePath="LICENSE.txt" Visible="false" />
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
