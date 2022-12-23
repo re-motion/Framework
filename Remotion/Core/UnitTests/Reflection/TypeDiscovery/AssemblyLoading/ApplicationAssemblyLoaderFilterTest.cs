@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
+using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;

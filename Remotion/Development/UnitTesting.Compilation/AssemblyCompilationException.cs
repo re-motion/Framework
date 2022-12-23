@@ -17,7 +17,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Remotion.Development.UnitTesting
+namespace Remotion.Development.UnitTesting.Compilation
 {
   /// <summary>
   /// The <see cref="AssemblyCompilationException"/> is thrown by the <see cref="AssemblyCompiler"/> type when compilation errors occured.
