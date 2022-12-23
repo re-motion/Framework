@@ -202,7 +202,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration
 
     public void QueryExecuted (Guid connectionID, Guid queryID, TimeSpan durationOfQueryExecution)
     {
-      _appenderProxy.CommandDurationAndRowCount(_clientTransactionID, durationOfQueryExecution.Milliseconds, null);
+      _appenderProxy.CommandDurationAndRowCount(_clientTransactionID, (int)durationOfQueryExecution.TotalMilliseconds, null);
     }
 
     public void QueryExecuting (
