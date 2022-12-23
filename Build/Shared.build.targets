@@ -2,6 +2,7 @@
 
   <Import Project="$(ProjectTypeTargetsFile)" Condition="'$(ProjectTypeTargetsFile)' != '' AND Exists('$(ProjectTypeTargetsFile)')" />
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.targets" Condition="'$(UseWebForms)' == 'true' AND Exists('$(FeaturesRoot)UseWebForms.targets')" />
+  <Import Project="$(ProjectFeaturesRoot)UseNetOnly.targets" Condition="'$(UseNetOnly)' == 'true' AND Exists('$(FeaturesRoot)UseNetOnly.targets')" />
 
   <Target Name="VerifyProjectConfiguration">
     <Error Text="No project type configured." Condition="'$(ProjectType)' == ''" />

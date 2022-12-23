@@ -53,6 +53,7 @@
     <None Include="NuSpec\Uninstall.ps1" />
     <None Include="NuSpec\Web.targets" />
     <None Include="packages.config" />
+    <None Include="ProjectFeatures\UseNetOnly.props" />
     <None Include="ProjectFeatures\UseWebForms.props" />
     <None Include="ProjectTypes\Analyzer.props" />
     <None Include="ProjectTypes\Executable.props" />
