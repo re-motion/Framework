@@ -126,7 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderRowIndex (BocListRenderingContext renderingContext, int index, string selectorControlID)
     {
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       int renderedIndex = index + 1;
       if (renderingContext.Control.IndexOffset != null)
         renderedIndex += renderingContext.Control.IndexOffset.Value;

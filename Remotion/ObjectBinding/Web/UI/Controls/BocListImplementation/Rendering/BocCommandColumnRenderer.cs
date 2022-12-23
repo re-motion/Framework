@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       if (!isCommandEnabled)
       {
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.Content);
-        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
       }
       return isCommandEnabled;
     }

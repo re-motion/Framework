@@ -371,10 +371,16 @@ td.bocListDataCellIndex
 }
 
 /*  Style applied to the non-anchor content in the data rows.  */
-span.bocListContent,
+div.bocListContent,
 label.bocListContent
 {
+  display: inline;
   padding: 2px;
+}
+
+div.bocListContent > div[onclick]
+{
+  display: inline;
 }
 
 /*  Style applied to the anchor tags in BocList's data rows.  */
@@ -576,24 +582,24 @@ div.bocListEditModeValidationMessage
   color: Red;
 }
 
-span.bocListEditableCell
+div.bocListEditableCell
 {
   display: inline-block;
   width: 100%
 }
 
-span.bocListEditableCell .validationErrorMarker
+div.bocListEditableCell .validationErrorMarker
 {
   float: left;
 }
 
-span.bocListEditableCell .control
+div.bocListEditableCell .control
 {
   width: 100%; 
   display: block;
 }
 
-span.bocListEditableCell .validationErrorMarker + .control
+div.bocListEditableCell .validationErrorMarker + .control
 {
   padding-left: 16px;
   -webkit-box-sizing: border-box;
@@ -601,14 +607,14 @@ span.bocListEditableCell .validationErrorMarker + .control
   box-sizing: border-box;
 }
 
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus,
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover
+div.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus,
+div.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover
 {
   position: relative;
 }
 
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after,
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
+div.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after,
+div.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
 {
   visibility: hidden;
   transition-property: visibility;
@@ -629,14 +635,14 @@ span.bocListEditableCell .validationErrorMarker[aria-label]:not([title])::after
   box-sizing: border-box;
 }
 
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
-span.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
+div.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):focus::after,
+div.bocListEditableCell .validationErrorMarker[aria-label]:not([title]):hover::after
 {
   visibility: visible;
   transition-delay: 0.7s;
 }
 
-span.bocListEditableCell .control > *
+div.bocListEditableCell .control > *
 {
   width: 100%;
   vertical-align: middle;

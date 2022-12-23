@@ -441,7 +441,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         writer.AddStyleAttribute(HtmlTextWriterStyle.Width, column.Width.ToString(CultureInfo.InvariantCulture));
 
       writer.AddAttribute(HtmlTextWriterAttribute.Class, "bocListEditableCell");
-      writer.RenderBeginTag(HtmlTextWriterTag.Span); // Span Container
+      writer.RenderBeginTag(HtmlTextWriterTag.Div); // Div Container
 
       if (_editModeHost.ShowEditModeValidationMarkers)
       {
@@ -479,7 +479,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
 
       writer.AddAttribute(HtmlTextWriterAttribute.Class, "control");
-      writer.RenderBeginTag(HtmlTextWriterTag.Span); // Span Control
+      writer.RenderBeginTag(HtmlTextWriterTag.Div); // Div Control
 
       foreach (BaseValidator validator in validators)
         editModeControl.RegisterValidator(validator);
@@ -488,7 +488,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       editModeControl.RenderControl(writer);
 
-      writer.RenderEndTag(); // Span Control
+      writer.RenderEndTag(); // Div Control
 
       writer.AddAttribute(HtmlTextWriterAttribute.Class, "validationMessages");
       writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -515,7 +515,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       writer.RenderEndTag(); // validationMessages Div container
 
-      writer.RenderEndTag(); // Span Container
+      writer.RenderEndTag(); // Div Container
     }
 
     protected override void OnPreRender (EventArgs e)

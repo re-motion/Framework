@@ -139,7 +139,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.BocListCellContents, contentString);
       }
 
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span); // Begin span
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div); // Begin Div
 
       editableRow.RenderSimpleColumnCellEditModeControl(
           renderingContext.Writer,
@@ -148,7 +148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.ColumnIndex,
           arguments.HeaderIDs);
 
-      renderingContext.Writer.RenderEndTag(); // End span
+      renderingContext.Writer.RenderEndTag(); // End Div
     }
   }
 }
