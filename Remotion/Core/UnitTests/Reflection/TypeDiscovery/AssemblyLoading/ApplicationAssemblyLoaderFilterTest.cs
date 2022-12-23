@@ -85,13 +85,14 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains; RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
 #endif
     public void ApplicationAssemblyInclusion_DependsOnAttribute ()
     {
       string compiledAssemblyPath = Path.Combine(AppContext.BaseDirectory, "NonApplicationMarkedAssembly.dll");
       try
       {
+#if NETFRAMEWORK
         AppDomainRunner.Run(
             delegate (object[] args)
             {
@@ -109,6 +110,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
               assemblyCompiler.Compile();
               Assert.That(filter.ShouldIncludeAssembly(assemblyCompiler.CompiledAssembly), Is.False);
             }, compiledAssemblyPath);
+#else
+        throw new NotImplementedException("RM-7808: Integrate the RoslynCodeDomProvider and reenable the AssemblyCompiler tests. Implement test using IsolatedCodeRunner.");
+#endif
       }
       finally
       {
@@ -116,6 +120,5 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
           FileUtility.DeleteAndWaitForCompletion(compiledAssemblyPath);
       }
     }
-
   }
 }
