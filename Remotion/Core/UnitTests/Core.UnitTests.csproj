@@ -29,5 +29,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
+    <ProjectReference Include="..\..\Development\UnitTesting.IsolatedCodeRunner\Development.UnitTesting.IsolatedCodeRunner.csproj" />
+  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>

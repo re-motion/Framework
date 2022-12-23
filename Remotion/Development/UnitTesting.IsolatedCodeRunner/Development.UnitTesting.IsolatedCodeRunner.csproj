@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>Executable</ProjectType>
+    <UseNetOnly>true</UseNetOnly>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyTitle>re-motion Development Isolated Code Runner Library</AssemblyTitle>
+    <Description>Unit test tool for running code in an external process to allow complete isolation of the tested system.</Description>
+    <AssemblyName>Remotion.Development.UnitTesting.IsolatedCodeRunner</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Core\Tools\Core.Tools.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>
