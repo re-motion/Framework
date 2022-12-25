@@ -25,7 +25,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
   public static class IClientTransactionMockEventReceiverExtensions
   {
     public static ISetup<IClientTransactionMockEventReceiver> SetupLoaded (
-        this ISetupConditionResult<IClientTransactionMockEventReceiver> fluent,
+        this MockWrapper<IClientTransactionMockEventReceiver> fluent,
         ClientTransaction sender,
         params DomainObject[] domainObjects)
     {
@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IClientTransactionMockEventReceiver> SetupRollingBack (
-        this ISetupConditionResult<IClientTransactionMockEventReceiver> fluent,
+        this MockWrapper<IClientTransactionMockEventReceiver> fluent,
         ClientTransaction sender,
         params DomainObject[] domainObjects)
     {
@@ -50,7 +50,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IClientTransactionMockEventReceiver> SetupRolledBack (
-        this ISetupConditionResult<IClientTransactionMockEventReceiver> fluent,
+        this MockWrapper<IClientTransactionMockEventReceiver> fluent,
         ClientTransaction sender,
         params DomainObject[] domainObjects)
     {
@@ -67,7 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IClientTransactionMockEventReceiver> SetupCommitting (
-        this ISetupConditionResult<IClientTransactionMockEventReceiver> fluent,
+        this MockWrapper<IClientTransactionMockEventReceiver> fluent,
         ClientTransaction sender,
         params DomainObject[] domainObjects)
     {
@@ -84,7 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.EventReceiver
     }
 
     public static ISetup<IClientTransactionMockEventReceiver> SetupCommitted (
-        this ISetupConditionResult<IClientTransactionMockEventReceiver> fluent,
+        this MockWrapper<IClientTransactionMockEventReceiver> fluent,
         ClientTransaction sender,
         params DomainObject[] domainObjects)
     {
