@@ -12,7 +12,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\..\..\SharedSource\Development\NUnit\UnitTesting\*.cs" Link="SharedSource\NUnit\UnitTesting\%(Filename)%(Extension)" />
-    <Compile Include="..\..\..\SharedSource\Development\Moq\UnitTesting\MoqExtensions.cs" Link="SharedSource\Development\Moq\UnitTesting\MoqExtensions.cs" />
     <Content Include="Res\*.xml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
