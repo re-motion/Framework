@@ -19,8 +19,6 @@ using System.Collections;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
-using Remotion.Development.Moq.UnitTesting;
-using Remotion.Development.UnitTesting;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
@@ -98,34 +96,35 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var strategy = CreateScopedTransactionStrategy(true, NullTransactionStrategy.Null);
 
       InvokeOnExecutionPlay(strategy.Object);
-      var sequenceCounter = 0;
+      var sequence = new VerifiableSequence();
       ChildTransactionStrategyMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object))
-          .InSequence(ref sequenceCounter, 0)
           .Verifiable();
       strategy
+          .InVerifiableSequence(sequence)
           .Protected()
           .Setup("CommitTransaction", true)
-          .InSequence(ref sequenceCounter, 1)
           .Verifiable();
       ExecutionContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.GetOutParameters())
           .Returns(new object[0])
-          .InSequence(ref sequenceCounter, 2)
           .Verifiable();
       ScopeMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Leave())
-          .InSequence(ref sequenceCounter, 3)
           .Verifiable();
       TransactionMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Release())
-          .InSequence(ref sequenceCounter, 4)
           .Verifiable();
 
       strategy.Object.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
       strategy.Verify();
+      sequence.Verify();
       Assert.That(strategy.Object.Scope, Is.Null);
     }
 
@@ -135,30 +134,30 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var strategy = CreateScopedTransactionStrategy(false, NullTransactionStrategy.Null);
 
       InvokeOnExecutionPlay(strategy.Object);
-      var sequenceCounter = 0;
+      var sequence = new VerifiableSequence();
       ChildTransactionStrategyMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.OnExecutionStop(Context, ExecutionListenerStub.Object))
-          .InSequence(ref sequenceCounter, 0)
           .Verifiable();
       ExecutionContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.GetOutParameters())
           .Returns(new object[0])
-          .InSequence(ref sequenceCounter, 1)
           .Verifiable();
       ScopeMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Leave())
-          .InSequence(ref sequenceCounter, 2)
           .Verifiable();
       strategy
           .Protected()
           .Setup("ReleaseTransaction", true)
-          .InSequence(ref sequenceCounter, 3)
           .Verifiable();
 
       strategy.Object.OnExecutionStop(Context, ExecutionListenerStub.Object);
 
       VerifyAll();
       strategy.Verify();
+      sequence.Verify();
       Assert.That(strategy.Object.Scope, Is.Null);
     }
 
