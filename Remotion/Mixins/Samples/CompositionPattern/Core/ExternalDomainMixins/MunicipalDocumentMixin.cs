@@ -32,9 +32,10 @@ namespace Remotion.Mixins.Samples.CompositionPattern.Core.ExternalDomainMixins
   /// <see cref="Mixin{TTarget}.Target"/> property to include the <see cref="IMunicipalSettlement.MunicipalityID"/> property would be to
   /// refactor <see cref="DocumentMixin"/> to become a generic mixin. We don't do that to illustrate how to work without a generic mixin.
   /// </summary>
+  // Omitted in order to simulate that the municipal configuration is only present in certain configurations:
   // [Extends (typeof (Settlement), 
   //     SuppressedMixins = new[] { typeof (DocumentMixin) }, 
-  //     AdditionalDependencies = new[] { typeof (IMunicipalSettlement) })] // => omitted in order to simulate that the municipal configuration is only present in certain configurations
+  //     AdditionalDependencies = new[] { typeof (IMunicipalSettlement) })]
   public class MunicipalDocumentMixin : DocumentMixin
   {
     public override string Title

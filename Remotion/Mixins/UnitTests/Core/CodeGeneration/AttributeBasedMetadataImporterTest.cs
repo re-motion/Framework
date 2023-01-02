@@ -170,7 +170,10 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
     {
       var importerMock = new Mock<AttributeBasedMetadataImporter>() { CallBase = true };
 
-      importerMock.Setup(mock => mock.GetIdentifierForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers))).Returns((ConcreteMixinTypeIdentifier)null).Verifiable();
+      importerMock
+          .Setup(mock => mock.GetIdentifierForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers)))
+          .Returns((ConcreteMixinTypeIdentifier)null)
+          .Verifiable();
 
       var result = importerMock.Object.GetMetadataForMixinType(typeof(LoadableConcreteMixinTypeForMixinWithAbstractMembers));
       Assert.That(result, Is.Null);

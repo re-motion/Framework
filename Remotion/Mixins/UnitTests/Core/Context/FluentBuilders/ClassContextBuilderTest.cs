@@ -317,7 +317,10 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
     {
       var expectedOrigin = MixinContextOrigin.CreateForMethod(MethodBase.GetCurrentMethod());
 
-      _classBuilderMock.Setup(mock => mock.AddOrderedMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2))).Returns(_classBuilderMock.Object).Verifiable();
+      _classBuilderMock
+          .Setup(mock => mock.AddOrderedMixins(expectedOrigin, typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2)))
+          .Returns(_classBuilderMock.Object)
+          .Verifiable();
 
       var result = _classBuilderMock.Object.AddOrderedMixins(typeof(BT2Mixin1), typeof(BT3Mixin1), typeof(BT3Mixin2));
 

@@ -179,7 +179,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(MixinIndirectlyAddingAttribute)).EnterScope())
       {
-        MethodDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget)).Mixins[typeof(MixinIndirectlyAddingAttribute)].Methods[typeof(MixinIndirectlyAddingAttribute).GetMethod("ToString")];
+        MethodDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget))
+            .Mixins[typeof(MixinIndirectlyAddingAttribute)]
+            .Methods[typeof(MixinIndirectlyAddingAttribute).GetMethod("ToString")];
 
         Assert.That(definition.CustomAttributes.ContainsKey(typeof(CopyCustomAttributesAttribute)), Is.False);
         Assert.That(definition.CustomAttributes.ContainsKey(typeof(AttributeWithParameters)), Is.True);
@@ -203,7 +205,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       using (MixinConfiguration.BuildFromActive().ForClass<NullTarget>().Clear().AddMixins(typeof(MixinIndirectlyAddingFilteredAttributes)).EnterScope())
       {
-        MethodDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget)).Mixins[typeof(MixinIndirectlyAddingFilteredAttributes)].Methods[typeof(MixinIndirectlyAddingFilteredAttributes).GetMethod("ToString")];
+        MethodDefinition definition = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(NullTarget))
+            .Mixins[typeof(MixinIndirectlyAddingFilteredAttributes)]
+            .Methods[typeof(MixinIndirectlyAddingFilteredAttributes).GetMethod("ToString")];
 
         Assert.That(definition.CustomAttributes.ContainsKey(typeof(CopyCustomAttributesAttribute)), Is.False);
         Assert.That(definition.CustomAttributes.ContainsKey(typeof(AttributeWithParameters)), Is.False);

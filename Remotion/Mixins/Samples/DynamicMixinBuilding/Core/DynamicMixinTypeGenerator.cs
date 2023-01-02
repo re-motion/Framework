@@ -116,7 +116,12 @@ namespace Remotion.Mixins.Samples.DynamicMixinBuilding.Core
       ParameterInfo[] stubbedMethodSignature = methodToBeStubbed.GetParameters();
       Expression[] baseCallArgs = new Expression[stubbedMethodSignature.Length];
       for (int i = 0; i < baseCallArgs.Length; ++i)
-        baseCallArgs[i] = new ConvertExpression(stubbedMethodSignature[i].ParameterType, typeof(object), new LoadArrayElementExpression(i, stubMethod.ArgumentReferences[0], typeof(object)));
+      {
+        baseCallArgs[i] = new ConvertExpression(
+            stubbedMethodSignature[i].ParameterType,
+            typeof(object),
+            new LoadArrayElementExpression(i, stubMethod.ArgumentReferences[0], typeof(object)));
+      }
 
       MethodInfo methodOnBaseInterface = _baseCallInterface.GetBaseCallMethod(methodToBeStubbed);
       Expression baseMethodCall = new VirtualMethodInvocationExpression(baseReference, methodOnBaseInterface, baseCallArgs);

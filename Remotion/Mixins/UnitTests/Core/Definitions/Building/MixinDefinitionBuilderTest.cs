@@ -232,7 +232,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
           .ForClass<ClassWithMixinsAcceptingAlphabeticOrdering>().AddMixin<MixinAcceptingAlphabeticOrdering1>()
           .EnterScope())
       {
-        MixinDefinition accepter = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassWithMixinsAcceptingAlphabeticOrdering)).Mixins[typeof(MixinAcceptingAlphabeticOrdering1)];
+        MixinDefinition accepter = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(ClassWithMixinsAcceptingAlphabeticOrdering))
+            .Mixins[typeof(MixinAcceptingAlphabeticOrdering1)];
         Assert.That(accepter.AcceptsAlphabeticOrdering, Is.True);
       }
     }
