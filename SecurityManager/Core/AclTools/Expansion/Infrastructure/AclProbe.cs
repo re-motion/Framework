@@ -116,7 +116,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningUser = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException(String.Format("ace.UserSelection={0} is currently not supported by this method. Please extend method to handle the new UserSelection state.", ace.UserCondition));
+          throw new ArgumentException(
+              string.Format(
+                  "ace.UserSelection={0} is currently not supported by this method. Please extend method to handle the new UserSelection state.",
+                  ace.UserCondition));
       }
       return owningUser;
     }
@@ -148,7 +151,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningTenant = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException(String.Format("ace.TenantSelection={0} is currently not supported by this method. Please extend method to handle the new TenantSelection state.", ace.TenantCondition));
+          throw new ArgumentException(
+              string.Format(
+                  "ace.TenantSelection={0} is currently not supported by this method. Please extend method to handle the new TenantSelection state.",
+                  ace.TenantCondition));
       }
       return owningTenant;
     }
@@ -184,7 +190,10 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           owningGroup = null; // No constraint => no condition (will always match).
           break;
         default:
-          throw new ArgumentException(String.Format("ace.GroupSelection={0} is currently not supported by this method. Please extend method to handle the new GroupSelection state.", ace.GroupCondition));
+          throw new ArgumentException(
+              string.Format(
+                  "ace.GroupSelection={0} is currently not supported by this method. Please extend method to handle the new GroupSelection state.",
+                  ace.GroupCondition));
       }
       return owningGroup;
     }

@@ -82,7 +82,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata
       AreEqual(expected, expectedObjectTransaction, actual, message, null);
     }
 
-    public static void AreEqual (SecurableClassDefinition expected, ClientTransaction expectedObjectTransaction, SecurableClassDefinition actual, string message, params object[] args)
+    public static void AreEqual (
+        SecurableClassDefinition expected,
+        ClientTransaction expectedObjectTransaction,
+        SecurableClassDefinition actual,
+        string message,
+        params object[] args)
     {
       string expectedName;
       int expectedIndex;

@@ -230,16 +230,20 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       var extensionStub = new Mock<IClientTransactionExtension>();
       bool propertyValueChangingCalled = false;
-      extensionStub.Setup(_ => _.Key).Returns("STUB");
-      extensionStub.Setup(_ => _.PropertyValueChanging(It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()))
-          .Callback((ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
-          {
-            if (propertyDefinition.PropertyInfo.Name == "UniqueIdentifier")
-            {
-              propertyValueChangingCalled = true;
-              Assert.That(SecurityFreeSection.IsActive, Is.True);
-            }
-          });
+      extensionStub
+          .Setup(_ => _.Key)
+          .Returns("STUB");
+      extensionStub
+          .Setup(_ => _.PropertyValueChanging(It.IsAny<ClientTransaction>(), It.IsAny<DomainObject>(), It.IsAny<PropertyDefinition>(), It.IsAny<object>(), It.IsAny<object>()))
+          .Callback(
+              (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object oldValue, object newValue) =>
+              {
+                if (propertyDefinition.PropertyInfo.Name == "UniqueIdentifier")
+                {
+                  propertyValueChangingCalled = true;
+                  Assert.That(SecurityFreeSection.IsActive, Is.True);
+                }
+              });
 
       OrganizationalStructureTestHelper testHelper = new OrganizationalStructureTestHelper();
       using (testHelper.Transaction.EnterNonDiscardingScope())

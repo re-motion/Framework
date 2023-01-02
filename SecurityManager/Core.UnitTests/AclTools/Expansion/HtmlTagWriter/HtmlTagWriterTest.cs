@@ -84,10 +84,16 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.HtmlTagWriter
       var stringWriter = new StringWriter();
       using (var htmlWriter = new SecurityManager.AclTools.Expansion.HtmlTagWriter.HtmlTagWriter(stringWriter, false))
       {
-        htmlWriter.WritePageHeader("Page Header Test","pageHeaderTest.css");
+        htmlWriter.WritePageHeader("Page Header Test", "pageHeaderTest.css");
       }
+
       var result = stringWriter.ToString();
-      Assert.That(result, Is.EqualTo("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"\"><html><head><title>Page Header Test</title><style>@import \"pageHeaderTest.css\";</style><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head></html>"));
+      Assert.That(
+          result,
+          Is.EqualTo(
+              "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\" \"\"><html>"
+              + "<head><title>Page Header Test</title><style>@import \"pageHeaderTest.css\";</style><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head>"
+              + "</html>"));
     }
 
 
@@ -152,8 +158,14 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion.HtmlTagWriter
       {
         WriteHtmlPage(htmlWriter);
       }
+
       var result = stringWriter.ToString();
-      Assert.That(result, Is.EqualTo("<html><head><title>Title: My HTML Page</title></head><body><p id=\"first_paragraph\">Smells like...<br />Victory<table class=\"myTable\"><tr><th>1st column</th></tr><tr><td>some data</td></tr><tr><td>some more data</td></tr></table></p></body></html>"));
+      Assert.That(
+          result,
+          Is.EqualTo(
+              "<html><head><title>Title: My HTML Page</title></head><body>"
+              + "<p id=\"first_paragraph\">Smells like...<br />Victory<table class=\"myTable\"><tr><th>1st column</th></tr><tr><td>some data</td></tr><tr><td>some more data</td></tr></table></p>"
+              + "</body></html>"));
     }
 
     private static void WriteHtmlPage (SecurityManager.AclTools.Expansion.HtmlTagWriter.HtmlTagWriter htmlWriter)
