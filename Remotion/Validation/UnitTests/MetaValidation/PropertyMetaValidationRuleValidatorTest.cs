@@ -124,8 +124,10 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       _propertyMetaValidationRuleCollectorStub3.Setup(stub => stub.Property).Returns(PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(lastNameExpression)));
       _propertyMetaValidationRuleCollectorStub3.Setup(stub => stub.MetaValidationRules).Returns(new IPropertyMetaValidationRule[0]);
 
-      _propertyMetaValidationRuleCollectorStub4.Setup(stub => stub.Property).Returns(PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(otherPropertyExpression)));
-      _propertyMetaValidationRuleCollectorStub4.Setup(stub => stub.MetaValidationRules).Returns(new[] { metaValidationRuleMock4.Object });
+      _propertyMetaValidationRuleCollectorStub4
+          .Setup(stub => stub.Property).Returns(PropertyInfoAdapter.Create(MemberInfoFromExpressionUtility.GetProperty(otherPropertyExpression)));
+      _propertyMetaValidationRuleCollectorStub4
+          .Setup(stub => stub.MetaValidationRules).Returns(new[] { metaValidationRuleMock4.Object });
 
       systemMetaValidationRuleMock1
           .Setup(

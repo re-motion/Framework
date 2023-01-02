@@ -30,7 +30,11 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
   {
   }
 
-  public class TypeWithSeveralInterfacesAndBaseType : TypeWithSeveralInterfaces, ITypeWithSeveralInterfacesAndBaseTypes1, ITypeWithSeveralInterfacesAndBaseTypes2, ITypeWithSeveralInterfacesAndBaseTypes3
+  public class TypeWithSeveralInterfacesAndBaseType
+      : TypeWithSeveralInterfaces,
+          ITypeWithSeveralInterfacesAndBaseTypes1,
+          ITypeWithSeveralInterfacesAndBaseTypes2,
+          ITypeWithSeveralInterfacesAndBaseTypes3
   {
   }
 }
