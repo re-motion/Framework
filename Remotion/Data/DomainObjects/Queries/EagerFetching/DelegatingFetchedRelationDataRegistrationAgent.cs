@@ -62,7 +62,10 @@ namespace Remotion.Data.DomainObjects.Queries.EagerFetching
       get { return _collectionDataRegistrationAgent; }
     }
 
-    public void GroupAndRegisterRelatedObjects (IRelationEndPointDefinition relationEndPointDefinition, ICollection<ILoadedObjectData> originatingObjects, ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
+    public void GroupAndRegisterRelatedObjects (
+        IRelationEndPointDefinition relationEndPointDefinition,
+        ICollection<ILoadedObjectData> originatingObjects,
+        ICollection<LoadedObjectDataWithDataSourceData> relatedObjects)
     {
       ArgumentUtility.CheckNotNull("relationEndPointDefinition", relationEndPointDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("originatingObjects", originatingObjects);

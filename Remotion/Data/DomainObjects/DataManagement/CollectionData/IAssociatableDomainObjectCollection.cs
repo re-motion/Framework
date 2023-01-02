@@ -35,7 +35,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.CollectionData
     /// users.
     /// </summary>
     /// <param name="endPointID">The <see cref="RelationEndPointID"/> of the <see cref="IDomainObjectCollectionEndPoint"/> to associate with.</param>
-    /// <param name="associatedDomainObjectCollectionDataStrategyFactory">The <see cref="IAssociatedDomainObjectCollectionDataStrategyFactory"/> to get the new data strategy from.</param>
+    /// <param name="associatedDomainObjectCollectionDataStrategyFactory">
+    /// The <see cref="IAssociatedDomainObjectCollectionDataStrategyFactory"/> to get the new data strategy from.
+    /// </param>
     /// <returns>The <see cref="IDomainObjectCollectionData"/> strategy used by the <see cref="DomainObjectCollection"/> before it was associated.</returns>
     IDomainObjectCollectionData TransformToAssociated (
         RelationEndPointID endPointID, IAssociatedDomainObjectCollectionDataStrategyFactory associatedDomainObjectCollectionDataStrategyFactory);

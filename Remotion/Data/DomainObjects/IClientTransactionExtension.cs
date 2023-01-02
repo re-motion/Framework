@@ -123,7 +123,8 @@ namespace Remotion.Data.DomainObjects
     /// <param name="clientTransaction">The <see cref="ClientTransaction"/> instance for which the event is raised.</param>
     /// <param name="loadedDomainObjects">A collection of all <see cref="DomainObject"/>s that were loaded.</param>
     /// <remarks>
-    ///   <see cref="DomainObject.OnLoaded(Remotion.Data.DomainObjects.LoadMode)"/> is called before this method is invoked, whereas <see cref="ClientTransaction.Loaded"/> is fired after it.
+    /// <see cref="DomainObject.OnLoaded(Remotion.Data.DomainObjects.LoadMode)"/> is called before this method is invoked,
+    /// whereas <see cref="ClientTransaction.Loaded"/> is fired after it.
     /// <note type="inotes">The implementation of this method must not throw an exception.</note>
     /// </remarks>
     void ObjectsLoaded (ClientTransaction clientTransaction, IReadOnlyList<DomainObject> loadedDomainObjects);
@@ -268,7 +269,8 @@ namespace Remotion.Data.DomainObjects
     /// <param name="relationEndPointDefinition">The relation endpoint definition of the relation property being read.</param>
     /// <param name="valueAccess">A value indicating whether the current or the original value is being accessed.</param>
     /// <remarks>
-    ///   Use this method to cancel the operation, whereas <see cref="RelationRead(ClientTransaction, DomainObject, IRelationEndPointDefinition, DomainObject, ValueAccess)"/> should be used to perform actions on its successful execution.
+    /// Use this method to cancel the operation, whereas <see cref="RelationRead(ClientTransaction, DomainObject, IRelationEndPointDefinition, DomainObject, ValueAccess)"/>
+    /// should be used to perform actions on its successful execution.
     /// <note type="inotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     /// </remarks>
     void RelationReading (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, ValueAccess valueAccess);
@@ -290,7 +292,12 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationReading"/> instead.</note>
     /// </remarks>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess);
+    void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? relatedObject,
+        ValueAccess valueAccess);
 
     /// <summary>
     /// Invoked when a relation property with cardinality <see cref="Mapping.CardinalityType.Many"/> was read. 
@@ -313,7 +320,12 @@ namespace Remotion.Data.DomainObjects
     ///   </para>
     /// <note type="inotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationReading"/> instead.</note>
     /// </remarks>
-    void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess);
+    void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        ValueAccess valueAccess);
 
     /// <summary>
     /// Invoked before a relation is changed.

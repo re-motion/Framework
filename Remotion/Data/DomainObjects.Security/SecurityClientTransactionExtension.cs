@@ -176,7 +176,12 @@ namespace Remotion.Data.DomainObjects.Security
       }
     }
 
-    public override void PropertyValueChanging (ClientTransaction clientTransaction, DomainObject domainObject, PropertyDefinition propertyDefinition, object? oldValue, object? newValue)
+    public override void PropertyValueChanging (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        PropertyDefinition propertyDefinition,
+        object? oldValue,
+        object? newValue)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);
       ArgumentUtility.CheckNotNull("domainObject", domainObject);

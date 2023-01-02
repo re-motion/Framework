@@ -30,7 +30,12 @@ namespace Remotion.Data.DomainObjects.Linq
   /// </summary>
   public class FetchResultOperatorHandler : ResultOperatorHandler<FetchRequestBase>
   {
-    public override void HandleResultOperator (FetchRequestBase resultOperator, SqlStatementBuilder sqlStatementBuilder, UniqueIdentifierGenerator generator, ISqlPreparationStage stage, ISqlPreparationContext context)
+    public override void HandleResultOperator (
+        FetchRequestBase resultOperator,
+        SqlStatementBuilder sqlStatementBuilder,
+        UniqueIdentifierGenerator generator,
+        ISqlPreparationStage stage,
+        ISqlPreparationContext context)
     {
       throw new NotSupportedException(
           "The fetch query operator methods must be the last query operators in a LINQ query. All calls to Where, Select, Take, etc. must go before "

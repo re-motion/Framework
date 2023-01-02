@@ -113,7 +113,11 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
       var mode = new Mock<ITransactionMode>();
       mode.Setup(stub => stub.CreateTransactionStrategy(It.IsAny<WxeFunction>(), It.IsAny<WxeContext>()))
           .Returns(
-              (Func<WxeFunction, WxeContext, TransactionStrategyBase>)((function, context) => new RootTransactionStrategy(false, clientTransaction.ToITransaction, NullTransactionStrategy.Null, function)));
+              (WxeFunction function, WxeContext context) => new RootTransactionStrategy(
+                  false,
+                  clientTransaction.ToITransaction,
+                  NullTransactionStrategy.Null,
+                  function));
       return mode.Object;
     }
   }

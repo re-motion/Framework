@@ -106,7 +106,9 @@ namespace Remotion.Data.DomainObjects.ObjectBinding
     /// Deletes the <see cref="SimpleDomainObject{TDomainObject}"/>.
     /// </summary>
     /// <exception cref="ObjectInvalidException">The object is invalid. See <see cref="ObjectInvalidException"/> for further information.</exception>
-    /// <remarks>To perform custom actions when a <see cref="DomainObject"/> is deleted <see cref="DomainObject.OnDeleting"/> and <see cref="DomainObject.OnDeleted"/> should be overridden.</remarks>
+    /// <remarks>
+    /// To perform custom actions when a <see cref="DomainObject"/> is deleted <see cref="DomainObject.OnDeleting"/> and <see cref="DomainObject.OnDeleted"/> should be overridden.
+    /// </remarks>
     public new void Delete ()
     {
       base.Delete();

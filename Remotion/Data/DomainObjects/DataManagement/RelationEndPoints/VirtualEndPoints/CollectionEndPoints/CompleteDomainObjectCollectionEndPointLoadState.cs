@@ -53,7 +53,9 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return DataManager.OriginalCollectionData;
     }
 
-    public override void SetDataFromSubTransaction (IDomainObjectCollectionEndPoint collectionEndPoint, IVirtualEndPointLoadState<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager> sourceLoadState)
+    public override void SetDataFromSubTransaction (
+        IDomainObjectCollectionEndPoint collectionEndPoint,
+        IVirtualEndPointLoadState<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager> sourceLoadState)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       var sourceCompleteLoadState = ArgumentUtility.CheckNotNullAndType<CompleteDomainObjectCollectionEndPointLoadState>("sourceLoadState", sourceLoadState);
@@ -68,7 +70,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       return DataManager.HasDataChangedFast();
     }
 
-    public new void MarkDataComplete (IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
+    public new void MarkDataComplete (
+        IDomainObjectCollectionEndPoint collectionEndPoint,
+        IEnumerable<DomainObject> items,
+        Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("items", items);

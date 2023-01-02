@@ -91,11 +91,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedStates = new ChangeState[]
+        ChangeState[] expectedStates =
+            new ChangeState[]
             {
-              new ObjectDeletionState(_supervisor, "1. Deleting of supervisor"),
-              new CollectionDeletionState(_supervisor.Subordinates, "2. Deleting of supervisor.Subordinates"),
-              new RelationChangeState(_subordinate1, "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor", _supervisor, null, "3. Relation changing of subordinate1")
+                new ObjectDeletionState(_supervisor, "1. Deleting of supervisor"),
+                new CollectionDeletionState(_supervisor.Subordinates, "2. Deleting of supervisor.Subordinates"),
+                new RelationChangeState(
+                    _subordinate1,
+                    "Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Supervisor",
+                    _supervisor,
+                    null,
+                    "3. Relation changing of subordinate1")
             };
 
         _eventReceiver.Check(expectedStates);
@@ -141,7 +147,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
     public void GetOriginalRelatedObjects ()
     {
       _supervisor.Delete();
-      DomainObjectCollection originalSubordinates = _supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
+      DomainObjectCollection originalSubordinates =
+          _supervisor.GetOriginalRelatedObjectsAsDomainObjectCollection("Remotion.Data.DomainObjects.UnitTests.TestDomain.Employee.Subordinates");
 
       Assert.That(originalSubordinates, Is.Not.Null);
       Assert.That(originalSubordinates.Count, Is.EqualTo(2));

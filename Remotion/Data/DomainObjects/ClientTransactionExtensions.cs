@@ -76,7 +76,9 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Returns whether at least one <see cref="DomainObject"/> in the <see cref="ClientTransaction"/> has been changed.
     /// </summary>
-    /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in the <see cref="ClientTransaction"/> has been changed; otherwise, <see langword="false"/>.</returns>
+    /// <returns>
+    /// <see langword="true"/> if at least one <see cref="DomainObject"/> in the <see cref="ClientTransaction"/> has been changed; otherwise, <see langword="false"/>.
+    /// </returns>
     public static bool HasChanged (this ClientTransaction clientTransaction)
     {
       ArgumentUtility.CheckNotNull("clientTransaction", clientTransaction);

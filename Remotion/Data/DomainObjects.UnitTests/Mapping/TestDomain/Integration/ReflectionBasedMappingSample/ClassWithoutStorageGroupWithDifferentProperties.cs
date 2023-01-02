@@ -40,11 +40,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
       get
       {
-        return Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.String"]
+        return Properties[
+                "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.String"]
             .GetValue<string>();
       }
-      set { Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.String"]
-            .SetValue(value); }
+      set
+      {
+        Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.String"]
+            .SetValue(value);
+      }
     }
 
     public abstract ClassWithVirtualRelationEndPoints UnidirectionalOneToOne { get; set; }
@@ -53,7 +57,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
       get
       {
-        return Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
+        return Properties[
+                "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.ClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
             .GetValue<string>();
       }
       set

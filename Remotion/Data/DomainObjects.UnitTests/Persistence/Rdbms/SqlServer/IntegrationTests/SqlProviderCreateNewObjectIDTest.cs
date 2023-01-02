@@ -44,7 +44,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
           () => Provider.CreateNewObjectID(classDefinition),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
-                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.", "classDefinition"));
+                  "The StorageProviderID 'UnitTestStorageProviderStub' of the provided ClassDefinition does not match with this StorageProvider's ID 'TestDomain'.",
+                  "classDefinition"));
     }
   }
 }

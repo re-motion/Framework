@@ -125,8 +125,14 @@ namespace Remotion.Data.DomainObjects.Queries.Configuration
     /// <summary>
     /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
     /// </summary>
-    /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/> or empty.</param>
-    /// <returns><see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
+    /// <param name="queryID">
+    /// The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>.
+    /// Must not be <see langword="null"/> or empty.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>;
+    /// otherwise, <see langword="false"/>.
+    /// </returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/></exception>
     public bool Contains (string queryID)
     {

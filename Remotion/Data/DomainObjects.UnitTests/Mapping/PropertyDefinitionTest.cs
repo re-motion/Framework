@@ -235,8 +235,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           StorageClass.Persistent);
       Assert.That(
           () => nullableValueProperty.DefaultValue,
-          Throws.InvalidOperationException.With.Message.EqualTo(
-              ".NET enum type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.EnumNotDefiningAnyValues' does not define any values. Properties based on this type must be declared as nullable."));
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  ".NET enum type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.EnumNotDefiningAnyValues' does not define any values. "
+                  + "Properties based on this type must be declared as nullable."));
     }
 
     [Test]
@@ -262,8 +264,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           StorageClass.Persistent);
       Assert.That(
           () => nullableValueProperty.DefaultValue,
-          Throws.InvalidOperationException.With.Message.EqualTo(
-              "Extensible enum type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ExtensibleEnumNotDefiningAnyValues' does not define any values. Properties based on this type must be declared as nullable."));
+          Throws.InvalidOperationException
+              .With.Message.EqualTo(
+                  "Extensible enum type 'Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ExtensibleEnumNotDefiningAnyValues' does not define any values. "
+                  + "Properties based on this type must be declared as nullable."));
     }
 
     [Test]

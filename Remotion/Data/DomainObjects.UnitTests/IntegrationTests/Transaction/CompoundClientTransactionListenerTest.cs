@@ -168,7 +168,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       CheckNotification(listener => listener.DataContainerMapRegistering(TestableClientTransaction, order.InternalDataContainer));
       CheckNotification(listener => listener.DataContainerMapUnregistering(TestableClientTransaction, order.InternalDataContainer));
 
-      CheckNotification(listener => listener.DataContainerStateUpdated(TestableClientTransaction, order.InternalDataContainer, new DataContainerState.Builder().SetDeleted().Value));
+      CheckNotification(
+          listener => listener.DataContainerStateUpdated(TestableClientTransaction, order.InternalDataContainer, new DataContainerState.Builder().SetDeleted().Value));
       CheckNotification(listener => listener.VirtualRelationEndPointStateUpdated(TestableClientTransaction, endPoint.ID, true));
     }
 

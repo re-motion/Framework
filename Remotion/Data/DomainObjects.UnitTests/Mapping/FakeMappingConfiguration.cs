@@ -526,7 +526,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       properties.Add(
           CreatePersistentPropertyDefinition(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "StringWithNullValueProperty", "StringWithNullValue", true, 100));
       properties.Add(
-          CreatePersistentPropertyDefinition(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "ExtensibleEnumWithNullValueProperty", "ExtensibleEnumWithNullValue", true, null));
+          CreatePersistentPropertyDefinition(
+              classWithAllDataTypes,
+              typeof(ClassWithAllDataTypes),
+              "ExtensibleEnumWithNullValueProperty",
+              "ExtensibleEnumWithNullValue",
+              true,
+              null));
       properties.Add(
           CreatePersistentPropertyDefinition(classWithAllDataTypes, typeof(ClassWithAllDataTypes), "NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", true, null));
       properties.Add(
@@ -1132,11 +1138,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               new Lazy<SortExpressionDefinition>(() => sortExpressionDefinition));
 
       var endPoint2 = new RelationEndPointDefinition(
-          productReviewClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Product"], true);
+          productReviewClass["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Product"],
+          true);
 
-      var relation = CreateExpectedRelationDefinition("Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview"
-                                                                      + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Product->"
-                                                                      +"Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product.Reviews", endPoint1, endPoint2);
+      var relation = CreateExpectedRelationDefinition(
+          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview"
+          + ":Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ProductReview.Product->"
+          + "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Product.Reviews",
+          endPoint1,
+          endPoint2);
 
       return relation;
     }

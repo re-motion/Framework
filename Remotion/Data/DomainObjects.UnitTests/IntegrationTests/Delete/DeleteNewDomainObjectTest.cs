@@ -340,8 +340,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Delete
           {
               new ObjectDeletionState(_newOrder, "1. Deleting event of order"),
               new CollectionDeletionState(orderItemsCollection, "2. Deleting of order.OrderItems"),
-              new RelationChangeState(_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", _newOrder, null, "3. Relation changing event of orderTicket"),
-              new RelationChangeState(_newOrderTicket, "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order", null, null, "4. Relation changed event of orderTicket"),
+              new RelationChangeState(
+                  _newOrderTicket,
+                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order",
+                  _newOrder,
+                  null,
+                  "3. Relation changing event of orderTicket"),
+              new RelationChangeState(
+                  _newOrderTicket,
+                  "Remotion.Data.DomainObjects.UnitTests.TestDomain.OrderTicket.Order",
+                  null,
+                  null,
+                  "4. Relation changed event of orderTicket"),
               new CollectionDeletionState(orderItemsCollection, "5. Deleted of order.OrderItems"),
               new ObjectDeletionState(_newOrder, "6. Deleted event of order")
           };

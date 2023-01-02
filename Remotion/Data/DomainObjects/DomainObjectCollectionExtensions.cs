@@ -43,8 +43,8 @@ namespace Remotion.Data.DomainObjects
 
     /// <summary>
     /// Adds all items of the given <see cref="DomainObjectCollection"/> to the <see cref="DomainObjectCollection"/>, that are not already part of it.
-    /// This method is a convenience method combining <see cref="DomainObjectCollection.Contains"/> and <see cref="DomainObjectCollection.AddRange"/>. If there are no changes made to this
-    /// collection, the <see cref="DomainObjectCollection"/> method does not touch the associated end point (if any).
+    /// This method is a convenience method combining <see cref="DomainObjectCollection.Contains"/> and <see cref="DomainObjectCollection.AddRange"/>.
+    /// If there are no changes made to this collection, the <see cref="DomainObjectCollection"/> method does not touch the associated end point (if any).
     /// </summary>
     /// <param name="collection">The collection to add items to.</param>
     /// <param name="sourceCollection">The collection to add items from. Must not be <see langword="null"/>.</param>

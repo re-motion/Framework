@@ -50,7 +50,9 @@ namespace Remotion.Data.DomainObjects.Queries
     /// convert the value into the given type <typeparamref name="T"/>.
     /// </summary>
     /// <returns>The value at <paramref name="position"/>. Can be <see langword="null"/> when no result exists or the data conversion yielded <see langword="null"/>.</returns>
-    /// <typeparam name="T"> The <see cref="Type"/> of the result data. Note that for value types, <see cref="Nullable{T}"/> must be used to properly account for empty results. </typeparam>
+    /// <typeparam name="T">
+    ///   The <see cref="Type"/> of the result data. Note that for value types, <see cref="Nullable{T}"/> must be used to properly account for empty results.
+    /// </typeparam>
     T? GetConvertedValue<T> (int position);
   }
 }

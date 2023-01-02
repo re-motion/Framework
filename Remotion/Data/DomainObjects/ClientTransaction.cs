@@ -35,7 +35,8 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
-  using SubTransactionFactory = Func<ClientTransaction, IInvalidDomainObjectManager, IEnlistedDomainObjectManager, ITransactionHierarchyManager, IClientTransactionEventSink, ClientTransaction>;
+  using SubTransactionFactory =
+      Func<ClientTransaction, IInvalidDomainObjectManager, IEnlistedDomainObjectManager, ITransactionHierarchyManager, IClientTransactionEventSink, ClientTransaction>;
 
 /// <summary>
 /// Represents an in-memory transaction.

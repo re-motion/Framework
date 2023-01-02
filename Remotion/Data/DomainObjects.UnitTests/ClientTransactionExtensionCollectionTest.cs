@@ -263,8 +263,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void PropertyReading ()
     {
       var sequence = new VerifiableSequence();
-      _extension1.InVerifiableSequence(sequence).Setup(mock => mock.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original)).Verifiable();
-      _extension2.InVerifiableSequence(sequence).Setup(mock => mock.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original)).Verifiable();
+      _extension1
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original))
+          .Verifiable();
+      _extension2
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original))
+          .Verifiable();
 
       _collectionWithExtensions.PropertyValueReading(TestableClientTransaction, _order, _propertyDefinition, ValueAccess.Original);
 
@@ -291,8 +297,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
     public void PropertyRead ()
     {
       var sequence = new VerifiableSequence();
-      _extension1.InVerifiableSequence(sequence).Setup(mock => mock.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original)).Verifiable();
-      _extension2.InVerifiableSequence(sequence).Setup(mock => mock.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original)).Verifiable();
+      _extension1
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original))
+          .Verifiable();
+      _extension2
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original))
+          .Verifiable();
 
       _collectionWithExtensions.PropertyValueRead(TestableClientTransaction, _order, _propertyDefinition, 0, ValueAccess.Original);
 
@@ -578,8 +590,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
       OrderTicket orderTicket = _order.OrderTicket;
       IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderTicket");
       var sequence = new VerifiableSequence();
-      _extension1.InVerifiableSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original)).Verifiable();
-      _extension2.InVerifiableSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original)).Verifiable();
+      _extension1
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original))
+          .Verifiable();
+      _extension2
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original))
+          .Verifiable();
 
       _collectionWithExtensions.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderTicket, ValueAccess.Original);
 
@@ -594,8 +612,14 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var orderItems = new ReadOnlyDomainObjectCollectionAdapter<DomainObject>(_order.OrderItems);
       IRelationEndPointDefinition endPointDefinition = GetEndPointDefinition(typeof(Order), "OrderItems");
       var sequence = new VerifiableSequence();
-      _extension1.InVerifiableSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original)).Verifiable();
-      _extension2.InVerifiableSequence(sequence).Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original)).Verifiable();
+      _extension1
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original))
+          .Verifiable();
+      _extension2
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original))
+          .Verifiable();
 
       _collectionWithExtensions.RelationRead(TestableClientTransaction, _order, endPointDefinition, orderItems, ValueAccess.Original);
 

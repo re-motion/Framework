@@ -43,7 +43,9 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       return new StubStorageProvider(storageProviderDefinition, persistenceExtension);
     }
 
-    public IPersistenceModelLoader CreatePersistenceModelLoader (StorageProviderDefinition storageProviderDefinition, IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
+    public IPersistenceModelLoader CreatePersistenceModelLoader (
+        StorageProviderDefinition storageProviderDefinition,
+        IStorageProviderDefinitionFinder storageProviderDefinitionFinder)
     {
       ArgumentUtility.CheckNotNull("storageProviderDefinition", storageProviderDefinition);
 
@@ -154,7 +156,10 @@ namespace Remotion.Data.DomainObjects.Validation.IntegrationTests.Testdomain
       throw new NotImplementedException();
     }
 
-    public ISqlQueryGenerator CreateSqlQueryGenerator (RdbmsProviderDefinition storageProviderDefinition, IMethodCallTransformerProvider methodCallTransformerProvider, ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
+    public ISqlQueryGenerator CreateSqlQueryGenerator (
+        RdbmsProviderDefinition storageProviderDefinition,
+        IMethodCallTransformerProvider methodCallTransformerProvider,
+        ResultOperatorHandlerRegistry resultOperatorHandlerRegistry)
     {
       throw new NotImplementedException();
     }
