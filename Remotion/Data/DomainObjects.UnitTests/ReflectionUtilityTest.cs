@@ -54,12 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests
     }
 
     [Test]
-#if !NETFRAMEWORK
-    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
-#endif
     public void GetAssemblyPath_WithHashInDirectoryName ()
     {
-#if NETFRAMEWORK
       string directoryPath = Path.Combine(AppContext.BaseDirectory, "#HashTestPath");
       string originalAssemblyPath = typeof(ReflectionUtilityTest).Assembly.Location;
       string newAssemblyPath = Path.Combine(directoryPath, Path.GetFileName(originalAssemblyPath));
@@ -71,6 +67,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       try
       {
         File.Copy(originalAssemblyPath, newAssemblyPath);
+#if NETFRAMEWORK
         AppDomainRunner.Run(
             delegate (object[] args)
             {
@@ -83,12 +80,21 @@ namespace Remotion.Data.DomainObjects.UnitTests
             },
             directoryPath,
             newAssemblyPath);
+#else
+        using var assemblyContext = new UnloadableAssemblyContext();
+        assemblyContext.RunWithAssemblyLoadContext(
+            context =>
+            {
+              var assembly = context.LoadFromAssemblyPath(newAssemblyPath);
+              Assert.That(Path.GetDirectoryName(assembly.Location), Is.EqualTo(directoryPath));
+              Assert.That(ReflectionUtility.GetAssemblyDirectory(assembly), Is.EqualTo(Path.TrimEndingDirectorySeparator(AppContext.BaseDirectory)));
+            });
+#endif
       }
       finally
       {
         Directory.Delete(directoryPath, true);
       }
-#endif
     }
 
     [Test]

@@ -3,12 +3,12 @@
   <PropertyGroup>
     <ProjectType>Test</ProjectType>
     <UseWebForms>true</UseWebForms>
+    <UseNetOnly>true</UseNetOnly>
   </PropertyGroup>
 
   <Import Project="..\..\..\Build\Shared.build.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
     <AssemblyTitle>Remotion Web Analyzer Integration Tests</AssemblyTitle>
     <AssemblyName>Remotion.Web.Development.Analyzers.IntegrationTests</AssemblyName>
     <RootNamespace>$(AssemblyName)</RootNamespace>

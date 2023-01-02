@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Queries.Configuration;
+using Remotion.Development;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
@@ -49,22 +50,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Queries.Configuration
     }
 
     [Test]
-#if !NETFRAMEWORK
-    [Ignore("TODO RM-7799: Create out-of-process test infrastructure to replace tests done with app domains")]
-#endif
     public void GetRootedPath_WithUnrootedPath_ReturnsPathRelativeToAppBase_InSeparateAddDomain ()
     {
-      AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
 #if NETFRAMEWORK
+      AppDomainSetup setup = AppDomain.CurrentDomain.SetupInformation;
       setup.ApplicationBase = @"c:\";
       setup.DynamicBase = Path.GetTempPath();
-#endif
+
       new AppDomainRunner(setup, delegate
       {
         string path = @"foo\bar.txt";
         string fullPath = Path.Combine(AppContext.BaseDirectory, @"foo\bar.txt");
         Assert.That(QueryFileElement.GetRootedPath(path), Is.EqualTo(fullPath));
       }).Run();
+#else
+      using (new ChangedApplicationBaseDirectorySection(@"c:\"))
+      {
+        string path = @"foo\bar.txt";
+        string fullPath = Path.Combine(AppContext.BaseDirectory, @"foo\bar.txt");
+        Assert.That(QueryFileElement.GetRootedPath(path), Is.EqualTo(fullPath));
+      }
+#endif
     }
   }
 }

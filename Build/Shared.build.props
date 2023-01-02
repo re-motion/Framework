@@ -48,6 +48,7 @@
   </PropertyGroup>
 
   <Import Project="$(ProjectFeaturesRoot)UseWebForms.props" Condition="'$(UseWebForms)' == 'true'" />
+  <Import Project="$(ProjectFeaturesRoot)UseNetOnly.props" Condition="'$(UseNetOnly)' == 'true'" />
 
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)..\remotion.snk" Link="remotion.snk" />

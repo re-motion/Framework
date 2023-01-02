@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <UseWebForms>true</UseWebForms>
-    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <UseNetOnly>true</UseNetOnly>
     <OutputPath>bin</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IsPackable>false</IsPackable>
