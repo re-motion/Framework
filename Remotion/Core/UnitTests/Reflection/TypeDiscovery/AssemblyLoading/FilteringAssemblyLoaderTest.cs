@@ -78,10 +78,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
-      _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(true)
           .Verifiable();
-      _filterMock.Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(true)
           .Verifiable();
 
@@ -96,10 +98,12 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
-      _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(true)
           .Verifiable();
-      _filterMock.Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldIncludeAssembly(It.Is<Assembly>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(false)
           .Verifiable();
 
@@ -114,7 +118,8 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       Assembly referenceAssembly = typeof(FilteringAssemblyLoaderTest).Assembly;
       string path = new Uri(referenceAssembly.GetName(copiedName: false).CodeBase).LocalPath;
 
-      _filterMock.Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
+      _filterMock
+          .Setup(_ => _.ShouldConsiderAssembly(It.Is<AssemblyName>(_ => _ != null && object.Equals(_.FullName, referenceAssembly.FullName))))
           .Returns(false)
           .Verifiable();
 

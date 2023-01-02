@@ -49,8 +49,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(mock => mock.AvailableViewsListTitle).Returns(WebString.CreateFromText("Views List Title"));
 
       dropDownList.Setup(mock => mock.ClientID).Returns("MockedDropDownListClientID");
-      dropDownList.Setup(mock => mock.RenderControl(Html.Writer)).Callback(
-          (HtmlTextWriter writer) => writer.Write("mocked dropdown list"));
+      dropDownList
+          .Setup(mock => mock.RenderControl(Html.Writer))
+          .Callback((HtmlTextWriter writer) => writer.Write("mocked dropdown list"));
 
       var renderer = new BocListMenuBlockRenderer(_bocListCssClassDefinition);
       renderer.Render(CreateRenderingContext());
@@ -100,8 +101,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(mock => mock.HasOptionsMenu).Returns(true);
       List.Setup(mock => mock.OptionsTitle).Returns(WebString.CreateFromText("Options Menu Title"));
 
-      optionsMenu.Setup(menuMock => menuMock.RenderControl(Html.Writer)).Callback(
-          (HtmlTextWriter writer) => writer.Write("mocked dropdown menu"));
+      optionsMenu
+          .Setup(menuMock => menuMock.RenderControl(Html.Writer))
+          .Callback((HtmlTextWriter writer) => writer.Write("mocked dropdown menu"));
 
       var renderer = new BocListMenuBlockRenderer(_bocListCssClassDefinition);
       renderer.Render(CreateRenderingContext());

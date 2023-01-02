@@ -65,7 +65,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -97,7 +98,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<PreparingRedirectToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -132,7 +134,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -165,7 +168,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -195,7 +199,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -228,7 +233,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
           .Callback(
               (IExecutionState executionState) =>
@@ -261,10 +267,11 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterRequiresPostBack(senderMock.Object)).Verifiable();
       _pageMock.InVerifiableSequence(sequence).Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
-                               .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
-                               .Callback((IExecutionState executionState) => CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState))
-                               .Verifiable();
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithoutPermaUrlState>()))
+          .Callback((IExecutionState executionState) => CheckExecutionState((ExecutingSubFunctionWithoutPermaUrlState)executionState))
+          .Verifiable();
 
       executionState.ExecuteSubFunction(WxeContext);
 

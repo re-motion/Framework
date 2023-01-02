@@ -65,7 +65,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       _pageMock.Setup(mock => mock.GetPostBackCollection()).Returns(PostBackCollection).Verifiable();
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
 
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<PreparingRedirectToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>

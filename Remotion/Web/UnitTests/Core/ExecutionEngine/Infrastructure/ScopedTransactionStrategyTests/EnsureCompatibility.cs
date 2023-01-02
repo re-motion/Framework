@@ -122,7 +122,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var sequence = new VerifiableSequence();
       ExecutionContextMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.GetInParameters()).Returns(new[] { object1, new[] { object2, null, object3 } })
+          .Setup(mock => mock.GetInParameters())
+          .Returns(new[] { object1, new[] { object2, null, object3 } })
           .Verifiable();
       TransactionMock
           .InVerifiableSequence(sequence)

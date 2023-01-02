@@ -467,9 +467,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
 
     private void RenderMultiLineReadonly (bool withStyle, bool withCssClass, bool inStandardProperties)
     {
-      TextValue.Setup(mock => mock.Text).Returns(
-          c_firstLineText + Environment.NewLine
-          + c_secondLineText);
+      TextValue
+          .Setup(mock => mock.Text)
+          .Returns(c_firstLineText + Environment.NewLine + c_secondLineText);
       TextValue.Setup(mock => mock.IsReadOnly).Returns(true);
       TextValue.Setup(mock => mock.Enabled).Returns(true);
 

@@ -115,14 +115,13 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
               new Mock<IExtensibleEnumGlobalizationService>().Object));
 
       var mockResourceManager = new Mock<IResourceManager>(MockBehavior.Strict);
-      mockglobalizationService.Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(BindableObjectGlobalizationService.ResourceIdentifier))))
+      mockglobalizationService
+          .Setup(_ => _.GetResourceManager(TypeAdapter.Create(typeof(BindableObjectGlobalizationService.ResourceIdentifier))))
           .Returns(mockResourceManager.Object)
           .Verifiable();
 
       mockResourceManager
-          .Setup(_ => _.TryGetString(
-              "Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True",
-              out outValue))
+          .Setup(_ => _.TryGetString("Remotion.ObjectBinding.BindableObject.BindableObjectGlobalizationService.True", out outValue))
           .Returns(true)
           .Verifiable();
 

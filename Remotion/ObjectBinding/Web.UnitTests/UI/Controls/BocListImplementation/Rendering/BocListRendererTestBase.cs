@@ -83,7 +83,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(mock => mock.ControlType).Returns("BocList");
       List.Setup(list => list.HasClientScript).Returns(true);
       List.Setup(mock => mock.GetLabelIDs()).Returns(EnumerableUtility.Singleton("Label"));
-      List.Setup(mock => mock.GetValidationErrors())
+      List
+          .Setup(mock => mock.GetValidationErrors())
           .Returns(EnumerableUtility.Singleton(PlainTextString.CreateFromText("ValidationError")));
 
       var dataSourceMock = new Mock<IBusinessObjectDataSource>();
@@ -123,8 +124,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       List.Setup(stub => stub.GetSelectAllControlName()).Returns("SelectAllControl$UniqueID");
       List.Setup(stub => stub.GetCurrentPageControlName()).Returns("CurrentPageControl$UniqueID"); // Keep the $-sign as long as the ScalarLoadPostDataTarget is used.
 
-      List.Setup(list => list.GetResourceManager()).Returns(
-          GlobalizationService.GetResourceManager(typeof(ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
+      List
+          .Setup(list => list.GetResourceManager())
+          .Returns(GlobalizationService.GetResourceManager(typeof(ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier)));
 
       List.Setup(stub => stub.ResolveClientUrl(It.IsAny<string>())).Returns((string url) => url.TrimStart('~'));
     }

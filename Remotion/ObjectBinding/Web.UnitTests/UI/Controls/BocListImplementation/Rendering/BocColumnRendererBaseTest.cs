@@ -55,8 +55,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Initialize();
 
       var editModeController = new Mock<IEditModeController>();
-      editModeController.Setup(mock => mock.RenderTitleCellMarkers(Html.Writer, Column, 0)).Callback(
-          (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex) => writer.Write(string.Empty));
+      editModeController
+          .Setup(mock => mock.RenderTitleCellMarkers(Html.Writer, Column, 0))
+          .Callback((HtmlTextWriter writer, BocColumnDefinition column, int columnIndex) => writer.Write(string.Empty));
 
       List.Setup(mock => mock.EditModeController).Returns(editModeController.Object);
 

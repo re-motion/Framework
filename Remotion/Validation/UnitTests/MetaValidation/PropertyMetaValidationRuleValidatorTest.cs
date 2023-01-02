@@ -59,7 +59,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       _propertyMetaValidationRuleCollectorStub3 = new Mock<IPropertyMetaValidationRuleCollector>();
       _propertyMetaValidationRuleCollectorStub4 = new Mock<IPropertyMetaValidationRuleCollector>();
 
-      _collectorStub1.Setup(stub => stub.PropertyMetaValidationRules)
+      _collectorStub1
+          .Setup(stub => stub.PropertyMetaValidationRules)
           .Returns(new[] { _propertyMetaValidationRuleCollectorStub1.Object, _propertyMetaValidationRuleCollectorStub2.Object });
       _collectorStub2.Setup(stub => stub.PropertyMetaValidationRules).Returns(new[] { _propertyMetaValidationRuleCollectorStub3.Object });
 
@@ -107,7 +108,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var systemMetaValidationRuleMock2 = new Mock<IPropertyMetaValidationRule>(MockBehavior.Strict);
 
       _systemPropertyMetaRuleProviderFactoryStub.Setup(stub => stub.Create(It.IsAny<IPropertyInformation>())).Returns(_systemPropertyMetaValidationRuleProviderStub.Object);
-      _systemPropertyMetaValidationRuleProviderStub.Setup(stub => stub.GetSystemPropertyMetaValidationRules())
+      _systemPropertyMetaValidationRuleProviderStub
+          .Setup(stub => stub.GetSystemPropertyMetaValidationRules())
           .Returns(new[] { systemMetaValidationRuleMock1.Object, systemMetaValidationRuleMock2.Object });
 
       var metaValidationRuleMock1 = new Mock<IPropertyMetaValidationRule>(MockBehavior.Strict);
@@ -130,47 +132,32 @@ namespace Remotion.Validation.UnitTests.MetaValidation
           .Setup(stub => stub.MetaValidationRules).Returns(new[] { metaValidationRuleMock4.Object });
 
       systemMetaValidationRuleMock1
-          .Setup(
-              mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
+          .Setup(mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
           .Returns(new[] { MetaValidationRuleValidationResult.CreateInvalidResult("Error System Mock 1") })
           .Verifiable();
       systemMetaValidationRuleMock2
-          .Setup(
-              mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
+          .Setup(mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
           .Returns(new[] { MetaValidationRuleValidationResult.CreateValidResult() })
           .Verifiable();
       metaValidationRuleMock1
-          .Setup(
-              mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
+          .Setup(mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
           .Returns(new[] { MetaValidationRuleValidationResult.CreateValidResult() })
           .Verifiable();
       metaValidationRuleMock2
-          .Setup(
-              mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
-          .Returns(
-              new[]
-              { MetaValidationRuleValidationResult.CreateValidResult(), MetaValidationRuleValidationResult.CreateInvalidResult("Error Mock 2") })
+          .Setup(mock => mock.Validate(new[] { _propertyValidatorStub1.Object, _propertyValidatorStub2.Object }))
+          .Returns(new[] { MetaValidationRuleValidationResult.CreateValidResult(), MetaValidationRuleValidationResult.CreateInvalidResult("Error Mock 2") })
           .Verifiable();
 
       systemMetaValidationRuleMock1
-          .Setup(
-              mock =>
-                  mock.Validate(
-                      new[] { _propertyValidatorStub3.Object, _propertyValidatorStub4.Object, _propertyValidatorStub5.Object }))
+          .Setup(mock => mock.Validate(new[] { _propertyValidatorStub3.Object, _propertyValidatorStub4.Object, _propertyValidatorStub5.Object }))
           .Returns(new[] { MetaValidationRuleValidationResult.CreateValidResult() })
           .Verifiable();
       systemMetaValidationRuleMock2
-          .Setup(
-              mock =>
-                  mock.Validate(
-                      new[] { _propertyValidatorStub3.Object, _propertyValidatorStub4.Object, _propertyValidatorStub5.Object }))
+          .Setup(mock => mock.Validate(new[] { _propertyValidatorStub3.Object, _propertyValidatorStub4.Object, _propertyValidatorStub5.Object }))
           .Returns(new[] { MetaValidationRuleValidationResult.CreateValidResult() })
           .Verifiable();
       metaValidationRuleMock3
-          .Setup(
-              mock =>
-                  mock.Validate(
-                      new[] { _propertyValidatorStub3.Object, _propertyValidatorStub4.Object, _propertyValidatorStub5.Object }))
+          .Setup(mock => mock.Validate(new[] { _propertyValidatorStub3.Object, _propertyValidatorStub4.Object, _propertyValidatorStub5.Object }))
           .Returns(new[] { MetaValidationRuleValidationResult.CreateValidResult() })
           .Verifiable();
 

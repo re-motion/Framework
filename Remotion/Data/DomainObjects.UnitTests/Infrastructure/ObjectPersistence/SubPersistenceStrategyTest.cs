@@ -781,7 +781,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID)).Returns((DataContainer)null);
 
       _unlockedParentTransactionContextMock.Setup(mock => mock.MarkNotInvalid(domainObject.ID));
-      _unlockedParentTransactionContextMock.Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()))
+      _unlockedParentTransactionContextMock
+          .Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()))
           .Callback(
               (DataContainer dataContainer) =>
                   CheckDataContainer(

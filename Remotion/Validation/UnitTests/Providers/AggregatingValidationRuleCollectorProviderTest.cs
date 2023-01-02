@@ -96,8 +96,8 @@ namespace Remotion.Validation.UnitTests.Providers
       var typeGroup1 = new[] { typeof(IPerson), typeof(ICollection) };
       var typeGroup2 = new[] { typeof(Person) };
       var typeGroup3 = new[] { typeof(Customer) };
-      _involvedTypeProviderStub.Setup(
-          stub => stub.GetTypes(typeof(Customer)))
+      _involvedTypeProviderStub
+          .Setup(stub => stub.GetTypes(typeof(Customer)))
           .Returns(new[] { typeGroup1, typeGroup2, typeGroup3 });
 
       var sequence = new VerifiableSequence();

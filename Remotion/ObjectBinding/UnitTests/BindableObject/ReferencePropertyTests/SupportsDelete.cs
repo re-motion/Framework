@@ -110,7 +110,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
       businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns(deleteObjectServiceMock.Object).Verifiable();
-      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
+      businessObjectClassServiceMock
+          .Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();
       deleteObjectServiceMock.Setup(_ => _.SupportsProperty(property)).Returns(true).Verifiable();
@@ -146,7 +147,8 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject.ReferencePropertyTests
 
       businessObjectClassWithIdentityMock.Setup(_ => _.BusinessObjectProvider).Returns(businessObjectProviderMock.Object).Verifiable();
       businessObjectProviderMock.Setup(_ => _.GetService(typeof(IDeleteObjectService))).Returns((IBusinessObjectService)null).Verifiable();
-      businessObjectClassServiceMock.Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
+      businessObjectClassServiceMock
+          .Setup(_ => _.GetBusinessObjectClass(typeof(ClassFromOtherBusinessObjectImplementation)))
           .Returns(businessObjectClassWithIdentityMock.Object)
           .Verifiable();
 

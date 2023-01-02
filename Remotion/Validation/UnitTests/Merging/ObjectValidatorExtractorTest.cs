@@ -130,35 +130,36 @@ namespace Remotion.Validation.UnitTests.Merging
     public void ExtractObjectValidatorsToRemove ()
     {
       var addingObjectValidationRuleCollector = new Mock<IAddingObjectValidationRuleCollector>();
-      addingObjectValidationRuleCollector.Setup(stub => stub.Validators)
+      addingObjectValidationRuleCollector
+          .Setup(stub => stub.Validators)
           .Returns(new[] { _stubObjectValidator1, _stubObjectValidator3.Object, _stubObjectValidator2, _stubObjectValidator4.Object, _stubObjectValidator5.Object });
       addingObjectValidationRuleCollector.Setup(stub => stub.CollectorType).Returns(typeof(CustomerValidationRuleCollector1));
       addingObjectValidationRuleCollector.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Customer)));
 
-      _logContextMock.Setup(
-          mock =>
-              mock.ValidatorRemoved(
+      _logContextMock
+          .Setup(
+              mock => mock.ValidatorRemoved(
                   _stubObjectValidator1,
                   new[] { _removingObjectValidatorRegistration1, _removingObjectValidatorRegistration4 },
                   addingObjectValidationRuleCollector.Object))
           .Verifiable();
-      _logContextMock.Setup(
-          mock =>
-              mock.ValidatorRemoved(
+      _logContextMock
+          .Setup(
+              mock => mock.ValidatorRemoved(
                   _stubObjectValidator2,
                   new[] { _removingObjectValidatorRegistration2 },
                   addingObjectValidationRuleCollector.Object))
           .Verifiable();
-      _logContextMock.Setup(
-          mock =>
-              mock.ValidatorRemoved(
+      _logContextMock
+          .Setup(
+              mock => mock.ValidatorRemoved(
                   _stubObjectValidator4.Object,
                   new[] { _removingObjectValidatorRegistration6 },
                   addingObjectValidationRuleCollector.Object))
           .Verifiable();
-      _logContextMock.Setup(
-          mock =>
-              mock.ValidatorRemoved(
+      _logContextMock
+          .Setup(
+              mock => mock.ValidatorRemoved(
                   _stubObjectValidator5.Object,
                   new[] { _removingObjectValidatorRegistration7 },
                   addingObjectValidationRuleCollector.Object))
@@ -175,11 +176,11 @@ namespace Remotion.Validation.UnitTests.Merging
       var result = extractor.ExtractObjectValidatorsToRemove(addingObjectValidationRuleCollector.Object).ToArray();
 
       _logContextMock.Verify(
-          mock =>
-              mock.ValidatorRemoved(
-                  _stubObjectValidator5.Object,
-                  new[] { _removingObjectValidatorRegistration7 },
-                  addingObjectValidationRuleCollector.Object), Times.Once());
+          mock => mock.ValidatorRemoved(
+              _stubObjectValidator5.Object,
+              new[] { _removingObjectValidatorRegistration7 },
+              addingObjectValidationRuleCollector.Object),
+          Times.Once());
       Assert.That(result, Is.EqualTo(new[] { _stubObjectValidator1, _stubObjectValidator2, _stubObjectValidator4.Object, _stubObjectValidator5.Object }));
     }
   }

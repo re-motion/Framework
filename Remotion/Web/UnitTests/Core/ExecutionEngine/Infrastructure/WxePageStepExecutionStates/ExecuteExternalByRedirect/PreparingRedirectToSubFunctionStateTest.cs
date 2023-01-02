@@ -58,7 +58,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       IExecutionState executionState = CreateExecutionState(WxePermaUrlOptions.Null, WxeReturnOptions.Null);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {
@@ -80,7 +81,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       IExecutionState executionState = CreateExecutionState(new WxePermaUrlOptions(), WxeReturnOptions.Null);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {
@@ -103,7 +105,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       IExecutionState executionState = CreateExecutionState(new WxePermaUrlOptions(), new WxeReturnOptions());
       ExecutionStateContextMock.Setup(stub => stub.CurrentFunction).Returns(RootFunction);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {
@@ -129,7 +132,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       IExecutionState executionState = CreateExecutionState(permaUrlOptions, new WxeReturnOptions(new NameValueCollection { { "Key", "Value" } }));
       ExecutionStateContextMock.Setup(stub => stub.CurrentFunction).Returns(RootFunction);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {
@@ -154,7 +158,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions(false, new NameValueCollection { { "Key", "NewValue" } });
       IExecutionState executionState = CreateExecutionState(permaUrlOptions, WxeReturnOptions.Null);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {
@@ -179,7 +184,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions(true);
       IExecutionState executionState = CreateExecutionState(permaUrlOptions, WxeReturnOptions.Null);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {

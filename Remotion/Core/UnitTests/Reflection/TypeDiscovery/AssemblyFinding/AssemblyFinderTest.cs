@@ -116,8 +116,9 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyFinding
             .Verifiable();
 
         var rootAssemblyFinderStub = new Mock<IRootAssemblyFinder>();
-        rootAssemblyFinderStub.Setup(stub => stub.FindRootAssemblies()).Returns(
-            new[] { new RootAssembly(referencingAssembly, true) });
+        rootAssemblyFinderStub
+            .Setup(stub => stub.FindRootAssemblies())
+            .Returns(new[] { new RootAssembly(referencingAssembly, true) });
 
         var finder = new AssemblyFinder(rootAssemblyFinderStub.Object, loaderMock.Object);
         var result = finder.FindAssemblies();

@@ -364,8 +364,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       {
         if (isVisible && _control.Object.Enabled)
         {
-          Mock.Get(_control.Object.Page.ClientScript).Setup(
-                  mock => mock.GetPostBackClientHyperlink(_control.Object, index.ToString()))
+          Mock.Get(_control.Object.Page.ClientScript)
+              .Setup(mock => mock.GetPostBackClientHyperlink(_control.Object, index.ToString()))
               .Returns("PostBackHyperLink:" + index)
               .Verifiable();
         }

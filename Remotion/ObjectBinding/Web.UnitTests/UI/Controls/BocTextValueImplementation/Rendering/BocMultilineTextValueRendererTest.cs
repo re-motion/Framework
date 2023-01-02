@@ -50,11 +50,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Initialize();
 
       TextValue = new Mock<IBocMultilineTextValue>();
-      TextValue.Setup(mock => mock.Text).Returns(
-          BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText + Environment.NewLine
-          + BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText);
-      TextValue.Setup(mock => mock.Value).Returns(
-          new[] { BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText });
+      TextValue
+          .Setup(mock => mock.Text)
+          .Returns(BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText + Environment.NewLine + BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText);
+      TextValue
+          .Setup(mock => mock.Value)
+          .Returns(new[] { BocTextValueRendererTestBase<IBocTextValue>.c_firstLineText, BocTextValueRendererTestBase<IBocTextValue>.c_secondLineText });
 
       TextValue.Setup(stub => stub.ClientID).Returns("MyTextValue");
       TextValue.Setup(stub => stub.ControlType).Returns("BocMultilineTextValue");

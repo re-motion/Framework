@@ -155,11 +155,9 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
               stringWriterError, stringWriterOut, 80, waitStub.Object) { CallBase = true };
 
       consoleApplicationMock.Setup(x => x.CreateApplication()).Returns(applicationRunnerMock.Object).Verifiable();
-      applicationRunnerMock.Setup(
-          x => x.Run(
-                   It.IsAny<ConsoleApplicationTestSettings>(),
-                   stringWriterError,
-                   stringWriterOut)).Verifiable();
+      applicationRunnerMock
+          .Setup(x => x.Run(It.IsAny<ConsoleApplicationTestSettings>(), stringWriterError, stringWriterOut))
+          .Verifiable();
 
       consoleApplicationMock.Object.Main(new string[0]);
 
@@ -168,7 +166,7 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
     }
 
     [Test]
-    public void RunApplicationExeptionTest ()
+    public void RunApplicationExceptionTest ()
     {
       var stringWriterError = new StringWriter();
       var stringWriterOut = TextWriter.Null;
@@ -181,11 +179,13 @@ namespace Remotion.Tools.UnitTests.Console.ConsoleApplicationTests
               stringWriterError, stringWriterOut, 80, waitStub.Object) { CallBase = true };
 
       consoleApplicationMock.Setup(x => x.CreateApplication()).Returns(applicationRunnerMock.Object).Verifiable();
-      applicationRunnerMock.Setup(
-          x => x.Run(
-                   It.IsAny<ConsoleApplicationTestSettings>(),
-                   It.IsAny<TextWriter>(),
-                   It.IsAny<TextWriter>())).Throws(new Exception("The valve just came loose...")).Verifiable();
+      applicationRunnerMock
+          .Setup(
+              x => x.Run(
+                  It.IsAny<ConsoleApplicationTestSettings>(),
+                  It.IsAny<TextWriter>(),
+                  It.IsAny<TextWriter>())).Throws(new Exception("The valve just came loose..."))
+          .Verifiable();
 
       consoleApplicationMock.Object.Main(new string[0]);
 

@@ -50,7 +50,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
     {
       var sequence = new VerifiableSequence();
       ResponseMock.InVerifiableSequence(sequence).Setup(mock => mock.Redirect("~/destination.wxe")).Callback((string url) => WxeThreadAbortHelper.Abort()).Verifiable();
-      ExecutionStateContextMock.InVerifiableSequence(sequence)
+      ExecutionStateContextMock
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetExecutionState(It.IsNotNull<ExecutingSubFunctionWithPermaUrlState>()))
           .Callback(
               (IExecutionState executionState) =>

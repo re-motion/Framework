@@ -58,13 +58,16 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
       WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup(mock => mock.Execute(context)).Callback(
-          (WxeContext context) =>
-          {
-            TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
-            Assert.That(strategy, Is.InstanceOf(typeof(RootTransactionStrategy)));
-            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
-          }).Verifiable();
+      stepMock
+          .Setup(mock => mock.Execute(context))
+          .Callback(
+              (WxeContext context) =>
+              {
+                TransactionStrategyBase strategy = transactionMode.CreateTransactionStrategy(childFunction, context);
+                Assert.That(strategy, Is.InstanceOf(typeof(RootTransactionStrategy)));
+                Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
+              })
+          .Verifiable();
 
       parentFunction.Execute(context);
     }
@@ -84,14 +87,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
       WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup(mock => mock.Execute(context)).Callback(
-          (WxeContext context) =>
-          {
-            TransactionStrategyBase strategy = ((TestFunction2)childFunction).TransactionStrategy;
-            Assert.That(strategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
-            Assert.That(((ChildTransactionStrategy)strategy).AutoCommit, Is.True);
-            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
-          }).Verifiable();
+      stepMock
+          .Setup(mock => mock.Execute(context))
+          .Callback(
+              (WxeContext context) =>
+              {
+                TransactionStrategyBase strategy = ((TestFunction2)childFunction).TransactionStrategy;
+                Assert.That(strategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
+                Assert.That(((ChildTransactionStrategy)strategy).AutoCommit, Is.True);
+                Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)parentFunction).TransactionStrategy));
+              })
+          .Verifiable();
 
       parentFunction.Execute(context);
     }
@@ -115,14 +121,17 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       WxeContextFactory wxeContextFactory = new WxeContextFactory();
       WxeContext context = wxeContextFactory.CreateContext(new TestFunction());
 
-      stepMock.Setup(mock => mock.Execute(context)).Callback(
-          (WxeContext context) =>
-          {
-            TransactionStrategyBase strategy = ((TestFunction2)childFunction).TransactionStrategy;
-            Assert.That(strategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
-            Assert.That(((ChildTransactionStrategy)strategy).AutoCommit, Is.True);
-            Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)grandParentFunction).TransactionStrategy));
-          }).Verifiable();
+      stepMock
+          .Setup(mock => mock.Execute(context))
+          .Callback(
+              (WxeContext context) =>
+              {
+                TransactionStrategyBase strategy = ((TestFunction2)childFunction).TransactionStrategy;
+                Assert.That(strategy, Is.InstanceOf(typeof(ChildTransactionStrategy)));
+                Assert.That(((ChildTransactionStrategy)strategy).AutoCommit, Is.True);
+                Assert.That(strategy.OuterTransactionStrategy, Is.SameAs(((TestFunction2)grandParentFunction).TransactionStrategy));
+              })
+          .Verifiable();
 
       grandParentFunction.Execute(context);
     }
