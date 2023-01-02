@@ -140,7 +140,9 @@ namespace Remotion.Globalization.Implementation
       return _localizedNameForPropertyInformationProvider.TryGetLocalizedNameForCurrentUICulture(propertyInformation, out result);
     }
 
-    public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (
+        IPropertyInformation propertyInformation,
+        ITypeInformation typeInformationForResourceResolution)
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);
