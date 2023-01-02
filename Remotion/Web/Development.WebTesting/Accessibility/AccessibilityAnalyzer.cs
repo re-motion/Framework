@@ -63,7 +63,9 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Creates an <see cref="AccessibilityAnalyzer"/> that uses an instance of <see cref="RemoteWebDriver"/> for both <see cref="IWebDriver"/>
     /// and <see cref="IJavaScriptExecutor"/>.
     /// </summary>
-    [Obsolete("Use CreateForWebDriver(IWebDriver, IAxeResultParser, IAccessibilityConfiguration, IAxeSourceProvider, IAccessibilityResultMapper, ILog) instead. (Version: 3.20.0)", false)]
+    [Obsolete(
+        "Use CreateForWebDriver(IWebDriver, IAxeResultParser, IAccessibilityConfiguration, IAxeSourceProvider, IAccessibilityResultMapper, ILog) instead. (Version: 3.20.0)",
+        false)]
     [NotNull]
     public static AccessibilityAnalyzer CreateForRemoteWebDriver (
         [NotNull] RemoteWebDriver remoteWebDriver,

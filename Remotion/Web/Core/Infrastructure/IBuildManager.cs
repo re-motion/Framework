@@ -28,7 +28,8 @@ namespace Remotion.Web.Infrastructure
   public interface IBuildManager
   {
     /// <summary>
-    /// Finds a type in the top-level assemblies, or in assemblies that are defined in configuration, by using a case-insensitive search and optionally throwing an exception on failure.
+    /// Finds a type in the top-level assemblies, or in assemblies that are defined in configuration, by using a case-insensitive search
+    /// and optionally throwing an exception on failure.
     /// </summary>
     /// <param name="typeName">The name of the type.</param>
     /// <param name="throwOnError"><see langword="true" /> to throw an exception if a Type cannot be generated for the type name; otherwise, <see langword="false" />.</param>

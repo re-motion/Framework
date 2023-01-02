@@ -96,9 +96,19 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
 
       InvokeOnExecutionPlay(_strategy.Object);
       var sequence = new VerifiableSequence();
-      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionFail(Context, ExecutionListenerStub.Object, _failException)).Throws(innerException).Verifiable();
-      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
-      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Verifiable();
+      ChildTransactionStrategyMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnExecutionFail(Context, ExecutionListenerStub.Object, _failException))
+          .Throws(innerException)
+          .Verifiable();
+      ScopeMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Leave())
+          .Verifiable();
+      TransactionMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Release())
+          .Verifiable();
 
       try
       {
@@ -196,8 +206,16 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
 
       InvokeOnExecutionPlay(_strategy.Object);
       var sequence = new VerifiableSequence();
-      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionFail(Context, ExecutionListenerStub.Object, _failException)).Throws(innerException).Verifiable();
-      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Throws(outerException).Verifiable();
+      ChildTransactionStrategyMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnExecutionFail(Context, ExecutionListenerStub.Object, _failException))
+          .Throws(innerException)
+          .Verifiable();
+      ScopeMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Leave())
+          .Throws(outerException)
+          .Verifiable();
 
       try
       {
@@ -223,9 +241,20 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
 
       InvokeOnExecutionPlay(_strategy.Object);
       var sequence = new VerifiableSequence();
-      ChildTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.OnExecutionFail(Context, ExecutionListenerStub.Object, _failException)).Throws(innerException).Verifiable();
-      ScopeMock.InVerifiableSequence(sequence).Setup(mock => mock.Leave()).Verifiable();
-      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Throws(outerException).Verifiable();
+      ChildTransactionStrategyMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnExecutionFail(Context, ExecutionListenerStub.Object, _failException))
+          .Throws(innerException)
+          .Verifiable();
+      ScopeMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Leave())
+          .Verifiable();
+      TransactionMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Release())
+          .Throws(outerException)
+          .Verifiable();
 
       try
       {

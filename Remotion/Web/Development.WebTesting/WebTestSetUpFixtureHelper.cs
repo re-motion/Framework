@@ -162,7 +162,8 @@ namespace Remotion.Web.Development.WebTesting
         {
           s_log.Warn($"Checking the web application root '{webApplicationRoot}' timed out (HTTP status code: '{statusCode}').");
           throw new WebException(
-              $"Checking the web application root '{webApplicationRoot}' did not return '{HttpStatusCode.OK}' in the defined {nameof(applicationPingTimeout)} ({applicationPingTimeout}). "
+              $"Checking the web application root '{webApplicationRoot}' did not return '{HttpStatusCode.OK}' "
+              + $"in the defined {nameof(applicationPingTimeout)} ({applicationPingTimeout}). "
               + $"Last received HTTP status code was: '{statusCode}'.",
               WebExceptionStatus.Timeout);
         }
@@ -180,7 +181,9 @@ namespace Remotion.Web.Development.WebTesting
           if (ex.Response is HttpWebResponse httpWebResponse)
             statusCode = httpWebResponse.StatusCode;
 
-          s_log.Warn($"Checking the web application root '{webApplicationRoot}' failed with WebException: '{ex.Message}' (HTTP status code: '{statusCode}'). Retrying until {nameof(applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
+          s_log.Warn(
+              $"Checking the web application root '{webApplicationRoot}' failed with WebException: '{ex.Message}' (HTTP status code: '{statusCode}'). "
+              + $"Retrying until {nameof(applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
         }
 
         Thread.Sleep(TimeSpan.FromMilliseconds(500));

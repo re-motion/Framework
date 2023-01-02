@@ -60,7 +60,9 @@ namespace Remotion.Web.Utilities
     /// <param name="context"> The <see cref="HttpContextBase"/> to be used. Must not be <see langword="null"/>. </param>
     /// <param name="virtualPath"> The virtual path. Must not be <see langword="null"/>. Must be rooted or absolute. </param>
     /// <returns> The absolute URL. </returns>
-    [Obsolete("Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23 and Version 1.17.11)", true)]
+    [Obsolete(
+        "Use ResolveUrlCaseSensitive (HttpContextBase, string) instead. Note that ResolveUrlCaseSensitive() no longer supports cookieless sessions. (Version 1.16.23 and Version 1.17.11)",
+        true)]
     public static string GetAbsoluteUrl (HttpContextBase context, string virtualPath)
     {
       throw new NotSupportedException(

@@ -120,8 +120,14 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.ScopedTrans
       var object3 = new object();
 
       var sequence = new VerifiableSequence();
-      ExecutionContextMock.InVerifiableSequence(sequence).Setup(mock => mock.GetInParameters()).Returns(new[] { object1, new[] { object2, null, object3 } }).Verifiable();
-      TransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(p => p.SetEquals(new[] { object1, object2, object3 })))).Verifiable();
+      ExecutionContextMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.GetInParameters()).Returns(new[] { object1, new[] { object2, null, object3 } })
+          .Verifiable();
+      TransactionMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.EnsureCompatibility(It.Is<IEnumerable<object>>(p => p.SetEquals(new[] { object1, object2, object3 }))))
+          .Verifiable();
 
       new RootTransactionStrategy(false, () => TransactionMock.Object, NullTransactionStrategy.Null, ExecutionContextMock.Object);
 
