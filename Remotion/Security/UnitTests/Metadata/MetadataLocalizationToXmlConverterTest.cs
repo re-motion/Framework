@@ -46,7 +46,10 @@ namespace Remotion.Security.UnitTests.Metadata
     public void Convert_OneLocalizedName ()
     {
       LocalizedName[] localizedNames = new LocalizedName[1];
-      localizedNames[0] = new LocalizedName("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName(
+          "b8621bc9-9ab3-4524-b1e4-582657d6b420",
+          "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain",
+          "Beamter");
 
       MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
 
@@ -67,7 +70,10 @@ namespace Remotion.Security.UnitTests.Metadata
     public void Convert_TwoLocalizedNames ()
     {
       LocalizedName[] localizedNames = new LocalizedName[2];
-      localizedNames[0] = new LocalizedName("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName(
+          "b8621bc9-9ab3-4524-b1e4-582657d6b420",
+          "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain",
+          "Beamter");
       localizedNames[1] = new LocalizedName("93969f13-65d7-49f4-a456-a1686a4de3de", "Confidentiality", "Vertraulichkeit");
 
       MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
@@ -92,7 +98,10 @@ namespace Remotion.Security.UnitTests.Metadata
     public void Convert_OneLocalizedNameForInvariantCulture ()
     {
       LocalizedName[] localizedNames = new LocalizedName[1];
-      localizedNames[0] = new LocalizedName("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain", "Beamter");
+      localizedNames[0] = new LocalizedName(
+          "b8621bc9-9ab3-4524-b1e4-582657d6b420",
+          "Clerk|Remotion.Security.UnitTests.TestDomain.DomainAbstractRoles, Remotion.Security.UnitTests.TestDomain",
+          "Beamter");
 
       MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter();
 
