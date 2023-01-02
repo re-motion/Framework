@@ -54,7 +54,8 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner.UnitTests
 
       Assert.That(
           ExceptionSerializer.SerializeException(exception),
-          Is.EqualTo($"{EncodeBase64(typeof(Exception).AssemblyQualifiedName)};{EncodeBase64("message😂")};{EncodeBase64("stackTrace\r\n--- End of stack trace from previous location ---\r\n")}"));
+          Is.EqualTo(
+              $"{EncodeBase64(typeof(Exception).AssemblyQualifiedName)};{EncodeBase64("message😂")};{EncodeBase64("stackTrace\r\n--- End of stack trace from previous location ---\r\n")}"));
     }
 
     [Test]
@@ -69,7 +70,8 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner.UnitTests
     [Test]
     public void Deserialize_WithMessageConstructor_ReconstructsException ()
     {
-      var exception = ExceptionSerializer.DeserializeException($"{EncodeBase64(typeof(WithMessageConstructorException).AssemblyQualifiedName)};{EncodeBase64("message")};{EncodeBase64("stackTrace")}");
+      var exception = ExceptionSerializer.DeserializeException(
+          $"{EncodeBase64(typeof(WithMessageConstructorException).AssemblyQualifiedName)};{EncodeBase64("message")};{EncodeBase64("stackTrace")}");
 
       Assert.That(exception, Is.TypeOf<WithMessageConstructorException>());
       Assert.That(exception.Message, Is.EqualTo("message"));
@@ -79,7 +81,8 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner.UnitTests
     [Test]
     public void Deserialize_WithMessageAndExceptionConstructor_ReconstructsException ()
     {
-      var exception = ExceptionSerializer.DeserializeException($"{EncodeBase64(typeof(WithMessageAndInnerExceptionException).AssemblyQualifiedName)};{EncodeBase64("message")};{EncodeBase64("stackTrace")}");
+      var exception = ExceptionSerializer.DeserializeException(
+          $"{EncodeBase64(typeof(WithMessageAndInnerExceptionException).AssemblyQualifiedName)};{EncodeBase64("message")};{EncodeBase64("stackTrace")}");
 
       Assert.That(exception, Is.TypeOf<WithMessageAndInnerExceptionException>());
       Assert.That(exception.Message, Is.EqualTo("message"));
@@ -89,10 +92,13 @@ namespace Remotion.Development.UnitTesting.IsolatedCodeRunner.UnitTests
     [Test]
     public void Deserialize_WithInvalidExceptionConstructor_CreatesIsolatedCodeException ()
     {
-      var exception = ExceptionSerializer.DeserializeException($"{EncodeBase64(typeof(WithInvalidConstructorException).AssemblyQualifiedName)};{EncodeBase64("message")};{EncodeBase64("stackTrace")}");
+      var exception = ExceptionSerializer.DeserializeException(
+          $"{EncodeBase64(typeof(WithInvalidConstructorException).AssemblyQualifiedName)};{EncodeBase64("message")};{EncodeBase64("stackTrace")}");
 
       Assert.That(exception, Is.TypeOf<IsolatedCodeException>());
-      Assert.That(exception.Message, Is.EqualTo($"Isolated code threw exception of type '{typeof(WithInvalidConstructorException).AssemblyQualifiedName}' with message 'message'"));
+      Assert.That(
+          exception.Message,
+          Is.EqualTo($"Isolated code threw exception of type '{typeof(WithInvalidConstructorException).AssemblyQualifiedName}' with message 'message'"));
       Assert.That(exception.StackTrace, Is.Null);
 
       var isolatedCodeException = (IsolatedCodeException)exception;

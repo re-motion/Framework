@@ -48,23 +48,44 @@ namespace Remotion.Development.UnitTesting.Reflection
     private static readonly FieldInfo[] s_staticFields = EnsureNoNulls(new[] { typeof(string).GetField("Empty"), typeof(Type).GetField("EmptyTypes") });
     private static readonly FieldInfo[] s_instanceFields = EnsureNoNulls(new[] { typeof(DomainType).GetField("Field") });
     private static readonly ConstructorInfo[] s_staticCtors = EnsureNoNulls(new[] { typeof(DomainType).TypeInitializer });
-    private static readonly ConstructorInfo[] s_defaultCtors = EnsureNoNulls(new[] { typeof(object).GetConstructor(Type.EmptyTypes), typeof(List<int>).GetConstructor(Type.EmptyTypes) });
+    private static readonly ConstructorInfo[] s_defaultCtors =
+        EnsureNoNulls(new[] { typeof(object).GetConstructor(Type.EmptyTypes), typeof(List<int>).GetConstructor(Type.EmptyTypes) });
     private static readonly MethodInfo[] s_instanceMethod = EnsureNoNulls(new[] { typeof(object).GetMethod("ToString"), typeof(object).GetMethod("GetHashCode") });
     private static readonly MethodInfo[] s_staticMethod = EnsureNoNulls(new[] { typeof(object).GetMethod("ReferenceEquals"), typeof(double).GetMethod("IsNaN") });
     private static readonly MethodInfo[] s_virtualMethods = EnsureNoNulls(new[] { typeof(object).GetMethod("ToString"), typeof(object).GetMethod("GetHashCode") });
-    private static readonly MethodInfo[] s_nonVirtualMethods = EnsureNoNulls(new[] { typeof(object).GetMethod("ReferenceEquals"), typeof(string).GetMethod("Concat", new[] { typeof(object) }) });
-    private static readonly MethodInfo[] s_nonVirtualInstanceMethods = EnsureNoNulls(new[] { typeof(object).GetMethod("GetType"), typeof(string).GetMethod("Contains", new[] { typeof(string) }) });
+    private static readonly MethodInfo[] s_nonVirtualMethods =
+        EnsureNoNulls(new[] { typeof(object).GetMethod("ReferenceEquals"), typeof(string).GetMethod("Concat", new[] { typeof(object) }) });
+    private static readonly MethodInfo[] s_nonVirtualInstanceMethods =
+        EnsureNoNulls(new[] { typeof(object).GetMethod("GetType"), typeof(string).GetMethod("Contains", new[] { typeof(string) }) });
     private static readonly MethodInfo[] s_overridingMethods = EnsureNoNulls(new[] { typeof(DomainType).GetMethod("Override"), typeof(DomainType).GetMethod("ToString") });
     private static readonly MethodInfo[] s_finalMethods = EnsureNoNulls(new[] { typeof(DomainType).GetMethod("FinalMethod") });
-    private static readonly MethodInfo[] s_nonGenericMethods = EnsureNoNulls(new[] { typeof(object).GetMethod("ToString"), typeof(string).GetMethod("Concat", new[] { typeof(object) }) });
-    private static readonly MethodInfo[] s_genericMethods = EnsureNoNulls(new[] { typeof(Enumerable).GetMethod("Empty"), typeof(ReflectionObjectMother).GetMethod("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static) });
-    private static readonly MethodInfo[] s_methodInstantiations = EnsureNoNulls(new[] { typeof(Enumerable).GetMethod("Empty")!.MakeGenericMethod(typeof(int)), typeof(ReflectionObjectMother).GetMethod("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(typeof(string)) });
-    private static readonly MethodInfo[] s_abstractMethodInfos = EnsureNoNulls(new[] { typeof(MethodInfo).GetMethod("GetBaseDefinition"), typeof(Type).GetMethod("GetMethods", new[] { typeof(BindingFlags) }) });
-    private static readonly MethodInfo[] s_nonPublicMethodInfos = EnsureNoNulls(new[] { typeof(DomainType).GetMethod("PrivateMethod", BindingFlags.NonPublic | BindingFlags.Instance), typeof(DomainType).GetMethod("ProtectedMethod", BindingFlags.NonPublic | BindingFlags.Instance) });
+    private static readonly MethodInfo[] s_nonGenericMethods =
+        EnsureNoNulls(new[] { typeof(object).GetMethod("ToString"), typeof(string).GetMethod("Concat", new[] { typeof(object) }) });
+    private static readonly MethodInfo[] s_genericMethods =
+        EnsureNoNulls(new[] { typeof(Enumerable).GetMethod("Empty"), typeof(ReflectionObjectMother).GetMethod("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static) });
+
+    private static readonly MethodInfo[] s_methodInstantiations =
+        EnsureNoNulls(
+            new[]
+            {
+                typeof(Enumerable).GetMethod("Empty")!.MakeGenericMethod(typeof(int)),
+                typeof(ReflectionObjectMother).GetMethod("GetRandomElement", BindingFlags.NonPublic | BindingFlags.Static)!.MakeGenericMethod(typeof(string))
+            });
+    private static readonly MethodInfo[] s_abstractMethodInfos =
+        EnsureNoNulls(new[] { typeof(MethodInfo).GetMethod("GetBaseDefinition"), typeof(Type).GetMethod("GetMethods", new[] { typeof(BindingFlags) }) });
+
+    private static readonly MethodInfo[] s_nonPublicMethodInfos =
+        EnsureNoNulls(
+            new[]
+            {
+                typeof(DomainType).GetMethod("PrivateMethod", BindingFlags.NonPublic | BindingFlags.Instance),
+                typeof(DomainType).GetMethod("ProtectedMethod", BindingFlags.NonPublic | BindingFlags.Instance)
+            });
     private static readonly MethodInfo[] s_publicMethodInfos = EnsureNoNulls(new[] { typeof(DomainType).GetMethod("FinalMethod"), typeof(DomainType).GetMethod("Override") });
     private static readonly ParameterInfo[] s_parameterInfos = EnsureNoNulls(typeof(Dictionary<,>).GetMethod("TryGetValue")!.GetParameters());
     private static readonly PropertyInfo[] s_properties = EnsureNoNulls(new[] { typeof(List<>).GetProperty("Count"), typeof(Type).GetProperty("IsArray") });
-    private static readonly PropertyInfo[] s_staticProperties = EnsureNoNulls(new[] { typeof(Environment).GetProperty("CurrentDirectory"), typeof(Type).GetProperty("DefaultBinder") });
+    private static readonly PropertyInfo[] s_staticProperties =
+        EnsureNoNulls(new[] { typeof(Environment).GetProperty("CurrentDirectory"), typeof(Type).GetProperty("DefaultBinder") });
     private static readonly EventInfo[] s_events = EnsureNoNulls(new[] { typeof(INotifyPropertyChanged).GetEvent("PropertyChanged"), typeof(AppDomain).GetEvent("AssemblyLoad") });
     private static readonly EventInfo[] s_staticEvents = EnsureNoNulls(new[] { typeof(DomainType).GetEvent("StaticEvent") });
 
