@@ -43,7 +43,10 @@ namespace OBWTest
       Stack.Text = "";
       Stack.Text += string.Format("LevelOne: HasInstance = {0}, IsDirty = {1}<br/>", hasLevelOneInstance, null);
       Stack.Text += string.Format("LevelTwo (LevelOne.ReferenceValue): HasInstance = {0}, IsDirty = {1}<br/>", hasLevelTwoInstance, LevelTwoDataSource.IsDirty);
-      Stack.Text += string.Format("LevelThree (LevelOne.ReferenceValue.ReferenceValue): HasInstance = {0}, IsDirty = {1}<br/>", hasLevelThreeInstance, LevelThreeDataSource.IsDirty);
+      Stack.Text += string.Format(
+          "LevelThree (LevelOne.ReferenceValue.ReferenceValue): HasInstance = {0}, IsDirty = {1}<br/>",
+          hasLevelThreeInstance,
+          LevelThreeDataSource.IsDirty);
     }
 
     protected override object SaveControlState ()

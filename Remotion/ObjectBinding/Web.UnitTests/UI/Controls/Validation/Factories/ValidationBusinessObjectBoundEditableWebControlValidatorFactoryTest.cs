@@ -36,15 +36,42 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.Validation.Factories
     }
 
     [Test]
-    [TestCase(typeof(IBocTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocTextValue>), new[] { typeof(BocTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase(typeof(IBocReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocReferenceValue>), new[] { typeof(BocReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase(typeof(IBocAutoCompleteReferenceValueValidatorFactory), typeof(CompoundValidatorFactory<IBocAutoCompleteReferenceValue>), new[] { typeof(BocAutoCompleteReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase(typeof(IBocBooleanValueValidatorFactory), typeof(CompoundValidatorFactory<IBocBooleanValue>), new[] { typeof(BocBooleanValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase(typeof(IBocCheckBoxValidatorFactory), typeof(CompoundValidatorFactory<IBocCheckBox>), new[] { typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase(typeof(IBocDateTimeValueValidatorFactory), typeof(CompoundValidatorFactory<IBocDateTimeValue>), new[] { typeof(BocDateTimeValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase(typeof(IBocEnumValueValidatorFactory), typeof(CompoundValidatorFactory<IBocEnumValue>), new[] { typeof(BocEnumValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    [TestCase(typeof(IBocMultilineTextValueValidatorFactory), typeof(CompoundValidatorFactory<IBocMultilineTextValue>), new[] { typeof(BocMultilineTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
-    //[TestCase (typeof (IUserControlBindingValidatorFactory), typeof (CompoundValidatorFactory<UserControlBinding>), new[] { typeof (FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocTextValueValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocTextValue>),
+        new[] { typeof(BocTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocReferenceValueValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocReferenceValue>),
+        new[] { typeof(BocReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocAutoCompleteReferenceValueValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocAutoCompleteReferenceValue>),
+        new[] { typeof(BocAutoCompleteReferenceValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocBooleanValueValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocBooleanValue>),
+        new[] { typeof(BocBooleanValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocCheckBoxValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocCheckBox>),
+        new[] { typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocDateTimeValueValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocDateTimeValue>),
+        new[] { typeof(BocDateTimeValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocEnumValueValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocEnumValue>),
+        new[] { typeof(BocEnumValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    [TestCase(
+        typeof(IBocMultilineTextValueValidatorFactory),
+        typeof(CompoundValidatorFactory<IBocMultilineTextValue>),
+        new[] { typeof(BocMultilineTextValueValidatorFactory), typeof(ValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
+    // [TestCase(
+    //     typeof(IUserControlBindingValidatorFactory),
+    //     typeof(CompoundValidatorFactory<UserControlBinding>),
+    //     new[] { typeof(FluentValidationBusinessObjectBoundEditableWebControlValidatorFactory) })]
     public void GetInstance_Once (Type serviceType, Type targetType, Type[] expectedInnerFactoryTypesOrdered)
     {
       var instance = _serviceLocator.GetInstance(serviceType);

@@ -464,7 +464,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Clears the list of <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
     /// <remarks> If the value is not required, the null item will displayed anyway. </remarks>
-    [Obsolete("Use SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>()) to set an empty list or ResetBusinessObjectList() to trigger an update of the list. (Version: 3.0.0)")]
+    [Obsolete(
+        "Use SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>()) to set an empty list or ResetBusinessObjectList() to trigger an update of the list. (Version: 3.0.0)")]
     public void ClearBusinessObjectList ()
     {
       SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>());

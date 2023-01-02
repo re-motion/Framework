@@ -645,7 +645,9 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectReferenceDataSourceBase
       var referencedObject = new Mock<IBusinessObject>();
 
       _readOnlyReferencePropertyStub.Setup(stub => stub.SupportsDefaultValue).Returns(true);
-      _readOnlyReferencePropertyStub.Setup(stub => stub.IsDefaultValue(It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>())).Returns(true);
+      _readOnlyReferencePropertyStub
+          .Setup(stub => stub.IsDefaultValue(It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObject>(), It.IsAny<IBusinessObjectProperty[]>()))
+          .Returns(true);
       _readOnlyReferencePropertyStub.Setup(stub => stub.SupportsDelete).Returns(true);
       _readOnlyReferencePropertyStub.Setup(stub => stub.Identifier).Returns("TestProperty");
       Mock.Get(_referencedDataSourceStub.Object.BusinessObject).Setup(stub => stub.GetProperty(_readOnlyReferencePropertyStub.Object)).Returns(referencedObject.Object);

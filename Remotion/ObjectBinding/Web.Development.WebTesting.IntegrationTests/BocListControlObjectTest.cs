@@ -649,7 +649,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GetRowWhere("Title", "EO"),
           Throws.Exception.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(
+                          Driver,
+                          "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']")
+                      .Message));
     }
 
     [Test]
@@ -889,7 +892,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GetCellWhere("Title", "EO"),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver,"Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(
+                          Driver,
+                          "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']")
+                      .Message));
     }
 
     [Test]
@@ -1205,7 +1211,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => row.Edit(),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateExpectationException(Driver, "The control is currently in a read-only state. Therefore, the operation is not possible.").Message));
+                  AssertionExceptionUtility.CreateExpectationException(
+                      Driver,
+                      "The control is currently in a read-only state. Therefore, the operation is not possible.").Message));
     }
 
     [Test]
@@ -1518,7 +1526,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GoToSpecificPage(pageNumberGreaterThanNumberOfPages),
           Throws.Exception.TypeOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateExpectationException(Driver, $"Unable to change page number to '{pageNumberGreaterThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
+                  AssertionExceptionUtility.CreateExpectationException(
+                      Driver,
+                      $"Unable to change page number to '{pageNumberGreaterThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
     }
 
     [Test]
@@ -1534,7 +1544,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GoToSpecificPage(pageNumberLesserThanNumberOfPages),
           Throws.Exception.TypeOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateExpectationException(Driver, $"Unable to change page number to '{pageNumberLesserThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
+                  AssertionExceptionUtility.CreateExpectationException(
+                      Driver,
+                      $"Unable to change page number to '{pageNumberLesserThanNumberOfPages}'. Page number must be between '1' and '4'.").Message));
     }
 
     [Test]
@@ -1591,7 +1603,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GoToFirstPage(),
           Throws.Exception.TypeOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the first page, as the list is already on the first page.").Message));
+                  AssertionExceptionUtility.CreateExpectationException(
+                      Driver,
+                      "Unable to change page number to the first page, as the list is already on the first page.").Message));
     }
 
     [Test]
@@ -1648,7 +1662,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GoToPreviousPage(),
           Throws.Exception.TypeOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the previous page, as the list is already on the first page.").Message));
+                  AssertionExceptionUtility.CreateExpectationException(Driver, "Unable to change page number to the previous page, as the list is already on the first page.")
+                      .Message));
     }
 
     [Test]

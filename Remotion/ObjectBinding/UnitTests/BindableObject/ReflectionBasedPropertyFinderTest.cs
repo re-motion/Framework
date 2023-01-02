@@ -91,7 +91,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var finder = new ReflectionBasedPropertyFinder(typeof(TestTypeWithInterfaces));
       var properties = finder.GetPropertyInfos();
-      Assert.That(properties.Where(p => p.Name == "Remotion.ObjectBinding.UnitTests.BindableObject.ReflectionBasedPropertyFinderTestDomain.IExplicitTestInterface.InterfaceProperty").Count(), Is.EqualTo(1));
+      Assert.That(
+          properties.Count(p => p.Name == "Remotion.ObjectBinding.UnitTests.BindableObject.ReflectionBasedPropertyFinderTestDomain.IExplicitTestInterface.InterfaceProperty"),
+          Is.EqualTo(1));
     }
 
     [Test]
@@ -99,7 +101,9 @@ namespace Remotion.ObjectBinding.UnitTests.BindableObject
     {
       var finder = new ReflectionBasedPropertyFinder(typeof(DerivedTypeWithInterfaces));
       var properties = finder.GetPropertyInfos();
-      Assert.That(properties.Where(p => p.Name == "Remotion.ObjectBinding.UnitTests.BindableObject.ReflectionBasedPropertyFinderTestDomain.IExplicitTestInterface.InterfaceProperty").Count(), Is.EqualTo(1));
+      Assert.That(
+          properties.Count(p => p.Name == "Remotion.ObjectBinding.UnitTests.BindableObject.ReflectionBasedPropertyFinderTestDomain.IExplicitTestInterface.InterfaceProperty"),
+          Is.EqualTo(1));
     }
 
     [Test]

@@ -79,7 +79,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    [Obsolete("RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
+    [Obsolete(
+        "RM-7053: Only intended for ARIA-role workaround. May be removed in future releases without warning once there is infrastructure option for specifying the table type.")]
     protected virtual string GetAriaRoleForTableDataElement ()
     {
       return HtmlRoleAttributeValue.Cell;

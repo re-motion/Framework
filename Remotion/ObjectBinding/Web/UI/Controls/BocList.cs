@@ -233,7 +233,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private bool _isSelectedViewIndexSet;
 
-    /// <summary> The <see cref="IReadOnlyList{IBusinessObject}"/> displayed by the <see cref="BocList"/>. Can additionally implement <see cref="IList"/> for modification.</summary>
+    /// <summary>
+    /// The <see cref="IReadOnlyList{IBusinessObject}"/> displayed by the <see cref="BocList"/>. Can additionally implement <see cref="IList"/> for modification.
+    /// </summary>
     private IReadOnlyList<IBusinessObject>? _value;
 
     /// <summary> The user independent column definitions. </summary>
@@ -1396,7 +1398,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         throw new InvalidOperationException(
             string.Format(
                 "BocList '{0}', column '{1}': Registering a custom column for a synchronous post back is only supported on pages implementing ISmartPage when used within an UpdatePanel.",
-                ID, columnIndex));
+                ID,
+                columnIndex));
       }
 
       string postBackArgument = FormatCustomCellPostBackArgument(columnIndex, row, customCellArgument);

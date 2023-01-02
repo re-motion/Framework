@@ -39,13 +39,26 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     [Test]
     [TestCase(true, true, true, true, true, new Type[0], Description = "Required/ReadOnly")]
-    [TestCase(true, false, true, true, true, new[] { typeof(RequiredFieldValidator), typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly")]
+    [TestCase(
+        true,
+        false,
+        true,
+        true,
+        true,
+        new[] { typeof(RequiredFieldValidator), typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) },
+        Description = "Required/Not ReadOnly")]
     [TestCase(false, true, true, true, true, new Type[0], Description = "Not Required/ReadOnly")]
     [TestCase(false, false, true, true, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Not Required/Not ReadOnly")]
     [TestCase(true, false, false, false, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
     [TestCase(true, false, true, false, true, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
     [TestCase(true, false, true, true, false, new[] { typeof(BocAutoCompleteReferenceValueInvalidDisplayNameValidator) }, Description = "Required/Not ReadOnly/No Property")]
-    public void CreateValidators_WithOptionalValidatorsDisabled (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
+    public void CreateValidators_WithOptionalValidatorsDisabled (
+        bool isRequired,
+        bool isReadonly,
+        bool hasDataSource,
+        bool hasBusinessObject,
+        bool hasProperty,
+        Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsDisabled(isRequired, hasDataSource, hasBusinessObject, hasProperty);
       var validators = _validatorFactory.CreateValidators(control, isReadonly).ToArray();
@@ -80,7 +93,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       return controlMock.Object;
     }
 
-    private IBocAutoCompleteReferenceValue GetControlWithOptionalValidatorsDisabled (bool isRequired, bool hasDataSource = true, bool hasBusinessObject = true, bool hasProperty = true)
+    private IBocAutoCompleteReferenceValue GetControlWithOptionalValidatorsDisabled (
+        bool isRequired,
+        bool hasDataSource = true,
+        bool hasBusinessObject = true,
+        bool hasProperty = true)
     {
       var outValue = "MockValue";
       var dataSourceStub = new Mock<IBusinessObjectDataSource>();

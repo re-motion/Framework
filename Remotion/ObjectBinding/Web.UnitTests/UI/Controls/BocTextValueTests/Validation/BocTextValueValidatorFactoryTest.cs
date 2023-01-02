@@ -45,7 +45,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     [TestCase(true, false, false, false, true, new Type[0], Description = "Required/Not ReadOnly/No DataSource")]
     [TestCase(true, false, true, false, true, new Type[0], Description = "Required/Not ReadOnly/No BusinessObject")]
     [TestCase(true, false, true, true, false, new Type[0], Description = "Required/Not ReadOnly/No Property")]
-    public void CreateValidators_WithOptionalValidatorsDisabledAndUndefinedProperty (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
+    public void CreateValidators_WithOptionalValidatorsDisabledAndUndefinedProperty (
+        bool isRequired,
+        bool isReadonly,
+        bool hasDataSource,
+        bool hasBusinessObject,
+        bool hasProperty,
+        Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsDisabled<IBusinessObjectProperty>(isRequired, hasDataSource, hasBusinessObject, hasProperty, BocTextValueType.Undefined);
       var validators = _validatorFactory.CreateValidators(control, isReadonly).ToArray();
@@ -74,9 +80,15 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     [TestCase(false, true, true, true, true, new Type[0], Description = "Not Required/ReadOnly")]
     [TestCase(false, false, true, true, true, new[] { typeof(ControlCharactersCharactersValidator) }, Description = "Not Required/Not ReadOnly")]
     [TestCase(true, false, false, false, true, new[] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
-    [TestCase(true, false, true, false, true, new [] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
-    [TestCase(true, false, true, true, false, new [] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No Property")]
-    public void CreateValidators_WithOptionalValidatorsDisabledAndStringProperty (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
+    [TestCase(true, false, true, false, true, new[] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
+    [TestCase(true, false, true, true, false, new[] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No Property")]
+    public void CreateValidators_WithOptionalValidatorsDisabledAndStringProperty (
+        bool isRequired,
+        bool isReadonly,
+        bool hasDataSource,
+        bool hasBusinessObject,
+        bool hasProperty,
+        Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsDisabled<IBusinessObjectStringProperty>(isRequired, hasDataSource, hasBusinessObject, hasProperty, BocTextValueType.String);
       var validators = _validatorFactory.CreateValidators(control, isReadonly).ToArray();
@@ -137,9 +149,20 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     [TestCase(true, false, false, false, true, new[] { typeof(DateTimeValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
     [TestCase(true, false, true, false, true, new[] { typeof(DateTimeValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
     [TestCase(true, false, true, true, false, new[] { typeof(DateTimeValidator) }, Description = "Required/Not ReadOnly/No Property")]
-    public void CreateValidators_WithOptionalValidatorsDisabledAndDateTimeProperty (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
+    public void CreateValidators_WithOptionalValidatorsDisabledAndDateTimeProperty (
+        bool isRequired,
+        bool isReadonly,
+        bool hasDataSource,
+        bool hasBusinessObject,
+        bool hasProperty,
+        Type[] expectedValidatorTypes)
     {
-      var control = GetControlWithOptionalValidatorsDisabled<IBusinessObjectDateTimeProperty>(isRequired, hasDataSource, hasBusinessObject, hasProperty, BocTextValueType.DateTime);
+      var control = GetControlWithOptionalValidatorsDisabled<IBusinessObjectDateTimeProperty>(
+          isRequired,
+          hasDataSource,
+          hasBusinessObject,
+          hasProperty,
+          BocTextValueType.DateTime);
       var validators = _validatorFactory.CreateValidators(control, isReadonly).ToArray();
 
       Assert.That(validators.Select(v => v.GetType()), Is.EquivalentTo(expectedValidatorTypes));
@@ -168,7 +191,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     [TestCase(true, false, false, false, true, new[] { typeof(CompareValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
     [TestCase(true, false, true, false, true, new[] { typeof(CompareValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
     [TestCase(true, false, true, true, false, new[] { typeof(CompareValidator) }, Description = "Required/Not ReadOnly/No Property")]
-    public void CreateValidators_WithOptionalValidatorsDisabledAndDateProperty (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
+    public void CreateValidators_WithOptionalValidatorsDisabledAndDateProperty (
+        bool isRequired,
+        bool isReadonly,
+        bool hasDataSource,
+        bool hasBusinessObject,
+        bool hasProperty,
+        Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsDisabled<IBusinessObjectDateTimeProperty>(isRequired, hasDataSource, hasBusinessObject, hasProperty, BocTextValueType.Date);
       var validators = _validatorFactory.CreateValidators(control, isReadonly).ToArray();
@@ -210,7 +239,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     [TestCase(true, false, false, false, true, new[] { typeof(NumericValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
     [TestCase(true, false, true, false, true, new[] { typeof(NumericValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
     [TestCase(true, false, true, true, false, new[] { typeof(NumericValidator) }, Description = "Required/Not ReadOnly/No Property")]
-    public void CreateValidators_WithOptionalValidatorsDisabledAndNumericProperty (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
+    public void CreateValidators_WithOptionalValidatorsDisabledAndNumericProperty (
+        bool isRequired,
+        bool isReadonly,
+        bool hasDataSource,
+        bool hasBusinessObject,
+        bool hasProperty,
+        Type[] expectedValidatorTypes)
     {
       Check(BocTextValueType.Byte);
       Check(BocTextValueType.Int16);

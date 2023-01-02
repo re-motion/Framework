@@ -230,7 +230,11 @@ namespace OBWTest.IndividualControlTests
 
       filteredPersons.Sort((left, right) => string.Compare(left.DisplayName, right.DisplayName, StringComparison.OrdinalIgnoreCase));
       if (filteredPersons.Count > 10)
-        filteredPersons.Add(new BusinessObjectWithIdentityProxy { UniqueIdentifier = "==null==", DisplayName = "...", IconUrl = GetUrl(IconInfo.CreateSpacer(_resourceUrlFactory)) });
+      {
+        filteredPersons.Add(
+            new BusinessObjectWithIdentityProxy { UniqueIdentifier = "==null==", DisplayName = "...", IconUrl = GetUrl(IconInfo.CreateSpacer(_resourceUrlFactory)) });
+      }
+
       return BocAutoCompleteReferenceValueSearchResult.CreateForValueList(filteredPersons.ToArray());
     }
 

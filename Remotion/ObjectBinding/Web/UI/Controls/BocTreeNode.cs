@@ -158,8 +158,12 @@ public class BusinessObjectTreeNode: BocTreeNode
           throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSoure is null.");
         if (BocTreeView.DataSource.BusinessObjectClass == null)
           throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is null.");
-        if (! (BocTreeView.DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
-          throw new InvalidOperationException("Cannot look-up IBusinessObjectWithIdentity '" + ItemID + "': DataSource.BusinessObjectClass is of type '" + BocTreeView.DataSource.BusinessObjectClass.GetType() + "' but must be of type IBusinessObjectClassWithIdentity.");
+        if (!(BocTreeView.DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity))
+        {
+          throw new InvalidOperationException(
+              $"Cannot look-up IBusinessObjectWithIdentity '{ItemID}': DataSource.BusinessObjectClass is of type '{BocTreeView.DataSource.BusinessObjectClass.GetType()}' "
+              + $"but must be of type IBusinessObjectClassWithIdentity.");
+        }
 
         BusinessObject =
             ((IBusinessObjectClassWithIdentity)BocTreeView.DataSource.BusinessObjectClass).GetObject(ItemID);

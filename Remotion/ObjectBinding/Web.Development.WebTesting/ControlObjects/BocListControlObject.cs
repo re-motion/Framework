@@ -267,7 +267,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
             column.Index,
             DiagnosticMetadataAttributesForObjectBinding.BocListCellContents,
             DomSelectorUtility.CreateMatchValueForCssSelector(containsCellText));
-        var cellScope = Scope.FindCss(cssSelector).FindXPath(string.Format("(ancestor::th[@{0}][1]|ancestor::td[@{0}][1])", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex));
+        var cellScope = Scope
+            .FindCss(cssSelector)
+            .FindXPath(string.Format("(ancestor::th[@{0}][1]|ancestor::td[@{0}][1])", DiagnosticMetadataAttributesForObjectBinding.BocListCellIndex));
         return CreateCellControlObject(GetHtmlID(), cellScope);
       }
       else

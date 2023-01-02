@@ -249,12 +249,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocTreeView.GetNode().WithItemID("c8ace752-55f6-4074-8890-130276ea6cd1").Select(),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(
+                      Driver,
+                      "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']").Message));
       Assert.That(
           () => bocTreeView.GetNode("c8ace752-55f6-4074-8890-130276ea6cd1").Select(),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(
+                      Driver,
+                      "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='c8ace752-55f6-4074-8890-130276ea6cd1']").Message));
 
       rootNode.Scope.ElementFinder.Options.Timeout = TimeSpan.Zero;
       Assert.That(
@@ -271,12 +275,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => rootNode.GetNode().WithItemID("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(
+                      Driver,
+                      "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']").Message));
       Assert.That(
           () => rootNode.GetNode("eb94bfdb-1140-46f8-971f-e4b41dae13b8").Select(),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(
+                      Driver,
+                      "Unable to find xpath: ((.//ul)[1])/li[@data-item-id='eb94bfdb-1140-46f8-971f-e4b41dae13b8']").Message));
     }
 
     [Test]
@@ -330,10 +338,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestSelectNodeInHierarchyOnlyRootNodeExpanded ()
     {
-      var expectedExceptionMessage = AssertionExceptionUtility.CreateExpectationException(
-              Driver,
-              "The element cannot be found: This element has been removed from the DOM. Coypu will normally re-find elements using the original locators in this situation, except if you have captured a snapshot list of all matching elements using FindAllCss() or FindAllXPath()")
-          .Message;
+      var expectedExceptionMessage =
+          AssertionExceptionUtility.CreateExpectationException(
+                  Driver,
+                  "The element cannot be found: This element has been removed from the DOM. Coypu will normally re-find elements using the original locators in this situation, "
+                  + "except if you have captured a snapshot list of all matching elements using FindAllCss() or FindAllXPath()")
+              .Message;
       var home = Start();
 
       var bocTreeView = home.TreeViews().GetByLocalID("Normal");
