@@ -19,12 +19,14 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering;
 using Remotion.Web.Utilities;
+using Calendar = System.Web.UI.WebControls.Calendar;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -52,6 +54,26 @@ namespace Remotion.Web.UI.Controls
 /// </remarks>
 public class DatePickerPage : Page
 {
+  /// <summary> A list of control specific resources. </summary>
+  /// <remarks> 
+  ///   Resources will be accessed using 
+  ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+  ///   See the documentation of <b>GetString</b> for further details.
+  /// </remarks>
+  [ResourceIdentifiers]
+  [MultiLingualResources("Remotion.Web.Globalization.DatePickerPage")]
+  public enum ResourceIdentifier
+  {
+    /// <summary>The tool tip text for the calendar popup.</summary>
+    TitleText,
+
+    /// <summary>The tool tip text for the select the previous month button.</summary>
+    PreviousMonthTitle,
+
+    /// <summary>The tool tip text for the select the next month button.</summary>
+    NextMonthTitle,
+  }
+
   public const string CultureParameterName = "Culture";
   public const string UICultureParameterName = "UICulture";
 
@@ -107,6 +129,14 @@ public class DatePickerPage : Page
 
     //  Force the creation of the postback function
     Page.ClientScript.GetPostBackEventReference(this, "");
+
+#if !NETFRAMEWORK
+    var globalizationService = SafeServiceLocator.Current.GetInstance<IGlobalizationService>();
+    var resourceManager = globalizationService.GetResourceManager(typeof(ResourceIdentifier));
+    Calendar.TitleText = resourceManager.GetString(ResourceIdentifier.TitleText);
+    Calendar.PreviousMonthTitle = resourceManager.GetString(ResourceIdentifier.PreviousMonthTitle);
+    Calendar.NextMonthTitle = resourceManager.GetString(ResourceIdentifier.NextMonthTitle);
+#endif
 
     base.OnInit(e);
 
