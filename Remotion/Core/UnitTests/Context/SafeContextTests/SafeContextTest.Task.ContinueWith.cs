@@ -63,7 +63,13 @@ namespace Remotion.UnitTests.Context.SafeContextTests
 
       public TaskScheduler TaskScheduler { get; }
 
-      public ContinueWithTestContext (TTask task, TContinuation continuation, object state, CancellationToken cancellationToken, TaskContinuationOptions options, TaskScheduler taskScheduler)
+      public ContinueWithTestContext (
+          TTask task,
+          TContinuation continuation,
+          object state,
+          CancellationToken cancellationToken,
+          TaskContinuationOptions options,
+          TaskScheduler taskScheduler)
       {
         Task = task;
         Continuation = continuation;
@@ -106,13 +112,19 @@ namespace Remotion.UnitTests.Context.SafeContextTests
       }
     }
 
-    private static readonly MethodInfo s_createTestInvocationMethod = typeof(SafeContextTaskTest).GetMethod(nameof(CreateTestInvocation), BindingFlags.NonPublic | BindingFlags.Static);
+    private static readonly MethodInfo s_createTestInvocationMethod =
+        typeof(SafeContextTaskTest).GetMethod(nameof(CreateTestInvocation), BindingFlags.NonPublic | BindingFlags.Static);
 
-    private static readonly MethodInfo s_runContinueWithTestMethod = typeof(SafeContextTaskTest).GetMethod(nameof(RunContinueWithTest), BindingFlags.NonPublic | BindingFlags.Instance);
+    private static readonly MethodInfo s_runContinueWithTestMethod =
+        typeof(SafeContextTaskTest).GetMethod(nameof(RunContinueWithTest), BindingFlags.NonPublic | BindingFlags.Instance);
 
     [Test]
     [TestCaseSource(nameof(ContinueWithTestSource), new object[] { true })]
-    public void ContinueWith_ImplicitSafeContextProvider (Type taskType, Type continuationType, Func<ISafeContextStorageProvider, object> continuationFactory, ContinueWithTestFlags flags)
+    public void ContinueWith_ImplicitSafeContextProvider (
+        Type taskType,
+        Type continuationType,
+        Func<ISafeContextStorageProvider, object> continuationFactory,
+        ContinueWithTestFlags flags)
     {
       var safeContextStorageProvider = SafeContextProviderMock.Object;
       using (SetupImplicitSafeContextStorageProvider(safeContextStorageProvider))
@@ -125,7 +137,11 @@ namespace Remotion.UnitTests.Context.SafeContextTests
 
     [Test]
     [TestCaseSource(nameof(ContinueWithTestSource), new object[] { false })]
-    public void ContinueWith_ExplicitSafeContextProvider (Type taskType, Type continuationType, Func<ISafeContextStorageProvider, object> continuationFactory, ContinueWithTestFlags flags)
+    public void ContinueWith_ExplicitSafeContextProvider (
+        Type taskType,
+        Type continuationType,
+        Func<ISafeContextStorageProvider, object> continuationFactory,
+        ContinueWithTestFlags flags)
     {
       var safeContextStorageProvider = SafeContextProviderMock.Object;
       var runTestMethod = s_runContinueWithTestMethod.MakeGenericMethod(taskType, continuationType);
@@ -297,7 +313,10 @@ namespace Remotion.UnitTests.Context.SafeContextTests
       {
         Assert.That(resultingTask, Is.Not.Null);
         Assert.That(ex.CancellationToken, Is.EqualTo(cancellationToken));
-        Assert.That(resultingTask.Status, Is.EqualTo((flags & HasCancellationToken) != 0 ? TaskStatus.Canceled : TaskStatus.Faulted), "CancellationToken was not passed correctly.");
+        Assert.That(
+            resultingTask.Status,
+            Is.EqualTo((flags & HasCancellationToken) != 0 ? TaskStatus.Canceled : TaskStatus.Faulted),
+            "CancellationToken was not passed correctly.");
       }
 
       Assert.That(continuationCalled, Is.True, "Continuation was not called.");

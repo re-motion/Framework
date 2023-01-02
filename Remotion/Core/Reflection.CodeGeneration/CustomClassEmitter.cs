@@ -409,7 +409,9 @@ namespace Remotion.Reflection.CodeGeneration
 
       IMethodEmitter wrapper = CreateMethod("__wrap__" + methodToBeWrapped.Name, attributes, methodToBeWrapped);
       wrapper.ImplementByDelegating(new TypeReferenceWrapper(SelfReference.Self, TypeBuilder), methodToBeWrapped);
-      var attributeBuilder = new CustomAttributeBuilder(s_generatedMethodWrapperAttributeCtor, new object?[] { methodToBeWrapped.DeclaringType, methodToBeWrapped.Name, methodToBeWrapped.ToString() });
+      var attributeBuilder = new CustomAttributeBuilder(
+          s_generatedMethodWrapperAttributeCtor,
+          new object?[] { methodToBeWrapped.DeclaringType, methodToBeWrapped.Name, methodToBeWrapped.ToString() });
       wrapper.AddCustomAttribute(attributeBuilder);
 
       return wrapper;

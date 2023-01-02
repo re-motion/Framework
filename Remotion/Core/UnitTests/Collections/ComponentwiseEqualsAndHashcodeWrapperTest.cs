@@ -56,11 +56,38 @@ namespace Remotion.UnitTests.Collections
     [Test]
     public void EqualsAndGetHashCodeTest ()
     {
-      var sequence0 = new [] {  new ComparableTestClass_EnumerableEqualsWrapper(7), new ComparableTestClass_EnumerableEqualsWrapper(11), new ComparableTestClass_EnumerableEqualsWrapper(13) };
-      var sequence1 = new [] {  new ComparableTestClass_EnumerableEqualsWrapper(7), new ComparableTestClass_EnumerableEqualsWrapper(11), new ComparableTestClass_EnumerableEqualsWrapper(13) };
-      var sequence2 = new [] {  new ComparableTestClass_EnumerableEqualsWrapper(7), new ComparableTestClass_EnumerableEqualsWrapper(11), new ComparableTestClass_EnumerableEqualsWrapper(13), new ComparableTestClass_EnumerableEqualsWrapper(17) };
-      var sequence3 = new [] {  new ComparableTestClass_EnumerableEqualsWrapper(7), new ComparableTestClass_EnumerableEqualsWrapper(11), new ComparableTestClass_EnumerableEqualsWrapper(14) };
-      var sequence4 = new [] {  new ComparableTestClass_EnumerableEqualsWrapper(7), new ComparableTestClass_EnumerableEqualsWrapper(11), new ComparableTestClass_EnumerableEqualsWrapper(13), new ComparableTestClass_EnumerableEqualsWrapper(17) };
+      var sequence0 = new[]
+                      {
+                          new ComparableTestClass_EnumerableEqualsWrapper(7),
+                          new ComparableTestClass_EnumerableEqualsWrapper(11),
+                          new ComparableTestClass_EnumerableEqualsWrapper(13)
+                      };
+      var sequence1 = new[]
+                      {
+                          new ComparableTestClass_EnumerableEqualsWrapper(7),
+                          new ComparableTestClass_EnumerableEqualsWrapper(11),
+                          new ComparableTestClass_EnumerableEqualsWrapper(13)
+                      };
+      var sequence2 = new[]
+                      {
+                          new ComparableTestClass_EnumerableEqualsWrapper(7),
+                          new ComparableTestClass_EnumerableEqualsWrapper(11),
+                          new ComparableTestClass_EnumerableEqualsWrapper(13),
+                          new ComparableTestClass_EnumerableEqualsWrapper(17)
+                      };
+      var sequence3 = new[]
+                      {
+                          new ComparableTestClass_EnumerableEqualsWrapper(7),
+                          new ComparableTestClass_EnumerableEqualsWrapper(11),
+                          new ComparableTestClass_EnumerableEqualsWrapper(14)
+                      };
+      var sequence4 = new[]
+                      {
+                          new ComparableTestClass_EnumerableEqualsWrapper(7),
+                          new ComparableTestClass_EnumerableEqualsWrapper(11),
+                          new ComparableTestClass_EnumerableEqualsWrapper(13),
+                          new ComparableTestClass_EnumerableEqualsWrapper(17)
+                      };
 
       Assert.That(NewEnumerableEqualsWrapper(sequence0).Equals(null), Is.False);
 

@@ -139,7 +139,10 @@ namespace Remotion.Utilities
     [Conditional("DEBUG")]
     [AssertionMethod]
     [StringFormatMethod("message")]
-    public static void DebugIsNotNull<T> ([AssertionCondition(AssertionConditionType.IS_NOT_NULL), NoEnumeration, System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
+    public static void DebugIsNotNull<T> (
+        [AssertionCondition(AssertionConditionType.IS_NOT_NULL), NoEnumeration, System.Diagnostics.CodeAnalysis.NotNull] T obj,
+        string message,
+        params object?[] arguments)
     {
       IsNotNull(obj, message, arguments);
     }
@@ -161,11 +164,14 @@ namespace Remotion.Utilities
     [AssertionMethod]
     [StringFormatMethod("message")]
     [return: System.Diagnostics.CodeAnalysis.NotNull]
-    public static T IsNotNull<T> ([AssertionCondition(AssertionConditionType.IS_NOT_NULL), NoEnumeration, System.Diagnostics.CodeAnalysis.NotNull] T obj, string message, params object?[] arguments)
+    public static T IsNotNull<T> (
+        [AssertionCondition(AssertionConditionType.IS_NOT_NULL), NoEnumeration, System.Diagnostics.CodeAnalysis.NotNull] T obj,
+        string message,
+        params object?[] arguments)
     {
       // ReSharper disable CompareNonConstrainedGenericWithNull
       if (obj == null)
-        // ReSharper restore CompareNonConstrainedGenericWithNull
+          // ReSharper restore CompareNonConstrainedGenericWithNull
         throw new InvalidOperationException(string.Format(message, arguments));
 
       return obj;

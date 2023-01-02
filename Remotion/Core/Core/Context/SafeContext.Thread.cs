@@ -51,7 +51,8 @@ namespace Remotion.Context
       public static System.Threading.Thread New (ParameterizedThreadStart start, int maxStackSize) => New(Instance, start, maxStackSize);
 
       /// <inheritdoc cref="M:System.Threading.Thread.#ctor(System.Threading.ParameterizedThreadStart,System.Int32)" />
-      public static System.Threading.Thread New (ISafeContextStorageProvider provider, ParameterizedThreadStart start, int maxStackSize) => new(CreateWrapper(provider, start), maxStackSize);
+      public static System.Threading.Thread New (ISafeContextStorageProvider provider, ParameterizedThreadStart start, int maxStackSize) =>
+          new(CreateWrapper(provider, start), maxStackSize);
 
 
       private static ThreadStart CreateWrapper (ISafeContextStorageProvider provider, ThreadStart start)

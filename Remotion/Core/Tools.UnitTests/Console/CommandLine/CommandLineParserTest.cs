@@ -51,7 +51,11 @@ public class CommandLineParserTest
 
     argDestinationDir = new CommandLineStringArgument(true);
     argDestinationDir.Placeholder = "destination-directory";
-    argDestinationDir.Description = "This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to.";
+    argDestinationDir.Description =
+        "This is the directory to copy to. This is the directory to copy to. "
+        + "This is the directory to copy to. This is the directory to copy to. "
+        + "This is the directory to copy to. This is the directory to copy to. "
+        + "This is the directory to copy to. This is the directory to copy to.";
     parser.Arguments.Add(argDestinationDir);
 
     argCopyBinary = new CommandLineFlagArgument("b", true);

@@ -8,7 +8,7 @@
     <AssemblyTitle>re-motion Extensions</AssemblyTitle>
     <Description>Extends the re-motion library with utilities.</Description>
     <AssemblyName>Remotion.Extensions</AssemblyName>
-    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <RootNamespace>Remotion</RootNamespace>
     <NoWarn>$(NoWarn);0419</NoWarn>
   </PropertyGroup>
   <ItemGroup>

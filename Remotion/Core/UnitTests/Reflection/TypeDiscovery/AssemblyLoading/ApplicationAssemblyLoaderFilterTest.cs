@@ -47,7 +47,16 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
       Assert.That(
           filter.SystemAssemblyMatchExpression,
-          Is.EqualTo(@"^((mscorlib)|(System)|(System\..*)|(Microsoft\..*)|(CoreForms\.Web)|(CoreForms\.Web\..*)|(Moq)|(netstandard)|(NUnit\..*)|(NUnit3\..*)|(Remotion\..*\.Generated\..*)|(Rhino.Mocks)|(testcentric\.engine\.metadata)|(TypePipe_.*Generated.*))$"));
+          Is.EqualTo(
+              @"^((mscorlib)|(System)|(System\..*)|(Microsoft\..*)"
+              + @"|(CoreForms\.Web)|(CoreForms\.Web\..*)"
+              + @"|(Moq)"
+              + @"|(netstandard)"
+              + @"|(NUnit\..*)|(NUnit3\..*)"
+              + @"|(Remotion\..*\.Generated\..*)"
+              + @"|(Rhino.Mocks)"
+              + @"|(testcentric\.engine\.metadata)"
+              + @"|(TypePipe_.*Generated.*))$"));
     }
 
     [Test]

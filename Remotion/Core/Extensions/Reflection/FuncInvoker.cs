@@ -17,6 +17,7 @@
 using System;
 using Remotion.Utilities;
 
+// @formatter:off
 namespace Remotion.Reflection
 {
   public struct FuncInvoker<TResult> : IFuncInvoker<TResult>

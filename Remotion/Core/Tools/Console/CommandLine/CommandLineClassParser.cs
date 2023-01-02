@@ -71,7 +71,13 @@ namespace Remotion.Tools.Console.CommandLine
         if (memberType == typeof(bool))
         {
           if (value == null)
-            throw new ApplicationException(string.Format("{0} {1}: Cannot convert null to System.Boolean. Use Nullable<Boolean> type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
+          {
+            throw new ApplicationException(
+                string.Format(
+                    "{0} {1}: Cannot convert null to System.Boolean. Use Nullable<Boolean> type for optional attributes without default values.",
+                    fieldOrProperty.MemberType,
+                    fieldOrProperty.Name));
+          }
           else if (value is bool?)
             value = ((bool?)value).Value;
         }

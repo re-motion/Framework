@@ -112,7 +112,12 @@ namespace Remotion.ServiceLocation
     /// <param name="registrationType">The registration type of the implementation.</param>
     /// <exception cref="InvalidOperationException">An instance of the <paramref name="serviceType"/> has already been retrieved. Registering factories
     /// or concrete implementations can only be done before any instances are retrieved.</exception>
-    public static void Register (this IServiceConfigurationRegistry serviceConfigurationRegistry, Type serviceType, Type concreteImplementationType, LifetimeKind lifetime, RegistrationType registrationType = RegistrationType.Single)
+    public static void Register (
+        this IServiceConfigurationRegistry serviceConfigurationRegistry,
+        Type serviceType,
+        Type concreteImplementationType,
+        LifetimeKind lifetime,
+        RegistrationType registrationType = RegistrationType.Single)
     {
       ArgumentUtility.CheckNotNull("serviceConfigurationRegistry", serviceConfigurationRegistry);
       ArgumentUtility.CheckNotNull("serviceType", serviceType);

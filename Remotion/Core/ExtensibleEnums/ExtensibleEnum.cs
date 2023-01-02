@@ -214,7 +214,8 @@ namespace Remotion.ExtensibleEnums
     /// <summary>
     /// Returns a <see cref="System.String"/> that represents this <see cref="ExtensibleEnum{T}"/> value. The string returned by this method is meant
     /// to be read, not parsed. Use <see cref="ID"/> to get a string that can be used to get back to the actual value.
-    /// Use <see cref="M:Remotion.Globalization.ExtensibleEnums.IExtensibleEnumerationGlobalizationService.TryGetExtensibleEnumerationValueDisplayName"/> to get a localized name of the value.
+    /// Use <see cref="M:Remotion.Globalization.ExtensibleEnums.IExtensibleEnumerationGlobalizationService.TryGetExtensibleEnumerationValueDisplayName"/>
+    /// to get a localized name of the value.
     /// </summary>
     /// <returns>
     /// A <see cref="System.String"/> that represents this <see cref="ExtensibleEnum{T}"/> value.
