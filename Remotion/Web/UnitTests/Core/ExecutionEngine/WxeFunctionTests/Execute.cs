@@ -65,7 +65,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxeFunctionTests
       TestFunction2 function = new TestFunction2(transactionModeMock.Object);
       var transactionStrategyMock = new Mock<TransactionStrategyBase>();
       transactionModeMock.Setup(mock => mock.CreateTransactionStrategy(function, _context)).Returns(transactionStrategyMock.Object).Verifiable();
-      transactionStrategyMock.Setup(mock => mock.CreateExecutionListener(It.IsNotNull<IWxeFunctionExecutionListener>()))
+      transactionStrategyMock
+          .Setup(mock => mock.CreateExecutionListener(It.IsNotNull<IWxeFunctionExecutionListener>()))
           .Returns(_executionListenerMock.Object)
           .Verifiable();
 

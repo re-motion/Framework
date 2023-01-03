@@ -98,15 +98,17 @@ namespace Remotion.Collections.Caching.UnitTests
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cacheStub.Object, invalidationToken);
       var key = new object();
       var count = 0;
-      cacheStub.Setup(_ => _.Clear()).Callback(
-          () =>
-          {
-            if (count < 2)
-            {
-              invalidationToken.Invalidate();
-              count++;
-            }
-          });
+      cacheStub
+          .Setup(_ => _.Clear())
+          .Callback(
+              () =>
+              {
+                if (count < 2)
+                {
+                  invalidationToken.Invalidate();
+                  count++;
+                }
+              });
       cacheStub.Setup(_ => _.GetOrCreateValue(It.IsAny<object>(), It.IsAny<Func<object, string>>())).Returns("Value");
 
       var value = decorator.GetOrCreateValue(key, o => null);
@@ -305,15 +307,17 @@ namespace Remotion.Collections.Caching.UnitTests
       var invalidationToken = InvalidationToken.Create();
       var decorator = new InvalidationTokenBasedCacheDecorator<object, string>(cacheStub.Object, invalidationToken);
       var count = 0;
-      cacheStub.Setup(_ => _.Clear()).Callback(
-          () =>
-          {
-            if (count < 2)
-            {
-              invalidationToken.Invalidate();
-              count++;
-            }
-          });
+      cacheStub
+          .Setup(_ => _.Clear())
+          .Callback(
+              () =>
+              {
+                if (count < 2)
+                {
+                  invalidationToken.Invalidate();
+                  count++;
+                }
+              });
 
       ((ICache<object, string>)decorator).Clear();
     }

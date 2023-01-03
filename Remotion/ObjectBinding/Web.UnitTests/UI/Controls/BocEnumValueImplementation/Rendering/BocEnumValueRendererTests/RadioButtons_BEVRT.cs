@@ -110,7 +110,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Setup(mock => mock.Attributes).Returns(new AttributeCollection(stateBag));
       _enumValue.Setup(mock => mock.Style).Returns(_enumValue.Object.Attributes.CssStyle);
       _enumValue.Setup(mock => mock.LabelStyle).Returns(new Style(stateBag));
-      _enumValue.Setup(mock => mock.ListControlStyle)
+      _enumValue
+          .Setup(mock => mock.ListControlStyle)
           .Returns(
               new ListControlStyle
               {

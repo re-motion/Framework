@@ -232,8 +232,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       Control.Setup(stub => stub.Enabled).Returns(true);
       Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
-      Control.Setup(stub => stub.Property).Returns(
-          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
+      Control
+          .Setup(stub => stub.Property)
+          .Returns((IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
       XmlNode span = GetAssertedContainerSpan(false);
@@ -359,8 +360,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
       Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
-      Control.Setup(stub => stub.Property).Returns(
-          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
+      Control
+          .Setup(stub => stub.Property)
+          .Returns((IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
       XmlNode span = GetAssertedContainerSpan(false);
@@ -418,11 +420,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
 
     protected void SetUpClientScriptExpectations ()
     {
-      ClientScriptManagerMock.Setup(
-          mock => mock.GetPostBackEventReference(
-              It.Is<PostBackOptions>(options => options.TargetControl == TextBox && options.AutoPostBack),
-              true)
-          )
+      ClientScriptManagerMock
+          .Setup(mock => mock.GetPostBackEventReference(It.Is<PostBackOptions>(options => options.TargetControl == TextBox && options.AutoPostBack), true))
           .Returns("PostBackEventReference")
           .Verifiable();
     }

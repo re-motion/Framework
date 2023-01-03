@@ -111,7 +111,8 @@ namespace Remotion.Data.DomainObjects.Web.IntegrationTests.WxeTransactedFunction
     protected static ITransactionMode CreateTransactionModeForClientTransaction (ClientTransaction clientTransaction)
     {
       var mode = new Mock<ITransactionMode>();
-      mode.Setup(stub => stub.CreateTransactionStrategy(It.IsAny<WxeFunction>(), It.IsAny<WxeContext>()))
+      mode
+          .Setup(stub => stub.CreateTransactionStrategy(It.IsAny<WxeFunction>(), It.IsAny<WxeContext>()))
           .Returns(
               (WxeFunction function, WxeContext context) => new RootTransactionStrategy(
                   false,

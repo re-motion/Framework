@@ -115,7 +115,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup(mock => mock.DropDownListStyle).Returns(new DropDownListStyle());
       Control.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
       Control.Setup(stub => stub.GetValueName()).Returns(c_valueName);
-      Control.Setup(stub => stub.PopulateDropDownList(It.IsNotNull<DropDownList>()))
+      Control
+          .Setup(stub => stub.PopulateDropDownList(It.IsNotNull<DropDownList>()))
           .Callback(
               (DropDownList dropDownList) =>
               {
@@ -222,8 +223,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
     {
       Control.Setup(stub => stub.Enabled).Returns(true);
       Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
-      Control.Setup(stub => stub.Property).Returns(
-          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
+      Control
+          .Setup(stub => stub.Property)
+          .Returns((IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
       XmlNode span = GetAssertedContainerSpan(false);
@@ -348,8 +350,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocReferenceValueImpl
       Control.Setup(stub => stub.Enabled).Returns(true);
       SetValue();
       Control.Setup(stub => stub.IsIconEnabled()).Returns(true);
-      Control.Setup(stub => stub.Property).Returns(
-          (IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
+      Control
+          .Setup(stub => stub.Property)
+          .Returns((IBusinessObjectReferenceProperty)((IBusinessObject)BusinessObject).BusinessObjectClass.GetPropertyDefinition("ReferenceValue"));
       SetUpGetIconExpectations();
 
       XmlNode span = GetAssertedContainerSpan(false);

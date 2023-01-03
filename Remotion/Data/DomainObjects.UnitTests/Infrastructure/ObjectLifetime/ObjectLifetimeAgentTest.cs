@@ -545,7 +545,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
       actualCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(Enumerable.Empty<Exception>());
       initialCommandStub
           .InVerifiableSequence(sequence)
-          .Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(new ExpandedCommand(actualCommandMock.Object))
+          .Setup(stub => stub.ExpandToAllRelatedObjects())
+          .Returns(new ExpandedCommand(actualCommandMock.Object))
           .Verifiable();
       actualCommandMock
           .InVerifiableSequence(sequence)

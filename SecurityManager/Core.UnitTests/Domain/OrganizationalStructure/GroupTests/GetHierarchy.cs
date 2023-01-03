@@ -118,14 +118,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       var securityProviderStub = new Mock<ISecurityProvider>();
 
       var childOfChild2SecurityContext = ((ISecurityContextFactory)child2_1).CreateSecurityContext();
-      securityProviderStub.Setup(
-          stub => stub.GetAccess(
-              It.Is<ISecurityContext>(_ => !object.Equals(_, childOfChild2SecurityContext)),
-              It.IsAny<ISecurityPrincipal>())).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
-      securityProviderStub.Setup(
-          stub => stub.GetAccess(
-              childOfChild2SecurityContext,
-              It.IsAny<ISecurityPrincipal>())).Returns(new AccessType[0]);
+      securityProviderStub
+          .Setup(stub => stub.GetAccess(It.Is<ISecurityContext>(_ => !object.Equals(_, childOfChild2SecurityContext)), It.IsAny<ISecurityPrincipal>()))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityProviderStub
+          .Setup(stub => stub.GetAccess(childOfChild2SecurityContext, It.IsAny<ISecurityPrincipal>()))
+          .Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);
@@ -151,8 +149,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       SimulateExistingObjectForSecurityTest(root);
 
       var securityProviderStub = new Mock<ISecurityProvider>();
-      securityProviderStub.Setup(
-          stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>())).Returns(new AccessType[0]);
+      securityProviderStub
+          .Setup(stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>()))
+          .Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);

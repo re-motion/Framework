@@ -286,7 +286,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Setup(mock => mock.RegisterDataContainer(registerableDataContainer1a))
           .Callback((DataContainer dataContainer) => CheckHasEnlistedDomainObject(registerableDataContainer1a))
           .Verifiable();
-      _registrationListenerMock.InVerifiableSequence(sequence)
+      _registrationListenerMock
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.OnAfterObjectRegistration(
                   loadedObjectIDs,

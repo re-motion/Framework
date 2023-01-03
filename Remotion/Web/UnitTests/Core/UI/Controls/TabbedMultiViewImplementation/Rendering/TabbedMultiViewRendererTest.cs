@@ -58,13 +58,15 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.TabbedMultiViewImplementation.
 
       var tabStrip = new Mock<IWebTabStrip>();
       tabStrip.SetupProperty(_ => _.CssClass);
-      tabStrip.Setup(stub => stub.RenderControl(_htmlHelper.Writer)).Callback(
-          delegate (HtmlTextWriter writer)
-          {
-            writer.AddAttribute(HtmlTextWriterAttribute.Class, tabStrip.Object.CssClass);
-            writer.RenderBeginTag("tabStrip");
-            writer.RenderEndTag();
-          });
+      tabStrip
+          .Setup(stub => stub.RenderControl(_htmlHelper.Writer))
+          .Callback(
+              delegate (HtmlTextWriter writer)
+              {
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, tabStrip.Object.CssClass);
+                writer.RenderBeginTag("tabStrip");
+                writer.RenderEndTag();
+              });
       var tabs = new WebTabCollection(tabStrip.Object);
       tabs.Add(new WebTab { ItemID = "Tab1" });
       tabs.Add(new WebTab { ItemID = "Tab2", IsSelected = true });

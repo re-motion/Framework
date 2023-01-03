@@ -73,7 +73,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       controlMock.Setup(c => c.DataSource).Returns(dataSourceStub.Object).Verifiable();
 
       var resourceManagerMock = new Mock<IResourceManager>();
-      resourceManagerMock.Setup(r => r.TryGetString(It.IsAny<string>(), out outValue))
+      resourceManagerMock
+          .Setup(r => r.TryGetString(It.IsAny<string>(), out outValue))
           .Returns(true)
           .Verifiable();
 
@@ -100,7 +101,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocBooleanValueImplem
       controlMock.Setup(c => c.DataSource).Returns(hasDataSource ? dataSourceStub.Object : null).Verifiable();
 
       var resourceManagerMock = new Mock<IResourceManager>();
-      resourceManagerMock.Setup(r => r.TryGetString(It.IsAny<string>(), out outValue))
+      resourceManagerMock
+          .Setup(r => r.TryGetString(It.IsAny<string>(), out outValue))
           .Returns(true)
           .Verifiable();
 

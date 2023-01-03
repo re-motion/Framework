@@ -60,7 +60,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions();
       IExecutionState executionState = CreateExecutionState(permaUrlOptions);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {
@@ -83,7 +84,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions(false, new NameValueCollection { { "Key", "Value" } });
       IExecutionState executionState = CreateExecutionState(permaUrlOptions);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {
@@ -108,7 +110,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure.WxePageStep
       WxePermaUrlOptions permaUrlOptions = new WxePermaUrlOptions(true);
       IExecutionState executionState = CreateExecutionState(permaUrlOptions);
 
-      ExecutionStateContextMock.Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
+      ExecutionStateContextMock
+          .Setup(mock => mock.SetExecutionState(It.IsNotNull<RedirectingToSubFunctionState>()))
           .Callback(
               (IExecutionState executionState) =>
               {

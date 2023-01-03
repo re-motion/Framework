@@ -145,7 +145,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.StorageProvide
 
       _dbCommandBuilderMock1
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.Create(_commandExecutionContextStub.Object)).Returns(_dbCommandMock1.Object)
+          .Setup(mock => mock.Create(_commandExecutionContextStub.Object))
+          .Returns(_dbCommandMock1.Object)
           .Verifiable();
 
       _commandExecutionContextStub

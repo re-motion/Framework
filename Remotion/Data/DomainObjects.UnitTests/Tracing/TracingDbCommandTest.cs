@@ -369,7 +369,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
           .Verifiable();
       _innerCommandMock
           .InVerifiableSequence(sequence)
-          .Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Returns(readerStub.Object)
+          .Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly))
+          .Returns(readerStub.Object)
           .Verifiable();
 
       _extensionMock

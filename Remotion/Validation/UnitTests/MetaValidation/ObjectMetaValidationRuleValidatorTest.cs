@@ -58,7 +58,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       _objectMetaValidationRuleCollectorStub3 = new Mock<IObjectMetaValidationRuleCollector>();
       _objectMetaValidationRuleCollectorStub4 = new Mock<IObjectMetaValidationRuleCollector>();
 
-      _collectorStub1.Setup(stub => stub.ObjectMetaValidationRules)
+      _collectorStub1
+          .Setup(stub => stub.ObjectMetaValidationRules)
           .Returns(new[] { _objectMetaValidationRuleCollectorStub1.Object, _objectMetaValidationRuleCollectorStub2.Object });
       _collectorStub2.Setup(stub => stub.ObjectMetaValidationRules).Returns(new[] { _objectMetaValidationRuleCollectorStub3.Object });
 
@@ -99,7 +100,8 @@ namespace Remotion.Validation.UnitTests.MetaValidation
       var metaValidationRuleMock4 = new Mock<IObjectMetaValidationRule>(MockBehavior.Strict);
 
       _objectMetaValidationRuleCollectorStub1.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Customer)));
-      _objectMetaValidationRuleCollectorStub1.Setup(stub => stub.MetaValidationRules)
+      _objectMetaValidationRuleCollectorStub1
+          .Setup(stub => stub.MetaValidationRules)
           .Returns(new[] { metaValidationRuleMock1.Object, metaValidationRuleMock2.Object });
 
       _objectMetaValidationRuleCollectorStub2.Setup(stub => stub.ValidatedType).Returns(TypeAdapter.Create(typeof(Person)));
@@ -118,28 +120,18 @@ namespace Remotion.Validation.UnitTests.MetaValidation
 
       metaValidationRuleMock1
           .Setup(mock => mock.Validate(new[] { _objectValidatorStub1.Object, _objectValidatorStub2.Object }))
-          .Returns(
-              new[]
-              {
-                  resultItem1
-              })
+          .Returns(new[] { resultItem1 })
           .Verifiable();
       metaValidationRuleMock2
           .Setup(mock => mock.Validate(new[] { _objectValidatorStub1.Object, _objectValidatorStub2.Object }))
-          .Returns(
-              new[]
-              {
-                  resultItem2,
-                  resultItem3
-              })
+          .Returns(new[] { resultItem2, resultItem3 })
           .Verifiable();
       metaValidationRuleMock3
-          .Setup(
-              mock => mock.Validate(
-                  new[] { _objectValidatorStub3.Object, _objectValidatorStub4.Object, _objectValidatorStub5.Object }))
+          .Setup(mock => mock.Validate(new[] { _objectValidatorStub3.Object, _objectValidatorStub4.Object, _objectValidatorStub5.Object }))
           .Returns(new[] { resultItem4 })
           .Verifiable();
-      metaValidationRuleMock4.Setup(mock => mock.Validate(new IObjectValidator[0]))
+      metaValidationRuleMock4
+          .Setup(mock => mock.Validate(new IObjectValidator[0]))
           .Returns(new MetaValidationRuleValidationResult[0])
           .Verifiable();
 

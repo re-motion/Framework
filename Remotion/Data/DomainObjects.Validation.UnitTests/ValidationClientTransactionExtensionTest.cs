@@ -163,7 +163,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests
         var validationFailure5 = new PropertyValidationFailure(domainObject2, propertyStub1.Object, null, "Error5", "ValidationMessage5");
 
         _validatorMock1.Setup(mock => mock.Validate(domainObject1)).Returns(new ValidationResult(new[] { validationFailure2 })).Verifiable();
-        _validatorMock2.Setup(mock => mock.Validate(domainObject2))
+        _validatorMock2
+            .Setup(mock => mock.Validate(domainObject2))
             .Returns(new ValidationResult(new ValidationFailure[] { validationFailure1, validationFailure3, validationFailure4, validationFailure5 }))
             .Verifiable();
 

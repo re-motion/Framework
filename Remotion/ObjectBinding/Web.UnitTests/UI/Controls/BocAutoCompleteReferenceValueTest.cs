@@ -299,7 +299,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
       Mock.Get((Page)_control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+      _webServiceFactoryStub
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
           .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
@@ -326,7 +327,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
       Mock.Get((Page)_control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
+      _webServiceFactoryStub
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/ControlService.asmx"))
           .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/ControlService.asmx";
@@ -350,7 +352,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       PrivateInvoke.SetNonPublicField(_control, "_hasBeenRenderedInPreviousLifecycle", true);
       Mock.Get((Page)_control.Page).As<ISmartPage>().Setup(stub => stub.GetPostBackCollection()).Returns(postbackCollection);
 
-      _webServiceFactoryStub.Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/SearchService.asmx"))
+      _webServiceFactoryStub
+          .Setup(stub => stub.CreateJsonService<IBocAutoCompleteReferenceValueWebService>("~/SearchService.asmx"))
           .Returns(new Mock<IBocAutoCompleteReferenceValueWebService>().Object);
       _control.AppRelativeTemplateSourceDirectory = "~/";
       _control.ControlServicePath = "~/SearchService.asmx";

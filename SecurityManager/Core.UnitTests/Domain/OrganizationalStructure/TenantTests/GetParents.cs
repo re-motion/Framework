@@ -149,14 +149,12 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       var securityProviderStub = new Mock<ISecurityProvider>();
 
       var grandParent1SecurityContext = ((ISecurityContextFactory)grandParent1).CreateSecurityContext();
-      securityProviderStub.Setup(
-          stub => stub.GetAccess(
-              It.Is<ISecurityContext>(_ => !object.Equals(_, grandParent1SecurityContext)),
-              It.IsAny<ISecurityPrincipal>())).Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
-      securityProviderStub.Setup(
-          stub => stub.GetAccess(
-              grandParent1SecurityContext,
-              It.IsAny<ISecurityPrincipal>())).Returns(new AccessType[0]);
+      securityProviderStub
+          .Setup(stub => stub.GetAccess(It.Is<ISecurityContext>(_ => !object.Equals(_, grandParent1SecurityContext)), It.IsAny<ISecurityPrincipal>()))
+          .Returns(new[] { AccessType.Get(GeneralAccessTypes.Read) });
+      securityProviderStub
+          .Setup(stub => stub.GetAccess(grandParent1SecurityContext, It.IsAny<ISecurityPrincipal>()))
+          .Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);
@@ -178,8 +176,9 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
 
       var securityProviderStub = new Mock<ISecurityProvider>();
-      securityProviderStub.Setup(
-          stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>())).Returns(new AccessType[0]);
+      securityProviderStub
+          .Setup(stub => stub.GetAccess(It.IsAny<SecurityContext>(), It.IsAny<ISecurityPrincipal>()))
+          .Returns(new AccessType[0]);
 
       var serviceLocator = DefaultServiceLocator.Create();
       serviceLocator.RegisterSingle(() => securityProviderStub.Object);

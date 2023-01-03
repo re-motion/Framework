@@ -71,11 +71,7 @@ namespace Remotion.Validation.UnitTests.Merging
       var collectors = Enumerable.Empty<IEnumerable<ValidationRuleCollectorInfo>>();
       _wrappedMergerStub
           .Setup(stub => stub.Merge(collectors))
-          .Returns(
-              new ValidationCollectorMergeResult(
-                  new IAddingPropertyValidationRuleCollector[0],
-                  new IAddingObjectValidationRuleCollector[0],
-                  _logContextStub.Object));
+          .Returns(new ValidationCollectorMergeResult(new IAddingPropertyValidationRuleCollector[0], new IAddingObjectValidationRuleCollector[0], _logContextStub.Object));
 
       CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(collectors), "\r\nAFTER MERGE:", 0);
       CheckLoggingMethod(() => _diagnosticOutputValidationRuleMergeDecorator.Merge(collectors), "\r\nBEFORE MERGE:", 1);
@@ -86,16 +82,12 @@ namespace Remotion.Validation.UnitTests.Merging
     {
       var collector1 = new TypeWithoutBaseTypeCollector1();
       var collector2 = new TypeWithoutBaseTypeCollector2();
-      var validationCollectorInfos = new[]
-                                     {
-                                         new[]
-                                         {
-                                             new ValidationRuleCollectorInfo(
-                                                 collector1,
-                                                 typeof(ValidationAttributesBasedValidationRuleCollectorProvider))
-                                         },
-                                         new[] { new ValidationRuleCollectorInfo(collector2, typeof(ApiBasedValidationRuleCollectorProvider)) }
-                                     };
+      var validationCollectorInfos =
+          new[]
+          {
+              new[] { new ValidationRuleCollectorInfo(collector1, typeof(ValidationAttributesBasedValidationRuleCollectorProvider)) },
+              new[] { new ValidationRuleCollectorInfo(collector2, typeof(ApiBasedValidationRuleCollectorProvider)) }
+          };
 
       var userNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.UserName);
       var lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.LastName);
@@ -137,21 +129,20 @@ namespace Remotion.Validation.UnitTests.Merging
           new[]
           { new RemovingPropertyValidatorRegistration(typeof(NotEqualValidator), null, null, removingPropertyRuleStub1.Object) });
 
-      _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotNullValidator)), It.IsAny<Func<Type, string>>()))
+      _validatorFormatterStub
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotNullValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("NotNullValidator");
-      _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(LengthValidator)), It.IsAny<Func<Type, string>>()))
+      _validatorFormatterStub
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(LengthValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("LengthValidator");
-      _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEmptyValidator)), It.IsAny<Func<Type, string>>()))
+      _validatorFormatterStub
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEmptyValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("NotEmptyValidator");
-      _validatorFormatterStub.Setup(
-          stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEqualValidator)), It.IsAny<Func<Type, string>>()))
+      _validatorFormatterStub
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(NotEqualValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("NotEqualValidator");
-      _validatorFormatterStub.Setup(
-          stub =>
-              stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(StubPropertyValidator)), It.IsAny<Func<Type, string>>()))
+      _validatorFormatterStub
+          .Setup(stub => stub.Format(It.Is<IPropertyValidator>(c => c.GetType() == typeof(StubPropertyValidator)), It.IsAny<Func<Type, string>>()))
           .Returns("StubPropertyValidator");
 
       _logContextStub.Setup(stub => stub.GetLogContextInfos(userNamePropertyRule)).Returns(new[] { logContextInfo1, logContextInfo2 });
@@ -159,10 +150,13 @@ namespace Remotion.Validation.UnitTests.Merging
       _logContextStub.Setup(stub => stub.GetLogContextInfos(noPropertyRuleStub)).Returns(new PropertyValidatorLogContextInfo[0]);
 
       var addingPropertyValidationRuleCollectors = new IAddingPropertyValidationRuleCollector[] { userNamePropertyRule, lastNamePropertyRule, noPropertyRuleStub };
-      var addingObjectValidationRuleCollectors = new IAddingObjectValidationRuleCollector[] { /* TODO RM-5906: test object rules */ };
-      _wrappedMergerStub.Setup(stub => stub.Merge(validationCollectorInfos))
-          .Returns(
-              new ValidationCollectorMergeResult(addingPropertyValidationRuleCollectors, addingObjectValidationRuleCollectors, _logContextStub.Object));
+      var addingObjectValidationRuleCollectors = new IAddingObjectValidationRuleCollector[]
+                                                 {
+                                                     /* TODO RM-5906: test object rules */
+                                                 };
+      _wrappedMergerStub
+          .Setup(stub => stub.Merge(validationCollectorInfos))
+          .Returns(new ValidationCollectorMergeResult(addingPropertyValidationRuleCollectors, addingObjectValidationRuleCollectors, _logContextStub.Object));
 
       var expectedAfterMerge =
           "\r\nAFTER MERGE:"

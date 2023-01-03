@@ -83,21 +83,29 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _pageMock.Setup(mock => mock.SaveAllState()).Verifiable();
       _pageMock.Setup(mock => mock.WxeHandler).Returns(_wxeHandler).Verifiable();
 
-      _subFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback(
-          (WxeContext context) =>
-          {
-            PrivateInvoke.SetNonPublicField(_functionState, "_postBackID", 100);
-            _pageStep.Object.SetPostBackCollection(new NameValueCollection());
-          }).Verifiable();
-      _pageExecutorMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", false)).Callback(
-          (WxeContext context, string page, bool isPostBack) =>
-          {
-            Assert.That(((IExecutionStateContext)_pageStep.Object).ExecutionState, Is.SameAs(NullExecutionState.Null));
-            Assert.That(_pageStep.Object.PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo("100"));
-            Assert.That(_pageStep.Object.PostBackCollection.AllKeys, Has.Member("Key"));
-            Assert.That(_pageStep.Object.ReturningFunction, Is.SameAs(_subFunction.Object));
-            Assert.That(_pageStep.Object.IsReturningPostBack, Is.True);
-          }).Verifiable();
+      _subFunction
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Execute(_wxeContext))
+          .Callback(
+              (WxeContext context) =>
+              {
+                PrivateInvoke.SetNonPublicField(_functionState, "_postBackID", 100);
+                _pageStep.Object.SetPostBackCollection(new NameValueCollection());
+              })
+          .Verifiable();
+      _pageExecutorMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.ExecutePage(_wxeContext, "~/ThePage", false))
+          .Callback(
+              (WxeContext context, string page, bool isPostBack) =>
+              {
+                Assert.That(((IExecutionStateContext)_pageStep.Object).ExecutionState, Is.SameAs(NullExecutionState.Null));
+                Assert.That(_pageStep.Object.PostBackCollection[WxePageInfo.PostBackSequenceNumberID], Is.EqualTo("100"));
+                Assert.That(_pageStep.Object.PostBackCollection.AllKeys, Has.Member("Key"));
+                Assert.That(_pageStep.Object.ReturningFunction, Is.SameAs(_subFunction.Object));
+                Assert.That(_pageStep.Object.IsReturningPostBack, Is.True);
+              })
+          .Verifiable();
 
       WxePermaUrlOptions permaUrlOptions = WxePermaUrlOptions.Null;
       WxeRepostOptions repostOptions = WxeRepostOptions.DoRepost(null);
@@ -236,7 +244,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.WxePageStepIntegrationTest
       _subFunction.InVerifiableSequence(sequence).Setup(mock => mock.Execute(_wxeContext)).Callback((WxeContext _) => executeCallbacks.Dequeue().Invoke()).Verifiable();
 
       //Return from sub function
-      responseMock.InVerifiableSequence(sequence).Setup(mock => mock.Redirect("/AppDir/root.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
+      responseMock
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.Redirect("/AppDir/root.wxe?WxeFunctionToken=" + _wxeContext.FunctionToken))
           .Callback(
               (string url) =>
               {
