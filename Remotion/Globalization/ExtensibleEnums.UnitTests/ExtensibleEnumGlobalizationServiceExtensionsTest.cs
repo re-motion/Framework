@@ -120,7 +120,8 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests
       Assert.That(
           events[0].RenderedMessage,
           Is.EqualTo(
-              "No resource entry exists for the following element: Extensible enum value: 'expected' (Method: 'Red', Type: 'Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.ColorExtensions')"));
+              "No resource entry exists for the following element: "
+              + "Extensible enum value: 'expected' (Method: 'Red', Type: 'Remotion.Globalization.ExtensibleEnums.UnitTests.TestDomain.ColorExtensions')"));
     }
 
     [Test]

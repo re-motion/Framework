@@ -135,7 +135,8 @@ namespace Remotion.Data.DomainObjects
     ///   <paramref name="classID"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
+    ///   Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
@@ -158,7 +159,8 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentException">
     ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
+    ///   Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.
@@ -181,7 +183,8 @@ namespace Remotion.Data.DomainObjects
     /// <exception cref="System.ArgumentException">
     ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
     ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.<br /> -or- <br />
-    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+    ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
+    ///   Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
     /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
     ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Remotion.Data.DomainObjects.Persistence.StorageProvider"/>.

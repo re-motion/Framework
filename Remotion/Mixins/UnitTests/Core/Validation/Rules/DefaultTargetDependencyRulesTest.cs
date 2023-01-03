@@ -39,7 +39,10 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     [Test]
     public void SucceedsIfCircularTargetCallDependency ()
     {
-      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(typeof(BaseType3), typeof(MixinWithCircularTargetCallDependency1), typeof(MixinWithCircularTargetCallDependency2));
+      TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(
+          typeof(BaseType3),
+          typeof(MixinWithCircularTargetCallDependency1),
+          typeof(MixinWithCircularTargetCallDependency2));
       var log = Validator.Validate(
           definition.Mixins[typeof(MixinWithCircularTargetCallDependency1)]);
 

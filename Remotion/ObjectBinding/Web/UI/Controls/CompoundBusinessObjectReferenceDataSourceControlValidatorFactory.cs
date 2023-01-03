@@ -21,12 +21,14 @@ using Remotion.ServiceLocation;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary>
-  /// Implements the <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> inteface and compounds all registered <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>.
+  /// Implements the <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/> interface
+  /// and compounds all registered <see cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>.
   /// </summary>
   /// <seealso cref="IBusinessObjectReferenceDataSourceControlValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>
   [ImplementationFor(typeof(IBusinessObjectReferenceDataSourceControlValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Compound)]
-  public class CompoundBusinessObjectReferenceDataSourceControlValidatorFactory : CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>, IBusinessObjectReferenceDataSourceControlValidatorFactory
+  public class CompoundBusinessObjectReferenceDataSourceControlValidatorFactory
+      : CompoundValidatorFactory<BusinessObjectReferenceDataSourceControl>, IBusinessObjectReferenceDataSourceControlValidatorFactory
   {
     public CompoundBusinessObjectReferenceDataSourceControlValidatorFactory (IEnumerable<IBusinessObjectReferenceDataSourceControlValidatorFactory> innerFactories)
         : base(innerFactories)

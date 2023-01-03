@@ -146,7 +146,10 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Copies the items of the <see cref="CommonCollection"/> to an Array, starting at a particular Array index.
   /// </summary>
-  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CommonCollection"/>. The array must have zero-based indexing. Must not be <see langword="null"/>.</param>
+  /// <param name="array">
+  /// The one-dimensional array that is the destination of the items copied from <see cref="CommonCollection"/>. The array must have zero-based indexing.
+  /// Must not be <see langword="null"/>.
+  /// </param>
   /// <param name="index">The zero-based index in array at which copying begins.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="index"/> is smaller than 0.</exception>
@@ -160,8 +163,10 @@ public class CommonCollection : ICollection
     ArgumentUtility.CheckNotNull("array", array);
     if (index < 0) throw new ArgumentOutOfRangeException("index", index, "Index must be greater than or equal to zero.");
     if (array.Rank != 1) throw new ArgumentException("CopyTo can only operate on one-dimensional arrays.", "array");
-    if (Count > 0 && index >= array.Length) throw new ArgumentException("Index cannot be equal to or greater than the length of the array.", "index");
-    if ((array.Length - index) < Count) throw new ArgumentException("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
+    if (Count > 0 && index >= array.Length)
+      throw new ArgumentException("Index cannot be equal to or greater than the length of the array.", "index");
+    if ((array.Length - index) < Count)
+      throw new ArgumentException("The number of items in the source collection is greater than the available space from index to the end of the destination array.", "index");
 
     for (int i = 0; i < Count; i++)
       array.SetValue(this.BaseGetObject(i), index + i);

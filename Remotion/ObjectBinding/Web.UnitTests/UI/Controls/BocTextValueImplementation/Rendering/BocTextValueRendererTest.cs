@@ -326,7 +326,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
-    private XmlNode RenderSingleLineEditable (bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null, string autoComplete = null)
+    private XmlNode RenderSingleLineEditable (
+        bool withStyle,
+        bool withCssClass,
+        bool inStandardProperties,
+        bool autoPostBack,
+        PlainTextString? placeholder = null,
+        string autoComplete = null)
     {
       TextValue.Setup(mock => mock.Text).Returns(c_firstLineText);
       TextValue.Setup(mock => mock.Enabled).Returns(true);

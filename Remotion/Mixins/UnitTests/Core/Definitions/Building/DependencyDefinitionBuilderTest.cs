@@ -103,7 +103,8 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
     {
       TargetClassDefinition targetClass = DefinitionObjectMother.GetActiveTargetClassDefinition(typeof(BaseType3));
 
-      List<Type> requiredNextCallTypes = new List<RequiredNextCallTypeDefinition>(targetClass.RequiredNextCallTypes).ConvertAll<Type>(delegate (RequiredNextCallTypeDefinition def) { return def.Type; });
+      List<Type> requiredNextCallTypes = new List<RequiredNextCallTypeDefinition>(targetClass.RequiredNextCallTypes)
+          .ConvertAll<Type>(delegate (RequiredNextCallTypeDefinition def) { return def.Type; });
       Assert.That(requiredNextCallTypes, Has.Member(typeof(IBaseType31)));
       Assert.That(requiredNextCallTypes, Has.Member(typeof(IBaseType33)));
       Assert.That(requiredNextCallTypes, Has.Member(typeof(IBaseType34)));
@@ -183,11 +184,17 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
         Assert.That(mixin.TargetCallDependencies[typeof(IDuckTargetCallRequirements)].Aggregator, Is.Null);
         Assert.That(mixin.TargetCallDependencies[typeof(IDuckTargetCallRequirements)].AggregatedDependencies.Count, Is.EqualTo(0));
 
-        Assert.That(mixin.TargetCallDependencies[typeof(IDuckTargetCallRequirements)].RequiredType, Is.SameAs(targetClass.RequiredTargetCallTypes[typeof(IDuckTargetCallRequirements)]));
+        Assert.That(
+            mixin.TargetCallDependencies[typeof(IDuckTargetCallRequirements)].RequiredType,
+            Is.SameAs(targetClass.RequiredTargetCallTypes[typeof(IDuckTargetCallRequirements)]));
 
         Assert.That(targetClass.RequiredTargetCallTypes[typeof(IDuckTargetCallRequirements)].Methods.Count, Is.EqualTo(2));
-        Assert.That(targetClass.RequiredTargetCallTypes[typeof(IDuckTargetCallRequirements)].Methods[0].InterfaceMethod, Is.SameAs(typeof(IDuckTargetCallRequirements).GetMethod("MethodImplementedOnBase")));
-        Assert.That(targetClass.RequiredTargetCallTypes[typeof(IDuckTargetCallRequirements)].Methods[0].ImplementingMethod, Is.SameAs(targetClass.Methods[typeof(BaseTypeWithDuckTargetCallMixin).GetMethod("MethodImplementedOnBase")]));
+        Assert.That(
+            targetClass.RequiredTargetCallTypes[typeof(IDuckTargetCallRequirements)].Methods[0].InterfaceMethod,
+            Is.SameAs(typeof(IDuckTargetCallRequirements).GetMethod("MethodImplementedOnBase")));
+        Assert.That(
+            targetClass.RequiredTargetCallTypes[typeof(IDuckTargetCallRequirements)].Methods[0].ImplementingMethod,
+            Is.SameAs(targetClass.Methods[typeof(BaseTypeWithDuckTargetCallMixin).GetMethod("MethodImplementedOnBase")]));
       }
     }
 
@@ -226,8 +233,12 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
         Assert.That(mixin.NextCallDependencies[typeof(IDuckBaseRequirements)].RequiredType, Is.SameAs(targetClass.RequiredNextCallTypes[typeof(IDuckBaseRequirements)]));
 
         Assert.That(targetClass.RequiredNextCallTypes[typeof(IDuckBaseRequirements)].Methods.Count, Is.EqualTo(2));
-        Assert.That(targetClass.RequiredNextCallTypes[typeof(IDuckBaseRequirements)].Methods[0].InterfaceMethod, Is.SameAs(typeof(IDuckBaseRequirements).GetMethod("MethodImplementedOnBase")));
-        Assert.That(targetClass.RequiredNextCallTypes[typeof(IDuckBaseRequirements)].Methods[0].ImplementingMethod, Is.SameAs(targetClass.Methods[typeof(BaseTypeWithDuckBaseMixin).GetMethod("MethodImplementedOnBase")]));
+        Assert.That(
+            targetClass.RequiredNextCallTypes[typeof(IDuckBaseRequirements)].Methods[0].InterfaceMethod,
+            Is.SameAs(typeof(IDuckBaseRequirements).GetMethod("MethodImplementedOnBase")));
+        Assert.That(
+            targetClass.RequiredNextCallTypes[typeof(IDuckBaseRequirements)].Methods[0].ImplementingMethod,
+            Is.SameAs(targetClass.Methods[typeof(BaseTypeWithDuckBaseMixin).GetMethod("MethodImplementedOnBase")]));
       }
     }
 

@@ -90,7 +90,9 @@ namespace Remotion.Globalization.Implementation
       return result != null;
     }
 
-    public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (IPropertyInformation propertyInformation, ITypeInformation typeInformationForResourceResolution)
+    public IReadOnlyDictionary<CultureInfo, string> GetAvailablePropertyDisplayNames (
+        IPropertyInformation propertyInformation,
+        ITypeInformation typeInformationForResourceResolution)
     {
       ArgumentUtility.CheckNotNull("propertyInformation", propertyInformation);
       ArgumentUtility.CheckNotNull("typeInformationForResourceResolution", typeInformationForResourceResolution);

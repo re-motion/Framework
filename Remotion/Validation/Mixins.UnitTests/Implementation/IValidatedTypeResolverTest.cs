@@ -44,7 +44,9 @@ namespace Remotion.Validation.Mixins.UnitTests.Implementation
           ((MixinTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver,
           Is.TypeOf<ClassTypeAwareValidatedTypeResolverDecorator>());
       Assert.That(
-          ((GenericTypeAwareValidatedTypeResolverDecorator)((ClassTypeAwareValidatedTypeResolverDecorator)((MixinTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver).InnerResolver).InnerResolver,
+          ((GenericTypeAwareValidatedTypeResolverDecorator)((ClassTypeAwareValidatedTypeResolverDecorator)((MixinTypeAwareValidatedTypeResolverDecorator)factory).InnerResolver
+          ).InnerResolver
+          ).InnerResolver,
           Is.TypeOf<NullValidatedTypeResolver>());
     }
 

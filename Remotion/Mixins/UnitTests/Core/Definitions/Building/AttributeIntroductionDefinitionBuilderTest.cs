@@ -189,7 +189,9 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
             definition.Mixins[typeof(MixinNonIntroducingSimpleAttribute)].NonAttributeIntroductions.GetFirstItem(typeof(SimpleAttribute));
         Assert.That(nonIntroductionDefinition.IsExplicitlySuppressed, Is.True);
         Assert.That(nonIntroductionDefinition.IsShadowed, Is.False);
-        Assert.That(nonIntroductionDefinition.Attribute, Is.SameAs(definition.Mixins[typeof(MixinNonIntroducingSimpleAttribute)].CustomAttributes.GetFirstItem(typeof(SimpleAttribute))));
+        Assert.That(
+            nonIntroductionDefinition.Attribute,
+            Is.SameAs(definition.Mixins[typeof(MixinNonIntroducingSimpleAttribute)].CustomAttributes.GetFirstItem(typeof(SimpleAttribute))));
         Assert.That(nonIntroductionDefinition.Parent, Is.SameAs(definition.Mixins[typeof(MixinNonIntroducingSimpleAttribute)]));
       }
     }
@@ -260,10 +262,13 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions.Building
         Assert.That(definition.ReceivedAttributes.ContainsKey(typeof(CopyCustomAttributesAttribute)), Is.False);
         Assert.That(definition.ReceivedAttributes.ContainsKey(typeof(AttributeWithParameters)), Is.True);
 
-        List<AttributeIntroductionDefinition> introductions =
-            new List<AttributeIntroductionDefinition>(definition.ReceivedAttributes[typeof(AttributeWithParameters)]);
-        List<AttributeDefinition> attributes = new List<AttributeDefinition>(
-            definition.Overrides[typeof(MixinIndirectlyAddingAttribute)].DeclaringClass.Methods[typeof(MixinIndirectlyAddingAttribute).GetMethod("ToString")].CustomAttributes[typeof(AttributeWithParameters)]);
+        List<AttributeIntroductionDefinition> introductions = definition.ReceivedAttributes[typeof(AttributeWithParameters)].ToList();
+        List<AttributeDefinition> attributes = definition
+            .Overrides[typeof(MixinIndirectlyAddingAttribute)]
+            .DeclaringClass
+            .Methods[typeof(MixinIndirectlyAddingAttribute).GetMethod("ToString")]
+            .CustomAttributes[typeof(AttributeWithParameters)]
+            .ToList();
 
         Assert.That(introductions.Count, Is.EqualTo(1));
         Assert.That(attributes.Count, Is.EqualTo(1));

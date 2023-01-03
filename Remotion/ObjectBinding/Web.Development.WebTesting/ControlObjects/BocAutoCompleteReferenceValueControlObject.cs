@@ -232,7 +232,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <param name="actionOptions">See <see cref="IWebTestActionOptions"/> for more information.</param>
     /// <exception cref="WebTestException"><paramref name="filter"/> cannot be matched with an auto-completion result.</exception>
     /// <returns>An unspecified page object, may be used in case a new page is expected after clicking the control object.</returns>
-    public UnspecifiedPageObject SelectFirstMatch ([NotNull] string filter, [NotNull] FinishInputWithAction finishInputWith, [CanBeNull] IWebTestActionOptions? actionOptions = null)
+    public UnspecifiedPageObject SelectFirstMatch (
+        [NotNull] string filter,
+        [NotNull] FinishInputWithAction finishInputWith,
+        [CanBeNull] IWebTestActionOptions? actionOptions = null)
     {
       ArgumentUtility.CheckNotNull("filter", filter);
       ArgumentUtility.CheckNotNull("finishInputWith", finishInputWith);

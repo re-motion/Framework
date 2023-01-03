@@ -27,15 +27,16 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
   /// loaded, or it has been unloaded).
   /// </summary>
   public class IncompleteDomainObjectCollectionEndPointLoadState
-      : IncompleteVirtualEndPointLoadStateBase<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager, IDomainObjectCollectionEndPointLoadState>,
-        IDomainObjectCollectionEndPointLoadState
+      : IncompleteVirtualEndPointLoadStateBase<IDomainObjectCollectionEndPoint, ReadOnlyDomainObjectCollectionDataDecorator, IDomainObjectCollectionEndPointDataManager,
+          IDomainObjectCollectionEndPointLoadState>,
+          IDomainObjectCollectionEndPointLoadState
   {
     private readonly IDomainObjectCollectionEndPointDataManagerFactory _dataManagerFactory;
 
     public IncompleteDomainObjectCollectionEndPointLoadState (
         IEndPointLoader endPointLoader,
         IDomainObjectCollectionEndPointDataManagerFactory dataManagerFactory)
-      : base(endPointLoader)
+        : base(endPointLoader)
     {
       ArgumentUtility.CheckNotNull("dataManagerFactory", dataManagerFactory);
       _dataManagerFactory = dataManagerFactory;
@@ -58,7 +59,10 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEn
       EndPointLoader.LoadEndPointAndGetNewState(endPoint);
     }
 
-    public new void MarkDataComplete (IDomainObjectCollectionEndPoint collectionEndPoint, IEnumerable<DomainObject> items, Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
+    public new void MarkDataComplete (
+        IDomainObjectCollectionEndPoint collectionEndPoint,
+        IEnumerable<DomainObject> items,
+        Action<IDomainObjectCollectionEndPointDataManager> stateSetter)
     {
       ArgumentUtility.CheckNotNull("collectionEndPoint", collectionEndPoint);
       ArgumentUtility.CheckNotNull("items", items);

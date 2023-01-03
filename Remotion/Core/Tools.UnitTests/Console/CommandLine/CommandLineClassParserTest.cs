@@ -25,7 +25,12 @@ namespace Remotion.Tools.UnitTests.Console.CommandLine
     [CommandLineStringArgument(true, Placeholder = "source-directory", Description = "Directory to copy from")]
     public string SourceDirectory;
 
-    [CommandLineStringArgument(true, Placeholder = "destination-directory", Description = "This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to.")]
+    [CommandLineStringArgument(
+        true,
+        Placeholder = "destination-directory",
+        Description =
+            "This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. "
+            + "This is the directory to copy to. This is the directory to copy to. This is the directory to copy to. This is the directory to copy to.")]
     public string DestinationDirectory;
 
     [CommandLineFlagArgument("b", true, Description = "binary copy on (+, default) or off (-)")]

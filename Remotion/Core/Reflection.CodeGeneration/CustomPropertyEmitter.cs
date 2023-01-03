@@ -41,7 +41,13 @@ namespace Remotion.Reflection.CodeGeneration
     private IMethodEmitter? _getMethod;
     private IMethodEmitter? _setMethod;
 
-    public CustomPropertyEmitter (CustomClassEmitter declaringType, string name, PropertyKind propertyKind, Type propertyType, Type[] indexParameters, PropertyAttributes attributes)
+    public CustomPropertyEmitter (
+        CustomClassEmitter declaringType,
+        string name,
+        PropertyKind propertyKind,
+        Type propertyType,
+        Type[] indexParameters,
+        PropertyAttributes attributes)
     {
       ArgumentUtility.CheckNotNull("declaringType", declaringType);
       ArgumentUtility.CheckNotNullOrEmpty("name", name);
@@ -56,8 +62,8 @@ namespace Remotion.Reflection.CodeGeneration
       _indexParameters = indexParameters;
 
       CallingConventions callingConvention = propertyKind == PropertyKind.Instance ? CallingConventions.HasThis : CallingConventions.Standard;
-      _propertyBuilder = _declaringType.TypeBuilder.DefineProperty(
-           name, attributes, callingConvention, propertyType, null, null, indexParameters, null, null);
+      _propertyBuilder =
+          _declaringType.TypeBuilder.DefineProperty(name, attributes, callingConvention, propertyType, null, null, indexParameters, null, null);
     }
 
     public Type PropertyType

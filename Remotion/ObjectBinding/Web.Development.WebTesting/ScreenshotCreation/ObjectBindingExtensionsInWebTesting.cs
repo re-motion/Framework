@@ -45,7 +45,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Starts the fluent screenshot API for the specified <paramref name="list"/>.
     /// </summary>
-    public static FluentScreenshotElement<ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListCellControlObject>> ForBocListScreenshot<TBocListControlObject, TBocListRowControlObject> (
+    public static
+        FluentScreenshotElement<ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListCellControlObject>>
+        ForBocListScreenshot<TBocListControlObject, TBocListRowControlObject> (
         [NotNull] this TBocListControlObject list)
         where TBocListControlObject : BocListControlObject<TBocListRowControlObject>
         where TBocListRowControlObject : BocListRowControlObject
@@ -75,7 +77,9 @@ namespace Remotion.Web.Development.WebTesting
     /// <summary>
     /// Starts the fluent screenshot API for the specified <paramref name="listAsGrid"/>.
     /// </summary>
-    public static FluentScreenshotElement<ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListAsGridCellControlObject>> ForBocListAsGridScreenshot<TBocListControlObject, TBocListRowControlObject> (
+    public static
+        FluentScreenshotElement<ScreenshotBocList<TBocListControlObject, TBocListRowControlObject, BocListAsGridCellControlObject>>
+        ForBocListAsGridScreenshot<TBocListControlObject, TBocListRowControlObject> (
         [NotNull] this TBocListControlObject listAsGrid)
         where TBocListControlObject : BocListAsGridControlObject<TBocListRowControlObject>
         where TBocListRowControlObject : BocListAsGridRowControlObject

@@ -77,7 +77,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Validates a client event that was registered for event validation using the <see cref="M:System.Web.UI.ClientScriptManager.RegisterForEventValidation(System.String)"/> method.
+    /// Validates a client event that was registered for event validation
+    /// using the <see cref="M:System.Web.UI.ClientScriptManager.RegisterForEventValidation(System.String)"/> method.
     /// </summary>
     /// <param name="uniqueId">A unique ID representing the client control generating the event.
     /// </param>
@@ -87,7 +88,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Validates a client event that was registered for event validation using the <see cref="M:System.Web.UI.ClientScriptManager.RegisterForEventValidation(System.String,System.String)"/> method.
+    /// Validates a client event that was registered for event validation
+    /// using the <see cref="M:System.Web.UI.ClientScriptManager.RegisterForEventValidation(System.String,System.String)"/> method.
     /// </summary>
     /// <param name="uniqueId">A unique ID representing the client control generating the event.
     /// </param><param name="argument">Event arguments passed with the client event.
@@ -99,16 +101,20 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Obtains a reference to a client function that, when invoked, initiates a client call back to a server event. The client function for this overloaded method includes a specified control, argument, client script, and context.
+    /// Obtains a reference to a client function that, when invoked, initiates a client call back to a server event.
+    /// The client function for this overloaded method includes a specified control, argument, client script, and context.
     /// </summary>
     /// <returns>
     /// The name of a client function that invokes the client callback. 
     /// </returns>
-    /// <param name="control">The server <see cref="T:System.Web.UI.Control"/> that handles the client callback. The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method. 
+    /// <param name="control">The server <see cref="T:System.Web.UI.Control"/> that handles the client callback.
+    /// The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface
+    /// and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method. 
     /// </param><param name="argument">An argument passed from the client script to the server 
     /// <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/>  method. 
     /// </param><param name="clientCallback">The name of the client event handler that receives the result of the successful server event. 
-    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback. The result of the script is passed back to the client event handler. 
+    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback.
+    /// The result of the script is passed back to the client event handler. 
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.Control"/> specified is null. 
     /// </exception><exception cref="T:System.InvalidOperationException">The <see cref="T:System.Web.UI.Control"/> specified does not implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface.
     /// </exception>
@@ -119,16 +125,20 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Obtains a reference to a client function that, when invoked, initiates a client call back to server events. The client function for this overloaded method includes a specified control, argument, client script, context, and Boolean value.
+    /// Obtains a reference to a client function that, when invoked, initiates a client call back to server events.
+    /// The client function for this overloaded method includes a specified control, argument, client script, context, and Boolean value.
     /// </summary>
     /// <returns>
     /// The name of a client function that invokes the client callback. 
     /// </returns>
-    /// <param name="control">The server <see cref="T:System.Web.UI.Control"/> that handles the client callback. The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method. 
+    /// <param name="control">The server <see cref="T:System.Web.UI.Control"/> that handles the client callback.
+    /// The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface
+    /// and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method. 
     /// </param><param name="argument">An argument passed from the client script to the server 
     /// <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/>  method. 
     /// </param><param name="clientCallback">The name of the client event handler that receives the result of the successful server event. 
-    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback. The result of the script is passed back to the client event handler. 
+    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback.
+    /// The result of the script is passed back to the client event handler. 
     /// </param><param name="useAsync">true to perform the callback asynchronously; false to perform the callback synchronously.
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.Control"/> specified is null. 
     /// </exception><exception cref="T:System.InvalidOperationException">The <see cref="T:System.Web.UI.Control"/> specified does not implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface.
@@ -140,15 +150,19 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Obtains a reference to a client function that, when invoked, initiates a client call back to server events. The client function for this overloaded method includes a specified control, argument, client script, context, error handler, and Boolean value.
+    /// Obtains a reference to a client function that, when invoked, initiates a client call back to server events.
+    /// The client function for this overloaded method includes a specified control, argument, client script, context, error handler, and Boolean value.
     /// </summary>
     /// <returns>
     /// The name of a client function that invokes the client callback. 
     /// </returns>
-    /// <param name="control">The server <see cref="T:System.Web.UI.Control"/> that handles the client callback. The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method. 
+    /// <param name="control">The server <see cref="T:System.Web.UI.Control"/> that handles the client callback.
+    /// The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface
+    /// and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method. 
     /// </param><param name="argument">An argument passed from the client script to the server <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/>  method. 
     /// </param><param name="clientCallback">The name of the client event handler that receives the result of the successful server event. 
-    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback. The result of the script is passed back to the client event handler. 
+    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback.
+    /// The result of the script is passed back to the client event handler. 
     /// </param><param name="clientErrorCallback">The name of the client event handler that receives the result when an error occurs in the server event handler. 
     /// </param><param name="useAsync">true to perform the callback asynchronously; false to perform the callback synchronously. 
     /// </param><exception cref="T:System.ArgumentNullException">The <see cref="T:System.Web.UI.Control"/> specified is null. 
@@ -162,16 +176,20 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Obtains a reference to a client function that, when invoked, initiates a client call back to server events. The client function for this overloaded method includes a specified target, argument, client script, context, error handler, and Boolean value.
+    /// Obtains a reference to a client function that, when invoked, initiates a client call back to server events.
+    /// The client function for this overloaded method includes a specified target, argument, client script, context, error handler, and Boolean value.
     /// </summary>
     /// <returns>
     /// The name of a client function that invokes the client callback. 
     /// </returns>
-    /// <param name="target">The name of a server <see cref="T:System.Web.UI.Control"/> that handles the client callback. The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method.
+    /// <param name="target">The name of a server <see cref="T:System.Web.UI.Control"/> that handles the client callback.
+    /// The control must implement the <see cref="T:System.Web.UI.ICallbackEventHandler"/> interface
+    /// and provide a <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/> method.
     /// </param><param name="argument">An argument passed from the client script to the server 
     /// <see cref="M:System.Web.UI.ICallbackEventHandler.RaiseCallbackEvent(System.String)"/>  method. 
     /// </param><param name="clientCallback">The name of the client event handler that receives the result of the successful server event. 
-    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback. The result of the script is passed back to the client event handler.
+    /// </param><param name="context">Client script that is evaluated on the client prior to initiating the callback.
+    /// The result of the script is passed back to the client event handler.
     /// </param><param name="clientErrorCallback">The name of the client event handler that receives the result when an error occurs in the server event handler. 
     /// </param><param name="useAsync">true to perform the callback asynchronously; false to perform the callback synchronously.
     /// </param>
@@ -182,7 +200,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Gets a reference, with javascript: appended to the beginning of it, that can be used in a client event to post back to the server for the specified control and with the specified event arguments.
+    /// Gets a reference, with javascript: appended to the beginning of it, that can be used in a client event to post back to the server for the specified control
+    /// and with the specified event arguments.
     /// </summary>
     /// <returns>
     /// A string representing a JavaScript call to the postback function that includes the target control's ID and event arguments.
@@ -197,7 +216,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Gets a reference, with javascript: appended to the beginning of it, that can be used in a client event to post back to the server for the specified control with the specified event arguments and Boolean indication whether to register the post back for event validation.
+    /// Gets a reference, with javascript: appended to the beginning of it, that can be used in a client event to post back to the server for the specified control
+    /// with the specified event arguments and Boolean indication whether to register the post back for event validation.
     /// </summary>
     /// <returns>
     /// A string representing a JavaScript call to the postback function that includes the target control's ID and event arguments.
@@ -213,7 +233,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Returns a string that can be used in a client event to cause postback to the server. The reference string is defined by the specified control that handles the postback and a string argument of additional event information.
+    /// Returns a string that can be used in a client event to cause postback to the server. The reference string is defined by the specified control that handles the postback
+    /// and a string argument of additional event information.
     /// </summary>
     /// <returns>
     /// A string that, when treated as script on the client, initiates the postback.
@@ -229,7 +250,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Returns a string to use in a client event to cause postback to the server. The reference string is defined by the specified control that handles the postback and a string argument of additional event information. Optionally, registers the event reference for validation.
+    /// Returns a string to use in a client event to cause postback to the server. The reference string is defined by the specified control that handles the postback
+    /// and a string argument of additional event information. Optionally, registers the event reference for validation.
     /// </summary>
     /// <returns>
     /// A string that, when treated as script on the client, initiates the postback.
@@ -246,7 +268,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Returns a string that can be used in a client event to cause postback to the server. The reference string is defined by the specified <see cref="T:System.Web.UI.PostBackOptions"/> instance.
+    /// Returns a string that can be used in a client event to cause postback to the server.
+    /// The reference string is defined by the specified <see cref="T:System.Web.UI.PostBackOptions"/> instance.
     /// </summary>
     /// <returns>
     /// A string that, when treated as script on the client, initiates the client postback.
@@ -259,7 +282,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Returns a string that can be used in a client event to cause postback to the server. The reference string is defined by the specified <see cref="T:System.Web.UI.PostBackOptions"/> object. Optionally, registers the event reference for validation.
+    /// Returns a string that can be used in a client event to cause postback to the server. The reference string is defined by the specified
+    /// <see cref="T:System.Web.UI.PostBackOptions"/> object. Optionally, registers the event reference for validation.
     /// </summary>
     /// <returns>
     /// A string that, when treated as script on the client, initiates the client postback.
@@ -428,7 +452,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Registers a name/value pair as a custom (expando) attribute of the specified control given a control ID, an attribute name, an attribute value, and a Boolean value indicating whether to encode the attribute value.
+    /// Registers a name/value pair as a custom (expando) attribute of the specified control given a control ID, an attribute name,
+    /// an attribute value, and a Boolean value indicating whether to encode the attribute value.
     /// </summary>
     /// <param name="controlId">The <see cref="T:System.Web.UI.Control"/> on the page that contains the custom attribute.
     /// </param><param name="attributeName">The name of the custom attribute to register.
@@ -441,7 +466,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Registers a name/value pair as a custom (expando) attribute of the specified control given a control ID, an attribute name, an attribute value, and a Boolean value indicating whether to encode the attribute value.
+    /// Registers a name/value pair as a custom (expando) attribute of the specified control given a control ID, an attribute name,
+    /// an attribute value, and a Boolean value indicating whether to encode the attribute value.
     /// </summary>
     /// <param name="registratorControl">The control registering the attribute.</param>
     /// <param name="controlId">The <see cref="T:System.Web.UI.Control"/> on the page that contains the custom attribute.
@@ -599,7 +625,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Registers an OnSubmit statement with the <see cref="T:System.Web.UI.Page"/> object using a type, a key, and a script literal. The statement executes when the <see cref="T:System.Web.UI.HtmlControls.HtmlForm"/> is submitted.
+    /// Registers an OnSubmit statement with the <see cref="T:System.Web.UI.Page"/> object using a type, a key, and a script literal.
+    /// The statement executes when the <see cref="T:System.Web.UI.HtmlControls.HtmlForm"/> is submitted.
     /// </summary>
     /// <param name="type">The type of the OnSubmit statement to register. 
     /// </param><param name="key">The key of the OnSubmit statement to register. 
@@ -630,7 +657,8 @@ namespace Remotion.Web.Infrastructure
     }
 
     /// <summary>
-    /// Registers the startup script with the <see cref="T:System.Web.UI.Page"/> object using a type, a key, a script literal, and a Boolean value indicating whether to add script tags.
+    /// Registers the startup script with the <see cref="T:System.Web.UI.Page"/> object using a type, a key, a script literal,
+    /// and a Boolean value indicating whether to add script tags.
     /// </summary>
     /// <param name="type">The type of the startup script to register. 
     /// </param><param name="key">The key of the startup script to register. 

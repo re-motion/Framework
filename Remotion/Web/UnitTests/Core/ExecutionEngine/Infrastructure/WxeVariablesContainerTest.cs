@@ -53,8 +53,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
           () => WxeVariablesContainer.GetParameterDeclarations(typeof(TestFunctionWithOverriddenParameter)),
           Throws.TypeOf<WxeException>()
               .With.Message.EqualTo(
-                  "Property 'Parameter1', overridden by 'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithOverriddenParameter', has a WxeParameterAttribute applied. "
-                  + "The WxeParameterAttribute may only be applied to the original declaration of a property."));
+                  "Property 'Parameter1', overridden by 'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithOverriddenParameter', "
+                  + "has a WxeParameterAttribute applied. The WxeParameterAttribute may only be applied to the original declaration of a property."));
     }
 
     [Test]
@@ -63,8 +63,8 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       Assert.That(
           () => WxeVariablesContainer.GetParameterDeclarations(typeof(TestFunctionWithDuplicateParameterIndices)),
           Throws.TypeOf<WxeException>().With.Message.EqualTo(
-              "'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithDuplicateParameterIndices' declares WxeParameters 'Parameter1' and 'Parameter2' with the same index. "
-              + "The index of a WxeParameter must be unique within a type."));
+              "'Remotion.Web.UnitTests.Core.ExecutionEngine.TestFunctions.TestFunctionWithDuplicateParameterIndices' "
+              + "declares WxeParameters 'Parameter1' and 'Parameter2' with the same index. The index of a WxeParameter must be unique within a type."));
     }
 
     [Test]

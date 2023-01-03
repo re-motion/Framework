@@ -126,7 +126,8 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       Assert.That(
           UrlUtility.ResolveUrlCaseSensitive(httpContextStub.Object, "path"),
           Is.EqualTo("/_%20_%C3%84_%C3%A4_/_%D6_%f6_/path"),
-          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. "
+          + "This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
@@ -347,7 +348,8 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       Assert.That(
           UrlUtility.ResolveUrlCaseSensitive(httpContextStub.Object, "~/path"),
           Is.EqualTo("/_%20_%C3%84_%C3%A4_/path"),
-          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. "
+          + "This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
@@ -358,7 +360,8 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       Assert.That(
           UrlUtility.ResolveUrlCaseSensitive(httpContextStub.Object, "~/path"),
           Is.EqualTo("/_%20_%C3%84_%C3%A4_/path"),
-          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. "
+          + "This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
@@ -369,7 +372,8 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       Assert.That(
           UrlUtility.ResolveUrlCaseSensitive(httpContextStub.Object, "~/path"),
           Is.EqualTo("/_%20_%C3%84_%C3%A4_/path"),
-          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. "
+          + "This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]
@@ -380,7 +384,8 @@ namespace Remotion.Web.UnitTests.Core.Utilities
       Assert.That(
           UrlUtility.ResolveUrlCaseSensitive(httpContextStub.Object, "~/path"),
           Is.EqualTo("/_%20_%C3%84_%C3%A4_/path"),
-          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
+          "This test fails in Visual Studio because some environments change the URL to use upper case escape sequences. "
+          + "This started somewhere in 2015. Other environments (nunit console, IIS) seem unaffected.");
     }
 
     [Test]

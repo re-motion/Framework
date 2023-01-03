@@ -32,7 +32,9 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public override void SetUp ()
     {
       base.SetUp();
-      _classEmitter = new CustomClassEmitter(Scope, UniqueName, typeof(object), Type.EmptyTypes, TypeAttributes.Public, true); // force unsigned because we use SimpleAttribute below
+
+      // force unsigned because we use SimpleAttribute below
+      _classEmitter = new CustomClassEmitter(Scope, UniqueName, typeof(object), Type.EmptyTypes, TypeAttributes.Public, forceUnsigned: true);
     }
 
     public override void TearDown ()

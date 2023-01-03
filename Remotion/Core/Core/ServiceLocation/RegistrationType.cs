@@ -31,7 +31,8 @@ namespace Remotion.ServiceLocation
   public enum RegistrationType
   {
     /// <summary>
-    /// Instances registered as <see cref="Single"/> indicate that there is only one instance registered and the <see cref="Multiple"/> or <see cref="Compound"/> registration types are not allowed.
+    /// Instances registered as <see cref="Single"/> indicate that there is only one instance registered
+    /// and the <see cref="Multiple"/> or <see cref="Compound"/> registration types are not allowed.
     /// The <see cref="Single"/> instance can be decorated by instances registered with the <see cref="Decorator"/> registration type.
     /// </summary>
     Single,

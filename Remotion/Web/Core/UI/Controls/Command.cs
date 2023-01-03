@@ -989,7 +989,10 @@ namespace Remotion.Web.UI.Controls
         ToolTip = resourceManager.GetString(key);
     }
 
-    public void RegisterForSynchronousPostBackOnDemand ([JetBrains.Annotations.NotNull]Control control, [JetBrains.Annotations.NotNull]string argument, [JetBrains.Annotations.NotNull]string commandID)
+    public void RegisterForSynchronousPostBackOnDemand (
+        [JetBrains.Annotations.NotNull] Control control,
+        [JetBrains.Annotations.NotNull] string argument,
+        [JetBrains.Annotations.NotNull] string commandID)
     {
       ArgumentUtility.CheckNotNull("control", control);
       ArgumentUtility.CheckNotNullOrEmpty("argument", argument);
@@ -1014,6 +1017,7 @@ namespace Remotion.Web.UI.Controls
                   "{0}: EventCommands with RequiresSynchronousPostBack set to true are only supported on pages implementing ISmartPage when used within an UpdatePanel.",
                   commandID));
         }
+
         smartPage.RegisterCommandForSynchronousPostBack(control, argument);
       }
       else if (isSynchronousWxeFunctionCommand)
@@ -1026,6 +1030,7 @@ namespace Remotion.Web.UI.Controls
                   "{0}: WxeCommands are only supported on pages implementing ISmartPage when used within an UpdatePanel.",
                   commandID));
         }
+
         smartPage.RegisterCommandForSynchronousPostBack(control, argument);
       }
     }

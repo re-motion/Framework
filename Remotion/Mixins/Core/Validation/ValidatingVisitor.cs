@@ -25,28 +25,28 @@ namespace Remotion.Mixins.Validation
   {
     private readonly IValidationLog _validationLog;
 
-    private readonly List<IValidationRule<TargetClassDefinition>> _targetClassRules = new List<IValidationRule<TargetClassDefinition>>();
-    private readonly List<IValidationRule<MixinDefinition>> _mixinRules = new List<IValidationRule<MixinDefinition>>();
-    private readonly List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new List<IValidationRule<InterfaceIntroductionDefinition>>();
-    private readonly IList<IValidationRule<NonInterfaceIntroductionDefinition>> _nonIntroductedInterfaceRules = new List<IValidationRule<NonInterfaceIntroductionDefinition>>();
-    private readonly List<IValidationRule<MethodIntroductionDefinition>> _methodIntroductionRules = new List<IValidationRule<MethodIntroductionDefinition>>();
-    private readonly List<IValidationRule<PropertyIntroductionDefinition>> _propertyIntroductionRules = new List<IValidationRule<PropertyIntroductionDefinition>>();
-    private readonly List<IValidationRule<EventIntroductionDefinition>> _eventIntroductionRules = new List<IValidationRule<EventIntroductionDefinition>>();
-    private readonly List<IValidationRule<MethodDefinition>> _methodRules = new List<IValidationRule<MethodDefinition>>();
-    private readonly List<IValidationRule<PropertyDefinition>> _propertyRules = new List<IValidationRule<PropertyDefinition>>();
-    private readonly List<IValidationRule<EventDefinition>> _eventRules = new List<IValidationRule<EventDefinition>>();
-    private readonly List<IValidationRule<RequiredTargetCallTypeDefinition>> _requiredTargetCallTypeRules = new List<IValidationRule<RequiredTargetCallTypeDefinition>>();
-    private readonly List<IValidationRule<RequiredNextCallTypeDefinition>> _requiredNextCallTypeRules = new List<IValidationRule<RequiredNextCallTypeDefinition>>();
-    private readonly List<IValidationRule<RequiredMixinTypeDefinition>> _requiredMixinTypeRules = new List<IValidationRule<RequiredMixinTypeDefinition>>();
-    private readonly List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new List<IValidationRule<RequiredMethodDefinition>>();
-    private readonly List<IValidationRule<TargetCallDependencyDefinition>> _targetCallDependencyRules = new List<IValidationRule<TargetCallDependencyDefinition>>();
-    private readonly List<IValidationRule<NextCallDependencyDefinition>> _nextCallDependencyRules = new List<IValidationRule<NextCallDependencyDefinition>>();
-    private readonly List<IValidationRule<MixinDependencyDefinition>> _mixinDependencyRules = new List<IValidationRule<MixinDependencyDefinition>>();
-    private readonly List<IValidationRule<ComposedInterfaceDependencyDefinition>> _composedInterfaceDependencyRules = new List<IValidationRule<ComposedInterfaceDependencyDefinition>>();
-    private readonly List<IValidationRule<AttributeDefinition>> _attributeRules = new List<IValidationRule<AttributeDefinition>>();
-    private readonly List<IValidationRule<AttributeIntroductionDefinition>> _attributeIntroductionRules = new List<IValidationRule<AttributeIntroductionDefinition>>();
-    private readonly List<IValidationRule<NonAttributeIntroductionDefinition>> _nonAttributeIntroductionRules = new List<IValidationRule<NonAttributeIntroductionDefinition>>();
-    private readonly List<IValidationRule<SuppressedAttributeIntroductionDefinition>> _suppressedAttributeIntroductionRules = new List<IValidationRule<SuppressedAttributeIntroductionDefinition>>();
+    private readonly List<IValidationRule<TargetClassDefinition>> _targetClassRules = new();
+    private readonly List<IValidationRule<MixinDefinition>> _mixinRules = new();
+    private readonly List<IValidationRule<InterfaceIntroductionDefinition>> _interfaceIntroductionRules = new();
+    private readonly List<IValidationRule<NonInterfaceIntroductionDefinition>> _nonIntroductedInterfaceRules = new();
+    private readonly List<IValidationRule<MethodIntroductionDefinition>> _methodIntroductionRules = new();
+    private readonly List<IValidationRule<PropertyIntroductionDefinition>> _propertyIntroductionRules = new();
+    private readonly List<IValidationRule<EventIntroductionDefinition>> _eventIntroductionRules = new();
+    private readonly List<IValidationRule<MethodDefinition>> _methodRules = new();
+    private readonly List<IValidationRule<PropertyDefinition>> _propertyRules = new();
+    private readonly List<IValidationRule<EventDefinition>> _eventRules = new();
+    private readonly List<IValidationRule<RequiredTargetCallTypeDefinition>> _requiredTargetCallTypeRules = new();
+    private readonly List<IValidationRule<RequiredNextCallTypeDefinition>> _requiredNextCallTypeRules = new();
+    private readonly List<IValidationRule<RequiredMixinTypeDefinition>> _requiredMixinTypeRules = new();
+    private readonly List<IValidationRule<RequiredMethodDefinition>> _requiredMethodRules = new();
+    private readonly List<IValidationRule<TargetCallDependencyDefinition>> _targetCallDependencyRules = new();
+    private readonly List<IValidationRule<NextCallDependencyDefinition>> _nextCallDependencyRules = new();
+    private readonly List<IValidationRule<MixinDependencyDefinition>> _mixinDependencyRules = new();
+    private readonly List<IValidationRule<ComposedInterfaceDependencyDefinition>> _composedInterfaceDependencyRules = new();
+    private readonly List<IValidationRule<AttributeDefinition>> _attributeRules = new();
+    private readonly List<IValidationRule<AttributeIntroductionDefinition>> _attributeIntroductionRules = new();
+    private readonly List<IValidationRule<NonAttributeIntroductionDefinition>> _nonAttributeIntroductionRules = new();
+    private readonly List<IValidationRule<SuppressedAttributeIntroductionDefinition>> _suppressedAttributeIntroductionRules = new();
 
     public ValidatingVisitor (IValidationLog validationLog)
     {

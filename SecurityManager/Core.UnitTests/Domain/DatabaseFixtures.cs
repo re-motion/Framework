@@ -176,7 +176,10 @@ namespace Remotion.SecurityManager.UnitTests.Domain
       }
     }
 
-    public SecurableClassDefinition[] CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (int classDefinitionCount, int derivedClassDefinitionCount, ClientTransaction transaction)
+    public SecurableClassDefinition[] CreateAndCommitSecurableClassDefinitionsWithSubClassesEach (
+        int classDefinitionCount,
+        int derivedClassDefinitionCount,
+        ClientTransaction transaction)
     {
       CreateEmptyDomain();
       using (transaction.EnterNonDiscardingScope())

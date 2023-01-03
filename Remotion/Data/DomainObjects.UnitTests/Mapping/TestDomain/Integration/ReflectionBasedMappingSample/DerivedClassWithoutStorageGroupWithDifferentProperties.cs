@@ -41,12 +41,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.R
     {
       get
       {
-        return Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
+        return Properties[
+                "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
             .GetValue<string>();
       }
       set
       {
-        Properties["Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
+        Properties[
+                "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.DerivedClassWithoutStorageGroupWithDifferentProperties.PrivateString"]
             .SetValue(value);
       }
     }

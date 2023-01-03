@@ -61,7 +61,8 @@ namespace Remotion.Validation.UnitTests.Merging
       _wrappedMergerStub = new Mock<IValidationRuleCollectorMerger>();
       _validatorFormatterStub = new Mock<IValidatorFormatter>();
 
-      _diagnosticOutputValidationRuleMergeDecorator = new DiagnosticOutputValidationRuleMergeDecorator(_wrappedMergerStub.Object, _validatorFormatterStub.Object, logManagerStub.Object);
+      _diagnosticOutputValidationRuleMergeDecorator =
+          new DiagnosticOutputValidationRuleMergeDecorator(_wrappedMergerStub.Object, _validatorFormatterStub.Object, logManagerStub.Object);
     }
 
     [Test]

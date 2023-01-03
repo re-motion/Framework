@@ -45,7 +45,13 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueTests.Val
     [TestCase(true, false, false, false, true, new[] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No DataSource")]
     [TestCase(true, false, true, false, true, new[] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No BusinessObject")]
     [TestCase(true, false, true, true, false, new[] { typeof(ControlCharactersCharactersValidator) }, Description = "Required/Not ReadOnly/No Property")]
-    public void CreateValidators_WithOptionalValidatorsDisabled (bool isRequired, bool isReadonly, bool hasDataSource, bool hasBusinessObject, bool hasProperty, Type[] expectedValidatorTypes)
+    public void CreateValidators_WithOptionalValidatorsDisabled (
+        bool isRequired,
+        bool isReadonly,
+        bool hasDataSource,
+        bool hasBusinessObject,
+        bool hasProperty,
+        Type[] expectedValidatorTypes)
     {
       var control = GetControlWithOptionalValidatorsDisabled(isRequired, hasDataSource, hasBusinessObject, hasProperty);
       var validators = _validatorFactory.CreateValidators(control, isReadonly).ToArray();

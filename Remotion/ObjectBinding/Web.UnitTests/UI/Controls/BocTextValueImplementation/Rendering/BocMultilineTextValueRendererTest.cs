@@ -219,7 +219,14 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocTextValueImplement
       Html.AssertAttribute(span, DiagnosticMetadataAttributes.TriggersPostBack, "false");
     }
 
-    private XmlNode RenderMultiLineEditable (bool isDisabled, bool withStyle, bool withCssClass, bool inStandardProperties, bool autoPostBack, PlainTextString? placeholder = null, string autoComplete = null)
+    private XmlNode RenderMultiLineEditable (
+        bool isDisabled,
+        bool withStyle,
+        bool withCssClass,
+        bool inStandardProperties,
+        bool autoPostBack,
+        PlainTextString? placeholder = null,
+        string autoComplete = null)
     {
       SetStyle(withStyle, withCssClass, inStandardProperties, autoPostBack);
       if (placeholder.HasValue)

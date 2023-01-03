@@ -23,7 +23,8 @@ using Remotion.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation
 {
   /// <summary>
-  /// Implements the <see cref="IBocReferenceValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
+  /// Implements the <see cref="IBocReferenceValueValidatorFactory"/> interface
+  /// and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocReferenceValueValidatorFactory"/>
   [ImplementationFor(typeof(IBocReferenceValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]

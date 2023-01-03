@@ -336,7 +336,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithSubstitutedUser_WithMultipleSubstitutedRoles_MatchesUserSubstition_UsesSubstitutedUserAndReducesSetOfRolesToContainOnlySubstitutedRoles ()
+    public void
+        Create_WithValidPrincipal_WithSubstitutedUser_WithMultipleSubstitutedRoles_MatchesUserSubstition_UsesSubstitutedUserAndReducesSetOfRolesToContainOnlySubstitutedRoles ()
     {
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns("substituting.user");
@@ -368,7 +369,8 @@ namespace Remotion.SecurityManager.UnitTests.Domain.AccessControl.AccessEvaluati
     }
 
     [Test]
-    public void Create_WithValidPrincipal_WithSubstitutedUser_WithMultipleSubstitutedRoles_MatchesUserSubstition_UsesSubstitutedUserAndReducesSetOfRolesToContainOnlyRolesOfSubstitutedUser ()
+    public void
+        Create_WithValidPrincipal_WithSubstitutedUser_WithMultipleSubstitutedRoles_MatchesUserSubstition_UsesSubstitutedUserAndReducesSetOfRolesToContainOnlyRolesOfSubstitutedUser ()
     {
       var principalStub = new Mock<ISecurityPrincipal>();
       principalStub.Setup(stub => stub.User).Returns("substituting.user");

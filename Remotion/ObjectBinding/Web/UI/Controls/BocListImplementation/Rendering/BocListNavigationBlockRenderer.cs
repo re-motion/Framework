@@ -280,7 +280,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, navigateCommandID);
 
         var currentPageControlClientID = GetCurrentPageIndexControlID(renderingContext);
-        var postBackEvent = string.Format("let element = document.getElementById('{0}');element.value = {1};element.dispatchEvent(new Event('change'));return false;", currentPageControlClientID, pageIndex);
+        var postBackEvent = string.Format(
+            "let element = document.getElementById('{0}');element.value = {1};element.dispatchEvent(new Event('change'));return false;",
+            currentPageControlClientID,
+            pageIndex);
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
 
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());

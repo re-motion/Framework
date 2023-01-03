@@ -91,9 +91,10 @@ namespace Remotion.Web.UnitTests.Core.Security.ExecutionEngine
           () => helper.GetTypeOfSecurableObject(),
           Throws.InstanceOf<WxeException>()
               .With.Message.EqualTo(
-                  "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
-                  + " WxeFunction 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is of type 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject',"
-                  + " which is not a base type of type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject'."));
+                  "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to "
+                  + "WxeFunction 'Remotion.Web.UnitTests.Core.Security.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' "
+                  + "is of type 'Remotion.Web.UnitTests.Core.Security.Domain.SecurableObject', "
+                  + "which is not a base type of type 'Remotion.Web.UnitTests.Core.Security.Domain.OtherSecurableObject'."));
     }
 
     [Test]

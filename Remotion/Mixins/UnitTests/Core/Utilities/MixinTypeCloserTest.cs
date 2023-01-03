@@ -145,8 +145,8 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
               .With.Message.EqualTo(
                   "The generic mixin "
                   + "'Remotion.Mixins.UnitTests.Core.TestDomain.GenericMixinWithoutBindingInformation`1[T]' applied to class "
-                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3' cannot be automatically closed because its type parameter 'T' does not have any binding "
-                  + "information. Apply the BindToTargetTypeAttribute, BindToConstraintsAttribute, or BindToGenericTargetParameterAttribute to the type parameter or specify the parameter's "
+                  + "'Remotion.Mixins.UnitTests.Core.TestDomain.BaseType3' cannot be automatically closed because its type parameter 'T' does not have any binding information. "
+                  + "Apply the BindToTargetTypeAttribute, BindToConstraintsAttribute, or BindToGenericTargetParameterAttribute to the type parameter or specify the parameter's "
                   + "instantiation when configuring the mixin for the target class."));
     }
 

@@ -78,8 +78,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </summary>
     /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
     /// <returns>The scalar value that is returned by the query.</returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.</exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///   <paramref name="query"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="System.ArgumentException">
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.
+    /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
@@ -104,8 +108,12 @@ namespace Remotion.Data.DomainObjects.Queries
     /// </summary>
     /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
     /// <returns>A collection containing the <see cref="DomainObject"/>s returned by the query.</returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///   <paramref name="query"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="System.ArgumentException">
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     ///   The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>
@@ -130,10 +138,16 @@ namespace Remotion.Data.DomainObjects.Queries
     /// <returns>
     /// A collection containing the <see cref="DomainObject"/>s returned by the query.
     /// </returns>
-    /// <exception cref="System.ArgumentNullException"><paramref name="query"/> is <see langword="null"/>.</exception>
-    /// <exception cref="UnexpectedQueryResultException">The objects returned by the <paramref name="query"/> do not match the expected type
-    /// <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.</exception>
-    /// <exception cref="System.ArgumentException"><paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
+    /// <exception cref="System.ArgumentNullException">
+    ///   <paramref name="query"/> is <see langword="null"/>.
+    /// </exception>
+    /// <exception cref="UnexpectedQueryResultException">
+    ///   The objects returned by the <paramref name="query"/> do not match the expected type
+    ///   <typeparamref name="T"/> or the configured collection type is not assignable to <see cref="ObjectList{T}"/> with the given <typeparamref name="T"/>.
+    /// </exception>
+    /// <exception cref="System.ArgumentException">
+    ///   <paramref name="query"/> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.
+    /// </exception>
     /// <exception cref="Remotion.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
     /// The <see cref="IQuery.StorageProviderDefinition"/> of <paramref name="query"/> could not be found.
     /// </exception>

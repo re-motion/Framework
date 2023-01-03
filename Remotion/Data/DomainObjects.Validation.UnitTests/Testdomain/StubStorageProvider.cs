@@ -76,7 +76,10 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.Testdomain
     {
     }
 
-    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (RelationEndPointDefinition relationEndPointDefinition, SortExpressionDefinition sortExpressionDefinition, ObjectID relatedID)
+    public override IEnumerable<DataContainer> LoadDataContainersByRelatedID (
+        RelationEndPointDefinition relationEndPointDefinition,
+        SortExpressionDefinition sortExpressionDefinition,
+        ObjectID relatedID)
     {
       throw new NotImplementedException();
     }

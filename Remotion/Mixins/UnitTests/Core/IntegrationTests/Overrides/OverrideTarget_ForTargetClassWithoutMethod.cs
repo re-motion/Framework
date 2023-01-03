@@ -81,7 +81,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase(typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> D2.M")]
     [TestCase(typeof(MixinWithoutTargetSpecification), "TheMixin.M")]
     [TestCase(typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> D2.M", IgnoreReason = "RM-2745")]
-    public void InstantiateDerivedTypeWithoutOverrideOfDerivedTypeWithOverrideOfDerivedType_ShouldOverrideTargetMethodFromDerivedTypeOfDerivedType (Type mixinType, string expectedMethodOutput)
+    public void InstantiateDerivedTypeWithoutOverrideOfDerivedTypeWithOverrideOfDerivedType_ShouldOverrideTargetMethodFromDerivedTypeOfDerivedType (
+        Type mixinType,
+        string expectedMethodOutput)
     {
       using (MixinConfiguration.BuildNew().ForClass<B>().AddMixin(mixinType).EnterScope())
       {
@@ -141,7 +143,9 @@ namespace Remotion.Mixins.UnitTests.Core.IntegrationTests.Overrides
     [TestCase(typeof(MixinWithImplicitTargetSpecification), "TheMixin.M -> D2.M")]
     [TestCase(typeof(MixinWithoutTargetSpecification), "TheMixin.M")]
     [TestCase(typeof(MixinWithExplicitTargetSpecification), "TheMixin.M -> D2.M", IgnoreReason = "RM-2745")]
-    public void InstantiatehadowOfDerivedTypeWithoutOverrideOfDerivedTypeWithOverrideOfDerivedType_ShouldOverrideTargetMethodFromDerivedTypeOfDerivedType (Type mixinType, string expectedMethodOutput)
+    public void InstantiateShadowOfDerivedTypeWithoutOverrideOfDerivedTypeWithOverrideOfDerivedType_ShouldOverrideTargetMethodFromDerivedTypeOfDerivedType (
+        Type mixinType,
+        string expectedMethodOutput)
     {
       using (MixinConfiguration.BuildNew().ForClass<B>().AddMixin(mixinType).EnterScope())
       {

@@ -327,14 +327,20 @@ namespace Remotion.Mixins.UnitTests.Core
       Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(BaseType1)), typeof(IBT1Mixin1)), Is.SameAs(typeof(BT1Mixin1)));
       using (MixinConfiguration.BuildFromActive().ForClass<GenericTargetClass<string>>().Clear().AddMixins(typeof(GenericMixin<>)).EnterScope())
       {
-        Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(GenericTargetClass<string>)), typeof(GenericMixin<>)), Is.SameAs(typeof(GenericMixin<>)));
+        Assert.That(
+            MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(GenericTargetClass<string>)), typeof(GenericMixin<>)),
+            Is.SameAs(typeof(GenericMixin<>)));
         Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(GenericTargetClass<string>)), typeof(GenericMixin<int>)), Is.Null);
         Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(GenericTargetClass<string>)), typeof(GenericMixin<string>)), Is.Null);
       }
       using (MixinConfiguration.BuildFromActive().ForClass<BaseType1>().Clear().AddMixins(typeof(GenericMixin<int>)).EnterScope())
       {
-        Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(BaseType1)), typeof(GenericMixin<>)), Is.SameAs(typeof(GenericMixin<int>)));
-        Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(BaseType1)), typeof(GenericMixin<int>)), Is.SameAs(typeof(GenericMixin<int>)));
+        Assert.That(
+            MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(BaseType1)), typeof(GenericMixin<>)),
+            Is.SameAs(typeof(GenericMixin<int>)));
+        Assert.That(
+            MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(BaseType1)), typeof(GenericMixin<int>)),
+            Is.SameAs(typeof(GenericMixin<int>)));
         Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(BaseType1)), typeof(GenericMixin<string>)), Is.Null);
       }
       Assert.That(MixinTypeUtility.GetAscribableMixinType(MixinTypeUtility.GetConcreteMixedType(typeof(BaseType1)), typeof(object)), Is.Not.Null);

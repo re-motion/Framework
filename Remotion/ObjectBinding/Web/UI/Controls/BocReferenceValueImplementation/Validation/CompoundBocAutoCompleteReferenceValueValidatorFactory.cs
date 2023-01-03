@@ -21,7 +21,8 @@ using Remotion.ServiceLocation;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Validation
 {
   /// <summary>
-  /// Implements the <see cref="IBocAutoCompleteReferenceValueValidatorFactory"/> inteface and compounds all registered <see cref="IBocAutoCompleteReferenceValueValidatorFactory"/>.
+  /// Implements the <see cref="IBocAutoCompleteReferenceValueValidatorFactory"/> interface
+  /// and compounds all registered <see cref="IBocAutoCompleteReferenceValueValidatorFactory"/>.
   /// </summary>
   /// <seealso cref="IBocAutoCompleteReferenceValueValidatorFactory"/>
   /// <seealso cref="CompoundValidatorFactory{T}"/>

@@ -80,7 +80,9 @@ namespace Core.Development.Analyzers
       get { return ImmutableArray.Create(AlternativeDescriptor, WarningDescriptor); }
     }
 
-    private void AnalyzeAddAssignmentExpression (SyntaxNodeAnalysisContext ctx, IReadOnlyCollection<(IMethodSymbol eventSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> eventSymbolAndDiagnostics)
+    private void AnalyzeAddAssignmentExpression (
+        SyntaxNodeAnalysisContext ctx,
+        IReadOnlyCollection<(IMethodSymbol eventSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> eventSymbolAndDiagnostics)
     {
       var memberAccessSymbolInfo = ctx.SemanticModel.GetSymbolInfo(ctx.Node);
 
@@ -90,11 +92,13 @@ namespace Core.Development.Analyzers
       var memberAccessOriginalDefinitionSymbol = memberAccessSymbolInfo.Symbol.OriginalDefinition;
 
       var match = eventSymbolAndDiagnostics.FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.eventSymbol, memberAccessOriginalDefinitionSymbol));
-      if(match != default)
+      if (match != default)
         match.CreateDiagnostic.Invoke(ctx, match.eventSymbol);
     }
 
-    private static void AnalyzeInvocationExpression (SyntaxNodeAnalysisContext ctx, IReadOnlyCollection<(IMethodSymbol methodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> methodSymbols)
+    private static void AnalyzeInvocationExpression (
+        SyntaxNodeAnalysisContext ctx,
+        IReadOnlyCollection<(IMethodSymbol methodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> methodSymbols)
     {
       var invocationSymbolInfo = ctx.SemanticModel.GetSymbolInfo(ctx.Node);
 
@@ -108,7 +112,9 @@ namespace Core.Development.Analyzers
         match.CreateDiagnostic.Invoke(ctx, match.methodSymbol);
     }
 
-    private static void AnalyzeObjectCreationExpression (SyntaxNodeAnalysisContext ctx, IReadOnlyCollection<(IMethodSymbol methodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> ctorMethodsWithDiagnostics)
+    private static void AnalyzeObjectCreationExpression (
+        SyntaxNodeAnalysisContext ctx,
+        IReadOnlyCollection<(IMethodSymbol methodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> CreateDiagnostic)> ctorMethodsWithDiagnostics)
     {
       var objectCreationInfo = ctx.SemanticModel.GetSymbolInfo(ctx.Node);
 
@@ -154,30 +160,41 @@ namespace Core.Development.Analyzers
           .Select(s => s.AddMethod!);
     }
 
-    private static void AddMethodSymbolWithDiagnosticToList (List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listOfMethodsAndActions, INamedTypeSymbol? parentSymbol, string methodName, Action<SyntaxNodeAnalysisContext, ISymbol> diagnostic)
+    private static void AddMethodSymbolWithDiagnosticToList (
+        List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listOfMethodsAndActions,
+        INamedTypeSymbol? parentSymbol,
+        string methodName,
+        Action<SyntaxNodeAnalysisContext, ISymbol> diagnostic)
     {
       var childMethod = GetMethodSymbols(parentSymbol, methodName);
       AddSymbolsWithAction(listOfMethodsAndActions, childMethod, diagnostic);
     }
 
-    private static void AddCtorSymbolWithDiagnosticToList (List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listOfMethodsAndActions, INamedTypeSymbol? parentSymbol, Action<SyntaxNodeAnalysisContext, ISymbol> diagnostic)
+    private static void AddCtorSymbolWithDiagnosticToList (
+        List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listOfMethodsAndActions,
+        INamedTypeSymbol? parentSymbol,
+        Action<SyntaxNodeAnalysisContext, ISymbol> diagnostic)
     {
       var childMethod = GetCtorSymbols(parentSymbol);
       AddSymbolsWithAction(listOfMethodsAndActions, childMethod, diagnostic);
     }
 
-    private static void AddAddMethodSymbolWithDiagnosticToList (List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listOfMethodsAndActions, INamedTypeSymbol? parentSymbol, string methodName, Action<SyntaxNodeAnalysisContext, ISymbol> diagnostic)
+    private static void AddAddMethodSymbolWithDiagnosticToList (
+        List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listOfMethodsAndActions,
+        INamedTypeSymbol? parentSymbol,
+        string methodName,
+        Action<SyntaxNodeAnalysisContext, ISymbol> diagnostic)
     {
       var childMethod = GetAddEventMethodSymbol(parentSymbol, methodName);
       AddSymbolsWithAction(listOfMethodsAndActions, childMethod, diagnostic);
     }
 
-    private static void AddSymbolsWithAction (List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listWithBoth, IEnumerable<IMethodSymbol> symbols, Action<SyntaxNodeAnalysisContext, ISymbol> action)
+    private static void AddSymbolsWithAction (
+        List<(IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>)> listWithBoth,
+        IEnumerable<IMethodSymbol> symbols,
+        Action<SyntaxNodeAnalysisContext, ISymbol> action)
     {
-      listWithBoth.AddRange(
-          symbols.Select(
-              method => (
-                  (IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>))(method, action)));
+      listWithBoth.AddRange(symbols.Select(method => ((IMethodSymbol, Action<SyntaxNodeAnalysisContext, ISymbol>))(method, action)));
     }
 
     private static void ExecutionRunDiagnostic (SyntaxNodeAnalysisContext ctx, ISymbol symbol)

@@ -23,7 +23,6 @@ using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 {
@@ -35,7 +34,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   public abstract class BocValueColumnRendererBase<TBocColumnDefinition> : BocCommandEnabledColumnRendererBase<TBocColumnDefinition>
       where TBocColumnDefinition: BocValueColumnDefinition
   {
-    protected BocValueColumnRendererBase (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+    protected BocValueColumnRendererBase (
+        IResourceUrlFactory resourceUrlFactory,
+        IRenderingFeatures renderingFeatures,
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
     }

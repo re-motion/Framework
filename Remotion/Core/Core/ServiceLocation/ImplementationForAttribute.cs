@@ -92,8 +92,9 @@ namespace Remotion.ServiceLocation
     /// override the lifetime of the injected types, same as all other service compositions.
     /// </para>
     /// <para>
-    /// <see cref="ServiceLocation.RegistrationType.Decorator"/> types are applied to the other registration types. Note that for <see cref="ServiceLocation.RegistrationType.Compound"/> 
-    /// types, only the <see cref="ServiceLocation.RegistrationType.Compound"/> type will be decorated, not the contained <see cref="ServiceLocation.RegistrationType.Multiple"/> 
+    /// <see cref="ServiceLocation.RegistrationType.Decorator"/> types are applied to the other registration types.
+    /// Note that for <see cref="ServiceLocation.RegistrationType.Compound"/> types, only the <see cref="ServiceLocation.RegistrationType.Compound"/> type will be decorated,
+    /// not the contained <see cref="ServiceLocation.RegistrationType.Multiple"/> 
     /// types.
     /// </para>
     /// </remarks>

@@ -84,7 +84,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
       return aclExpansionTree;
     }
 
-    private IEnumerable<AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> RoleGrouping (IGrouping<User, AclExpansionEntry> grouping)
+    private IEnumerable<AclExpansionTreeNode<Role, AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>>> RoleGrouping (
+        IGrouping<User, AclExpansionEntry> grouping)
     {
       return grouping
           .OrderBy(roleEntry => roleEntry.Role.Group?.DisplayName)
@@ -93,7 +94,8 @@ namespace Remotion.SecurityManager.AclTools.Expansion.Infrastructure
           .Select(roleGrouping => AclExpansionTreeNode.New(roleGrouping.Key, CountRowsBelow(roleGrouping), ClassGrouping(roleGrouping).ToList()));
     }
 
-    private IEnumerable<AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> ClassGrouping (IGrouping<Role, AclExpansionEntry> roleGrouping)
+    private IEnumerable<AclExpansionTreeNode<SecurableClassDefinition, AclExpansionTreeNode<AclExpansionEntry, AclExpansionEntry>>> ClassGrouping (
+        IGrouping<Role, AclExpansionEntry> roleGrouping)
     {
       return (roleGrouping.OrderBy(classEntry => _orderbyForSecurableClass(classEntry)).GroupBy(
           classEntry => classEntry.Class).Select(

@@ -69,7 +69,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>. Must not be <see langword="null"/>.</param>
     /// <param name="value">The initial <see cref="Value"/> for the <b>PropertyValue</b>.</param>
     /// <exception cref="System.ArgumentNullException"><paramref name="definition"/> is <see langword="null"/>.</exception>
-    /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
+    /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException">
+    /// <paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.
+    /// </exception>
     public PropertyValue (PropertyDefinition definition, object? value)
     {
       ArgumentUtility.CheckNotNull("definition", definition);
@@ -77,7 +79,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (!IsTypeSupported(definition.PropertyType))
       {
         var message = string.Format("The property '{0}' (declared on class '{1}') is invalid because its values cannot be copied. Only value types, "
-            + "strings, the Type type, byte arrays, types implementing IStructualEquatable, and ObjectIDs are currently supported, but the property's type is '{2}'.",
+            + "strings, the Type type, byte arrays, types implementing IStructuralEquatable, and ObjectIDs are currently supported, but the property's type is '{2}'.",
             definition.PropertyName, definition.ClassDefinition.ID, definition.PropertyType.GetFullNameSafe());
         throw new NotSupportedException(message);
       }
@@ -97,7 +99,9 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// </summary>
     /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="PropertyValue"/> has been discarded. 
     /// See <see cref="ObjectInvalidException"/> for further information.</exception>
-    /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <see cref="PropertyDefinition"/>.</exception>
+    /// <exception cref="Remotion.Data.DomainObjects.InvalidTypeException">
+    /// <paramref name="value"/> does not match the required type specified in <see cref="PropertyDefinition"/>.
+    /// </exception>
     public object? Value
     {
       get

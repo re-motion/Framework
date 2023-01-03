@@ -185,6 +185,7 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       {
         securableObject = CreateSecurableObject(_securityContextFactoryStub.Object);
       }
+
       Assert.That(
           () => ((ISecurableObjectMixin)securableObject).MixedPropertyWithDefaultPermission,
           Throws.InstanceOf<PermissionDeniedException>()
@@ -265,7 +266,10 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
       Assert.That(_clientTransaction.IsEnlisted(throwingObject), Is.False);
     }
 
-    private SecurableObject CreateSecurableObject (ISecurityContextFactory securityContextFactory, ClientTransaction clientTransaction = null, Action<SecurableObject> action = null)
+    private SecurableObject CreateSecurableObject (
+        ISecurityContextFactory securityContextFactory,
+        ClientTransaction clientTransaction = null,
+        Action<SecurableObject> action = null)
     {
       return SecurableObject.NewObject(
           clientTransaction ?? _clientTransaction,

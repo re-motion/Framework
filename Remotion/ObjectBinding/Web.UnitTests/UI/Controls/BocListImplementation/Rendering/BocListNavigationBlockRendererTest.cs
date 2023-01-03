@@ -278,7 +278,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     private void AssertActiveIcon (XmlNode link, string command, int pageIndex)
     {
       Html.AssertAttribute(link, "id", List.Object.ClientID + "_Navigation_" + command);
-      Html.AssertAttribute(link, "onclick", string.Format("let element = document.getElementById('CurrentPageControl_UniqueID');element.value = {0};element.dispatchEvent(new Event('change'));return false;", pageIndex));
+      Html.AssertAttribute(
+          link,
+          "onclick",
+          string.Format(
+              "let element = document.getElementById('CurrentPageControl_UniqueID');element.value = {0};element.dispatchEvent(new Event('change'));return false;",
+              pageIndex));
       Html.AssertAttribute(link, "href", "fakeFallbackUrl");
 
       var icon = Html.GetAssertedChildElement(link, "img", 0);

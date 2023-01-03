@@ -150,7 +150,8 @@ namespace Remotion.Web.UI.Controls
     bool EnableViewState { get; set; }
 
     /// <summary>
-    /// Gets a reference to the server control's naming container, which creates a unique namespace for differentiating between server controls with the same <see cref="P:System.Web.UI.Control.ID"/> property value.
+    /// Gets a reference to the server control's naming container, which creates a unique namespace for differentiating between server controls
+    /// with the same <see cref="P:System.Web.UI.Control.ID"/> property value.
     /// </summary>
     /// <returns>
     /// The server control's naming container.
@@ -200,7 +201,8 @@ namespace Remotion.Web.UI.Controls
     string TemplateSourceDirectory { get; }
 
     /// <summary>
-    /// Gets or sets the application-relative virtual directory of the <see cref="T:System.Web.UI.Page"/> or <see cref="T:System.Web.UI.UserControl"/> object that contains this control.
+    /// Gets or sets the application-relative virtual directory of the <see cref="T:System.Web.UI.Page"/> or <see cref="T:System.Web.UI.UserControl"/>
+    /// object that contains this control.
     /// </summary>
     /// <returns>
     /// The application-relative virtual directory of the page or user control that contains this control.

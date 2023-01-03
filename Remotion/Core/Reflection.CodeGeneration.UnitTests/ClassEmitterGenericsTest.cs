@@ -130,8 +130,14 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     [Test]
     public void OverridingSimpleMembersOfClosedGenericClass ()
     {
-      CustomClassEmitter classEmitter = new CustomClassEmitter(Scope, "OverridingSimpleMembersOfClosedGenericClass", typeof(GenericClassWithAllKindsOfMembers<int>), Type.EmptyTypes,
-          TypeAttributes.Public | TypeAttributes.Class, false);
+      CustomClassEmitter classEmitter =
+          new CustomClassEmitter(
+              Scope,
+              "OverridingSimpleMembersOfClosedGenericClass",
+              typeof(GenericClassWithAllKindsOfMembers<int>),
+              Type.EmptyTypes,
+              TypeAttributes.Public | TypeAttributes.Class,
+              false);
 
       MethodInfo baseMethod = typeof(GenericClassWithAllKindsOfMembers<int>).GetMethod("Method");
       var overriddenMethod = classEmitter.CreateMethodOverride(baseMethod);

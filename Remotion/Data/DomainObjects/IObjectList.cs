@@ -125,8 +125,13 @@ namespace Remotion.Data.DomainObjects
     /// <summary>
     /// Determines whether an item is in the <see cref="IObjectList{TDomainObject}"/>.
     /// </summary>
-    /// <param name="objectID">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="IObjectList{TDomainObject}"/>. Must not be <see langword="null"/>.</param>
-    /// <returns><see langword="true"/> if the <see cref="DomainObject"/> with the <paramref name="objectID"/> is found in the <see cref="IObjectList{TDomainObject}"/>; otherwise, <see langword="false" />false;</returns>
+    /// <param name="objectID">
+    /// The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="IObjectList{TDomainObject}"/>. Must not be <see langword="null"/>.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if the <see cref="DomainObject"/> with the <paramref name="objectID"/> is found in the <see cref="IObjectList{TDomainObject}"/>;
+    /// otherwise, <see langword="false" />.
+    /// </returns>
     /// <exception cref="System.ArgumentNullException"><paramref name="objectID"/> is <see langword="null"/></exception>
     bool Contains (ObjectID objectID);
 

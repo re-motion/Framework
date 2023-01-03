@@ -95,11 +95,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyFinderTests
           propertyFinder.FindPropertyInfos(),
           Is.EquivalentTo(
               new[]
-                  {
-                      GetProperty(typeof(ClassWithInterface), "Property"),
-                      GetProperty(typeof(ClassWithInterface), "ImplicitProperty"),
-                      GetProperty(typeof(ClassWithInterface), "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.IInterfaceWithProperties.ExplicitManagedProperty")
-                  }));
+              {
+                  GetProperty(typeof(ClassWithInterface), "Property"),
+                  GetProperty(typeof(ClassWithInterface), "ImplicitProperty"),
+                  GetProperty(
+                      typeof(ClassWithInterface),
+                      "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample.IInterfaceWithProperties.ExplicitManagedProperty")
+              }));
     }
 
     [Test]

@@ -26,9 +26,12 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
   public class DefaultRequiredMethodRulesTest : ValidationTestBase
   {
     [Test]
-    public void FailsIfRequiredBaseMethodIsExplit ()
+    public void FailsIfRequiredBaseMethodIsExplicit ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersNextCall)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear()
+          .AddMixins(typeof(MixinRequiringAllMembersNextCall));
+      using (configuration.EnterScope())
       {
         TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(
             typeof(ClassFulfillingAllMemberRequirementsExplicitly), typeof(MixinRequiringAllMembersNextCall));
@@ -39,9 +42,12 @@ namespace Remotion.Mixins.UnitTests.Core.Validation.Rules
     }
 
     [Test]
-    public void SucceedsIfRequiredTargetCallMethodIsExplit ()
+    public void SucceedsIfRequiredTargetCallMethodIsExplicit ()
     {
-      using (MixinConfiguration.BuildFromActive().ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear().AddMixins(typeof(MixinRequiringAllMembersTargetCall)).EnterScope())
+      var configuration = MixinConfiguration.BuildFromActive()
+          .ForClass<ClassFulfillingAllMemberRequirementsExplicitly>().Clear()
+          .AddMixins(typeof(MixinRequiringAllMembersTargetCall));
+      using (configuration.EnterScope())
       {
         TargetClassDefinition definition = DefinitionObjectMother.BuildUnvalidatedDefinition(
             typeof(ClassFulfillingAllMemberRequirementsExplicitly), typeof(MixinRequiringAllMembersTargetCall));

@@ -614,7 +614,11 @@ namespace Remotion.SecurityManager.UnitTests.AclTools.Expansion
       AssertGroupHierarchyCondition(group, GroupHierarchyCondition.This, group.DisplayName, new[] { orItsChildrenText, orItsParentsText });
       AssertGroupHierarchyCondition(group, GroupHierarchyCondition.ThisAndParent, group.DisplayName + "<br />" + orItsParentsText, new[] { orItsChildrenText });
       AssertGroupHierarchyCondition(group, GroupHierarchyCondition.ThisAndChildren, group.DisplayName + "<br />" + orItsChildrenText, new[] { orItsParentsText });
-      AssertGroupHierarchyCondition(group, GroupHierarchyCondition.ThisAndParentAndChildren, group.DisplayName + "<br />" + orItsParentsText + "<br />" + orItsChildrenText, new string[0]);
+      AssertGroupHierarchyCondition(
+          group,
+          GroupHierarchyCondition.ThisAndParentAndChildren,
+          group.DisplayName + "<br />" + orItsParentsText + "<br />" + orItsChildrenText,
+          new string[0]);
     }
 
     public void AssertGroupHierarchyCondition (Group owningGroup, GroupHierarchyCondition groupHierarchyCondition, string inResultingHtmlString,

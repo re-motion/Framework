@@ -169,7 +169,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       _control.Setup(stub => stub.ShowTitle).Returns(true);
       PopulateMenu();
 
-      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.WithDiagnosticMetadata, new StubLabelReferenceRenderer(), new FakeFallbackNavigationUrlProvider());
+      var renderer = new DropDownMenuRenderer(
+          _resourceUrlFactory,
+          GlobalizationService,
+          RenderingFeatures.WithDiagnosticMetadata,
+          new StubLabelReferenceRenderer(),
+          new FakeFallbackNavigationUrlProvider());
       renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
 
       var document = _htmlHelper.GetResultDocument();
@@ -298,7 +303,12 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
               _ => throw new ArgumentOutOfRangeException(nameof(buttonType), buttonType, null)
           };
 
-      var renderer = new DropDownMenuRenderer(_resourceUrlFactory, GlobalizationService, RenderingFeatures.Default, new StubLabelReferenceRenderer(), new FakeFallbackNavigationUrlProvider());
+      var renderer = new DropDownMenuRenderer(
+          _resourceUrlFactory,
+          GlobalizationService,
+          RenderingFeatures.Default,
+          new StubLabelReferenceRenderer(),
+          new FakeFallbackNavigationUrlProvider());
       renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
       var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement("span", 0);

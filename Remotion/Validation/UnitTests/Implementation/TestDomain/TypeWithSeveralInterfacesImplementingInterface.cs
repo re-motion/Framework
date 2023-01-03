@@ -47,7 +47,10 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
   {
   }
 
-  public class TypeWithSeveralInterfacesImplementingInterface : ITypeWithSeveralInterfacesImplementingInterface1, ITypeWithSeveralInterfacesImplementingInterface2, ITypeWithSeveralInterfacesImplementingInterface3
+  public class TypeWithSeveralInterfacesImplementingInterface
+      : ITypeWithSeveralInterfacesImplementingInterface1,
+          ITypeWithSeveralInterfacesImplementingInterface2,
+          ITypeWithSeveralInterfacesImplementingInterface3
   {
   }
 }

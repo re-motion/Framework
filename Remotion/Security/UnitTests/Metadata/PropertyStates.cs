@@ -21,11 +21,22 @@ namespace Remotion.Security.UnitTests.Metadata
 {
   public static class PropertyStates
   {
-    public static readonly EnumValueInfo FileStateNew = new EnumValueInfo("Remotion.Security.UnitTests.TestDomain.FileState, Remotion.Security.UnitTests.TestDomain", "New", 0);
-    public static readonly EnumValueInfo FileStateNormal = new EnumValueInfo("Remotion.Security.UnitTests.TestDomain.FileState, Remotion.Security.UnitTests.TestDomain", "Normal", 1);
-    public static readonly EnumValueInfo FileStateArchived = new EnumValueInfo("Remotion.Security.UnitTests.TestDomain.FileState, Remotion.Security.UnitTests.TestDomain", "Archived", 2);
-    public static readonly EnumValueInfo ConfidentialityNormal = new EnumValueInfo("Remotion.Security.UnitTests.TestDomain.Confidentiality, Remotion.Security.UnitTests.TestDomain", "Normal", 0);
-    public static readonly EnumValueInfo ConfidentialityConfidential = new EnumValueInfo("Remotion.Security.UnitTests.TestDomain.Confidentiality, Remotion.Security.UnitTests.TestDomain", "Confidential", 1);
-    public static readonly EnumValueInfo ConfidentialityPrivate = new EnumValueInfo("Remotion.Security.UnitTests.TestDomain.Confidentiality, Remotion.Security.UnitTests.TestDomain", "Private", 2);
+    public static readonly EnumValueInfo FileStateNew =
+        new("Remotion.Security.UnitTests.TestDomain.FileState, Remotion.Security.UnitTests.TestDomain", "New", 0);
+
+    public static readonly EnumValueInfo FileStateNormal =
+        new("Remotion.Security.UnitTests.TestDomain.FileState, Remotion.Security.UnitTests.TestDomain", "Normal", 1);
+
+    public static readonly EnumValueInfo FileStateArchived =
+        new("Remotion.Security.UnitTests.TestDomain.FileState, Remotion.Security.UnitTests.TestDomain", "Archived", 2);
+
+    public static readonly EnumValueInfo ConfidentialityNormal =
+        new("Remotion.Security.UnitTests.TestDomain.Confidentiality, Remotion.Security.UnitTests.TestDomain", "Normal", 0);
+
+    public static readonly EnumValueInfo ConfidentialityConfidential =
+        new("Remotion.Security.UnitTests.TestDomain.Confidentiality, Remotion.Security.UnitTests.TestDomain", "Confidential", 1);
+
+    public static readonly EnumValueInfo ConfidentialityPrivate =
+        new("Remotion.Security.UnitTests.TestDomain.Confidentiality, Remotion.Security.UnitTests.TestDomain", "Private", 2);
   }
 }

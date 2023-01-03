@@ -122,27 +122,48 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       throw CreateException();
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? relatedObject, ValueAccess valueAccess)
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? relatedObject,
+        ValueAccess valueAccess)
     {
       throw CreateException();
     }
 
-    public void RelationRead (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, IReadOnlyCollectionData<DomainObject> relatedObjects, ValueAccess valueAccess)
+    public void RelationRead (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        IReadOnlyCollectionData<DomainObject> relatedObjects,
+        ValueAccess valueAccess)
     {
       throw CreateException();
     }
 
-    public void RelationChanging (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanging (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       throw CreateException();
     }
 
-    public void RelationChanged (ClientTransaction clientTransaction, DomainObject domainObject, IRelationEndPointDefinition relationEndPointDefinition, DomainObject? oldRelatedObject, DomainObject? newRelatedObject)
+    public void RelationChanged (
+        ClientTransaction clientTransaction,
+        DomainObject domainObject,
+        IRelationEndPointDefinition relationEndPointDefinition,
+        DomainObject? oldRelatedObject,
+        DomainObject? newRelatedObject)
     {
       throw CreateException();
     }
 
-    public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult) where T : DomainObject
+    public QueryResult<T> FilterQueryResult<T> (ClientTransaction clientTransaction, QueryResult<T> queryResult)
+        where T : DomainObject
     {
       throw CreateException();
     }

@@ -41,7 +41,11 @@ namespace Remotion.Web.UI.Controls.ListMenuImplementation.Rendering
     private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
     private const string c_whiteSpace = "&nbsp;";
 
-    public ListMenuRenderer (IResourceUrlFactory resourceUrlFactory, IGlobalizationService globalizationService, IRenderingFeatures renderingFeatures, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+    public ListMenuRenderer (
+        IResourceUrlFactory resourceUrlFactory,
+        IGlobalizationService globalizationService,
+        IRenderingFeatures renderingFeatures,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
       ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);

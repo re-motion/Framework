@@ -175,13 +175,27 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
       if (ReflectionUtility.IsStringPropertyValueType(dotNetType))
       {
         string storageTypeName = GetStorageTypeStringForVarType("nvarchar", maxLength);
-        return new StorageTypeInformation(typeof(string), storageTypeName, DbType.String, isNullableInDatabase, maxLength ?? StorageTypeLengthRepresentingMax, dotNetType, new DefaultConverter(dotNetType));
+        return new StorageTypeInformation(
+            typeof(string),
+            storageTypeName,
+            DbType.String,
+            isNullableInDatabase,
+            maxLength ?? StorageTypeLengthRepresentingMax,
+            dotNetType,
+            new DefaultConverter(dotNetType));
       }
 
       if (ReflectionUtility.IsBinaryPropertyValueType(dotNetType))
       {
         string storageTypeName = GetStorageTypeStringForVarType("varbinary", maxLength);
-        return new StorageTypeInformation(typeof(byte[]), storageTypeName, DbType.Binary, isNullableInDatabase, maxLength ?? StorageTypeLengthRepresentingMax, dotNetType, new DefaultConverter(dotNetType));
+        return new StorageTypeInformation(
+            typeof(byte[]),
+            storageTypeName,
+            DbType.Binary,
+            isNullableInDatabase,
+            maxLength ?? StorageTypeLengthRepresentingMax,
+            dotNetType,
+            new DefaultConverter(dotNetType));
       }
 
       if (dotNetType == typeof(Boolean))
@@ -212,7 +226,14 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms.SqlServer.Model.Building
     {
       var storageTypeLength = GetColumnWidthForExtensibleEnum(extensibleEnumType);
       var storageType = GetStorageTypeStringForVarType("varchar", storageTypeLength);
-      return new StorageTypeInformation(typeof(string), storageType, DbType.AnsiString, isNullableInDatabase, storageTypeLength, extensibleEnumType, new ExtensibleEnumConverter(extensibleEnumType));
+      return new StorageTypeInformation(
+          typeof(string),
+          storageType,
+          DbType.AnsiString,
+          isNullableInDatabase,
+          storageTypeLength,
+          extensibleEnumType,
+          new ExtensibleEnumConverter(extensibleEnumType));
     }
 
     [CanBeNull]

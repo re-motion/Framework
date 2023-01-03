@@ -491,8 +491,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       addedRowDataSourceStub.SetupProperty(_ => _.BusinessObject);
       addedRowDataSourceStub.Object.BusinessObject = addedBusinessObject;
       EditModeHost.EditModeDataSourceFactory = new Mock<EditableRowDataSourceFactory>().Object;
-      Mock.Get(EditModeHost.EditModeDataSourceFactory).Setup(_ => _.Create(addedBusinessObject)).Returns(addedRowDataSourceStub.Object);
-      Mock.Get(EditModeHost.EditModeDataSourceFactory).Setup(_ => _.Create(It.Is<IBusinessObject>(_ => !object.ReferenceEquals(_, addedBusinessObject)))).Returns(dataSourceStub.Object);
+      Mock.Get(EditModeHost.EditModeDataSourceFactory)
+          .Setup(_ => _.Create(addedBusinessObject))
+          .Returns(addedRowDataSourceStub.Object);
+      Mock.Get(EditModeHost.EditModeDataSourceFactory)
+          .Setup(_ => _.Create(It.Is<IBusinessObject>(_ => !object.ReferenceEquals(_, addedBusinessObject))))
+          .Returns(dataSourceStub.Object);
 
       Assert.That(Controller.IsListEditModeActive, Is.False);
       ControllerInvoker.LoadControlState(CreateControlState(null, EditMode.ListEditMode, new List<string> { "0", "1", "3", "4" }, false));
@@ -583,8 +587,12 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var addedRowDataSourceStub = new Mock<IBusinessObjectReferenceDataSource>();
       addedRowDataSourceStub.Object.BusinessObject = addedBusinessObject;
       EditModeHost.EditModeDataSourceFactory = new Mock<EditableRowDataSourceFactory>().Object;
-      Mock.Get(EditModeHost.EditModeDataSourceFactory).Setup(_ => _.Create(addedBusinessObject)).Returns(addedRowDataSourceStub.Object);
-      Mock.Get(EditModeHost.EditModeDataSourceFactory).Setup(_ => _.Create(It.Is<IBusinessObject>(_ => !object.ReferenceEquals(_, addedBusinessObject)))).Returns(dataSourceStub.Object);
+      Mock.Get(EditModeHost.EditModeDataSourceFactory)
+          .Setup(_ => _.Create(addedBusinessObject))
+          .Returns(addedRowDataSourceStub.Object);
+      Mock.Get(EditModeHost.EditModeDataSourceFactory)
+          .Setup(_ => _.Create(It.Is<IBusinessObject>(_ => !object.ReferenceEquals(_, addedBusinessObject))))
+          .Returns(dataSourceStub.Object);
 
       Assert.That(Controller.IsListEditModeActive, Is.False);
       ControllerInvoker.LoadControlState(CreateControlState(null, EditMode.ListEditMode, new List<string> { "0", "1", "2", "3", "4" }, false));

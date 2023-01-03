@@ -202,7 +202,9 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
 
       Assert.That(parameters[1].ParameterType.IsGenericParameter, Is.True);
       Assert.That(parameters[1].ParameterType.DeclaringMethod, Is.EqualTo(builtMethod));
-      Assert.That(parameters[1].ParameterType.GenericParameterAttributes, Is.EqualTo(GenericParameterAttributes.NotNullableValueTypeConstraint | GenericParameterAttributes.DefaultConstructorConstraint));
+      Assert.That(
+          parameters[1].ParameterType.GenericParameterAttributes,
+          Is.EqualTo(GenericParameterAttributes.NotNullableValueTypeConstraint | GenericParameterAttributes.DefaultConstructorConstraint));
       constraints = parameters[1].ParameterType.GetGenericParameterConstraints();
       Assert.That(constraints.Length, Is.EqualTo(1));
       Assert.That(constraints[0], Is.EqualTo(typeof(ValueType)));

@@ -35,7 +35,6 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Val
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
 using Remotion.Web.Services;
 using Remotion.Web.UI;
-using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -88,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       _dataSource = new StubDataSource(((IBusinessObject)_businessObject).BusinessObjectClass);
       _dataSource.BusinessObject = (IBusinessObject)_businessObject;
 
-      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService((IBusinessObjectWithIdentity)TypeWithReference.Create()));
+      ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IGetObjectService>(new GetObjectService(TypeWithReference.Create()));
       ((IBusinessObject)_businessObject).BusinessObjectClass.BusinessObjectProvider.AddService<IBusinessObjectWebUIService>(new ReflectionBusinessObjectWebUIService());
     }
 

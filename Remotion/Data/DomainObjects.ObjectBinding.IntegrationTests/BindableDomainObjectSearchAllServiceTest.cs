@@ -116,9 +116,10 @@ namespace Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "The property 'ReferencePropertyNotInMapping' on type "
-                  + "'Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search.BindableDomainObjectWithProperties, Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests' is not "
-                  + "supported by the BindableDomainObjectSearchAllService: The service only supports relation properties (ie. references to other DomainObject "
-                  + "instances).", "property"));
+                  + "'Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search.BindableDomainObjectWithProperties, "
+                  + "Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests' "
+                  + "is not supported by the BindableDomainObjectSearchAllService: The service only supports relation properties (ie. references to other DomainObject instances).",
+                  "property"));
     }
 
     [Test]

@@ -24,7 +24,8 @@ using Remotion.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation
 {
   /// <summary>
-  /// Implements the <see cref="IBocDateTimeValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
+  /// Implements the <see cref="IBocDateTimeValueValidatorFactory"/> interface
+  /// and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocDateTimeValueValidatorFactory"/>
   [ImplementationFor(typeof(IBocDateTimeValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple,

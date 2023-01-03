@@ -16,7 +16,6 @@
 // 
 using System;
 using Remotion.Globalization;
-using Remotion.ServiceLocation;
 
 #nullable disable
 
@@ -49,10 +48,15 @@ namespace Remotion.Mixins.Globalization
     /// <param name="includeHierarchy">If set to true, <see cref="MultiLingualResourcesAttribute"/> applied to base classes and mixins will be
     /// included in the resource manager; otherwise, only the <paramref name="objectType"/> is searched for such attributes.</param>
     /// <returns>An instance of <see cref="IResourceManager"/> for <paramref name="objectType"/>.</returns>
-    [Obsolete("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)", true)]
+    [Obsolete(
+        "Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). "
+        + "Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)",
+        true)]
     public static IResourceManager GetResourceManager (Type objectType, bool includeHierarchy)
     {
-      throw new NotSupportedException("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)");
+      throw new NotSupportedException(
+          "Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectType). "
+          + "Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)");
     }
 
     /// <summary>
@@ -63,10 +67,17 @@ namespace Remotion.Mixins.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> The found string resource or an empty string. </returns>
-    [Obsolete("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)", true)]
+    [Obsolete(
+        "Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). "
+        + "Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. "
+        + "Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)",
+        true)]
     public static string GetResourceText (Type objectTypeToGetResourceFor, string name)
     {
-      throw new NotSupportedException("Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)");
+      throw new NotSupportedException(
+          "Retrieve IGlobalizationService from IoC container and use IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).GetString (name). "
+          + "Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. "
+          + "Note: When using IGlobalizationService, the order of resolution has changed to return resources for mixins first, then the target types. (Version 1.13.223.0)");
     }
 
     /// <summary>
@@ -77,10 +88,15 @@ namespace Remotion.Mixins.Globalization
     /// </param>
     /// <param name="name"> The ID of the resource. </param>
     /// <returns> <see langword="true"/> if the resource can be found. </returns>
-    [Obsolete("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)", true)]
+    [Obsolete(
+        "Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). "
+        + "Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)",
+        true)]
     public static bool ExistsResourceText (Type objectTypeToGetResourceFor, string name)
     {
-      throw new NotSupportedException("Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
+      throw new NotSupportedException(
+          "Retrieve IGlobalizationService from IoC container and test for IGlobalizationService.GetResourceManager (objectTypeToGetResourceFor).ContainsString (name). "
+          + "Note: This method did not include the hierarchy but IGlobalizationService will always include the hierarchy. (Version 1.13.223.0)");
     }
   }
 }

@@ -37,7 +37,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     private RelationEndPointID _endPointID;
     private Mock<IVirtualObjectEndPoint> _virtualObjectEndPointMock;
 
-    private Mock<IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager, IVirtualObjectEndPointLoadState>.IEndPointLoader> _endPointLoaderMock;
+    private Mock<IncompleteVirtualEndPointLoadStateBase<IVirtualObjectEndPoint, DomainObject, IVirtualObjectEndPointDataManager,
+        IVirtualObjectEndPointLoadState>.IEndPointLoader> _endPointLoaderMock;
     private Mock<IVirtualObjectEndPointDataManagerFactory> _dataManagerFactoryStub;
 
     private IncompleteVirtualObjectEndPointLoadState _loadState;

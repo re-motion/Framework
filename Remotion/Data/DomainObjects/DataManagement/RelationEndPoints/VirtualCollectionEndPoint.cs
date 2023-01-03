@@ -443,7 +443,8 @@ namespace Remotion.Data.DomainObjects.DataManagement.RelationEndPoints
           else
           {
             //TODO: RM-7294: Hack for supporting unloaded collections. Will be reworked with changes to IVirtualCollectionEndPointDataManager.
-            throw new InvalidOperationException($"VirtualCollectionEndPoint can only handle collection data of type '{typeof(VirtualCollectionData)}' but collection data type was '{_dataManager.CollectionData.GetType()}'.");
+            throw new InvalidOperationException(
+                $"VirtualCollectionEndPoint can only handle collection data of type '{typeof(VirtualCollectionData)}' but collection data type was '{_dataManager.CollectionData.GetType()}'.");
           }
         }
       }

@@ -46,7 +46,9 @@ namespace Remotion.Web.UI.Controls
     /// Use <c>{0}</c> for the text fragment where the error occurred. Use <c>{1}</c> for the line position and <c>{2}</c> for the line number.
     /// </summary>
     [Category("Appearance")]
-    [Description("Set this property to specify a format string to be used as ErrorMessage. Use '{0}' for the text fragment where the error occurred. Use '{1}' for the line position and '{2}' for the line number.")]
+    [Description(
+        "Set this property to specify a format string to be used as ErrorMessage. Use '{0}' for the text fragment where the error occurred. "
+        + "Use '{1}' for the line position and '{2}' for the line number.")]
     [DefaultValue("")]
 
     public string? ErrorMessageFormat { get; set; }

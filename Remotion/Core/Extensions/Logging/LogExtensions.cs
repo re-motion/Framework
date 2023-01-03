@@ -38,7 +38,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="logLevel" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void LogFormat (this ILog log, LogLevel logLevel, Enum messageEnum, Exception? exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -57,7 +59,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="logLevel"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void LogFormat (this ILog log, LogLevel logLevel, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -71,7 +75,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void DebugFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -84,7 +90,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void DebugFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -98,7 +106,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void InfoFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -111,7 +121,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void InfoFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -125,7 +137,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void WarnFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -138,7 +152,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void WarnFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -152,7 +168,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void ErrorFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -165,7 +183,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void ErrorFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -179,7 +199,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log" or @name="exceptionObject"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void FatalFormat (this ILog log, Enum messageEnum, Exception exceptionObject, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);
@@ -192,7 +214,9 @@ namespace Remotion.Logging
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/Log/param[@name="log"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormat/param[@name="messageEnum" or @name="args"]' />
     /// <include file='..\doc\include\Logging\LogExtensions.xml' path='LogExtensions/LogFormatWithEnum/remarks' />
-    /// <exception cref="ArgumentOutOfRangeException">Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer. </exception>
+    /// <exception cref="ArgumentOutOfRangeException">
+    /// Thrown if the <paramref name="messageEnum"/>'s underlying value is outside the range of an unsigned 16-bit integer.
+    /// </exception>
     public static void FatalFormat (this ILog log, Enum messageEnum, params object[] args)
     {
       ArgumentUtility.CheckNotNull("log", log);

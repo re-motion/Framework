@@ -51,7 +51,15 @@ namespace Remotion.Utilities
       if (attributes == null || attributes.Length == 0)
         return null;
       if (attributes.Length > 1)
-        throw new NotSupportedException(String.Format("Cannot get member value for multiple attributes. Reflection object {0} has {1} instances of attribute {2}", reflectionObject.Name, attributes.Length, attributeType.GetFullNameSafe()));
+      {
+        throw new NotSupportedException(
+            string.Format(
+                "Cannot get member value for multiple attributes. Reflection object {0} has {1} instances of attribute {2}",
+                reflectionObject.Name,
+                attributes.Length,
+                attributeType.GetFullNameSafe()));
+      }
+
       return GetFieldOrPropertyValue(attributes[0], fieldOrProperty);
     }
 

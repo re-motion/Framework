@@ -24,7 +24,8 @@ using Remotion.Web.UI.Controls;
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Validation
 {
   /// <summary>
-  /// Implements the <see cref="IBocMultilineTextValueValidatorFactory"/> inteface and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
+  /// Implements the <see cref="IBocMultilineTextValueValidatorFactory"/> interface
+  /// and creates all validators required to ensure a valid property value (i.e. nullability and formatting).
   /// </summary>
   /// <seealso cref="IBocMultilineTextValueValidatorFactory"/>
   [ImplementationFor(typeof(IBocMultilineTextValueValidatorFactory), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Multiple, Position = Position)]

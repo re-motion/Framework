@@ -46,7 +46,9 @@ namespace Remotion.ObjectBinding.Web.Services
     /// </param>
     /// <param name="args">Additional search arguments or <see langword="null" />.</param>
     /// <returns>A <see cref="BocAutoCompleteReferenceValueSearchResult"/> instance.</returns>
-    /// <remarks>This method can be implemented by delegating the search to <see cref="ISearchAvailableObjectsService"/>.<see cref="ISearchAvailableObjectsService.Search"/>.</remarks>
+    /// <remarks>
+    ///   This method can be implemented by delegating the search to <see cref="ISearchAvailableObjectsService"/>.<see cref="ISearchAvailableObjectsService.Search"/>.
+    /// </remarks>
     BocAutoCompleteReferenceValueSearchResult Search (
         string searchString,
         int? completionSetCount,

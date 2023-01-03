@@ -127,7 +127,9 @@ namespace Remotion.Web.UnitTests.Core
     [Test]
     public void ToString_WithPlainTextTextAndHtmlWithEncodedLineBreaksEncoding_EncodesOutputIncludingLineBreaks ()
     {
-      Assert.That(WebString.CreateFromText("aoe   \" & ' < > é \r \n \r\n").ToString(WebStringEncoding.HtmlWithTransformedLineBreaks), Is.EqualTo("aoe &#160; &quot; &amp; &#39; &lt; &gt; &#233; <br /> <br /> <br />"));
+      Assert.That(
+          WebString.CreateFromText("aoe   \" & ' < > é \r \n \r\n").ToString(WebStringEncoding.HtmlWithTransformedLineBreaks),
+          Is.EqualTo("aoe &#160; &quot; &amp; &#39; &lt; &gt; &#233; <br /> <br /> <br />"));
     }
 
     [Test]

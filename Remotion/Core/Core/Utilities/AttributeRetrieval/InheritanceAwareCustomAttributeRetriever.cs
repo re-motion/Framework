@@ -97,7 +97,11 @@ namespace Remotion.Utilities.AttributeRetrieval
       return s_getMethodParentDefinition.Value(methodInfo);
     }
 
-    private void AddInheritedAttributes (ArrayList allAttributes, TCustomAttributeProvider baseMember, Type attributeType, Dictionary<Type, AttributeUsageAttribute> visitedAttributeTypes)
+    private void AddInheritedAttributes (
+        ArrayList allAttributes,
+        TCustomAttributeProvider baseMember,
+        Type attributeType,
+        Dictionary<Type, AttributeUsageAttribute> visitedAttributeTypes)
     {
       var currentAttributes = baseMember.GetCustomAttributes(attributeType, false);
       foreach (var currentAttribute in currentAttributes)

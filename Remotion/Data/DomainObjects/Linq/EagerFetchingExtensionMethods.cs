@@ -77,7 +77,9 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <param name="relatedObjectSelector">A lambda expression selecting the next related objects to be eager-fetched.</param>
     /// <returns>A <see cref="FluentFetchRequest{TFetch, TQueried}"/> object on which further recursive fetch requests can be made. The subsequent fetches start 
     /// from the related objects fetched by the fetch request created by this method.</returns>
-    public static FluentFetchRequest<TQueried, TRelated> ThenFetchMany<TQueried, TFetch, TRelated> (this FluentFetchRequest<TQueried, TFetch> query, Expression<Func<TFetch, IEnumerable<TRelated>>> relatedObjectSelector)
+    public static FluentFetchRequest<TQueried, TRelated> ThenFetchMany<TQueried, TFetch, TRelated> (
+        this FluentFetchRequest<TQueried, TFetch> query,
+        Expression<Func<TFetch, IEnumerable<TRelated>>> relatedObjectSelector)
     {
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);
@@ -97,7 +99,9 @@ namespace Remotion.Data.DomainObjects.Linq
     /// <param name="relatedObjectSelector">A lambda expression selecting the next related objects to be eager-fetched.</param>
     /// <returns>A <see cref="FluentFetchRequest{TFetch, TQueried}"/> object on which further recursive fetch requests can be made. The subsequent fetches start 
     /// from the related objects fetched by the fetch request created by this method.</returns>
-    public static FluentFetchRequest<TQueried, TRelated> ThenFetchOne<TQueried, TFetch, TRelated> (this FluentFetchRequest<TQueried, TFetch> query, Expression<Func<TFetch, TRelated>> relatedObjectSelector)
+    public static FluentFetchRequest<TQueried, TRelated> ThenFetchOne<TQueried, TFetch, TRelated> (
+        this FluentFetchRequest<TQueried, TFetch> query,
+        Expression<Func<TFetch, TRelated>> relatedObjectSelector)
     {
       ArgumentUtility.CheckNotNull("query", query);
       ArgumentUtility.CheckNotNull("relatedObjectSelector", relatedObjectSelector);

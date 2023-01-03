@@ -31,7 +31,9 @@ namespace Remotion.Data.DomainObjects.Persistence
   {
     private static string BuildMessage (IEnumerable<ObjectID> ids)
     {
-      return string.Format("Concurrency violation encountered. One or more object(s) have already been changed by someone else: {0}", string.Join(", ", ids.Select(id => "'" + id + "'")));
+      return string.Format(
+          "Concurrency violation encountered. One or more object(s) have already been changed by someone else: {0}",
+          string.Join(", ", ids.Select(id => "'" + id + "'")));
     }
 
     private readonly ObjectID[] _ids;

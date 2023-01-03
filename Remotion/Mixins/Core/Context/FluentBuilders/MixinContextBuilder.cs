@@ -788,8 +788,9 @@ namespace Remotion.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Denotes that mixin <paramref name="dependentMixin"/> should have a dependency on <paramref name="requiredMixin"/> in the context 
-    /// of this object's <see cref="ClassContextBuilder"/>'s <see cref="ClassContextBuilder.TargetType"/>. This dependency can be added independently from the actual mixin, but when the <see cref="ClassContext"/> is 
-    /// built, an exception is found if <paramref name="dependentMixin"/> is not configured for the <see cref="ClassContextBuilder.TargetType"/>.
+    /// of this object's <see cref="ClassContextBuilder"/>'s <see cref="ClassContextBuilder.TargetType"/>. This dependency can be added independently
+    /// from the actual mixin, but when the <see cref="ClassContext"/> is built, an exception is found if <paramref name="dependentMixin"/> is not configured
+    /// for the <see cref="ClassContextBuilder.TargetType"/>.
     /// </summary>
     /// <param name="dependentMixin">The mixin for which the dependency is to be added.</param>
     /// <param name="requiredMixin">The type on which <paramref name="dependentMixin"/> should have a dependency.</param>
@@ -801,8 +802,9 @@ namespace Remotion.Mixins.Context.FluentBuilders
 
     /// <summary>
     /// Denotes that mixin <typeparamref name="TDependentMixin"/> should have a dependency on <typeparamref name="TRequiredMixin"/> in the context 
-    /// of this object's <see cref="ClassContextBuilder"/>'s <see cref="ClassContextBuilder.TargetType"/>. This dependency can be added independently from the actual mixin, but when the <see cref="ClassContext"/> is 
-    /// built, an exception is found if <typeparamref name="TDependentMixin"/> is not configured for the <see cref="ClassContextBuilder.TargetType"/>.
+    /// of this object's <see cref="ClassContextBuilder"/>'s <see cref="ClassContextBuilder.TargetType"/>. This dependency can be added independently
+    /// from the actual mixin, but when the <see cref="ClassContext"/> is built, an exception is found if <typeparamref name="TDependentMixin"/> is not configured
+    /// for the <see cref="ClassContextBuilder.TargetType"/>.
     /// </summary>
     /// <typeparam name="TDependentMixin">The mixin for which the dependency is to be added.</typeparam>
     /// <typeparam name="TRequiredMixin">The type on which <typeparamref name="TDependentMixin"/> should have a dependency.</typeparam>

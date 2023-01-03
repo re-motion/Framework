@@ -18,14 +18,13 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Remotion.Reflection;
-using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 
 namespace Remotion.Validation.RuleCollectors
 {
   /// <summary>
-  /// Defines a rule associated with an <see cref="IPropertyInformation"/> which specifies the validators to remove from the validation specification. The rule belongs to a component 
-  /// via the <see cref="CollectorType"/> and is applied to the validation specification if the component is used within the application.
+  /// Defines a rule associated with an <see cref="IPropertyInformation"/> which specifies the validators to remove from the validation specification.
+  /// The rule belongs to a component via the <see cref="CollectorType"/> and is applied to the validation specification if the component is used within the application.
   /// </summary>
   /// <seealso cref="RemovingPropertyValidationRuleCollector"/>
   public interface IRemovingPropertyValidationRuleCollector

@@ -124,7 +124,10 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
       Assert.That(ReflectionUtility.IsPublicOrProtected(typeof(ClassWithAllVisibilityMethods).GetMethod("ProtectedInternal", bf)), Is.True);
       Assert.That(ReflectionUtility.IsPublicOrProtected(typeof(ClassWithAllVisibilityMethods).GetMethod("Internal", bf)), Is.False);
       Assert.That(ReflectionUtility.IsPublicOrProtected(typeof(ClassWithAllVisibilityMethods).GetMethod("Private", bf)), Is.False);
-      Assert.That(ReflectionUtility.IsPublicOrProtected(typeof(ClassWithAllVisibilityMethods).GetMethod("Remotion.Mixins.UnitTests.Core.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)), Is.False);
+      Assert.That(
+          ReflectionUtility.IsPublicOrProtected(
+              typeof(ClassWithAllVisibilityMethods).GetMethod("Remotion.Mixins.UnitTests.Core.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)),
+          Is.False);
     }
 
     [Test]
@@ -136,7 +139,10 @@ namespace Remotion.Mixins.UnitTests.Core.Utilities
       Assert.That(ReflectionUtility.IsPublicOrProtectedOrExplicit(typeof(ClassWithAllVisibilityMethods).GetMethod("ProtectedInternal", bf)), Is.True);
       Assert.That(ReflectionUtility.IsPublicOrProtectedOrExplicit(typeof(ClassWithAllVisibilityMethods).GetMethod("Internal", bf)), Is.False);
       Assert.That(ReflectionUtility.IsPublicOrProtectedOrExplicit(typeof(ClassWithAllVisibilityMethods).GetMethod("Private", bf)), Is.False);
-      Assert.That(ReflectionUtility.IsPublicOrProtectedOrExplicit(typeof(ClassWithAllVisibilityMethods).GetMethod("Remotion.Mixins.UnitTests.Core.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)), Is.True);
+      Assert.That(
+          ReflectionUtility.IsPublicOrProtectedOrExplicit(
+              typeof(ClassWithAllVisibilityMethods).GetMethod("Remotion.Mixins.UnitTests.Core.Utilities.ReflectionUtilityTest.IInterface.Explicit", bf)),
+          Is.True);
     }
 
     [Test]

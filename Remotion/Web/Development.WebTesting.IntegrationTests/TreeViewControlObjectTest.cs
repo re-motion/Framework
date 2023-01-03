@@ -87,7 +87,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           () => rootNode.IsChecked(),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateExpectationException(Driver, "The checkbox could not be found: Unable to find xpath: ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']").Message));
+                  AssertionExceptionUtility.CreateExpectationException(
+                      Driver,
+                      "The checkbox could not be found: Unable to find xpath: ./tbody/tr/td[a[contains(@onclick, 'TreeView_SelectNode')]]/input[@type='checkbox']").Message));
 
       rootNode.Scope.ElementFinder.Options.Timeout = backupTimeout;
 
@@ -245,7 +247,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
           () => rootNode.GetNode().WithDisplayText("ChildNode 11").Select(),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find xpath: ./table[normalize-space(tbody/tr/td[last()]//*)='ChildNode 11']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(
+                      Driver,
+                      "Unable to find xpath: ./table[normalize-space(tbody/tr/td[last()]//*)='ChildNode 11']").Message));
       Assert.That(
           () => rootNode.GetNode().WithItemID("11").Select(),
           Throws.InstanceOf<NotSupportedException>()
@@ -306,7 +310,11 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestSelectNodeInHierarchyOnlyRootNodeExpanded ()
     {
-      var expectedExceptionMessage = AssertionExceptionUtility.CreateExpectationException(Driver, "The element cannot be found: This element has been removed from the DOM. Coypu will normally re-find elements using the original locators in this situation, except if you have captured a snapshot list of all matching elements using FindAllCss() or FindAllXPath()").Message;
+      var expectedExceptionMessage = AssertionExceptionUtility.CreateExpectationException(
+              Driver,
+              "The element cannot be found: This element has been removed from the DOM. Coypu will normally re-find elements using the original locators in this situation, "
+              + "except if you have captured a snapshot list of all matching elements using FindAllCss() or FindAllXPath()")
+          .Message;
       var home = Start();
 
       var treeView = home.TreeViews().GetByLocalID("MyTreeView");

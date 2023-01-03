@@ -206,21 +206,45 @@ namespace Remotion.Validation.UnitTests.Merging
     [Test]
     public void Merge_RemovePropertyValidator_AllRemoveRulesInSameGroupAreAppliedBeforeAllAddedRulesInSameGroup ()
     {
-      _validationRuleCollectorStub1.Setup(stub => stub.AddedPropertyRules).Returns(new[] { _addingPropertyValidationRuleCollector1, _addingPropertyValidationRuleCollector2 });
-      _validationRuleCollectorStub2.Setup(stub => stub.AddedPropertyRules).Returns(new[] { _addingPropertyValidationRuleCollector3 });
-      _validationRuleCollectorStub3.Setup(stub => stub.AddedPropertyRules).Returns(new[] { _addingPropertyValidationRuleCollector4 });
+      _validationRuleCollectorStub1
+          .Setup(stub => stub.AddedPropertyRules)
+          .Returns(new[] { _addingPropertyValidationRuleCollector1, _addingPropertyValidationRuleCollector2 });
+      _validationRuleCollectorStub2
+          .Setup(stub => stub.AddedPropertyRules)
+          .Returns(new[] { _addingPropertyValidationRuleCollector3 });
+      _validationRuleCollectorStub3
+          .Setup(stub => stub.AddedPropertyRules)
+          .Returns(new[] { _addingPropertyValidationRuleCollector4 });
 
-      _validationRuleCollectorStub1.Setup(stub => stub.RemovedPropertyRules).Returns(new IRemovingPropertyValidationRuleCollector[0]);
-      _validationRuleCollectorStub2.Setup(stub => stub.RemovedPropertyRules).Returns(new[] { _removingPropertyValidationRuleCollector1, _removingPropertyValidationRuleCollector4 });
-      _validationRuleCollectorStub3.Setup(stub => stub.RemovedPropertyRules).Returns(new[] { _removingPropertyValidationRuleCollector2 });
+      _validationRuleCollectorStub1
+          .Setup(stub => stub.RemovedPropertyRules)
+          .Returns(new IRemovingPropertyValidationRuleCollector[0]);
+      _validationRuleCollectorStub2
+          .Setup(stub => stub.RemovedPropertyRules)
+          .Returns(new[] { _removingPropertyValidationRuleCollector1, _removingPropertyValidationRuleCollector4 });
+      _validationRuleCollectorStub3
+          .Setup(stub => stub.RemovedPropertyRules)
+          .Returns(new[] { _removingPropertyValidationRuleCollector2 });
 
-      _validationRuleCollectorStub1.Setup(stub => stub.AddedObjectRules).Returns(new IAddingObjectValidationRuleCollector[0]);
-      _validationRuleCollectorStub2.Setup(stub => stub.AddedObjectRules).Returns(new IAddingObjectValidationRuleCollector[0]);
-      _validationRuleCollectorStub3.Setup(stub => stub.AddedObjectRules).Returns(new IAddingObjectValidationRuleCollector[0]);
+      _validationRuleCollectorStub1
+          .Setup(stub => stub.AddedObjectRules)
+          .Returns(new IAddingObjectValidationRuleCollector[0]);
+      _validationRuleCollectorStub2
+          .Setup(stub => stub.AddedObjectRules)
+          .Returns(new IAddingObjectValidationRuleCollector[0]);
+      _validationRuleCollectorStub3
+          .Setup(stub => stub.AddedObjectRules)
+          .Returns(new IAddingObjectValidationRuleCollector[0]);
 
-      _validationRuleCollectorStub1.Setup(stub => stub.RemovedObjectRules).Returns(new IRemovingObjectValidationRuleCollector[0]);
-      _validationRuleCollectorStub2.Setup(stub => stub.RemovedObjectRules).Returns(new IRemovingObjectValidationRuleCollector[0]);
-      _validationRuleCollectorStub3.Setup(stub => stub.RemovedObjectRules).Returns(new IRemovingObjectValidationRuleCollector[0]);
+      _validationRuleCollectorStub1
+          .Setup(stub => stub.RemovedObjectRules)
+          .Returns(new IRemovingObjectValidationRuleCollector[0]);
+      _validationRuleCollectorStub2
+          .Setup(stub => stub.RemovedObjectRules)
+          .Returns(new IRemovingObjectValidationRuleCollector[0]);
+      _validationRuleCollectorStub3
+          .Setup(stub => stub.RemovedObjectRules)
+          .Returns(new IRemovingObjectValidationRuleCollector[0]);
 
       _propertyValidatorExtractorFactoryMock
           .Setup(mock => mock.Create(It.IsAny<IEnumerable<RemovingPropertyValidatorRegistration>>(), It.IsNotNull<ILogContext>()))

@@ -95,7 +95,11 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.TestDomain
 
     protected abstract string NonPublicPropertyWithCustomPermission { [DemandPermission(TestAccessTypes.First)] get;  [DemandPermission(TestAccessTypes.Second)] set; }
 
-    protected abstract SecurableObject NonPublicRelationPropertyWithCustomPermission { [DemandPermission(TestAccessTypes.First)] get; [DemandPermission(TestAccessTypes.Second)] set; }
+    protected abstract SecurableObject NonPublicRelationPropertyWithCustomPermission
+    {
+      [DemandPermission(TestAccessTypes.First)] get;
+      [DemandPermission(TestAccessTypes.Second)] set;
+    }
 
     public abstract string PropertyWithMissingGetAccessor { set; }
 
