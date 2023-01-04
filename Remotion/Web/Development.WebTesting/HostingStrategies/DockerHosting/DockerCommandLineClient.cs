@@ -55,6 +55,7 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
         IDictionary<int, int> ports,
         IDictionary<string, string> mounts,
         string imageName,
+        string? isolationMode,
         string? hostname,
         bool remove,
         string? entryPoint,
@@ -73,6 +74,9 @@ namespace Remotion.Web.Development.WebTesting.HostingStrategies.DockerHosting
 
       if (remove)
         commandBuilder.Append("--rm").Append(' ');
+
+      if (isolationMode != null)
+        commandBuilder.Append($@"--isolation=""{isolationMode}""").Append(' ');
 
       if (ports.Any())
       {
