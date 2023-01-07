@@ -199,10 +199,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestFillWithLongText ()
     {
-      // TODO: Remove when RM-7150 is fixed
-      if (Helper.BrowserConfiguration.IsChrome())
-        Assert.Ignore("ChromeDriver currently times out when writing long texts into single line text fields (see issue RM-7150)");
-
       var home = Start();
 
       var builder = new StringBuilder();
