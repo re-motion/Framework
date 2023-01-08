@@ -42,9 +42,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadReplacesCurrentPage_WithExpectedFileName ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadTxtReplaceSiteButton");
       button.Click();
@@ -57,9 +54,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadReplacesCurrentPage_WithUnknownFileName ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadTxtReplaceSiteButton");
       button.Click();
@@ -69,9 +63,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadReplacesCurrentPage_AnchorWithSelf ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var anchor = home.Scope.FindId("body_TargetSelfAnchor");
       anchor.Click();
@@ -82,9 +73,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadOpensInNewWindow_WithPostback_WithUnknownFileName ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
@@ -100,9 +88,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadOpensInNewWindow_WithPostback_WithExpectedFileName ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
@@ -117,9 +102,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadOpensInNewWindow_WithAnchorTargetBlank ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
       // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
       var home = Start();
@@ -209,9 +191,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void TestDownloadOpensInNewWindow_WithExpectedFileName_FileWithWrongName ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
@@ -249,9 +228,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     [Test]
     public void TestDownloadOpensInNewWindow_WithPostback_WithXmlFile ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       // Note: test for Chrome "safebrowsing" (requires safebrowsing.enabled to be set to true in browser preferences - see Chrome configuration).
       // This test fails if safebrowsing is set to false because downloading an XML file produces an additional user prompt.
 
@@ -286,9 +262,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     [Test]
     public void TestDownloadTwice_WithExpectedFileName_PreventsFileNameConflicts ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
@@ -309,9 +282,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     [Test]
     public void TestDownload_WithUnknownFileName_DeleteFilesRemovesDownloadedFiles ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
@@ -328,9 +298,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     [Test]
     public void TestDownload_WithExpectedFileName_DeleteFilesRemovesDownloadedFiles ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadPostbackButton");
       button.Click();
@@ -347,9 +314,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     [Test]
     public void TestDownload_HandleDownloadWithoutFileExtension ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
       var button = home.Scope.FindId("body_DownloadFileWithoutFileExtension");
       button.Click();
@@ -365,9 +329,6 @@ Unmatched files in the download directory (will be cleaned up by the infrastruct
     [Test]
     public void TestDownload_HandleZipFileDownload ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("RM-7856: Test does not work properly after Firefox browser upgrade (Version 89).");
-
       var home = Start();
 
       var button = home.Scope.FindId("body_DownloadZipFile");
