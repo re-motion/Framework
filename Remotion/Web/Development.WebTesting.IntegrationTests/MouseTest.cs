@@ -100,9 +100,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     [Test]
     public void Test_Focus ()
     {
-      if (Helper.BrowserConfiguration.IsFirefox())
-        Assert.Ignore("This test is flaky in Firefox. (RM-7291)");
-
       var home = Start();
 
       var focusElement = home.Scope.FindId(c_focusDivID);
