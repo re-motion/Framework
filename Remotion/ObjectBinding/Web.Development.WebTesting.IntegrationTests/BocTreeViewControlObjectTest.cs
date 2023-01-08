@@ -480,6 +480,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bANode = rootNode.Expand().GetNode("c8ace752-55f6-4074-8890-130276ea6cd1");
       Assert.That(bANode.GetNumberOfChildren(), Is.EqualTo(2));
+
+      var child = bANode.Expand().GetNode(1);
+      Assert.That(child.GetNumberOfChildren(), Is.EqualTo(0));
     }
 
     [Test]
