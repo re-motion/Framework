@@ -32,13 +32,6 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private const string c_sampleTxtFileName = "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt";
     private const string c_sampleXmlFileName = "SampleXmlFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.xml";
 
-    [SetUp]
-    public void SetUp ()
-    {
-      if (Helper.BrowserConfiguration.IsEdge())
-        Assert.Ignore("RM-7525: File download tests are temporarily disabled in Edge.");
-    }
-
     [Test]
     public void TestDownloadReplacesCurrentPage_WithExpectedFileName ()
     {
