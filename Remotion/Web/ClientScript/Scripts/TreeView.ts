@@ -199,6 +199,9 @@ class WebTreeView
         }
       case 38: // up arrow
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the previous node that is focusable without opening or closing a node.
           let newTreeNodeIndex = activeTreeNodeIndex - 1;
           if (newTreeNodeIndex >= 0)
@@ -211,6 +214,9 @@ class WebTreeView
         }
       case 40: // down arrow
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the next node that is focusable without opening or closing a node.
           let newTreeNodeIndex = activeTreeNodeIndex + 1;
           if (newTreeNodeIndex < treeNodes.length)
@@ -223,6 +229,9 @@ class WebTreeView
         }
       case 36: // home
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the first node in the tree without opening or closing a node.
           let newTreeNodeIndex = 0;
           if (newTreeNodeIndex < treeNodes.length)
@@ -235,6 +244,9 @@ class WebTreeView
         }
       case 35: // end
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the last node in the tree that is focusable without opening a node.
           let newTreeNodeIndex = treeNodes.length -1;
           if (newTreeNodeIndex >= 0)
