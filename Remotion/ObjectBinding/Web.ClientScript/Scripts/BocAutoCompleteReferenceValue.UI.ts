@@ -1212,15 +1212,15 @@ namespace Remotion.BocAutoCompleteReferenceValue
             innerDiv.appendChild(this.list);
 
             this.list.addEventListener('mouseover', (event) => {
-                if (this.target(event).nodeName && this.target(event).nodeName.toUpperCase() === 'LI')
+                const listItemElement = this.target(event);
+                if (listItemElement && listItemElement.nodeName && listItemElement.nodeName.toUpperCase() === 'LI')
                 {
                     const listElements = Array.from(this.list.querySelectorAll<HTMLElement>("li"));
                     for (const listElement of listElements)
                         listElement.classList.remove(this.CLASSES.ACTIVE);
 
-                    const activeItem = this.target(event);
-                    this.active = listElements.indexOf(activeItem);
-                    activeItem.classList.add(this.CLASSES.ACTIVE);
+                    this.active = listElements.indexOf(listItemElement);
+                    listItemElement.classList.add(this.CLASSES.ACTIVE);
                     // do not mark as selected.
                 }
             });
@@ -1231,13 +1231,17 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     listElement.classList.remove(this.CLASSES.ACTIVE);
                     listElement.setAttribute('aria-selected', 'false');
                 }
+                this.active = -1;
 
                 const activeItem = this.target (event);
-                this.active = listElements.indexOf(activeItem);
-                activeItem.classList.add(this.CLASSES.ACTIVE);
-                activeItem.setAttribute('aria-selected', 'true');
+                if (activeItem)
+                {
+                    this.active = listElements.indexOf(activeItem);
+                    activeItem.classList.add(this.CLASSES.ACTIVE);
+                    activeItem.setAttribute('aria-selected', 'true');
 
-                this.select(true);
+                    this.select(true);
+                }
 
                 return false;
             });
@@ -1260,11 +1264,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.needsInit = false;
         }
 
-        private target(event: Event): HTMLElement {
+        private target(event: Event): Nullable<HTMLElement> {
             let element = event.target as Nullable<HTMLElement>;
             while (element && element.tagName != "LI")
                 element = element.parentNode as Nullable<HTMLElement>;
-            return element!;
+            return element;
         }
 
         private moveSelect(step: number, updateInput: boolean): void {
