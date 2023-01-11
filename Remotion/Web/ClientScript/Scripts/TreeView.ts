@@ -34,13 +34,21 @@ class WebTreeView
       const nodes = [...treeView.querySelectorAll ('.treeViewNode')];
       for (const node of nodes)
       {
-        const linkElement = node.querySelector (':scope > .treeViewNodeHead > a[onclick], :scope > .treeViewNodeHeadSelected > a[onclick]') as Nullable<HTMLElement>;
+        const linkElement = node.querySelector (':scope > .treeViewNodeHead > a[onclick], :scope > .treeViewNodeHeadSelected > a[onclick]');
         if (linkElement)
         {
+          linkElement.addEventListener('click', ev =>
+          {
+            ev.stopPropagation();
+          });
+
           node.addEventListener ('click', ev =>
           {
             // Prevent recursion through bubbling
             if (!ev.isTrusted)
+              return;
+
+            if (ev.target === linkElement)
               return;
 
             linkElement.dispatchEvent (new MouseEvent (ev.type, ev));
@@ -53,8 +61,20 @@ class WebTreeView
             if (!ev.isTrusted)
               return;
 
+            if (ev.target === linkElement)
+              return;
+
             linkElement.dispatchEvent (new PointerEvent (ev.type, ev));
             ev.preventDefault();
+            ev.stopPropagation();
+          });
+        }
+
+        const expanderElement = node.querySelector(':scope > a:first-child');
+        if (expanderElement)
+        {
+          expanderElement.addEventListener('click', ev =>
+          {
             ev.stopPropagation();
           });
         }
