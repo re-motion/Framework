@@ -19,8 +19,10 @@ using System.IO;
 using System.Numerics;
 using System.Threading;
 using System.Web;
+using System.Web.Hosting;
+using Remotion.Development.Web.ResourceHosting;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   /// <summary>
   /// File Download Handler serving files based on the value of the 'testMode' parameter. Used by the <see cref="FileDownloadTest"/>.
@@ -53,15 +55,15 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       }
     }
 
-    private static void AddFileToResponse (HttpContext context, string file)
+    private void AddFileToResponse (HttpContext context, string file)
     {
       AddFileToResponse(context, file, file);
     }
 
-    private static void AddFileToResponse (HttpContext context, string file, string fileName)
+    private void AddFileToResponse (HttpContext context, string file, string fileName)
     {
       var response = context.Response;
-      var fullFilePath = context.Server.MapPath("~/" + file);
+      var fullFilePath = ((ResourceVirtualFile)HostingEnvironment.VirtualPathProvider.GetFile(this.ResolveRootResource(file))).PhysicalPath;
 
       response.Clear();
       response.ClearHeaders();
@@ -97,7 +99,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private void ZipFileResponse (HttpContext context, string fileName)
     {
       var response = context.Response;
-      var fullFilePath = context.Server.MapPath("~/" + fileName);
+      var fullFilePath = ((ResourceVirtualFile)HostingEnvironment.VirtualPathProvider.GetFile(this.ResolveRootResource(fileName))).PhysicalPath;
       var data = File.ReadAllBytes(fullFilePath);
 
       response.Clear();

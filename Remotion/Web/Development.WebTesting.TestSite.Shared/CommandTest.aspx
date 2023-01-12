@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="CommandTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.CommandTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="CommandTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.CommandTest" %>
+<%@ Register tagPrefix="testsite" namespace="Remotion.Web.Development.WebTesting.TestSite.Shared" assembly="Remotion.Web.Development.WebTesting.TestSite.Shared" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>

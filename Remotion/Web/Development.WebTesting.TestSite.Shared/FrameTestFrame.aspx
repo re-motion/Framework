@@ -14,6 +14,6 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Title="" Language="C#" AutoEventWireup="true" CodeBehind="FrameTestFrame.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.FrameTestFrame" %>
+<%@ Page Title="" Language="C#" AutoEventWireup="true" CodeBehind="FrameTestFrame.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.FrameTestFrame" %>
 
 <div id="target"></div>

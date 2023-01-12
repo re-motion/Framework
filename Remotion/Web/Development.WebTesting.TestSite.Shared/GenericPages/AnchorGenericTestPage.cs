@@ -18,7 +18,7 @@ using System;
 using System.Web.UI.WebControls;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.GenericPages
 {
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="LinkButton"/>.

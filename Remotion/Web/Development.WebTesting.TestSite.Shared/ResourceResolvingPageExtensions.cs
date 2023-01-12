@@ -15,11 +15,28 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Remotion.Web.UI;
+using System.CodeDom.Compiler;
+using System.Web;
+using System.Web.UI;
+using Remotion.ServiceLocation;
+using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
 namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
-  public partial class SingleViewTest : SmartPage
+  public static class ResourceResolvingPageExtensions
   {
+    public static string ResolveRootResource (this IHttpHandler pageLike, string fileName)
+    {
+      return SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>()
+          .CreateResourceUrl(typeof(ResourceResolvingPageExtensions), TestResourceType.Root, fileName)
+          .GetUrl();
+    }
+
+    public static string ResolveImageResource (this IHttpHandler pageLike, string imageName)
+    {
+      return SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>()
+          .CreateResourceUrl(typeof(ResourceResolvingPageExtensions), ResourceType.Image, imageName)
+          .GetUrl();
+    }
   }
 }

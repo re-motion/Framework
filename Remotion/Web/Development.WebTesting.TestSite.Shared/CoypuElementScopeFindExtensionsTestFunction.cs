@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   [UsedImplicitly]
   public class CoypuElementScopeFindExtensionsTestFunction : WxeFunction
@@ -30,6 +30,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep("CoypuElementScopeFindExtensionsTest.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(CoypuElementScopeFindExtensionsTest), "CoypuElementScopeFindExtensionsTest.aspx");
   }
 }

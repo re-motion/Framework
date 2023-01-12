@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="DropDownListTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.DropDownListTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="DropDownListTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.DropDownListTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>DropDownList1</h3>
   <asp:DropDownList ID="MyDropDownList" AutoPostBack="true" Enabled="true" runat="server">

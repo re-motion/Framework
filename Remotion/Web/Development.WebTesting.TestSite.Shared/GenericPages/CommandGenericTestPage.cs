@@ -21,7 +21,7 @@ using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.GenericPages
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.GenericPages
 {
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="TestCommand"/>.

@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="DropDownMenuTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.DropDownMenuTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="DropDownMenuTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.DropDownMenuTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
@@ -28,7 +29,7 @@
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
@@ -41,10 +42,10 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="Image/SampleIcon.gif"></remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID6" Text="DisabledItem" IsDisabled="True">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
         </MenuItems>
@@ -58,7 +59,7 @@
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
@@ -71,10 +72,10 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="Image/SampleIcon.gif"></remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID6" Text="DisabledItem" IsDisabled="True">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
         </MenuItems>
@@ -88,7 +89,7 @@
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
@@ -101,10 +102,10 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="Image/SampleIcon.gif"></remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID6" Text="DisabledItem" IsDisabled="True">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
         </MenuItems>
@@ -137,7 +138,7 @@
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
@@ -150,7 +151,7 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="Image/SampleIcon.gif"></remotion:WebMenuItem>
         </MenuItems>
       </remotion:DropDownMenu>
       <remotion:DropDownMenu ID="MyDropDownMenu_DisabledPrimary" Mode="DropDownMenu" ButtonType="Primary" TitleText="Text" Enabled="False" runat="server">
@@ -162,7 +163,7 @@
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
@@ -175,7 +176,7 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="Image/SampleIcon.gif"></remotion:WebMenuItem>
         </MenuItems>
       </remotion:DropDownMenu>
       <remotion:DropDownMenu ID="MyDropDownMenu_DisabledSupplemental" Mode="DropDownMenu" ButtonType="Supplemental" TitleText="Text" Enabled="False" runat="server">
@@ -187,7 +188,7 @@
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="DropDownMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/DropDownMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
@@ -200,7 +201,7 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="Image/SampleIcon.gif"></remotion:WebMenuItem>
         </MenuItems>
       </remotion:DropDownMenu>
       <h3>DropDownMenu (delayed open)</h3>

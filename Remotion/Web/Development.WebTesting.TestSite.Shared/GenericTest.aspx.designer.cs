@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite {
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared {
     
     
     public partial class GenericTest {

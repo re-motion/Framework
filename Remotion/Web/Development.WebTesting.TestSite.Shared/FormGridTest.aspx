@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="FormGridTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.FormGridTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="FormGridTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.FormGridTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <remotion:FormGridManager runat="server"></remotion:FormGridManager>
   <h3>FormGrid1</h3>

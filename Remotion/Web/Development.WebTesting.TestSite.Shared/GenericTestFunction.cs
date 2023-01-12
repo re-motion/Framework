@@ -14,11 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
+using System;
 using JetBrains.Annotations;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   [UsedImplicitly]
   public class GenericTestFunction : WxeFunction
@@ -29,6 +30,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep("GenericTest.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(GenericTest), "GenericTest.aspx");
   }
 }

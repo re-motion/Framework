@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="InfrastructureTests.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.InfrastructureTests" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="InfrastructureTests.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.InfrastructureTests" %>
+<%@ Register tagPrefix="testsite" namespace="Remotion.Web.Development.WebTesting.TestSite.Shared" assembly="Remotion.Web.Development.WebTesting.TestSite.Shared" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>Test FillWithAndWait from CoypuWaitingElementScopeExtensions</h3>
   <testsite:TestEditableTextBox ID="MyTextBox" Text="@SampleText@" AutoPostBack="true" runat="server"/>

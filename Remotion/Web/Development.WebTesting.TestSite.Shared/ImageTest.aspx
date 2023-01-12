@@ -14,13 +14,14 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="ImageTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.ImageTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="ImageTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.ImageTest" %>
+<%@ Import Namespace="Remotion.Web.Development.WebTesting.TestSite.Shared" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>Image</h3>
-  <img id="MyImage" src="~/Images/SampleIcon.gif" alt="My alternative text" runat="server"/>
+    <img id="MyImage" src="<%= this.ResolveImageResource("SampleIcon.gif") %>" alt="My alternative text"/>
   <div id="scope">
     <h3>Image (without alt text)</h3>
-    <img id="MyImage2" src="~/Images/SampleIcon.gif" runat="server"/>
+    <img id="MyImage2" src="<%= this.ResolveImageResource("SampleIcon.gif") %>"/>
   </div>
   <h3>Image (without src URL)</h3>
   <img id="MyImage3" alt="My alternative text" runat="server"/>

@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class WebTreeViewTest : SmartPage
   {
@@ -29,7 +29,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
       var node = new WebTreeNode(
           "Item1",
           WebString.CreateFromText("This is the beginning of very long text that should be placed correctly beside the icon"),
-          "~/Images/SampleIcon.gif");
+          this.ResolveImageResource("SampleIcon.gif"));
       MyWebTreeView2.Nodes.Add(node);
 
       var webTreeNodeNoBadge = new WebTreeNode("Node1", WebString.CreateFromText("No badge"));

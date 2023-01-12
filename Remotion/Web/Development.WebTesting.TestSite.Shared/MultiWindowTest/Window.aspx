@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Window.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest.Window" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Window.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest.Window" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head runat="server">

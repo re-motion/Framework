@@ -90,7 +90,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
               }));
       Assert.That(violation.None, Has.Length.EqualTo(0));
       Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #testImage"));
-      Assert.That(violation.Html, Is.EqualTo("<img id=\"testImage\" src=\"/Images/SampleIcon.gif\">"));
+      Assert.That(violation.Html, Is.EqualTo("<img id=\"testImage\" src=\"../Image/SampleIcon.gif\">"));
       Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.ImageAlt));
       Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
       Assert.That(violation.Rule.Description, Is.EqualTo("Ensures <img> elements have alternate text or a role of none or presentation"));

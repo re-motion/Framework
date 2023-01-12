@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite {
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared {
     
     
     public partial class CommandTest {
@@ -28,7 +28,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Development.WebTesting.TestSite.TestCommand Command1;
+        protected global::Remotion.Web.Development.WebTesting.TestSite.Shared.TestCommand Command1;
         
         /// <summary>
         /// Command2 control.
@@ -37,7 +37,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Development.WebTesting.TestSite.TestCommand Command2;
+        protected global::Remotion.Web.Development.WebTesting.TestSite.Shared.TestCommand Command2;
         
         /// <summary>
         /// TestCommand3 control.
@@ -46,6 +46,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Development.WebTesting.TestSite.TestCommand TestCommand3;
+        protected global::Remotion.Web.Development.WebTesting.TestSite.Shared.TestCommand TestCommand3;
     }
 }

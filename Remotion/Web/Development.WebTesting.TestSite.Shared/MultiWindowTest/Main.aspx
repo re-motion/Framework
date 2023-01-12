@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Main.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest.Main" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Main.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest.Main" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head runat="server">
@@ -41,7 +42,7 @@
             <p><remotion:WebButton ID="LoadWindowFunctionInFrame" Text="Load WindowFunction in Frame" runat="server"/></p>
             <p><remotion:WebButton ID="LoadMainAutoRefreshingFrameFunctionInFrame" Text="Load Main-auto-refreshing FrameFunction in Frame" runat="server"/></p>
             <p><remotion:WebButton ID="LoadWindowFunctionInNewWindow" Text="Load WindowFunction in new Window" runat="server"/></p>
-            <p><asp:HyperLink ID="NavigateAway" Text="Navigate Away" NavigateUrl="~/Default.aspx" runat="server"/></p>
+            <p><asp:HyperLink ID="NavigateAway" Text="Navigate Away" runat="server"/></p>
           </ContentTemplate>
         </asp:UpdatePanel>
         <div style="border: 1px solid black">

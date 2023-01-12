@@ -19,7 +19,7 @@ using System.Web.UI;
 using Remotion.Web.ExecutionEngine.Obsolete;
 using Remotion.Web.UI.Controls.PostBackTargets;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest
 {
   public partial class Frame : MultiWindowTestPageBase
   {

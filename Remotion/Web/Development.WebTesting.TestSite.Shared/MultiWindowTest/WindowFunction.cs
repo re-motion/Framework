@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest
 {
   public class WindowFunction : WxeFunction
   {
@@ -28,6 +28,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep("MultiWindowTest/Window.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(Window), "MultiWindowTest/Window.aspx");
   }
 }

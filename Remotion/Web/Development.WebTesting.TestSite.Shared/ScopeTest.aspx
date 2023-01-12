@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="ScopeTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.ScopeTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="ScopeTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.ScopeTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>MyScope</h3>
   <div id="body_MyScope">

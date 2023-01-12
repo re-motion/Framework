@@ -21,7 +21,7 @@ using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.DropDownMenuImplementation;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class DropDownMenuTest : WxePage
   {

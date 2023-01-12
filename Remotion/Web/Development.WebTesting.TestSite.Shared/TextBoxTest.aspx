@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="TextBoxTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.TextBoxTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="TextBoxTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.TextBoxTest" %>
+<%@ Register tagPrefix="testsite" namespace="Remotion.Web.Development.WebTesting.TestSite.Shared" assembly="Remotion.Web.Development.WebTesting.TestSite.Shared" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>TextBox1 - re-motion IEditableTextBox</h3>
   <testsite:TestEditableTextBox ID="MyEditableTextBox" Value="MyEditableTextBoxValue" AutoPostBack="true" runat="server"/>

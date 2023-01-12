@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="WebTabStripTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.WebTabStripTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="WebTabStripTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.WebTabStripTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>WebTabStrip1</h3>
   <remotion:WebTabStrip ID="MyTabStrip1" style="width: 300px" runat="server">
@@ -28,7 +29,7 @@
     <h3>WebTabStrip2</h3>
     <remotion:WebTabStrip ID="MyTabStrip2" Width="100px" runat="server">
       <Tabs>
-        <remotion:WebTab ItemID="Tab1" Icon-Url="~/Images/SampleIcon.gif" Text="This is a very long text that should wrap."/>
+        <remotion:WebTab ItemID="Tab1" Icon-Url="Image/SampleIcon.gif" Text="This is a very long text that should wrap."/>
         <remotion:WebTab ItemID="Tab2" Text="Tab2Label"/>
       </Tabs>
     </remotion:WebTabStrip>

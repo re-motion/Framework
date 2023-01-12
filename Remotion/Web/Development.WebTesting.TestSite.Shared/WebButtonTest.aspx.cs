@@ -16,15 +16,19 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Remotion.ServiceLocation;
+using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class WebButtonTest : WxePage
   {
     protected override void OnInit (EventArgs e)
     {
       base.OnInit(e);
+
+      MyWebButtonWithIcon.Icon.Url = this.ResolveImageResource("SampleIcon.gif");
 
       MyWebButton1Sync.Command += Command;
       MyWebButtonPrimary1Sync.Command += Command;

@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class ScreenshotTest : WxePage
   {
@@ -26,7 +26,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     {
       base.OnInit(e);
 
-      var node = new WebTreeNode("ItemA", WebString.CreateFromText("A"), "~/Images/SampleIcon.gif") { IsEvaluated = true, IsExpanded = true };
+      var node = new WebTreeNode("ItemA", WebString.CreateFromText("A"), this.ResolveImageResource("SampleIcon.gif")) { IsEvaluated = true, IsExpanded = true };
       node.Children.Add(new WebTreeNode("ItemA1", WebString.CreateFromText("A1")));
       node.Children.Add(new WebTreeNode("ItemA2", WebString.CreateFromText("A2")));
       node.Children.Add(new WebTreeNode("ItemA3", WebString.CreateFromText("A3")));

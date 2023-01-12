@@ -18,19 +18,25 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.ServiceLocation;
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
-using Remotion.Web.Development.WebTesting.TestSite.GenericPages;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
+using Remotion.Web.Development.WebTesting.TestSite.Shared.GenericPages;
 using Remotion.Web.UI.Controls;
+using GenericTestPageParameter = Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure.GenericTestPageParameter;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class GenericTest : GenericTestPageBase<GenericTestOptions>
   {
     protected override Dictionary<string, GenericTestPageParameter> Parameters { get; } = new Dictionary<string, GenericTestPageParameter>();
 
+    public string FrameTestFrameUrl { get; }
+
     public GenericTest ()
     {
+      FrameTestFrameUrl = this.ResolveRootResource("FrameTestFrame.aspx");
+
       Register("anchor", new AnchorGenericTestPage());
       Register("command", new CommandGenericTestPage());
       Register("dropDownList", new SimpleGenericTestPage<DropDownList>());

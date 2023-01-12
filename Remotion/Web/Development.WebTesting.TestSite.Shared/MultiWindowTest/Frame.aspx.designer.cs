@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest {
     
     
     public partial class Frame {
@@ -91,6 +91,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Development.WebTesting.TestSite.TestEditableTextBox _MyTextBox;
+        protected global::Remotion.Web.Development.WebTesting.TestSite.Shared.TestEditableTextBox _MyTextBox;
     }
 }

@@ -111,6 +111,11 @@
     <Content Include="..\..\Remotion LGPL.licenseheader">
       <Link>Remotion LGPL.licenseheader</Link>
     </Content>
+    <Content Include="..\Development.WebTesting.TestSite.Shared\UrlMapping.xml">
+      <Link>UrlMapping.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="index.html" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
@@ -155,6 +160,10 @@
     <ProjectReference Include="..\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj">
       <Project>{651E6B2A-5C3C-4981-AAB3-CA2AA3A433CA}</Project>
       <Name>Web.Development.WebTesting.TestSite.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Development.WebTesting.TestSite.Shared\Web.Development.WebTesting.TestSite.Shared.csproj">
+      <Project>{165a8123-c506-4239-bb21-adbef603bc0b}</Project>
+      <Name>Web.Development.WebTesting.TestSite.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

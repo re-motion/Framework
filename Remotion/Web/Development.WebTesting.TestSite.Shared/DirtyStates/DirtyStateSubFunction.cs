@@ -18,7 +18,7 @@ using System;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.DirtyStates
 {
   public class DirtyStateSubFunction : WxeFunction
   {
@@ -28,6 +28,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
       ExceptionHandler.SetCatchExceptionTypes(typeof(WxeUserCancelException));
     }
 
-    private WxeStep Step1 = new WxePageStep("DirtyStates/DirtyStateTest.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(DirtyStateTest), "DirtyStates/DirtyStateTest.aspx");
   }
 }

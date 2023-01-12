@@ -16,7 +16,7 @@
 // 
 using System;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class FrameTestFrame : System.Web.UI.Page
   {

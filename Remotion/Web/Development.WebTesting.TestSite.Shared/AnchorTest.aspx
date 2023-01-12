@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="AnchorTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.AnchorTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="AnchorTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.AnchorTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
@@ -26,22 +27,22 @@
       <remotion:WebLinkButton ID="MyWebLinkButton" Text="MyWebLinkButton" CommandName="MyWebLinkButtonCommand" PostBackUrl="AnchorTest.wxe" runat="server"/>
       <h3>HtmlAnchor2 - re-motion SmartHyperLink</h3>
       <%-- ReSharper disable once Html.PathError --%>
-      <remotion:SmartHyperLink ID="MySmartHyperLink" Text="MySmartHyperLink" NavigateUrl="AnchorTest.wxe" runat="server"/>
+      <remotion:SmartHyperLink ID="MySmartHyperLink" Text="MySmartHyperLink" NavigateUrl="~/AnchorTest.wxe" runat="server"/>
       <h3>HtmlAnchor3 - ASP.NET LinkButton</h3>
       <asp:LinkButton ID="MyAspLinkButton" Text="MyAspLinkButton" CommandName="MyAspLinkButtonCommand" runat="server"/>
       <h3>HtmlAnchor4 - ASP.NET HyperLink</h3>
       <%-- ReSharper disable once Html.PathError --%>
-      <asp:HyperLink ID="MyAspHyperLink" Text="MyAspHyperLink" NavigateUrl="AnchorTest.wxe" runat="server" />
+      <asp:HyperLink ID="MyAspHyperLink" Text="MyAspHyperLink" NavigateUrl="~/AnchorTest.wxe" runat="server" />
       <div id="scope">
         <h3>HtmlAnchor5 - HTML a</h3>
         <a id="MyHtmlAnchor" href="AnchorTest.wxe" runat="server">MyHtmlAnchor</a>
       </div>
       <h3>HtmlAnchor6 - HTML a with JavaScript action</h3>
-      <a id="MyHtmlAnchorWithJavaScriptLink" href="#" onclick="javascript:myClickHandler('MyHtmlAnchorWithJavaScriptLink');" runat="server">MyHtmlAnchorWithJavaScriptLink</a>
+      <a id="body_MyHtmlAnchorWithJavaScriptLink" href="#" onclick="javascript:myClickHandler('MyHtmlAnchorWithJavaScriptLink');">MyHtmlAnchorWithJavaScriptLink</a>
       <h3>HtmlAnchor7 - With SingleQuote</h3>
-      <a id="MyHtmlAnchorWithSingleQuote" href="AnchorTest.wxe" runat="server">With'SingleQuote</a>
+      <a id="MyHtmlAnchorWithSingleQuote" href="~/AnchorTest.wxe" runat="server">With'SingleQuote</a>
       <h3>HtmlAnchor8 - With SingleQuote and DoubleQuote</h3>
-      <a id="MyHtmlAnchorWithSingleQuoteAndDoubleQuote" href="AnchorTest.wxe" runat="server">With'SingleQuoteAnd"DoubleQuote</a>
+      <a id="MyHtmlAnchorWithSingleQuoteAndDoubleQuote" href="~/AnchorTest.wxe" runat="server">With'SingleQuoteAnd"DoubleQuote</a>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

@@ -155,7 +155,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     private ElementScope StartToStaticPage (string page)
     {
-      var url = Helper.TestInfrastructureConfiguration.WebApplicationRoot + page;
+      var url = SharedProjectWebRoot + page;
       Helper.MainBrowserSession.Window.Visit(url);
 
       return Helper.MainBrowserSession.Window.GetRootScope();

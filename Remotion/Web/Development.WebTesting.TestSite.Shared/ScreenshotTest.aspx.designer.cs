@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
 
 
@@ -92,11 +92,11 @@ namespace Remotion.Web.Development.WebTesting.TestSite
         /// <remarks>
         /// Auto-generated property.
         /// </remarks>
-        public new Remotion.Web.Development.WebTesting.TestSite.Layout Master
+        public new Layout Master
         {
             get
             {
-                return ((Remotion.Web.Development.WebTesting.TestSite.Layout)(base.Master));
+                return ((Layout)(base.Master));
             }
         }
     }

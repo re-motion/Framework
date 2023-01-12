@@ -19,7 +19,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class TreeViewTest : WxePage
   {
@@ -79,7 +79,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void InitializeMyTreeView ()
     {
-      var root = new TreeNode("Root node", "RootValue", "~/Images/SampleIcon.gif");
+      var root = new TreeNode("Root node", "RootValue", this.ResolveImageResource("SampleIcon.gif"));
       var child1 = new TreeNode("Child node 1", "Child1Value");
       var child2 = new TreeNode("Child node 2", "Child2Value");
       var child11 = new TreeNode("Child node 11", "Child11Value");
@@ -106,7 +106,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
 
     private void InitializeMyTreeViewWithSpecialChildren ()
     {
-      var root = new TreeNode("Root node 2", "RootValue2", "~/Images/SampleIcon.gif");
+      var root = new TreeNode("Root node 2", "RootValue2", this.ResolveImageResource("SampleIcon.gif"));
 
       var child1 = new TreeNode("With'SingleQuote", "Child1Value");
       var child2 = new TreeNode("With'SingleQuoteAndDouble\"Quote", "Child2Value");
@@ -118,13 +118,13 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     }
     private void InitializeTreeViewWithOnlyRootWithSingleQuote ()
     {
-      var root = new TreeNode("With'SingleQuote", "RootValue", "~/Images/SampleIcon.gif");
+      var root = new TreeNode("With'SingleQuote", "RootValue", this.ResolveImageResource("SampleIcon.gif"));
       TreeViewWithOnlyRootWithSingleQuote.Nodes.Add(root);
     }
 
     private void InitializeTreeViewWithOnlyRootWithDoubleQuote ()
     {
-      var root = new TreeNode("With'SingleQuoteAndDouble\"Quote", "~/Images/SampleIcon.gif");
+      var root = new TreeNode("With'SingleQuoteAndDouble\"Quote", "RootValue", this.ResolveImageResource("SampleIcon.gif"));
       TreeViewWithOnlyRootWithDoubleQuote.Nodes.Add(root);
     }
   }

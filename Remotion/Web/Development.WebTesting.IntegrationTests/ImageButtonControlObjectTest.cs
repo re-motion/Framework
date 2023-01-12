@@ -67,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var imageButton = home.ImageButtons().GetByLocalID("MyImageButton");
-      Assert.That(imageButton.GetImageSourceUrl(), Does.EndWith("/Images/SampleIcon.gif"));
+      Assert.That(imageButton.GetImageSourceUrl(), Does.EndWith("/Image/SampleIcon.gif"));
     }
 
     [Test]

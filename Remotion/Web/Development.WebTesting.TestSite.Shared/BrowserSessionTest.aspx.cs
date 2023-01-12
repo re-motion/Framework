@@ -19,7 +19,7 @@ using System.Web;
 using System.Web.UI.WebControls;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class BrowserSessionTest : WxePage
   {

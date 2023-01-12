@@ -21,7 +21,7 @@ using System.Web.UI.WebControls;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.UI.Controls.PostBackTargets;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest
 {
   public abstract class MultiWindowTestPageBase : WxePage
   {

@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="TabbedMenuTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.TabbedMenuTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="TabbedMenuTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.TabbedMenuTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>TabbedMenu</h3>
   <remotion:TabbedMenu ID="MyTabbedMenu" StatusText=" MyStatusText " style="width: 1000px" runat="server">
@@ -26,7 +27,7 @@
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="HrefCommandTab" Text="HrefCommandTabTitle">
         <PersistedCommand>
-          <remotion:NavigationCommand Type="Href" HrefCommand-Href="TabbedMenuTest.wxe" AccessKey="A"/>
+          <remotion:NavigationCommand Type="Href" HrefCommand-Href="~/TabbedMenuTest.wxe" AccessKey="A"/>
         </PersistedCommand>
       </remotion:MainMenuTab>
       <remotion:MainMenuTab ItemID="WxeFunctionCommandTab" Text="WxeFunctionCommandTabTitle">
@@ -59,7 +60,7 @@
           <remotion:NavigationCommand Type="None"/>
         </PersistedCommand>
       </remotion:MainMenuTab>
-      <remotion:MainMenuTab ItemID="VeryLongTab" Text="This is a very long text and should break if there is not enough space. But this text has to be reaaaaaaaaly long because it must be longer that the whole line of menu to break." Icon-Url="~/Images/SampleIcon.gif" IsDisabled="True">
+      <remotion:MainMenuTab ItemID="VeryLongTab" Text="This is a very long text and should break if there is not enough space. But this text has to be reaaaaaaaaly long because it must be longer that the whole line of menu to break." Icon-Url="Image/SampleIcon.gif" IsDisabled="True">
         <PersistedCommand>
           <remotion:NavigationCommand Type="None"/>
         </PersistedCommand>

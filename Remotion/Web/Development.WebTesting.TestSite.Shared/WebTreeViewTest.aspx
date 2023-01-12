@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="WebTreeViewTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.WebTreeViewTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="WebTreeViewTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.WebTreeViewTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>WebTreeView1</h3>
   <remotion:WebTreeView ID="MyWebTreeView" runat="server"/>

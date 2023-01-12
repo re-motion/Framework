@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite {
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared {
     
     
     public partial class TextBoxTest {
@@ -19,7 +19,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::Remotion.Web.Development.WebTesting.TestSite.TestEditableTextBox MyEditableTextBox;
+        protected global::Remotion.Web.Development.WebTesting.TestSite.Shared.TestEditableTextBox MyEditableTextBox;
         
         /// <summary>
         /// MyAspTextBox control.

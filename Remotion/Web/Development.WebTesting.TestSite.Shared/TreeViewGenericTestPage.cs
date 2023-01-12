@@ -16,11 +16,11 @@
 // 
 using System;
 using System.Web.UI.WebControls;
-using Remotion.Web.Development.WebTesting.TestSite.GenericPages;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
+using Remotion.Web.Development.WebTesting.TestSite.Shared.GenericPages;
 using Remotion.Web.UI.Controls;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   /// <summary>
   /// Custom <see cref="IGenericTestPage{TOptions}"/> for a <see cref="WebTreeView"/>.

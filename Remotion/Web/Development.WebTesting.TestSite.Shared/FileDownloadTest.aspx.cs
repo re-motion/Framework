@@ -15,9 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Web.Hosting;
 using System.Web.UI;
+using Remotion.Development.Web.ResourceHosting;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public partial class FileDownloadTest : Page
   {
@@ -32,7 +34,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite
     private void DownloadButtonOnClick (object sender, EventArgs eventArgs)
     {
       const string file = "SampleFile_06d6ff4d-c124-4d3f-9d96-5e4f2d0c7b0c.txt";
-      var fullFilePath = Server.MapPath("~/SampleFile.txt");
+      var fullFilePath = ((ResourceVirtualFile)HostingEnvironment.VirtualPathProvider.GetFile(this.ResolveRootResource("SampleFile.txt"))).PhysicalPath;
 
       Response.Clear();
       Response.ClearHeaders();

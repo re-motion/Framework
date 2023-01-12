@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="GenericTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.GenericTest" %>
+<%@ Page Title="" Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="GenericTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.GenericTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
@@ -39,7 +40,7 @@
       </asp:Panel>
       
       <h3>Frame test</h3>
-      <iframe id="testFrame" src="FrameTestFrame.aspx">
+      <iframe id="testFrame" src="<%= FrameTestFrameUrl %>">
       </iframe>
     </ContentTemplate>
   </asp:UpdatePanel>

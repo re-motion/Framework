@@ -16,11 +16,13 @@
 // 
 using System;
 using System.Web.UI;
+using Remotion.ServiceLocation;
+using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Obsolete;
 using Remotion.Web.UI.Controls.PostBackTargets;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest
 {
   public partial class Main : MultiWindowTestPageBase
   {
@@ -33,6 +35,8 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
       LoadWindowFunctionInFrame.Click += LoadWindowFunctionInFrameOnClick;
       LoadMainAutoRefreshingFrameFunctionInFrame.Click += LoadMainAutoRefreshingFrameFunctionInFrameOnClick;
       LoadWindowFunctionInNewWindow.Click += LoadWindowFunctionInNewWindowOnClick;
+
+      NavigateAway.NavigateUrl = this.ResolveRootResource("Default.aspx");
     }
 
     protected override void OnPreRender (EventArgs e)

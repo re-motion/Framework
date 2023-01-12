@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.ExecutionEngine.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.MultiWindowTest
 {
   public class FrameFunction : WxeFunction
   {
@@ -42,6 +42,6 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
     }
 
     // Steps
-    private WxeStep Step1 = new WxePageStep("MultiWindowTest/Frame.aspx");
+    private WxeResourcePageStep Step1 = new WxeResourcePageStep(typeof(Frame), "MultiWindowTest/Frame.aspx");
   }
 }

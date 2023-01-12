@@ -21,33 +21,33 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.re-motion.org/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 
-  <add id="AnchorTest" type="Remotion.Web.Development.WebTesting.TestSite::AnchorTestFunction" resource="~/AnchorTest.wxe" />
-  <add id="CommandTest" type="Remotion.Web.Development.WebTesting.TestSite::CommandTestFunction" resource="~/CommandTest.wxe" />
-  <add id="CoypuElementScopeFindExtensionsTest" type="Remotion.Web.Development.WebTesting.TestSite::CoypuElementScopeFindExtensionsTestFunction" resource="~/CoypuElementScopeFindExtensionsTest.wxe" />
-  <add id="DirtyStateTest" type="Remotion.Web.Development.WebTesting.TestSite::DirtyStates.DirtyStateRootFunction" resource="~/DirtyStateTest.wxe" />
-  <add id="DropDownListTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownListTestFunction" resource="~/DropDownListTest.wxe" />
-  <add id="DropDownMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::DropDownMenuTestFunction" resource="~/DropDownMenuTest.wxe" />
-  <add id="ElementScopeTest" type="Remotion.Web.Development.WebTesting.TestSite::ElementScopeTestFunction" resource="~/ElementScopeTest.wxe" />
-  <add id="GenericTest" type="Remotion.Web.Development.WebTesting.TestSite::GenericTestFunction" resource="~/GenericTest.wxe" />
-  <add id="ImageButtonTest" type="Remotion.Web.Development.WebTesting.TestSite::ImageButtonTestFunction" resource="~/ImageButtonTest.wxe" />
-  <add id="InfrastructureTests" type="Remotion.Web.Development.WebTesting.TestSite::InfrastructureTestsFunction" resource="~/InfrastructureTests.wxe" />
-  <add id="ListMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::ListMenuTestFunction" resource="~/ListMenuTest.wxe" />
-  <add id="RequestErrorDetectionStrategyTest" type="Remotion.Web.Development.WebTesting.TestSite::RequestErrorDetectionStrategyTestFunction" resource="~/RequestErrorDetectionStrategyTest.wxe" />
-  <add id="ScreenshotTest" type="Remotion.Web.Development.WebTesting.TestSite::ScreenshotTestFunction" resource="~/ScreenshotTest.wxe" />
-  <add id="TabbedMenuTest" type="Remotion.Web.Development.WebTesting.TestSite::TabbedMenuTestFunction" resource="~/TabbedMenuTest.wxe" />
-  <add id="TabbedMultiViewTest" type="Remotion.Web.Development.WebTesting.TestSite::TabbedMultiViewTestFunction" resource="~/TabbedMultiViewTest.wxe" />
-  <add id="TextBoxTest" type="Remotion.Web.Development.WebTesting.TestSite::TextBoxTestFunction" resource="~/TextBoxTest.wxe" />
-  <add id="TreeViewTest" type="Remotion.Web.Development.WebTesting.TestSite::TreeViewTestFunction" resource="~/TreeViewTest.wxe" />
-  <add id="WebButtonTest" type="Remotion.Web.Development.WebTesting.TestSite::WebButtonTestFunction" resource="~/WebButtonTest.wxe" />
-  <add id="WebTabStripTest" type="Remotion.Web.Development.WebTesting.TestSite::WebTabStripTestFunction" resource="~/WebTabStripTest.wxe" />
-  <add id="BrowserSessionTest" type="Remotion.Web.Development.WebTesting.TestSite::BrowserSessionTestFunction" resource="~/BrowserSessionTest.wxe" />
-  <add id="PlatformTest" type="Remotion.Web.Development.WebTesting.TestSite::PlatformTestFunction" resource="~/PlatformTest.wxe" />
-  <add id="CompletionDetectionStrategyTest" type="Remotion.Web.Development.WebTesting.TestSite::CompletionDetectionStrategyTestFunction" resource="~/CompletionDetectionStrategyTest.wxe" />
+  <add id="AnchorTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::AnchorTestFunction" resource="~/AnchorTest.wxe" />
+  <add id="CommandTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::CommandTestFunction" resource="~/CommandTest.wxe" />
+  <add id="CoypuElementScopeFindExtensionsTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::CoypuElementScopeFindExtensionsTestFunction" resource="~/CoypuElementScopeFindExtensionsTest.wxe" />
+  <add id="DirtyStateTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::DirtyStates.DirtyStateRootFunction" resource="~/DirtyStateTest.wxe" />
+  <add id="DropDownListTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::DropDownListTestFunction" resource="~/DropDownListTest.wxe" />
+  <add id="DropDownMenuTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::DropDownMenuTestFunction" resource="~/DropDownMenuTest.wxe" />
+  <add id="ElementScopeTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::ElementScopeTestFunction" resource="~/ElementScopeTest.wxe" />
+  <add id="GenericTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::GenericTestFunction" resource="~/GenericTest.wxe" />
+  <add id="ImageButtonTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::ImageButtonTestFunction" resource="~/ImageButtonTest.wxe" />
+  <add id="InfrastructureTests" type="Remotion.Web.Development.WebTesting.TestSite.Shared::InfrastructureTestsFunction" resource="~/InfrastructureTests.wxe" />
+  <add id="ListMenuTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::ListMenuTestFunction" resource="~/ListMenuTest.wxe" />
+  <add id="RequestErrorDetectionStrategyTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::RequestErrorDetectionStrategyTestFunction" resource="~/RequestErrorDetectionStrategyTest.wxe" />
+  <add id="ScreenshotTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::ScreenshotTestFunction" resource="~/ScreenshotTest.wxe" />
+  <add id="TabbedMenuTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::TabbedMenuTestFunction" resource="~/TabbedMenuTest.wxe" />
+  <add id="TabbedMultiViewTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::TabbedMultiViewTestFunction" resource="~/TabbedMultiViewTest.wxe" />
+  <add id="TextBoxTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::TextBoxTestFunction" resource="~/TextBoxTest.wxe" />
+  <add id="TreeViewTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::TreeViewTestFunction" resource="~/TreeViewTest.wxe" />
+  <add id="WebButtonTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::WebButtonTestFunction" resource="~/WebButtonTest.wxe" />
+  <add id="WebTabStripTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::WebTabStripTestFunction" resource="~/WebTabStripTest.wxe" />
+  <add id="BrowserSessionTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::BrowserSessionTestFunction" resource="~/BrowserSessionTest.wxe" />
+  <add id="PlatformTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::PlatformTestFunction" resource="~/PlatformTest.wxe" />
+  <add id="CompletionDetectionStrategyTest" type="Remotion.Web.Development.WebTesting.TestSite.Shared::CompletionDetectionStrategyTestFunction" resource="~/CompletionDetectionStrategyTest.wxe" />
 
-  <add id="MultiWindowTest_Main" type="Remotion.Web.Development.WebTesting.TestSite::MultiWindowTest.MainFunction"
-      resource="~/MultiWindowTest/Main.wxe" />
-  <add id="MultiWindowTest_Frame" type="Remotion.Web.Development.WebTesting.TestSite::MultiWindowTest.FrameFunction"
-      resource="~/MultiWindowTest/Frame.wxe" />
-  <add id="MultiWindowTest_Window" type="Remotion.Web.Development.WebTesting.TestSite::MultiWindowTest.WindowFunction"
-      resource="~/MultiWindowTest/Window.wxe" />
+  <add id="MultiWindowTest_Main" type="Remotion.Web.Development.WebTesting.TestSite.Shared::MultiWindowTest.MainFunction"
+       resource="~/MultiWindowTest/Main.wxe" />
+  <add id="MultiWindowTest_Frame" type="Remotion.Web.Development.WebTesting.TestSite.Shared::MultiWindowTest.FrameFunction"
+       resource="~/MultiWindowTest/Frame.wxe" />
+  <add id="MultiWindowTest_Window" type="Remotion.Web.Development.WebTesting.TestSite.Shared::MultiWindowTest.WindowFunction"
+       resource="~/MultiWindowTest/Window.wxe" />
 </urlMapping>

@@ -17,7 +17,7 @@
 using System;
 using Remotion.Web.ExecutionEngine;
 
-namespace Remotion.Web.Development.WebTesting.TestSite.DirtyStates
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared.DirtyStates
 {
   public partial class DirtyStateTest : WxePage
   {

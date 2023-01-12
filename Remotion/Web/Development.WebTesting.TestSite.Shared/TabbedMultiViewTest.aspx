@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="TabbedMultiViewTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.TabbedMultiViewTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="TabbedMultiViewTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.TabbedMultiViewTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <h3>TabbedMultiView</h3>
   <remotion:TabbedMultiView ID="MyTabbedMultiView" runat="server" Height="500">
@@ -28,7 +29,7 @@
       <remotion:TabView ID="Tab2" Title="Tab2Title" runat="server">
         <span>Content2</span>
       </remotion:TabView>
-      <remotion:TabView runat="server" ID="Tab3" Title="Tab3Title" Icon-Url="~/Images/SampleIcon.gif" runat="server">
+      <remotion:TabView runat="server" ID="Tab3" Title="Tab3Title" Icon-Url="Image/SampleIcon.gif">
         <span>Content3</span>
       </remotion:TabView>
     </Views>

@@ -2,7 +2,7 @@
 using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.TestSite.Infrastructure;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.Shared
 {
   public class WebGenericTestPageParameterFactory : GenericTestPageParameterFactory
   {

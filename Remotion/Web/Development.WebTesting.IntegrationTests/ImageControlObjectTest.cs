@@ -44,7 +44,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var image = home.Images().GetByLocalID("MyImage");
-      Assert.That(image.GetSourceUrl(), Does.EndWith("/Images/SampleIcon.gif"));
+      Assert.That(image.GetSourceUrl(), Does.EndWith("/Image/SampleIcon.gif"));
 
       var image3 = home.Images().GetByLocalID("MyImage3");
       Assert.That(image3.GetSourceUrl(), Is.Null);

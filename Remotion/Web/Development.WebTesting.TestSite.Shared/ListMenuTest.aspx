@@ -14,7 +14,8 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="ListMenuTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.ListMenuTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="ListMenuTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.ListMenuTest" %>
+<%@ Register tagPrefix="remotion" namespace="Remotion.Web.UI.Controls" assembly="Remotion.Web" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
@@ -28,7 +29,7 @@
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID2" Text="HrefItem">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="ListMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/ListMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID3" Text="NoneItem">
@@ -41,10 +42,10 @@
               <remotion:Command Type="WxeFunction" WxeFunctionCommand-MappingID="ListMenuTest" />
             </PersistedCommand>
           </remotion:WebMenuItem>
-          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="~/Images/SampleIcon.gif" Style="Icon" Icon-AlternateText="Icon-only Command"></remotion:WebMenuItem>
+          <remotion:WebMenuItem Category="Category2" ItemID="ItemID5" Icon-Url="Image/SampleIcon.gif" Style="Icon" Icon-AlternateText="Icon-only Command"></remotion:WebMenuItem>
           <remotion:WebMenuItem Category="Category2" ItemID="ItemID6" Text="DisabledItem" IsDisabled="True">
             <PersistedCommand>
-              <remotion:Command Type="Href" HrefCommand-Href="ListMenuTest.wxe" />
+              <remotion:Command Type="Href" HrefCommand-Href="~/ListMenuTest.wxe" />
             </PersistedCommand>
           </remotion:WebMenuItem>
         </MenuItems>
@@ -53,7 +54,7 @@
         <h3>ListMenu2</h3>
         <remotion:ListMenu ID="MyListMenu2" runat="server">
           <MenuItems>
-            <remotion:WebMenuItem Category="Category1" Icon-Url="~/Images/SampleIcon.gif" ItemID="ItemID1" Text="This is a very long text that should wrap around into the next line and should be displayed to the right of the icon"/>
+            <remotion:WebMenuItem Category="Category1" Icon-Url="Image/SampleIcon.gif" ItemID="ItemID1" Text="This is a very long text that should wrap around into the next line and should be displayed to the right of the icon"/>
           </MenuItems>
         </remotion:ListMenu>
         <style>

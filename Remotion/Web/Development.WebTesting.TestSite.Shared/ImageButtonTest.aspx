@@ -14,20 +14,20 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="ImageButtonTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.ImageButtonTest" %>
+<%@ Page Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="ImageButtonTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.ImageButtonTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
       <h3>ImageButton</h3>
-      <asp:ImageButton ID="MyImageButton" CommandName="MyImageButtonCommand" ImageUrl="~/Images/SampleIcon.gif" PostBackUrl="ImageButtonTest.wxe" runat="server"/>
+      <asp:ImageButton ID="MyImageButton" CommandName="MyImageButtonCommand" ImageUrl="Image/SampleIcon.gif" PostBackUrl="ImageButtonTest.wxe" runat="server"/>
       <div id="scope">
         <h3>ImageButton2</h3>
-        <asp:ImageButton ID="MyImageButton2" CommandName="MyImageButton2Command" ImageUrl="~/Images/SampleIcon.gif" PostBackUrl="ImageButtonTest.wxe" runat="server"/>
+        <asp:ImageButton ID="MyImageButton2" CommandName="MyImageButton2Command" ImageUrl="Image/SampleIcon.gif" PostBackUrl="ImageButtonTest.wxe" runat="server"/>
       </div>
       <h3>ImageButton3</h3>
-      <asp:HyperLink ID="MyImageButton3" ImageUrl="~/Images/SampleIcon.gif" NavigateUrl="ImageButtonTest.wxe" runat="server" />
+      <asp:HyperLink ID="MyImageButton3" ImageUrl="Image/SampleIcon.gif" NavigateUrl="~/ImageButtonTest.wxe" runat="server" />
       <h3>ImageButton disabled</h3>
-      <asp:ImageButton ID="ImageButtonDisabled" CommandName="MyImageButtonCommand" ImageUrl="~/Images/SampleIcon.gif" PostBackUrl="ImageButtonTest.wxe" disabled="true" runat="server"/>
+      <asp:ImageButton ID="ImageButtonDisabled" CommandName="MyImageButtonCommand" ImageUrl="Image/SampleIcon.gif" PostBackUrl="ImageButtonTest.wxe" disabled="true" runat="server"/>
     </ContentTemplate>
   </asp:UpdatePanel>
 </asp:Content>

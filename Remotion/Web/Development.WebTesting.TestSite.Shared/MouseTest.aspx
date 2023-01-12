@@ -14,7 +14,7 @@
  % You should have received a copy of the GNU Lesser General Public License
  % along with re-motion; if not, see http://www.gnu.org/licenses.
 --%>
-<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="MouseTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.MouseTest" %>
+<%@ Page Title="" Language="C#" MasterPageFile="Layout.Master" AutoEventWireup="true" CodeBehind="MouseTest.aspx.cs" Inherits="Remotion.Web.Development.WebTesting.TestSite.Shared.MouseTest" %>
 <asp:Content ContentPlaceHolderID="body" runat="server">
   <table id="table">
     <tr>
