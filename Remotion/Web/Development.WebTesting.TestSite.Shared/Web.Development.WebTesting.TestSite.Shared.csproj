@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <ProjectType>WebLibrary</ProjectType>
+  </PropertyGroup>
+  <Import Project="..\..\..\Build\Shared.build.props" />
+  <PropertyGroup>
+    <AssemblyName>Remotion.Web.Development.WebTesting.TestSite.Shared</AssemblyName>
+    <RootNamespace>$(AssemblyName)</RootNamespace>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core\Core.Core.csproj" />
+    <ProjectReference Include="..\..\Development\Web\Development.Web.csproj" />
+    <ProjectReference Include="..\..\Security\Core\Security.Core.csproj" />
+    <ProjectReference Include="..\..\Web\Core\Web.Core.csproj" />
+    <ProjectReference Include="..\Development.WebTesting.TestSite.Infrastructure\Web.Development.WebTesting.TestSite.Infrastructure.csproj" />
+  </ItemGroup>
+  <Import Project="..\..\..\Build\Shared.build.targets" />
+</Project>

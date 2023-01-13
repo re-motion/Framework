@@ -36,6 +36,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     private WebTestHelper _webTestHelper;
     private IDisposable _aspNetRequestErrorDetectionScope;
 
+    protected string SharedProjectWebRoot => s_webApplicationRoot.Value + "res/Remotion.Web.Development.WebTesting.TestSite.Shared/";
+
     protected virtual bool MaximizeMainBrowserSession
     {
       get { return true; }
@@ -101,7 +103,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     protected TPageObject Start<TPageObject> (string page)
       where TPageObject : PageObject
     {
-      var url = s_webApplicationRoot.Value + page;
+      var isWxe = page.EndsWith(".wxe", StringComparison.OrdinalIgnoreCase);
+      var url = isWxe
+          ? s_webApplicationRoot.Value + page
+          : SharedProjectWebRoot + page;
       _webTestHelper.MainBrowserSession.Window.Visit(url);
 
       return _webTestHelper.CreateInitialPageObject<TPageObject>(_webTestHelper.MainBrowserSession);
