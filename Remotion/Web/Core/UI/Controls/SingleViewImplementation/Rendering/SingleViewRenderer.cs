@@ -67,7 +67,6 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + renderingContext.Control.WrapperClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.WrapperClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassWrapper);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -107,8 +106,6 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     private void RenderPlaceHolder (SingleViewRenderingContext renderingContext, Style style, PlaceHolder placeHolder, string defaultCssClass)
     {
-      ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + placeHolder.ClientID);
-
       string cssClass = defaultCssClass;
       if (!string.IsNullOrEmpty(style.CssClass))
         cssClass = style.CssClass;
@@ -135,8 +132,6 @@ namespace Remotion.Web.UI.Controls.SingleViewImplementation.Rendering
 
     private void RenderView (SingleViewRenderingContext renderingContext)
     {
-      ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + renderingContext.Control.ViewClientID);
-
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ViewClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassView);
       renderingContext.Control.ViewStyle.AddAttributesToRender(renderingContext.Writer);

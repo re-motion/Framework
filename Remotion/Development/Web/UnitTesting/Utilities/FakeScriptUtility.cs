@@ -31,10 +31,6 @@ namespace Remotion.Development.Web.UnitTesting.Utilities
     {
     }
 
-    public void RegisterElementForBorderSpans (IControl control, string cssSelectorForBorderSpanTarget)
-    {
-    }
-
     public void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler)
     {
     }

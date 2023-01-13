@@ -72,7 +72,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
       AddAttributesToRender(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-      ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + renderingContext.Control.WrapperClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.WrapperClientID);
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassWrapper);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -106,8 +105,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
     protected virtual void RenderActiveView (TabbedMultiViewRenderingContext renderingContext)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-
-      ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + renderingContext.Control.ActiveViewClientID);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, renderingContext.Control.ActiveViewClientID);
       renderingContext.Control.ActiveViewStyle.AddAttributesToRender(renderingContext.Writer);
@@ -168,8 +165,6 @@ namespace Remotion.Web.UI.Controls.TabbedMultiViewImplementation.Rendering
 
     private void RenderPlaceHolder (TabbedMultiViewRenderingContext renderingContext, Style style, PlaceHolder placeHolder, string defaultCssClass)
     {
-      ScriptUtility.Instance.RegisterElementForBorderSpans(renderingContext.Control, "#" + placeHolder.ClientID);
-
       string cssClass = defaultCssClass;
       if (!string.IsNullOrEmpty(style.CssClass))
         cssClass = style.CssClass;
