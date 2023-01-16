@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Remotion.Validation.RuleBuilders;
 using Remotion.Validation.Validators;
@@ -30,10 +31,28 @@ namespace Remotion.Validation
       return ruleBuilder.SetValidator(p => new NotNullValidator(p.ValidationMessage));
     }
 
-    public static IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> NotEmpty<TValidatedType, TProperty> (
-        this IAddingPropertyValidationRuleBuilder<TValidatedType, TProperty> ruleBuilder)
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> NotEmpty<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder)
     {
-      return ruleBuilder.SetValidator(p => new NotEmptyValidator(p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+    }
+
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> NotEmpty<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> ruleBuilder)
+    {
+      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+    }
+
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, byte[]> NotEmpty<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, byte[]> ruleBuilder)
+    {
+      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+    }
+
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, IReadOnlyList<object>> NotEmpty<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, IReadOnlyList<object>> ruleBuilder)
+    {
+      return ruleBuilder.SetValidator(p => new NotEmptyListValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> Length<TValidatedType> (

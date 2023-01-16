@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
@@ -27,12 +25,12 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotEmptyValidator : IRequiredValidator
+  public class NotEmptyValueValidator : IPropertyValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public NotEmptyValidator ([NotNull] ValidationMessage validationMessage)
+    public NotEmptyValueValidator (ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
@@ -55,13 +53,13 @@ namespace Remotion.Validation.Validators
       if (propertyValue == null)
         return true;
 
-      return !IsEmptyString(propertyValue) && !IsEmptyCollection(propertyValue);
+      return !IsEmptyString(propertyValue) && !IsEmptyArray(propertyValue);
     }
 
-    private bool IsEmptyCollection (object propertyValue)
+    private bool IsEmptyArray (object propertyValue)
     {
-      if (propertyValue is ICollection collectionValue)
-        return !collectionValue.Cast<object>().Any();
+      if (propertyValue is Array array)
+        return array.Length == 0;
 
       return false;
     }

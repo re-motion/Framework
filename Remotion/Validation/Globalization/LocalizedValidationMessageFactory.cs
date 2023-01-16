@@ -127,8 +127,11 @@ namespace Remotion.Validation.Globalization
       if (validator is LengthValidator lengthValidator)
         return GetResourceIdentifierForLengthValidator(lengthValidator);
 
-      if (validator is NotEmptyValidator)
+      if (validator is NotEmptyValueValidator)
         return GetResourceIdentifierForNotEmptyValidator(dataType);
+
+      if (validator is NotEmptyListValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
 
       if (validator is NotEqualValidator)
         return ResourceIdentifier.ValueMustNotBeEqualValidationMessage;

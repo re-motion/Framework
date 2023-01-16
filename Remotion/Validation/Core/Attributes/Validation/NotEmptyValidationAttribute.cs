@@ -25,7 +25,7 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyValidator"/> constraint for a property.
+  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyValueValidator"/> constraint for a property.
   /// </summary>
   public class NotEmptyValidationAttribute : AddingValidationAttributeBase
   {
@@ -38,18 +38,24 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull("property", property);
       ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      NotEmptyValidator validator;
-      if (string.IsNullOrEmpty(ErrorMessage))
+      IPropertyValidator CreateValidator (Func<ValidationMessage, IPropertyValidator> factory)
       {
-        validator = PropertyValidatorFactory.Create(
-            property,
-            parameters => new NotEmptyValidator(parameters.ValidationMessage),
-            validationMessageFactory);
+        if (string.IsNullOrEmpty(ErrorMessage))
+        {
+         return PropertyValidatorFactory.Create(
+              property,
+              parameters => factory(parameters.ValidationMessage),
+              validationMessageFactory);
+        }
+
+        return factory(new InvariantValidationMessage(ErrorMessage));
       }
+
+      IPropertyValidator validator;
+      if (property.PropertyType.CanAscribeTo(typeof(IReadOnlyList<>)))
+        validator = CreateValidator(msg => new NotEmptyListValidator(msg));
       else
-      {
-        validator = new NotEmptyValidator(new InvariantValidationMessage(ErrorMessage));
-      }
+        validator = CreateValidator(msg => new NotEmptyValueValidator(msg));
 
       return EnumerableUtility.Singleton(validator);
     }

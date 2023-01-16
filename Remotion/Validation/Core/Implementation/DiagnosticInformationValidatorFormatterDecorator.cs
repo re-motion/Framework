@@ -55,6 +55,7 @@ namespace Remotion.Validation.Implementation
       switch (validator)
       {
         case IRequiredValidator _:
+        case NotEmptyValueValidator _:
           return typeName;
 
         case ILengthValidator lengthValidator:

@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
@@ -23,27 +24,13 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.UnitTests.Validators
 {
   [TestFixture]
-  public class NotEmptyValidatorTest : ValidatorTestBase
+  public class NotEmptyListValidatorTest : ValidatorTestBase
   {
-    [Test]
-    public void Validate_WithPropertyValueIsEmptyString_ReturnsSingleValidationFailure ()
-    {
-      var propertyValidatorContext = CreatePropertyValidatorContext("");
-      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Custom validation message."));
-
-      var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
-
-      Assert.That(validationFailures.Length, Is.EqualTo(1));
-      //TODO RM-5906: Assert ValidatedObject, ValidatedProperty, ValidatedValue
-      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must not be empty."));
-      Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message."));
-    }
-
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
+      var validator = new NotEmptyListValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -51,21 +38,10 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    public void Validate_WithPropertyValueIsStringWhitespace_ReturnsNoValidationFailures ()
+    public void Validate_WithPropertyValueIsEmptyList_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext(" ");
-      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
-
-      var validationFailures = validator.Validate(propertyValidatorContext);
-
-      Assert.That(validationFailures, Is.Empty);
-    }
-
-    [Test]
-    public void Validate_WithPropertyValueIsEmptyArray_ReturnsSingleValidationFailure ()
-    {
-      var propertyValidatorContext = CreatePropertyValidatorContext(Array.Empty<object>());
-      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new List<object>());
+      var validator = new NotEmptyListValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
@@ -74,10 +50,10 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    public void Validate_WithPropertyValueIsNonEmptyCollection_ReturnsNoValidationFailures ()
+    public void Validate_WithPropertyValueIsNonEmptyList_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext(new[]{"someValue"});
-      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new List<string> { "someValue" });
+      var validator = new NotEmptyListValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
@@ -88,7 +64,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithObject_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
-      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
+      var validator = new NotEmptyListValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
