@@ -278,7 +278,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     }
 
     [Test]
-    public void GetTypes_WithGlobalBaseTypeAndExcludeGlobalTypes_IsNotIncludedInResult ()
+    public void GetTypes_WithGlobalBaseTypeAndExcludeGlobalTypes_IsIncludedInResult ()
     {
       var service = new AssemblyFinderTypeDiscoveryService(_finderMock.Object);
 
@@ -288,7 +288,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       Assert.That(objectTypes, Does.Contain(typeof(ExtendedHashtable)));
 
       var iCollectionTypes = service.GetTypes(typeof(ICollection), true);
-      Assert.That(iCollectionTypes, Does.Not.Contain(typeof(Hashtable)));
+      Assert.That(iCollectionTypes, Does.Contain(typeof(Hashtable)));
 
       _finderMock.Verify();
     }

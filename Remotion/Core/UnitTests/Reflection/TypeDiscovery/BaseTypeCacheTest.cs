@@ -122,7 +122,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     {
       var baseTypeCache = BaseTypeCache.Create(_testDomain);
 
-      Assert.That(baseTypeCache.GetTypes(typeof(ICloneable)), Is.EquivalentTo(new[] { typeof(Siberian) }));
+      Assert.That(baseTypeCache.GetTypes(typeof(ICloneable)), Is.EquivalentTo(new[] { typeof(ICloneable), typeof(Siberian) }));
     }
 
     [Test]
