@@ -45,17 +45,17 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
       var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty("LastName"));
       var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
-          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEmptyValidator>(), propertyInformation))
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEmptyValueValidator>(), propertyInformation))
           .Returns(validationMessageStub.Object);
 
       var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage, Is.Not.Null);
+      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyValueValidator)));
+      Assert.That(((NotEmptyValueValidator)result[0]).ValidationMessage, Is.Not.Null);
 
       validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+      Assert.That(((NotEmptyValueValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
     }
 
     [Test]
@@ -67,8 +67,104 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
       var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
 
       Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
-      Assert.That(((NotEmptyValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
+      Assert.That(((NotEmptyValueValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((NotEmptyValueValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_ForGenericCollectionProperty_WithDefaultMessage ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.ShippingAddresses)));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEmptyCollectionValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyCollectionValidator)));
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage, Is.Not.Null);
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_ForGenericCollectionProperty_WithCustomMessage ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.ShippingAddresses)));
+      _attribute.ErrorMessage = "CustomMessage";
+
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_ForCollectionProperty_WithDefaultMessage ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.AvailableBonuses)));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEmptyCollectionValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyCollectionValidator)));
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage, Is.Not.Null);
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_ForCollectionProperty_WithCustomMessage ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.AvailableBonuses)));
+      _attribute.ErrorMessage = "CustomMessage";
+
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_ForReadOnlyCollectionProperty_WithDefaultMessage ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.FamilyMembers)));
+      var validationMessageStub = new Mock<ValidationMessage>();
+      _validationMessageFactoryStub
+          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEmptyCollectionValidator>(), propertyInformation))
+          .Returns(validationMessageStub.Object);
+
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyCollectionValidator)));
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage, Is.Not.Null);
+
+      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
+    }
+
+    [Test]
+    public void GetPropertyValidator_ForReadOnlyCollectionProperty_WithCustomMessage ()
+    {
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.FamilyMembers)));
+      _attribute.ErrorMessage = "CustomMessage";
+
+      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
+
+      Assert.That(result.Length, Is.EqualTo(1));
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
+      Assert.That(((NotEmptyCollectionValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
     }
 
     [Test]

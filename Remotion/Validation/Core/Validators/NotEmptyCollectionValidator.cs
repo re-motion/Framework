@@ -21,18 +21,19 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotEmptyValidator : IRequiredValidator
+  public class NotEmptyCollectionValidator : IRequiredValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public NotEmptyValidator ([NotNull] ValidationMessage validationMessage)
+    public NotEmptyCollectionValidator ([NotNull] ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
@@ -55,23 +56,16 @@ namespace Remotion.Validation.Validators
       if (propertyValue == null)
         return true;
 
-      return !IsEmptyString(propertyValue) && !IsEmptyCollection(propertyValue);
-    }
+      if (propertyValue is ICollection collection)
+        return collection.Count > 0;
 
-    private bool IsEmptyCollection (object propertyValue)
-    {
-      if (propertyValue is ICollection collectionValue)
-        return !collectionValue.Cast<object>().Any();
+      if (propertyValue is IReadOnlyCollection<object> readOnlyCollection)
+        return readOnlyCollection.Count > 0;
 
-      return false;
-    }
+      if (propertyValue.GetType().CanAscribeTo(typeof(ICollection<>)))
+        return ((IEnumerable<object>)propertyValue).Any();
 
-    private bool IsEmptyString (object value)
-    {
-      if (value is string stringValue)
-        return stringValue.Length == 0;
-
-      return false;
+      return true;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)

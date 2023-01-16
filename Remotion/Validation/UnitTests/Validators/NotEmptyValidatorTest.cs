@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Remotion.Validation.Implementation;
@@ -30,7 +29,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueIsEmptyString_ReturnsSingleValidationFailure ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext("");
-      var validator = new NotEmptyValidator(new InvariantValidationMessage("Custom validation message."));
+      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Custom validation message."));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
@@ -44,7 +43,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(null);
-      var validator = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -55,7 +54,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithPropertyValueIsStringWhitespace_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(" ");
-      var validator = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
@@ -63,10 +62,10 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    public void Validate_WithPropertyValueIsEmptyCollection_ReturnsSingleValidationFailure ()
+    public void Validate_WithPropertyValueIsEmptyArray_ReturnsSingleValidationFailure ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext(new List<object>());
-      var validator = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(Array.Empty<object>());
+      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
@@ -77,8 +76,8 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void Validate_WithPropertyValueIsNonEmptyCollection_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext(new List<string> { "someValue" });
-      var validator = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      var propertyValidatorContext = CreatePropertyValidatorContext(new[]{"someValue"});
+      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
@@ -89,7 +88,7 @@ namespace Remotion.Validation.UnitTests.Validators
     public void Validate_WithObject_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
-      var validator = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      var validator = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
 
