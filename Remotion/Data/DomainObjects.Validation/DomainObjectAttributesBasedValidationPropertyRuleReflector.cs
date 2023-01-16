@@ -177,7 +177,7 @@ namespace Remotion.Data.DomainObjects.Validation
       {
         yield return PropertyValidatorFactory.Create(
             _implementationPropertyInformation,
-            parameters => new NotEmptyValidator(parameters.ValidationMessage),
+            parameters => new NotEmptyValueValidator(parameters.ValidationMessage),
             _validationMessageFactory);
       }
     }
@@ -196,7 +196,7 @@ namespace Remotion.Data.DomainObjects.Validation
         {
           yield return PropertyValidatorFactory.Create(
               _implementationPropertyInformation,
-              parameters => new NotEmptyValidator(parameters.ValidationMessage),
+              parameters => new NotEmptyCollectionValidator(parameters.ValidationMessage),
               _validationMessageFactory);
         }
       }

@@ -409,7 +409,7 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       _validationMessageFactoryStub
           .Setup(
               _ => _.CreateValidationMessageForPropertyValidator(
-                  It.IsAny<NotEmptyValidator>(),
+                  It.IsAny<NotEmptyValueValidator>(),
                   PropertyInfoAdapter.Create(_mixinPropertyWithMandatoryStringPropertyAttribute)))
           .Returns(notEmptyValidationMessageStub.Object);
 
@@ -422,8 +422,8 @@ namespace Remotion.Data.DomainObjects.Validation.UnitTests.DomainObjectAttribute
       Assert.That(((MaximumLengthValidator)result[0]).ValidationMessage.ToString, Is.EqualTo("Stub Message for Length"));
 
       notEmptyValidationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message for NotEmpty");
-      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValidator)));
-      Assert.That(((NotEmptyValidator)result[1]).ValidationMessage.ToString, Is.EqualTo("Stub Message for NotEmpty"));
+      Assert.That(result[1], Is.TypeOf(typeof(NotEmptyValueValidator)));
+      Assert.That(((NotEmptyValueValidator)result[1]).ValidationMessage.ToString, Is.EqualTo("Stub Message for NotEmpty"));
     }
 
     [Test]

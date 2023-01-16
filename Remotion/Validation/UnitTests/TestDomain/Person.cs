@@ -15,6 +15,8 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Remotion.Validation.UnitTests.TestDomain
 {
@@ -25,5 +27,7 @@ namespace Remotion.Validation.UnitTests.TestDomain
     public virtual string LastName { get; set; }
 
     public virtual DateTime Birthday { get; set; }
+
+    public virtual IReadOnlyCollection<Person> FamilyMembers { get; set; }
   }
 }
