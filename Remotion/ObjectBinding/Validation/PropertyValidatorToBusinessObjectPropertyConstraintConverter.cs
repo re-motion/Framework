@@ -43,10 +43,7 @@ namespace Remotion.ObjectBinding.Validation
       if (propertyValidator is ILengthValidator lengthValidator && lengthValidator.Max.HasValue)
         yield return new BusinessObjectPropertyValueLengthConstraint(lengthValidator.Max.Value);
 
-      if (propertyValidator is INotNullValidator)
-        yield return new BusinessObjectPropertyValueRequiredConstraint();
-
-      if (propertyValidator is INotEmptyValidator)
+      if (propertyValidator is IRequiredValidator)
         yield return new BusinessObjectPropertyValueRequiredConstraint();
     }
   }

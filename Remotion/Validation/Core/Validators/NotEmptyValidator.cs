@@ -27,7 +27,7 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotEmptyValidator : INotEmptyValidator
+  public class NotEmptyValidator : IRequiredValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
