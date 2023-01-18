@@ -30,9 +30,5 @@ namespace Remotion.Development.Web.UnitTesting.Utilities
     public void RegisterJavaScriptInclude (IControl control, HtmlHeadAppender htmlHeadAppender)
     {
     }
-
-    public void RegisterResizeOnElement (IControl control, string cssSelector, string eventHandler)
-    {
-    }
   }
 }

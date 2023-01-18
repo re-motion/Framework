@@ -191,56 +191,6 @@ class PageUtility
 {
   public static Instance: PageUtility;
 
-  private _resizeHandlers: PageUtility_ResizeHandlerItem[] = new Array();
-  private _resizeTimeoutID: Nullable<number> = null;
-  private _resizeTimeoutInMilliSeconds = 50;
-
-  constructor()
-  {
-    window.addEventListener("resize", function() { PageUtility.Instance.PrepareExecuteResizeHandlers(); });
-  }
-
-  public RegisterResizeHandler (selector: string, handler: PageUtility_ResizeHandler): void
-  {
-    ArgumentUtility.CheckNotNullAndTypeIsString ('selector', selector);
-    ArgumentUtility.CheckNotNull ('handler', handler);
-
-    for (var i = 0; i < this._resizeHandlers.length; i++)
-    {
-      var item = this._resizeHandlers[i];
-      if (item.Selector == selector)
-      {
-        (item as any).handler = handler; // TODO 7632: PageUtility.RegisterResizeHandler assigns wrong property
-        return;
-      }
-    }
-    this._resizeHandlers[this._resizeHandlers.length] = new PageUtility_ResizeHandlerItem (selector, handler);
-  };
-
-  public PrepareExecuteResizeHandlers(): void
-  {
-    if (this._resizeTimeoutID != null)
-      window.clearTimeout (this._resizeTimeoutID);
-
-    this._resizeTimeoutID = window.setTimeout (function () { PageUtility.Instance.ExecuteResizeHandlers(); }, this._resizeTimeoutInMilliSeconds);
-  };
-
-  public ExecuteResizeHandlers(): void
-  {
-    var existingResizeHandlers = new Array();
-    for (var i = 0; i < this._resizeHandlers.length; i++)
-    {
-      var item = this._resizeHandlers[i];
-      var element = document.querySelector<HTMLElement> (item.Selector);
-      if (element != null)
-      {
-        item.Handler (element);
-        existingResizeHandlers[existingResizeHandlers.length] = item;
-      }
-    }
-    this._resizeHandlers = existingResizeHandlers;
-  };
-
   public IsInDom (element: HTMLElement): boolean
   {
     ArgumentUtility.CheckNotNull('element', element);
@@ -254,20 +204,6 @@ class PageUtility
       node = node.parentNode;
     }
     return false;
-  }
-}
-
-type PageUtility_ResizeHandler = (element: HTMLElement) => void;
-
-class PageUtility_ResizeHandlerItem
-{
-  public readonly Selector: string;
-  public readonly Handler: PageUtility_ResizeHandler;
-
-  constructor(selector: string, handler: PageUtility_ResizeHandler)
-  {
-    this.Selector = selector;
-    this.Handler = handler;
   }
 }
 
