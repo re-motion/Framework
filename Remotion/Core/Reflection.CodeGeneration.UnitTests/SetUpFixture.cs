@@ -75,7 +75,7 @@ namespace Remotion.Reflection.CodeGeneration.UnitTests
     public virtual void OneTimeTearDown ()
     {
       Console.WriteLine("Tearing down code generation tests");
-#if FEATURE_ASSEMBLYBUILDER_SAVE && !NO_PEVERIFY
+#if FEATURE_ASSEMBLYBUILDER_SAVE && ENABLE_PEVERIFY
       string[] paths = AssemblySaver.SaveAssemblies(s_scope);
       s_scope = null;
       s_unsavedScope = null;
