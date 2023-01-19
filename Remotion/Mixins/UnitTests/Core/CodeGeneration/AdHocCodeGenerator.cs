@@ -40,7 +40,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
       ArgumentUtility.CheckNotNullOrEmpty("assemblyName", assemblyName);
 
       _filename = assemblyName + ".dll";
-#if NETFRAMEWORK && !NO_PEVERIFY
+#if NETFRAMEWORK && ENABLE_PEVERIFY
       _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.RunAndSave, assemblyDirectory);
 #else
       _assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.Run);
@@ -140,7 +140,7 @@ namespace Remotion.Mixins.UnitTests.Core.CodeGeneration
         }
       }
 
-#if NETFRAMEWORK && !NO_PEVERIFY
+#if NETFRAMEWORK && ENABLE_PEVERIFY
       _assemblyBuilder.Save(_filename);
 #endif
       return _moduleBuilder.FullyQualifiedName;
