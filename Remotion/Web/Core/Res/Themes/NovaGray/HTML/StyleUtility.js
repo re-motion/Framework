@@ -20,10 +20,6 @@ function StyleUtility()
 
 StyleUtility.IsNovaGray = true;
 
-StyleUtility.CreateBorderSpans = function (selector)
-{
-};
-
 StyleUtility.AddBrowserSwitch = function ()
 {
   function containsBrowser(brands, expectedBrand)
