@@ -63,8 +63,8 @@ namespace Remotion.Validation.UnitTests
 
       addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      Assert.That(createdValidator, Is.InstanceOf<NotEmptyValueValidator>());
-      var notEmptyValidator = (NotEmptyValueValidator)createdValidator;
+      Assert.That(createdValidator, Is.InstanceOf<NotEmptyBinaryValidator>());
+      var notEmptyValidator = (NotEmptyBinaryValidator)createdValidator;
       Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
@@ -81,8 +81,8 @@ namespace Remotion.Validation.UnitTests
 
       addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      Assert.That(createdValidator, Is.InstanceOf<NotEmptyValueValidator>());
-      var notEmptyValidator = (NotEmptyValueValidator)createdValidator;
+      Assert.That(createdValidator, Is.InstanceOf<NotEmptyStringValidator>());
+      var notEmptyValidator = (NotEmptyStringValidator)createdValidator;
       Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 

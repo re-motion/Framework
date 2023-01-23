@@ -25,12 +25,12 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotEmptyValueValidator : IPropertyValidator
+  public class NotEmptyBinaryValidator : IPropertyValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public NotEmptyValueValidator (ValidationMessage validationMessage)
+    public NotEmptyBinaryValidator (ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
@@ -50,26 +50,10 @@ namespace Remotion.Validation.Validators
     {
       var propertyValue = context.PropertyValue;
 
-      if (propertyValue == null)
+      if (propertyValue is not byte[] binaryValue)
         return true;
 
-      return !IsEmptyString(propertyValue) && !IsEmptyArray(propertyValue);
-    }
-
-    private bool IsEmptyArray (object propertyValue)
-    {
-      if (propertyValue is Array array)
-        return array.Length == 0;
-
-      return false;
-    }
-
-    private bool IsEmptyString (object value)
-    {
-      if (value is string stringValue)
-        return stringValue.Length == 0;
-
-      return false;
+      return binaryValue.Length > 0;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)

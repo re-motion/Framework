@@ -28,6 +28,8 @@ namespace Remotion.Validation.UnitTests.TestDomain
 
     public virtual DateTime Birthday { get; set; }
 
+    public virtual byte[] Photograph { get; set; }
+
     public virtual IReadOnlyCollection<Person> FamilyMembers { get; set; }
   }
 }
