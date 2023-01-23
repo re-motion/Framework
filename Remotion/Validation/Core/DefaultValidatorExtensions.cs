@@ -34,25 +34,37 @@ namespace Remotion.Validation
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> NotEmpty<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder)
     {
-      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyStringValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> NotEmpty<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> ruleBuilder)
     {
-      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyCollectionValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, byte[]> NotEmpty<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, byte[]> ruleBuilder)
     {
-      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyBinaryValidator(p.ValidationMessage));
     }
 
-    public static IAddingPropertyValidationRuleBuilder<TValidatedType, IReadOnlyList<object>> NotEmpty<TValidatedType> (
-        this IAddingPropertyValidationRuleBuilder<TValidatedType, IReadOnlyList<object>> ruleBuilder)
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, IReadOnlyCollection<object>> NotEmpty<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, IReadOnlyCollection<object>> ruleBuilder)
     {
-      return ruleBuilder.SetValidator(p => new NotEmptyListValidator(p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyCollectionValidator(p.ValidationMessage));
+    }
+
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, ICollection> NotEmpty<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, ICollection> ruleBuilder)
+    {
+      return ruleBuilder.SetValidator(p => new NotEmptyCollectionValidator(p.ValidationMessage));
+    }
+
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, ICollection<TItem>> NotEmpty<TValidatedType, TItem> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, ICollection<TItem>> ruleBuilder)
+    {
+      return ruleBuilder.SetValidator(p => new NotEmptyCollectionValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> Length<TValidatedType> (

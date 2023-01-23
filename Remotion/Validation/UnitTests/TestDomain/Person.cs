@@ -25,5 +25,7 @@ namespace Remotion.Validation.UnitTests.TestDomain
     public virtual string LastName { get; set; }
 
     public virtual DateTime Birthday { get; set; }
+
+    public virtual byte[] Photograph { get; set; }
   }
 }

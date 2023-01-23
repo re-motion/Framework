@@ -159,7 +159,7 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustMatchRegularExpressionValidationMessage" xml:space="preserve">
     <value>Immetti un valore nel formato corretto.</value>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyStringValidationMessage" xml:space="preserve">
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyValueValidationMessage" xml:space="preserve">
     <value>Immettere un valore.</value>
   </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEqualValidationMessage" xml:space="preserve">

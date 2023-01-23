@@ -15,23 +15,25 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
+using Remotion.Reflection;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotEmptyListValidator : IRequiredValidator
+  public class NotEmptyCollectionValidator : IRequiredValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public NotEmptyListValidator ([NotNull] ValidationMessage validationMessage)
+    public NotEmptyCollectionValidator ([NotNull] ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
@@ -54,10 +56,16 @@ namespace Remotion.Validation.Validators
       if (propertyValue == null)
         return true;
 
-      if (propertyValue is IReadOnlyList<object> listValue)
-        return listValue.Any();
+      if (propertyValue is ICollection collection)
+        return collection.Count > 0;
 
-      return true;
+      if (propertyValue is IReadOnlyCollection<object> readOnlyCollection)
+        return readOnlyCollection.Count > 0;
+
+      if (propertyValue.GetType().CanAscribeTo(typeof(ICollection<>)))
+        return ((IEnumerable<object>)propertyValue).Any();
+
+      throw new NotSupportedException($"Only the following types are supported: IReadOnlyCollection<T>, ICollection<T>, and ICollection.");
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
