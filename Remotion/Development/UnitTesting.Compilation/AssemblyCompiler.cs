@@ -20,6 +20,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Microsoft.CSharp;
+using Remotion.Development.UnitTesting.Compilation.Roslyn;
 using Remotion.Utilities;
 
 namespace Remotion.Development.UnitTesting.Compilation
@@ -89,7 +90,7 @@ namespace Remotion.Development.UnitTesting.Compilation
 
     public void Compile ()
     {
-      CodeDomProvider provider = new CSharpCodeProvider();
+      CodeDomProvider provider = new CSharpRoslynCodeProvider();
 
       string[] sourceFiles = Directory.GetFiles(_sourceDirectory, "*.cs");
 
@@ -108,30 +109,6 @@ namespace Remotion.Development.UnitTesting.Compilation
 
         throw new AssemblyCompilationException(errorBuilder.ToString());
       }
-    }
-
-    public void CompileInSeparateAppDomain ()
-    {
-#if NETFRAMEWORK
-      AppDomain appDomain = null;
-      try
-      {
-        appDomain = AppDomain.CreateDomain(
-            "CompilerAppDomain",
-            null,
-            AppContext.BaseDirectory,
-            AppDomain.CurrentDomain.RelativeSearchPath,
-            AppDomain.CurrentDomain.ShadowCopyFiles);
-        appDomain.DoCallBack(Compile);
-      }
-      finally
-      {
-        if (appDomain != null)
-          AppDomain.Unload(appDomain);
-      }
-#else
-      throw new PlatformNotSupportedException("Compiling in a separate assembly is not supported in .NET 5.");
-#endif
     }
   }
 }

@@ -18,11 +18,15 @@ using System;
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Compilation;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
 using Remotion.Utilities;
+#if NETFRAMEWORK
+using Remotion.Development.UnitTesting;
+#else
+using Remotion.Development.UnitTesting.IsolatedCodeRunner;
+#endif
 
 namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 {
@@ -93,34 +97,16 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     }
 
     [Test]
-#if !NETFRAMEWORK
-    [Ignore("RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
-#endif
     public void ApplicationAssemblyInclusion_DependsOnAttribute ()
     {
       string compiledAssemblyPath = Path.Combine(AppContext.BaseDirectory, "NonApplicationMarkedAssembly.dll");
       try
       {
 #if NETFRAMEWORK
-        AppDomainRunner.Run(
-            delegate (object[] args)
-            {
-              var path = (string)args[0];
-
-              ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
-              Assert.That(filter.ShouldIncludeAssembly(typeof(AttributeAssemblyLoaderFilterTest).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof(TestFixtureAttribute).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof(ApplicationAssemblyLoaderFilter).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof(object).Assembly), Is.True);
-              Assert.That(filter.ShouldIncludeAssembly(typeof(Uri).Assembly), Is.True);
-
-              var assemblyCompiler = new AssemblyCompiler(@"Reflection\TypeDiscovery\TestAssemblies\NonApplicationMarkedAssembly", path,
-                                                           typeof(NonApplicationAssemblyAttribute).Assembly.Location);
-              assemblyCompiler.Compile();
-              Assert.That(filter.ShouldIncludeAssembly(assemblyCompiler.CompiledAssembly), Is.False);
-            }, compiledAssemblyPath);
+        AppDomainRunner.Run(args => Test(new []{ (string)args[0] }), compiledAssemblyPath);
 #else
-        throw new NotImplementedException("RM-7808: Integrate the RoslynCodeDomProvider and reenable the AssemblyCompiler tests. Implement test using IsolatedCodeRunner.");
+        var isolatedCodeRunner = new IsolatedCodeRunner(Test);
+        isolatedCodeRunner.Run(compiledAssemblyPath);
 #endif
       }
       finally
@@ -128,6 +114,25 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
         if (File.Exists(compiledAssemblyPath))
           FileUtility.DeleteAndWaitForCompletion(compiledAssemblyPath);
       }
+    }
+
+    private static void Test (string[] args)
+    {
+      var path = args[0];
+
+      ApplicationAssemblyLoaderFilter filter = ApplicationAssemblyLoaderFilter.Instance;
+      Assert.That(filter.ShouldIncludeAssembly(typeof(AttributeAssemblyLoaderFilterTest).Assembly), Is.True);
+      Assert.That(filter.ShouldIncludeAssembly(typeof(TestFixtureAttribute).Assembly), Is.True);
+      Assert.That(filter.ShouldIncludeAssembly(typeof(ApplicationAssemblyLoaderFilter).Assembly), Is.True);
+      Assert.That(filter.ShouldIncludeAssembly(typeof(object).Assembly), Is.True);
+      Assert.That(filter.ShouldIncludeAssembly(typeof(Uri).Assembly), Is.True);
+
+      var assemblyCompiler = new AssemblyCompiler(
+          @"Reflection\TypeDiscovery\TestAssemblies\NonApplicationMarkedAssembly",
+          path,
+          typeof(NonApplicationAssemblyAttribute).Assembly.Location);
+      assemblyCompiler.Compile();
+      Assert.That(filter.ShouldIncludeAssembly(assemblyCompiler.CompiledAssembly), Is.False);
     }
   }
 }
