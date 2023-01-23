@@ -170,15 +170,22 @@ namespace Remotion.Data.DomainObjects.Validation
             _validationMessageFactory);
       }
 
-      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation)
-          && typeof(IEnumerable).IsAssignableFrom(_implementationProperty.PropertyType)
-          && !ReflectionUtility.IsObjectList(_implementationProperty.PropertyType)
-          && !ReflectionUtility.IsIObjectList(_implementationProperty.PropertyType))
+      if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation))
       {
-        yield return PropertyValidatorFactory.Create(
-            _implementationPropertyInformation,
-            parameters => new NotEmptyValueValidator(parameters.ValidationMessage),
-            _validationMessageFactory);
+        if (_implementationProperty.PropertyType == typeof(string))
+        {
+          yield return PropertyValidatorFactory.Create(
+              _implementationPropertyInformation,
+              parameters => new NotEmptyStringValidator(parameters.ValidationMessage),
+              _validationMessageFactory);
+        }
+        else if (_implementationProperty.PropertyType == typeof(byte[]))
+        {
+          yield return PropertyValidatorFactory.Create(
+              _implementationPropertyInformation,
+              parameters => new NotEmptyBinaryValidator(parameters.ValidationMessage),
+              _validationMessageFactory);
+        }
       }
     }
 

@@ -34,7 +34,7 @@ namespace Remotion.Validation
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> NotEmpty<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder)
     {
-      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyStringValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> NotEmpty<TValidatedType> (
@@ -46,7 +46,7 @@ namespace Remotion.Validation
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, byte[]> NotEmpty<TValidatedType> (
         this IAddingPropertyValidationRuleBuilder<TValidatedType, byte[]> ruleBuilder)
     {
-      return ruleBuilder.SetValidator(p => new NotEmptyValueValidator(p.ValidationMessage));
+      return ruleBuilder.SetValidator(p => new NotEmptyBinaryValidator(p.ValidationMessage));
     }
 
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, IReadOnlyCollection<object>> NotEmpty<TValidatedType> (

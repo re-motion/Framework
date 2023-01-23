@@ -26,8 +26,7 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyValueValidator"/> or
-  /// <see cref="NotEmptyCollectionValidator"/>, based on the property <see cref="Type"/>:
+  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyStringValidator"/>, <see cref="NotEmptyBinaryValidator"/>, or
   /// <see cref="NotEmptyCollectionValidator"/>, based on the property <see cref="Type"/>.
   /// </summary>
   /// <remarks>
@@ -35,11 +34,11 @@ namespace Remotion.Validation.Attributes.Validation
   /// <list type="bullet">
   ///   <item>
   ///     <term><see cref="string"/>: </term>
-  ///     <description><see cref="NotEmptyValueValidator"/></description>
+  ///     <description><see cref="NotEmptyStringValidator"/></description>
   ///   </item>
   ///   <item>
   ///     <term>byte[]: </term>
-  ///     <description><see cref="NotEmptyValueValidator"/></description>
+  ///     <description><see cref="NotEmptyBinaryValidator"/></description>
   ///   </item>
   ///   <item>
   ///     <term><see cref="ICollection"/>: </term>
@@ -68,9 +67,9 @@ namespace Remotion.Validation.Attributes.Validation
 
       Func<ValidationMessage, IPropertyValidator> validatorFactory;
       if(property.PropertyType == typeof(string))
-        validatorFactory = msg => new NotEmptyValueValidator(msg);
+        validatorFactory = msg => new NotEmptyStringValidator(msg);
       else if (property.PropertyType == typeof(byte[]))
-        validatorFactory = msg => new NotEmptyValueValidator(msg);
+        validatorFactory = msg => new NotEmptyBinaryValidator(msg);
       else if(typeof(ICollection).IsAssignableFrom(property.PropertyType))
         validatorFactory = msg => new NotEmptyCollectionValidator(msg);
       else if (typeof(IReadOnlyCollection<object>).IsAssignableFrom(property.PropertyType))

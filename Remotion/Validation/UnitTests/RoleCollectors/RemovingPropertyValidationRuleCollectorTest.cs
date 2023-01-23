@@ -99,13 +99,13 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     [Test]
     public void RegisterValidator_WithCollectorNotNullAndPredicateNull_AddsValidatorToCollector ()
     {
-      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyValueValidator), typeof(CustomerValidationRuleCollector1), null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyStringValidator), typeof(CustomerValidationRuleCollector1), null);
 
       Assert.That(_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(1));
 
       var removingPropertyValidatorRegistration = _removingPropertyValidationRuleCollector.Validators.Single();
 
-      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyValueValidator)));
+      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyStringValidator)));
       Assert.That(removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.EqualTo(typeof(CustomerValidationRuleCollector1)));
       Assert.That(removingPropertyValidatorRegistration.ValidatorPredicate, Is.Null);
       Assert.That(
@@ -118,13 +118,13 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     public void RegisterValidator_WithCollectorNullAndPredicateNotNull_AddsValidatorToCollector ()
     {
       Func<IPropertyValidator, bool> validatorPredicate = _ => false;
-      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyValueValidator), null, validatorPredicate);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyStringValidator), null, validatorPredicate);
 
       Assert.That(_removingPropertyValidationRuleCollector.Validators.Count(), Is.EqualTo(1));
 
       var removingPropertyValidatorRegistration = _removingPropertyValidationRuleCollector.Validators.Single();
 
-      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyValueValidator)));
+      Assert.That(removingPropertyValidatorRegistration.ValidatorType, Is.EqualTo(typeof(NotEmptyStringValidator)));
       Assert.That(removingPropertyValidatorRegistration.CollectorTypeToRemoveFrom, Is.Null);
       Assert.That(removingPropertyValidatorRegistration.ValidatorPredicate, Is.SameAs(validatorPredicate));
       Assert.That(
@@ -137,11 +137,11 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     {
       _removingPropertyValidationRuleCollector.RegisterValidator(typeof(StubPropertyValidator), null, null);
       _removingPropertyValidationRuleCollector.RegisterValidator(typeof(StubPropertyValidator), null, null);
-      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyValueValidator), null, null);
+      _removingPropertyValidationRuleCollector.RegisterValidator(typeof(NotEmptyStringValidator), null, null);
 
       Assert.That(
           _removingPropertyValidationRuleCollector.Validators.Select(v => v.ValidatorType),
-          Is.EqualTo(new[] { typeof(StubPropertyValidator), typeof(StubPropertyValidator), typeof(NotEmptyValueValidator) }));
+          Is.EqualTo(new[] { typeof(StubPropertyValidator), typeof(StubPropertyValidator), typeof(NotEmptyStringValidator) }));
     }
 
     [Test]

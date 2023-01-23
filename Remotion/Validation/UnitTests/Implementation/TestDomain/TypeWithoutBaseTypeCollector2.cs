@@ -23,7 +23,7 @@ namespace Remotion.Validation.UnitTests.Implementation.TestDomain
   {
     public TypeWithoutBaseTypeCollector2 ()
     {
-      RemoveRule(t => t.Property2).Validator<NotEmptyValueValidator>(_ => true).Validator<MaximumLengthValidator, TypeWithoutBaseTypeCollector1>();
+      RemoveRule(t => t.Property2).Validator<NotEmptyStringValidator>(_ => true).Validator<MaximumLengthValidator, TypeWithoutBaseTypeCollector1>();
     }
   }
 }

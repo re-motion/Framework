@@ -42,7 +42,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
     private IPropertyInformation _property;
     private Mock<IPropertyValidatorExtractor> _propertyValidatorExtractorMock;
     private StubPropertyValidator _stubPropertyValidator1;
-    private NotEmptyValueValidator _stubPropertyValidator2;
+    private NotEmptyStringValidator _stubPropertyValidator2;
     private NotEqualValidator _stubPropertyValidator3;
 
     [SetUp]
@@ -54,7 +54,7 @@ namespace Remotion.Validation.UnitTests.RoleCollectors
       _lastNameExpression = ExpressionHelper.GetTypedMemberExpression<Customer, string>(c => c.LastName);
 
       _stubPropertyValidator1 = new StubPropertyValidator();
-      _stubPropertyValidator2 = new NotEmptyValueValidator(new InvariantValidationMessage("Fake Message"));
+      _stubPropertyValidator2 = new NotEmptyStringValidator(new InvariantValidationMessage("Fake Message"));
       _stubPropertyValidator3 = new NotEqualValidator("gfsf", new InvariantValidationMessage("Fake Message"));
 
       _propertyValidatorExtractorMock = new Mock<IPropertyValidatorExtractor>(MockBehavior.Strict);
