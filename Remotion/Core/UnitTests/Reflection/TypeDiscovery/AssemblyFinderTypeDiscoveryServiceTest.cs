@@ -277,6 +277,22 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
       _finderMock.Verify(mock => mock.FindAssemblies(), Times.Never());
     }
 
+    [Test]
+    public void GetTypes_WithGlobalBaseTypeAndExcludeGlobalTypes_IsNotIncludedInResult ()
+    {
+      var service = new AssemblyFinderTypeDiscoveryService(_finderMock.Object);
+
+      _finderMock.Setup(mock => mock.FindAssemblies()).Returns(new[] { _testAssembly }).Verifiable();
+
+      var objectTypes = service.GetTypes(typeof(object), true);
+      Assert.That(objectTypes, Does.Contain(typeof(ExtendedHashtable)));
+
+      var iCollectionTypes = service.GetTypes(typeof(ICollection), true);
+      Assert.That(iCollectionTypes, Does.Not.Contain(typeof(Hashtable)));
+
+      _finderMock.Verify();
+    }
+
     public class Base { }
     public class Derived1 : Base { }
     public class Derived2 : Base { }
@@ -285,5 +301,6 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     public class OpenGenericBase<T> { }
     public class OpenGenericDerived<T> : OpenGenericBase<T> { }
     public class ClosedGenericDerived : OpenGenericDerived<int> { }
+    public class ExtendedHashtable : Hashtable { }
   }
 }

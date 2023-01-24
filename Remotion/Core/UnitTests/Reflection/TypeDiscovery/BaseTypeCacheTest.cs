@@ -39,6 +39,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
         typeof(OpenGenericDerived<>),
         typeof(ClosedGenericDerived),
         typeof(ClosedGenericDerived2),
+        typeof(OpenGenericDerivedDerived<>),
         typeof(ClosedGenericDerivedDerived),
         typeof(IOpenGenericInterface<>),
         typeof(IOpenGenericInterface2<>),
@@ -167,6 +168,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),
+                         typeof(OpenGenericDerivedDerived<>),
                          typeof(ClosedGenericDerivedDerived),
                      };
 
@@ -183,6 +185,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),
+                         typeof(OpenGenericDerivedDerived<>),
                          typeof(ClosedGenericDerivedDerived),
                      };
 
@@ -201,6 +204,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),
+                         typeof(OpenGenericDerivedDerived<>),
                          typeof(ClosedGenericDerivedDerived),
                      };
 
