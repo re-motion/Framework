@@ -39,6 +39,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
         typeof(OpenGenericDerived<>),
         typeof(ClosedGenericDerived),
         typeof(ClosedGenericDerived2),
+        typeof(OpenGenericDerivedDerived<>),
         typeof(ClosedGenericDerivedDerived),
         typeof(IOpenGenericInterface<>),
         typeof(IOpenGenericInterface2<>),
@@ -121,7 +122,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
     {
       var baseTypeCache = BaseTypeCache.Create(_testDomain);
 
-      Assert.That(baseTypeCache.GetTypes(typeof(ICloneable)), Is.EquivalentTo(new[] { typeof(Siberian) }));
+      Assert.That(baseTypeCache.GetTypes(typeof(ICloneable)), Is.EquivalentTo(new[] { typeof(ICloneable), typeof(Siberian) }));
     }
 
     [Test]
@@ -167,6 +168,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),
+                         typeof(OpenGenericDerivedDerived<>),
                          typeof(ClosedGenericDerivedDerived),
                      };
 
@@ -183,6 +185,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),
+                         typeof(OpenGenericDerivedDerived<>),
                          typeof(ClosedGenericDerivedDerived),
                      };
 
@@ -201,6 +204,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery
                          typeof(OpenGenericDerived<>),
                          typeof(ClosedGenericDerived),
                          typeof(ClosedGenericDerived2),
+                         typeof(OpenGenericDerivedDerived<>),
                          typeof(ClosedGenericDerivedDerived),
                      };
 
