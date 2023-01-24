@@ -80,10 +80,28 @@ $licenses = @{
   "https://raw.githubusercontent.com/moq/moq4/master/License.txt"=@{
     url=$null
     license="3-Clause BSD License"};
+  "https://github.com/rubicon-oss/Moq.VerifiableSequence/blob/main/LICENSE.md"=@{
+    url=$null
+    license="3-Clause BSD License"};
 
   "CoreForms.Web"=@{
     url=$null
     license="Closed source, RUBICON IT GmbH"};
+  "CoreForms.Web.Extensions"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Infrastructure"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Infrastructure.MachineConfig"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Infrastructure.Roslyn"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Services"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
   "DependDB.BuildProcessor"=@{
     url=$null
     license="Closed source, RUBICON IT GmbH"};
@@ -96,9 +114,6 @@ $licenses = @{
   "Microsoft.TypeScript.MSBuild"=@{
     url=$null
     license="Closed source, Microsoft Corporation"};
-    
-    
-    
 }
 
 $global:packageIds = New-Object System.Collections.Generic.List[System.Object]
@@ -333,6 +348,20 @@ $output += "| [Autocomplete - jQuery plugin](http://bassistance.de/jquery-plugin
 $output += "| dated: 2008-07-12 "
 $output += "| [MIT License](http://www.opensource.org/licenses/mit-license.php) "
 $output += "| This software (assembly 'Remotion.ObjectBinding.Web') embeds code based on 'Autocomplete - jQuery plugin'. <br> Copyright (c) 2007 Dylan Verheul, Dan G. Switzer, Anjesh Tuladhar, Jörn Zaefferer <br> http://bassistance.de/jquery-plugins/jquery-plugin-autocomplete/ "
+$output += "|
+"
+
+$output += "| [Roboto (Google Fonts)](https://fonts.google.com/specimen/Roboto) (Source Code) "
+$output += "| dated: 2021-10-13 "
+$output += "| [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) "
+$output += "| This software (assembly 'Remotion.Web') embeds 'Roboto' from the Google Fonts catalogue. <br> Copyright (c) 2011 Google (Designed by Christian Robertson) <br> https://fonts.google.com/specimen/Roboto "
+$output += "|
+"
+
+$output += "| [axe-core](https://github.com/dequelabs/axe-core) (Source Code) "
+$output += "| 3.3.4 "
+$output += "| [Mozilla Public License 2.0](https://github.com/dequelabs/axe-core/blob/develop/LICENSE) "
+$output += "| This software (assembly 'Remotion.Web.Development.WebTesting') embeds code based on 'axe-core'. <br> Copyright (c) 2021 Deque Systems, Inc. <br> https://github.com/dequelabs/axe-core "
 $output += "|
 "
 
