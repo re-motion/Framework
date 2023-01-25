@@ -112,6 +112,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation
     /// <summary> Gets or sets the text that is rendered as a label for the <c>options menu</c>. </summary>
     WebString OptionsTitle { get; }
 
+    /// <summary>
+    /// Gets the heading used to label the list menu.
+    /// </summary>
+    WebString ListMenuHeading { get; }
+
+    /// <summary>
+    /// Gets the heading level used to render the list menu heading. <see langword="null"/> renders a <c>span</c>.
+    /// </summary>
+    HeadingLevel? ListMenuHeadingLevel { get; }
+
     bool HasClientScript { get; }
     DropDownList? GetAvailableViewsList ();
     IDropDownMenu OptionsMenu { get; }

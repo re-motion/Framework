@@ -17,7 +17,7 @@
 using System;
 using log4net.Core;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Logging;
 
 namespace Remotion.UnitTests.Logging.Log4NetLogTests

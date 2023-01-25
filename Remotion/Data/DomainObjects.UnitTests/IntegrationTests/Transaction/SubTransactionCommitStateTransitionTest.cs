@@ -28,13 +28,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order obj = GetChangedThroughPropertyValue();
       Assert.That(obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         ++obj.OrderNumber;
         Assert.That(obj.State.IsChanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.False);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -42,13 +45,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order obj = GetChangedThroughPropertyValue();
       Assert.That(obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         obj.EnsureDataAvailable();
         Assert.That(obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.False);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -84,13 +90,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order obj = GetUnchanged();
       Assert.That(obj.State.IsUnchanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         ++obj.OrderNumber;
         Assert.That(obj.State.IsChanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.False);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsChanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -98,13 +107,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       Order obj = GetUnchanged();
       Assert.That(obj.State.IsUnchanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         obj.EnsureDataAvailable();
         Assert.That(obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.False);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsUnchanged, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -139,13 +151,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ClassWithAllDataTypes obj = GetNewUnchanged();
       Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         ++obj.Int32Property;
         Assert.That(obj.State.IsChanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -153,13 +168,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ClassWithAllDataTypes obj = GetNewUnchanged();
       Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         obj.EnsureDataAvailable();
         Assert.That(obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -167,12 +185,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ClassWithAllDataTypes obj = GetNewUnchanged();
       Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         Assert.That(obj.State.IsNotLoadedYet, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -180,13 +201,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     {
       ClassWithAllDataTypes obj = GetNewUnchanged();
       Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
       using (TestableClientTransaction.CreateSubTransaction().EnterDiscardingScope())
       {
         obj.Delete();
         Assert.That(obj.State.IsDeleted, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
         ClientTransactionScope.CurrentTransaction.Commit();
       }
       Assert.That(obj.State.IsInvalid, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -249,9 +273,12 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         obj = GetNewUnchanged();
         Assert.That(obj.State.IsNew, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
         ClientTransactionScope.CurrentTransaction.Commit();
+        Assert.That(obj.State.IsUnchanged, Is.True);
+        Assert.That(obj.State.IsNewInHierarchy, Is.True);
       }
-      Assert.That(obj.State.IsNew, Is.True);
+      Assert.That(obj.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -264,30 +291,41 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
       {
         objectCreatedInSub = GetNewUnchanged();
         Assert.That(objectCreatedInSub.State.IsNew, Is.True);
+        Assert.That(objectCreatedInSub.State.IsNewInHierarchy, Is.True);
 
         using (ClientTransactionScope.CurrentTransaction.CreateSubTransaction().EnterDiscardingScope())
         {
           objectCreatedInSubSub = GetNewUnchanged();
 
           Assert.That(objectCreatedInSub.State.IsNotLoadedYet, Is.True);
+          Assert.That(objectCreatedInSub.State.IsNewInHierarchy, Is.True);
           Assert.That(objectCreatedInSubSub.State.IsNew, Is.True);
+          Assert.That(objectCreatedInSubSub.State.IsNewInHierarchy, Is.True);
 
           ClientTransactionScope.CurrentTransaction.Commit();
 
           Assert.That(objectCreatedInSub.State.IsNotLoadedYet, Is.True);
+          Assert.That(objectCreatedInSub.State.IsNewInHierarchy, Is.True);
           Assert.That(objectCreatedInSubSub.State.IsUnchanged, Is.True);
+          Assert.That(objectCreatedInSubSub.State.IsNewInHierarchy, Is.True);
         }
 
         Assert.That(objectCreatedInSub.State.IsNew, Is.True);
+        Assert.That(objectCreatedInSub.State.IsNewInHierarchy, Is.True);
         Assert.That(objectCreatedInSubSub.State.IsNew, Is.True);
+        Assert.That(objectCreatedInSubSub.State.IsNewInHierarchy, Is.True);
 
         ClientTransactionScope.CurrentTransaction.Commit();
 
         Assert.That(objectCreatedInSub.State.IsUnchanged, Is.True);
+        Assert.That(objectCreatedInSub.State.IsNewInHierarchy, Is.True);
         Assert.That(objectCreatedInSubSub.State.IsUnchanged, Is.True);
+        Assert.That(objectCreatedInSubSub.State.IsNewInHierarchy, Is.True);
       }
 
       Assert.That(objectCreatedInSub.State.IsNew, Is.True);
+      Assert.That(objectCreatedInSub.State.IsNewInHierarchy, Is.True);
+      Assert.That(objectCreatedInSubSub.State.IsNewInHierarchy, Is.True);
       Assert.That(objectCreatedInSubSub.State.IsNew, Is.True);
     }
 

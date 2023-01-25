@@ -40,11 +40,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
-      var valueScope = Scope.FindChild("Value");
-
-      if (IsReadOnly())
-        return valueScope.Text; // do not trim
-
+      var valueScope = GetValueScope();
       return valueScope.Value; // do not trim
     }
 
@@ -91,7 +87,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
         throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
 
       var actualActionOptions = MergeWithDefaultActionOptions(actionOptions, finishInputWith);
-      ExecuteAction(new FillWithAction(this, Scope.FindChild("Value"), text, finishInputWith), actualActionOptions);
+      ExecuteAction(new FillWithAction(this, GetValueScope(), text, finishInputWith), actualActionOptions);
       return UnspecifiedPage();
     }
 

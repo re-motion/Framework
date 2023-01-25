@@ -39,25 +39,29 @@ span.bocTextValue .content
   position: static;
 }
 
-.bocTextValue.readOnly .content span[tabindex]
+.bocTextValue.readOnly .content input:read-only + span,
+.bocTextValue.readOnly .content textarea:read-only + span
 {
   /* Ensures that the outline is rendered outside of the space reserved for diacritic marks. */
   display: inline-block;
 }
 
-.bocTextValue.readOnly .content span[tabindex]:first-child
+.bocTextValue.readOnly .content input:read-only + span:first-child,
+.bocTextValue.readOnly .content textarea:read-only + span:first-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-top: 0.2em;
 }
 
-.bocTextValue.readOnly .content span[tabindex]:last-child
+.bocTextValue.readOnly .content input:read-only + span:last-child,
+.bocTextValue.readOnly .content textarea:read-only + span:last-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-bottom: 0.2em;
 }
 
-.bocTextValue.readOnly .content span[tabindex]:empty
+.bocTextValue.readOnly .content input:read-only + span:empty,
+.bocTextValue.readOnly .content textarea:read-only + span:empty
 {
   /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
   width: calc(100% - 2px);
@@ -65,6 +69,14 @@ span.bocTextValue .content
   padding-top: 0;
   padding-bottom: 0;
   vertical-align: -0.2em;
+}
+
+.bocTextValue.readOnly .content input:read-only:focus + span,
+.bocTextValue.readOnly .content textarea:read-only:focus + span
+{
+  outline: dotted black 1px;
+  outline: solid Highlight 2px;
+  outline: auto 5px -webkit-focus-ring-color;
 }
 
 span.bocTextValue input

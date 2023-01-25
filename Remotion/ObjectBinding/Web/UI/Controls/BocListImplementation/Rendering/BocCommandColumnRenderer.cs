@@ -39,8 +39,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// This class should not be instantiated directly by clients. Instead, a <see cref="BocRowRenderer"/> should use a
     /// factory to obtain instances of this class.
     /// </remarks>
-    public BocCommandColumnRenderer (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+    public BocCommandColumnRenderer (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
     }
 
@@ -49,20 +49,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// </summary>
     /// <remarks>
     /// A <see cref="BocCommandColumnDefinition"/> can contain both an object icon and a command icon. The former is rendered according to
-    /// <paramref name="showIcon"/>, the latter if the column defintion's <see cref="BocCommandColumnDefinition.Icon"/> property contains
-    /// an URL. Furthermore, the command text in <see cref="BocCommandColumnDefinition.Text"/> is rendered after any icons.
+    /// <paramref name="arguments"/>.<see cref="BocDataCellRenderArguments.ShowIcon"/>, the latter if the column definition's <see cref="BocCommandColumnDefinition.Icon"/>
+    /// property contains an URL. Furthermore, the command text in <see cref="BocCommandColumnDefinition.Text"/> is rendered after any icons.
     /// </remarks>
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<BocCommandColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<BocCommandColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
-      int originalRowIndex = dataRowRenderEventArgs.ListIndex;
-      IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
+      int originalRowIndex = arguments.ListIndex;
+      IBusinessObject businessObject = arguments.BusinessObject;
 
       IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex);
 
@@ -70,7 +65,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       bool isCommandEnabled = RenderBeginTag(renderingContext, originalRowIndex, businessObject);
 
-      RenderCellIcon(renderingContext, businessObject, hasEditModeControl, showIcon);
+      RenderCellIcon(renderingContext, businessObject, hasEditModeControl, arguments.ShowIcon);
       RenderCellCommand(renderingContext);
 
       RenderEndTag(renderingContext, isCommandEnabled);

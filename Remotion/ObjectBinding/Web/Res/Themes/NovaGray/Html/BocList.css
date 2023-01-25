@@ -253,7 +253,8 @@ tbody.bocListTableBody
 }
 
 /*  Style applied to the cells in the BocList's title row.  */
-th.bocListTitleCell
+th.bocListTitleCell,
+td.bocListTitleCell
 {
   font-weight: bold;
   text-align: left;
@@ -267,17 +268,20 @@ th.bocListTitleCell
   white-space: nowrap;
 }
 
-thead.bocListTableHead[aria-hidden] > tr > th > *
+thead.bocListTableHead[aria-hidden] > tr > th > *,
+thead.bocListTableHead[aria-hidden] > tr > td > *
 {
   visibility: hidden;
 }
 
-div.bocList.hasDimensions th.bocListTitleCell
+div.bocList.hasDimensions th.bocListTitleCell,
+div.bocList.hasDimensions td.bocListTitleCell
 {
   border-bottom: none;
 }
 
-th.bocListTitleCell > span
+th.bocListTitleCell > span,
+td.bocListTitleCell > span
 {
   padding: 2px;
 }
@@ -636,17 +640,4 @@ span.bocListEditableCell .control > *
 {
   width: 100%;
   vertical-align: middle;
-}
-
-/* Shared in other CSS files */
-.screenReaderText
-{
-  clip: rect(1px, 1px, 1px, 1px) !important;
-  height: 1px !important;
-  width: 1px !important;
-  overflow: hidden !important;
-  position: absolute !important;
-  display: inline !important;
-  padding: 0 !important;
-  margin: 0 !important;
 }

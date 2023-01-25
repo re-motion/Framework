@@ -77,7 +77,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
         var storageEntity = CreateEntityDefinition(classDefinition);
         classDefinition.SetStorageEntity(storageEntity);
       }
-      else if (!(classDefinition.StorageEntityDefinition is NonPersistentStorageEntity))
+      else if (!classDefinition.IsNonPersistent())
       {
         throw new InvalidOperationException(
             string.Format(
@@ -87,6 +87,7 @@ namespace Remotion.Data.DomainObjects.Persistence.NonPersistent
       }
 
       Assertion.DebugIsNotNull(classDefinition.StorageEntityDefinition, "classDefinition.StorageEntityDefinition != null");
+      Assertion.DebugAssert(classDefinition.StorageEntityDefinition is NonPersistentStorageEntity, "classDefinition.StorageEntityDefinition is NonPersistentStorageEntity");
     }
 
     private void EnsureAllStoragePropertiesCreated (IEnumerable<ClassDefinition> classDefinitions)

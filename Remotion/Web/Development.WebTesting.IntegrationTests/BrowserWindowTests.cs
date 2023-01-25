@@ -17,12 +17,14 @@
 using System;
 using System.Drawing;
 using NUnit.Framework;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.PageObjects;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [RequiresUserInterface]
   public class BrowserWindowTests : IntegrationTest
   {
     protected override bool MaximizeMainBrowserSession

@@ -54,9 +54,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
       string nullOutValue = null;
       var theNameOutValue = "The Name";
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _innerService1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetExtensibleEnumValueDisplayName(
                 enumValue,
@@ -64,7 +64,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
           .Returns(false)
           .Verifiable();
       _innerService2
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetExtensibleEnumValueDisplayName(
                 enumValue,
@@ -72,7 +72,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
           .Returns(true)
           .Verifiable();
       _innerService3
-          .InSequence(sequence)
+          // Not in sequence because not called
           .Setup(
             mock => mock.TryGetExtensibleEnumValueDisplayName(
                 It.IsAny<IExtensibleEnum>(),
@@ -92,6 +92,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
                 It.IsAny<IExtensibleEnum>(),
                 out nullOutValue),
           Times.Never());
+      sequence.Verify();
     }
 
     [Test]
@@ -100,9 +101,9 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
       var enumValue = Color.Values.Red();
       string outValue = null;
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _innerService1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetExtensibleEnumValueDisplayName(
                 enumValue,
@@ -110,7 +111,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
           .Returns(false)
           .Verifiable();
       _innerService2
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
             mock => mock.TryGetExtensibleEnumValueDisplayName(
                 enumValue,
@@ -118,7 +119,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
           .Returns(false)
           .Verifiable();
       _innerService3
-          .InSequence(sequence)
+          // Not in sequence because not called
           .Setup(
             mock => mock.TryGetExtensibleEnumValueDisplayName(
                 enumValue,
@@ -135,6 +136,7 @@ namespace Remotion.Globalization.ExtensibleEnums.UnitTests.Implementation
       _innerService1.Verify();
       _innerService2.Verify();
       _innerService3.Verify();
+      sequence.Verify();
     }
   }
 }

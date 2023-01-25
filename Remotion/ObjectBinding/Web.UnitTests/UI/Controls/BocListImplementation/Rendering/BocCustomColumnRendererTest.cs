@@ -22,7 +22,9 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using Moq;
 using NUnit.Framework;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.Web.Services;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
@@ -38,6 +40,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   {
     private BocListCssClassDefinition _bocListCssClassDefinition;
     private BocColumnRenderingContext<BocCustomColumnDefinition> _renderingContext;
+    private Mock<ISmartControl> _smartControlMock;
 
     [SetUp]
     public override void SetUp ()
@@ -47,6 +50,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
 
+      _smartControlMock = new Mock<Control>().As<ISmartControl>();
+
       base.SetUp();
 
       IBusinessObject firstObject = (IBusinessObject)((TypeWithReference)BusinessObject).FirstValue;
@@ -54,7 +59,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var triplets = new[]
                      {
                          new BocListCustomColumnTuple(firstObject, 10, new WebControl(HtmlTextWriterTag.Div)),
-                         new BocListCustomColumnTuple(secondObject, 20, new HtmlGenericControl("div"))
+                         new BocListCustomColumnTuple(secondObject, 20, new HtmlGenericControl("div")),
+                         new BocListCustomColumnTuple(secondObject, 30, (Control)_smartControlMock.Object)
                      };
       var customColumns =
           new ReadOnlyDictionary<BocCustomColumnDefinition, BocListCustomColumnTuple[]>(
@@ -74,9 +80,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Column.Mode = BocCustomColumnDefinitionMode.ControlsInAllRows;
 
-      IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       var args = new BocListDataRowRenderEventArgs(10, EventArgs.BusinessObject, EventArgs.IsEditableRow, EventArgs.IsOddRow);
-      renderer.RenderDataCell(_renderingContext, 0, false, args);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(args));
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -92,9 +98,9 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       Column.Mode = BocCustomColumnDefinitionMode.ControlsInAllRows;
 
-      IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
+      IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
       var args = new BocListDataRowRenderEventArgs(20, EventArgs.BusinessObject, EventArgs.IsEditableRow, EventArgs.IsOddRow);
-      renderer.RenderDataCell(_renderingContext, 0, false,args);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(args));
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);
@@ -106,12 +112,32 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     [Test]
+    public void RenderCellWithInnerSmartControl ()
+    {
+      Column.Mode = BocCustomColumnDefinitionMode.ControlsInAllRows;
+
+      IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      var args = new BocListDataRowRenderEventArgs(30, EventArgs.BusinessObject, EventArgs.IsEditableRow, EventArgs.IsOddRow);
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments(args, headerIDs: new[] { "h1", "h2" }));
+
+      var document = Html.GetResultDocument();
+      var td = Html.GetAssertedChildElement(document, "td", 0);
+      Html.AssertAttribute(td, "class", _bocListCssClassDefinition.DataCell);
+      Html.AssertAttribute(td, "role", "cell");
+
+      var span = Html.GetAssertedChildElement(td, "span", 0);
+      Html.AssertAttribute(span, "onclick", "BocList.OnCommandClick();");
+
+      _smartControlMock.Verify(_ => _.AssignLabels(new[] { "h1", "h2" }));
+    }
+
+    [Test]
     public void RenderCellDirectly ()
     {
       Column.Mode = BocCustomColumnDefinitionMode.NoControls;
 
-      IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition);
-      renderer.RenderDataCell(_renderingContext, 0, false, EventArgs);
+      IBocColumnRenderer renderer = new BocCustomColumnRenderer(new FakeResourceUrlFactory(), RenderingFeatures.Default, _bocListCssClassDefinition, new FakeFallbackNavigationUrlProvider());
+      renderer.RenderDataCell(_renderingContext, CreateBocDataCellRenderArguments());
 
       var document = Html.GetResultDocument();
       var td = Html.GetAssertedChildElement(document, "td", 0);

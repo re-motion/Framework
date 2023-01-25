@@ -17,8 +17,8 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Security.UnitTests.SampleDomain;
 using Remotion.Security.UnitTests.TestDomain;
 

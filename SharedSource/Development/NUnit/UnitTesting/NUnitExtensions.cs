@@ -19,7 +19,7 @@ using System;
 using NUnit.Framework.Constraints;
 using Remotion.Utilities;
 
-namespace Remotion.Development.UnitTesting.NUnit
+namespace Remotion.Development.NUnit.UnitTesting
 {
   public static class NUnitExtensions
   {

@@ -141,6 +141,11 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Tena
       Tenant root = TestHelper.CreateTenant("Root", "UID: Root");
       root.Parent = parent;
 
+      SimulateExistingObjectForSecurityTest(grandParent2);
+      SimulateExistingObjectForSecurityTest(grandParent1);
+      SimulateExistingObjectForSecurityTest(parent);
+      SimulateExistingObjectForSecurityTest(root);
+
       var securityProviderStub = new Mock<ISecurityProvider>();
 
       var grandParent1SecurityContext = ((ISecurityContextFactory)grandParent1).CreateSecurityContext();

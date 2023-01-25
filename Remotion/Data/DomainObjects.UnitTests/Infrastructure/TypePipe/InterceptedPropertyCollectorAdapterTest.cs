@@ -146,6 +146,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class MyDomainObject : DomainObject
     {
       public int NonOverridableProperty
@@ -171,6 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.TypePipe
       }
     }
 
+    [IncludeInMappingTestDomain]
     public class MyConcreteBaseType : MyDomainObject
     {
       public override int OverriddenProperty { get; set; }

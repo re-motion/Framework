@@ -91,7 +91,7 @@
         </ListMenuItems>
         <FixedColumns>
           <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" EditText="Edit" SaveText="Save" CancelText="Cancel" Width="2em" />
-          <remotion:BocCommandColumnDefinition ItemID="RowCmd" Text="Row command" Icon-Url="../Image/SampleIcon.gif" ColumnTitle="Command">
+          <remotion:BocCommandColumnDefinition ItemID="RowCmd" Text="Row command" Icon-Width="16px" Icon-Height="16px" Icon-Url="../Image/SampleIcon.gif" ColumnTitle="Command">
             <PersistedCommand>
               <remotion:BocListItemCommand Type="Event" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState"></remotion:BocListItemCommand>
             </PersistedCommand>
@@ -272,6 +272,36 @@
     <td></td>
     <td>
       <testsite:TestBocListWithRowMenuItems
+        ID="ChildrenList_EmptyWithRowHeaders"
+        ReadOnly="False"
+        DataSourceControl="EmptyObject"
+        PropertyIdentifier="Children"
+
+        EmptyListMessage="An empty list can still identify its row headers to the web testing framework."
+        ShowEmptyListMessage="True"
+
+        Width="100%"
+        Height="10em"
+        runat="server">
+        <FixedColumns>
+          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" EditText="Edit" SaveText="Save" CancelText="Cancel" Width="2em" />
+          <remotion:BocCommandColumnDefinition ItemID="RowCmd" Text="Row command" ColumnTitle="Command">
+            <PersistedCommand>
+              <remotion:BocListItemCommand Type="Event" CommandStateType="Remotion.ObjectBinding.Sample::PersonListItemCommandState"></remotion:BocListItemCommand>
+            </PersistedCommand>
+          </remotion:BocCommandColumnDefinition>
+          <remotion:BocSimpleColumnDefinition ColumnTitle="LastName" PropertyPathIdentifier="LastName" IsRowHeader="True" />
+          <remotion:BocSimpleColumnDefinition ColumnTitle="FirstName" PropertyPathIdentifier="FirstName" IsRowHeader="True" />
+          <remotion:BocSimpleColumnDefinition ColumnTitle="Partner" PropertyPathIdentifier="Partner" />
+        </FixedColumns>
+      </testsite:TestBocListWithRowMenuItems>
+    </td>
+    <td>&nbsp; (empty with row headers)</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
         ID="JobList_NoFakeTableHeader"
         ReadOnly="False"
         DataSourceControl="CurrentObject"
@@ -365,6 +395,7 @@
         PropertyIdentifier="Jobs"
         ShowAllProperties="True"
         ShowEmptyListMessage="true"
+        Selection="Multiple"
         Width="100%"
         Height="10em"
         runat="server">

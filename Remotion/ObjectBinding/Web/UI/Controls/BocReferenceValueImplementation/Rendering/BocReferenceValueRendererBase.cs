@@ -16,10 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
@@ -71,6 +69,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
     }
 
     protected abstract void RenderEditModeValue (BocRenderingContext<TControl> renderingContext);
+
+    protected abstract string GetAriaHasPopupForCombobox ();
+
+    protected abstract string GetAriaRoleDescriptionForComboboxReadOnly (BocRenderingContext<TControl> renderingContext);
 
     protected virtual void RegisterJavaScriptFiles (HtmlHeadAppender htmlHeadAppender)
     {
@@ -187,20 +189,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
       RenderIcon(renderingContext);
 
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetInnerContentID(renderingContext));
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, GetCssClassInnerContent(renderingContext));
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
+
       if (renderingContext.Control.IsReadOnly)
       {
         RenderReadOnlyValue(renderingContext);
       }
       else
       {
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetInnerContentID(renderingContext));
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, GetCssClassInnerContent(renderingContext));
-        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-
         RenderEditModeValue(renderingContext);
-
-        renderingContext.Writer.RenderEndTag();
       }
+
+      renderingContext.Writer.RenderEndTag();
 
       bool hasOptionsMenu = renderingContext.Control.HasOptionsMenu;
       if (hasOptionsMenu)
@@ -253,32 +255,39 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
 
     private void RenderReadOnlyValue (BocRenderingContext<TControl> renderingContext)
     {
+      var textBox = new RenderOnlyTextBox() { ClientIDMode = ClientIDMode.Static };
+      textBox.ID = renderingContext.Control.ClientID + "_TextValue";
+      textBox.EnableViewState = false;
+      textBox.Enabled = renderingContext.Control.Enabled;
+      textBox.ReadOnly = true;
+      textBox.Text = renderingContext.Control.GetLabelText();
+      textBox.CssClass = CssClassDefinition.ScreenReaderText;
+      if (renderingContext.Control.IsRequired)
+        textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaHasPopup, GetAriaHasPopupForCombobox());
+      textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaRoleDescription, GetAriaRoleDescriptionForComboboxReadOnly(renderingContext));
+      textBox.Attributes.Add("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+      _labelReferenceRenderer.SetLabelReferenceOnControl(textBox, labelIDs);
+
       var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID(renderingContext);
 
-      Label label = GetLabel(renderingContext);
+      ValidationErrorRenderer.SetValidationErrorsReferenceOnControl(textBox, validationErrorsID, validationErrors);
 
-      renderingContext.Writer.AddAttribute("tabindex", "0");
-      // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox (at least in browse-mode),
-      // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
-      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-      //renderingContext.Writer.AddAttribute (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+      var label = new Label { ClientIDMode = ClientIDMode.Static };
+      label.EnableViewState = false;
+      label.Height = Unit.Empty;
+      label.Width = Unit.Empty;
+      label.ApplyStyle(renderingContext.Control.CommonStyle);
+      label.ApplyStyle(renderingContext.Control.LabelStyle);
+      label.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      label.Text = PlainTextString.CreateFromText(renderingContext.Control.GetLabelText()).ToString(WebStringEncoding.Html);
 
-      var labelIDs = renderingContext.Control.GetLabelIDs();
-      LabelReferenceRenderer.AddLabelsReference(renderingContext.Writer, labelIDs.ToArray(), new[] { label.ClientID });
-
-      var attributeCollection = new AttributeCollection(new StateBag());
-      ValidationErrorRenderer.AddValidationErrorsReference(attributeCollection, validationErrorsID, validationErrors);
-      attributeCollection.AddAttributes(renderingContext.Writer);
-
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, GetInnerContentID(renderingContext));
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, GetCssClassInnerContent(renderingContext));
-      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
-
+      textBox.RenderControl(renderingContext.Writer);
       label.RenderControl(renderingContext.Writer);
-
-      renderingContext.Writer.RenderEndTag();
-
       ValidationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
     }
 
@@ -293,23 +302,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation
         return null;
 
       return icon;
-    }
-
-    private Label GetLabel (BocRenderingContext<TControl> renderingContext)
-    {
-      var label = new Label
-                  {
-                      ID = renderingContext.Control.ClientID + "_Value",
-                      ClientIDMode = ClientIDMode.Static,
-                      EnableViewState = false,
-                      Height = Unit.Empty,
-                      Width = Unit.Empty
-                  };
-      label.ApplyStyle(renderingContext.Control.CommonStyle);
-      label.ApplyStyle(renderingContext.Control.LabelStyle);
-      label.Text = PlainTextString.CreateFromText(renderingContext.Control.GetLabelText()).ToString(WebStringEncoding.Html);
-      label.Attributes.Add("data-value", renderingContext.Control.BusinessObjectUniqueIdentifier ?? renderingContext.Control.NullValueString);
-      return label;
     }
 
     protected IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<TControl> renderingContext)

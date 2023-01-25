@@ -95,7 +95,8 @@ namespace Remotion.Utilities
     /// <returns> <see langword="true"/> if the conversion is supported. </returns>
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType!); // Override nullability for release v3.0 of re-motion to prevent changes during release phase
+      if (destinationType == null)
+        return false;
 
       if (!_isNullable && destinationType == _underlyingType)
         return true;
@@ -127,9 +128,13 @@ namespace Remotion.Utilities
 
           return Enum.ToObject(UnderlyingEnumType, value);
         }
+        else if (value == null)
+        {
+          throw new NotSupportedException(string.Format("Cannot convert value 'null' to non-nullable type '{0}'.", UnderlyingEnumType.GetFullNameSafe()));
+        }
       }
 
-      return base.ConvertFrom(context, culture, value!);
+      return base.ConvertFrom(context, culture, value);
       // ReSharper restore ConditionIsAlwaysTrueOrFalse
     }
 

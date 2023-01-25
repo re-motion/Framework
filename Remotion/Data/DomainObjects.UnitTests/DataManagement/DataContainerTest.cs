@@ -22,8 +22,7 @@ using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -34,12 +33,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     private DataContainer _existingDataContainer;
     private DataContainer _deletedDataContainer;
     private DataContainer _discardedDataContainer;
+    private DataContainer _newNonPersistentDataContainer;
+    private DataContainer _existingNonPersistentDataContainer;
+    private DataContainer _dataContainerWithNonPersistentProperty;
     private ObjectID _invalidObjectID;
     private Mock<IDataContainerEventListener> _eventListenerMock;
 
     private PropertyDefinition _orderNumberProperty;
     private PropertyDefinition _deliveryDateProperty;
     private PropertyDefinition _nonOrderProperty;
+    private PropertyDefinition _nonPersistentPropertyOnPersistentDataContainer;
+    private PropertyDefinition _propertyOnNonPersistentDataContainer;
 
     public override void SetUp ()
     {
@@ -63,11 +67,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       _discardedDataContainer = DataContainer.CreateNew(_invalidObjectID);
       _discardedDataContainer.Discard();
 
+      _newNonPersistentDataContainer = DataContainer.CreateNew(new ObjectID(typeof(OrderViewModel), idValue));
+
+      _existingNonPersistentDataContainer = DataContainer.CreateForExisting(
+          new ObjectID(typeof(OrderViewModel), idValue),
+          null,
+          propertyDefinition => propertyDefinition.DefaultValue);
+
+      _dataContainerWithNonPersistentProperty = DataContainer.CreateForExisting(
+          new ObjectID(typeof(OrderTicket), idValue),
+          null,
+          propertyDefinition => propertyDefinition.DefaultValue);
+
       _eventListenerMock = new Mock<IDataContainerEventListener>();
 
       _orderNumberProperty = GetPropertyDefinition(typeof(Order), "OrderNumber");
       _deliveryDateProperty = GetPropertyDefinition(typeof(Order), "DeliveryDate");
       _nonOrderProperty = GetPropertyDefinition(typeof(OrderItem), "Order");
+      _propertyOnNonPersistentDataContainer = GetPropertyDefinition(typeof(OrderViewModel), nameof(OrderViewModel.OrderSum));
+      _nonPersistentPropertyOnPersistentDataContainer = GetPropertyDefinition(typeof(OrderTicket), nameof(OrderTicket.Int32TransactionProperty));
     }
 
     [Test]
@@ -86,6 +104,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
       Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(0));
       Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void CreateNew_WithLookupValue_IncludesStorageClassPersistentProperties ()
+    {
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()), delegate { return 2; });
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Persistent");
+      Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(2));
+      Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void CreateNew_WithLookupValue_IncludesStorageClassTransactionProperties ()
+    {
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()), delegate { return 2; });
+      var propertyDefinition = GetPropertyDefinition(typeof(ClassWithPropertiesHavingStorageClassAttribute), "Transaction");
+      Assert.That(dc.GetValue(propertyDefinition), Is.EqualTo(2));
+      Assert.That(dc.GetValue(propertyDefinition, ValueAccess.Original), Is.EqualTo(2));
+    }
+
+    [Test]
+    public void CreateNew_NewInHierarchyFlagIsSet ()
+    {
+      DataContainer dc = DataContainer.CreateNew(new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()));
+      Assert.That(dc.State.IsNew, Is.True);
+      Assert.That(dc.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -113,6 +157,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void CreateForExisting_NewInHierarchyFlagIsNotSet ()
+    {
+      DataContainer dc = DataContainer.CreateForExisting(
+          new ObjectID(typeof(ClassWithPropertiesHavingStorageClassAttribute), Guid.NewGuid()),
+          1,
+          delegate { return 2; });
+      Assert.That(dc.State.IsUnchanged, Is.True);
+      Assert.That(dc.State.IsNew, Is.False);
+      Assert.That(dc.State.IsNewInHierarchy, Is.False);
+    }
+
+    [Test]
     public void SetEventListener ()
     {
       Assert.That(_existingDataContainer.EventListener, Is.Null);
@@ -132,7 +188,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void GetValue_SetValue ()
+    public void GetValue_SetValue_WithPersistentProperty ()
     {
       var valueBeforeChange = _existingDataContainer.GetValue(_orderNumberProperty);
       Assert.That(valueBeforeChange, Is.EqualTo(0));
@@ -144,6 +200,22 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var valueAfterChange = _existingDataContainer.GetValue(_orderNumberProperty);
       Assert.That(valueAfterChange, Is.EqualTo(17));
       var originalValueAfterChange = _existingDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original);
+      Assert.That(originalValueAfterChange, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void GetValue_SetValue_WithNonPersistentProperty ()
+    {
+      var valueBeforeChange = _dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer);
+      Assert.That(valueBeforeChange, Is.EqualTo(0));
+      var originalValueBeforeChange = _dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original);
+      Assert.That(originalValueBeforeChange, Is.EqualTo(0));
+
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 17);
+
+      var valueAfterChange = _dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer);
+      Assert.That(valueAfterChange, Is.EqualTo(17));
+      var originalValueAfterChange = _dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original);
       Assert.That(originalValueAfterChange, Is.EqualTo(0));
     }
 
@@ -428,8 +500,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state2 = _existingDataContainer.State;
       Assert.That(state2.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(1));
+      Assert.That(state2.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.SetValue(_orderNumberProperty, 0);
 
@@ -444,30 +518,155 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     {
       var state1 = _newDataContainer.State;
       Assert.That(state1.IsNew, Is.True);
+      Assert.That(state1.IsNewInHierarchy, Is.True);
       Assert.That(_newDataContainer.State.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
       Assert.That(_newDataContainer.GetValue(_orderNumberProperty), Is.Not.EqualTo(17));
 
       _newDataContainer.SetValue(_orderNumberProperty, 17);
 
       var state2 = _newDataContainer.State;
       Assert.That(state2.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(1));
+      Assert.That(state2.IsNewInHierarchy, Is.True);
+      Assert.That(state2.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(3));
       Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_newDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _newDataContainer.SetValue(_orderNumberProperty, 0);
 
       var state3 = _newDataContainer.State;
       Assert.That(state3.IsNew, Is.True);
-      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
+      Assert.That(state3.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(2));
       Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void PropertyChange_StateUpdate_WithNewNonPersistentDataContainer ()
+    {
+      var state1 = _newNonPersistentDataContainer.State;
+      Assert.That(state1.IsNew, Is.True);
+      Assert.That(state1.IsNewInHierarchy, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer), Is.Not.EqualTo(17));
+
+      _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 17);
+
+      var state2 = _newNonPersistentDataContainer.State;
+      Assert.That(state2.IsNew, Is.True);
+      Assert.That(state2.IsNewInHierarchy, Is.True);
+      Assert.That(state2.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(3));
+      Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
+
+      _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 0);
+
+      var state3 = _newNonPersistentDataContainer.State;
+      Assert.That(state3.IsNew, Is.True);
+      Assert.That(state3.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(2));
+      Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void PropertyChange_StateUpdate_WithDeletedDataContainer ()
+    {
+      var dataContainer = _existingDataContainer;
+      dataContainer.SetValue(_orderNumberProperty, 1);
+      dataContainer.Delete();
+
+      var state = dataContainer.State;
+      Assert.That(state.IsDeleted, Is.True);
+      Assert.That(state.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(2));
+      Assert.That(dataContainer.State.IsDeleted, Is.True);
+      Assert.That(dataContainer.State.IsPersistentDataChanged, Is.True);
+    }
+
+    [Test]
+    public void PropertyChange_StateUpdate_WithNonPersistentProperty ()
+    {
+      var state1 = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(state1.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
+
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 5);
+
+      var state2 = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(state2.IsChanged, Is.True);
+      Assert.That(state2.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsChanged, Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsNonPersistentDataChanged, Is.True);
+
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 0);
+
+      var state3 = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(state3.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void PropertyChange_StateUpdate_WithNonPersistentDataContainer ()
+    {
+      var state1 = _existingNonPersistentDataContainer.State;
+      Assert.That(state1.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(_existingNonPersistentDataContainer.State.IsUnchanged, Is.True);
+
+      _existingNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 5);
+
+      var state2 = _existingNonPersistentDataContainer.State;
+      Assert.That(state2.IsChanged, Is.True);
+      Assert.That(state2.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
+      Assert.That(_existingNonPersistentDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
+
+      _existingNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 0);
+
+      var state3 = _existingNonPersistentDataContainer.State;
+      Assert.That(state3.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
+      Assert.That(_existingNonPersistentDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
     public void PropertyChange_RaisesStateUpdated ()
     {
-      CheckStateNotification(_existingDataContainer, dc => dc.SetValue(_orderNumberProperty, 5), new DataContainerState.Builder().SetChanged().Value);
-      CheckStateNotification(_newDataContainer, dc => dc.SetValue(_orderNumberProperty, 5), new DataContainerState.Builder().SetNew().Value);
+      CheckStateNotification(
+          _existingDataContainer,
+          dc => dc.SetValue(_orderNumberProperty, 5),
+          new DataContainerState.Builder().SetChanged().SetPersistentDataChanged().Value);
+    }
+
+    [Test]
+    public void PropertyChange_RaisesStateUpdated_WithNewDataContainer ()
+    {
+      CheckStateNotification(
+          _newDataContainer,
+          dc => dc.SetValue(_orderNumberProperty, 5),
+          new DataContainerState.Builder().SetNew().SetNewInHierarchy().SetPersistentDataChanged().Value);
+    }
+
+    [Test]
+    public void PropertyChange_RaisesStateUpdated_WithNonPersistentProperty ()
+    {
+      CheckStateNotification(
+          _dataContainerWithNonPersistentProperty,
+          dc => dc.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 5),
+          new DataContainerState.Builder().SetChanged().SetNonPersistentDataChanged().Value);
     }
 
     [Test]
@@ -493,8 +692,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state1 = _existingDataContainer.State;
       Assert.That(state1.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(state1.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.CommitValue(_orderNumberProperty);
 
@@ -508,8 +709,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state2 = _existingDataContainer.State;
       Assert.That(state2.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(1));
+      Assert.That(state2.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.CommitValue(_deliveryDateProperty);
 
@@ -517,6 +720,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(state3.IsUnchanged, Is.True);
       Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
       Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void CommitValue_CommitsOnlyGivenPropertyValue_AndUpdatesState_WithNonPersistentProperty ()
+    {
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(10));
+
+      var state1 = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(state1.IsChanged, Is.True);
+      Assert.That(state1.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsChanged, Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsNonPersistentDataChanged, Is.True);
+
+      _dataContainerWithNonPersistentProperty.CommitValue(_nonPersistentPropertyOnPersistentDataContainer);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.False);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(10));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(10));
+
+      var state2 = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(state2.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -551,8 +782,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state1 = _existingDataContainer.State;
       Assert.That(state1.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(state1.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.RollbackValue(_orderNumberProperty);
 
@@ -566,8 +799,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state2 = _existingDataContainer.State;
       Assert.That(state2.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(1));
+      Assert.That(state2.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.RollbackValue(_deliveryDateProperty);
 
@@ -575,6 +810,34 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(state3.IsUnchanged, Is.True);
       Assert.That(GetNumberOfSetFlags(state3), Is.EqualTo(1));
       Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void RollbackValue_RollsBackOnlyGivenPropertyValue_AndUpdatesState_WithNonPersistentProperty ()
+    {
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(10));
+
+      var state1 = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(state1.IsChanged, Is.True);
+      Assert.That(state1.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsChanged, Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsNonPersistentDataChanged, Is.True);
+
+      _dataContainerWithNonPersistentProperty.RollbackValue(_nonPersistentPropertyOnPersistentDataContainer);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.False);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(0));
+
+      var state2 = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(state2.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
     }
 
     [Test]
@@ -594,7 +857,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_SetsOnlyGivenPropertyValue_AndUpdatesState ()
+    public void SetPropertyValueDataFromSubTransaction_SetsOnlyGivenPropertyValue_AndUpdatesState ()
     {
       var sourceDataContainer = DataContainerObjectMother.CreateExisting(_existingDataContainer.ID);
       sourceDataContainer.SetValue(_orderNumberProperty, 17);
@@ -607,51 +870,76 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
       Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
 
-      _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer);
+      _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer);
 
       Assert.That(_existingDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(17));
       Assert.That(_existingDataContainer.GetValue(_deliveryDateProperty), Is.EqualTo(new DateTime()));
       var stateAfterChange = _existingDataContainer.State;
       Assert.That(stateAfterChange.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(stateAfterChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_Discarded ()
+    public void SetPropertyValueDataFromSubTransaction_SetsOnlyGivenPropertyValue_AndUpdatesState_WithNonPersistentProperty ()
+    {
+      var sourceDataContainer = DataContainerObjectMother.CreateExisting(_dataContainerWithNonPersistentProperty.ID);
+      sourceDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 17);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(0));
+      var stateBeforeChange = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
+
+      _dataContainerWithNonPersistentProperty.SetPropertyValueFromSubTransaction(_nonPersistentPropertyOnPersistentDataContainer, sourceDataContainer);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(17));
+      var stateAfterChange = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(stateAfterChange.IsChanged, Is.True);
+      Assert.That(stateAfterChange.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsChanged, Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsNonPersistentDataChanged, Is.True);
+    }
+
+    [Test]
+    public void SetPropertyValueDataFromSubTransaction_Discarded ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(_existingDataContainer.ID);
       _existingDataContainer.Discard();
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.TypeOf<ObjectInvalidException>());
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_DiscardedSource ()
+    public void SetPropertyValueDataFromSubTransaction_DiscardedSource ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(_existingDataContainer.ID);
       sourceDataContainer.Discard();
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.TypeOf<ObjectInvalidException>());
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_InvalidProperty ()
+    public void SetPropertyValueDataFromSubTransaction_InvalidProperty ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(_existingDataContainer.ID);
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_nonOrderProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_nonOrderProperty, sourceDataContainer),
           Throws.ArgumentException.With.ArgumentExceptionMessageWithParameterNameEqualTo("propertyDefinition"));
     }
 
     [Test]
-    public void SetValueDataFromSubTransaction_InvalidSource ()
+    public void SetPropertyValueDataFromSubTransaction_InvalidSource ()
     {
       var sourceDataContainer = DataContainerObjectMother.Create(DomainObjectIDs.Customer1);
       Assert.That(
-          () => _existingDataContainer.SetValueDataFromSubTransaction(_orderNumberProperty, sourceDataContainer),
+          () => _existingDataContainer.SetPropertyValueFromSubTransaction(_orderNumberProperty, sourceDataContainer),
           Throws.ArgumentException.With.ArgumentExceptionMessageEqualTo(
               "Cannot set this data container's property values from 'Customer|55b52e75-514b-4e82-a91b-8f0bb59b80ad|System.Guid'; the data "
               + "containers do not have the same class definition.", "source"));
@@ -666,6 +954,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_SetsID ()
     {
       var original = _existingDataContainer;
@@ -676,6 +965,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesState ()
     {
       var originalNew = _newDataContainer;
@@ -696,6 +986,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesTimestamp ()
     {
       var original = _newDataContainer;
@@ -706,7 +997,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void Clone_CopiesPropertyValues ()
+    [Obsolete("DataContainer.Clone() is obsolete.")]
+    public void Clone_CopiesPropertyValues_WithPersistentProperty ()
     {
       var original = _existingDataContainer;
 
@@ -721,6 +1013,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
+    public void Clone_CopiesPropertyValues_WithNonPersistentProperty ()
+    {
+      var original = _dataContainerWithNonPersistentProperty;
+
+      var clone = original.Clone(new ObjectID(original.ClassDefinition, Guid.NewGuid()));
+
+      Assert.That(
+          clone.ClassDefinition.GetPropertyDefinitions().Select(pd => clone.GetValue(pd)),
+          Is.EqualTo(clone.ClassDefinition.GetPropertyDefinitions().Select(pd => original.GetValue(pd))));
+      Assert.That(
+          clone.ClassDefinition.GetPropertyDefinitions().Select(pd => clone.GetValue(pd, ValueAccess.Original)),
+          Is.EqualTo(clone.ClassDefinition.GetPropertyDefinitions().Select(pd => original.GetValue(pd, ValueAccess.Original))));
+    }
+
+    [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_CopiesHasBeenMarkedChanged ()
     {
       var original = _existingDataContainer;
@@ -732,23 +1041,51 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void Clone_CopiesHasBeenChangedFlag ()
+    [Obsolete("DataContainer.Clone() is obsolete.")]
+    public void Clone_CopiesHasBeenChangedFlag_WithPersistentProperty ()
     {
       var original = _existingDataContainer;
       original.SetValue(_orderNumberProperty, 10);
       var state1 = original.State;
       Assert.That(state1.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(state1.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
       Assert.That(original.State.IsChanged, Is.True);
+      Assert.That(original.State.IsPersistentDataChanged, Is.True);
 
       var clone = original.Clone(DomainObjectIDs.Order3);
       var state2 = clone.State;
       Assert.That(state2.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(1));
+      Assert.That(state2.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
       Assert.That(clone.State.IsChanged, Is.True);
+      Assert.That(clone.State.IsPersistentDataChanged, Is.True);
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
+    public void Clone_CopiesHasBeenChangedFlag_WithNonPersistentProperty ()
+    {
+      var original = _dataContainerWithNonPersistentProperty;
+      original.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+      var state1 = original.State;
+      Assert.That(state1.IsChanged, Is.True);
+      Assert.That(state1.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
+      Assert.That(original.State.IsChanged, Is.True);
+      Assert.That(original.State.IsNonPersistentDataChanged, Is.True);
+
+      var clone = original.Clone(new ObjectID(original.ClassDefinition, Guid.NewGuid()));
+      var state2 = clone.State;
+      Assert.That(state2.IsChanged, Is.True);
+      Assert.That(state2.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state1), Is.EqualTo(2));
+      Assert.That(clone.State.IsChanged, Is.True);
+      Assert.That(clone.State.IsNonPersistentDataChanged, Is.True);
+    }
+
+    [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_DomainObjectEmpty ()
     {
       var original = _existingDataContainer;
@@ -760,6 +1097,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_TransactionEmpty ()
     {
       var original = _existingDataContainer;
@@ -772,6 +1110,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    [Obsolete("DataContainer.Clone() is obsolete.")]
     public void Clone_EventListenerEmpty ()
     {
       _existingDataContainer.SetEventListener(_eventListenerMock.Object);
@@ -788,18 +1127,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var state = _newDataContainer.State;
       Assert.That(state.IsUnchanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(1));
+      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(2));
       Assert.That(_newDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
     public void CommitState_RaisesStateUpdated ()
     {
-      CheckStateNotification(_newDataContainer, dc => dc.CommitState(), new DataContainerState.Builder().SetUnchanged().Value);
+      CheckStateNotification(_newDataContainer, dc => dc.CommitState(), new DataContainerState.Builder().SetUnchanged().SetNewInHierarchy().Value);
     }
 
     [Test]
-    public void CommitState_CommitsPropertyValues ()
+    public void CommitState_CommitsPropertyValues_WithPersistentProperty ()
     {
       _existingDataContainer.SetValue(_orderNumberProperty, 10);
 
@@ -815,32 +1155,95 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void CommitState_ResetsChangedFlag ()
+    public void CommitState_CommitsPropertyValues_WithNonPersistentProperty ()
+    {
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(10));
+
+      _dataContainerWithNonPersistentProperty.CommitState();
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.False);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(10));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(10));
+    }
+
+    [Test]
+    public void CommitState_ResetsChangedFlag_WithPersistentProperty ()
     {
       _existingDataContainer.SetValue(_orderNumberProperty, 10);
 
       var stateBeforeChange = _existingDataContainer.State;
       Assert.That(stateBeforeChange.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
+      Assert.That(stateBeforeChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.CommitState();
 
       var stateAfterChange = _existingDataContainer.State;
       Assert.That(stateAfterChange.IsUnchanged, Is.True);
+      Assert.That(stateAfterChange.IsPersistentDataChanged, Is.False);
       Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
       Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
     }
 
     [Test]
-    public void CommitState_ResetsMarkedChangedFlag ()
+    public void CommitState_ResetsChangedFlag_WithNonPersistentProperty ()
+    {
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+
+      var stateBeforeChange = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(stateBeforeChange.IsChanged, Is.True);
+      Assert.That(stateBeforeChange.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsChanged, Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsNonPersistentDataChanged, Is.True);
+
+      _dataContainerWithNonPersistentProperty.CommitState();
+
+      var stateAfterChange = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(stateAfterChange.IsUnchanged, Is.True);
+      Assert.That(stateAfterChange.IsNonPersistentDataChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void CommitState_ResetsMarkedChangedFlag_WithPersistentDataContainer ()
     {
       _existingDataContainer.MarkAsChanged();
       Assert.That(_existingDataContainer.HasBeenMarkedChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(_existingDataContainer.State), Is.EqualTo(2));
+      Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.CommitState();
 
       Assert.That(_existingDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(_existingDataContainer.State), Is.EqualTo(1));
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void CommitState_ResetsMarkedChangedFlag_WithNonPersistentDataContainer ()
+    {
+      _existingNonPersistentDataContainer.MarkAsChanged();
+      Assert.That(_existingNonPersistentDataContainer.HasBeenMarkedChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(_existingNonPersistentDataContainer.State), Is.EqualTo(2));
+      Assert.That(_existingNonPersistentDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
+
+      _existingNonPersistentDataContainer.CommitState();
+
+      Assert.That(_existingNonPersistentDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(_dataContainerWithNonPersistentProperty.State), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsNonPersistentDataChanged, Is.False);
     }
 
     [Test]
@@ -861,6 +1264,144 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void CommitPropertyValuesOnNewDataContainer_LeavesStateUnchanged ()
+    {
+      _newDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      var state = _newDataContainer.State;
+      Assert.That(state.IsNew, Is.True);
+      Assert.That(state.IsNewInHierarchy, Is.True);
+      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(2));
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_RaisesStateUpdated ()
+    {
+      CheckStateNotification(_newDataContainer, dc => dc.CommitPropertyValuesOnNewDataContainer(), new DataContainerState.Builder().SetNew().SetNewInHierarchy().Value);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_CommitsPropertyValues_WithPersistentProperty ()
+    {
+      _newDataContainer.SetValue(_orderNumberProperty, 10);
+
+      Assert.That(_newDataContainer.HasValueChanged(_orderNumberProperty), Is.True);
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(10));
+
+      _newDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      Assert.That(_newDataContainer.HasValueChanged(_orderNumberProperty), Is.False);
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty, ValueAccess.Original), Is.EqualTo(10));
+      Assert.That(_newDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(10));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_CommitsPropertyValues_WithNonPersistentProperty ()
+    {
+      _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 10);
+
+      Assert.That(_newNonPersistentDataContainer.HasValueChanged(_propertyOnNonPersistentDataContainer), Is.True);
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer), Is.EqualTo(10));
+
+      _newNonPersistentDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      Assert.That(_newNonPersistentDataContainer.HasValueChanged(_propertyOnNonPersistentDataContainer), Is.False);
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer, ValueAccess.Original), Is.EqualTo(10));
+      Assert.That(_newNonPersistentDataContainer.GetValue(_propertyOnNonPersistentDataContainer), Is.EqualTo(10));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_ResetsChangedFlag_WithPersistentProperty ()
+    {
+      _newDataContainer.SetValue(_orderNumberProperty, 10);
+
+      var stateBeforeChange = _newDataContainer.State;
+      Assert.That(stateBeforeChange.IsNew, Is.True);
+      Assert.That(stateBeforeChange.IsNewInHierarchy, Is.True);
+      Assert.That(stateBeforeChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(3));
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_newDataContainer.State.IsPersistentDataChanged, Is.True);
+
+      _newDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      var stateAfterChange = _newDataContainer.State;
+      Assert.That(stateAfterChange.IsNew, Is.True);
+      Assert.That(stateAfterChange.IsNewInHierarchy, Is.True);
+      Assert.That(stateAfterChange.IsPersistentDataChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_ResetsChangedFlag_WithNonPersistentProperty ()
+    {
+      _newNonPersistentDataContainer.SetValue(_propertyOnNonPersistentDataContainer, 10);
+
+      var stateBeforeChange = _newNonPersistentDataContainer.State;
+      Assert.That(stateBeforeChange.IsNew, Is.True);
+      Assert.That(stateBeforeChange.IsNewInHierarchy, Is.True);
+      Assert.That(stateBeforeChange.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(3));
+      Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
+
+      _newNonPersistentDataContainer.CommitPropertyValuesOnNewDataContainer();
+
+      var stateAfterChange = _newNonPersistentDataContainer.State;
+      Assert.That(stateAfterChange.IsNew, Is.True);
+      Assert.That(stateAfterChange.IsNewInHierarchy, Is.True);
+      Assert.That(stateAfterChange.IsNonPersistentDataChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
+      Assert.That(_newNonPersistentDataContainer.State.IsNew, Is.True);
+      Assert.That(_newNonPersistentDataContainer.State.IsNewInHierarchy, Is.True);
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_DiscardedDataContainer_Throws ()
+    {
+      Assert.That(
+          () => _discardedDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_UnchangedDataContainer_Throws ()
+    {
+      Assert.That(
+          () => _existingDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only new data containers can commit their property state as unchanged."));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_ChangedDataContainer_Throws ()
+    {
+      _existingDataContainer.SetValue(_orderNumberProperty, 10);
+
+      Assert.That(
+          () => _existingDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only new data containers can commit their property state as unchanged."));
+    }
+
+    [Test]
+    public void CommitPropertyValuesOnNewDataContainer_DeletedDataContainer_Throws ()
+    {
+      Assert.That(
+          () => _deletedDataContainer.CommitPropertyValuesOnNewDataContainer(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only new data containers can commit their property state as unchanged."));
+    }
+
+    [Test]
     public void RollbackState_SetsStateToExisting ()
     {
       _deletedDataContainer.RollbackState();
@@ -878,7 +1419,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void RollbackState_RollsbackPropertyValues ()
+    public void RollbackState_RollsbackPropertyValues_WithPersistentProperty ()
     {
       _existingDataContainer.SetValue(_orderNumberProperty, 10);
 
@@ -894,14 +1435,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void RollbackState_ResetsChangedFlag ()
+    public void RollbackState_RollsbackPropertyValues_WithNonPersistentProperty ()
+    {
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(10));
+
+      _dataContainerWithNonPersistentProperty.RollbackState();
+
+      Assert.That(_dataContainerWithNonPersistentProperty.HasValueChanged(_nonPersistentPropertyOnPersistentDataContainer), Is.False);
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer, ValueAccess.Original), Is.EqualTo(0));
+      Assert.That(_dataContainerWithNonPersistentProperty.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(0));
+    }
+
+    [Test]
+    public void RollbackState_ResetsChangedFlag_WithPersistentProperty ()
     {
       _existingDataContainer.SetValue(_orderNumberProperty, 10);
 
       var stateBeforeChange = _existingDataContainer.State;
       Assert.That(stateBeforeChange.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
+      Assert.That(stateBeforeChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.RollbackState();
 
@@ -912,14 +1471,57 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void RollbackState_ResetsMarkedChangedFlag ()
+    public void RollbackState_ResetsChangedFlag_WithNonPersistentProperty ()
+    {
+      _dataContainerWithNonPersistentProperty.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+
+      var stateBeforeChange = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(stateBeforeChange.IsChanged, Is.True);
+      Assert.That(stateBeforeChange.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsChanged, Is.True);
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsNonPersistentDataChanged, Is.True);
+
+      _dataContainerWithNonPersistentProperty.RollbackState();
+
+      var stateAfterChange = _dataContainerWithNonPersistentProperty.State;
+      Assert.That(stateAfterChange.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(_dataContainerWithNonPersistentProperty.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void RollbackState_ResetsMarkedChangedFlag_WithPersistentDataContainer ()
     {
       _existingDataContainer.MarkAsChanged();
       Assert.That(_existingDataContainer.HasBeenMarkedChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(_existingDataContainer.State), Is.EqualTo(2));
+      Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
 
       _existingDataContainer.RollbackState();
 
       Assert.That(_existingDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(_existingDataContainer.State), Is.EqualTo(1));
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void RollbackState_ResetsMarkedChangedFlag_WithNonPersistentDataContainer ()
+    {
+      _existingNonPersistentDataContainer.MarkAsChanged();
+      Assert.That(_existingNonPersistentDataContainer.HasBeenMarkedChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(_existingNonPersistentDataContainer.State), Is.EqualTo(2));
+      Assert.That(_existingNonPersistentDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.True);
+
+      _existingNonPersistentDataContainer.RollbackState();
+
+      Assert.That(_existingNonPersistentDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(GetNumberOfSetFlags(_existingNonPersistentDataContainer.State), Is.EqualTo(1));
+      Assert.That(_existingNonPersistentDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(_existingNonPersistentDataContainer.State.IsNonPersistentDataChanged, Is.False);
     }
 
     [Test]
@@ -1001,15 +1603,28 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    public void SetDataFromSubTransaction_SetsValues ()
+    public void SetDataFromSubTransaction_SetsValues_WithStorageClassPeristent ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
       var newDataContainer = DataContainer.CreateNew(DomainObjectIDs.Order3);
       Assert.That(newDataContainer.GetValue(_orderNumberProperty), Is.Not.EqualTo(1));
 
-      newDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      newDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       Assert.That(newDataContainer.GetValue(_orderNumberProperty), Is.EqualTo(1));
+    }
+
+    [Test]
+    public void SetDataFromSubTransaction_SetsValues_WithNonPersistentProperty ()
+    {
+      var sourceDataContainer = _dataContainerWithNonPersistentProperty;
+      sourceDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 42);
+      var newDataContainer = DataContainer.CreateNew(new ObjectID(sourceDataContainer.ClassDefinition, Guid.NewGuid()));
+      Assert.That(newDataContainer.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.Not.EqualTo(42));
+
+      newDataContainer.SetDataFromSubTransaction(sourceDataContainer);
+
+      Assert.That(newDataContainer.GetValue(_nonPersistentPropertyOnPersistentDataContainer), Is.EqualTo(42));
     }
 
     [Test]
@@ -1020,13 +1635,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var propertyDefinition = GetPropertyDefinition(typeof(OrderTicket), "Order");
       Assert.That(newDataContainer.GetValue(propertyDefinition), Is.Not.EqualTo(DomainObjectIDs.Order1));
 
-      newDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      newDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       Assert.That(newDataContainer.GetValue(propertyDefinition), Is.EqualTo(DomainObjectIDs.Order1));
     }
 
     [Test]
-    public void SetDataFromSubTransaction_SetsChangedFlag_IfChanged ()
+    public void SetDataFromSubTransaction_SetsChangedFlag_IfChanged_WithPersistentProperty ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
       var existingDataContainer = DomainObjectIDs.Order3.GetObject<Order>().InternalDataContainer;
@@ -1035,26 +1650,78 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
       Assert.That(existingDataContainer.State.IsUnchanged, Is.True);
 
-      existingDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      existingDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       var stateAfterChange = existingDataContainer.State;
       Assert.That(stateAfterChange.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(stateAfterChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
       Assert.That(existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(existingDataContainer.State.IsPersistentDataChanged, Is.True);
     }
 
     [Test]
-    public void SetDataFromSubTransaction_ResetsChangedFlag_IfUnchanged ()
+    public void SetDataFromSubTransaction_SetsChangedFlag_IfChanged_WithNonPersistentProperty ()
+    {
+      var sourceDataContainer = DataContainer.CreateForExisting(
+          new ObjectID(_nonPersistentPropertyOnPersistentDataContainer.ClassDefinition, Guid.NewGuid()),
+          null,
+          propertyDefinition => propertyDefinition.DefaultValue);
+      sourceDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 42);
+
+      var existingDataContainer = _dataContainerWithNonPersistentProperty;
+
+      var stateBeforeChange = existingDataContainer.State;
+      Assert.That(stateBeforeChange.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
+      Assert.That(existingDataContainer.State.IsUnchanged, Is.True);
+
+      existingDataContainer.SetDataFromSubTransaction(sourceDataContainer);
+
+      var stateAfterChange = existingDataContainer.State;
+      Assert.That(stateAfterChange.IsChanged, Is.True);
+      Assert.That(stateAfterChange.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
+      Assert.That(existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(existingDataContainer.State.IsNonPersistentDataChanged, Is.True);
+    }
+
+    [Test]
+    public void SetDataFromSubTransaction_ResetsChangedFlag_IfUnchanged_WithPersistentProperty ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order1);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order1);
       targetDataContainer.SetValue(_orderNumberProperty, 10);
       var stateBeforeChange = targetDataContainer.State;
       Assert.That(stateBeforeChange.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(1));
+      Assert.That(stateBeforeChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
       Assert.That(targetDataContainer.State.IsChanged, Is.True);
+      Assert.That(targetDataContainer.State.IsPersistentDataChanged, Is.True);
 
-      targetDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
+
+      var stateAfterChange = targetDataContainer.State;
+      Assert.That(stateAfterChange.IsUnchanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(targetDataContainer.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void SetDataFromSubTransaction_ResetsChangedFlag_IfUnchanged_WithNonPersistentProperty ()
+    {
+      var sourceDataContainer = _dataContainerWithNonPersistentProperty;
+      sourceDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 42);
+      var targetDataContainer = DataContainer.CreateForExisting(sourceDataContainer.ID, sourceDataContainer.Timestamp, pd => sourceDataContainer.GetValueWithoutEvents(pd));
+      targetDataContainer.SetValue(_nonPersistentPropertyOnPersistentDataContainer, 10);
+      var stateBeforeChange = targetDataContainer.State;
+      Assert.That(stateBeforeChange.IsChanged, Is.True);
+      Assert.That(stateBeforeChange.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateBeforeChange), Is.EqualTo(2));
+      Assert.That(targetDataContainer.State.IsChanged, Is.True);
+      Assert.That(targetDataContainer.State.IsNonPersistentDataChanged, Is.True);
+
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
       var stateAfterChange = targetDataContainer.State;
       Assert.That(stateAfterChange.IsUnchanged, Is.True);
@@ -1076,24 +1743,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       CheckStateNotification(
           targetDataContainer,
-          dc => dc.SetPropertyDataFromSubTransaction(sourceDataContainer),
-          new DataContainerState.Builder().SetChanged().Value);
+          dc => dc.SetDataFromSubTransaction(sourceDataContainer),
+          new DataContainerState.Builder().SetChanged().SetPersistentDataChanged().Value);
     }
 
     [Test]
     public void SetDataFromSubTransaction_RaisesStateUpdated_Unchanged ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order3);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order3);
       targetDataContainer.SetValue(_orderNumberProperty, 10);
       var state = targetDataContainer.State;
       Assert.That(state.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(1));
+      Assert.That(state.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state), Is.EqualTo(2));
       Assert.That(targetDataContainer.State.IsChanged, Is.True);
+      Assert.That(targetDataContainer.State.IsPersistentDataChanged, Is.True);
 
       CheckStateNotification(
           targetDataContainer,
-          dc => dc.SetPropertyDataFromSubTransaction(sourceDataContainer),
+          dc => dc.SetDataFromSubTransaction(sourceDataContainer),
           new DataContainerState.Builder().SetUnchanged().Value);
     }
 
@@ -1101,7 +1770,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
     public void SetDataFromSubTransaction_RaisesStateUpdated_OtherState ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order3);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order3);
       targetDataContainer.Delete();
       var state = targetDataContainer.State;
       Assert.That(state.IsDeleted, Is.True);
@@ -1110,22 +1779,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       CheckStateNotification(
           targetDataContainer,
-          dc => dc.SetPropertyDataFromSubTransaction(sourceDataContainer),
+          dc => dc.SetDataFromSubTransaction(sourceDataContainer),
           new DataContainerState.Builder().SetDeleted().Value);
     }
 
     [Test]
-    public void SetDataFromSubTransaction_DoesntMarkAsChanged ()
+    public void SetDataFromSubTransaction_DoNotSetMarkAsChangedWhenSourceHasNotBeenMarkedChanged ()
     {
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
-      var targetDataContainer = sourceDataContainer.Clone(DomainObjectIDs.Order1);
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order1);
+      Assert.That(sourceDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
+
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
+
+      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
+    }
+
+    [Test]
+    public void SetDataFromSubTransaction_SetMarkAsChangedWhenSourceHasBeenMarkedChanged ()
+    {
+      var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
+      var targetDataContainer = Copy(sourceDataContainer, DomainObjectIDs.Order1);
       sourceDataContainer.MarkAsChanged();
       Assert.That(sourceDataContainer.HasBeenMarkedChanged, Is.True);
       Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
 
-      targetDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer);
+      targetDataContainer.SetDataFromSubTransaction(sourceDataContainer);
 
-      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.False);
+      Assert.That(targetDataContainer.HasBeenMarkedChanged, Is.True);
     }
 
     [Test]
@@ -1134,7 +1816,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       var sourceDataContainer = DomainObjectIDs.Order1.GetObject<Order>().InternalDataContainer;
       var targetDataContainer = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>().InternalDataContainer;
       Assert.That(
-          () => targetDataContainer.SetPropertyDataFromSubTransaction(sourceDataContainer),
+          () => targetDataContainer.SetDataFromSubTransaction(sourceDataContainer),
           Throws.ArgumentException
               .With.ArgumentExceptionMessageEqualTo(
                   "Cannot set this data container's property values from 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'; the data containers do not "
@@ -1171,8 +1853,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       dataContainer.MarkAsChanged();
       var state2 = dataContainer.State;
       Assert.That(state2.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(1));
+      Assert.That(state2.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state2), Is.EqualTo(2));
       Assert.That(dataContainer.State.IsChanged, Is.True);
+      Assert.That(dataContainer.State.IsPersistentDataChanged, Is.True);
 
       TestableClientTransaction.Rollback();
       var state3 = dataContainer.State;
@@ -1183,32 +1867,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
       dataContainer.MarkAsChanged();
       var state4 = dataContainer.State;
       Assert.That(state4.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state4), Is.EqualTo(1));
+      Assert.That(state4.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(state4), Is.EqualTo(2));
       Assert.That(dataContainer.State.IsChanged, Is.True);
+      Assert.That(dataContainer.State.IsPersistentDataChanged, Is.True);
 
       TestableClientTransaction.Commit();
       var state5 = dataContainer.State;
       Assert.That(state5.IsUnchanged, Is.True);
       Assert.That(GetNumberOfSetFlags(state5), Is.EqualTo(1));
       Assert.That(dataContainer.State.IsUnchanged, Is.True);
-
-      DataContainer clone = dataContainer.Clone(DomainObjectIDs.Order1);
-      var state6 = clone.State;
-      Assert.That(state6.IsUnchanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state6), Is.EqualTo(1));
-      Assert.That(clone.State.IsUnchanged, Is.True);
-
-      dataContainer.MarkAsChanged();
-      var state7 = dataContainer.State;
-      Assert.That(state7.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state7), Is.EqualTo(1));
-      Assert.That(dataContainer.State.IsChanged, Is.True);
-
-      clone = dataContainer.Clone(DomainObjectIDs.Order1);
-      var state8 = clone.State;
-      Assert.That(state8.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(state8), Is.EqualTo(1));
-      Assert.That(clone.State.IsChanged, Is.True);
     }
 
     [Test]
@@ -1223,14 +1891,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
 
       var stateAfterChange = _existingDataContainer.State;
       Assert.That(stateAfterChange.IsChanged, Is.True);
-      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(1));
+      Assert.That(stateAfterChange.IsPersistentDataChanged, Is.True);
+      Assert.That(GetNumberOfSetFlags(stateAfterChange), Is.EqualTo(2));
       Assert.That(_existingDataContainer.State.IsChanged, Is.True);
+      Assert.That(_existingDataContainer.State.IsPersistentDataChanged, Is.True);
     }
 
     [Test]
     public void MarkAsChanged_RaisesStateUpdated ()
     {
-      CheckStateNotification(_existingDataContainer, dc => dc.MarkAsChanged(), new DataContainerState.Builder().SetChanged().Value);
+      CheckStateNotification(_existingDataContainer, dc => dc.MarkAsChanged(), new DataContainerState.Builder().SetChanged().SetPersistentDataChanged().Value);
     }
 
     [Test]
@@ -1256,6 +1926,90 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
           Throws.InvalidOperationException
               .With.Message.EqualTo(
                   "Only existing DataContainers can be marked as changed."));
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForNewDataContainer_ThrowsInvalidOperationException ()
+    {
+      Assert.That(
+          () => _newDataContainer.SetNewInHierarchy(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only existing DataContainers can be marked as new-in-hierarchy."));
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForExistingDataContainer_IsNewInHierarchyIsSet ()
+    {
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.False);
+
+      _existingDataContainer.SetNewInHierarchy();
+
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForDeletedDataContainer_ThrowsInvalidOperationException ()
+    {
+      Assert.That(
+          () => _deletedDataContainer.SetNewInHierarchy(),
+          Throws.InvalidOperationException
+              .With.Message.EqualTo("Only existing DataContainers can be marked as new-in-hierarchy."));
+    }
+
+    [Test]
+    public void SetNewInHierarchy_ForDiscardedDataContainer_ThrowsObjectInvalidException ()
+    {
+      Assert.That(
+          () => _discardedDataContainer.SetNewInHierarchy(),
+          Throws.InstanceOf<ObjectInvalidException>());
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForNewDataContainer_ThrowsInvalidOperationException ()
+    {
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+
+      _newDataContainer.ClearNewInHierarchy();
+
+      Assert.That(_newDataContainer.State.IsNewInHierarchy, Is.False);
+      Assert.That(_newDataContainer.State.IsNew, Is.True);
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForExistingDataContainer_IsNewInHierarchyIsNotSet ()
+    {
+      _existingDataContainer.SetNewInHierarchy();
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+
+      _existingDataContainer.ClearNewInHierarchy();
+
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.False);
+      Assert.That(_existingDataContainer.State.IsUnchanged, Is.True);
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForDeletedDataContainer_IsNewInHierarchyIsNotSet ()
+    {
+      _existingDataContainer.SetNewInHierarchy();
+      _existingDataContainer.Delete();
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.True);
+      Assert.That(_existingDataContainer.State.IsDeleted, Is.True);
+
+      _existingDataContainer.ClearNewInHierarchy();
+
+      Assert.That(_existingDataContainer.State.IsNewInHierarchy, Is.False);
+      Assert.That(_existingDataContainer.State.IsDeleted, Is.True);
+    }
+
+    [Test]
+    public void ClearNewInHierarchy_ForDiscardedDataContainer_ThrowsObjectInvalidException ()
+    {
+      Assert.That(
+          () => _discardedDataContainer.ClearNewInHierarchy(),
+          Throws.InstanceOf<ObjectInvalidException>());
     }
 
     [Test]
@@ -1392,8 +2146,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
         count++;
       if (dataContainerState.IsUnchanged)
         count++;
+      if (dataContainerState.IsPersistentDataChanged)
+        count++;
+      if (dataContainerState.IsNonPersistentDataChanged)
+        count++;
+      if (dataContainerState.IsNewInHierarchy)
+        count++;
 
       return count;
+    }
+
+    private DataContainer Copy (DataContainer source, ObjectID newID)
+    {
+      Assert.That(source.State.IsUnchanged, Is.True);
+      return DataContainer.CreateForExisting(
+          newID,
+          source.Timestamp,
+          pd => source.GetValueWithoutEvents(pd, ValueAccess.Current));
     }
   }
 }

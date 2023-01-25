@@ -34,13 +34,14 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A column definition using <see cref="BocCustomColumnDefinitionCell"/> for rendering the data. </summary>
-  public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition
+  public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport
   {
     private readonly PropertyPathBinding _propertyPathBinding;
     private BocCustomColumnDefinitionCell? _customCell;
     private string _customCellType = string.Empty;
     private string _customCellArgument = string.Empty;
     private bool _isSortable;
+    private bool _isRowHeader;
     private BocCustomColumnDefinitionMode _mode;
 
     public BocCustomColumnDefinition ()
@@ -156,6 +157,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       get { return _isSortable; }
       set { _isSortable = value; }
+    }
+
+    /// <summary> Gets or sets a flag that determines whether to use the value of this column as a row header. </summary>
+    [PersistenceMode(PersistenceMode.Attribute)]
+    [Category("Behavior")]
+    [Description("A flag determining whether to use the value if this column as a row header.")]
+    [DefaultValue(true)]
+    [NotifyParentProperty(true)]
+    public bool IsRowHeader
+    {
+      get { return _isRowHeader; }
+      set { _isRowHeader = value; }
     }
 
     /// <summary> 
@@ -637,6 +650,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
   public class BocCustomCellPreRenderArguments : BocCustomCellArguments
   {
     private readonly int _columnIndex;
+
     public BocCustomCellPreRenderArguments (IBocList list, BocCustomColumnDefinition columnDefinition, int columnIndex)
         : base(list, columnDefinition)
     {
@@ -661,6 +675,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private readonly int _columnIndex;
     private readonly IBusinessObject _businessObject;
     private readonly int _listIndex;
+    private IReadOnlyCollection<string> _headerIDs;
     private readonly string _onClick;
 
     public BocCustomCellRenderArguments (
@@ -669,12 +684,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         BocCustomColumnDefinition columnDefinition,
         int columnIndex,
         int listIndex,
+        IReadOnlyCollection<string> headerIDs,
         string onClick)
         : base(list, columnDefinition)
     {
       _columnIndex = columnIndex;
       _businessObject = businessObject;
       _listIndex = listIndex;
+      _headerIDs = headerIDs;
       _onClick = onClick;
     }
 
@@ -694,6 +711,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     public int ListIndex
     {
       get { return _listIndex; }
+    }
+
+    public IReadOnlyCollection<string> HeaderIDs
+    {
+      get { return _headerIDs; }
     }
 
     /// <summary> Gets client script code that prevents row selection. For use with hyperlinks. </summary>

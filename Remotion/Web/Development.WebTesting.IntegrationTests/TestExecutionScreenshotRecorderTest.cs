@@ -20,12 +20,14 @@ using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.Utilities;
 using Remotion.Web.Development.WebTesting.WebDriver;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [RequiresUserInterface]
   public class TestExecutionScreenshotRecorderTest : IntegrationTest
   {
     private string _tempSavePath = "";
@@ -179,6 +181,9 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
     {
       if (Helper.BrowserConfiguration.IsEdge())
         Assert.Ignore("Edge v79 does not find an alert dialog. (RM-7387)");
+
+      if (Helper.BrowserConfiguration.IsChrome())
+        Assert.Ignore("Chrome v102 does not find an alert dialog. (RM-7387)");
 
       if (Helper.BrowserConfiguration.IsFirefox())
         Assert.Ignore("Firefox does not show an alert dialog.");

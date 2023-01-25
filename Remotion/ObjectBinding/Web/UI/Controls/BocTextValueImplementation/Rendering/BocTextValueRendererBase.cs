@@ -57,6 +57,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       _validationErrorRenderer = validationErrorRenderer;
     }
 
+    protected abstract string GetText (BocRenderingContext<T> renderingContext);
+
     protected ILabelReferenceRenderer LabelReferenceRenderer
     {
       get { return _labelReferenceRenderer; }
@@ -85,24 +87,34 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassContent);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-      bool isControlHeightEmpty = renderingContext.Control.Height.IsEmpty && string.IsNullOrEmpty(renderingContext.Control.Style["height"]);
+      var textBox = GetTextBox(renderingContext);
+      textBox.Page = renderingContext.Control.Page!.WrappedInstance;
 
-      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl)GetLabel(renderingContext) : GetTextBox(renderingContext);
-      innerControl.Page = renderingContext.Control.Page!.WrappedInstance;
+      var label = GetLabel(renderingContext);
+      label.Page = renderingContext.Control.Page!.WrappedInstance;
 
-      bool isInnerControlHeightEmpty = innerControl.Height.IsEmpty && string.IsNullOrEmpty(innerControl.Style["height"]);
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(textBox, validationErrorsID, validationErrors);
 
-      if (!isControlHeightEmpty && isInnerControlHeightEmpty)
-        renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "100%");
+      if (!IsControlHeightEmpty(renderingContext.Control))
+      {
+        if (IsWebControlHeightEmpty(textBox))
+          textBox.Style.Add(HtmlTextWriterStyle.Height, "100%");
 
-      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(innerControl, validationErrorsID, validationErrors);
+        if (IsWebControlHeightEmpty(label))
+          label.Style.Add(HtmlTextWriterStyle.Height, "100%");
+      }
 
-      innerControl.RenderControl(renderingContext.Writer);
+      textBox.RenderControl(renderingContext.Writer);
+      if (renderingContext.Control.IsReadOnly)
+        label.RenderControl(renderingContext.Writer);
 
       _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag(); // Content Span
       renderingContext.Writer.RenderEndTag();
+
+      static bool IsControlHeightEmpty (T control) => control.Height.IsEmpty && string.IsNullOrEmpty(control.Style[HtmlTextWriterStyle.Height]);
+      static bool IsWebControlHeightEmpty (WebControl control) => control.Height.IsEmpty && string.IsNullOrEmpty(control.Style[HtmlTextWriterStyle.Height]);
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<T> renderingContext)
@@ -126,11 +138,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       textBox.ID = renderingContext.Control.GetValueName();
       textBox.EnableViewState = false;
       textBox.Enabled = renderingContext.Control.Enabled;
-      textBox.ReadOnly = !renderingContext.Control.Enabled;
+      textBox.ReadOnly = renderingContext.Control.IsReadOnly || !renderingContext.Control.Enabled;
       textBox.Width = Unit.Empty;
       textBox.Height = Unit.Empty;
       textBox.ApplyStyle(renderingContext.Control.CommonStyle);
       renderingContext.Control.TextBoxStyle.ApplyStyle(textBox);
+      if (renderingContext.Control.IsReadOnly)
+        textBox.CssClass = CssClassDefinition.ScreenReaderText;
 
       var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
       _labelReferenceRenderer.SetLabelReferenceOnControl(textBox, labelIDs);
@@ -141,11 +155,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocTextValueImplementation.Rend
       return textBox;
     }
 
-    /// <summary>
-    /// Creates a <see cref="Label"/> control to use for rendering the <see cref="BocTextValueBase"/> control in read-only mode.
-    /// </summary>
-    /// <returns>A <see cref="Label"/> control with all relevant properties set and all appropriate styles applied to it.</returns>
-    protected abstract Label GetLabel (BocRenderingContext<T> renderingContext);
+    private Label GetLabel (BocRenderingContext<T> renderingContext)
+    {
+      Label label = new Label { ClientIDMode = ClientIDMode.Static};
+      label.EnableViewState = false;
+      label.Text = GetText(renderingContext);
+      label.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+
+      label.Width = Unit.Empty;
+      label.Height = Unit.Empty;
+      label.ApplyStyle(renderingContext.Control.CommonStyle);
+      label.ApplyStyle(renderingContext.Control.LabelStyle);
+
+      return label;
+    }
 
     private IEnumerable<PlainTextString> GetValidationErrorsToRender (BocRenderingContext<T> renderingContext)
     {

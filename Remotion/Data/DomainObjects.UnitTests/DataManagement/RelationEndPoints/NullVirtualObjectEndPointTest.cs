@@ -103,5 +103,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     {
       _nullEndPoint.UnregisterCurrentOppositeEndPoint(_oppositeEndPointStub.Object);
     }
+
+    [Test]
+    public void GetData ()
+    {
+      Assert.That(_nullEndPoint.GetData(), Is.Null);
+    }
+
+    [Test]
+    public void GetOriginalData ()
+    {
+      Assert.That(() => _nullEndPoint.GetOriginalData(), Throws.InvalidOperationException);
+    }
+
+    [Test]
+    public void MarkDataComplete ()
+    {
+      _nullEndPoint.MarkDataComplete(null);
+    }
   }
 }

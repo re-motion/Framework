@@ -16,8 +16,10 @@
 // 
 using System;
 using System.Web.UI.WebControls;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls;
 
@@ -57,7 +59,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
       ArgumentUtility.CheckNotNull("businessObjectClass", businessObjectClass);
 
       return new HelpInfo(
-          "#",
+          "fakeFallbackUrl",
           null,
           string.Format(
               "{0}\r\n{1}\r\n{2}\r\n{3}",

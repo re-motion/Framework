@@ -19,7 +19,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Reflection;
 using Remotion.Validation.MetaValidation;
 using Remotion.Validation.RuleCollectors;

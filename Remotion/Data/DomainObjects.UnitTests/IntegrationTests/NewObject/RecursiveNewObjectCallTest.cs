@@ -32,6 +32,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NewObject
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class OuterDomainObject : DomainObject
     {
       public static OuterDomainObject NewObject ()
@@ -48,6 +49,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.NewObject
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class InnerDomainObject : DomainObject
     {
       public static InnerDomainObject NewObject ()

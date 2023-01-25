@@ -157,7 +157,7 @@
   justify-content: start;
 }
 
-.bocAutoCompleteReferenceValue.readOnly span[tabindex]
+.bocAutoCompleteReferenceValue.readOnly span.content
 {
   min-height: var(--remotion-themed-singleline-min-height);
   box-sizing: border-box;
@@ -168,7 +168,7 @@
   border-radius: var(--remotion-themed-border-radius);
 }
 
-.bocAutoCompleteReferenceValue.readOnly span[tabindex]:focus-visible
+.bocAutoCompleteReferenceValue.readOnly span.content:focus-within
 {
   outline: none;
   border: var(--remotion-themed-border-readonly-focus);
@@ -176,13 +176,13 @@
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
-span.bocAutoCompleteReferenceValue.readOnly span[tabindex]:empty
+span.bocAutoCompleteReferenceValue.readOnly span.content input + span:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
   width: 100%;
 }
 
-span.bocAutoCompleteReferenceValue.readOnly span[tabindex]:empty::before
+span.bocAutoCompleteReferenceValue.readOnly span.content input + span:empty::before
 {
   /* Inserting a 'zero width space' unicode character as placeholder so that empty
   readonly values are not collapsed and can therefore visualize the keyboard focus.

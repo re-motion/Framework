@@ -15,21 +15,39 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using Moq;
-using Remotion.Data.DomainObjects.DataManagement;
+using NUnit.Framework;
 
-namespace Remotion.Data.DomainObjects.UnitTests.DataManagement
+namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public static class DataManagementCommandTestHelper
+  public class FakeEntityFrameworkProfiler
   {
-    public static void ExpectNotifyAndPerform (Mock<IDataManagementCommand> commandMock)
+    public class Configuration
     {
-      var sequence = new MockSequence();
-      commandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      commandMock.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
-      commandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      commandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
-      commandMock.InSequence(sequence).Setup(mock => mock.End()).Verifiable();
+      public Configuration ()
+      {
+      }
+    }
+
+    private static bool s_initialized;
+    private static readonly object s_initializedLock = new object();
+
+    public static void Initialize (Configuration configuration)
+    {
+      Assert.That(configuration, Is.Not.Null);
+
+      lock (s_initializedLock)
+      {
+        Assert.That(s_initialized, Is.False, "Initialize must not be called twice.");
+        s_initialized = true;
+      }
+    }
+
+    public static void Reset ()
+    {
+      lock (s_initializedLock)
+      {
+        s_initialized = false;
+      }
     }
   }
 }

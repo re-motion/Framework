@@ -27,7 +27,7 @@ using Remotion.Data.DomainObjects.UnitTests.DataManagement;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting.Enumerables;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 {
@@ -94,7 +94,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       var objectID = DomainObjectIDs.Order1;
       var parentObject = DomainObjectMother.CreateFakeObject<Order>(objectID);
       var parentDataContainer = CreateChangedDataContainer(objectID, 4711, _orderNumberPropertyDefinition, 17);
-      CheckDataContainer(parentDataContainer, objectID, 4711, state => state.IsChanged, _orderNumberPropertyDefinition, 17, 0, true);
+      CheckDataContainer(parentDataContainer, objectID, 4711, state => state.IsChanged && !state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
 
       var parentEventListenerMock = new Mock<IDataContainerEventListener>(MockBehavior.Strict);
       parentDataContainer.SetEventListener(parentEventListenerMock.Object);
@@ -116,7 +116,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(result, Is.TypeOf<FreshlyLoadedObjectData>());
       Assert.That(result.ObjectID, Is.EqualTo(objectID));
       var dataContainer = ((FreshlyLoadedObjectData)result).FreshlyLoadedDataContainer;
-      CheckDataContainer(dataContainer, objectID, 4711, state => state.IsUnchanged, _orderNumberPropertyDefinition, 17, 17, false);
+      CheckDataContainer(dataContainer, objectID, 4711, state => state.IsUnchanged && !state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 17, false);
     }
 
     [Test]
@@ -138,6 +138,38 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(() => _persistenceStrategy.LoadObjectData(objectID), Throws.Exception.SameAs(exception));
 
       _parentTransactionContextMock.Verify();
+    }
+
+    [Test]
+    public void LoadObjectData_Single_ParentObjectIsNewInHierarchy ()
+    {
+      var objectID = DomainObjectIDs.Order1;
+      var parentObject = DomainObjectMother.CreateFakeObject<Order>(objectID);
+      var parentDataContainer = CreateChangedDataContainer(objectID, 4711, _orderNumberPropertyDefinition, 17);
+      parentDataContainer.SetNewInHierarchy();
+      CheckDataContainer(parentDataContainer, objectID, 4711, state => state.IsChanged && state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
+
+      var parentEventListenerMock = new Mock<IDataContainerEventListener>(MockBehavior.Strict);
+      parentDataContainer.SetEventListener(parentEventListenerMock.Object);
+
+      _parentTransactionContextMock
+          .Setup(mock => mock.TryGetObject(objectID))
+          .Returns(parentObject)
+          .Verifiable();
+      _parentTransactionContextMock
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(objectID, true))
+          .Returns(parentDataContainer)
+          .Verifiable();
+
+      var result = _persistenceStrategy.LoadObjectData(objectID);
+
+      _parentTransactionContextMock.Verify();
+      parentEventListenerMock.Verify(mock => mock.PropertyValueReading(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<ValueAccess>()), Times.Never());
+
+      Assert.That(result, Is.TypeOf<FreshlyLoadedObjectData>());
+      Assert.That(result.ObjectID, Is.EqualTo(objectID));
+      var dataContainer = ((FreshlyLoadedObjectData)result).FreshlyLoadedDataContainer;
+      CheckDataContainer(dataContainer, objectID, 4711, state => state.IsUnchanged && state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 17, false);
     }
 
     [Test]
@@ -190,7 +222,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var parentObject1 = DomainObjectMother.CreateFakeObject<Order>(objectID1);
       var parentDataContainer1 = CreateChangedDataContainer(objectID1, 4711, _orderNumberPropertyDefinition, 17);
-      CheckDataContainer(parentDataContainer1, objectID1, 4711, state => state.IsChanged, _orderNumberPropertyDefinition, 17, 0, true);
+      CheckDataContainer(parentDataContainer1, objectID1, 4711, state => state.IsChanged && !state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
 
       var parentObject3 = DomainObjectMother.CreateFakeObject<Order>(objectID3);
       var parentDataContainer3 = DataContainerObjectMother.CreateExisting(objectID3);
@@ -228,7 +260,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           ((FreshlyLoadedObjectData)result[0]).FreshlyLoadedDataContainer,
           objectID1,
           4711,
-          state => state.IsUnchanged,
+          state => state.IsUnchanged && !state.IsNewInHierarchy,
           _orderNumberPropertyDefinition,
           17,
           17,
@@ -260,6 +292,58 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       Assert.That(() => _persistenceStrategy.LoadObjectData(objectID), Throws.Exception.SameAs(exception));
 
       _parentTransactionContextMock.Verify();
+    }
+
+    [Test]
+    public void LoadObjectData_Multiple_ParentObjectIsNewInHierarchy ()
+    {
+      var objectID1 = DomainObjectIDs.Order1;
+      var objectID2 = DomainObjectIDs.Order4;
+
+      var parentObject1 = DomainObjectMother.CreateFakeObject<Order>(objectID1);
+      var parentDataContainer1 = CreateChangedDataContainer(objectID1, 4711, _orderNumberPropertyDefinition, 17);
+      parentDataContainer1.SetNewInHierarchy();
+      CheckDataContainer(parentDataContainer1, objectID1, 4711, state => state.IsChanged && state.IsNewInHierarchy, _orderNumberPropertyDefinition, 17, 0, true);
+
+      var parentObject2 = DomainObjectMother.CreateFakeObject<Order>(objectID2);
+      var parentDataContainer2 = DataContainerObjectMother.CreateExisting(objectID2);
+
+      var parentEventListenerMock = new Mock<IDataContainerEventListener>(MockBehavior.Strict);
+      parentDataContainer1.SetEventListener(parentEventListenerMock.Object);
+      parentDataContainer2.SetEventListener(parentEventListenerMock.Object);
+
+      // Use a strict mock because the parameter should not be enumerated, it should only be passed on TryGetObjects
+
+      _parentTransactionContextMock
+          .Setup(mock => mock.TryGetObjects(new[] { objectID1, objectID2 }))
+          .Returns(new DomainObject[] { parentObject1, parentObject2 })
+          .Verifiable();
+      _parentTransactionContextMock
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(objectID1, true))
+          .Returns(parentDataContainer1)
+          .Verifiable();
+      _parentTransactionContextMock
+          .Setup(mock => mock.GetDataContainerWithLazyLoad(objectID2, true))
+          .Returns(parentDataContainer2)
+          .Verifiable();
+
+      var result = _persistenceStrategy.LoadObjectData(new[] { objectID1, objectID2 }.AsOneTime()).ToList();
+
+      _parentTransactionContextMock.Verify();
+      parentEventListenerMock
+          .Verify(
+              mock => mock.PropertyValueReading(It.IsAny<DataContainer>(), It.IsAny<PropertyDefinition>(), It.IsAny<ValueAccess>()),
+              Times.Never());
+
+      Assert.That(result[0], Is.TypeOf<FreshlyLoadedObjectData>());
+      Assert.That(result[0].ObjectID, Is.EqualTo(objectID1));
+      Assert.That(((FreshlyLoadedObjectData)result[0]).FreshlyLoadedDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(((FreshlyLoadedObjectData)result[0]).FreshlyLoadedDataContainer.State.IsNewInHierarchy, Is.True);
+
+      Assert.That(result[1], Is.TypeOf<FreshlyLoadedObjectData>());
+      Assert.That(result[1].ObjectID, Is.EqualTo(objectID2));
+      Assert.That(((FreshlyLoadedObjectData)result[1]).FreshlyLoadedDataContainer.State.IsUnchanged, Is.True);
+      Assert.That(((FreshlyLoadedObjectData)result[1]).FreshlyLoadedDataContainer.State.IsNewInHierarchy, Is.False);
     }
 
     [Test]
@@ -586,7 +670,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           persistedDataContainer,
           new[] { persistedEndPoint1.Object, persistedEndPoint2.Object, persistedEndPoint3.Object });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
@@ -596,7 +680,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Returns(parentEndPointMock1.Object)
           .Verifiable();
       parentEndPointMock1
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint1.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
 
@@ -606,7 +690,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Returns(parentEndPointMock3.Object)
           .Verifiable();
       parentEndPointMock3
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint3.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
       _unlockedParentTransactionContextMock
@@ -619,6 +703,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock1.Verify();
       parentEndPointMock3.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -635,18 +720,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           persistedDataContainer,
           new[] { persistedEndPoint.Object });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
       _parentTransactionContextMock.Setup(stub => stub.IsInvalid(domainObject.ID)).Returns(true);
       _parentTransactionContextMock.Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID)).Returns((DataContainer)null);
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.MarkNotInvalid(domainObject.ID))
           .Verifiable();
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()))
           .Callback(
               (DataContainer dataContainer) =>
@@ -656,16 +741,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var parentEndPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
       _parentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.GetRelationEndPointWithoutLoading(persistedEndPoint.Object.ID))
           .Returns(parentEndPointMock.Object)
           .Verifiable("New DataContainers must be registered before the parent relation end-points are retrieved for persistence.");
       parentEndPointMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Verifiable("Dispose should come at the end.");
 
@@ -674,6 +759,47 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Verify();
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void PersistData_NewDataContainer_CopiesOriginalValue ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order>();
+      var persistedDataContainer = DataContainerObjectMother.CreateNew(domainObject);
+      SetPropertyValue(persistedDataContainer, typeof(Order), "OrderNumber", 12);
+      persistedDataContainer.CommitValue(GetPropertyDefinition(typeof(Order), "OrderNumber"));
+      SetPropertyValue(persistedDataContainer, typeof(Order), "OrderNumber", 13);
+      var persistableData = new PersistableData(
+          domainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          persistedDataContainer,
+          Array.Empty<IRelationEndPoint>());
+
+      _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
+      _parentTransactionContextMock.Setup(stub => stub.IsInvalid(domainObject.ID)).Returns(true);
+      _parentTransactionContextMock.Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID)).Returns((DataContainer)null);
+
+      _unlockedParentTransactionContextMock.Setup(mock => mock.MarkNotInvalid(domainObject.ID));
+      _unlockedParentTransactionContextMock.Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()))
+          .Callback(
+              (DataContainer dataContainer) =>
+                  CheckDataContainer(
+                      dataContainer,
+                      domainObject,
+                      null,
+                      state => state.IsNew,
+                      _orderNumberPropertyDefinition,
+                      expectedCurrentPropertyValue: 13,
+                      expectedOriginalPropertyValue: 12,
+                      expectedHasPropertyValueBeenTouched: true)
+              )
+          .Verifiable();
+      _unlockedParentTransactionContextMock.Setup(mock => mock.Dispose());
+
+      _persistenceStrategy.PersistData(new[] { persistableData }.AsOneTime());
+
+      _unlockedParentTransactionContextMock.Verify();
     }
 
     [Test]
@@ -689,18 +815,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           persistedDataContainer,
           new[] { persistedEndPoint.Object });
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
       var parentEndPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
       _parentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.GetRelationEndPointWithoutLoading(persistedEndPoint.Object.ID))
           .Returns(parentEndPointMock.Object)
           .Verifiable("Deleted DataContainers must be persisted after the parent relation end-points are retrieved for persistence.");
       parentEndPointMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
       var parentDataContainer = DataContainerObjectMother.CreateNew(persistedDataContainer.ID);
@@ -709,11 +835,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID))
           .Returns(parentDataContainer);
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Discard(parentDataContainer))
           .Verifiable("Deleted DataContainers must be persisted after the parent relation end-points are retrieved for persistence.");
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Verifiable("Dispose should come at the end.");
 
@@ -722,6 +848,35 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Verify();
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock.Verify();
+      sequence.Verify();
+    }
+
+    [Test]
+    public void PersistData_NewDataContainer_PreservesNewInHierarchyFlag ()
+    {
+      var domainObject = DomainObjectMother.CreateFakeObject<Order>();
+      var persistedDataContainer = DataContainerObjectMother.CreateNew(domainObject);
+      var persistableData = new PersistableData(
+          domainObject,
+          new DomainObjectState.Builder().SetNew().Value,
+          persistedDataContainer,
+          Array.Empty<IRelationEndPoint>());
+
+      _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
+      _parentTransactionContextMock.Setup(stub => stub.IsInvalid(domainObject.ID)).Returns(true);
+      _parentTransactionContextMock.Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID)).Returns((DataContainer)null);
+
+      _unlockedParentTransactionContextMock.Setup(mock => mock.MarkNotInvalid(domainObject.ID));
+      _unlockedParentTransactionContextMock.Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()));
+      _unlockedParentTransactionContextMock.Setup(mock => mock.Dispose());
+
+      Assert.That(persistedDataContainer.State.IsNew, Is.True);
+      Assert.That(persistedDataContainer.State.IsNewInHierarchy, Is.True);
+
+      _persistenceStrategy.PersistData(new[] { persistableData }.AsOneTime());
+
+      Assert.That(persistedDataContainer.State.IsNew, Is.True);
+      Assert.That(persistedDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]
@@ -739,7 +894,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       _parentTransactionContextMock.Setup(mock => mock.UnlockParentTransaction()).Returns(_unlockedParentTransactionContextMock.Object).Verifiable();
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       var parentEndPointMock = new Mock<IRelationEndPoint>(MockBehavior.Strict);
       _parentTransactionContextMock
@@ -747,7 +902,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Returns(parentEndPointMock.Object)
           .Verifiable();
       parentEndPointMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.SetDataFromSubTransaction(persistedEndPoint.Object))
           .Verifiable("SetDataFromSubTransaction must occur prior to Dispose.");
 
@@ -757,7 +912,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Setup(stub => stub.GetDataContainerWithoutLoading(domainObject.ID))
           .Returns(parentDataContainer);
       _unlockedParentTransactionContextMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.Dispose())
           .Callback(
               () => Assert.That(
@@ -771,6 +926,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _parentTransactionContextMock.Verify();
       _unlockedParentTransactionContextMock.Verify();
       parentEndPointMock.Verify();
+      sequence.Verify();
     }
 
     private void CheckDataContainer (

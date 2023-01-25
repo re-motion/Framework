@@ -33,7 +33,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
       }
     }
 
-    public static MockableLinqToSqlAppender GetAppender (string name)
+    public static MockableAppender GetAppender (string name)
     {
       lock (s_initializedLock)
       {
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
         s_initialized = false;
       }
 
-      return new MockableLinqToSqlAppender(name);
+      return new MockableAppender(name);
     }
   }
 }

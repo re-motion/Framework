@@ -512,49 +512,52 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void Dispose ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
           .Verifiable();
-      _innerDataReader.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
 
       _dataReader.Dispose();
       _innerDataReader.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void Close ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
           .Verifiable();
-      _innerDataReader.InSequence(sequence).Setup(mock => mock.Close()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Close()).Verifiable();
 
       _dataReader.Close();
       _innerDataReader.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
     public void CloseAndDispose ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryCompleted(_connectionID,  _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 0))
           .Verifiable();
-      _innerDataReader.InSequence(sequence).Setup(mock => mock.Close()).Verifiable();
-      _innerDataReader.InSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Close()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Dispose()).Verifiable();
 
       _dataReader.Close();
       _dataReader.Dispose();
 
       _innerDataReader.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -584,19 +587,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     [Test]
     public void ReadAndClose ()
     {
-      var sequence = new MockSequence();
-      _innerDataReader.InSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Read()).Returns(true).Verifiable();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryCompleted(_connectionID, _queryID, It.Is<TimeSpan>(p => p > TimeSpan.Zero), 1))
           .Verifiable();
-      _innerDataReader.InSequence(sequence).Setup(mock => mock.Close()).Verifiable();
+      _innerDataReader.InVerifiableSequence(sequence).Setup(mock => mock.Close()).Verifiable();
 
       _dataReader.Read();
       _dataReader.Close();
 
       _innerDataReader.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
   }

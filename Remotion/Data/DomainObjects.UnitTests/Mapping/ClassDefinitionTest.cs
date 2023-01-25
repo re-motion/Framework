@@ -30,7 +30,7 @@ using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.Mixed
 using Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.Model;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
 using Remotion.Development.UnitTesting.Enumerables;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Mixins;
 using Remotion.Reflection;
 

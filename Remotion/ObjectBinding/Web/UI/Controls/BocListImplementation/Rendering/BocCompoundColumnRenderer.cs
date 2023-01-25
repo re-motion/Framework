@@ -46,8 +46,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public BocCompoundColumnRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
@@ -55,24 +56,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     /// <summary>
-    /// Renders a string representation of the property of <paramref name="businessObject"/> that is shown in the column.
+    /// Renders a string representation of the property of <paramref name="arguments"/>.<see cref="BocDataCellRenderArguments.BusinessObject"/> that is shown in the column.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocColumnDefinition}"/>.</param>
-    /// <param name="businessObject">The <see cref="IBusinessObject"/> whose property will be rendered.</param>
+    /// <param name="arguments">The <see cref="BocDataCellRenderArguments"/> for the rendered cell.</param>
     /// <param name="editableRow">Ignored.</param>
     protected override void RenderCellDataForEditMode (
-        BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow? editableRow)
+        BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow? editableRow)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      RenderValueColumnCellText(renderingContext, PlainTextString.CreateFromText(renderingContext.ColumnDefinition.GetStringValue(businessObject)));
+      RenderValueColumnCellText(renderingContext, PlainTextString.CreateFromText(renderingContext.ColumnDefinition.GetStringValue(arguments.BusinessObject)));
     }
 
     /// <summary>
     /// Renders a custom title cell that includes information about bound property paths of <see cref="BocCompoundColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocCompoundColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
@@ -94,7 +94,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         }
       }
 
-      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, arguments);
     }
   }
 }

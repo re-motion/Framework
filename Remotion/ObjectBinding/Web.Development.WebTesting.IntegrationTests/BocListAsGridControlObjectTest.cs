@@ -37,6 +37,7 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [RequiresUserInterface]
   public class BocListAsGridControlObjectTest : IntegrationTest
   {
     [Test]
@@ -236,6 +237,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetColumnDefinitionsWithRowHeaders ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_EmptyWithRowHeaders");
+      Assert.That(
+          bocList.GetColumnDefinitions().Select(cd => (cd.Title, cd.IsRowHeader)),
+          Is.EquivalentTo(new[] { ("Title", true), ("StartDate", false), ("EndDate", false), ("DisplayName", true) }));
+    }
+
+    [Test]
     public void TestGetDisplayedRows ()
     {
       var home = Start();
@@ -321,10 +333,10 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
 
       var row = bocList.GetRow("0ba19f5c-f2a2-4c9f-83c9-e6d25b461d98");
-      Assert.That(row.GetCell(8).GetText(), Is.EqualTo("CEO"));
+      Assert.That(row.GetCell(5).GetText(), Is.EqualTo("CEO"));
 
       row = bocList.GetRow(1);
-      Assert.That(row.GetCell(8).GetText(), Is.EqualTo("Programmer"));
+      Assert.That(row.GetCell(5).GetText(), Is.EqualTo("Programmer"));
     }
 
     [Test]
@@ -368,7 +380,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var cell = row.GetCell("DisplayName");
       Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
-      cell = row.GetCell(8);
+      cell = row.GetCell(5);
       Assert.That(cell.GetText(), Is.EqualTo("CEO"));
 
       cell = row.GetCell().WithColumnTitle("DisplayName");
@@ -426,7 +438,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
-      var cell = bocList.GetRow(2).GetCell(8);
+      var cell = bocList.GetRow(2).GetCell(5);
 
       Assert.That(cell.GetText(), Is.EqualTo("CEO"));
     }
@@ -454,7 +466,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.ListAsGrids().GetByLocalID("JobList_Normal");
       var editableRow = bocList.GetRow(2);
-      var editableCell = editableRow.GetCell(5);
+      var editableCell = editableRow.GetCell(6);
 
       var bocText = editableCell.TextValues().First();
       bocText.FillWith("NewTitle");

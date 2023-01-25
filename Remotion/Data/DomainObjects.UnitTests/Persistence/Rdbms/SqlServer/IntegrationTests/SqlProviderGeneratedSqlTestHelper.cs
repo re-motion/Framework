@@ -57,48 +57,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
       get { return _provider; }
     }
 
-    public void Replay ()
-    {
-    }
-
     public void VerifyAllExpectations ()
     {
       _executionListenerStrictMock.Verify();
     }
 
-    public void ExpectExecuteReader (
-        MockSequence sequence,
+    internal void ExpectExecuteReader (
+        VerifiableSequence sequence,
         CommandBehavior expectedCommandBehavior,
         string expectedSql,
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.OnExecuteReader(It.IsAny<IDbCommand>(), expectedCommandBehavior))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnExecuteReader(It.Is<IDbCommand>(cmd => cmd.CommandText == expectedSql), expectedCommandBehavior))
           .Callback((IDbCommand command, CommandBehavior _) => CheckCommand(command, expectedSql, expectedParametersData))
           .Verifiable();
     }
 
-    public void ExpectExecuteScalar (
-        MockSequence sequence,
+    internal void ExpectExecuteScalar (
+        VerifiableSequence sequence,
         string expectedSql,
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.OnExecuteScalar(It.IsAny<IDbCommand>()))
           .Callback((IDbCommand command) => CheckCommand(command, expectedSql, expectedParametersData))
           .Verifiable();
     }
 
-    public void ExpectExecuteNonQuery (
-        MockSequence sequence,
+    internal void ExpectExecuteNonQuery (
+        VerifiableSequence sequence,
         string expectedSql,
         params Tuple<string, DbType, object>[] expectedParametersData)
     {
       _executionListenerStrictMock
-          .InSequence(sequence)
-          .Setup(mock => mock.OnExecuteNonQuery(It.IsAny<IDbCommand>()))
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnExecuteNonQuery(It.Is<IDbCommand>(cmd => cmd.CommandText == expectedSql)))
           .Callback((IDbCommand command) => CheckCommand(command, expectedSql, expectedParametersData))
           .Verifiable();
     }

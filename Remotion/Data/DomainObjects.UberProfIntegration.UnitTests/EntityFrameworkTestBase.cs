@@ -21,24 +21,25 @@ using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
 {
-  public abstract class TestBase
+  public abstract class EntityFrameworkTestBase
   {
-    private LinqToSqlAppenderProxy _appenderProxy;
-    private MockableLinqToSqlAppender _mockableAppender;
-    private LinqToSqlAppenderProxy _originalAppender;
-    private DoubleCheckedLockingContainer<LinqToSqlAppenderProxy> _container;
+    private EntityFrameworkAppenderProxy _appenderProxy;
+    private MockableAppender _mockableAppender;
+    private EntityFrameworkAppenderProxy _originalAppender;
+    private DoubleCheckedLockingContainer<EntityFrameworkAppenderProxy> _container;
 
     [SetUp]
     public virtual void SetUp ()
     {
-      _appenderProxy = (LinqToSqlAppenderProxy)PrivateInvoke.CreateInstanceNonPublicCtor(
-          typeof(LinqToSqlAppenderProxy),
+      _appenderProxy = (EntityFrameworkAppenderProxy)PrivateInvoke.CreateInstanceNonPublicCtor(
+          typeof(EntityFrameworkAppenderProxy),
           "Test",
-          typeof(FakeLinqToSqlProfiler),
-          typeof(MockableLinqToSqlAppender));
-      _mockableAppender = (MockableLinqToSqlAppender)_appenderProxy.LinqToSqlAppender;
+          typeof(FakeEntityFrameworkProfiler),
+          typeof(FakeEntityFrameworkProfiler.Configuration),
+          typeof(MockableAppender));
+      _mockableAppender = (MockableAppender)_appenderProxy.EntityFrameworkAppender;
 
-      _container = (DoubleCheckedLockingContainer<LinqToSqlAppenderProxy>)PrivateInvoke.GetNonPublicStaticField(typeof(LinqToSqlAppenderProxy), "s_instance");
+      _container = (DoubleCheckedLockingContainer<EntityFrameworkAppenderProxy>)PrivateInvoke.GetNonPublicStaticField(typeof(EntityFrameworkAppenderProxy), "s_instance");
       Assertion.IsNotNull(_container);
 
       if (_container.HasValue)
@@ -53,14 +54,15 @@ namespace Remotion.Data.DomainObjects.UberProfIntegration.UnitTests
     public virtual void TearDown ()
     {
       _container.Value = _originalAppender;
+      FakeEntityFrameworkProfiler.Reset();
     }
 
-    public LinqToSqlAppenderProxy AppenderProxy
+    public EntityFrameworkAppenderProxy AppenderProxy
     {
       get { return _appenderProxy; }
     }
 
-    protected void SetAppender (MockableLinqToSqlAppender.ILinqToSqlAppender appender)
+    protected void SetAppender (MockableAppender.IAppender appender)
     {
       _mockableAppender.AppenderMock = appender;
     }

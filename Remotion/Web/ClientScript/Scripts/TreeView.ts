@@ -27,6 +27,60 @@ class WebTreeView
       WebTreeView.OnKeyDown (event, treeView);
     });
 
+    // The following code is responsible for making the whole tree view node clickable
+    // Nodes in NovaGray are not full-width so we do this handling only in NovaViso
+    if (!StyleUtility.IsNovaGray)
+    {
+      const nodes = [...treeView.querySelectorAll ('.treeViewNode')];
+      for (const node of nodes)
+      {
+        const linkElement = node.querySelector (':scope > .treeViewNodeHead > a[onclick], :scope > .treeViewNodeHeadSelected > a[onclick]');
+        if (linkElement)
+        {
+          linkElement.addEventListener('click', ev =>
+          {
+            ev.stopPropagation();
+          });
+
+          node.addEventListener ('click', ev =>
+          {
+            // Prevent recursion through bubbling
+            if (!ev.isTrusted)
+              return;
+
+            if (ev.target === linkElement)
+              return;
+
+            linkElement.dispatchEvent (new MouseEvent (ev.type, ev));
+            ev.preventDefault();
+            ev.stopPropagation();
+          });
+          node.addEventListener('contextmenu', ev =>
+          {
+            // Prevent recursion through bubbling
+            if (!ev.isTrusted)
+              return;
+
+            if (ev.target === linkElement)
+              return;
+
+            linkElement.dispatchEvent (new PointerEvent (ev.type, ev));
+            ev.preventDefault();
+            ev.stopPropagation();
+          });
+        }
+
+        const expanderElement = node.querySelector(':scope > a:first-child');
+        if (expanderElement)
+        {
+          expanderElement.addEventListener('click', ev =>
+          {
+            ev.stopPropagation();
+          });
+        }
+      }
+    }
+
     var focusableTreeNode = treeView.querySelector ('li[tabindex="0"][role=treeitem]');
     if (focusableTreeNode === null)
     {
@@ -145,6 +199,9 @@ class WebTreeView
         }
       case 38: // up arrow
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the previous node that is focusable without opening or closing a node.
           let newTreeNodeIndex = activeTreeNodeIndex - 1;
           if (newTreeNodeIndex >= 0)
@@ -157,6 +214,9 @@ class WebTreeView
         }
       case 40: // down arrow
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the next node that is focusable without opening or closing a node.
           let newTreeNodeIndex = activeTreeNodeIndex + 1;
           if (newTreeNodeIndex < treeNodes.length)
@@ -169,6 +229,9 @@ class WebTreeView
         }
       case 36: // home
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the first node in the tree without opening or closing a node.
           let newTreeNodeIndex = 0;
           if (newTreeNodeIndex < treeNodes.length)
@@ -181,6 +244,9 @@ class WebTreeView
         }
       case 35: // end
         {
+          event.preventDefault();
+          event.stopPropagation();
+
           // Moves focus to the last node in the tree that is focusable without opening a node.
           let newTreeNodeIndex = treeNodes.length -1;
           if (newTreeNodeIndex >= 0)

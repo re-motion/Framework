@@ -41,6 +41,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
   [ImplementationFor(typeof(IBocEnumValueRenderer), Lifetime = LifetimeKind.Singleton)]
   public class BocEnumValueRenderer : BocRendererBase<IBocEnumValue>, IBocEnumValueRenderer
   {
+
+    /// <summary> A list of control specific resources. </summary>
+    /// <remarks> 
+    ///   Resources will be accessed using 
+    ///   <see cref="M:Remotion.Globalization.IResourceManager.GetString(System.Enum)">IResourceManager.GetString(Enum)</see>. 
+    ///   See the documentation of <b>GetString</b> for further details.
+    /// </remarks>
+    [ResourceIdentifiers]
+    [MultiLingualResources("Remotion.ObjectBinding.Web.Globalization.BocEnumValueRenderer")]
+    public enum ResourceIdentifier
+    {
+      /// <summary> The aria-role description for the drop-down list as a read-only element. </summary>
+      ScreenReaderLabelForComboboxReadOnly,
+      /// <summary> The aria-role description for the radio-button as a read-only element. </summary>
+      ScreenReaderLabelForRadioButtonReadOnly
+    }
+
     private readonly IInternalControlMemberCaller _internalControlMemberCaller;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly IValidationErrorRenderer _validationErrorRenderer;
@@ -103,40 +120,40 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       var validationErrors = GetValidationErrorsToRender(renderingContext).ToArray();
       var validationErrorsID = GetValidationErrorsID(renderingContext);
 
-      bool isControlHeightEmpty = renderingContext.Control.Height.IsEmpty && string.IsNullOrEmpty(renderingContext.Control.Style["height"]);
-      bool isControlWidthEmpty = renderingContext.Control.Width.IsEmpty && string.IsNullOrEmpty(renderingContext.Control.Style["width"]);
-      Label label = GetLabel(renderingContext);
-      ListControl listControl = GetListControl(renderingContext);
-      WebControl innerControl = renderingContext.Control.IsReadOnly ? (WebControl)label : listControl;
-      innerControl.Page = renderingContext.Control.Page.WrappedInstance;
+      var label = GetLabel(renderingContext);
+      label.Page = renderingContext.Control.Page.WrappedInstance;
+      var dataControl = renderingContext.Control.IsReadOnly ? GetReadOnlyDataControl(renderingContext) : GetListControl(renderingContext);
+      dataControl.Page = renderingContext.Control.Page.WrappedInstance;
 
-      bool isInnerControlHeightEmpty = innerControl.Height.IsEmpty && string.IsNullOrEmpty(innerControl.Style["height"]);
-      if (!isControlHeightEmpty && isInnerControlHeightEmpty)
-        renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "100%");
+      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(dataControl, validationErrorsID, validationErrors);
 
-      bool isInnerControlWidthEmpty = innerControl.Width.IsEmpty && string.IsNullOrEmpty(innerControl.Style["width"]);
-
-      if (isInnerControlWidthEmpty)
+      if (!IsControlHeightEmpty(renderingContext.Control))
       {
-        if (!isControlWidthEmpty)
-        {
-          if (renderingContext.Control.IsReadOnly)
-          {
-            if (!renderingContext.Control.Width.IsEmpty)
-              renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, renderingContext.Control.Width.ToString());
-            else
-              renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, renderingContext.Control.Style["width"]);
-          }
-        }
+        if (IsWebControlHeightEmpty(dataControl))
+          dataControl.Style.Add(HtmlTextWriterStyle.Height, "100%");
+
+        if (IsWebControlHeightEmpty(label))
+          label.Style.Add(HtmlTextWriterStyle.Height, "100%");
       }
 
-      _validationErrorRenderer.SetValidationErrorsReferenceOnControl(innerControl, validationErrorsID, validationErrors);
+      if (!IsControlWidthEmpty(renderingContext.Control))
+      {
+        if (IsWebControlWidthEmpty(label))
+          label.Style.Add(HtmlTextWriterStyle.Width, renderingContext.Control.Width.ToString()); // TODO: 100% ?
+      }
 
-      innerControl.RenderControl(renderingContext.Writer);
+      dataControl.RenderControl(renderingContext.Writer);
+      if (renderingContext.Control.IsReadOnly)
+        label.RenderControl(renderingContext.Writer);
 
       _validationErrorRenderer.RenderValidationErrors(renderingContext.Writer, validationErrorsID, validationErrors);
 
       renderingContext.Writer.RenderEndTag();
+
+      static bool IsControlHeightEmpty (IBocEnumValue control) => control.Height.IsEmpty && string.IsNullOrEmpty(control.Style[HtmlTextWriterStyle.Height]);
+      static bool IsControlWidthEmpty (IBocEnumValue control) => control.Width.IsEmpty && string.IsNullOrEmpty(control.Style[HtmlTextWriterStyle.Width]);
+      static bool IsWebControlHeightEmpty (WebControl control) => control.Height.IsEmpty && string.IsNullOrEmpty(control.Style[HtmlTextWriterStyle.Height]);
+      static bool IsWebControlWidthEmpty (WebControl control) => control.Width.IsEmpty && string.IsNullOrEmpty(control.Style[HtmlTextWriterStyle.Width]);
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IBocEnumValue> renderingContext)
@@ -152,6 +169,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
           renderingContext.Control.ListControlStyle.ControlType.ToString());
 
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, renderingContext.Control.NullIdentifier);
+    }
+
+    protected virtual IResourceManager GetResourceManager (BocRenderingContext<IBocEnumValue> renderingContext)
+    {
+      return GetResourceManager(typeof(ResourceIdentifier), renderingContext.Control.GetResourceManager());
     }
 
     private ListControl GetListControl (BocEnumValueRenderingContext renderingContext)
@@ -277,49 +299,83 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocEnumValueImplementation.Rend
       return emptyItem;
     }
 
-    private Label GetLabel (BocEnumValueRenderingContext renderingContext)
+    private WebControl GetReadOnlyDataControl (BocEnumValueRenderingContext renderingContext)
     {
-      Label label = new Label { ID = renderingContext.Control.GetValueName(), ClientIDMode = ClientIDMode.Static };
-      PlainTextString text;
-      if (renderingContext.Control.EnumerationValueInfo == null)
+      var resourceManager = GetResourceManager(renderingContext);
+      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
+
+      var dataText = renderingContext.Control.EnumerationValueInfo == null
+          ? renderingContext.Control.GetNullItemText()
+          : PlainTextString.CreateFromText(renderingContext.Control.EnumerationValueInfo.DisplayName);
+
+      var dataValue = renderingContext.Control.EnumerationValueInfo == null
+          ? renderingContext.Control.NullIdentifier
+          : renderingContext.Control.EnumerationValueInfo.Identifier;
+
+      var textControlID = renderingContext.Control.ClientID + "_TextValue";
+
+      if (renderingContext.Control.ListControlStyle.ControlType == ListControlType.RadioButtonList)
       {
-        text = PlainTextString.Empty;
-        label.Attributes.Add("data-value", renderingContext.Control.NullIdentifier);
+        var radioButtonList = new Label() { ClientIDMode = ClientIDMode.Static };
+        radioButtonList.ID = textControlID;
+        radioButtonList.EnableViewState = false;
+        radioButtonList.CssClass = CssClassDefinition.ScreenReaderText;
+        radioButtonList.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.RadioGroup);
+        _labelReferenceRenderer.SetLabelReferenceOnControl(radioButtonList, labelIDs);
+
+        var radioButton = new Label() { ClientIDMode = ClientIDMode.Static };
+        radioButton.Attributes.Add("data-value", dataValue);
+        if (renderingContext.Control.IsRequired)
+          radioButton.Attributes.Add(HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
+        radioButton.Attributes.Add(HtmlTextWriterAttribute2.Tabindex, "0");
+        radioButton.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Radio);
+        radioButton.Attributes.Add(HtmlTextWriterAttribute2.AriaChecked, HtmlAriaCheckedAttributeValue.True);
+        radioButton.Attributes.Add(HtmlTextWriterAttribute2.AriaRoleDescription, resourceManager.GetString(ResourceIdentifier.ScreenReaderLabelForRadioButtonReadOnly));
+        radioButton.Attributes.Add(HtmlTextWriterAttribute2.AriaLabel, dataText.GetValue());
+
+        radioButtonList.Controls.Add(radioButton);
+
+        return radioButtonList;
       }
       else
       {
-        text = PlainTextString.CreateFromText(renderingContext.Control.EnumerationValueInfo.DisplayName);
-        label.Attributes.Add("data-value", renderingContext.Control.EnumerationValueInfo.Identifier);
+        var textBox = new RenderOnlyTextBox() { ClientIDMode = ClientIDMode.Static };
+        textBox.ID = textControlID;
+        textBox.EnableViewState = false;
+        textBox.CssClass = CssClassDefinition.ScreenReaderText;
+        textBox.Attributes.Add("data-value", dataValue);
+        if (renderingContext.Control.IsRequired)
+          textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaRequired, HtmlAriaRequiredAttributeValue.True);
+        textBox.Enabled = renderingContext.Control.Enabled;
+        textBox.ReadOnly = true;
+        textBox.Attributes.Add(HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
+        textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaExpanded, HtmlAriaExpandedAttributeValue.False);
+        textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaHasPopup, HtmlAriaHasPopupAttributeValue.Menu);
+        textBox.Attributes.Add(HtmlTextWriterAttribute2.AriaRoleDescription, resourceManager.GetString(ResourceIdentifier.ScreenReaderLabelForComboboxReadOnly));
+        textBox.Text = dataText.GetValue();
+        _labelReferenceRenderer.SetLabelReferenceOnControl(textBox, labelIDs);
+
+        return textBox;
       }
 
-      label.Text = text.ToString(WebStringEncoding.Html);
+    }
 
-      label.Width = Unit.Empty;
+    private Label GetLabel (BocEnumValueRenderingContext renderingContext)
+    {
+      PlainTextString text;
+      if (renderingContext.Control.EnumerationValueInfo == null)
+        text = PlainTextString.Empty;
+      else
+        text = PlainTextString.CreateFromText(renderingContext.Control.EnumerationValueInfo.DisplayName);
+
+      var label = new Label { ClientIDMode = ClientIDMode.Static };
+      label.EnableViewState = false;
       label.Height = Unit.Empty;
+      label.Width = Unit.Empty;
       label.ApplyStyle(renderingContext.Control.CommonStyle);
       label.ApplyStyle(renderingContext.Control.LabelStyle);
-
-      var labelIDs = renderingContext.Control.GetLabelIDs().ToArray();
-      _labelReferenceRenderer.SetLabelsReferenceOnControl(label, labelIDs, new[] { label.ClientID });
-
-      label.Attributes.Add("tabindex", "0");
-      // Screenreaders (JAWS v18) will not read the contents of a span with role=combobox, etc,
-      // therefor we have to emulate the reading of the label + contents. Missing from this is "readonly" after the label is read.
-      //switch (renderingContext.Control.ListControlStyle.ControlType)
-      //{
-      //  case ListControlType.DropDownList:
-      //    label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Combobox);
-      //    break;
-      //  case ListControlType.ListBox:
-      //    label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Listbox);
-      //    break;
-      //  case ListControlType.RadioButtonList:
-      //    label.Attributes.Add (HtmlTextWriterAttribute2.Role, HtmlRoleAttributeValue.Radio);
-      //    break;
-      //  default:
-      //    throw new NotImplementedException();
-      //}
-      //label.Attributes.Add (HtmlTextWriterAttribute2.AriaReadOnly, HtmlAriaReadOnlyAttributeValue.True);
+      label.Attributes.Add(HtmlTextWriterAttribute2.AriaHidden, HtmlAriaHiddenAttributeValue.True);
+      label.Text = text.ToString(WebStringEncoding.Html);
 
       return label;
     }

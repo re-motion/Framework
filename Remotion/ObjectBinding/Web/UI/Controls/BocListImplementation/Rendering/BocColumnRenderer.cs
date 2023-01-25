@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -31,6 +32,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private readonly int _columnIndex;
     private readonly int _visibleColumnIndex;
     private readonly bool _showIcon;
+    private readonly bool _isRowHeader;
     private readonly SortingDirection _sortingDirection;
     private readonly int _orderIndex;
 
@@ -39,6 +41,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocColumnDefinition columnDefinition,
         int columnIndex,
         int visibleColumnIndex,
+        bool isRowHeader,
         bool showIcon,
         SortingDirection sortingDirection,
         int orderIndex)
@@ -50,6 +53,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       _columnDefinition = columnDefinition;
       _columnIndex = columnIndex;
       _visibleColumnIndex = visibleColumnIndex;
+      _isRowHeader = isRowHeader;
       _showIcon = showIcon;
       _sortingDirection = sortingDirection;
       _orderIndex = orderIndex;
@@ -75,6 +79,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return _visibleColumnIndex; }
     }
 
+    public bool IsRowHeader
+    {
+      get { return _isRowHeader; }
+    }
+
     public bool ShowIcon
     {
       get { return _showIcon; }
@@ -90,13 +99,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return _orderIndex; }
     }
 
-    public void RenderTitleCell (BocListRenderingContext renderingContext)
+    public void RenderTitleCell (BocListRenderingContext renderingContext, string cellID)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+      ArgumentUtility.CheckNotNullOrEmpty("cellID", cellID);
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 
-      _columnRenderer.RenderTitleCell(columnRenderingContext, _sortingDirection, _orderIndex);
+      _columnRenderer.RenderTitleCell(
+          columnRenderingContext,
+          new BocTitleCellRenderArguments(
+              sortingDirection: _sortingDirection,
+              orderIndex: _orderIndex,
+              cellID: cellID,
+              isRowHeader: _isRowHeader));
     }
 
     public void RenderDataColumnDeclaration (BocListRenderingContext renderingContext, bool isTextXml)
@@ -108,14 +124,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       _columnRenderer.RenderDataColumnDeclaration(columnRenderingContext, isTextXml);
     }
 
-    public void RenderDataCell (BocListRenderingContext renderingContext, int rowIndex, BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    public void RenderDataCell (
+        BocListRenderingContext renderingContext,
+        int rowIndex,
+        string? cellID,
+        IReadOnlyCollection<string> headerIDs,
+        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       var columnRenderingContext = CreateBocColumnRenderingContext(renderingContext);
 
-      _columnRenderer.RenderDataCell(columnRenderingContext, rowIndex, _showIcon, dataRowRenderEventArgs);
+      _columnRenderer.RenderDataCell(
+          columnRenderingContext,
+          new BocDataCellRenderArguments(
+              dataRowRenderEventArgs,
+              rowIndex: rowIndex,
+              showIcon: _showIcon,
+              cellID: cellID,
+              headerIDs: headerIDs));
     }
 
     private BocColumnRenderingContext CreateBocColumnRenderingContext (BocListRenderingContext renderingContext)

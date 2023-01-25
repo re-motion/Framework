@@ -25,8 +25,8 @@ using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints;
 using Remotion.Data.DomainObjects.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints;
 using Remotion.Data.DomainObjects.UnitTests.DataManagement.SerializableFakes;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -226,26 +226,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _collectionEndPointMock.Setup(mock => mock.CreateRemoveCommand(_orderItem1)).Returns(removeCommandStub1.Object).Verifiable();
       _collectionEndPointMock.Setup(mock => mock.CreateRemoveCommand(_orderItem2)).Returns(removeCommandStub2.Object).Verifiable();
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
-      nestedCommandMock2.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable("nestedCommandMock2.Begin");
+      nestedCommandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable("nestedCommandMock2.Begin");
 
-      nestedCommandMock1.InSequence(sequence).Setup(mock => mock.Begin()).Verifiable("nestedCommandMock1.Begin");
+      nestedCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable("nestedCommandMock1.Begin");
 
-      nestedCommandMock2.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable("nestedCommandMock2.Perform");
+      nestedCommandMock2.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable("nestedCommandMock2.Perform");
 
-      nestedCommandMock1.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable("nestedCommandMock1.Perform");
+      nestedCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable("nestedCommandMock1.Perform");
 
-      _collectionEndPointMock.InSequence(sequence).Setup(mock => mock.Touch()).Verifiable("endPoint.Touch");
+      _collectionEndPointMock.InVerifiableSequence(sequence).Setup(mock => mock.Touch()).Verifiable("endPoint.Touch");
 
-      nestedCommandMock1.InSequence(sequence).Setup(mock => mock.End()).Verifiable("nestedCommandMock1.End");
+      nestedCommandMock1.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable("nestedCommandMock1.End");
 
-      nestedCommandMock2.InSequence(sequence).Setup(mock => mock.End()).Verifiable("nestedCommandMock2.End");
+      nestedCommandMock2.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable("nestedCommandMock2.End");
 
       _delegatingData.Clear();
 
       nestedCommandMock1.Verify();
       nestedCommandMock2.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -263,15 +264,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Insert ()
     {
+      var sequence = new VerifiableSequence();
       _collectionEndPointMock.Setup(mock => mock.CreateInsertCommand(_orderItem1, 17)).Returns(_commandStub.Object).Verifiable();
       _collectionEndPointMock.Setup(mock => mock.Touch()).Verifiable();
       _commandStub.Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(_expandedCommandFake);
-        DataManagementCommandTestHelper.ExpectNotifyAndPerform(_nestedCommandMock);
+      ExpectNotifyAndPerform(sequence, _nestedCommandMock);
 
       _delegatingData.Insert(17, _orderItem1);
 
       _collectionEndPointMock.Verify();
       _nestedCommandMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -285,18 +288,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Remove ()
     {
+      var sequence = new VerifiableSequence();
       _endPointDataStub.Setup(stub => stub.ContainsObjectID(_orderItem1.ID)).Returns(true);
       _collectionEndPointMock.Setup(mock => mock.GetData()).Returns(_endPointDataDecorator).Verifiable();
       _collectionEndPointMock.Setup(mock => mock.CreateRemoveCommand(_orderItem1)).Returns(_commandStub.Object).Verifiable();
       _collectionEndPointMock.Setup(mock => mock.Touch()).Verifiable();
 
       _commandStub.Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(_expandedCommandFake);
-      DataManagementCommandTestHelper.ExpectNotifyAndPerform(_nestedCommandMock);
+      ExpectNotifyAndPerform(sequence, _nestedCommandMock);
 
       var result = _delegatingData.Remove(_orderItem1);
 
       _collectionEndPointMock.Verify();
       _nestedCommandMock.Verify();
+      sequence.Verify();
 
       Assert.That(result, Is.True);
     }
@@ -326,18 +331,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Remove_ID ()
     {
+      var sequence = new VerifiableSequence();
       _endPointDataStub.Setup(stub => stub.GetObject(_orderItem1.ID)).Returns(_orderItem1);
       _collectionEndPointMock.Setup(mock => mock.GetData()).Returns(_endPointDataDecorator).Verifiable();
       _collectionEndPointMock.Setup(mock => mock.CreateRemoveCommand(_orderItem1)).Returns(_commandStub.Object).Verifiable();
       _collectionEndPointMock.Setup(mock => mock.Touch()).Verifiable();
 
       _commandStub.Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(_expandedCommandFake);
-      DataManagementCommandTestHelper.ExpectNotifyAndPerform(_nestedCommandMock);
+      ExpectNotifyAndPerform(sequence, _nestedCommandMock);
 
       var result = _delegatingData.Remove(_orderItem1.ID);
 
       _collectionEndPointMock.Verify();
       _nestedCommandMock.Verify();
+      sequence.Verify();
 
       Assert.That(result, Is.True);
     }
@@ -366,15 +373,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Replace ()
     {
+      var sequence = new VerifiableSequence();
       _collectionEndPointMock.Setup(mock => mock.CreateReplaceCommand(17, _orderItem1)).Returns(_commandStub.Object).Verifiable();
       _collectionEndPointMock.Setup(mock => mock.Touch()).Verifiable();
       _commandStub.Setup(stub => stub.ExpandToAllRelatedObjects()).Returns(_expandedCommandFake);
-      DataManagementCommandTestHelper.ExpectNotifyAndPerform(_nestedCommandMock);
+      ExpectNotifyAndPerform(sequence, _nestedCommandMock);
 
       _delegatingData.Replace(17, _orderItem1);
 
       _collectionEndPointMock.Verify();
       _nestedCommandMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -483,6 +492,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       {
         // ok
       }
+    }
+
+    private void ExpectNotifyAndPerform (VerifiableSequence sequence, Mock<IDataManagementCommand> commandMock)
+    {
+      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Begin()).Verifiable();
+      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      commandMock.InVerifiableSequence(sequence).Setup(mock => mock.End()).Verifiable();
     }
   }
 }

@@ -20,11 +20,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using CommonServiceLocator;
 using Remotion.Collections;
-using Remotion.FunctionalProgramming;
 using Remotion.Globalization;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -33,7 +31,6 @@ using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Globalization;
-using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
@@ -215,7 +212,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private bool _controlExistedInPreviousRequest;
 
-    private string? _assignedLabelID;
+    private IReadOnlyCollection<string> _assignedLabelIDs = Array.Empty<string>();
 
     /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
     protected BusinessObjectBoundWebControl ()
@@ -411,18 +408,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     [Browsable(false)]
     public abstract bool UseLabel { get; }
 
-    public void AssignLabel (string labelID)
+    public void AssignLabels (IEnumerable<string> labelIDs)
     {
-      ArgumentUtility.CheckNotNullOrEmpty("labelID", labelID);
+      ArgumentUtility.CheckNotNull("labelIDs", labelIDs);
 
-      _assignedLabelID = labelID;
+      _assignedLabelIDs = labelIDs.ToList().AsReadOnly();
     }
 
     protected virtual IEnumerable<string> GetLabelIDs ()
     {
-      if (string.IsNullOrEmpty(_assignedLabelID))
-        return Enumerable.Empty<string>();
-      return EnumerableUtility.Singleton(_assignedLabelID);
+      return _assignedLabelIDs;
     }
 
     /// <summary> Evaluates whether this control is in <b>Design Mode</b>. </summary>

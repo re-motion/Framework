@@ -106,19 +106,19 @@ namespace Remotion.Web.UI.Controls
       private string? _target;
 
       /// <summary> Initalizes a new instance. </summary>
-      public MultiViewTab (string itemID, string text, IconInfo icon)
+      public MultiViewTab (string itemID, WebString text, IconInfo icon)
           : base(itemID, text, icon)
       {
       }
 
       /// <summary> Initalizes a new instance. </summary>
-      public MultiViewTab (string itemID, string text, string iconUrl)
+      public MultiViewTab (string itemID, WebString text, string iconUrl)
           : this(itemID, text, new IconInfo(iconUrl))
       {
       }
 
       /// <summary> Initalizes a new instance. </summary>
-      public MultiViewTab (string itemID, string text)
+      public MultiViewTab (string itemID, WebString text)
           : this(itemID, text, string.Empty)
       {
       }
@@ -262,7 +262,8 @@ namespace Remotion.Web.UI.Controls
 
       MultiViewTab tab = new MultiViewTab();
       tab.ItemID = view.ID + c_itemIDSuffix;
-      tab.Text = WebString.CreateFromText(view.Title!); // TODO RM-8118: Title should not be null or empty
+      tab.Text = view.Title;
+      tab.AccessKey = view.AccessKey;
       tab.Icon = view.Icon;
       tab.Target = view.ID;
       _tabStrip.Tabs.Add(tab);

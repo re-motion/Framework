@@ -238,6 +238,8 @@ namespace Remotion.Web.UI.Controls
   {
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+
       if (context == null // Requried to circumvent the Designer
           && sourceType == typeof(string))
         return true;

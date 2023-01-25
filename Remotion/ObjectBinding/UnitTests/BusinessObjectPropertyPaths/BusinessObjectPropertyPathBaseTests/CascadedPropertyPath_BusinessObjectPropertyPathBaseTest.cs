@@ -39,7 +39,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferencePropertyIsAccessible(true, sequence);
       ExpectOnceOnBusinessObjectGetProperty(_testHelper.BusinessObjectWithIdentity, sequence);
 
@@ -49,6 +49,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
+      sequence.Verify();
 
       Assert.That(actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
       Assert.That(actual.ResultObject, Is.SameAs(_testHelper.BusinessObjectWithIdentity));
@@ -58,7 +59,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithUnreachableObject_ReturnsNull ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferencePropertyIsAccessible(true, sequence);
       ExpectOnceOnBusinessObjectGetProperty(null, sequence);
 
@@ -68,6 +69,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
+      sequence.Verify();
 
       Assert.That(actual, Is.InstanceOf<NullBusinessObjectPropertyPathResult>());
     }
@@ -75,7 +77,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetResult_WithUnreachableObject_ThrowsInvalidOperationException ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferencePropertyIsAccessible(true, sequence);
       ExpectOnceOnBusinessObjectGetProperty(null, sequence);
 
@@ -87,12 +89,13 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
               BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry),
           Throws.InvalidOperationException.With.Message
                 .EqualTo("A null value was returned for property #0 of property path 'Identifier'. Cannot evaluate rest of path."));
+      sequence.Verify();
     }
 
     [Test]
     public void GetResult_WithAccessDenied_ReturnsNull ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferencePropertyIsAccessible(false, sequence);
 
       var actual = _path.GetResult(
@@ -101,13 +104,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
+      sequence.Verify();
       Assert.That(actual, Is.InstanceOf<NotAccessibleBusinessObjectPropertyPathResult>());
     }
 
     [Test]
     public void GetResult_WithAccessDenied_ThrowsInvalidOperationException ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferencePropertyIsAccessible(false, sequence);
 
       Assert.That(
@@ -118,12 +122,13 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
               BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry),
           Throws.InvalidOperationException.With.Message
                 .EqualTo("Access was denied to property #0 of property path 'Identifier'. Cannot evaluate rest of path."));
+      sequence.Verify();
     }
 
     [Test]
     public void GetResult_WithBusinessObjectPropertyAccessException_ReturnsNull ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferencePropertyIsAccessible(true, sequence);
       ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty(sequence);
 
@@ -133,13 +138,14 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
+      sequence.Verify();
       Assert.That(actual, Is.InstanceOf<NotAccessibleBusinessObjectPropertyPathResult>());
     }
 
     [Test]
     public void GetResult_WithBusinessObjectPropertyAccessException_ThrowsInvalidOperationException ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferencePropertyIsAccessible(true, sequence);
       ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty(sequence);
 
@@ -151,6 +157,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
               BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry),
           Throws.InvalidOperationException.With.Message
                 .EqualTo("Access was denied to property #0 of property path 'Identifier'. Cannot evaluate rest of path."));
+      sequence.Verify();
     }
 
     [Test]
@@ -159,15 +166,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
       Assert.That(_path.ToString(), Is.EqualTo(_path.Identifier));
     }
 
-    private void ExpectOnceOnReferencePropertyIsAccessible (bool returnValue)
-    {
-      _testHelper.ExpectOnceOnIsAccessible(
-          _testHelper.BusinessObjectClass,
-          _testHelper.BusinessObject,
-          Mock.Get(_testHelper.ReferenceProperty).As<IBusinessObjectProperty>(), returnValue);
-    }
-
-    private void ExpectOnceOnReferencePropertyIsAccessible (bool returnValue, MockSequence sequence)
+    private void ExpectOnceOnReferencePropertyIsAccessible (bool returnValue, VerifiableSequence sequence)
     {
       _testHelper.ExpectOnceOnIsAccessible(
           _testHelper.BusinessObjectClass,
@@ -177,25 +176,12 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
           sequence);
     }
 
-    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity businessObejctWithIdentity)
-    {
-      _testHelper.ExpectOnceOnGetProperty(Mock.Get(_testHelper.BusinessObject), _testHelper.ReferenceProperty, businessObejctWithIdentity);
-    }
-
-    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity businessObejctWithIdentity, MockSequence sequence)
+    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity businessObejctWithIdentity, VerifiableSequence sequence)
     {
       _testHelper.ExpectOnceOnGetProperty(Mock.Get(_testHelper.BusinessObject), _testHelper.ReferenceProperty, businessObejctWithIdentity, sequence);
     }
 
-    private void ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty ()
-    {
-      _testHelper.ExpectThrowOnGetProperty(
-          Mock.Get(_testHelper.BusinessObject),
-          _testHelper.ReferenceProperty,
-          new BusinessObjectPropertyAccessException("The Message", null));
-    }
-
-    private void ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty (MockSequence sequence)
+    private void ExpectThrowBusinessObjectPropertyAccessExceptionOnBusinessObjectGetProperty (VerifiableSequence sequence)
     {
       _testHelper.ExpectThrowOnGetProperty(
           Mock.Get(_testHelper.BusinessObject),

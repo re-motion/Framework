@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
@@ -45,8 +46,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public BocSimpleColumnRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
 
@@ -57,16 +59,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// Renders the edit mode control.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocColumnDefinition}"/>.</param>
-    /// <param name="businessObject">The <see cref="IBusinessObject"/> whose property will be rendered.</param>
+    /// <param name="arguments">The <see cref="BocDataCellRenderArguments"/> for the rendered cell.</param>
     /// <param name="editableRow">The <see cref="EditableRow"/> object used to actually render the edit row controls.</param>
     protected override void RenderCellDataForEditMode (
-        BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow)
+        BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow editableRow)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("businessObject", businessObject);
       ArgumentUtility.CheckNotNull("editableRow", editableRow);
 
-      RenderEditModeControl(renderingContext, businessObject, editableRow);
+      RenderEditModeControl(renderingContext, arguments, editableRow);
     }
 
     /// <summary>
@@ -100,7 +101,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// <summary>
     /// Renders a custom title cell that includes information about bound property paths of <see cref="BocSimpleColumnDefinition"/>.
     /// </summary>
-    protected override void RenderTitleCell (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    protected override void RenderTitleCell (BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
 
@@ -121,12 +122,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         }
       }
 
-      base.RenderTitleCell(renderingContext, sortingDirection, orderIndex);
+      base.RenderTitleCell(renderingContext, arguments);
     }
 
     private void RenderEditModeControl (
-        BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow)
+        BocColumnRenderingContext<BocSimpleColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow editableRow)
     {
+      var businessObject = arguments.BusinessObject;
+
       if (renderingContext.Control.HasClientScript)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
 
@@ -143,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           renderingContext.ColumnDefinition,
           businessObject,
           renderingContext.ColumnIndex,
-          GetColumnTitleID(renderingContext));
+          arguments.HeaderIDs);
 
       renderingContext.Writer.RenderEndTag(); // End span
     }

@@ -62,6 +62,14 @@ namespace Remotion.UnitTests.Utilities
     }
 
     [Test]
+    public void CanConvertTo_Null ()
+    {
+      var result = _nullValueConverter.CanConvertTo(_typeDescriptorContextStub.Object, (Type)null);
+
+      Assert.That(result, Is.False);
+    }
+
+    [Test]
     public void CanConvertFrom_NonNullableType ()
     {
       var result = _nullValueConverter.CanConvertFrom(_typeDescriptorContextStub.Object, typeof(int));

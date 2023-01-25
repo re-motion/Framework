@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests
@@ -73,6 +74,28 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
 
     [Test]
+    public void IsNewInHierarchy_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().Value;
+      Assert.That(state.IsNewInHierarchy, Is.False);
+    }
+
+    [Test]
+    public void IsNewInHierarchy_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().SetChanged().Value;
+      Assert.That(state.IsNewInHierarchy, Is.False);
+    }
+
+    [Test]
+    public void IsNewInHierarchy_WithBuilderSettingNewInHierarchy_ReturnsTrue ()
+    {
+      var state = new DomainObjectState.Builder().SetNewInHierarchy().Value;
+      Assert.That(state.IsNewInHierarchy, Is.True);
+    }
+
+
+    [Test]
     public void IsDeleted_WithBuilderDefault_ReturnsFalse ()
     {
       var state = new DomainObjectState.Builder().Value;
@@ -136,6 +159,137 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var state = new DomainObjectState.Builder().SetNotLoadedYet().Value;
       Assert.That(state.IsNotLoadedYet, Is.True);
     }
+
+
+    [Test]
+    public void IsDataChanged_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().Value;
+      Assert.That(state.IsDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsDataChanged_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().SetNew().Value;
+      Assert.That(state.IsDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsDataChanged_WithBuilderSettingChanged_ReturnsTrue ()
+    {
+      var state = new DomainObjectState.Builder().SetDataChanged().Value;
+      Assert.That(state.IsDataChanged, Is.True);
+    }
+
+    [Test]
+    public void SetDataChanged_DoesNotSetIsChanged ()
+    {
+      var state = new DomainObjectState.Builder().SetDataChanged().Value;
+      Assert.That(state.IsChanged, Is.False);
+    }
+
+
+    [Test]
+    public void IsPersistentDataChanged_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().Value;
+      Assert.That(state.IsPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsPersistentDataChanged_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().SetNew().Value;
+      Assert.That(state.IsPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsPersistentDataChanged_WithBuilderSettingChanged_ReturnsTrue ()
+    {
+      var state = new DomainObjectState.Builder().SetPersistentDataChanged().Value;
+      Assert.That(state.IsPersistentDataChanged, Is.True);
+    }
+
+    [Test]
+    public void SetPersistentDataChanged_ImplicitlySetsIsDataChanged ()
+    {
+      var state = new DomainObjectState.Builder().SetPersistentDataChanged().Value;
+      Assert.That(state.IsDataChanged, Is.True);
+    }
+
+    [Test]
+    public void SetPersistentDataChanged_DoesNotSetIsChanged ()
+    {
+      var state = new DomainObjectState.Builder().SetPersistentDataChanged().Value;
+      Assert.That(state.IsChanged, Is.False);
+    }
+
+
+    [Test]
+    public void IsNonPersistentDataChanged_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().Value;
+      Assert.That(state.IsNonPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsNonPersistentDataChanged_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().SetNew().Value;
+      Assert.That(state.IsNonPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void IsNonPersistentDataChanged_WithBuilderSettingChanged_ReturnsTrue ()
+    {
+      var state = new DomainObjectState.Builder().SetNonPersistentDataChanged().Value;
+      Assert.That(state.IsNonPersistentDataChanged, Is.True);
+    }
+
+    [Test]
+    public void SetNonPersistentDataChanged_ImplicitlySetsIsDataChanged ()
+    {
+      var state = new DomainObjectState.Builder().SetNonPersistentDataChanged().Value;
+      Assert.That(state.IsDataChanged, Is.True);
+    }
+
+    [Test]
+    public void SetNonPersistentDataChanged_DoesNotSetIsChanged ()
+    {
+      var state = new DomainObjectState.Builder().SetNonPersistentDataChanged().Value;
+      Assert.That(state.IsChanged, Is.False);
+    }
+
+
+    [Test]
+    public void IsRelationChanged_WithBuilderDefault_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().Value;
+      Assert.That(state.IsRelationChanged, Is.False);
+    }
+
+    [Test]
+    public void IsRelationChanged_WithBuilderSettingOther_ReturnsFalse ()
+    {
+      var state = new DomainObjectState.Builder().SetNew().Value;
+      Assert.That(state.IsRelationChanged, Is.False);
+    }
+
+    [Test]
+    public void IsRelationChanged_WithBuilderSettingChanged_ReturnsTrue ()
+    {
+      var state = new DomainObjectState.Builder().SetRelationChanged().Value;
+      Assert.That(state.IsRelationChanged, Is.True);
+    }
+
+    [Test]
+    public void SetRelationChanged_DoesNotSetIsChanged ()
+    {
+      var state = new DomainObjectState.Builder().SetRelationChanged().Value;
+      Assert.That(state.IsChanged, Is.False);
+    }
+
 
     [Test]
     public void SerializeAndDeserialize ()

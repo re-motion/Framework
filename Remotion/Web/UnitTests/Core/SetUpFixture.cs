@@ -19,12 +19,14 @@ using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Development.Web.UnitTesting.Infrastructure;
 using Remotion.Development.Web.UnitTesting.Resources;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.Development.Web.UnitTesting.Utilities;
 using Remotion.ServiceLocation;
 using Remotion.Web.ExecutionEngine;
 using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UnitTests.Core.UI.Controls;
 using Remotion.Web.Utilities;
 
@@ -44,6 +46,7 @@ namespace Remotion.Web.UnitTests.Core
       serviceLocator.RegisterSingle<IInfrastructureResourceUrlFactory>(() => new FakeInfrastructureResourceUrlFactory());
       serviceLocator.RegisterSingle<IScriptUtility>(() => new FakeScriptUtility());
       serviceLocator.RegisterSingle<IResourceUrlFactory>(() => new FakeResourceUrlFactory());
+      serviceLocator.RegisterSingle<IFallbackNavigationUrlProvider>(() => new FakeFallbackNavigationUrlProvider());
       serviceLocator.RegisterMultiple<IWebSecurityAdapter>();
       serviceLocator.RegisterMultiple<IWxeSecurityAdapter>();
 

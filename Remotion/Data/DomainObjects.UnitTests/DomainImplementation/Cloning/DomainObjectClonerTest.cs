@@ -23,7 +23,7 @@ using Remotion.Data.DomainObjects.DomainImplementation.Cloning;
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.TypePipe;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
@@ -405,6 +405,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainImplementation.Cloning
     }
 
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class ClassWithClonerCallback : DomainObject, IClonerCallback
     {
       public virtual int Property { get; set; }

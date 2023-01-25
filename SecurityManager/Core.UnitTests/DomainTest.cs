@@ -57,5 +57,10 @@ namespace Remotion.SecurityManager.UnitTests
       return DataManagementService.GetDataManager(ClientTransaction.Current)
                                   .GetDataContainerWithLazyLoad(domainObject.ID, true);
     }
+
+    protected void SimulateExistingObjectForSecurityTest (DomainObject domainObject)
+    {
+      GetDataContainer(domainObject).ClearNewInHierarchy();
+    }
   }
 }

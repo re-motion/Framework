@@ -50,12 +50,16 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Firefox
       var sessionConfiguration = CreateSessionConfiguration(driverConfiguration);
       var commandTimeout = driverConfiguration.CommandTimeout;
 
+      var extendedFirefoxOptions = _firefoxConfiguration.CreateFirefoxOptions();
+      if (driverConfiguration.Headless)
+        extendedFirefoxOptions.AddArgument("-headless");
+
       var firefoxDriverService = GetFirefoxDriverService();
-      var driver = new FirefoxDriver(firefoxDriverService, _firefoxConfiguration.CreateFirefoxOptions(), commandTimeout);
+      var driver = new FirefoxDriver(firefoxDriverService, extendedFirefoxOptions, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = driverConfiguration.AsyncJavaScriptTimeout;
       var session = new Coypu.BrowserSession(sessionConfiguration, new CustomSeleniumWebDriver(driver, Browser.Firefox));
 
-      return new FirefoxBrowserSession(session, _firefoxConfiguration, firefoxDriverService.ProcessId);
+      return new FirefoxBrowserSession(session, _firefoxConfiguration, firefoxDriverService.ProcessId, driverConfiguration.Headless);
     }
 
     private FirefoxDriverService GetFirefoxDriverService ()

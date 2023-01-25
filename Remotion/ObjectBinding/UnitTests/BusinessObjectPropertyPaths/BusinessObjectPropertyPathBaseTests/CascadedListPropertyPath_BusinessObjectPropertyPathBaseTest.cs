@@ -38,7 +38,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetValue_ListProperty_ReturnsFirstItem ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferenceListPropertyIsAccessible(true, sequence);
       ExpectOnceOnBusinessObjectGetProperty(_testHelper.BusinessObjectWithIdentityList, sequence);
 
@@ -48,6 +48,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
           BusinessObjectPropertyPath.ListValueBehavior.GetResultForFirstListEntry);
 
       _testHelper.VerifyAll();
+      sequence.Verify();
 
       Assert.That(actual, Is.InstanceOf<EvaluatedBusinessObjectPropertyPathResult>());
       Assert.That(actual.ResultObject, Is.SameAs(_testHelper.BusinessObjectWithIdentity));
@@ -57,7 +58,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
     [Test]
     public void GetValue_ListProperty_ThrowsInvalidOperationException ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       ExpectOnceOnReferenceListPropertyIsAccessible(true, sequence);
       ExpectOnceOnBusinessObjectGetProperty(_testHelper.BusinessObjectWithIdentityList, sequence);
 
@@ -69,9 +70,10 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
               BusinessObjectPropertyPath.ListValueBehavior.FailForListProperties),
           Throws.InvalidOperationException.With.Message
                 .EqualTo("Property #0 of property path 'Identifier' is not a single-value property."));
+      // Sequence not verified because only first item is called before exception occurs
     }
 
-    private void ExpectOnceOnReferenceListPropertyIsAccessible (bool returnValue, MockSequence sequence)
+    private void ExpectOnceOnReferenceListPropertyIsAccessible (bool returnValue, VerifiableSequence sequence)
     {
       _testHelper.ExpectOnceOnIsAccessible(
           _testHelper.BusinessObjectClass,
@@ -81,7 +83,7 @@ namespace Remotion.ObjectBinding.UnitTests.BusinessObjectPropertyPaths.BusinessO
           sequence);
     }
 
-    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity[] businessObjectsWithIdentity, MockSequence sequence)
+    private void ExpectOnceOnBusinessObjectGetProperty (IBusinessObjectWithIdentity[] businessObjectsWithIdentity, VerifiableSequence sequence)
     {
       _testHelper.ExpectOnceOnGetProperty(Mock.Get(_testHelper.BusinessObject), _testHelper.ReferenceListProperty, businessObjectsWithIdentity, sequence);
     }

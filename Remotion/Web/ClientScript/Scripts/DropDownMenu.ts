@@ -28,6 +28,13 @@ interface DropDownMenuPositioningDetails
   offsetY: number;
 }
 
+interface IKeyboardEventLike
+{
+  keyCode: number;
+  preventDefault(): void;
+  stopPropagation(): void;
+}
+
 type DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler = (itemInfos: DropDownMenu_ItemInfo[]) => void;
 type DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler = () => void;
 type DropDownMenu_MenuInfo_LoadMenuItemsCallback = (successHandler: DropDownMenu_MenuInfo_LoadMenuItemsSuccessHandler, errorHandler: DropDownMenu_MenuInfo_LoadMenuItemsErrorHandler) => void;
@@ -70,6 +77,7 @@ class DropDownMenu_ItemInfo
       public IsDisabled: boolean,
       public readonly Href: Nullable<string>,
       public readonly Target: Nullable<string>,
+      public readonly FallbackNavigationUrl: string,
       public readonly DiagnosticMetadata: Nullable<Dictionary<string | boolean>>,
       public readonly DiagnosticMetadataForCommand: Nullable<Dictionary<string | boolean>>)
   {
@@ -348,7 +356,7 @@ class DropDownMenu
     else
       statusPopup.setAttribute ('aria-labelledby', menuButton.id);
     DropDownMenu._currentStatusPopup = statusPopup;
-    document.getElementById (menuID)!.closest ('div, td, th, body')!.append (statusPopup);
+    document.getElementById (menuID)!.closest ('div, td, th, body, span.bocListEditableCell > span.control')!.append (statusPopup);
 
     const positioningDetails = this.CalculatePositioningDetails(titleDivFunc(), evt);
     DropDownMenu.ApplyPosition (statusPopup, positioningDetails, titleDivFunc(), false);
@@ -416,7 +424,7 @@ class DropDownMenu
     div.appendChild(ul);
 
     const menuButton = document.getElementById (menuID)!;
-    menuButton.closest ('div, td, th, body')!.append (div);
+    menuButton.closest ('div, td, th, body, span.bocListEditableCell > span.control')!.append (div);
 
     ul.addEventListener ('mouseleave', function ()
     {
@@ -518,42 +526,105 @@ class DropDownMenu
 
     // position drop-down list
     var top = Math.max (0, space_top + referenceElement.offsetHeight + details.offsetY);
-    var left = details.align === 'left' ? Math.max (0, LayoutUtility.GetOffset (referenceElement).left + details.offsetX) + 'px' : 'auto';
-    var right = details.align === 'right' ? Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth - details.offsetX) + 'px' : 'auto';
+    var left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left + details.offsetX) + 'px';
+    var right = Math.max (0, document.documentElement.clientWidth - LayoutUtility.GetOffset (referenceElement).left - referenceElement.offsetWidth - details.offsetX) + 'px';
 
-    const verticalSpacing = parseInt(getComputedStyle(popUpDiv).fontSize) * 2;
+    const popUpMargin = parseInt(getComputedStyle(popUpDiv).fontSize) * 2;
 
     // Save and restore the scrollTop value to retain the scrolling after resizing
     var scrollTop = popUpDiv.scrollTop;
 
     popUpDiv.style.top = top + 'px';
     popUpDiv.style.bottom = 'auto';
-    popUpDiv.style.right = right;
-    popUpDiv.style.left = left;
     popUpDiv.style.position = 'fixed';
 
-    // move dropdown if there is not enough space to fit it on the page
-    if ((LayoutUtility.GetWidth (popUpDiv) > space_left) && (space_left < space_right))
+    // Set to values that allow the popup to expand properly - this way the result of GetWidth is actually correct
+    popUpDiv.style.left = '0';
+    popUpDiv.style.right = 'auto';
+
+    const isContextMenu = details.align === 'left';
+
+    // In case of a context menu being open, the space calculation needs to be adapted to match the actual click location in the context of
+    // the reference element.
+    if (isContextMenu)
     {
-      if (LayoutUtility.GetOffset (popUpDiv).left < 0)
-      {
-        left = Math.max (0, LayoutUtility.GetOffset (referenceElement).left) + 'px';
-        popUpDiv.style.left = left;
-        popUpDiv.style.right = 'auto';
-      }
+      const currentOffset = referenceElement.getBoundingClientRect().left + details.offsetX;
+      space_right = document.documentElement.clientWidth - currentOffset;
+      space_left = Math.min(document.documentElement.clientWidth, currentOffset);
+    }
+
+    const requiredPopUpWidth = LayoutUtility.GetWidth(popUpDiv);
+    const dropDownMenuButtonWidth = isContextMenu ? 0 : LayoutUtility.GetWidth(referenceElement);
+    const maxLeftAlignedPopupWidth = (space_right - popUpMargin) + dropDownMenuButtonWidth;
+    const maxRightAlignedPopupWidth = (space_left - popUpMargin) + dropDownMenuButtonWidth;
+    const isPopUpSmallerThanViewPort = requiredPopUpWidth <= (document.documentElement.clientWidth - 2 * popUpMargin);
+
+    const alignToLeftOfReferenceElement = () =>
+    {
+      popUpDiv.style.left = left;
+      popUpDiv.style.right = 'auto';
+    };
+    const alignToRightOfReferenceElement = () =>
+    {
+      popUpDiv.style.left = 'auto';
+      popUpDiv.style.right = right;
+    };
+    const alignToLeftViewPortBorder = () =>
+    {
+      popUpDiv.style.left = popUpMargin + 'px';
+      popUpDiv.style.right = 'auto';
+    };
+    const alignToRightViewPortBorder = () =>
+    {
+      popUpDiv.style.left = 'auto';
+      popUpDiv.style.right = popUpMargin + 'px';
+    };
+    const clampToViewPort = () =>
+    {
+      popUpDiv.style.left = popUpMargin + 'px';
+      popUpDiv.style.right = popUpMargin + 'px';
+    };
+
+    if (isContextMenu && (requiredPopUpWidth <= maxLeftAlignedPopupWidth))
+    {
+      alignToLeftOfReferenceElement();
+    }
+    else if (isContextMenu && (requiredPopUpWidth <= maxRightAlignedPopupWidth))
+    {
+      alignToRightViewPortBorder();
+    }
+    else if (requiredPopUpWidth <= maxRightAlignedPopupWidth)
+    {
+      alignToRightOfReferenceElement();
+    }
+    else if (requiredPopUpWidth <= maxLeftAlignedPopupWidth)
+    {
+      alignToLeftOfReferenceElement();
+    }
+    else if (isContextMenu && isPopUpSmallerThanViewPort)
+    {
+      alignToRightViewPortBorder();
+    }
+    else if (isPopUpSmallerThanViewPort)
+    {
+      alignToLeftViewPortBorder();
+    }
+    else
+    {
+      clampToViewPort();
     }
 
     const documentHeight = document.documentElement.clientHeight;
     const popUpHeight = LayoutUtility.GetHeight (popUpDiv);
-    const maximumPopUpHeightConsideringSpacing = documentHeight - verticalSpacing * 2;
+    const maximumPopUpHeightConsideringSpacing = documentHeight - popUpMargin * 2;
     if (popUpHeight > maximumPopUpHeightConsideringSpacing)
     {
       // If we do not have enough space to display the element we keep space above and below and enable scrolling
       // If the window gets very small we reduce the spacing above and below until we reach the window borders
       // This effect is in effect when the remaining size gets smaller than the minimum popup height
-      const minimumPopUpHeight = verticalSpacing * 6;
+      const minimumPopUpHeight = popUpMargin * 6;
       const targetPopUpHeight = Math.max(minimumPopUpHeight, maximumPopUpHeightConsideringSpacing);
-      let verticalSpaceAround = Math.floor(documentHeight - targetPopUpHeight - verticalSpacing);
+      let verticalSpaceAround = Math.floor(documentHeight - targetPopUpHeight - popUpMargin);
       let suggestedVerticalSpacing = Math.max(0, verticalSpaceAround);
 
       // If the popup is small enough we might make it bigger by removing spacing - so we center the element instead
@@ -575,13 +646,13 @@ class DropDownMenu
       popUpDiv.style.top = suggestedVerticalSpacing + 'px';
       popUpDiv.style.bottom = suggestedVerticalSpacing + 'px';
     }
-    else if (popUpHeight > space_bottom - verticalSpacing)
+    else if (popUpHeight > space_bottom - popUpMargin)
     {
-      if (space_top > popUpHeight + verticalSpacing)
+      if (space_top > popUpHeight + popUpMargin)
       {
         popUpDiv.classList.remove(CssClassDefinition.Scrollable);
 
-        const bottom = Math.max (verticalSpacing, documentHeight - LayoutUtility.GetOffset (referenceElement).top - (referenceElement.offsetHeight - LayoutUtility.GetHeight (referenceElement)));
+        const bottom = Math.max (popUpMargin, documentHeight - LayoutUtility.GetOffset (referenceElement).top - (referenceElement.offsetHeight - LayoutUtility.GetHeight (referenceElement)));
 
         popUpDiv.style.top = 'auto';
         popUpDiv.style.bottom = bottom + 'px';
@@ -591,7 +662,7 @@ class DropDownMenu
         popUpDiv.classList.remove(CssClassDefinition.Scrollable);
 
         popUpDiv.style.top = 'auto';
-        popUpDiv.style.bottom = verticalSpacing + 'px';
+        popUpDiv.style.bottom = popUpMargin + 'px';
       }
     }
 
@@ -665,7 +736,7 @@ class DropDownMenu
     anchor.setAttribute('tabindex', '-1');
     if (isEnabled)
     {
-      anchor.setAttribute('href', '#');
+      anchor.setAttribute('href', itemInfo.FallbackNavigationUrl);
     }
     else
     {
@@ -762,8 +833,10 @@ class DropDownMenu
     return item;
   }
 
-  private static OnItemClick (this: HTMLAnchorElement): boolean
+  private static OnItemClick (this: HTMLAnchorElement, ev: MouseEvent): boolean
   {
+    ev.preventDefault();
+
     if (this.href == null || this.href === '')
       return false;
 
@@ -792,20 +865,21 @@ class DropDownMenu
     if (DropDownMenu._currentMenu === null && !hasDedicatedDropDownMenuElement)
       return;
 
-    switch (event.keyCode)
+    let keyboardEvent: IKeyboardEventLike = event;
+    switch (keyboardEvent.keyCode)
     {
       case 9: // tab
         DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
         return;
       case 13: //enter
       case 32: //space
-        event.preventDefault();
-        event.stopPropagation();
+        keyboardEvent.preventDefault();
+        keyboardEvent.stopPropagation();
         if (dropDownMenu !== DropDownMenu._currentMenu)
         {
           DropDownMenu.OnClick (dropDownMenu, dropDownMenu.id, getSelectionCount, null);
-          (event.keyCode as number) = 40; // always act as if the down-arrow was used when opening the drop down menu.
-          DropDownMenu.Options_OnKeyDown (event, dropDownMenu);
+          keyboardEvent = this.CreateKeyboardEventLikeWithKeyCode(keyboardEvent, 40); //down arrow
+          DropDownMenu.Options_OnKeyDown (keyboardEvent, dropDownMenu);
         }
         else
         {
@@ -813,28 +887,28 @@ class DropDownMenu
         }
         return;
       case 27: //escape
-        event.preventDefault();
-        event.stopPropagation();
+        keyboardEvent.preventDefault();
+        keyboardEvent.stopPropagation();
         DropDownMenu.ClosePopUp(DropDownMenu._updateFocus);
         return;
       case 38: // up arrow
       case 40: // down arrow
-        event.preventDefault();
-        event.stopPropagation();
+        keyboardEvent.preventDefault();
+        keyboardEvent.stopPropagation();
         if (dropDownMenu !== DropDownMenu._currentMenu)
         {
           DropDownMenu.OnClick (dropDownMenu, dropDownMenu.id, getSelectionCount, null);
-          (event.keyCode as number) = 40; // always act as if the down-arrow was used when opening the drop down menu.
+          keyboardEvent = this.CreateKeyboardEventLikeWithKeyCode(keyboardEvent, 40); //down arrow
         }
-        DropDownMenu.Options_OnKeyDown (event, dropDownMenu);
+        DropDownMenu.Options_OnKeyDown (keyboardEvent, dropDownMenu);
         return;
       default:
-        DropDownMenu.Options_OnKeyDown(event, dropDownMenu);
+        DropDownMenu.Options_OnKeyDown(keyboardEvent, dropDownMenu);
         return;
     }
   }
 
-  private static Options_OnKeyDown (event: KeyboardEvent, dropDownMenu: HTMLElement): void
+  private static Options_OnKeyDown (event: IKeyboardEventLike, dropDownMenu: HTMLElement): void
   {
     if (DropDownMenu._currentPopup == null)
       return;
@@ -930,6 +1004,15 @@ class DropDownMenu
       // So we ignore mouse events for a small amount of time to deal with cascading events triggered by the selection change
       DropDownMenu._ignoreHoverMouseEvents = true;
       setTimeout(() => DropDownMenu._ignoreHoverMouseEvents = false, 250);
+    }
+  }
+
+  private static CreateKeyboardEventLikeWithKeyCode(event: IKeyboardEventLike, keyCode: number): IKeyboardEventLike
+  {
+    return {
+      keyCode: keyCode,
+      preventDefault: () => event.preventDefault(),
+      stopPropagation: () => event.stopPropagation()
     }
   }
 

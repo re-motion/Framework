@@ -33,6 +33,8 @@ namespace Remotion.Web
     /// <inheritdoc />
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+
       return sourceType == typeof(string)
              || base.CanConvertFrom(context, sourceType);
     }
@@ -60,6 +62,8 @@ namespace Remotion.Web
     /// <inheritdoc />
     public override object? ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
     {
+      ArgumentUtility.CheckNotNull("destinationType", destinationType);
+
       if (value == null)
         return null;
 

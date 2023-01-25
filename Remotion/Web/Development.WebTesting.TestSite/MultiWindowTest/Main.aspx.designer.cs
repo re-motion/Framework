@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
-    
-    
-    public partial class Main {
-        
+namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest
+{
+
+
+    public partial class Main
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// ScriptManager control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager ScriptManager;
-        
+
         /// <summary>
         /// UpdatePanel control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
-        
+
         /// <summary>
         /// MainLabel control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label MainLabel;
-        
+
         /// <summary>
         /// SimplePostBack control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton SimplePostBack;
-        
+
         /// <summary>
         /// LoadFrameFunctionInFrame control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton LoadFrameFunctionInFrame;
-        
+
         /// <summary>
         /// LoadFrameFunctionAsSubInFrame control.
         /// </summary>
@@ -74,7 +76,16 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton LoadFrameFunctionAsSubInFrame;
-        
+
+        /// <summary>
+        /// LoadFrameFunctionInFrameWithoutPostback control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Remotion.Web.UI.Controls.WebButton LoadFrameFunctionInFrameWithoutPostback;
+
         /// <summary>
         /// LoadWindowFunctionInFrame control.
         /// </summary>
@@ -83,7 +94,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton LoadWindowFunctionInFrame;
-        
+
         /// <summary>
         /// LoadMainAutoRefreshingFrameFunctionInFrame control.
         /// </summary>
@@ -92,7 +103,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton LoadMainAutoRefreshingFrameFunctionInFrame;
-        
+
         /// <summary>
         /// LoadWindowFunctionInNewWindow control.
         /// </summary>
@@ -101,7 +112,7 @@ namespace Remotion.Web.Development.WebTesting.TestSite.MultiWindowTest {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Remotion.Web.UI.Controls.WebButton LoadWindowFunctionInNewWindow;
-        
+
         /// <summary>
         /// NavigateAway control.
         /// </summary>

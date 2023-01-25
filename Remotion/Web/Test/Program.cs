@@ -1,5 +1,5 @@
 using System;
-using System.Web.Integration;
+using CoreForms.Web.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
@@ -10,7 +10,8 @@ namespace Remotion.Web.Test
     public static void Main (string[] args)
     {
       Console.WriteLine(Environment.CurrentDirectory);
-      LegacyAspNetInitialization.Init("/", Environment.CurrentDirectory, true);
+      var legacyAspNetInitializationOptions = new LegacyAspNetInitializationOptions("/", Environment.CurrentDirectory);
+      LegacyAspNetInitialization.Initialize(legacyAspNetInitializationOptions);
 
       CreateHostBuilder(args).Build().Run();
     }

@@ -369,12 +369,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       get
       {
         if (_internalValue == null && EnumerationValueInfo != null)
-          _internalValue = EnumerationValueInfo.Identifier;
+        {
+          var identifier = EnumerationValueInfo.Identifier;
+          Assertion.IsFalse(string.IsNullOrEmpty(identifier), "EnumerationValueInfo.Identifier must not be null or empty.");
+          _internalValue = identifier;
+        }
 
         return _internalValue;
       }
       set
       {
+        if (value == string.Empty)
+          throw new ArgumentException("Value must not be an empty string.", "value");
+
         if (_internalValue == value)
           return;
 
@@ -387,6 +394,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Ensures that the <see cref="Value"/> is set to the enum-value of the <see cref="InternalValue"/>. </summary>
     protected void EnsureValue ()
     {
+      Assertion.DebugAssert(_internalValue != string.Empty, "InternalValue must not be empty.");
+
       if (_enumerationValueInfo != null
           && _enumerationValueInfo.Identifier == _internalValue)
       {
@@ -555,7 +564,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <include file='..\..\doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
     protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
     {
-      string? newValue = PageUtility.GetPostBackCollectionItem(Page!, GetValueName());
+      string? newValue = StringUtility.EmptyToNull(PageUtility.GetPostBackCollectionItem(Page!, GetValueName()));
       bool isDataChanged = false;
       if (newValue != null)
       {

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
+using System.ComponentModel;
 using NUnit.Framework;
 using Remotion.Web.UI.Controls;
 
@@ -22,6 +24,30 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
   [TestFixture]
   public class BadgeConverterTest
   {
+    [Test]
+    public void CanConvertTo_WithString_ReturnsTrue ()
+    {
+      var badgeConverter = new BadgeConverter();
+
+      Assert.That(badgeConverter.CanConvertTo(null, typeof(string)), Is.True);
+    }
+
+    [Test]
+    public void CanConvertTo_WithNull_ReturnsFalse ()
+    {
+      var badgeConverter = new BadgeConverter();
+
+      Assert.That(badgeConverter.CanConvertTo((ITypeDescriptorContext)null, (Type)null), Is.False);
+    }
+
+    [Test]
+    public void CanConvertTo_WithOtherType_ReturnsFalse ()
+    {
+      var badgeConverter = new BadgeConverter();
+
+      Assert.That(badgeConverter.CanConvertTo(null, typeof(object)), Is.False);
+    }
+
     [Test]
     public void ConvertTo_WithTextValue_CorrectlyEncodesWebStrings ()
     {
@@ -46,6 +72,22 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
 
       var stringRepresentation = (string)badgeConverter.ConvertTo(badge, typeof(string));
       Assert.That(stringRepresentation, Is.EqualTo("(html)a\0b"));
+    }
+
+    [Test]
+    public void CanConvertFrom_WithString_ReturnsTrue ()
+    {
+      var badgeConverter = new BadgeConverter();
+
+      Assert.That(badgeConverter.CanConvertFrom(null, typeof(string)), Is.True);
+    }
+
+    [Test]
+    public void CanConvertFrom_WithOtherType_ReturnsFalse ()
+    {
+      var badgeConverter = new BadgeConverter();
+
+      Assert.That(badgeConverter.CanConvertFrom(null, typeof(object)), Is.False);
     }
 
     [Test]

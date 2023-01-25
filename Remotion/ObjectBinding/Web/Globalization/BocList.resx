@@ -153,6 +153,9 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsLabelText" xml:space="preserve">
     <value>Select all rows</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.SelectionHeaderText" xml:space="preserve">
+    <value>Row selection</value>
+  </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.IndexColumnTitle" xml:space="preserve">
     <value>No.</value>
   </data>
@@ -164,5 +167,8 @@
   </data>
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ValidationErrorInfoTitle" xml:space="preserve">
     <value>Invalid input in current row</value>
+  </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocList.ListMenuHeading" xml:space="preserve">
+    <value>Options</value>
   </data>
 </root>

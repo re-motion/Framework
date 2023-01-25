@@ -25,7 +25,6 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
-using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
@@ -35,6 +34,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
   {
     private BocListCssClassDefinition _bocListCssClassDefinition;
     private BocColumnRenderer[] _columnRenderers;
+    private StubLabelReferenceRenderer _stubLabelReferenceRenderer;
 
     [SetUp]
     public void SetUp ()
@@ -50,14 +50,16 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
                              new BocColumnRenderer(
                                  new StubColumnRenderer(new FakeResourceUrlFactory()),
                                  stubColumnDefinition,
-                                 0,
-                                 0,
-                                 false,
+                                 columnIndex: 7,
+                                 visibleColumnIndex: 13,
+                                 isRowHeader: false,
+                                 showIcon: false,
                                  SortingDirection.Ascending,
-                                 0)
+                                 orderIndex: 5)
                          };
 
       _bocListCssClassDefinition = new BocListCssClassDefinition();
+      _stubLabelReferenceRenderer = new StubLabelReferenceRenderer();
     }
 
     [Test]
@@ -66,7 +68,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.Default);
       renderer.RenderTitlesRow(CreateRenderingContext());
 
@@ -75,7 +77,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var tr = Html.GetAssertedChildElement(document, "tr", 0);
       Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement(tr, "th", 0);
+      var th = Html.GetAssertedChildElement(tr, "th", 0);
+      Html.AssertAttribute(th, "arguments-CellID", List.Object.ClientID + "_C13");
     }
 
     [Test]
@@ -87,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.Default);
       renderer.RenderTitlesRow(CreateRenderingContext());
 
@@ -97,6 +100,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(tr, "role", "row");
 
       var thIndex = Html.GetAssertedChildElement(tr, "th", 0);
+      Html.AssertAttribute(thIndex, "id", "MyList_C0");
       Html.AssertAttribute(thIndex, "class", _bocListCssClassDefinition.TitleCell, HtmlHelperBase.AttributeValueCompareMode.Contains);
       Html.AssertAttribute(thIndex, "class", _bocListCssClassDefinition.TitleCellIndex, HtmlHelperBase.AttributeValueCompareMode.Contains);
 
@@ -112,7 +116,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.Default);
       renderer.RenderTitlesRow(CreateRenderingContext());
 
@@ -121,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       var tr = Html.GetAssertedChildElement(document, "tr", 0);
       Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement(tr, "th", 0);
+      Html.GetAssertedChildElement(tr, "td", 0);
 
       Html.GetAssertedChildElement(tr, "th", 1);
     }
@@ -132,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.Default);
       renderer.RenderDataRow(
           CreateRenderingContext(),
@@ -145,7 +149,207 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Html.AssertAttribute(tr, "class", _bocListCssClassDefinition.DataRow + " " + _bocListCssClassDefinition.DataRowOdd);
       Html.AssertAttribute(tr, "role", "row");
 
-      Html.GetAssertedChildElement(tr, "td", 0);
+      var td = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertAttribute(td, "arguments-CellID", "null");
+      Html.AssertAttribute(td, "arguments-HeaderIDs", "MyList_C13");
+    }
+
+    [Test]
+    public void RenderDataRow_WithRowHeaders ()
+    {
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                             {
+                                 CreateBocColumnRenderer(3, isRowHeader: false),
+                                 CreateBocColumnRenderer(4, isRowHeader: true),
+                                 CreateBocColumnRenderer(5, isRowHeader: false),
+                                 CreateBocColumnRenderer(6, isRowHeader: true),
+                                 CreateBocColumnRenderer(7, isRowHeader: false),
+                                 CreateBocColumnRenderer(8, isRowHeader: true),
+                                 CreateBocColumnRenderer(9, isRowHeader: false)
+                             };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertAttribute(td0, "arguments-CellID", "null");
+      Html.AssertAttribute(td0, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C3");
+
+      var td1 = Html.GetAssertedChildElement(tr, "td", 1);
+      Html.AssertAttribute(td1, "arguments-CellID", "MyList_C4_R17");
+      Html.AssertAttribute(td1, "arguments-HeaderIDs", "MyList_C4");
+
+      var td2 = Html.GetAssertedChildElement(tr, "td", 2);
+      Html.AssertAttribute(td2, "arguments-CellID", "null");
+      Html.AssertAttribute(td2, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C5");
+
+      var td3 = Html.GetAssertedChildElement(tr, "td", 3);
+      Html.AssertAttribute(td3, "arguments-CellID", "MyList_C6_R17");
+      Html.AssertAttribute(td3, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6");
+
+      var td4 = Html.GetAssertedChildElement(tr, "td", 4);
+      Html.AssertAttribute(td4, "arguments-CellID", "null");
+      Html.AssertAttribute(td4, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C7");
+
+      var td5 = Html.GetAssertedChildElement(tr, "td", 5);
+      Html.AssertAttribute(td5, "arguments-CellID", "MyList_C8_R17");
+      Html.AssertAttribute(td5, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8");
+
+      var td6 = Html.GetAssertedChildElement(tr, "td", 6);
+      Html.AssertAttribute(td6, "arguments-CellID", "null");
+      Html.AssertAttribute(td6, "arguments-HeaderIDs", "MyList_C4_R17, MyList_C6_R17, MyList_C8_R17, MyList_C9");
+
+      BocColumnRenderer CreateBocColumnRenderer (int visibleColumnIndex, bool isRowHeader)
+      {
+        return new BocColumnRenderer(
+            new StubColumnRenderer(new FakeResourceUrlFactory()),
+            new StubColumnDefinition(),
+            columnIndex: 0,
+            visibleColumnIndex: visibleColumnIndex,
+            isRowHeader: isRowHeader,
+            showIcon: false,
+            SortingDirection.None,
+            orderIndex: -1);
+      }
+    }
+
+    [Test]
+    public void RenderDataRow_WithIndex_WithRowHeaders ()
+    {
+      List.Setup(_ => _.IsIndexEnabled).Returns(true);
+      List.Setup(_ => _.IsSelectionEnabled).Returns(false);
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 5,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertNoAttribute(td0, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td0, "headers");
+    }
+
+    [Test]
+    public void RenderDataRow_WithSelection_WithRowHeaders ()
+    {
+      List.Setup(_ => _.IsIndexEnabled).Returns(false);
+      List.Setup(_ => _.IsSelectionEnabled).Returns(true);
+      List.Setup(_ => _.GetSelectorControlValue(It.IsAny<BocListRow>())).Returns("Value");
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 5,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertNoAttribute(td0, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td0, "headers");
+    }
+
+    [Test]
+    public void RenderDataRow_WithIndexAndSelection_WithRowHeaders ()
+    {
+      List.Setup(_ => _.IsIndexEnabled).Returns(true);
+      List.Setup(_ => _.IsSelectionEnabled).Returns(true);
+      List.Setup(_ => _.GetSelectorControlValue(It.IsAny<BocListRow>())).Returns("Value");
+
+      IBocRowRenderer renderer = new BocRowRenderer(
+          _bocListCssClassDefinition,
+          new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
+          RenderingFeatures.Default);
+      var columnRenderers = new[]
+                            {
+                                new BocColumnRenderer(
+                                    new StubColumnRenderer(new FakeResourceUrlFactory()),
+                                    new StubColumnDefinition(),
+                                    columnIndex: 0,
+                                    visibleColumnIndex: 5,
+                                    isRowHeader: true,
+                                    showIcon: false,
+                                    SortingDirection.None,
+                                    orderIndex: -1)
+                            };
+      var businessObjectWebServiceContext = BusinessObjectWebServiceContext.Create(null, null, null);
+      renderer.RenderDataRow(
+          new BocListRenderingContext(HttpContext, Html.Writer, List.Object, businessObjectWebServiceContext, columnRenderers),
+          new BocListRowRenderingContext(new BocListRow(0, BusinessObject), 1, false),
+          17);
+
+      var document = Html.GetResultDocument();
+
+      var tr = Html.GetAssertedChildElement(document, "tr", 0);
+
+      var td0 = Html.GetAssertedChildElement(tr, "td", 0);
+      Html.AssertNoAttribute(td0, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td0, "headers");
+
+      var td1 = Html.GetAssertedChildElement(tr, "td", 1);
+      Html.AssertNoAttribute(td1, "id");
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      Html.AssertNoAttribute(td1, "headers");
     }
 
     [Test]
@@ -154,7 +358,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.Default);
       renderer.RenderDataRow(
           CreateRenderingContext(),
@@ -182,7 +386,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.Default);
       renderer.RenderEmptyListDataRow(CreateRenderingContext());
 
@@ -202,7 +406,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.Default, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.Default);
       renderer.RenderEmptyListDataRow(CreateRenderingContext());
 
@@ -217,7 +421,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       IBocRowRenderer renderer = new BocRowRenderer(
           _bocListCssClassDefinition,
           new BocIndexColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
-          new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition),
+          new BocSelectorColumnRenderer(RenderingFeatures.WithDiagnosticMetadata, _bocListCssClassDefinition, _stubLabelReferenceRenderer),
           RenderingFeatures.WithDiagnosticMetadata);
       renderer.RenderDataRow(
           CreateRenderingContext(),

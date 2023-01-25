@@ -247,20 +247,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
         {
           extensionMock.Reset();
 
-          var sequence = new MockSequence();
+          var sequence = new VerifiableSequence();
 
           extensionMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .Setup(_ => _.Committing(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<DomainObject>>(), It.IsAny<ICommittingEventRegistrar>()))
               .Verifiable();
 
           extensionMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .Setup(_ => _.CommitValidate(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<PersistableData>>()))
               .Verifiable();
 
           extensionMock
-              .InSequence(sequence)
+              .InVerifiableSequence(sequence)
               .Setup(_ => _.Committed(It.IsAny<ClientTransaction>(), It.IsAny<IReadOnlyList<DomainObject>>()))
               .Verifiable();
 

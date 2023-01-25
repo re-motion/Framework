@@ -86,6 +86,7 @@
 
 .tabStrip .tabStripTabSelected a
 {
+  color: var(--color-standard-text);
   border-color: var(--color-highlight);
   background-color: var(--color-highlight);
 }
@@ -114,6 +115,14 @@
 .tabStrip .tabStripTabSelected:not(.disabled) a:focus
 {
   background-color: var(--color-highlight);
+}
+
+.tabStrip .tabStripTab:not(.disabled) a:focus:hover,
+.tabStrip .tabStripTabSelected:not(.disabled) a:focus:hover
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  border: var(--remotion-themed-border-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
 .tabStrip .tabStripTab.disabled a

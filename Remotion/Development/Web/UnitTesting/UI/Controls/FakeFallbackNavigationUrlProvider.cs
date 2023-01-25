@@ -1,4 +1,4 @@
-// This file is part of the re-motion Core Framework (www.re-motion.org)
+﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
 // 
 // The re-motion Core Framework is free software; you can redistribute it 
@@ -14,19 +14,21 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
-using System;
-using NUnit.Framework;
+using Remotion.ServiceLocation;
+using Remotion.Web.UI.Controls;
 
-namespace Remotion.Data.DomainObjects.UnitTests.Mapping
+namespace Remotion.Development.Web.UnitTesting.UI.Controls
 {
-  [SetUpFixture]
-  public class SetUpFixture
+  /// <summary>
+  /// Implements <see cref="IFallbackNavigationUrlProvider"/> interface with a default URL of "fakeFallbackUrl".
+  /// Only used for tests and therefore not part of the normal DI containers.
+  /// </summary>
+  /// <threadsafety static="true" instance="true" />
+  public class FakeFallbackNavigationUrlProvider : IFallbackNavigationUrlProvider
   {
-
-    [OneTimeSetUp]
-    public void OneTimeSetUp ()
+    public string GetURL ()
     {
-      TestMappingConfiguration.Initialize();
+      return "fakeFallbackUrl";
     }
   }
 }

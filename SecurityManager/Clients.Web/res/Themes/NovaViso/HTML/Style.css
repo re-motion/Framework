@@ -68,6 +68,12 @@ button.imageButton img
   width: var(--imagebutton-image-width);
 }
 
+img.Icon
+{
+  height: var(--imagebutton-image-width);
+  width: var(--imagebutton-image-width);
+}
+
 div.singleViewTopControls div.content h1.pageTitle
 {
   padding: var(--remotion-themed-spacing) var(--remotion-themed-spacing-large) 0 var(--remotion-themed-spacing-large);
@@ -99,6 +105,11 @@ div.accessControlListContainer td.stateCombinationsContainer
 {
   border-right: var(--accesscontrollist-border);
   width: 13em;
+}
+
+div.accessControlListContainer td.stateCombinationsContainer > div > div
+{
+  display: flex;
 }
 
 div.accessControlListContainer td.stateCombinationsButtons
@@ -233,7 +244,7 @@ div.accessControlListContainer table.accessControlEntriesTable td.permissionCell
   box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
-div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue a[role=checkbox]
+div.accessControlListContainer table.accessControlEntriesTable td.permissionCell .bocBooleanValue span[role=checkbox]
 {
   margin-left: 0;
   margin-right: 0;
@@ -266,6 +277,12 @@ div.accessControlListContainer table.accessControlEntryExpanded td.formGridTopDa
 div.accessControlListContainer table.accessControlEntryExpanded td.formGridTitleCell
 {
   display: none;
+}
+
+div.accessControlListContainer table.accessControlEntryExpanded td.formGridControlsCell > div > div
+{
+  display: flex;
+  gap: var(--remotion-themed-spacing);
 }
 
 div.accessControlListContainer tr.underlinedMarkerCellRow td.formGridMarkersCell

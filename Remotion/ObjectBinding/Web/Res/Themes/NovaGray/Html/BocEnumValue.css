@@ -46,7 +46,8 @@ span.bocEnumValue select[size="1"]
   vertical-align: text-bottom;
 }
 
-.bocEnumValue.readOnly span[tabindex]
+.bocEnumValue.readOnly input:read-only + span,
+.bocEnumValue.readOnly span[role=radiogroup] + span
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 
      Using line-height instead of padding works better with BocEnumValue. When using padding, the text is not aligned with the label. */
@@ -55,19 +56,22 @@ span.bocEnumValue select[size="1"]
   display: inline-block;
 }
 
-.bocEnumValue.readOnly span[tabindex]:first-child
+.bocEnumValue.readOnly input:read-only + span:first-child,
+.bocEnumValue.readOnly span[role=radiogroup] + span:first-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-top: 0.2em;
 }
 
-.bocEnumValue.readOnly span[tabindex]:last-child
+.bocEnumValue.readOnly input:read-only + span:last-child,
+.bocEnumValue.readOnly span[role=radiogroup] + span:last-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   padding-bottom: 0.2em;
 }
 
-.bocEnumValue.readOnly span[tabindex]:empty
+.bocEnumValue.readOnly input:read-only + span:empty,
+.bocEnumValue.readOnly span[role=radiogroup] + span:empty
 {
   /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
   width: 100%;
@@ -75,4 +79,12 @@ span.bocEnumValue select[size="1"]
   padding-top: 0;
   padding-bottom: 0;
   vertical-align: -0.2em;
+}
+
+.bocEnumValue.readOnly input:read-only:focus + span,
+.bocEnumValue.readOnly span[role=radiogroup]:focus-within + span
+{
+  outline: dotted black 1px;
+  outline: solid Highlight 2px;
+  outline: auto 5px -webkit-focus-ring-color;
 }

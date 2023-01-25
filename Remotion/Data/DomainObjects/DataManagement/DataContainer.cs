@@ -60,13 +60,43 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull("id", id);
 
-      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary(pd => pd, pd => new PropertyValue(pd, pd.DefaultValue));
-      return new DataContainer(id, DataContainerStateType.New, null, propertyValues);
+      return CreateNew(id, pd => pd.DefaultValue);
     }
 
     /// <summary>
-    /// Creates an empty <see cref="DataContainer"/> for an existing <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
-    /// contain all <see cref="PropertyValue"/> objects, just as if it had been created with <see cref="CreateNew"/>, but the values for its 
+    /// Creates a <see cref="DataContainer"/> for a new <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+    /// contains an initialized <see cref="PropertyValue"/> object for every <see cref="PropertyDefinition"/> in the respective <see cref="ClassDefinition"/>.
+    /// The <see cref="DataContainer"/> has be to <see cref="DataManager.RegisterDataContainer">registered</see> with a
+    /// <see cref="ClientTransaction"/> and its <see cref="DomainObject"/> must <see cref="SetDomainObject">be set</see> before it can be used.
+    /// </summary>
+    /// <remarks>
+    /// The new <see cref="DataContainer"/> has the <see cref="DataContainerState.IsNew"/> flag set for <see cref="State"/>.
+    /// All <see cref="PropertyValue"/>s for the class specified by <see cref="ObjectID.ClassID"/> are created with the <see cref="PropertyValue.Value"/> and
+    /// <see cref="PropertyValue.OriginalValue"/> initialized via the <paramref name="valueLookup"/>.
+    /// </remarks>
+    /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
+    /// <param name="valueLookup">A function object returning the initial value of a given property for the new object.</param>
+    /// <returns>The new <see cref="DataContainer"/>.</returns>
+    /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
+    public static DataContainer CreateNew (ObjectID id, Func<PropertyDefinition, object?> valueLookup)
+    {
+      ArgumentUtility.CheckNotNull("id", id);
+
+      var propertyDefinitions = GetPropertyDefinitions(id.ClassDefinition);
+      var persistentPropertyValues = propertyDefinitions.Persistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
+      var nonPersistentPropertyValues = propertyDefinitions.NonPersistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
+
+      return new DataContainer(
+          id,
+          DataContainerStateType.New,
+          null,
+          persistentPropertyValues: persistentPropertyValues,
+          nonPersistentPropertyValues: nonPersistentPropertyValues);
+    }
+
+    /// <summary>
+    /// Creates a <see cref="DataContainer"/> for an existing <see cref="Remotion.Data.DomainObjects.DomainObject"/>. The <see cref="DataContainer"/>
+    /// contains all <see cref="PropertyValue"/> objects, just as if it had been created with <see cref="CreateNew(ObjectID)"/>, but the values for its
     /// properties are set as returned by a lookup method.
     /// The <see cref="DataContainer"/> has be to registered with a <see cref="ClientTransaction"/> via <see cref="DataManager.RegisterDataContainer"/> 
     /// and <see cref="SetDomainObject"/> must be called before it can be used.
@@ -85,12 +115,30 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       ArgumentUtility.CheckNotNull("id", id);
 
-      var propertyValues = id.ClassDefinition.GetPropertyDefinitions().ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
-      return new DataContainer(id, DataContainerStateType.Existing, timestamp, propertyValues);
+      var propertyDefinitions = GetPropertyDefinitions(id.ClassDefinition);
+      var persistentPropertyValues = propertyDefinitions.Persistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
+      var nonPersistentPropertyValues = propertyDefinitions.NonPersistent.ToDictionary(pd => pd, pd => new PropertyValue(pd, valueLookup(pd)));
+
+      return new DataContainer(id, DataContainerStateType.Existing, timestamp,
+          persistentPropertyValues: persistentPropertyValues,
+          nonPersistentPropertyValues: nonPersistentPropertyValues);
+    }
+
+    private static (IEnumerable<PropertyDefinition> Persistent, IEnumerable<PropertyDefinition> NonPersistent) GetPropertyDefinitions (ClassDefinition classDefinition)
+    {
+      var propertyDefinitionsPerStorageClass = classDefinition.GetPropertyDefinitions().ToLookup(pd => pd.StorageClass);
+      Assertion.IsTrue(
+          propertyDefinitionsPerStorageClass.Count <= 2,
+          "ClassDefinition '{0}' contains properties with a storage class other than 'Persistent' or 'Transaction'",
+          classDefinition.ID);
+
+      return (Persistent: propertyDefinitionsPerStorageClass[StorageClass.Persistent],
+          NonPersistent: propertyDefinitionsPerStorageClass[StorageClass.Transaction]);
     }
 
     private readonly ObjectID _id;
-    private readonly Dictionary<PropertyDefinition, PropertyValue> _propertyValues;
+    private readonly Dictionary<PropertyDefinition, PropertyValue> _persistentPropertyValues;
+    private readonly Dictionary<PropertyDefinition, PropertyValue> _nonPersistentPropertyValues;
 
     private ClientTransaction? _clientTransaction;
     private IDataContainerEventListener? _eventListener;
@@ -101,21 +149,28 @@ namespace Remotion.Data.DomainObjects.DataManagement
     private object? _timestamp;
     private DataContainerStateType _state;
     private bool _isDiscarded;
+    private bool _isNewInHierarchy;
     private bool _hasBeenMarkedChanged;
-    private bool? _hasBeenChanged;
+    private bool? _hasBeenChangedForPersistentData;
+    private bool? _hasBeenChangedForNonPersistentData;
 
     // construction and disposing
 
-    private DataContainer (ObjectID id, DataContainerStateType state, object? timestamp, Dictionary<PropertyDefinition, PropertyValue> propertyValues)
+    private DataContainer (
+        ObjectID id,
+        DataContainerStateType state,
+        object? timestamp,
+        Dictionary<PropertyDefinition, PropertyValue> persistentPropertyValues,
+        Dictionary<PropertyDefinition, PropertyValue> nonPersistentPropertyValues)
     {
-      ArgumentUtility.CheckNotNull("id", id);
-      ArgumentUtility.CheckNotNull("propertyValues", propertyValues);
-
       _id = id;
       _timestamp = timestamp;
       _state = state;
+      if (state == DataContainerStateType.New)
+        _isNewInHierarchy = true;
 
-      _propertyValues = propertyValues;
+      _persistentPropertyValues = persistentPropertyValues;
+      _nonPersistentPropertyValues = nonPersistentPropertyValues;
     }
 
     public bool HasBeenMarkedChanged
@@ -132,7 +187,7 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
       RaisePropertyValueReadingNotification(propertyDefinition, valueAccess);
       object? value = GetValueWithoutEvents(propertyValue, valueAccess);
-     RaisePropertyValueReadNotification(propertyDefinition, value, valueAccess);
+      RaisePropertyValueReadNotification(propertyDefinition, value, valueAccess);
 
       return value;
     }
@@ -161,12 +216,24 @@ namespace Remotion.Data.DomainObjects.DataManagement
       // - we were not changed before this event (now we must be - the property only fires this event when it was set to a different value)
       // - the property indicates that it doesn't have the original value ("HasChanged")
       // - recalculation of all property change states indicates another property doesn't have its original value
-      if (_hasBeenChanged != null && !_hasBeenChanged.Value)
-        _hasBeenChanged = true;
-      else if (propertyValue.HasChanged)
-        _hasBeenChanged = true;
+      if (propertyDefinition.StorageClass == StorageClass.Persistent)
+      {
+        if (_hasBeenChangedForPersistentData != null && !_hasBeenChangedForPersistentData.Value)
+          _hasBeenChangedForPersistentData = true;
+        else if (propertyValue.HasChanged)
+          _hasBeenChangedForPersistentData = true;
+        else
+          _hasBeenChangedForPersistentData = null;
+      }
       else
-        _hasBeenChanged = null;
+      {
+        if (_hasBeenChangedForNonPersistentData != null && !_hasBeenChangedForNonPersistentData.Value)
+          _hasBeenChangedForNonPersistentData = true;
+        else if (propertyValue.HasChanged)
+          _hasBeenChangedForNonPersistentData = true;
+        else
+          _hasBeenChangedForNonPersistentData = null;
+      }
 
       RaiseStateUpdatedNotification();
       RaisePropertyValueChangedNotification(propertyDefinition, oldValue, value);
@@ -225,7 +292,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       propertyValue.CommitState();
 
       // Invalidate state rather than recalculating it - CommitValue might be called multiple times.
-      _hasBeenChanged = null;
+      _hasBeenChangedForPersistentData = null;
+      _hasBeenChangedForNonPersistentData = null;
     }
 
     public void RollbackValue (PropertyDefinition propertyDefinition)
@@ -237,10 +305,34 @@ namespace Remotion.Data.DomainObjects.DataManagement
       propertyValue.RollbackState();
 
       // Invalidate state rather than recalculating it - RollbackValue might be called multiple times.
-      _hasBeenChanged = null;
+      _hasBeenChangedForPersistentData = null;
+      _hasBeenChangedForNonPersistentData = null;
     }
 
-    public void SetValueDataFromSubTransaction (PropertyDefinition propertyDefinition, DataContainer sourceContainer)
+    public void SetDataFromSubTransaction (DataContainer sourceDataContainer)
+    {
+      ArgumentUtility.CheckNotNull("sourceDataContainer", sourceDataContainer);
+
+      CheckNotDiscarded();
+      sourceDataContainer.CheckNotDiscarded();
+      CheckSourceForSetDataFromSubTransaction(sourceDataContainer);
+
+      var allPropertyValues = _persistentPropertyValues.Concat(_nonPersistentPropertyValues);
+      foreach (var kvp in allPropertyValues)
+      {
+        var sourcePropertyValue = sourceDataContainer.GetPropertyValue(kvp.Key);
+        kvp.Value.SetDataFromSubTransaction(sourcePropertyValue);
+      }
+
+      if (sourceDataContainer.HasBeenMarkedChanged && _state == DataContainerStateType.Existing)
+        _hasBeenMarkedChanged = true;
+
+      _hasBeenChangedForPersistentData = null;
+      _hasBeenChangedForNonPersistentData = null;
+      RaiseStateUpdatedNotification();
+    }
+
+    public void SetPropertyValueFromSubTransaction (PropertyDefinition propertyDefinition, DataContainer sourceContainer)
     {
       ArgumentUtility.CheckNotNull("propertyDefinition", propertyDefinition);
       ArgumentUtility.CheckNotNull("sourceContainer", sourceContainer);
@@ -254,7 +346,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       propertyValue.SetDataFromSubTransaction(sourcePropertyValue);
 
       // Invalidate state rather than recalculating it - SetValueDataFromSubTransaction might be called multiple times.
-      _hasBeenChanged = null;
+      _hasBeenChangedForPersistentData = null;
+      _hasBeenChangedForNonPersistentData = null;
     }
 
     /// <summary>
@@ -373,25 +466,46 @@ namespace Remotion.Data.DomainObjects.DataManagement
     {
       get
       {
+        var stateBuilder = new DataContainerState.Builder();
         if (_isDiscarded)
-          return new DataContainerState.Builder().SetDiscarded().Value;
+          return stateBuilder.SetDiscarded().Value;
+
+        if (_isNewInHierarchy)
+          stateBuilder = stateBuilder.SetNewInHierarchy();
+
+        if (!_hasBeenChangedForPersistentData.HasValue)
+          _hasBeenChangedForPersistentData = _persistentPropertyValues.Values.Any(pv => pv.HasChanged);
+
+        if (!_hasBeenChangedForNonPersistentData.HasValue)
+          _hasBeenChangedForNonPersistentData = _nonPersistentPropertyValues.Values.Any(pv => pv.HasChanged);
+
+        bool hasChanged = false;
+        var isNonPersistent = _id.ClassDefinition.IsNonPersistent();
+        if (_hasBeenChangedForPersistentData.Value || (_hasBeenMarkedChanged && !isNonPersistent))
+        {
+          stateBuilder = stateBuilder.SetPersistentDataChanged();
+          hasChanged = true;
+        }
+
+        if (_hasBeenChangedForNonPersistentData.Value || (_hasBeenMarkedChanged && isNonPersistent))
+        {
+          stateBuilder = stateBuilder.SetNonPersistentDataChanged();
+          hasChanged = true;
+        }
 
         switch (_state)
         {
           case DataContainerStateType.New:
-            return new DataContainerState.Builder().SetNew().Value;
+            return stateBuilder.SetNew().Value;
           case DataContainerStateType.Deleted:
-            return new DataContainerState.Builder().SetDeleted().Value;
+            return stateBuilder.SetDeleted().Value;
           default:
             Assertion.IsTrue(_state == DataContainerStateType.Existing);
 
-            if (!_hasBeenChanged.HasValue)
-              _hasBeenChanged = CalculatePropertyValueChangeState();
-
-            if (_hasBeenMarkedChanged || _hasBeenChanged.Value)
-              return new DataContainerState.Builder().SetChanged().Value;
+            if (hasChanged)
+              return stateBuilder.SetChanged().Value;
             else
-              return new DataContainerState.Builder().SetUnchanged().Value;
+              return stateBuilder.SetUnchanged().Value;
         }
       }
     }
@@ -413,6 +527,36 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _hasBeenMarkedChanged = true;
 
       RaiseStateUpdatedNotification();
+    }
+
+    /// <summary>
+    /// Marks an existing <see cref="DataContainer"/> as being new in the <see cref="ClientTransaction"/>.<see cref="DomainObjects.ClientTransaction.ParentTransaction"/> hierarchy.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">This <see cref="DataContainer"/> is not in state <see cref="DataContainerStateType.Existing"/>.
+    /// New or deleted objects cannot be marked as new-in-hierarchy.</exception>
+    /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="DataContainer"/> has been discarded.
+    /// See <see cref="ObjectInvalidException"/> for further information.</exception>
+    public void SetNewInHierarchy ()
+    {
+      CheckNotDiscarded();
+      if (_state != DataContainerStateType.Existing)
+        throw new InvalidOperationException("Only existing DataContainers can be marked as new-in-hierarchy.");
+
+      _isNewInHierarchy = true;
+    }
+
+    /// <summary>
+    /// Removes the information than an existing or deleted <see cref="DataContainer"/> is new in the
+    /// <see cref="ClientTransaction"/>.<see cref="DomainObjects.ClientTransaction.ParentTransaction"/> hierarchy.
+    /// </summary>
+    /// <exception cref="ObjectInvalidException">The <see cref="DomainObject"/> is invalid and its <see cref="DataContainer"/> has been discarded.
+    /// See <see cref="ObjectInvalidException"/> for further information.</exception>
+    public void ClearNewInHierarchy ()
+    {
+      CheckNotDiscarded();
+      // No check for state since the flag must be cleared before the state is updated.
+
+      _isNewInHierarchy = false;
     }
 
     /// <summary>
@@ -457,6 +601,22 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _timestamp = timestamp;
     }
 
+    public void CommitPropertyValuesOnNewDataContainer ()
+    {
+      CheckNotDiscarded();
+
+      if (_state != DataContainerStateType.New)
+        throw new InvalidOperationException("Only new data containers can commit their property state as unchanged.");
+
+      var allPropertyValues = _persistentPropertyValues.Values.Concat(_nonPersistentPropertyValues.Values);
+      foreach (PropertyValue propertyValue in allPropertyValues)
+        propertyValue.CommitState();
+
+      _hasBeenChangedForPersistentData = false;
+      _hasBeenChangedForNonPersistentData = false;
+      RaiseStateUpdatedNotification();
+    }
+
     public void CommitState ()
     {
       CheckNotDiscarded();
@@ -464,11 +624,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (_state == DataContainerStateType.Deleted)
         throw new InvalidOperationException("Deleted data containers cannot be committed, they have to be discarded.");
 
-      foreach (PropertyValue propertyValue in _propertyValues.Values)
+      var allPropertyValues = _persistentPropertyValues.Values.Concat(_nonPersistentPropertyValues.Values);
+      foreach (PropertyValue propertyValue in allPropertyValues)
         propertyValue.CommitState();
 
       _hasBeenMarkedChanged = false;
-      _hasBeenChanged = false;
+      _hasBeenChangedForPersistentData = false;
+      _hasBeenChangedForNonPersistentData = false;
       _state = DataContainerStateType.Existing;
       RaiseStateUpdatedNotification();
     }
@@ -480,11 +642,13 @@ namespace Remotion.Data.DomainObjects.DataManagement
       if (_state == DataContainerStateType.New)
         throw new InvalidOperationException("New data containers cannot be rolled back, they have to be discarded.");
 
-      foreach (PropertyValue propertyValue in _propertyValues.Values)
+      var allPropertyValues = _persistentPropertyValues.Values.Concat(_nonPersistentPropertyValues.Values);
+      foreach (PropertyValue propertyValue in allPropertyValues)
         propertyValue.RollbackState();
 
       _hasBeenMarkedChanged = false;
-      _hasBeenChanged = false;
+      _hasBeenChangedForPersistentData = false;
+      _hasBeenChangedForNonPersistentData = false;
       _state = DataContainerStateType.Existing;
       RaiseStateUpdatedNotification();
     }
@@ -518,24 +682,6 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _eventListener = null;
     }
 
-    public void SetPropertyDataFromSubTransaction (DataContainer source)
-    {
-      ArgumentUtility.CheckNotNull("source", source);
-
-      CheckNotDiscarded();
-      source.CheckNotDiscarded();
-      CheckSourceForSetDataFromSubTransaction(source);
-
-      foreach (var kvp in _propertyValues)
-      {
-        var sourcePropertyValue = source.GetPropertyValue(kvp.Key);
-        kvp.Value.SetDataFromSubTransaction(sourcePropertyValue);
-      }
-
-      _hasBeenChanged = null;
-      RaiseStateUpdatedNotification();
-    }
-
     public void SetDomainObject (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
@@ -564,16 +710,25 @@ namespace Remotion.Data.DomainObjects.DataManagement
     /// <see cref="ClientTransaction"/> and <see cref="DomainObject"/> are not set, so the returned <see cref="DataContainer"/> cannot be 
     /// used until it is registered with a <see cref="DomainObjects.ClientTransaction"/>. Its <see cref="DomainObject"/> is set via the
     /// <see cref="SetDomainObject"/> method.</returns>
+    [Obsolete("When cloning existing unchanged DataContainer, use DataContainer.CreateForExisting(id, dataContainer.Timestamp, pd => dataContainer.GetValueWithoutEvents(pd, ValueAccess.Current)) instead. "
+              + "All other scenarios are broken for DataContainer.Clone(). (Version: 3.0.0")]
     public DataContainer Clone (ObjectID id)
     {
       CheckNotDiscarded();
 
-      var clonePropertyValues = _propertyValues.ToDictionary(kvp => kvp.Key, kvp => new PropertyValue(kvp.Key, kvp.Value.Value));
+      var clonedPersistentPropertyValues = _persistentPropertyValues.ToDictionary(kvp => kvp.Key, kvp => new PropertyValue(kvp.Key, kvp.Value.Value));
+      var clonedNonPersistentPropertyValues = _nonPersistentPropertyValues.ToDictionary(kvp => kvp.Key, kvp => new PropertyValue(kvp.Key, kvp.Value.Value));
 
-      var clone = new DataContainer(id, _state, _timestamp, clonePropertyValues);
+      var clone = new DataContainer(
+          id,
+          _state,
+          _timestamp,
+          persistentPropertyValues: clonedPersistentPropertyValues,
+          nonPersistentPropertyValues: clonedNonPersistentPropertyValues);
 
       clone._hasBeenMarkedChanged = _hasBeenMarkedChanged;
-      clone._hasBeenChanged = _hasBeenChanged;
+      clone._hasBeenChangedForPersistentData = _hasBeenChangedForPersistentData;
+      clone._hasBeenChangedForNonPersistentData = _hasBeenChangedForNonPersistentData;
 
       Assertion.IsNull(clone._clientTransaction);
       Assertion.IsNull(clone._domainObject);
@@ -592,26 +747,24 @@ namespace Remotion.Data.DomainObjects.DataManagement
 
     private PropertyValue GetPropertyValue (PropertyDefinition propertyDefinition)
     {
-      try
-      {
-        return _propertyValues[propertyDefinition];
-      }
-      catch (KeyNotFoundException ex)
-      {
-        var message = string.Format("Property '{0}' does not exist.", propertyDefinition.PropertyName);
-        throw new ArgumentException(message, "propertyDefinition", ex);
-      }
+      var propertyValues = propertyDefinition.StorageClass
+          switch
+          {
+              StorageClass.Persistent => _persistentPropertyValues,
+              _ => _nonPersistentPropertyValues
+          };
+
+      if (propertyValues.TryGetValue(propertyDefinition, out var value))
+        return value;
+
+      var message = string.Format("Property '{0}' does not exist.", propertyDefinition.PropertyName);
+      throw new ArgumentException(message, "propertyDefinition");
     }
 
     private void CheckNotDiscarded ()
     {
       if (_isDiscarded)
         throw new ObjectInvalidException(_id);
-    }
-
-    private bool CalculatePropertyValueChangeState ()
-    {
-      return _propertyValues.Values.Any(pv => pv.HasChanged);
     }
 
     private void RaisePropertyValueReadingNotification (PropertyDefinition propertyDefinition, ValueAccess valueAccess)
@@ -666,7 +819,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _timestamp = info.GetNullableValue<object>();
       _isDiscarded = info.GetBoolValue();
 
-      _propertyValues = new Dictionary<PropertyDefinition, PropertyValue>();
+      _persistentPropertyValues = new Dictionary<PropertyDefinition, PropertyValue>();
+      _nonPersistentPropertyValues = new Dictionary<PropertyDefinition, PropertyValue>();
 
       if (!_isDiscarded)
       {
@@ -676,7 +830,11 @@ namespace Remotion.Data.DomainObjects.DataManagement
           var propertyDefinition = ClassDefinition.GetMandatoryPropertyDefinition(propertyName);
           var propertyValue = new PropertyValue(propertyDefinition, propertyDefinition.DefaultValue);
           propertyValue.DeserializeFromFlatStructure(info);
-          _propertyValues.Add(propertyDefinition, propertyValue);
+
+          if (propertyDefinition.StorageClass == StorageClass.Persistent)
+            _persistentPropertyValues.Add(propertyDefinition, propertyValue);
+          else
+            _nonPersistentPropertyValues.Add(propertyDefinition, propertyValue);
         }
       }
 
@@ -684,8 +842,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
       _eventListener = info.GetNullableValueForHandle<IDataContainerEventListener>();
       _state = (DataContainerStateType)info.GetIntValue();
       _domainObject = info.GetNullableValueForHandle<DomainObject>();
+      _isNewInHierarchy = info.GetBoolValue();
       _hasBeenMarkedChanged = info.GetBoolValue();
-      _hasBeenChanged = info.GetNullableValue<bool?>();
+      _hasBeenChangedForPersistentData = info.GetNullableValue<bool?>();
+      _hasBeenChangedForNonPersistentData = info.GetNullableValue<bool?>();
     }
     // ReSharper restore UnusedMember.Local
 
@@ -696,7 +856,8 @@ namespace Remotion.Data.DomainObjects.DataManagement
       info.AddBoolValue(_isDiscarded);
       if (!_isDiscarded)
       {
-        foreach (var kvp in _propertyValues)
+        var allPropertyValues = _persistentPropertyValues.Concat(_nonPersistentPropertyValues);
+        foreach (var kvp in allPropertyValues)
         {
           info.AddHandle(kvp.Key.PropertyName);
           kvp.Value.SerializeIntoFlatStructure(info);
@@ -707,8 +868,10 @@ namespace Remotion.Data.DomainObjects.DataManagement
       info.AddHandle(_eventListener);
       info.AddIntValue((int)_state);
       info.AddHandle(_domainObject);
+      info.AddBoolValue(_isNewInHierarchy);
       info.AddBoolValue(_hasBeenMarkedChanged);
-      info.AddValue(_hasBeenChanged);
+      info.AddValue(_hasBeenChangedForPersistentData);
+      info.AddValue(_hasBeenChangedForNonPersistentData);
     }
 
     #endregion Serialization

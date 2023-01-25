@@ -23,6 +23,7 @@ using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurati
 using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
+using Remotion.Data.DomainObjects.UnitTests.Factories;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -71,6 +72,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     [OneTimeSetUp]
     public virtual void OneTimeSetUp ()
     {
+      TestMappingConfiguration.EnsureInitialized();
       DomainObjectsConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetDomainObjectsConfiguration());
       MappingConfiguration.SetCurrent(TestMappingConfiguration.Instance.GetMappingConfiguration());
       ConfigurationWrapper.SetCurrent(null);

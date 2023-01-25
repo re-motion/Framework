@@ -284,8 +284,8 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     [Test]
     public void Render_NamedValueSelected_WithStyleInAttributes ()
     {
-      _enumValue.Object.Style["height"] = _height.ToString();
-      _enumValue.Object.Style["width"] = _width.ToString();
+      _enumValue.Object.Style[HtmlTextWriterStyle.Height] = _height.ToString();
+      _enumValue.Object.Style[HtmlTextWriterStyle.Width] = _width.ToString();
       _enumValue.Setup(mock => mock.IsRequired).Returns(true);
       _enumValue.SetupProperty(_ => _.Value);
       _enumValue.Object.Value = TestEnum.First;

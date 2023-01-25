@@ -45,12 +45,18 @@ namespace Remotion.Web.Development.WebTesting.Configuration
     /// </summary>
     public TimeSpan AsyncJavaScriptTimeout { get; }
 
-    public DriverConfiguration (TimeSpan commandTimeout, TimeSpan searchTimeout, TimeSpan retryInterval, TimeSpan asyncJavaScriptTimeout)
+    /// <summary>
+    /// Gets a boolean indicating if the web browser should run without a user interface (headless mode).
+    /// </summary>
+    public bool Headless { get; }
+
+    public DriverConfiguration (TimeSpan commandTimeout, TimeSpan searchTimeout, TimeSpan retryInterval, TimeSpan asyncJavaScriptTimeout, bool headless)
     {
       CommandTimeout = commandTimeout;
       SearchTimeout = searchTimeout;
       RetryInterval = retryInterval;
       AsyncJavaScriptTimeout = asyncJavaScriptTimeout;
+      Headless = headless;
     }
   }
 }

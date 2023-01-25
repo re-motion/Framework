@@ -30,7 +30,7 @@ namespace Remotion.Mixins.Validation
     void Fail (IValidationRule rule);
     void UnexpectedException (IValidationRule rule, Exception ex);
 
-    IDictionary<object, object> ContextStore { get; }
+    Dictionary<object, object> ContextStore { get; }
 
     ValidationLogData GetData ();
   }

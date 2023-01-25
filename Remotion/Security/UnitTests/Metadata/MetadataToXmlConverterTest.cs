@@ -505,10 +505,8 @@ namespace Remotion.Security.UnitTests.Metadata
     [Test]
     public void ConvertAndSave_NewFile ()
     {
-      string testOutputPath = @"Core\Metadata\Testoutput";
-
-      if (!Directory.Exists(testOutputPath))
-        Directory.CreateDirectory(testOutputPath);
+      string testOutputPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+      Directory.CreateDirectory(testOutputPath);
 
       string filename = Path.Combine(testOutputPath, "metadata.xml");
 
@@ -518,6 +516,7 @@ namespace Remotion.Security.UnitTests.Metadata
       _converter.ConvertAndSave(_cache, filename);
 
       Assert.That(System.IO.File.Exists(filename), Is.True);
+      Directory.Delete(testOutputPath, true);
     }
   }
 }

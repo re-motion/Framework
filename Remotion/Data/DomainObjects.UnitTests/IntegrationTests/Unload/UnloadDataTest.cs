@@ -431,7 +431,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           () => UnloadService.UnloadData(TestableClientTransaction, orderNew.ID),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-              + string.Format("'Order|{0}|System.Guid' (DataContainerState (New)).", orderNew.ID.Value)));
+              + string.Format("'Order|{0}|System.Guid' (DataContainerState (New, NewInHierarchy)).", orderNew.ID.Value)));
 
       Assert.That(orderNew.State.IsNew, Is.True);
     }
@@ -455,7 +455,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
           () => UnloadService.UnloadData(TestableClientTransaction, DomainObjectIDs.Order1),
           Throws.InvalidOperationException.With.Message.EqualTo(
               "The state of the following DataContainers prohibits that they be unloaded; only unchanged DataContainers can be unloaded: "
-              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed))."));
+              + "'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' (DataContainerState (Changed, PersistentDataChanged))."));
 
     }
 

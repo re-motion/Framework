@@ -56,7 +56,6 @@ namespace Remotion.Reflection
     /// </returns>
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType!);
       return destinationType == typeof(MethodInfo);
     }
 

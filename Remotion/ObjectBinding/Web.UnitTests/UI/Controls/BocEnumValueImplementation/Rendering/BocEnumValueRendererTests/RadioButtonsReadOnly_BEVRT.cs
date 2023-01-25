@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -26,6 +25,7 @@ using Remotion.Development.Web.UnitTesting.AspNetFramework;
 using Remotion.Development.Web.UnitTesting.Resources;
 using Remotion.Development.Web.UnitTesting.UI.Controls.Rendering;
 using Remotion.FunctionalProgramming;
+using Remotion.Globalization;
 using Remotion.ObjectBinding.BindableObject;
 using Remotion.ObjectBinding.BindableObject.Properties;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
@@ -39,6 +39,7 @@ using Remotion.ServiceLocation;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
 using Remotion.Web.UI;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 using AttributeCollection = System.Web.UI.AttributeCollection;
@@ -46,10 +47,10 @@ using AttributeCollection = System.Web.UI.AttributeCollection;
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplementation.Rendering.BocEnumValueRendererTests
 {
   [TestFixture]
-  public class ReadOnly_BEVRT : RendererTestBase
+  public class RadioButtonsReadOnly_BEVRT : RendererTestBase
   {
     private const string c_clientID = "MyEnumValue";
-    private const string c_valueName = "ListControlClientID";
+    private const string c_valueName = "MyEnumValue_TextValue";
     private const string c_labelID = "Label";
 
     private static readonly PlainTextString s_validationErrors = PlainTextString.CreateFromText("ValidationError");
@@ -105,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
 
       _enumValue.Setup(mock => mock.GetNullItemText()).Returns(PlainTextString.CreateFromText("null-text"));
       _enumValue.Setup(mock => mock.NullIdentifier).Returns("null-id");
-      _enumValue.Setup(mock => mock.GetValueName()).Returns(c_valueName);
+      _enumValue.Setup(mock => mock.GetValueName()).Throws(new InvalidOperationException("Should not be called."));
 
       StateBag stateBag = new StateBag();
       _enumValue.Setup(mock => mock.Enabled).Returns(true);
@@ -113,8 +114,10 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Setup(mock => mock.Attributes).Returns(new AttributeCollection(stateBag));
       _enumValue.Setup(mock => mock.Style).Returns(_enumValue.Object.Attributes.CssStyle);
       _enumValue.Setup(mock => mock.LabelStyle).Returns(new Style(stateBag));
-      _enumValue.Setup(mock => mock.ListControlStyle).Returns(new ListControlStyle());
+      _enumValue.Setup(mock => mock.ListControlStyle).Returns(new ListControlStyle() {ControlType = ListControlType.RadioButtonList});
       _enumValue.Setup(mock => mock.ControlStyle).Returns(new Style(stateBag));
+
+      _enumValue.Setup(stub => stub.GetResourceManager()).Returns(NullResourceManager.Instance);
 
       _internalControlMemberCaller = SafeServiceLocator.Current.GetInstance<IInternalControlMemberCaller>();
     }
@@ -122,7 +125,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
     [Test]
     public void Render_NullValue ()
     {
-      AssertLabel(null, false);
+      AssertReadOnlyRadioGroup(null, false);
     }
 
     [Test]
@@ -132,7 +135,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Value = TestEnum.First;
       _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertLabel(TestEnum.First, false);
+      AssertReadOnlyRadioGroup(TestEnum.First, false);
     }
 
     [Test]
@@ -143,7 +146,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Value = TestEnum.First;
       _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertLabel(TestEnum.First, false);
+      AssertReadOnlyRadioGroup(TestEnum.First, false);
     }
 
     [Test]
@@ -154,7 +157,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Value = TestEnum.First;
       _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertLabel(TestEnum.First, false);
+      AssertReadOnlyRadioGroup(TestEnum.First, false);
     }
 
     [Test]
@@ -170,7 +173,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Value = TestEnum.First;
       _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertLabel(TestEnum.First, true);
+      AssertReadOnlyRadioGroup(TestEnum.First, true);
     }
 
     [Test]
@@ -182,7 +185,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       _enumValue.Object.Value = TestEnum.First;
       _enumValue.Setup(mock => mock.EnumerationValueInfo).Returns(_enumerationInfos[0]);
 
-      AssertLabel(TestEnum.First, false);
+      AssertReadOnlyRadioGroup(TestEnum.First, false);
     }
 
     [Test]
@@ -209,7 +212,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       Html.AssertAttribute(outerSpan, DiagnosticMetadataAttributesForObjectBinding.NullIdentifier, "null-id");
     }
 
-    private void AssertLabel (TestEnum? value, bool withStyle)
+    private void AssertReadOnlyRadioGroup (TestEnum? value, bool withStyle)
     {
       var renderer = new BocEnumValueRenderer(
           new FakeResourceUrlFactory(),
@@ -221,42 +224,52 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocEnumValueImplement
       renderer.Render(new BocEnumValueRenderingContext(HttpContext, Html.Writer, _enumValue.Object));
 
       var document = Html.GetResultDocument();
-      XmlNode div = GetAssertedSpan(document, false, renderer);
+      XmlNode div = GetAssertedDiv(document, false, renderer);
 
-      var span = Html.GetAssertedChildElement(div, "span", 0);
-      Html.AssertAttribute(span, "id", c_valueName);
-      Html.AssertAttribute(span, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
-      Html.AssertAttribute(span, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, c_valueName);
-      Html.AssertAttribute(span, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
-      Html.AssertAttribute(span, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
-      Html.AssertAttribute(span, "tabindex", "0");
-      //Html.AssertAttribute (span, "role", "combobox");
-      //Html.AssertAttribute (span, "aria-readonly", "true");
+      var radioGroupSpan = Html.GetAssertedChildElement(div, "span", 0);
+      Html.AssertAttribute(radioGroupSpan, "id", c_valueName);
+      Html.AssertAttribute(radioGroupSpan, StubLabelReferenceRenderer.LabelReferenceAttribute, c_labelID);
+      Html.AssertAttribute(radioGroupSpan, StubLabelReferenceRenderer.AccessibilityAnnotationsAttribute, "");
+      Html.AssertAttribute(radioGroupSpan, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
+      Html.AssertAttribute(radioGroupSpan, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
+      Html.AssertAttribute(radioGroupSpan, "role", "radiogroup");
+      Html.AssertAttribute(radioGroupSpan, "class", CssClassDefinition.ScreenReaderText);
 
-      if (_enumValue.Object.EnumerationValueInfo == null)
-        Html.AssertAttribute(span, "data-value", _enumValue.Object.NullIdentifier);
+      var radioButtonSpan = Html.GetAssertedChildElement(radioGroupSpan, "span", 0);
+      Html.AssertAttribute(radioButtonSpan, "tabindex", "0");
+      Html.AssertAttribute(radioButtonSpan, "role", "radio");
+      Html.AssertAttribute(radioButtonSpan, "aria-checked", "true");
+      if (value.HasValue)
+        Html.AssertAttribute(radioButtonSpan, "aria-label", value.Value.ToString());
       else
-        Html.AssertAttribute(span, "data-value", _enumValue.Object.EnumerationValueInfo.Identifier);
+        Html.AssertAttribute(radioButtonSpan, "aria-label", "null-text");
+      Html.AssertAttribute(radioButtonSpan, "aria-roledescription", "read only radio button");
+      if (_enumValue.Object.EnumerationValueInfo == null)
+        Html.AssertAttribute(radioButtonSpan, "data-value", _enumValue.Object.NullIdentifier);
+      else
+        Html.AssertAttribute(radioButtonSpan, "data-value", _enumValue.Object.EnumerationValueInfo.Identifier);
 
+      var labelSpan =  Html.GetAssertedChildElement(div, "span", 1);
+      Html.AssertNoAttribute(labelSpan, "tabindex");
+      Html.AssertAttribute(labelSpan, "aria-hidden", "true");
+      if (value.HasValue)
+        Html.AssertTextNode(labelSpan, value.Value.ToString(), 0);
+      else
+        Html.AssertChildElementCount(labelSpan, 0);
       if (withStyle)
       {
-        Html.AssertStyleAttribute(span, "width", _width.ToString());
-        Html.AssertStyleAttribute(span, "height", "100%");
+        Html.AssertStyleAttribute(labelSpan, "width", _width.ToString());
+        Html.AssertStyleAttribute(labelSpan, "height", "100%");
       }
 
-      if (value.HasValue)
-        Html.AssertTextNode(span, value.Value.ToString(), 0);
-      else
-        Html.AssertChildElementCount(span, 0);
-
-      var validationErrors = Html.GetAssertedChildElement(div, "fake", 1);
+      var validationErrors = Html.GetAssertedChildElement(div, "fake", 2);
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsIDAttribute, c_clientID + "_ValidationErrors");
       Html.AssertAttribute(validationErrors, StubValidationErrorRenderer.ValidationErrorsAttribute, s_validationErrors);
     }
 
-    private XmlNode GetAssertedSpan (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)
+    private XmlNode GetAssertedDiv (XmlDocument document, bool withStyle, BocEnumValueRenderer renderer)
     {
-      var div = Html.GetAssertedChildElement(document, "span", 0);
+      var div = Html.GetAssertedChildElement(document, "div", 0);
       string cssClass = _enumValue.Object.CssClass;
       if (string.IsNullOrEmpty(cssClass))
         cssClass = _enumValue.Object.Attributes["class"];

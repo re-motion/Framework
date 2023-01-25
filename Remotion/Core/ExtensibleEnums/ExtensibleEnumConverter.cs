@@ -81,8 +81,6 @@ namespace Remotion.ExtensibleEnums
     /// </returns>
     public override bool CanConvertTo (ITypeDescriptorContext? context, Type? destinationType)
     {
-      ArgumentUtility.CheckNotNull("destinationType", destinationType!);
-
       return destinationType == typeof(string);
     }
 

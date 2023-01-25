@@ -85,7 +85,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     // member fields
 
-    private bool _isBusinessObejectListPopulated;
+    private bool _isBusinessObjectListPopulated;
 
     private readonly DropDownListStyle _dropDownListStyle;
 
@@ -186,15 +186,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       ((IStateManager)_listItems).TrackViewState();
     }
 
-    /// <remarks> Populates the list. </remarks>
-    protected override void OnLoad (EventArgs e)
-    {
-      base.OnLoad(e);
-
-      if (!ControlExistedInPreviousRequest)
-        EnsureBusinessObjectListPopulated();
-    }
-
     protected override string ValueContainingControlID
     {
       get { return GetValueName(); }
@@ -213,14 +204,27 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <summary> Called when the state of the control has changed between postbacks. </summary>
     protected override void RaisePostDataChangedEvent ()
     {
-      if (InternalValue == null)
+      var internalValue = InternalValue;
+      if (internalValue == null)
+      {
         _displayName = null;
+      }
       else
       {
-        ListItem selectedItem = _listItems.FindByValue(InternalValue);
+        ListItem selectedItem = _listItems.FindByValue(internalValue);
         if (selectedItem == null)
-          throw new InvalidOperationException(string.Format("The key '{0}' does not correspond to a known element.", InternalValue));
-        _displayName = selectedItem.Text;
+        {
+          // GetObject(...) can load any value that is provided by ID. This behavior is symmetrical with BocAutoCompleteReferenceValue.
+          var businessObject = GetBusinessObjectClass()?.GetObject(internalValue);
+          if (businessObject == null)
+            throw new InvalidOperationException(string.Format("The key '{0}' does not correspond to a known element.", internalValue));
+          else
+            _displayName = GetDisplayName(businessObject);
+        }
+        else
+        {
+          _displayName = selectedItem.Text;
+        }
       }
 
       if (!IsReadOnly && Enabled)
@@ -305,6 +309,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return new BocReferenceValueConstraintVisitor(this);
     }
 
+    protected override void OnPreRender (EventArgs e)
+    {
+      // Required to provide the list before SaveControlState is performed
+      EnsureBusinessObjectListPopulated();
+
+      base.OnPreRender(e);
+    }
+
     protected override void Render (HtmlTextWriter writer)
     {
       ArgumentUtility.CheckNotNull("writer", writer);
@@ -323,17 +335,21 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (values[1] != null)
         InternalValue = (string?)values[1];
       _displayName = (string?)values[2];
-      ((IStateManager)_listItems).LoadViewState(values[3]);
+      _isBusinessObjectListPopulated = (bool)values[3]!;
+      if (_isBusinessObjectListPopulated)
+        ((IStateManager)_listItems).LoadViewState(values[4]);
     }
 
     protected override object SaveControlState ()
     {
-      object?[] values = new object?[4];
+      object?[] values = new object?[5];
 
       values[0] = base.SaveControlState();
       values[1] = InternalValue;
       values[2] = _displayName;
-      values[3] = ((IStateManager)_listItems).SaveViewState();
+      values[3] = _isBusinessObjectListPopulated;
+      if (_isBusinessObjectListPopulated)
+        values[4] =  ((IStateManager)_listItems).SaveViewState();
 
       return values;
     }
@@ -448,15 +464,24 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Clears the list of <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
     /// <remarks> If the value is not required, the null item will displayed anyway. </remarks>
+    [Obsolete("Use SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>()) to set an empty list or ResetBusinessObjectList() to trigger an update of the list. (Version: 3.0.0)")]
     public void ClearBusinessObjectList ()
     {
-      RefreshBusinessObjectList(null);
+      SetBusinessObjectList(Array.Empty<IBusinessObjectWithIdentity>());
+    }
+
+    /// <summary> Resets the list of <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
+    /// <remarks> Clears the list of values and reloads the values during the next rendering phase. </remarks>
+    public void ResetBusinessObjectList ()
+    {
+      _isBusinessObjectListPopulated = false;
+      _listItems.Clear();
     }
 
     /// <summary> Calls <see cref="PopulateBusinessObjectList"/> if the list has not yet been populated. </summary>
     protected void EnsureBusinessObjectListPopulated ()
     {
-      if (_isBusinessObejectListPopulated)
+      if (_isBusinessObjectListPopulated)
         return;
       PopulateBusinessObjectList();
     }
@@ -484,33 +509,29 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (Property == null)
         return;
 
-      IBusinessObject[]? businessObjects = null;
-
       //  Get all matching business objects
-      if (DataSource != null)
-        businessObjects = Property.SearchAvailableObjects(DataSource.BusinessObject, new DefaultSearchArguments(_select));
+      var businessObjects = Property.SearchAvailableObjects(DataSource?.BusinessObject, new DefaultSearchArguments(_select));
 
-      RefreshBusinessObjectList(ArrayUtility.Convert<IBusinessObject, IBusinessObjectWithIdentity>(businessObjects));
+      RefreshBusinessObjectList(businessObjects);
     }
 
     /// <summary> Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>. </summary>
     /// <param name="businessObjects">
-    ///   The <see cref="IList"/> of <see cref="IBusinessObjectWithIdentity"/> objects to populate the 
-    ///   <see cref="DropDownList"/>. Use <see langword="null"/> to clear the list.
+    ///   The <see cref="IList"/> of <see cref="IBusinessObjectWithIdentity"/> objects to populate the <see cref="DropDownList"/>.
+    ///   Must not be <see langword="null" />.
     /// </param>
     /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
-    protected virtual void RefreshBusinessObjectList (IList? businessObjects)
+    protected virtual void RefreshBusinessObjectList (IList businessObjects)
     {
-      _isBusinessObejectListPopulated = true;
+      ArgumentUtility.CheckNotNull("businessObjects", businessObjects);
+
+      _isBusinessObjectListPopulated = true;
       _listItems.Clear();
 
-      if (businessObjects != null)
+      foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
       {
-        foreach (IBusinessObjectWithIdentity businessObject in businessObjects)
-        {
-          ListItem item = new ListItem(GetDisplayName(businessObject), businessObject.UniqueIdentifier);
-          _listItems.Add(item);
-        }
+        ListItem item = new ListItem(GetDisplayName(businessObject), businessObject.UniqueIdentifier);
+        _listItems.Add(item);
       }
     }
 
@@ -652,6 +673,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       // PopulateDropDownList should be moved to the renderer, the BocReferenceValue should only provide a list of items, see also BocEnumValue.
 
       ArgumentUtility.CheckNotNull("dropDownList", dropDownList);
+
+      EnsureBusinessObjectListPopulated();
+
       dropDownList.Items.Clear();
 
       bool isNullItem = (InternalValue == null);

@@ -47,17 +47,18 @@ namespace Remotion.Mixins.UnitTests.Core.Definitions
       var composedInterfaceDependencyDefinition = DefinitionObjectMother.CreateComposedInterfaceDependencyDefinition(targetClassDefinition);
 
       var visitorMock = new Mock<IDefinitionVisitor>();
-      var sequence = new MockSequence();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(targetClassDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(mixinDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(requiredTargetCallTypeDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(requiredNextCallTypeDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(requiredMixinTypeDefinition)).Verifiable();
-      visitorMock.InSequence(sequence).Setup(mock => mock.Visit(composedInterfaceDependencyDefinition)).Verifiable();
+      var sequence = new VerifiableSequence();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(targetClassDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(mixinDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(requiredTargetCallTypeDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(requiredNextCallTypeDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(requiredMixinTypeDefinition)).Verifiable();
+      visitorMock.InVerifiableSequence(sequence).Setup(mock => mock.Visit(composedInterfaceDependencyDefinition)).Verifiable();
 
       targetClassDefinition.Accept(visitorMock.Object);
 
       visitorMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

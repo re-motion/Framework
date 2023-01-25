@@ -333,7 +333,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// except where the underlying function requires input that depends on the path of the user's movement and not just the
     /// endpoints.
     /// </remarks>
-    wgac_2_1_1,
+    Wcag_2_1_1,
 
     /// <summary>
     /// No Keyboard Trap

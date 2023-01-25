@@ -440,6 +440,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       //  Only reload if value is outdated
       else if (_value == null || _value.UniqueIdentifier != InternalValue)
       {
+        // GetObject(...) can load any value that is provided by ID. This behavior is symmetrical with BocReferenceValue.
         var businessObjectClass = GetBusinessObjectClass();
         if (businessObjectClass != null)
           _value = businessObjectClass.GetObject(InternalValue);

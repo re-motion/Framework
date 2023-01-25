@@ -120,4 +120,7 @@
   <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.LoadIconFailedErrorMessage" xml:space="preserve">
     <value>Das Symbol für Ihre Auswahl konnte nicht geladen werden.</value>
   </data>
+  <data name="Remotion.ObjectBinding.Web.UI.Controls.BocReferenceValueImplementation.Rendering.BocReferenceValueRenderer.ScreenReaderLabelForComboboxReadOnly" xml:space="preserve">
+      <value>nur lesen Ausklappliste</value>
+  </data>
 </root>

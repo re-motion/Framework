@@ -55,25 +55,26 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CanModifyThisObject_PropertyValues ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_order))
-            .Callback((DomainObject domainObject) => CheckTransactionAndSetProperty(ReadOnlyRootTransaction, _order, o => o.OrderNumber, expectedValue: 1, newValue: 2))
-            .Verifiable();
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnLoaded(It.Is<Order>(o => o == _order && o.OrderNumber == 1)))
+          .Callback((DomainObject _) => CheckTransactionAndSetProperty(ReadOnlyRootTransaction, _order, o => o.OrderNumber, expectedValue: 1, newValue: 2))
+          .Verifiable();
       _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_order))
-            .Callback((DomainObject domainObject) => CheckTransactionAndSetProperty(ReadOnlyMiddleTransaction, _order, o => o.OrderNumber, expectedValue: 2, newValue: 3))
-            .Verifiable();
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnLoaded(It.Is<Order>(o => o == _order && o.OrderNumber == 2)))
+          .Callback((DomainObject _) => CheckTransactionAndSetProperty(ReadOnlyMiddleTransaction, _order, o => o.OrderNumber, expectedValue: 2, newValue: 3))
+          .Verifiable();
       _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_order))
-            .Callback((DomainObject domainObject) => CheckTransactionAndSetProperty(WriteableSubTransaction, _order, o => o.OrderNumber, expectedValue: 3, newValue: 4))
-            .Verifiable();
+          .InVerifiableSequence(sequence)
+          .Setup(mock => mock.OnLoaded(It.Is<Order>(o => o == _order && o.OrderNumber == 3)))
+          .Callback((DomainObject _) => CheckTransactionAndSetProperty(WriteableSubTransaction, _order, o => o.OrderNumber, expectedValue: 3, newValue: 4))
+          .Verifiable();
       WriteableSubTransaction.EnsureDataAvailable(_order.ID);
 
       _loadEventReceiverMock.Verify();
+      sequence.Verify();
 
       CheckProperty(ReadOnlyRootTransaction, _order, o => o.OrderNumber, expectedOriginalValue: 1, expectedCurrentValue: 2);
       CheckProperty(ReadOnlyMiddleTransaction, _order, o => o.OrderNumber, expectedOriginalValue: 2, expectedCurrentValue: 3);
@@ -83,26 +84,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction.Rea
     [Test]
     public void OnLoaded_CanModifyThisObject_UnidirectionalRelations ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_location))
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.OnLoaded(It.Is<Location>(o => o == _location && o.Client == _client1)))
             .Callback((DomainObject _) => CheckTransactionAndSetProperty(ReadOnlyRootTransaction, _location, l => l.Client, expectedValue: _client1, newValue: _client2))
             .Verifiable();
       _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_location))
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.OnLoaded(It.Is<Location>(o => o == _location && o.Client == _client2)))
             .Callback((DomainObject _) => CheckTransactionAndSetProperty(ReadOnlyMiddleTransaction, _location, l => l.Client, expectedValue: _client2, newValue: _client3))
             .Verifiable();
       _loadEventReceiverMock
-            .InSequence(sequence)
-            .Setup(mock => mock.OnLoaded(_location))
+            .InVerifiableSequence(sequence)
+            .Setup(mock => mock.OnLoaded(It.Is<Location>(o => o == _location && o.Client == _client3)))
             .Callback((DomainObject _) => CheckTransactionAndSetProperty(WriteableSubTransaction, _location, l => l.Client, expectedValue: _client3, newValue: _client4))
             .Verifiable();
 
       WriteableSubTransaction.EnsureDataAvailable(_location.ID);
 
       _loadEventReceiverMock.Verify();
+      sequence.Verify();
 
       CheckProperty(ReadOnlyRootTransaction, _location, l => l.Client, expectedOriginalValue: _client1, expectedCurrentValue: _client2);
       CheckProperty(ReadOnlyMiddleTransaction, _location, l => l.Client, expectedOriginalValue: _client2, expectedCurrentValue: _client3);

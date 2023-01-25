@@ -1,6 +1,11 @@
 ﻿/* Style applied to the ListMenu. */
 
-table.listMenu
+div.listMenu
+{
+  width: fit-content;
+}
+
+div.listMenu table
 {
   border: none;
   border-spacing: 0;

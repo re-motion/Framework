@@ -227,15 +227,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
 
     private void CheckNotification (Expression<Action<IClientTransactionListener>> notificationCall)
     {
-      var sequence = new MockSequence();
-      _listener1.InSequence(sequence).Setup(notificationCall).Verifiable();
-      _listener2.InSequence(sequence).Setup(notificationCall).Verifiable();
+      var sequence = new VerifiableSequence();
+      _listener1.InVerifiableSequence(sequence).Setup(notificationCall).Verifiable();
+      _listener2.InVerifiableSequence(sequence).Setup(notificationCall).Verifiable();
 
       var compiledNotificationCall = notificationCall.Compile();
       compiledNotificationCall(_compoundListener);
 
       _listener1.Verify();
       _listener2.Verify();
+      sequence.Verify();
     }
 
   }

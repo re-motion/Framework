@@ -58,17 +58,22 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void HasAccess_WithAccessGranted ()
     {
       var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy.Object, _stubContextFactory.Object, RequiredSecurityForStates.None);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsDeleted).Returns(false).Verifiable();
-      _mockObjectSecurityStrategy.InSequence(sequence).Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsDeleted).Returns(false).Verifiable();
+      _mockObjectSecurityStrategy
+          .InVerifiableSequence(sequence)
+          .Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult))
+          .Returns(true)
+          .Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(true));
     }
 
@@ -76,15 +81,16 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void HasAccess_StateIsNew ()
     {
       var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy.Object, _stubContextFactory.Object, RequiredSecurityForStates.None);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsNew).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsNew).Returns(true).Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(true));
     }
 
@@ -92,16 +98,17 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void HasAccess_StateIsDeleted ()
     {
       var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy.Object, _stubContextFactory.Object, RequiredSecurityForStates.None);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsDeleted).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsDeleted).Returns(true).Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(true));
     }
 
@@ -109,16 +116,21 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void HasAccess_SecurityRequiredForNew ()
     {
       var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy.Object, _stubContextFactory.Object, RequiredSecurityForStates.New);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsDeleted).Returns(false).Verifiable();
-      _mockObjectSecurityStrategy.InSequence(sequence).Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsDeleted).Returns(false).Verifiable();
+      _mockObjectSecurityStrategy
+          .InVerifiableSequence(sequence)
+          .Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult))
+          .Returns(true)
+          .Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(true));
     }
 
@@ -126,16 +138,21 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void HasAccess_SecurityRequiredForDeleted ()
     {
       var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy.Object, _stubContextFactory.Object, RequiredSecurityForStates.Deleted);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
-      _mockObjectSecurityStrategy.InSequence(sequence).Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
+      _mockObjectSecurityStrategy
+          .InVerifiableSequence(sequence)
+          .Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult))
+          .Returns(true)
+          .Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(true));
     }
 
@@ -146,15 +163,20 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
           _mockObjectSecurityStrategy.Object,
           _stubContextFactory.Object,
           RequiredSecurityForStates.NewAndDeleted);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
-      _mockObjectSecurityStrategy.InSequence(sequence).Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult)).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
+      _mockObjectSecurityStrategy
+          .InVerifiableSequence(sequence)
+          .Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult))
+          .Returns(true)
+          .Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(true));
     }
 
@@ -162,14 +184,15 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void HasAccess_WithAccessGrantedAndStateIsDiscarded ()
     {
       var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy.Object, _stubContextFactory.Object, RequiredSecurityForStates.None);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(true).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(true).Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(true));
     }
 
@@ -177,17 +200,22 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests
     public void HasAccess_WithAccessDenied ()
     {
       var strategy = new DomainObjectSecurityStrategyDecorator(_mockObjectSecurityStrategy.Object, _stubContextFactory.Object, RequiredSecurityForStates.None);
-      var sequence = new MockSequence();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
-      _stubContextFactory.InSequence(sequence).Setup(_ => _.IsDeleted).Returns(false).Verifiable();
-      _mockObjectSecurityStrategy.InSequence(sequence).Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult)).Returns(false).Verifiable();
+      var sequence = new VerifiableSequence();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsInvalid).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsNew).Returns(false).Verifiable();
+      _stubContextFactory.InVerifiableSequence(sequence).Setup(_ => _.IsDeleted).Returns(false).Verifiable();
+      _mockObjectSecurityStrategy
+          .InVerifiableSequence(sequence)
+          .Setup(_ => _.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult))
+          .Returns(false)
+          .Verifiable();
 
       bool hasAccess = strategy.HasAccess(_stubSecurityProvider.Object, _stubUser.Object, _accessTypeResult);
 
       _mockObjectSecurityStrategy.Verify();
       _stubSecurityProvider.Verify();
       _stubContextFactory.Verify();
+      sequence.Verify();
       Assert.That(hasAccess, Is.EqualTo(false));
     }
 

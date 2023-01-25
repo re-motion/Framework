@@ -18,7 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectIDStringSerialization;
 using Remotion.Data.DomainObjects.UnitTests.Mapping;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSerialization
 {
@@ -264,7 +264,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
       Assert.That(
           () => ObjectIDStringSerializer.Instance.Parse(idString),
           Throws.TypeOf<FormatException>().With.Message.EqualTo(
-              "Serialized ObjectID 'Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid' is invalid: 'System.Goid' is not the name of a loadable type."));
+              "Serialized ObjectID 'Order|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid' is invalid: type 'System.Goid' is not supported."));
     }
 
     [Test]
@@ -275,6 +275,44 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
           () => ObjectIDStringSerializer.Instance.Parse(idString),
           Throws.TypeOf<FormatException>().With.Message.EqualTo(
               "Serialized ObjectID 'Arder|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid' is invalid: 'Arder' is not a valid class ID."));
+    }
+
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, mscorlib", typeof(Guid), "System.Guid, mscorlib")]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, mscorlib, Version=4.0.0.0", typeof(Guid), "System.Guid, mscorlib, Version=4.0.0.0")]
+    [TestCase("Official|23|System.Int32, mscorlib", typeof(Int32), "System.Int32, mscorlib")]
+    [TestCase("Official|23|System.Int32 , mscorlib , Version=4.0.0.0", typeof(Int32), "System.Int32 , mscorlib , Version=4.0.0.0")]
+    [TestCase("Official|test|System.String, mscorlib", typeof(String), "System.String, mscorlib")]
+    [TestCase("Official|test| System.String , mscorlib , Version=4.0.0.0", typeof(String), " System.String , mscorlib , Version=4.0.0.0")]
+    [Test]
+    public void Parse_WithAssemblyNameValidForNetFramwork (string idString, Type type, string typePart)
+    {
+#if NETFRAMEWORK
+      ObjectID id = ObjectIDStringSerializer.Instance.Parse(idString);
+
+      Assert.That(id.Value.GetType(), Is.EqualTo(type));
+#else
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo(
+              $"Serialized ObjectID '{idString}' is invalid: type '{typePart}' is not supported."));
+#endif
+    }
+
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid, mscorlib", "System.Goid, mscorlib")]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.guid, mscorlib", "System.guid, mscorlib")]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, badassembly, mscorlib", "System.Guid, badassembly, mscorlib")]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, badassembly, mscorlib, Version=4.0.0.0", "System.Guid, badassembly, mscorlib, Version=4.0.0.0")]
+    [TestCase("Official|23|System.Int32, badassembly, mscorlib", "System.Int32, badassembly, mscorlib")]
+    [TestCase("Official|23|System.Int32 , badassembly, mscorlib , Version=4.0.0.0", "System.Int32 , badassembly, mscorlib , Version=4.0.0.0")]
+    [TestCase("Official|test|System.String, badassembly, mscorlib", "System.String, badassembly, mscorlib")]
+    [TestCase("Official|test| System.String , badassembly, mscorlib , Version=4.0.0.0", " System.String , badassembly, mscorlib , Version=4.0.0.0")]
+    [Test]
+    public void Parse_WithInvalidAssemblyName_ThrowsFormatException (string idString, string typePart)
+    {
+      Assert.That(
+          () => ObjectIDStringSerializer.Instance.Parse(idString),
+          Throws.TypeOf<FormatException>().With.Message.EqualTo(
+              $"Serialized ObjectID '{idString}' is invalid: type '{typePart}' is not supported."));
     }
 
     [Test]
@@ -506,6 +544,37 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectIDStringSer
 
       Assert.That(result, Is.False);
       Assert.That(id, Is.Null);
+    }
+
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, mscorlib", typeof(Guid))]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, mscorlib, Version=4.0.0.0", typeof(Guid))]
+    [TestCase("Official|23|System.Int32, mscorlib", typeof(Int32))]
+    [TestCase("Official|23|System.Int32 , mscorlib , Version=4.0.0.0", typeof(Int32))]
+    [TestCase("Official|test|System.String, mscorlib", typeof(String))]
+    [TestCase("Official|test| System.String , mscorlib , Version=4.0.0.0", typeof(String))]
+    [Test]
+    public void TryParse_WithAssemblyNameValidForNetFramework (string idString, Type type)
+    {
+#if NETFRAMEWORK
+      Assert.That(ObjectIDStringSerializer.Instance.TryParse(idString, out var id), Is.True);
+      Assert.That(id.Value.GetType(), Is.EqualTo(type));
+#else
+      Assert.That(ObjectIDStringSerializer.Instance.TryParse(idString, out _), Is.False);
+#endif
+    }
+
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Goid, mscorlib")]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.guid, mscorlib")]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, badassembly, mscorlib")]
+    [TestCase("Official|5d09030c-25c2-4735-b514-46333bd28ac8|System.Guid, badassembly, mscorlib, Version=4.0.0.0")]
+    [TestCase("Official|23|System.Int32, badassembly, mscorlib")]
+    [TestCase("Official|23|System.Int32 , badassembly, mscorlib , Version=4.0.0.0")]
+    [TestCase("Official|test|System.String, badassembly, mscorlib")]
+    [TestCase("Official|test| System.String , badassembly, mscorlib , Version=4.0.0.0")]
+    [Test]
+    public void TryParse_WithInvalidAssemblyName_ReturnsFalse (string idString)
+    {
+      Assert.That(ObjectIDStringSerializer.Instance.TryParse(idString, out _), Is.False);
     }
   }
 }

@@ -85,15 +85,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
 
       var consolidatedResultItems = new[] { CreateEquivalentData(_resultItem1), CreateEquivalentData(_resultItem2) };
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _persistenceStrategyMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ExecuteCollectionQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub.Object))
           .Returns(new[] { _resultItem1, _resultItem2 })
           .Verifiable();
       _loadedObjectDataRegistrationAgentMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.BeginRegisterIfRequired(
                   new[] { _resultItem1, _resultItem2 },
@@ -105,7 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
           .Returns(consolidatedResultItems)
           .Verifiable();
       _eagerFetcherMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.PerformEagerFetching(
                     consolidatedResultItems,
@@ -114,7 +114,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
                     It.Is<LoadedObjectDataPendingRegistrationCollector>(c => c == collector)))
             .Verifiable();
       _loadedObjectDataRegistrationAgentMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(mock => mock.EndRegisterIfRequired(It.Is<LoadedObjectDataPendingRegistrationCollector>(c => c == collector)))
             .Verifiable();
 
@@ -123,6 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _persistenceStrategyMock.Verify();
       _loadedObjectDataRegistrationAgentMock.Verify();
       _eagerFetcherMock.Verify();
+      sequence.Verify();
       Assert.That(result, Is.EqualTo(consolidatedResultItems));
     }
 
@@ -179,15 +180,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
               CreateEquivalentData(_resultItemWithSourceData2.LoadedObjectData)
           };
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       _persistenceStrategyMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ExecuteFetchQuery(_queryWithFetchQueries, _loadedObjectDataProviderStub.Object))
           .Returns(new[] { _resultItemWithSourceData1, _resultItemWithSourceData2 })
           .Verifiable();
       _loadedObjectDataRegistrationAgentMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.BeginRegisterIfRequired(
                     new[] { _resultItemWithSourceData1.LoadedObjectData, _resultItemWithSourceData2.LoadedObjectData },
@@ -196,7 +197,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
             .Returns(consolidatedResultItems)
             .Verifiable();
       _eagerFetcherMock
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.PerformEagerFetching(
                     consolidatedResultItems,
@@ -210,6 +211,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectPersistence
       _persistenceStrategyMock.Verify();
       _loadedObjectDataRegistrationAgentMock.Verify();
       _eagerFetcherMock.Verify();
+      sequence.Verify();
       Assert.That(
           result,
           Is.EqualTo(

@@ -39,11 +39,11 @@ public class WebTabCollectionTest: WebControlTest
   {
     base.SetUpPage();
     _tabStrip = new WebTabStrip();
-    _tab0 = new WebTab("Tab0", "Tab 0");
-    _tab1 = new WebTab("Tab1", "Tab 1");
-    _tab2 = new WebTab("Tab2", "Tab 2");
-    _tab3 = new WebTab("Tab3", "Tab 3");
-    _tabNew = new WebTab("Tab5", "Tab 5");
+    _tab0 = new WebTab("Tab0", WebString.CreateFromText("Tab 0"));
+    _tab1 = new WebTab("Tab1", WebString.CreateFromText("Tab 1"));
+    _tab2 = new WebTab("Tab2", WebString.CreateFromText("Tab 2"));
+    _tab3 = new WebTab("Tab3", WebString.CreateFromText("Tab 3"));
+    _tabNew = new WebTab("Tab5", WebString.CreateFromText("Tab 5"));
   }
 
   [Test]
@@ -399,6 +399,49 @@ public class WebTabCollectionTest: WebControlTest
     Assert.That(
         () => _tab1.IsSelected = true,
         Throws.InvalidOperationException);
+  }
+
+  [Test]
+  public void HideTabFollowedByInvisibleTab_WithFirstTabAsLastSelectable ()
+  {
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tab1.IsSelected = true;
+    _tab2.IsVisible = false;
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1));
+    _tab1.IsVisible = false;
+
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab0));
+  }
+
+  [Test]
+  public void HideTabPrecededByInvisibleTab_WithFirstTabAsLastSelectable ()
+  {
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tab1.IsVisible = false;
+    _tab2.IsSelected = true;
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab2));
+    _tab2.IsVisible = false;
+
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab0));
+  }
+
+  [Test]
+  public void HideTabFollowedByInvisibleTab_WithLastTabAsLastSelectable ()
+  {
+    _tabStrip.Tabs.Add(_tab0);
+    _tabStrip.Tabs.Add(_tab1);
+    _tabStrip.Tabs.Add(_tab2);
+    _tabStrip.Tabs.Add(_tab3);
+    _tab1.IsSelected = true;
+    _tab2.IsVisible = false;
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab1));
+    _tab1.IsVisible = false;
+
+    Assert.That(_tabStrip.SelectedTab, Is.SameAs(_tab3));
   }
 
   [Test]

@@ -235,10 +235,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
     [Test]
     public void CreateSubTransaction ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       bool subTransactionCreatingCalled = false;
       _thisEventSinkWithStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseSubTransactionCreatingEvent())
           .Callback(
               () =>
@@ -258,11 +258,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
         return fakeSubTransaction;
       };
       _hierarchyStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.AppendLeafTransaction(fakeSubTransaction))
           .Verifiable();
       _thisEventSinkWithStrictMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseSubTransactionCreatedEvent(fakeSubTransaction))
           .Verifiable();
 
@@ -274,6 +274,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.HierarchyManageme
 
       _hierarchyStrictMock.Verify();
       _thisEventSinkWithStrictMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

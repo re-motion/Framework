@@ -19,12 +19,14 @@
     <PackageProjectUrl>http://www.re-motion.org</PackageProjectUrl>
     <RepositoryUrl>https://github.com/re-motion/Framework/</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <LangVersion>9</LangVersion>
     <DebugType Condition="'$(TargetFramework)' == 'net48'">full</DebugType>
-    <DebugType Condition="'$(TargetFramework)' != 'net48'">portable</DebugType>
+    <DebugType Condition="'$(TargetFramework)' != 'net48'">embedded</DebugType>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)..\remotion.snk</AssemblyOriginatorKeyFile>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
@@ -58,6 +60,7 @@
 
   <ItemGroup>
     <PackageReference Include="Remotion.Infrastructure.Styles.Analyzer" Version="1.1.3" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
 
   <PropertyGroup>

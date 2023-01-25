@@ -105,7 +105,7 @@ namespace Remotion.Web.UI
     /// <remarks> 
     ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
     /// </remarks>
-    WebString AbortMessage { get; }
+    PlainTextString AbortMessage { get; }
 
     /// <summary> Gets the message displayed when the user attempts to submit while the page is already submitting. </summary>
     /// <remarks> 

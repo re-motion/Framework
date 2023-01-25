@@ -1172,7 +1172,7 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.style.position = 'fixed';
             LayoutUtility.Hide(this.element);
 
-            this.input.closest('div, td, th, body')!.appendChild(this.element);
+            this.input.closest('div, td, th, body, span.bocListEditableCell > span.control')!.appendChild(this.element);
 
             this.options.combobox.setAttribute('aria-owns', this.options.selectListID);
             const isAria11 = this.options.combobox !== this.input;
@@ -1212,15 +1212,15 @@ namespace Remotion.BocAutoCompleteReferenceValue
             innerDiv.appendChild(this.list);
 
             this.list.addEventListener('mouseover', (event) => {
-                if (this.target(event).nodeName && this.target(event).nodeName.toUpperCase() === 'LI')
+                const listItemElement = this.target(event);
+                if (listItemElement && listItemElement.nodeName && listItemElement.nodeName.toUpperCase() === 'LI')
                 {
                     const listElements = Array.from(this.list.querySelectorAll<HTMLElement>("li"));
                     for (const listElement of listElements)
                         listElement.classList.remove(this.CLASSES.ACTIVE);
 
-                    const activeItem = this.target(event);
-                    this.active = listElements.indexOf(activeItem);
-                    activeItem.classList.add(this.CLASSES.ACTIVE);
+                    this.active = listElements.indexOf(listItemElement);
+                    listItemElement.classList.add(this.CLASSES.ACTIVE);
                     // do not mark as selected.
                 }
             });
@@ -1231,13 +1231,17 @@ namespace Remotion.BocAutoCompleteReferenceValue
                     listElement.classList.remove(this.CLASSES.ACTIVE);
                     listElement.setAttribute('aria-selected', 'false');
                 }
+                this.active = -1;
 
                 const activeItem = this.target (event);
-                this.active = listElements.indexOf(activeItem);
-                activeItem.classList.add(this.CLASSES.ACTIVE);
-                activeItem.setAttribute('aria-selected', 'true');
+                if (activeItem)
+                {
+                    this.active = listElements.indexOf(activeItem);
+                    activeItem.classList.add(this.CLASSES.ACTIVE);
+                    activeItem.setAttribute('aria-selected', 'true');
 
-                this.select(true);
+                    this.select(true);
+                }
 
                 return false;
             });
@@ -1260,11 +1264,11 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.needsInit = false;
         }
 
-        private target(event: Event): HTMLElement {
+        private target(event: Event): Nullable<HTMLElement> {
             let element = event.target as Nullable<HTMLElement>;
             while (element && element.tagName != "LI")
                 element = element.parentNode as Nullable<HTMLElement>;
-            return element!;
+            return element;
         }
 
         private moveSelect(step: number, updateInput: boolean): void {
@@ -1611,7 +1615,9 @@ namespace Remotion.BocAutoCompleteReferenceValue
             this.element.style.position = 'fixed';
 
             LayoutUtility.Hide(this.element);
-            this.input.closest('div, td, th, body')!.appendChild(this.element);
+
+            this.input.closest('div, td, th, body, span.bocListEditableCell > span.control')!.appendChild(this.element);
+
 
             if (this.options.combobox.getAttribute('aria-labelledby') !== null) {
                 this.element.setAttribute("aria-labelledby", this.options.combobox.getAttribute('aria-labelledby')!);
@@ -1770,7 +1776,8 @@ namespace Remotion.BocAutoCompleteReferenceValue
         let contentWidth = parseInt(popUp.dataset['popUpContentWidth']!, 10);
         if (!isVisibe)
         {
-            contentWidth = Math.max(0, Math.max(...(Array.from(popUpDiv.children) as HTMLElement[]).map(function (el) { return el.offsetWidth + el.offsetLeft; })));
+            const htmlPopUpDiv = popUpDiv as HTMLElement;
+            contentWidth = Math.max(0, htmlPopUpDiv.offsetLeft + htmlPopUpDiv.offsetWidth);
             popUp.dataset['popUpContentWidth'] = '' + contentWidth;
         }
 

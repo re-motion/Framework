@@ -64,16 +64,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       _listenerMock.Setup(mock => mock.VirtualEndPointStateUpdated(_endPointID, true)).Verifiable();
 
       _innerEndPointMock.Reset();
-      var sequence = new MockSequence();
       _innerEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
-      _innerEndPointMock.InSequence(sequence).Setup(stub => stub.HasChanged).Returns(false);
-      _innerEndPointMock.InSequence(sequence).Setup(stub => stub.HasChanged).Returns(true);
+      _innerEndPointMock
+          .SetupSequence(stub => stub.HasChanged)
+          .Returns(false)
+          .Returns(true);
       _innerEndPointMock
           .Setup(ep => ep.SetDataFromSubTransaction(sourceInnerEndPoint.Object))
-          .Callback(
-              (IRelationEndPoint _) => _listenerMock.Verify(
-                  mock => mock.VirtualEndPointStateUpdated(It.IsAny<RelationEndPointID>(), It.IsAny<bool?>()),
-                  Times.Never()))
+          .Callback((IRelationEndPoint _) => _listenerMock.Verify(mock => mock.VirtualEndPointStateUpdated(It.IsAny<RelationEndPointID>(), It.IsAny<bool?>()), Times.Never()))
           .Verifiable();
 
       _decorator.SetDataFromSubTransaction(sourceEndPoint);
@@ -92,18 +90,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var exception = new Exception();
       _innerEndPointMock.Reset();
-      var sequence = new MockSequence();
       _innerEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
-      _innerEndPointMock.InSequence(sequence).Setup(stub => stub.HasChanged).Returns(true);
-      _innerEndPointMock.InSequence(sequence).Setup(stub => stub.HasChanged).Returns(false);
+      _innerEndPointMock
+          .SetupSequence(stub => stub.HasChanged)
+          .Returns(true)
+          .Returns(false);
       _innerEndPointMock
           .Setup(ep => ep.SetDataFromSubTransaction(sourceInnerEndPoint.Object))
-          .Throws(exception)
-          .Verifiable();
+          .Throws(exception);
 
       Assert.That(() => _decorator.SetDataFromSubTransaction(sourceEndPoint), Throws.Exception.SameAs(exception));
 
-      _innerEndPointMock.Verify();
       _listenerMock.Verify();
     }
 
@@ -244,10 +241,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       // Check with HasChanged returning true, then false
 
       _innerEndPointMock.Reset();
-      var sequence1 = new MockSequence();
       _innerEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
-      _innerEndPointMock.InSequence(sequence1).Setup(stub => stub.HasChanged).Returns(true);
-      _innerEndPointMock.InSequence(sequence1).Setup(stub => stub.HasChanged).Returns(false);
+      _innerEndPointMock
+          .SetupSequence(stub => stub.HasChanged)
+          .Returns(true)
+          .Returns(false);
 
       _listenerMock.Reset();
       _listenerMock.Setup(mock => mock.VirtualEndPointStateUpdated(_endPointID, false)).Verifiable();
@@ -259,10 +257,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
       // Check with exception
 
       _innerEndPointMock.Reset();
-      var sequence2 = new MockSequence();
       _innerEndPointMock.Setup(stub => stub.ID).Returns(_endPointID);
-      _innerEndPointMock.InSequence(sequence2).Setup(stub => stub.HasChanged).Returns(true);
-      _innerEndPointMock.InSequence(sequence2).Setup(stub => stub.HasChanged).Returns(false);
+      _innerEndPointMock
+          .SetupSequence(stub => stub.HasChanged)
+          .Returns(true)
+          .Returns(false);
 
       _listenerMock.Reset();
       _listenerMock.Setup(mock => mock.VirtualEndPointStateUpdated(_endPointID, false)).Verifiable();

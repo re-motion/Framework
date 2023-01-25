@@ -158,6 +158,8 @@ class SmartFocus
       {
         function isEnabledFilter(el: HTMLElement)
         {
+          if (el.closest('[aria-hidden=true]') !== null)
+            return false;
           if (el.tagName === 'BUTTON')
             return true;
           if (el.tagName === 'INPUT' && (el as HTMLInputElement).type.toLowerCase() === "button")

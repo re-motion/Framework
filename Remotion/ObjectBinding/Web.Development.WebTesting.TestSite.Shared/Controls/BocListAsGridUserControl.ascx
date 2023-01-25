@@ -126,6 +126,31 @@
     </td>
     <td>&nbsp; (empty)</td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <testsite:TestBocListWithRowMenuItems
+        ID="JobList_EmptyWithRowHeaders"
+        ReadOnly="False"
+        DataSourceControl="EmptyObject"
+        PropertyIdentifier="Jobs"
+
+        EmptyListMessage="An empty list can still identify its row headers to the web testing framework."
+        ShowEmptyListMessage="True"
+
+        Width="100%"
+        Height="10em"
+        runat="server">
+        <FixedColumns>
+          <remotion:BocSimpleColumnDefinition ColumnTitle="Title" PropertyPathIdentifier="Title" IsRowHeader="True" />
+          <remotion:BocSimpleColumnDefinition ColumnTitle="StartDate" PropertyPathIdentifier="StartDate" IsRowHeader="False" />
+          <remotion:BocSimpleColumnDefinition ColumnTitle="EndDate" PropertyPathIdentifier="EndDate" IsRowHeader="False" />
+          <remotion:BocSimpleColumnDefinition ColumnTitle="DisplayName" PropertyPathIdentifier="DisplayName" IsRowHeader="True" />
+        </FixedColumns>
+      </testsite:TestBocListWithRowMenuItems>
+    </td>
+    <td>&nbsp; (empty with row headers)</td>
+  </tr>
 
     <tr>
       <td></td>
@@ -138,6 +163,7 @@
           EmptyListMessage="A wonderful empty list."
           ShowAllProperties="True"
           ShowEmptyListMessage="True"
+          Selection="Multiple"
           Width="100%"
           Height="10em"
           runat="server">

@@ -304,20 +304,20 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var classBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, builder.Object, targetType);
       var mixinBuilderMock = new Mock<MixinContextBuilder>(MockBehavior.Strict, classBuilderMock.Object, mixinType, _mixinContextOrigin);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       builder
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.AddMixinToClass(
                     MixinKind.Extending, targetType, mixinType, MemberVisibility.Private, explicitDependencies, suppressedMixins, _mixinContextOrigin))
             .CallBase()
             .Verifiable();
-      builder.InSequence(sequence).Setup(mock => mock.ForClass(targetType)).Returns(classBuilderMock.Object).Verifiable();
-      classBuilderMock.InSequence(sequence).Setup(mock => mock.AddMixin(mixinType, _mixinContextOrigin)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.OfKind(MixinKind.Extending)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.WithDependencies(explicitDependencies)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.ReplaceMixins(suppressedMixins)).Returns(mixinBuilderMock.Object).Verifiable();
+      builder.InVerifiableSequence(sequence).Setup(mock => mock.ForClass(targetType)).Returns(classBuilderMock.Object).Verifiable();
+      classBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.AddMixin(mixinType, _mixinContextOrigin)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.OfKind(MixinKind.Extending)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.WithDependencies(explicitDependencies)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.ReplaceMixins(suppressedMixins)).Returns(mixinBuilderMock.Object).Verifiable();
 
       var returnedBuilder = builder.Object.AddMixinToClass(
           MixinKind.Extending, targetType, mixinType, MemberVisibility.Private, explicitDependencies, suppressedMixins, _mixinContextOrigin);
@@ -325,6 +325,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       builder.Verify();
       classBuilderMock.Verify();
       mixinBuilderMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -367,20 +368,20 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var classBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, builder.Object, targetType);
       var mixinBuilderMock = new Mock<MixinContextBuilder>(MockBehavior.Strict, classBuilderMock.Object, mixinType, _mixinContextOrigin);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       builder
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.AddMixinToClass(
                     MixinKind.Used, targetType, mixinType, MemberVisibility.Private, explicitDependencies, suppressedMixins, _mixinContextOrigin))
             .CallBase()
             .Verifiable();
-      builder.InSequence(sequence).Setup(mock => mock.ForClass(targetType)).Returns(classBuilderMock.Object).Verifiable();
-      classBuilderMock.InSequence(sequence).Setup(mock => mock.AddMixin(mixinType, _mixinContextOrigin)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.OfKind(MixinKind.Used)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.WithDependencies(explicitDependencies)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.ReplaceMixins(suppressedMixins)).Returns(mixinBuilderMock.Object).Verifiable();
+      builder.InVerifiableSequence(sequence).Setup(mock => mock.ForClass(targetType)).Returns(classBuilderMock.Object).Verifiable();
+      classBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.AddMixin(mixinType, _mixinContextOrigin)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.OfKind(MixinKind.Used)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.WithDependencies(explicitDependencies)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.ReplaceMixins(suppressedMixins)).Returns(mixinBuilderMock.Object).Verifiable();
 
 
       var returnedBuilder = builder.Object.AddMixinToClass(
@@ -389,6 +390,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       builder.Verify();
       classBuilderMock.Verify();
       mixinBuilderMock.Verify();
+      sequence.Verify();
       Assert.That(returnedBuilder, Is.SameAs(builder.Object));
     }
 
@@ -405,20 +407,20 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       var classBuilderMock = new Mock<ClassContextBuilder>(MockBehavior.Strict, builder.Object, targetType);
       var mixinBuilderMock = new Mock<MixinContextBuilder>(MockBehavior.Strict, classBuilderMock.Object, mixinType, _mixinContextOrigin);
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
 
       builder
-            .InSequence(sequence)
+            .InVerifiableSequence(sequence)
             .Setup(
                 mock => mock.AddMixinToClass(
                     MixinKind.Used, targetType, mixinType, MemberVisibility.Public, explicitDependencies, suppressedMixins, _mixinContextOrigin))
             .CallBase()
             .Verifiable();
-      builder.InSequence(sequence).Setup(mock => mock.ForClass(targetType)).Returns(classBuilderMock.Object).Verifiable();
-      classBuilderMock.InSequence(sequence).Setup(mock => mock.AddMixin(mixinType, _mixinContextOrigin)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.OfKind(MixinKind.Used)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.WithDependencies(explicitDependencies)).Returns(mixinBuilderMock.Object).Verifiable();
-      mixinBuilderMock.InSequence(sequence).Setup(mock => mock.ReplaceMixins(suppressedMixins)).Returns(mixinBuilderMock.Object).Verifiable();
+      builder.InVerifiableSequence(sequence).Setup(mock => mock.ForClass(targetType)).Returns(classBuilderMock.Object).Verifiable();
+      classBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.AddMixin(mixinType, _mixinContextOrigin)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.OfKind(MixinKind.Used)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.WithDependencies(explicitDependencies)).Returns(mixinBuilderMock.Object).Verifiable();
+      mixinBuilderMock.InVerifiableSequence(sequence).Setup(mock => mock.ReplaceMixins(suppressedMixins)).Returns(mixinBuilderMock.Object).Verifiable();
 
       var returnedBuilder = builder.Object.AddMixinToClass(
           MixinKind.Used, targetType, mixinType, MemberVisibility.Public, explicitDependencies, suppressedMixins, _mixinContextOrigin);
@@ -426,6 +428,7 @@ namespace Remotion.Mixins.UnitTests.Core.Context.FluentBuilders
       builder.Verify();
       classBuilderMock.Verify();
       mixinBuilderMock.Verify();
+      sequence.Verify();
       Assert.That(returnedBuilder, Is.SameAs(builder.Object));
     }
 

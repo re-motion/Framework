@@ -92,7 +92,7 @@ div.tabbedMultiViewBottomControls
 
 div.tabbedMultiViewBottomControls.empty
 {
-  box-shadow: none;
+  display: none;
 }
 
 /* Applied to the tab strip section of the multi view. */
@@ -126,6 +126,7 @@ div.tabbedMultiViewTabStrip .tabStripTab a
 
 div.tabbedMultiViewTabStrip .tabStripTabSelected a
 {
+  color: var(--color-standard-text);
   border-color: var(--color-highlight);
   background-color: var(--color-highlight);
 }
@@ -154,6 +155,14 @@ div.tabbedMultiViewTabStrip .tabStripTab:not(.disabled) a:focus
 div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:focus
 {
   background-color: var(--color-highlight);
+}
+
+div.tabbedMultiViewTabStrip .tabStripTab:not(.disabled) a:focus:hover,
+div.tabbedMultiViewTabStrip .tabStripTabSelected:not(.disabled) a:focus:hover
+{
+  background-color: var(--remotion-themed-background-color-focus-hover);
+  border: var(--remotion-themed-border-focus-hover);
+  box-shadow: var(--remotion-themed-box-shadow-focus-hover);
 }
 
 div.tabbedMultiViewTabStrip .tabStripTab.disabled a

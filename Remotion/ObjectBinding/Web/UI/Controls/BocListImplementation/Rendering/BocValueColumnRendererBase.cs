@@ -21,6 +21,7 @@ using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
 using Remotion.Web.Utilities;
 
@@ -34,25 +35,20 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   public abstract class BocValueColumnRendererBase<TBocColumnDefinition> : BocCommandEnabledColumnRendererBase<TBocColumnDefinition>
       where TBocColumnDefinition: BocValueColumnDefinition
   {
-    protected BocValueColumnRendererBase (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+    protected BocValueColumnRendererBase (IResourceUrlFactory resourceUrlFactory, IRenderingFeatures renderingFeatures, BocListCssClassDefinition cssClasses, IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
     }
 
     /// <summary>
     /// Renders a table cell for a <see cref="BocValueColumnDefinition"/>.
     /// </summary>
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
-      int originalRowIndex = dataRowRenderEventArgs.ListIndex;
-      IBusinessObject businessObject = dataRowRenderEventArgs.BusinessObject;
+      int originalRowIndex = arguments.ListIndex;
+      IBusinessObject businessObject = arguments.BusinessObject;
 
       IEditableRow? editableRow = renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex);
 
@@ -68,13 +64,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!hasEditModeControl)
       {
-        if (showIcon)
+        if (arguments.ShowIcon)
           RenderCellIcon(renderingContext, businessObject);
 
         RenderOtherIcons(renderingContext, businessObject);
       }
       if (showEditModeControl)
-        RenderCellDataForEditMode(renderingContext, businessObject, editableRow!);
+        RenderCellDataForEditMode(renderingContext, arguments, editableRow!);
       else
         RenderValueColumnCellText(renderingContext, valueColumnText!);
 
@@ -83,7 +79,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     }
 
     protected abstract void RenderCellDataForEditMode (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, IBusinessObject businessObject, IEditableRow editableRow);
+        BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments, IEditableRow editableRow);
 
     /// <summary>
     /// Used by <see cref="RenderCellContents"/> to render icons in addition to the <paramref name="businessObject"/>'s icon.
@@ -130,6 +126,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (enforceWidth)
       {
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClasses.CellStructureElement);
         renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, renderingContext.ColumnDefinition.Width.ToString());
         renderingContext.Writer.AddStyleAttribute("overflow", "hidden");
         renderingContext.Writer.AddStyleAttribute("white-space", "nowrap");

@@ -320,6 +320,8 @@ namespace Remotion.Data.DomainObjects.Persistence.Rdbms
         if (!timestampDictionary.TryGetValue(dataContainer.ID, out var timestamp))
           throw new RdbmsProviderException(string.Format("No timestamp found for object '{0}'.", dataContainer.ID));
 
+        // TODO RM-8523: guard against null-values of timestamp
+
         dataContainer.SetTimestamp(timestamp);
       }
     }

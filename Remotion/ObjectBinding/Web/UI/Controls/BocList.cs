@@ -152,6 +152,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     {
       EmptyListMessage,
       OptionsTitle,
+      ListMenuHeading,
       AvailableViewsListTitle,
       /// <summary>The tool tip text for the required icon.</summary>
       RequiredFieldTitle,
@@ -168,6 +169,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       RowEditModeCancelAlternateText,
       SelectAllRowsLabelText,
       SelectRowLabelText,
+      SelectionHeaderText,
       IndexColumnTitle,
       /// <summary> The menu title text used for an automatically generated row menu column. </summary>
       RowMenuTitle,
@@ -257,6 +259,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     private RowMenuDisplay _rowMenuDisplay = RowMenuDisplay.Undefined;
     private WebString _optionsTitle;
+    private WebString _listMenuHeading;
     private string[]? _hiddenMenuItems;
     private Unit _menuBlockOffset = Unit.Empty;
     private Unit _menuBlockItemOffset = Unit.Empty;
@@ -1622,22 +1625,26 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_allPropertyColumns != null)
         return _allPropertyColumns;
 
+      bool isBusinessObjectWithIdentity;
       IBusinessObjectProperty[] properties;
       if (DataSource == null)
       {
         properties = new IBusinessObjectProperty[0];
+        isBusinessObjectWithIdentity = false;
       }
       else if (Property == null)
       {
         Assertion.IsNotNull(DataSource.BusinessObjectClass, "DataSource.BusinessObjectClass must not be null.");
         properties = DataSource.BusinessObjectClass.GetPropertyDefinitions();
+        isBusinessObjectWithIdentity = DataSource.BusinessObjectClass is IBusinessObjectClassWithIdentity;
       }
       else
       {
         properties = Property.ReferenceClass.GetPropertyDefinitions();
+        isBusinessObjectWithIdentity = Property.ReferenceClass is IBusinessObjectClassWithIdentity;
       }
 
-      _allPropertyColumns = new BocColumnDefinition[properties.Length];
+      var allPropertyColumns = new List<BocColumnDefinition>(properties.Length);
       for (int i = 0; i < properties.Length; i++)
       {
         IBusinessObjectProperty property = properties[i];
@@ -1646,8 +1653,18 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         column.ColumnTitle = WebString.CreateFromText(property.DisplayName);
         column.SetPropertyPath(BusinessObjectPropertyPath.CreateStatic(new[] { property }));
         column.OwnerControl = this;
-        _allPropertyColumns[i] = column;
+        if (isBusinessObjectWithIdentity && property.Identifier == nameof(IBusinessObjectWithIdentity.DisplayName))
+        {
+          allPropertyColumns.Insert(0, column);
+          column.IsRowHeader = true;
+        }
+        else
+        {
+          allPropertyColumns.Add(column);
+        }
       }
+
+      _allPropertyColumns = allPropertyColumns.ToArray();
       return _allPropertyColumns;
     }
 
@@ -3722,9 +3739,37 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <inheritdoc />
+    [Category("Menu")]
+    [Description("The text that is rendered as a label for the menu.")]
+    [DefaultValue(typeof(WebString), "")]
+    public WebString ListMenuHeading
+    {
+      get => _listMenuHeading;
+      set => _listMenuHeading = value;
+    }
+
+    /// <inheritdoc />
+    [Category("Menu")]
+    [Description("The heading level applied to the ListMenuHeading. Leave empty to use a SPAN instead of a Heading-element.")]
+    [DefaultValue(typeof(HeadingLevel?), "")]
+    public HeadingLevel? ListMenuHeadingLevel
+    {
+      get => _listMenu.HeadingLevel;
+      set => _listMenu.HeadingLevel = value;
+    }
+
     IListMenu IBocList.ListMenu
     {
-      get { return _listMenu; }
+      get
+      {
+        if (ListMenuHeading.IsEmpty)
+          _listMenu.Heading = GetResourceManager().GetText(ResourceIdentifier.ListMenuHeading);
+        else
+          _listMenu.Heading = ListMenuHeading;
+
+        return _listMenu;
+      }
     }
 
     IEditModeController IBocList.EditModeController

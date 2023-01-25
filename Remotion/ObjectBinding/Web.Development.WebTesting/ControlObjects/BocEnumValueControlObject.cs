@@ -150,20 +150,31 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
     public IReadOnlyList<string> GetValidationErrors ()
     {
-      return GetValidationErrors(GetScopeWithReferenceInformation());
+      if (IsReadOnly())
+        throw AssertionExceptionUtility.CreateControlReadOnlyException(Driver);
+
+      return GetValidationErrors(GetValueScope());
     }
 
     public IReadOnlyList<string> GetValidationErrorsForReadOnly ()
     {
-      return GetValidationErrorsForReadOnly(GetScopeWithReferenceInformation());
+      return GetValidationErrorsForReadOnly(GetLabeledElementScope());
     }
 
     protected override ElementScope GetLabeledElementScope ()
     {
-      return GetScopeWithReferenceInformation();
+      if (IsReadOnly())
+        return GetReadOnlyValueScope();
+      else
+        return GetValueScope();
     }
 
-    private ElementScope GetScopeWithReferenceInformation ()
+    private ElementScope GetReadOnlyValueScope ()
+    {
+      return Scope.FindChild("TextValue");
+    }
+
+    private ElementScope GetValueScope ()
     {
       return Scope.FindChild("Value");
     }
@@ -227,18 +238,22 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
       public OptionDefinition GetSelectedOption ()
       {
-        var scope = _controlObject.Scope.FindChild("Value");
-
         if (_controlObject.IsReadOnly())
-          return new OptionDefinition(scope["data-value"], -1, scope.Text, true);
-
-        return scope.GetSelectedOption();
+        {
+          var scope = _controlObject.GetReadOnlyValueScope();
+          return new OptionDefinition(scope["data-value"], -1, scope.FindXPath("../span[@aria-hidden='true']").Text, true);
+        }
+        else
+        {
+          var scope = _controlObject.GetValueScope();
+          return scope.GetSelectedOption();
+        }
       }
 
       public IReadOnlyList<OptionDefinition> GetOptionDefinitions ()
       {
         return RetryUntilTimeout.Run(
-            () => _controlObject.Scope.FindChild("Value").FindAllCss("option")
+            () => _controlObject.GetValueScope().FindAllCss("option")
                 .Select((optionScope, i) => new OptionDefinition(optionScope.Value, i + 1, optionScope.Text, optionScope.Selected))
                 .ToList());
       }
@@ -271,7 +286,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
 
         var actualActionOptions = _controlObject.MergeWithDefaultActionOptions(_controlObject.Scope, actionOptions);
 
-        var customAction = new CustomAction(_controlObject, _controlObject.Scope.FindChild("Value"), "Select", selectAction);
+        var customAction = new CustomAction(_controlObject, _controlObject.GetValueScope(), "Select", selectAction);
         ActionExecute?.Invoke(customAction, actualActionOptions);
         customAction.Execute(actualActionOptions);
 
@@ -306,8 +321,8 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
       {
         if (_controlObject.IsReadOnly())
         {
-          var scope = _controlObject.Scope.FindChild("Value");
-          return new OptionDefinition(scope["data-value"], -1, scope.Text, true);
+          var scope = _controlObject.GetReadOnlyValueScope();
+          return new OptionDefinition(scope.FindCss("span[data-value]")["data-value"], -1, scope.FindXPath("../span[@aria-hidden='true']").Text, true);
         }
 
         var selectedOption = GetOptionDefinitions().FirstOrDefault(o => o.IsSelected);

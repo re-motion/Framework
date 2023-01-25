@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
+using System;
+using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Reflection;
 using NUnit.Framework;
@@ -24,6 +26,15 @@ namespace Remotion.Web.UnitTests.Core
   [TestFixture]
   public class PlainTextStringConverterTest
   {
+    [Test]
+    public void CanConvertTo_WithNull_ReturnsFalse ()
+    {
+      var converter = new PlainTextStringConverter();
+
+      Assert.That(converter.CanConvertTo((ITypeDescriptorContext)null ,(Type)null), Is.False);
+      Assert.That(converter.CanConvertTo((Type)null), Is.False);
+    }
+
     [Test]
     [TestCaseSource(nameof(TestCaseSource_ConvertFromString))]
     public void ConvertFromString (string input, PlainTextString? expectedOutput)

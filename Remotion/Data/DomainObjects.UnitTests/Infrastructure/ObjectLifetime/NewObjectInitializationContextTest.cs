@@ -20,7 +20,7 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
 using Remotion.Data.DomainObjects.Infrastructure.Enlistment;
 using Remotion.Data.DomainObjects.Infrastructure.ObjectLifetime;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 {
@@ -63,14 +63,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
     [Test]
     public void RegisterObject ()
     {
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _enlistedDomainObjectManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.EnlistDomainObject(_domainObject))
           .Verifiable();
       StubEmptyDataContainersCollection(_dataManagerMock);
       _dataManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RegisterDataContainer(It.IsAny<DataContainer>()))
           .Callback(
               (DataContainer dataContainer) =>
@@ -84,6 +84,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure.ObjectLifetime
 
       _enlistedDomainObjectManagerMock.Verify();
       _dataManagerMock.Verify();
+      sequence.Verify();
 
       Assert.That(_context.RegisteredObject, Is.SameAs(_domainObject));
     }

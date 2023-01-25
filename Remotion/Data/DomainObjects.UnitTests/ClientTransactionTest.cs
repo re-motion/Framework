@@ -36,7 +36,6 @@ using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 using Remotion.Development.UnitTesting.ObjectMothers;
 using Remotion.TypePipe;
 
@@ -129,9 +128,9 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       ClientTransaction actualConstructedTransaction = null;
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateApplicationData(It.IsAny<ClientTransaction>()))
           .Returns(_fakeApplicationData)
           .Callback(
@@ -142,7 +141,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
               })
           .Verifiable();
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateEventBroker(It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction)))
           .Returns(_eventBrokerMock.Object)
           .Callback(
@@ -151,7 +150,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Verifiable();
 
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CreateTransactionHierarchyManager(
                   It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction),
@@ -163,11 +162,11 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Verifiable();
 
       _hierarchyManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
             .Setup(mock => mock.InstallListeners(_eventBrokerMock.Object))
             .Verifiable();
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateEnlistedObjectManager(It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction)))
           .Returns(_enlistedObjectManagerMock.Object)
           .Callback(
@@ -176,7 +175,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Verifiable();
 
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CreateInvalidDomainObjectManager(
                   It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction),
@@ -187,7 +186,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
                   Assert.That(ClientTransactionTestHelper.GetEnlistedDomainObjectManager(constructedTransaction), Is.SameAs(_enlistedObjectManagerMock.Object)))
           .Verifiable();
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreatePersistenceStrategy(It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction)))
           .Returns(_persistenceStrategyMock.Object)
           .Callback(
@@ -196,7 +195,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Verifiable();
 
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CreateDataManager(
                   It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction),
@@ -216,7 +215,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Verifiable();
 
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CreateObjectLifetimeAgent(
                   It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction),
@@ -238,7 +237,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Verifiable();
 
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CreateQueryManager(
                   It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction),
@@ -260,7 +259,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
           .Verifiable();
 
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(
               mock => mock.CreateCommitRollbackAgent(
                   It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction),
@@ -277,7 +276,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
                   Assert.That(constructedTransaction.QueryManager, Is.SameAs(_queryManagerMock.Object)))
           .Verifiable();
       componentFactoryMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.CreateExtensions(It.Is<ClientTransaction>(tx => tx == actualConstructedTransaction)))
           .Returns(new[] { fakeExtension.Object })
           .Callback(
@@ -285,12 +284,12 @@ namespace Remotion.Data.DomainObjects.UnitTests
                   Assert.That(ClientTransactionTestHelper.GetCommitRollbackAgent(constructedTransaction), Is.SameAs(_commitRollbackAgentMock.Object)))
           .Verifiable();
       _hierarchyManagerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.OnBeforeTransactionInitialize())
           .Callback(() => Assert.That(fakeExtensionCollection, Has.Member(fakeExtension.Object)))
           .Verifiable();
       _eventBrokerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.RaiseTransactionInitializeEvent())
           .Verifiable();
       _eventBrokerMock
@@ -320,6 +319,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _queryManagerMock.Verify();
       _commitRollbackAgentMock.Verify();
       componentFactoryMock.Verify();
+      sequence.Verify();
 
       Assert.That(result, Is.SameAs(actualConstructedTransaction));
     }
@@ -845,10 +845,10 @@ namespace Remotion.Data.DomainObjects.UnitTests
     [Test]
     public void Discard ()
     {
-      var sequence = new MockSequence();
-      _eventBrokerMock.InSequence(sequence).Setup(mock => mock.RaiseTransactionDiscardEvent()).Verifiable();
-      _hierarchyManagerMock.InSequence(sequence).Setup(mock => mock.OnTransactionDiscard()).Verifiable();
-      _eventBrokerMock.InSequence(sequence).Setup(mock => mock.AddListener(It.IsNotNull<InvalidatedTransactionListener>())).Verifiable();
+      var sequence = new VerifiableSequence();
+      _eventBrokerMock.InVerifiableSequence(sequence).Setup(mock => mock.RaiseTransactionDiscardEvent()).Verifiable();
+      _hierarchyManagerMock.InVerifiableSequence(sequence).Setup(mock => mock.OnTransactionDiscard()).Verifiable();
+      _eventBrokerMock.InVerifiableSequence(sequence).Setup(mock => mock.AddListener(It.IsNotNull<InvalidatedTransactionListener>())).Verifiable();
 
       Assert.That(_transactionWithMocks.IsDiscarded, Is.False);
 
@@ -863,6 +863,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       _objectLifetimeAgentMock.Verify();
       _queryManagerMock.Verify();
       _commitRollbackAgentMock.Verify();
+      sequence.Verify();
       Assert.That(_transactionWithMocks.IsDiscarded, Is.True);
     }
 

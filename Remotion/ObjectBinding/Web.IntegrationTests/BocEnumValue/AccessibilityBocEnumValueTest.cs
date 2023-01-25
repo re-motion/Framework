@@ -118,10 +118,11 @@ namespace Remotion.ObjectBinding.Web.IntegrationTests.BocEnumValue
       var analyzer = Helper.CreateAccessibilityAnalyzer();
 
       var result = bocEnumValue.Analyze(analyzer);
-      // TODO RM-7332 remove ignore once issue is resolved
-      var violations = result.Violations.IgnoreByRuleIDAndXPath(
-          AccessibilityRuleID.ColorContrast,
-          "/select[@id='body_DataEditControl_MarriageStatusField_ListBoxDisabled_Value']");
+      var violations = result.Violations
+          // TODO RM-7332 remove ignore once issue is resolved
+          .IgnoreByRuleIDAndXPath(AccessibilityRuleID.ColorContrast, "/select[@id='body_DataEditControl_MarriageStatusField_ListBoxDisabled_Value']")
+          // TODO RM-7223 remove ignore once issue is resolved: https://github.com/dequelabs/axe-core/issues/3692
+          .IgnoreByRuleIDAndXPath(AccessibilityRuleID.ScrollableRegionFocusable, "/select[@id='body_DataEditControl_MarriageStatusField_ListBoxDisabled_Value']");
 
       Assert.That(violations, Is.Empty);
     }

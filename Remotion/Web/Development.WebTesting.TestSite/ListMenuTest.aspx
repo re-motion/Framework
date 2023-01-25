@@ -19,7 +19,7 @@
   <asp:UpdatePanel ID="UpdatePanel" runat="server">
     <ContentTemplate>
       <h3>ListMenu1</h3>
-      <remotion:ListMenu ID="MyListMenu" LineBreaks="BetweenGroups" runat="server">
+      <remotion:ListMenu ID="MyListMenu" LineBreaks="BetweenGroups" Heading="Test List Menu" HeadingLevel="H4" runat="server">
         <MenuItems>
           <remotion:WebMenuItem Category="Category1" ItemID="ItemID1" Text="EventItem">
             <PersistedCommand>

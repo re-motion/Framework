@@ -10,7 +10,7 @@
   vertical-align: middle;
 }
 
-.bocBooleanValue a[role=checkbox]
+.bocBooleanValue span[role=checkbox]
 {
   display: inline-flex;
   align-items: center;
@@ -18,21 +18,38 @@
   margin-right: var(--remotion-themed-spacing);
 }
 
-.bocBooleanValue a[role=checkbox]:focus
+.bocBooleanValue span[role=checkbox]:focus
 {
   outline: none;
 }
 
-.bocBooleanValue a[role=checkbox]:hover
+.bocBooleanValue span[role=checkbox]:hover
 {
   cursor: default;
+}
+
+.bocBooleanValue span.description
+{
+  align-items: center;
+  margin-right: var(--remotion-themed-spacing);
 }
 
 .bocBooleanValue span.description:not([hidden])
 {
   display: inline-flex;
-  align-items: center;
-  margin-right: var(--remotion-themed-spacing);
+}
+
+.bocBooleanValue.readOnly span.description
+{
+  margin-left: var(--remotion-themed-spacing);
+}
+
+.bocBooleanValue.readOnly span.description[hidden]
+{
+  display: inline;
+  overflow: hidden;
+  width: 0;
+  padding-left: var(--remotion-themed-spacing-large);
 }
 
 .bocBooleanValue img
@@ -53,6 +70,11 @@
   border: var(--remotion-themed-border-readonly-focus);
   background-color: var(--remotion-themed-background-color-readonly-focus);
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
+}
+
+.bocBooleanValue:not(.readOnly, .disabled):hover
+{
+  cursor: pointer;
 }
 
 .bocBooleanValue.disabled span.description

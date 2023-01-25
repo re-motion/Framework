@@ -73,7 +73,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
     private SmartNavigationData _smartNavigationDataToBeDisacarded;
     private string? _smartFocusID;
-    private WebString _abortMessage = WebString.Empty;
+    private PlainTextString _abortMessage = PlainTextString.Empty;
     private WebString _statusIsSubmittingMessage = WebString.Empty;
 
     private bool _isPreRenderComplete;
@@ -439,12 +439,13 @@ namespace Remotion.Web.UI.SmartPageImplementation
 
       if (_page.IsAbortConfirmationEnabled)
       {
-        WebString temp;
+        PlainTextString temp;
         if (_page.AbortMessage.IsEmpty)
           temp = resourceManager.GetText(ResourceIdentifier.AbortMessage);
         else
           temp = _page.AbortMessage;
-        abortMessage = "'" + ScriptUtility.EscapeClientScript(temp) + "'";
+        var unescapedValueForUseInBrowserApis = temp.GetValue();
+        abortMessage = "'" + ScriptUtility.EscapeClientScript(unescapedValueForUseInBrowserApis) + "'";
       }
 
       return abortMessage;
@@ -582,7 +583,7 @@ namespace Remotion.Web.UI.SmartPageImplementation
     /// <summary>
     ///   Implements <see cref="ISmartPage.AbortMessage">ISmartPage.AbortMessage</see>.
     /// </summary>
-    public WebString AbortMessage
+    public PlainTextString AbortMessage
     {
       get { return _abortMessage; }
       set { _abortMessage = value; }

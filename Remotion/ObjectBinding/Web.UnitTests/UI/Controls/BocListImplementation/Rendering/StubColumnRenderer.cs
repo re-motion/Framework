@@ -15,42 +15,38 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
-using Remotion.ObjectBinding.Web.UI.Controls;
+using Remotion.Development.Web.UnitTesting.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.Web;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
   public class StubColumnRenderer : BocColumnRendererBase<StubColumnDefinition>
   {
     public StubColumnRenderer (IResourceUrlFactory resourceUrlFactory)
-        : base(resourceUrlFactory, Remotion.Web.UI.Controls.Rendering.RenderingFeatures.Default, new BocListCssClassDefinition())
+        : base(resourceUrlFactory, Remotion.Web.UI.Controls.Rendering.RenderingFeatures.Default, new BocListCssClassDefinition(), new FakeFallbackNavigationUrlProvider())
     {
     }
 
-    protected override void RenderTitleCell (
-        BocColumnRenderingContext<StubColumnDefinition> renderingContext, SortingDirection sortingDirection, int orderIndex)
+    protected override void RenderTitleCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
+      renderingContext.Writer.AddAttribute("arguments-CellID", arguments.CellID);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
       renderingContext.Writer.RenderEndTag();
     }
 
-    protected override void RenderDataCell (
-        BocColumnRenderingContext<StubColumnDefinition> renderingContext,
-        int rowIndex,
-        bool showIcon,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    protected override void RenderDataCell (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
+      renderingContext.Writer.AddAttribute("arguments-CellID", arguments.CellID ?? "null");
+      renderingContext.Writer.AddAttribute("arguments-HeaderIDs", arguments.HeaderIDs.Any() ? string.Join(", ", arguments.HeaderIDs) : "empty");
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
       renderingContext.Writer.RenderEndTag();
     }
 
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<StubColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<StubColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       throw new NotImplementedException();
     }

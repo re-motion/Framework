@@ -182,6 +182,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
 
     [Serializable]
     [DBTable]
+    [IncludeInMappingTestDomain]
     public class SerializableClassCallingWrongBaseCtor : DomainObject, ISerializable
     {
       public SerializableClassCallingWrongBaseCtor ()

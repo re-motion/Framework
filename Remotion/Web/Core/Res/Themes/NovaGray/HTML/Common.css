@@ -2,3 +2,25 @@
 {
   overflow: auto;
 }
+
+.screenReaderText
+{
+  clip-path: circle(0) !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.blink input.screenReaderText,
+.blink textarea.screenReaderText
+{
+  /* In Chromium-based browsers, clip-path can result on jumping scroll positions when focusing the invisible input element 
+     and in Mozilla Firefox, scale-0 input elements are not announced by NVDA 2022.3.2.
+     For least impact, scale-0 is only used in problemantic browser implementations. */
+  clip-path: unset !important;
+  transform: scale(0) !important;
+}

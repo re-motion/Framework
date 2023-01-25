@@ -21,6 +21,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.TestDomain
   [DBTable("TableWithKeyOfInvalidType")]
   [TestDomain]
   [Instantiable]
+  [ExcludeFromTestDomainDB]
   public abstract class ClassWithKeyOfInvalidType : TestDomainBase
   {
     protected ClassWithKeyOfInvalidType ()

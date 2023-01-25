@@ -43,13 +43,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public BocRowEditModeColumnRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
-        : base(resourceUrlFactory, renderingFeatures, cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
+        : base(resourceUrlFactory, renderingFeatures, cssClasses, fallbackNavigationUrlProvider)
     {
     }
 
     /// <summary>
-    /// Renders the cell contents depending on the <paramref name="dataRowRenderEventArgs"/>'s
+    /// Renders the cell contents depending on the <paramref name="arguments"/>'s
     /// <see cref="BocListDataRowRenderEventArgs.IsEditableRow"/> property.
     /// <seealso cref="BocColumnRendererBase{TBocColumnDefinition}.RenderCellContents"/>
     /// </summary>
@@ -58,18 +59,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// if the row cannot be edited, an empty cell is rendered.
     /// Since the "Save", "Cancel" and "Edit" controls are structurally identical, their actual rendering is done by <see cref="RenderCommandControl"/>
     /// </remarks>
-    protected override void RenderCellContents (
-        BocColumnRenderingContext<BocRowEditModeColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon)
+    protected override void RenderCellContents (BocColumnRenderingContext<BocRowEditModeColumnDefinition> renderingContext, in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
-      int originalRowIndex = dataRowRenderEventArgs.ListIndex;
-      var businessObject = dataRowRenderEventArgs.BusinessObject;
-      bool isEditableRow = dataRowRenderEventArgs.IsEditableRow;
+      int originalRowIndex = arguments.ListIndex;
+      var businessObject = arguments.BusinessObject;
+      bool isEditableRow = arguments.IsEditableRow;
       bool isEditedRow = renderingContext.Control.EditModeController.GetEditableRow(originalRowIndex) != null;
 
       if (isEditedRow)

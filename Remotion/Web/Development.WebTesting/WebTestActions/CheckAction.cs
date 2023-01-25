@@ -17,7 +17,9 @@
 using System;
 using Coypu;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using Remotion.Utilities;
+using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting.WebTestActions
 {
@@ -42,7 +44,11 @@ namespace Remotion.Web.Development.WebTesting.WebTestActions
     {
       ArgumentUtility.CheckNotNull("scope", scope);
 
-      scope.Check();
+      if (scope.Selected)
+        return;
+
+      JavaScriptExecutor.GetJavaScriptExecutor(scope).ExecuteScript("arguments[0].focus();", scope.Native);
+      scope.SendKeys(Keys.Space);
     }
   }
 }

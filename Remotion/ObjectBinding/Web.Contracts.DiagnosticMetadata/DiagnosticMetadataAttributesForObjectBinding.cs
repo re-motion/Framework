@@ -43,9 +43,10 @@ namespace Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata
     public static readonly string BocListCellContents = "data-boclist-cell-contents";
     public static readonly string BocListCellIndex = "data-boclist-cell-index";
     public static readonly string BocListColumnHasContentAttribute = "data-boclist-column-has-content-attribute";
-    // Note: do not change value without chaning usages in JavaScript files.
+    public static readonly string BocListColumnIsRowHeader = "data-boclist-column-is-row-header";
+    // Note: do not change value without changing usages in JavaScript files.
     public static readonly string BocListHasFakeTableHead = "data-boclist-has-fake-table-head";
-    // Note: do not change value without chaning usages in JavaScript files.
+    // Note: do not change value without changing usages in JavaScript files.
     public static readonly string BocListIsInitialized = "data-boclist-is-initialized";
     public static readonly string BocListNumberOfPages = "data-boclist-number-of-pages";
     public static readonly string BocListCurrentPageNumber = "data-boclist-current-page-number";

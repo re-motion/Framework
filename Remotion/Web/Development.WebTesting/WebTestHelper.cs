@@ -184,7 +184,8 @@ namespace Remotion.Web.Development.WebTesting
       s_log.InfoFormat("WebDriver version: {0}", _mainBrowserSession.Driver.GetWebDriverVersion());
 
       // Note: otherwise cursor could interfere with element hovering.
-      EnsureCursorIsOutsideBrowserWindow();
+      if (!_mainBrowserSession.Headless)
+        EnsureCursorIsOutsideBrowserWindow();
     }
 
     /// <summary>
@@ -285,7 +286,8 @@ namespace Remotion.Web.Development.WebTesting
         Assertion.IsNotNull(_testName, "'{0}' should be set by the test infrastructure calling '{1}'", nameof(_testName), nameof(OnSetUp));
         var screenshotRecorder = new TestExecutionScreenshotRecorder(_testInfrastructureConfiguration.ScreenshotDirectory);
         screenshotRecorder.CaptureCursor();
-        screenshotRecorder.TakeDesktopScreenshot(_testName);
+        if (_mainBrowserSession is { Headless: false })
+          screenshotRecorder.TakeDesktopScreenshot(_testName);
         screenshotRecorder.TakeBrowserScreenshot(_testName, _browserSessions.ToArray(), BrowserConfiguration.Locator);
       }
 
@@ -363,7 +365,8 @@ namespace Remotion.Web.Development.WebTesting
           configurationOverride.CommandTimeout ?? configuration.CommandTimeout,
           configurationOverride.SearchTimeout ?? configuration.SearchTimeout,
           configurationOverride.RetryInterval ?? configuration.RetryInterval,
-          configurationOverride.AsyncJavaScriptTimeout ?? configuration.AsyncJavaScriptTimeout);
+          configurationOverride.AsyncJavaScriptTimeout ?? configuration.AsyncJavaScriptTimeout,
+          configurationOverride.Headless ?? configuration.Headless);
     }
 
     /// <summary>

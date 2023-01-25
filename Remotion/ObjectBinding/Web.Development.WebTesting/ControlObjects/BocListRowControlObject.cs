@@ -58,6 +58,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <summary>
     /// Unselect all rows by checking the table's select all checkbox.
     /// </summary>
+    /// <exception cref="WebTestException">Thrown if the row-selection is based on radio buttons instead of checkboxes.</exception>
     public void Deselect ()
     {
       _impl.Deselect();

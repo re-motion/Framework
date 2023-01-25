@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects;
 using Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects.Selectors;
 using Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests.TestCaseFactories;
@@ -110,14 +110,12 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var shouldBeText = "<Test 1> " + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3";
-      //TODO: Remove after implementation of RM-7062
-      var shouldBeTextWithTrim = "<Test 1>" + Environment.NewLine + "Test 2" + Environment.NewLine + "Test 3";
 
       var bocMultilineText = home.MultilineTextValues().GetByLocalID("CVField_Normal");
       Assert.That(bocMultilineText.GetText(), Is.EqualTo(shouldBeText));
 
       bocMultilineText = home.MultilineTextValues().GetByLocalID("CVField_ReadOnly");
-      Assert.That(bocMultilineText.GetText(), Is.EqualTo(shouldBeTextWithTrim));
+      Assert.That(bocMultilineText.GetText(), Is.EqualTo(shouldBeText));
 
       bocMultilineText = home.MultilineTextValues().GetByLocalID("CVField_Disabled");
       Assert.That(bocMultilineText.GetText(), Is.EqualTo(shouldBeText));

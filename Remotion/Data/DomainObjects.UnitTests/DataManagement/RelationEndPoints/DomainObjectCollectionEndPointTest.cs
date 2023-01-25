@@ -29,8 +29,8 @@ using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Data.DomainObjects.Validation;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 {
@@ -212,18 +212,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CanBeCollected ()
+    public void CanBeCollected_WithoutChangedCollectionReference_WithCanEndPointBeCollectedIsTrue_ReturnsTrue ()
     {
       _collectionManagerMock.Setup(stub => stub.HasCollectionReferenceChanged()).Returns(false);
-      var sequence = new MockSequence();
-      _loadStateMock.InSequence(sequence).Setup(stub => stub.CanEndPointBeCollected(_endPoint)).Returns(true);
-      _loadStateMock.InSequence(sequence).Setup(stub => stub.CanEndPointBeCollected(_endPoint)).Returns(false);
+      _loadStateMock.Setup(stub => stub.CanEndPointBeCollected(_endPoint)).Returns(true);
 
-      var result1 = _endPoint.CanBeCollected;
-      var result2 = _endPoint.CanBeCollected;
+      var result = _endPoint.CanBeCollected;
 
-      Assert.That(result1, Is.True);
-      Assert.That(result2, Is.False);
+      Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void CanBeCollected_WithoutChangedCollectionReference_WithCanEndPointBeCollectedIsFalse_ReturnsFalse ()
+    {
+      _collectionManagerMock.Setup(stub => stub.HasCollectionReferenceChanged()).Returns(false);
+      _loadStateMock.Setup(stub => stub.CanEndPointBeCollected(_endPoint)).Returns(false);
+
+      var result = _endPoint.CanBeCollected;
+
+      Assert.That(result, Is.False);
     }
 
     [Test]
@@ -238,18 +245,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     }
 
     [Test]
-    public void CanBeMarkedIncomplete ()
+    public void CanBeMarkedIncomplete_WithoutChangedCollectionReference_WithCanDataBeMarkedIncompleteIsTrue_ReturnsTrue ()
     {
       _collectionManagerMock.Setup(stub => stub.HasCollectionReferenceChanged()).Returns(false);
-      var sequence = new MockSequence();
-      _loadStateMock.InSequence(sequence).Setup(stub => stub.CanDataBeMarkedIncomplete(_endPoint)).Returns(true);
-      _loadStateMock.InSequence(sequence).Setup(stub => stub.CanDataBeMarkedIncomplete(_endPoint)).Returns(false);
+      _loadStateMock.Setup(stub => stub.CanDataBeMarkedIncomplete(_endPoint)).Returns(true);
 
-      var result1 = _endPoint.CanBeMarkedIncomplete;
-      var result2 = _endPoint.CanBeMarkedIncomplete;
+      var result = _endPoint.CanBeMarkedIncomplete;
 
-      Assert.That(result1, Is.True);
-      Assert.That(result2, Is.False);
+      Assert.That(result, Is.True);
+    }
+
+    [Test]
+    public void CanBeMarkedIncomplete_WithoutChangedCollectionReference_WithCanDataBeMarkedIncompleteIsFalse_ReturnsFalse ()
+    {
+      _collectionManagerMock.Setup(stub => stub.HasCollectionReferenceChanged()).Returns(false);
+      _loadStateMock.Setup(stub => stub.CanDataBeMarkedIncomplete(_endPoint)).Returns(false);
+
+      var result = _endPoint.CanBeMarkedIncomplete;
+
+      Assert.That(result, Is.False);
     }
 
     [Test]

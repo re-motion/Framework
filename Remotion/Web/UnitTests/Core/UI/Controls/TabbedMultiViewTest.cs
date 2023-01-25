@@ -51,7 +51,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls
       _tabbedMultiView = new TabbedMultiViewMock();
       _tabbedMultiView.ID = "TabbedMultiVIew";
 
-      _tabView1 = new TabView { ID = "Tab1", Title = "Tab 1" };
+      _tabView1 = new TabView { ID = "Tab1", Title = WebString.CreateFromText("Tab 1") };
       _tabbedMultiView.Views.Add(_tabView1);
     }
 

@@ -26,7 +26,8 @@ span.bocDateValue
   min-width: 8em;
 }
 
-span.bocDateInputWrapper
+span.bocDateTimeValue:not(.readOnly) span.bocDateInputWrapper,
+span.bocDateValue:not(.readOnly) span.bocDateInputWrapper
 {
   width: 100%;
 }
@@ -71,8 +72,8 @@ span.bocDateValue.disabled a
   cursor: unset;
 }
 
-.bocDateValue.readOnly span[tabindex],
-.bocDateTimeValue.readOnly span[tabindex]
+.bocDateValue.readOnly input:read-only + span,
+.bocDateTimeValue.readOnly input:read-only + span
 {
   min-height: var(--remotion-themed-singleline-min-height);
   box-sizing: border-box;
@@ -83,8 +84,8 @@ span.bocDateValue.disabled a
   border-radius: var(--remotion-themed-border-radius);
 }
 
-.bocDateValue.readOnly span[tabindex]:focus-visible,
-.bocDateTimeValue.readOnly span[tabindex]:focus-visible
+.bocDateValue.readOnly input:read-only:focus-visible + span,
+.bocDateTimeValue.readOnly input:read-only:focus-visible + span
 {
   outline: none;
   border: var(--remotion-themed-border-readonly-focus);
@@ -92,21 +93,21 @@ span.bocDateValue.disabled a
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
-span.bocDateTimeValue.readOnly span[tabindex]:not(:first-child)
+span.bocDateTimeValue.readOnly span.bocTimeInputWrapper
 {
   /* decrease the distance between date and time values */
   margin-left: calc(-1 * var(--remotion-themed-spacing));
 }
 
-span.bocDateValue.readOnly span[tabindex]:empty,
-span.bocDateTimeValue.readOnly span[tabindex]:empty
+span.bocDateValue.readOnly input:read-only + span:empty,
+span.bocDateTimeValue.readOnly input:read-only + span:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
   width: 100%;
 }
 
-span.bocDateValue.readOnly span[tabindex]:empty::before,
-span.bocDateTimeValue.readOnly span[tabindex]:empty::before
+span.bocDateValue.readOnly input:read-only + span:empty::before,
+span.bocDateTimeValue.readOnly input:read-only + span:empty::before
 {
   /* Inserting a 'zero width space' unicode character as placeholder so that empty
   readonly values are not collapsed and can therefore visualize the keyboard focus.

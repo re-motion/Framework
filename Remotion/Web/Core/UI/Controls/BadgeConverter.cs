@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
+using Remotion.Utilities;
 
 namespace Remotion.Web.UI.Controls
 {
@@ -15,6 +16,8 @@ namespace Remotion.Web.UI.Controls
 
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
+
       if (context == null && sourceType == typeof(string))
         return true;
 

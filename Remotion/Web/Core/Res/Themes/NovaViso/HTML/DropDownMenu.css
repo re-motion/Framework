@@ -113,7 +113,28 @@ span.DropDownMenuContainer.primary span.DropDownMenuSelect.disabled a.DropDownMe
 span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(:hover, :focus, :focus-within),
 span.DropDownMenuContainer.supplemental span.DropDownMenuSelect.disabled
 {
+  background-color: transparent;
   border-color: transparent;
+}
+
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(.disabled):hover
+{
+  background-color: var(--color-highlight);
+  border-color: var(--color-primary);
+}
+
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(.disabled):focus,
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(.disabled):focus-within
+{
+  background-color: var(--color-standard-background);
+  border-color: var(--color-primary);
+}
+
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(.disabled):focus:hover,
+span.DropDownMenuContainer.supplemental span.DropDownMenuSelect:not(.disabled):focus-within:hover
+{
+  background-color: var(--color-highlight);
+  border-color: var(--color-primary);
 }
 
 span.DropDownMenuContainer.supplemental span.DropDownMenuSelect a.DropDownMenuLabel
@@ -225,6 +246,8 @@ ul.DropDownMenuOptions li a > span:last-of-type
   grid-area: span;
   align-self: center;
   padding-left: var(--remotion-themed-spacing);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 ul.DropDownMenuOptions li.selected a:hover:not(li.DropDownMenuItemDisabled a),
@@ -233,6 +256,12 @@ ul.DropDownMenuOptions li.selected a:focus:not(li.DropDownMenuItemDisabled a)
   background-color: var(--remotion-themed-background-color-hover);
   border: var(--remotion-themed-border-hover);
   box-shadow: var(--remotion-themed-box-shadow-hover);
+}
+
+ul.DropDownMenuOptions li a:focus,
+ul.DropDownMenuOptions li a:hover
+{
+  text-decoration: none;
 }
 
 /* style separator */

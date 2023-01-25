@@ -15,10 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
@@ -52,19 +54,23 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private readonly IResourceUrlFactory _resourceUrlFactory;
     private readonly IRenderingFeatures _renderingFeatures;
     private readonly BocListCssClassDefinition _cssClasses;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     protected BocColumnRendererBase (
         IResourceUrlFactory resourceUrlFactory,
         IRenderingFeatures renderingFeatures,
-        BocListCssClassDefinition cssClasses)
+        BocListCssClassDefinition cssClasses,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
     {
       ArgumentUtility.CheckNotNull("resourceUrlFactory", resourceUrlFactory);
       ArgumentUtility.CheckNotNull("renderingFeatures", renderingFeatures);
       ArgumentUtility.CheckNotNull("cssClasses", cssClasses);
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
 
       _resourceUrlFactory = resourceUrlFactory;
       _renderingFeatures = renderingFeatures;
       _cssClasses = cssClasses;
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public bool IsNull
@@ -98,20 +104,19 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return false; }
     }
 
-    void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, SortingDirection sortingDirection, int orderIndex)
+    void IBocColumnRenderer.RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments)
     {
-      RenderTitleCell(
-          new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext),
-          sortingDirection,
-          orderIndex);
+      RenderTitleCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
 
-    protected virtual void RenderTitleCell (
-        BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        SortingDirection sortingDirection,
-        int orderIndex)
+    protected virtual void RenderTitleCell (BocColumnRenderingContext<TBocColumnDefinition> renderingContext, in BocTitleCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
+      if (arguments.CellID == null)
+        throw new ArgumentException("arguments.CellID is null", "arguments");
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, arguments.CellID);
 
       string cssClassTitleCell = CssClasses.TitleCell;
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
@@ -133,6 +138,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.AddAttribute(
             DiagnosticMetadataAttributesForObjectBinding.BocListColumnHasContentAttribute,
             HasContentAttribute.ToString().ToLower());
+
+        renderingContext.Writer.AddAttribute(
+            DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader,
+            arguments.IsRowHeader.ToString().ToLower());
       }
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Th);
 
@@ -140,7 +149,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       RenderBeginTagTitleCellSortCommand(renderingContext);
       RenderTitleCellText(renderingContext);
       if (renderingContext.Control.IsClientSideSortingEnabled || renderingContext.Control.HasSortingKeys)
-        RenderTitleCellSortingButton(renderingContext, sortingDirection, orderIndex);
+        RenderTitleCellSortingButton(renderingContext, arguments.SortingDirection, arguments.OrderIndex);
       RenderEndTagTitleCellSortCommand(renderingContext);
 
       renderingContext.Writer.RenderEndTag();
@@ -172,11 +181,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         renderingContext.Writer.Write(">");
     }
 
-    protected string GetColumnTitleID (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
-    {
-      return string.Format("{0}_{1}_Title", renderingContext.Control.ClientID, renderingContext.ColumnIndex);
-    }
-
     private void RenderTitleCellMarkers (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
       renderingContext.Control.EditModeController.RenderTitleCellMarkers(
@@ -205,7 +209,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           postBackEvent += "; return false;";
           renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEvent);
 
-          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+          renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
 
           renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.A);
         }
@@ -219,8 +223,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private void RenderTitleCellText (BocColumnRenderingContext<TBocColumnDefinition> renderingContext)
     {
       var columnTitle = renderingContext.ColumnDefinition.ColumnTitleDisplayValue;
-      var columnTitleID = GetColumnTitleID(renderingContext);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, columnTitleID);
       if (!renderingContext.ColumnDefinition.ShowColumnTitle)
         renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, _cssClasses.CssClassScreenReaderText);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Span);
@@ -288,54 +290,58 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       renderingContext.Writer.RenderEndTag();
     }
 
-    void IBocColumnRenderer.RenderDataCell (
-        BocColumnRenderingContext renderingContext,
-        int rowIndex,
-        bool showIcon,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    void IBocColumnRenderer.RenderDataCell (BocColumnRenderingContext renderingContext, in BocDataCellRenderArguments arguments)
     {
-      RenderDataCell(
-          new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext),
-          rowIndex,
-          showIcon,
-          dataRowRenderEventArgs);
+      RenderDataCell(new BocColumnRenderingContext<TBocColumnDefinition>(renderingContext), arguments);
     }
 
     /// <summary>
     /// Renders a table cell for <see cref="BocColumnRenderingContext.ColumnDefinition"/> containing the appropriate data from the 
-    /// <see cref="IBusinessObject"/> contained in <paramref name="dataRowRenderEventArgs"/>
+    /// <see cref="IBusinessObject"/> contained in <paramref name="arguments"/>
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocColumnDefinition}"/>.</param>
-    /// <param name="rowIndex">The zero-based index of the row on the page to be displayed.</param>
-    /// <param name="showIcon">Specifies if an object-specific icon will be rendered in the table cell.</param>
-    /// <param name="dataRowRenderEventArgs">Specifies row-specific arguments used in rendering the table cell.</param>
+    /// <param name="arguments">The cell-specific rendering arguments.</param>
     /// <remarks>
     /// This is a template method. Deriving classes must implement <see cref="RenderCellContents"/> to provide the contents of
     /// the table cell (&lt;td&gt;) element.
     /// </remarks>
     protected virtual void RenderDataCell (
         BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        int rowIndex,
-        bool showIcon,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+        in BocDataCellRenderArguments arguments)
     {
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
-      ArgumentUtility.CheckNotNull("dataRowRenderEventArgs", dataRowRenderEventArgs);
 
       string cssClassTableCell = CssClasses.DataCell;
 
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableCell);
+
+      if (arguments.IsRowHeader)
+        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Id, arguments.CellID);
+
+      // Rendering the header IDs is problematic for split tables and doesn't help with columns to the left of the header column.
+      // Therefor, the header IDs are simply not rendered in the first place.
+      // renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Headers, string.Join(" ", arguments.HeaderIDs));
+
+      string ariaRoleForTableDataElement;
+      if (arguments.IsRowHeader)
+      {
+        ariaRoleForTableDataElement = HtmlRoleAttributeValue.RowHeader;
+      }
+      else
+      {
 #pragma warning disable CS0618 // Type or member is obsolete
-      var ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
+        ariaRoleForTableDataElement = GetAriaRoleForTableDataElement();
 #pragma warning restore CS0618 // Type or member is obsolete
+      }
+
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute2.Role, ariaRoleForTableDataElement);
       if (_renderingFeatures.EnableDiagnosticMetadata)
         AddDiagnosticMetadataAttributes(renderingContext);
       renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
-      RenderCellContents(renderingContext, dataRowRenderEventArgs, rowIndex, showIcon);
+      RenderCellContents(renderingContext, arguments);
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -362,13 +368,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// Renders the contents of the table cell. It is called by <see cref="RenderDataCell"/> and should not be called by other clients.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext{BocCOlumnDefinition}"/>.</param>
-    /// <param name="dataRowRenderEventArgs">The row-specific rendering arguments.</param>
-    /// <param name="rowIndex">The zero-based index of the row to render in <see cref="IBocList"/>.</param>
-    /// <param name="showIcon">Specifies if the cell should contain an icon of the current <see cref="IBusinessObject"/>.</param>
+    /// <param name="arguments">The cell-specific rendering arguments.</param>
     protected abstract void RenderCellContents (
         BocColumnRenderingContext<TBocColumnDefinition> renderingContext,
-        BocListDataRowRenderEventArgs dataRowRenderEventArgs,
-        int rowIndex,
-        bool showIcon);
+        in BocDataCellRenderArguments arguments);
   }
 }

@@ -84,6 +84,21 @@ $licenses = @{
   "CoreForms.Web"=@{
     url=$null
     license="Closed source, RUBICON IT GmbH"};
+  "CoreForms.Web.Extensions"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Infrastructure"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Infrastructure.MachineConfig"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Infrastructure.Roslyn"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
+  "CoreForms.Web.Services"=@{
+    url=$null
+    license="Closed source, RUBICON IT GmbH"};    
   "DependDB.BuildProcessor"=@{
     url=$null
     license="Closed source, RUBICON IT GmbH"};
@@ -301,6 +316,13 @@ $output =
 
 $output += CreateOutput($false)
 
+$output += "| [SharpZipLib](https://github.com/icsharpcode/SharpZipLib) "
+$output += "| 1.0.0 "
+$output += "| [MIT License](https://github.com/icsharpcode/SharpZipLib/blob/master/LICENSE.txt) "
+$output += "| SharpZipLib (#ziplib, formerly NZipLib) is a compression library for Zip, GZip, BZip2, and Tar written entirely in C# for .NET. It is implemented as an assembly (installable in the GAC), and thus can easily be incorporated into other projects (in any .NET language) "
+$output += "|
+"
+
 $output += "| JetBrains Annotations (Source Code) "
 $output += "| 2017.2 "
 $output += "| [MIT License](https://raw.githubusercontent.com/JetBrains/ExternalAnnotations/master/LICENSE.md) "
@@ -326,6 +348,20 @@ $output += "| [Autocomplete - jQuery plugin](http://bassistance.de/jquery-plugin
 $output += "| dated: 2008-07-12 "
 $output += "| [MIT License](http://www.opensource.org/licenses/mit-license.php) "
 $output += "| This software (assembly 'Remotion.ObjectBinding.Web') embeds code based on 'Autocomplete - jQuery plugin'. <br> Copyright (c) 2007 Dylan Verheul, Dan G. Switzer, Anjesh Tuladhar, Jörn Zaefferer <br> http://bassistance.de/jquery-plugins/jquery-plugin-autocomplete/ "
+$output += "|
+"
+
+$output += "| [Roboto (Google Fonts)](https://fonts.google.com/specimen/Roboto) (Source Code) "
+$output += "| dated: 2021-10-13 "
+$output += "| [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) "
+$output += "| This software (assembly 'Remotion.Web') embeds 'Roboto' from the Google Fonts catalogue. <br> Copyright (c) 2011 Google (Designed by Christian Robertson) <br> https://fonts.google.com/specimen/Roboto "
+$output += "|
+"
+
+$output += "| [axe-core](https://github.com/dequelabs/axe-core) (Source Code) "
+$output += "| 3.3.4 "
+$output += "| [Mozilla Public License 2.0](https://github.com/dequelabs/axe-core/blob/develop/LICENSE) "
+$output += "| This software (assembly 'Remotion.Web.Development.WebTesting') embeds code based on 'axe-core'. <br> Copyright (c) 2021 Deque Systems, Inc. <br> https://github.com/dequelabs/axe-core "
 $output += "|
 "
 

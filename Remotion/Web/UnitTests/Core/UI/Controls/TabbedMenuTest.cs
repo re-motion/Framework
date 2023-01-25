@@ -64,17 +64,17 @@ public class TabbedMenuTest: WebControlTest
     _tabbedMenu = new TabbedMenuMock();
     _tabbedMenu.ID = "TabbedMenu";
 
-    _mainMenuTab1 = new MainMenuTab("MainMenuTab1", "Main 1");
-    _mainMenuTab2 = new MainMenuTab("MainMenuTab2", "Main 2");
-    _mainMenuTab3 = new MainMenuTab("MainMenuTab3", "Main 3");
+    _mainMenuTab1 = new MainMenuTab("MainMenuTab1", WebString.CreateFromText("Main 1"));
+    _mainMenuTab2 = new MainMenuTab("MainMenuTab2", WebString.CreateFromText("Main 2"));
+    _mainMenuTab3 = new MainMenuTab("MainMenuTab3", WebString.CreateFromText("Main 3"));
 
-    _subMenuTab11 = new SubMenuTab("SubMenuTab11", "Sub 1.1");
-    _subMenuTab12 = new SubMenuTab("SubMenuTab12", "Sub 1.2");
-    _subMenuTab13 = new SubMenuTab("SubMenuTab13", "Sub 1.3");
+    _subMenuTab11 = new SubMenuTab("SubMenuTab11", WebString.CreateFromText("Sub 1.1"));
+    _subMenuTab12 = new SubMenuTab("SubMenuTab12", WebString.CreateFromText("Sub 1.2"));
+    _subMenuTab13 = new SubMenuTab("SubMenuTab13", WebString.CreateFromText("Sub 1.3"));
 
-    _subMenuTab21 = new SubMenuTab("SubMenuTab21", "Sub 2.1");
-    _subMenuTab22 = new SubMenuTab("SubMenuTab22", "Sub 2.2");
-    _subMenuTab23 = new SubMenuTab("SubMenuTab23", "Sub 2.3");
+    _subMenuTab21 = new SubMenuTab("SubMenuTab21", WebString.CreateFromText("Sub 2.1"));
+    _subMenuTab22 = new SubMenuTab("SubMenuTab22", WebString.CreateFromText("Sub 2.2"));
+    _subMenuTab23 = new SubMenuTab("SubMenuTab23", WebString.CreateFromText("Sub 2.3"));
 
     _mainMenuTab1.SubMenuTabs.Add(_subMenuTab11);
     _mainMenuTab1.SubMenuTabs.Add(_subMenuTab12);

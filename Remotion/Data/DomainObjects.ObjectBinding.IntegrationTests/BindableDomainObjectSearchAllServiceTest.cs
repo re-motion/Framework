@@ -18,7 +18,7 @@ using System;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain;
 using Remotion.Data.DomainObjects.ObjectBinding.IntegrationTests.TestDomain.Search;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.BindableObject;
 

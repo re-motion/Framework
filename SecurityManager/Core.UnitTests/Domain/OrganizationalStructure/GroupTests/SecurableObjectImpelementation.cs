@@ -17,6 +17,7 @@
 // 
 using System;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.Security;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain.OrganizationalStructure;
@@ -67,6 +68,24 @@ namespace Remotion.SecurityManager.UnitTests.Domain.OrganizationalStructure.Grou
       group.Delete();
 
       Assert.That(factory.IsInvalid, Is.True);
+    }
+
+    [Test]
+    public void DomainObjectSecurityContextFactoryImplementation_InSubTransaction ()
+    {
+      Group group = CreateGroup();
+      IDomainObjectSecurityContextFactory factory = group;
+
+      using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+      {
+        Assert.That(factory.IsInvalid, Is.False);
+        Assert.That(factory.IsNew, Is.True);
+        Assert.That(factory.IsDeleted, Is.False);
+
+        group.Delete();
+
+        Assert.That(factory.IsDeleted, Is.True);
+      }
     }
 
     [Test]

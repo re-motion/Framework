@@ -39,6 +39,7 @@ using Remotion.Web.Development.WebTesting.Utilities;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [RequiresUserInterface]
   public class BocAutoCompleteReferenceValueControlObjectTest : IntegrationTest
   {
     [Test]
@@ -531,7 +532,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocAutoComplete = home.AutoCompletes().GetByLocalID("PartnerField_Normal");
 
-      Assert.That(() => bocAutoComplete.GetSearchServiceResults("throw", 1), Throws.Exception.InstanceOf<WebServiceExceutionException>());
+      Assert.That(() => bocAutoComplete.GetSearchServiceResults("throw", 1), Throws.Exception.InstanceOf<WebServiceExecutionException>());
     }
 
     [Test]

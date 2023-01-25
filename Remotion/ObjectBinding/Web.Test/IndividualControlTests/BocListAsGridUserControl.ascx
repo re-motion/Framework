@@ -44,7 +44,7 @@
 <remotion:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></remotion:BocListItemCommand>
 </PersistedCommand>
 </remotion:BocSimpleColumnDefinition>
-<remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" EnforceWidth="True" Width="3em" ColumnTitle="Name">
+<remotion:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" EnforceWidth="True" Width="3em" ColumnTitle="Name" IsRowHeader="True">
 <propertypathbindings>
 <remotion:PropertyPathBinding PropertyPathIdentifier="LastName"></remotion:PropertyPathBinding>
 <remotion:PropertyPathBinding PropertyPathIdentifier="FirstName"></remotion:PropertyPathBinding>

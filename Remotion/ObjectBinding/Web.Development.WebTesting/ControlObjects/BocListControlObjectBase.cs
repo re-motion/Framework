@@ -242,16 +242,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     public IReadOnlyList<BocListColumnDefinition<TRowControlObject, TCellControlObject>> GetColumnDefinitions ()
     {
       return RetryUntilTimeout.Run(
-          () => Scope.FindAllCss(_hasFakeTableHead ? ".bocListFakeTableHead th" : ".bocListTableContainer th")
+          () => Scope.FindAllCss(_hasFakeTableHead ? ".bocListFakeTableHead thead .bocListTitleCell" : ".bocListTableContainer thead .bocListTitleCell")
               .Select(
                   (s, i) =>
                       new BocListColumnDefinition<TRowControlObject, TCellControlObject>(
-                          s[DiagnosticMetadataAttributes.ItemID] ?? string.Empty,
-                          i + 1,
-                          s[DiagnosticMetadataAttributes.Content] ?? string.Empty,
-                          s[DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths] == "true",
-                          s[DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths]?.Split('\u001e') ?? Array.Empty<string>(),
-                          ColumnHasContentAttribute(s)))
+                          itemID: s[DiagnosticMetadataAttributes.ItemID] ?? string.Empty,
+                          oneBasedIndex: i + 1,
+                          title: s[DiagnosticMetadataAttributes.Content] ?? string.Empty,
+                          isRowHeader: s[DiagnosticMetadataAttributesForObjectBinding.BocListColumnIsRowHeader] == "true",
+                          hasDomainPropertyPaths: s[DiagnosticMetadataAttributesForObjectBinding.HasPropertyPaths] == "true",
+                          domainPropertyPaths: s[DiagnosticMetadataAttributesForObjectBinding.BoundPropertyPaths]?.Split('\u001e') ?? Array.Empty<string>(),
+                          hasDiagnosticMetadata: ColumnHasContentAttribute(s)))
               .ToList());
     }
 

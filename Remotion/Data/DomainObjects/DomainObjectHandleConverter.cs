@@ -16,6 +16,7 @@
 // 
 using System;
 using System.ComponentModel;
+using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects
 {
@@ -26,6 +27,7 @@ namespace Remotion.Data.DomainObjects
   {
     public override bool CanConvertFrom (ITypeDescriptorContext? context, Type sourceType)
     {
+      ArgumentUtility.CheckNotNull("sourceType", sourceType);
       return sourceType == typeof(string);
     }
 

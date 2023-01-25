@@ -20,12 +20,14 @@ using NUnit.Framework;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.CompletionDetectionStrategies;
 using Remotion.Web.Development.WebTesting.ExecutionEngine.PageObjects;
 using Remotion.Web.Development.WebTesting.FluentControlSelection;
+using Remotion.Web.Development.WebTesting.IntegrationTests.Infrastructure;
 using Remotion.Web.Development.WebTesting.WebDriver;
 using Remotion.Web.Development.WebTesting.WebFormsControlObjects;
 
 namespace Remotion.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [RequiresUserInterface]
   public class MultiWindowTest : IntegrationTest
   {
     [Test]
@@ -138,10 +140,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var frameLabel = home.Frame.Labels().GetByID("FrameLabel");
       AssertPostBackSequenceNumber(frameLabel, 1);
 
+      home.Frame.WebButtons().GetByLocalID("SimplePostBack").Click();
+      AssertPostBackSequenceNumber(frameLabel, 2);
+
       home.Frame.TextBoxes().GetByLocalID("MyTextBox").FillWith("MyText", FinishInput.Promptly);
 
-      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrame");
-      loadFrameFunctionInFrameButton.Click(Opt.ContinueWhen(Wxe.ResetIn(home.Frame)).AcceptModalDialog());
+      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrameWithoutPostback");
+      loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately().AcceptModalDialog());
       AssertPostBackSequenceNumber(frameLabel, 1);
       AssertPostBackSequenceNumber(mainLabel, 2);
 
@@ -165,10 +170,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       var frameLabel = home.Frame.Labels().GetByID("FrameLabel");
       AssertPostBackSequenceNumber(frameLabel, 1);
 
+      home.Frame.WebButtons().GetByLocalID("SimplePostBack").Click();
+      AssertPostBackSequenceNumber(frameLabel, 2);
+
       home.Frame.TextBoxes().GetByLocalID("MyTextBox").FillWith("MyText", FinishInput.Promptly);
 
-      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrame");
-      loadFrameFunctionInFrameButton.Click(Opt.ContinueWhen(Wxe.PostBackCompletedIn(home.Frame)).CancelModalDialog());
+      var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrameWithoutPostback");
+      loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately().CancelModalDialog());
       AssertPostBackSequenceNumber(frameLabel, 2);
       AssertPostBackSequenceNumber(mainLabel, 2);
 

@@ -258,22 +258,23 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
     {
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteNonQuery()).Returns(100).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteNonQuery()).Returns(100).Verifiable();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
           .Verifiable();
-      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 100)).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 100)).Verifiable();
 
       Assert.That(_command.ExecuteNonQuery(), Is.EqualTo(100));
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -283,19 +284,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteNonQuery()).Throws(exception).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteNonQuery()).Throws(exception).Verifiable();
 
-      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
 
       Assert.That(() => _command.ExecuteNonQuery(), Throws.Exception.SameAs(exception));
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -305,15 +307,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteReader()).Returns(readerStub.Object).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteReader()).Returns(readerStub.Object).Verifiable();
 
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
           .Verifiable();
 
@@ -327,6 +329,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -336,19 +339,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteReader()).Throws(exception).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteReader()).Throws(exception).Verifiable();
 
-      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
 
       Assert.That(() => _command.ExecuteReader(), Throws.Exception.SameAs(exception));
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -358,18 +362,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
       _innerCommandMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Returns(readerStub.Object)
           .Verifiable();
 
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
           .Verifiable();
 
@@ -383,6 +387,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -392,19 +397,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Throws(exception).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteReader(CommandBehavior.SchemaOnly)).Throws(exception).Verifiable();
 
-      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
 
       Assert.That(() => _command.ExecuteReader(CommandBehavior.SchemaOnly), Throws.Exception.SameAs(exception));
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -413,24 +419,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteScalar()).Returns(30).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteScalar()).Returns(30).Verifiable();
 
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuted(_connectionID, _command.QueryID, It.Is<TimeSpan>(_ => _ > TimeSpan.Zero)))
           .Verifiable();
 
-      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 1)).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryCompleted(_connectionID, _command.QueryID, TimeSpan.Zero, 1)).Verifiable();
 
       Assert.That(_command.ExecuteScalar(), Is.EqualTo(30));
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -440,19 +447,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.Tracing
       _innerCommandMock.Setup(mock => mock.CommandText).Returns("commandText");
       _innerCommandMock.Setup(mock => mock.Parameters).Returns(CreateParameterCollection());
 
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       _extensionMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.QueryExecuting(_connectionID, _command.QueryID, "commandText", It.IsNotNull<IDictionary<string, object>>()))
           .Verifiable();
-      _innerCommandMock.InSequence(sequence).Setup(mock => mock.ExecuteScalar()).Throws(exception).Verifiable();
+      _innerCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.ExecuteScalar()).Throws(exception).Verifiable();
 
-      _extensionMock.InSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
+      _extensionMock.InVerifiableSequence(sequence).Setup(mock => mock.QueryError(_connectionID, _command.QueryID, exception)).Verifiable();
 
       Assert.That(() => _command.ExecuteScalar(), Throws.Exception.SameAs(exception));
 
       _innerCommandMock.Verify();
       _extensionMock.Verify();
+      sequence.Verify();
     }
 
     private IDataParameterCollection CreateParameterCollection ()

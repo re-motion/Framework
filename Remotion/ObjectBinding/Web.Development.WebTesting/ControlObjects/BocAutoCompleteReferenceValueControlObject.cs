@@ -109,9 +109,6 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     /// <inheritdoc cref="IFillableControlObject" />
     public string GetText ()
     {
-      if (IsReadOnly())
-        return Scope.FindChild("Value").Text; // do not trim
-
       return Scope.FindChild("TextValue").Value; // do not trim
     }
 
@@ -271,9 +268,9 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ControlObjects
     protected override ElementScope GetLabeledElementScope ()
     {
       if (IsReadOnly())
-        return Scope.FindChild("Content");
-
-      return Scope.FindChild("TextValue").FindXPath("..");
+        return Scope.FindChild("TextValue");
+      else
+        return Scope.FindChild("TextValue").FindXPath("..");
     }
 
     private SearchServiceResultItem GetFirstAutoCompleteResult ([NotNull] string filter)
@@ -394,7 +391,7 @@ return CallWebService();";
 
         case AutoCompleteSearchService.Error:
           var errorData = (IDictionary<string, object>)data;
-          throw new WebServiceExceutionException(
+          throw new WebServiceExecutionException(
               (long)errorData["readyState"],
               (string)errorData["responseText"],
               (long)errorData["status"],
@@ -435,14 +432,6 @@ return CallWebService();";
     private string GetInputScopeID ()
     {
       return GetHtmlID() + "_TextValue";
-    }
-
-    private ElementScope GetScopeWithReferenceInformation ()
-    {
-      if (IsReadOnly())
-        return Scope.FindChild("Command");
-
-      return Scope.FindChild("TextValue").FindXPath("..");
     }
   }
 }

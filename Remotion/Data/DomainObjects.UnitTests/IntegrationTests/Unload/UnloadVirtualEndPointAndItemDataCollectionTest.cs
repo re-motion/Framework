@@ -128,9 +128,9 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       var orderItemB = order1.OrderItems[1];
 
       var listenerMock = ClientTransactionTestHelperWithMocks.CreateAndAddListenerMock(TestableClientTransaction);
-      var sequence = new MockSequence();
+      var sequence = new VerifiableSequence();
       listenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloading(TestableClientTransaction, new[] { orderItemA, orderItemB }))
           .Callback(
               (ClientTransaction _, IReadOnlyList<DomainObject> _) =>
@@ -145,7 +145,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
               })
           .Verifiable();
       listenerMock
-          .InSequence(sequence)
+          .InVerifiableSequence(sequence)
           .Setup(mock => mock.ObjectsUnloaded(TestableClientTransaction, new[] { orderItemA, orderItemB }))
           .Callback(
               (ClientTransaction _, IReadOnlyList<DomainObject> _) =>
@@ -164,6 +164,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Unload
       {
         UnloadService.UnloadVirtualEndPointAndItemData(TestableClientTransaction, order1.OrderItems.AssociatedEndPointID);
         listenerMock.Verify();
+        sequence.Verify();
       }
       finally
       {

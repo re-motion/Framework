@@ -32,9 +32,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       }
     }
 
-    public static void Initialize ()
+    public static void EnsureInitialized ()
     {
+      if (s_instance != null)
+        return;
+
       s_instance = new TableInheritanceConfiguration();
+      s_instance.DisableDatabaseAccess();
     }
 
     private readonly TableInheritanceDomainObjectIDs _domainObjectIDs;

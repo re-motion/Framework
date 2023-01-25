@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Globalization;
-using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
@@ -24,7 +23,6 @@ using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI.Controls.Rendering;
-using Remotion.Web.Utilities;
 
 namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
 {
@@ -35,12 +33,17 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
   [ImplementationFor(typeof(IDatePickerButtonRenderer), Lifetime = LifetimeKind.Singleton)]
   public class DatePickerButtonRenderer : RendererBase<IDatePickerButton>, IDatePickerButtonRenderer
   {
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
+
     public DatePickerButtonRenderer (
         IResourceUrlFactory resourceUrlFactory,
         IGlobalizationService globalizationService,
-        IRenderingFeatures renderingFeatures)
+        IRenderingFeatures renderingFeatures,
+        IFallbackNavigationUrlProvider fallbackNavigationUrlProvider)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
     {
+      ArgumentUtility.CheckNotNull("fallbackNavigationUrlProvider", fallbackNavigationUrlProvider);
+      _fallbackNavigationUrlProvider = fallbackNavigationUrlProvider;
     }
 
     public void RegisterHtmlHeadContents (HtmlHeadAppender htmlHeadAppender)
@@ -85,7 +88,7 @@ namespace Remotion.Web.UI.Controls.DatePickerButtonImplementation.Rendering
       string script = GetClickScript(renderingContext, true);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Onclick, script);
-      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, "-1");
 
       if (!renderingContext.Control.Enabled)

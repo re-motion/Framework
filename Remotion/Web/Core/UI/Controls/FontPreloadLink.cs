@@ -51,6 +51,8 @@ namespace Remotion.Web.UI.Controls
       writer.WriteBeginTag(s_tagName);
       writer.WriteAttribute(s_hrefAttribute, _resourceUrl.GetUrl());
       writer.WriteAttribute(s_typeAttribute, _type);
+      // The crossorigin attribute with anonymous-mode is part of the spec for preloading fonts: https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/preload#cors-enabled_fetches
+      writer.WriteAttribute("crossorigin", "anonymous");
       writer.WriteAttribute(s_relAttribute, "preload");
       writer.WriteAttribute("as", "font");
       writer.Write('>');

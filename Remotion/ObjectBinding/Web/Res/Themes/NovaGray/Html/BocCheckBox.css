@@ -24,17 +24,18 @@
   vertical-align: -0.1em;
 }
 
+.bocCheckBox.readOnly span.description
+{
+  margin-left: 4px;
+}
+
+.bocCheckBox.readOnly span[tabindex]:focus ~ span.description
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
 .bocCheckBox span + span
 {
   vertical-align: middle;
-}
-
-.bocCheckBox img
-{
-  margin-left: 0px;
-  margin-right: 0;
-  padding: 0px;
-  vertical-align: middle;
-  height: 20px;
-  width: 20px;
 }

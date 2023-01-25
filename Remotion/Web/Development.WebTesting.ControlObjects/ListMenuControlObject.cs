@@ -31,6 +31,8 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
   public class ListMenuControlObject
       : WebFormsControlObjectWithDiagnosticMetadata, IControlObjectWithSelectableItems, IFluentControlObjectWithSelectableItems, ISupportsDisabledState
   {
+    private const string c_headingFragmentID = "Heading";
+
     public ListMenuControlObject ([NotNull] ControlObjectContext context)
         : base(context)
     {
@@ -52,6 +54,21 @@ namespace Remotion.Web.Development.WebTesting.ControlObjects
                                   FindItemCommand(itemScope).IsDisabled(),
                                   itemScope.FindCss("a")?["accesskey"] ?? string.Empty))
                       .ToList());
+    }
+
+    /// <summary>
+    /// Gets the hidden heading of the list menu.
+    /// </summary>
+    public string? Heading
+    {
+      get
+      {
+        var hasHeading = Scope.FindCss(":scope > table")["aria-labelledby"] != null;
+        if (!hasHeading)
+          return null;
+
+        return Scope.FindChild(c_headingFragmentID).Text.Trim();
+      }
     }
 
     /// <inheritdoc />

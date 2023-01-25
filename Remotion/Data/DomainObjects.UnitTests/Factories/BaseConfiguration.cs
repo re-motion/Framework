@@ -15,7 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Remotion.Configuration;
@@ -25,9 +27,11 @@ using Remotion.Data.DomainObjects.Mapping.Configuration;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Data.DomainObjects.Persistence.Configuration;
 using Remotion.Data.DomainObjects.Persistence.NonPersistent;
+using Remotion.Data.DomainObjects.Persistence.Rdbms;
 using Remotion.Data.DomainObjects.Queries.Configuration;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain.TableInheritance;
+using Remotion.Development.UnitTesting;
 using Remotion.Development.UnitTesting.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
@@ -37,6 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
 {
   public abstract class BaseConfiguration
   {
+    private const string c_databaseDisabledConnectionString = "DATABASE_DISABLED_IN_UNITEST";
+
     public static ITypeDiscoveryService GetTypeDiscoveryService (params Assembly[] rootAssemblies)
     {
       var rootAssemblyFinder = new FixedRootAssemblyFinder(rootAssemblies.Select(asm => new RootAssembly(asm, true)).ToArray());
@@ -44,23 +50,32 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
       var assemblyFinder = new CachingAssemblyFinderDecorator(new AssemblyFinder(rootAssemblyFinder, assemblyLoader));
       ITypeDiscoveryService typeDiscoveryService = new AssemblyFinderTypeDiscoveryService(assemblyFinder);
 
-      return FilteringTypeDiscoveryService.CreateFromNamespaceBlacklist(
+      var whitelistedNamespaces = new[]
+                                  {
+                                      "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.ReflectionBasedPropertyResolver",
+                                      "Remotion.Data.DomainObjects.UnitTests.TestDomain",
+                                      "Remotion.Data.DomainObjects.UnitTests.DataManagement.TestDomain",
+                                      "Remotion.Data.DomainObjects.UnitTests.MixedDomains.TestDomain",
+                                      "Remotion.Data.DomainObjects.UnitTests.Linq.TestDomain"
+                                  };
+      return new FilteringTypeDiscoveryService(
           typeDiscoveryService,
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Errors",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.RelationReflector",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Validation",
-          "Remotion.Data.DomainObjects.UnitTests.Mapping.MappingReflectionIntegrationTests",
-          "Remotion.Data.DomainObjects.UnitTests.Security.TestDomain",
-          "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SchemaGenerationTestDomain",
-          "Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.IntegrationTests"
-          );
+          type =>
+          {
+            var @namespace = type.Namespace ?? string.Empty;
+            if (whitelistedNamespaces.Any(t => @namespace.StartsWith(t)))
+              return true;
+
+            return Attribute.IsDefined(type, typeof(IncludeInMappingTestDomainAttribute));
+          });
     }
 
     private readonly StorageConfiguration _storageConfiguration;
     private readonly MappingLoaderConfiguration _mappingLoaderConfiguration;
     private readonly QueryConfiguration _queryConfiguration;
     private readonly MappingConfiguration _mappingConfiguration;
+
+    private readonly Dictionary<RdbmsProviderDefinition, string> _originalConnectionStrings = new();
 
     protected BaseConfiguration ()
     {
@@ -110,6 +125,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
     public FakeDomainObjectsConfiguration GetDomainObjectsConfiguration ()
     {
       return new FakeDomainObjectsConfiguration(_mappingLoaderConfiguration, _storageConfiguration, _queryConfiguration);
+    }
+
+    public void DisableDatabaseAccess ()
+    {
+      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
+      {
+        var connectionString = rdbmsProviderDefinition.ConnectionString;
+        var isConnectionStringSet = connectionString != c_databaseDisabledConnectionString;
+        if (isConnectionStringSet)
+        {
+          _originalConnectionStrings[rdbmsProviderDefinition] = connectionString;
+          PrivateInvoke.SetNonPublicField(rdbmsProviderDefinition, "_connectionString", c_databaseDisabledConnectionString);
+        }
+      }
+    }
+
+    public void EnableDatabaseAccess ()
+    {
+      foreach (var rdbmsProviderDefinition in _storageConfiguration.StorageProviderDefinitions.OfType<RdbmsProviderDefinition>())
+      {
+        if (_originalConnectionStrings.TryGetValue(rdbmsProviderDefinition, out var originalConnectionString))
+          PrivateInvoke.SetNonPublicField(rdbmsProviderDefinition, "_connectionString", originalConnectionString);
+      }
     }
   }
 }

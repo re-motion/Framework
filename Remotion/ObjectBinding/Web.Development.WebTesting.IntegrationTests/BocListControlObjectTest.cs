@@ -41,6 +41,7 @@ using Remotion.Web.Development.WebTesting.WebDriver;
 namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 {
   [TestFixture]
+  [RequiresUserInterface]
   public class BocListControlObjectTest : IntegrationTest
   {
     [Test]
@@ -418,6 +419,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestGetColumnDefinitionsWithRowHeaders ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("ChildrenList_EmptyWithRowHeaders");
+      Assert.That(
+          bocList.GetColumnDefinitions().Select(cd => (cd.Title, cd.IsRowHeader)),
+          Is.EquivalentTo(new[] { ("", false), ("Command", false), ("LastName", true), ("FirstName", true), ("Partner", false) }));
+    }
+
+    [Test]
     public void TestGetDisplayedRows ()
     {
       var home = Start();
@@ -637,7 +649,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GetRowWhere("Title", "EO"),
           Throws.Exception.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(Driver, "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']").Message));
     }
 
     [Test]
@@ -877,7 +889,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
           () => bocList.GetCellWhere("Title", "EO"),
           Throws.InstanceOf<WebTestException>()
               .With.Message.EqualTo(
-                  AssertionExceptionUtility.CreateControlMissingException(Driver,"Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='6'] span[data-boclist-cell-contents='EO']").Message));
+                  AssertionExceptionUtility.CreateControlMissingException(Driver,"Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']").Message));
     }
 
     [Test]
@@ -926,16 +938,16 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocList.ClickOnSortColumn("StartDate");
       bocList.ClickOnSortColumn("Title");
       Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That(bocList.GetRow(2).GetCell(6).GetText(), Is.EqualTo("Programmer"));
+      Assert.That(bocList.GetRow(2).GetCell(7).GetText(), Is.EqualTo("Programmer"));
 
-      bocList.ClickOnSortColumn(6);
+      bocList.ClickOnSortColumn(7);
       Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That(bocList.GetRow(2).GetCell(6).GetText(), Is.EqualTo("Clerk"));
+      Assert.That(bocList.GetRow(2).GetCell(7).GetText(), Is.EqualTo("Clerk"));
 
       bocList.ClickOnSortColumnByTitle("Title");
       bocList.ClickOnSortColumnByTitle("StartDate");
       Assert.That(completionDetection.GetAndReset(), Is.TypeOf<WxePostBackCompletionDetectionStrategy>());
-      Assert.That(bocList.GetRow(2).GetCell(6).GetText(), Is.EqualTo("Developer"));
+      Assert.That(bocList.GetRow(2).GetCell(7).GetText(), Is.EqualTo("Developer"));
     }
 
     [Test]
@@ -1091,7 +1103,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
-    public void TestRowSelectAndDeselectForRadioButton ()
+    public void TestRowSelectForRadioButton ()
     {
       var home = Start();
 
@@ -1108,11 +1120,33 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       bocList.GetListMenu().SelectItem("ListMenuCmd1");
       Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
       Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("1"));
+      Assert.That(row.IsSelected, Is.True);
 
-      row.Deselect();
+      var otherRow = bocList.GetRow(1);
+
+      otherRow.Select();
       bocList.GetListMenu().SelectItem("ListMenuCmd1");
-      Assert.That(completionDetection.GetAndReset(), Is.TypeOf<NullCompletionDetectionStrategy>());
-      Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("NoneSelected"));
+      Assert.That(home.Scope.FindIdEndingWith("SelectedIndexForRadioButtonLabel").Text, Is.EqualTo("0"));
+      Assert.That(otherRow.IsSelected, Is.True);
+
+      Assert.That(row.IsSelected, Is.False);
+    }
+
+    [Test]
+    public void TestRowDeselect_ForRadioButton ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_WithRadioButtons");
+      var row = bocList.GetRow(2);
+
+      Assert.That(
+          () => row.Deselect(),
+          Throws.Exception.TypeOf<WebTestException>()
+              .With.Message.EqualTo(
+                  AssertionExceptionUtility.CreateExpectationException(
+                      Driver,
+                      "Unable to de-select the row because the list uses radio buttons for row selection instead of checkboxes.").Message));
     }
 
     [Test]
@@ -1254,7 +1288,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var cell = editableRow.GetCell("Title");
       Assert.That(cell.TextValues().First().GetText(), Is.EqualTo("CEO"));
 
-      cell = editableRow.GetCell(6);
+      cell = editableRow.GetCell(7);
       Assert.That(cell.TextValues().First().GetText(), Is.EqualTo("CEO"));
     }
 
@@ -1264,7 +1298,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var home = Start();
 
       var bocList = home.Lists().GetByLocalID("JobList_Normal");
-      var cell = bocList.GetRow(2).GetCell(9);
+      var cell = bocList.GetRow(2).GetCell(6);
 
       Assert.That(cell.GetText(), Is.EqualTo("CEO"));
     }
@@ -1328,7 +1362,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       var bocList = home.Lists().GetByLocalID("JobList_Normal");
       var editableRow = bocList.GetRow(2).Edit();
-      var editableCell = editableRow.GetCell(6);
+      var editableCell = editableRow.GetCell(7);
 
       var bocText = editableCell.TextValues().First();
       bocText.FillWith("NewTitle");

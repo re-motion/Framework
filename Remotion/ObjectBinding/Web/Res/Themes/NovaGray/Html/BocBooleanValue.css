@@ -16,19 +16,38 @@
 {
 }
 
+.bocBooleanValue.readOnly span.description
+{
+  margin-left: 4px;
+}
+
+.bocBooleanValue.readOnly span.description[hidden]
+{
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  padding-left: 1em;
+}
+
+.bocBooleanValue.readOnly span[role=checkbox]:focus ~ span.description
+{
+  outline: dotted black 1px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
 .bocBooleanValue span
 {
   vertical-align: middle;
 }
 
-.bocBooleanValue a
+.bocBooleanValue span[role=checkbox]
 {
   padding : 0;
   border: none;
   background-color: transparent;
 }
 
-.bocBooleanValue a[href]
+.bocBooleanValue:not(.readOnly) span[role=checkbox]
 {
   cursor: default;
 }

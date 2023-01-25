@@ -159,6 +159,7 @@ namespace Remotion.Web.UI.Controls
     private IPage? _page;
     private IInfrastructureResourceUrlFactory? _infrastructureResourceUrlFactory;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
+    private readonly IFallbackNavigationUrlProvider _fallbackNavigationUrlProvider;
 
     /// <summary> Caches the <see cref="ResourceManagerSet"/> for this <see cref="WebTreeView"/>. </summary>
     private ResourceManagerSet? _cachedResourceManager;
@@ -172,7 +173,7 @@ namespace Remotion.Web.UI.Controls
       _nodes.SetParent(this, null);
       _menuPlaceHolder = new PlaceHolder();
       _renderingFeatures = SafeServiceLocator.Current.GetInstance<IRenderingFeatures>();
-
+      _fallbackNavigationUrlProvider = SafeServiceLocator.Current.GetInstance<IFallbackNavigationUrlProvider>();
       _labelReferenceRenderer = SafeServiceLocator.Current.GetInstance<ILabelReferenceRenderer>();
     }
 
@@ -365,6 +366,8 @@ namespace Remotion.Web.UI.Controls
         _isLoadControlStateCompleted = true;
 
       RegisterHtmlHeadContents(HtmlHeadAppender.Current, Context);
+
+      ScriptUtility.Instance.RegisterJavaScriptInclude(this, HtmlHeadAppender.Current);
     }
 
 
@@ -764,7 +767,7 @@ namespace Remotion.Web.UI.Controls
         string argument = c_expansionCommandPrefix + nodePath;
         string postBackEventReference = Page!.ClientScript.GetPostBackEventReference(this, argument) + ";return false;";
         writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEventReference);
-        writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+        writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
         if (_renderingFeatures.EnableDiagnosticMetadata)
           writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
       }
@@ -791,7 +794,7 @@ namespace Remotion.Web.UI.Controls
       string argument = GetClickCommandArgument(nodePath);
       string postBackEventReference = Page!.ClientScript.GetPostBackEventReference(this, argument) + ";return false;";
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, postBackEventReference);
-      writer.AddAttribute(HtmlTextWriterAttribute.Href, "#");
+      writer.AddAttribute(HtmlTextWriterAttribute.Href, _fallbackNavigationUrlProvider.GetURL());
       if (_renderingFeatures.EnableDiagnosticMetadata)
         writer.AddAttribute(DiagnosticMetadataAttributes.TriggersPostBack, "true");
       writer.AddAttribute(HtmlTextWriterAttribute.Id, "Head_" + nodeID);
@@ -1508,7 +1511,7 @@ namespace Remotion.Web.UI.Controls
     /// <remarks> Class: <c>screenReaderText</c> </remarks>
     protected string CssClassScreenReaderText
     {
-      get { return "screenReaderText"; }
+      get { return CssClassDefinition.ScreenReaderText; }
     }
 
     #endregion

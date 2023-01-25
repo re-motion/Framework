@@ -144,42 +144,47 @@ namespace Remotion.Web.Development.WebTesting
 
       var stopwatch = Stopwatch.StartNew();
 
-#pragma warning disable SYSLIB0014
-      var webRequest = (HttpWebRequest)HttpWebRequest.Create(resolvedUri); // TODO RM-8492: Replace with HttpClient
-#pragma warning restore SYSLIB0014
-      webRequest.Method = WebRequestMethods.Http.Head;
-      webRequest.AllowAutoRedirect = true;
-      webRequest.Host = webApplicationRoot.Host;
-      webRequest.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
-
       HttpStatusCode statusCode = default;
       Assertion.DebugAssert(statusCode != HttpStatusCode.OK);
 
-      while (statusCode != HttpStatusCode.OK)
+      while (true)
       {
+#pragma warning disable SYSLIB0014
+        var webRequest = (HttpWebRequest)HttpWebRequest.Create(resolvedUri); // TODO RM-8492: Replace with HttpClient
+#pragma warning restore SYSLIB0014
+        webRequest.Method = WebRequestMethods.Http.Head;
+        webRequest.AllowAutoRedirect = true;
+        webRequest.Host = webApplicationRoot.GetComponents(UriComponents.Host | UriComponents.Port, UriFormat.UriEscaped);
+        webRequest.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
+
+        var remainingTimeout = (int)(applicationPingTimeout.TotalMilliseconds - stopwatch.Elapsed.TotalMilliseconds);
+        if (remainingTimeout <= 0)
+        {
+          s_log.Warn($"Checking the web application root '{webApplicationRoot}' timed out (HTTP status code: '{statusCode}').");
+          throw new WebException(
+              $"Checking the web application root '{webApplicationRoot}' did not return '{HttpStatusCode.OK}' in the defined {nameof(applicationPingTimeout)} ({applicationPingTimeout}). "
+              + $"Last received HTTP status code was: '{statusCode}'.",
+              WebExceptionStatus.Timeout);
+        }
+
         try
         {
-          var remainingTimeout = (int)(applicationPingTimeout.TotalMilliseconds - stopwatch.Elapsed.TotalMilliseconds);
-          webRequest.Timeout = Math.Max(remainingTimeout, 0);
+          webRequest.Timeout = remainingTimeout;
 
-          using (var response = (HttpWebResponse)webRequest.GetResponse())
-          {
-            statusCode = response.StatusCode;
-          }
+          using var response = (HttpWebResponse)webRequest.GetResponse();
+          s_log.Info($"Verified that '{resolvedUri}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
+          return;
         }
         catch (WebException ex)
         {
-          CheckTimeout(webApplicationRoot, applicationPingTimeout, stopwatch, $"Failed with WebException '{ex.Message}'");
-        }
+          if (ex.Response is HttpWebResponse httpWebResponse)
+            statusCode = httpWebResponse.StatusCode;
 
-        CheckTimeout(webApplicationRoot, applicationPingTimeout, stopwatch, $"Failed with HttpStatusCode '{statusCode}'");
+          s_log.Warn($"Checking the web application root '{webApplicationRoot}' failed with WebException: '{ex.Message}' (HTTP status code: '{statusCode}'). Retrying until {nameof(applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
+        }
 
         Thread.Sleep(TimeSpan.FromMilliseconds(500));
       }
-
-      stopwatch.Stop();
-
-      s_log.Info($"Verified that '{resolvedUri}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
     }
 
     private Uri ResolveHostname (Uri uri)
@@ -194,20 +199,6 @@ namespace Remotion.Web.Development.WebTesting
     private void UnhostWebApplication ()
     {
       _hostingStrategy.StopAndUndeployWebApplication();
-    }
-
-    // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
-    private void CheckTimeout (Uri webApplicationRoot, TimeSpan applicationPingTimeout, Stopwatch stopwatch, string failureReason)
-    {
-      if (stopwatch.ElapsedMilliseconds > applicationPingTimeout.TotalMilliseconds)
-      {
-        throw new WebException(
-            $"Checking the web application root '{webApplicationRoot}' did not return '{HttpStatusCode.OK}' in the defined {nameof(applicationPingTimeout)} ({applicationPingTimeout}). "
-            + $"{failureReason}.",
-            WebExceptionStatus.Timeout);
-      }
-
-      s_log.Warn($"Checking the web application root '{webApplicationRoot}' failed with following reason: {failureReason}. Retrying until {nameof(applicationPingTimeout)} ({applicationPingTimeout}) is reached.");
     }
   }
 }

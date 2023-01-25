@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects;
 using Remotion.Data.DomainObjects.DataManagement;
-using Remotion.Development.UnitTesting.NUnit;
+using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Security;
 using Remotion.SecurityManager.Domain;
 using Remotion.SecurityManager.Domain.AccessControl;
@@ -344,6 +344,38 @@ namespace Remotion.SecurityManager.UnitTests.Domain.Metadata.SecurableClassDefin
           Assert.That(classDefinition.StatefulAccessControlLists[1], Is.SameAs(acccessControlListl));
           Assert.That(acccessControlListl.Index, Is.EqualTo(1));
           Assert.That(classDefinition.State.IsChanged, Is.True);
+        }
+      }
+    }
+
+    [Test]
+    public void CreateStatefulAccessControlList_DeleteAcl ()
+    {
+      using (ClientTransaction.CreateRootTransaction().EnterNonDiscardingScope())
+      {
+        SecurableClassDefinition classDefinition = SecurableClassDefinition.NewObject();
+        using (ClientTransaction.Current.CreateSubTransaction().EnterDiscardingScope())
+        {
+          classDefinition.EnsureDataAvailable();
+          Assert.That(classDefinition.State.IsUnchanged, Is.True);
+
+          var acccessControlList0 = classDefinition.CreateStatefulAccessControlList();
+          var acccessControlListl = classDefinition.CreateStatefulAccessControlList();
+          var acccessControlList2 = classDefinition.CreateStatefulAccessControlList();
+          var acccessControlList3 = classDefinition.CreateStatefulAccessControlList();
+
+          Assert.That(classDefinition.StatefulAccessControlLists, Is.EqualTo(new[] { acccessControlList0, acccessControlListl, acccessControlList2, acccessControlList3 }));
+          Assert.That(acccessControlList0.Index, Is.EqualTo(0));
+          Assert.That(acccessControlListl.Index, Is.EqualTo(1));
+          Assert.That(acccessControlList2.Index, Is.EqualTo(2));
+          Assert.That(acccessControlList3.Index, Is.EqualTo(3));
+
+          acccessControlListl.Delete();
+
+          Assert.That(classDefinition.StatefulAccessControlLists, Is.EqualTo(new[] { acccessControlList0, acccessControlList2, acccessControlList3 }));
+          Assert.That(acccessControlList0.Index, Is.EqualTo(0));
+          Assert.That(acccessControlList2.Index, Is.EqualTo(1));
+          Assert.That(acccessControlList3.Index, Is.EqualTo(2));
         }
       }
     }

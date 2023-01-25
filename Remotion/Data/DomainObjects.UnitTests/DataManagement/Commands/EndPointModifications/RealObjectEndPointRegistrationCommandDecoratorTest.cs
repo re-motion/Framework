@@ -71,16 +71,17 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.Commands.EndPoint
     public void Perform ()
     {
       _decoratedCommandMock.Setup(stub => stub.GetAllExceptions()).Returns(new Exception[0]);
-      var sequence = new MockSequence();
-      _oldRelatedEndPointMock.InSequence(sequence).Setup(mock => mock.UnregisterCurrentOppositeEndPoint(_realObjectEndPointStub.Object)).Verifiable();
-      _decoratedCommandMock.InSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
-      _newRelatedEndPointMock.InSequence(sequence).Setup(mock => mock.RegisterCurrentOppositeEndPoint(_realObjectEndPointStub.Object)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _oldRelatedEndPointMock.InVerifiableSequence(sequence).Setup(mock => mock.UnregisterCurrentOppositeEndPoint(_realObjectEndPointStub.Object)).Verifiable();
+      _decoratedCommandMock.InVerifiableSequence(sequence).Setup(mock => mock.Perform()).Verifiable();
+      _newRelatedEndPointMock.InVerifiableSequence(sequence).Setup(mock => mock.RegisterCurrentOppositeEndPoint(_realObjectEndPointStub.Object)).Verifiable();
 
       _decorator.Perform();
 
       _decoratedCommandMock.Verify();
       _oldRelatedEndPointMock.Verify();
       _newRelatedEndPointMock.Verify();
+      sequence.Verify();
     }
 
     [Test]

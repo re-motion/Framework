@@ -40,11 +40,17 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var violation = result.Violations.Single();
 
       Assert.That(violation.All, Has.Length.EqualTo(0));
-      Assert.That(violation.Any, Has.Length.EqualTo(5));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.ImplicitLabel).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(
+          violation.Any.Select(x => x.ID),
+          Is.EquivalentTo(
+              new[]
+              {
+                  AccessibilityRequirementID.AriaLabel,
+                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.ExplicitLabel,
+                  AccessibilityRequirementID.ImplicitLabel,
+                  AccessibilityRequirementID.NonEmptyTitle
+              }));
       Assert.That(violation.None, Has.Length.EqualTo(0));
       Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #labels > #input"));
       Assert.That(violation.Html, Contains.Substring("id=\"input\""));
@@ -70,13 +76,18 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var violation = result.Violations.Single();
 
       Assert.That(violation.All, Has.Length.EqualTo(0));
-      Assert.That(violation.Any, Has.Length.EqualTo(6));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.HasAlt).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RolePresentation).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RoleNone).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(
+          violation.Any.Select(x => x.ID),
+          Is.EquivalentTo(
+              new[]
+              {
+                  AccessibilityRequirementID.HasAlt,
+                  AccessibilityRequirementID.AriaLabel,
+                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.NonEmptyTitle,
+                  AccessibilityRequirementID.RolePresentation,
+                  AccessibilityRequirementID.RoleNone
+              }));
       Assert.That(violation.None, Has.Length.EqualTo(0));
       Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #testImage"));
       Assert.That(violation.Html, Is.EqualTo("<img id=\"testImage\" src=\"/Images/SampleIcon.gif\">"));
@@ -100,17 +111,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       var violation = result.Violations.Single();
 
       Assert.That(violation.All, Is.Empty);
-      Assert.That(violation.Any, Has.Length.EqualTo(8));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyIfPresent).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyValue).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.ButtonHasVisibleText).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabel).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.AriaLabeledBy).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RolePresentation).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.RoleNone).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.Any.Where(x => x.ID == AccessibilityRequirementID.NonEmptyTitle).ToArray(), Has.Length.EqualTo(1));
-      Assert.That(violation.None, Has.Length.EqualTo(1));
-      Assert.That(violation.None.Where(x => x.ID == AccessibilityRequirementID.FocusableNoName).ToArray(), Has.Length.EqualTo(1));
+      Assert.That(
+          violation.Any.Select(x => x.ID),
+          Is.EquivalentTo(
+              new[]
+              {
+                  AccessibilityRequirementID.ButtonHasVisibleText,
+                  AccessibilityRequirementID.AriaLabel,
+                  AccessibilityRequirementID.AriaLabeledBy,
+                  AccessibilityRequirementID.RolePresentation,
+                  AccessibilityRequirementID.RoleNone,
+                  AccessibilityRequirementID.NonEmptyTitle,
+              }));
+      Assert.That(violation.None, Has.Length.EqualTo(0));
       Assert.That(violation.TargetPath.Single().CssSelector, Is.EqualTo("html > body > #coolButton"));
       Assert.That(violation.Html, Is.EqualTo("<button id=\"coolButton\"></button>"));
       Assert.That(violation.Rule.ID, Is.EqualTo(AccessibilityRuleID.ButtonName));

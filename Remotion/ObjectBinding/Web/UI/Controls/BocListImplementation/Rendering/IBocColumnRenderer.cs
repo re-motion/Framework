@@ -27,19 +27,16 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     /// Renders a table header cell for a <see cref="BocColumnDefinition"/> including title and sorting controls.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext"/>.</param>
-    /// <param name="sortingDirection">Specifies if rows are sorted by this column's data, and if so in which direction.</param>
-    /// <param name="orderIndex">The zero-based index of the column in a virtual sorted list containing all columns by which data is sorted.</param>
-    void RenderTitleCell (BocColumnRenderingContext renderingContext, SortingDirection sortingDirection, int orderIndex);
+    /// <param name="arguments">The cell-specific rendering arguments.</param>
+    void RenderTitleCell (BocColumnRenderingContext renderingContext, in BocTitleCellRenderArguments arguments);
 
     /// <summary>
     /// Renders a table cell for a <see cref="BocColumnDefinition"/> containing the appropriate data from the <see cref="IBusinessObject"/>
-    /// contained in <paramref name="dataRowRenderEventArgs"/>.
+    /// contained in <paramref name="arguments"/>.
     /// </summary>
     /// <param name="renderingContext">The <see cref="BocColumnRenderingContext"/>.</param>
-    /// <param name="rowIndex">The zero-based index of the row on the page to be displayed.</param>
-    /// <param name="showIcon">Specifies if an object-specific icon will be rendered in the table cell.</param>
-    /// <param name="dataRowRenderEventArgs">Specifies row-specific arguments used in rendering the table cell.</param>
-    void RenderDataCell (BocColumnRenderingContext renderingContext, int rowIndex, bool showIcon, BocListDataRowRenderEventArgs dataRowRenderEventArgs);
+    /// <param name="arguments">The cell-specific rendering arguments.</param>
+    void RenderDataCell (BocColumnRenderingContext renderingContext, in BocDataCellRenderArguments arguments);
 
     /// <summary>
     /// Renders a data column declaration for a <see cref="BocColumnDefinition"/>.

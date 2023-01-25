@@ -105,14 +105,15 @@ namespace Remotion.SecurityManager.Domain.AccessControl
     protected override void OnRelationChanged (RelationChangedEventArgs args)
     {
       base.OnRelationChanged(args);
-      if (args.IsRelation(this, "AccessControlEntries"))
-        HandleAccessControlEntriesChanged((AccessControlEntry?)args.NewRelatedObject);
+      if (args.IsRelation(this, nameof(AccessControlEntries)))
+        HandleAccessControlEntriesChanged();
     }
 
-    private void HandleAccessControlEntriesChanged (AccessControlEntry? ace)
+    private void HandleAccessControlEntriesChanged ()
     {
-      if (ace != null)
-        ace.Index = AccessControlEntries.IndexOf(ace);
+      var accessControlEntries = AccessControlEntries;
+      for (int i = 0; i < accessControlEntries.Count; i++)
+        accessControlEntries[i].Index = i;
     }
 
     protected override void OnCommitting (DomainObjectCommittingEventArgs args)

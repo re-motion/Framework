@@ -107,6 +107,8 @@ namespace Remotion.UnitTests.Utilities
       Assert.That(_converterForString.CanConvertTo(_typeDescriptorContext.Object, typeof(object)), Is.False);
       // from nullable to non-nullable
       Assert.That(_converterForNullableInt.CanConvertTo(_typeDescriptorContext.Object, typeof(int)), Is.False);
+      // null-value for destination type
+      Assert.That(_converterForNullableInt.CanConvertTo(_typeDescriptorContext.Object, null), Is.False);
     }
 
     [Test]

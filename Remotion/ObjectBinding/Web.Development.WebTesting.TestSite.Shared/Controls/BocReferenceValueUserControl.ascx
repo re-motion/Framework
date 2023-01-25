@@ -20,6 +20,11 @@
 <remotion:FormGridManager ID="FormGridManager" runat="server" />
 <remotion:BindableObjectDataSourceControl ID="CurrentObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" />
 <remotion:BindableObjectDataSourceControl ID="NoObject" runat="server" Type="Remotion.ObjectBinding.Sample::Person" Mode="Search" />
+<div>
+    <remotion:WebButton ID="PostbackButton" runat="server" Width="10em" Text="Postback" OnClick="PostbackButton_OnClick" />
+    <remotion:WebButton ID="ResetBusinessObjectListButton" runat="server" Width="10em" Text="Reset Items" OnClick="ResetBusinessObjectListButton_OnClick" />
+    <remotion:WebButton ID="SetEmptyBusinessObjectListButton" runat="server" Width="10em" Text="Set Items Empty" OnClick="SetEmptyBusinessObjectListButton_OnClick" />
+</div>
 <table id="FormGrid" runat="server">
   <tr>
     <td></td>

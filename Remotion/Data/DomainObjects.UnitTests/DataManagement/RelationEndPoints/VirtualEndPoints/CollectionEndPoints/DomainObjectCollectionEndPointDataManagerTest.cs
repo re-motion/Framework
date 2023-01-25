@@ -26,7 +26,6 @@ using Remotion.Data.DomainObjects.UnitTests.Serialization;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
 using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.NUnit;
 
 namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints.VirtualEndPoints.CollectionEndPoints
 {
@@ -462,17 +461,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void HasDataChanged_Cache_InvalidatedOnModifyingOperations ()
     {
-      var sequence = new MockSequence();
       _changeDetectionStrategyMock
-            .InSequence(sequence)
-            .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
+            .SetupSequence(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
             .Returns(true)
-            .Verifiable();
-      _changeDetectionStrategyMock
-            .InSequence(sequence)
-            .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
-            .Returns(false)
-            .Verifiable();
+            .Returns(false);
 
       // require use of strategy
       _dataManager.CollectionData.Add(_domainObject2);
@@ -485,7 +477,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
 
       var result2 = _dataManager.HasDataChanged();
 
-      _changeDetectionStrategyMock.Verify();
+      _changeDetectionStrategyMock.Verify(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData), Times.Exactly(2));
+
       Assert.That(result1, Is.EqualTo(true));
       Assert.That(result2, Is.EqualTo(false));
     }
@@ -626,9 +619,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DataManagement.RelationEndPoints
     [Test]
     public void Rollback_InvalidatesHasChangedCache ()
     {
-      var sequence = new MockSequence();
       _changeDetectionStrategyMock
-            .InSequence(sequence)
             .Setup(mock => mock.HasDataChanged(_dataManager.CollectionData, _dataManager.OriginalCollectionData))
             .Returns(true)
             .Verifiable();

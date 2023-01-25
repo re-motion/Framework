@@ -15,17 +15,12 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using System.Data.SqlClient;
 using log4net;
 using CommonServiceLocator;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.Infrastructure;
-using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Database;
-using Remotion.Data.DomainObjects.UnitTests.Factories;
-using Remotion.Development.UnitTesting;
-using Remotion.Development.UnitTesting.Data.SqlClient;
-using Remotion.Utilities;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests
 {
@@ -33,65 +28,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
   public class SetUpFixture
   {
     private StandardMappingDatabaseAgent _standardMappingDatabaseAgent;
-    private DoubleCheckedLockingContainer<IMappingConfiguration> _previousMappingConfigurationContainer;
 
     [OneTimeSetUp]
     public void OneTimeSetUp ()
     {
-      try
-      {
-        ServiceLocator.SetLocatorProvider(() => null);
+      var defaultServiceLocator = DefaultServiceLocator.Create();
 
-        LogManager.ResetConfiguration();
-        Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
+      //defaultServiceLocator.Register(typeof(IClientTransactionExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
+      //defaultServiceLocator.Register(typeof(Remotion.Data.DomainObjects.Tracing.IPersistenceExtensionFactory), typeof(UberProfIntegration.EntityFrameworkExtensionFactory), LifetimeKind.Singleton);
 
-        StandardConfiguration.Initialize();
-        TableInheritanceConfiguration.Initialize();
+      ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
-        SqlConnection.ClearAllPools();
-
-        var masterAgent = new DatabaseAgent(DatabaseTest.MasterConnectionString);
-        masterAgent.ExecuteBatchFile("Database\\DataDomainObjects_CreateDB.sql", false, DatabaseConfiguration.GetReplacementDictionary());
-        var testDomainAgent = new DatabaseAgent(DatabaseTest.TestDomainConnectionString);
-        testDomainAgent.ExecuteBatchFile("Database\\DataDomainObjects_SetupDB.sql", true, DatabaseConfiguration.GetReplacementDictionary());
-
-        _standardMappingDatabaseAgent = new StandardMappingDatabaseAgent(DatabaseTest.TestDomainConnectionString);
-        string sqlFileName = StandardMappingTest.CreateTestDataFileName;
-        _standardMappingDatabaseAgent.ExecuteBatchFile(sqlFileName, true, DatabaseConfiguration.GetReplacementDictionary());
-        string sqlFileName1 = TableInheritanceMappingTest.CreateTestDataFileName;
-        _standardMappingDatabaseAgent.ExecuteBatchFile(sqlFileName1, true, DatabaseConfiguration.GetReplacementDictionary());
-
-        // We don't want the tests to initialize a default mapping; therefore, modify MappingConfiguration.s_fields.Current so that it will 
-        // throw when asked to generate a new MappingConfiguration.
-
-        var throwingMappingConfigurationContainer = new DoubleCheckedLockingContainer<IMappingConfiguration>(
-            () =>
-            {
-              throw new InvalidOperationException(
-                  "This test failed to setup the mapping configuration. Did you forget to derive from StandardMappingTest or to call base.SetUp?");
-            });
-        var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
-        Assertion.IsNotNull(fields);
-        _previousMappingConfigurationContainer = (DoubleCheckedLockingContainer<IMappingConfiguration>)PrivateInvoke.GetPublicField(fields, "Current");
-        PrivateInvoke.SetPublicField(fields, "Current", throwingMappingConfigurationContainer);
-      }
-      catch (Exception ex)
-      {
-        Console.WriteLine("SetUpFixture failed: " + ex);
-        Console.WriteLine();
-        throw;
-      }
-    }
-
-    [OneTimeTearDown]
-    public void OneTimeTearDown ()
-    {
-      var fields = PrivateInvoke.GetNonPublicStaticField(typeof(MappingConfiguration), "s_fields");
-      Assertion.IsNotNull(fields);
-      PrivateInvoke.SetPublicField(fields, "Current", _previousMappingConfigurationContainer);
-
-      _standardMappingDatabaseAgent.SetDatabaseReadWrite(DatabaseTest.DatabaseName);
-      SqlConnection.ClearAllPools();
+      LogManager.ResetConfiguration();
+      Assert.That(LogManager.GetLogger(typeof(LoggingClientTransactionListener)).IsDebugEnabled, Is.False);
     }
   }
 }

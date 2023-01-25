@@ -136,12 +136,10 @@ span.remotion-themed,
   min-height: var(--remotion-themed-singleline-min-height);
 }
 
-button.remotion-themed,
-input.remotion-themed,
+input.remotion-themed:not([type=submit], [type=button]),
 textarea.remotion-themed,
 select.remotion-themed,
-.remotion-themed button,
-.remotion-themed input,
+.remotion-themed input:not([type=submit], [type=button]),
 .remotion-themed textarea,
 .remotion-themed select
 {
@@ -150,32 +148,40 @@ select.remotion-themed,
   border-radius: var(--remotion-themed-border-radius);
 }
 
+button.remotion-themed,
+input[type=submit].remotion-themed,
+input[type=button].remotion-themed,
+.remotion-themed button,
+.remotion-themed input[type=submit],
+.remotion-themed input[type=button]
+{
+  background-color: var(--remotion-themed-background-color-control);
+  border: var(--remotion-themed-border-width) solid var(--color-primary);
+  border-radius: var(--remotion-themed-border-radius);
+}
+
 select:not([size]).remotion-themed,
 .remotion-themed select:not([size])
 {
-  padding-left: calc(var(--remotion-themed-spacing-small) - var(--remotion-themed-border-width));
-}
-
-.blink select:not([size]).remotion-themed,
-.blink .remotion-themed select:not([size])
-{
   padding-top: var(--remotion-themed-border-width);
+  padding-left: calc(var(--remotion-themed-spacing-small) - var(--remotion-themed-border-width));
 }
 
 .mozilla select:not([size]).remotion-themed,
 .mozilla .remotion-themed select:not([size])
 {
   padding-top: calc(var(--remotion-themed-spacing) - var(--remotion-themed-border-width));
+  padding-left: var(--remotion-themed-spacing);
 }
 
-select.remotion-themed:not(:disabled) option,
-.remotion-themed select:not(:disabled) option
+select.remotion-themed:not(:disabled) option:not(:checked),
+.remotion-themed select:not(:disabled) option:not(:checked)
 {
   background-color: var(--remotion-themed-background-color-control);
 }
 
-select.remotion-themed:disabled option,
-.remotion-themed select:disabled option
+select.remotion-themed:disabled option:not(:checked),
+.remotion-themed select:disabled option:not(:checked)
 {
   background-color: var(--remotion-themed-background-color-disabled);
 }
@@ -192,8 +198,8 @@ select.remotion-themed:not(:disabled) option:hover,
   background-color: var(--remotion-themed-background-color-hover);
 }
 
-.mozilla select.remotion-themed:disabled option[selected],
-.mozilla .remotion-themed select:disabled option[selected]
+.mozilla select.remotion-themed:disabled option:checked,
+.mozilla .remotion-themed select:disabled option:checked
 {
   filter: grayscale(100%);
   opacity: 0.33;
@@ -255,28 +261,72 @@ input[type="password"].remotion-themed,
   box-sizing: border-box;
 }
 
-.remotion-themed input[type=checkbox] + label::before,
-.remotion-themed input[type=checkbox] + span::before
+.remotion-themed input[type=checkbox] + label:not(:hover)::before,
+.remotion-themed input[type=checkbox] + span:not(:hover)::before,
+.remotion-themed input[type=checkbox]:disabled + label::before,
+.remotion-themed input[type=checkbox]:disabled + span::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxFalse');
 }
 
-.remotion-themed input[type=radio] + label::before,
-.remotion-themed input[type=radio] + span::before
+.remotion-themed input[type=checkbox]:not(:disabled) + label:hover::before,
+.remotion-themed input[type=checkbox]:not(:disabled) + span:hover::before
+{
+  background-image: url('../Image/sprite.svg#CheckBoxFalseHover');
+}
+
+.remotion-themed input[type=checkbox]:not(:disabled) + label:hover,
+.remotion-themed input[type=checkbox]:not(:disabled) + span:hover
+{
+  cursor: pointer;
+}
+
+.remotion-themed input[type=radio] + label:not(:hover)::before,
+.remotion-themed input[type=radio] + span:not(:hover)::before,
+.remotion-themed input[type=radio]:disabled + label::before,
+.remotion-themed input[type=radio]:disabled + span::before
 {
   background-image: url('../Image/sprite.svg#RadioButtonFalse');
 }
 
-.remotion-themed input[type=checkbox]:checked + label::before,
-.remotion-themed input[type=checkbox]:checked + span::before
+.remotion-themed input[type=radio]:not(:disabled) + label:hover::before,
+.remotion-themed input[type=radio]:not(:disabled) + span:hover::before
+{
+  background-image: url('../Image/sprite.svg#RadioButtonFalseHover');
+}
+
+.remotion-themed input[type=radio]:not(:disabled) + label:hover,
+.remotion-themed input[type=radio]:not(:disabled) + span:hover
+{
+  cursor: pointer;
+}
+
+.remotion-themed input[type=checkbox]:checked + label:not(:hover)::before,
+.remotion-themed input[type=checkbox]:checked + span:not(:hover)::before,
+.remotion-themed input[type=checkbox]:checked:disabled + label::before,
+.remotion-themed input[type=checkbox]:checked:disabled + span::before
 {
   background-image: url('../Image/sprite.svg#CheckBoxTrue');
 }
 
-.remotion-themed input[type=radio]:checked + label::before,
-.remotion-themed input[type=radio]:checked + span::before
+.remotion-themed input[type=checkbox]:checked:not(:disabled) + label:hover::before,
+.remotion-themed input[type=checkbox]:checked:not(:disabled) + span:hover::before
+{
+  background-image: url('../Image/sprite.svg#CheckBoxTrueHover');
+}
+
+.remotion-themed input[type=radio]:checked + label:not(:hover)::before,
+.remotion-themed input[type=radio]:checked + span:not(:hover)::before,
+.remotion-themed input[type=radio]:disabled:checked + label::before,
+.remotion-themed input[type=radio]:disabled:checked + span::before
 {
   background-image: url('../Image/sprite.svg#RadioButtonTrue');
+}
+
+.remotion-themed input[type=radio]:checked:not(:disabled) + label:hover::before,
+.remotion-themed input[type=radio]:checked:not(:disabled) + span:hover::before
+{
+  background-image: url('../Image/sprite.svg#RadioButtonTrueHover');
 }
 
 input:not(:disabled).remotion-themed:hover,
@@ -380,6 +430,23 @@ a.remotion-themed:focus,
   outline: none;
 }
 
+select.remotion-themed,
+textarea.remotion-themed,
+.remotion-themed select,
+.remotion-themed textarea
+{
+  scrollbar-width: var(--remotion-themed-scrollbar-style);
+  scrollbar-color: var(--remotion-themed-scrollbar-color-thumb) var(--remotion-themed-background-color-control);
+}
+
+select.remotion-themed:disabled,
+textarea.remotion-themed:disabled,
+.remotion-themed select:disabled,
+.remotion-themed textarea:disabled
+{
+  scrollbar-color: var(--color-disabled-border) var(--remotion-themed-background-color-disabled);
+}
+
 select.remotion-themed::-webkit-scrollbar,
 textarea.remotion-themed::-webkit-scrollbar,
 .remotion-themed select::-webkit-scrollbar,
@@ -472,7 +539,7 @@ img.disabled,
 
 .screenReaderText
 {
-  clip: rect(1px, 1px, 1px, 1px) !important;
+  clip-path: circle(0) !important;
   height: 1px !important;
   width: 1px !important;
   overflow: hidden !important;
@@ -480,4 +547,14 @@ img.disabled,
   display: inline !important;
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.blink input.screenReaderText,
+.blink textarea.screenReaderText
+{
+  /* In Chromium-based browsers, clip-path can result on jumping scroll positions when focusing the invisible input element 
+     and in Mozilla Firefox, scale-0 input elements are not announced by NVDA 2022.3.2.
+     For least impact, scale-0 is only used in problemantic browser implementations. */
+  clip-path: unset !important;
+  transform: scale(0) !important;
 }

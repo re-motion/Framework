@@ -173,6 +173,13 @@ span.bocAutoCompleteReferenceValue.readOnly span.content span:empty
   vertical-align: -0.2em;
 }
 
+.bocAutoCompleteReferenceValue.readOnly span.content input:read-only:focus + span
+{
+  outline: dotted black 1px;
+  outline: solid Highlight 2px;
+  outline: auto 5px -webkit-focus-ring-color;
+}
+
 span.bocAutoCompleteReferenceValue.readOnly span.body
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 

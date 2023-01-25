@@ -65,6 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       computer.SerialNumber = "abc";
 
       DataContainer dataContainer = computer.InternalDataContainer;
+
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 
       Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
@@ -74,8 +75,27 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That(deserializedDataContainer.DomainObject, Is.Not.Null);
       Assert.That(deserializedDataContainer.DomainObject.ID, Is.EqualTo(dataContainer.DomainObject.ID));
       Assert.That(deserializedDataContainer.State.IsChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsPersistentDataChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsNonPersistentDataChanged, Is.False);
       Assert.That(GetPropertyValue(deserializedDataContainer, typeof(Computer), "SerialNumber"), Is.EqualTo("abc"));
       Assert.That(GetPropertyValue(deserializedDataContainer, typeof(Computer), "Employee"), Is.EqualTo(employee.ID));
+    }
+
+    [Test]
+    public void DataContainer_Contents_WithNonPersistentProperty ()
+    {
+      OrderTicket orderTicket = DomainObjectIDs.OrderTicket1.GetObject<OrderTicket>();
+
+      orderTicket.Int32TransactionProperty = 42;
+
+      DataContainer dataContainer = orderTicket.InternalDataContainer;
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
+
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+      Assert.That(deserializedDataContainer.State.IsChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsPersistentDataChanged, Is.False);
+      Assert.That(deserializedDataContainer.State.IsNonPersistentDataChanged, Is.True);
+      Assert.That(GetPropertyValue(deserializedDataContainer, typeof(OrderTicket), "Int32TransactionProperty"), Is.EqualTo(42));
     }
 
     [Test]
@@ -91,6 +111,25 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
       Assert.That(deserializedDataContainer.HasBeenMarkedChanged, Is.True);
       Assert.That(deserializedDataContainer.State.IsChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsPersistentDataChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsNonPersistentDataChanged, Is.False);
+    }
+
+    [Test]
+    public void DataContainer_MarkAsChanged_Contents_WithNonPersistentDataContainer ()
+    {
+      OrderViewModel orderViewModel = OrderViewModel.NewObject();
+      DataContainer dataContainer = orderViewModel.InternalDataContainer;
+      dataContainer.CommitState();
+      dataContainer.MarkAsChanged();
+
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
+
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+      Assert.That(deserializedDataContainer.HasBeenMarkedChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsChanged, Is.True);
+      Assert.That(deserializedDataContainer.State.IsPersistentDataChanged, Is.False);
+      Assert.That(deserializedDataContainer.State.IsNonPersistentDataChanged, Is.True);
     }
 
     [Test]
@@ -101,6 +140,19 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
       DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
 
       Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+    }
+
+    [Test]
+    public void DataContainer_IsNewInHierarchy_Contents ()
+    {
+      Employee employee = DomainObjectIDs.Employee3.GetObject<Employee>();
+      DataContainer dataContainer = employee.InternalDataContainer;
+      dataContainer.SetNewInHierarchy();
+
+      DataContainer deserializedDataContainer = FlattenedSerializer.SerializeAndDeserialize(dataContainer);
+
+      Assert.That(deserializedDataContainer.ID, Is.EqualTo(dataContainer.ID));
+      Assert.That(deserializedDataContainer.State.IsNewInHierarchy, Is.True);
     }
 
     [Test]

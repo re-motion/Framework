@@ -84,9 +84,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
     [Test]
     public void ReleaseTransaction ()
     {
-      var sequence = new MockSequence();
-      _childTransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
-      _outerTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.UnregisterChildTransactionStrategy(_strategy)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _childTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Verifiable();
+      _outerTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.UnregisterChildTransactionStrategy(_strategy)).Verifiable();
 
       PrivateInvoke.InvokeNonPublicMethod(_strategy, "ReleaseTransaction");
 
@@ -95,6 +95,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _childTransactionMock.Verify();
       _executionContextStub.Verify();
       _executionListenerStub.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -104,12 +105,12 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _strategy.OnExecutionPlay(_context, _executionListenerStub.Object);
       _childTransactionMock.Reset();
 
-      var sequence = new MockSequence();
-      _childTransactionMock.InSequence(sequence).Setup(stub => stub.Commit()); ;
-      _executionContextStub.InSequence(sequence).Setup(stub => stub.GetOutParameters()).Returns(new object[0]);
-      _outerTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.IsNotNull<IEnumerable>()));
-      _childTransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
-      _outerTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.UnregisterChildTransactionStrategy(_strategy)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _childTransactionMock.InVerifiableSequence(sequence).Setup(stub => stub.Commit()); ;
+      _executionContextStub.InVerifiableSequence(sequence).Setup(stub => stub.GetOutParameters()).Returns(new object[0]);
+      _outerTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.EnsureCompatibility(It.IsNotNull<IEnumerable>()));
+      _childTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Verifiable();
+      _outerTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.UnregisterChildTransactionStrategy(_strategy)).Verifiable();
 
       _strategy.OnExecutionStop(_context, _executionListenerStub.Object);
 
@@ -118,6 +119,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _childTransactionMock.Verify();
       _executionContextStub.Verify();
       _executionListenerStub.Verify();
+      sequence.Verify();
     }
 
     [Test]
@@ -127,9 +129,9 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _strategy.OnExecutionPlay(_context, _executionListenerStub.Object);
       _childTransactionMock.Reset();
 
-      var sequence = new MockSequence();
-      _childTransactionMock.InSequence(sequence).Setup(mock => mock.Release()).Verifiable();
-      _outerTransactionStrategyMock.InSequence(sequence).Setup(mock => mock.UnregisterChildTransactionStrategy(_strategy)).Verifiable();
+      var sequence = new VerifiableSequence();
+      _childTransactionMock.InVerifiableSequence(sequence).Setup(mock => mock.Release()).Verifiable();
+      _outerTransactionStrategyMock.InVerifiableSequence(sequence).Setup(mock => mock.UnregisterChildTransactionStrategy(_strategy)).Verifiable();
 
       _strategy.OnExecutionFail(_context, _executionListenerStub.Object, new Exception("Inner Exception"));
 
@@ -138,6 +140,7 @@ namespace Remotion.Web.UnitTests.Core.ExecutionEngine.Infrastructure
       _childTransactionMock.Verify();
       _executionContextStub.Verify();
       _executionListenerStub.Verify();
+      sequence.Verify();
     }
   }
 }

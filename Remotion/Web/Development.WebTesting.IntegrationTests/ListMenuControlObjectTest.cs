@@ -166,6 +166,28 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
       Assert.That(home.Scope.FindId("TestOutputLabel").Text, Is.EqualTo("ItemID4|WxeFunction"));
     }
 
+    [Test]
+    public void TestHeading ()
+    {
+      var home = Start();
+
+      var listMenu = home.ListMenus().GetByLocalID("MyListMenu");
+      var heading = listMenu.Heading;
+
+      Assert.That(heading, Is.EqualTo("Test List Menu"));
+    }
+
+    [Test]
+    public void TestMissingHeading ()
+    {
+      var home = Start();
+
+      var listMenu = home.ListMenus().GetByLocalID("MyListMenu2");
+      var heading = listMenu.Heading;
+
+      Assert.That(heading, Is.Null);
+    }
+
     private WxePageObject Start ()
     {
       return Start<WxePageObject>("ListMenuTest.wxe");

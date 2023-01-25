@@ -35,12 +35,14 @@ span.bocDateValue.disabled
 {
 }
 
-.mozilla span.bocDateInputWrapper
+.mozilla span.bocDateTimeValue:not(.readOnly) span.bocDateInputWrapper,
+.mozilla span.bocDateValue:not(.readOnly) span.bocDateInputWrapper
 {
   right: 2px;
 }
 
-span.bocDateInputWrapper
+span.bocDateTimeValue:not(.readOnly) span.bocDateInputWrapper,
+span.bocDateValue:not(.readOnly) span.bocDateInputWrapper
 {
   position: absolute;
   left: 0;
@@ -48,44 +50,44 @@ span.bocDateInputWrapper
   width: auto;
 }
 
-span.bocTimeInputWrapper
+span.bocDateTimeValue:not(.readOnly) span.bocTimeInputWrapper
 {
   position: absolute;
   right: 0;
 }
 
-span.bocDateTimeValue span.bocDate24HoursWithSeconds,
-span.bocDateTimeValue span.bocDate12HoursWithSeconds
+span.bocDateTimeValue:not(.readOnly) span.bocDate24HoursWithSeconds,
+span.bocDateTimeValue:not(.readOnly) span.bocDate12HoursWithSeconds
 {
   right: 9.0em;
 }
 
-.mozilla span.bocDateTimeValue span.bocDate24HoursWithSeconds,
-.mozilla span.bocDateTimeValue span.bocDate12HoursWithSeconds
+.mozilla span.bocDateTimeValue:not(.readOnly) span.bocDate24HoursWithSeconds,
+.mozilla span.bocDateTimeValue:not(.readOnly) span.bocDate12HoursWithSeconds
 {
   right: calc(9.0em + 2px);
 }
 
-span.bocDateTimeValue span.bocDate24Hours,
-span.bocDateTimeValue span.bocDate12Hours
+span.bocDateTimeValue:not(.readOnly) span.bocDate24Hours,
+span.bocDateTimeValue:not(.readOnly) span.bocDate12Hours
 {
   right: 7.4em;
 }
 
-.mozilla span.bocDateTimeValue span.bocDate24Hours,
-.mozilla span.bocDateTimeValue span.bocDate12Hours
+.mozilla span.bocDateTimeValue:not(.readOnly) span.bocDate24Hours,
+.mozilla span.bocDateTimeValue:not(.readOnly) span.bocDate12Hours
 {
   right: calc(7.4em + 4px);
 }
 
-span.bocDateValue span.bocDate24Hours,
-span.bocDateValue span.bocDate12Hours
+span.bocDateValue:not(.readOnly) span.bocDate24Hours,
+span.bocDateValue:not(.readOnly) span.bocDate12Hours
 {
   right: 2.2em;
 }
 
-.mozilla span.bocDateValue span.bocDate24Hours,
-.mozilla span.bocDateValue span.bocDate12Hours
+.mozilla span.bocDateValue:not(.readOnly) span.bocDate24Hours,
+.mozilla span.bocDateValue:not(.readOnly) span.bocDate12Hours
 {
   right: calc(2.2em + 2px);
 }
@@ -107,8 +109,8 @@ span.bocTime12Hours input
   width: 4.5em;
 }
 
-span.bocDateTimeValue.readOnly span[tabindex],
-span.bocDateValue.readOnly span[tabindex]
+span.bocDateTimeValue.readOnly input:read-only + span,
+span.bocDateValue.readOnly input:read-only + span
 {
   /* Ensures that diacritic marks can be rendered without being cut off. 
      Using line-height instead of padding works better with BocDateTimeValue. When using padding, the text is not aligned with the label. */
@@ -117,38 +119,46 @@ span.bocDateValue.readOnly span[tabindex]
   display: inline-block;
 }
 
-span.bocDateTimeValue.readOnly span[tabindex]:first-child,
-span.bocDateValue.readOnly span[tabindex]:first-child
+span.bocDateTimeValue.readOnly input:read-only + span:first-child,
+span.bocDateValue.readOnly input:read-only + span:first-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   /*padding-top: 0.2em;*/
 }
 
-span.bocDateTimeValue.readOnly span[tabindex]:last-child,
-span.bocDateValue.readOnly span[tabindex]:last-child
+span.bocDateTimeValue.readOnly input:read-only + span:last-child,
+span.bocDateValue.readOnly input:read-only + span:last-child
 {
   /* Ensures that diacritic marks can be rendered without being cut off. */
   /*padding-bottom: 0.2em;*/
 }
 
-span.bocDateTimeValue.readOnly span[tabindex]:empty,
-span.bocDateValue.readOnly span[tabindex]:empty
+span.bocDateTimeValue.readOnly input:read-only + span:empty,
+span.bocDateValue.readOnly input:read-only + span:empty
 {
   /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
   min-height: 1.5em;
   vertical-align: -0.2em;
 }
 
-span.bocDateTimeValue.readOnly span[tabindex]:empty
+span.bocDateTimeValue.readOnly input:read-only + span:empty
 {
   /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
   width: calc(50% - 2px);
 }
 
-span.bocDateValue.readOnly span[tabindex]:empty
+span.bocDateValue.readOnly input:read-only + span:empty
 {
   /* Ensures that empty readonly values are not collapsed and can therefor visualize the keyboard focus */
   width: 100%;
+}
+
+span.bocDateTimeValue.readOnly input:read-only:focus + span,
+span.bocDateValue.readOnly input:read-only:focus + span
+{
+  outline: dotted black 1px;
+  outline: solid Highlight 2px;
+  outline: auto 5px -webkit-focus-ring-color;
 }
 
 a.bocPicker24HoursWithSeconds,

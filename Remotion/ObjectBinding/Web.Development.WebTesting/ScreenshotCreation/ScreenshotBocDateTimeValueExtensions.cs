@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       ElementScope target;
       if (fluentDateTimeValue.IsReadOnly())
-        target = fluentDateTimeValue.Target.Scope.FindCss("span:nth-child(1)");
+        target = fluentDateTimeValue.Target.Scope.FindCss("span.bocDateInputWrapper span[aria-hidden]");
       else
         target = fluentDateTimeValue.Target.Scope.FindChild("DateValue", Options.NoWait);
       target.EnsureExistence();
@@ -104,7 +104,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.ScreenshotCreation
 
       ElementScope target;
       if (fluentDateTimeValue.IsReadOnly())
-        target = fluentDateTimeValue.Target.Scope.FindCss("span:nth-child(2)");
+        target = fluentDateTimeValue.Target.Scope.FindCss("span.bocTimeInputWrapper span[aria-hidden]");
       else
         target = fluentDateTimeValue.Target.Scope.FindChild("TimeValue", Options.NoWait);
       target.EnsureExistence();
