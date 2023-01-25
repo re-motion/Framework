@@ -1,5 +1,10 @@
 <Project>
 
+  <PropertyGroup>
+    <!-- Allow pre-release dependencies (i.e. CoreForms) in stable package -->
+    <NoWarn>$(NoWarn);NU5104</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' != 'net48'">
     <PackageReference Include="CoreForms.Web" Version="5.0.0-alpha.7" />
     <PackageReference Include="CoreForms.Web.Extensions" Version="5.0.0-alpha.7" />
