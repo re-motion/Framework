@@ -50,13 +50,10 @@ namespace Remotion.Validation.Validators
     {
       var propertyValue = context.PropertyValue;
 
-      if (propertyValue == null)
+      if (propertyValue is not byte[] binaryValue)
         return true;
 
-      if(propertyValue is byte[] binaryValue)
-        return binaryValue.Length > 0;
-
-      throw new NotSupportedException($"Only properties of type '{nameof(Byte)}[]' are supported.");
+      return binaryValue.Length > 0;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)

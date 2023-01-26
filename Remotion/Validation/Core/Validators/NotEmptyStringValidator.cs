@@ -50,13 +50,10 @@ namespace Remotion.Validation.Validators
     {
       var propertyValue = context.PropertyValue;
 
-      if (propertyValue == null)
+      if (propertyValue is not string stringValue)
         return true;
 
-      if(propertyValue is string stringValue)
-        return stringValue.Length > 0;
-
-      throw new NotSupportedException($"Only properties of type '{nameof(String)}' are supported.");
+      return stringValue.Length > 0;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)

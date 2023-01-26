@@ -65,7 +65,7 @@ namespace Remotion.Validation.Validators
       if (propertyValue.GetType().CanAscribeTo(typeof(ICollection<>)))
         return ((IEnumerable<object>)propertyValue).Any();
 
-      throw new NotSupportedException($"Only the following types are supported: IReadOnlyCollection<T>, ICollection<T>, and ICollection.");
+      return true;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
