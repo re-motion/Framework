@@ -26,7 +26,11 @@ using Remotion.Validation.Validators;
 namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
-  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce one of the following <see cref="IPropertyValidator"/>s, based on the property <see cref="Type"/>:
+  /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyStringValidator"/>, <see cref="NotEmptyBinaryValidator"/>, or
+  /// <see cref="NotEmptyCollectionValidator"/>, based on the property <see cref="Type"/>:
+  /// </summary>
+  /// <remarks>
+  /// The mapping between property types and validator types is as follows:
   /// <list type="bullet">
   ///   <item>
   ///     <term><see cref="string"/>: </term>
@@ -49,7 +53,7 @@ namespace Remotion.Validation.Attributes.Validation
   ///     <description><see cref="NotEmptyCollectionValidator"/></description>
   ///   </item>
   /// </list>
-  /// </summary>
+  /// </remarks>
   public class NotEmptyValidationAttribute : AddingValidationAttributeBase
   {
     public NotEmptyValidationAttribute ()
@@ -79,15 +83,20 @@ namespace Remotion.Validation.Attributes.Validation
 
       IPropertyValidator CreateValidator (Func<ValidationMessage, IPropertyValidator> factory)
       {
+        IPropertyValidator propertyValidator;
         if (string.IsNullOrEmpty(ErrorMessage))
         {
-          return PropertyValidatorFactory.Create(
+          propertyValidator = PropertyValidatorFactory.Create(
               property,
               parameters => factory(parameters.ValidationMessage),
               validationMessageFactory);
         }
+        else
+        {
+          propertyValidator = factory(new InvariantValidationMessage(ErrorMessage));
+        }
 
-        return factory(new InvariantValidationMessage(ErrorMessage));
+        return propertyValidator;
       }
     }
   }

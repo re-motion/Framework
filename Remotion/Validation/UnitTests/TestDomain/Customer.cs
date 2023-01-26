@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Remotion.Validation.Attributes.Validation;
 
@@ -36,6 +37,8 @@ namespace Remotion.Validation.UnitTests.TestDomain
     public virtual Address BillingAddress { get; set; }
 
     public virtual ICollection<Address> ShippingAddresses { get; set; }
+
+    public virtual ICollection Referrals { get; set; }
 
     public string Dummy ()
     {
