@@ -52,7 +52,8 @@ namespace Remotion.Validation.Globalization
       ValueMustMatchPredicateValidationMessage,
       ValueMustMatchRegularExpressionValidationMessage,
       ValueMustNotBeEmptyCollectionValidationMessage,
-      ValueMustNotBeEmptyValueValidationMessage,
+      ValueMustNotBeEmptyStringValidationMessage,
+      ValueMustNotBeEmptyBinaryValidationMessage,
       ValueMustNotBeEqualValidationMessage,
       ValueMustNotBeNullCollectionValidationMessage,
       ValueMustNotBeNullBooleanValidationMessage,
@@ -128,10 +129,10 @@ namespace Remotion.Validation.Globalization
         return GetResourceIdentifierForLengthValidator(lengthValidator);
 
       if (validator is NotEmptyStringValidator)
-        return ResourceIdentifier.ValueMustNotBeEmptyValueValidationMessage;
+        return ResourceIdentifier.ValueMustNotBeEmptyStringValidationMessage;
 
       if (validator is NotEmptyBinaryValidator)
-        return ResourceIdentifier.ValueMustNotBeEmptyValueValidationMessage;
+        return ResourceIdentifier.ValueMustNotBeEmptyBinaryValidationMessage;
 
       if (validator is NotEmptyCollectionValidator)
         return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
