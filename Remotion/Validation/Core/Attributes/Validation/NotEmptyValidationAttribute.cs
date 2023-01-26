@@ -65,39 +65,34 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull("property", property);
       ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
-      IPropertyValidator validator;
-      if(typeof(string).IsAssignableFrom(property.PropertyType))
-        validator = CreateValidator(msg => new NotEmptyStringValidator(msg));
-      else if (typeof(byte[]).IsAssignableFrom(property.PropertyType))
-        validator = CreateValidator(msg => new NotEmptyBinaryValidator(msg));
+      Func<ValidationMessage, IPropertyValidator> validatorFactory;
+      if(typeof(string) == property.PropertyType)
+        validatorFactory = msg => new NotEmptyStringValidator(msg);
+      else if (typeof(byte[]) == property.PropertyType)
+        validatorFactory = msg => new NotEmptyBinaryValidator(msg);
       else if(typeof(ICollection).IsAssignableFrom(property.PropertyType))
-        validator = CreateValidator(msg => new NotEmptyCollectionValidator(msg));
+        validatorFactory = msg => new NotEmptyCollectionValidator(msg);
       else if (typeof(IReadOnlyCollection<object>).IsAssignableFrom(property.PropertyType))
-        validator = CreateValidator(msg => new NotEmptyCollectionValidator(msg));
+        validatorFactory = msg => new NotEmptyCollectionValidator(msg);
       else if(property.PropertyType.CanAscribeTo(typeof(ICollection<>)))
-        validator = CreateValidator(msg => new NotEmptyCollectionValidator(msg));
+        validatorFactory = msg => new NotEmptyCollectionValidator(msg);
       else
         throw new NotSupportedException($"{nameof(NotEmptyValidationAttribute)} is not supported for properties of type '{property.PropertyType.FullName}'.");
 
-      return EnumerableUtility.Singleton(validator);
-
-      IPropertyValidator CreateValidator (Func<ValidationMessage, IPropertyValidator> factory)
+      IPropertyValidator propertyValidator;
+      if (string.IsNullOrEmpty(ErrorMessage))
       {
-        IPropertyValidator propertyValidator;
-        if (string.IsNullOrEmpty(ErrorMessage))
-        {
-          propertyValidator = PropertyValidatorFactory.Create(
-              property,
-              parameters => factory(parameters.ValidationMessage),
-              validationMessageFactory);
-        }
-        else
-        {
-          propertyValidator = factory(new InvariantValidationMessage(ErrorMessage));
-        }
-
-        return propertyValidator;
+        propertyValidator = PropertyValidatorFactory.Create(
+            property,
+            parameters => validatorFactory(parameters.ValidationMessage),
+            validationMessageFactory);
       }
+      else
+      {
+        propertyValidator = validatorFactory(new InvariantValidationMessage(ErrorMessage));
+      }
+
+      return EnumerableUtility.Singleton(propertyValidator);
     }
   }
 }
