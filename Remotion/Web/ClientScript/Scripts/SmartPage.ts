@@ -36,7 +36,6 @@ type SmartPage_OnBeforeUnloadEventHandler = (this: null) => void;
 type SmartPage_OnAbortEventHandler = (this: null, hasSubmitted: boolean, isCached: boolean) => void;
 type SmartPage_OnUnloadEventHandler = (this: null) => void;
 type SmartPage_OnPostbackEventHandler = (this: null, eventTarget: Nullable<string>, eventObject: string) => void;
-type SmartPage_OnScrollEventHandler = (this: null) => void;
 
 type SmartPage_EventMap = {
   onloading: SmartPage_OnLoadingEventHandler,
@@ -45,7 +44,6 @@ type SmartPage_EventMap = {
   onabort: SmartPage_OnAbortEventHandler,
   onunload: SmartPage_OnUnloadEventHandler,
   onpostback: SmartPage_OnPostbackEventHandler,
-  onscroll: SmartPage_OnScrollEventHandler,
 };
 type SmartPage_Event = keyof SmartPage_EventMap;
 
@@ -129,7 +127,6 @@ class SmartPage_Context
   private _loadHandler = function () { SmartPage_Context.Instance!.OnLoad(); };
   private _beforeUnloadHandler = function () { return SmartPage_Context.Instance!.OnBeforeUnload(); };
   private _unloadHandler = function () { return SmartPage_Context.Instance!.OnUnload(); };
-  private _scrollHandler = function () { SmartPage_Context.Instance!.OnScroll(); };
   private _formSubmitHandler = function () { return SmartPage_Context.Instance!.OnFormSubmit(); };
   private _formClickHandler = function (evt: MouseEvent) { return SmartPage_Context.Instance!.OnFormClick(evt); };
   private _doPostBackHandler = function (eventTarget: string, eventArg: string) { SmartPage_Context.Instance!.DoPostBack(eventTarget, eventArg); };
@@ -225,9 +222,6 @@ class SmartPage_Context
     window.onbeforeunload = this._beforeUnloadHandler;
 
     window.onunload = this._unloadHandler;
-
-    window.removeEventListener('scroll', this._scrollHandler);
-    window.addEventListener('scroll', this._scrollHandler);
 
     window.document.removeEventListener('mousedown', this._mouseDownHandler);
     window.document.addEventListener('mousedown', this._mouseDownHandler);
@@ -806,14 +800,6 @@ class SmartPage_Context
 
     this.ShowStatusIsSubmittingMessage();
     return false;
-  };
-
-  // Event handler for Window.OnScroll.
-  public OnScroll(): void
-  {
-    if (this._statusMessageWindow != null)
-      this.AlignStatusMessage(this._statusMessageWindow);
-    this.ExecuteEventHandlers('onscroll');
   };
 
   // Sends an AJAX request to the server.
