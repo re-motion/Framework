@@ -33,6 +33,7 @@ namespace Remotion.Web.UI
     /// <summary> Raised when the user leaves the page. Signature: <c>void Function (hasSubmitted, isCached)</c> </summary>
     OnAbort,
     /// <summary> Raised when the user scrolls the page. Signature: <c>void Function ()</c> </summary>
+    [Obsolete("SmartPage.OnScroll event is no longer supported. Use CSS (recommendation) or implement a scroll handler inside application code. (Version 4.0.0)", true)]
     OnScroll,
     /// <summary> Raised when the user resizes the page. Signature: <c>void Function ()</c> </summary>
     [Obsolete("SmartPage.OnResize event is no longer supported. Use CSS (recommendation) or implement a resize handler inside application code. (Version 4.0.0)", true)]
