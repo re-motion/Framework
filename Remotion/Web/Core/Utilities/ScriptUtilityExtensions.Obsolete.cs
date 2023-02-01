@@ -26,5 +26,11 @@ namespace Remotion.Web.Utilities
     {
       throw new NotSupportedException("IScriptUtility.RegisterElementForBorderSpans() was removed. (Version 4.0.0)");
     }
+
+    [Obsolete("IScriptUtility.RegisterResizeOnElement() was removed. (Version 4.0.0)", true)]
+    public static void RegisterResizeOnElement (this IScriptUtility scriptUtility, IControl control, string cssSelector, string eventHandler)
+    {
+      throw new NotSupportedException("IScriptUtility.RegisterResizeOnElement() was removed. (Version 4.0.0)");
+    }
   }
 }

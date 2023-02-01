@@ -37,7 +37,6 @@ type SmartPage_OnAbortEventHandler = (this: null, hasSubmitted: boolean, isCache
 type SmartPage_OnUnloadEventHandler = (this: null) => void;
 type SmartPage_OnPostbackEventHandler = (this: null, eventTarget: Nullable<string>, eventObject: string) => void;
 type SmartPage_OnScrollEventHandler = (this: null) => void;
-type SmartPage_OnResizeEventHandler = (this: null) => void;
 
 type SmartPage_EventMap = {
   onloading: SmartPage_OnLoadingEventHandler,
@@ -47,7 +46,6 @@ type SmartPage_EventMap = {
   onunload: SmartPage_OnUnloadEventHandler,
   onpostback: SmartPage_OnPostbackEventHandler,
   onscroll: SmartPage_OnScrollEventHandler,
-  onresize: SmartPage_OnResizeEventHandler,
 };
 type SmartPage_Event = keyof SmartPage_EventMap;
 
@@ -132,7 +130,6 @@ class SmartPage_Context
   private _beforeUnloadHandler = function () { return SmartPage_Context.Instance!.OnBeforeUnload(); };
   private _unloadHandler = function () { return SmartPage_Context.Instance!.OnUnload(); };
   private _scrollHandler = function () { SmartPage_Context.Instance!.OnScroll(); };
-  private _resizeHandler = function () { SmartPage_Context.Instance!.OnResize(); };
   private _formSubmitHandler = function () { return SmartPage_Context.Instance!.OnFormSubmit(); };
   private _formClickHandler = function (evt: MouseEvent) { return SmartPage_Context.Instance!.OnFormClick(evt); };
   private _doPostBackHandler = function (eventTarget: string, eventArg: string) { SmartPage_Context.Instance!.DoPostBack(eventTarget, eventArg); };
@@ -237,8 +234,6 @@ class SmartPage_Context
 
     window.document.removeEventListener('mouseup', this._mouseUpHandler);
     window.document.addEventListener('mouseup', this._mouseUpHandler);
-
-    PageUtility.Instance.RegisterResizeHandler('#' + this._theForm.id, this._resizeHandler);
 
     this._aspnetFormOnSubmit = this._theForm.onsubmit as Nullable<() => boolean>;
     this._theForm.onsubmit = this._formSubmitHandler;
@@ -819,14 +814,6 @@ class SmartPage_Context
     if (this._statusMessageWindow != null)
       this.AlignStatusMessage(this._statusMessageWindow);
     this.ExecuteEventHandlers('onscroll');
-  };
-
-  // Event handler for Window.OnResize.
-  public OnResize(): void
-  {
-    if (this._statusMessageWindow != null)
-      this.AlignStatusMessage(this._statusMessageWindow);
-    this.ExecuteEventHandlers('onresize');
   };
 
   // Sends an AJAX request to the server.

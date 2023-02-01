@@ -37,20 +37,7 @@ declare class ArgumentUtility {
 }
 declare class PageUtility {
     static Instance: PageUtility;
-    private _resizeHandlers;
-    private _resizeTimeoutID;
-    private _resizeTimeoutInMilliSeconds;
-    constructor();
-    RegisterResizeHandler(selector: string, handler: PageUtility_ResizeHandler): void;
-    PrepareExecuteResizeHandlers(): void;
-    ExecuteResizeHandlers(): void;
     IsInDom(element: HTMLElement): boolean;
-}
-declare type PageUtility_ResizeHandler = (element: HTMLElement) => void;
-declare class PageUtility_ResizeHandlerItem {
-    readonly Selector: string;
-    Handler: PageUtility_ResizeHandler;
-    constructor(selector: string, handler: PageUtility_ResizeHandler);
 }
 declare type WebServiceProxyInvokeFunction<TResult, TUserContext> = (servicePath: string, methodName: string, useGet?: boolean, params?: Nullable<Dictionary<string>>, onSuccess?: (result: TResult, userContext: TUserContext, methodName: string) => void, onFailure?: (error: Sys.Net.WebServiceError, userContext: TUserContext, methodName: string) => void, userContext?: TUserContext, timeout?: number, enableJsonp?: boolean, jsonpCallbackParameter?: string) => Sys.Net.WebRequest;
 declare class WebServiceUtility {
