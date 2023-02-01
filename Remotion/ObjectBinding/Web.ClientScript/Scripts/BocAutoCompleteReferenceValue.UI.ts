@@ -1762,9 +1762,12 @@ namespace Remotion.BocAutoCompleteReferenceValue
         const position = calculateSpaceAround(reference);
 
         const isVisibe = LayoutUtility.IsVisible(popUp);
+        let scrollbarGutterValueBackup: string  = "";
         if (!isVisibe)
         {
             popUp.style.width = 'auto'; // clear the width before showing the popUp, otherwise, the popUp expands to 100%
+            scrollbarGutterValueBackup = popUp.style.getPropertyValue("scrollbar-gutter");
+            popUp.style.setProperty("scrollbar-gutter", "stable")
             LayoutUtility.Show(popUp); // provide initial dimensions to popUp
         }
 
@@ -1772,12 +1775,20 @@ namespace Remotion.BocAutoCompleteReferenceValue
         let contentHeight = Math.max(0, Math.max(...(Array.from(popUpDiv.children) as HTMLElement[]).map(function (el) { return el.offsetHeight + el.offsetTop; })));
 
         let contentWidth = parseInt(popUp.dataset['popUpContentWidth']!, 10);
+        let scrollbarWidth = parseInt(popUp.dataset['popUpScrollbarWidth']!, 10);
         if (!isVisibe)
         {
+            const totalWidthWithScrollbar = LayoutUtility.GetOuterWidth(popUp);
+
+            popUp.style.setProperty("scrollbar-gutter", scrollbarGutterValueBackup);
             const htmlPopUpDiv = popUpDiv as HTMLElement;
             const width = LayoutUtility.GetOuterWidth(popUp);
             contentWidth = Math.max(0, width);
+
+            scrollbarWidth = totalWidthWithScrollbar - width;
+
             popUp.dataset['popUpContentWidth'] = '' + contentWidth;
+            popUp.dataset['popUpScrollbarWidth'] = '' + scrollbarWidth;
         }
 
         if (!isVisibe)
@@ -1817,9 +1828,10 @@ namespace Remotion.BocAutoCompleteReferenceValue
         const referenceWidth = LayoutUtility.GetOuterWidth(reference);
         const marginLeft = 30;
         const availableWidth = position.left + referenceWidth - marginLeft;
+        const isScrollbarRequired = requiredHeight >= maxHeightSafe;
         // js rounding errors sometimes create linebreaks
         // therefore we add a single pixel for the field to always be wide enough:
-        const requiredWidth = contentWidth + 1;
+        const requiredWidth = contentWidth + 1 + (isScrollbarRequired ? scrollbarWidth : 0);
         const maxWidth = Math.min (isNaN (options.maxWidth) ? referenceWidth : options.maxWidth, availableWidth);
         const maxAllowedWidth = Math.min(requiredWidth, maxWidth)
         const elementWidth = Math.max(referenceWidth, maxAllowedWidth)

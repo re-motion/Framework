@@ -74,7 +74,7 @@ namespace OBWTest
         Directory.CreateDirectory(objectPath);
       var defaultServiceLocator = DefaultServiceLocator.Create();
 
-      //defaultServiceLocator.RegisterSingle<ResourceTheme> (() => new ResourceTheme.NovaGray());
+      //defaultServiceLocator.RegisterSingle<ResourceTheme>(() => new ResourceTheme.NovaGray());
 
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
