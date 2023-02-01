@@ -33,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Development.Analyzers\bin\$(Configuration)\netstandard2.0\Remotion.Web.Development.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Update="..\..\Remotion LGPL.licenseheader" Pack="true" PackagePath="res/" Visible="false" />
   </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
