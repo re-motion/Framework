@@ -39,8 +39,8 @@ namespace Remotion.Reflection.TypeDiscovery
       using (StopwatchScope.CreateScope(s_log.Value, LogLevel.Debug, string.Format("Built BaseTypeCache. Time taken: {{elapsed}}")))
       {
         // Note: there is no measurable impact when switching this code to parallel execution.
-        var classes = new HashSet<KeyValuePair<Type, Type>>();
-        var interfaces = new HashSet<KeyValuePair<Type, Type>>();
+        var classes = new List<KeyValuePair<Type, Type>>();
+        var interfaces = new List<KeyValuePair<Type, Type>>();
 
         var typesToProcess = new Queue<Type>();
         var enqueuedTypes = new HashSet<Type>();
@@ -51,6 +51,7 @@ namespace Remotion.Reflection.TypeDiscovery
             typesToProcess.Enqueue(type);
         }
 
+        var processedInterfaces = new HashSet<Type>();
         while (typesToProcess.Count > 0)
         {
           var type = typesToProcess.Dequeue();
@@ -69,13 +70,15 @@ namespace Remotion.Reflection.TypeDiscovery
             } while (nextBaseType != null);
           }
 
+          processedInterfaces.Clear();
           foreach (var interfaceType in type.GetInterfaces())
           {
             var normalizedInterfaceType = GetNormalizedType(interfaceType);
             if (enqueuedTypes.Add(normalizedInterfaceType))
               typesToProcess.Enqueue(normalizedInterfaceType);
 
-            interfaces.Add(new KeyValuePair<Type, Type>(normalizedInterfaceType, type));
+            if (processedInterfaces.Add(normalizedInterfaceType))
+              interfaces.Add(new KeyValuePair<Type, Type>(normalizedInterfaceType, type));
           }
 
           if (type.IsInterface)
