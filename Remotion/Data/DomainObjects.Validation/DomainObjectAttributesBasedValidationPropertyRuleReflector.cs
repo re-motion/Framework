@@ -172,14 +172,14 @@ namespace Remotion.Data.DomainObjects.Validation
 
       if (!_domainModelConstraintProvider.IsNullable(_implementationPropertyInformation))
       {
-        if (typeof(string).IsAssignableFrom(_implementationProperty.PropertyType))
+        if (_implementationProperty.PropertyType == typeof(string))
         {
           yield return PropertyValidatorFactory.Create(
               _implementationPropertyInformation,
               parameters => new NotEmptyStringValidator(parameters.ValidationMessage),
               _validationMessageFactory);
         }
-        else if (typeof(byte[]).IsAssignableFrom(_implementationProperty.PropertyType))
+        else if (_implementationProperty.PropertyType == typeof(byte[]))
         {
           yield return PropertyValidatorFactory.Create(
               _implementationPropertyInformation,

@@ -38,7 +38,7 @@ namespace Remotion.Validation.UnitTests.TestDomain
 
     public virtual ICollection<Address> ShippingAddresses { get; set; }
 
-    public virtual ICollection Referrals { get; set; }
+    public virtual ICollection AvailableBonuses { get; set; }
 
     public string Dummy ()
     {

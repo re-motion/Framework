@@ -31,6 +31,5 @@ namespace Remotion.Validation.UnitTests.TestDomain
     public virtual byte[] Photograph { get; set; }
 
     public virtual IReadOnlyCollection<Person> FamilyMembers { get; set; }
-
   }
 }

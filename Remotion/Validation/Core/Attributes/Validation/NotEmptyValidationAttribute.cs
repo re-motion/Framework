@@ -27,7 +27,7 @@ namespace Remotion.Validation.Attributes.Validation
 {
   /// <summary>
   /// Apply the <see cref="NotEmptyValidationAttribute"/> to introduce a <see cref="NotEmptyStringValidator"/>, <see cref="NotEmptyBinaryValidator"/>, or
-  /// <see cref="NotEmptyCollectionValidator"/>, based on the property <see cref="Type"/>:
+  /// <see cref="NotEmptyCollectionValidator"/>, based on the property <see cref="Type"/>.
   /// </summary>
   /// <remarks>
   /// The mapping between property types and validator types is as follows:
@@ -66,9 +66,9 @@ namespace Remotion.Validation.Attributes.Validation
       ArgumentUtility.CheckNotNull("validationMessageFactory", validationMessageFactory);
 
       Func<ValidationMessage, IPropertyValidator> validatorFactory;
-      if(typeof(string) == property.PropertyType)
+      if(property.PropertyType == typeof(string))
         validatorFactory = msg => new NotEmptyStringValidator(msg);
-      else if (typeof(byte[]) == property.PropertyType)
+      else if (property.PropertyType == typeof(byte[]))
         validatorFactory = msg => new NotEmptyBinaryValidator(msg);
       else if(typeof(ICollection).IsAssignableFrom(property.PropertyType))
         validatorFactory = msg => new NotEmptyCollectionValidator(msg);

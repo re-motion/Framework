@@ -138,7 +138,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator_ForCollectionProperty_WithDefaultMessage ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.Referrals)));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.AvailableBonuses)));
       var validationMessageStub = new Mock<ValidationMessage>();
       _validationMessageFactoryStub
           .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEmptyCollectionValidator>(), propertyInformation))
@@ -157,7 +157,7 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     [Test]
     public void GetPropertyValidator_ForCollectionProperty_WithCustomMessage ()
     {
-      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.Referrals)));
+      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Customer.AvailableBonuses)));
       _attribute.ErrorMessage = "CustomMessage";
 
       var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
