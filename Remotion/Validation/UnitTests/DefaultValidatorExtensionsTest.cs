@@ -159,6 +159,40 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
+    public void NotEmptyOrWhitespace_ForString_ReturnsNotEmptyOrWhitespaceValidator ()
+    {
+      var validationMessage = new InvariantValidationMessage("Fake message");
+      var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
+      IPropertyValidator createdValidator = null;
+      var addingPropertyValidationRuleBuilderMock = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
+      addingPropertyValidationRuleBuilderMock
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+          .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
+
+      addingPropertyValidationRuleBuilderMock.Object.NotEmptyOrWhitespace();
+
+      addingPropertyValidationRuleBuilderMock.Verify();
+      Assert.That(createdValidator, Is.InstanceOf<NotEmptyOrWhitespaceValidator>());
+    }
+
+    [Test]
+    public void NotEmptyOrWhitespace_ForStringArray_ReturnsNotEmptyOrWhitespaceValidator ()
+    {
+      var validationMessage = new InvariantValidationMessage("Fake message");
+      var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
+      IPropertyValidator createdValidator = null;
+      var addingPropertyValidationRuleBuilderMock = new Mock<IAddingPropertyValidationRuleBuilder<object, string[]>>();
+      addingPropertyValidationRuleBuilderMock
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+          .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
+
+      addingPropertyValidationRuleBuilderMock.Object.NotEmptyOrWhitespace();
+
+      addingPropertyValidationRuleBuilderMock.Verify();
+      Assert.That(createdValidator, Is.InstanceOf<NotEmptyOrWhitespaceValidator>());
+    }
+
+    [Test]
     public void Length_ForString_ReturnsLengthValidator ()
     {
       var validationMessage = new InvariantValidationMessage("Fake message");

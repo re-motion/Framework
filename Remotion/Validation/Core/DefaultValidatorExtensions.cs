@@ -105,6 +105,24 @@ namespace Remotion.Validation
     }
 
     /// <summary>
+    /// Adds a <see cref="NotEmptyOrWhitespaceValidator"/> to the <paramref name="ruleBuilder"/>.
+    /// </summary>
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> NotEmptyOrWhitespace<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder)
+    {
+      return ruleBuilder.SetValidator(p => new NotEmptyOrWhitespaceValidator(p.ValidationMessage));
+    }
+
+    /// <summary>
+    /// Adds a <see cref="NotEmptyOrWhitespaceValidator"/> to the <paramref name="ruleBuilder"/>.
+    /// </summary>
+    public static IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> NotEmptyOrWhitespace<TValidatedType> (
+        this IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> ruleBuilder)
+    {
+      return ruleBuilder.SetValidator(p => new NotEmptyOrWhitespaceValidator(p.ValidationMessage));
+    }
+
+    /// <summary>
     /// Adds a <see cref="LengthValidator"/> with the given <paramref name="min"/> and <paramref name="max"/> length to the <paramref name="ruleBuilder"/>.
     /// </summary>
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> Length<TValidatedType> (
