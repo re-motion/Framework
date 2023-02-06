@@ -54,6 +54,7 @@ namespace Remotion.Validation.Globalization
       ValueMustNotBeEmptyCollectionValidationMessage,
       ValueMustNotBeEmptyStringValidationMessage,
       ValueMustNotBeEmptyBinaryValidationMessage,
+      ValueMustNotBeEmptyOrWhitespaceValidationMessage,
       ValueMustNotBeEqualValidationMessage,
       ValueMustNotBeNullCollectionValidationMessage,
       ValueMustNotBeNullBooleanValidationMessage,
@@ -133,6 +134,9 @@ namespace Remotion.Validation.Globalization
 
       if (validator is NotEmptyBinaryValidator)
         return ResourceIdentifier.ValueMustNotBeEmptyBinaryValidationMessage;
+
+      if (validator is NotEmptyOrWhitespaceValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyOrWhitespaceValidationMessage;
 
       if (validator is NotEmptyCollectionValidator)
         return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;

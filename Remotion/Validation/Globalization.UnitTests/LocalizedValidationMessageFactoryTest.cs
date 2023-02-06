@@ -281,6 +281,32 @@ namespace Remotion.Validation.Globalization.UnitTests
     }
 
     [Test]
+    public void CreateValidationMessageForPropertyValidator_WithNotEmptyOrWhitespaceValidatorAndPropertyIsString_ReturnsLocalizedValidationMessage ()
+    {
+      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(string));
+      var validator = new NotEmptyOrWhitespaceValidator(_validationMessageStub.Object);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
+
+      Assert.That(validationMessage, Is.Not.Null);
+      Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
+
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value with visible characters."));
+    }
+
+    [Test]
+    public void CreateValidationMessageForPropertyValidator_WithNotEmptyOrWhitespaceValidatorAndPropertyIsStringArray_ReturnsLocalizedValidationMessage ()
+    {
+      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(string[]));
+      var validator = new NotEmptyOrWhitespaceValidator(_validationMessageStub.Object);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
+
+      Assert.That(validationMessage, Is.Not.Null);
+      Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
+
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value with visible characters."));
+    }
+
+    [Test]
     public void CreateValidationMessageForPropertyValidator_WithNotEqualValidator_ReturnsLocalizedValidationMessage ()
     {
       _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(object));
