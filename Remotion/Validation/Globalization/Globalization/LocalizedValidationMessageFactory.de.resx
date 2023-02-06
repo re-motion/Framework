@@ -222,4 +222,7 @@
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeNullBooleanValidationMessage" xml:space="preserve">
     <value>Wählen Sie einen Eintrag aus.</value>
   </data>
+  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyOrWhitespaceValidationMessage" xml:space="preserve">
+      <value>Geben Sie mindestens ein sichtbares Zeichen ein.</value>
+  </data>
 </root>
