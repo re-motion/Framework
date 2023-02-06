@@ -57,6 +57,7 @@ namespace Remotion.Validation.Implementation
         case IRequiredValidator _:
         case NotEmptyStringValidator _:
         case NotEmptyBinaryValidator _:
+        case NotEmptyOrWhitespaceValidator _:
           return typeName;
 
         case ILengthValidator lengthValidator:
