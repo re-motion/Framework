@@ -22,7 +22,7 @@ using Remotion.Development.Web.ResourceHosting;
 using Remotion.ServiceLocation;
 using Remotion.Web.UI.Controls.Rendering;
 
-namespace Remotion.Web.Development.WebTesting.TestSite
+namespace Remotion.Web.Development.WebTesting.TestSite.NetFramework
 {
   public class Global : HttpApplication
   {
