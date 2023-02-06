@@ -20,14 +20,16 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.NotNull();
+      addingPropertyValidationRuleBuilderStub.Object.NotNull();
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotNullValidator>());
+      var notEmptyValidator = (NotNullValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -36,14 +38,16 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, string[]>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string[]>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.NotEmpty();
+      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyCollectionValidator>());
+      var notEmptyValidator = (NotEmptyCollectionValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -52,14 +56,16 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, byte[]>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, byte[]>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.NotEmpty();
+      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyBinaryValidator>());
+      var notEmptyValidator = (NotEmptyBinaryValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -68,14 +74,16 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.NotEmpty();
+      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyStringValidator>());
+      var notEmptyValidator = (NotEmptyStringValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -84,14 +92,16 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, ICollection>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, ICollection>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.NotEmpty();
+      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyCollectionValidator>());
+      var notEmptyValidator = (NotEmptyCollectionValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -100,14 +110,16 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, ICollection<object>>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, ICollection<object>>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.NotEmpty();
+      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyCollectionValidator>());
+      var notEmptyValidator = (NotEmptyCollectionValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -116,14 +128,16 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, IReadOnlyCollection<object>>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, IReadOnlyCollection<object>>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.NotEmpty();
+      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyCollectionValidator>());
+      var notEmptyValidator = (NotEmptyCollectionValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -132,17 +146,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.Length(17, 42);
+      addingPropertyValidationRuleBuilderStub.Object.Length(17, 42);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<LengthValidator>());
       var lengthValidator = (LengthValidator)createdValidator;
       Assert.That(lengthValidator.Min, Is.EqualTo(17));
       Assert.That(lengthValidator.Max, Is.EqualTo(42));
+      Assert.That(lengthValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -151,17 +166,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.MinLength(17);
+      addingPropertyValidationRuleBuilderStub.Object.MinLength(17);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<LengthValidator>());
       var lengthValidator = (LengthValidator)createdValidator;
       Assert.That(lengthValidator.Min, Is.EqualTo(17));
       Assert.That(lengthValidator.Max, Is.Null);
+      Assert.That(lengthValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -170,17 +186,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.MaxLength(42);
+      addingPropertyValidationRuleBuilderStub.Object.MaxLength(42);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<LengthValidator>());
       var lengthValidator = (LengthValidator)createdValidator;
       Assert.That(lengthValidator.Min, Is.EqualTo(0));
       Assert.That(lengthValidator.Max, Is.EqualTo(42));
+      Assert.That(lengthValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -189,17 +206,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.ExactLength(23);
+      addingPropertyValidationRuleBuilderStub.Object.ExactLength(23);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<LengthValidator>());
       var lengthValidator = (LengthValidator)createdValidator;
       Assert.That(lengthValidator.Min, Is.EqualTo(23));
       Assert.That(lengthValidator.Max, Is.EqualTo(23));
+      Assert.That(lengthValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -208,17 +226,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
       var compareValue = new object();
-      addingPropertyValidationRuleBuilder.Object.Equal(compareValue);
+      addingPropertyValidationRuleBuilderStub.Object.Equal(compareValue);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<EqualValidator>());
       var equalValidator = (EqualValidator)createdValidator;
       Assert.That(equalValidator.ComparisonValue, Is.EqualTo(compareValue));
+      Assert.That(equalValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -227,17 +246,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
       var compareValue = new object();
-      addingPropertyValidationRuleBuilder.Object.NotEqual(compareValue);
+      addingPropertyValidationRuleBuilderStub.Object.NotEqual(compareValue);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEqualValidator>());
       var notEqualValidator = (NotEqualValidator)createdValidator;
       Assert.That(notEqualValidator.ComparisonValue, Is.EqualTo(compareValue));
+      Assert.That(notEqualValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -246,16 +266,17 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.LessThan(23);
+      addingPropertyValidationRuleBuilderStub.Object.LessThan(23);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<LessThanValidator>());
       var lessThanValidator = (LessThanValidator)createdValidator;
       Assert.That(lessThanValidator.ComparisonValue, Is.EqualTo(23));
+      Assert.That(lessThanValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -264,16 +285,17 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.LessThanOrEqual(23);
+      addingPropertyValidationRuleBuilderStub.Object.LessThanOrEqual(23);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<LessThanOrEqualValidator>());
       var lessThanValidator = (LessThanOrEqualValidator)createdValidator;
       Assert.That(lessThanValidator.ComparisonValue, Is.EqualTo(23));
+      Assert.That(lessThanValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -282,16 +304,17 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.GreaterThan(23);
+      addingPropertyValidationRuleBuilderStub.Object.GreaterThan(23);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<GreaterThanValidator>());
       var greaterThanValidator = (GreaterThanValidator)createdValidator;
       Assert.That(greaterThanValidator.ComparisonValue, Is.EqualTo(23));
+      Assert.That(greaterThanValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -300,16 +323,17 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.GreaterThanOrEqual(23);
+      addingPropertyValidationRuleBuilderStub.Object.GreaterThanOrEqual(23);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<GreaterThanOrEqualValidator>());
       var greaterThanOrEqualValidator = (GreaterThanOrEqualValidator)createdValidator;
       Assert.That(greaterThanOrEqualValidator.ComparisonValue, Is.EqualTo(23));
+      Assert.That(greaterThanOrEqualValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -318,17 +342,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.ExclusiveBetween(17, 42);
+      addingPropertyValidationRuleBuilderStub.Object.ExclusiveBetween(17, 42);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<ExclusiveRangeValidator>());
       var exclusiveRangeValidator = (ExclusiveRangeValidator)createdValidator;
       Assert.That(exclusiveRangeValidator.From, Is.EqualTo(17));
       Assert.That(exclusiveRangeValidator.To, Is.EqualTo(42));
+      Assert.That(exclusiveRangeValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -337,17 +362,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, int>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.InclusiveBetween(17, 42);
+      addingPropertyValidationRuleBuilderStub.Object.InclusiveBetween(17, 42);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<InclusiveRangeValidator>());
       var inclusiveRangeValidator = (InclusiveRangeValidator)createdValidator;
       Assert.That(inclusiveRangeValidator.From, Is.EqualTo(17));
       Assert.That(inclusiveRangeValidator.To, Is.EqualTo(42));
+      Assert.That(inclusiveRangeValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -356,17 +382,18 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, decimal>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, decimal>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.DecimalValidator(8, 3);
+      addingPropertyValidationRuleBuilderStub.Object.DecimalValidator(8, 3);
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<DecimalValidator>());
       var decimalValidator = (DecimalValidator)createdValidator;
       Assert.That(decimalValidator.MaxIntegerPlaces, Is.EqualTo(8));
       Assert.That(decimalValidator.MaxDecimalPlaces, Is.EqualTo(3));
+      Assert.That(decimalValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -375,16 +402,17 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      addingPropertyValidationRuleBuilder.Object.Matches(".*");
+      addingPropertyValidationRuleBuilderStub.Object.Matches(".*");
 
-      addingPropertyValidationRuleBuilder.Verify();
       Assert.That(createdValidator, Is.InstanceOf<RegularExpressionValidator>());
       var regularExpressionValidator = (RegularExpressionValidator)createdValidator;
       Assert.That(regularExpressionValidator.Regex.ToString(), Is.EqualTo(".*"));
+      Assert.That(regularExpressionValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -393,24 +421,28 @@ namespace Remotion.Validation.UnitTests
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilder = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
-      addingPropertyValidationRuleBuilder.Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, object>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
 
-      var predicate = new Mock<PredicateValidator.Predicate>();
-      predicate.Setup(_ => _.Invoke(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<PropertyValidatorContext>()))
-          .Returns(true);
+      var predicateMock = new Mock<PredicateValidator.Predicate>();
+      predicateMock
+          .Setup(_ => _.Invoke(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<PropertyValidatorContext>()))
+          .Returns(true)
+          .Verifiable();
 
-      addingPropertyValidationRuleBuilder.Object.Must(predicate.Object);
-      addingPropertyValidationRuleBuilder.Verify();
+      addingPropertyValidationRuleBuilderStub.Object.Must(predicateMock.Object);
 
       Assert.That(createdValidator, Is.InstanceOf<PredicateValidator>());
       var predicateValidator = (PredicateValidator)createdValidator;
 
       var instanceToValidate = new object();
-      var property = new Mock<IPropertyInformation>();
-      predicateValidator.Validate(new PropertyValidatorContext(new ValidationContext(instanceToValidate), instanceToValidate, property.Object, null));
-      predicate.Verify();
+      var propertyStub = new Mock<IPropertyInformation>();
+      predicateValidator.Validate(new PropertyValidatorContext(new ValidationContext(instanceToValidate), instanceToValidate, propertyStub.Object, null));
+
+      predicateMock.Verify(p => p.Invoke(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<PropertyValidatorContext>()), Times.Once());
+      Assert.That(predicateValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
   }
 }

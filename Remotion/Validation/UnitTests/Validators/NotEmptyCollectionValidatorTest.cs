@@ -27,112 +27,6 @@ namespace Remotion.Validation.UnitTests.Validators
   [TestFixture]
   public class NotEmptyCollectionValidatorTest : ValidatorTestBase
   {
-    private class Enumerable<T> : IEnumerable<T>
-    {
-      private readonly List<T> _list = new();
-
-      public IEnumerator<T> GetEnumerator ()
-      {
-        return _list.GetEnumerator();
-      }
-
-      IEnumerator IEnumerable.GetEnumerator ()
-      {
-        return GetEnumerator();
-      }
-    }
-
-    private class SimpleCollection : ICollection
-    {
-      private readonly List<object> _list = new();
-
-      public IEnumerator GetEnumerator ()
-      {
-        return _list.GetEnumerator();
-      }
-
-      public void CopyTo (Array array, int index)
-      {
-        var objectArray = array.Cast<object>().ToArray();
-        _list.CopyTo(objectArray, index);
-      }
-
-      public void Add (object item)
-      {
-        _list.Add(item);
-      }
-
-      public int Count => _list.Count;
-      public bool IsSynchronized => true;
-      public object SyncRoot { get; } = new();
-    }
-
-    private class GenericCollection<T> : ICollection<T>
-    {
-      private readonly List<T> _list = new();
-
-      public IEnumerator GetEnumerator ()
-      {
-        return _list.GetEnumerator();
-      }
-
-      public int Count => _list.Count;
-
-      IEnumerator<T> IEnumerable<T>.GetEnumerator ()
-      {
-        return _list.GetEnumerator();
-      }
-
-      public void Add (T item)
-      {
-        _list.Add(item);
-      }
-
-      public void Clear ()
-      {
-        _list.Clear();
-      }
-
-      public bool Contains (T item)
-      {
-        return _list.Contains(item);
-      }
-
-      public void CopyTo (T[] array, int arrayIndex)
-      {
-        _list.CopyTo(array, arrayIndex);
-      }
-
-      public bool Remove (T item)
-      {
-        return _list.Remove(item);
-      }
-
-      public bool IsReadOnly => false;
-    }
-
-    private class ReadOnlyCollection<T> : IReadOnlyCollection<T>
-    {
-      private readonly List<T> _list = new();
-
-      public IEnumerator GetEnumerator ()
-      {
-        return _list.GetEnumerator();
-      }
-
-      public void Add (T item)
-      {
-        _list.Add(item);
-      }
-
-      public int Count => _list.Count;
-
-      IEnumerator<T> IEnumerable<T>.GetEnumerator ()
-      {
-        return _list.GetEnumerator();
-      }
-    }
-
     [Test]
     public void Validate_WithPropertyValueNull_ReturnsNoValidationFailures ()
     {
@@ -256,6 +150,70 @@ namespace Remotion.Validation.UnitTests.Validators
       var validationFailures = validator.Validate(propertyValidatorContext).ToArray();
 
       Assert.That(validationFailures, Is.Empty);
+    }
+
+    private class Enumerable<T> : IEnumerable<T>
+    {
+      private readonly List<T> _list = new();
+
+      public IEnumerator<T> GetEnumerator () => _list.GetEnumerator();
+
+      IEnumerator IEnumerable.GetEnumerator () => GetEnumerator();
+    }
+
+    private class SimpleCollection : ICollection
+    {
+      private readonly List<object> _list = new();
+
+      public IEnumerator GetEnumerator () => _list.GetEnumerator();
+
+      public void CopyTo (Array array, int index)
+      {
+        var objectArray = array.Cast<object>().ToArray();
+        _list.CopyTo(objectArray, index);
+      }
+
+      public void Add (object item) => _list.Add(item);
+
+      public int Count => _list.Count;
+      public bool IsSynchronized => true;
+      public object SyncRoot { get; } = new();
+    }
+
+    private class GenericCollection<T> : ICollection<T>
+    {
+      private readonly List<T> _list = new();
+
+      public IEnumerator GetEnumerator () => _list.GetEnumerator();
+
+      public int Count => _list.Count;
+
+      IEnumerator<T> IEnumerable<T>.GetEnumerator () => _list.GetEnumerator();
+
+      public void Add (T item) => _list.Add(item);
+
+      public void Clear () => _list.Clear();
+
+      public bool Contains (T item) => _list.Contains(item);
+
+      public void CopyTo (T[] array, int arrayIndex) => _list.CopyTo(array, arrayIndex);
+
+      public bool Remove (T item) => _list.Remove(item);
+
+      public bool IsReadOnly => false;
+    }
+
+    private class ReadOnlyCollection<T> : IReadOnlyCollection<T>
+    {
+      private readonly List<T> _list = new();
+
+      public IEnumerator GetEnumerator () => _list.GetEnumerator();
+
+      public void Add (T item) => _list.Add(item);
+
+      public int Count => _list.Count;
+
+      IEnumerator<T> IEnumerable<T>.GetEnumerator () => _list.GetEnumerator();
     }
   }
 }
