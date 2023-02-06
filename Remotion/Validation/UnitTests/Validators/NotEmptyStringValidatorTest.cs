@@ -62,12 +62,14 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    public void Validate_WithObject_Throws ()
+    public void Validate_WithObject_ReturnsNoValidationFailures ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new object());
       var validator = new NotEmptyStringValidator(new InvariantValidationMessage("Fake Message"));
 
-      Assert.Throws<NotSupportedException>(() => validator.Validate(propertyValidatorContext));
+      var validationFailures = validator.Validate(propertyValidatorContext);
+
+      Assert.That(validationFailures, Is.Empty);
     }
   }
 }

@@ -81,7 +81,7 @@ namespace Remotion.Validation.UnitTests.Providers
 
       Assert.That(result, Is.Not.Null);
       var propertyReflectors = result[typeof(Customer)].ToArray();
-      Assert.That(propertyReflectors.Count(), Is.EqualTo(6));
+      Assert.That(propertyReflectors.Count(), Is.EqualTo(7));
       CollectionAssert.AllItemsAreInstancesOfType(propertyReflectors, typeof(ValidationAttributesBasedPropertyRuleReflector));
     }
   }
