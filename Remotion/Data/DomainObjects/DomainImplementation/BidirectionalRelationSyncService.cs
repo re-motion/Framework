@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.DomainImplementation
   /// The <see cref="BidirectionalRelationSyncService"/> class allows users to check whether a relation is out-of-sync (<see cref="IsSynchronized"/>)
   /// and, if so, get re-store to synchronize the opposite sides in the relation (<see cref="Synchronize(Remotion.Data.DomainObjects.ClientTransaction,RelationEndPointID)"/>):
   /// <code>
-  /// var endPointID = RelationEndPointID.Create (newOrderItem, oi => oi.Order);
+  /// var endPointID = RelationEndPointID.Resolve (newOrderItem, oi => oi.Order);
   /// 
   /// // Prints "False" - the relation is out-of-sync
   /// Console.WriteLine (BidirectionalRelationSyncService.IsSynchronized (ClientTransaction.Current, endPointID));
