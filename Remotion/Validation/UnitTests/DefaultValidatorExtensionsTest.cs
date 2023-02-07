@@ -105,7 +105,7 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
-    public void NotEmpty_ForCollection_ReturnsNotEmptyGenericCollectionValidator ()
+    public void NotEmpty_ForGenericCollection_ReturnsNotEmptyGenericCollectionValidator ()
     {
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
@@ -123,12 +123,30 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
-    public void NotEmpty_ForCollection_ReturnsNotEmptyReadOnlyCollectionValidator ()
+    public void NotEmpty_ForReadOnlyCollectionCollection_ReturnsNotEmptyReadOnlyCollectionValidator ()
     {
       var validationMessage = new InvariantValidationMessage("Fake message");
       var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
       IPropertyValidator createdValidator = null;
       var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, IReadOnlyCollection<object>>>();
+      addingPropertyValidationRuleBuilderStub
+          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
+          .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
+
+      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
+
+      Assert.That(createdValidator, Is.InstanceOf<NotEmptyCollectionValidator>());
+      var notEmptyValidator = (NotEmptyCollectionValidator)createdValidator;
+      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
+    }
+
+    [Test]
+    public void NotEmpty_ForList_ReturnsNotEmptyReadOnlyCollectionValidator ()
+    {
+      var validationMessage = new InvariantValidationMessage("Fake message");
+      var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
+      IPropertyValidator createdValidator = null;
+      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, List<object>>>();
       addingPropertyValidationRuleBuilderStub
           .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
           .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
