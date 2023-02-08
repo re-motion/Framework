@@ -154,23 +154,22 @@ namespace Remotion.Validation.UnitTests.Validators
 
     private class Enumerable<T> : IEnumerable<T>
     {
-      private readonly List<T> _list = new();
+      private readonly IEnumerable<T> _enumerable = Enumerable.Empty<T>();
 
-      public IEnumerator<T> GetEnumerator () => _list.GetEnumerator();
+      public IEnumerator<T> GetEnumerator () => _enumerable.GetEnumerator();
 
       IEnumerator IEnumerable.GetEnumerator () => GetEnumerator();
     }
 
     private class SimpleCollection : ICollection
     {
-      private readonly List<object> _list = new();
+      private readonly ArrayList _list = new();
 
       public IEnumerator GetEnumerator () => _list.GetEnumerator();
 
       public void CopyTo (Array array, int index)
       {
-        var objectArray = array.Cast<object>().ToArray();
-        _list.CopyTo(objectArray, index);
+        _list.CopyTo(array, index);
       }
 
       public void Add (object item) => _list.Add(item);
