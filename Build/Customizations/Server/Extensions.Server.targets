@@ -40,6 +40,8 @@
   <Target Name="TestBuild_FirefoxConfiguration" DependsOnTargets="TestBuild_BrowserConfiguration">
     <PropertyGroup>
       <Browsers>Firefox</Browsers>
+      <!-- Requires override because of test permutations (Firefox has different target image) -->
+      <ExecutionRuntimes>Win_NET481+EnforcedLocalMachine</ExecutionRuntimes>
     </PropertyGroup>
   </Target>
 
