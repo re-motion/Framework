@@ -167,10 +167,7 @@ namespace Remotion.Validation.UnitTests.Validators
 
       public IEnumerator GetEnumerator () => _list.GetEnumerator();
 
-      public void CopyTo (Array array, int index)
-      {
-        _list.CopyTo(array, index);
-      }
+      public void CopyTo (Array array, int index) => _list.CopyTo(array, index);
 
       public void Add (object item) => _list.Add(item);
 
