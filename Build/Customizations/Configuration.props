@@ -14,9 +14,11 @@
 
     <SupportedExecutionRuntimes Remove="@(SupportedExecutionRuntimes)"/>
     <SupportedExecutionRuntimes Include="Win_NET48=$(DockerImageDotNetFrameworkRuntime4_8)|$(DockerIsolationModeDotNetFrameworkRuntime4_8)"/>
+    <SupportedExecutionRuntimes Include="Win_NET481=$(DockerImageDotNetFrameworkRuntime4_8_1)|$(DockerIsolationModeDotNetFrameworkRuntime4_8_1)"/>
 
     <SupportedTargetRuntimes Remove="@(SupportedTargetRuntimes)"/>
     <SupportedTargetRuntimes Include="NET48"/>
+    <SupportedTargetRuntimes Include="NET481"/>
   </ItemGroup>
 
   <ItemGroup>
