@@ -107,7 +107,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
 
       Assert.That(actualPredicate, Is.Not.Null);
 
-      var notEmptyValidator = new NotEmptyValidator(new InvariantValidationMessage("Foo"));
+      var notEmptyValidator = new NotEmptyStringValidator(new InvariantValidationMessage("Foo"));
       Assert.That(() => actualPredicate(notEmptyValidator), Throws.ArgumentException);
     }
 
@@ -189,7 +189,7 @@ namespace Remotion.Validation.UnitTests.RuleBuilders
 
       Assert.That(actualPredicate, Is.Not.Null);
 
-      var notEmptyValidator = new NotEmptyValidator(new InvariantValidationMessage("Foo"));
+      var notEmptyValidator = new NotEmptyStringValidator(new InvariantValidationMessage("Foo"));
       Assert.That(() => actualPredicate(notEmptyValidator), Throws.ArgumentException);
     }
   }

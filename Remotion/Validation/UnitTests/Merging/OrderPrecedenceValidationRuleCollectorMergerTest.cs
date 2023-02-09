@@ -42,7 +42,7 @@ namespace Remotion.Validation.UnitTests.Merging
     private Expression<Func<Customer, string>> _firstNameExpression;
     private Expression<Func<Customer, string>> _lastNameExpression;
     private NotNullValidator _notNullValidator;
-    private NotEmptyValidator _notEmptyValidator;
+    private NotEmptyStringValidator _notEmptyStringValidator;
     private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollector2;
     private NotEqualValidator _notEqualValidator;
     private IRemovingPropertyValidationRuleCollector _removingPropertyValidationRuleCollector3;
@@ -61,7 +61,7 @@ namespace Remotion.Validation.UnitTests.Merging
     [SetUp]
     public void SetUp ()
     {
-      _notEmptyValidator = new NotEmptyValidator(new InvariantValidationMessage("Fake Message"));
+      _notEmptyStringValidator = new NotEmptyStringValidator(new InvariantValidationMessage("Fake Message"));
       _notNullValidator = new NotNullValidator(new InvariantValidationMessage("Fake Message"));
       _notEqualValidator = new NotEqualValidator("test", new InvariantValidationMessage("Fake Message"));
       _maximumLengthValidator = new MaximumLengthValidator(30, new InvariantValidationMessage("Fake Message"));
@@ -76,7 +76,7 @@ namespace Remotion.Validation.UnitTests.Merging
 
       _addingPropertyValidationRuleCollector1 = AddingPropertyValidationRuleCollector.Create(_firstNameExpression, _validationRuleCollectorStub1.Object.GetType());
       _addingPropertyValidationRuleCollector1.SetRemovable();
-      _addingPropertyValidationRuleCollector1.RegisterValidator(_ => _notEmptyValidator);
+      _addingPropertyValidationRuleCollector1.RegisterValidator(_ => _notEmptyStringValidator);
       _addingPropertyValidationRuleCollector1.RegisterValidator(_ => _notNullValidator);
       _addingPropertyValidationRuleCollector1.RegisterValidator(_ => _notEqualValidator);
 
@@ -93,7 +93,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _addingPropertyValidationRuleCollector4.RegisterValidator(_ => _notNullValidator);
 
       _removingPropertyValidationRuleCollector1 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof(CustomerValidationRuleCollector1));
-      _removingPropertyValidationRuleCollector1.RegisterValidator(typeof(NotEmptyValidator), null, null);
+      _removingPropertyValidationRuleCollector1.RegisterValidator(typeof(NotEmptyStringValidator), null, null);
 
       _removingPropertyValidationRuleCollector2 = RemovingPropertyValidationRuleCollector.Create(_firstNameExpression, typeof(CustomerValidationRuleCollector1));
       _removingPropertyValidationRuleCollector2.RegisterValidator(typeof(NotNullValidator), _validationRuleCollectorStub1.Object.GetType(), null);
@@ -133,14 +133,14 @@ namespace Remotion.Validation.UnitTests.Merging
               mock =>
                   mock.Create(
                       It.Is<IEnumerable<RemovingPropertyValidatorRegistration>>(
-                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof(NotEmptyValidator)),
+                          c => c.Count() == 1 && c.ToArray()[0].ValidatorType == typeof(NotEmptyStringValidator)),
                       It.IsNotNull<ILogContext>()))
           .Returns(_propertyValidatorExtractorMock.Object)
           .Verifiable();
 
       _propertyValidatorExtractorMock
           .Setup(mock => mock.ExtractPropertyValidatorsToRemove(_addingPropertyValidationRuleCollector1))
-          .Returns(new[] { _notEmptyValidator })
+          .Returns(new[] { _notEmptyStringValidator })
           .Verifiable();
 
       var result =
@@ -200,7 +200,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _propertyValidatorExtractorFactoryMock.Verify();
       _propertyValidatorExtractorMock.Verify();
       Assert.That(result.Count(), Is.EqualTo(1));
-      Assert.That(result[0].Validators, Is.EquivalentTo(new IPropertyValidator[] { _notEmptyValidator, _notEqualValidator }));
+      Assert.That(result[0].Validators, Is.EquivalentTo(new IPropertyValidator[] { _notEmptyStringValidator, _notEqualValidator }));
     }
 
     [Test]
@@ -253,7 +253,7 @@ namespace Remotion.Validation.UnitTests.Merging
 
       _propertyValidatorExtractorMock
           .Setup(mock => mock.ExtractPropertyValidatorsToRemove(_addingPropertyValidationRuleCollector1))
-          .Returns(new IPropertyValidator[] { _notEmptyValidator, _notNullValidator })
+          .Returns(new IPropertyValidator[] { _notEmptyStringValidator, _notNullValidator })
           .Verifiable();
       _propertyValidatorExtractorMock
           .Setup(mock => mock.ExtractPropertyValidatorsToRemove(_addingPropertyValidationRuleCollector2))
@@ -317,7 +317,7 @@ namespace Remotion.Validation.UnitTests.Merging
       _propertyValidatorExtractorFactoryMock.Verify();
       _propertyValidatorExtractorMock.Verify();
       Assert.That(result.Count(), Is.EqualTo(1));
-      Assert.That(result[0].Validators, Is.EquivalentTo(new IPropertyValidator[] { _notEmptyValidator, _notNullValidator, _notEqualValidator }));
+      Assert.That(result[0].Validators, Is.EquivalentTo(new IPropertyValidator[] { _notEmptyStringValidator, _notNullValidator, _notEqualValidator }));
     }
 
     [Test]

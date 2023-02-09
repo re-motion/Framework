@@ -53,6 +53,7 @@ namespace Remotion.Validation.Globalization
       ValueMustMatchRegularExpressionValidationMessage,
       ValueMustNotBeEmptyCollectionValidationMessage,
       ValueMustNotBeEmptyStringValidationMessage,
+      ValueMustNotBeEmptyBinaryValidationMessage,
       ValueMustNotBeEqualValidationMessage,
       ValueMustNotBeNullCollectionValidationMessage,
       ValueMustNotBeNullBooleanValidationMessage,
@@ -127,8 +128,14 @@ namespace Remotion.Validation.Globalization
       if (validator is LengthValidator lengthValidator)
         return GetResourceIdentifierForLengthValidator(lengthValidator);
 
-      if (validator is NotEmptyValidator)
-        return GetResourceIdentifierForNotEmptyValidator(dataType);
+      if (validator is NotEmptyStringValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyStringValidationMessage;
+
+      if (validator is NotEmptyBinaryValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyBinaryValidationMessage;
+
+      if (validator is NotEmptyCollectionValidator)
+        return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
 
       if (validator is NotEqualValidator)
         return ResourceIdentifier.ValueMustNotBeEqualValidationMessage;
@@ -220,17 +227,6 @@ namespace Remotion.Validation.Globalization
         return ResourceIdentifier.ValueMustNotBeNullCollectionValidationMessage;
 
       return ResourceIdentifier.ValueMustNotBeNullReferenceValidationMessage;
-    }
-
-    private ResourceIdentifier? GetResourceIdentifierForNotEmptyValidator (Type dataType)
-    {
-      if (dataType == typeof(String))
-        return ResourceIdentifier.ValueMustNotBeEmptyStringValidationMessage;
-
-      if (typeof(IEnumerable).IsAssignableFrom(dataType))
-        return ResourceIdentifier.ValueMustNotBeEmptyCollectionValidationMessage;
-
-      return null;
     }
   }
 }

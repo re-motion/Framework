@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
@@ -26,16 +25,16 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotNullValidator : IRequiredValidator
+  public class NotEmptyStringValidator : IPropertyValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public NotNullValidator ([NotNull] ValidationMessage validationMessage)
+    public NotEmptyStringValidator (ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
-      ErrorMessage = "The value must not be null.";
+      ErrorMessage = "The value must not be empty.";
       ValidationMessage = validationMessage;
     }
 
@@ -49,7 +48,12 @@ namespace Remotion.Validation.Validators
 
     private bool IsValid (PropertyValidatorContext context)
     {
-      return !object.Equals(null, context.PropertyValue);
+      var propertyValue = context.PropertyValue;
+
+      if (propertyValue is not string stringValue)
+        return true;
+
+      return stringValue.Length > 0;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
