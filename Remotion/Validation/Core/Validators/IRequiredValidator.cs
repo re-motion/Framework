@@ -18,7 +18,7 @@ using System;
 
 namespace Remotion.Validation.Validators
 {
-  public interface INotNullValidator : IPropertyValidator
+  public interface IRequiredValidator : IPropertyValidator
   {
   }
 }

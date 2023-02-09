@@ -7,7 +7,6 @@ using NUnit.Framework;
 using Remotion.Globalization;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
-using Remotion.Utilities;
 using Remotion.Validation.Implementation;
 using Remotion.Validation.Validators;
 
@@ -217,30 +216,10 @@ namespace Remotion.Validation.Globalization.UnitTests
     }
 
     [Test]
-    public void CreateValidationMessageForPropertyValidator_WithNotEmptyValidatorAndPropertyIsObject_ReturnsNul ()
-    {
-      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(Object));
-      var validator = new NotEmptyValidator(_validationMessageStub.Object);
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
-
-      Assert.That(validationMessage, Is.Null);
-    }
-
-    [Test]
-    public void CreateValidationMessageForPropertyValidator_WithNotEmptyValidatorAndPropertyIsReferenceType_ReturnsNull ()
-    {
-      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(Assert));
-      var validator = new NotEmptyValidator(_validationMessageStub.Object);
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
-
-      Assert.That(validationMessage, Is.Null);
-    }
-
-    [Test]
-    public void CreateValidationMessageForPropertyValidator_WithNotEmptyValidatorAndPropertyIsString_ReturnsLocalizedValidationMessage ()
+    public void CreateValidationMessageForPropertyValidator_WithNotEmptyStringValidator_ReturnsLocalizedValidationMessage ()
     {
       _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(string));
-      var validator = new NotEmptyValidator(_validationMessageStub.Object);
+      var validator = new NotEmptyStringValidator(_validationMessageStub.Object);
       var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
 
       Assert.That(validationMessage, Is.Not.Null);
@@ -250,10 +229,49 @@ namespace Remotion.Validation.Globalization.UnitTests
     }
 
     [Test]
-    public void CreateValidationMessageForPropertyValidator_WithNotEmptyValidatorAndPropertyIsIEnumerable_ReturnsLocalizedValidationMessage ()
+    public void CreateValidationMessageForPropertyValidator_WithNotEmptyBinaryValidator_ReturnsLocalizedValidationMessage ()
     {
-      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(IEnumerable));
-      var validator = new NotEmptyValidator(_validationMessageStub.Object);
+      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(byte[]));
+      var validator = new NotEmptyBinaryValidator(_validationMessageStub.Object);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
+
+      Assert.That(validationMessage, Is.Not.Null);
+      Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
+
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value."));
+    }
+
+    [Test]
+    public void CreateValidationMessageForPropertyValidator_WithNotEmptyCollectionValidator_WithReadOnlyCollection_ReturnsLocalizedValidationMessage ()
+    {
+      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(IReadOnlyCollection<object>));
+      var validator = new NotEmptyCollectionValidator(_validationMessageStub.Object);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
+
+      Assert.That(validationMessage, Is.Not.Null);
+      Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
+
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Add an entry."));
+    }
+
+    [Test]
+    public void CreateValidationMessageForPropertyValidator_WithNotEmptyCollectionValidator_WithCollection_ReturnsLocalizedValidationMessage ()
+    {
+      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(ICollection));
+      var validator = new NotEmptyCollectionValidator(_validationMessageStub.Object);
+      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
+
+      Assert.That(validationMessage, Is.Not.Null);
+      Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
+
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Add an entry."));
+    }
+
+    [Test]
+    public void CreateValidationMessageForPropertyValidator_WithNotEmptyCollectionValidator_WithGenericCollection_ReturnsLocalizedValidationMessage ()
+    {
+      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(ICollection<object>));
+      var validator = new NotEmptyCollectionValidator(_validationMessageStub.Object);
       var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
 
       Assert.That(validationMessage, Is.Not.Null);

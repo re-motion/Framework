@@ -170,7 +170,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       Assert.That(lastNameValidationFailures.Length, Is.EqualTo(1));
       Assert.That(lastNameValidationFailures[0].ValidatedObject, Is.SameAs(person));
       Assert.That(lastNameValidationFailures[0].ValidatedProperty, Is.SameAs(_lastNameBusinessObjectProperty));
-      Assert.That(lastNameValidationFailures[0].ErrorMessage, Is.EqualTo("NotEmptyValidator: Validation error."));
+      Assert.That(lastNameValidationFailures[0].ErrorMessage, Is.EqualTo("NotEmptyStringValidator: Validation error."));
 
       var phoneNumberValidationFailures =
           businessObjectValidationResult.GetValidationFailures(person, _phoneNumberBusinessObjectProperty, markAsHandled: true).ToArray();
@@ -184,7 +184,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       Assert.That(customerNumberValidationFailures.Length, Is.EqualTo(1));
       Assert.That(customerNumberValidationFailures[0].ValidatedObject, Is.SameAs(person));
       Assert.That(customerNumberValidationFailures[0].ValidatedProperty, Is.SameAs(_customerNumberBusinessObjectProperty));
-      Assert.That(customerNumberValidationFailures[0].ErrorMessage, Is.EqualTo("NotEmptyValidator: Validation error."));
+      Assert.That(customerNumberValidationFailures[0].ErrorMessage, Is.EqualTo("NotEmptyStringValidator: Validation error."));
     }
 
     [Test]
@@ -280,7 +280,7 @@ namespace Remotion.ObjectBinding.Validation.UnitTests
       Assert.That(sortedUnhandledValidationFailures[0].ErrorMessage, Is.EqualTo("Localized Object Validation Error"));
 
       Assert.That(sortedUnhandledValidationFailures[1].ValidatedProperty, Is.SameAs(_customerNumberBusinessObjectProperty));
-      Assert.That(sortedUnhandledValidationFailures[1].ErrorMessage, Is.EqualTo("NotEmptyValidator: Validation error."));
+      Assert.That(sortedUnhandledValidationFailures[1].ErrorMessage, Is.EqualTo("NotEmptyStringValidator: Validation error."));
 
       Assert.That(sortedUnhandledValidationFailures[2].ValidatedProperty, Is.SameAs(_phoneNumberBusinessObjectProperty));
       Assert.That(sortedUnhandledValidationFailures[2].ErrorMessage, Is.EqualTo("NotNullValidator: Validation error."));

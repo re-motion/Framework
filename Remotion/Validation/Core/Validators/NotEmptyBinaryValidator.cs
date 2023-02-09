@@ -15,11 +15,9 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using JetBrains.Annotations;
 using Remotion.FunctionalProgramming;
 using Remotion.Utilities;
 using Remotion.Validation.Implementation;
@@ -27,12 +25,12 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
-  public class NotEmptyValidator : INotEmptyValidator
+  public class NotEmptyBinaryValidator : IPropertyValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public NotEmptyValidator ([NotNull] ValidationMessage validationMessage)
+    public NotEmptyBinaryValidator (ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
@@ -52,26 +50,10 @@ namespace Remotion.Validation.Validators
     {
       var propertyValue = context.PropertyValue;
 
-      if (propertyValue == null)
+      if (propertyValue is not byte[] binaryValue)
         return true;
 
-      return !IsEmptyString(propertyValue) && !IsEmptyCollection(propertyValue);
-    }
-
-    private bool IsEmptyCollection (object propertyValue)
-    {
-      if (propertyValue is ICollection collectionValue)
-        return !collectionValue.Cast<object>().Any();
-
-      return false;
-    }
-
-    private bool IsEmptyString (object value)
-    {
-      if (value is string stringValue)
-        return stringValue.Length == 0;
-
-      return false;
+      return binaryValue.Length > 0;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
