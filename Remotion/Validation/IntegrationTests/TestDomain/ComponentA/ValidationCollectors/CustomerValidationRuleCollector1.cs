@@ -25,7 +25,7 @@ namespace Remotion.Validation.IntegrationTests.TestDomain.ComponentA.ValidationC
     public CustomerValidationRuleCollector1 ()
     {
       AddRule(c => c.LastName).CanBeRemoved().NotNull();
-      AddRule(c => c.LastName).NotEmpty().Length(2, 8);
+      AddRule(c => c.LastName).NotEmptyOrWhitespace().Length(2, 8);
       AddRule(c => c.PhoneNumber).CanBeRemoved().Length(0, 20);
       AddRule().SetValidator(p => new FakeCustomerValidator());
 

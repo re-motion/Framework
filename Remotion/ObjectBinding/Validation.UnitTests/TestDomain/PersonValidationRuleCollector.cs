@@ -22,8 +22,8 @@ namespace Remotion.ObjectBinding.Validation.UnitTests.TestDomain
   {
     public PersonValidationRuleCollector ()
     {
-      AddRule(_ => _.LastName).NotNull().NotEmpty();
-      AddRule(_ => _.FirstName).NotNull().NotEmpty();
+      AddRule(_ => _.LastName).NotNull().NotEmptyOrWhitespace();
+      AddRule(_ => _.FirstName).NotNull().NotEmptyOrWhitespace();
     }
   }
 }
