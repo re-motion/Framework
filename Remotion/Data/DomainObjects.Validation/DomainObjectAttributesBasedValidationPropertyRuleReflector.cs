@@ -176,7 +176,7 @@ namespace Remotion.Data.DomainObjects.Validation
         {
           yield return PropertyValidatorFactory.Create(
               _implementationPropertyInformation,
-              parameters => new NotEmptyStringValidator(parameters.ValidationMessage),
+              parameters => new NotEmptyOrWhitespaceValidator(parameters.ValidationMessage),
               _validationMessageFactory);
         }
         else if (_implementationProperty.PropertyType == typeof(byte[]))
