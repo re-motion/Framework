@@ -157,6 +157,12 @@ namespace OBWTest.IndividualControlTests
                                            "very long text so there is a scrollbar, take 2",
                                            "very long text so there is a scrollbar, take 3",
                                            "very long text so there is a scrollbar, because there was not enough yet",
+                                           "very long text so there is a scrollbar, take 2",
+                                           "very long text so there is a scrollbar, take 3",
+                                           "very long text so there is a scrollbar, because there was not enough yet",
+                                           "very long text so there is a scrollbar, take 2",
+                                           "very long text so there is a scrollbar, take 3",
+                                           "very"
                                        };
 
     #endregion
