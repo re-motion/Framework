@@ -28,6 +28,17 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
+  /// <summary>
+  /// Checks that a collection contains at least one element.
+  /// </summary>
+  /// <remarks>
+  /// The following collection types are supported:
+  /// <list type="bullet">
+  ///   <item><description><see cref="ICollection"/></description></item>
+  ///   <item><description><see cref="ICollection{T}"/></description></item>
+  ///   <item><description><see cref="IReadOnlyCollection{T}"/></description></item>
+  /// </list>
+  /// </remarks>
   public class NotEmptyCollectionValidator : IRequiredValidator
   {
     public string ErrorMessage { get; }

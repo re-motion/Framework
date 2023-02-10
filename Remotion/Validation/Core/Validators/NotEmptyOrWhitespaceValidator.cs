@@ -25,6 +25,12 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
+  /// <summary>
+  ///   Checks that a <see cref="string"/> value is neither <see cref="string.Empty"/> nor contains only whitespace characters.
+  /// </summary>
+  /// <remarks>Note the definition of whitespace in <see cref="char.IsWhiteSpace(char)"/>, which includes tab, carriage return and line feed as well as non-breaking space,
+  /// thin space and hair space, but does not include zero-width space.</remarks>
+  /// <seealso cref="char.IsWhiteSpace(char)"/>
   public class NotEmptyOrWhitespaceValidator : IPropertyValidator
   {
     public string ErrorMessage { get; }

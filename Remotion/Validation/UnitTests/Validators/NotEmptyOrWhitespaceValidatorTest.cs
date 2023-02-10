@@ -87,6 +87,22 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
+    public void ValidateString_WithPropertyValueIsZeroWidthSpaces_ReturnsNoValidationFailures ()
+    {
+      // this is not a "whitespace" character, because it is not in one of the characters listed in the spec for char.IsWhiteSpace()
+      // https://learn.microsoft.com/en-us/dotnet/api/system.char.iswhitespace?view=net-7.0
+      // rather, its category is "Format (Cf)" - see https://www.compart.com/en/unicode/U+200B
+      var zeroWidthSpace = '\u200b';
+
+      var propertyValidatorContext = CreatePropertyValidatorContext(new string(zeroWidthSpace, 7));
+      var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
+
+      var validationFailures = validator.Validate(propertyValidatorContext);
+
+      Assert.That(validationFailures, Is.Empty);
+    }
+
+    [Test]
     public void ValidateArray_WithPropertyValueIsEmptyArray_ReturnsSingleValidationFailure ()
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(Array.Empty<string>());
