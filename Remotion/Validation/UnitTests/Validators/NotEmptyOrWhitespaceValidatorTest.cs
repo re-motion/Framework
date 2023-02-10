@@ -49,9 +49,12 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    public void ValidateString_WithPropertyValueIsLetter_ReturnsNoValidationFailures ()
+    [TestCase("y")] // letter
+    [TestCase("7")] // number
+    [TestCase(";")] // punctuation
+    public void ValidateString_WithPropertyValueIsVisibleCharacter_ReturnsNoValidationFailures (string testString)
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext("y");
+      var propertyValidatorContext = CreatePropertyValidatorContext(testString);
       var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
@@ -73,7 +76,8 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void ValidateString_WithPropertyValueIsWhitespaceString_ReturnsSingleValidationFailure ()
     {
-      var whitespaceString = " \t\r\n \u00a0";
+      const char nonBreakingSpace = '\u00a0';
+      var whitespaceString = " \t\r\n " + nonBreakingSpace;
       var propertyValidatorContext = CreatePropertyValidatorContext(whitespaceString);
       var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Custom validation message."));
 
@@ -105,9 +109,12 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    public void ValidateArray_WithSingleEntryIsLetter_ReturnsNoValidationFailures ()
+    [TestCase("y")] // letter
+    [TestCase("7")] // number
+    [TestCase(";")] // punctuation
+    public void ValidateArray_WithSingleEntryIsVisibleCharacter_ReturnsNoValidationFailures (string testString)
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext(new[]{"y"});
+      var propertyValidatorContext = CreatePropertyValidatorContext(new[] { testString });
       var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
@@ -118,7 +125,7 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void ValidateArray_WithSingleEntryHasLeadingAndTrailingWhitespace_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext(new[]{"\ty  "});
+      var propertyValidatorContext = CreatePropertyValidatorContext(new[] { "\ty  " });
       var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
@@ -129,7 +136,7 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void ValidateArray_WithMultipleEntriesMixedTextAndWhitespace_ReturnsNoValidationFailures ()
     {
-      var propertyValidatorContext = CreatePropertyValidatorContext(new[]{"   ", "\ty  ", "\t\t"});
+      var propertyValidatorContext = CreatePropertyValidatorContext(new[] { "   ", "\ty  ", "\t\t" });
       var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
 
       var validationFailures = validator.Validate(propertyValidatorContext);
@@ -140,7 +147,8 @@ namespace Remotion.Validation.UnitTests.Validators
     [Test]
     public void ValidateArray_WithMultipleEntriesOnlyWhitespace_ReturnsSingleValidationFailure ()
     {
-      var whitespaceString = " \t\r\n \u00a0";
+      const char nonBreakingSpace = '\u00a0';
+      var whitespaceString = " \t\r\n " + nonBreakingSpace;
       var propertyValidatorContext = CreatePropertyValidatorContext(new[] { whitespaceString, whitespaceString, whitespaceString });
       var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Custom validation message."));
 
@@ -163,7 +171,7 @@ namespace Remotion.Validation.UnitTests.Validators
     private static void AssertValidationFailure (PropertyValidationFailure[] validationFailures, PropertyValidatorContext propertyValidatorContext)
     {
       Assert.That(validationFailures.Length, Is.EqualTo(1));
-      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must not be empty and cannot consist entirely of whitespace characters."));
+      Assert.That(validationFailures[0].ErrorMessage, Is.EqualTo("The value must not be empty or contain only whitespace characters."));
       Assert.That(validationFailures[0].LocalizedValidationMessage, Is.EqualTo("Custom validation message."));
       Assert.That(validationFailures[0].ValidatedObject, Is.SameAs(propertyValidatorContext.Instance));
       Assert.That(validationFailures[0].ValidatedProperty, Is.SameAs(propertyValidatorContext.Property));

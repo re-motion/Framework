@@ -34,7 +34,7 @@ namespace Remotion.Validation.Validators
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
-      ErrorMessage = "The value must not be empty and cannot consist entirely of whitespace characters.";
+      ErrorMessage = "The value must not be empty or contain only whitespace characters.";
       ValidationMessage = validationMessage;
     }
 

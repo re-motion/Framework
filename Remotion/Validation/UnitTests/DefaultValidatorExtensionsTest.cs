@@ -173,6 +173,8 @@ namespace Remotion.Validation.UnitTests
 
       addingPropertyValidationRuleBuilderMock.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyOrWhitespaceValidator>());
+      var notEmptyOrWhitespaceValidator = (NotEmptyOrWhitespaceValidator)createdValidator;
+      Assert.That(notEmptyOrWhitespaceValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]
@@ -190,6 +192,8 @@ namespace Remotion.Validation.UnitTests
 
       addingPropertyValidationRuleBuilderMock.Verify();
       Assert.That(createdValidator, Is.InstanceOf<NotEmptyOrWhitespaceValidator>());
+      var notEmptyOrWhitespaceValidator = (NotEmptyOrWhitespaceValidator)createdValidator;
+      Assert.That(notEmptyOrWhitespaceValidator.ValidationMessage, Is.SameAs(validationMessage));
     }
 
     [Test]

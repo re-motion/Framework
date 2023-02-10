@@ -29,6 +29,10 @@ namespace Remotion.Validation.Attributes.Validation
   /// </summary>
   public class NotEmptyOrWhitespaceValidationAttribute : AddingValidationAttributeBase
   {
+    public NotEmptyOrWhitespaceValidationAttribute ()
+    {
+    }
+
     protected override IEnumerable<IPropertyValidator> GetValidators (IPropertyInformation property, IValidationMessageFactory validationMessageFactory)
     {
       ArgumentUtility.CheckNotNull("property", property);
