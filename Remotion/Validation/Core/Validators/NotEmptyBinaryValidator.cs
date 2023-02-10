@@ -25,6 +25,9 @@ using Remotion.Validation.Results;
 
 namespace Remotion.Validation.Validators
 {
+  /// <summary>
+  /// Checks that a byte[] value contains at least one <see cref="byte"/>. 
+  /// </summary>
   public class NotEmptyBinaryValidator : IPropertyValidator
   {
     public string ErrorMessage { get; }
