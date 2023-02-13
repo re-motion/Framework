@@ -81,6 +81,16 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
+    public void Format_NotEmptyOrWhitespaceValidator ()
+    {
+      var validator = new NotEmptyOrWhitespaceValidator(new InvariantValidationMessage("Fake Message"));
+
+      var result = _formatter.Format(validator, _typeNameFormatter);
+
+      Assert.That(result, Is.EqualTo("NotEmptyOrWhitespaceValidator"));
+    }
+
+    [Test]
     public void Format_ILengthValidators ()
     {
       var validator1 = new LengthValidator(5, 10, new InvariantValidationMessage("Fake Message"));
