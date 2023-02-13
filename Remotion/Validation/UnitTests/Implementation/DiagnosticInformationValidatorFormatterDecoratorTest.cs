@@ -51,16 +51,6 @@ namespace Remotion.Validation.UnitTests.Implementation
     }
 
     [Test]
-    public void Format_NotEmptyStringValidator ()
-    {
-      var validator = new NotEmptyStringValidator(new InvariantValidationMessage("Fake Message"));
-
-      var result = _formatter.Format(validator, _typeNameFormatter);
-
-      Assert.That(result, Is.EqualTo("NotEmptyStringValidator"));
-    }
-
-    [Test]
     public void Format_NotEmptyBinaryValidator ()
     {
       var validator = new NotEmptyBinaryValidator(new InvariantValidationMessage("Fake Message"));
