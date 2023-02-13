@@ -49,9 +49,9 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCase("y")] // letter
-    [TestCase("7")] // number
-    [TestCase(";")] // punctuation
+    [TestCase("y", Description = "letter")]
+    [TestCase("7", Description = "number")]
+    [TestCase(";", Description = "punctuation")]
     public void ValidateString_WithPropertyValueIsVisibleCharacter_ReturnsNoValidationFailures (string testString)
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(testString);
@@ -125,9 +125,9 @@ namespace Remotion.Validation.UnitTests.Validators
     }
 
     [Test]
-    [TestCase("y")] // letter
-    [TestCase("7")] // number
-    [TestCase(";")] // punctuation
+    [TestCase("y", Description = "letter")]
+    [TestCase("7", Description = "number")]
+    [TestCase(";", Description = "punctuation")]
     public void ValidateArray_WithSingleEntryIsVisibleCharacter_ReturnsNoValidationFailures (string testString)
     {
       var propertyValidatorContext = CreatePropertyValidatorContext(new[] { testString });

@@ -32,7 +32,7 @@ namespace Remotion.Validation.Validators
   /// Checks that a collection contains at least one element.
   /// </summary>
   /// <remarks>
-  /// The following collection types are supported:
+  /// The following collection interfaces and their implementations are supported:
   /// <list type="bullet">
   ///   <item><description><see cref="ICollection"/></description></item>
   ///   <item><description><see cref="ICollection{T}"/></description></item>
