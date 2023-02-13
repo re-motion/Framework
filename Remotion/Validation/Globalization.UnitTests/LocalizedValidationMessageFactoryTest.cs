@@ -290,7 +290,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value with visible characters."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter at least one visible character."));
     }
 
     [Test]
@@ -303,7 +303,7 @@ namespace Remotion.Validation.Globalization.UnitTests
       Assert.That(validationMessage, Is.Not.Null);
       Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
 
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value with visible characters."));
+      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter at least one visible character."));
     }
 
     [Test]
