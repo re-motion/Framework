@@ -1,16 +1,16 @@
-﻿// This file is part of the re-motion Core Framework (www.re-motion.org)
+// This file is part of the re-motion Core Framework (www.re-motion.org)
 // Copyright (c) rubicon IT GmbH, www.rubicon.eu
-//
-// The re-motion Core Framework is free software; you can redistribute it
-// and/or modify it under the terms of the GNU Lesser General Public License
-// as published by the Free Software Foundation; either version 2.1 of the
+// 
+// The re-motion Core Framework is free software; you can redistribute it 
+// and/or modify it under the terms of the GNU Lesser General Public License 
+// as published by the Free Software Foundation; either version 2.1 of the 
 // License, or (at your option) any later version.
-//
-// re-motion is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// 
+// re-motion is distributed in the hope that it will be useful, 
+// but WITHOUT ANY WARRANTY; without even the implied warranty of 
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
 // GNU Lesser General Public License for more details.
-//
+// 
 // You should have received a copy of the GNU Lesser General Public License
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 //
@@ -26,18 +26,21 @@ using Remotion.Validation.Results;
 namespace Remotion.Validation.Validators
 {
   /// <summary>
-  /// Checks that a byte[] value contains at least one <see cref="byte"/>. 
+  ///   Checks that a <see cref="string"/> value is neither <see cref="string.Empty"/> nor contains only whitespace characters.
   /// </summary>
-  public class NotEmptyBinaryValidator : IPropertyValidator
+  /// <remarks>Note the definition of whitespace in <see cref="char.IsWhiteSpace(char)"/>, which includes tab, carriage return and line feed as well as non-breaking space,
+  /// thin space and hair space, but does not include zero-width space.</remarks>
+  /// <seealso cref="char.IsWhiteSpace(char)"/>
+  public class NotEmptyOrWhitespaceValidator : IPropertyValidator
   {
     public string ErrorMessage { get; }
     public ValidationMessage ValidationMessage { get; }
 
-    public NotEmptyBinaryValidator (ValidationMessage validationMessage)
+    public NotEmptyOrWhitespaceValidator (ValidationMessage validationMessage)
     {
       ArgumentUtility.CheckNotNull("validationMessage", validationMessage);
 
-      ErrorMessage = "The value must not be empty.";
+      ErrorMessage = "The value must not be empty or contain only whitespace characters.";
       ValidationMessage = validationMessage;
     }
 
@@ -51,12 +54,13 @@ namespace Remotion.Validation.Validators
 
     private bool IsValid (PropertyValidatorContext context)
     {
-      var propertyValue = context.PropertyValue;
+      if (context.PropertyValue is string stringValue)
+        return !string.IsNullOrWhiteSpace(stringValue);
 
-      if (propertyValue is not byte[] binaryValue)
-        return true;
+      if (context.PropertyValue is string[] stringArray)
+        return stringArray.Any(s => !string.IsNullOrWhiteSpace(s));
 
-      return binaryValue.Length > 0;
+      return true;
     }
 
     private PropertyValidationFailure CreateValidationError (PropertyValidatorContext context)
