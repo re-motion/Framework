@@ -26,7 +26,7 @@
     <NUnitToolPath Condition="'$(NUnitToolPath)' == ''">$(PackagesDirectory)NUnit.ConsoleRunner.3.11.1\tools\</NUnitToolPath>
     <NuGetToolPath Condition="'$(NuGetToolPath)' == ''">$(PackagesDirectory)NuGet.CommandLine.3.5.0\tools\</NuGetToolPath>
     <NuGetForMSBuildPath Condition="'$(NuGetForMSBuildPath)' == ''">$(PackagesDirectory)NuGet.for.MSBuild.1.4.3\build\</NuGetForMSBuildPath>
-    <RemotionBuildScriptPath Condition="'$(RemotionBuildScriptPath)' == ''">$(PackagesDirectory)Remotion.BuildScript.3.0.0-alpha.9\</RemotionBuildScriptPath>
+    <RemotionBuildScriptPath Condition="'$(RemotionBuildScriptPath)' == ''">$(PackagesDirectory)Remotion.BuildScript.3.0.0-alpha.10\</RemotionBuildScriptPath>
     <RemotionBuildScriptTargetsPath Condition="'$(RemotionBuildScriptTargetsPath)' == ''">$(RemotionBuildScriptPath)BuildTargets\</RemotionBuildScriptTargetsPath>
     <RemotionBuildScriptTasksPath Condition="'$(RemotionBuildScriptTasksPath)' == ''">$(RemotionBuildScriptPath)lib\net472\</RemotionBuildScriptTasksPath>
   </PropertyGroup>
