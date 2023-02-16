@@ -193,7 +193,15 @@ namespace Remotion.Web.Development.WebTesting
     private Uri ResolveHostname (Uri uri)
     {
       var host = new RetryUntilTimeout<IPHostEntry>(() => Dns.GetHostEntry(uri.Host), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(1)).Run();
-      var address = host.AddressList.First(a => a.AddressFamily == AddressFamily.InterNetwork).MapToIPv4();
+      var ipAddress = host.AddressList.FirstOrDefault(a => a.AddressFamily == AddressFamily.InterNetwork);
+      if (ipAddress == null)
+      {
+        throw new InvalidOperationException(
+            string.Format(
+                $"Host: '{host.HostName}' - No IP addresses found for InterNetwork. Host has the following addresses: {string.Join(", ", host.AddressList.Select(a => "'" + a + "'"))}"));
+      }
+
+      var address = ipAddress.MapToIPv4();
       var uriBuilder = new UriBuilder(uri);
       uriBuilder.Host = address.ToString();
       return uriBuilder.Uri;
