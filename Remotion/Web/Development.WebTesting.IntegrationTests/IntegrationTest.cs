@@ -68,8 +68,8 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
             var uri = new Uri(_webTestHelper.TestInfrastructureConfiguration.WebApplicationRoot);
 
             // RM-7401: Edge loads pages slower due to repeated hostname resolution.
-            if (_webTestHelper.BrowserConfiguration.IsEdge())
-              return HostnameResolveHelper.ResolveHostname(uri);
+            // if (_webTestHelper.BrowserConfiguration.IsEdge())
+            //   return HostnameResolveHelper.ResolveHostname(uri);
 
             return uri;
           });

@@ -139,8 +139,8 @@ namespace Remotion.Web.Development.WebTesting
 
     private void VerifyWebApplicationStarted (Uri webApplicationRoot, TimeSpan applicationPingTimeout)
     {
-      var resolvedUri = ResolveHostname(webApplicationRoot);
-      s_log.Info($"Verifying that '{resolvedUri}' is accessible within {applicationPingTimeout}.");
+      //var resolvedUri = ResolveHostname(webApplicationRoot);
+      s_log.Info($"Verifying that '{webApplicationRoot}' is accessible within {applicationPingTimeout}.");
 
       var stopwatch = Stopwatch.StartNew();
 
@@ -150,7 +150,7 @@ namespace Remotion.Web.Development.WebTesting
       while (true)
       {
 #pragma warning disable SYSLIB0014
-        var webRequest = (HttpWebRequest)HttpWebRequest.Create(resolvedUri); // TODO RM-8492: Replace with HttpClient
+        var webRequest = (HttpWebRequest)HttpWebRequest.Create(webApplicationRoot); // TODO RM-8492: Replace with HttpClient
 #pragma warning restore SYSLIB0014
         webRequest.Method = WebRequestMethods.Http.Head;
         webRequest.AllowAutoRedirect = true;
@@ -173,7 +173,7 @@ namespace Remotion.Web.Development.WebTesting
           webRequest.Timeout = remainingTimeout;
 
           using var response = (HttpWebResponse)webRequest.GetResponse();
-          s_log.Info($"Verified that '{resolvedUri}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
+          s_log.Info($"Verified that '{webApplicationRoot}' is accessible after {stopwatch.Elapsed.TotalMilliseconds:N0} ms.");
           return;
         }
         catch (WebException ex)
