@@ -18,12 +18,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using Remotion.Collections;
 using Remotion.Reflection;
-using Remotion.Reflection.TypeDiscovery;
 using Remotion.Utilities;
 
 namespace Remotion.ServiceLocation

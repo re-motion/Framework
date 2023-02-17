@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -36,6 +35,7 @@ using Remotion.Data.DomainObjects.UnitTests.UnitTesting;
 using Remotion.Data.DomainObjects.Validation;
 using Remotion.Development.UnitTesting;
 using Remotion.Mixins;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {

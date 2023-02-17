@@ -18,8 +18,8 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ServiceLocation;
 using Remotion.Web;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls

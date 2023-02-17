@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Linq;
-using CommonServiceLocator;
 using NUnit.Framework;
 using Remotion.ServiceLocation;
 using Remotion.UnitTests.ServiceLocation.DefaultServiceLocatorTests.TestDomain;

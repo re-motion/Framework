@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Web;
-using CommonServiceLocator;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Logging;
 using Remotion.ServiceLocation;

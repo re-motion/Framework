@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DataManagement;
@@ -35,6 +34,7 @@ using Remotion.Data.DomainObjects.UnitTests.Factories;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.UnitTesting;
 using Remotion.FunctionalProgramming;
+using Remotion.ServiceLocation;
 using Is = NUnit.Framework.Is;
 
 namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction

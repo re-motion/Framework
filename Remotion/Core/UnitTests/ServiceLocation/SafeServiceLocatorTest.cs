@@ -16,7 +16,6 @@
 // 
 using System;
 using System.Collections.ObjectModel;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Configuration.ServiceLocation;

@@ -15,7 +15,6 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using CommonServiceLocator;
 using Remotion.ServiceLocation;
 
 namespace Remotion.Utilities.Singleton

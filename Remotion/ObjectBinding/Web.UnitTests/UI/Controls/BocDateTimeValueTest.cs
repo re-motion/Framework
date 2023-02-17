@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -26,6 +25,7 @@ using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocDateTimeValueImplementation.Validation;
 using Remotion.ObjectBinding.Web.UnitTests.Domain;
+using Remotion.ServiceLocation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {

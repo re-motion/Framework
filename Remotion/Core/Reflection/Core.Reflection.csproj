@@ -16,8 +16,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
-  </ItemGroup>
   <Import Project="..\..\..\Build\Shared.build.targets" />
 </Project>
