@@ -36,7 +36,7 @@
       <_dockerPortNumber>60402</_dockerPortNumber>
       <_dockerWebApplicationRoot>http://$(_dockerHostName).local:$(_dockerPortNumber)/</_dockerWebApplicationRoot>
       <_dockerPullTimeout>00:15:00</_dockerPullTimeout>
-      <_dockerVerifyWebApplicationStartedTimeout>00:01:00</_dockerVerifyWebApplicationStartedTimeout>
+      <_dockerVerifyWebApplicationStartedTimeout>00:01:30</_dockerVerifyWebApplicationStartedTimeout>
     </PropertyGroup>
 
     <Message Text="Selected Browser: '$(Browser)'" />
