@@ -365,6 +365,13 @@ $output += "| This software (assembly 'Remotion.Web.Development.WebTesting') emb
 $output += "|
 "
 
+$output += "| [.NET Reference Source](https://github.com/microsoft/referencesource) (Source Code) "
+$output += "| 4.8 "
+$output += "| [MIT License](https://github.com/microsoft/referencesource/blob/master/LICENSE.txt) "
+$output += "| This software (assemblies in the 'CoreForms.Web' family) embeds code based on the '.NET Reference Source'. <br> Copyright (c) Microsoft Corporation <br> https://github.com/microsoft/referencesource "
+$output += "|
+"
+
 $output += "
 "
 

@@ -40,6 +40,8 @@
   <Target Name="TestBuild_FirefoxConfiguration" DependsOnTargets="TestBuild_BrowserConfiguration">
     <PropertyGroup>
       <Browsers>Firefox</Browsers>
+      <!-- Requires override because of test permutations (Firefox has different target image) -->
+      <ExecutionRuntimes>Win_NET481+EnforcedLocalMachine</ExecutionRuntimes>
     </PropertyGroup>
   </Target>
 
@@ -49,8 +51,8 @@
       <Platforms>x86+x64</Platforms>
       <DatabaseSystems>NoDB</DatabaseSystems>
       <!--<Browsers>CUSTOMIZE</Browsers>-->
-      <ExecutionRuntimes>Win_NET472+Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
-      <TargetRuntimes>NET48+NET472</TargetRuntimes>
+      <ExecutionRuntimes>Win_NET48+EnforcedLocalMachine</ExecutionRuntimes>
+      <TargetRuntimes>NET48</TargetRuntimes>
     </PropertyGroup>
   </Target>
 
