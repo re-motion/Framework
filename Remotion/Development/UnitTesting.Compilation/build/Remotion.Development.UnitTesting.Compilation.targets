@@ -1,0 +1,25 @@
+<Project>
+
+  <Target Name="CopyRoslynBinariesToOutput" AfterTargets="CopyFilesToOutputDirectory">
+    <Error Text="Could not locate the required Nuget package 'Microsoft.Net.Compilers.Toolset'. Please install the package and make sure to set 'GeneratePathProperty=&quot;true&quot;':
+&lt;PackageReference Include=&quot;Microsoft.Net.Compilers.Toolset&quot; Version=&quot;4.3.1&quot; GeneratePathProperty=&quot;true&quot; ExcludeAssets=&quot;build&quot; /&gt;
+This package needs to be installed in all leaf projects as the 'GeneratePathProperty' does not work transitively across projects." 
+           Condition="'$(PkgMicrosoft_Net_Compilers_Toolset)' == '' AND '$(RoslynBinariesPath)' == ''" />
+
+    <PropertyGroup>
+      <RoslynBinariesPath Condition="'$(RoslynBinariesPath)' == ''">$([System.IO.Path]::GetFullPath('$(PkgMicrosoft_Net_Compilers_Toolset)\tasks\net472\'))</RoslynBinariesPath>
+      <RoslynBinariesOutputDirectory Condition="'$(RoslynBinariesOutputDirectory)' == ''">$([System.IO.Path]::Combine('$(OutputPath)', 'roslyn'))</RoslynBinariesOutputDirectory>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <_roslynBinaryFiles Include="$(RoslynBinariesPath)\*" />
+    </ItemGroup>
+    
+    <Error Text="Could not locate the roslyn binaries in '$(RoslynBinariesPath)'." Condition="'@(_roslynBinaryFiles)' == ''" />
+    <Copy SourceFiles="@(_roslynBinaryFiles)" DestinationFolder="$(RoslynBinariesOutputDirectory)" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <FileWrites Include="$(RoslynBinariesOutputDirectory)\*" />
+    </ItemGroup>
+  </Target>
+
+</Project>

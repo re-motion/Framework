@@ -162,7 +162,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
     // will be unlocked when the process exits and we can delete it after the test has run.
     [Test]
 #if !NETFRAMEWORK
-    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("This test only works in .NET Framework")]
 #endif
     public void TryLoadAssembly_WithFileLoadException ()
     {
@@ -211,7 +211,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
 
     [Test]
 #if !NETFRAMEWORK
-    [Ignore("TODO RM-7808: Integrate the RoslynCodeDomProvider and renable the AssemblyCompiler tests")]
+    [Ignore("This test only works in .NET Framework")]
 #endif
     public void TryLoadAssembly_WithFileLoadException_AndShadowCopying ()
     {
@@ -379,6 +379,7 @@ namespace Remotion.UnitTests.Reflection.TypeDiscovery.AssemblyLoading
       var compiler = new AssemblyCompiler(
           sourceDirectory,
           Path.Combine(targetDirectory, outputAssemblyName),
+          typeof(Console).Assembly.Location,
           typeof(FilteringAssemblyLoader).Assembly.Location,
           typeof(Remotion.Logging.LogManager).Assembly.Location);
 
