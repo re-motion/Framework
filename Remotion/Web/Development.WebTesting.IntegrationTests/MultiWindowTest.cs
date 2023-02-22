@@ -145,8 +145,19 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       home.Frame.TextBoxes().GetByLocalID("MyTextBox").FillWith("MyText", FinishInput.Promptly);
 
+      // We need to manually setup WXE post back detection since we do Opt.ContinueImmediately() later
+      var mainPostBackCompletionDetectionStrategy = new WxePostBackCompletionDetectionStrategy(1, TimeSpan.FromSeconds(15));
+      var mainPostBackState = mainPostBackCompletionDetectionStrategy.PrepareWaitForCompletion(home.Context);
+
+      var framePostBackCompletionDetectionStrategy = new WxePostBackCompletionDetectionStrategy(-1, TimeSpan.FromSeconds(15));
+      var framePostBackState = framePostBackCompletionDetectionStrategy.PrepareWaitForCompletion(home.Frame.Context);
+
       var loadFrameFunctionInFrameButton = home.WebButtons().GetByID("LoadFrameFunctionInFrameWithoutPostback");
       loadFrameFunctionInFrameButton.Click(Opt.ContinueImmediately().AcceptModalDialog());
+
+      mainPostBackCompletionDetectionStrategy.WaitForCompletion(home.Context, mainPostBackState);
+      framePostBackCompletionDetectionStrategy.WaitForCompletion(home.Frame.Context, framePostBackState);
+
       AssertPostBackSequenceNumber(frameLabel, 1);
       AssertPostBackSequenceNumber(mainLabel, 2);
 
