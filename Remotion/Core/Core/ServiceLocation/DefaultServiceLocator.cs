@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CommonServiceLocator;
 using Remotion.Logging;
 using Remotion.Utilities;
 
@@ -87,7 +86,7 @@ namespace Remotion.ServiceLocation
     /// </summary>
     /// <param name="serviceType">The type of object requested.</param>
     /// <returns>The requested service instance.</returns>
-    /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instance: The 
+    /// <exception cref="ActivationException">There was an error resolving the service instance: The
     /// <see cref="ImplementationForAttribute"/> could not be found on the <paramref name="serviceType"/>, or the concrete implementation could
     /// not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public object GetInstance (Type serviceType)
@@ -108,7 +107,7 @@ namespace Remotion.ServiceLocation
     /// <param name="serviceType">The type of object requested.</param>
     /// <param name="key">The name the object was registered with. This parameter is ignored by this implementation of <see cref="IServiceLocator"/>.</param>
     /// <returns>The requested service instance.</returns>
-    /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instance: The 
+    /// <exception cref="ActivationException">There was an error resolving the service instance: The
     /// <see cref="ImplementationForAttribute"/> could not be found on the <paramref name="serviceType"/>, or the concrete implementation could
     /// not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public object GetInstance (Type serviceType, string key)
@@ -127,7 +126,7 @@ namespace Remotion.ServiceLocation
     /// <see cref="ImplementationForAttribute"/>, or a concrete implementation or factory must have been registered using one of the 
     /// <see cref="Register(ServiceConfigurationEntry)"/> methods. Otherwise, the sequence is empty.
     /// </returns>
-    /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instances: The concrete 
+    /// <exception cref="ActivationException">There was an error resolving the service instances: The concrete
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public IEnumerable<object> GetAllInstances (Type serviceType)
     {
@@ -142,7 +141,7 @@ namespace Remotion.ServiceLocation
     /// </summary>
     ///<typeparam name="TService">The type of object requested.</typeparam>
     /// <returns>The requested service instance.</returns>
-    /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instance: The 
+    /// <exception cref="ActivationException">There was an error resolving the service instance: The
     /// <see cref="ImplementationForAttribute"/> could not be found on the <typeparamref name="TService"/>, type or the concrete implementation 
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> ()
@@ -157,7 +156,7 @@ namespace Remotion.ServiceLocation
     /// <typeparam name="TService">The type of object requested.</typeparam>
     /// <param name="key">The name the object was registered with. This parameter is ignored by this implementation of <see cref="IServiceLocator"/>.</param>
     /// <returns>The requested service instance.</returns>
-    /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instance: The
+    /// <exception cref="ActivationException">There was an error resolving the service instance: The
     /// <see cref="ImplementationForAttribute"/> could not be found on the <typeparamref name="TService"/>, type or the concrete implementation
     /// could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public TService GetInstance<TService> (string key)
@@ -174,7 +173,7 @@ namespace Remotion.ServiceLocation
     /// <see cref="ImplementationForAttribute"/>, or a concrete implementation or factory must have been registered using one of the 
     /// <see cref="Register(ServiceConfigurationEntry)"/> methods. Otherwise, the sequence is empty.
     /// </returns>
-    /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instances: The concrete 
+    /// <exception cref="ActivationException">There was an error resolving the service instances: The concrete
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     public IEnumerable<TService> GetAllInstances<TService> ()
     {
@@ -188,7 +187,7 @@ namespace Remotion.ServiceLocation
     /// </summary>
     /// <param name="serviceType">The type of object requested.</param>
     /// <returns>The requested service instance, or <see langword="null" /> if no instance could be found.</returns>
-    /// <exception cref="T:Microsoft.Practices.ServiceLocation.ActivationException">There was an error resolving the service instance: The concrete 
+    /// <exception cref="ActivationException">There was an error resolving the service instance: The concrete
     /// implementation could not be instantiated. Inspect the <see cref="Exception.InnerException"/> property for the reason of the exception.</exception>
     object? IServiceProvider.GetService (Type serviceType)
     {

@@ -15,11 +15,11 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
-using CommonServiceLocator;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
 using Remotion.Extensions.UnitTests.Utilities.Singleton.TestDomain;
+using Remotion.ServiceLocation;
 using Remotion.Utilities.Singleton;
 
 namespace Remotion.Extensions.UnitTests.Utilities.Singleton

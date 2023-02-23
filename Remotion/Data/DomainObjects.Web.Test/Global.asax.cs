@@ -18,7 +18,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Web;
-using CommonServiceLocator;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.Web.ResourceHosting;
 using Remotion.Security;

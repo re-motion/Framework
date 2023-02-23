@@ -20,7 +20,6 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using CommonServiceLocator;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.Infrastructure;
