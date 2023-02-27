@@ -40,6 +40,8 @@
       <remotion:WebButton ID="MyDisabledWebButtonSupplemental" Text="DisabledWebButton" ButtonType="Supplemental" CommandName="Disabled" Enabled="False" runat="server"/>
       <h3>WebButton with icon</h3>
       <remotion:WebButton ID="MyWebButtonWithIcon" Text="This text should wrap correctly because it is too long to fit" Width="100px" CommandName="Disabled" runat="server"/>
+      <h3>WebButton with icon and projec relative path (~/...)</h3>
+      <remotion:WebButton ID="MyWebButtonWithIconAndProjectRelativePath" Icon-Url="~/res/Remotion.Web.Development.WebTesting.TestSite.Shared/Image/SampleIcon.gif" Text="My icon Text" Width="100px" CommandName="Disabled" runat="server"/>
       <h3>WebButton UseLegacyButton="True"</h3>
       <remotion:WebButton ID="MyWebButtonWithUseLegacyButton" Text="LegacyButton" CommandName="Sync" RequiresSynchronousPostBack="true" UseLegacyButton="True" runat="server" />
       <h3>WebButton with Access Keys</h3>
