@@ -17,12 +17,14 @@
 using System.Runtime.Serialization;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Extensions;
+using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
   /// <summary>
   /// Provides methods for detecting an ASP.NET error page.
+  /// Only works with synchronous postbacks or GET requests.
   /// </summary>
   public static class AspNetErrorPageDetection
   {
@@ -30,30 +32,34 @@ namespace Remotion.Web.Development.WebTesting
     private class ErrorObject
     {
       [DataMember]
-      public string Message { get; set; } = default!;
+      public string? Message { get; set; }
 
       [DataMember]
-      public string Details { get; set; } = default!;
+      public string? Details { get; set; }
     }
 
     private const string c_errorPageDetectionJs = @"
 let result = null;
 // The following CSS selector matches specific parts of the ASP.NET error page, which make it improbable that a non error page will match it
-if (document.querySelector(""body[bgcolor='white']>span:first-child>h1:first-child>hr[color='silver']:last-child"")) {
+if (document.querySelector('body[bgcolor=""white""] > span:first-child > h1:first-child > hr[color=""silver""]:last-child')) {
   result = {};
-  result.Message = document.querySelector(""body>span>h2"").innerText;
-  result.Details = document.querySelector(""body>font"").innerText;
+  result.Message = document.querySelector('body > span > h2').innerText;
+  result.Details = document.querySelector('body > font').innerText;
 }
 return JSON.stringify(result);
 ";
 
     public static void ThrowOnErrorPage (PageObject pageObject)
     {
+      ArgumentUtility.CheckNotNull("pageObject", pageObject);
+
       ThrowOnErrorPage((IWebDriver)pageObject.Driver.Native);
     }
 
     public static void ThrowOnErrorPage (IWebDriver webDriver)
     {
+      ArgumentUtility.CheckNotNull("webDriver", webDriver);
+
       var resultJson = webDriver.ExecuteJavaScript<string>(c_errorPageDetectionJs);
 
       // Shortcut the JSON deserialization for the common case to improve performance
@@ -62,7 +68,7 @@ return JSON.stringify(result);
 
       var resultObject = DataContractJsonSerializationUtility.Deserialize<ErrorObject>(resultJson);
       if (resultObject != null)
-        throw new AspNetErrorPageException(resultObject.Message, resultObject.Details);
+        throw new AspNetErrorPageException(resultObject.Message ?? "The error message could not be determined.", resultObject.Details ?? "The error details could not be determined.");
     }
   }
 }

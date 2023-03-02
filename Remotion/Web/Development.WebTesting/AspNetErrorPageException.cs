@@ -15,6 +15,7 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using Remotion.Utilities;
 
 namespace Remotion.Web.Development.WebTesting
 {
@@ -29,6 +30,9 @@ namespace Remotion.Web.Development.WebTesting
     public AspNetErrorPageException (string message, string details)
         : base(message)
     {
+      ArgumentUtility.CheckNotNull("message", message))
+      ArgumentUtility.CheckNotNull("details", details);
+
       Details = details;
     }
   }
