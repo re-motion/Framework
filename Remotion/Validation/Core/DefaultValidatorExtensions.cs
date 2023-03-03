@@ -35,15 +35,6 @@ namespace Remotion.Validation
     }
 
     /// <summary>
-    /// Adds a <see cref="NotEmptyStringValidator"/> to the <paramref name="ruleBuilder"/>.
-    /// </summary>
-    public static IAddingPropertyValidationRuleBuilder<TValidatedType, string> NotEmpty<TValidatedType> (
-        this IAddingPropertyValidationRuleBuilder<TValidatedType, string> ruleBuilder)
-    {
-      return ruleBuilder.SetValidator(p => new NotEmptyStringValidator(p.ValidationMessage));
-    }
-
-    /// <summary>
     /// Adds a <see cref="NotEmptyCollectionValidator"/> to the <paramref name="ruleBuilder"/>.
     /// </summary>
     public static IAddingPropertyValidationRuleBuilder<TValidatedType, string[]> NotEmpty<TValidatedType> (

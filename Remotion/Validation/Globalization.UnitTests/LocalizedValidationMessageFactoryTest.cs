@@ -216,19 +216,6 @@ namespace Remotion.Validation.Globalization.UnitTests
     }
 
     [Test]
-    public void CreateValidationMessageForPropertyValidator_WithNotEmptyStringValidator_ReturnsLocalizedValidationMessage ()
-    {
-      _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(string));
-      var validator = new NotEmptyStringValidator(_validationMessageStub.Object);
-      var validationMessage = _factory.CreateValidationMessageForPropertyValidator(validator, _propertyStub.Object);
-
-      Assert.That(validationMessage, Is.Not.Null);
-      Assert.That(validationMessage, Is.InstanceOf<ResourceManagerBasedValidationMessage>());
-
-      Assert.That(validationMessage.ToString(), Is.EqualTo("Enter a value."));
-    }
-
-    [Test]
     public void CreateValidationMessageForPropertyValidator_WithNotEmptyBinaryValidator_ReturnsLocalizedValidationMessage ()
     {
       _propertyStub.Setup(_ => _.PropertyType).Returns(typeof(byte[]));

@@ -40,38 +40,6 @@ namespace Remotion.Validation.UnitTests.Attributes.Validation
     }
 
     [Test]
-    public void GetPropertyValidator_ForStringProperty_WithDefaultMessage ()
-    {
-      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Person.LastName)));
-      var validationMessageStub = new Mock<ValidationMessage>();
-      _validationMessageFactoryStub
-          .Setup(_ => _.CreateValidationMessageForPropertyValidator(It.IsAny<NotEmptyStringValidator>(), propertyInformation))
-          .Returns(validationMessageStub.Object);
-
-      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
-
-      Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(result[0], Is.TypeOf(typeof(NotEmptyStringValidator)));
-      Assert.That(((NotEmptyStringValidator)result[0]).ValidationMessage, Is.Not.Null);
-
-      validationMessageStub.Setup(_ => _.ToString()).Returns("Stub Message");
-      Assert.That(((NotEmptyStringValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("Stub Message"));
-    }
-
-    [Test]
-    public void GetPropertyValidator_ForStringProperty_WithCustomMessage ()
-    {
-      var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Person.LastName)));
-      _attribute.ErrorMessage = "CustomMessage";
-
-      var result = _attribute.GetPropertyValidators(propertyInformation, _validationMessageFactoryStub.Object).ToArray();
-
-      Assert.That(result.Length, Is.EqualTo(1));
-      Assert.That(((NotEmptyStringValidator)result[0]).ValidationMessage, Is.InstanceOf<InvariantValidationMessage>());
-      Assert.That(((NotEmptyStringValidator)result[0]).ValidationMessage.ToString(), Is.EqualTo("CustomMessage"));
-    }
-
-    [Test]
     public void GetPropertyValidator_ForBinaryProperty_WithDefaultMessage ()
     {
       var propertyInformation = PropertyInfoAdapter.Create(typeof(Customer).GetProperty(nameof(Person.Photograph)));

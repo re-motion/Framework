@@ -153,9 +153,6 @@
     <value>Enter a value less than "{0}".</value>
     <comment>{0} = comparison value</comment>
   </data>
-  <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyStringValidationMessage" xml:space="preserve">
-    <value>Enter a value.</value>
-  </data>
   <data name="Remotion.Validation.Globalization.LocalizedValidationMessageFactory.ValueMustNotBeEmptyBinaryValidationMessage" xml:space="preserve">
     <value>Enter a value.</value>
   </data>

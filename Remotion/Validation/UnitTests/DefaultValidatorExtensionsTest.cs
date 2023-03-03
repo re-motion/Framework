@@ -69,24 +69,6 @@ namespace Remotion.Validation.UnitTests
     }
 
     [Test]
-    public void NotEmpty_ForString_ReturnsNotEmptyStringValidator ()
-    {
-      var validationMessage = new InvariantValidationMessage("Fake message");
-      var initParameters = new PropertyValidationRuleInitializationParameters(validationMessage);
-      IPropertyValidator createdValidator = null;
-      var addingPropertyValidationRuleBuilderStub = new Mock<IAddingPropertyValidationRuleBuilder<object, string>>();
-      addingPropertyValidationRuleBuilderStub
-          .Setup(_ => _.SetValidator(It.IsAny<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>()))
-          .Callback<Func<PropertyValidationRuleInitializationParameters, IPropertyValidator>>(func => createdValidator = func.Invoke(initParameters));
-
-      addingPropertyValidationRuleBuilderStub.Object.NotEmpty();
-
-      Assert.That(createdValidator, Is.InstanceOf<NotEmptyStringValidator>());
-      var notEmptyValidator = (NotEmptyStringValidator)createdValidator;
-      Assert.That(notEmptyValidator.ValidationMessage, Is.SameAs(validationMessage));
-    }
-
-    [Test]
     public void NotEmpty_ForCollection_ReturnsNotEmptyCollectionValidator ()
     {
       var validationMessage = new InvariantValidationMessage("Fake message");
