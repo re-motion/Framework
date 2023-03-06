@@ -17,6 +17,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Model;
 using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
@@ -37,6 +38,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly bool _isNullable;
     private bool _isNullablePropertyType;
     private readonly bool _isObjectID;
+    private readonly IPropertyDefaultValueProvider _defaultValueProvider;
 
     public PropertyDefinition (
         ClassDefinition classDefinition,
@@ -60,6 +62,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       _isNullable = isNullable;
       _maxLength = maxLength;
       _storageClass = storageClass;
+      _defaultValueProvider = new LegacyPropertyDefaultValueProvider();
     }
 
     public ClassDefinition ClassDefinition
@@ -103,48 +106,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       get
       {
-        if (_isNullable)
-          return null;
-
-        if (_propertyType.IsArray)
-        {
-          var elementType = _propertyType.GetElementType();
-          Assertion.DebugIsNotNull(elementType, "elementType != null when _propertyType.IsArray");
-          return Array.CreateInstance(elementType, 0);
-        }
-
-        if (_propertyType == typeof(string))
-          return string.Empty;
-
-        if (_propertyType.IsEnum)
-        {
-          var firstValueOrNull = EnumUtility.GetEnumMetadata(_propertyType).OrderedValues.FirstOrDefault();
-          if (firstValueOrNull == null)
-          {
-            throw new InvalidOperationException(
-                string.Format(
-                    ".NET enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
-                    _propertyType.GetFullNameSafe()));
-          }
-
-          return firstValueOrNull;
-        }
-
-        if (ExtensibleEnumUtility.IsExtensibleEnumType(_propertyType))
-        {
-          var firstValueOrNull = ExtensibleEnumUtility.GetDefinition(_propertyType).GetValueInfos().FirstOrDefault();
-          if (firstValueOrNull == null)
-          {
-            throw new InvalidOperationException(
-                string.Format(
-                    "Extensible enum type '{0}' does not define any values. Properties based on this type must be declared as nullable.",
-                    _propertyType.GetFullNameSafe()));
-          }
-
-          return firstValueOrNull.Value;
-        }
-
-        return Activator.CreateInstance(_propertyType, new object[0]);
+        return _defaultValueProvider.GetDefaultValue(_propertyInfo, _isNullable);
       }
     }
 
