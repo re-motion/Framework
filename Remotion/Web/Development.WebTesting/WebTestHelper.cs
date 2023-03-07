@@ -254,6 +254,8 @@ namespace Remotion.Web.Development.WebTesting
       var context = PageObjectContext.New(browser, requestErrorDetectionStrategy);
       s_log.InfoFormat("New PageObjectContext has been created.");
 
+      requestErrorDetectionStrategy.CheckPageForError(context.Scope);
+
       var pageObject = (TPageObject)Activator.CreateInstance(typeof(TPageObject), new object[] { context })!;
       s_log.InfoFormat("Initial PageObject has been created.");
       return pageObject;
