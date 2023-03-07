@@ -32,16 +32,6 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
   /// </summary>
   public sealed class AspNetRequestErrorDetectionParser
   {
-    [DataContract]
-    private class ErrorObject
-    {
-      [DataMember]
-      public string? Message { get; set; }
-
-      [DataMember]
-      public string? StackTrace { get; set; }
-    }
-
     public sealed class Result
     {
       public static Result CreateErrorResult ([NotNull] string message, [NotNull] string stacktrace)
@@ -86,6 +76,16 @@ namespace Remotion.Web.Development.WebTesting.RequestErrorDetectionStrategies
       }
     }
 
+    [DataContract]
+    private class ErrorObject
+    {
+      [DataMember]
+      public string? Message { get; set; }
+
+      [DataMember]
+      public string? StackTrace { get; set; }
+    }
+
     private const string c_errorPageDetectionJs = @"
 function fixNewlines(text) {
   // Ensure strings have a CRLF endings
@@ -94,9 +94,9 @@ function fixNewlines(text) {
 
 let result = null;
 
-const smartPageErrorBody = document.querySelector('.SmartPageErrorBody:first-child');
-const errorPageTarget = smartPageErrorBody
-  ? smartPageErrorBody.querySelector(':scope > div')
+const smartPageErrorMessage = document.getElementById('SmartPageServerErrorMessage');
+const errorPageTarget = smartPageErrorMessage
+  ? smartPageErrorMessage.querySelector(':scope .SmartPageErrorBody > div')
   : document.body;
 
 const message = errorPageTarget?.querySelector(':scope > span > h2 > i')?.innerText;
