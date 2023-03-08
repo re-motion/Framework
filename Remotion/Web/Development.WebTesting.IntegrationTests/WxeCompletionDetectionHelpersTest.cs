@@ -82,7 +82,13 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
     private WxePageObject Start ()
     {
-      return Start<WxePageObject>("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
+      // We cannot start the correct page directly as it would throw because of the error detection
+      // So instead, we start an empty page, navigate to the actual page and return the empty-page
+      // page object to ensure that the error detection is correctly set in the context
+      var pageObject = Start<WxePageObject>("Empty.aspx");
+
+      StartWithoutRequestErrorDetection<WxePageObject>("AspNetRequestErrorDetectionParserStaticPages/CustomErrorDefaultErrorPage.html");
+      return pageObject;
     }
   }
 }
