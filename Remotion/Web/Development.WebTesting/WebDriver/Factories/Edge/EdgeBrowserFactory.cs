@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Edge
 
       var extendedEdgeOptions = _edgeConfiguration.CreateEdgeOptions();
       if (configuration.Headless)
-        extendedEdgeOptions.AddArgument("headless");
+        extendedEdgeOptions.AddArgument("headless=new");
 
       var driver = CreateEdgeDriver(extendedEdgeOptions, out var driverProcessID, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
