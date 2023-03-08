@@ -55,7 +55,7 @@ namespace Remotion.Web.Development.WebTesting.WebDriver.Factories.Chrome
 
       var extendedChromeOptions = _chromeConfiguration.CreateChromeOptions();
       if (configuration.Headless)
-        extendedChromeOptions.AddArgument("headless");
+        extendedChromeOptions.AddArgument("headless=new");
 
       var driver = CreateChromeDriver(extendedChromeOptions, out var driverProcessID, commandTimeout);
       driver.Manage().Timeouts().AsynchronousJavaScript = configuration.AsyncJavaScriptTimeout;
