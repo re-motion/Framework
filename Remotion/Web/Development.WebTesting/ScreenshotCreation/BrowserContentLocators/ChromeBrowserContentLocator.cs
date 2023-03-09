@@ -24,7 +24,6 @@ using System.Windows.Automation;
 using OpenQA.Selenium;
 using Remotion.Utilities;
 using Remotion.Web.Development.WebTesting.Utilities;
-using Condition = System.Windows.Automation.Condition;
 
 namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentLocators
 {
@@ -109,19 +108,28 @@ namespace Remotion.Web.Development.WebTesting.ScreenshotCreation.BrowserContentL
 
     private AutomationElement? GetContentElement (AutomationElement window)
     {
-      return window.FindFirst(
+
+      var automationElement = window.FindFirst(
           TreeScope.Children,
           new AndCondition(
-              new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Document),
+              new OrCondition(
+                  // UI Automation tools tell us that the ControlTypeProperty == "ControlType.Document", but when executing the code, the value is returned as
+                  // a "ControlType.Pane". In order to prevent strange effects, we check for both values since there is a) no ambiguity and b) the underlying reason for this
+                  // mismatch is not easily discoverable.
+                  new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Document),
+                  new PropertyCondition(AutomationElement.ControlTypeProperty, ControlType.Pane)
+              ),
               new PropertyCondition(AutomationElement.ClassNameProperty, "Chrome_RenderWidgetHostHWND"),
+
               new OrCondition(
                   // UI Automation tools tell us that the FrameworkIdProperty == "Chrome", but when executing the code, the value is returned as "Win32".
                   // In order to prevent strange effects, both values are tested since there is a) no ambiguity and b) the underlying reason for this
                   // mismatch is not easily discoverable. It may be related to a timing effect.
                   new PropertyCondition(AutomationElement.FrameworkIdProperty, "Chrome"),
                   new PropertyCondition(AutomationElement.FrameworkIdProperty, "Win32"))
-              )
-          );
+          )
+      );
+      return automationElement;
     }
 
     private TResult RetryUntilValueChanges<TResult> (Func<TResult> func, TResult value, int retries, TimeSpan interval)
