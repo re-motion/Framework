@@ -19,6 +19,7 @@ using System.ComponentModel.Design;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Infrastructure.TypePipe;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Factories
@@ -37,7 +38,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           new ReflectionBasedMemberInformationNameResolver(),
           new PropertyMetadataReflector(),
           new DomainModelConstraintProvider(),
-          new LegacyPropertyDefaultValueProvider(),
+          SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
           new SortExpressionDefinitionProvider(),
           DomainObjectCreator);
     }

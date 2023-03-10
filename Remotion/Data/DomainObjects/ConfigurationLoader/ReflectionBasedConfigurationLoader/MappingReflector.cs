@@ -59,7 +59,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
             SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
             new PropertyMetadataReflector(),
             SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
-            new LegacyPropertyDefaultValueProvider(),
+            SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
             SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
             CreateDomainObjectCreator())
     {

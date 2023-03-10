@@ -22,6 +22,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 {
@@ -46,7 +47,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           new ClassIDProvider(),
           new PropertyMetadataReflector(),
           new DomainModelConstraintProvider(),
-          new LegacyPropertyDefaultValueProvider(),
+          SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
           new SortExpressionDefinitionProvider(),
           _domainObjectCreator);
     }

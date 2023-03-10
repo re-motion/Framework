@@ -29,6 +29,7 @@ using Remotion.Reflection;
 using Remotion.Reflection.TypeDiscovery;
 using Remotion.Reflection.TypeDiscovery.AssemblyFinding;
 using Remotion.Reflection.TypeDiscovery.AssemblyLoading;
+using Remotion.ServiceLocation;
 
 namespace Remotion.Data.DomainObjects.PerformanceTests
 {
@@ -56,7 +57,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
               new ReflectionBasedMemberInformationNameResolver(),
               new PropertyMetadataReflector(),
               new DomainModelConstraintProvider(),
-              new LegacyPropertyDefaultValueProvider(),
+              SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
               new SortExpressionDefinitionProvider(),
               MappingReflector.CreateDomainObjectCreator()),
           new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage)));

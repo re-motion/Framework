@@ -99,7 +99,7 @@ namespace Remotion.SecurityManager.Metadata.Importer
                     new ReflectionBasedMemberInformationNameResolver(),
                     new PropertyMetadataReflector(),
                     new DomainModelConstraintProvider(),
-                    new LegacyPropertyDefaultValueProvider(),
+                    SafeServiceLocator.Current.GetInstance<IPropertyDefaultValueProvider>(),
                     new SortExpressionDefinitionProvider(),
                     MappingReflector.CreateDomainObjectCreator()),
                 new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));
