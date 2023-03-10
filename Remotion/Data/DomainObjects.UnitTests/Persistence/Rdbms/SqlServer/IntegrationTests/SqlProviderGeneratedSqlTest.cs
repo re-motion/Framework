@@ -233,6 +233,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Persistence.Rdbms.SqlServer.Inte
     {
       var newGuid = new Guid("322D1DCB-19E4-49BA-90AB-7F5C9C8126E8");
       var newDataContainer = DataContainer.CreateNew(new ObjectID(Configuration.GetTypeDefinition(typeof(Employee)), newGuid));
+      SetPropertyValue(newDataContainer, typeof(Employee), "Name", "");
       var changedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee1);
       SetPropertyValue(changedDataContainer, typeof(Employee), "Name", "George");
       var markedAsChangedDataContainer = _testHelper.LoadDataContainerInSeparateProvider(DomainObjectIDs.Employee2);

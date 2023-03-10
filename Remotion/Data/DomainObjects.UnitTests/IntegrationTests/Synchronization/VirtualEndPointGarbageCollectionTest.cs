@@ -67,12 +67,18 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     {
       var employee = DomainObjectIDs.Employee3.GetObject<Employee>();
       employee.Subordinates.EnsureDataComplete();
+      employee.Name = "Employee";
+
       Assert.That(employee.Subordinates, Is.Empty);
 
       var unsynchronizedSubordinateID =
-          RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Employee, Employee>(
+          RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<Employee, Employee>(
             employee.ID,
-            (subOrdinate, e) => subOrdinate.Supervisor = e);
+            (subOrdinate, e) =>
+            {
+              subOrdinate.Name = "Subordinate";
+              subOrdinate.Supervisor = e;
+            });
       var unsynchronizedSubordinate = unsynchronizedSubordinateID.GetObject<Employee>();
 
       var virtualEndPointID = RelationEndPointID.Resolve(employee, o => o.Subordinates);
@@ -93,9 +99,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       TestableClientTransaction.EnsureDataComplete(virtualEndPointID);
 
       var unsynchronizedComputerID =
-          RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Computer, Employee>(
+          RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<Computer, Employee>(
             employee.ID,
-            (c, e) => c.Employee = e);
+            (c, e) =>
+            {
+              c.SerialNumber = "12345";
+              c.Employee = e;
+            });
       var unsynchronizedComputer = unsynchronizedComputerID.GetObject<Computer>();
 
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(virtualEndPointID), Is.Not.Null);
@@ -113,14 +123,20 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
     public void UnloadUnsynchronizedFK_LeavesNullCompleteVirtualObjectEndPoint ()
     {
       var employee = DomainObjectIDs.Employee1.GetObject<Employee>();
+      employee.Name = "Employee";
+
       var virtualEndPointID = RelationEndPointID.Resolve(employee, e => e.Computer);
       TestableClientTransaction.EnsureDataComplete(virtualEndPointID);
       Assert.That(employee.Computer, Is.Null);
 
       var unsynchronizedComputerID =
-          RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Computer, Employee>(
+          RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<Computer, Employee>(
             employee.ID,
-            (c, e) => c.Employee = e);
+            (c, e) =>
+            {
+              c.SerialNumber = "12345";
+              c.Employee = e;
+            });
       var unsynchronizedComputer = unsynchronizedComputerID.GetObject<Computer>();
 
       Assert.That(_dataManager.GetRelationEndPointWithoutLoading(virtualEndPointID), Is.Not.Null);
@@ -251,10 +267,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
 
     protected ObjectID CreateCompanyAndSetIndustrialSectorInOtherTransaction (ObjectID industrialSectorID)
     {
-      return RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<Company, IndustrialSector>(industrialSectorID, (c, s) =>
+      return RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<Company, IndustrialSector>(industrialSectorID, (c, s) =>
       {
+        c.Name = "Company";
         c.IndustrialSector = s;
+        c.IndustrialSector.Name = "Sector";
         c.Ceo = Ceo.NewObject();
+        c.Ceo.Name = "CEO";
       });
     }
   }

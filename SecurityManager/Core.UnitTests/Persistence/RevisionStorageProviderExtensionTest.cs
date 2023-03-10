@@ -45,7 +45,8 @@ namespace Remotion.SecurityManager.UnitTests.Persistence
     [Test]
     public void Saving_OneSecurityManagerDomainObject ()
     {
-      Dev.Null = _factory.CreateTenant();
+      var tenant = _factory.CreateTenant();
+      tenant.Name = "MyTenant";
 
       ClientTransactionScope.CurrentTransaction.Commit();
 

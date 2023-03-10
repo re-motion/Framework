@@ -462,20 +462,24 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       orderTicket1.FileName = @"C:\NewFile.tif";
 
       OrderItem newOrderItem1 = OrderItem.NewObject();
+      newOrderItem1.Product = "Product 1";
       ObjectID newOrderItem1ID = newOrderItem1.ID;
 
       newOrderItem1.Position = 1;
       newOrder.OrderItems.Add(newOrderItem1);
 
       OrderItem newOrderItem2 = OrderItem.NewObject();
+      newOrderItem2.Product = "Product 2";
       ObjectID newOrderItem2ID = newOrderItem2.ID;
       newOrderItem2.Position = 2;
       order4.OrderItems.Add(newOrderItem2);
 
       Customer newCustomer = Customer.NewObject();
+      newCustomer.Name = "Customer";
       ObjectID newCustomerID = newCustomer.ID;
 
       Ceo newCeo = Ceo.NewObject();
+      newCeo.Name = "CEO";
       ObjectID newCeoID = newCeo.ID;
       newCustomer.Ceo = newCeo;
       order3.Customer = newCustomer;
@@ -536,9 +540,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void TestAllOperationsWithHierarchy ()
     {
       Employee newSupervisor1 = Employee.NewObject();
+      newSupervisor1.Name = "Supervisor 1";
       ObjectID newSupervisor1ID = newSupervisor1.ID;
 
       Employee newSubordinate1 = Employee.NewObject();
+      newSubordinate1.Name = "Subordinate 1";
       ObjectID newSubordinate1ID = newSubordinate1.ID;
       newSubordinate1.Supervisor = newSupervisor1;
 
@@ -555,8 +561,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Dev.Null = DomainObjectIDs.Employee7.GetObject<Employee>();
 
       Employee newSubordinate2 = Employee.NewObject();
+      newSubordinate2.Name = "Subordinate 2";
       ObjectID newSubordinate2ID = newSubordinate2.ID;
+
       Employee newSubordinate3 = Employee.NewObject();
+      newSubordinate3.Name = "Subordinate 3";
       ObjectID newSubordinate3ID = newSubordinate3.ID;
 
       newSupervisor1.Supervisor = supervisor2;
@@ -626,6 +635,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Partner partner = DomainObjectIDs.Partner2.GetObject<Partner>();
 
       Person newPerson = Person.NewObject();
+      newPerson.Name = "Jane Doe";
       partner.ContactPerson = newPerson;
       partner.IndustrialSector.Delete();
 

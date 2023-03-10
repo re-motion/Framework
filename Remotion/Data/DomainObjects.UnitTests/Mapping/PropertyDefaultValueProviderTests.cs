@@ -90,7 +90,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     }
 
     [Test]
-    public void DefaultValue_NotNullable_OtherType ()
+    public void DefaultValue_ValueType ()
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(int));
       var defaultValue = _defaultValueProvider.GetDefaultValue(_propertyInformationStub.Object, false);

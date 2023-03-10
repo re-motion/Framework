@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -11,6 +12,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// <see langword="null"/>, even if they are declared with <see cref="NullablePropertyAttribute.IsNullable"/> set to <see langword="false"/>.
   /// </summary>     
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor(typeof(IPropertyDefaultValueProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class PropertyDefaultValueProvider : IPropertyDefaultValueProvider
   {
     public object? GetDefaultValue (IPropertyInformation propertyInfo, bool isNullable)

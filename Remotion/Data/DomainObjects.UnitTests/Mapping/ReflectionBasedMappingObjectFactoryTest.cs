@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           new ClassIDProvider(),
           new PropertyMetadataReflector(),
           new DomainModelConstraintProvider(),
-          new LegacyPropertyDefaultValueProvider(),
+          new PropertyDefaultValueProvider(),
           new SortExpressionDefinitionProvider(),
           _domainObjectCreator);
     }

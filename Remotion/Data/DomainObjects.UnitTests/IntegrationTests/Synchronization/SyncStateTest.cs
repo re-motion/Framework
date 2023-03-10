@@ -52,7 +52,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Synchronization
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       order.OrderItems.EnsureDataComplete();
 
-      var orderItemID = RelationInconcsistenciesTestHelper.CreateObjectAndSetRelationInOtherTransaction<OrderItem, Order>(order.ID, (oi, o) => oi.Order = o);
+      var orderItemID = RelationInconcsistenciesTestHelper.CreateAndInitializeObjectAndSetRelationInOtherTransaction<OrderItem, Order>(order.ID, (oi, o) =>
+      {
+        oi.Order = o;
+        oi.Product = "Product1";
+      });
       var orderItem = orderItemID.GetObject<OrderItem>();
       var endPointID = RelationEndPointID.Resolve(orderItem, oi => oi.Order);
       var endPoint = (RealObjectEndPoint)TestableClientTransaction.DataManager.GetRelationEndPointWithoutLoading(endPointID);

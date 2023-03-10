@@ -87,14 +87,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     public void GetMetadata_WithExtensibleEnumProperty ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithAllDataTypes>(
-          "ExtensibleEnumProperty", DomainModelConstraintProviderStub.Object,
+          "ExtensibleEnumProperty",
+          DomainModelConstraintProviderStub.Object,
           PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
 
-      var extensibleEnumValue = ExtensibleEnumObjectMother.GetRandomValue<Color>();
+      var extensibleEnumValue = Color.Values.Green();
       PropertyDefaultValueProviderStub
           .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
           .Returns(extensibleEnumValue);
@@ -112,7 +113,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     public void GetMetadata_WithOptionalRelationProperty ()
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithGuidKey>(
-          "ClassWithValidRelationsOptional", DomainModelConstraintProviderStub.Object,
+          "ClassWithValidRelationsOptional",
+          DomainModelConstraintProviderStub.Object,
           PropertyDefaultValueProviderStub.Object);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();

@@ -85,6 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void MandatoryRelationNotSetExceptionForOneToOneRelation ()
     {
       OrderTicket newOrderTicket = OrderTicket.NewObject();
+      newOrderTicket.FileName = @"C:\temp\newOrder.tkt";
 
       using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
       {
@@ -104,6 +105,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void MandatoryRelationNotSetExceptionForOneToManyRelation ()
     {
       IndustrialSector newIndustrialSector = IndustrialSector.NewObject();
+      newIndustrialSector.Name = "Sector";
 
       using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
       {
@@ -123,6 +125,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void CommitWithValidProperties ()
     {
       var newObject = CreateClassWithAllDataTypes();
+      newObject.PopulateMandatoryProperties();
       newObject.StringWithNullValueProperty = null;
       newObject.NullableBinaryProperty = null;
 
@@ -133,6 +136,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ExceptionForNotNullableStringPropertyNotSet ()
     {
       var newObject = CreateClassWithAllDataTypes();
+      newObject.PopulateMandatoryProperties();
       newObject.StringProperty = null;
 
       using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
@@ -153,6 +157,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ExceptionForNotNullableBinaryPropertyNotSet ()
     {
       var newObject = CreateClassWithAllDataTypes();
+      newObject.PopulateMandatoryProperties();
       newObject.BinaryProperty = null;
 
       using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
@@ -173,6 +178,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ExceptionForStringPropertyExceedingMaxLength ()
     {
       var newObject = CreateClassWithAllDataTypes();
+      newObject.PopulateMandatoryProperties();
       newObject.StringProperty = new string('x', 101);
 
       using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())
@@ -195,6 +201,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests.Transaction
     public void ExceptionForBinaryPropertyExceedingMaxLength ()
     {
       var newObject = CreateClassWithAllDataTypes();
+      newObject.PopulateMandatoryProperties();
       newObject.TransactionOnlyBinaryProperty = new byte[1000001];
 
       using (var _ = DatabaseAgent.OpenNoDatabaseWriteSection())

@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Data.DomainObjects.UnitTests.Mapping.TestDomain.Integration.ReflectionBasedMappingSample;
-using Remotion.Development.UnitTesting.ObjectMothers;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
@@ -84,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
 
-      var extensibleEnumValue = ExtensibleEnumObjectMother.GetRandomValue<TestExtensibleEnum>();
+      var extensibleEnumValue = TestExtensibleEnum.Values.Value2();
       PropertyDefaultValueProviderStub
           .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
           .Returns(extensibleEnumValue);

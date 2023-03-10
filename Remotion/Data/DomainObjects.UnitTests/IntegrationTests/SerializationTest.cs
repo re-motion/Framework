@@ -58,7 +58,11 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
       Official official2 = DomainObjectIDs.Official2.GetObject<Official>();
       Ceo newCeo1 = Ceo.NewObject();
+      newCeo1.Name = "NewCEO1";
+
       Ceo newCeo2 = Ceo.NewObject();
+      newCeo2.Name = "NewCEO2";
+
       Order newOrder1 = Order.NewObject();
       newOrder1.DeliveryDate = new DateTime(2006, 1, 1);
 
@@ -66,7 +70,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
       newOrder2.DeliveryDate = new DateTime(2006, 2, 2);
 
       OrderItem newOrderItem1 = OrderItem.NewObject();
+      newOrderItem1.Product = "Product1";
+
       OrderItem newOrderItem2 = OrderItem.NewObject();
+      newOrderItem2.Product = "Product2";
 
       var domainObjects = new DomainObject[]
                           {
@@ -148,6 +155,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.IntegrationTests
 
         //13
         OrderTicket desNewOrderTicket1 = OrderTicket.NewObject(desNewOrder1);
+        desNewOrderTicket1.FileName = @"C:\temp\order1.tkt";
 
         var expectedChangeStates = new ChangeState[]
                                    {

@@ -20,7 +20,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       var domainModelConstraintProvider = _serviceLocator.GetInstance<IPropertyDefaultValueProvider>();
 
-      Assert.That(domainModelConstraintProvider, Is.TypeOf<LegacyPropertyDefaultValueProvider>());
+      Assert.That(domainModelConstraintProvider, Is.TypeOf<PropertyDefaultValueProvider>());
     }
 
     [Test]

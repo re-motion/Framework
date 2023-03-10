@@ -96,7 +96,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       customer.Name = "Arthur Dent";
 
       Assert.That(customer.Name, Is.EqualTo("Arthur Dent"));
-      Assert.That(customer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>(), Is.EqualTo(string.Empty));
+      Assert.That(customer.Properties["Remotion.Data.DomainObjects.UnitTests.TestDomain.Company.Name"].GetOriginalValue<string>(), Is.Null);
       Assert.That(customer.State.IsNew, Is.True);
     }
 
@@ -213,7 +213,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
       Customer customer = Customer.NewObject();
       Order order = Order.NewObject();
       OrderTicket orderTicket = OrderTicket.NewObject(order);
+      orderTicket.FileName = @"C:\orders\order.tkt";
+
       OrderItem orderItem = OrderItem.NewObject();
+      orderItem.Product = "Product";
 
       ObjectID ceoID = ceo.ID;
       ObjectID customerID = customer.ID;
@@ -323,6 +326,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void ValidateMandatoryRelation ()
     {
       OrderItem orderItem = OrderItem.NewObject();
+      orderItem.Product = "Product 1";
       Assert.That(
           () => TestableClientTransaction.Commit(),
           Throws.InstanceOf<MandatoryRelationNotSetException>());
@@ -353,7 +357,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.DomainObjects
     public void DataContainerStateAfterCommit ()
     {
       Computer computer = Computer.NewObject();
-
+      computer.SerialNumber = "12345";
       TestableClientTransaction.Commit();
 
       Assert.That(computer.State.IsUnchanged, Is.True);

@@ -56,7 +56,7 @@ namespace Remotion.Data.DomainObjects.PerformanceTests
               new ReflectionBasedMemberInformationNameResolver(),
               new PropertyMetadataReflector(),
               new DomainModelConstraintProvider(),
-              new LegacyPropertyDefaultValueProvider(),
+              new PropertyDefaultValueProvider(),
               new SortExpressionDefinitionProvider(),
               MappingReflector.CreateDomainObjectCreator()),
           new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage)));
