@@ -257,7 +257,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           propertyInfo,
           new ReflectionBasedMemberInformationNameResolver(),
           PropertyMetadataProvider,
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          new LegacyPropertyDefaultValueProvider());
       var propertyDefinition = propertyReflector.GetMetadata();
       var properties = new List<PropertyDefinition>();
       properties.Add(propertyDefinition);

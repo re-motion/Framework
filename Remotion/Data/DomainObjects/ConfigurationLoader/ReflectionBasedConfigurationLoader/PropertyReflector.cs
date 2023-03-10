@@ -35,13 +35,15 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IPropertyInformation propertyInfo,
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        IPropertyDefaultValueProvider propertyDefaultValueProvider)
         : base(classDefinition, propertyInfo, nameResolver, propertyMetadataProvider)
     {
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
 
       _domainModelConstraintProvider = domainModelConstraintProvider;
-      _propertyDefaultValueProvider = new LegacyPropertyDefaultValueProvider();
+      _propertyDefaultValueProvider = propertyDefaultValueProvider;
     }
 
     public PropertyDefinition GetMetadata ()
