@@ -49,6 +49,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
     private readonly IPropertyMetadataProvider _propertyMetadataProvider;
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
     private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
+    private readonly IPropertyDefaultValueProvider _propertyDefaultValueProvider;
 
     // This ctor is required when the MappingReflector is instantiated as a configuration element from a config file.
     public MappingReflector ()
@@ -58,6 +59,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
             SafeServiceLocator.Current.GetInstance<IMemberInformationNameResolver>(),
             new PropertyMetadataReflector(),
             SafeServiceLocator.Current.GetInstance<IDomainModelConstraintProvider>(),
+            new LegacyPropertyDefaultValueProvider(),
             SafeServiceLocator.Current.GetInstance<ISortExpressionDefinitionProvider>(),
             CreateDomainObjectCreator())
     {
@@ -69,6 +71,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
         IMemberInformationNameResolver nameResolver,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
+        IPropertyDefaultValueProvider propertyDefaultValueProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator domainObjectCreator)
     {
@@ -76,6 +79,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
       ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
       ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
       ArgumentUtility.CheckNotNull("nameResolver", nameResolver);
       ArgumentUtility.CheckNotNull("domainObjectCreator", domainObjectCreator);
@@ -86,11 +90,13 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
       _nameResolver = nameResolver;
+      _propertyDefaultValueProvider = propertyDefaultValueProvider;
       _mappingObjectFactory = new ReflectionBasedMappingObjectFactory(
           _nameResolver,
           _classIDProvider,
           _propertyMetadataProvider,
           _domainModelConstraintProvider,
+          _propertyDefaultValueProvider,
           _sortExpressionDefinitionProvider,
           domainObjectCreator);
     }
