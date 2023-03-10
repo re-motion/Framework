@@ -60,7 +60,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
           propertyInfo,
           Configuration.NameResolver,
           PropertyMetadataProvider,
-          domainModelConstraintProvider);
+          domainModelConstraintProvider,
+          new LegacyPropertyDefaultValueProvider());
     }
   }
 }

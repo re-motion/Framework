@@ -84,7 +84,8 @@ namespace Remotion.Data.DomainObjects.Mapping
           propertyInfo,
           _nameResolver,
           _propertyMetadataProvider,
-          _domainModelConstraintProvider);
+          _domainModelConstraintProvider,
+          new LegacyPropertyDefaultValueProvider());
       return propertyReflector.GetMetadata();
     }
 
