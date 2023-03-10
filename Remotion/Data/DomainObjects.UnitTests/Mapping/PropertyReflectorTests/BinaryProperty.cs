@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_NoDomainObjectAndNoValueType_NullableTrue ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
+      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -50,11 +50,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_NoDomainObjectAndNoValueType_NullableFalse ()
     {
-      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
+      var propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("NoAttribute", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
+
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(Array.Empty<byte>());
 
       var actual = propertyReflector.GetMetadata();
 
@@ -70,7 +74,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithMaximumLength ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("MaximumLength", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithBinaryProperties>("MaximumLength", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))

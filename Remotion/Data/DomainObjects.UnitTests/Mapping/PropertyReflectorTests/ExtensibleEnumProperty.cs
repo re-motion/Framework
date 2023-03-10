@@ -30,7 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
           "NoAttribute",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -52,7 +53,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
           "NullableFromAttribute",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -74,11 +76,16 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithExtensibleEnumProperties>(
           "NotNullable",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
+
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(TestExtensibleEnum.Values.Value1);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 

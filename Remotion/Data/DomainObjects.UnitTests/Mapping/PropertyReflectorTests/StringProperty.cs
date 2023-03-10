@@ -28,11 +28,15 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithNullableFalse ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("NoAttribute", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("NoAttribute", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
           .Returns(false);
+
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(string.Empty);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
@@ -50,7 +54,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>(
           "NullableFromAttribute",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -70,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     [Test]
     public void GetMetadata_WithMaximumLength ()
     {
-      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("MaximumLength", DomainModelConstraintProviderStub.Object);
+      PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>("MaximumLength", DomainModelConstraintProviderStub.Object, PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -95,7 +100,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithStringProperties>(
           "NotNullableAndMaximumLength",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       DomainModelConstraintProviderStub
           .Setup(stub => stub.IsNullable(propertyReflector.PropertyInfo))
@@ -103,6 +109,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
       DomainModelConstraintProviderStub
           .Setup(stub => stub.GetMaxLength(propertyReflector.PropertyInfo))
           .Returns(100);
+
+      PropertyDefaultValueProviderStub
+          .Setup(stub => stub.GetDefaultValue(propertyReflector.PropertyInfo, false))
+          .Returns(string.Empty);
 
       PropertyDefinition actual = propertyReflector.GetMetadata();
 
