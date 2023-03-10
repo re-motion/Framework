@@ -68,6 +68,7 @@ namespace Remotion.Development.UnitTests.Data.UnitTesting.DomainObjects
                     new ReflectionBasedMemberInformationNameResolver(),
                     new PropertyMetadataReflector(),
                     new DomainModelConstraintProvider(),
+                    new LegacyPropertyDefaultValueProvider(),
                     new SortExpressionDefinitionProvider(),
                     new ThrowingDomainObjectCreator()),
                 new PersistenceModelLoader(new StorageGroupBasedStorageProviderDefinitionFinder(DomainObjectsConfiguration.Current.Storage))));

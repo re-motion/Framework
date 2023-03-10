@@ -37,6 +37,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Factories
           new ReflectionBasedMemberInformationNameResolver(),
           new PropertyMetadataReflector(),
           new DomainModelConstraintProvider(),
+          new LegacyPropertyDefaultValueProvider(),
           new SortExpressionDefinitionProvider(),
           DomainObjectCreator);
     }
