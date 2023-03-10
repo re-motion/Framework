@@ -18,7 +18,6 @@ using System;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
-using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
@@ -130,6 +129,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
 
       var isObjectID = ReflectionUtility.IsDomainObject(propertyInfo.PropertyType);
 
+      IPropertyInformation propertyInformation = PropertyInfoAdapter.Create(propertyInfo);
       return CreateForPropertyInformation(
           classDefinition,
           fullPropertyName,
@@ -137,7 +137,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           true,
           null,
           StorageClass.Persistent,
-          PropertyInfoAdapter.Create(propertyInfo));
+          propertyInformation,
+          null);
     }
 
     public static PropertyDefinition CreateForPropertyInformation (
@@ -179,7 +180,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         bool isNullable,
         int? maxLength,
         StorageClass storageClass,
-        IPropertyInformation propertyInformation)
+        IPropertyInformation propertyInformation,
+        object defaultValue)
     {
       var propertyDefinition = new PropertyDefinition(
           classDefinition,
@@ -189,7 +191,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           isNullable,
           maxLength,
           storageClass,
-          new LegacyPropertyDefaultValueProvider().GetDefaultValue(propertyInformation, isNullable));
+          defaultValue);
       return propertyDefinition;
     }
 
