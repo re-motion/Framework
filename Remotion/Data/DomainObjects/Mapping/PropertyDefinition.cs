@@ -16,10 +16,7 @@
 // 
 using System;
 using System.Diagnostics;
-using System.Linq;
-using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Persistence.Model;
-using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
 using Remotion.Utilities;
 
@@ -38,7 +35,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly bool _isNullable;
     private bool _isNullablePropertyType;
     private readonly bool _isObjectID;
-    private readonly IPropertyDefaultValueProvider _defaultValueProvider;
+    private readonly object? _defaultValue;
 
     public PropertyDefinition (
         ClassDefinition classDefinition,
@@ -47,7 +44,8 @@ namespace Remotion.Data.DomainObjects.Mapping
         bool isObjectID,
         bool isNullable,
         int? maxLength,
-        StorageClass storageClass)
+        StorageClass storageClass,
+        object? defaultValue)
     {
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNullOrEmpty("propertyName", propertyName);
@@ -62,7 +60,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       _isNullable = isNullable;
       _maxLength = maxLength;
       _storageClass = storageClass;
-      _defaultValueProvider = new LegacyPropertyDefaultValueProvider();
+      _defaultValue = defaultValue;
     }
 
     public ClassDefinition ClassDefinition
@@ -106,7 +104,7 @@ namespace Remotion.Data.DomainObjects.Mapping
     {
       get
       {
-        return _defaultValueProvider.GetDefaultValue(_propertyInfo, _isNullable);
+        return _defaultValue;
       }
     }
 

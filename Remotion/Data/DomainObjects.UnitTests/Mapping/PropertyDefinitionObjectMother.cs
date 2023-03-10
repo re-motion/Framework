@@ -18,7 +18,9 @@ using System;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
+using Remotion.Development.UnitTesting.Reflection;
 using Remotion.Reflection;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Mapping
@@ -91,7 +93,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
       propertyInformationStub.Setup(stub => stub.DeclaringType).Returns(TypeAdapter.Create(declaringType));
       propertyInformationStub.Setup(stub => stub.GetOriginalDeclaringType()).Returns(TypeAdapter.Create(declaringType));
 
-      return CreateForPropertyInformation(classDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformationStub.Object);
+      var defaultValue = isNullable ? null : propertyType.GetDefaultValue();
+
+      IPropertyInformation propertyInformation = propertyInformationStub.Object;
+      return CreateForPropertyInformation(classDefinition, propertyName, isObjectID, isNullable, maxLength, storageClass, propertyInformation, defaultValue);
     }
 
     public static PropertyDefinition CreateForFakePropertyInfo_ObjectID ()
@@ -147,7 +152,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           false,
           null,
           StorageClass.Persistent,
-          propertyInformation);
+          propertyInformation,
+          propertyInformation.PropertyType.GetDefaultValue());
     }
 
     public static PropertyDefinition CreateForPropertyInformation (
@@ -162,7 +168,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           false,
           null,
           storageClass,
-          propertyInformation);
+          propertyInformation,
+          propertyInformation.PropertyType.GetDefaultValue());
     }
 
     private static PropertyDefinition CreateForPropertyInformation (
@@ -181,7 +188,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           isObjectID,
           isNullable,
           maxLength,
-          storageClass);
+          storageClass,
+          new LegacyPropertyDefaultValueProvider().GetDefaultValue(propertyInformation, isNullable));
       return propertyDefinition;
     }
 

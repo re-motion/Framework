@@ -30,7 +30,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           false,
           false,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          default(float));
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithMandatoryOtherType"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       _classDefinition.SetReadOnly();
@@ -50,7 +51,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           false,
           false,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithMandatoryExtensibleEnumTypeWithValues"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[] { propertyDefinition }, true));
       _classDefinition.SetReadOnly();
@@ -70,7 +72,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           false,
           true,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithNullableExtensibleEnumTypeWithValues"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
@@ -90,7 +93,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           false,
           false,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithMandatoryExtensibleEnumTypeWithoutValues"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
@@ -115,7 +119,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.Validation.Logical
           false,
           true,
           20,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          null);
       propertyDefinition.SetStorageProperty(new FakeStoragePropertyDefinition("PropertyWithNullableExtensibleEnumTypeWithoutValues"));
       _classDefinition.SetPropertyDefinitions(new PropertyDefinitionCollection(new[]{propertyDefinition}, true));
       _classDefinition.SetReadOnly();
