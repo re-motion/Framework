@@ -46,7 +46,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(string));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent, null);
 
       Assert.That(actual.ClassDefinition, Is.SameAs(_classDefinition));
       Assert.That(actual.IsNullable, Is.False);
@@ -63,7 +63,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(string));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent, null);
 
       Assert.That(actual.IsNullable, Is.False);
     }
@@ -73,7 +73,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(string));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent, null);
 
       Assert.That(actual.IsNullable, Is.True);
     }
@@ -83,7 +83,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(int));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent, default(int));
 
       Assert.That(actual.IsNullable, Is.False);
     }
@@ -93,7 +93,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(int?));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent, null);
 
       Assert.That(actual.IsNullable, Is.False);
     }
@@ -103,7 +103,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(int?));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent, null);
 
       Assert.That(actual.IsNullable, Is.True);
     }
@@ -113,7 +113,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(string));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, true, 50, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, true, 50, StorageClass.Persistent, null);
 
       Assert.That(actual.MaxLength, Is.EqualTo(50));
     }
@@ -123,7 +123,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(string));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent, null);
 
       Assert.That(actual.MaxLength, Is.Null);
     }
@@ -133,7 +133,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(byte[]));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, true, 50, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, true, 50, StorageClass.Persistent, null);
 
       Assert.That(actual.MaxLength, Is.EqualTo(50));
     }
@@ -143,7 +143,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(byte[]));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, true, null, StorageClass.Persistent, null);
 
       Assert.That(actual.MaxLength, Is.Null);
     }
@@ -153,7 +153,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(int));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent, default(int));
 
       Assert.That(actual.MaxLength, Is.Null);
     }
@@ -163,7 +163,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(DomainObject));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", true, false, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", true, false, null, StorageClass.Persistent, null);
       Assert.That(actual.IsObjectID, Is.True);
     }
 
@@ -172,7 +172,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
     {
       _propertyInformationStub.Setup(stub => stub.PropertyType).Returns(typeof(int));
       var actual = new PropertyDefinition(
-          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent);
+          _classDefinition, _propertyInformationStub.Object, "Test", false, false, null, StorageClass.Persistent, default(int));
       Assert.That(actual.IsObjectID, Is.False);
     }
 

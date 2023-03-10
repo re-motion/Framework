@@ -18,6 +18,7 @@ using System;
 using System.Reflection;
 using Moq;
 using NUnit.Framework;
+using Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.Reflection;
 
@@ -181,7 +182,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           isObjectID,
           isNullable,
           maxLength,
-          storageClass);
+          storageClass,
+          new LegacyPropertyDefaultValueProvider().GetDefaultValue(propertyInformation, isNullable));
       return propertyDefinition;
     }
 

@@ -631,7 +631,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           ReflectionUtility.IsDomainObject(propertyInfoAdapter.PropertyType),
           isNullable,
           maxLength,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          propertyInfoAdapter.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfoAdapter.PropertyType) : null);
     }
 
     private Lazy<SortExpressionDefinition> CreateSortExpressionDefinition (string propertyName)

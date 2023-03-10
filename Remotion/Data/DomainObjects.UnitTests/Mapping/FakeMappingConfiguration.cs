@@ -952,7 +952,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           ReflectionUtility.IsDomainObject(propertyInformation.PropertyType),
           isNullable,
           maxLength,
-          storageClass);
+          storageClass,
+          propertyInformation.PropertyType.IsValueType ? Activator.CreateInstance(propertyInformation.PropertyType) : null);
     }
 
     #endregion

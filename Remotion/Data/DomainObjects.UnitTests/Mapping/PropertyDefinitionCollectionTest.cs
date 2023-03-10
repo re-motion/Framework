@@ -140,7 +140,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
               _propertyDefinition.IsObjectID,
               _propertyDefinition.IsNullable,
               _propertyDefinition.MaxLength,
-              _propertyDefinition.StorageClass);
+              _propertyDefinition.StorageClass,
+              _propertyDefinition.DefaultValue);
 
       Assert.That(_collection.Contains(copy), Is.False);
     }

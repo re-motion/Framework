@@ -33,7 +33,8 @@ namespace Remotion.Data.DomainObjects.Security.UnitTests.SecurityClientTransacti
           false,
           false,
           null,
-          StorageClass.Persistent);
+          StorageClass.Persistent,
+          propertyInfo.PropertyType.IsValueType ? Activator.CreateInstance(propertyInfo.PropertyType) : null);
     }
   }
 }
