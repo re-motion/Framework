@@ -85,7 +85,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
         int? maxLength,
         StorageClass storageClass)
     {
-      Type declaringType = classDefinition.ClassType;
+      var declaringType = classDefinition.ClassType;
 
       var propertyInformationStub = new Mock<IPropertyInformation>();
       propertyInformationStub.Setup(stub => stub.Name).Returns(propertyName + "FakeProperty");

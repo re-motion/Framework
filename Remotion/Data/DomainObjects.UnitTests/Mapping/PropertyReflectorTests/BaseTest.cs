@@ -25,7 +25,10 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
 {
   public class BaseTest : MappingReflectionTestBase
   {
-    protected PropertyReflector CreatePropertyReflector<T> (string property, IDomainModelConstraintProvider domainModelConstraintProvider)
+    protected PropertyReflector CreatePropertyReflector<T> (
+        string property,
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("property", property);
 
@@ -40,13 +43,14 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
         classDefinition = ClassDefinitionObjectMother.CreateClassDefinition(classType: type, isAbstract: false);
       }
 
-      return CreatePropertyReflector<T>(property, classDefinition, domainModelConstraintProvider);
+      return CreatePropertyReflector<T>(property, classDefinition, domainModelConstraintProvider, propertyDefaultValueProvider);
     }
 
     protected PropertyReflector CreatePropertyReflector<T> (
         string property,
         ClassDefinition classDefinition,
-        IDomainModelConstraintProvider domainModelConstraintProvider)
+        IDomainModelConstraintProvider domainModelConstraintProvider,
+        IPropertyDefaultValueProvider propertyDefaultValueProvider)
     {
       ArgumentUtility.CheckNotNullOrEmpty("property", property);
       ArgumentUtility.CheckNotNull("classDefinition", classDefinition);
@@ -61,7 +65,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
           Configuration.NameResolver,
           PropertyMetadataProvider,
           domainModelConstraintProvider,
-          new LegacyPropertyDefaultValueProvider());
+          propertyDefaultValueProvider);
     }
   }
 }

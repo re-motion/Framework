@@ -31,7 +31,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "NoAttribute",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
       Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.Persistent));
     }
 
@@ -40,7 +41,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Persistent",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
       Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.Persistent));
     }
 
@@ -49,7 +51,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Transaction",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
       Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.Transaction));
     }
 
@@ -58,7 +61,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       PropertyReflector propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "None",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
       Assert.That(propertyReflector.GetStorageClass(), Is.EqualTo(StorageClass.None));
     }
 
@@ -67,7 +71,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "NoAttribute",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       var actual = propertyReflector.GetMetadata();
       actual.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("NoAttribute"));
@@ -84,7 +89,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Persistent",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       var actual = propertyReflector.GetMetadata();
       actual.SetStorageProperty(SimpleStoragePropertyDefinitionObjectMother.CreateStorageProperty("Persistent"));
@@ -101,7 +107,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Transaction",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       propertyReflector.GetMetadata();
     }
@@ -111,7 +118,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "Transaction",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       var propertyDefinition = propertyReflector.GetMetadata();
       Assert.That(propertyDefinition.StorageClass, Is.EqualTo(StorageClass.Transaction));
@@ -122,7 +130,8 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping.PropertyReflectorTests
     {
       var propertyReflector = CreatePropertyReflector<ClassWithPropertiesHavingStorageClassAttribute>(
           "TransactionWithDateTimeDataType",
-          DomainModelConstraintProviderStub.Object);
+          DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object);
 
       var propertyDefinition = propertyReflector.GetMetadata();
       Assert.That(propertyDefinition.StorageClass, Is.EqualTo(StorageClass.Transaction));
