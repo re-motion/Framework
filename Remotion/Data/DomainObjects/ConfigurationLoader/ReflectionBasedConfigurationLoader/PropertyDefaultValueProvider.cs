@@ -11,6 +11,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// Implements the default behavior for <see cref="PropertyDefinition.DefaultValue"/>, which sets all reference-<see cref="Type"/> properties to
   /// <see langword="null"/>, even if they are declared with <see cref="NullablePropertyAttribute.IsNullable"/> set to <see langword="false"/>.
   /// </summary>     
+  [ImplementationFor(typeof(IPropertyDefaultValueProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class PropertyDefaultValueProvider : IPropertyDefaultValueProvider
   {
     public object? GetDefaultValue (IPropertyInformation propertyInfo, bool isNullable)
