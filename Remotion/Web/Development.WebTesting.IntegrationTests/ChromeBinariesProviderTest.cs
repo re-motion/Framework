@@ -35,7 +35,10 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests
 
       var result = provider.GetInstalledExecutable();
 
-      Assert.That(result.BrowserBinaryPath, Is.EqualTo(@"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"));
+      Assert.That(result.BrowserBinaryPath,
+          Is.EqualTo(@"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe").
+          Or.EqualTo(@"C:\Program Files\Google\Chrome\Application\chrome.exe"));
+
       Assert.That(
           result.DriverBinaryPath,
           Does.Match(
