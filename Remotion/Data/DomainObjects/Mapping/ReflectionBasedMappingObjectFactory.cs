@@ -34,12 +34,14 @@ namespace Remotion.Data.DomainObjects.Mapping
     private readonly IDomainModelConstraintProvider _domainModelConstraintProvider;
     private readonly IDomainObjectCreator _instanceCreator;
     private readonly ISortExpressionDefinitionProvider _sortExpressionDefinitionProvider;
+    private readonly IPropertyDefaultValueProvider _propertyDefaultValueProvider;
 
     public ReflectionBasedMappingObjectFactory (
         IMemberInformationNameResolver nameResolver,
         IClassIDProvider classIDProvider,
         IPropertyMetadataProvider propertyMetadataProvider,
         IDomainModelConstraintProvider domainModelConstraintProvider,
+        IPropertyDefaultValueProvider propertyDefaultValueProvider,
         ISortExpressionDefinitionProvider sortExpressionDefinitionProvider,
         IDomainObjectCreator instanceCreator)
     {
@@ -47,6 +49,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       ArgumentUtility.CheckNotNull("classIDProvider", classIDProvider);
       ArgumentUtility.CheckNotNull("propertyMetadataProvider", propertyMetadataProvider);
       ArgumentUtility.CheckNotNull("domainModelConstraintProvider", domainModelConstraintProvider);
+      ArgumentUtility.CheckNotNull("propertyDefaultValueProvider", propertyDefaultValueProvider);
       ArgumentUtility.CheckNotNull("sortExpressionDefinitionProvider", sortExpressionDefinitionProvider);
       ArgumentUtility.CheckNotNull("instanceCreator", instanceCreator);
 
@@ -56,6 +59,7 @@ namespace Remotion.Data.DomainObjects.Mapping
       _domainModelConstraintProvider = domainModelConstraintProvider;
       _sortExpressionDefinitionProvider = sortExpressionDefinitionProvider;
       _instanceCreator = instanceCreator;
+      _propertyDefaultValueProvider = propertyDefaultValueProvider;
     }
 
     public ClassDefinition CreateClassDefinition (Type type, ClassDefinition? baseClass)
@@ -85,7 +89,7 @@ namespace Remotion.Data.DomainObjects.Mapping
           _nameResolver,
           _propertyMetadataProvider,
           _domainModelConstraintProvider,
-          new LegacyPropertyDefaultValueProvider());
+          _propertyDefaultValueProvider);
       return propertyReflector.GetMetadata();
     }
 

@@ -62,6 +62,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Mapping
           ClassIDProviderStub.Object,
           PropertyMetadataProvider,
           DomainModelConstraintProviderStub.Object,
+          PropertyDefaultValueProviderStub.Object,
           SortExpressionDefinitionProviderStub.Object,
           DomainObjectCreatorStub.Object);
     }
