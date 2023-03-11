@@ -309,6 +309,9 @@
         
         ShowAllProperties="True"
         runat="server">
+        <FixedColumns>
+          <remotion:BocRowEditModeColumnDefinition ItemID="EditRow" ColumnTitle="Edit" EditText="Edit" SaveText="Save" CancelText="Cancel" Width="2em" />
+        </FixedColumns>
       </testsite:TestBocListWithRowMenuItems>
     </td>
     <td>&nbsp; (no fake table header)</td>
