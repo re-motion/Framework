@@ -49,6 +49,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Ensures unsupported DPUB roles are only used on elements with implicit fallback roles.
     /// </summary>
+    [Obsolete("Deprecated with aXe v3.5. (Version 5.0.0-alpha.2)")]
     AriaDpubRoleFallback,
 
     /// <summary>
@@ -80,6 +81,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Ensures elements with an ARIA role that require parent roles are contained by them.
     /// </summary>
     AriaRequiredParent,
+
+    /// <summary>
+    /// Ensures that the aria-roledescription attribute is only used on elements with an implicit or explicit role values
+    /// </summary>
+    AriaRoleDescription,
 
     /// <summary>
     /// Ensures all elements with a role attribute use a valid value.
@@ -134,6 +140,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Ensures related &lt;input type="checkbox"&gt; elements have a group and that the group designation is consistent.
     /// </summary>
+    [Obsolete("Deprecated with aXe v3.4. (Version 5.0.0-alpha.2)")]
     CheckboxGroup,
 
     /// <summary>
@@ -232,6 +239,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     HtmlXmlLangMismatch,
 
     /// <summary>
+    /// Ensure that links with the same accessible name serve a similar purpose.
+    /// </summary>
+    IdenticalLinksSamePurpose,
+
+    /// <summary>
     /// Ensures &lt;img&gt; elements have alternate text or a role of none or presentation.
     /// </summary>
     ImageAlt,
@@ -297,6 +309,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     LandmarkNoDuplicateContentInfo,
 
     /// <summary>
+    /// Ensures the document has at most one main landmark.
+    /// </summary>
+    LandmarkNoDuplicateMain,
+
+    /// <summary>
     /// Ensures the document has only one main landmark and each iframe in the page has at most one main landmark.
     /// </summary>
     LandmarkOneMain,
@@ -309,6 +326,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Ensures presentational &lt;table&gt; elements do not use &lt;th&gt;, &lt;caption&gt; elements or the summary attribute.
     /// </summary>
+    [Obsolete("Deprecated with aXe v3.5. (Version 5.0.0-alpha.2)")]
     LayoutTable,
 
     /// <summary>
@@ -352,6 +370,13 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     MetaViewport,
 
     /// <summary>
+    /// Ensures &lt;video&gt; or &lt;audio&gt; elements do not autoplay audio for more than three seconds without a control mechanism to stop or mute the audio.
+    /// Currently still experimental, only available in axe coconut and needs to be enabled with the "experimental" tag in the runOnly option.
+    /// </summary>
+    [Obsolete("Experimental in aXe v3.5. (Version 5.0.0-alpha.2)")]
+    NoAutoplayAudio,
+
+    /// <summary>
     /// Ensures &lt;object&gt; elements have alternate text.
     /// </summary>
     ObjectAlt,
@@ -369,6 +394,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Ensures related &lt;input type="radio"&gt; elements have a group and that the group designation is consistent.
     /// </summary>
+    [Obsolete("Deprecated with aXe v3.4. (Version 5.0.0-alpha.2)")]
     RadioGroup,
 
     /// <summary>
@@ -400,6 +426,11 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// Ensure all skip links have a focusable target.
     /// </summary>
     SkipLink,
+
+    /// <summary>
+    /// Ensures SVG elements with an &lt;img&gt;, graphics-document or graphics-symbol role have an accessible text alternative.
+    /// </summary>
+    SvgImageAlt,
 
     /// <summary>
     /// Ensures tabindex attribute values are not greater than 0.
@@ -444,6 +475,7 @@ namespace Remotion.Web.Development.WebTesting.Accessibility
     /// <summary>
     /// Ensures &lt;video&gt; elements have audio descriptions.
     /// </summary>
+    [Obsolete("Deprecated with aXe v3.4. (Version 5.0.0-alpha.2)")]
     VideoDescription
   }
 }

@@ -60,7 +60,7 @@ namespace Remotion.Web.Development.WebTesting.IntegrationTests.Accessibility
       Assert.That(violation.Rule.Description, Is.EqualTo("Ensures every form element has a label"));
       Assert.That(violation.Rule.Impact, Is.EqualTo(AccessibilityTestImpact.Critical));
       Assert.That(violation.Rule.SuccessCriteria, Has.Length.EqualTo(3));
-      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_3_3_2));
+      Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_4_1_2));
       Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Wcag_1_3_1));
       Assert.That(violation.Rule.SuccessCriteria, Contains.Item(AccessibilityTestSuccessCriteria.Section508_22_n));
       Assert.That(violation.TargetPath.Single().XPath, Is.EqualTo("/input[@id='input']"));
