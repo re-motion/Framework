@@ -616,6 +616,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestEditableGetRowWhere ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+
+      var row = bocList.GetRowWhere("Title", "CEO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
+
+      row.Edit();
+
+      row = bocList.GetRowWhere().ColumnWithIndexContainsExactly(6, "CEO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
+
+      row = bocList.GetRowWhere().ColumnWithIndexContains(6, "EO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
+
+      row = bocList.GetRowWhere().ColumnWithTitleContainsExactly("Title", "CEO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
+
+      row = bocList.GetRowWhere().ColumnWithTitleContains("Title", "EO");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("CEO"));
+
+      bocList.GetRowWhere("Title", "Programmer").Edit();
+
+      row = bocList.GetRowWhere().ColumnWithItemIDContainsExactly("Title", "Programmer");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("Programmer"));
+
+      row = bocList.GetRowWhere().ColumnWithItemIDContains("Title", "gra");
+      Assert.That(row.GetCell(6).GetText(), Is.EqualTo("Programmer"));
+    }
+
+    [Test]
     public void TestGetRowWhereContainsMultipleMatches_MatchesFirst ()
     {
       const string customFiveX = "Custom XXXXX";
@@ -651,7 +684,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               .With.Message.EqualTo(
                   AssertionExceptionUtility.CreateControlMissingException(
                           Driver,
-                          "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']")
+                          "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] *[data-boclist-cell-contents='EO']")
                       .Message));
     }
 
@@ -685,6 +718,39 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestEditableGetCellWhere ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_Normal");
+
+      var cell = bocList.GetCellWhere("Title", "CEO");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
+
+      bocList.GetRowWhere("Title", "CEO").Edit();
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(6, "CEO");
+      Assert.That(cell.GetText(), Is.EqualTo("CEO"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "CEO");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("CEO"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "EO");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("CEO"));
+
+      bocList.GetRowWhere("Title", "Programmer").Edit();
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "Programmer");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("Programmer"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "gra");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("Programmer"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(6, "gra");
+      Assert.That(cell.GetText(), Is.EqualTo("Programmer"));
+    }
+
+    [Test]
     public void TestGetCellWhere_WithSingleQuote ()
     {
       var home = Start();
@@ -711,6 +777,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith'SingleQuot");
       Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
+    }
+
+    [Test]
+    public void TestEditableGetCellWhere_WithSingleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+
+      bocList.GetRow(5).Edit();
+
+      var cell = bocList.GetCellWhere("Title", "With'SingleQuote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "With'SingleQuote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "ith'SingleQuot");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(1, "With'SingleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(1, "ith'SingleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "With'SingleQuote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith'SingleQuot");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuote"));
     }
 
     [Test]
@@ -743,6 +840,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
     }
 
     [Test]
+    public void TestEditableGetCellWhere_WithDoubleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+
+      bocList.GetRow(8).Edit();
+
+      var cell = bocList.GetCellWhere("Title", "With\"DoubleQuote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "With\"DoubleQuote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "ith\"DoubleQuot");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(1, "With\"DoubleQuote");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(1, "ith\"DoubleQuot");
+      Assert.That(cell.GetText(), Is.EqualTo("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "With\"DoubleQuote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With\"DoubleQuote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith\"DoubleQuot");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With\"DoubleQuote"));
+    }
+
+    [Test]
     public void TestGetCellWhere_WithSingleQuoteAndDoubleQuote ()
     {
       var home = Start();
@@ -769,6 +897,37 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
 
       cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith'SingleQuoteAndWith\"Double1Quot");
       Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
+    }
+
+    [Test]
+    public void TestEditableGetCellWhere_WithSingleQuoteAndDoubleQuote ()
+    {
+      var home = Start();
+
+      var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
+
+      bocList.GetRow(6).Edit();
+
+      var cell = bocList.GetCellWhere("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContainsExactly("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithItemIDContains("Title", "ith'SingleQuoteAndWith\"Double1Quot");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContainsExactly(1, "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithIndexContains(1, "ith'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.GetText(), Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContainsExactly("Title", "With'SingleQuoteAndWith\"Double1Quote");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
+
+      cell = bocList.GetCellWhere().ColumnWithTitleContains("Title", "ith'SingleQuoteAndWith\"Double1Quot");
+      Assert.That(cell.Scope.FindCss("input").Value, Is.EqualTo("With'SingleQuoteAndWith\"Double1Quote"));
     }
 
     [Test]
@@ -894,7 +1053,7 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
               .With.Message.EqualTo(
                   AssertionExceptionUtility.CreateControlMissingException(
                           Driver,
-                          "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] span[data-boclist-cell-contents='EO']")
+                          "Unable to find css: .bocListTable .bocListTableBody .bocListDataRow .bocListDataCell[data-boclist-cell-index='7'] *[data-boclist-cell-contents='EO']")
                       .Message));
     }
 
@@ -920,17 +1079,17 @@ namespace Remotion.ObjectBinding.Web.Development.WebTesting.IntegrationTests
       var bocList = home.Lists().GetByLocalID("JobList_NoFakeTableHeader");
 
       bocList.ClickOnSortColumn("EndDate");
-      Assert.That(bocList.GetRow(1).GetCell(1).GetText(), Is.EqualTo("CEO"));
+      Assert.That(bocList.GetRow(1).GetCell(2).GetText(), Is.EqualTo("CEO"));
 
       bocList.ClickOnSortColumn("EndDate");
       bocList.ClickOnSortColumn("EndDate");
-      Assert.That(bocList.GetRow(1).GetCell(1).GetText(), Is.EqualTo("Programmer"));
+      Assert.That(bocList.GetRow(1).GetCell(2).GetText(), Is.EqualTo("Programmer"));
 
       var row = bocList.GetRowWhere("Title", "Developer");
       Assert.That(row.GetCell("DisplayName").GetText(), Is.EqualTo("Developer"));
 
       var columnTitles = bocList.GetColumnDefinitions().Select(cd => cd.Title);
-      Assert.That(columnTitles, Is.EquivalentTo(new[] { "Title", "StartDate", "EndDate", "DisplayName" }));
+      Assert.That(columnTitles, Is.EquivalentTo(new[] { "Edit", "Title", "StartDate", "EndDate", "DisplayName" }));
     }
 
     [Test]
