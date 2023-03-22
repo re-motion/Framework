@@ -28,6 +28,11 @@ form
   width: 100%;
 }
 
+div.securableClassDefinitions ul.treeViewRoot
+{
+    min-width: auto;
+}
+
 div#ErrorContainer
 {
   color: var(--color-indicator-error-text);

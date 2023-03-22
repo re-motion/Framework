@@ -40,6 +40,8 @@ namespace Remotion.SecurityManager.Clients.Web.Test
       //defaultServiceLocator.RegisterMultiple<IOrganizationalStructureEditControlFormGridRowProvider<EditUserControl>> (() => new EditUserControlFormGridRowProvider());
       defaultServiceLocator.Register(typeof(IRenderingFeatures), typeof(WithDiagnosticMetadataRenderingFeatures), LifetimeKind.Singleton);
 
+      //defaultServiceLocator.RegisterSingle<ResourceTheme>(() => new ResourceTheme.NovaGray());
+
       ServiceLocator.SetLocatorProvider(() => defaultServiceLocator);
 
       Assertion.IsTrue(
