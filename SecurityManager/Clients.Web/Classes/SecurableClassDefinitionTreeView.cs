@@ -16,12 +16,14 @@
 // Additional permissions are listed in the file re-motion_exceptions.txt.
 // 
 using System;
+using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.SecurityManager.Domain.Metadata;
 using Remotion.Utilities;
 using Remotion.Web;
+using Remotion.Web.UI.Controls;
 
 namespace Remotion.SecurityManager.Clients.Web.Classes
 {
@@ -45,28 +47,31 @@ namespace Remotion.SecurityManager.Clients.Web.Classes
       return GetResourceManager(typeof(ResourceIdentifier));
     }
 
-    protected override WebString GetText (IBusinessObjectWithIdentity businessObject)
+    protected override Badge? GetBadge (IBusinessObjectWithIdentity businessObject)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
 
-      WebString text = base.GetText(businessObject);
-
-      SecurableClassDefinition? classDefinition = businessObject as SecurableClassDefinition;
+      var classDefinition = businessObject as SecurableClassDefinition;
       if (classDefinition == null)
-        return text;
+        return null;
 
-      int aclCount = 0;
+      var aclCount = 0;
       if (classDefinition.StatelessAccessControlList != null)
         aclCount++;
       aclCount += classDefinition.StatefulAccessControlLists.Count;
 
       var resourceManager = GetResourceManager(typeof(ResourceIdentifier));
+
       if (aclCount == 0)
-        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.NoAclsText), text.GetValue()));
-      if (aclCount == 1)
-        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.SingleAclText), text.GetValue()));
+        return CreateBadge(resourceManager.GetString(ResourceIdentifier.NoAclsText));
+      else if (aclCount == 1)
+        return CreateBadge(resourceManager.GetString(ResourceIdentifier.SingleAclText));
       else
-        return WebString.CreateFromText(string.Format(resourceManager.GetString(ResourceIdentifier.MultipleAclsText), text.GetValue(), aclCount));
+        return CreateBadge(string.Format(resourceManager.GetString(ResourceIdentifier.MultipleAclsText), aclCount));
+
+      static Badge CreateBadge (string text) => new Badge(
+          PlainTextString.CreateFromText($"({text})"),
+          PlainTextString.CreateFromText(text));
     }
   }
 }
