@@ -69,7 +69,7 @@ namespace Remotion.ObjectBinding
     ///   The <see cref="IBusinessObjectProperty"/> identified through the <paramref name="propertyIdentifier"/> is not part of this 
     ///   <paramref name="businessObject"/>'s <see cref="IBusinessObject.BusinessObjectClass"/>.
     /// </exception>
-    public static void SetProperty (this IBusinessObject businessObject, string propertyIdentifier, object value)
+    public static void SetProperty (this IBusinessObject businessObject, string propertyIdentifier, object? value)
     {
       ArgumentUtility.CheckNotNull("businessObject", businessObject);
       ArgumentUtility.CheckNotNullOrEmpty("propertyIdentifier", propertyIdentifier);
