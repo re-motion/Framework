@@ -42,6 +42,8 @@ span.bocTextValue textarea
   padding: var(--remotion-themed-control-padding-readonly);
   border: var(--remotion-themed-border-readonly);
   border-radius: var(--remotion-themed-border-radius);
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .bocTextValue.readOnly .content input:read-only:focus-visible + span,
