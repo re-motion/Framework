@@ -77,14 +77,7 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void LoadUserControls ()
   {
-    // add tabs 
-    AddTab("1", "Test Tab 1", null);
-    AddTab("2", "Test Tab 2 foo bar", null);
-    AddTab("3", "Test Tab 3 foo", null);
-    AddTab("4", "Test Tab 4 foo foo bar", null);
-    AddTab("5", "Test Tab 5", null);
-    AddTab("6", "Test Tab 6 foo", null);
-    AddTab("7", "Test Tab 7 foo foo bar", null);
+    // add tabs
 
     //    AddMainMenuTab ("1", "Main Tab 1", null);
     //    AddMainMenuTab ("2", "Main Tab 2 foo bar", null);
@@ -115,13 +108,24 @@ public class TestTabbedForm : TestWxeBasePage
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
     _dataEditControls = (IDataEditControl[])dataEditControls.ToArray();
+  /*  removeView();
+    removeView();
+    removeView();
+    removeView();
+    removeView();
+    removeView();
+    removeView();
+    removeView();
+    removeView();
+    removeView();
+    AddView("1", WebString.CreateFromText("Hehe"),"acess" );*/
   }
 
   private void AddTab (string id, string text, IconInfo icon)
   {
     WebTab tab = new WebTab();
-    tab.Text = WebString.CreateFromText("text");
     tab.ItemID = id ;
+    tab.Text = WebString.CreateFromText(text);
     tab.Icon = icon;
     PagesTabStrip.Tabs.Add(tab);
   }
@@ -160,6 +164,28 @@ public class TestTabbedForm : TestWxeBasePage
     return dataEditControl;
   }
 
+  private void AddView (string id, WebString title, string accessKey, bool visible = true, int? at = null, bool active = false)
+  {
+    var where = at ?? MultiView.Views.Count - 1;
+    var view = new TabView
+               {
+                 ID = id,
+                 Title = title,
+                 AccessKey = accessKey,
+                 Visible = visible,
+               };
+    MultiView.Views.Add(view);
+    if (active)
+    {
+      MultiView.SetActiveView(MultiView.Views[where]);
+    }
+  }
+
+  private void removeView (int indexFromBehind = 1)
+  {
+    MultiView.Views.RemoveAt(MultiView.Views.Count-indexFromBehind);
+  }
+
   private void DataEditControl_Load (object sender, EventArgs e)
   {
     IDataEditControl dataEditControl = (IDataEditControl)sender;
@@ -196,6 +222,37 @@ public class TestTabbedForm : TestWxeBasePage
 		//
 		InitializeComponent();
 
+    WebButton removeTabButton = new WebButton();
+    removeTabButton.ID = "RemoveTabButton";
+    removeTabButton.Text = WebString.CreateFromText("Remove Tab");
+    removeTabButton.Click += new EventHandler(removeView_Click);
+    MultiView.TopControls.Add(removeTabButton);
+
+    WebButton addTabButton = new WebButton();
+    addTabButton.ID = "AddTabButton";
+    addTabButton.Text = WebString.CreateFromText("Add Tab");
+    addTabButton.Click += new EventHandler(AddTab_Click);
+    MultiView.TopControls.Add(addTabButton);
+
+
+    WebButton removeAllAddNew = new WebButton();
+    removeAllAddNew.ID = "RemoveAllAndAddButton";
+    removeAllAddNew.Text = WebString.CreateFromText("Remove and Add new Tab");
+    removeAllAddNew.Click += new EventHandler(RemoveAllAndAddNewTab_Click);
+    MultiView.TopControls.Add(removeAllAddNew);
+
+    WebButton removeAll = new WebButton();
+    removeAll.ID = "RemoveAllButton";
+    removeAll.Text = WebString.CreateFromText("Remove all Tab");
+    removeAll.Click += new EventHandler(RemoveAll_Click);
+    MultiView.TopControls.Add(removeAll);
+
+    WebButton invisible = new WebButton();
+    invisible.ID = "InvisibleButton";
+    invisible.Text = WebString.CreateFromText("Invisibile");
+    invisible.Click += new EventHandler(RemoveAllAndAddNewInvisibleNewAndRemove_Click);
+    MultiView.TopControls.Add(invisible);
+
     WebButton saveButton = new WebButton();
     saveButton.ID = "SaveButton";
     saveButton.Text = WebString.CreateFromText("Save");
@@ -230,7 +287,42 @@ public class TestTabbedForm : TestWxeBasePage
 	  new DropDownMenu().RegisterHtmlHeadContents(HtmlHeadAppender.Current);
 	  new ListMenu().RegisterHtmlHeadContents(HtmlHeadAppender.Current);
 	}
-	#region Web Form Designer generated code
+
+  private void RemoveAll_Click (object sender, EventArgs e)
+  {
+    while (MultiView.Views.Count > 0)
+    {
+      removeView();
+    }
+  }
+
+  private void RemoveAllAndAddNewTab_Click (object sender, EventArgs e)
+  {
+    while (MultiView.Views.Count > 0)
+    {
+      removeView();
+    }
+    AddView("1", WebString.CreateFromText("Hehe"),"access" );
+  }
+
+  private void RemoveAllAndAddNewInvisibleNewAndRemove_Click (object sender, EventArgs e)
+  {
+    while (MultiView.Views.Count > 0)
+    {
+      removeView();
+    }
+    AddView("12341234", WebString.CreateFromText("invisibleAfter"), "invis", false);
+    AddView("1", WebString.CreateFromText("ToRemove"), "Remove", active: true);
+    AddView("16",WebString.CreateFromText("invisibleBefore"), "invisB", false);
+    //MultiView.Views.Remove(MultiView.GetActiveView()!);
+  }
+
+  private void removeView_Click (object sender, EventArgs e)
+  {
+    removeView();
+  }
+
+  #region Web Form Designer generated code
 
 
 	/// <summary>
@@ -268,6 +360,18 @@ public class TestTabbedForm : TestWxeBasePage
   private void CancelButton_Click (object sender, EventArgs e)
   {
     ExecuteNextStep();
+  }
+
+  private void RemoveTab_Click (object sender, EventArgs e)
+  {
+    var webTabStrip = (WebTab)PagesTabStrip.Tabs[PagesTabStrip.Tabs.Count - 1];
+    webTabStrip.IsVisible = false;
+    PagesTabStrip.Tabs.RemoveAt(PagesTabStrip.Tabs.Count-1);
+  }
+
+  private void AddTab_Click (object sender, EventArgs e)
+  {
+    AddTab((PagesTabStrip.Tabs.Count + 1).ToString(), "asdf", null);
   }
 
   private void SaveButton_Click (object sender, EventArgs e)

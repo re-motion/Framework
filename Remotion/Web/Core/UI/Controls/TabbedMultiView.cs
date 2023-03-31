@@ -268,11 +268,13 @@ namespace Remotion.Web.UI.Controls
       tab.Target = view.ID;
       _tabStrip.Tabs.Add(tab);
 
-      if (Views.Count == 2 && Views.IndexOf(_placeHolderTabView) > 0)
+      if (Views.Count == 2)
         Views.Remove(_placeHolderTabView);
-
-      if (Views.Count == 1)
+      else if (Views.Count == 1)
+      {
         _multiViewInternal.ActiveViewIndex = 0;
+        SetActiveView(view);
+      }
     }
 
     private void OnTabViewRemove (TabView view)
@@ -288,8 +290,6 @@ namespace Remotion.Web.UI.Controls
         {
           if (MultiViewInternal.Controls.Count > 1)
             _newActiveTabAfterRemove = (TabView)MultiViewInternal.Controls[index - 1];
-          else // No Tabs left after this tab
-            _newActiveTabAfterRemove = _placeHolderTabView;
         }
         else
           _newActiveTabAfterRemove = (TabView)MultiViewInternal.Controls[index + 1];
@@ -311,8 +311,6 @@ namespace Remotion.Web.UI.Controls
 
       if (_newActiveTabAfterRemove != null)
       {
-        if (_newActiveTabAfterRemove == _placeHolderTabView)
-          Views.Add(_placeHolderTabView);
         SetActiveView(_newActiveTabAfterRemove);
       }
     }
