@@ -17,10 +17,11 @@
 using System;
 using System.Web.UI;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation.Rendering
 {
-  public class StubRenderer : IBocListTableBlockRenderer, IBocListMenuBlockRenderer, IBocListNavigationBlockRenderer
+  public class StubRenderer : IBocListTableBlockRenderer, IBocListMenuBlockRenderer, IBocListNavigationBlockRenderer, IBocListValidationSummaryBlockRenderer
   {
     private readonly string _tagName;
 
@@ -46,6 +47,11 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     }
 
     void IBocListMenuBlockRenderer.Render (BocListRenderingContext renderingContext)
+    {
+      Render(renderingContext.Writer);
+    }
+
+    void IBocListValidationSummaryBlockRenderer.Render (BocListRenderingContext renderingContext, BocListValidationFailureRepository validationFailureRepository)
     {
       Render(renderingContext.Writer);
     }

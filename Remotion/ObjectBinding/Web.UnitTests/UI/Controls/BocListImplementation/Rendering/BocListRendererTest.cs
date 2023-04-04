@@ -57,6 +57,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
       renderer.Render(CreateRenderingContext());
@@ -94,6 +95,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
       renderer.Render(CreateRenderingContext());
@@ -136,6 +138,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
       renderer.Render(CreateRenderingContext());
@@ -176,6 +179,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
       renderer.Render(CreateRenderingContext());
@@ -210,6 +214,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
       renderer.Render(CreateRenderingContext());
@@ -230,6 +235,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
@@ -253,6 +259,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
@@ -276,6 +283,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
@@ -300,6 +308,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
@@ -324,6 +333,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 
@@ -348,6 +358,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
           _bocListCssClassDefinition,
           new StubRenderer("table"),
           new StubRenderer("navigation"),
+          new StubRenderer("validationSummary"),
           new StubRenderer("menu"),
           new StubLabelReferenceRenderer());
 

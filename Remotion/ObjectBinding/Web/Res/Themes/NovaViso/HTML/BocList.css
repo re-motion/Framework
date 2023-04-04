@@ -275,7 +275,7 @@ div.bocList div.bocListTableBlock
   grid-column: 1 / span 2;
   grid-row: var(--boclist-grid-row-placement);
   display: grid;
-  grid-template-rows: auto min-content;
+  grid-template-rows: auto min-content min-content;
   height: 100%;
 }
 
@@ -359,6 +359,18 @@ div.bocList div.bocListTableBlock div.bocListNavigator a[href]:focus:hover
 div.bocList div.bocListTableBlock div.bocListNavigator a:not([href]) img
 {
   filter: opacity(0.5);
+}
+/*endregion*/
+
+/*region bocListValidationSummary*/
+div.bocList div.bocListTableBlock div.bocListValidationSummary
+{
+  overflow: hidden;
+  padding: var(--remotion-themed-spacing-small);
+  display: flex;
+  align-items: center;
+  grid-row: 3;
+  color: red;
 }
 /*endregion*/
 

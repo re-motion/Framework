@@ -21,6 +21,7 @@ using System.Web.UI;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -53,6 +54,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
     private readonly IBocListMenuBlockRenderer _menuBlockRenderer;
     private readonly IBocListNavigationBlockRenderer _navigationBlockRenderer;
+    private readonly IBocListValidationSummaryBlockRenderer _validationSummaryBlockRenderer;
     private readonly IBocListTableBlockRenderer _tableBlockRenderer;
     private readonly ILabelReferenceRenderer _labelReferenceRenderer;
     private readonly BocListCssClassDefinition _cssClasses;
@@ -64,6 +66,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
         BocListCssClassDefinition cssClasses,
         IBocListTableBlockRenderer tableBlockRenderer,
         IBocListNavigationBlockRenderer navigationBlockRenderer,
+        IBocListValidationSummaryBlockRenderer validationSummaryBlockRenderer,
         IBocListMenuBlockRenderer menuBlockRenderer,
         ILabelReferenceRenderer labelReferenceRenderer)
         : base(resourceUrlFactory, globalizationService, renderingFeatures)
@@ -77,6 +80,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       _cssClasses = cssClasses;
       _tableBlockRenderer = tableBlockRenderer;
       _navigationBlockRenderer = navigationBlockRenderer;
+      _validationSummaryBlockRenderer = validationSummaryBlockRenderer;
       _menuBlockRenderer = menuBlockRenderer;
       _labelReferenceRenderer = labelReferenceRenderer;
     }
@@ -89,6 +93,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     public IBocListNavigationBlockRenderer NavigationBlockRenderer
     {
       get { return _navigationBlockRenderer; }
+    }
+
+    public IBocListValidationSummaryBlockRenderer ValidationSummaryBlockRenderer
+    {
+      get { return _validationSummaryBlockRenderer; }
     }
 
     public IBocListTableBlockRenderer TableBlockRenderer
@@ -233,6 +242,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (renderingContext.Control.HasNavigator)
         NavigationBlockRenderer.Render(renderingContext);
+
+      if (renderingContext.Control is IBocListWithValidationSupport bocListWithValidationSupport)
+        ValidationSummaryBlockRenderer.Render(renderingContext, bocListWithValidationSupport.ValidationFailureRepository);
 
       renderingContext.Writer.RenderEndTag();
     }

@@ -182,6 +182,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListNavigator"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s validation summary. </summary>
+    /// <remarks> Class: <c>bocListValidationSummary</c> </remarks>
+    public virtual string ValidationSummary
+    {
+      get { return "bocListValidationSummary"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s list of additional columns. </summary>
     /// <remarks> Class: <c>bocListAvailableViewsList</c> </remarks>
     public virtual string AvailableViewsList
