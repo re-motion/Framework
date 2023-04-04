@@ -152,6 +152,32 @@ namespace Remotion.ObjectBinding.Validation
     }
 
     public IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
+        [NotNull] IBusinessObject businessObject,
+        bool includePartiallyHandledFailures = false,
+        bool markAsHandled = true)
+    {
+      ArgumentUtility.CheckNotNull("businessObject", businessObject);
+
+      var validationFailures = _validationFailures
+          .Where(f => Equals(f.BusinessObjectValidationFailure.ValidatedObject, businessObject))
+          .Where(f => includePartiallyHandledFailures || !_handledValidationFailures.Contains(f.ValidationFailure));
+
+      var result = new List<BusinessObjectValidationFailure>();
+      foreach (var (businessObjectValidationFailure, validationFailure) in validationFailures)
+      {
+        result.Add(businessObjectValidationFailure);
+
+        if (markAsHandled)
+        {
+          _unhandledValidationFailures.Remove((businessObjectValidationFailure, validationFailure));
+          _handledValidationFailures.Add(validationFailure);
+        }
+      }
+
+      return result;
+    }
+
+    public IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
         IBusinessObject businessObject,
         IBusinessObjectProperty businessObjectProperty,
         bool markAsHandled)

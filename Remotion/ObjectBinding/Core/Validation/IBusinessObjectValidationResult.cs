@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using JetBrains.Annotations;
 
 namespace Remotion.ObjectBinding.Validation
@@ -23,6 +24,11 @@ namespace Remotion.ObjectBinding.Validation
   /// <threadsafety static="true" instance="false" />
   public interface IBusinessObjectValidationResult
   {
+    IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
+        [NotNull] IBusinessObject businessObject,
+        bool includePartiallyHandledFailures = false,
+        bool markAsHandled = true);
+
     IReadOnlyCollection<BusinessObjectValidationFailure> GetValidationFailures (
         [NotNull] IBusinessObject businessObject,
         [NotNull] IBusinessObjectProperty businessObjectProperty,

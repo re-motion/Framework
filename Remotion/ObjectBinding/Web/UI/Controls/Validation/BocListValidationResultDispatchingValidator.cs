@@ -16,10 +16,7 @@
 // 
 using System;
 using System.Linq;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using JetBrains.Annotations;
-using Remotion.FunctionalProgramming;
 using Remotion.ObjectBinding.Validation;
 using Remotion.Utilities;
 
@@ -27,23 +24,44 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
 {
   public sealed class BocListValidationResultDispatchingValidator : BaseValidator, IBusinessObjectBoundEditableWebControlValidationResultDispatcher
   {
-    public BocListValidationResultDispatchingValidator ()
-    {
-    }
-
     public void DispatchValidationFailures (IBusinessObjectValidationResult validationResult)
     {
-      ArgumentUtility.CheckNotNull("validationResult", validationResult);
+      ArgumentUtility.CheckNotNull(nameof(validationResult), validationResult);
 
       var bocListControl = GetControlToValidate();
+      var rowObjects = bocListControl.Value?.Cast<IBusinessObject>();
+      if (rowObjects != null && bocListControl is IBocListWithValidationSupport bocListWithValidationSupport)
+      {
+        var columnsAndMatchers = bocListWithValidationSupport.GetColumnsWithValidationSupport()
+            .Select(c => new { Column = (BocColumnDefinition)c, Matcher = c.GetValidationFailureMatcher() })
+            .ToArray();
 
-      var validatorsMatchingToControls = EnumerableUtility.SelectRecursiveDepthFirst(
-              bocListControl as Control,
-              child => child.Controls.Cast<Control>().Where(item => !(item is INamingContainer)))
-          .OfType<IBusinessObjectBoundEditableWebControlValidationResultDispatcher>();
+        var validationFailureRepository = bocListWithValidationSupport.ValidationFailureRepository;
+        validationFailureRepository.Clear();
 
-      foreach (var validator in validatorsMatchingToControls)
-        validator.DispatchValidationFailures(validationResult);
+        foreach (var rowObject in rowObjects)
+        {
+          foreach (var columnAndMatcher in columnsAndMatchers)
+          {
+            var matched = columnAndMatcher.Matcher.GetMatchingValidationFailures(rowObject, validationResult);
+            if (matched.Count > 0)
+              validationFailureRepository.AddRowValidationFailures(rowObject, columnAndMatcher.Column, matched);
+          }
+
+          var otherRowFailures = validationResult.GetValidationFailures(rowObject);
+          if (otherRowFailures.Count > 0)
+            validationFailureRepository.AddRowValidationFailures(rowObject, otherRowFailures);
+        }
+
+        var businessObject = bocListControl.DataSource?.BusinessObject;
+        var property = bocListControl.Property;
+        if (businessObject != null && property != null)
+        {
+          var listPropertyFailures = validationResult.GetValidationFailures(businessObject, property, true);
+          if (listPropertyFailures.Count > 0)
+            validationFailureRepository.AddListValidationFailures(listPropertyFailures);
+        }
+      }
     }
 
 
@@ -62,7 +80,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.Validation
         return NamingContainer.FindControl(controlToValidate) != null;
     }
 
-    [NotNull]
     private BocList GetControlToValidate ()
     {
       var control = NamingContainer.FindControl(ControlToValidate);
