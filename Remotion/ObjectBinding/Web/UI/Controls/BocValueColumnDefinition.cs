@@ -20,11 +20,12 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A column definition for displaying data and an optional command. </summary>
-  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport
+  public abstract class BocValueColumnDefinition : BocCommandEnabledColumnDefinition, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport, IBocColumnDefinitionWithValidationSupport
   {
     private bool _enforceWidth;
     private bool _isSortable = true;
@@ -47,6 +48,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     /// <returns>An implementation of <see cref="IComparer{T}"/>, typed to <see cref="BocListRow"/>. Does not return <see langword="null" />.</returns>
     [NotNull]
     protected abstract IComparer<BocListRow> CreateCellValueComparer ();
+
+    protected abstract IBocColumnValidationFailureMatcher GetValidationFailureMatcher ();
 
     /// <summary> 
     ///   Gets or sets a flag that determines whether to hide overflowing contents in the data rows instead of 
@@ -101,6 +104,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     IComparer<BocListRow> IBocSortableColumnDefinition.CreateCellValueComparer ()
     {
       return CreateCellValueComparer();
+    }
+
+    IBocColumnValidationFailureMatcher IBocColumnDefinitionWithValidationSupport.GetValidationFailureMatcher ()
+    {
+      return GetValidationFailureMatcher();
     }
   }
 }

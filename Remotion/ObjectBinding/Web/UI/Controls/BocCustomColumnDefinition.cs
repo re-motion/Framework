@@ -26,6 +26,7 @@ using JetBrains.Annotations;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -34,7 +35,7 @@ using Remotion.Web.Utilities;
 namespace Remotion.ObjectBinding.Web.UI.Controls
 {
   /// <summary> A column definition using <see cref="BocCustomColumnDefinitionCell"/> for rendering the data. </summary>
-  public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport
+  public class BocCustomColumnDefinition : BocColumnDefinition, IBusinessObjectClassSource, IBocSortableColumnDefinition, IBocColumnDefinitionWithRowHeaderSupport, IBocColumnDefinitionWithValidationSupport
   {
     private readonly PropertyPathBinding _propertyPathBinding;
     private BocCustomColumnDefinitionCell? _customCell;
@@ -241,6 +242,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       var args = new BocCustomCellArguments((IBocList)OwnerControl, this);
       return CustomCell.CreateCellValueComparerInternal(args);
+    }
+
+    public virtual IBocColumnValidationFailureMatcher GetValidationFailureMatcher ()
+    {
+      return new PropertyPathValidationFailureMatcher(GetPropertyPath());
     }
   }
 

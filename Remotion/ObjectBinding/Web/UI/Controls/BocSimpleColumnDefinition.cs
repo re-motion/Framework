@@ -22,6 +22,7 @@ using System.Web.UI;
 using Remotion.Mixins;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.TypePipe;
 using Remotion.Utilities;
@@ -234,6 +235,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     IBusinessObjectClass? IBusinessObjectClassSource.BusinessObjectClass
     {
       get { return _propertyPathBinding.BusinessObjectClass; }
+    }
+
+    protected override IBocColumnValidationFailureMatcher GetValidationFailureMatcher ()
+    {
+      return new PropertyPathValidationFailureMatcher(GetPropertyPath());
     }
   }
 }
