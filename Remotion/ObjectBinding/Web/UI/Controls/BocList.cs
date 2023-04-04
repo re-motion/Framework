@@ -38,6 +38,7 @@ using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSu
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Reflection;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
@@ -71,7 +72,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       IBocList,
       IPostBackEventHandler,
       IPostBackDataHandler,
-      IResourceDispatchTarget
+      IResourceDispatchTarget,
+      IBocListWithValidationSupport
   {
     #region Obsolete
 
@@ -3966,6 +3968,14 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       Assertion.DebugIsNotNull(_currentPagePostBackTarget, "_currentPagePostBackTarget must not be null.");
 
       return _currentPagePostBackTarget.UniqueID;
+    }
+
+    BocListValidationFailureRepository IBocListWithValidationSupport.ValidationFailureRepository { get; } = new();
+
+    IEnumerable<IBocColumnDefinitionWithValidationSupport> IBocListWithValidationSupport.GetColumnsWithValidationSupport ()
+    {
+      var columns = EnsureColumnsGot();
+      return columns.OfType<IBocColumnDefinitionWithValidationSupport>();
     }
 
     string IControlWithDiagnosticMetadata.ControlType
