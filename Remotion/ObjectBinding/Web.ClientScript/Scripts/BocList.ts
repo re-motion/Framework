@@ -51,6 +51,7 @@ class BocList_RowBlock
 {
   public Row: HTMLElement;
   public SelectorControl: HTMLInputElement;
+  public ValidationRow: Nullable<HTMLElement>;
 
   constructor(row: HTMLElement, selectorControl: HTMLInputElement)
   {
@@ -59,6 +60,9 @@ class BocList_RowBlock
 
     this.Row = row;
     this.SelectorControl = selectorControl
+    this.ValidationRow = this.Row.classList.contains("hasValidationRow")
+      ? this.Row.nextSibling as HTMLElement
+      : null;
   }
 }
 
@@ -288,7 +292,10 @@ class BocList
     // Select currentRow
     rowBlock.SelectorControl.checked = true;
     if (isRowHighlightingEnabled)
+    {
       rowBlock.Row.classList.add(BocList.TrClassNameSelected);
+      rowBlock.ValidationRow?.classList.add(BocList.TrClassNameSelected);
+    }
 
     BocList.SetSelectAllRowsSelectorOnDemand (selectedRows);
   }
@@ -328,7 +335,10 @@ class BocList
     // Unselect currentRow
     rowBlock.SelectorControl.checked = false;
     if (isRowHighlightingEnabled)
+    {
       rowBlock.Row.classList.remove(BocList.TrClassNameSelected);
+      rowBlock.ValidationRow?.classList.remove(BocList.TrClassNameSelected);
+    }
 
     BocList.ClearSelectAllRowsSelector (selectedRows);
   }

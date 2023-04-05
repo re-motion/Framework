@@ -15,10 +15,13 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using Remotion.FunctionalProgramming;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
@@ -121,6 +124,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
       ArgumentUtility.CheckNotNull("rowRenderingContext", rowRenderingContext);
 
+      var hasValidationFailures = renderingContext.Control is IBocListWithValidationSupport bocListWithValidationSupport
+                                  && bocListWithValidationSupport.ValidationFailureRepository.HasValidationFailures(rowRenderingContext.Row.BusinessObject);
+
       var absoluteRowIndex = rowRenderingContext.SortedIndex;
       var originalRowIndex = rowRenderingContext.Row.Index;
       var businessObject = rowRenderingContext.Row.BusinessObject;
@@ -135,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
           isOddRow);
       renderingContext.Control.OnDataRowRendering(dataRowRenderEventArgs);
 
-      string cssClassTableRow = GetCssClassTableRow(renderingContext, isChecked, dataRowRenderEventArgs);
+      string cssClassTableRow = GetCssClassTableRow(renderingContext, isChecked, hasValidationFailures, dataRowRenderEventArgs);
 
       renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableRow);
       if (_renderingFeatures.EnableDiagnosticMetadata)
@@ -167,6 +173,47 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       GetSelectorColumnRenderer().RenderDataCell(renderingContext, rowRenderingContext, headerIDs: dataCellIDsForSelectorColumn);
 
       RenderDataCells(renderingContext, rowIndex, dataRowRenderEventArgs);
+
+      renderingContext.Writer.RenderEndTag();
+
+      if (hasValidationFailures)
+      {
+        var validationFailures = ((IBocListWithValidationSupport)renderingContext.Control).ValidationFailureRepository.GetAllValidationFailures(rowRenderingContext.Row.BusinessObject, true);
+        RenderValidationRow(renderingContext, rowRenderingContext, dataRowRenderEventArgs, validationFailures);
+      }
+    }
+
+    private void RenderValidationRow (
+        BocListRenderingContext renderingContext,
+        BocListRowRenderingContext rowRenderingContext,
+        BocListDataRowRenderEventArgs rowRenderEventArgs,
+        IReadOnlyCollection<BusinessObjectValidationFailure> validationFailures)
+    {
+      var cssClassTableRow = GetCssClassValidationRow(renderingContext, rowRenderingContext.IsSelected, rowRenderEventArgs);
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClassTableRow);
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Tr);
+
+      renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Colspan, "999");
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Td);
+
+      renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+      foreach (var validationFailure in validationFailures)
+      {
+        renderingContext.Writer.RenderBeginTag(HtmlTextWriterTag.Li);
+        if (validationFailure.ValidatedProperty != null)
+        {
+          renderingContext.Writer.WriteEncodedText($"{validationFailure.ValidatedProperty.DisplayName}: {validationFailure.ErrorMessage}");
+        }
+        else
+        {
+          renderingContext.Writer.WriteEncodedText(validationFailure.ErrorMessage);
+        }
+        renderingContext.Writer.RenderEndTag();
+      }
+      renderingContext.Writer.RenderEndTag();
+
+      renderingContext.Writer.RenderEndTag();
 
       renderingContext.Writer.RenderEndTag();
     }
@@ -245,6 +292,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
     private string GetCssClassTableRow (
         BocListRenderingContext renderingContext,
         bool isChecked,
+        bool hasValidationErrors,
         BocListDataRowRenderEventArgs dataRowRenderEventArgs)
     {
       string cssClassTableRow = CssClasses.DataRow;
@@ -256,6 +304,30 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty(dataRowRenderEventArgs.AdditionalCssClassForDataRow))
         cssClassTableRow += " " + dataRowRenderEventArgs.AdditionalCssClassForDataRow;
+
+      if (isChecked && renderingContext.Control.AreDataRowsClickSensitive())
+        cssClassTableRow += " " + CssClasses.DataRowSelected;
+
+      if (hasValidationErrors)
+        cssClassTableRow += " " + CssClasses.HasValidationRow;
+
+      return cssClassTableRow;
+    }
+
+    private string GetCssClassValidationRow (
+        BocListRenderingContext renderingContext,
+        bool isChecked,
+        BocListDataRowRenderEventArgs dataRowRenderEventArgs)
+    {
+      string cssClassTableRow = CssClasses.ValidationRow;
+
+      if (dataRowRenderEventArgs.IsOddRow)
+        cssClassTableRow += " " + CssClasses.DataRowOdd;
+      else
+        cssClassTableRow += " " + CssClasses.DataRowEven;
+
+      if (!string.IsNullOrEmpty(dataRowRenderEventArgs.AdditionalCssClassForValidationRow))
+        cssClassTableRow += " " + dataRowRenderEventArgs.AdditionalCssClassForValidationRow;
 
       if (isChecked && renderingContext.Control.AreDataRowsClickSensitive())
         cssClassTableRow += " " + CssClasses.DataRowSelected;

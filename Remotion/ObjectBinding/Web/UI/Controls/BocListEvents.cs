@@ -117,6 +117,7 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
   private bool _isEditableRow;
   private readonly bool _isOddRow;
   private string? _additionalCssClassForDataRow;
+  private string? _additionalCssClassForValidationRow;
 
   public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject, bool isEditableRow, bool isOddRow)
     : base(listIndex, businessObject)
@@ -140,6 +141,11 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
     get { return _additionalCssClassForDataRow; }
   }
 
+  public string? AdditionalCssClassForValidationRow
+  {
+    get { return _additionalCssClassForValidationRow; }
+  }
+
   /// <summary>
   /// Setting the row read-only will affect only the display of the edit-button for row-edit-mode. Setting the entire row readonly for list-edit-mode
   /// is currently not supported via the <see cref="BocListDataRowRenderEventArgs"/>. Instead, the controls used for editing should be set to read-only.
@@ -154,6 +160,12 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
   {
     ArgumentUtility.CheckNotEmpty("cssClass", cssClass);
     _additionalCssClassForDataRow = cssClass;
+  }
+
+  public void SetAdditionalCssClassForValidationRow (string cssClass)
+  {
+    ArgumentUtility.CheckNotEmpty("cssClass", cssClass);
+    _additionalCssClassForValidationRow = cssClass;
   }
 }
 
