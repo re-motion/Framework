@@ -133,6 +133,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       get { return "bocListDataCell"; }
     }
 
+    /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/> that have a validation error. </summary>
+    /// <remarks> Class: <c>bocLisHasValidationErrors</c> </remarks>
+    public virtual string DataCellHasValidationErrors
+    {
+      get { return "bocLisHasValidationErrors"; }
+    }
+
     /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the row index header. </summary>
     /// <remarks> Class: <c>bocListTitleCellIndex</c> </remarks>
     public virtual string TitleCellIndex

@@ -20,13 +20,16 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Remotion.Globalization;
 using Remotion.ObjectBinding.Web.Contracts.DiagnosticMetadata;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.Contracts.DiagnosticMetadata;
+using Remotion.Web.Infrastructure;
 using Remotion.Web.UI;
 using Remotion.Web.UI.Controls;
 using Remotion.Web.UI.Controls.Rendering;
+using Remotion.Web.UI.Globalization;
 using Remotion.Web.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
@@ -345,6 +348,15 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
       if (!string.IsNullOrEmpty(renderingContext.ColumnDefinition.CssClass))
         cssClassTableCell += " " + renderingContext.ColumnDefinition.CssClass;
+
+      if (renderingContext is { Control: IBocListWithValidationSupport validatedBocList, ColumnDefinition: IBocColumnDefinitionWithValidationSupport })
+      {
+        var validationFailures = validatedBocList.ValidationFailureRepository.GetCellValidationFailures(arguments.BusinessObject, renderingContext.ColumnDefinition, false);
+
+        if (validationFailures.Any())
+          cssClassTableCell += " " + CssClasses.DataCellHasValidationErrors;
+      }
+
       renderingContext.AddAttributeToRender(HtmlTextWriterAttribute.Class, cssClassTableCell);
 
       if (arguments.IsRowHeader)
