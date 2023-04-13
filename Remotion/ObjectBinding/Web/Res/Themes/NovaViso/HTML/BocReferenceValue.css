@@ -133,6 +133,12 @@
   box-shadow: var(--remotion-themed-box-shadow-readonly-focus);
 }
 
+.bocReferenceValue.readOnly span.content span
+{
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
 span.bocReferenceValue.readOnly span.content span:empty
 {
   /* Ensures that the keyboard focus of empty readonly values surrounds the entires width of the span. */
