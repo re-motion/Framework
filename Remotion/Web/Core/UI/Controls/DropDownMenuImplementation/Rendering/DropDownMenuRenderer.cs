@@ -240,23 +240,41 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
 
     private void AddAttributesToRender (DropDownMenuRenderingContext renderingContext)
     {
+      ArgumentUtility.CheckNotNull("renderingContext", renderingContext);
+
+      OverrideCssClass(renderingContext, out var backUpCssClass, out var backUpAttributeCssClass);
+
       AddStandardAttributesToRender(renderingContext);
-      if (string.IsNullOrEmpty(renderingContext.Control.CssClass) && string.IsNullOrEmpty(renderingContext.Control.Attributes["class"]))
-      {
-        var cssClass = renderingContext.Control.ButtonType switch {
-                ButtonType.Primary => $"{CssClassBase} {CssClassDropDownButtonPrimary}",
-                ButtonType.Supplemental => $"{CssClassBase} {CssClassDropDownButtonSupplemental}",
-                _ => CssClassBase
-            };
 
-        renderingContext.Writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
-      }
+      RestoreClass(renderingContext, backUpCssClass, backUpAttributeCssClass);
 
+      AddAdditionalAttributes(renderingContext);
+    }
+
+    /// <summary>
+    /// Called after all attributes have been added by <see cref="AddAttributesToRender"/>.
+    /// Use this to render style attributes without putting them into the control's <see cref="IStyledControl.ControlStyle"/> property.
+    /// </summary>
+    protected virtual void AddAdditionalAttributes (DropDownMenuRenderingContext renderingContext)
+    {
       if (renderingContext.Control.ControlStyle.Width.IsEmpty)
       {
         if (!renderingContext.Control.Width.IsEmpty)
           renderingContext.Writer.AddStyleAttribute(HtmlTextWriterStyle.Width, renderingContext.Control.Width.ToString());
       }
+    }
+
+    protected virtual string GetAdditionalCssClass (IDropDownMenu dropDownMenu)
+    {
+      var additionalCssClass = string.Empty;
+
+      if (dropDownMenu.ButtonType == ButtonType.Primary)
+        additionalCssClass += " " + CssClassDropDownButtonPrimary;
+
+      if (dropDownMenu.ButtonType == ButtonType.Supplemental)
+        additionalCssClass += " " + CssClassDropDownButtonSupplemental;
+
+      return additionalCssClass;
     }
 
     protected override void AddDiagnosticMetadataAttributes (RenderingContext<IDropDownMenu> renderingContext)
@@ -266,6 +284,28 @@ namespace Remotion.Web.UI.Controls.DropDownMenuImplementation.Rendering
       HtmlUtility.ExtractPlainText(renderingContext.Control.TitleText).AddAttributeTo(renderingContext.Writer, DiagnosticMetadataAttributes.Content);
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.IsDisabled, (!renderingContext.Control.Enabled).ToString().ToLower());
       renderingContext.Writer.AddAttribute(DiagnosticMetadataAttributes.ButtonType, renderingContext.Control.ButtonType.ToString());
+    }
+
+    private void OverrideCssClass (DropDownMenuRenderingContext renderingContext, out string backUpCssClass, out string? backUpAttributeCssClass)
+    {
+      backUpCssClass = renderingContext.Control.CssClass;
+      var hasCssClass = !string.IsNullOrEmpty(backUpCssClass);
+      if (hasCssClass)
+        renderingContext.Control.CssClass += GetAdditionalCssClass(renderingContext.Control);
+
+      backUpAttributeCssClass = renderingContext.Control.Attributes["class"];
+      var hasClassAttribute = !string.IsNullOrEmpty(backUpAttributeCssClass);
+      if (hasClassAttribute)
+        renderingContext.Control.Attributes["class"] += GetAdditionalCssClass(renderingContext.Control);
+
+      if (!hasCssClass && !hasClassAttribute)
+        renderingContext.Control.CssClass = CssClassBase + GetAdditionalCssClass(renderingContext.Control);
+    }
+
+    private void RestoreClass (DropDownMenuRenderingContext renderingContext, string backUpCssClass, string? backUpAttributeCssClass)
+    {
+      renderingContext.Control.CssClass = backUpCssClass;
+      renderingContext.Control.Attributes["class"] = backUpAttributeCssClass;
     }
 
     private void RegisterEventHandlerScripts (DropDownMenuRenderingContext renderingContext)

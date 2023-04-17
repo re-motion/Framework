@@ -65,6 +65,7 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       _control.Setup(stub => stub.Enabled).Returns(true);
       _control.Setup(stub => stub.UniqueID).Returns("DropDownMenu1");
       _control.Setup(stub => stub.ClientID).Returns("DropDownMenu1");
+      _control.SetupProperty(stub => stub.CssClass);
       _control.Setup(stub => stub.ControlType).Returns("DropDownMenu");
       _control.Setup(stub => stub.MenuItems).Returns(new WebMenuItemCollection(_control.Object));
       _control.Setup(stub => stub.GetBindOpenEventScript(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns("OpenDropDownMenuEventReference");
@@ -169,15 +170,8 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
       _control.Setup(stub => stub.ShowTitle).Returns(true);
       PopulateMenu();
 
-      var renderer = new DropDownMenuRenderer(
-          _resourceUrlFactory,
-          GlobalizationService,
-          RenderingFeatures.WithDiagnosticMetadata,
-          new StubLabelReferenceRenderer(),
-          new FakeFallbackNavigationUrlProvider());
-      renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
+      var document = RenderDropDownMenu(RenderingFeatures.WithDiagnosticMetadata);
 
-      var document = _htmlHelper.GetResultDocument();
       var containerDiv = document.GetAssertedChildElement("span", 0);
       containerDiv.AssertAttributeValueEquals(DiagnosticMetadataAttributes.ControlType, "DropDownMenu");
       containerDiv.AssertAttributeValueEquals(DiagnosticMetadataAttributes.Content, c_MenuTitle);
@@ -209,6 +203,52 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
 
       var titleNode = node.GetAssertedElementByID("DropDownMenu1_DropDownMenuLabel");
       Assert.That(titleNode.InnerXml, Is.EqualTo("Multiline<br />Title"));
+    }
+
+    [Test]
+    public void RenderCustomCssClass ()
+    {
+      _control.Setup(stub => stub.CssClass).Returns("myDropDownMenu");
+
+      var document = RenderDropDownMenu(RenderingFeatures.Default);
+
+      var containerDiv = document.GetAssertedChildElement("span", 0);
+      containerDiv.AssertAttributeValueEquals("class", "myDropDownMenu");
+    }
+
+    [Test]
+    public void RenderCustomCssClassWithPrimaryButtonType ()
+    {
+      _control.Setup(stub => stub.ButtonType).Returns(ButtonType.Primary);
+      _control.Object.CssClass = "myDropDownMenu";
+
+      var document = RenderDropDownMenu(RenderingFeatures.Default);
+
+      var containerDiv = document.GetAssertedChildElement("span", 0);
+      containerDiv.AssertAttributeValueEquals("class", "myDropDownMenu primary");
+    }
+
+    [Test]
+    public void RenderCustomCssClassWithSupplementalButtonType ()
+    {
+      _control.Setup(stub => stub.ButtonType).Returns(ButtonType.Supplemental);
+      _control.Object.CssClass = "myDropDownMenu";
+
+      var document = RenderDropDownMenu(RenderingFeatures.Default);
+
+      var containerDiv = document.GetAssertedChildElement("span", 0);
+      containerDiv.AssertAttributeValueEquals("class", "myDropDownMenu supplemental");
+    }
+
+    [Test]
+    public void RenderCustomClassAttribute ()
+    {
+      _control.Object.Attributes["class"] = "testClass";
+
+      var document = RenderDropDownMenu(RenderingFeatures.Default);
+
+      var containerDiv = document.GetAssertedChildElement("span", 0);
+      containerDiv.AssertAttributeValueEquals("class", "testClass");
     }
 
     private void AssertTitleSpan (XmlNode containerDiv, bool withTitle, bool withIcon)
@@ -303,20 +343,27 @@ namespace Remotion.Web.UnitTests.Core.UI.Controls.DropDownMenuImplementation.Ren
               _ => throw new ArgumentOutOfRangeException(nameof(buttonType), buttonType, null)
           };
 
-      var renderer = new DropDownMenuRenderer(
-          _resourceUrlFactory,
-          GlobalizationService,
-          RenderingFeatures.Default,
-          new StubLabelReferenceRenderer(),
-          new FakeFallbackNavigationUrlProvider());
-      renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
-      var document = _htmlHelper.GetResultDocument();
+      var document = RenderDropDownMenu(RenderingFeatures.Default);
+
       var containerDiv = document.GetAssertedChildElement("span", 0);
       containerDiv.AssertAttributeValueEquals("id", _control.Object.ClientID);
       containerDiv.AssertAttributeValueEquals("class", buttonClass);
       containerDiv.AssertChildElementCount(1);
 
       return containerDiv;
+    }
+
+    private XmlDocument RenderDropDownMenu (IRenderingFeatures renderingFeatures)
+    {
+      var renderer = new DropDownMenuRenderer(
+          _resourceUrlFactory,
+          GlobalizationService,
+          renderingFeatures,
+          new StubLabelReferenceRenderer(),
+          new FakeFallbackNavigationUrlProvider());
+      renderer.Render(new DropDownMenuRenderingContext(_httpContextStub.Object, _htmlHelper.Writer, _control.Object));
+
+      return _htmlHelper.GetResultDocument();
     }
 
     private void PopulateMenu ()
