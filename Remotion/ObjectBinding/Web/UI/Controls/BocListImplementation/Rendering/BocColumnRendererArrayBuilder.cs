@@ -16,6 +16,8 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Remotion.Collections;
 using Remotion.ServiceLocation;
 using Remotion.Utilities;
 using Remotion.Web.UI;
@@ -30,11 +32,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
   /// </summary>
   public class BocColumnRendererArrayBuilder
   {
-    private readonly BocColumnDefinition[] _columnDefinitions;
+    private readonly IReadOnlyList<BocColumnDefinition> _columnDefinitions;
     private readonly IServiceLocator _serviceLocator;
     private readonly WcagHelper _wcagHelper;
 
-    public BocColumnRendererArrayBuilder (BocColumnDefinition[] columnDefinitions, IServiceLocator serviceLocator, WcagHelper wcagHelper)
+    public BocColumnRendererArrayBuilder (IReadOnlyList<BocColumnDefinition> columnDefinitions, IServiceLocator serviceLocator, WcagHelper wcagHelper)
     {
       ArgumentUtility.CheckNotNullOrEmpty("columnDefinitions", columnDefinitions);
       ArgumentUtility.CheckNotNull("serviceLocator", serviceLocator);
@@ -63,9 +65,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
       PrepareSorting(sortingDirections, sortingOrder);
 
       var firstValueColumnRendered = false;
-      var bocColumnRenderers = new List<BocColumnRenderer>(_columnDefinitions.Length);
+      var bocColumnRenderers = new List<BocColumnRenderer>(_columnDefinitions.Count);
       var visibleColumnIndex = GetInitialVisibleColumnIndex();
-      for (int columnIndex = 0; columnIndex < _columnDefinitions.Length; columnIndex++)
+      for (int columnIndex = 0; columnIndex < _columnDefinitions.Count; columnIndex++)
       {
         var columnDefinition = _columnDefinitions[columnIndex];
         var isRowHeader = (columnDefinition as IBocColumnDefinitionWithRowHeaderSupport)?.IsRowHeader ?? false;
@@ -120,7 +122,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Rendering
 
         foreach (var entry in SortingOrder)
         {
-          var columnIndex = Array.IndexOf(_columnDefinitions, entry.Column);
+          var columnIndex = _columnDefinitions.IndexOf((BocColumnDefinition?)entry.Column);
           if (entry.Direction != SortingDirection.None)
           {
             sortingDirections.Add(columnIndex, entry.Direction);

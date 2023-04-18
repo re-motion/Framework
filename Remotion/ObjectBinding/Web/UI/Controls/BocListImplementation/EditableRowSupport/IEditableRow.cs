@@ -22,7 +22,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 {
   public interface IEditableRow
   {
-    void CreateControls (IBusinessObject value, BocColumnDefinition[] columns);
+    void CreateControls (IBusinessObject value, IReadOnlyList<BocColumnDefinition> columns);
     void RemoveControls ();
     bool HasEditControls ();
     bool HasEditControl (int columnIndex);
