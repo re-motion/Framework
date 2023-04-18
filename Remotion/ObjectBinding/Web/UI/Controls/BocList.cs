@@ -1313,6 +1313,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
+    /// <summary>
+    /// Returns the <see cref="BocColumnDefinition"/>s displayed in the <see cref="BocList"/>.
+    /// </summary>
+    /// <remarks>
+    /// The column definitions change when one of the following properties are changed:
+    /// <list type="bullet">
+    ///   <item><see cref="FixedColumns"/></item>
+    ///   <item><see cref="SelectedView"/></item>
+    ///   <item><see cref="SelectedViewIndex"/></item>
+    /// </list>
+    /// </remarks>
+    public IReadOnlyList<BocColumnDefinition> GetColumnDefinitions ()
+    {
+      return EnsureColumnsGot();
+    }
+
     /// <summary> Builds the input required marker. </summary>
     protected virtual Image GetRequiredMarker ()
     {
