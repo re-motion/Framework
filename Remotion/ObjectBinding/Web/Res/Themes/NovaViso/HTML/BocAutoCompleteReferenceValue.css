@@ -207,4 +207,5 @@ span.bocAutoCompleteReferenceValue.readOnly span.content input + span:empty::bef
   grid-area: optionsMenu;
   /* by not using gap on the parent element, we don't need to adjust the grid-template when the optionsMenu is not rendered. */
   margin-left: var(--remotion-themed-spacing);
+  align-self: baseline;
 }
