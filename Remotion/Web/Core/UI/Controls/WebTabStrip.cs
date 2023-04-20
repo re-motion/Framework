@@ -384,9 +384,20 @@ namespace Remotion.Web.UI.Controls
         throw new InvalidOperationException("Only tabs that are part of this tab strip can be selected.");
       if (_selectedTab != tab)
       {
-        if ((_selectedTab != null) && _selectedTab.IsSelected)
+        if (_selectedTab != null && _selectedTab.IsSelected)
           _selectedTab.SetSelected(false);
         _selectedTab = tab;
+        if (_selectedTab != null && (!_selectedTab.IsVisible || _selectedTab.IsDisabled))
+        {
+          for (int i = Tabs.IndexOf(_selectedTab); i < Tabs.Count; i++)
+          {
+            if (Tabs[i].IsVisible && !Tabs[i].IsDisabled)
+            {
+              _selectedTab = Tabs[i];
+              break;
+            }
+          }
+        }
         if ((_selectedTab != null) && ! _selectedTab.IsSelected)
           _selectedTab.SetSelected(true);
 

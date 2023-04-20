@@ -73,19 +73,27 @@ public class TestTabbedForm : TestWxeBasePage
     TabView activeView = (TabView)MultiView.Views[activeViewIndex];
     if (activeViewIndex > 0)
       MultiView.SetActiveView(activeView);
+    if (IsPostBack)
+    {
+      var a = (WebTab)PagesTabStrip.Tabs[2];
+      a.IsVisible = false;
+      PagesTabStrip.Tabs.RemoveAt(1);
+
+      ((WebTab)PagesTabStrip.Tabs[4]).IsDisabled = true;
+      PagesTabStrip.Tabs.RemoveAt(3);
+    }
   }
 
   private void LoadUserControls ()
   {
-    // add tabs
 
-    //    AddMainMenuTab ("1", "Main Tab 1", null);
-    //    AddMainMenuTab ("2", "Main Tab 2 foo bar", null);
-    //    AddMainMenuTab ("3", "Main Tab 3 foo", null);
-    //    AddMainMenuTab ("4", "Main Tab 4 foo foo bar", null);
-    //    AddMainMenuTab ("5", "Main Tab 5", null);
-    //    AddMainMenuTab ("6", "Main Tab 6 foo", null);
-    //    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
+       AddTab("1", "Main Tab 1", null);
+       AddTab("2", "Main Tab 2 foo bar", null);
+       AddTab("3", "Main Tab 3 foo", null);
+       AddTab("4", "Main Tab 4 foo foo bar", null);
+       AddTab("5", "Main Tab 5", null);
+       AddTab("6", "Main Tab 6 foo", null);
+       AddTab("7", "Main Tab 7 foo foo bar", null);
 
     var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
     List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
@@ -108,17 +116,6 @@ public class TestTabbedForm : TestWxeBasePage
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
     _dataEditControls = (IDataEditControl[])dataEditControls.ToArray();
-  /*  removeView();
-    removeView();
-    removeView();
-    removeView();
-    removeView();
-    removeView();
-    removeView();
-    removeView();
-    removeView();
-    removeView();
-    AddView("1", WebString.CreateFromText("Hehe"),"acess" );*/
   }
 
   private void AddTab (string id, string text, IconInfo icon)
@@ -130,10 +127,10 @@ public class TestTabbedForm : TestWxeBasePage
     PagesTabStrip.Tabs.Add(tab);
   }
 
-  private void AddMainMenuTab (string id, WebString text, IconInfo icon)
+  private void AddMainMenuTab (string id, string text, IconInfo icon)
   {
     WebTab tab = new WebTab();
-    tab.Text = WebString.CreateFromText("text");
+    tab.Text = WebString.CreateFromText(text);
     tab.ItemID = id ;
     tab.Icon = icon;
     NavigationTabs.Tabs.Add(tab);
