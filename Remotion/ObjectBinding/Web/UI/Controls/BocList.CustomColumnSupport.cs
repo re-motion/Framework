@@ -45,7 +45,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _customColumnsInitialized = false;
     }
 
-    private void EnsureCustomColumnsInitialized (BocColumnDefinition[] columns)
+    private void EnsureCustomColumnsInitialized (IReadOnlyList<BocColumnDefinition> columns)
     {
       if (_customColumnsInitialized)
         return;
@@ -61,7 +61,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     }
 
     /// <summary> Creates the controls for the custom columns in the <paramref name="columns"/> array. </summary>
-    private void CreateCustomColumnControls (BocColumnDefinition[] columns)
+    private void CreateCustomColumnControls (IReadOnlyList<BocColumnDefinition> columns)
     {
       EnsureChildControls();
 
@@ -158,7 +158,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     private void PreRenderCustomColumns ()
     {
       var columns = EnsureColumnsGot();
-      for (int index = 0; index < columns.Length; index++)
+      for (int index = 0; index < columns.Count; index++)
       {
         var column = columns[index];
         var customColumn = column as BocCustomColumnDefinition;

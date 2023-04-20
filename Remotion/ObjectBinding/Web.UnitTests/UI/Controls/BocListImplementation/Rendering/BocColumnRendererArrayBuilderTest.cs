@@ -16,6 +16,7 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Moq;
 using NUnit.Framework;
 using Remotion.Development.UnitTesting;
@@ -46,7 +47,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void GetColumnRenderers ()
     {
-      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(_stubColumnDefinition), _serviceLocator, _wcagHelperStub.Object);
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
 
@@ -59,7 +60,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void GetColumnRenderers_PrepareSorting_IsClientSideSortingEnabled_False_And_HasSortingKeys_False ()
     {
-      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(_stubColumnDefinition), _serviceLocator, _wcagHelperStub.Object);
       builder.SortingOrder = new List<BocListSortingOrderEntry>(new[] { new BocListSortingOrderEntry(_stubColumnDefinition, SortingDirection.Ascending) });
       builder.IsClientSideSortingEnabled = false;
       builder.HasSortingKeys = false;
@@ -74,7 +75,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void GetColumnRenderers_PrepareSorting_IsClientSideSortingEnabledTrue_And_HasSortingKeys_False ()
     {
-      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(_stubColumnDefinition), _serviceLocator, _wcagHelperStub.Object);
       builder.SortingOrder = new List<BocListSortingOrderEntry>(new[] { new BocListSortingOrderEntry(_stubColumnDefinition, SortingDirection.Ascending) });
       builder.IsClientSideSortingEnabled = true;
       builder.HasSortingKeys = false;
@@ -89,7 +90,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void GetColumnRenderers_PrepareSorting_IsClientSideSortingEnabled_False_And_HasSortingKeys_True ()
     {
-      var builder = new BocColumnRendererArrayBuilder(new[] { _stubColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(_stubColumnDefinition), _serviceLocator, _wcagHelperStub.Object);
       builder.SortingOrder = new List<BocListSortingOrderEntry>(new[] { new BocListSortingOrderEntry(_stubColumnDefinition, SortingDirection.Ascending) });
       builder.IsClientSideSortingEnabled = false;
       builder.HasSortingKeys = true;
@@ -105,7 +106,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     public void GetColumnRenderers_PrepareSorting_SeveralColumns ()
     {
       var columns = new[] { _stubColumnDefinition, new StubColumnDefinition(), new StubColumnDefinition(), new StubColumnDefinition() };
-      var builder = new BocColumnRendererArrayBuilder(columns, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(new ReadOnlyCollection<BocColumnDefinition>(columns), _serviceLocator, _wcagHelperStub.Object);
       builder.SortingOrder =
           new List<BocListSortingOrderEntry>(
               new[]
@@ -135,7 +136,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var columns = new BocColumnDefinition[]
                     { _stubColumnDefinition, new StubColumnDefinition(), new StubValueColumnDefinition(), new StubColumnDefinition() };
-      var builder = new BocColumnRendererArrayBuilder(columns, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(new ReadOnlyCollection<BocColumnDefinition>(columns), _serviceLocator, _wcagHelperStub.Object);
       builder.SortingOrder =
           new List<BocListSortingOrderEntry>(
               new[]
@@ -163,7 +164,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void GetColumnRenderers_BocValueColumnDefinition_EnableIcon_False ()
     {
-      var builder = new BocColumnRendererArrayBuilder(new[] { _stubValueColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(_stubValueColumnDefinition), _serviceLocator, _wcagHelperStub.Object);
       builder.EnableIcon = false;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
@@ -175,7 +176,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     [Test]
     public void GetColumnRenderers_BocValueColumnDefinition_EnableIcon_True ()
     {
-      var builder = new BocColumnRendererArrayBuilder(new[] { _stubValueColumnDefinition }, _serviceLocator, _wcagHelperStub.Object);
+      var builder = new BocColumnRendererArrayBuilder(CreateColumnCollection(_stubValueColumnDefinition), _serviceLocator, _wcagHelperStub.Object);
       builder.EnableIcon = true;
 
       var bocColumnRenderers = builder.CreateColumnRenderers();
@@ -189,7 +190,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
     {
       var builder =
           new BocColumnRendererArrayBuilder(
-              new[] { _stubValueColumnDefinition, new StubValueColumnDefinition(), new StubValueColumnDefinition() },
+              CreateColumnCollection(_stubValueColumnDefinition, new StubValueColumnDefinition(), new StubValueColumnDefinition()),
               _serviceLocator,
               _wcagHelperStub.Object);
       builder.EnableIcon = true;
@@ -201,5 +202,7 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls.BocListImplementation
       Assert.That(bocColumnRenderers[1].ShowIcon, Is.False);
       Assert.That(bocColumnRenderers[2].ShowIcon, Is.False);
     }
+
+    private static ReadOnlyCollection<BocColumnDefinition> CreateColumnCollection (params BocColumnDefinition[] values) => new(values);
   }
 }

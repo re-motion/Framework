@@ -92,7 +92,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       }
     }
 
-    public virtual void CreateControls (IBusinessObject value, BocColumnDefinition[] columns)
+    public virtual void CreateControls (IBusinessObject value, IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNull("value", value);
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
@@ -113,9 +113,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
       _dataSource = _dataSourceFactory.Create(value);
 
-      _rowEditModeControls = new IBusinessObjectBoundEditableWebControl[columns.Length];
+      _rowEditModeControls = new IBusinessObjectBoundEditableWebControl[columns.Count];
 
-      for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+      for (int idxColumns = 0; idxColumns < columns.Count; idxColumns++)
       {
         BocSimpleColumnDefinition? simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
 
@@ -141,7 +141,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _isRowEditModeValidatorsRestored = false;
     }
 
-    protected void CreatePlaceHolders (BocColumnDefinition[] columns)
+    protected void CreatePlaceHolders (IReadOnlyList<BocColumnDefinition> columns)
     {
       RemoveControls();
 
@@ -151,7 +151,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       _validatorControls = new PlaceHolder();
       Controls.Add(_validatorControls);
 
-      for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+      for (int idxColumns = 0; idxColumns < columns.Count; idxColumns++)
       {
         _editControls.Controls.Add(new PlaceHolder());
         _validatorControls.Controls.Add(new PlaceHolder());

@@ -28,6 +28,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using JetBrains.Annotations;
+using Remotion.Collections;
 using Remotion.Globalization;
 using Remotion.Logging;
 using Remotion.ObjectBinding.BusinessObjectPropertyConstraints;
@@ -245,10 +246,10 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   Contains a <see cref="BocColumnDefinition"/> for each property of the bound 
     ///   <see cref="IBusinessObject"/>. 
     /// </summary>
-    private BocColumnDefinition[]? _allPropertyColumns;
+    private IReadOnlyList<BocColumnDefinition>? _allPropertyColumns;
 
     /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
-    private BocColumnDefinition[]? _columnDefinitions;
+    private IReadOnlyList<BocColumnDefinition>? _columnDefinitions;
 
     private bool _hasAppendedAllPropertyColumnDefinitions;
 
@@ -575,8 +576,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.", ex);
       }
 
-      BocColumnDefinition[] columns = EnsureColumnsGot();
-      if (columnIndex >= columns.Length)
+      var columns = EnsureColumnsGot();
+      if (columnIndex >= columns.Count)
       {
         throw new ArgumentOutOfRangeException(
             "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
@@ -655,8 +656,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>[,<customArgument>]'.", ex);
       }
 
-      BocColumnDefinition[] columns = EnsureColumnsGot();
-      if (columnIndex >= columns.Length)
+      var columns = EnsureColumnsGot();
+      if (columnIndex >= columns.Count)
       {
         throw new ArgumentOutOfRangeException(
             "Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'",
@@ -815,9 +816,9 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
 
       // Get columns from current life cycle. Once a sorting event was fired, no one will change the columns in this page life cycle.
-      BocColumnDefinition[] columns = EnsureColumnsGot();
+      var columns = EnsureColumnsGot();
 
-      if (columnIndex >= columns.Length)
+      if (columnIndex >= columns.Count)
       {
         throw new ArgumentOutOfRangeException(
             "eventArgument",
@@ -967,7 +968,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
     /// <summary> Checks whether the control conforms to the required WAI level. </summary>
     /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
-    protected virtual void EvaluateWaiConformity (BocColumnDefinition[] columns)
+    protected virtual void EvaluateWaiConformity (IReadOnlyList<BocColumnDefinition> columns)
     {
       ArgumentUtility.CheckNotNullOrItemsNull("columns", columns);
 
@@ -987,7 +988,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         if (RowMenuDisplay == RowMenuDisplay.Automatic)
           WcagHelper.Instance.HandleError(1, this, "RowMenuDisplay");
 
-        for (int i = 0; i < columns.Length; i++)
+        for (int i = 0; i < columns.Count; i++)
         {
           if (columns[i] is BocRowEditModeColumnDefinition)
             WcagHelper.Instance.HandleError(1, this, string.Format("Columns[{0}]", i));
@@ -1025,7 +1026,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       _optionsMenu.Enabled = !_editModeController.IsRowEditModeActive;
       _listMenu.Enabled = !_editModeController.IsRowEditModeActive;
 
-      BocColumnDefinition[] columns = EnsureColumnsGot();
+      var columns = EnsureColumnsGot();
       EnsureChildControls();
 
       base.OnPreRender(e);
@@ -1147,7 +1148,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       CreateAvailableViewsList();
 
-      BocColumnDefinition[] renderColumns = EnsureColumnsGot();
+      var renderColumns = EnsureColumnsGot();
       EvaluateWaiConformity(renderColumns);
 
       var renderer = CreateRenderer();
@@ -1310,6 +1311,22 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             item.Selected = true;
         }
       }
+    }
+
+    /// <summary>
+    /// Returns the <see cref="BocColumnDefinition"/>s displayed in the <see cref="BocList"/>.
+    /// </summary>
+    /// <remarks>
+    /// The column definitions change when one of the following properties are changed:
+    /// <list type="bullet">
+    ///   <item><see cref="FixedColumns"/></item>
+    ///   <item><see cref="SelectedView"/></item>
+    ///   <item><see cref="SelectedViewIndex"/></item>
+    /// </list>
+    /// </remarks>
+    public IReadOnlyList<BocColumnDefinition> GetColumnDefinitions ()
+    {
+      return EnsureColumnsGot();
     }
 
     /// <summary> Builds the input required marker. </summary>
@@ -1607,7 +1624,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       BocDropDownMenu.HideMenuItems(OptionsMenuItems, _hiddenMenuItems);
     }
 
-    private BocColumnRenderer[] GetColumnRenderers (BocColumnDefinition[] columns)
+    private BocColumnRenderer[] GetColumnRenderers (IReadOnlyList<BocColumnDefinition> columns)
     {
       var columnRendererBuilder = new BocColumnRendererArrayBuilder(columns, ServiceLocator, WcagHelper.Instance);
       columnRendererBuilder.IsListReadOnly = IsReadOnly;
@@ -1623,7 +1640,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       return columnRendererBuilder.CreateColumnRenderers();
     }
 
-    private BocColumnDefinition[] GetAllPropertyColumns ()
+    private IReadOnlyList<BocColumnDefinition> GetAllPropertyColumns ()
     {
       if (_allPropertyColumns != null)
         return _allPropertyColumns;
@@ -1667,7 +1684,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
         }
       }
 
-      _allPropertyColumns = allPropertyColumns.ToArray();
+      _allPropertyColumns = new ReadOnlyCollection<BocColumnDefinition>(allPropertyColumns.ToArray());
       return _allPropertyColumns;
     }
 
@@ -1676,7 +1693,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (!HasValue)
         return;
 
-      BocColumnDefinition[] columns = EnsureColumnsGot();
+      var columns = EnsureColumnsGot();
       var commandColumns =
           columns.Select((column, index) => new { Column = column as BocCommandEnabledColumnDefinition, Index = index })
                  .Where(d => d.Column != null && d.Column.Command != null)
@@ -1694,7 +1711,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       }
     }
 
-    private BocColumnDefinition[] EnsureColumnsGot ()
+    private IReadOnlyList<BocColumnDefinition> EnsureColumnsGot ()
     {
       if (_columnDefinitions == null)
         _columnDefinitions = GetColumnsInternal();
@@ -1707,7 +1724,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
     ///   into a single array.
     /// </summary>
     /// <returns> An array of <see cref="BocColumnDefinition"/> objects. </returns>
-    private BocColumnDefinition[] GetColumnsInternal ()
+    private IReadOnlyList<BocColumnDefinition> GetColumnsInternal ()
     {
       _hasAppendedAllPropertyColumnDefinitions = false;
 
@@ -1723,7 +1740,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
 
       CheckRowMenuColumns(columnDefinitions);
 
-      return columnDefinitions;
+      return new ReadOnlyCollection<BocColumnDefinition>(columnDefinitions);
     }
 
     private void AppendFixedColumns (List<BocColumnDefinition> columnDefinitionList)
@@ -1771,7 +1788,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       if (_hasAppendedAllPropertyColumnDefinitions)
         return;
 
-      BocColumnDefinition[] allPropertyColumnDefinitions = GetAllPropertyColumns();
+      var allPropertyColumnDefinitions = GetAllPropertyColumns();
       Unit width = Unit.Empty;
       string cssClass = string.Empty;
 
@@ -1779,7 +1796,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       {
         if (! placeholderColumnDefinition.Width.IsEmpty)
         {
-          double value = placeholderColumnDefinition.Width.Value / allPropertyColumnDefinitions.Length;
+          double value = placeholderColumnDefinition.Width.Value / allPropertyColumnDefinitions.Count;
           value = Math.Round(value, 1);
           width = new Unit(value, placeholderColumnDefinition.Width.Type);
         }
@@ -1886,7 +1903,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
             }
             else
             {
-              var newIndex = Array.IndexOf(columns, entry.Column);
+              var newIndex = columns.IndexOf((BocColumnDefinition)entry.Column);
               if (newIndex == entry.ColumnIndex)
               {
                 return entry;
