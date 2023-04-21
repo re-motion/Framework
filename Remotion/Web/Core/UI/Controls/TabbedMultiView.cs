@@ -308,10 +308,9 @@ namespace Remotion.Web.UI.Controls
 
       int tabIndex = _tabStrip.Tabs.IndexOf(tab);
       _tabStrip.Tabs.RemoveAt(tabIndex);
-
       if (_newActiveTabAfterRemove != null)
       {
-        SetActiveView(_newActiveTabAfterRemove);
+        //SetActiveView(_newActiveTabAfterRemove);
       }
     }
 

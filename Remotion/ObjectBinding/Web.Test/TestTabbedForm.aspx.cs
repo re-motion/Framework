@@ -169,8 +169,8 @@ public class TestTabbedForm : TestWxeBasePage
                  ID = id,
                  Title = title,
                  AccessKey = accessKey,
-                 Visible = visible,
                };
+    view.LazyControls.Add(new LiteralControl("Such a good view: " + title));
     MultiView.Views.Add(view);
     if (active)
     {
@@ -264,6 +264,13 @@ public class TestTabbedForm : TestWxeBasePage
     cancelButton.Click += new EventHandler(CancelButton_Click);
     MultiView.TopControls.Add(cancelButton);
 
+    WebButton removeCurrentButton = new WebButton();
+    removeCurrentButton.ID = "RemoveCurrentView";
+    removeCurrentButton.Text = WebString.CreateFromText("Remove currently active view");
+    removeCurrentButton.Style["margin-right"] = "10pt";
+    removeCurrentButton.Click += new EventHandler(RemoveSelected_Click);
+    MultiView.BottomControls.Add(removeCurrentButton);
+
     WebButton postBackButton = new WebButton();
     postBackButton.ID = "PostBackButton";
     postBackButton.Text = WebString.CreateFromText("Postback");
@@ -293,13 +300,19 @@ public class TestTabbedForm : TestWxeBasePage
     }
   }
 
+  private void RemoveSelected_Click (object sneder, EventArgs e)
+  {
+    var view = MultiView.GetActiveView();
+    MultiView.Views.Remove(view);
+  }
+
   private void RemoveAllAndAddNewTab_Click (object sender, EventArgs e)
   {
     while (MultiView.Views.Count > 0)
     {
       removeView();
     }
-    AddView("1", WebString.CreateFromText("Hehe"),"access" );
+    AddView("1", WebString.CreateFromText("There should only be this tab visible"),"access" );
   }
 
   private void RemoveAllAndAddNewInvisibleNewAndRemove_Click (object sender, EventArgs e)
