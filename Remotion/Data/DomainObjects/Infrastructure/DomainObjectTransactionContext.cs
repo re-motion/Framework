@@ -34,16 +34,19 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public object? GetTimestamp (ClientTransaction clientTransaction)
     {
+      ThrowOnDomainObjectInWrongState();
       return clientTransaction.DataManager.GetDataContainerWithLazyLoad(_domainObject.ID, throwOnNotFound: true)!.Timestamp;
     }
 
     public DomainObjectState GetState (ClientTransaction clientTransaction)
     {
+      ThrowOnDomainObjectInWrongState();
       return clientTransaction.DataManager.GetState(_domainObject.ID);
     }
 
     public void RegisterForCommit (ClientTransaction clientTransaction)
     {
+      ThrowOnDomainObjectInWrongState();
       var dataContainer = clientTransaction.DataManager.GetDataContainerWithLazyLoad(_domainObject.ID, throwOnNotFound: true)!;
       if (dataContainer.State.IsDeleted)
         return;
@@ -56,6 +59,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     public void EnsureDataAvailable (ClientTransaction clientTransaction)
     {
+      ThrowOnDomainObjectInWrongState();
       clientTransaction.EnsureDataAvailable(_domainObject.ID);
 
       DataContainer? dataContainer;
@@ -68,6 +72,12 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     public bool TryEnsureDataAvailable (ClientTransaction clientTransaction)
     {
       return clientTransaction.TryEnsureDataAvailable(_domainObject.ID);
+    }
+
+    private void ThrowOnDomainObjectInWrongState ()
+    {
+      if(_domainObject._isReferenceInitializeEventExecuting)
+        throw new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
   }
 }

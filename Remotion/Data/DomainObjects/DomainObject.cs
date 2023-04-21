@@ -170,7 +170,7 @@ namespace Remotion.Data.DomainObjects
     private ObjectID _id;
     private ClientTransaction _rootTransaction;
     private bool _needsLoadModeDataContainerOnly; // true if the object was created by a constructor call or OnLoaded has already been called once
-    private bool _isReferenceInitializeEventExecuting; // true only while OnReferenceInitializing is executed
+    internal bool _isReferenceInitializeEventExecuting; // true only while OnReferenceInitializing is executed
     private IDomainObjectTransactionContextStrategy? _strategy;
 
     /// <summary>
@@ -209,6 +209,7 @@ namespace Remotion.Data.DomainObjects
       RaiseReferenceInitializatingEvent();
 
       _needsLoadModeDataContainerOnly = true;
+      _strategy = new DomainObjectTransactionContext(this);
     }
 
 #pragma warning disable 168
@@ -290,15 +291,7 @@ namespace Remotion.Data.DomainObjects
     {
       get
       {
-        if (_strategy == null)
-        {
-          _strategy = _isReferenceInitializeEventExecuting ? new InitializedEventDomainObjectTransactionContextDecorator() : new DomainObjectTransactionContext(this);
-        }
-        else if (!(_strategy.GetType() == typeof(InitializedEventDomainObjectTransactionContextDecorator) && _isReferenceInitializeEventExecuting) ||
-            !(_strategy.GetType() == typeof(DomainObjectTransactionContext) && !_isReferenceInitializeEventExecuting))
-        {
-          _strategy = _isReferenceInitializeEventExecuting ? new InitializedEventDomainObjectTransactionContextDecorator() : new DomainObjectTransactionContext(this);
-        }
+        _strategy ??= new DomainObjectTransactionContext(this);
         return new DomainObjectTransactionContextIndexer(this, _strategy);
       }
     }

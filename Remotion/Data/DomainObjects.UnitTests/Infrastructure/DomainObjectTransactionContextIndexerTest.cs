@@ -29,7 +29,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var tx = order.RootTransaction.CreateSubTransaction();
-      var indexer = new DomainObjectTransactionContextIndexer(order, false);
+      var indexer = new DomainObjectTransactionContextIndexer(order, new DomainObjectTransactionContext(order));
 
       var item = indexer[tx];
       Assert.That(item, Is.InstanceOf(typeof(DomainObjectTransactionContextStruct)));
@@ -41,7 +41,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var tx = order.RootTransaction.CreateSubTransaction();
-      var indexer = new DomainObjectTransactionContextIndexer(order, true);
+      var indexer = new DomainObjectTransactionContextIndexer(order, new DomainObjectTransactionContext(order));
 
       var item = indexer[tx];
       Assert.That(item, Is.InstanceOf(typeof(InitializedEventDomainObjectTransactionContextDecorator)));

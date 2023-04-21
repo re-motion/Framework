@@ -27,8 +27,6 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public struct DomainObjectTransactionContextIndexer
   {
     private readonly DomainObject _domainObject;
-
-    private static readonly IDomainObjectTransactionContextStrategy s_initializedEventStrategy = new InitializedEventDomainObjectTransactionContextDecorator();
     private readonly IDomainObjectTransactionContextStrategy _strategy;
 
     public DomainObjectTransactionContextIndexer (DomainObject domainObject, IDomainObjectTransactionContextStrategy strategy)
@@ -48,9 +46,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     }
   }
 
-  public struct DomainObjectTransactionContextStruct
+  public readonly struct DomainObjectTransactionContextStruct
   {
-    private IDomainObjectTransactionContextStrategy _strategy;
+    private readonly IDomainObjectTransactionContextStrategy _strategy;
 
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
 
