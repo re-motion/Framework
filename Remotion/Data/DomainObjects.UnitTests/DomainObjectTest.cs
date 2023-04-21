@@ -210,7 +210,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => _transaction.ExecuteInScope(() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject(o => o.OrderNumber)),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+              .With.Message.EqualTo("While the DomainObject.OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
@@ -219,7 +219,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => _transaction.ExecuteInScope(() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject(o => o.Properties)),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+              .With.Message.EqualTo("While the DomainObject.OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
@@ -228,14 +228,19 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => _transaction.ExecuteInScope(() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject(o => o.CurrentProperty)),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+              .With.Message.EqualTo("While the DomainObject.OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
     public void RaiseReferenceInitializatingEvent_CallsReferenceInitializing_TransactionContextIsRestricted ()
     {
-      var result = _transaction.ExecuteInScope(() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject(o => o.DefaultTransactionContext));
-      Assert.That(result, Is.TypeOf(typeof(InitializedEventDomainObjectTransactionContextDecorator)));
+      var result = _transaction.ExecuteInScope(() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject(o =>
+      {
+        var transactionContext = o.DefaultTransactionContext;
+        Assert.That(() => transactionContext.State,
+            Throws.InvalidOperationException.With.Message.EqualTo("While the DomainObject.OnReferenceInitializing event is executing, this member cannot be used."));
+        return transactionContext;
+      }));
     }
 
     [Test]
@@ -244,7 +249,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(
           () => _transaction.ExecuteInScope(() => DomainObjectTestHelper.ExecuteInReferenceInitializing_NewObject(o => { o.Delete(); return o; })),
           Throws.InvalidOperationException
-              .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+              .With.Message.EqualTo("While the DomainObject.OnReferenceInitializing event is executing, this member cannot be used."));
     }
 
     [Test]
@@ -267,7 +272,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
         Assert.That(
             () => _transaction.ExecuteInScope(() => HookedTargetClass.NewObject()),  // indirect call of RaiseReferenceInitializatingEvent);
             Throws.InvalidOperationException
-                .With.Message.EqualTo("While the OnReferenceInitializing event is executing, this member cannot be used."));
+                .With.Message.EqualTo("While the DomainObject.OnReferenceInitializing event is executing, this member cannot be used."));
       }
     }
 
@@ -558,7 +563,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var transactionContextIndexer = order.TransactionContext;
 
       Assert.That(transactionContextIndexer, Is.InstanceOf(typeof(DomainObjectTransactionContextIndexer)));
-      Assert.That(((DomainObjectTransactionContext)transactionContextIndexer[_transaction]).DomainObject, Is.SameAs(order));
+      Assert.That(transactionContextIndexer[_transaction].DomainObject, Is.SameAs(order));
     }
 
     private Type GetConcreteType (Type requestedType)

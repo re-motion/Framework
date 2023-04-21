@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using NUnit.Framework;
 using Remotion.Data.DomainObjects.DomainImplementation;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.UnitTests.EventReceiver;
 using Remotion.Data.DomainObjects.UnitTests.TestDomain;
 using Remotion.Development.NUnit.UnitTesting;
@@ -149,6 +150,29 @@ namespace Remotion.Data.DomainObjects.UnitTests.Serialization
               "The DomainObject constructor may only be called via ClientTransaction.NewObject. "
               + "If this exception occurs during a base call of a deserialization constructor, adjust the base call to call the DomainObject's "
               + "deserialization constructor instead."));
+    }
+
+    [Test]
+    public void DomainObject_TransactionContextAfterDeserialization ()
+    {
+      var transaction = ClientTransaction.Current;
+
+      var order = transaction!.ExecuteInScope(() => Order.NewObject());
+      var transactionContextIndexer = order.TransactionContext;
+
+      Assert.That(transactionContextIndexer, Is.InstanceOf(typeof(DomainObjectTransactionContextIndexer)));
+      Assert.That(transactionContextIndexer[transaction].DomainObject, Is.SameAs(order));
+
+      var deserializedData = Serializer.SerializeAndDeserialize(Tuple.Create(transaction, order));
+      var deserializedOrder = deserializedData.Item2;
+      var deserializedTransaction = deserializedData.Item1;
+
+      Assert.That(deserializedOrder.ID, Is.EqualTo(order.ID));
+      Assert.That(deserializedOrder.RootTransaction, Is.SameAs(deserializedData.Item1));
+
+      var deserializedTransactionContextIndexer = deserializedOrder.TransactionContext;
+
+      Assert.That(deserializedTransactionContextIndexer [deserializedTransaction].DomainObject, Is.SameAs(deserializedOrder));
     }
 
     private void AssertEventRegistered (DomainObject domainObject, string eventName, object receiver, MethodInfo receiverMethod)

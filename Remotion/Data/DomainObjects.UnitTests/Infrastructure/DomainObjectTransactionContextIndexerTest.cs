@@ -29,24 +29,13 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       var order = DomainObjectIDs.Order1.GetObject<Order>();
       var tx = order.RootTransaction.CreateSubTransaction();
-      var indexer = new DomainObjectTransactionContextIndexer(order, false);
+      var transactionContextImplementation = new DomainObjectTransactionContextImplementation(order);
+      var indexer = new DomainObjectTransactionContextIndexer(transactionContextImplementation);
 
       var item = indexer[tx];
-      Assert.That(item, Is.InstanceOf(typeof(DomainObjectTransactionContext)));
-      Assert.That(((DomainObjectTransactionContext)item).DomainObject, Is.SameAs(order));
-      Assert.That(item.ClientTransaction, Is.SameAs(tx));
-    }
 
-    [Test]
-    public void Item_WhileEventIsExecuting ()
-    {
-      var order = DomainObjectIDs.Order1.GetObject<Order>();
-      var tx = order.RootTransaction.CreateSubTransaction();
-      var indexer = new DomainObjectTransactionContextIndexer(order, true);
-
-      var item = indexer[tx];
-      Assert.That(item, Is.InstanceOf(typeof(InitializedEventDomainObjectTransactionContextDecorator)));
       Assert.That(item.ClientTransaction, Is.SameAs(tx));
+      Assert.That(item, Is.EqualTo(new DomainObjectTransactionContext(transactionContextImplementation, tx)));
     }
   }
 }

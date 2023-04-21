@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Utilities;
 
@@ -116,11 +117,11 @@ namespace Remotion.Data.DomainObjects
     }
 
     /// <summary>
-    /// Gets the default <see cref="IDomainObjectTransactionContext"/>, i.e. the transaction context that is used when 
+    /// Gets the default <see cref="DomainObjectTransactionContext"/>, i.e. the transaction context that is used when
     /// <paramref name="domainObject"/>'s properties are accessed without specifying a <see cref="DomainObjects.ClientTransaction"/>.
     /// </summary>
     /// <param name="domainObject">
-    /// The <see cref="IDomainObject"/> to get the default <see cref="IDomainObjectTransactionContext"/> for. Must not be <see langword="null" />.
+    /// The <see cref="IDomainObject"/> to get the default <see cref="DomainObjectTransactionContext"/> for. Must not be <see langword="null" />.
     /// </param>
     /// <returns>The default transaction context.</returns>
     /// <remarks>
@@ -129,7 +130,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="ClientTransaction.LeafTransaction"/>, but it can be changed by using <see cref="ClientTransaction"/> APIs.
     /// </remarks>
     [JetBrains.Annotations.NotNull]
-    public static IDomainObjectTransactionContext GetDefaultTransactionContext ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
+    public static DomainObjectTransactionContext GetDefaultTransactionContext ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 

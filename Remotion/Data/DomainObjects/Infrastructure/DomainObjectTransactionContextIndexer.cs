@@ -16,6 +16,7 @@
 // 
 using System;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Queries.EagerFetching;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.Infrastructure
@@ -23,29 +24,18 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// <summary>
   /// Provides an indexing property to access a <see cref="DomainObject"/>'s transaction-dependent context for a specific <see cref="ClientTransaction"/>.
   /// </summary>
-  public struct DomainObjectTransactionContextIndexer
+  public readonly struct DomainObjectTransactionContextIndexer
   {
-    private readonly DomainObject _domainObject;
-    private readonly bool _isInitializedEventExecuting;
+    private readonly DomainObjectTransactionContextImplementation _transactionContextImplementation;
 
-    public DomainObjectTransactionContextIndexer (DomainObject domainObject, bool isInitializedEventExecuting)
+    public DomainObjectTransactionContextIndexer (DomainObjectTransactionContextImplementation transactionContextImplementation)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      _domainObject = domainObject;
-      _isInitializedEventExecuting = isInitializedEventExecuting;
+      ArgumentUtility.DebugCheckNotNull("transactionContextImplementation", transactionContextImplementation);
+
+      _transactionContextImplementation = transactionContextImplementation;
     }
 
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
-    public IDomainObjectTransactionContext this[ClientTransaction clientTransaction]
-    {
-      get
-      {
-        var context = new DomainObjectTransactionContext(_domainObject, clientTransaction);
-        if (_isInitializedEventExecuting)
-          return new InitializedEventDomainObjectTransactionContextDecorator(context);
-        else
-          return context;
-      }
-    }
+    public DomainObjectTransactionContext this[ClientTransaction clientTransaction] => new(_transactionContextImplementation, clientTransaction);
   }
 }
