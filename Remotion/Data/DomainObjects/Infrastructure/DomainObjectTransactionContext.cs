@@ -24,45 +24,21 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// Provides the default implementation of the <see cref="IDomainObjectTransactionContext"/> interface.
   /// Represents the context of a <see cref="DomainObject"/> that is associated with a specific <see cref="ClientTransaction"/>.
   /// </summary>
-  public class DomainObjectTransactionContext : IDomainObjectTransactionContext
+  public class DomainObjectTransactionContext : IDomainObjectTransactionContextStrategy
   {
-    private readonly DomainObject _domainObject;
-    private readonly ClientTransaction _associatedTransaction;
-
-    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
-    public DomainObjectTransactionContext (DomainObject domainObject, ClientTransaction associatedTransaction)
+    public object? GetTimestamp (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("associatedTransaction", associatedTransaction);
-      DomainObjectCheckUtility.CheckIfRightTransaction(domainObject, associatedTransaction);
-
-      _domainObject = domainObject;
-      _associatedTransaction = associatedTransaction;
+      return clientTransaction.DataManager.GetDataContainerWithLazyLoad(domainObject.ID, throwOnNotFound: true)!.Timestamp;
     }
 
-    public DomainObject DomainObject
+    public DomainObjectState GetState (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      get { return _domainObject; }
+      return clientTransaction.DataManager.GetState(domainObject.ID);
     }
 
-    public ClientTransaction ClientTransaction
+    public void RegisterForCommit (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      get { return _associatedTransaction; }
-    }
-
-    public DomainObjectState State
-    {
-      get { return ClientTransaction.DataManager.GetState(DomainObject.ID); }
-    }
-
-    public object? Timestamp
-    {
-      get { return ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true)!.Timestamp; }
-    }
-
-    public void RegisterForCommit ()
-    {
-      var dataContainer = ClientTransaction.DataManager.GetDataContainerWithLazyLoad(DomainObject.ID, throwOnNotFound: true)!;
+      var dataContainer = clientTransaction.DataManager.GetDataContainerWithLazyLoad(domainObject.ID, throwOnNotFound: true)!;
       if (dataContainer.State.IsDeleted)
         return;
 
@@ -72,20 +48,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       dataContainer.MarkAsChanged();
     }
 
-    public void EnsureDataAvailable ()
+    public void EnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      ClientTransaction.EnsureDataAvailable(DomainObject.ID);
+      clientTransaction.EnsureDataAvailable(domainObject.ID);
 
       DataContainer? dataContainer;
       Assertion.DebugAssert(
-          (dataContainer = ClientTransaction.DataManager.DataContainers[DomainObject.ID]) != null
-          && dataContainer.DomainObject == DomainObject,
+          (dataContainer = clientTransaction.DataManager.DataContainers[domainObject.ID]) != null
+          && dataContainer.DomainObject == domainObject,
           "Guaranteed because CheckIfRightTransaction ensures that DomainObject is enlisted.");
     }
 
-    public bool TryEnsureDataAvailable ()
+    public bool TryEnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction)
     {
-      return ClientTransaction.TryEnsureDataAvailable(DomainObject.ID);
+      return clientTransaction.TryEnsureDataAvailable(domainObject.ID);
     }
   }
 }

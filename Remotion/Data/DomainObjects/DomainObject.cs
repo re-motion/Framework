@@ -300,7 +300,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="RootTransaction"/>. The <see cref="ClientTransaction.ActiveTransaction"/> is usually the 
     /// <see cref="ClientTransaction.LeafTransaction"/>, but it can be changed by using <see cref="ClientTransaction"/> APIs.
     /// </remarks>
-    public IDomainObjectTransactionContext DefaultTransactionContext
+    public DomainObjectTransactionContextStruct DefaultTransactionContext
     {
       get { return this.GetDefaultTransactionContext(); }
     }

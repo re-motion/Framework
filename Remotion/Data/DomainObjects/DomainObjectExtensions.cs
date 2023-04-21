@@ -18,6 +18,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using Remotion.Data.DomainObjects.DataManagement;
+using Remotion.Data.DomainObjects.Infrastructure;
 using Remotion.Data.DomainObjects.Persistence;
 using Remotion.Utilities;
 
@@ -129,7 +130,7 @@ namespace Remotion.Data.DomainObjects
     /// <see cref="ClientTransaction.LeafTransaction"/>, but it can be changed by using <see cref="ClientTransaction"/> APIs.
     /// </remarks>
     [JetBrains.Annotations.NotNull]
-    public static IDomainObjectTransactionContext GetDefaultTransactionContext ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
+    public static DomainObjectTransactionContextStruct GetDefaultTransactionContext ([JetBrains.Annotations.NotNull] this IDomainObject domainObject)
     {
       ArgumentUtility.DebugCheckNotNull("domainObject", domainObject);
 
