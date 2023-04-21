@@ -31,27 +31,27 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       return new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
 
-    public object? GetTimestamp (DomainObject domainObject, ClientTransaction clientTransaction)
+    public object? GetTimestamp (ClientTransaction clientTransaction)
     {
       throw CreateInvalidOperationException();
     }
 
-    public DomainObjectState GetState (DomainObject domainObject, ClientTransaction clientTransaction)
+    public DomainObjectState GetState (ClientTransaction clientTransaction)
     {
       throw CreateInvalidOperationException();
     }
 
-    public void RegisterForCommit (DomainObject domainObject, ClientTransaction clientTransaction)
+    public void RegisterForCommit (ClientTransaction clientTransaction)
     {
       throw CreateInvalidOperationException();
     }
 
-    public void EnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction)
+    public void EnsureDataAvailable (ClientTransaction clientTransaction)
     {
       throw CreateInvalidOperationException();
     }
 
-    public bool TryEnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction)
+    public bool TryEnsureDataAvailable (ClientTransaction clientTransaction)
     {
       throw CreateInvalidOperationException();
     }

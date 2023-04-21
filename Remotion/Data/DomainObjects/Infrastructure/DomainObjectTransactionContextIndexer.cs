@@ -27,16 +27,15 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public struct DomainObjectTransactionContextIndexer
   {
     private readonly DomainObject _domainObject;
-    private readonly bool _isInitializedEventExecuting;
 
-    private static IDomainObjectTransactionContextStrategy s_defaultStrategy = new DomainObjectTransactionContext();
-    private static IDomainObjectTransactionContextStrategy s_initializedEventStrategy = new InitializedEventDomainObjectTransactionContextDecorator();
+    private static readonly IDomainObjectTransactionContextStrategy s_initializedEventStrategy = new InitializedEventDomainObjectTransactionContextDecorator();
+    private readonly IDomainObjectTransactionContextStrategy _strategy;
 
-    public DomainObjectTransactionContextIndexer (DomainObject domainObject, bool isInitializedEventExecuting)
+    public DomainObjectTransactionContextIndexer (DomainObject domainObject, IDomainObjectTransactionContextStrategy strategy)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       _domainObject = domainObject;
-      _isInitializedEventExecuting = isInitializedEventExecuting;
+      _strategy = strategy;
     }
 
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
@@ -44,15 +43,13 @@ namespace Remotion.Data.DomainObjects.Infrastructure
     {
       get
       {
-        var strategy = _isInitializedEventExecuting ? s_initializedEventStrategy : s_defaultStrategy;
-        return new DomainObjectTransactionContextStruct(_domainObject, clientTransaction, strategy);
+        return new DomainObjectTransactionContextStruct(_domainObject, clientTransaction, _strategy);
       }
     }
   }
 
   public struct DomainObjectTransactionContextStruct
   {
-    private DomainObject _domainObject;
     private IDomainObjectTransactionContextStrategy _strategy;
 
     /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
@@ -65,37 +62,36 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
       _strategy = strategy;
       ClientTransaction = clientTransaction;
-      _domainObject = domainObject;
     }
 
     public ClientTransaction ClientTransaction { get; }
 
-    public DomainObjectState State => _strategy.GetState(_domainObject, ClientTransaction);
-    public object? Timestamp => _strategy.GetTimestamp(_domainObject, ClientTransaction);
+    public DomainObjectState State => _strategy.GetState(ClientTransaction);
+    public object? Timestamp => _strategy.GetTimestamp(ClientTransaction);
     public void RegisterForCommit ()
     {
-      _strategy.RegisterForCommit(_domainObject, ClientTransaction);
+      _strategy.RegisterForCommit(ClientTransaction);
     }
 
     public void EnsureDataAvailable ()
     {
-      _strategy.EnsureDataAvailable(_domainObject, ClientTransaction);
+      _strategy.EnsureDataAvailable(ClientTransaction);
     }
 
     public bool TryEnsureDataAvailable ()
     {
-      return _strategy.TryEnsureDataAvailable(_domainObject, ClientTransaction);
+      return _strategy.TryEnsureDataAvailable(ClientTransaction);
     }
   }
 
   public interface IDomainObjectTransactionContextStrategy
   {
-    public object? GetTimestamp (DomainObject domainObject, ClientTransaction clientTransaction);
-    public DomainObjectState GetState (DomainObject domainObject, ClientTransaction clientTransaction);
+    public object? GetTimestamp (ClientTransaction clientTransaction);
+    public DomainObjectState GetState (ClientTransaction clientTransaction);
 
-    public void RegisterForCommit (DomainObject domainObject, ClientTransaction clientTransaction);
-    public void EnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction);
-    public bool TryEnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction);
+    public void RegisterForCommit (ClientTransaction clientTransaction);
+    public void EnsureDataAvailable (ClientTransaction clientTransaction);
+    public bool TryEnsureDataAvailable (ClientTransaction clientTransaction);
   }
 }
 

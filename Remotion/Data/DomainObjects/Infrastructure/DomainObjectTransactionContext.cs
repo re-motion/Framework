@@ -26,19 +26,25 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   /// </summary>
   public class DomainObjectTransactionContext : IDomainObjectTransactionContextStrategy
   {
-    public object? GetTimestamp (DomainObject domainObject, ClientTransaction clientTransaction)
+    private readonly DomainObject _domainObject;
+    public DomainObjectTransactionContext (DomainObject domainObject)
     {
-      return clientTransaction.DataManager.GetDataContainerWithLazyLoad(domainObject.ID, throwOnNotFound: true)!.Timestamp;
+      _domainObject = domainObject;
     }
 
-    public DomainObjectState GetState (DomainObject domainObject, ClientTransaction clientTransaction)
+    public object? GetTimestamp (ClientTransaction clientTransaction)
     {
-      return clientTransaction.DataManager.GetState(domainObject.ID);
+      return clientTransaction.DataManager.GetDataContainerWithLazyLoad(_domainObject.ID, throwOnNotFound: true)!.Timestamp;
     }
 
-    public void RegisterForCommit (DomainObject domainObject, ClientTransaction clientTransaction)
+    public DomainObjectState GetState (ClientTransaction clientTransaction)
     {
-      var dataContainer = clientTransaction.DataManager.GetDataContainerWithLazyLoad(domainObject.ID, throwOnNotFound: true)!;
+      return clientTransaction.DataManager.GetState(_domainObject.ID);
+    }
+
+    public void RegisterForCommit (ClientTransaction clientTransaction)
+    {
+      var dataContainer = clientTransaction.DataManager.GetDataContainerWithLazyLoad(_domainObject.ID, throwOnNotFound: true)!;
       if (dataContainer.State.IsDeleted)
         return;
 
@@ -48,20 +54,20 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       dataContainer.MarkAsChanged();
     }
 
-    public void EnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction)
+    public void EnsureDataAvailable (ClientTransaction clientTransaction)
     {
-      clientTransaction.EnsureDataAvailable(domainObject.ID);
+      clientTransaction.EnsureDataAvailable(_domainObject.ID);
 
       DataContainer? dataContainer;
       Assertion.DebugAssert(
-          (dataContainer = clientTransaction.DataManager.DataContainers[domainObject.ID]) != null
-          && dataContainer.DomainObject == domainObject,
+          (dataContainer = clientTransaction.DataManager.DataContainers[_domainObject.ID]) != null
+          && dataContainer.DomainObject == _domainObject,
           "Guaranteed because CheckIfRightTransaction ensures that DomainObject is enlisted.");
     }
 
-    public bool TryEnsureDataAvailable (DomainObject domainObject, ClientTransaction clientTransaction)
+    public bool TryEnsureDataAvailable (ClientTransaction clientTransaction)
     {
-      return clientTransaction.TryEnsureDataAvailable(domainObject.ID);
+      return clientTransaction.TryEnsureDataAvailable(_domainObject.ID);
     }
   }
 }
