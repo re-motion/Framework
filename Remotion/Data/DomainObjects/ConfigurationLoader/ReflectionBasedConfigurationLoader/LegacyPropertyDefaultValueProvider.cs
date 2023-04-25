@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Remotion.Data.DomainObjects.Mapping;
 using Remotion.ExtensibleEnums;
 using Remotion.Reflection;
+using Remotion.ServiceLocation;
 using Remotion.Utilities;
 
 namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigurationLoader
@@ -13,6 +14,7 @@ namespace Remotion.Data.DomainObjects.ConfigurationLoader.ReflectionBasedConfigu
   /// non-<see langword="null"/> values. This affects all <see cref="Array"/>, <see cref="string"/>, and <see cref="ExtensibleEnum{T}"/> properties.
   /// </summary>
   /// <threadsafety static="true" instance="true" />
+  [ImplementationFor(typeof(IPropertyDefaultValueProvider), Lifetime = LifetimeKind.Singleton, RegistrationType = RegistrationType.Single)]
   public class LegacyPropertyDefaultValueProvider : IPropertyDefaultValueProvider
   {
     public object? GetDefaultValue (IPropertyInformation propertyInfo, bool isNullable)
