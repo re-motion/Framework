@@ -269,7 +269,9 @@ namespace Remotion.Web.UI.Controls
       _tabStrip.Tabs.Add(tab);
 
       if (Views.Count == 2)
+      {
         Views.Remove(_placeHolderTabView);
+      }
       else if (Views.Count == 1)
       {
         _multiViewInternal.ActiveViewIndex = 0;
@@ -310,7 +312,7 @@ namespace Remotion.Web.UI.Controls
       _tabStrip.Tabs.RemoveAt(tabIndex);
       if (_newActiveTabAfterRemove != null)
       {
-        //SetActiveView(_newActiveTabAfterRemove);
+        SetActiveView(_newActiveTabAfterRemove);
       }
     }
 

@@ -87,13 +87,13 @@ public class TestTabbedForm : TestWxeBasePage
   private void LoadUserControls ()
   {
 
-       AddTab("1", "Main Tab 1", null);
-       AddTab("2", "Main Tab 2 foo bar", null);
-       AddTab("3", "Main Tab 3 foo", null);
-       AddTab("4", "Main Tab 4 foo foo bar", null);
-       AddTab("5", "Main Tab 5", null);
-       AddTab("6", "Main Tab 6 foo", null);
-       AddTab("7", "Main Tab 7 foo foo bar", null);
+     AddTab("1", "Main Tab 1", null);
+     AddTab("2", "Main Tab 2 foo bar", null);
+     AddTab("3", "Main Tab 3 foo", null);
+     AddTab("4", "Main Tab 4 foo foo bar", null);
+     AddTab("5", "Main Tab 5", null);
+     AddTab("6", "Main Tab 6 foo", null);
+     AddTab("7", "Main Tab 7 foo foo bar", null);
 
     var resourceUrlFactory = SafeServiceLocator.Current.GetInstance<IResourceUrlFactory>();
     List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
@@ -212,43 +212,12 @@ public class TestTabbedForm : TestWxeBasePage
     }
   }
 
-	override protected void OnInit (EventArgs e)
+  override protected void OnInit (EventArgs e)
 	{
 		//
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
 		//
 		InitializeComponent();
-
-    WebButton removeTabButton = new WebButton();
-    removeTabButton.ID = "RemoveTabButton";
-    removeTabButton.Text = WebString.CreateFromText("Remove Tab");
-    removeTabButton.Click += new EventHandler(removeView_Click);
-    MultiView.TopControls.Add(removeTabButton);
-
-    WebButton addTabButton = new WebButton();
-    addTabButton.ID = "AddTabButton";
-    addTabButton.Text = WebString.CreateFromText("Add Tab");
-    addTabButton.Click += new EventHandler(AddTab_Click);
-    MultiView.TopControls.Add(addTabButton);
-
-
-    WebButton removeAllAddNew = new WebButton();
-    removeAllAddNew.ID = "RemoveAllAndAddButton";
-    removeAllAddNew.Text = WebString.CreateFromText("Remove and Add new Tab");
-    removeAllAddNew.Click += new EventHandler(RemoveAllAndAddNewTab_Click);
-    MultiView.TopControls.Add(removeAllAddNew);
-
-    WebButton removeAll = new WebButton();
-    removeAll.ID = "RemoveAllButton";
-    removeAll.Text = WebString.CreateFromText("Remove all Tab");
-    removeAll.Click += new EventHandler(RemoveAll_Click);
-    MultiView.TopControls.Add(removeAll);
-
-    WebButton invisible = new WebButton();
-    invisible.ID = "InvisibleButton";
-    invisible.Text = WebString.CreateFromText("Invisibile");
-    invisible.Click += new EventHandler(RemoveAllAndAddNewInvisibleNewAndRemove_Click);
-    MultiView.TopControls.Add(invisible);
 
     WebButton saveButton = new WebButton();
     saveButton.ID = "SaveButton";
@@ -271,14 +240,30 @@ public class TestTabbedForm : TestWxeBasePage
     removeCurrentButton.Click += new EventHandler(RemoveSelected_Click);
     MultiView.BottomControls.Add(removeCurrentButton);
 
+    WebButton removeAllAddNew = new WebButton();
+    removeAllAddNew.ID = "RemoveAllAndAddButton";
+    removeAllAddNew.Text = WebString.CreateFromText("Remove and Add new Tab");
+    removeAllAddNew.Click += new EventHandler(RemoveAllAndAddNewTab_Click);
+    MultiView.BottomControls.Add(removeAllAddNew);
+
+    WebButton removeAll = new WebButton();
+    removeAll.ID = "RemoveAllButton";
+    removeAll.Text = WebString.CreateFromText("Remove all Tab");
+    removeAll.Click += new EventHandler(RemoveAll_Click);
+    MultiView.BottomControls.Add(removeAll);
+
     WebButton postBackButton = new WebButton();
     postBackButton.ID = "PostBackButton";
     postBackButton.Text = WebString.CreateFromText("Postback");
     postBackButton.Style["margin-right"] = "10pt";
+    postBackButton.Click += (sender, args) =>
+    {
+    };
     MultiView.BottomControls.Add(postBackButton);
 
     _wxeControlsPlaceHolder = new PlaceHolder();
     MultiView.BottomControls.Add(_wxeControlsPlaceHolder);
+
 
     base.OnInit(e);
 
@@ -291,46 +276,6 @@ public class TestTabbedForm : TestWxeBasePage
 	  new DropDownMenu().RegisterHtmlHeadContents(HtmlHeadAppender.Current);
 	  new ListMenu().RegisterHtmlHeadContents(HtmlHeadAppender.Current);
 	}
-
-  private void RemoveAll_Click (object sender, EventArgs e)
-  {
-    while (MultiView.Views.Count > 0)
-    {
-      removeView();
-    }
-  }
-
-  private void RemoveSelected_Click (object sneder, EventArgs e)
-  {
-    var view = MultiView.GetActiveView();
-    MultiView.Views.Remove(view);
-  }
-
-  private void RemoveAllAndAddNewTab_Click (object sender, EventArgs e)
-  {
-    while (MultiView.Views.Count > 0)
-    {
-      removeView();
-    }
-    AddView("1", WebString.CreateFromText("There should only be this tab visible"),"access" );
-  }
-
-  private void RemoveAllAndAddNewInvisibleNewAndRemove_Click (object sender, EventArgs e)
-  {
-    while (MultiView.Views.Count > 0)
-    {
-      removeView();
-    }
-    AddView("12341234", WebString.CreateFromText("invisibleAfter"), "invis", false);
-    AddView("1", WebString.CreateFromText("ToRemove"), "Remove", active: true);
-    AddView("16",WebString.CreateFromText("invisibleBefore"), "invisB", false);
-    //MultiView.Views.Remove(MultiView.GetActiveView()!);
-  }
-
-  private void removeView_Click (object sender, EventArgs e)
-  {
-    removeView();
-  }
 
   #region Web Form Designer generated code
 
@@ -372,18 +317,6 @@ public class TestTabbedForm : TestWxeBasePage
     ExecuteNextStep();
   }
 
-  private void RemoveTab_Click (object sender, EventArgs e)
-  {
-    var webTabStrip = (WebTab)PagesTabStrip.Tabs[PagesTabStrip.Tabs.Count - 1];
-    webTabStrip.IsVisible = false;
-    PagesTabStrip.Tabs.RemoveAt(PagesTabStrip.Tabs.Count-1);
-  }
-
-  private void AddTab_Click (object sender, EventArgs e)
-  {
-    AddTab((PagesTabStrip.Tabs.Count + 1).ToString(), "asdf", null);
-  }
-
   private void SaveButton_Click (object sender, EventArgs e)
   {
     MultiView.EnsureAllLazyLoadedViews();
@@ -409,6 +342,29 @@ public class TestTabbedForm : TestWxeBasePage
       return;
 
     ExecuteNextStep();
+  }
+
+  private void RemoveAll_Click (object sender, EventArgs e)
+  {
+    while (MultiView.Views.Count > 0)
+    {
+      removeView();
+    }
+  }
+
+  private void RemoveSelected_Click (object sneder, EventArgs e)
+  {
+    var view = MultiView.GetActiveView();
+    MultiView.Views.Remove(view);
+  }
+
+  private void RemoveAllAndAddNewTab_Click (object sender, EventArgs e)
+  {
+    while (MultiView.Views.Count > 0)
+    {
+      removeView();
+    }
+    AddView("1", WebString.CreateFromText("There should only be this tab visible"),"access" );
   }
 
   private bool PerformDomainValidation ()
