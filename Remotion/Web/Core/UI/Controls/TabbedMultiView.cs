@@ -312,6 +312,9 @@ namespace Remotion.Web.UI.Controls
       _tabStrip.Tabs.RemoveAt(tabIndex);
       if (_newActiveTabAfterRemove != null)
       {
+        // required to trigger next active tab
+        // WebTabStrip restores the control state on demand, when performing selection.
+        // This means that when removing a tab, the selection can get lost.
         SetActiveView(_newActiveTabAfterRemove);
       }
     }

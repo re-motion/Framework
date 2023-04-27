@@ -49,6 +49,7 @@ public class TestTabbedForm : TestWxeBasePage
   protected SmartHyperLink SmartHyperLink1;
   private bool _currentObjectSaved = false;
   protected WebUpdatePanel UpdatePanel;
+  private WebButton _removeCurrentButton;
 
   public TestTabbedForm ()
   {
@@ -116,6 +117,8 @@ public class TestTabbedForm : TestWxeBasePage
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
     _dataEditControls = (IDataEditControl[])dataEditControls.ToArray();
+    AddView("asdf", WebString.CreateFromText("penultimate tab"), "ff");
+    AddView("asdfes", WebString.CreateFromText("final tab"), "fe");
   }
 
   private void AddTab (string id, string text, IconInfo icon)
@@ -161,9 +164,8 @@ public class TestTabbedForm : TestWxeBasePage
     return dataEditControl;
   }
 
-  private void AddView (string id, WebString title, string accessKey, bool visible = true, int? at = null, bool active = false)
+  private void AddView (string id, WebString title, string accessKey)
   {
-    var where = at ?? MultiView.Views.Count - 1;
     var view = new TabView
                {
                  ID = id,
@@ -172,10 +174,6 @@ public class TestTabbedForm : TestWxeBasePage
                };
     view.LazyControls.Add(new LiteralControl("Such a good view: " + title));
     MultiView.Views.Add(view);
-    if (active)
-    {
-      MultiView.SetActiveView(MultiView.Views[where]);
-    }
   }
 
   private void removeView (int indexFromBehind = 1)
@@ -233,12 +231,12 @@ public class TestTabbedForm : TestWxeBasePage
     cancelButton.Click += new EventHandler(CancelButton_Click);
     MultiView.TopControls.Add(cancelButton);
 
-    WebButton removeCurrentButton = new WebButton();
-    removeCurrentButton.ID = "RemoveCurrentView";
-    removeCurrentButton.Text = WebString.CreateFromText("Remove currently active view");
-    removeCurrentButton.Style["margin-right"] = "10pt";
-    removeCurrentButton.Click += new EventHandler(RemoveSelected_Click);
-    MultiView.BottomControls.Add(removeCurrentButton);
+    _removeCurrentButton = new WebButton();
+    _removeCurrentButton.ID = "RemoveCurrentView";
+    _removeCurrentButton.Text = WebString.CreateFromText("Remove currently active view");
+    _removeCurrentButton.Style["margin-right"] = "10pt";
+    _removeCurrentButton.Click += new EventHandler(RemoveSelected_Click);
+    MultiView.BottomControls.Add(_removeCurrentButton);
 
     WebButton removeAllAddNew = new WebButton();
     removeAllAddNew.ID = "RemoveAllAndAddButton";
@@ -293,6 +291,8 @@ public class TestTabbedForm : TestWxeBasePage
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender(e);
+    var active = MultiView.GetActiveView();
+    _removeCurrentButton.Enabled = !(active!.ID is "TestTabbedPersonDetailsUserControl" or "TestTabbedPersonJobsUserControl");
     string mode = Global.PreferQuirksModeRendering ? "Quirks" : "Standard";
     string theme = Global.PreferQuirksModeRendering ? "" : SafeServiceLocator.Current.GetInstance<ResourceTheme>().Name;
     NavigationTabs.StatusText = WebString.CreateFromText(mode + " " + theme);
