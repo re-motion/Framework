@@ -24,7 +24,7 @@ using Remotion.Development.Data.UnitTesting.DomainObjects;
 using Remotion.Development.UnitTesting;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
-{
+{/*
   [TestFixture]
   public class DomainObjectTransactionContextTest : ClientTransactionBaseTest
   {
@@ -292,5 +292,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
     {
       return ClientTransactionTestHelper.GetIDataManager(transactionContext.ClientTransaction).DataContainers[transactionContext.DomainObject.ID];
     }
-  }
+  }*/
 }

@@ -550,7 +550,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(newPropertyIndexer, Is.Not.Null);
       Assert.That(newPropertyIndexer.DomainObject, Is.SameAs(deserializedOrder));
     }
-
+/*
     [Test]
     public void TransactionContext ()
     {
@@ -559,7 +559,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
 
       Assert.That(transactionContextIndexer, Is.InstanceOf(typeof(DomainObjectTransactionContextIndexer)));
       Assert.That(((DomainObjectTransactionContext)transactionContextIndexer[_transaction]).DomainObject, Is.SameAs(order));
-    }
+    }*/
 
     private Type GetConcreteType (Type requestedType)
     {

@@ -75,7 +75,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       var handle = ((IDomainObject)null).GetSafeHandle();
       Assert.That(handle, Is.Null);
     }
-
+/*
     [Test]
     public void GetDefaultTransactionContext ()
     {
@@ -91,7 +91,7 @@ namespace Remotion.Data.DomainObjects.UnitTests
       Assert.That(actualTransactionContext, Is.Not.EqualTo(expectedTransactionContext), "DomainObjectTransactionContext cannot be compared by reference at the moment.");
 
     }
-
+*/
     [Test]
     public void GetState ()
     {

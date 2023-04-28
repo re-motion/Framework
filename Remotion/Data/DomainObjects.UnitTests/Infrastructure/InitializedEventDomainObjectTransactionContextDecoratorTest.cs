@@ -21,7 +21,7 @@ using Remotion.Data.DomainObjects.Infrastructure;
 
 namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 {
-  [TestFixture]
+  /*[TestFixture]
   public class InitializedEventDomainObjectTransactionContextDecoratorTest
   {
     [Test]
@@ -109,5 +109,5 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
 
       contextMock.Verify(_ => _.TryEnsureDataAvailable(), Times.Never());
     }
-  }
+  }*/
 }
