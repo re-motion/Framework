@@ -158,33 +158,25 @@
           </asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="second" Title="Second">
-                  <asp:Literal runat="server">
-                      Second
-                  </asp:Literal>
+            <asp:Literal runat="server">Second</asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="TabView1" Title="Some more">
-            <asp:Literal runat="server">
-                            SomeMore  </asp:Literal>
+            <asp:Literal runat="server">SomeMore</asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="TabView2" Title="Still more">
-            <asp:Literal runat="server">
-                              Still more</asp:Literal>
+            <asp:Literal runat="server">Still more</asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="TabView3" Title="Another one">
-            <asp:Literal runat="server">
-                              Another one</asp:Literal>
+            <asp:Literal runat="server">Another one</asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="TabView4" Title="And here we go">
-<asp:Literal runat="server">
-And here we go                              </asp:Literal>
+            <asp:Literal runat="server">And here we go</asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="TabView5" Title="Still not enough?">
-            <asp:Literal runat="server">
-              Still not enough?                </asp:Literal>
+            <asp:Literal runat="server">Still not enough?</asp:Literal>
         </remotion:TabView>
         <remotion:TabView ID="TabView6" Title="Apparently not">
-            <asp:Literal runat="server">
-                              Apparently not</asp:Literal>
+            <asp:Literal runat="server">Apparently not</asp:Literal>
         </remotion:TabView>
       </Views>
       <BottomControls>

@@ -74,15 +74,6 @@ public class TestTabbedForm : TestWxeBasePage
     TabView activeView = (TabView)MultiView.Views[activeViewIndex];
     if (activeViewIndex > 0)
       MultiView.SetActiveView(activeView);
-    if (IsPostBack)
-    {
-      var a = (WebTab)PagesTabStrip.Tabs[2];
-      a.IsVisible = false;
-      PagesTabStrip.Tabs.RemoveAt(1);
-
-      ((WebTab)PagesTabStrip.Tabs[4]).IsDisabled = true;
-      PagesTabStrip.Tabs.RemoveAt(3);
-    }
   }
 
   private void LoadUserControls ()
@@ -117,8 +108,9 @@ public class TestTabbedForm : TestWxeBasePage
     if (dataEditControl != null)
       dataEditControls.Add(dataEditControl);
     _dataEditControls = (IDataEditControl[])dataEditControls.ToArray();
-    AddView("asdf", WebString.CreateFromText("penultimate tab"), "ff");
-    AddView("asdfes", WebString.CreateFromText("final tab"), "fe");
+    // required for testing removal of current active at the end of the tabs, better without controls
+    AddView("PenultimateTab", WebString.CreateFromText("penultimate tab"), null);
+    AddView("FinalTab", WebString.CreateFromText("final tab"), null);
   }
 
   private void AddTab (string id, string text, IconInfo icon)
@@ -176,7 +168,7 @@ public class TestTabbedForm : TestWxeBasePage
     MultiView.Views.Add(view);
   }
 
-  private void removeView (int indexFromBehind = 1)
+  private void RemoveView (int indexFromBehind = 1)
   {
     MultiView.Views.RemoveAt(MultiView.Views.Count-indexFromBehind);
   }
@@ -250,18 +242,21 @@ public class TestTabbedForm : TestWxeBasePage
     removeAll.Click += new EventHandler(RemoveAll_Click);
     MultiView.BottomControls.Add(removeAll);
 
+    WebButton createInvisibleAndRemoveFollowing = new WebButton();
+    createInvisibleAndRemoveFollowing.ID = "InvisibleTabCreationAndRemoveFollowingButton";
+    createInvisibleAndRemoveFollowing.Text = WebString.CreateFromText("Remove Tab following an invisible Tab");
+    createInvisibleAndRemoveFollowing.Click += new EventHandler(ChangeToInvisibleAndRemoveFollowingTab_Click);
+    MultiView.BottomControls.Add(createInvisibleAndRemoveFollowing);
+
     WebButton postBackButton = new WebButton();
     postBackButton.ID = "PostBackButton";
     postBackButton.Text = WebString.CreateFromText("Postback");
     postBackButton.Style["margin-right"] = "10pt";
-    postBackButton.Click += (sender, args) =>
-    {
-    };
+    postBackButton.Click += (sender, args) => {};
     MultiView.BottomControls.Add(postBackButton);
 
     _wxeControlsPlaceHolder = new PlaceHolder();
     MultiView.BottomControls.Add(_wxeControlsPlaceHolder);
-
 
     base.OnInit(e);
 
@@ -348,7 +343,7 @@ public class TestTabbedForm : TestWxeBasePage
   {
     while (MultiView.Views.Count > 0)
     {
-      removeView();
+      RemoveView();
     }
   }
 
@@ -362,9 +357,19 @@ public class TestTabbedForm : TestWxeBasePage
   {
     while (MultiView.Views.Count > 0)
     {
-      removeView();
+      RemoveView();
     }
     AddView("1", WebString.CreateFromText("There should only be this tab visible"),"access" );
+  }
+
+  private void ChangeToInvisibleAndRemoveFollowingTab_Click (object sender, EventArgs e)
+  {
+    var a = (WebTab)PagesTabStrip.Tabs[2];
+    a.IsVisible = false;
+    PagesTabStrip.Tabs.RemoveAt(1);
+
+    ((WebTab)PagesTabStrip.Tabs[4]).IsDisabled = true;
+    PagesTabStrip.Tabs.RemoveAt(3);
   }
 
   private bool PerformDomainValidation ()
