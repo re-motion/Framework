@@ -18,8 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableRowSupport;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -179,6 +181,11 @@ namespace Remotion.ObjectBinding.Web.UI.Controls
       public void SetFocus (IFocusableControl control)
       {
         _bocList.SetFocusImplementation(control);
+      }
+
+      public void ReportValidationFailure (IBusinessObject rowObject, BocColumnDefinition columnDefinition, IEnumerable<BusinessObjectValidationFailure> validationFailures)
+      {
+        ((IBocListWithValidationSupport)_bocList).ValidationFailureRepository.AddRowValidationFailures(rowObject, columnDefinition, validationFailures);
       }
     }
   }

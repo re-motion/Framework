@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Validation;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Web;
 using Remotion.Web.UI.Controls;
 
@@ -52,5 +54,6 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
     Control GetValidationErrorMarker ();
     EditModeValidator? GetEditModeValidator ();
     void SetFocus (IFocusableControl control);
+    void ReportValidationFailure (IBusinessObject rowObject, BocColumnDefinition columnDefinition, IEnumerable<BusinessObjectValidationFailure> validationFailure);
   }
 }

@@ -25,6 +25,7 @@ using System.Text;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using Remotion.ObjectBinding.Validation;
 using Remotion.Utilities;
 using Remotion.Web;
 using Remotion.Web.UI;
@@ -47,6 +48,7 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
 
     private IBusinessObjectReferenceDataSource? _dataSource;
 
+    private IReadOnlyList<BocColumnDefinition>? _columnDefinitions;
     private PlaceHolder? _editControls;
     private PlaceHolder? _validatorControls;
 
@@ -108,6 +110,8 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         throw new InvalidOperationException(
             string.Format("BocList '{0}': ControlFactory has not been set prior to invoking CreateControls().", _editModeHost.ID));
       }
+
+      _columnDefinitions = columns;
 
       CreatePlaceHolders(columns);
 
@@ -328,13 +332,13 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
       if (HasValidators())
       {
         for (int i = 0; i < _editControls.Controls.Count; i++)
-          isValid &= Validate(i);
+          isValid &= Validate(i, _columnDefinitions![i]);
       }
 
       return isValid;
     }
 
-    protected bool Validate (int columnIndex)
+    protected bool Validate (int columnIndex, BocColumnDefinition columnDefinition)
     {
       bool isValid = true;
 
@@ -346,6 +350,17 @@ namespace Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.EditableR
         {
           BaseValidator validator = (BaseValidator)cellValidators[i];
           validator.Validate();
+
+          if (!validator.IsValid)
+          {
+            var editControl = GetEditControl(columnIndex);
+            var businessObject = editControl?.DataSource?.BusinessObject;
+            var property = editControl?.Property;
+
+            var validationFailure = BusinessObjectValidationFailure.CreateForBusinessObjectProperty(validator.ErrorMessage, businessObject!, property!);
+            _editModeHost.ReportValidationFailure(businessObject!, columnDefinition, new[] { validationFailure });
+          }
+
           isValid &= validator.IsValid;
         }
       }
