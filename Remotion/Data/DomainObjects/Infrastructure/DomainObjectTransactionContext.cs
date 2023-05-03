@@ -27,6 +27,8 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public class DomainObjectTransactionContext : IDomainObjectTransactionContextStrategy
   {
     private readonly DomainObject _domainObject;
+
+    public bool IsInitializing { get; set; }
     public DomainObjectTransactionContext (DomainObject domainObject)
     {
       _domainObject = domainObject;
@@ -76,7 +78,7 @@ namespace Remotion.Data.DomainObjects.Infrastructure
 
     private void ThrowOnDomainObjectInWrongState ()
     {
-      if(_domainObject._isReferenceInitializeEventExecuting)
+      if(IsInitializing)
         throw new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
   }

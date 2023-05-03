@@ -170,8 +170,7 @@ namespace Remotion.Data.DomainObjects
     private ObjectID _id;
     private ClientTransaction _rootTransaction;
     private bool _needsLoadModeDataContainerOnly; // true if the object was created by a constructor call or OnLoaded has already been called once
-    internal bool _isReferenceInitializeEventExecuting; // true only while OnReferenceInitializing is executed
-    private IDomainObjectTransactionContextStrategy? _strategy;
+    private DomainObjectTransactionContext? _strategy;
 
     /// <summary>
     /// Initializes a new <see cref="DomainObject"/> with the current <see cref="DomainObjects.ClientTransaction"/>.
@@ -513,7 +512,8 @@ namespace Remotion.Data.DomainObjects
     /// </summary>
     internal void RaiseReferenceInitializatingEvent ()
     {
-      _isReferenceInitializeEventExecuting = true;
+      _strategy ??= new DomainObjectTransactionContext(this);
+      _strategy.IsInitializing = true;
       try
       {
         OnReferenceInitializing();
@@ -521,7 +521,7 @@ namespace Remotion.Data.DomainObjects
       }
       finally
       {
-        _isReferenceInitializeEventExecuting = false;
+        _strategy.IsInitializing = false;
       }
     }
 
@@ -729,7 +729,7 @@ namespace Remotion.Data.DomainObjects
 
     private void CheckInitializeEventNotExecuting ()
     {
-      if (_isReferenceInitializeEventExecuting)
+      if (_strategy != null && !_strategy.IsInitializing)
         throw new InvalidOperationException("While the OnReferenceInitializing event is executing, this member cannot be used.");
     }
 
