@@ -61,6 +61,16 @@ namespace Remotion.ObjectBinding.Validation
     [CanBeNull]
     public IBusinessObjectProperty? ValidatedProperty { get; }
 
+    public override string ToString ()
+    {
+      var objectType = ValidatedObject switch
+      {
+        IBusinessObjectWithIdentity businessObjectWithIdentity => businessObjectWithIdentity.UniqueIdentifier,
+        _ => ValidatedObject?.BusinessObjectClass.Identifier
+      };
+      return $"{ErrorMessage} (object: {objectType} # {ValidatedProperty?.Identifier}";
+    }
+
     private BusinessObjectValidationFailure (
         [NotNull] string errorMessage,
         [CanBeNull] IBusinessObject? validatedObject,
