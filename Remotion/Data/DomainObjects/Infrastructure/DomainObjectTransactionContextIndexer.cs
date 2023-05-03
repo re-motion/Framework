@@ -27,9 +27,9 @@ namespace Remotion.Data.DomainObjects.Infrastructure
   public struct DomainObjectTransactionContextIndexer
   {
     private readonly DomainObject _domainObject;
-    private readonly IDomainObjectTransactionContextStrategy _strategy;
+    private readonly DomainObjectTransactionContext _strategy;
 
-    public DomainObjectTransactionContextIndexer (DomainObject domainObject, IDomainObjectTransactionContextStrategy strategy)
+    public DomainObjectTransactionContextIndexer (DomainObject domainObject, DomainObjectTransactionContext strategy)
     {
       ArgumentUtility.CheckNotNull("domainObject", domainObject);
       _domainObject = domainObject;
@@ -45,53 +45,4 @@ namespace Remotion.Data.DomainObjects.Infrastructure
       }
     }
   }
-
-  public readonly struct DomainObjectTransactionContextStruct
-  {
-    private readonly IDomainObjectTransactionContextStrategy _strategy;
-
-    /// <exception cref="ClientTransactionsDifferException">The object cannot be used in the given transaction.</exception>
-
-    public DomainObjectTransactionContextStruct (DomainObject domainObject, ClientTransaction clientTransaction, IDomainObjectTransactionContextStrategy strategy)
-    {
-      ArgumentUtility.CheckNotNull("domainObject", domainObject);
-      ArgumentUtility.CheckNotNull("associatedTransaction", clientTransaction);
-      DomainObjectCheckUtility.CheckIfRightTransaction(domainObject, clientTransaction);
-
-      _strategy = strategy;
-      ClientTransaction = clientTransaction;
-    }
-
-    public ClientTransaction ClientTransaction { get; }
-
-    public DomainObjectState State => _strategy.GetState(ClientTransaction);
-    public object? Timestamp => _strategy.GetTimestamp(ClientTransaction);
-    public void RegisterForCommit ()
-    {
-      _strategy.RegisterForCommit(ClientTransaction);
-    }
-
-    public void EnsureDataAvailable ()
-    {
-      _strategy.EnsureDataAvailable(ClientTransaction);
-    }
-
-    public bool TryEnsureDataAvailable ()
-    {
-      return _strategy.TryEnsureDataAvailable(ClientTransaction);
-    }
-  }
-
-  public interface IDomainObjectTransactionContextStrategy
-  {
-    public object? GetTimestamp (ClientTransaction clientTransaction);
-    public DomainObjectState GetState (ClientTransaction clientTransaction);
-
-    public void RegisterForCommit (ClientTransaction clientTransaction);
-    public void EnsureDataAvailable (ClientTransaction clientTransaction);
-    public bool TryEnsureDataAvailable (ClientTransaction clientTransaction);
-  }
 }
-
-// struct wird vom Indexer returned, muss die gleiche API haben wie das Interface, kann aber nicht implementieren
-// enthält TransactionContext & relevante daten (wsl nur domainobject)

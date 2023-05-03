@@ -21,10 +21,10 @@ using Remotion.Utilities;
 namespace Remotion.Data.DomainObjects.Infrastructure
 {
   /// <summary>
-  /// Provides the default implementation of the <see cref="IDomainObjectTransactionContext"/> interface.
+  /// Provides actual implementation for the <see cref="DomainObjectTransactionContextStruct"/>.
   /// Represents the context of a <see cref="DomainObject"/> that is associated with a specific <see cref="ClientTransaction"/>.
   /// </summary>
-  public class DomainObjectTransactionContext : IDomainObjectTransactionContextStrategy
+  public class DomainObjectTransactionContext
   {
     private readonly DomainObject _domainObject;
 

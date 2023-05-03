@@ -44,7 +44,7 @@ namespace Remotion.Data.DomainObjects.UnitTests.Infrastructure
       var indexer = new DomainObjectTransactionContextIndexer(order, new DomainObjectTransactionContext(order));
 
       var item = indexer[tx];
-      Assert.That(item, Is.InstanceOf(typeof(InitializedEventDomainObjectTransactionContextDecorator)));
+      Assert.That(item, Is.InstanceOf(typeof(DomainObjectTransactionContextStruct)));
       Assert.That(item.ClientTransaction, Is.SameAs(tx));
     }
   }
