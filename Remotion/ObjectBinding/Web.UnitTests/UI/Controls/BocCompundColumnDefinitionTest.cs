@@ -15,11 +15,14 @@
 // along with re-motion; if not, see http://www.gnu.org/licenses.
 // 
 using System;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 using Remotion.Utilities;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
@@ -60,8 +63,23 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       var comparers = ((CompoundComparer<BocListRow>)comparer).Comparers;
       Assert.That(comparers.Count, Is.EqualTo(2));
-      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparers[0]).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
+      Assert.That(
+          ((BusinessObjectPropertyPathBasedComparer)comparers[0]).PropertyPath,
+          Is.InstanceOf<NullBusinessObjectPropertyPath>());
       Assert.That(((BusinessObjectPropertyPathBasedComparer)comparers[1]).PropertyPath, Is.SameAs(propertyPath1.Object));
+    }
+
+    [Test]
+    public void GetValidationFailureMatcher_ReturnsInstanceOfCompoundValidationFailureMatcher ()
+    {
+      var column = new BocCompoundColumnDefinition();
+
+      var validationFailureMatcher = ((IBocColumnDefinitionWithValidationSupport)column).GetValidationFailureMatcher();
+
+      Assert.That(validationFailureMatcher, Is.InstanceOf<CompoundBusinessObjectPropertyPathBasedValidationFailureMatcher>());
+      Assert.That(
+          ((CompoundBusinessObjectPropertyPathBasedValidationFailureMatcher)validationFailureMatcher).PropertyPaths,
+          Is.EqualTo(column.PropertyPathBindings.Cast<PropertyPathBinding>().Select(p => p.GetPropertyPath())));
     }
   }
 }

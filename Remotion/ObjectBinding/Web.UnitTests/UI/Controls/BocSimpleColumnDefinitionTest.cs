@@ -18,8 +18,10 @@ using System;
 using Moq;
 using NUnit.Framework;
 using Remotion.ObjectBinding.BusinessObjectPropertyPaths;
+using Remotion.ObjectBinding.Validation;
 using Remotion.ObjectBinding.Web.UI.Controls;
 using Remotion.ObjectBinding.Web.UI.Controls.BocListImplementation.Sorting;
+using Remotion.ObjectBinding.Web.UI.Controls.Validation;
 
 namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 {
@@ -47,7 +49,22 @@ namespace Remotion.ObjectBinding.Web.UnitTests.UI.Controls
 
       var comparer = ((IBocSortableColumnDefinition)column).CreateCellValueComparer();
       Assert.That(comparer, Is.InstanceOf<BusinessObjectPropertyPathBasedComparer>());
-      Assert.That(((BusinessObjectPropertyPathBasedComparer)comparer).PropertyPath, Is.InstanceOf<NullBusinessObjectPropertyPath>());
+      Assert.That(
+          ((BusinessObjectPropertyPathBasedComparer)comparer).PropertyPath,
+          Is.InstanceOf<NullBusinessObjectPropertyPath>());
+    }
+
+    [Test]
+    public void GetValidationFailureMatcher_ReturnsInstanceOfPropertyPathValidationFailureMatcher ()
+    {
+      var column = new BocSimpleColumnDefinition();
+
+      var validationFailureMatcher = ((IBocColumnDefinitionWithValidationSupport)column).GetValidationFailureMatcher();
+
+      Assert.That(validationFailureMatcher, Is.InstanceOf<BusinessObjectPropertyPathValidationFailureMatcher>());
+      Assert.That(
+          ((BusinessObjectPropertyPathValidationFailureMatcher)validationFailureMatcher).PropertyPath,
+          Is.EqualTo(column.GetPropertyPath()));
     }
   }
 }
